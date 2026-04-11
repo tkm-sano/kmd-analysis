@@ -1,0 +1,22 @@
+score_weights:
+  search_space_score: 0.4
+  evaluation_accuracy_score: 0.35
+  engineering_validity_score: 0.25
+engineering:
+  search_to_lambda_intercept: 0.0
+  search_to_lambda_slope: 0.08
+  weight_to_fe_alpha_center: 0.7
+  weight_to_fe_alpha_low: 0.6
+  weight_to_fe_alpha_high: 0.8
+city_condition_theta:
+  it: 0.1
+  living: 0.08
+  mobility: 0.12
+simulation:
+  years:
+  - 2025
+  compute_conditions:
+  - classical_only
+  - quantum_enabled
+  n_replicates: 50
+  random_seed: 42
