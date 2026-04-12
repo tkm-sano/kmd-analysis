@@ -1,0 +1,79 @@
+# source_registry
+
+本表は公式データ源と主要文献を共通形式へ統合した一覧である。
+
+## official_data
+- 必須 | 産業群の定義 | 日本標準産業分類 第13回（平成25年10月改定）の概要
+  - use_in_model: 金属素材群・化学/高分子素材群・無機素材群への再編基準
+  - url: https://www.e-stat.go.jp/classifications/terms/revisions/10/03
+- 補助 | 分類対応表 | 日本標準産業分類 改定の状況一覧
+  - use_in_model: 将来の分類対応表作成や第13回→第14回の対応確認
+  - url: https://www.e-stat.go.jp/classifications/terms/revisions/10
+- 必須 | 国勢調査データの総覧 | 令和2年国勢調査 調査の結果
+  - use_in_model: 使用表の全体位置づけ確認、公表区分の確認
+  - url: https://www.stat.go.jp/data/kokusei/2020/kekka.htm
+- 必須 | 国勢調査データの利用手順 | 令和2年国勢調査 調査結果の利用案内（ユーザーズガイド）
+  - use_in_model: 表検索、利用上の注意、分類事項一覧の確認
+  - url: https://www.stat.go.jp/data/kokusei/2020/kekka/pdf/u_guide_2020.pdf
+- 推奨 | 起点→都市の通勤・通学流動 | 従業・通学市区町村，男女別通勤者・通学者数－全国，都道府県，市区町村（常住地）
+  - use_in_model: 起点地域から主要都市への流動量の原表
+  - url: https://www.e-stat.go.jp/index.php/stat-search/database?cycle=0&layout=datalist&month=24101210&statdisp_id=0003454527&tclass1=000001136469&tclass2val=0&toukei=00200521&tstat=000001136464&year=20200
+- 必須 | 起点→都市の通勤流動 | 従業・通学市区町村，男女別通勤者数（15歳以上）－全国，都道府県，市区町村（常住地）
+  - use_in_model: 通勤者に限定した起点地域→都市の基礎流動量
+  - url: https://www.e-stat.go.jp/stat-search/files?collect_area=000&cycle=0&layout=datalist&page=1&result_page=1&stat_infid=000032214494&tclass1=000001136469&tclass2val=0&toukei=00200521&tstat=000001136464
+- 最重要 | 起点地域×都市×産業群流動 | 産業（大分類），従業地・通学地別就業者数（15歳以上）－全国，都道府県，21大都市，21大都市の区，県庁所在市，人口20万以上の市（常住地）
+  - use_in_model: 起点地域別に，どの都市へ，どの産業の就業者が向かうかを産業大分類レベルで取得
+  - url: https://www.e-stat.go.jp/index.php/stat-search/database?cycle=0&layout=datalist&page=1&result_page=1&statdisp_id=0003454532&tclass1=000001136469&tclass2val=0&toukei=00200521&tstat=000001136464
+- 必須 | 自動車依存度の代理指標 | 利用交通手段の種類数・利用交通手段，常住地又は従業地・通学地別通勤者・通学者数（15歳以上）－全国，都道府県，市区町村
+  - use_in_model: 常住地または従業地側の自動車依存度指標の構成
+  - url: https://www.e-stat.go.jp/dbview?sid=0003454513
+- 推奨 | 産業群の再編精緻化 | 男女，産業（中分類）別就業者数（15歳以上）－全国，都道府県，21大都市，21大都市の区，県庁所在市，人口10万以上の市（従業地・通学地）
+  - use_in_model: 化学工業，プラスチック製品，ゴム製品，窯業・土石製品，鉄鋼業，非鉄金属製造業などを用いた三産業群再編
+  - url: https://www.e-stat.go.jp/stat-search/database?layout=datalist&page=1&statdisp_id=0003464368&tclass1=000001136468&toukei=00200521&tstat=000001136464
+- 推奨 | 広域移動補助データ | 貨物・旅客地域流動調査
+  - use_in_model: 広域移動関係，自動車依存度，地域間移動構造の補助把握
+  - url: https://www.mlit.go.jp/statistics/details/sample03_2_00035.html
+- 必須 | 燃料費入力 | 石油製品価格調査 調査の結果
+  - use_in_model: ガソリン・軽油等のエネルギー費用系列
+  - url: https://www.enecho.meti.go.jp/statistics/petroleum_and_lpgas/pl007/results.html
+- 補助 | 電力価格入力 | JEPX スポット市場（Day Ahead Market）
+  - use_in_model: 電力価格シナリオの補助資料
+  - url: https://www.jepx.jp/electricpower/market-data/spot/
+- 必須 | 一般化交通費の原単位 | 費用便益分析マニュアル（令和7年8月訂正版）
+  - use_in_model: 時間価値原単位・走行経費原単位・感度分析の実務基準
+  - url: https://www.mlit.go.jp/road/ir/ir-hyouka/ben-eki_2.pdf
+
+## core_literature
+- 必須 | 量子計算による表面・界面反応 | Gujarati, T.P. et al. (2023) Quantum computation of reactions on surfaces using local embedding. npj Quantum Information 9, 88.
+  - use_in_model: corrosion_interface / interface_adhesion の量子側証拠
+  - url: https://www.nature.com/articles/s41534-023-00753-1
+- 必須 | 強相関固体の量子埋め込み | Cao, C. et al. (2023) Ab initio quantum simulation of strongly correlated materials with quantum embedding. npj Computational Materials 9, 78.
+  - use_in_model: 金属素材群・周期系材料の量子側証拠
+  - url: https://www.nature.com/articles/s41524-023-01045-0
+- 必須 | 近中期量子材料シミュレーション | Clinton, L. et al. (2024) Towards near-term quantum simulation of materials. Nature Communications 15, 211.
+  - use_in_model: 量子条件の資源改善ポテンシャル整理
+  - url: https://www.nature.com/articles/s41467-023-43479-6
+- 推奨 | 格子最適化・配置探索 | Xu, Z. et al. (2025) Quantum annealing-assisted lattice optimization. npj Computational Materials 11, 4.
+  - use_in_model: disorder_search / lattice_optimization の量子側証拠
+  - url: https://www.nature.com/articles/s41524-024-01505-1
+- 推奨 | 腐食シミュレーション | Nguyen, N. et al. (2026) Quantum computing for corrosion simulation: workflow and resource analysis. npj Quantum Information 12, 27.
+  - use_in_model: 金属素材群の中心候補文献
+  - url: https://www.nature.com/articles/s41534-025-01171-1
+- 必須 | 軽量化率→燃費改善率 | Joost, W.J. (2012) Reducing Vehicle Weight and Improving U.S. Energy Efficiency Using Integrated Computational Materials Engineering. JOM 64, 1032–1038.
+  - use_in_model: 10%軽量化あたりの燃費改善率レンジ（約6–8%）の根拠
+  - url: https://link.springer.com/article/10.1007/s11837-012-0424-z
+- 必須 | 軽量化技術レビュー | Isenstadt, A. & German, J. (2017) Lightweighting technology developments. International Council on Clean Transportation.
+  - use_in_model: 軽量化技術の制約・コスト・政策レビュー
+  - url: https://theicct.org/publication/lightweighting-technology-developments/
+- 必須 | PPMLの理論的根拠 | Santos Silva, J.M.C. & Tenreyro, S. (2006) The Log of Gravity. Review of Economics and Statistics 88(4), 641–658.
+  - use_in_model: 対数線形OLSではなくPPMLを採用する理論的根拠
+  - url: https://direct.mit.edu/rest/article/88/4/641/57668/The-Log-of-Gravity
+- 推奨 | PPMLの後続レビュー | Santos Silva, J.M.C. & Tenreyro, S. (2022) The Log of Gravity at 15. Portuguese Economic Journal 21, 423–437.
+  - use_in_model: 重力モデル推定の近年レビュー
+  - url: https://link.springer.com/article/10.1007/s10258-021-00203-w
+- 必須 | 高次元固定効果PPML実装 | Correia, S., Guimarães, P., & Zylkin, T. (2020) Fast Poisson estimation with high-dimensional fixed effects. The Stata Journal 20(1), 95–115.
+  - use_in_model: ppmlhdfe 実装，分離診断，HDFEを含むPPML推定
+  - url: https://journals.sagepub.com/doi/10.1177/1536867X20909691
+- 必須 | 通勤重力モデル | Persyn, D. & Torfs, W. (2016) A gravity equation for commuting with an application to estimating regional border effects in Belgium. Journal of Economic Geography 16(1), 155–175.
+  - use_in_model: 通勤流動に対する重力方程式の直接的先行研究
+  - url: https://academic.oup.com/joeg/article/16/1/155/2413035
