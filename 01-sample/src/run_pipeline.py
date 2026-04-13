@@ -9,10 +9,18 @@ from .anova_model import run_two_way_anova
 from .plotter import (
     plot_anova_effects,
     plot_city_industry_heatmap,
+    plot_condition_diff_boxplot,
+    plot_condition_diff_overview,
     plot_city_inflow,
     plot_industry_diff,
     plot_monte_carlo_delta,
+    plot_paper_heatmap,
+    plot_paper_main_results,
+    plot_paper_robustness_results,
+    plot_paper_sensitivity_analysis,
     plot_sensitivity_levers,
+    plot_technology_cost_flow,
+    plot_technology_flow_diagram,
 )
 from .scenario_analysis import build_pipeline_outputs, run_monte_carlo, run_sensitivity_suite
 from .config import BASE_DIR, PROCESSED_DIR, OUTPUT_TABLES, OUTPUT_FIGURES
@@ -67,7 +75,16 @@ def main():
 
     plot_city_inflow(sim, OUTPUT_FIGURES / "city_inflow.png")
     plot_industry_diff(sim, OUTPUT_FIGURES / "industry_inflow_diff.png")
+    plot_condition_diff_overview(sim, OUTPUT_FIGURES / "condition_diff_overview.png")
+    plot_condition_diff_boxplot(sim, OUTPUT_FIGURES / "condition_diff_boxplot.png")
     plot_city_industry_heatmap(sim, OUTPUT_FIGURES / "city_industry_heatmap.png")
+    plot_paper_heatmap(sim, OUTPUT_FIGURES / "paper_heatmap.png")
+    plot_technology_cost_flow(bench, eng, cost, OUTPUT_FIGURES / "technology_cost_flow.png")
+    plot_technology_flow_diagram(bench, eng, cost, OUTPUT_FIGURES / "technology_flow_diagram.png")
+    plot_technology_flow_diagram(bench, eng, cost, OUTPUT_FIGURES / "paper_mechanism_flow.png")
+    plot_paper_main_results(sim, OUTPUT_FIGURES / "paper_main_results.png")
+    plot_paper_sensitivity_analysis(sensitivity_df, OUTPUT_FIGURES / "paper_sensitivity_analysis.png")
+    plot_paper_robustness_results(sensitivity_df, monte_carlo_df, OUTPUT_FIGURES / "paper_robustness_results.png")
     plot_anova_effects(anova, OUTPUT_FIGURES / "anova_effect_sizes.png")
     plot_sensitivity_levers(sensitivity_df, OUTPUT_FIGURES / "sensitivity_levers.png")
     plot_monte_carlo_delta(monte_carlo_df, OUTPUT_FIGURES / "monte_carlo_delta.png")
