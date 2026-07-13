@@ -1,0 +1,17 @@
+parameter,low,base,high,unit,evidence_status,source_or_rationale
+customer_count,25.0,50.0,100.0,customers,Experimental design,User-specified factorial levels.
+vehicle_count,1.0,3.0,5.0,vehicles,Experimental design,User-specified factorial levels.
+assumed_speed_kmh,20.0,25.0,30.0,km/h,Assumed parameter,Base retained from the prior Tokyo proxy model; low and high are explicit exploratory stress levels and are not observed speeds.
+road_distance_multiplier,1.1,1.25,1.4,ratio,Assumed parameter,Base retained from the prior Tokyo proxy model; low and high are explicit geometric-proxy stress levels.
+service_time_per_customer_min,5.0,10.0,15.0,min/customer,Assumed parameter,Bounds match the prior benchmark-style synthetic service-time rule; no observed Tokyo service-time data are used.
+operating_time_limit_min,360.0,480.0,600.0,min,Assumed parameter,Base is the prior all-day scenario window; low and high are explicit exploratory limits.
+usable_battery_ratio,0.6,0.7,0.8,ratio,Assumed parameter,Base matches the prior usable-range factor; low and high are sensitivity assumptions.
+reserve_soc_ratio,0.1,0.2,0.3,ratio,Assumed parameter,The prior vehicle-rule snapshot specifies a 10-20 percent reserve check; 30 percent is an explicit conservative stress level.
+vehicle_payload_capacity_kg,1500.0,2000.0,2500.0,kg,Mixed official and assumed,Base is the official-scenario eCanter payload; low and high are explicit capacity stress levels.
+customer_demand_scale,0.75,1.0,1.25,ratio,Assumed parameter,Explicit scaling around the recorded synthetic-demand distribution.
+charger_power_kw,48.0,50.0,130.0,kW,Observed candidate values,Levels occur in the validated Open Charge Map connection input.
+charging_time_limit_min,30.0,60.0,90.0,min,Assumed parameter,Explicit charging-duration feasibility thresholds; not observed stopping times.
+maximum_charger_access_distance_km,3.0,5.0,10.0,km,Assumed parameter,Explicit conservative balanced and broad geographic-access thresholds.
+initial_soc_ratio,0.8,0.9,1.0,ratio,Assumed parameter,Explicit initial-state sensitivity; no observed departure SOC is available.
+seed_count,,100.0,,seed identifiers,Analysis design,One hundred paired seed identifiers are retained across all experimental conditions.
+bootstrap_iterations,,1000.0,,resamples,Analysis design,Cluster bootstrap resamples seed identifiers and retains all conditions within sampled seeds.

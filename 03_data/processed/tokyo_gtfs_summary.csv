@@ -1,0 +1,6 @@
+variable_id,value,unit,definition,source_file,limitation
+gtfs_available_tokyo,1,binary,A static GTFS feed is available for Toei Bus in the Tokyo subcase.,03_data/raw/smart_city/gtfs/tokyo/toei_bus_gtfs_2026-07-04.zip,Bus GTFS indicates static mobility-data readiness; it is not road traffic telemetry and is not a direct EV delivery-route demand dataset.
+gtfs_routes_tokyo,151,routes,Number of routes in the Toei Bus GTFS feed. Agency: 都営バス.,03_data/raw/smart_city/gtfs/tokyo/toei_bus_gtfs_2026-07-04.zip,"Public transit route count is a mobility-data availability indicator, not a logistics route count."
+gtfs_stops_tokyo,5370,stops,Number of stops in the Toei Bus GTFS feed.,03_data/raw/smart_city/gtfs/tokyo/toei_bus_gtfs_2026-07-04.zip,"Stops are public transit stops, not delivery customers."
+gtfs_trips_tokyo,68022,trips,Number of scheduled trips in the Toei Bus GTFS feed. Calendar range: 20260704-20290703.,03_data/raw/smart_city/gtfs/tokyo/toei_bus_gtfs_2026-07-04.zip,"Scheduled transit trips indicate data richness, not EV delivery operations."
+gtfs_stop_times_tokyo,1304152,stop_time records,Number of stop_time records in the Toei Bus GTFS feed.,03_data/raw/smart_city/gtfs/tokyo/toei_bus_gtfs_2026-07-04.zip,"Large stop_time count indicates detailed static schedule data, not real-time traffic."

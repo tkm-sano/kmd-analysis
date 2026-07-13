@@ -1,0 +1,50 @@
+\label{app:extracted-circuit-resources}
+
+Table~\ref{tab:extracted-circuit-resources} lists the circuit-resource data extracted from the analysis corpus.
+The table is a compact rendering of \texttt{literature/circuit\_resources.csv}.
+Depth values should not be read as a single homogeneous physical-depth metric; the depth type column states how each paper defines or reports depth.
+
+\begingroup
+\tiny
+\setlength{\tabcolsep}{2pt}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.18\linewidth}>{\raggedright\arraybackslash}p{0.20\linewidth}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.18\linewidth}}
+\caption{Extracted circuit-resource data used for Figures A--C and the gap assessment.}
+\label{tab:extracted-circuit-resources}\\
+\toprule
+Source ID & Instance or scope & Width & Depth & Depth type / source location \\
+\midrule
+\endfirsthead
+\toprule
+Source ID & Instance or scope & Width & Depth & Depth type / source location \\
+\midrule
+\endhead
+qaoa-2014-farhi & QAOA theoretical definition & $n$ logical qubits & $\leq m p + p$ & theoretical upper bound; abstract/introduction \\
+bench-2021-lubinski & benchmark methodology & circuit width = qubits & normalized depth & normalized depth after standard-gate transpilation; Secs. III.D--III.F \\
+vrptw-2023-leonidas & 11-route full encoding & 11 qubits & $L=4$ & hardware-efficient ansatz layers; Fig. 3 and Sec. VI.B \\
+vrptw-2023-leonidas & 16-route full encoding & 16 qubits & $L=4$ & hardware-efficient ansatz layers; Fig. 4 and Sec. VI.B \\
+vrptw-2023-leonidas & 16-route minimal encoding & 5 qubits & $L=4$ & hardware-efficient ansatz layers; Fig. 4 and Sec. VI.B \\
+vrptw-2023-leonidas & 128-route minimal encoding & 8 qubits & $L=4$ & hardware-efficient ansatz layers; Fig. 6 and Sec. VI.B \\
+vrptw-2023-leonidas & 3964-route minimal encoding & 13 qubits & $L=4$ & hardware-efficient ansatz layers; Fig. 6 and Sec. VI.B \\
+hvrp-2024-fitzek & HVRP instance I & 11 qubits & $p=1$--5 & QAOA layer depth; Table 1 and Figs. 7--9 \\
+hvrp-2024-fitzek & HVRP instance II & 19 qubits & $p=1$--5 & QAOA layer depth; Table 1 and Figs. 7--8 \\
+hvrp-2024-fitzek & HVRP instance III & 21 qubits & $p=1$--5 & QAOA layer depth; Table 1 and Figs. 7--8 \\
+cvrp-2025-onah-utility & Golden\_5 HOBO/direct encoding & 7685 qubits & 38425 & Depth(N), asymptotic two-qubit depth; Table 3, Fig. 1, Table 1 \\
+cvrp-2025-onah-utility & Golden\_5 QUBO & 202505 qubits & not reported & QUBO depth not directly reported for Golden\_5 in Table 3 \\
+encoding-2022-glos & general TSP QUBO encoding & $N^2$ qubits & $12N$ & theoretical circuit-depth bound; Table 1 \\
+encoding-2022-glos & general TSP HOBO encoding & $N\log N$ qubits & $(4C^2+3C)N^2$ & theoretical circuit-depth bound; Table 1 \\
+encoding-2022-glos & general TSP mixed encoding & \(\begin{array}{l}C N^{2-\alpha}\log N\\ \text{qubits}\end{array}\) & \(\begin{array}{l}2\alpha^2 C N^{1+\alpha}\\ \log^2 N\end{array}\) & theoretical circuit-depth bound; Table 1 \\
+encoding-2022-glos & general TSP enumerating encoding & $\lceil \log(N!) \rceil$ qubits & exponential & theoretical resource complexity; Table 1 \\
+vrp-2020-azad & VRP $(4,2)$ instance & 12 qubits & $p=12$ & QAOA layer depth; Fig. 2 and Sec. V.A \\
+vrp-2020-azad & VRP $(5,2)$ instance & 20 qubits & $p=6$--40 & QAOA layer search range; Sec. V.B and Figs. 5--6 \\
+vrp-2020-azad & VRP $(5,3)$ instance & 20 qubits & $p=24$ & QAOA layer depth; Fig. 3 and Sec. V.C \\
+vrp-2025-azfar-arxiv & 3-node 2-vehicle VRP & 6 qubits & $p=2$ & QAOA layer plus transpiled gate counts; Secs. 4.1--4.3 and Fig. 4 \\
+vrp-2025-azfar-arxiv & 4-node VRP & 14 qubits & $p=2$ & QAOA layer plus transpiled gate counts; Sec. 4.3 \\
+vrp-2025-azfar-arxiv & 5-node VRP & 30 qubits & $p=2$ & QAOA layer plus transpiled total gate count; Sec. 4.3 and Figs. 8--10 \\
+cvrp-2023-xie & general $N$-customer CVRP AOA & \(\begin{array}{l}2N^2+\lceil\log_2 M\rceil-2\\ M=Q+\max(q)+1\end{array}\) & $p$ pairs & AOA phase-separation and mixing depth; Sec. IV.F, Sec. V.A, Fig. 6 \\
+cvrp-2023-xie & 4-customer P1/P2 and 3-customer P3s & formula-based & depth 1--9 & repeated AOA phase/mixer pairs; Figs. 7--10 and Table I \\
+cvrp-2023-palackal & 4-node TSP subproblem & 9 qubits & $p=5$ & QAOA layer; Sec. IV, Table I, Table II, Table IV \\
+cvrp-2023-palackal & 5-node TSP subproblem & 16 qubits & $p=5$ & QAOA layer; Sec. IV, Table I, Table II, Table III \\
+cvrp-2023-palackal & 6-node TSP subproblem & 25 qubits & $p=5$ & QAOA layer; Sec. IV, Fig. 3, Table II \\
+\bottomrule
+\end{longtable}
+\endgroup
