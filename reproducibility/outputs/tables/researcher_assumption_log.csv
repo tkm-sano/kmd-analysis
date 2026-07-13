@@ -1,9 +1,0 @@
-assumption_id,assumption,why_needed,evidence,alternative,impact_if_false,tested,status
-AS1,人口分布を配送需要位置の代理とする,実注文位置がない,population mesh; code,実注文/企業データ,空間結果が変わる,False,RESEARCHER_ASSUMPTION
-AS2,地理距離×1.25で道路距離を近似,network distanceなし,BaselineAssumptions,road shortest path,time/range率が変わる,True,RATIONALE_NOT_VERIFIED
-AS3,空間クラスタを車両割当の代理とする,車両別routeが必要,KMeans code,constrained assignment,route負荷が変わる,False,RESEARCHER_ASSUMPTION
-AS4,最近傍順がroute負荷proxyとなる,共通訪問順が必要,route code,TSP/VRP optimum,distanceが変わる,False,RESEARCHER_ASSUMPTION
-AS5,固定25 km/hで時間を近似,traffic dataを使用しない,config,observed/network time,time率が変わる,True,RATIONALE_NOT_VERIFIED
-AS6,候補距離がcharging accessの一側面,利用データなし,OCM geography,availability model,access解釈が変わる,True,RESEARCHER_ASSUMPTION
-AS7,選択車両仕様をbaselineに使える,比較車両が必要,vehicle snapshot,fleet distribution,range/payloadが変わる,True,SOURCE_PARTLY_VERIFIED
-AS8,個別制約率が実装gapの予備情報になる,統合EVRP未実装,study logic,joint feasibility,要件優先順位が変わる,False,RETROSPECTIVE_RECONSTRUCTION

@@ -1,8 +1,0 @@
-constraint,result,what_this_result_shows,main_caution
-積載量,0.0,現在の需要仮定では積載量制約がどの程度拘束的だったか。,Synthetic discrete-uniform customer demand and one manufacturer-specification vehicle
-運行時間上限,0.3351851851851852,現在の速度・時間上限・顧客数・route proxyの下で時間制約が拘束した。,"Haversine distance with road multiplier, assumed speed, synthetic service time; no waiting/detour/charging event"
-航続距離,0.6444444444444445,現在のvehicle rangeとroute proxyでは途中補完なしで成立しない候補がある。,Nominal range multiplied by initial-minus-reserve SOC ratio; no SOC trajectory
-SOC,Not evaluated,SOC trajectoryは未評価である。,A sequential SOC trajectory and charger-arrival SOC are not modeled
-充電器候補への地理アクセス,0.10691358024691358,設定した地理的・条件的閾値で候補が見つかるか。,Distance from any route-proxy node to a screened OCM candidate; actual public availability is unknown
-単純化した充電補完可能性,0.33295019157088124,単純化した充電補完モデルでも解消できない航続距離条件が残る。,Simplified geographic range-support proxy; charger-arrival SOC and actual stop choice are not evaluated
-充電時間上限,0.15302124149309135,一定出力の単純計算で補完時間が設定上限内か。,"Constant reported power; no taper, efficiency loss, queue, operating hours, or event timing"
