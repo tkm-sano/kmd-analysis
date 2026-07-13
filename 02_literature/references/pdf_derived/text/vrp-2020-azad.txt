@@ -1,0 +1,825 @@
+===== PAGE 1 =====
+
+arXiv:2002.01351v2  [quant-ph]  23 Sep 2022
+Solving Vehicle Routing Problem Using Quantum Approximate Optimization
+Algorithm
+Utkarsh,1, ∗ Bikash K. Behera, 2, 3, † Emad A. Ahmed, 4, ‡ Prasanta K. Panigrahi, 3, § and Ahmed Farouk 5, ¶
+1Center for Computational Natural Sciences and Bioinformat ics,
+International Institute of Information Technology Hydera bad, Hyderabad 500032, Telangana, India
+2Bikash’s Quantum (OPC) Pvt. Ltd.,
+Balindi, Mohanpur 741246, Nadia, West Bengal, India
+3Department of Physical Sciences,
+Indian Institute of Science Education and Research Kolkata , Mohanpur 741246, West Bengal, India
+4Department of Computer Science, Faculty of Computers and In formation, South Valley University, Qena, Egypt
+5Department of Computer Science, Faculty of Computers and Ar tiﬁcial Intelligence, South Valley University, Hurghada, Egypt
+In this paper, we describe the usage of the Quantum Approxima te Optimization Algorithm
+(QAOA), which is a quantum-classical heuristic, to solve a c ombinatorial optimization and inte-
+ger programming task known as Vehicle Routing Problem (VRP) . We outline the Ising formulation
+for VRP and present a detailed procedure to solve VRP by minim izing its simulated Ising Hamil-
+tonian using the IBM Qiskit platform. Here, we attempt to ﬁnd solutions for the VRP problems:
+(4,2), (5,2), and (5 ,3), where each (n, k) represents a VRP problem with n locations and k vehicles.
+We ﬁnd that the performance of QAOA is not just dependent upon the classical optimizer used, the
+number of steps p in which an adiabatic path is realized, or the way parameters are initialized, but
+also on the problem instance itself.
+I. INTRODUCTION
+A majority of the real world applications involve map-
+ping the task at hand to an optimization problem, whose
+solutions are either fully known or can be approximated
+by relaxing some of its constraints. In general, the incre-
+ment in problem size or augmentation of additional con-
+straints can increase the hardness of the problem. This
+means that the computational resources required in solv-
+ing them scale-up exponentially, making them computa-
+tionally intractable. Hence, researchers worldwide have
+been working on developing eﬃcient tools and techniques
+for solving these problems eﬃciently with the available
+computing power.
+With the recent development of quantum processors
+by IBM
+1, Rigetti 2, Google 3 etc, various proposals have
+been made to use them to ﬁnd solutions for optimization
+problems. In general, quantum computing devices are
+supposed to have a computational advantage over classi-
+cal processors by using quantum resources such as super-
+position and entanglement. However, the computational
+capabilities of these current generation quantum proces-
+sors also known as Noisy Intermediate-Scale Quantum
+(NISQ)
+4 devices, are considerably restricted due to their
+intermediate size (in terms of qubits count), limited con-
+nectivity, imperfect qubit-control, short coherence time
+and minimal error-correction. Hence, they are only able
+to run algorithms with limited circuit depth. The Quan-
+tum Approximate Optimization Algorithm (QAOA)
+5 is
+one of such algorithm which belongs to the class of
+quantum-classical hybrid variational algorithms. It can
+be thought of as a coarsely trotterized adiabatic time
+evolution in p steps to
+⏐
+⏐
+⏐ψHc
+GS
+⟩
+i.e., the ground state of a
+HamiltonianHc which encodes the problem from
+⏐
+⏐
+⏐ψHm
+GS
+⟩
+i.e., the ground state of the Hamiltonian Hm which is
+known and easier to prepare. Thus, it can be used
+to solve combinatorial optimization problems mapped
+to the minimization of an Ising Hamiltonian on near-
+term devices. As the Ising problem is itself NP-hard,
+QAOA is an expected candidate for demonstrating quan-
+tum supremacy. Here, in this paper, we use QAOA to
+solve the Vehicle Routing Problem (VRP), which is an
+NP-hard combinatorial optimization problem
+6.
+Structure – In Section II, we discuss VRP and present
+its Ising formulation in Section III. Then, in Section IV,
+we explain QAOA in detail and present our simulation
+results in Section
+V. Finally, in Section VI, we discuss
+the performance and limitations of using QAOA to solve
+combinatorial optimizations problem in general.
+II. VEHICLE ROUTING PROBLEM
+Vehicle Routing Problem is an NP-hard combinatorial
+optimization problem. Any problem instance ( n,k ) of
+VRP involves k vehicles, and n − 1 locations (other than
+the depot D). Its solution is the set of routes in which all
+of the k vehicles begin and end in the D, such that each
+location is visited exactly once. The optimal route is the
+one in which the total distance travelled by k vehicles is
+least. In a way, this problem is a generalization of the
+classic Travelling Salesman Problem
+7, where now a group
+ofk salesmen begin and end at the same location D while
+having to collectively serve n − 1 locations such that each
+location is served exactly once.
+In most real world applications, the VRP problem 8
+is generally augmented by constraints, such as vehicle
+capacity or limited coverage-time. However, here we only
+focus on showing how to solve the most basic version of
+VRP without any of these additional constraints.
+
+===== PAGE 2 =====
+
+2
+III. ISING FORMULATION OF VRP
+To solve a problem instance ( n,k ) of VRP using
+QAOA, we ﬁrst need to map it to the minimization of
+an Ising Hamiltonian Hc
+9. We do this by ﬁrst ﬁnding
+the Hc, which encodes the given problem instance.
+Let xij be the binary decision variable which has the
+value 1 if there exists an edge from i to j with weight
+wij > 0, else it is 0. To represent a solution to VRP
+problem, there will be n×(n−1) decision variables. Next,
+we for every edge i →j we deﬁne two sets source[i] and
+target[j]. The set source[i] will contain the nodes j to
+which node i sends an edge. Similarly, the set target[j]
+will contain all the nodes i which send an edge to node
+j. Hence, the VRP can be forumalted as
+VRP (n,k ) = min{xij } i→ j∈{ 0, 1}
+∑
+i→ j
+wijxij (1)
+Subjected to the following constraints:
+∑
+j∈ source[i]
+xij = 1 ∀i ∈ {1,...,n − 1} (2)
+∑
+j∈ target[i]
+xji = 1 ∀i ∈ {1,...,n − 1} (3)
+∑
+j∈ source[0]
+x0j =k (4)
+∑
+j∈ target[0]
+xj0 =k (5)
+Here, Eqs. (
+2), (3) impose the node-visiting constraint
+so that each node is visited exactly once. Also, the Eqs.
+(
+4), ( 5) impose the constraint to enforce that all the ve-
+hicles begin from and return back to depot D, i.e., the
+node 0. Now, using Eqs. ( 1-5), the energy functional
+HV RP of the above problem can be written as:
+HV RP =HA +HB +HC +HD +HE (6)
+HA =
+∑
+i→ j
+wijxij (7)
+HB =A
+∑
+i∈ 1,...,n − 1
+(
+1 −
+∑
+j∈ source[i]
+xij
+) 2
+(8)
+HC =A
+∑
+i∈ 1,...,n − 1
+(
+1 −
+∑
+j∈ target[i]
+xji
+) 2
+(9)
+HD =A
+(
+k −
+∑
+j∈ source[0]
+x0j
+) 2
+(10)
+HE =A
+(
+k −
+∑
+j∈ target[0]
+xj0
+) 2
+(11)
+Here, A >0 is a constant, which is dependent on the
+problem instance itself. Next, for VRP (n,k ), we can
+represent all the decision variables xij using the following
+vector⃗ x:
+⃗x = [x(0, 1),x (0, 2),...x (1, 0),x (1, 2),...x (n− 1,n − 2)]T (12)
+Using ⃗ x, we also deﬁne the following vectors for every
+node i: ⃗ zS[i] and ⃗ zT [i]. The ﬁrst vector ⃗ zS[i] is ⃗ xwith
+xij = 1, xkj = 0 if k ̸=i, ∀j,k ∈ {0,...,n −1}. Similarly,
+the second vector ⃗ zT [i] is⃗ xwithxji = 1, xjk = 0 if k ̸=i,
+∀j,k ∈ {0,...,n −1}. These two additional vectors could
+be understood more clearly using the following two Eqs.
+(
+13-14):
+∑
+j∈ source[i]
+xij =⃗ zT
+S[i]⃗ x (13)
+∑
+j∈ target[i]
+xji =⃗ zT
+T [i]⃗ x (14)
+From Eq. ( 12), we can represent minimization of
+HV RP as a quadratic unconstrained binary optimiza-
+tion (QUBO) problem which is isomorphic to the ising
+problem. In general, a QUBO problem for a graph
+G = (N,V ) may be deﬁned as:
+f (x)QU BO =minx∈{ 0, 1} (N × V ) xTQx +gTx +c (15)
+Here the quadratic coeﬃcient Q represents the edge
+weight i.e., coupling or interaction between two nodes,
+the linear coeﬃcient g represents the node weight i.e.,
+contribution from individual nodes, and the term c is a
+constant oﬀset. In order to ﬁnd these coeﬃcient in the
+QUBO forumations
+10 of HV RP given in Eq. ( 6) we ﬁrst
+put in Eqs. ( 13-14) in Eqs. ( 8-9) respectively, then ex-
+pand and regroup Eq. ( 6) according to Eq. ( 15).
+H =A
+n− 1∑
+i=0
+[zS[i]zT
+S[i] +zT [i]zT
+T [i]]⃗ x2+
+wT⃗ x− 2A
+n− 1∑
+i=1
+[zT
+S[i] +zT
+T [i]]⃗ x−
+2Ak[zT
+S[0] +zT
+T [0]]⃗ x+ 2A(n − 1) + 2Ak2
+(16)
+From Eq. ( 16), we get the coeﬃcients Q ( n(n − 1) ×
+n(n − 1)), g (n(n − 1) × 1) and c:
+Q =A
+[
+[zT [1],z T [2],...,z T [n− 1],z T [0],z T [2],...,z T [n− 2]]T,
++ [[ZS[0]]× (n− 1)[ZS[1]]× (n− 1)... [ZS[n− 1]]× (n− 1)]
+]
+(17)
+
+===== PAGE 3 =====
+
+3
+(i) Annealing
+(ii) Simulated
+     Annealing
+(iii) QAOA
+FIG. 1. Consider an adiabatic time evolution path (black) in
+the state space. Conceptually, quantum annealing (top) fol -
+lows this adiabatic time evolution path. Simulated anneali ng
+(middle) follows this path in discrete steps i.e. it follows a
+trotterized adiabatic time evolution path. QAOA follows th is
+path in p steps, i.e. it follows a coarsely trotterized adiabatic
+time evolution.
+11
+g =w − 2A[J +K] − 2Ak[zS[0] +zT [0]] (18)
+c = 2A(n − 1) + 2Ak2 (19)
+Here,J is a n × (n − 1) vector with ﬁrst n − 1 elements
+0 and rest (n − 1)2 elements 1, vector K is⃗ xwithxij = 1
+if j ̸= 0, ∀i ∈ { 0,...,n − 1}, else 0 and ⃗ wis a weight
+vector. From this, to construct Ising Hamiltonian for
+VRP we expand Eq. (
+15) by using Eqs. ( 17-19) and
+rewrite all the binary variables xij ∈ { 0, 1} using spin
+variablessij ∈ {−1, 1}.
+xij = sij + 1
+2 (20)
+By regrouping 10 together similar terms from the
+expansion, one can express ˆHISIN G for VRP (n,k ) as:
+HISIN G = −
+∑
+i
+∑
+j<i
+Jijsisj +
+∑
+i
+hisi +d (21)
+Jij = −Qij
+4 ∀i<j, J ii = 0 ∀i (22)
+hi = gi
+2 +
+∑
+j
+Qij
+4 +
+∑
+j
+Qji
+4 (23)
+d =c +
+∑
+i
+gi
+2 +
+∑
+i
+Qii
+4 +
+∑
+i
+∑
+j
+Qij
+4 (24)
+Replacing si with σz
+i i.e. the Pauli-Z operator acting
+onith qubit, gives the quantum mechanical description of
+ˆHISIN G which is implementable on a quantum computer.
+IV. QUANTUM APPROXIMATE
+OPTIMIZATION ALGORITHM
+Adiabatic quantum computation (AQC)12 was the ﬁrst
+quantum computation model to be used for solving hard
+combinatorial optimization problems. Unlike the gate-
+based quantum computation model, it was based on adi-
+abatic theorem from quantum mechanics. In this model,
+to perform any computation we need two Hamiltonians
+called ˆHmixer and ˆHcost. Amongst them, the ground
+state of ˆHmixer should be an easily preparable state such
+as |+⟩⊗ N and ground state of ˆHcost encode the solution
+to our problem. Both Hamiltonians ˆHmixer and ˆHcost,
+should be local, i.e. they only involve terms for interac-
+tions between a constant number of particles. The in-
+stantaneous Hamiltonian ˆH(t) for the system is:
+ˆH(t) = (1 −t) ˆHmixer +t ˆHcost (25)
+In AQC, ∆ E, i.e., the diﬀerence between the ground
+state and ﬁrst excited state energy of ˆH(t) bounds the
+step size one can take to follow adiabatic pathway
+13.
+Hence, the computation time to solve any problem rises
+exponentially as ∆ E becomes inﬁnitesimally small. This
+limits its capability to solve a certain instance of hard
+optimization problems.
+In Quantum Approximate Optimization Algorithm
+(QAOA), we eliminate this restriction on the step size.
+Instead, whole of the adiabatic pathway is discretized in
+some p steps, where p represents precision (Fig.
+1). To
+do this, we trotterize the unitary into p steps using the
+parameters {β,γ } as follows:
+U =U ( ˆHmixer,β 0)U ( ˆHcost,γ 0)...
+U ( ˆHmixer,β p− 1)U ( ˆHcost,γ p− 1)
+(26)
+In gate-model quantum computation this means 13 that
+starting from some initial product state |ψHM
+GS ⟩, we ap-
+ply a parameterized gate sequence to produce the state
+|ψHC ⟩. For some optimal value of the parameters:
+
+===== PAGE 4 =====
+
+4
+0 1000 2000 3000 4000
+0.000
+0.002
+0.004
+0.006
+0.008
+0.010
+0.012
+0.014Probability
+FIG. 2. Probability distribution for the problem instance ( 4,2) for p = 12. Indices of optimal states (blue) are: 779 and 2125.
+{β∗,γ ∗ }, this is the ground state of ˆHcost. The parame-
+ters {β,γ } are provided by a classical processor, and also
+optimized by a classical optimization routine based on
+the result of energy measurement for ﬁnal state |ψHC ⟩.
+Hence, QAOA belongs to the class of hybrid quantum-
+classical variational algorithms.
+V. SIMULATIONS AND RESULTS
+We have executed QAOA using IBM Qiskit to solve
+VRP for three problem instances: (4 , 2), (5, 2), and (5, 3),
+where each (n,k ) represents a problem with n locations
+and k vehicles with a distance matrix D representing
+the squared euclidean distances between locations. One
+needs N = n × (n − 1) qubits to encode the problem
+instance, i.e., state of each qubit represents the possibility
+of an edge between two nodes. The mixing Hamiltonian
+ˆHmixer and the cost Hamiltonian ˆHcost for this problem
+are:
+ˆHmixer = −
+n× (n− 1)− 1∑
+i=0
+σx
+i (27)
+ˆHcost = −
+∑
+i
+∑
+j<i
+Jijσz
+iσz
+j −
+∑
+i
+hiσz
+i −d (28)
+In ˆHcost, we have n × (n − 1) × (n − 2) terms of Jij,
+n×(n−1) terms ofhi, andd is an oﬀset. In each of the fol-
+lowing cases, we begin with the state |+⟩n⊗ (n− 1), which
+is the ground state of ˆHmixer given in Eq. (
+27). This
+state is prepared by applying Hadamard on all qubits
+initialized to |0⟩. From Eq. (
+26), this state is evolved as:
+|β,γ ⟩ =e− i ˆHmixer β pe− i ˆHcostγ p...
+e− i ˆHmixer β 0e− i ˆHcostγ 0 |+⟩n⊗ (n− 1) (29)
+For the evolved state |β,γ ⟩, we calculate energy E by
+measuring the expectation value of ˆHcost as:
+E = ⟨β,γ | ˆHcost |β,γ ⟩ (30)
+Running a classical optimization routine on Eq. ( 30),
+we get the optimal value of {β,γ } as {β∗,γ ∗ }. To get
+the ﬁnal result we measure the state |β∗,γ ∗ ⟩. As shown
+in Fig. ( 2), the state can collapse to any of the 2 n× (n− 1)
+possibilities. To visualize the solution, we represent the
+index of the collapsed state as 2 n× (n− 1) length bit string
+which represents ﬂattened version of the adjacency ma-
+trix of the graph.
+A. Experiment 1
+In the ﬁrst experiment, we have solved the problem in-
+stance (4, 2), described by the following distance matrix:
+D1 =
+
+
+
+0. 36.84 5 .06 30 .63
+36.84 0 . 24.55 63 .22
+5.06 24 .55 0 . 15.50
+30.63 63 .22 15 .50 0
+
+
+ (31)
+
+===== PAGE 5 =====
+
+5
+69933 69963 70023 70174 70683 71703 74014 82205 98583 135454 266525 528667
+0.00000
+0.00025
+0.00050
+0.00075
+0.00100
+0.00125
+0.00150
+0.00175Probability 48.417
+30.530
+46.826
+48.417
+46.356
+44.602
+30.530
+46.356
+51.502
+46.826
+44.602
+51.502
+FIG. 3. Probability distribution for top-12 feasible solut ions of the problem instance (5 ,3) for p = 24. Indices of optimal states
+(blue) are: 69963 and 74014. Costs corresponding to each sta te are written at the top of the bars.
+−4 −3 −2 −1 0 1 2
+−3
+−2
+−1
+0
+1
+2
+3 0
+1
+2
+3
+36.840
+5.061
+36.840
+15.497
+30.632
+FIG. 4. Visualization of the solution state indexed 779 =
+“110100001100”. The cost is: C1 = 30.632 + 15.497 + 5.061 +
+2 × 36.840 = 124 .871. Here, the node with yellow star denotes
+the depot, or the origin.
+To encode the problem, we used N = 4 × 3 = 12
+qubits. Using COBYLA optimizer, for p ≥ 12 we were
+able to get the correct solution with suﬃcient probabil-
+ity. In Fig. (
+2), we have shown the probability distri-
+bution of our result for p = 12. States corresponding
+to indexes 779 and 2125 are equiprobable and solution
+states. We present the visualization of the state indexed
+779 = [1 , 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0] in Fig. (
+4) using the
+following adjacency matrix A1:
+A1 =
+
+
+
+X 1 1 0
+1 X 0 0
+0 0 X 1
+1 0 0 X
+
+
+ (32)
+The cost in both cases come out to be C1 = 30.632 +
+15.497 + 5.061 + 2 × 36.840 = 124.871.
+B. Experiment 2
+In the second experiment, we have solved the prob-
+lem instance (5 , 2), described by the following distance
+matrix:
+D2 =
+
+
+
+
+
+0 6 .794 61 .653 24 .557 47 .767
+6.794 0 87 .312 47 .262 39 .477
+61.653 87 .312 0 . 9.711 42 .887
+24.557 47 .262 9 .711 0 40 .98
+47.767 39 .477 42 .887 40 .98 0
+
+
+
+
+ (33)
+To encode the problem, we used N = 5 ×4 = 20 qubits.
+We tried COBYLA, NELDER MEAD, and L-BFGS-B
+optimizers, for diﬀerent values of p ranging from 6 to 40.
+Fig. (
+5) represents the visualization of the state indexed:
+623144 = [1 , 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0],
+i.e., the state we got, using the following adjacency ma-
+trix A2:
+
+===== PAGE 6 =====
+
+6
+−2 −1 0 1 2 3 4
+−4
+−2
+0
+2
+4
+0
+1
+2
+3
+4
+6.794
+47.767
+6.794
+9.7119.711
+47.767
+FIG. 5. Visualization of the QAOA state indexed 623144 =
+“10011000001000101000”. The cost is: C2 = 2 × 9.711 + 2 ×
+47.767 + 2× 6.794 = 128 .545. Here, the node with yellow star
+denotes the depot, or the origin.
+A2 =
+
+
+
+
+
+X 1 0 0 1
+1 X 0 0 0
+0 0 X 1 0
+0 0 1 X 0
+1 0 0 0 X
+
+
+
+
+ (34)
+The cost in this case comes out to be C2 = 2 × 9.711 +
+2 × 47.767 + 2 × 6.794 = 128.545.
+Where as, Fig. (
+6) represents the visualization of the
+state indexed:
+688424 = [1 , 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0],
+i.e., the optimal state we should have got, using the fol-
+lowing adjacency matrix A3:
+A3 =
+
+
+
+
+
+X 1 0 1 0
+1 X 0 0 0
+0 0 X 0 1
+0 0 1 X 0
+1 0 0 0 X
+
+
+
+
+ (35)
+The cost in this case comes out to be C3 = 24.557 +
+9.711 + 42.887 + 47.767 + 2× 6.794 = 138.511. Therefore,
+as shown in Fig. (
+5), the solution we got was not the
+optimal one i.e., given in Fig. ( 6).
+C. Experiment 3
+In the third experiment, we have solved the problem
+instance (5, 3), described by the following distance ma-
+trix:
+−2 −1 0 1 2 3 4
+−4
+−2
+0
+2
+4
+0
+1
+2
+3
+4
+6.794
+24.557
+6.794
+42.887
+9.711
+47.767
+FIG. 6. Visualization of the solution state indexed 688424 =
+“10101000000100101000”. The cost is: C3 = 24.557 + 9.711 +
+42.887 + 47 .767 + 2 × 6.794 = 138 .511. Here, the node with
+yellow star denotes the depot, or the origin.
+D4 =
+
+
+
+
+
+0. 12.138 0 .32 7 .2 2 .626
+12.138 0 . 16.307 5 .3 17 .021
+0.32 16 .307 0 . 9.309 2 .98
+7.2 5 .3 9 .309 0 . 16.759
+2.626 17 .021 2 .98 16 .759 0 .
+
+
+
+
+ (36)
+To encode the problem, we used N = 5 ×4 = 20 qubits.
+Using COBYLA optimizer, for p ≥ 24 we were able to
+get the correct solution with suﬃcient probability. In
+Fig. (
+3), we have shown the probability distribution of
+our result for p = 24 for top 12 feasible solutions. States
+corresponding to indexes 69963 and 74014 are equiprob-
+able and solution states.
+We present the visualization of the state 69963 =
+[1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1] in Fig. (
+7) using
+the following adjacency matrix A4:
+A4 =
+
+
+
+
+
+X 1 1 0 1
+0 X 0 1 0
+1 0 X 0 0
+1 0 0 X 0
+1 0 0 0 X
+
+
+
+
+ (37)
+The cost in both cases come out to be C4 = 12.138 +
+5.300 + 7.200 + 2 × 2.626 + 2 × 0.320 = 30.530.
+VI. DISCUSSIONS
+Here, we have used Quantum Approximate Optimiza-
+tion Algorithm to solve the Vehicle Routing Problem.
+
+===== PAGE 7 =====
+
+7
+−1.5 −1.0 −0.5 0.0 0.5 1.0 1.5 2.0 2.5
+−1.5
+−1.0
+−0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+0
+1
+2
+3
+4
+12.138
+0.320
+2.626
+5.300
+0.320
+7.200
+2.626
+FIG. 7. Visualization of the solution state indexed 69963 =
+“10001000101001011”. The cost is: C4 = 12 .138 + 5 .300 +
+7.200 + 2 × 2.626 + 2 × 0.320 = 30 .530. Here, the node with
+yellow star denotes the depot, or the origin.
+In past, QAOA has been widely used in solving various
+combinatorial hard optimization problems
+14–16. How-
+ever, looking at the results from Exp. ( V A), (V B), and
+(V C), we conclude that in general, for a ﬁnite value of
+p, there is no guarantee that the solution achieved by
+QAOA corresponds to the most optimal solution of the
+original combinatorial optimization problem
+17. This is
+because, in QAOA instead of the following the adiabatic
+time evolution path, we try to guess it using p steps. So,
+the ﬁrst straightforward reason could be that the chosen
+value p does not produce a good enough guess. Then,
+another reason which could explain failure of QAOA at
+larger values of p, could be the emergence of new lo-
+cal minimums in our solution energy-landscape which
+traps both gradient-free and gradient-based optimizers,
+and make them converge prematurely.
+Moreover, in the previous studies
+17–19, it has been
+shown that while running QAOA on near term quan-
+tum processors, noise-based errors aﬀect both the ﬁdelity
+of state: |β,γ ⟩, prepared by a quantum routine, and the
+minimized expectation value of ˆHcost, i.e., ⟨ ˆHcost⟩. Char-
+acterizing the behaviour of noisy quantum hardware is
+essential in developing error correction code, and noise-
+resilient algorithms. Therefore, in future, we would like
+to do a noise analysis of QAOA for solving the problem
+of VRP with additional constraints, or any other combi-
+natorial optimization problem.
+DATA A V AILABILITY
+The code created to run these simulations and re-
+lated supplementary data could be made available to any
+reader upon reasonable request.
+ACKNOWLEDGMENTS
+U. would like to thank IISER Kolkata and Bikash’s
+Quantum (OPC) Pvt. Ltd. for providing hospitality dur-
+ing the course of the project work. B.K.B. acknowledges
+the support of Institute fellowship provided by IISER
+Kolkata.
+∗ utkarsh.azad@research.iiit.ac.in
+† bikas.riki@gmail.com
+‡ emad.amer@sci.svu.edu.eg
+§ pprasanta@iiserkol.ac.in
+¶ afarouk@wlu.ca
+1 Qiskit: An Open-source Framework for Quantum Com-
+puting, 10.5281/zenodo.2562110 (2019).
+2 R. Smith, M. J. Curtis, and W. J. Zeng, A Practical
+Quantum Instruction Set Architecture, arXiv:1608.03355
+[quant-ph] (2016).
+3 Google AI Quantum Lab. Retrieved December 16,
+2019, from https://research.google/teams/applied-
+science/quantum/.
+4 J. Preskill, Quantum Computing in the NISQ era and be-
+yond, Quantum 2, 79 (2018).
+5 E. Farhi, J. Goldstone, and S. Gutmann, A Quantum
+Approximate Optimization Algorithm, arXiv:1411.4028
+[quant-ph] (2014).
+6 S. Feld, C. Roch, T. Gabor, C. Seidel, F. Neukart, I. Gal-
+ter, W. Mauerer, and C. Linnhoﬀ-Popien, A Hybrid Solu-
+tion Method for the Capacitated Vehicle Routing Problem
+Using a Quantum Annealer, Front. ICT 6, 13 (2019).
+7 K. Srinivasan, S. Satyajit, B. K. Behera, and P. K. Pan-
+igrahi, Eﬃcient quantum algorithm for solving travel-
+ling salesman problem: An IBM quantum experience,
+arXiv:1805.10928 [quant-ph] (2018).
+8 A. Nowbagh, B. K. Behera, and P. K. Pani-
+grah, A Quantum Approach for Solving Vehicle
+Routing Problem: An IBM Quantum Experience,
+DOI:10.13140/RG.2.2.18975.30887 (2019).
+9 A. Lucas, Ising formulations of many NP problems, Front.
+Phys. 2, 5 (2014).
+10 D-Wave Systems: Diﬀerence between BQM, Ising,
+and QUBO problems? Retrieved December 16,
+2019, from https://support.dwavesys.com/hc/en-
+us/community/posts/360017439853-Diﬀerence-between-
+BQM-Ising-and-QUBO-problems.
+11 G. Verdon, M. Broughton, and J. Biamonte, A quantum al-
+gorithm to train neural networks using low-depth circuits,
+arxiv:1712.05304 [quant-ph] (2019)
+12 T. Albash, and D. A. Lidar, Adiabatic Quantum Comput-
+ing, Rev. Mod. Phys. 90, 015002 (2018).
+
+===== PAGE 8 =====
+
+8
+13 D. Aharonov, W. V. Dam, J. Kempe, Z. Landau, S. Lloyd,
+and O. Regev, Adiabatic Quantum Computation is Equiv-
+alent to Standard Quantum Computation. 45th Annual
+IEEE Symposium on Foundations of Computer Science
+(2004).
+14 Z. Wang, S. Hadﬁeld, Z. Jiang, and E. G. Rieﬀel, Quan-
+tum approximate optimization algorithm for MaxCut: A
+fermionic view, Phys. Rev. A 97, 1-13 (2018)
+15 E. Farhi, J. Goldstone, and S. Gutmann, A Quantum Ap-
+proximate Optimization Algorithm Applied to a Bounded
+Occurrence Constraint Problem, arXiv:1411.4028 [quant-
+ph] (2014).
+16 C. Lin, and Y. Zhu, Performance of QAOA on Typical In-
+stances of Constraint Satisfaction Problems with Bounded
+Degree. arXiv:1601.01744 [quant-ph]. (2016).
+17 M. Willsch, D. Willsch, F. Jin, H. D. Raedt, and K.
+Michielsen, Benchmarking the Quantum Approximate Op-
+timization Algorithm, arxiv:1907.02359 [quant-ph] (2019 ).
+18 M. Alam, A. Ash-Saki, and S. Ghosh, Analysis of Quan-
+tum Approximate Optimization Algorithm under Realistic
+Noise in Superconducting Qubits, arxiv:1907.09631 [quant -
+ph] (2019).
+19 G. Guerreschi, and A. Y. Matsuura, QAOA for Max-Cut
+requires hundreds of qubits for quantum speed-up, Sci.
+Rep. 9, 6903 (2019).

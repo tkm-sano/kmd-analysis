@@ -1,0 +1,10 @@
+factor,parameter,baseline_value,sensitivity_range,unmet_rate_impact,interpretation
+Assumed travel speed,assumed_speed_kmh,25.0,20-30,0.4966666666666666,Exploratory one-at-a-time effect under the route-proxy model
+Road-distance multiplier,road_distance_multiplier,1.25,1.1-1.4,0.3,Exploratory one-at-a-time effect under the route-proxy model
+Service time per customer,service_time_per_customer_min,10.0,5-15,0.6066666666666667,Exploratory one-at-a-time effect under the route-proxy model
+Operating-time limit,operating_time_limit_min,480.0,360-600,0.78,Exploratory one-at-a-time effect under the route-proxy model
+Vehicle count,vehicle_count,3.0,1-5,0.992,Exploratory one-at-a-time effect under the route-proxy model
+Customer count,customer_count,50.0,25-100,0.9733333333333333,Exploratory one-at-a-time effect under the route-proxy model
+Route-proxy inefficiency,route_generation_method,KMeans + nearest neighbor,Alternative route generators not evaluated,,Not quantified; route proxy is not an optimized EVRP solution.
+Supplemental charging duration,charging_time_total_min,0,Not included in operating-time constraint,,Evaluated separately as a duration proxy; no charging event is assumed.
+Waiting and charger detour time,waiting_time_total_min/detour_time_min,0,Not modeled,,"Data unavailable; zero is a model boundary, not evidence of no waiting or detour."

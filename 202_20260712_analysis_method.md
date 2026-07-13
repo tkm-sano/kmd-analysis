@@ -1,0 +1,5 @@
+# Analysis Method
+
+The analysis connects four evidence layers: literature extraction, public-data proxies, synthetic scenario generation, and constraint evaluation. Literature rows preserve problem instance, formulation, encoding, reported width, depth meaning, and evaluation modality. The Tokyo workflow validates inputs, samples synthetic customer configurations, uses a depot and route proxy, evaluates payload/operating-time/range/charging-related conditions, and tests spatial and parameter sensitivity.
+
+Outputs are exploratory constraint indicators, not optimized or observed operations. A classical optimization baseline, road-network routing, calibrated demand, time windows, and sequential SOC/charging dynamics belong to the real-world-optimization next stage. Systems thinking, morphological analysis, Delphi/expert elicitation, backcasting, FMEA, futures wheels, scenario planning, cross-impact analysis, and technology assessment are candidate methods for the broader application-stage framework; they are not current quantitative results.

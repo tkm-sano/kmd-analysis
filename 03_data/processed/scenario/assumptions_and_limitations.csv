@@ -1,0 +1,21 @@
+topic,limitation,status
+Customer locations,Synthetic population-weighted locations; not observed orders,Assumption or evidence limitation
+Customer demand,Synthetic 5-30 kg values; not observed freight weights,Assumption or evidence limitation
+Route construction,KMeans plus nearest-neighbor proxy; not an EVRP optimum,Assumption or evidence limitation
+Road geometry,Haversine plus multiplier baseline; road-network paths Data unavailable,Assumption or evidence limitation
+Travel speed,Assumed constant value; not calibrated traffic speed,Assumption or evidence limitation
+Service time,Synthetic value; not observed stop-service time,Assumption or evidence limitation
+Visit time windows,Not evaluated,Not evaluated
+SOC trajectory,Not evaluated,Not evaluated
+Charger congestion,Not evaluated,Not evaluated
+Charger failure,Not evaluated,Not evaluated
+Connector compatibility,Only reported connector labels screened; actual vehicle compatibility not established,Assumption or evidence limitation
+Public access and operating hours,Unknown for many Open Charge Map records,Assumption or evidence limitation
+Charging price,Not evaluated,Not evaluated
+Actual charging behavior,Not evaluated or predicted,Not evaluated
+Charging demand and utilization,Not evaluated or predicted,Not evaluated
+Electricity-grid load,Not evaluated or predicted,Not evaluated
+Monte Carlo scope,Primarily customer spatial configuration plus synthetic demand/service variation,Assumption or evidence limitation
+Unmet rate meaning,Model-conditional route-proxy rate; not an observed delivery failure rate,Assumption or evidence limitation
+Quantum comparison,Limited to seven local extraction notes with heterogeneous reporting granularity,Assumption or evidence limitation
+Inference,"All findings depend on explicit vehicle, demand, time, charger, and routing assumptions",Assumption or evidence limitation

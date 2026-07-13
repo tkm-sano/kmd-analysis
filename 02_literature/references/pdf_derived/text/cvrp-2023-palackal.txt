@@ -1,0 +1,1400 @@
+===== PAGE 1 =====
+
+Quantum-Assisted Solution Paths for the
+Capacitated Vehicle Routing Problem
+Lilly Palackal∗†§ , Benedikt Poggel‡§, Matthias Wulff∗, Hans Ehm∗, Jeanette Miriam Lorenz‡, Christian B. Mendl†
+∗Inﬁneon Technologies AG, Munich, Germany
+†Technical University of Munich, Germany
+‡Fraunhofer Institute for Cognitive Systems IKS
+{lilly.palackal, matthias.wulff, hans.ehm}@inﬁneon.com
+{benedikt.poggel, jeanette.miriam.lorenz}@iks.fraunhofer.de, christian.mendl@tum.de
+§Authors contributed equally
+Abstract—Many relevant problems in industrial settings re-
+sult in NP-hard optimization problems, such as the Capaci-
+tated Vehicle Routing Problem (CVRP) or its reduced variant,
+the Travelling Salesperson Problem (TSP). Even with today’s
+most powerful classical algorithms, the CVRP is challenging
+to solve classically. Quantum computing may offer a way to
+improve the time to solution, although the question remains
+open as to whether Noisy Intermediate-Scale Quantum (NISQ)
+devices can achieve a practical advantage compared to classical
+heuristics. The most prominent algorithms proposed to solve
+combinatorial optimization problems in the NISQ era are the
+Quantum Approximate Optimization Algorithm (QAOA) and the
+more general Variational Quantum Eigensolver (VQE). However,
+implementing them in a way that reliably provides high-quality
+solutions is challenging, even for toy examples. In this work,
+we discuss decomposition and formulation aspects of the CVRP
+and propose an application-driven way to measure solution
+quality. Considering current hardware constraints, we reduce
+the CVRP to a clustering phase and a set of TSPs. For the
+TSP, we extensively test both QAOA and VQE and investigate
+the inﬂuence of various hyperparameters, such as the classical
+optimizer choice and strength of constraint penalization. Results
+of QAOA are generally of limited quality because the algorithm
+does not reach the energy threshold for feasible TSP solutions,
+even when considering various extensions such as recursive and
+constraint-preserving mixer QAOA. On the other hand, the VQE
+reaches the energy threshold and shows a better performance.
+Our work outlines the obstacles to quantum-assisted solutions
+for real-world optimization problems and proposes perspectives
+on how to overcome them.
+I. I NTRODUCTION
+Transportation and logistics are becoming increasingly in-
+telligent with the aid of the Internet of Things (IoT), which
+plays a pivotal role in achieving a smart industry pursuing
+digitalization and decarbonization. Waste management is an
+area with high potential for improvement in effectiveness and
+efﬁciency. For instance, in large cities, overﬂowing waste
+containers are a common problem. Trucks follow ﬁxed routes
+regardless how full the containers are. To improve these routes,
+containers can be equipped with sensors providing real-time
+information on their ﬁlling level. Then, optimal routes can be
+calculated dynamically to only visit full containers and make
+the most of the truck’s capacity. However, efﬁcient planning
+of vehicle routes is essential to take advantage of these op-
+portunities. The route planning for waste collection translates
+to a Capacitated Vehicle Routing Problem (CVRP), which is
+NP-hard. Therefore, industry-sized problems with hundreds to
+thousands of nodes can only be solved heuristically.
+Quantum computing (QC) offers exciting possibilities to
+perform certain computational tasks better than classical
+solvers and may be able to speed up challenging optimization
+problems like route planning. Powerful algorithms, such as
+Shor’s factorization [1] or Grover’s search [2] have a proven
+advantage over their classical counterparts, but require fault-
+tolerant quantum computers. The current quantum hardware,
+however, is prone to errors and limited in the number of
+qubits and connectivity, which sparked interest in variational
+quantum algorithms for these Noisy Intermediate-Scale Quan-
+tum (NISQ) devices [3]. They use a combination of rela-
+tively shallow parameterized quantum circuits and classical
+optimizers to improve the noise resilience. As a result, these
+algorithms do not require fully error-corrected qubits and can
+be used even with relatively few physical qubits. While the
+capabilities of variational quantum algorithms are not fully
+understood yet, they have the potential to harness the power of
+quantum computing even in the current NISQ era. Countless
+proposals have been put forth, mainly centered around the
+Quantum Approximate Optimization Algorithm (QAOA) [4]
+and the Variational Quantum Eigensolver (VQE) [5]. However,
+their practical application to industry-relevant optimization
+problems poses challenges such as ﬁnding useful mathemati-
+cal formulations, setting good hyperparameters of variational
+algorithms, or measuring the solution quality. For example,
+a challenge commonly faced when training parameters of
+a variational quantum algorithm are barren plateaus in the
+energy landscape [6]. Also, not all optimization problems
+might be well-suited for QC. An individual analysis of each
+application is required.
+This work aims to study the application of quantum-
+enhanced algorithms to an optimization problem motivated
+by the real world, the CVRP, and to highlight the challenges
+it poses for QC. We assess the viability of formulation,
+decomposition, and algorithmic options for NISQ hardware
+with regards to problem-speciﬁc performance measures. To
+This work has been submitted to the IEEE for possible publication. Copyright may be transferred without notice, after which this version may no longer be
+accessible.
+arXiv:2304.09629v2  [quant-ph]  7 May 2023
+
+===== PAGE 2 =====
+
+facilitate the numerical experiments, it is necessary to reduce
+the CVRP to its simpler variant, the Travelling Salesperson
+Problem (TSP) which arises from the CVRP as a subproblem
+after an initial clustering step. Many real-world TSP instances
+can be solved efﬁciently by classical solvers like Concorde [7],
+[8], however, a solution to the CVRP remains hard to compute
+in practice. In this paper, conclusions for quantum-assisted
+solutions are drawn for both, the TSP as well as the CVRP.
+We test QAOA and VQE extensively for the TSP and analyze
+the inﬂuence of various hyperparameters like the classical
+optimizer choice and strength of constraint penalization. We
+pinpoint what makes TSP hard for QC and work towards
+separating fundamental problems from the challenge of ﬁnding
+good hyperparameters. Furthermore, we deﬁne a performance
+metric suited to the particular problem which can serve as
+template for other optimization problems and puts the focus on
+the solution quality from an application perspective. Obtaining
+useful results with the QAOA and its variants proves to be
+difﬁcult even for simple TSPs. We conjecture that the bad
+results of QAOA are caused by the fact that it does not reach
+the energy threshold required for feasible TSP solutions that
+can be found in VQE simulations. Common extensions of
+QAOA, like recursive QAOA [9] or the constraint preserving
+mixer QAOA [10] do not yield better results. The VQE, on
+the other hand, converges better and ﬁnds good solutions for
+all tested instances.
+In Section II we introduce the basic concepts in quantum
+optimization used throughout the paper. In Section III we
+derive QUBO formulations for the CVRP and the subprob-
+lems arising from its two-phase solution (Clustering and the
+TSP) and deﬁne an application-speciﬁc performance metric.
+Section IV contains the main results of this paper, where the
+TSP is solved with QAOA, VQE and several extensions. We
+discuss the results in Section V and suggest future research
+directions in Section VI.
+II. P RELIMINARIES
+A. Quadratic Unconstrained Binary Optimization
+Many discrete optimization problems can be formulated
+in terms of a Quadratic Unconstrained Binary Optimization
+(QUBO) problem. It is a convenient input format for quan-
+tum optimization algorithms, stated as minimization problem
+minxf(x) with binary decision variables x∈ {0, 1}n, and
+a quadratic cost function f(x) = xTQx for a square matrix
+Q∈ Rn×n, the QUBO matrix. Thus, a QUBO problem is
+deﬁned by
+min
+x∈{0,1}n
+xTQx. (1)
+Any QUBO can be mapped directly to an Ising model and
+vice versa [11] which is why it is extensively used in QC.
+This transformation is sketched in Section III-C for the TSP.
+B. Variational Quantum Algorithms
+Variational quantum computing [12] is a proposal to make
+use of imperfect NISQ era devices. It combines shallow pa-
+rameterized quantum circuits with classical optimizers, aiming
+to ﬁnd a combination of parameters such that the circuit
+prepares a quantum state representing the solution of a given
+problem. The main application areas are simulation (e.g.
+in quantum chemistry), machine learning and mathematical
+optimization. The latter starts with expressing the cost function
+C(x) as a quantum expectation value:
+C(x) =⟨ψ(x)|HP|ψ(x)⟩ (2)
+The state|ψ(x⟩) is prepared by a quantum circuit (the ansatz)
+depending on parameters θ. Mathematically, this changes the
+optimization variables to θ.
+|ψ(θ)⟩ =U(θ)|+⟩
+C(θ) =⟨+|U†(θ)HPU(θ)|+⟩ (3)
+Once the ansatz is chosen, a classical optimizer tries to ﬁnd
+the optimal parameters θ that minimize C(θ) by repeatedly
+evaluating the expectation value in (3).
+QAOA is a particular ansatz, originally proposed in [4], that
+can be regarded as the trotterized version of adiabatic quantum
+computing. Given the optimization problem encoded into an
+Ising Hamiltonian HP , the ansatz is then given by
+U(β, γ) =
+p∏
+k=1
+e−iβkHMe−iγkHP. (4)
+The number of alternating layers p is commonly called depth.
+HM is the mixer Hamiltonian, corresponding to the driver in
+adiabatic quantum computing, Its standard choice is HM =∑
+jσx
+j .
+Starting from this simple variational protocol, numerous
+improvements have been proposed such as warm-start [13]
+and recursive variants [9].
+VQE [5] is a more general variational quantum algorithm
+allowing for an arbitrary ansatz. Its advantage over QAOA
+for optimization problems lies in the availability of hardware-
+efﬁcient ansätze that are designed speciﬁcally to respect the
+native gate set and connectivity of the quantum hardware. The
+ansatz in (3) is
+U(θ) =
+p+c∏
+k=1
+Uk(θ), (5)
+where the circuit may contain c non-parameterized gates and
+p parameterized ones of the form e−iθHk. Usually, p is much
+larger compared to QAOA, but each operatorUk typically only
+involves one or two qubits.
+III. M ATHEMATICAL FORMULATION OF THE USE CASE
+The optimization problem motivated by the waste manage-
+ment logistics is modeled as a CVRP. Formally, the CVRP is
+deﬁned on a graph with n nodes and weighted directed edges.
+Each node i represents a customer with demand di, where
+node 0 represents a depot. The edge weights wij represent
+distances for travelling from node i to j. We aim to ﬁnd
+the shortest route for a vehicle with capacity C visiting each
+2
+
+===== PAGE 3 =====
+
+customer to satisfy their demand. When the vehicle visits a
+customer node i, its current capacity is decreased by di. Upon
+returning to the depot 0, the capacity is ﬁlled up to C again.
+If ∑n
+i=1di≤ C, the CVRP reduces to searching for a tour
+among all vertices with least total edge weight, known as the
+travelling salesperson problem (TSP). It is described in more
+detail in Section III-C. However, in the case ∑n
+i=1di > C,
+the optimal tour will split up into cycles intersecting at the
+depot node as shown in Figure 1. The TSP and by extension
+the harder CVRP are proven to be NP-hard [14].
+/truck
+capacity = 10
+D
+1
+3
+2
+2
+2
+5
+2
+1
+55
+10
+21
+33
+42
+47
+38
+31 45
+20
+30
+42
+15
+30
+Figure 1: An example instance of the capacitated vehicle
+routing problem and its optimal path. The number in each node
+corresponds to its demand, the edge weights their distances,
+and “D” marks the depot. The blue cycle will be used as 6-,
+5- and 4-node TSP instances for the numerical experiments.
+A. QUBO formulation of the CVRP
+In recent years, several QUBO formulations have been
+stated for CVRP variants. Irie et al. [15] introduce a time-table
+based CVRP formulation deﬁning decision variables which
+indicate whether a vehicle arrives at a location within a certain
+time interval. Harikrishnakumar et al. [16] allow for CVRPs
+with multiple depot nodes. The CVRP formulated in [15] and
+[16] considers one vehicle visiting all customers which is able
+to return to the depot to ﬁll up its capacity. In this work,
+we consider several vehicles with capacity C∈ N being sent
+to visit some customers and return to the depot without the
+possibility of recharging at the depot. We optimize the total
+length of all paths such that CO 2 emissions are minimized.
+The CVRP with multiple vehicles is also considered by Feld
+et al. [17]. However, our formulation needs fewer terms and
+requires slightly less qubits. For this, let the binary variable
+xk
+v,t mark whether vehicle k visits customer v at time step t.
+For an ideal tour, we need K∗ vehicles to serve all customers.
+In general, we do not know K∗ a priori, thus, we suggest the
+number of vehicles to be set to K =
+⌈ ∑
+v∈V dv
+C
+⌉
+. Similarly,
+T∗ is unknown and is set as T = n for the worst case of
+one vehicle visiting all costumers. The objective function to
+be minimized is the total distance given by
+Hobj =
+∑
+v,v′,t,k
+wvv′·xk
+v,t·xk
+v′,t+1. (6)
+The three constraints (C1) visiting each customer exactly
+once, (C2) visiting exactly one customer or the depot for each
+time step and each car, and (C3) respecting the capacity of
+each vehicle, can be formulated as
+(C1) HC1 =
+n∑
+v=1
+(
+1−
+K∑
+k=1
+T∑
+t=1
+xk
+v,t
+)2
+!
+= 0,
+(C2) HC2 =
+K∑
+k=1
+T∑
+t=1
+(
+1−
+n∑
+v=0
+xk
+v,t
+)2
+!
+= 0,
+(C3)
+T∑
+t=1
+n∑
+v=1
+xk
+v,t·dv≤C ∀k∈K.
+(7)
+In order to ensure that every vehicle starts and ends at the
+depot we setxk
+0,1 =xk
+0,T = 1 for eachk. In general, we might
+have chosen a larger number of time steps than necessary
+for the optimal solution, i.e. T > T∗. Whenever a time step
+is not needed, the constraint (C2) will force xk
+0,t = 1 for
+all time steps t corresponding to the car k staying at the
+depot. Note that this does not contradict constraint (C1) as
+the sum over the nodes starts at v = 1. Next, we transform
+the inequality in (C3) into an equation by introducing slack
+variablesyk
+b∈{ 0, 1} which represent the sum of demands of
+customers visited by vehicle k. With a logarithmic encoding,
+this requires K·⌈ log2(C + 1)⌉ additional qubits resulting in
+the QUBO term
+HC3 =
+K∑
+k=1
+[( T∑
+t=1
+n∑
+v=1
+xk
+v,t·dv
+)
++
+
+
+⌈log(C+1)⌉−1∑
+b=0
+2b·yk
+b
+
+−C
+
+
+2
+.
+(8)
+A complete QUBO formulation for the CVRP is thus given
+by
+HCVRP =Hobj +P1HC1 +P2HC2 +P3HC3. (9)
+This QUBO requires fewer resources (terms and qubits) than
+the formulation derived in [17]. Instead of K·C slack bits, we
+use K·⌈ log2(C + 1)⌉. However, a large number of decision
+variables, n·T·K, remains. For NISQ devices, it is thus
+necessary to consider a heuristic two-phase approach splitting
+the CVRP into a Clustering Phase (CP) and a TSP [18]. This
+method drastically reduces the number of qubits at the cost of
+possibly losing optimality. The heuristic works in two steps:
+the CP aims to group customers such that the demands within
+3
+
+===== PAGE 4 =====
+
+a group do not exceed the truck’s capacity and the groups
+stay close together. Then, it remains to solve the TSP for each
+cluster.
+B. The Clustering Phase
+The CP is modelled as a multiple Knapsack problem, where
+each customer should be assigned to a knapsack such that
+the sum of the customers’ demands does not overstep the
+knapsack’s capacityC, which is equal to the truck’s capacity
+from the CVRP. Additionally, the sum of distances within
+each Knapsack is minimized. A QUBO formulation to the
+CP is given in [17]. We slightly change this formulation by
+introducing a binary encoding for the slack variables.
+P1
+K∑
+k=1
+
+
+( n∑
+v=1
+xk
+v·dv
+)
++
+
+
+⌈log(C+1)⌉−1∑
+b=0
+2b·yk
+b
+
+−C
+
+
+2
++P2
+n∑
+v=1
+(
+1−
+K∑
+k=1
+xk
+v
+)2
++P3
+K∑
+k=1
+
+ ∑
+u,v∈V
+Duvxk
+uxk
+v
+
+,
+(10)
+where xk
+v :=∑T
+t=1xk
+v,t and xk
+v = 1, if customer v is packed
+in Knapsack k. The slack variables yk
+b represent the ﬁlling
+level of each knapsack and K =
+⌈ ∑
+v∈V dv
+C
+⌉
+is the number
+of knapsacks as deﬁned in Section III-A. A penalty factor
+P1 ensures that each knapsack’s ﬁlling level takes a value
+between 0 and the capacity C. Analogously, P2 requires each
+customer to be packed into exactly one knapsack. The last term
+in (10) is the sum of all edge weights within a cluster. As the
+last term can easily dominate the other summands, especially
+for large C, we aim to normalize it. With an approximate
+number n
+K of customers per cluster, a route within a cluster
+visiting each node once contains n
+K− 1 edges. Therefore, we
+suggest to choose the penalty factor P3 =p· K
+n , where p is a
+constant. With this normalization, the summand approximately
+represents the length of a route in a given cluster.
+As described in Section III-B, the CP is similar to a multiple
+knapsack problem extended by the minimization of the sum
+of all distances within a knapsack. In [19], several quantum
+approaches to the multiple Knapsack problem are evaluated
+demonstrating a rather bad performance. This aligns with the
+performance benchmarks we derived for the CP of the CVRP
+when running QAOA and VQE. Therefore, we do not further
+investigate the performance of these algorithms for the CP in
+this work.
+C. The Travelling Salesperson Problem
+The TSP can be stated as follows: Given a complete,
+undirected and weighted graph, ﬁnd the shortest cycle that
+contains all vertices. In this picture, cities are modeled as
+vertices and the distances between them as edge weights of the
+graph. A minimal complete description of a problem instance
+is therefore given by its (symmetric) adjacency matrix D.
+The direct encoding into a QUBO is given in [20]. It
+requires (n− 1)2 binary decision variables xij, where i labels
+the cities and j the position they appear in the path. The
+reduction from n2 to (n− 1)2 variables comes with the
+elimination of the cyclic permutation symmetry of the TSP
+paths. For simplicity, we present the non-reduced n2-variable
+cost function:
+C({xij}) =s
+
+
+n∑
+i,i′,j=1
+Dii′xijxi′(j+1)
++P
+n∑
+i=1
+
+1−
+n∑
+j=1
+xij
+
+
+2
++P
+n∑
+j=1
+(
+1−
+n∑
+i=1
+xij
+)2
+.
+(11)
+Here, s is an overall scaling factor that does not change the
+optimum, but may be used to improve numerical stability
+and convergence. P scales the penalty associated to the two
+constraints of (C1) visiting each city exactly once and (C2)
+asserting each position exactly once. In the ﬁrst sum, the
+actual TSP path length, n + 1≡ 1 is assumed. The reduction
+to (n− 1)2 variables is straightforward by setting x11 = 1
+and x1i = xi1 = 0 ∀i̸= 1 . Since all variables are binary,
+x2
+ij =xij and the corresponding QUBO matrix element Qijkl,
+the interaction between xij and xkl, is given by
+Qijkl =−2sPδikδjl +sP [δik(1−δjl) +δjl(1−δik)]
++sDik[δj(l+1) +δj(l−1)]. (12)
+The ﬁrst addend describes the diagonal terms, the second the
+penalty for violating the constraints, and the third the TSP
+path length. A constant contribution oQ := 2nsP (the QUBO
+offset) has been omitted here such that the QUBO problem
+reads
+Minimize
+∑
+i,j,k,l
+xijQijklxkl
+for xij∈{ 0, 1}∀i,j = 1,...,n.
+(13)
+One can now pass to an Ising formulation with variables zij∈
+{−1, 1} via zij := 2xij− 1, dropping another offset oI =∑
+i,j,k,lQijkl− 2sn2P along the way (the latter contribution
+arises because z2
+ij = 1 ). Promoting the variables to Pauli-Z
+operators σij
+z then yields the Ising Hamiltonian
+HP =
+∑
+(i,j)̸=(k,l)
+Qijkl
+4 σij
+z σkl
+z +
+∑
+i,j,k,l
+Qijkl
+2 σkl
+z . (14)
+The open questions are now how to determines andP in (12),
+and how to judge the quality of a state in the presence of
+potentially infeasible states. For the sake of completeness, the
+TSP can be cast into different formulations by representing a
+path as a permutation of (1,...,n ) and then encoding these
+integer variables into binaries. The formulation used here is
+equivalent to one-hot encoding in this protocol.
+4
+
+===== PAGE 5 =====
+
+1) A performance metric
+In order to compare the performance of quantum algorithms
+on the TSP, a performance metric akin to the MaxCut approxi-
+mation ratio is needed. For the TSP, infeasible solutions do not
+correspond to routes and are thus useless. A desirable metric
+should yield information about the overlap of an outcome |ψ⟩
+with the subspace of feasible solutions. For this reason, we
+propose an alternate measure consisting of a pair of values.
+First, we would like to know ∑
+|feasible⟩|⟨ feasible|ψ⟩| 2. Since
+for the TSP the number of feasible solutions grows as a
+factorial of the problem size, calculating this quantity will
+quickly become costly when scaling the problem size. Instead,
+we suggest to consider the feasibility ratio
+mfeas := # feasible shots
+#shots . (15)
+Similarly, when searching for an optimal (and not only
+feasible) state, we are interested in the overlap of opti-
+mal states with feasible ones ∑
+|optimal⟩|⟨ optimal|ψfeasible⟩| 2,
+where|ψfeasible⟩ is the projection of |ψ⟩ onto feasible states∑
+|feasible⟩|feasible⟩⟨ feasible|ψ⟩. However, this sum should be
+weighted with the TSP path length to measure the closeness
+to the optimal solution. Ultimately, optimality can then be
+measured by the TSP length ratio
+mlen := optimal TSP path length
+averaged TSP path length for feas. shots . (16)
+Since the optimal TSP path length is, in general, unknown,
+the nominator can be replaced with the best known classical
+solution. Finally, an informative measure of the performance
+of a quantum algorithm for the TSP is given by the tuple
+(mlen,m feas). (17)
+These indicators are well suited for assessing the quality of a
+TSP solution even in the absence of a working ampliﬁcation
+of the solution state. Unlike the energy, they depend on the
+penalty only through the optimization process and can thus
+be used to compare different penalty values and selection
+strategies. Naturally, the ideal value is (1, 1) and the equal
+superposition of all basis states corresponds to (c, (n−1)!
+2(n−1)2 ),
+where c = optimal TSP path length
+averaged TSP path length for all feas. states depends on the
+given instance. This quickly goes to (c, 0) with increasing n.
+Note that the TSP length ratio is bounded from below by ratio
+corresponding to the longest path l (l < mlen < 1). Further,
+there is a potentially high variance in determining the ratios
+in a shot-based way, especially when the algorithm fails to
+amplify the solution states strongly enough and the circuit
+therefore samples from a very ﬂat distribution.
+This performance measure can analogously be deﬁned for
+the CVRP by simply exchanging the TSP length by the CVRP
+length in (16).
+IV. Q UANTUM -A SSISTED SOLUTION PATHS FOR THE TSP
+We now turn to the solution of the TSP. The algorithms
+are tested on instances with 4, 5 and 6 nodes derived from the
+blue part in the CVRP (Figure 1). These instances are encoded
+−3 0 3
+−2
+0
+2
+−8 0 8
+−8
+0
+8
+QAOA VQE
+θ1
+θ2
+Figure 2: The loss landscapes for QAOA (left) and VQE
+(right) differ drastically. Both are plotted in a plane randomly
+oriented in the parameter space of 10 (QAOA) and 27 (VQE)
+dimensions. The overall structure of the loss landscape is much
+less complicated for VQE, but for large parameter values, high
+ﬂuctuations come into play. QAOA clearly has a large area
+with near-vanishing gradients with maxima and minima close
+by each other.
+into 9-, 16- and 25-qubit Hamiltonians such that the resulting
+algorithms can be run with a statevector simulator. We exten-
+sively test QAOA and VQE as well as the hyperparameters.
+Beyond the scaling s and penalty factor P as described in
+Section III-C, those include algorithm-speciﬁc options such
+as the optimizer or the exact ansatz.
+VQE and QAOA behave differently due to their loss land-
+scapes. Figure 2 compares a 9-qubit QAOA ansatz with depth
+5 and a hardware-efﬁcient 9-qubit VQE with 27 parameters. It
+shows a plane parameterized byθ1 andθ2 that is randomly ori-
+ented in the high-dimensional parameter space. VQE exhibits
+a much coarser structure, although high-frequency components
+appear for larger parameter values. For QAOA, maxima and
+minima lie closely together, surrounded by areas with small
+gradients. Taken together, it seems like there is a tradeoff
+between the number of dimensions of the parameter landscape
+and its complexity for single parameters.
+A. QAOA
+The QAOA ansatz is fully determined by the problem
+Hamiltonian Hp depth p. The algorithm furthermore needs a
+classical optimizer and an initial point. The complete selection
+of hyperparameters of the algorithm and Hamiltonian formula-
+tion is given in Table I. Since ﬁnding good parameter selection
+strategies is an open research question, especially combined
+with an application-speciﬁc performance metric, we turn to
+discussing the tuning options for these parameters.
+1) Scaling Factor Selection
+The scaling factor s does not inﬂuence the location of the
+minimum. However, adjustings might help the optimizer since
+it treats the β and γ parameters on equal grounds [21]. It is
+therefore beneﬁcial to equalize their impact on the ansatz.
+Ref. [21] tries to achieve this by scaling HP such that
+its spectral width aligns with the mixer HM . However, the
+approximate period of the e−iγHP operator depends on the
+spacing of the eigenvalues. Therefore, we propose the ground
+5
+
+===== PAGE 6 =====
+
+Table I: Hyperparameter choices for setting up QAOA for the
+TSP
+Hyperparameter Options Policy
+Name Symbol
+Penalty Factor P P > P min Section IV-A2
+Scaling Factor s s > 0 Section IV-A1
+QAOA depth p p ∈ N ﬁxed p = 5
+Optimizer options provided by Qiskit Testing
+Initialization random, linear Testing
+state gap strategy instead: equalize the gap between the ground
+state and lowest excited state. The smallest excitation of the
+σx mixer corresponds to a single spin ﬂip with an energy gap
+∆M = 2. For small systems, the ground state gap has a high
+variance and leads to larger s overall. With increasing system
+size, both strategies approach each other.
+Although the scaling factor selection is not the most press-
+ing issue, it should not be neglected as it directly inﬂuences
+the unit in which the distances between the TSP nodes are to
+be measured. For toy examples, both the spectral width and
+ground state gap strategies roughly amount to normalizing the
+distances such that they are of O(1).
+2) Penalty Factor Selection
+The penalty factor needs to ensure that the lowest energy
+state is feasible and thus optimal. It is therefore bounded from
+below by aPmin and unbounded from above. From a practical
+standpoint, a certain separation between the optimal state and
+infeasible ones is desirable, but the penalty should not be
+chosen too high to avoid very rugged loss landscapes getting
+in the way of the optimization process. The test instances
+are classically solvable and Pmin can be calculated, but it
+is unknown for unsolved real-world instances. We therefore
+adopt the following protocol: DeterminePmin for a number of
+classically accessible instances of increasing size, then derive
+a scaling relation to approximate Pmin for larger instances.
+The actual penalty should then be chosen slightly larger to
+achieve good penalization (e.g., 1.2·Pmin). Computing Pmin
+for TSP sizes 4 through 9 and 1000 instances each shows that
+it does not scale with system size, but remains stable around
+Pmin = 57± 11 with fewer than 0.1% problematic outliers
+above the 3σ interval. Luckily, a sanity check for the feasibility
+of obtained solutions is easy.
+3) Initialization
+The QAOA loss landscapes exhibit large areas of barren
+plateaus [6] and sections riddled with local minima. Therefore,
+the initial point in parameter space plays an important role in
+the performance of QAOA. For the scope of this paper, we
+consider two relatively simple strategies, uniformly random
+initialization and a linear initialization. The latter is inspired
+by the analogy between QAOA and quantum annealing. The
+β parameters decrease linearly with each layer whereas the
+γ increase linearly in order to mimic the annealing time
+evolution. We observe no statistically signiﬁcant difference
+between the two strategies and, for this reason, stick with
+random initialization. In principle, there are more sophisticated
+strategies for the initial point selection [22].
+4) QAOA Depth
+The depthp of QAOA determines the number of alternating
+layers applied to construct the ansatz. As p increases, the
+approximation of the ground state of the problem Hamiltonian
+is expected to improve [4]. Due to decoherence, NISQ devices
+are limited to relatively shallow circuits. Following a reverse
+causal cone argument [23], a depth of p = 5 should be
+sufﬁcient to produce reasonable solutions.
+5) Simulating QAOA with Various Optimizers and Hyper-
+parameters
+Together with the hyperparameters shown above, the op-
+timizers accessible through Qiskit are tested in statevector
+simulation for the 4-node TSP instance (for data see Ap-
+pendix A). Throughout all tests, the achieved feasibility ratio is
+low, and the variational procedure does not manage to amplify
+a solution state sufﬁciently, or reliably produce a feasible state.
+This is true even for the smallest example instance of four
+cities. The optimizers still differ in performance as seen by
+the ﬁnal energies, with NFT and UMDA reaching the best
+states. Among the other optimizers, some fail to converge with
+the allocated iteration budget (Nelder-Mead, SPSA) whereas
+others ﬁnish quickly without any meaningful optimization
+effort (SLSQP). While still far from any useful solution, the
+Powell optimizer shows the best combination of the number
+of quantum circuit executions and energy obtained.
+In light of these results, tests with real hardware do not seem
+useful. Even switching from the exact statevector simulation
+method to approximate ones resulted in a severe decrease in
+solution quality, most likely due to the very ﬂat distribution
+of output states. Furthermore, real hardware would be much
+more restricted in the number of circuit executions. Overall,
+it is doubtful that the performance gap can be closed by mere
+hyperparameter tuning. Our experiments with various scaling
+factors, penalties, depth and initial points support this claim.
+B. Warm-Start QAOA
+A possible improvement to the standard QAOA ansatz,
+referred to as warm-start QAOA (WS-QAOA), was proposed
+by Egger, Mare ˇcek and Woerner [13]. Instead of preparing a
+uniform superposition state |+⟩⊗n, a classical solver obtains
+a solution to the relaxed continuous problem, ˜x∈ [0, 1]n that,
+once encoded, serves as initial state
+|˜ψ⟩ =
+n−1⨂
+i=0
+RY (θi)|0⟩, (18)
+where the angles are deﬁned by the solution ˜x by θi =
+2 arcsin√ ˜xi. Further, a new mixer operator is deﬁned that
+depends on the continuous solution ˜x as well. The solution
+to the relaxation of the QUBO problem of the 4-node TSP
+instance turns out to be integer. Thus the initial state is a
+computational basis state corresponding to the optimal solution
+and a search with QAOA is not necessary. For this reason, we
+cannot derive any insights on the performance of WS-QAOA
+based on the present instance.
+6
+
+===== PAGE 7 =====
+
+C. Recursive QAOA
+Recursive QAOA (rQAOA) [9] is a potential extension
+of the QAOA protocol aimed at improving its performance.
+The idea is to use QAOA to ﬁnd correlated qubits that can
+then be merged to reduce the problem size until it can be
+solved classically. The strongest correlation among qubit pairs
+is effectively rounded to ±1, replacing both qubits with a
+single one while modifying the cost function in accordance
+with the sign of the correlation. However, the success of this
+reduction directly depends on the accuracy of the rounding.
+The low-quality QAOA output achieved for the TSP does
+certainly not sufﬁce to produce meaningful results. For the
+MaxCut problem (the standard test problem for QAOA),
+rQAOA has shown promising results. However, when applied
+to the TSP, rQAOA encounters two additional obstacles. First,
+the reduction process can be very fragile with approximate
+solutions, and even a single error can render the entire rQAOA
+output meaningless. For example, one faulty correlation that
+results in setting two qubits associated to the same node as
+equal results in the whole rQAOA never exploring feasible
+states in the future. MaxCut has no infeasible states and
+thus does not suffer from this problem. Second, the one-hot
+encoding together with the inherent inversion symmetry of the
+TSP paths signiﬁcantly reduces the amount of correlation in
+the qubit pairs. To illustrate, the 4-node TSP has two optimal
+routes, (0,1,3,2) and (0,2,3,1), corresponding to the bitstrings
+100001010 and 010001100, respectively. Any algorithm that
+only distinguishes states by their Ising energy cannot tell them
+apart. A perfect solution is therefore a mixture between these
+states. However, only half of the qubit pairs are correlated.
+For the two equivalent solution strings of a MaxCut problem
+in contrast, all qubit pairs are correlated. In the light of these
+theoretical and practical difﬁculties, applying rQAOA to the
+TSP problem does not seem sensible.
+D. Constraint-Preserving Mixer QAOA
+The Constraint-Preserving Mixer QAOA, often referred to
+as Quantum Alternating Operator Ansatz (AOA) [10], aims to
+restrict the search space to the subspace containing the feasible
+solutions. Consider a binary optimization problem minf(x)
+forx∈F⊂{ 0, 1}n. Deﬁne a Hamiltonian Hf to act as f on
+computational basis states, i.e. Hf|x⟩ = f(x)|x⟩. Then the
+Alternating Operator Ansatz (AOA) is deﬁned by two families
+of parameterized operators,
+• phase separation operators UP (β) deﬁned by the objec-
+tive function f, e.g. UP (β) =e−iβHf , and
+• mixing operators UM(γ) deﬁned by the constraints that
+preserve the feasible subspace F and allow its full
+exploration.
+The quantum circuit of the AOA is given by the alternating
+application of the two operators for p layers on an easily
+prepared feasible initial state |s⟩ (s ∈ F ). The parameters
+are then optimized classically as in QAOA.
+In [10], constructions for mixer operators for several appli-
+cations are given, including the TSP. Let
+S+ =|1⟩⟨ 0|, S − =|0⟩⟨ 1|, (19)
+HM,i,{u,v} =S+
+u,iS+
+v,i+1S−
+u,i+1S−
+v,i +S−
+u,iS−
+v,i+1S+
+u,i+1S+
+v,i,
+(20)
+HM =
+n∑
+i=1
+∑
+{u,v}∈(
+[n]
+2 )
+HM,i,{u,v}. (21)
+Then a mixer operator for the TSP is given by
+UM(β) =eiβHM. (22)
+For a 4-node TSP instance, this mixer Hamiltonian consists
+of 1100 terms. In our simulations, states remain feasible
+throughout the search, however, the optimal solution was not
+found.
+E. Variational Quantum Eigensolver
+For VQE, we test a simple ansatz comprising a layer of
+single-qubit rotation gates (X and Z) followed by entangling
+controlled-X rotation gates in nearest-neighbor connectivity on
+a chain topology. To ensure a fair comparison, we adjust the
+maximum allowed number of iterations to the optimizer to
+avoid exceeding the timeout of the IBM statevector simulator.
+All TSP instances were formulated with a penalty of P = 100
+for the optimizer comparison. To facilitate the comparison with
+the QAOA runs, we chose the scaling factor with the ground
+state gap strategy outlined in Section IV-A1. However, since
+the optimizers are scale-invariant and the problem Hamiltonian
+does not enter the ansatz, the scaling factor is irrelevant for
+VQE.
+1) Optimizers
+For the simple TSP example, the optimization process is
+quite successful for most optimizers, as shown in Table II.
+Feasibility ratios of 90% and above are within reach, as
+Figure 3 illustrates while some optimizers still fail to am-
+plify the solution state at all. Notably, the Powell, COBYLA
+and Nelder-Mead optimizers are stable. In high-dimensional
+parameter spaces such as the ones encountered in TSP, one
+should therefore prefer gradient-free optimizers. The Nelder-
+Mead method, although robust, requires a huge number of
+evaluations of the quantum circuit to converge and may not be
+suitable for practical applications. Furthermore, the number of
+iterations needed grows with the system size. It is worth noting
+that execution times on the IBM statevector simulator do not
+seem to depend solely on the total number of quantum circuit
+shots, even for the same optimizer. Scheduling might interfere
+here, so comparing circuit executions is a better performance
+metric than real time, assuming a ﬁxed ansatz.
+There is no monotone relation between the Ising energy and
+the application-speciﬁc performance metric (mlen,mfeas). As
+seen in Figure 3 for TSP instances of size 5 and 6, there is
+a transition point where the feasibility increases rapidly with
+decreasing energy. Below this energy threshold, a high number
+of measured shots will be feasible. For a successful solution
+7
+
+===== PAGE 8 =====
+
+of the TSP, it is crucial to surpass this threshold at about 97-
+98% of the optimal energy, which is far beyond QAOA’s per-
+formance guarantees. The relative transition threshold depends
+on the penalty factor, but not the scaling. The appearance of the
+transition changes with the optimizer as well, see Appendix B
+for tests with COBYLA.
+Moreover, Table II includes the results of a small number of
+VQE runs with the best optimizers (Powell and NFT) on the
+27-qubit IBM system in Ehningen. As expected, performance
+degrades signiﬁcantly compared to the simulation, with NFT
+showing a better noise resilience than Powell. Only the 4-node
+TSP could be solved satisfactorily on real hardware.
+2) Penalty
+The selection of suitable penalty factors is an open research
+question that receives constant interest. For the 4- and 5-node
+TSPs, we have determined that the minimum penalties Pmin
+required to ensure the lowest energy state is also a feasible
+(and therefore optimal) solution are approximately 50 and
+75, respectively. In our simulations, we tested penalty factors
+ranging from approximately Pmin to 3Pmin, using the best
+optimizers identiﬁed beforehand, NFT and Powell. The scaling
+factor was kept constant. The optimal energies still shift due to
+the constant offset between the QUBO and Ising formulations,
+which is dependent on the penalty.
+For the 4-node TSP (data see Appendix C), the quantum
+state found by the NFT optimizer contains almost exclusively
+feasible states regardless of the penalty. The TSP length ratio
+seems to reach a stable plateau at about P = 70, but is overall
+high. However, the optimizer uses its iteration budget (maxfev)
+entirely on most runs. Powell, on the other hand, converges
+faster, but achieves lower TSP ratios for penalties P = 50 and
+P = 60. The solution quality stabilizes again around a penalty
+factor of P = 70.
+The results for the 5-node TSP in Table III clearly demon-
+strate the impact of penalties below Pmin≈ 75. For P = 50,
+the feasibility is very low (the uniform superposition would
+be at 4!/216 ≈ 4· 10−4). The feasibility ratio at P = 70
+and 80 rises signiﬁcantly and, most interestingly, has a high
+variance, suggesting a feasibility phase transition when the
+lowest feasible state crosses the lowest infeasible one. Above
+this transition, NFT achieves good feasibility ratios, whereas
+Powell remains in a medium feasibility ratio regime with
+high variance between runs. Both optimizers’ average TSP
+length ratio stays around 75− 85%, (uniform superposition:
+79%), however variance indicates runs with it coming close to
+optimality. NFT once again depletes its entire iteration budget,
+while Powell terminates after roughly 3700 executions of the
+quantum circuit (excluding shots).
+V. D ISCUSSION
+We have conducted an evaluation of the usefulness of
+current-era QC restricted to NISQ devices for the highly
+relevant TSP application. The TSP is a simpler variant of
+the CVRP, which is particularly difﬁcult to solve using clas-
+sical computing methods. To this end, we have presented a
+QUBO formulation of the CVRP that requires fewer qubits
+than previously derived formulations. Our numerical studies
+are based on two prominent variational algorithms for opti-
+mization problems, VQE and its special case, QAOA. Their
+performance was evaluated on simulators as well as in ﬁrst
+hardware experiments. To reﬂect the actual solution quality of
+the algorithm, we have proposed a pair of performance metrics,
+(mlen,m feas), which measures the ratio of obtained path length
+to the optimal (or best known) one and the feasibility ratio,
+respectively. This performance metric is necessary to account
+for infeasible solutions in contrast to the approximation ratio
+for MaxCut. It enables the user to quickly judge the quality of
+the algorithm from an application viewpoint and to determine
+whether it can yield helpful solutions to their problem. In
+practice, the Ising energy is not of interest to end users, but the
+feasibility and quality of the ﬁnal path. Our experiments have
+shown that the Ising energy has no monotone relation with
+the performance metrics. Instead, at an (Ising) approximation
+ratio around 97− 98%, the feasibility rises signiﬁcantly and
+is close to zero below. This explains why QAOA failed
+to obtain feasible results since it stays below the threshold
+for all hyperparameter choices. The high approximation ratio
+required is partly caused by the problem formulation and
+might be avoided with a different encoding. In our suggested
+formulation, we state several constraint terms, and violating
+any constraint increases the energy, thus, the energy spectrum
+is quite wide with a large part of it only differentiating between
+infeasible states. Furthermore, extensions like rQAOA, WS-
+QAOA and QAOA with a constraint-preserving mixer are a
+possible path to improve the convergence process, but require
+more tuning and did not converge to the optimal solution with
+an out-of-the-box implementation either. On the other hand,
+hardware-efﬁcient VQE performs well for toy instances of
+4, 5 and 6 cities with very little hyperparameter tuning. In
+particular, Powell and NFT are powerful optimizers that can
+tackle the high-dimensional parameter space of 3 parameters
+per qubit without major problems. The parameter landscape
+of VQE has a simple structure, especially when compared
+to QAOA, cf. Figure 2, which enables the optimizer to
+ﬁnd good parameters. However, the performance decreases
+again on real hardware which is expected due to noise and
+runtime constraints. With a more thorough ansatz selection
+and hyperparameter tuning, good results on hardware do not
+seem out of reach. Ansätze with a more favorable tuning of the
+parameter number are of particular interest. The ansatz used
+in Section IV-E needs three parameters per qubit, or a total of
+3(n− 1)2 parameters for a n-vertex TSP.
+VI. O UTLOOK
+This work serves as a foundational exploration of the CVRP
+with variational quantum algorithms, highlighting the obsta-
+cles in obtaining useful solutions. While the study’s outcomes
+demonstrate the difﬁculty of achieving high quality solutions,
+there are several proposals of interest for future studies, such as
+encoding mechanisms or algorithms. One promising approach
+attempts to obtain more favorable loss landscapes with alterna-
+tive encodings (e.g., binary, domain-wall). Additionally, using
+8
+
+===== PAGE 9 =====
+
+Table II: VQE performance with various optimizers. Each row results from a set 50 individuals runs with randomly chosen
+initial points. The maximum number of circuit evaluations is adapted to the three hour timeout of the statevector simulator.
+Sets where a signiﬁcant number of runs did not reach convergence within the allocated maximum number of circuit executions
+are marked with a star ( ∗) in the circuit executions column. Hardware runs are indicated by (H) in the optimizer column. The
+data is grouped by TSP size, where the analytic optimal energies for each instance are given in the intermediate rows.
+Optimizer Energy ↓ Feas. ratio mfeas↑ TSP ratio mlen↑ Circuit executions↓
+TSP size 4 Optimal energy −137.72
+Powell −136.6± 3.3 0 .986± 0.012 0 .95± 0.12 2000 ± 500
+Powell (H) −109± 15 0 .37± 0.34 0 .91± 0.14 900 ± 800
+COBYLA −125± 16 0 .60± 0.43 0 .89± 0.16 330 ± 60
+Nelder-Mead −74.3± 4.0 (2 .5± 2.8)· 10−3 0.85± 0.13 84000 ∗
+SLSQP −13± 40 0 .017± 0.038 0 .91± 0.12 1606 ± 25
+SPSA −132.2± 9.0 0 .84± 0.37 0 .92± 0.14 16000 ∗
+NFT −136.5± 4.0 0 .9982± 1.8· 10−3 0.97± 0.09 100000 ∗
+NFT (H) −128.7± 1.5 0 .947± 0.032 0 .88± 0.20 2000 ∗
+CG −73.5± 2.9 (2 .7± 3.8)· 10−3 0.88± 0.15 700 ± 100
+UMDA −92± 14 0 .08± 0.27 0 .92± 0.15 70000 ± 20000
+TSP size 5 Optimal energy −221.10
+Powell −217.3± 2.7 0 .79± 0.35 0 .83± 0.13 4000 ± 3000
+Powell (H) −185.5± 6.7 0 .014± 0.034 0 .790± 0.079 500 ± 600
+COBYLA −209.7± 7.1 0 .27± 0.33 0 .83± 0.13 600 ± 100
+Nelder-Mead −177.4± 1.9 (2 .5± 4.2)· 10−4 0.838± 0.094 8700 ∗
+SLSQP −3± 60 (0 .3± 1.0)· 10−3 0.82± 0.15 500 ∗
+SPSA −215.8± 5.0 0 .71± 0.45 0 .87± 0.13 5000 ∗
+NFT −218.8± 1.4 0 .9968± 2.1· 10−3 0.86± 0.10 29000 ∗
+NFT (H) −201.0± 6.7 (3 .5± 4.3)· 10−3 0.928± 0.046 1600 ∗
+CG −176.0± 2.0 (2 .7± 6.8)· 10−4 0.82± 0.13 1300 ± 300
+UMDA −195± 23 0 .25± 0.36 0 .87± 0.15 17000 ± 4000
+TSP size 6 Optimal energy −400.47
+Powell −390.82± 3.76 0 .423± 0.40 0 .80± 0.12 2500 ∗
+Powell (H) −349.4± 6.9 0 .005± 0.010 0 .75± 0.13 800 ± 600
+COBYLA −381± 11 0 .185± 0.27 0 .79± 0.13 924 ± 200
+Nelder-Mead −350.6± 2.8 (1 .1± 2.9)· 10−4 0.78± 0.12 1200 ∗
+SLSQP 12± 93 — — 56∗
+SPSA −379± 12 0 .09± 0.18 0 .77± 0.11 990 ∗
+NFT −395.3± 4.1 0 .94± 0.24 0 .79± 0.12 3800 ± 700
+NFT (H) −362.1± 2.5 (3 .5± 4.0)· 10−4 0.734± 0.070 1600 ± 100
+CG −351.2± 1.9 (4 .9± 6.1)· 10−5 0.75± 0.11 1300 ± 300
+UMDA −232± 32 — — 1600± 200
+Table III: Performance of VQE for various penalties for the 5-node TSP instance. Pmin is approximately 75 for this problem
+instance. Each row is the result of a set of 50 individual runs with randomly chosen initial points. All runs with the NFT
+optimizer ﬁnished due to reaching the maximum number of circuit executions (marked by ∗).
+Penalty Opt. Energy Optimizer Energy ↓ Approx. ratio↑ Feas. ratio mfeas↑ TSP ratio mlen↑ Circuit executions↓
+50 −143.44 NFT −142.5± 1.1 99.34% (4± 19)· 10−3 0.03± 0.15 10000 ∗
+60 −157.86 NFT −156.6± 1.1 99.20% (1.2± 3.4)· 10−3 0.29± 0.40 10000 ∗
+70 −172.29 NFT −171.71± 0.28 99.67% 0.36± 0.48 0 .37± 0.43 10000 ∗
+80 −188.13 NFT −186.67± 0.91 99.22% 0.32± 0.47 0 .42± 0.44 10000 ∗
+90 −204.61 NFT −201.8± 2.2 98.65% 0.9951± 4.0· 10−3 0.87± 0.10 10000 ∗
+100 −221.10 NFT −218.3± 2.0 98.75% 0.9963± 2.6· 10−3 0.85± 0.10 10000 ∗
+120 −254.06 NFT −251.2± 2.0 98.87% 0.9972± 2.1· 10−3 0.83± 0.10 10000 ∗
+150 −303.51 NFT −300.6± 2.1 99.03% 0.9967± 2.2· 10−3 0.86± 0.10 10000 ∗
+200 −385.92 NFT −382.1± 3.2 99.02% 0.9971± 1.9· 10−3 0.78± 0.13 10000 ∗
+50 −143.44 Powell −141.1± 4.5 98.35% (2.3± 5.7)· 10−3 0.86± 0.12 2500 ± 1400
+60 −157.86 Powell −153.6± 7.1 97.32% (3.9± 7.8)· 10−3 0.88± 0.12 3600 ± 1500
+70 −172.29 Powell −167.9± 6.4 97.46% 0.20± 0.36 0 .74± 0.11 3500 ± 1700
+80 −188.13 Powell −181± 10 96.07% 0.08± 0.28 0 .81± 0.12 4100 ± 1600
+90 −204.61 Powell −198± 10 96.66% 0.54± 0.48 0 .84± 0.11 4000 ± 1700
+100 −221.10 Powell −212± 13 95.84% 0.58± 0.48 0 .87± 0.12 3800 ± 1300
+120 −254.06 Powell −240± 19 94.43% 0.69± 0.43 0 .80± 0.13 3800 ± 1700
+150 −303.51 Powell −286± 24 94.17% 0.64± 0.47 0 .83± 0.12 3200 ± 1200
+200 −385.92 Powell −363± 28 94.05% 0.60± 0.50 0 .75± 0.12 3700 ± 900
+9
+
+===== PAGE 10 =====
+
+−135 −130 −125 −120
+0.95
+0.96
+0.97
+0.98
+0.99
+1
+−220 −215 −210
+0
+0.2
+0.4
+0.6
+0.8
+1
+−400 −395 −390 −385
+0
+0.2
+0.4
+0.6
+0.8
+0.5
+0.6
+0.7
+0.8
+0.9
+1TSP ratio
+0.5
+0.6
+0.7
+0.8
+0.9
+1TSP ratio
+0.5
+0.6
+0.7
+0.8
+0.9
+1TSP ratio
+Energy
+Feasibility ratio
+4-node TSP 5-node TSP 6-node TSP
+Figure 3: The relation of the feasibility ratio to the Ising energy of VQE with the Powell optimizer on a TSP with 4 to 6
+nodes. For the 5- and 6-node TSP, it becomes clear that the feasibility undergoes drastic changes at a transition point in energy,
+illustrated with an arctan ﬁt. The data was obtained with a QASM Simulator on the IBM cloud. 50 attempts were run for each
+TSP instance of which a signiﬁcant amount failed for the 6-node TSP due to runtime constraints.
+encodings where every state corresponds to a feasible solution
+will increase the performance in mfeas. However, it is unlikely
+that algorithms based on QAOA will be able to reach the
+approximation ratio required for a high feasibility ratio. Still,
+constraint-preserving mixers might bypass this issue entirely
+if they can be implemented effectively on NISQ devices. The
+exploration of recursive QAOA for the use case runs into the
+issue of imperfect correlations, even in the ideal solution state
+as outlined in Section IV-C. This issue goes beyond the con-
+vergence problems with QAOA in practice. It is rooted in the
+degeneracy of the solution state originating from the inversion
+symmetry of the paths (as a reminder, the cyclic permutation
+symmetry is eliminated in the problem formulation). There are
+two ways to address this problem: One could implement an
+additional constraint (e.g., “city 1 is visited before city 2“)
+or include an intermediate processing step after each QAOA
+iteration, essentially mapping one of the two degenerate basis
+states onto the other one. The latter option requires modifying
+the hybrid algorithm itself whereas the ﬁrst still works with
+the basic QAOA, but is complex to encode. To continue in
+this direction, constraint terms depending on the parity of a
+permutation may be worth exploring. Furthermore, in light
+of the experimental difﬁculties with QAOA, an analogous
+recursive VQE protocol could be the superior choice. Further
+insights on the performance of WS-QAOA can be gained from
+implementations for additional problem instances of the TSP
+and CVRP. In the QAOA variant with a constraint-preserving
+mixer, the principal tasks are to reduce the size of the mixer
+and examine its stability against noise. To this end, alternative
+encodings may be beneﬁcial, particularly those with a higher
+density of feasible states in the phase space. VQE, on the
+other hand, has a good performance baseline even with a naive
+ansatz. Further efforts are necessary to estimate its scaling
+behavior, simplify the ansatz, promote noise resilience, and
+improve its convergence for larger problems. A candidate
+method is, e.g., ﬁltered VQE [24].
+However, the roles of many parameters, such as the initial
+point, penalty, or scaling, remain on heuristic grounds. There-
+fore, additional numerical experiments and analytic efforts are
+necessary to expand the study to other problem instances an
+gain a deeper understanding of the optimization process.
+ACKNOWLEDGMENT
+This project is supported by the Federal Ministry for Eco-
+nomic Affairs and Climate Action on the basis of a decision by
+the German Bundestag through the project Quantum-enabling
+Services and Tools for Industrial Applications (QuaST) .
+QuaST aims to facilitate the access to quantum-based solutions
+for optimization problems and to bridge the gap between busi-
+ness and technology. Our work contributes to understanding
+the challenges therein for the CVRP.
+10
+
+===== PAGE 11 =====
+
+APPENDIX
+A. QAOA Performance
+As described in Section IV-A, QAOA generally did not achieve to produce feasible solutions. The optimal state is far from
+what any optimizer is able to achieve. In addition to the results shown in Table IV, different hyperparameter combinations
+according to Table I were tested with similarly discouraging results.
+Table IV: QAOA performance with various optimizers in simulation on the 4-city problem instance. Each row is the aggregate
+of 50 individual runs with a random initial point. The problem was formulated with P = 100 resulting in an optimal energy of
+−137.72. Values marked with ∗ indicate that a signiﬁcant portion of the runs ﬁnished due to reaching the maximum allowed
+number of circuit executions.
+Optimizer Energy ↓ Feas. ratio mf eas↑ TSP length ratio mlen↑ Circuit executions↓
+CG −11.5± 6.5 0 .0110± 6.6· 10−3 0.846± 0.043 290 ± 50
+COBYLA −23± 15 0 .014± 0.011 0 .847± 0.039 97 ± 10
+Nelder-Mead −25± 10 0 .015± 0.010 0 .857± 0.050 7000 ∗
+NFT −57± 10 0 .021± 0.017 0 .854± 0.057 19000 ∗
+Powell −48± 27 0 .018± 0.017 0 .868± 0.061 800 ± 400
+SPSA −45.9± 9.5 0 .018± 0.018 0 .857± 0.050 10000 ∗
+SLSQP −2.0± 6.7 0 .0112± 8.5· 10−3 0.849± 0.049 12 ± 4
+UMDA −57.3± 7.7 0 .023± 0.022 0 .850± 0.049 5000 ± 1000
+B. VQE with the COBYLA optimizer
+In the same manner as Figure 3, optimizing the VQE ansatz with COBYLA as shown in Figure 4 shows an energy threshold
+below which feasible states start to appear. However, the relation between mfeas and the Ising energy at the transition point
+seems different. Powell exhibits an approximate step-like behaviour, modeled in Figure 3 through an arcus tangens. For
+COBYLA, it looks like the feasibility ratio increases linearly below a threshold energy. Further research is needed in this
+direction, but this phenomenon hints towards the best optimizer choice depending on the speciﬁc application as well as the
+formulation and encoding of the problem. Different optimizers may take different paths towards the optimum, resulting in
+approximate results of different quality. Once again, this is why one should consider application-speciﬁc performance metrics
+and cannot rely purely on energy approximation ratios.
+−140−130−120−110 −100
+0
+0.2
+0.4
+0.6
+0.8
+1
+−220 −210 −200 −400 −380 −360
+0
+0.2
+0.4
+0.6
+0.8
+1TSP ratio
+0
+0.2
+0.4
+0.6
+0.8
+1TSP ratio
+0
+0.2
+0.4
+0.6
+0.8
+1TSP ratio
+Energy
+Feasibility ratio
+4-node TSP 5-node TSP 6-node TSP
+Figure 4: The relation of the feasibility ratio to the Ising energy of VQE with the COBYLA optimizer on a TSP with 4 to 6
+nodes. In contrast to Powell, COBYLA seems to show a linear increase in feasibility below a threshold energy. 50 attempts
+were run for each TSP instance.
+11
+
+===== PAGE 12 =====
+
+Table V: Performance of VQE for various penalties for the 4-node TSP instance. Pmin = 50 is the approximate minimum
+penalty for the 4-node TSP. All simulations were given a budget of 10000 quantum calls. The overall scaling was held constant,
+but different penalty factors still result in varying optimal energies
+Penalty Opt. Energy Optimizer Energy ↓ Approx. ratio↑ Feas. ratio mf eas↑ TSP length ratio mlen↑ Circuit evaluations↓
+50 −80.90 NFT −80.69± 0.93 99 .74% 0 .98± 0.14 0 .91± 0.15 10000 ∗
+60 −92.27 NFT −91.9± 2.0 99 .60% 0 .98± 0.14 0 .969± 0.095 10000 ∗
+70 −103.62 NFT −103.2± 2.4 99 .59% 0 .99836± 6.4· 10−4 0.976± 0.083 10000 ∗
+80 −114.99 NFT −113.6± 4.6 98 .79% 0 .99834± 6.6· 10−4 0.96± 0.10 10000 ∗
+90 −126.36 NFT −125.9± 2.4 99 .64% 0 .99832± 6.4· 10−4 0.976± 0.083 10000 ∗
+100 −137.72 NFT −135.9± 5.1 98 .68% 0 .98± 0.14 0 .96± 0.11 10000 ∗
+120 −160.45 NFT −158.6± 5.1 98 .85% 0 .98± 0.14 0 .981± 0.070 10000 ∗
+150 −194.54 NFT −194.1± 2.4 99 .77% 0 .99849± 6.1· 10−4 0.983± 0.069 10000 ∗
+200 −251.35 NFT −249.9± 4.6 99 .42% 0 .99846± 6.4· 10−4 0.99713± 9.7· 10−4 10000∗
+50 −80.90 Powell −79.9± 2.1 98 .76% 0 .65± 0.46 0 .88± 0.16 2000 ± 600
+60 −92.27 Powell −90.4± 4.7 98 .00% 0 .87± 0.33 0 .89± 0.16 2000 ± 600
+70 −103.62 Powell −102.0± 4.7 98 .51% 0 .93± 0.24 0 .95± 0.12 1900 ± 500
+80 −114.99 Powell −113.8± 4.1 98 .96% 0 .9923± 6.5· 10−3 0.983± 0.070 2000 ± 600
+90 −126.36 Powell −125.8± 2.4 99 .59% 0 .9907± 9.2· 10−3 0.99± 0.13 2000 ± 600
+100 −137.72 Powell −137.2± 2.5 99 .63% 0 .9920± 5.2· 10−3 0.99± 0.11 2100 ± 600
+120 −160.45 Powell −158.5± 7.4 98 .77% 0 .95± 0.20 0 .95± 0.12 2000 ± 600
+150 −194.54 Powell −193.6± 3.3 99 .53% 0 .9919± 6.1· 10−3 0.990± 0.049 2000 ± 600
+200 −251.35 Powell −250.3± 3.4 99 .58% 0 .991± 0.011 0 .990± 0.051 2100 ± 600
+C. Inﬂuence of the Penalty Factor for the 4-node TSP instance
+Results with varying penalties for the 4-node TSP instances are shown in Table V. The NFT and Powell optimizers reach
+approximation ratios around 98− 99% for all penalty factors. Likewise, the feasibility and TSP length ratios obtained are
+similarly well, with the exception that Powell starts to reach high feasibility only starting at P = 70 . Furthermore, with
+penalties only slightly higher than Pmin, the performance metrics ﬂuctuate more and stabilizes around P = 70≈ 1.4Pmin
+for both optimizers. Within the tested values from Pmin = 50 to 4Pmin = 200, no signiﬁcant performance impact can be
+observed. . NFT still uses its budget of quantum circuit evaluations completely. A modiﬁcation of the convergence criterion
+might be useful for this optimizer. Powell requires signiﬁcantly fewer executions for a feasibility ratio that is only marginally
+lower.
+12
+
+===== PAGE 13 =====
+
+REFERENCES
+[1] P. Shor, “Algorithms for quantum computation: Discrete
+logarithms and factoring,” in Proceedings 35th An-
+nual Symposium on Foundations of Computer Science
+(FOCS), 1994, pp. 124–134.
+[2] L. K. Grover, “A fast quantum mechanical algorithm
+for database search,” in Proceedings of the Twenty-
+Eighth Annual ACM Symposium on Theory of Com-
+puting (STOC) , New York, NY , USA: Association for
+Computing Machinery, 1996, pp. 212–219.
+[3] J. Preskill, “Quantum computing in the NISQ era and
+beyond,” Quantum, vol. 2, p. 79, Aug. 2018. DOI: 10.
+22331/q-2018-08-06-79.
+[4] E. Farhi, J. Goldstone, and S. Gutmann, “A quantum
+approximate optimization algorithm,” 2014. DOI: 10 .
+48550/ARXIV .1411.4028.
+[5] A. Peruzzo, J. McClean, P. Shadbolt, et al. , “A varia-
+tional eigenvalue solver on a photonic quantum proces-
+sor,” Nature Communications, vol. 5, no. 1, Jul. 2014.
+DOI: 10.1038/ncomms5213.
+[6] J. R. McClean, S. Boixo, V . N. Smelyanskiy, R. Bab-
+bush, and H. Neven, “Barren plateaus in quantum neural
+network training landscapes,” Nature Communications,
+vol. 9, no. 1, p. 4812, Nov. 16, 2018. DOI: 10.1038/
+s41467-018-07090-4.
+[7] D. Applegate, R. E. Bixby, V . Chvátal, and W. J. Cook.
+(2001). “Concorde TSP solver,” [Online]. Available:
+https : / / www. math . uwaterloo . ca / tsp / concorde . html
+(visited on 04/13/2023).
+[8] D. L. Applegate, R. E. Bixby, V . Chvátal, and
+W. J. Cook, A Computational Study . Princeton: Prince-
+ton University Press, 2011. DOI: doi : 10 . 1515 /
+9781400841103. [Online]. Available: https://doi.org/
+10.1515/9781400841103.
+[9] S. Bravyi, A. Kliesch, R. Koenig, and E. Tang, “Obsta-
+cles to variational quantum optimization from symmetry
+protection,” Physical Review Letters , vol. 125, no. 26,
+Dec. 2020. DOI: 10.1103/physrevlett.125.260505.
+[10] S. Hadﬁeld, Z. Wang, B. O’Gorman, E. G. Rieffel, D.
+Venturelli, and R. Biswas, “From the quantum approx-
+imate optimization algorithm to a quantum alternating
+operator ansatz,” Algorithms, vol. 12, no. 2, 2019. DOI:
+10.3390/a12020034.
+[11] F. Barahona, M. Jünger, and G. Reinelt, “Experiments
+in quadratic 0–1 programming,” Mathematical Pro-
+gramming, vol. 44, no. 1, pp. 127–137, May 1, 1989.
+DOI: 10.1007/BF01587084.
+[12] M. Cerezo, A. Arrasmith, R. Babbush, et al. , “Vari-
+ational quantum algorithms,” Nature Reviews Physics ,
+vol. 3, no. 9, pp. 625–644, Sep. 1, 2021. DOI: 10.1038/
+s42254-021-00348-9.
+[13] D. J. Egger, J. M. ek, and S. Woerner, “Warm-starting
+quantum optimization,” Quantum, vol. 5, p. 479, Jun.
+2021. DOI: 10.22331/q-2021-06-17-479.
+[14] R. M. Karp, “Reducibility among combinatorial prob-
+lems,” in Complexity of Computer Computations Pro-
+ceedings, R. E. Miller, J. W. Thatcher, and J. D.
+Bohlinger, Eds. Springer US, 1972, pp. 85–103, ISBN :
+978-1-4684-2001-2. DOI: 10.1007/978-1-4684-2001-
+2_9.
+[15] H. Irie, G. Wongpaisarnsin, M. Terabe, A. Miki, and
+S. Taguchi, “Quantum annealing of vehicle routing
+problem with time, state and capacity,” in S. Feld and
+C. Linnhoff-Popien, Eds. Springer Nature Switzerland
+AG, 2019. DOI: 10.1007/978-3-030-14082-3.
+[16] R. Harikrishnakumar, S. Nannapaneni, N. H. Nguyen,
+J. E. Steck, and E. C. Behrman, A quantum annealing
+approach for dynamic multi-depot capacitated vehicle
+routing problem, 2020. DOI: 10.48550/ARXIV.2005.
+12478.
+[17] S. Feld, C. Roch, T. Gabor, et al. , “A hybrid solution
+method for the capacitated vehicle routing problem
+using a quantum annealer,” Frontiers in ICT , vol. 6,
+Jun. 2019. DOI: 10.3389/ﬁct.2019.00013.
+[18] G. Laporte and F. Semet, “5. classical heuristics for
+the capacitated vrp,” in R. E. Miller, J. W. Thatcher,
+and J. D. Bohlinger, Eds. Jan. 2002, pp. 109–128. DOI:
+10.1137/1.9780898718515.ch5.
+[19] A. Awasthi, F. Bär, J. Doetsch, et al., Quantum comput-
+ing techniques for multi-knapsack problems, 2023. DOI:
+10.48550/ARXIV .2301.05750.
+[20] A. Lucas, “Ising formulations of many NP problems,”
+Frontiers in Physics , vol. 2, 2014. DOI: 10.3389/fphy.
+2014.00005.
+[21] S. Brandhofer, D. Braun, V . Dehn, et al., Benchmarking
+the performance of portfolio optimization with QAOA ,
+2022. DOI: 10.48550/ARXIV .2207.10555.
+[22] O. Amosy, T. Danzig, E. Porat, G. Chechik, and A.
+Makmal, “Iterative-free quantum approximate optimiza-
+tion algorithm using neural networks,” 2022. DOI: 10.
+48550/ARXIV .2208.09888.
+[23] M. Streif and M. Leib, Training the quantum ap-
+proximate optimization algorithm without access to a
+quantum processing unit, 2019. DOI: 10.48550/ARXIV .
+1908.08862.
+[24] D. Amaro, C. Modica, M. Rosenkranz, M. Fioren-
+tini, M. Benedetti, and M. Lubasch, “Filtering varia-
+tional quantum algorithms for combinatorial optimiza-
+tion,” Quantum Science and Technology , vol. 7, no. 1,
+p. 015 021, Feb. 2022. DOI: 10.1088/2058-9565/ac3e54.
+13

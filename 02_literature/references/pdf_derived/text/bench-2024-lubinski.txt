@@ -1,0 +1,2920 @@
+===== PAGE 1 =====
+
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks
+Thomas Lubinski,1, 2 Joshua J. Goings,3 Karl Mayer,4 Sonika Johri,5 Nithin Reddy,6 Aman Mehta,7 Niranjan Bhatia,8 Sonny
+Rappaport,3 Daniel Mills,9 Charles H. Baldwin,4 Luning Zhao,3 Aaron Barbosa,10 Smarak Maity,10 and Pranav S. Mundada10
+(Quantum Economic Development Consortium (QED-C) collaboration) ∗
+1Quantum Circuits Inc, 25 Science Park, New Haven, CT 06511
+2QED-C Technical Advisory Committee on Standards and Performance Benchmarks
+3IonQ Inc, 4505 Campus Dr, College Park, MD 20740, USA
+4Quantinuum, 303 S. Technology Ct, Broomfield, CO 80021, USA
+5Coherent Computing, Cupertino, CA, USA
+6San Jose State University, San Jose, USA
+7University of California at Los Angeles, USA
+8University of California, Berkeley, USA
+9Quantinuum, Terrington House, 13-15 Hills Road, Cambridge CB2 1NL, UK
+10Q-CTRL, Los Angeles, CA USA
+(Dated: February 15, 2024)
+The QED-C suite of Application-Oriented Benchmarks provides the ability to gauge performance charac-
+teristics of quantum computers as applied to real-world applications. Its benchmark programs sweep over a
+range of problem sizes and inputs, capturing key performance metrics related to the quality of results, total
+time of execution, and quantum gate resources consumed. The work described in this manuscript investigates
+challenges in broadening the relevance of this benchmarking methodology to applications of greater complexity.
+First, we introduce a method for improving landscape coverage by varying algorithm parameters systematically,
+exemplifying this functionality in a new scalable HHL linear equation solver benchmark. Second, we add a VQE
+implementation of a Hydrogen Lattice simulation to the QED-C suite, and introduce a methodology for analyzing
+the result quality and run-time cost trade-off. We observe a decrease in accuracy with increased number of qubits,
+but only a mild increase in the execution time. Third, unique characteristics of a supervised machine-learning
+classification application are explored as a benchmark to gauge the extensibility of the framework to new classes
+of application. Applying this to a binary classification problem revealed the increase in training time required for
+larger anzatz circuits, and the significant classical overhead. Fourth, we add methods to include optimization
+and error mitigation in the benchmarking workflow which allows us to: identify a favourable trade off between
+approximate gate synthesis and gate noise; observe the benefits of measurement error mitigation and a form of
+deterministic error mitigation algorithm; and to contrast the improvement with the resulting time overhead. Look-
+ing to the future, we discuss how the benchmark framework can be instrumental in facilitating the exploration of
+algorithmic options and their impact on performance.
+CONTENTS
+I. Introduction 2
+II. Background 3
+A. System-Level Performance Benchmarks 3
+B. Application-Oriented Benchmarks 3
+III. Benchmarking An HHL Linear Solver 4
+A. The HHL Algorithm 4
+B. The HHL Benchmark Implementation 5
+C. Results From Executing the HHL Benchmark 5
+IV . Benchmarking a Hydrogen Lattice Simulation 7
+A. Simulating a Hydrogen Lattice with VQE 7
+B. The Hydrogen Lattice Benchmark Algorithm 8
+∗ This work was sponsored by the Quantum Economic Development Con-
+sortium (QED-C) and was performed under the auspices of the QED-C
+Technical Advisory Committee on Standards and Performance Benchmarks.
+The authors acknowledge many committee members for their input to and
+feedback on the project and this manuscript.
+C. Analysis of Benchmark Result Accuracy 9
+D. Quality of Solution vs Execution Run-Time 11
+V . Program Optimization Techniques 12
+A. Error Mitigation with Qiskit Sampler 12
+B. Quantum Circuit Transformation with TKET 13
+C. Custom Execution Pipeline with Fire Opal 16
+VI. Benchmarking Machine Learning Applications 17
+A. Quantum Machine Learning 17
+B. Image Recognition Quantum Algorithm 17
+C. Image Recognition Benchmark Implementation 18
+D. Simulation Results and Analysis 19
+VII. Summary and Conclusions 20
+Code Availability 21
+Acknowledgement 21
+References 22
+arXiv:2402.08985v1  [quant-ph]  14 Feb 2024
+
+===== PAGE 2 =====
+
+2
+I. INTRODUCTION
+Quantum computing is in the early stages of its introduction
+to a broad community of potential users in multiple application
+areas, with new technologies and supporting software emerg-
+ing regularly. For both providers and users to obtain optimal
+results, it is important they be able to gauge the evolution of
+these systems and evaluate available options. In this context, a
+variety of methodologies for benchmarking performance and
+characterizing improvements have become available to the
+community.
+Performance benchmarking tools span various levels of the
+computing stack. At the component level, protocols such as
+randomized benchmarking [1, 2], and gate set tomography [3],
+are used to characterize individual components within the sys-
+tem. System-level benchmarks, such as quantum volume [4],
+cross-entropy benchmarking [5], mirror circuit benchmarks [6],
+and CLOPS (Circuit-Layer Operations per Second) [ 7], pro-
+vide a single metric measure of quality or speed of execution
+of quantum programs. In combination, these two classes of
+benchmarks complement each other. The former precisely
+measures the performance of key elements, while the latter
+aggregates system behavior, providing a summary view.
+At the algorithm or application level, a number of bench-
+marking suites have emerged that provide measures in several
+dimensions of the performance experienced by users when run-
+ning complete programs. These attempt to take into account
+all factors contributing to the overall quality and run-time effi-
+ciency of a quantum computing system. Factors include qubit
+noise characteristics, program preparation and execution time,
+classical processing of results, and data transfer to and from the
+system [8–15]. Such benchmarks are valuable for users as they
+provide measures that may be closer to their actual experience
+and in the context of recognizable application scenarios.
+One of these, the QED-C suite of Application-Oriented
+Performance Benchmarks for Quantum Computing [14, 15],
+takes an approach similar to that of the SPEC benchmarks for
+classical computers [16, 17], providing algorithms and simple
+applications structured as benchmarks that sweep over a range
+of problem sizes and complexity. This enables a broad charac-
+terization of the overall system performance to be expected for
+many classes of application, in the dimensions of quality and
+execution run-time, across different target quantum computing
+systems.
+However, creating benchmarks from applications comes
+with several challenges. One requirement is to select meth-
+ods that scalably quantify performance. For example, in the
+QED-C suite, most applications used simple problem instances
+producing computational basis states to ease testing. Moreover,
+quantum algorithms come in many variants, and benchmark
+results can be impacted dramatically by the particular imple-
+mentation and execution options. For example, there are multi-
+ple options for the ansatz used in a VQE algorithm [ 18], the
+number of rounds (repetitions of a group of gates, resulting
+in deeper circuit) in a QAOA algorithm [ 19], or the type of
+encoding of data in a machine learning application [20]. Addi-
+tionally, with variational algorithms, a classical optimizer must
+be selected along with the freedom to choose hyperparameters,
+which may impact the time to solution and the quality of results.
+Another challenge is selecting appropriate datasets for use with
+a particular algorithm. For example, in HHL, discussed below,
+some datasets are efficiently verifiable while others are not.
+The choices made in converting an algorithm to a scalable
+and verifiable benchmark will have consequences on how the
+benchmark performs on quantum hardware. Many of these
+choices impact the number of two-qubit gates, which is the
+dominant source of error in most current generation systems,
+and therefore strongly correlates with the performance. Evi-
+dence of this can be seen in the QED-C suite where decisions
+made to simplify verification allow for effective compilation
+that substantially reduces the number of two-qubit gates as
+discussed below. Additionally, the choice to have some circuits
+ideally generate computational basis states means results are
+greatly improved with plurality voting error mitigation tech-
+niques [21], which are known to scale poorly. Both of these
+options are unique to the benchmark version of the application
+and are not typical for an actual use case. It is important to
+have benchmarks that both represent application use cases and
+run with comparable resource requirements.
+In this work, we describe several enhancements that have
+been made to the QED-C suite. These were selected to bet-
+ter match users’ experience in running algorithms. Several
+new benchmark algorithms have been added, specifically to in-
+crease the breadth and complexity of the applications included,
+add coverage where gaps exist in areas of un-tested qubit num-
+ber and depth, and to illustrate various execution methods and
+metric collection options. We also examine the impact of pro-
+gram optimization and error mitigation techniques and review
+the enhancements made to enable the inclusion of these.
+Our benchmark suite provides a platform in which new
+applications can readily be developed, studied, and measured
+without the need to build anew the standardized data collection
+and reporting mechanisms required for each instance. By
+varying the algorithm or its hyperparameters, while keeping
+constant the problem definition, our approach can provide
+useful information to developers, who can use the results to
+analyze solution trade-o ffs in the context of various target
+environments.
+The remainder of this paper is structured as follows. Back-
+ground on the fundamentals guiding this work is provided
+in section II. A new benchmark, based on a scalable version
+of the HHL linear equation solver [ 22], is introduced in sec-
+tion III. This new benchmark illustrates how variations on
+the algorithm impact its volumetric profile and extends the
+coverage of the benchmark suite. In section IV, we analyze the
+run-time costs associated with finding the ground state energy
+of a hydrogen lattice using a Variational Quantum Eigensolver
+algorithm along with a methodology for analyzing the trade-
+off between the quality of the result and the run-time cost to
+achieve that quality. In section V, a set of program optimiza-
+tion techniques is described along with a discussion of their
+operation, the level of performance improvement obtained, the
+cost associated with the technique, and the types of applica-
+tions that exhibit the greatest impact. Lastly, in section VI,
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 3 =====
+
+3
+we extend the iterative benchmarking framework by including
+a machine learning algorithm, a simple image classification
+problem, that defines another application-specific measure and
+requires more circuits iteratively than the VQE benchmark.
+II. BACKGROUND
+In this section, we review concepts and definitions from prior
+benchmarking work that we reference throughout the remain-
+der of this manuscript. We focus primarily on the application-
+oriented level of performance evaluation, as there is already
+a large body of reference material on component and system-
+level benchmarks [1–3, 23–25].
+A. System-Level Performance Benchmarks
+We briefly describe here two well-known system-level per-
+formance benchmarks, Quantum V olume (QV) [ 4, 26] and
+V olumetric Benchmarking (VB) [6, 27]. As a single-number
+metric of a quantum computer’s general capability, QV cap-
+tures the combined effects of qubit number and result fidelity
+for gate model computers [4, 28, 29]. VB was proposed to ad-
+dress limitations of QV , using a method by which the observed
+performance of the quantum computing system is plotted in a
+two-dimensional depth× width “volumetric” grid. Our bench-
+marks build upon the VB method, which highlights the ability
+of a specific device to execute successfully both wide/shallow
+and deep/narrow circuits, extending the square circuits repre-
+sented by QV [30].
+These two methods (QV and VB) characterize quantum
+circuit execution quality and scale, but neither provides infor-
+mation about the time it takes a program to run, which is a
+key factor in evaluating the total cost of any computing so-
+lution. Circuit Layer Operations per Second (CLOPS) was
+introduced [7] as a measure of run-time performance com-
+puted by executing a sequence of quantum volume circuits.
+While CLOPS characterizes execution speed in a single num-
+ber metric that includes data transfer, circuit operations, and
+other latencies, it is not specific to any application. It also does
+not capture compilation time or the trade-o ff between qual-
+ity and run-time, or true time-to-solution, which is crucial to
+understand when selecting machines for running applications.
+B. Application-Oriented Benchmarks
+System-level metrics are valuable as general measures of
+system capability, but it can be challenging to predict how well
+a machine with a certain level of general performance would
+be able to address a specific class of application. Application-
+focused benchmarks execute well-defined programs that aim
+to directly yield performance metrics specific to an application
+type.
+The QED-C suite offers an effective methodology to eval-
+uate the performance of a wide variety of quantum pro-
+grams across a range of quantum hardware and simulator sys-
+1 2 3 6 11 20 36 66119217394717 1K 2K 4K 8K14K26K47K86K156K
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17Circuit Width
+QV=2048
+Bernstein-Vazirani (1)
+Hamiltonian Simulation
+Phase Estimation
+Quantum Fourier Transform (1)
+Shor's Order Finding (1)
+Amplitude EstimationGrover's Search
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=qasm_simulator-future  Sep 25, 2023 00:06:23 UTC
+FIG. 1: A V olumetric Positioning Plot. Results from executing
+several of the application-oriented benchmark programs on a classi-
+cally implemented noisy simulator of a device that exhibits a quantum
+volume of 2048. The result quality of the application circuits (shown
+on a color scale) degrades as the width and depth of the circuits range
+outside of the quantum volume and volumetric benchmark regions
+(shown in dark and light grey rectangles). Each application has a
+unique profile and the success or failure in its execution can be pre-
+dicted (approximately) from the system-level benchmarks.
+tems [14, 15, 31]. Its benchmark programs are structured to
+sweep over a range of problem sizes and input characteris-
+tics, while systematically capturing key performance metrics,
+such as quality of result, execution run-time, and resources
+consumed (i.e. gate count). Supporting infrastructure and ab-
+stractions make them accessible to a broad audience of users.
+The framework supports benchmarking of individual circuit ex-
+ecution as well as iterative algorithms that repeatedly execute
+quantum circuits as part of an algorithm such as QAOA [19]
+or VQE [18].
+Throughout this manuscript, the figure of merit used to
+represent the quality of result for individual circuits is the
+“Normalized Hellinger Fidelity”, a modification of the standard
+“Hellinger Fidelity” that scales the metric to account for the uni-
+form distribution produced by a completely noisy device. This
+is described in detail in our prior work [14]. For iterative algo-
+rithms that address problems such as combinatorial optimiza-
+tion, we calculate figures of merit that are application-specific
+as described in Ref. [15]. We use the new Hydrogen Lattice and
+Machine Learning benchmarks to explore application-specific
+figures of merit derived from functions of observables and how
+these are impacted by various algorithm options.
+Figure 1 illustrates a visualization technique, referred to as
+“volumetric positioning”, that shows the quality of the result ob-
+tained from executing each application circuit type, at increas-
+ing width and depth, on a classically implemented quantum
+simulator measured to have a quantum volume of 2048 (depo-
+larizing error 0.05% for one qubit gates and 0.5% for two qubit
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 4 =====
+
+4
+gates, used throughout this manuscript). Results are plotted
+over a background defined by the quantum volume of the target
+machine (dark grey rectangle) and the success region estimated
+for volumetric circuits (light grey rectangles). Each application
+is characterized by its “profile”, a visual representation of the
+relationship between circuit depth and the number of qubits
+used as the problem size grows. Several of the benchmark
+programs have multiple versions implemented, as indicated by
+a number that can follow its name, e.g. Bernstein-Vazirani (1).
+A correlation can be seen in Figure 1 between the execution
+fidelity of the application-oriented benchmark circuits at spe-
+cific qubit widths and circuit depths and the results predicted
+by QV or VB. Circuits with fidelity greater than ∼ 0.5 lie
+within the region defined by the QV of the target system or in
+the success regions predicted by VB. This approach helps to
+validate that results from the application-oriented benchmarks
+align with those of the system-level benchmarks.
+The QED-C benchmark framework incorporates multiple
+metrics for assessing execution run-time performance. This is
+important because total execution time significantly influences
+the overall number of applications that can be processed within
+a defined time window on a quantum computer. Quantum
+algorithms such as QAOA and VQE are iterative in nature
+and any run-time overhead is magnified by the number of
+circuit executions performed. The framework implements a
+standard mechanism for the collection of the total elapsed time
+telapsed and the quantum execution time on a backend system
+tquantum (reported differently by each service provider). In this
+manuscript, these times are represented in various plots with
+the labels “Elapsed” and “Quantum”.
+Execution time for quantum circuits is closely related to the
+gate depth of the circuit. In the plots in this manuscript, we
+use the label “Algorithmic Depth” to refer to the number of
+gate operations in the longest path of the circuit, as defined
+by a user at the quantum programming API level. The label
+“Normalized Depth” refers to an estimate of the gate depth that
+is expected after transpiling the program to the gate set of a
+representative backend system. For comparison across different
+backend systems, we approximate the transpiled circuit depth
+by transpiling circuits with Qiskit at the default optimization
+level 1, using a default gate set denoted by [‘rx’, ‘ry’, ‘rz’,
+‘cx’]. More detail about execution time and circuit depth can
+be found in our prior work [15].
+III. BENCHMARKING AN HHL LINEAR SOLVER
+The Harrow-Hassidim-Lloyd (HHL) algorithm [22, 32] is
+theoretically capable of solving linear systems of equations
+with exponential speedup over classical solutions (apart from
+data loading and extraction). We selected this algorithm as a
+benchmark for two reasons. First, the algorithm is constructed
+from multiple instances of smaller subroutines that we pre-
+viously configured as benchmarks, together with a particular
+quantum controlled-rotation implementation. This combina-
+tion enables us to reasonably predict where the benchmark
+profile would lie in the volumetric spectrum.
+Secondly, the HHL algorithm employs two independent
+qubit registers: one for input data, which scales as the size of
+the problem matrix, and another for performing phase estima-
+tion, which scales as the bit precision of the problem matrix
+elements. These registers provide a mechanism by which to
+vary the circuit complexity, impacting the algorithm’s profile
+and extending its coverage across the volumetric spectrum.
+In this section, we review the HHL algorithm and our bench-
+mark implementation. The HHL algorithm has been studied
+extensively, and there are numerous tutorials and circuit ex-
+amples available [33–37]. However, most of these have been
+constrained to a fixed number of qubits or a limited set of
+problem instances, primarily to simplify the implementation’s
+complexity. For our benchmark, we developed an implementa-
+tion that achieves a modest level of scaling, closely resembling
+one that is described in a recent study [38].
+A. The HHL Algorithm
+The HHL algorithm prepares a quantum state that encodes
+the solution, x, for the linear equation shown here:
+Ax = b (1)
+The transformation represented by the N-by-N matrix A is
+applied to an unknown N-dimensional vector x, resulting in
+the vector b. Finding the value of x is equivalent to determining
+the inverse of A and applying it to b. The matrix A is assumed
+to be Hermitian without loss of generality [22].
+When the HHL algorithm is executed, it generates an n-
+qubit quantum state whose amplitudes are proportional to the
+N = 2n components of the solution vector x in Equation 1. It
+is important to note that the HHL algorithm does not directly
+provide the complete solution vector x, since a computational
+basis measurement on the output state only returns one random
+bitstring with a probability given by the square of the amplitude,
+rather than the full list of amplitudes. However, if one is
+interested in a property of the solution vector, such as the
+expectation value of an observable in the solution state, the
+HHL algorithm can be used to extract that information.
+Furthermore, there are several caveats that must be satisfied
+for the HHL algorithm to provide an exponential speedup over
+classical matrix inversion [32, 33]. First, the row sparsity of A,
+which is the number of non-zero elements per row, must be at
+most polynomial in n. Second, the condition number κ, which
+is the ratio between the largest and smallest eigenvalues of A,
+must also be at most polynomial in n.
+Here, we describe how the HHL algorithm functions. First,
+an n-qubit “input” register is initialized in the state |b⟩, rep-
+resenting the vector b. A Quantum Phase Estimation (QPE)
+routine is used to encode this input state in the eigenbasis of the
+matrix A. To realize this, a second group ofnp qubits called the
+“phase” register, is placed into an equal superposition. (This
+register is sometimes referred to as the “clock” register.) A
+Hamiltonian evolution, defined by the matrix A and controlled
+by the value in the phase register, is then performed on the
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 5 =====
+
+5
+input register, as in Equation 2 where Np = 2np.
+1pNp
+Np−1X
+t=0
+|t⟩ e−iAt|b⟩ (2)
+By decomposing the input state |b⟩ = P
+jβ j
+µ j
+E
+into the
+eigenbasis of A, the state is then given by Equation 3:
+X
+j
+β j
+1pNp
+Np−1X
+t=0
+|t⟩ e−iλ jt µ j
+E
+, (3)
+whereλ j is the eigenvalue corresponding to
+µ j
+E
+. The next step
+is an inverse QFT on the phase register, resulting in the state
+shown in Equation 4:
+N−1X
+j=0
+β j
+λ j
+Eµ j
+E
+(4)
+To effect a matrix inversion, an ancilla qubit is appended to
+the circuit and a rotation on the ancilla is performed, condi-
+tioned on the phase register. This results in the state in Equa-
+tion 5, in which sinθ j/2 = C
+λ j
+for constant C≤ 1
+κ andκ is the
+condition number of A.
+N−1X
+j=0
+β j
+λ j
+Eµ j
+E  cosθ j/2|0⟩ + sinθ j/2|1⟩ (5)
+Following this, an inverse Quantum Phase Estimation
+(QPE†) is applied to the input and phase qubits, and measure-
+ment is performed on the qubits, conditioned on a measurement
+outcome of|1⟩ in the ancilla. The final state is proportional to
+the unknown vector x, as seen in Equation 6.
+X
+j
+β j
+λ j
+µ j
+E
+=|x⟩ (6)
+The post-selection step is used to amplify the components of
+the quantum state that correspond to non-zero elements since
+the solution to the linear system is encoded in these non-zero
+amplitudes.
+B. The HHL Benchmark Implementation
+There are many ways that the HHL algorithm can be imple-
+mented, with various trade-offs [33, 34]. We outline here the
+design choices made to ensure a scalable and efficient imple-
+mentation, tailored for execution as a benchmark on current
+quantum computing systems.
+For scalability, we defined a set of problem instances repre-
+sented by matrices A and vectors b for a range of phase register
+qubit numbers np and input qubit numbers nb. The values
+for these instances are generated such that the matrices are
+sufficiently sparse and well-conditioned, making it possible
+to efficiently load the non-zero elements of A onto a quantum
+register, and to prepare the input state |b⟩. Each instance is
+given by a quantum oracle corresponding to a 2-sparse matrix
+A withκ≤ 4. The elements of A are chosen as fractions that
+are exactly expressible with np bits of precision.
+The Hamiltonian evolution is implemented in the bench-
+marking code using the algorithm of [ 39] for sparse Hamil-
+tonian simulation based on a quantum walk. This algorithm
+makes use of an oracle V acting on two registers of size nb
+according to V|b1⟩| b2⟩ =|b1⟩| a(b1)⊕ b2⟩, for all length-nb bit-
+strings b1 and b2. Here, the binary vector b1 indexes the rows
+of A and a(b1) is the column index in which the b1-th row of A
+has an off-diagonal element. For this reason, the Hamiltonian
+simulation part of the HHL algorithm implementation requires
+2nb qubits.
+To implement the controlled rotation step in Equation 5, we
+use the algorithm for uniformly controlled rotations in [ 40].
+More generally, the rotation angleθ j = sin−1(2C/λ j) could be
+computed efficiently fromλ j using quantum arithmetic [41].
+However, for small problem sizes the constant overhead of
+quantum arithmetic is too large to be practical for realistic near-
+term devices [42]. The uniformly controlled rotation requires
+a number of gates exponential in np, so it is important that np
+not scale with n in order for the benchmark to be scalable.
+To explore volumetric profiles for the algorithm, we vary the
+values of nb and np as a function of the total number of qubits
+under test, using Equation 7. The value fornb is multiplied by2
+for the reason described above, and the addition of 1 represents
+the ancilla qubit used for inverse rotation.
+ntotal = 2× nb + np + 1 (7)
+In general, the value of np should be capped at some upper
+limit in order for the benchmark to be scalable, however the
+results presented below use a modest number of qubits and
+therefore np is allowed to vary over the full range consistent
+with Equation 7.
+The benchmark sweeps over a range of available qubit
+widths [min_qubits : max_qubits]. For each width ntotal, valid
+values of nb and np are determined, random problem matrices
+A and vectors b are chosen, quantum circuits are generated, and
+the expected measurement distributions are calculated. After
+executing each circuit, measurement results are analyzed, and
+normalized and Hellinger fidelity metrics are computed from
+the observed and ideal outcome distributions [14]. The bench-
+mark returns the average of these metrics across all problem
+instances and combinations of nb and np.
+C. Results From Executing the HHL Benchmark
+For this benchmark, we targeted the gap in Figure 1 between
+the Quantum Fourier Transform (QFT) (1) and the Amplitude
+Estimation volumetric profiles. The sum of the circuit depths
+of the components of the HHL algorithm suggests that it should
+lie just to the right of the QFT (1). Additionally, by executing
+the circuit multiple times while varying the width of the input
+and phase registers, it is possible to ‘broaden’ the algorithm’s
+profile and fill much of the targeted gap.
+In Figure 2, we show the results of executing the HHL bench-
+mark on a noisy quantum simulator from 4 to 12 qubits, using
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 6 =====
+
+6
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Avg Result Fidelity
+Hellinger
+Normalized
+4 5 6 6 7 7 8 8 8 9 9 10 10 11 12
+Circuit Width (Number of Qubits)
+0
+200
+400
+600
+800
+1000Circuit Depth
+Algorithmic Depth
+Normalized Depth
+Benchmark Results - HHL - Qiskit
+Device=qasm_simulator-future  Feb 03, 2024 21:36:32 UTC
+FIG. 2: Execution of HHL Benchmark up to 12 Qubits. Here
+we show the results of running the HHL benchmark on the noisy
+quantum simulator from 4 to 12 qubits. The benchmark is configured
+to sweep several combinations of input and phase register sizes at
+each total width executed (corresponding to n_total in Equation 7).
+As a consequence, there are multiple execution groups at several of
+the circuit widths. This plot shows the average fidelities and circuit
+depth for each qubit width. For example, at 8 qubits, there are 3 valid
+combinations of input and phase size: (1,5), (2,3), and (3,1).
+1 2 3 4 7 11 18 29 47 77124202327529857 1K 2K 4K 6K10K16K
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17Circuit Width
+QV=2048
+Quantum Fourier Transform (1)
+HHL
+Amplitude Estimation
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=qasm_simulator-future  Oct 02, 2023 03:34:16 UTC
+FIG. 3: Broadening Benchmark Coverage with HHL. Here, the
+broadening of the application profile is visible in the volumetric posi-
+tioning plot. The HHL benchmark fills the gap between the Quantum
+Fourier Transform (1) and Amplitude Estimation benchmarks. Each
+of the rectangles shown in the horizontal row for the HHL benchmark
+at a specific qubit width represents a variation in the algorithm’s input
+and phase sizes. We sweep several of these to ensure more coverage
+of the width× height region.
+this broadened mode. For a given maximum number of qubits,
+a valid combination of input and phase size is determined us-
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Avg Result Fidelity
+Hellinger
+Normalized
+4 5 6 7 8
+Circuit Width (Number of Qubits)
+0
+200
+400
+600Circuit Depth
+Algorithmic Depth
+Normalized Depth
+Benchmark Results - HHL - Qiskit
+Device=quantinuum-h1-240117  Feb 03, 2024 21:31:48 UTC
+FIG. 4: Execution of HHL Benchmark on Quantinuum H1-1. Here
+we show the results of running the HHL benchmark on Quantinuum’s
+H1-1 quantum computer. The benchmark was only run with nb = 1
+but could be configured to sweep over a wider range to more fully
+cover the volumetric region. This plot shows the average fidelities and
+circuit depth for each qubit width. (Data provided by Quantinuum.)
+ing Equation 7. In this case, for 12 qubits, valid values for the
+input and phase size are nb = 4 and np = 3. From this, we
+generate a sweep over valid combinations of smaller phase and
+input sizes, producing circuit variants with a variety of depths
+at each circuit width. At the maximum and minimum, there is
+only a single valid combination, but in the middle range, there
+are multiple valid combinations. The second figure, Figure 3,
+shows that by varying the width of the phase and input registers,
+the volumetric profile of the circuit is e ffectively broadened,
+increasing the coverage of the benchmark suite.
+It is interesting to note the variation in fidelity and circuit
+depth for the qubit numbers in the middle of the profile. For
+example, at 8 qubits, there are 3 valid combinations of input
+and phase register size: (1,5), (2,3), and (3,1). Because of the
+implementation of the quantum phase estimation, the depth of
+the circuit grows faster with the number of input qubits than
+with the phase qubits, yet the fidelity of the execution is higher
+with fewer phase qubits. We conjecture that this is due to the
+higher number of two-qubit gates for circuits with more phase
+qubits. This example illustrates the way in which the bench-
+mark framework can be useful in exploring the characteristics
+of quantum algorithms. This approach could also be applied to
+other benchmarks in the suite, such as Amplitude Estimation,
+which similarly employs groups of qubits for specific functions,
+the size of which can be varied.
+In Figure 4 we show the results from execution of the HHL
+benchmark on the Quantinuum H1-1 quantum computer with
+1000 shots. H1-1 currently has 20 qubits, measured two-qubit
+gate fidelities >99.87% from standard randomized benchmark-
+ing, and QV=219. H1-1 is also capable of mid-circuit measure-
+ment and conditional logic, which is required for this HHL
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 7 =====
+
+7
+benchmark. The HHL algorithm was run with nb = 1 and
+np = 1, 2, 3, 4, 5 but in principle could be run up to ntotal = 20
+with non-zero result fidelity expected up to ntotal≈ 15 based
+on simulations. H1-1 ran the exact transpiled circuits from the
+QED-C suite, no further compilation was applied, although in
+principle could be used to further improve performance. The
+data in Figure 4 shows that the HHL benchmark is possible
+to run on current hardware with small qubit number. We omit
+execution time data here to focus our analysis, as the execution
+times for the HHL algorithm closely track circuit depth and
+align with trends in earlier benchmarks [14].
+The HHL benchmark is currently implemented to evaluate
+performance based on the fidelity of circuit execution as com-
+pared to ideal. However, the benchmark could be enhanced to
+produce an application-specific metric based on how well the
+algorithm solves the linear equation that is given as its input.
+We did not address this in our work, as there are many variables
+to consider in developing a valid figure of merit. The approach
+would be to implement a method (2), similar to the other itera-
+tive benchmarks, which computes a figure of merit based on
+how accurately the algorithm solves the linear equation. This
+work is left for future research.
+IV . BENCHMARKING A HYDROGEN LA TTICE
+SIMULA TION
+Quantum computing offers new and efficient ways to tackle
+classically challenging problems in chemistry and may be
+particularly relevant for the electronic structure problem,
+which can require exponential resources on classical ma-
+chines [43, 44]. Although an exact solution to the electronic
+structure problem can be obtained with quantum phase estima-
+tion (QPE), the resource requirements of QPE are unattainable
+on today’s NISQ devices [45] due to high rates of error. In con-
+trast, the Variational Quantum Eigensolver (VQE) algorithm
+uses a hybrid quantum-classical approach with more attainable
+error requirements. As a result, it is thought to be a candidate
+algorithm that could be capable of addressing such electronic
+structure problems.
+In this section, we introduce a VQE implementation of a Hy-
+drogen Lattice simulation structured to make use of the QED-C
+benchmarking framework. The VQE algorithm has been used
+previously as the basis for performance benchmarking of quan-
+tum computers [46–50]. We found it necessary to constrain
+some characteristics of the problem to be addressed and care-
+fully choose features of the benchmarking implementation for
+it to be practically useful for exploring various behaviors of
+the simulation as parameters and execution options are varied.
+Our detailed analysis helps to quantify the performance of the
+algorithm on a target quantum computing system, with particu-
+lar emphasis on the trade-off between the time taken to execute
+the application and the quality of the result obtained.
+FIG. 5: Hydrogen Lattice Schematic. The hydrogen lattice used in
+this work consists of one-dimensional chains of N hydrogen atoms
+spaced equally r Å apart. Here an 8-hydrogen chain at 1.0 Å inter-
+atomic spacing is depicted. More complex geometries, such as 2D or
+3D arrangements in sheets or pyramids, may also be considered in
+future work.
+0 3 6 9 12 15 18 21
+Iterations
+1.2
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+0.2
+0.4
+Energy (Hartree)
+FCI Energy    = -1.1371
+DOCI Energy = -1.1371
+Random Energy = 0.2316
+Solution Energy = -1.1179
+Benchmark Results - Hydrogen Lattice (2) - Qiskit
+Device=qasm_simulator  Sep 09, 2023 06:03:04 UTC
+qubits=2, radius=0.75, shots=1000
+FIG. 6: Hydrogen Lattice Benchmark on 2 Qubits. Results from
+executing this benchmark on a simulation of a simple chain of 2
+Hydrogen atoms separated by 0.75 Å. The benchmark implements a
+VQE algorithm using an upCCD ansatz with observables derived from
+the problem Hamiltonian. A classical optimizer iteratively executes
+the ansatz, varying its parameters to find the ground state energy and
+converging to a final energy near to the classically computed exact FCI
+and DOCI energy. The benchmark was executed on a noisy quantum
+simulator with a quantum volume of 2048. The energy computed at
+the final iteration is displayed along with relevant reference energies.
+A. Simulating a Hydrogen Lattice with VQE
+A simple example of the hydrogen lattice problem is de-
+picted in Figure 5. The challenge is to determine the radius
+at which the ground state energy of this chain of atoms is the
+lowest, by sweeping over a range of radii and computing the
+ground state energy at each. Our benchmark is limited to eval-
+uating the ability of a quantum computing system to calculate
+the ground state energy at any of a small set of pre-defined
+radii. We currently use hydrogen chains of varying lengths but
+plan to examine more complex geometries in the future (see
+Ref. [50] for alternatives.)
+Using a variational optimization loop, the VQE algorithm
+can estimate the ground state energy of a given Hamiltonian,
+rendering it well-suited for quantum chemistry applications.
+Our benchmark VQE algorithm implements a trial wave func-
+tion using a unitary pair coupled-cluster doubles (upCCD)
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 8 =====
+
+8
+ansatz with observables derived from the problem Hamiltonian.
+A classical optimizer iteratively executes the ansatz, varying
+its parameters in an attempt to find the lowest ground state
+energy. Figure 5 shows the progression of the benchmark over
+each iteration as it converges to a final energy near to the clas-
+sically computed (and numerically exact) full configuration
+interaction (FCI) and doubly-occupied configuration interac-
+tion (DOCI) energies. The final energy is displayed along with
+relevant reference energies.
+The heuristic, but variational, nature of VQE allows it to
+operate with shallower circuits compared to common QPE
+algorithms [51], and the iterative, hybrid quantum-classical
+approach allows for some noise tolerance as the noisy quan-
+tum function is classically minimized [52]. The algorithm is
+inherently approximate except in certain specific cases, and it
+may be susceptible to noise from insufficient statistical sam-
+pling, as it calculates an expectation value (energy). While
+other approaches exist for chemistry problems, such as Robust
+Amplitude Estimation [53], VQE’s blend of efficiency and ro-
+bustness against noise makes it a compelling instrument for
+near-term quantum chemical calculations.
+Navigating the broad range of potential Hamiltonians for
+VQE benchmarking presents a significant challenge. Various
+Hamiltonian libraries, e.g. HamLib, have been implemented
+in [49] and others, reflecting the wide variety of molecules
+and basis sets available. Amid this complexity, we chose the
+hydrogen lattices for their simplicity and flexibility. They are
+easily tunable systems, allowing for diverse physical scenarios
+to be explored. Moreover, these lattices are exactly solvable in
+the one-dimensional (1D) case using Density Matrix Renormal-
+ization Group (DMRG) methods [54], offering a benchmark
+against which approximate methods can be assessed. This
+feature, along with their operation at half-filling with mini-
+mal basis sets — a trait shared by many “real-world” valence
+electron active spaces — enables the thorough investigation of
+various electronic correlation regimes.
+Though no single model can fully encapsulate all possible
+chemical systems, hydrogen lattices serve as practical and rep-
+resentative models [43, 50, 55–57]. For instance, in dealing
+with strongly correlated Hamiltonians, a similarly complex
+system can often be constructed using a hydrogen lattice. By
+judiciously selecting the lattice’s geometry, one can create
+Hamiltonian complexity that closely mirrors the original sys-
+tem, and VQE performance is correspondingly similar. Thus,
+hydrogen lattices offer a manageable and effective model, faith-
+fully reflecting various facets of more complex systems, and
+validating their use for VQE benchmarking.
+Practical implementation of VQE requires the selection of a
+parameterized trial circuit, or ansatz, that introduces additional
+layers of complexity for benchmarking. Given this, our work
+initially focuses on the upCCD ansatz, which treats electrons
+as pairs rather than as independent, single electrons. This ap-
+proach is particularly effective for closed-shell systems, where
+electron pairing is a natural representation [58–60]. In other
+words, the upCCD ansatz intrinsically modifies the structure
+of the problem by allowing only paired double excitations.
+On account of the upCCD ansatz, we can represent quantum
+Algorithm1 Benchmark Algorithm for VQE
+1: target← backend_id
+2: initialize_metrics()
+3: for size← min_size, max_size do
+4: circuit_de f← de f ine_problem(problem, size, args)
+5: for restart _id← 1, max_restarts do
+6: cost_ f unction← de f ine_cost_ f unction(problem)
+7: circuit, num_params← create_circuit(circuit_de f)
+8: cached_circuit← compile_circuit(circuit)
+9: params[α]← random(num_params)
+10: while minimizer() not done do ▷ minimizing
+11: circuit← apply _params(cached_circuit, params)
+12: for pauli_op← problem do
+13: counts← execute(target, circuit, num_shots)
+14: end for
+15: energy, quality← cost_ f unction(counts)
+16: store_iteration_metrics(quality, timing)
+17: params[α]← optimize(params[α])
+18: done← True if lowest(energy) found
+19: end while
+20: compute_and_store_restart _metrics()
+21: end for
+22: compute_and_store_group_metrics()
+23: end for
+states efficiently by mapping to electron pairs [58, 61], which
+simplifies the problem significantly. A key benefit of this
+approach is that it cuts down the number of qubits we need
+by half compared to other methods like the Jordan-Wigner
+mapping. However, it’s important to note that this method
+only works for certain types of systems, specifically those with
+paired electrons.
+In addition to a reduced qubit requirement, the paired map-
+ping provides another practical benefit. The upCCD Hamil-
+tonian can be partitioned into three qubit-wise commuting
+groups, such that only three circuits need to be measured to
+evaluate the energy, regardless of problem size. This is in con-
+trast to other mappings, where energy measurements require a
+circuit count that can grow quartically with system size.
+Assuming full connectivity, the upCCD method requires sig-
+nificantly fewer entangling gates than traditional unitary cou-
+pled cluster methods—about two orders of magnitude less [62].
+Additionally, if gates can be applied in parallel, the time to
+execute the upCCD circuit is further reduced, potentially be-
+coming linear with respect to system size. The upCCD ap-
+proach, characterized by its less complex circuit and fewer
+measurements, is, therefore, a strong early option for NISQ
+applications. Though more complex ansatz will be explored in
+future work, we note that for cases where upCCD lacks accu-
+racy, enhancements like orbital optimization and perturbation
+theory are viable options [59, 63].
+B. The Hydrogen Lattice Benchmark Algorithm
+The implementation of the VQE algorithm, shown in Al-
+gorithm 1, is modeled after the Max-Cut QAOA benchmark
+implementation from [ 15]. We describe the algorithm here,
+omitting some details for brevity. As another type of iterative
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 9 =====
+
+9
+quantum algorithm, the new benchmark similarly optimizes by
+iterating over circuits executed with varying parameters, but
+brings additional complexity. The benchmark can be config-
+ured to sweep over a range of qubit widths, executing the VQE
+algorithm at the problem size associated with that qubit width.
+For each problem size, a limited set of inputs (radii in this
+case) can be selected, and the results at each radius collected
+and displayed. For each radius, however, execution is more
+involved and we focus here on several important distinctions.
+One key difference is the addition of a loop over the three
+circuits with their appended basis rotations to measure the
+multiple non-commuting upCCD Hamiltonian terms of the
+hydrogen lattice simulation [ 58]. For every iteration within
+the VQE algorithm, we find the overall expectation value by
+summing over the expectation value of all these individual
+terms. This requires an additional for loop that goes through
+every Hamiltonian term to collect the measurement counts for
+each one. The counts variable represents an array of counts
+for each Pauli term, rather than just the single counts seen in
+each iteration of the Max-Cut benchmark. Measurements of
+execution fidelity and run-time are similarly collected as arrays
+over the Pauli terms and aggregated in summary displays.
+The execution parameters for the Hydrogen Lattice VQE
+benchmark are di fferent from those of the MaxCut QAOA
+benchmark. For the Hydrogen Lattice simulation, there is only
+a single cost-function parameter α (rather than the β and γ
+parameters used in QAOA). This α generally encompasses the
+parameter composition that a VQE ansatz might have. There is
+also the radius parameter, the spacing constantr that is specific
+to the Hydrogen Lattice problem.
+Another complication to consider is related to the hydrogen
+lattice Hamiltonians over which we are iterating. For every
+system size, there are different shapes of the hydrogen lattice
+as well as the spacing constant r. In future work, we will need
+to add an option to execute over di fferent Hamiltonians that
+refer to different shapes of the hydrogen lattice (1D, 2D, 3D)
+in addition to the spacing constant.
+As with our other benchmark algorithms, this benchmark
+is implemented with multiple methods. The simpler of these,
+Method (1), gauges the fidelity of the VQE ansatz execution
+using the normalized Hellinger fidelity. Executing the VQE
+ansatz at various sizes, we expect to acquire an ideal distri-
+bution over the outcome space. For our analysis in the next
+section, we can state specifically that, for the VQE ansatz,
+as the problem size grows larger, the fidelity will generally
+decrease due to noise for the same number of shots.
+The iterative, variational VQE algorithm discussed in this
+section is invoked as Method (2) of the Hydrogen Lattice
+Benchmark. The entirety of the discussion in this manuscript
+is centered around the implementation and analysis of results
+from this Method (2) of the benchmark.
+C. Analysis of Benchmark Result Accuracy
+The final ground state energy that results from the execu-
+tion of the VQE hydrogen lattice benchmark algorithm can
+0.000 0.025 0.050 0.075 0.100 0.125 0.150 0.175
+Cumulative Quantum Execution Time (s)
+10 3
+10 2
+10 1
+100
+Accuracy Ratio Error
+Chem. Accuracy = 0.9988
+Accuracy Ratio = 0.9859
+Solution Quality = 0.9946
+Benchmark Results - Hydrogen Lattice (2) - Qiskit
+Device=qasm_simulator  Sep 09, 2023 06:03:04 UTC
+qubits=2, radius=0.75, shots=1000
+FIG. 7: Hydrogen Lattice Benchmark Results Analysis. Here we
+present a detailed analysis of the data shown in Figure 6. Two figures
+of merit, the “Accuracy Ratio” and “Solution Quality”, are computed
+as ratios of the solution energy to the FCI energy, scaled relative to
+the energy produced from a random measurement distribution. At
+each iteration, the error in these metrics is displayed on a log scale to
+highlight results near optimal. The grey band envelops energy values
+within the commonly accepted threshold for “chemical accuracy”, or
+1.6× 10−3 Hartree, scaled similarly. Here, the algorithm converged
+to an energy about an order of magnitude from chemical accuracy.
+Results are plotted against the cumulative quantum execution time to
+capture the run-time cost of executing the algorithm.
+be compared against a classically computed “exact energy”.
+While Figure 6 shows the energy computed by the VQE algo-
+rithm along with the relevant reference energies, we introduce
+in Figure 7 several new figures of merit, or measures of accu-
+racy, computed from the same benchmark data. The derivation
+and significance of these is discussed in this section.
+The simplest measure of the accuracy of a simulation result
+is the absolute energy difference ∆E between the application’s
+computed result (solution energy) and the exact FCI energy.
+This is the method used in much of the literature that explores
+the use of quantum computers for computational chemistry [46–
+48]. A given value of absolute energy difference is considered
+a good result if it falls within the commonly accepted threshold
+for “chemical accuracy”, or 1.6× 10−3 Hartree. In Figure 6,
+this ∆E is 0.0192 or about 12 times the acceptable distance for
+chemical accuracy.
+However, it is challenging to gauge whether an absolute en-
+ergy difference is good, mediocre, or really bad, as it depends
+greatly on the nature and size of the problem it addresses, mak-
+ing it difficult to use as a generalized performance benchmark.
+Even more complicated is deciding on a metric to formalize
+the accuracy of the VQE algorithm at intermediate steps. What
+might be considered a “good" result is highly dependent on the
+application. For example, while large fluctuations in the energy
+at the start of the VQE may be acceptable, the same fluctua-
+tions towards the end of the iterations could be considered a
+failure of the algorithm to find a true ground state. There is
+also an issue of scale - because the VQE could result in a state
+close to but not exactly the ground state, it is difficult to define
+what a successful energy might be for different applications.
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 10 =====
+
+10
+0.00 0.05 0.10 0.15 0.20
+Cumulative Quantum Execution Time (s)
+10 3
+10 2
+10 1
+100
+Accuracy Ratio Error
+Chem. Accuracy = 0.9995
+Accuracy Ratio = 0.9690
+Solution Quality = 0.9848
+Benchmark Results - Hydrogen Lattice (2) - Qiskit
+Device=qasm_simulator  Sep 10, 2023 06:12:55 UTC
+qubits=4, radius=0.75, shots=1000
+FIG. 8: Hydrogen Lattice Results Analysis on 4 Qubits. This plot
+presents the error in two figures of merit, the Accuracy Ratio AR, and
+the Solution Quality S Q, for a 4-qubit Hydrogen Lattice simulation
+problem. During initial iterations of the algorithm, the accuracy ratio
+metric takes on negative values, resulting in an error greater the1.0.
+The solution quality is normalized so that its values always lie in the
+range [0.0, 1.0], ensuring that a full trace appears in the plot.
+Another complication could be what to use as a “correct"
+ground state energy to verify the VQE’s estimated value. As
+an example, because the upCCD ansatz operates in a seniority-
+zero Hilbert subspace, the exact solution for the ground state
+energy is found via DOCI [58], which is the exact solution in
+the seniority-zero subspace. In other words, while FCI will
+calculate an exact solution in the full Hilbert space, the upCCD
+ansatz will converge instead to the DOCI energy.
+For our purposes, we introduce a new figure of merit rele-
+vant for benchmarking, the “Accuracy Ratio” or AR. Defined
+in Equation 8, this metric is calculated as a ratio of the com-
+puted energy Esolution to the exact FCI energy EFCI, scaled
+relative to the energy that would be computed using a quantum
+system that returns completely random measurement values,
+generating a uniform distribution (the “random” energy) or
+Erandom.
+AR = 1.0−| Esolution− EFCI|
+| Erandom− EFCI| (8)
+The values of EFCI, EDOCI, EHFEFCI, and Erandom, are com-
+puted (classically) in advance for each problem that is ad-
+dressed by the benchmark. With this approach, running the
+benchmark program requires only the execution of the algo-
+rithm under test, followed by a comparison against the previ-
+ously computed reference values. Note that AR can take on a
+value that is outside of the range [0, 1].
+To bound our metric in the range [0, 1] we define a second
+figure of merit, referred to as “Solution Quality” orS Q, defined
+in Equation 9.
+S Q =− arctan
+
+Esolution
+EFCI
+· p· 2
+π
+ (9)
+0 0.20.40.60.8 1 1.21.41.61.8 2 2.22.42.62.8 3 3.23.43.63.8 4
+Cumulative Elapsed Quantum Execution Time (s)
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10Problem Size (# of Variables)
+Benchmark Results - Hydrogen Lattice (2) - Qiskit
+Device=qasm_simulator  Sep 09, 2023 06:47:36 UTC
+shots=1000, radius=None, restarts=1
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Accuracy Ratio
+FIG. 9: Area Plot Shows Quality /Run-Time Trade-off. In this
+“area plot”, each horizontal row summarizes the data for the execution
+of the benchmark at a specific number of qubits. Each rectangle in
+the horizontal strip represents the elapsed quantum execution time.
+The elapsed time includes circuit compilation, transpilation, initializa-
+tion and loading, and the final transfer of result data to the classical
+computer for classical processing. Elapsed time is a realistic repre-
+sentation of the time that a user will experience when executing a
+quantum circuit of this type.
+The metric S Q is a measure of where the solution energy
+Esolution is positioned in the range from EFCI to infinity. Since
+the most interesting computed energies lie closer to EFCI, we
+found it necessary to apply a conditioning function to the ratio
+S Q to make it useful as a normalized metric. A heuristically
+determined “precision” factor p (default 5.0) determines the
+shape of the curve that is conditioned by the arctan function
+and is chosen to best portray the results seen in this region.
+The difference between these two figures of merit is illus-
+trated in Figure 8. The accuracy ratio AR is seen to take on
+negative values, resulting in an error that is greater than 1.0.
+The normalized value of solution quality S Q is bounded in
+the range [0.0, 1.0]. The value of AR acts as a measure of the
+degree to which a quantum computing system is more effective
+than a random number generator. The value ofS Q is useful for
+visualizations that depend upon a bounded set of values for all
+to be visible. There are trade-offs between the two, and in this
+work, we primarily use AR, since the shape of the S Q curve
+depends on precision p which can vary based on the size of the
+problem.
+The grey band seen in the figure envelops energy values
+that lie within the commonly accepted threshold for “chemical
+accuracy”, or 1.6× 10−3 Hartree, scaled for AR using Equa-
+tion 8. In this 4-qubit case, the algorithm converged to an
+energy about two orders of magnitude from chemical accuracy,
+when viewed in the AR accuracy ratio domain from EFCI to
+Erandom.
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 11 =====
+
+11
+2 4 6 8 10 12 14
+Number of Qubits
+0
+2
+4
+6
+8
+10Error in Accuracy Ratio (%)
+Benchmark Results - Hydrogen Lattice (2) - Qiskit
+Device=qasm_simulator-230910-5r  Jan 30, 2024 23:58:40 UTC
+qubits=14, shots=1000, radius=0.75, restarts=5
+FIG. 10: Hydrogen Lattice Accuracy Ratio Error over a Range of
+Qubit Widths. Here, the Hydrogen Lattice benchmark was executed
+on a noisy simulator over a range of qubit widths, from 2 to 14. Each
+bar represents the error in the accuracy ratio computed in the final
+iteration at each qubit width, averaged over 5 restarts. Degradation
+in the solution quality is evident as the problem size increases. This
+is largely due to the decrease in result fidelity seen in method (1),
+correlated with the depth of the ansatz circuit. Other factors may
+also impact the results, such as the limited shot count or the random
+initialization of angles which can lead to barren plateaus.
+D. Quality of Solution vs Execution Run-Time
+In iterative algorithms, the quality of the results obtained
+is impacted by the length of time the algorithm is permitted
+to execute. Here, we show how benchmarking results are
+presented in ways that permit some comparisons across system
+size, quality, and runtime. We also describe the methods used
+to collect and analyze the metrics and illustrate the time versus
+quality trade-off for the Hydrogen Lattice VQE algorithm using
+a performance profile referred to as an “area plot”, introduced
+in our previous work [15].
+An example of an area plot depicting the Quality/Time trade-
+off is shown in Figure 9. It presents data collected for the
+benchmark on problems ranging from 2 to 8 qubits and exe-
+cuted on the same noisy quantum simulator used in prior plots.
+Each horizontal row represents successive iterations at each
+problem size (number of qubits), where position on the X-axis
+represents the cumulative elapsed quantum execution time, and
+color tracks the AR computed after each classical optimizer
+iteration. The elapsed time includes circuit compilation, tran-
+spilation, initialization and loading, and the transfer of result
+data to the classical computer for classical processing. It is a
+realistic representation of the time that a user will experience
+when executing a quantum circuit of this type. The time at
+which the quality of result reaches an acceptable level is visible
+in this plot and grows with circuit width.
+In Figure 10, we show the error in AR (distance from opti-
+mal) seen in the final iteration of each run of the benchmark
+executed on our noisy quantum simulator. The benchmark
+sweeps over a range of problem sizes, implemented with qubit
+widths from 2 to 14, and executed 5 times to obtain variance.
+This plot illustrates how the quality of the result degrades as
+2 4 6 8 10 12 14
+Number of Qubits
+10 2
+10 1
+100
+101
+Cumulative Execution Times / iteration (s)
+Elapsed
+Quantum
+Benchmark Results - Hydrogen Lattice (2) - Qiskit
+Device=qasm_simulator-230910-5r  Jan 30, 2024 23:58:40 UTC
+qubits=14, shots=1000, radius=0.75, restarts=5
+(a) Execution on Quantum Simulator
+2 4 6 8 10 12
+Number of Qubits
+10 2
+10 1
+100
+101
+102
+Cumulative Execution Times / iteration (s)
+Elapsed
+Quantum
+Benchmark Results - Hydrogen Lattice (2) - Qiskit
+Device=ibmq_guadalupe-230911-1  Jan 30, 2024 23:57:36 UTC
+qubits=12, shots=1000, radius=0.75, restarts=1
+(b) Execution on Hardware System
+FIG. 11: A verage Execution and Elapsed Times per Iteration.
+Here we show average execution and elapsed times per iteration of
+the objective function, at each qubit width. On a quantum simulator
+(a), the exponential growth of the quantum execution time is evi-
+dent, while the elapsed time increment becomes less significant as
+the quantum time increases. On a physical hardware system, IBM
+Quantum ibmq_guadalupe (b), the quantum execution time increases
+more slowly, a defining characteristic of a quantum system. ( Data
+collected via cloud service.)
+the problem size increases. This is roughly in line with expec-
+tations, as the depth of the ansatz increases in proportion to
+qubit width. The fidelities obtained with method (1) show a
+similar degradation with problem size.
+Another important perspective is in how the execution time
+of the application changes as the problem size increases. Exe-
+cution time on a classically implemented simulator is expected
+to increase much more rapidly than on a computing system
+implemented in hardware.
+A bar chart showing average execution and elapsed time
+per iteration of the objective function, at each qubit width, is
+shown in Figure 11. These averages, and associated error bars,
+are computed as a function of the array of time measurements
+collected as the iterative algorithm progresses. Executed on
+a noisy quantum simulator (a), the exponential growth of the
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 12 =====
+
+12
+quantum execution time is evident, while the increment in
+elapsed time is a smaller fraction of the total as the quantum
+time increases. On a representative physical hardware system,
+e.g. ibmq_guadalupe, (b), the quantum execution time starts at
+a larger value but increases much more slowly. The growth in
+execution time is primarily due to the increase in circuit depth
+which can be seen when running the method (1) benchmark.
+The hydrogen lattice benchmark algorithm enables users
+to define both the classical optimizer function governing the
+iteration of the algorithm and the method by which angles
+are specified within the ansatz. While not explored in this
+manuscript, it is important to acknowledge that variations in
+these parameters can yield markedly different outcomes. Main-
+taining consistency in these parameters is imperative when
+utilizing the benchmarks to compare performance across back-
+end systems.
+V . PROGRAM OPTIMIZA TION TECHNIQUES
+In this section, we review advancements made within the
+QED-C benchmark framework to allow the integration of cus-
+tom program optimization functions into the execution pipeline
+(i.e. circuit creation, compilation, transpilation, execution, mea-
+surement processing). We demonstrate the impact that such
+options can have on benchmark results, using optional third-
+party tools that have newly become available.
+We analyze the impact of three program optimization tech-
+niques, using the new execution control features added to the
+benchmark framework. First, we consider state preparation and
+measurement error mitigation, employed through the “Sampler”
+primitive recently added to the Qiskit library [64]. Second, we
+explore approximate circuit resynthesis, implemented via the
+open-source toolkit TKET [65]. Third, we consider a form of
+deterministic error suppression, available through Fire Opal
+and via native integration with Qiskit Runtime primitives [66].
+For each of these, we evaluate the effect on the fidelity of the re-
+sult data returned to the user and the impact on total application
+performance, including execution run-time.
+A. Error Mitigation with Qiskit Sampler
+Error mitigation has been shown to be an effective technique
+for improving the performance of quantum program execu-
+tion [67, 68]. However, there are limits to the effectiveness of
+these techniques [69]. In particular, there is a trade-off in the
+improvement in result quality and the total time taken to exe-
+cute all the required circuits, while the degree of improvement
+can depend on the device used and the circuit types tested [70].
+In this section, we study the Qiskit Runtime Sampler Prim-
+itive [64], a feature of the Qiskit library that performs error
+mitigation automatically after circuit execution, and before
+data are returned to the caller. The Sampler makes use of
+functions from a library called “mthree” [ 71, 72], short for
+matrix-free measurement mitigation. The mthree library uses
+calibrated measures of error rate variability in the components
+0
+5
+10
+15
+20
+25
+30Avg Execution Time (sec)
+Elapsed
+Quantum
+2 3 4 5 6 7 8
+Circuit Width (Number of Qubits)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Avg Result Fidelity
+Hellinger
+Normalized
+Benchmark Results - Quantum Fourier Transform (1) - Qiskit
+Device=ibm_brisbane-240212-res-0  Feb 13, 2024 23:23:43 UTC
+(a) QFT (1) Execution - Resilience Level 0
+0
+10
+20
+30
+40
+50
+60Avg Execution Time (sec)
+Elapsed
+Quantum
+2 3 4 5 6 7 8
+Circuit Width (Number of Qubits)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Avg Result Fidelity
+Hellinger
+Normalized
+Benchmark Results - Quantum Fourier Transform (1) - Qiskit
+Device=ibm_brisbane-240212-res-1  Feb 13, 2024 23:23:58 UTC
+(b) QFT (1) Execution - Resilience Level 1
+FIG. 12: Execution of QFT (1) Benchmark using Sampler . The
+elapsed and quantum execution times are shown, with fidelity results,
+from executing the QFT (1) benchmark using the Qiskit Sampler
+Primitive on the IBM Quantum ibm_brisbane backend (1000 shots).
+In (a), the circuits were executed using resilience level 0, in which no
+error mitigation is applied. In (b), the circuits were executed with error
+mitigation level 1, which applies dynamical decoupling to the circuits
+and mthree error mitigation automatically. With resilience level 1,
+fidelity is improved by up to 14% at small qubit counts, but execution
+times are about 2X larger. (Data collected via cloud service.)
+of a target quantum computing system to recover missing fi-
+delity from measurement data. This can compensate for SPAM
+errors, returning a quasi-probability distribution of bitstrings.
+The Sampler may also perform multiple executions of the cir-
+cuit and uses a heuristic algorithm in an attempt to achieve the
+highest fidelity of execution.
+The Sampler provides a default error mitigation level, re-
+ferred to as resilience level 1, which activates the mthree error
+mitigation functions. Setting the resilience level to 0 disables
+error mitigation and returns the uncorrected measurement dis-
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 13 =====
+
+13
+tribution. We enable this optimization when executing the
+benchmarks by specifying an option that invokes the Sampler
+primitive with the desired resilience level.
+We chose the Sampler for its ease of use in activating this
+error mitigation feature. Alternatively, the QED-C bench-
+marks can be programmatically configured to execute any user-
+defined post-processing function, such as mthree, immediately
+after executing each quantum circuit to apply corrections to
+the measured data and improve the quality of result. Mthree
+has been studied previously with this alternate approach and
+shown to produce statistically significant improvements in the
+measured fidelity of the QED-C benchmarks [73].
+In Figure 12, we contrast the quality of the results and execu-
+tion times that are observed when the circuits of the benchmark
+suite are executed using the Sampler, with and without error
+mitigation configured. For one representative benchmark pro-
+gram, the QFT (1), the improvement in fidelity is visible for
+circuits of qubit widths ranging from 2 to 8 qubits. The average
+Hellinger fidelity, normalized fidelity, elapsed, and execution
+times for each circuit group are compared across the range of
+qubit widths using the provided benchmark plots. The first plot
+(a) shows the results of executing without enabling error miti-
+gation, while the second plot (b) shows the improvement when
+mitigation is enabled. For example, at 5 qubits, the normalized
+fidelity improves from 0.415 to 0.475 when the resilience level
+is set to 1, a gain of about 14%.
+The introduction of classical post-processing into the exe-
+cution pipeline has a cost in terms of the total run-time for
+the execution of the circuit. Our benchmark framework pro-
+vides a standard mechanism for collecting execution time on
+a backend quantum device and the total elapsed or wall-clock
+time which includes classical computation and data transfer
+time (described in our prior work [15].) For circuits executed
+with Qiskit, the elapsed time telapsed is the sum of circuit com-
+pilation time tcompile, queue time tqueue, time to load the circuit
+into the control system tload, execution time on the quantum
+backend tquantum, and time required to classically compute error
+mitigation tmitigate as in Equation 10.
+telapsed = tcompile + tqueue + tload + tquantum + tmitigate (10)
+Quantum execution time tquantum is the only metric that is re-
+liably returned in the Qiskit result record, although the method
+of timing may di ffer across backend providers. When the
+Sampler is used with resilience level 1, a portion of the error
+mitigation processing time is included in tquantum, while the
+remainder is captured by the benchmark framework in telapsed.
+As a result, both the elapsed time and the quantum execution
+time increase when error mitigation is applied. Currently, we
+do not have a mechanism to partition the time into all of its
+components with more granularity than this.
+In the QFT (1) example presented in Figure 12, the time for
+execution with error mitigation enabled is about 2-3X greater
+on average than without, depending on the qubit width of the
+circuit. For example, at 6 qubits, the total elapsed time telapsed
+increases from 51s to 129s with resilience level set to 1. At this
+width, the quantum execution time component tquantum shows
+an increase from 18s to 42s.
+2 4 6 8 10 12
+Number of Qubits
+0
+10
+20
+30
+40
+50
+60Error in Accuracy Ratio (%)
+Benchmark Results - Hydrogen Lattice (2) - Qiskit
+Device=ibmq_guadalupe-230910-0  Feb 13, 2024 23:56:35 UTC
+qubits=12, shots=1000, radius=0.75, restarts=1
+(a) Hydrogen Lattice Accuracy Error - Resilience Level 0
+2 4 6 8 10 12
+Number of Qubits
+0
+10
+20
+30
+40
+50
+60Error in Accuracy Ratio (%)
+Benchmark Results - Hydrogen Lattice (2) - Qiskit
+Device=ibmq_guadalupe-230911-1  Feb 13, 2024 23:49:56 UTC
+qubits=12, shots=1000, radius=0.75, restarts=1
+(b) Hydrogen Lattice Accuracy Error - Resilience Level 1
+FIG. 13: Accuracy Improvement for Hydrogen Lattice Bench-
+mark using Sampler . Here we display the percentage error in an
+application-specific metric, the accuracy ratio, that is computed in the
+final iteration of the Hydrogen Lattice benchmark when executed on
+the IBM Quantum ibmq_guadalupe system. In plot (a), the error is
+16% and 19% at 2 and 4 qubit widths, respectively. In plot (b), the
+error has been reduced with error mitigation to about 1% and 11%.
+The level of improvement appears to diminish at larger problem sizes
+(Data collected via cloud service.)
+As another example, Figure 13 illustrates an improvement
+in the accuracy ratio obtained when the Hydrogen Lattice
+benchmark (section IV) is run with error mitigation enabled
+via the Sampler. This benchmark uses a hybrid algorithm that
+executes a set of quantum circuits repeatedly, wherein error
+mitigation is applied to the measurement results after each
+iteration. In (a), we observe that without error mitigation, the
+error in the accuracy ratio ranges from 16% to 30% for small
+qubit widths. However, in (b), we see that the error in accuracy
+ratio is reduced to a range of 1% to 23% for small problem
+sizes, ranging from 2 to 6 qubits. At larger qubit widths, there
+is no noticeable improvement in the accuracy ratio.
+B. Quantum Circuit Transformation with TKET
+The QED-C benchmark circuits are typically executed using
+default methods for compiling and mapping them to target
+systems, sometimes with API-specific options, such as the
+resilience level discussed in an earlier section. In this section,
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 14 =====
+
+14
+we illustrate an enhancement made to the benchmark execution
+pipeline that enables the exploration of custom techniques for
+preparing the circuits before their execution. A new benchmark
+API option permits a user to invoke a custom transformer
+function on each circuit before it is executed.
+Here, we make use of an open-source toolkit, TKET (ac-
+cessed via the python package pytket) [65], to perform program
+transformations on the benchmark circuits prior to execution.
+This permits us to explore the impact that such transformations
+have on benchmark algorithms that have differing characteris-
+tics. This exercise revealed weaknesses in some of the bench-
+marks, where our algorithmic benchmark examples turned out
+to compile to much fewer gates than the standard algorith-
+mic circuits. We mention several examples below and plan to
+investigate more complicated circuits to address this.
+It is expected that transformation passes on benchmark cir-
+cuits will a ffect the performance when running application-
+oriented benchmarks [74], as the resulting circuits may be more
+or less vulnerable to noise. Limits on the optimization tech-
+niques permitted when benchmarking have been explored [75],
+and prevent the use of some techniques. Here, we demand
+only that the optimization passes utilized are clearly reported
+in the results of these benchmarks, that the optimizations used
+are classically efficient to implement, and that barriers in the
+circuit are respected.
+In the remainder of this section, we examine the impact the
+transformation technique “approximate circuit resynthesis”.
+Approximate resynthesis proceeds by merging sequences of
+two-qubit gates acting on the same two qubits into a single two-
+qubit unitary, and resynthesizing the resulting unitary. Two-
+qubit operations can always be synthesized using at most three
+CX gates and single-qubit gates, by a result known as the KAK
+or Cartan decomposition [76]. The set of unitaries that can be
+generated by two CX gates and single-qubit gates is smaller
+than the set of all 2 qubit unitaries, but when such a circuit
+implements a unitary that is “close enough” to the desired one
+it may be preferable to use that approximate decomposition
+instead of the perfect one [ 4]. This is true if the error that
+results from using an approximate decomposition is greater
+than the error that would be introduced from implementing an
+additional CX gate on a noisy quantum computer. Approximate
+synthesis typically improves performance, since shorter depth
+circuits compensate for inaccuracies introduced by altering
+the unitary considered (by removing gates). Here we use the
+KAKDecomposition pass, available through pytket [65] as a
+means of performing such an approximate resynthesis.
+A function is defined to implement the approximate resyn-
+thesis transformation on an input circuit and return a modified
+circuit. This function is specified via the exec_options argu-
+ment of a benchmark’s run method. When the benchmark is
+executed, the transformation is applied to each circuit prior to
+its execution. Both the fidelity score achieved on the bench-
+mark as well as the execution time are metrics of concern.
+In Figure 14 and Figure 15, we show the fidelities and exe-
+cution times obtained for two of the benchmarks, Hamiltonian
+Simulation and Hidden Shift, when executed over widths of 2
+to 12 qubits, with approximate resynthesis applied. The Hamil-
+tonian Simulation results are significantly improved while the
+0
+5
+10
+15Avg Execution Time (sec)
+Elapsed
+Quantum
+2 3 4 5 6 7 8 9 10 11 12
+Circuit Width (Number of Qubits)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Avg Result Fidelity
+Hellinger
+Normalized
+Benchmark Results - Hamiltonian Simulation - Qiskit
+Device=Fake Mumbai_pytket  Oct 12, 2023 18:41:24 UTC
+(a) Hamiltonian Simulation with TKET Approximate Resynthesis
+0
+2
+4
+6
+8
+10
+12Avg Execution Time (sec)
+Elapsed
+Quantum
+2 3 4 5 6 7 8 9 10 11 12
+Circuit Width (Number of Qubits)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Avg Result Fidelity
+Hellinger
+Normalized
+Benchmark Results - Hamiltonian Simulation - Qiskit
+Device=Fake Mumbai_qiskit  Oct 12, 2023 18:41:14 UTC
+(b) Hamiltonian Simulation with default optimization level 3
+FIG. 14: Approximate Resynthesis TKET Circuit Optimization
+applied to Hamiltonian Simulation. Hellinger and normalized fideli-
+ties are displayed over circuit width for the Hamiltonian Simulation
+benchmark circuits executed on the Qiskit Aer simulator, using a
+Fake Melbourne noise model. A significant increase in execution
+fidelity is visible in plot (a) as the approximate resynthesis algorithm
+produces circuits of shorter lengths, compensating for a decrease in
+the accuracy of the gate representation of the problem.
+Hidden Shift is essentially unchanged.
+The Hamiltonian simulation implementation benefits the
+most from the approximate resynthesis since all two-qubit gates
+correspond to small angle (π/300) ZZ interactions. In current-
+generation quantum computers implementing such small in-
+teractions actually adds more errors to the overall circuit than
+simply skipping the gates. This is seen by comparing the av-
+erage fidelity between the small angle ZZ interactions and the
+identity gate to the fidelity of typical two-qubit gates. The use
+of approximate resynthesis is generically applicable, not just
+to Hamiltonian Simulation, but the advantage is particularly
+notable in this case due to the small angle gates. Other QED-C
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 15 =====
+
+15
+0
+2
+4
+6
+8
+10
+12Avg Execution Time (sec)
+Elapsed
+Quantum
+2 4 6 8 10 12
+Circuit Width (Number of Qubits)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Avg Result Fidelity
+Hellinger
+Normalized
+Benchmark Results - Hidden Shift - Qiskit
+Device=Fake Mumbai_pytket  Oct 12, 2023 18:41:22 UTC
+(a) Hidden Shift with TKET Approximate Resynthesis.
+0
+2
+4
+6
+8
+10
+12Avg Execution Time (sec)
+Elapsed
+Quantum
+2 4 6 8 10 12
+Circuit Width (Number of Qubits)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Avg Result Fidelity
+Hellinger
+Normalized
+Benchmark Results - Hidden Shift - Qiskit
+Device=Fake Mumbai_qiskit  Oct 12, 2023 18:41:12 UTC
+(b) Hidden Shift with default optimization level 3
+FIG. 15: Approximate Resynthesis TKET Circuit Optimization
+applied to Hidden Shift. Hellinger and normalized fidelities are
+displayed over circuit width for the Hidden Shift benchmark circuits
+executed on the Qiskit Aer simulator, using a Fake Melbourne noise
+model. No increase in execution fidelity is seen in plot (a) as the
+approximate resynthesis algorithm is unable to regroup any of the
+small number of gates in the Hidden Shift circuit, making no change
+to circuit depth, resulting in no improvement in fidelity.
+benchmarks that benefit include QFT (1) and (2), quantum
+phase estimation, as well as HHL and the Hydrogen Lattice
+examples discussed above. Conducting such transformations
+comes at an additional, but reasonable time cost, as expected.
+In future work, we plan to implement other variants of Hamil-
+tonian simulation circuits (and other benchmark circuits) that
+may limit the impact of such techniques.
+Conversely, there is little change in performance in the case
+of the Hidden shift class of circuits, as seen in Figure 15.
+This particular class of circuits contains two-qubit sub-circuits
+separated by barriers. These two-qubit subcircuits contain only
+a single two-qubit gate between barriers, and therefore do not
+1 2 4 8 16 32 64128256512 1K 2K 4K 8K16K33K66K131K262K524K1M
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12Circuit Width
+QV=8
+Hidden Shift
+Hamiltonian Simulation
+Amplitude Estimation
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=Fake_Melbourne_pytket  Oct 05, 2023 03:35:23 UTC
+(a) TKET circuit optimization - Approximate resynthesis.
+1 2 4 8 16 32 64128256512 1K 2K 4K 8K16K33K66K131K262K524K1M
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12Circuit Width
+QV=8
+Hidden Shift
+Hamiltonian Simulation
+Amplitude Estimation
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=Fake_Melbourne_qiskit  Oct 05, 2023 03:35:18 UTC
+(b) Default Qiskit circuit optimization - level 3.
+FIG. 16: V olumetric plot of several benchmark circuits These
+circuits were executed on the Qiskit Aer simulator, using the Fake
+Melbourne noise model. Quantum volume on the Melbourne system
+(now retired) was measured to be 8, suggesting that circuits wider than
+3 qubits will have a low probability of success. Here, the impact of
+using the TKET approximate resynthesis method is visible for both the
+Hamiltonian Simulation and the Amplitude Estimation benchmark.
+benefit from resynthesis passes leaving the fidelity unchanged.
+In Figure 16, we present a volumetric plot of the results from
+executing three of the benchmarks with and without the use of
+the approximate resynthesis transformation. The improvement
+in the Hamiltonian Simulation and the lack of improvement in
+Hidden Shift fidelities is visible between the two. While we
+do not include the detailed bar charts here, our analysis shows
+that Amplitude Estimation (plotted in Figure 16) and Monte
+Carlo (not plotted) also benefit from resynthesis across three-
+qubit sub-circuits (also available in pytket). In those tests,
+the target state is created only over two qubits with several
+subcircuits that consist of controlled operations between the
+target state and the ancilla qubit (three total qubits). Three
+qubit resynthesis significantly reduces the two-qubit gate count
+in these cases. In future work, we will scale the target state
+size in these examples with the number of qubits to avoid such
+a high reduction.
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 16 =====
+
+16
+C. Custom Execution Pipeline with Fire Opal
+In this section, we discuss another enhancement developed
+for this work, a custom “executor” function that permits a
+user to take complete control of the execution pipeline. This
+custom function receives an un-processed benchmark circuit
+object, processes and executes it under user control, and returns
+measurement results post-processed as desired.
+To illustrate this enhancement, we developed a custom ex-
+ecutor function that employs the Fire Opal package from Q-
+CTRL [66] to perform transpilation, optimization, execution,
+and mitigation of errors during the execution of each bench-
+mark circuit. The Fire Opal package is intended to be agnostic
+to the hardware backend and to the type of algorithm executed.
+Given an arbitrary algorithm and hardware properties, such
+as device topology, connectivity, and backend data on qubit
+quality, Fire Opal uses a deterministic approach to improve
+quantum hardware performance and suppress non-Markovian
+noise in the system without the use of sampling or randomiza-
+tion methods (described in [77].)
+Here, we present an analysis of the results of executing two
+of the QED-C benchmarks within the Q-CTRL environment,
+configured to use this custom executor function. To illustrate
+the types of operations that can be performed in a custom
+executor function, we describe the error-suppressing workflow
+implemented for Fire Opal, and performed on each benchmark
+circuit:
+1. A quantum circuit (Qiskit QuantumCircuit object), along
+with execution parameters, is passed to the function,
+where a Fire Opal front-end compiler reduces the circuit
+depth and transpiles it to the backend device topology
+using a sequence of mathematical identities. Fire Opal
+also accepts OpenQASM circuit definition.
+2. An error-aware hardware mapping function determines
+the best circuit layout to maximize performance on the
+physical device, using knowledge of qubit coherences
+and gate errors that typically vary across the device.
+Dynamical decoupling pulses are embedded to suppress
+crosstalk using a context-aware ranking protocol.
+3. If the gate fidelities are lower than the coherence limit
+as calculated by the T1 and T2 times provided by the
+backend, then optimal pulse control ([ 78, 79] is au-
+tonomously deployed to replace the hardware-level in-
+structions for the specified gate.
+4. The user circuit is converted to the API supported by
+the specified backend (i.e. Pyquil, Qiskit pulse, AWS
+Braket, etc). The circuit is then executed and the results
+are returned for further processing.
+5. In post-processing, measurement errors from the ob-
+tained probability distribution are eliminated using a
+protocol that utilizes a set of pre-measured confusion
+matrices. The details of this error mitigation protocol
+are available in Appendix C-4 of Ref.[77]
+FIG. 17: Benchmark execution on the 27Q IBM Quantum Algiers
+backend. (In logscale) (a) Normalized fidelity of the BV (1) circuits
+executed using default sampler primitive (black) is below 1% beyond
+18Q and is 0% for 26Q and 27Q. Using the error suppression in Q-
+CTRL Fire Opal (blue) gives fidelities ranging from 25% down to
+5% for 27 qubits. (b) Normalized fidelities for QFT (2) using default
+sample (black) shows an exponential decay to 0.01% for 14Q. Using
+Fire Opal (blue) gives fidelities ranging from 50% (for 7Q) to 9% (for
+14Q). (Data provided by Q-CTRL.)
+To understand the impact of error-suppression techniques on
+performance, we compare the result fidelity of the Bernstein-
+Vazirani BV (1) and the QFT (2) benchmarks run on the IBM
+quantum processor ibm_algiers via the default sampler prim-
+itive (black) and Q-CTRL’s Fire Opal software (blue) in Fig-
+ure 17. In this experiment, we focus specifically on circuits
+with increasing qubit widths, where the result fidelity obtained
+with default settings is very low. We highlight the improve-
+ment in result fidelity that can be obtained in this region of
+circuit widths when the Fire Opal executor function is invoked.
+The default sampler primitive includes an optimization level
+= 3 and resilience level = 1. We pass exactly the same input
+circuits to both methods.
+For BV (1), we examine results from 18 qubits to 27 qubits.
+We modified this benchmark to use a target string of all “1”s,
+instead of random inputs, as it results in the largest depth
+circuits. The fidelity of the BV (1) circuits executed using the
+default sampler primitive (black) is below 1% beyond 18Q and
+we never observe the target bitstring for 26Q and 27Q over
+10,000 shots. Using the error suppression in Q-CTRL Fire
+Opal (blue) gives improved fidelities ranging from 25% to 5%
+for 27 qubits.
+For QFT (2), we examine results from 7 to 14 qubits, where
+the default result fidelity is below 10% and as low as 0.01% for
+14Q. Fire Opal (blue) gives improved fidelities ranging from
+50% (for 7Q) down to 9% (for 14Q). It is important to note
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 17 =====
+
+17
+that the magnitude of improvement in fidelity varies with the
+type and size of circuits. Typically, benefits are expected to
+increase with circuit width and depth [77].
+This demonstrates how the QED-C benchmark framework
+allows users to test additional error suppression features like
+Fire Opal to improve result fidelity. However, in this exercise,
+we do not present measurements of the run-time cost of this
+additional processing. We plan to do this in a future work.
+VI. BENCHMARKING MACHINE LEARNING
+APPLICA TIONS
+Applications in machine learning have widespread utility,
+revolutionizing data analysis and decision-making across var-
+ious domains, and recently being extended to creative tasks
+as well. However, the heavy computational requirements of
+classical machine learning make it an attractive area for the
+development of quantum approaches. While early quantum ma-
+chine learning algorithms required large numbers of qubits and
+gates which are beyond the capabilities of current generation
+quantum computers, much recent algorithmic development has
+focused on near-term heuristic approaches which are possible
+to test on real quantum hardware.
+In this section, we present a framework for benchmarking
+these emerging quantum machine learning algorithms, using
+a representative quantum algorithm for binary classification
+of images within a large dataset. While there have been many
+benchmark frameworks developed for quantum machine learn-
+ing applications [13, 80–82], our work generalizes an approach
+to be consistent with our benchmarking of other classes of
+applications. This is designed to provide consistency and val-
+idation of results across application domains and to enable
+performance-driven exploration of new types of machine learn-
+ing applications.
+A. Quantum Machine Learning
+Machine learning involves analyzing existing data to make
+predictions when presented with new information. Some com-
+monly encountered examples of machine learning are image
+and speech recognition, product recommendation, and anomaly
+detection. Machine learning can be supervised, that is, based
+on a labeled dataset, or unsupervised, where the dataset is
+unlabeled. A further distinction can be made between discrimi-
+native, which seeks to maximize the ability of an algorithm to
+assign a class to unseen data, and generative learning, which
+seeks to produce new data that could plausibly belong to the
+original dataset.
+Quantum computers provide a new paradigm for machine
+learning algorithms. Near-term quantum machine learning
+generally relies on using parameterized circuits to efficiently
+capture the correlations between different variables in a dataset
+which can be optimized according to a desired outcome. The-
+oretical work suggests favorable generalization properties for
+such quantum models [ 83–85] and arguments for quantum
+advantage are presented based on the expressivity of these
+models [86–88].
+Notable experimental results in quantum machine learn-
+ing include training quantum-enhanced generative adversarial
+networks (GANs) on a variety of image generation and mul-
+tivariate problems [ 88–92], and using quantum algorithms,
+transformers, or ensembles to perform image classification
+tasks of varying complexity [93–95]. In addition to the poten-
+tial for quantum advantage, theoretical and numerical work
+has established the possibility of effective training of certain
+classes of parameterized quantum circuits, including Quantum
+Convolutional Neural Networks [96] and orthogonal quantum
+circuits [97].
+B. Image Recognition Quantum Algorithm
+For our benchmark, we selected a simple binary image clas-
+sification problem that uses a database consisting of images of
+two digits, 7 or 9, as the source of data. Each image is labeled
+to identify the class, 7 or 9, to which it belongs. The chal-
+lenge is to execute and benchmark a quantum algorithm that
+can recognize the class of an unknown image. To accomplish
+this, we first use a subset of the images in ‘training’ mode by
+repeatedly encoding each of these images into an ansatz circuit
+and executing a variational algorithm to search for parameters
+that maximize the classification accuracy of the images. These
+parameters can later be used to identify any unknown encoded
+image by re-executing the circuit with these parameters.
+In the algorithm used, each data point (image) is uploaded to
+the quantum computer one at a time, after which it is acted upon
+by the parameterized quantum circuit. After measurement, the
+output is classically processed and submitted to a loss function.
+This procedure effectively encodes a Fourier series in the data,
+whose coefficients depend on the parameterized circuit and
+frequencies on the data encoding procedure [98]. Since Fourier
+functions are known to be universal function approximators
+quantum models can be used to model any kind of data.
+Specifically, the classification of the k-th image with pixel
+values{i, p(k)
+i }, where i∈ [1, n0] is the pixel index andp(k)
+i is the
+pixel value which lies between 0 and 1, proceeds as follows:
+(i) Compressing the image using Principal Component
+Analysis to a vector of size equal to the numbern of avail-
+able qubits:{p(k)
+i }→{ q(k)
+j } with j∈ [1, n] for n< n0.
+(ii) Loading into a quantum state with n qubits
+using product state encoding,
+Ψ0({q(k)
+j })
+E
+=
+Qn
+j=1 exp
+
+i2πq(k)
+j X j
+
+|0... 0⟩
+(iii) Acting on it with a parameterized unitary U(θ) based
+on the quantum convolutional neural network [99, 100]
+with the circuit tapering towards the 0-th qubit to give
+the state U(⃗θ)
+Ψ({q(k)
+j })
+E
+(iv) Measuring operator Z0 (i.e. Pauli Z acting on the 0-th
+qubit) on the resulting state and converting that mea-
+surement into a prediction for the image class: mk =
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 18 =====
+
+18
+f
+D
+Ψ0({q(k)
+j })
+ U(⃗θ)†Z0U(⃗θ)
+Ψ0({q(k)
+j })
+E
+, where f is a
+simple classical function
+While training the classifier, the prediction is used to cal-
+culate a mean square loss function for image k against the
+provided label yk, lk =|yk− mk|2 which is input to a mean loss
+for the whole training dataset L = 1
+Ntrain
+PNtrain
+k=1 lk, where Ntrain is
+the size of the training dataset. This loss function is used by
+an optimizer to iteratively change the parameters to minimize
+the loss. While in validation (also known as testing) mode, the
+prediction is used to calculate how well the classifier performs.
+Finally, the machine learning algorithm can be deployed in
+inference mode on new data.
+C. Image Recognition Benchmark Implementation
+This image recognition benchmark makes use of a publicly
+available MNIST image database, ‘mnist_784’ [ 101]. The
+digits in this database are size-normalized and centered in a
+fixed-size 28x28 pixel image. We use the OpenML ‘sklearn’
+python package [102] to load the database and extract only the
+images for the digits 7 and 9 along with their labels. From
+a specified number of images to process, we select 80% for
+a training set, with the remaining 20% used for testing the
+effectiveness of the training.
+Once the images have been loaded, the benchmark can be ex-
+ecuted in three different modes, or ‘methods’, each exercising
+a different aspect of the benchmark. All three modes produce
+a series of plots displaying the benchmarking results which are
+described below.
+Method (1) is designed to characterize the result fidelity of
+ansatz execution, as with the other iterative algorithms in the
+suite (e.g. maxcut, hydrogen-lattice). The quantum circuit
+that encodes a single image for classification is executed with
+random input parameters and its output is evaluated against the
+output from an ideal simulator. This can be done for different
+numbers of qubits, and it produces results similar to the non-
+iterative benchmarks, including a volumetric plot and bar charts
+displaying execution times, circuit depths, and fidelities.
+Method (2) is the ‘training pass’, in which the images in
+the training subset are processed by the variational algorithm
+to find optimal parameters for the given problem dataset. Al-
+gorithm 2 outlines the pseudocode for the operation of this
+training mode.
+The benchmark loops over a specified range of qubit widths,
+as in other benchmarks. For each width, and under the control
+of a classical optimizer, the training images undergo classical
+pre-processing and are compressed so that they can be encoded
+into a small number of qubits at that width. For each image,
+an ansatz circuit, with image features encoded, is created and
+executed with trial parameters. An aggregate loss, expressed
+as a distance from the expected classifications, is calculated
+for all the images in the set. This loss value is returned to
+the optimizer which attempts to find the parameters for the
+ansatz that result in the lowest loss. The benchmark tracks
+the progress of the algorithm as it attempts to converge on the
+lowest loss value.
+Algorithm2 Benchmark Algorithm for Quantum Image Recog-
+nition (Training Mode, method 2)
+1: target← backend_id
+2: initialize_metrics()
+3: image_data, image_label← load_mnist_data()
+4: image_data_batch, image_label_batch ←
+create_batch(batch_size, image_data, image_label)
+5: for qubit_count← min_count, max_count do
+6: params[α]← random(num_params)
+7: while num_iteration not done do ▷ minimizing
+8: for data_point← image_data_batch do
+9: f eature_map_circuit ←
+create_ f eature_map(qubit_count, data_point)
+10: parameterized_circuit ←
+create_ansatz_circuit(qubit_count)
+11: mergedcircuit ←
+compose_circuits( f eature_map_circuit, parameterized_circuit)
+12: cached_circuit← compile_circuit(mergedcircuit)
+13: circuit← apply _params(cached_circuit, params)
+14: counts← execute(target, circuit, num_shots)
+15: prediction← calculate_prediction(counts)
+16: prediction_batch← append (prediction)
+17: end for
+18: loss, accuracy ←
+loss_ f unction(prediction_batch, image_data_batch)
+19: store_iteration_metrics(loss, accuracy)
+20: params[α]← optimize(params[α])
+21: image_data_batch, image_label_batch ←
+update_batch(batch_size, image_data, image_label) ▷ no
+repetition
+22: done← True if iterations completed
+23: end while
+24: compute_and_store_restart_metrics()
+25: compute_and_store_group_metrics()
+26: end for
+The Simultaneous Perturbation Stochastic Approximation
+(SPSA) optimizer is chosen for its ability to perform multi-
+parameter optimization where the number of function calls is
+independent of the number of parameters. This is important
+here since many images need to be evaluated at each optimizer
+iteration. In principle, the loss function could be evaluated
+as an average over all the training images at each iteration.
+However, this would make training very expensive. In practice,
+we find that a stochastic sampling technique, where a number
+of images equal to a fixed batch size are evaluated at each
+iteration of the optimizer works just as well. In this work, we
+use a default batch size of 50.
+Method (3) is the ‘validation’ pass, in which the benchmark
+performs inference on the remaining images, known as the
+test dataset. The ansatz is executed once for each of the im-
+ages, using the parameters obtained during the training pass.
+The distance of the resulting classifications from the expected
+classifications results in a loss that acts as a measure of how
+well this quantum classification algorithm works when trained.
+This value can be compared against classical solutions using
+the same problem set.
+While the overall framework remains the same as for other
+variational algorithms, some key differences distinguish this
+benchmark. First, the classical data, in this case images, need
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 19 =====
+
+19
+0 25 50 75 100 125 150 175 200
+Iterations
+0.16
+0.18
+0.20
+0.22
+0.24
+0.26
+0.28Training Loss
+0 5 10 15 20 25 30 35
+Cumulative Quantum Execution Time (s)
+0.5
+0.6
+0.7
+0.8
+0.9Training Accuracy
+Benchmark Results - Image Recognition (2) - Qiskit
+Device=statevector_simulator  Jan 04, 2024 00:48:34 UTC
+qubits=4, shots=1000, ansatz=qcnn uniform, method=2
+0 25 50 75 100 125 150 175 200
+Iterations
+0.65
+0.70
+0.75
+0.80
+0.85
+0.90T est Accuracy
+0 10 20 30 40
+Cumulative Quantum Execution Time (s)
+0.65
+0.70
+0.75
+0.80
+0.85
+0.90T est Accuracy
+Benchmark Results - Image Recognition (3) - Qiskit
+Device=statevector_simulator  Jan 04, 2024 00:58:52 UTC
+qubits=4, shots=1000, ansatz=qcnn uniform, method=3
+FIG. 18: Progression of Training and Test Accuracies. Here we show results from executing the Image Recognition benchmark methods 2
+and 3, the training pass and the testing pass, respectively. As the training progresses, the classification accuracy increases, and the loss decreases
+for both the training and test datasets. The benchmarking suite evaluates the mean training loss after every iteration of the optimizer. The test
+loss can be calculated after the training at parameter values that are stored periodically after a set number of iterations. Here, 200 images are
+used for training and 50 for testing.
+to be effectively compressed before loading into the quantum
+computer. Secondly, a large number of images need to be
+processed at each iteration corresponding to which a large
+number of quantum circuits need to be run on the quantum
+computer or simulator. Finally, even validating the e fficacy
+of the training involves running the classification algorithm
+on a test dataset that itself requires many calls to the quantum
+computer or simulator.
+D. Simulation Results and Analysis
+The benchmark was tested in simulation using the Qiskit
+statevector simulator. Some of the output graphs are shown
+in Figure 18 - Figure 20. In Figure 18 (top), the measured
+loss function decreases as the training of the classifier circuit
+progress. At the same time, the accuracy of the circuit in
+classifying images of the training dataset increases. The cor-
+responding behavior is also seen on the test dataset (bottom).
+The test accuracy is measured less frequently than the training
+accuracy since it is not essential for training, but rather a mea-
+sure of how it is progressing. We see that the curves oscillate
+around an increasing or decreasing overall trend. This oscilla-
+tion is due to the stochastic nature of the batch construction as
+well as the use of the SPSA optimizer.
+Figure 19 shows the training accuracy that is achieved for
+4 through 10 qubits after 200 iterations. Here the maximum
+training accuracy is defined as an average of the 5 highest
+accuracies that are achieved on the training dataset during the
+training. The accuracy overall trends downwards as the number
+of qubits increases, indicating that models with a larger number
+of qubits take longer to train. Additionally, the models with
+4 and 8 qubits have increased accuracy which is a result of
+using the quantum convolutional neural network, which has a
+symmetry when the number of qubits is a power of 2.
+Figure 20 shows the training times for 4 through 10 qubits
+for executing 200 iterations of the optimizer. It is notable that
+for execution on the simulator, the elapsed time is considerably
+longer than the quantum time, indicating that more optimized
+software for handling the construction and execution of param-
+eterized quantum circuits could have a significant impact on
+the feasibility of quantum machine learning which involves
+running batches of such circuits.
+The benchmarking framework allows us to test the effect of
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 20 =====
+
+20
+4 5 6 7 8 9 10
+Number of Qubits
+0
+20
+40
+60
+80T esting Accuracy (%)
+Benchmark Results - Image Recognition (3) - Qiskit
+Device=statevector_simulator  Jan 04, 2024 00:58:55 UTC
+qubits=10, shots=1000, restarts=1
+FIG. 19: Maximum Training Accuracies. Here we show the ac-
+curacy of the algorithm on the training dataset as a function of the
+number of qubits when the number of training iterations is fixed at
+200 and the size of the training dataset is 200.
+4 5 6 7 8 9 10
+Number of Qubits
+0
+10
+20
+30
+40
+50
+60Cumulative Execution Times / iteration (s)
+Elapsed
+Quantum
+Benchmark Results - Image Recognition (3) - Qiskit
+Device=statevector_simulator  Jan 04, 2024 00:58:55 UTC
+qubits=10, shots=1000, restarts=1
+FIG. 20: Training Times. Here we show the execution time of the
+algorithm on the training dataset as a function of the number of qubits
+when the number of training iterations is fixed at 200 and the size of
+the training dataset is 200.
+different hyperparameters on the training. For instance, Fig-
+ure 21 shows the effect of the size of the training dataset. The
+top panel shows the accuracy on the test dataset when the num-
+ber of training images is fixed at 200, while the middle one
+shows the results when all the available images in MNIST for
+our binary classification problem that are not in the test dataset,
+numbering 14201, are used. We see that for the smaller dataset
+size, the test accuracies are larger for 4 qubits, while the accu-
+racy of the 8 qubit ansatz stays about the same in both cases.
+In the bottom panel, we see that the accuracy for the larger
+dataset for 4 qubits increases when we increase the number of
+iterations, indicating that the larger dataset size makes it harder
+for the optimizer to converge at a fixed number of iterations.
+VII. SUMMARY AND CONCLUSIONS
+Cloud-accessible quantum computers are attracting a wide
+audience of potential users, but the challenges in understanding
+their capabilities create a significant barrier to the adoption of
+quantum computing. The QED-C Application-Oriented Bench-
+FIG. 21: Effect of Training Dataset Size. Here is an example of the
+hyperparameter exploration that can be done with the benchmarking
+framework. The top panel shows the accuracy on the test dataset when
+Ntrain = 200, while the middle panel shows the results when Ntrain =
+14201. For both the top and middle panels, the number of iterations
+is 200. The bottom panel shows the results when Ntrain = 14201 and
+number of iterations is 400.
+mark suite makes it easy for new users to assess a machine’s
+ability to implement applications, and its volumetric visualiza-
+tion of the results is designed to be simple and intuitive. In this
+manuscript, we described several enhancements made to this
+benchmark suite. This is an ongoing effort, established under
+the direction of the QED-C (Quantum Economic Development
+Consortium), with work organized and managed by QED-C
+members within the broad community of quantum computing
+system providers and quantum software developers.
+In enhancing the suite and developing new benchmarks, we
+have expanded the framework to o ffer greater control over
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 21 =====
+
+21
+the properties and configuration of the applications used as
+benchmarks. It makes it possible, not only to increase coverage
+of the execution landscape but to explore various algorithmic
+variations. One reason to do this is to determine whether
+there are certain applications or variants of them that perform
+better on a specific class of hardware. We anticipate that our
+work will facilitate the adoption of quantum computing, and
+encourage economic development within the industry.
+In this work, we introduced several new benchmarks, the
+first based on a scalable version of the HHL linear equation
+solver that illustrates how variations on the algorithm impact
+its volumetric profile and add coverage to the benchmark suite.
+The second evaluates the performance of a VQE algorithm that
+finds the ground state energy of a hydrogen lattice simulation,
+with a new methodology for analyzing the quality /run-time
+trade-off and two new normalized measures of chemical accu-
+racy, the accuracy ratio, and the solution quality.
+This was followed by a review of new options for insert-
+ing custom circuit preparation, execution, and error mitiga-
+tion procedures. We show how these enable the use of new
+tools such as the Qiskit Sampler, TKET, and Q-CTRL’s Fire
+Opal to improve the results obtained from running the bench-
+mark results. Lastly, we presented an early-stage version of
+a machine learning algorithm, a simple image classification
+problem, that defines another application-specific measure and
+executes many more circuits iteratively than does the VQE
+benchmark.
+The updated QED-C benchmarks provide extensive support
+for measuring the run-time costs associated with the execution
+of both simple and variational algorithms. In evaluating the
+performance of quantum computers, a precise understanding
+of the practical trade-o ffs in run-time cost versus quality of
+solution is essential to evaluating the total cost of ownership
+for a solution technology.
+A primary goal of this e ffort is to identify ways in which
+this highly flexible framework could be made available and
+extended easily to new quantum applications. Surfacing these
+benchmarks early offers potential users and investors the assur-
+ance that progress is being made in advancing the technology.
+To truly develop confidence in the technology, users must be
+able to execute simple programs easily and gauge the perfor-
+mance of these programs as the machine improves in perfor-
+mance. That is the purpose of this suite of benchmarks and the
+effort described in this paper.
+Looking to the future, we envision proposals for additional
+efforts to facilitate the exploration of algorithmic options and
+their impact on performance in this continually evolving bench-
+marking framework.
+CODE A V AILABILITY
+The code for the benchmark suite described in this work
+is available at https://github.com/SRI-International/QC-App-
+Oriented-Benchmarks. Detailed instructions are provided in
+the repository.
+ACKNOWLEDGEMENT
+The Quantum Economic Development Consortium (QED-
+C), a group of commercial organizations, government institu-
+tions, and academia formed a Technical Advisory Committee
+(TAC) to study the landscape of standards development in quan-
+tum technologies and to identify ways to encourage economic
+development through standards. In this context, the Standards
+TAC undertook to create the suite of Application-Oriented Per-
+formance Benchmarks for Quantum Computing as an open
+source project, with contributions from many members of the
+QED-C involved in Quantum Computing. We thank the many
+members of the QED-C for their valuable input in reviewing
+and enhancing this work.
+We acknowledge the use of IBM Quantum services for
+this work. The views expressed are those of the authors
+and do not reflect the o fficial policy or position of IBM or
+the IBM Quantum team. IBM Quantum. https: //quantum-
+computing.ibm.com/, 2023. We acknowledge Quantinuum
+for contributing the results from their commercial H1-1 hard-
+ware. We thank Q-CTRL for supplying the environment and
+performing the execution of several of the QED-C benchmarks.
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 22 =====
+
+22
+[1] E. Knill, D. Leibfried, R. Reichle, J. Britton, R. B. Blakestad,
+J. D. Jost, C. Langer, R. Ozeri, S. Seidelin, and D. J. Wineland.
+Randomized benchmarking of quantum gates. Phys. Rev. A, 77:
+012307, Jan 2008. doi:10.1103 /PhysRevA.77.012307. URL
+https://link.aps.org/doi/10.1103/PhysRevA.77.0
+12307.
+[2] Easwar Magesan, J. M. Gambetta, and Joseph Emerson. Scal-
+able and robust randomized benchmarking of quantum pro-
+cesses. Phys. Rev. Lett. , 106:180504, May 2011. doi:
+10.1103/PhysRevLett.106.180504. URL https://link.aps
+.org/doi/10.1103/PhysRevLett.106.180504.
+[3] Robin Blume-Kohout, John King Gamble, Erik Nielsen, Ken-
+neth Rudinger, Jonathan Mizrahi, Kevin Fortier, and Peter
+Maunz. Demonstration of qubit operations below a rigorous
+fault tolerance threshold with gate set tomography. Nat. Com-
+mun., 8:14485, February 2017. doi:10.1038 /ncomms14485.
+URL https://www.nature.com/articles/ncomms1448
+5.
+[4] Andrew W. Cross, Lev S. Bishop, Sarah Sheldon, Paul D.
+Nation, and Jay M. Gambetta. Validating quantum computers
+using randomized model circuits. Physical Review A, 100(3),
+sep 2019. doi:10.1103 /physreva.100.032328. URL https:
+//doi.org/10.1103%2Fphysreva.100.032328.
+[5] Sergio Boixo, Sergei V . Isakov, Vadim N. Smelyanskiy,
+Ryan Babbush, Nan Ding, Zhang Jiang, Michael J. Bremner,
+John M. Martinis, and Hartmut Neven. Characterizing quan-
+tum supremacy in near-term devices. Nature Physics, 14(6):
+595–600, Apr 2018. ISSN 1745-2481. doi:10.1038 /s41567-
+018-0124-x. URL http://dx.doi.org/10.1038/s4156
+7-018-0124-x .
+[6] Timothy Proctor, Kenneth Rudinger, Kevin Young, Erik
+Nielsen, and Robin Blume-Kohout. Measuring the capabil-
+ities of quantum computers, 2020.
+[7] Andrew Wack, Hanhee Paik, Ali Javadi-Abhari, Petar Jurce-
+vic, Ismael Faro, Jay M. Gambetta, and Blake R. Johnson.
+Quality, speed, and scale: three key attributes to measure the
+performance of near-term quantum computers, 2021. URL
+https://arxiv.org/abs/2110.14108.
+[8] Nils Quetschlich, Lukas Burgholzer, and Robert Wille. MQT
+Bench: Benchmarking Software and Design Automation Tools
+for Quantum Computing. Quantum, 7:1062, July 2023. ISSN
+2521-327X. doi:10.22331/q-2023-07-20-1062. URL https:
+//doi.org/10.22331/q-2023-07-20-1062 .
+[9] Teague Tomesh, Pranav Gokhale, Victory Omole, Gokul Sub-
+ramanian Ravi, Kaitlin N. Smith, Joshua Viszlai, Xin-Chuan
+Wu, Nikos Hardavellas, Margaret R. Martonosi, and Frederic T.
+Chong. Supermarq: A scalable quantum benchmark suite,
+2022.
+[10] Koen Mesman, Zaid Al-Ars, and Matthias Möller. QPack:
+Quantum Approximate Optimization Algorithms as universal
+benchmark for quantum computers, April 2022. URL https:
+//arxiv.org/abs/2103.17193.
+[11] Huub Donkers, Koen Mesman, Zaid Al-Ars, and Matthias
+Möller. Qpack scores: Quantitative performance metrics for
+application-oriented quantum computer benchmarking, 2022.
+URL https://arxiv.org/abs/2205.12142.
+[12] Jernej Rudi Finzgar, Philipp Ross, Leonhard Holscher, Jo-
+hannes Klepsch, and Andre Luckow. QUARK: A frame-
+work for quantum computing application benchmarking. In
+2022 IEEE International Conference on Quantum Com-
+puting and Engineering (QCE) . IEEE, sep 2022. doi:
+10.1109/qce53715.2022.00042. URL https://doi.org/
+10.1109%2Fqce53715.2022.00042.
+[13] Florian J. Kiwit, Marwa Marso, Philipp Ross, Carlos A. Riofrío,
+Johannes Klepsch, and Andre Luckow. Application-oriented
+benchmarking of quantum generative learning using quark,
+2023. URL https://arxiv.org/abs/2308.04082.
+[14] Thomas Lubinski, Sonika Johri, Paul Varosy, Jeremiah Cole-
+man, Luning Zhao, Jason Necaise, Charles H. Baldwin,
+Karl Mayer, and Timothy Proctor. Application-oriented
+performance benchmarks for quantum computing. IEEE
+Transactions on Quantum Engineering , 4:1–32, 2023. doi:
+10.1109/TQE.2023.3253761.
+[15] Thomas Lubinski, Carleton Co ffrin, Catherine McGeoch,
+Pratik Sathe, Joshua Apanavicius, and David E. Bernal Neira.
+Optimization applications as quantum performance bench-
+marks, 2023. URL https://arxiv.org/abs/2302.02278.
+[16] Standard Performance Evaluation Corporation, 2021. URL
+https://spec.org/ . SPEC Benchmark Suite, accessed
+2021-05-28.
+[17] John L. Hennessy and Patterson. Computer Architecture: a
+Quantitative Approach. Morgan Kaufmann, 2019.
+[18] Alberto Peruzzo, Jarrod McClean, Peter Shadbolt, Man-Hong
+Yung, Xiao-Qi Zhou, Peter J. Love, Alán Aspuru-Guzik, and
+Jeremy L. O’Brien. A variational eigenvalue solver on a pho-
+tonic quantum processor. Nature Communications, 5(1):1–7,
+July 2014. ISSN 2041-1723. doi:10.1038 /ncomms5213.
+[19] Edward Farhi, Jeffrey Goldstone, and Sam Gutmann. A quan-
+tum approximate optimization algorithm, 2014.
+[20] Ryan LaRose and Brian Coyle. Robust data encodings for
+quantum classifiers. Phys. Rev. A, 102:032420, Sep 2020. doi:
+10.1103/PhysRevA.102.032420. URL https://link.aps.o
+rg/doi/10.1103/PhysRevA.102.032420.
+[21] Jwo-Sy Chen, Erik Nielsen, Matthew Ebert, V olkan Inlek, Ken-
+neth Wright, Vandiver Chaplin, Andrii Maksymov, Eduardo
+Páez, Amrit Poudel, Peter Maunz, and John Gamble. Bench-
+marking a trapped-ion quantum computer with 29 algorithmic
+qubits, 2023.
+[22] Aram W. Harrow, Avinatan Hassidim, and Seth Lloyd. Quan-
+tum algorithm for linear systems of equations. Phys. Rev. Lett.,
+103:150502, Oct 2009. doi:10.1103/PhysRevLett.103.150502.
+URL https://link.aps.org/doi/10.1103/PhysRevLe
+tt.103.150502.
+[23] Jay M Gambetta, AD Córcoles, Seth T Merkel, Blake R
+Johnson, John A Smolin, Jerry M Chow, Colm A Ryan,
+Chad Rigetti, S Poletto, Thomas A Ohki, et al. Characteri-
+zation of addressability by simultaneous randomized bench-
+marking. Phys. Rev. Lett. , 109(24):240504, 2012. URL
+https://journals.aps.org/prl/abstract/10.110
+3/PhysRevLett.109.240504.
+[24] Mohan Sarovar, Timothy Proctor, Kenneth Rudinger, Kevin
+Young, Erik Nielsen, and Robin Blume-Kohout. Detecting
+crosstalk errors in quantum information processors. Quantum,
+4:321, 2020. URL https://quantum-journal.org/pap
+ers/q-2020-09-11-321/ .
+[25] Timothy Proctor, Stefan Seritan, Kenneth Rudinger, Erik
+Nielsen, Robin Blume-Kohout, and Kevin Young. Scalable
+randomized benchmarking of quantum computers using mirror
+circuits. Physical Review Letters, 129(15), October 2022. ISSN
+1079-7114. doi:10.1103/physrevlett.129.150502. URL http:
+//dx.doi.org/10.1103/PhysRevLett.129.150502.
+[26] The Qiskit Team. Measuring quantum volume, Aug 2021. URL
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 23 =====
+
+23
+https://qiskit.org/textbook/ch-quantum-hardwar
+e/measuring-quantum-volume.html.
+[27] Robin Blume-Kohout and Kevin C. Young. A volumetric
+framework for quantum computer benchmarks. Quantum, 4:
+362, November 2020. ISSN 2521-327X. doi:10.22331 /q-2020-
+11-15-362. URL https://doi.org/10.22331/q-2020-1
+1-15-362.
+[28] Charles H. Baldwin, Karl Mayer, Natalie C. Brown, Ciarán
+Ryan-Anderson, and David Hayes. Re-examining the quantum
+volume test: Ideal distributions, compiler optimizations, confi-
+dence intervals, and scalable resource estimations. Quantum,
+6:707, May 2022. ISSN 2521-327X. doi:10.22331 /q-2022-05-
+09-707. URL https://doi.org/10.22331/q-2022-05-0
+9-707.
+[29] Elijah Pelofske, Andreas Bartschi, and Stephan Eidenbenz.
+Quantum volume in practice: What users can expect from
+NISQ devices. IEEE Transactions on Quantum Engineering,
+3:1–19, 2022. doi:10.1109 /tqe.2022.3184764. URL https:
+//doi.org/10.1109%2Ftqe.2022.3184764.
+[30] Timothy Proctor, Stefan Seritan, Erik Nielsen, Kenneth
+Rudinger, Kevin Young, Robin Blume-Kohout, and Mohan
+Sarovar. Establishing trust in quantum computations, 2022.
+URL https://arxiv.org/abs/2204.07568.
+[31] Application-Oriented Performance Benchmarks for Quantum
+Computing, 2015. URL https://github.com/SRI-Inter
+national/QC-App-Oriented-Benchmarks .
+[32] Scott Aaronson. Read the fine print. Nature Physics, 11(4):
+291–293, Apr 2015. ISSN 1745-2481. doi:10.1038/nphys3272.
+URL https://doi.org/10.1038/nphys3272.
+[33] Xiaonan Liu, Haoshan Xie, Zhengyu Liu, and Chenyan Zhao.
+Survey on the improvement and application of hhl algorithm.
+Journal of Physics: Conference Series, 2333(1):012023, 2022.
+doi:10.1088/1742-6596/2333/1/012023.
+[34] Danial Dervovic, Mark Herbster, Peter Mountney, Simone
+Severini, Naïri Usher, and Leonard Wossnig. Quantum linear
+systems algorithms: a primer, 2018.
+[35] Hector Jose Morrell Jr au2, Anika Zaman, and Hiu Yung Wong.
+Step-by-step hhl algorithm walkthrough to enhance the under-
+standing of critical quantum computing concepts, 2023.
+[36] Yudong Cao, Anmer Daskin, Steven Frankel, and Sabre Kais.
+Quantum circuit design for solving linear systems of equations.
+Molecular Physics, 110(15-16):1675–1680, aug 2012. doi:
+10.1080/00268976.2012.668289. URL https://doi.org/
+10.1080%2F00268976.2012.668289.
+[37] Yonghae Lee, Jaewoo Joo, and Soojoon Lee. Hybrid quan-
+tum linear equation algorithm and its experimental test on
+ibm quantum experience. Scientific Reports, 9, 03 2019. doi:
+10.1038/s41598-019-41324-9.
+[38] Ana Martin, Ruben Ibarrondo, and Mikel Sanz. Digital-
+analog co-design of the harrow-hassidim-lloyd algo-
+rithm. Physical Review Applied , 19(6), jun 2023.
+doi:10.1103/physrevapplied.19.064056. URL h t t p s :
+//doi.org/10.1103%2Fphysrevapplied.19.064056.
+[39] Andrew M. Childs, Richard Cleve, Enrico Deotto, Edward
+Farhi, Sam Gutmann, and Daniel A. Spielman. Exponen-
+tial algorithmic speedup by a quantum walk. In Proceed-
+ings of the Thirty-Fifth Annual ACM Symposium on The-
+ory of Computing , STOC ’03, page 59–68, New York, NY ,
+USA, 2003. Association for Computing Machinery. ISBN
+1581136749. doi:10.1145 /780542.780552. URL https:
+//doi.org/10.1145/780542.780552.
+[40] Mikko Möttönen, Juha J. Vartiainen, Ville Bergholm, and
+Martti M. Salomaa. Transformation of quantum states using
+uniformly controlled rotations. 5(6):467–473, sep 2005. ISSN
+1533-7146.
+[41] Lidia Ruiz-Perez and Juan Carlos Garcia-Escartin. Quan-
+tum arithmetic with the quantum fourier transform. Quan-
+tum Information Processing , 16(6):152, Apr 2017. ISSN
+1573-1332. doi:10.1007 /s11128-017-1603-1. URL https:
+//doi.org/10.1007/s11128-017-1603-1 .
+[42] Romina Yalovetzky, Pierre Minssen, Dylan Herman, and Marco
+Pistoia. Hybrid hhl with dynamic quantum circuits on real
+hardware, 2023.
+[43] Mario Motta, David M. Ceperley, Garnet Kin-Lic Chan, John A.
+Gomez, Emanuel Gull, Sheng Guo, Carlos A. Jiménez-Hoyos,
+Tran Nguyen Lan, Jia Li, Fengjie Ma, Andrew J. Millis, Niko-
+lay V . Prokof’ev, Ushnish Ray, Gustavo E. Scuseria, Sandro
+Sorella, Edwin M. Stoudenmire, Qiming Sun, Igor S. Tupitsyn,
+Steven R. White, Dominika Zgid, and Shiwei Zhang. Towards
+the solution of the many-electron problem in real materials:
+Equation of state of the hydrogen chain with state-of-the-art
+many-body methods. Phys. Rev. X, 7:031059, Sep 2017. doi:
+10.1103/PhysRevX.7.031059. URL https://link.aps.org
+/doi/10.1103/PhysRevX.7.031059.
+[44] Changsu Cao, Jinzhao Sun, Xiao Yuan, Han-Shi Hu, Hung Q.
+Pham, and Dingshun Lv. Ab initio quantum simulation of
+strongly correlated materials with quantum embedding. npj
+Computational Materials, 9(1), may 2023. doi:10.1038/s41524-
+023-01045-0. URL https://doi.org/10.1038%2Fs41524
+-023-01045-0 .
+[45] Joshua J. Goings, Alec White, Joonho Lee, Christofer S. Tauter-
+mann, Matthias Degroote, Craig Gidney, Toru Shiozaki, Ryan
+Babbush, and Nicholas C. Rubin. Reliably assessing the elec-
+tronic structure of cytochrome p450 on today’s classical com-
+puters and tomorrow’s quantum computers. Proceedings of
+the National Academy of Sciences , 119(38), sep 2022. doi:
+10.1073/pnas.2203533119. URL https://doi.org/10.107
+3%2Fpnas.2203533119.
+[46] Alexander J. McCaskey, Zachary P. Parks, Jacek Jakowski,
+Shirley V . Moore, T. Morris, Travis S. Humble, and Raphael C.
+Pooser. Quantum chemistry as a benchmark for near-term
+quantum computers, 2019. URL https://doi.org/10.103
+8/s41534-019-0209-0 .
+[47] Kübra Yeter-Aydeniz, Bryan T. Gard, Jacek Jakowski, Swar-
+nadeep Majumder, George S. Barron, George Siopsis, Travis
+Humble, and Raphael C. Pooser. Benchmarking quantum chem-
+istry computations with variational, imaginary time evolution,
+and krylov space solver algorithms, 2021.
+[48] Pierre-Luc Dallaire-Demers, Michał St ˛ echły, Jerome F.
+Gonthier, Ntwali Toussaint Bashige, Jonathan Romero, and
+Yudong Cao. An application benchmark for fermionic quantum
+simulations, 2020.
+[49] Nicolas PD Sawaya, Daniel Marti-Dafcik, Yang Ho, Daniel P
+Tabor, David Bernal, Alicia B Magann, Shavindra Premaratne,
+Pradeep Dubey, Anne Matsuura, Nathan Bishop, Wibe A
+de Jong, Simon Benjamin, Ojas D Parekh, Norm Tubman,
+Katherine Klymko, and Daan Camps. Hamlib: A library of
+hamiltonians for benchmarking quantum algorithms and hard-
+ware, 2023.
+[50] Nicholas H. Stair and Francesco A. Evangelista. Explor-
+ing hilbert space on a budget: Novel benchmark set and
+performance metric for testing electronic structure methods
+in the regime of strong correlation, 2020. URL https:
+//doi.org/10.1063/5.0014928.
+[51] Jules Tilly, Hongxiang Chen, Shuxiang Cao, Dario Picozzi,
+Kanav Setia, Ying Li, Edward Grant, Leonard Wossnig, Ivan
+Rungger, George H Booth, et al. The variational quantum
+eigensolver: a review of methods and best practices. Physics
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 24 =====
+
+24
+Reports, 986:1–128, 2022.
+[52] Jarrod R McClean, Jonathan Romero, Ryan Babbush, and
+Alán Aspuru-Guzik. The theory of variational hybrid quantum-
+classical algorithms. New Journal of Physics, 18(2):023023,
+feb 2016. doi:10.1088/1367-2630/18/2/023023. URL https:
+//doi.org/10.1088/1367-2630/18/2/023023.
+[53] Peter D. Johnson, Alexander A. Kunitsa, Jérôme F. Gonthier,
+Maxwell D. Radin, Corneliu Buda, Eric J. Doskocil, Clena M.
+Abuan, and Jhonathan Romero. Reducing the cost of energy
+estimation in the variational quantum eigensolver algorithm
+with robust amplitude estimation, 2022. URL https://arxi
+v.org/abs/2203.07275.
+[54] Steven R White. Density matrix formulation for quantum
+renormalization groups. Physical review letters, 69(19):2863,
+1992.
+[55] Frank Arute, Kunal Arya, Ryan Babbush, Dave Bacon,
+Joseph C. Bardin, Rami Barends, Sergio Boixo, Michael
+Broughton, Bob B. Buckley, David A. Buell, Brian Burkett,
+Nicholas Bushnell, Yu Chen, Zijun Chen, Benjamin Chiaro,
+Roberto Collins, William Courtney, Sean Demura, Andrew
+Dunsworth, Edward Farhi, Austin Fowler, Brooks Foxen,
+Craig Gidney, Marissa Giustina, Rob Gra ff, Steve Habeg-
+ger, Matthew P. Harrigan, Alan Ho, Sabrina Hong, Trent
+Huang, William J. Huggins, Lev Ioffe, Sergei V . Isakov, Evan
+Jeffrey, Zhang Jiang, Cody Jones, Dvir Kafri, Kostyantyn
+Kechedzhi, Julian Kelly, Seon Kim, Paul V . Klimov, Alexan-
+der Korotkov, Fedor Kostritsa, David Landhuis, Pavel Laptev,
+Mike Lindmark, Erik Lucero, Orion Martin, John M. Marti-
+nis, Jarrod R. McClean, Matt McEwen, Anthony Megrant,
+Xiao Mi, Masoud Mohseni, Wojciech Mruczkiewicz, Josh
+Mutus, Ofer Naaman, Matthew Neeley, Charles Neill, Hart-
+mut Neven, Murphy Yuezhen Niu, Thomas E. O’Brien, Eric
+Ostby, Andre Petukhov, Harald Putterman, Chris Quintana,
+Pedram Roushan, Nicholas C. Rubin, Daniel Sank, Kevin J.
+Satzinger, Vadim Smelyanskiy, Doug Strain, Kevin J. Sung,
+Marco Szalay, Tyler Y . Takeshita, Amit Vainsencher, Theodore
+White, Nathan Wiebe, Z. Jamie Yao, Ping Yeh, and Adam
+Zalcman. Hartree-fock on a superconducting qubit quantum
+computer. Science, 369(6507):1084–1089, aug 2020. doi:
+10.1126/science.abb9811. URL https://doi.org/10.112
+6%2Fscience.abb9811.
+[56] Mario Motta, David M. Ceperley, Garnet Kin-Lic Chan, John A.
+Gomez, Emanuel Gull, Sheng Guo, Carlos A. Jimé nez-Hoyos,
+Tran Nguyen Lan, Jia Li, Fengjie Ma, Andrew J. Millis, Niko-
+lay V . Prokof’ev, Ushnish Ray, Gustavo E. Scuseria, Sandro
+Sorella, Edwin M. Stoudenmire, Qiming Sun, Igor S. Tupit-
+syn, Steven R. White, Dominika Zgid, and Shiwei Zhang
+and. Towards the solution of the many-electron problem
+in real materials: Equation of state of the hydrogen chain
+with state-of-the-art many-body methods. Physical Review
+X, 7(3), sep 2017. doi:10.1103 /physrevx.7.031059. URL
+https://doi.org/10.1103%2Fphysrevx.7.031059.
+[57] Yudong Cao, Jonathan Romero, Jonathan P. Olson, Matthias
+Degroote, Peter D. Johnson, Mária Kieferová, Ian D. Kivlichan,
+Tim Menke, Borja Peropadre, Nicolas P. D. Sawaya, and
+et al. Quantum chemistry in the age of quantum comput-
+ing. Chemical Reviews, 119(19):10856–10915, Aug 2019.
+ISSN 1520-6890. doi:10.1021 /acs.chemrev.8b00803. URL
+http://dx.doi.org/10.1021/acs.chemrev.8b00803.
+[58] Vincent E Elfving, Marta Millaruelo, José A Gámez, and Chris-
+tian Gogolin. Simulating quantum chemistry in the seniority-
+zero space on qubit-based quantum computers.Physical Review
+A, 103(3):032605, 2021.
+[59] Luning Zhao, Joshua Goings, Kyujin Shin, Woomin Kyoung,
+Johanna I Fuks, June-Koo Kevin Rhee, Young Min Rhee, Ken-
+neth Wright, Jason Nguyen, Jungsang Kim, et al. Orbital-
+optimized pair-correlated electron simulations on trapped-ion
+quantum computers. npj Quantum Information, 9(1):60, 2023.
+[60] T E O’Brien, G Anselmetti, F Gkritsis, V E Elfving, S Polla,
+W J Huggins, O Oumarou, K Kechedzhi, D Abanin, R Acharya,
+I Aleiner, R Allen, T I Andersen, K Anderson, M Ansmann,
+F Arute, K Arya, A Asfaw, J Atalaya, J C Bardin, A Bengts-
+son, G Bortoli, A Bourassa, J Bovaird, L Brill, M Broughton,
+B Buckley, D A Buell, T Burger, B Burkett, N Bushnell,
+J Campero, Z Chen, B Chiaro, D Chik, J Cogan, R Collins,
+P Conner, W Courtney, A L Crook, B Curtin, D M Debroy,
+S Demura, I Drozdov, A Dunsworth, C Erickson, L Faoro,
+E Farhi, R Fatemi, V S Ferreira, L Flores Burgos, E Forati, A G
+Fowler, B Foxen, W Giang, C Gidney, D Gilboa, M Giustina,
+R Gosula, A Grajales Dau, J A Gross, S Habegger, M C
+Hamilton, M Hansen, M P Harrigan, S D Harrington, P Heu,
+M R Ho ffmann, S Hong, T Huang, A Hu ff, L B Io ffe, S V
+Isakov, J Iveland, E Jeffrey, Z Jiang, C Jones, P Juhas, D Kafri,
+T Khattar, M Khezri, M Kieferová, S Kim, P V Klimov, A R
+Klots, A N Korotkov, F Kostritsa, J M Kreikebaum, D Land-
+huis, P Laptev, K-M Lau, L Laws, J Lee, K Lee, B J Lester,
+A T Lill, W Liu, W P Livingston, A Locharla, F D Malone,
+S Mandrà, O Martin, S Martin, J R McClean, T McCourt,
+M McEwen, X Mi, A Mieszala, K C Miao, M Mohseni, S Mon-
+tazeri, A Morvan, R Movassagh, W Mruczkiewicz, O Naa-
+man, M Neeley, C Neill, A Nersisyan, M Newman, J H Ng,
+A Nguyen, M Nguyen, M Y Niu, S Omonije, A Opremcak,
+A Petukhov, R Potter, L P Pryadko, C Quintana, C Rocque,
+P Roushan, N Saei, D Sank, K Sankaragomathi, K J Satzinger,
+H F Schurkus, C Schuster, M J Shearn, A Shorter, N Shutty,
+V Shvarts, J Skruzny, W C Smith, R D Somma, G Sterling,
+D Strain, M Szalay, D Thor, A Torres, G Vidal, B Villalonga,
+C V ollgraff Heidweiller, T White, B W K Woo, C Xing, Z J Yao,
+P Yeh, J Yoo, G Young, A Zalcman, Y Zhang, N Zhu, N Zo-
+brist, D Bacon, S Boixo, Y Chen, J Hilton, J Kelly, E Lucero,
+A Megrant, H Neven, V Smelyanskiy, C Gogolin, R Babbush,
+and N C Rubin. Purification-based quantum error mitigation
+of pair-correlated electron simulations. Nat. Phys., pages 1–6,
+October 2023.
+[61] Yunseong Nam, Jwo-Sy Chen, Neal C Pisenti, Kenneth Wright,
+Conor Delaney, Dmitri Maslov, Kenneth R Brown, Stewart
+Allen, Jason M Amini, Joel Apisdorf, et al. Ground-state energy
+estimation of the water molecule on a trapped-ion quantum
+computer. npj Quantum Information, 6(1):33, 2020.
+[62] Joonho Lee, William J Huggins, Martin Head-Gordon, and
+K Birgitta Whaley. Generalized unitary coupled cluster wave
+functions for quantum computation. Journal of chemical theory
+and computation, 15(1):311–324, 2018.
+[63] Joshua Goings, Luning Zhao, Jacek Jakowski, Titus Morris,
+and Raphael Pooser. Molecular symmetry in vqe: A dual ap-
+proach for trapped-ion simulations of benzene. arXiv preprint
+arXiv:2308.00667, 2023.
+[64] Qiskit Runtime Sampler Primitive. https://qiskit.org/e
+cosystem/ibm-runtime/stubs/qiskit_ibm_runtime.
+Sampler.html, 2022. IBM Quantum Lab.
+[65] Seyon Sivarajah, Silas Dilkes, Alexander Cowtan, Will Sim-
+mons, Alec Edgington, and Ross Duncan. tket: a retargetable
+compiler for NISQ devices. Quantum Science and Technology,
+6(1):014003, nov 2020. doi:10.1088/2058-9565/ab8e92. URL
+https://doi.org/10.1088/2058-9565/ab8e92.
+[66] Q-CTRL web site. https://q-ctrl.com/, 2023. Q-CTRL
+File Opal.
+[67] Zhenyu Cai, Ryan Babbush, Simon C. Benjamin, Suguru Endo,
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 25 =====
+
+25
+William J. Huggins, Ying Li, Jarrod R. McClean, and Thomas E.
+O’Brien. Quantum error mitigation, 2023.
+[68] Dayue Qin, Yanzhu Chen, and Ying Li. Error statistics and
+scalability of quantum error mitigation formulas. npj Quantum
+Information, 9(1), apr 2023. doi:10.1038/s41534-023-00707-7.
+URL https://doi.org/10.1038%2Fs41534-023-00707
+-7.
+[69] Ryuji Takagi, Suguru Endo, Shintaro Minagawa, and Mile Gu.
+Fundamental limits of quantum error mitigation. npj Quantum
+Information, 8(1), sep 2022. doi:10.1038/s41534-022-00618-z.
+URL https://doi.org/10.1038%2Fs41534-022-00618
+-z.
+[70] Cristina Cirstoiu, Silas Dilkes, Daniel Mills, Seyon Sivara-
+jah, and Ross Duncan. V olumetric Benchmarking of Er-
+ror Mitigation with Qermit. Quantum, 7:1059, July 2023.
+ISSN 2521-327X. doi:10.22331 /q-2023-07-13-1059. URL
+https://doi.org/10.22331/q-2023-07-13-1059 .
+[71] Paul D. Nation, Hwajung Kang, Neereja Sundaresan, and
+Jay M. Gambetta. Scalable mitigation of measurement er-
+rors on quantum computers. PRX Quantum, 2(4), nov 2021.
+doi:10.1103/prxquantum.2.040326. URL https://doi.org/
+10.1103%2Fprxquantum.2.040326.
+[72] Mthree Error Mitigation. https://qiskit.org/ecosyst
+em/mthree/, 2022. IBM Quantum Lab.
+[73] Paul D. Nation and Matthew Treinish. Suppressing quantum
+circuit errors due to system variability. PRX Quantum, 4(1),
+mar 2023. doi:10.1103 /prxquantum.4.010327. URL https:
+//doi.org/10.1103%2Fprxquantum.4.010327.
+[74] Daniel Mills, Seyon Sivarajah, Travis L. Scholten, and Ross
+Duncan. Application-motivated, holistic benchmarking of a full
+quantum computing stack. Quantum, 5:415, Mar 2021. ISSN
+2521-327X. doi:10.22331 /q-2021-03-22-415. URL http:
+//dx.doi.org/10.22331/q-2021-03-22-415 .
+[75] Mirko Amico, Helena Zhang, Petar Jurcevic, Lev S. Bishop,
+Paul Nation, Andrew Wack, and David C. McKay. Defining
+standard strategies for quantum benchmarks, 2023. URL http
+s://arxiv.org/abs/2303.02108.
+[76] Robert R. Tucci. An introduction to cartan’s kak decomposition
+for qc programmers, 2005. URL https://arxiv.org/abs/
+quant-ph/0507171.
+[77] Pranav S. Mundada, Aaron Barbosa, Smarak Maity, Yu-
+lun Wang, Thomas Merkh, T.M. Stace, Felicity Nielson,
+Andre R.R. Carvalho, Michael Hush, Michael J. Biercuk,
+and Yuval Baum. Experimental benchmarking of an auto-
+mated deterministic error-suppression workflow for quantum
+algorithms. Phys. Rev. Appl. , 20:024034, Aug 2023. doi:
+10.1103/PhysRevApplied.20.024034. URL https://link.a
+ps.org/doi/10.1103/PhysRevApplied.20.024034.
+[78] Yuval Baum, Mirko Amico, Sean Howell, Michael Hush, Mag-
+gie Liuzzi, Pranav Mundada, Thomas Merkh, Andre R.R. Car-
+valho, and Michael J. Biercuk. Experimental deep reinforce-
+ment learning for error-robust gate-set design on a supercon-
+ducting quantum computer. PRX Quantum, 2:040324, Nov
+2021. doi:10.1103 /PRXQuantum.2.040324. URL https:
+//link.aps.org/doi/10.1103/PRXQuantum.2.040324.
+[79] Andre R. R. Carvalho, Harrison Ball, Michael J. Biercuk,
+Michael R. Hush, and Felix Thomsen. Error-robust quan-
+tum logic optimization using a cloud quantum computer in-
+terface. Phys. Rev. Applied , 15:064054, Jun 2021. doi:
+10.1103/PhysRevApplied.15.064054. URL https://link.a
+ps.org/doi/10.1103/PhysRevApplied.15.064054.
+[80] Nam H. Nguyen, E. C. Behrman, Mohamed A. Moustafa,
+and J. E. Steck. Benchmarking neural networks for quan-
+tum computations. IEEE Transactions on Neural Networks
+and Learning Systems , page 1–10, 2019. ISSN 2162-2388.
+doi:10.1109/tnnls.2019.2933394. URL http://dx.doi.org
+/10.1109/TNNLS.2019.2933394.
+[81] Maxwell T. West, Sarah M. Erfani, Christopher Leckie, Mar-
+tin Sevior, Lloyd C. L. Hollenberg, and Muhammad Usman.
+Benchmarking adversarially robust quantum machine learn-
+ing at scale. Physical Review Research , 5(2), June 2023.
+ISSN 2643-1564. doi:10.1103/physrevresearch.5.023186. URL
+http://dx.doi.org/10.1103/PhysRevResearch.5.023
+186.
+[82] Marcello Benedetti, Delfina Garcia-Pintos, Oscar Perdomo, Vi-
+cente Leyton-Ortega, Yunseong Nam, and Alejandro Perdomo-
+Ortiz. A generative modeling approach for benchmarking and
+training shallow quantum circuits. npj Quantum Information,
+5(1), May 2019. ISSN 2056-6387. doi:10.1038 /s41534-019-
+0157-8. URL http://dx.doi.org/10.1038/s41534-019
+-0157-8.
+[83] Evan Peters and Maria Schuld. Generalization despite overfit-
+ting in quantum machine learning models. Quantum, 7:1210,
+December 2023. ISSN 2521-327X. doi:10.22331 /q-2023-12-
+20-1210. URL http://dx.doi.org/10.22331/q-2023-1
+2-20-1210.
+[84] Matthias C. Caro, Hsin-Yuan Huang, Nicholas Ezzell, Joe
+Gibbs, Andrew T. Sornborger, Lukasz Cincio, Patrick J. Coles,
+and Zoë Holmes. Out-of-distribution generalization for learn-
+ing quantum dynamics. Nature Communications, 14(1), July
+2023. ISSN 2041-1723. doi:10.1038 /s41467-023-39381-w.
+URL http://dx.doi.org/10.1038/s41467-023-39381
+-w.
+[85] Matthias C Caro, Hsin-Yuan Huang, M Cerezo, Kunal Sharma,
+Andrew Sornborger, Lukasz Cincio, and Patrick J Coles. Gen-
+eralization in quantum machine learning from few training data.
+Nature Communications, 13(1):4919, aug 2022.
+[86] Xun Gao, Eric R. Anschuetz, Sheng-Tao Wang, J. Ignacio
+Cirac, and Mikhail D. Lukin. Enhancing generative models
+via quantum correlations. Phys. Rev. X, 12:021037, May 2022.
+doi:10.1103/PhysRevX.12.021037.
+[87] Joseph Bowles, Victoria J Wright, Máté Farkas, Nathan Kil-
+loran, and Maria Schuld. Contextuality and inductive bias in
+quantum machine learning, 2023.
+[88] Elton Yechao Zhu, Sonika Johri, Dave Bacon, Mert Esencan,
+Jungsang Kim, Mark Muir, Nikhil Murgai, Jason Nguyen, Neal
+Pisenti, Adam Schouela, Ksenia Sosnova, and Ken Wright.
+Generative quantum learning of joint probability distribu-
+tion functions. Phys. Rev. Res., 4:043092, Nov 2022. doi:
+10.1103/PhysRevResearch.4.043092.
+[89] Manuel S. Rudolph, Ntwali Bashige Toussaint, Amara
+Katabarwa, Sonika Johri, Borja Peropadre, and Alejandro
+Perdomo-Ortiz. Generation of high-resolution handwritten
+digits with an ion-trap quantum computer. 2020.
+[90] He-Liang Huang, Yuxuan Du, Ming Gong, Youwei Zhao,
+Yulin Wu, Chaoyue Wang, Shaowei Li, Futian Liang, Jin
+Lin, Yu Xu, Rui Yang, Tongliang Liu, Min-Hsiu Hsieh, Hui
+Deng, Hao Rong, Cheng-Zhi Peng, Chao-Yang Lu, Yu-Ao
+Chen, Dacheng Tao, Xiaobo Zhu, and Jian-Wei Pan. Exper-
+imental quantum generative adversarial networks for image
+generation. Phys. Rev. Appl. , 16:024051, Aug 2021. doi:
+10.1103/PhysRevApplied.16.024051. URL https://link.a
+ps.org/doi/10.1103/PhysRevApplied.16.024051.
+[91] Daniel Silver, Tirthak Patel, William Cutler, Aditya Ranjan,
+Harshitta Gandhi, and Devesh Tiwari. Mosaiq: Quantum gen-
+erative adversarial networks for image generation on nisq com-
+puters, 2023.
+[92] Daiwei Zhu, Weiwei Shen, Annarita Giani, Saikat Ray Ma-
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024
+
+===== PAGE 26 =====
+
+26
+jumder, Bogdan Neculaes, and Sonika Johri. Copula-based risk
+aggregation with trapped ion quantum computers. 2022. URL
+https://arxiv.org/abs/2206.11937.
+[93] Sonika Johri, Shantanu Debnath, Avinash Mocherla, Alexan-
+dros SINGK, Anupam Prakash, Jungsang Kim, and Iordanis
+Kerenidis. Nearest centroid classification on a trapped ion
+quantum computer. npj Quantum Information, 7(1):122, Aug
+2021. ISSN 2056-6387. doi:10.1038 /s41534-021-00456-5.
+[94] El Amine Cherrat, Iordanis Kerenidis, Natansh Mathur, Jonas
+Landman, Martin Strahm, and Yun Yvonna Li. Quantum vision
+transformers. 2022. URL https://arxiv.org/abs/2209
+.08167.
+[95] Daniel Silver, Tirthak Patel, and Devesh Tiwari. Quilt: Effec-
+tive multi-class classification on quantum computers using an
+ensemble of diverse quantum classifiers. Proceedings of the
+AAAI Conference on Artificial Intelligence, 36(8):8324–8332,
+Jun. 2022. doi:10.1609/aaai.v36i8.20807. URL https://oj
+s.aaai.org/index.php/AAAI/article/view/20807.
+[96] Arthur Pesah, M. Cerezo, Samson Wang, Tyler V olkoff, An-
+drew T. Sornborger, and Patrick J. Coles. Absence of barren
+plateaus in quantum convolutional neural networks. Phys. Rev.
+X, 11:041011, Oct 2021. doi:10.1103/PhysRevX.11.041011.
+[97] Iordanis Kerenidis, Jonas Landman, and Natansh Mathur. Clas-
+sical and quantum algorithms for orthogonal neural networks.
+2022. URL https://arxiv.org/abs/2106.07198.
+[98] Maria Schuld, Ryan Sweke, and Johannes Jakob Meyer. Ef-
+fect of data encoding on the expressive power of variational
+quantum-machine-learning models. Phys. Rev. A, 103:032430,
+Mar 2021. doi:10.1103/PhysRevA.103.032430. URL https:
+//link.aps.org/doi/10.1103/PhysRevA.103.032430.
+[99] Iris Cong and Mikhail D. Choi, Soonwonand Lukin. Quantum
+convolutional neural networks. Nature Physics, 15(12):1273–
+1278, Dec 2019. ISSN 1745-2481. doi:10.1038 /s41567-019-
+0648-8. URL https://arxiv.org/abs/1810.03787.
+[100] Tak Hur, Leeseok Kim, and Daniel K. Park. Quantum convolu-
+tional neural network for classical data classification. Quantum
+Machine Intelligence, 4(1), February 2022. ISSN 2524-4914.
+doi:10.1007/s42484-021-00061-x. URL http://dx.doi.o
+rg/10.1007/s42484-021-00061-x .
+[101] Mnist database 784. https://www.openml.org/search?
+type=data&sort=runs&id=554&status=active , 2023.
+Handwritten Digit Database.
+[102] Sci-kit sklearn. https://scikit-learn.org/stable/ ,
+2023. Machine Learning Package in Python.
+Quantum Algorithm Exploration using Application-Oriented Performance Benchmarks February 15, 2024

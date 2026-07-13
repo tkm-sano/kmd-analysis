@@ -1,0 +1,1650 @@
+--- Page 1 ---
+Quantum utility – definition and assessment of a practical quantum advantage
+Nils Herrmann, ∗ Daanish Arya, Florian Preis, † and Stefan Prestel
+Quantum Brilliance GmbH
+Colorado Tower Industriestr. 4
+70565 Stuttgart, Germany
+Marcus W. Doherty, Angus Mingare, and Jason C. Pillay
+Quantum Brilliance Pty Ltd
+60 Mills Road
+Acton ACT 2601, Australia
+(Dated: June 5, 2023)
+Several benchmarks have been proposed to holistically measure quantum computing performance.
+While some have focused on the end user’s perspective (e.g., in application-oriented benchmarks),
+the real industrial value taking into account the physical footprint of the quantum processor are not
+discussed. Different use-cases come with different requirements for size, weight, power consumption,
+or data privacy while demanding to surpass certain thresholds of fidelity, speed, problem size, or
+precision. This paper aims to incorporate these characteristics into a concept coined quantum utility,
+which demonstrates the effectiveness and practicality of quantum computers for various applications
+where quantum advantage – defined as either being faster, more accurate, or demanding less energy –
+is achieved over a classical machine of similar size, weight, and cost. To successively pursue quantum
+utility, a level-based classification scheme – constituted as application readiness levels (ARLs) – as
+well as extended classification labels are introduced. These are demonstratively applied to different
+quantum applications from the fields of quantum chemistry, quantum simulation, quantum machine
+learning, and data analysis followed by a brief discussion.
+I. INTRODUCTION
+In recent years, there have been claims of quantum
+computers reaching quantum advantage [1–4] – the point
+at which quantum computers are able to solve a prob-
+lem that a classical device would not be able to in a
+reasonable amount of time [1]. This is a critical turning
+point in the computational sciences as it precedes an era
+of widespread use of quantum computers. All current
+quantum advantage claims reaching super-polynomial
+speed-ups [5], rely on either random circuit sampling
+[6] or Gaussian boson sampling methods [7]. These
+can be viewed as extreme niche use-cases with question-
+able practical relevance. Nevertheless, they demonstrate
+that there is no fundamental physical law which prevents
+quantum advantage from being achieved.
+In the past endeavors to establish a genuine quantum
+advantage, the physical demands of quantum processors
+in terms of size, weight, and power consumption and thus
+costs (SWaP-C) are rarely considered if at all. Only if
+these SWaP-C factors are taken into consideration, users
+are enabled to decide which computing platform is suit-
+able and beneficial for a particular application. More
+community focus on SWaP-C could thus lead to the
+widespread adoption of quantum computing. Therefore,
+we introduce the idea of a practical quantum advantage –
+called quantum utility –, which incorporates device spec-
+ifications in terms of SWaP-C demands.
+∗ nils.herrmann@quantum-brilliance.com
+† f.preis@quantum-brilliance.com
+In terms of general performance benchmarks for quan-
+tum computing, one of the first metrics – called quantum
+volume[8, 9] – utilized by multiple quantum computing
+companies was introduced by IBM. It considers various
+properties of the device, such as number of qubits, cir-
+cuit compilation, coherent and non-coherent errors, gate
+parallelism, device connectivity and computational effi-
+ciency to create a single-number value to quantify the
+abilities of a quantum computer. In addition to quan-
+tum volume to measure the quality and scale of a quan-
+tum computer, the concept of circuit layer operations per
+second (CLOPS) has been subsequently introduced [10].
+CLOPS builds on the quantum volume circuits and deter-
+mines the number of circuit layers which can be executed
+per second.
+Whilst quantum volume can provide information on
+the performance of the machine, its deployment is limited
+to the performance of only square circuits, which repre-
+sents a compromise of the large variety of algorithms of
+interest such as the quantum Fourier transform, quantum
+phase estimation, Deutsch-Jozsa’s, Grover’s, and Shor’s
+algorithm [11] or many variational quantum algorithms
+[12]. These are realized as either shallow or deep rectan-
+gular circuits in general. Consequently, the notion of the
+quantum volume proposal was generalized to so-called
+volumetric benchmarks [13, 14].
+It is important to note that these benchmarks rely on
+the same theoretical framework for random circuit sam-
+pling [6] as references [1, 15] for demonstrating quantum
+advantage. As noted in references [16, 17], randomized
+circuits are less sensitive to coherent errors, which are
+amplified in structured circuits. While this fact can be
+arXiv:2303.02138v2  [quant-ph]  2 Jun 2023
+
+--- Page 2 ---
+2
+exploited in randomized compilation [18] it is not desired
+in benchmarking, since many quantum algorithms such
+as the variational quantum eigensolver [19] with many re-
+peating blocks are instances of structured quantum pro-
+grams.
+While random circuits can mimic some aspects of vari-
+ational circuits, the potential for applications of random
+circuit sampling is as of yet unclear. Therefore, sev-
+eral proposals towards application-oriented benchmark-
+ing have been made.
+Q-Score was proposed as a method of defining the max-
+imum number of qubits a quantum computer has avail-
+able to run a max-cut algorithm. This demonstrates the
+size of problem that a processor is able to solve [20].
+The benchmarking suite introduced in reference [21]
+contains the three categories: tutorial (e.g., Deutsch-
+Jozsa), subroutine (e.g., quantum Fourier transform),
+and functional (e.g., variational quantum eigensolver).
+Here, the performance is measured by the averaged re-
+sult fidelity and quantum execution times for each cir-
+cuit. The resulting metrics are displayed in the spirit of
+volumetric benchmarks (width and depth of the circuits)
+and are compared to a volumetric background. Since the
+benchmarking suite does not contain a full-blown appli-
+cation, e.g., electronic structure simulations of molecules,
+the measured execution times are only of limited value
+for estimating application runtimes. Even the functional
+benchmarks do not capture the full hybrid nature of near
+term applications, which require many passes between
+classical and quantum computing resources in many it-
+erations, optimization of circuits to specific hardware
+topologies, and error mitigation.
+Recently, a benchmarking suite was proposed[22] fo-
+cussing on end-to-end application performance and so far
+contains a robot path planning and a vehicle option plan-
+ning problem.
+A common problem of all previously discussed bench-
+marks is the difficulty to verify success at scale, as the
+comparison with a classical computation becomes in-
+creasingly difficult with an increasing width of the quan-
+tum circuits. In special cases such as Shor’s algorithm,
+one can efficiently verify the result of prime factoriza-
+tion by multiplication. With the use of so-called mirror
+circuits[17], this may be generalized to more common cir-
+cuits. Here, a given circuit C is appended with a layer
+of Pauli gates followed by the quasi-inverse ˜C −1 of the
+given circuit, which should reverse the action of C up to
+the latter Pauli operations.
+In the following section, we propose a framework to
+systematically assess the maturity and commercial value
+of quantum enhanced applications and the associated
+quantum algorithms that allows to drive adoption for-
+ward. In section II, we introduce the notion of quantum
+utility and define Application Readiness Levels (ARLs) –
+a corresponding measurement system. Furthermore, we
+propose extensions of performance benchmarks and dis-
+cuss criteria for progressing through the ARLs during the
+development of quantum applications. In section III, we
+apply the quantum utility framework to selected quan-
+tum applications from the fields of quantum chemistry,
+quantum simulation, quantum machine learning (QML),
+and data analysis.
+II. A PRACTICAL QUANTUM ADV ANT AGE
+Quantum computing is often praised as a breakthrough
+technology that will have tremendous impacts on the
+computational sciences (see, e.g., [23–25]). In particu-
+lar, future quantum devices may enable computations
+deemed impossible on any available classical device – of-
+ten referred to as quantum supremacy [1, 6, 15] or more
+recently just as quantum advantage [2, 26, 27]. It is
+reasonable to assume that such an advantage will not
+appear instantaneously, but rather emerge slowly over
+time. A natural milestone on this path is the advent of
+commercially-available quantum devices that, when per-
+forming practical applications, can outperform a classical
+device in terms of speed, accuracy and energy consump-
+tion.
+In this section, we build upon that philosophy of a
+practical quantum advantage. In subsection II A, we
+strictly define (and separate) the terms quantum util-
+ity and quantum dominance. Subsection II C further in-
+troduces a simple concept – application readiness levels
+(ARLs) – to characterize and assess quantum applica-
+tions in terms of their utility.
+A. Definitions
+In this work, we introduce and reintroduce the terms
+quantum utility , quantum dominance , and quantum ad-
+vantage according to definitions 1, 2, and 3, respectively:
+Definition 1 Quantum utility is obtained if a practi-
+cal application
+(i) requires less computing time, or
+(ii) requires less power, or
+(iii) yields more accurate results
+on a quantum device or a hybrid classical/quantum archi-
+tecture, compared to the best classical device of similar
+size, weight, and cost.
+Definition 2 Quantum dominance is obtained if a
+practical application fulfills requirements (i)–(iii) from
+Definition 1 on a quantum device or a hybrid classi-
+cal/quantum architecture, compared to any other clas-
+sical device.
+Definition 3 Quantum advantageis defined as a col-
+lective term meaning either quantum utility or quan-
+tum dominance.
+
+--- Page 3 ---
+3
+Device speciﬁcation
+(size, weight, cost)
+Computational power
+(speed, accuracy
+eﬃciency)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Classical advantage Quantum advantage
+Best quantum device
+Best classical device Quantum utility
+Quantum dominance
+Figure 1: Abstract visualization of computational power (in terms of either speed, accuracy or power efficiency)
+w.r.t. device specifications (in terms of size, weight and cost) for the best classical device (red line) and best
+quantum device (blue line), in analogy to reference [28]. In contrast to the light red area of classical advantage, the
+light blue area of quantum advantage sub-categorizes into quantum utility and quantum dominance, depending on
+the availability of larger (better performing) classical devices compared to the best quantum device.
+Fig. 1 illustrates these definitions in terms of ab-
+stract computational power versus abstract physical de-
+vice specification for the best performing classical and
+quantum devices. Device advantage, indicated by the
+curves, separate into two regions of classical and quan-
+tum device advantage. The region of quantum device
+advantage is further separated into a region of quantum
+utility and quantum dominance according to definitions
+1 and 2. In particular, quantum utility is reached when-
+ever a quantum device outperforms a classical competitor
+of the same device specifications.
+While quantum dominance remains the main goal of
+most quantum computing companies, quantum utility
+may be a more realistic target for the intermediate-scale
+devices currently being developed. Also, quantum dom-
+inance may not be required at all to reach a genuine
+advantage – especially for applications that have strict
+SWaP-C constraints (e.g., mobile or edge-based). Even
+if quantum computing will never achieve quantum domi-
+nance, quantum utility – as long as SWaP-C constraints
+are met – might still lead to an improvement of tremen-
+dous value. Hence, quantum utility marks a milestone
+of great importance for both manufacturers of quantum
+technology and their customers alike, at which a quan-
+tum application first takes on commercial significance.
+B. Performance benchmarks
+Inspired by The Green Index (TGI) [29] we propose
+to adopt similar measures of energy efficiency for quan-
+tum computing which allows users to compare different
+quantum computing architectures. It was seen as unsus-
+tainable to consider performance based on only compu-
+tational power. The TGI allows for corporations to make
+environmentally considered decisions about the types of
+HPC systems used. The TGI employs a performance per
+Watt metric based on the floating point operations per
+second (FLOPS) per Watt. The FLOPS are typically
+measured by the performance of the LINPACK bench-
+mark. So far, no quantum benchmarks have taken the
+environmental aspect into account, but ideas around sus-
+tainable quantum computing begin to gain traction, see
+e.g., [30, 31] and the Quantum Energy Initiative.
+More generally, the performance can be given by any
+benchmarking score, such as circuit fidelities or successful
+number of quantum gate operations, divided by the total
+runtime. Here, the runtime may be multiplied by the av-
+erage power consumption of the device yielding the total
+energy consumed in the denominator of the benchmark,
+therefore, penalizing power hungry devices:
+Score1 = Performance
+Runtime × Power (1)
+In many deployment scenarios in automotive or
+aerospace industries, size and weight are further essen-
+tial measures. A like-for-like comparison of devices would
+allow stakeholders in industries such as automotive to
+decide whether to replace their existing processors with
+a quantum equivalent. In classical computing, Sun Mi-
+crosystems introduced the Space, Wattage, and Perfor-
+mance metric incorporating an additional factor of vol-
+ume in the denominator of their benchmark to account
+for the size of the computing device:
+Score2 = Performance
+Volume × Runtime × Power (2)
+
+--- Page 4 ---
+4
+In order to assess Quantum Utility as introduced in the
+previous subsection we have to incorporate all dimen-
+sions into future benchmarks: quantity, quality, speed,
+usefulness and physical, economical as well as ecologi-
+cal footprint. We recommend that the quantum com-
+puting industry adopts energy efficiency standards es-
+tablished in the classical computing industry. Hardware
+providers should disclose the power consumption, vol-
+ume, and weight of the quantum computer (including
+control and all infrastructure required for maintaining
+the coherence of the qubits) in addition to fidelities, num-
+ber of qubit, T1, and T2 times.
+C. Application readiness levels and their
+assessment
+Following NASA’s development of technology readi-
+ness levels (TRLs) in the late 80s, an international stan-
+dard was published in 2013[32]. Ever since, TRLs are a
+widely accepted tool to track and assess the maturity of
+emerging technologies. In analogy to TRLs, we propose
+a five-level scheme we denote application readiness levels
+(ARLs) to track the maturity of quantum applications
+in the pursuit of quantum utility (cf. Def. 1). In Figures
+2 and 3, a schematic roadmap including exit strategies
+through the individual ARLs as well as milestones, and
+definitions are highlighted, respectively.
+Any idea or concept of a quantum application is cat-
+egorized as ARL–1. At this level, no formal description
+(e.g., in terms of a quantum circuit) of that algorithm
+is necessary. ARL–1 is meant as an entry label to pave
+the way of further investigations and developments, even
+if the application is merely a thought. With more in-
+depth research and a working proof of concept imple-
+mentation, the application may proceed to ARL–2 if it
+can present any kind of benefit compared to a (possi-
+bly scaled-down) similar-sized classical competitive algo-
+rithm. At this stage, the application may enter an ad-
+vanced analysis phase, where its formal resource scaling
+w.r.t. problem-specific variables is investigated. In our
+own studies (cf. section III) we found that an extended
+classification scheme in terms of a quantum application’s
+core features may be useful. The labels of a such an ex-
+tended classification scheme, which we will use in section
+III, are summarized in Table I. These include
+• Scalability: Given a set of problem-specific vari-
+ables (e.g., the number of required qubits), it is
+important to understand how demanding a quan-
+tum application becomes with increasing problem
+sizes. An extensive scaling study should therefore
+involve the formal scaling of (i) the total number of
+quantum circuits that need to be executed, (ii) the
+number of successive quantum gate operations, i.e.,
+the gate depth, to be executed in each circuit, and
+(iii) the number of measurement shots required to
+sample the quantum state with sufficient accuracy.
+Table I: Additional classification labels for the analysis
+of ARL–2 applications.
+Category Labels
+Scalability
+O scaling of
+(i) the number of measurement circuits,
+(ii) the gate depth per circuit, and
+(iii) the number of shots per circuit
+Compilability
+• Native gates
+• Non-native 1 and/or 2 qubit gates
+• General multi-qubit gates
+• Classical control
+Connectivity
+• Linear
+• Circular
+• Nearest neighbor
+• All-to-all
+Robustness
+• Noise as a resource
+• Variational circuits
+• Non-variational circuits
+Parallelizability
+• Qubit-based
+• Circuit-based
+• Shot-based
+• Compilability: When working with real quantum
+hardware, one has to compile the algorithm gates
+into the available native hardware gates. Depend-
+ing on the original algorithm gates (and the avail-
+able native gates) this may be a more or less de-
+manding task. In general one may distinguish be-
+tween an algorithm that uses only native gates, uses
+non-native 1- and 2- qubit gates, requires general
+multi-qubit gates, or involves some degree of clas-
+sical control such as conditional mid-circuit mea-
+surements or classical oracles.
+• Connectivity: A given quantum hardware may
+only be able to entangle specific pairs or sets of
+qubits. To make optimal use of this constrained
+qubit topology, the algorithmic qubits need to be
+mapped in an optimal fashion to the real physi-
+cal qubits. Depending on the connectivity require-
+ments of a given quantum circuit, this may lead
+to significant increases in compiled gate depths. In
+general, one may distinguish between algorithms
+that require linear, circular, nearest neighbor (in 2
+or 3-dimensional space), or an all-to-all connectiv-
+ity.
+• Robustness: All currently developed quantum com-
+puters are subject to noise. The robustness of a
+given quantum application to this noise may be of
+great importance. In general, one may distinguish
+between applications that use noise as a resource,
+involve trained parametrized circuits that may to
+some degree adapt to the presence of noise, and
+general non-variational circuits that assume perfect
+or near perfect execution.
+• Parallelizability: Due to the probabilistic nature of
+quantum computing, any quantum application is
+
+--- Page 5 ---
+5
+ARL 1:
+Problem statement
+and idea
+Technical
+documentation
+ARL 2:
+Useful proof
+of concept
+0/1
+0/1
+0/1
+0/1
+|0⟩ H H
+|0⟩ H H
+|0⟩ H H
+|0⟩ H H
+|0⟩ X H
+Resource
+estimation
+ARL 3:
+Proof of
+scalability
+Large-scale
+simulation
+ARL 4:
+Utility in
+simulation
+Deploy to
+quantum hardware
+ARL 5:
+Quantum utility
+Figure 2: Schematic roadmap detailing the progression through and exit strategies of the individual application
+readiness levels (cf. Figure 3) in the pursuit of quantum utility (see Def. 1).
+ARL 1: concept with unknown potential
+• Concept or idea for quantum or hybrid classical/quantum
+application formulated
+• Algorithm, encoding or circuit unknown
+ARL 2: beneﬁcial in small idealized systems
+• Proof of concept is favorable compared to similarly idealiz ed
+classical algorithm
+ARL 3: utility indicated by theory or resource estimations
+• Extrapolation exposes quantum device as faster, more
+accurate or less energy-demanding compared to classical
+competitor of similar size, weight and cost
+ARL 4: simulated utility demonstration
+• Functionality and requirements conﬁrmed by large-scale
+noise-free or noisy simulation of quantum application
+ARL 5: utility demonstration on quantum hardware
+• Utility of practically relevant application conﬁrmed on re al
+quantum hardware, according to Deﬁnition 1.
+Figure 3: Milestones and definition of application readiness levels (ARLs) for the classification and assessment of the
+maturity of quantum applications in the pursuit of quantum utility (referred to as just ’utility’, see Def. 1).
+inherently parallelizable. The degree of paralleliza-
+tion, however, depends on the underlying quantum
+circuits. In general, one may distinguish between
+a qubit-based parallelizability, where the quantum
+circuits may be split into smaller circuits requiring
+less qubits, a circuit-based parallelizability, where a
+specific application involves the simultaneous mea-
+surement of multiple circuits, and a pure shot-based
+parallelizability where a given quantum application
+may be deployed to multiple quantum processing
+units to increase only the obtained shot rate.
+Once an application is properly assessed according to
+
+--- Page 6 ---
+6
+these extended classification labels, the resource require-
+ments for specific quantum hardware may be extrapo-
+lated. If such an extrapolation reveals an advantage
+over classical competitors, the application reaches ARL–
+3. From here on, one may prove these theoretical extrap-
+olations by performing simulations (if possible) or actual
+quantum computations to reach ARL–4 and ARL–5, re-
+spectively. ARL–4 is further subcategorized into noise-
+free (ARL–4a) and noisy (ARL–4b) simulations. The
+final target, however, – quantum utility – is reached only
+if an application reaches ARL–5.
+III. PRACTICAL ASSESSMENT
+This section features a practical assessment of selected
+quantum applications from the fields of quantum chem-
+istry, quantum simulation, quantum machine learning,
+and data analysis in terms of their ARLs and extended
+classification labels (cf. subsection II C).
+A summary of all results can be found in Table II. The
+following subsections contain details of the applications’
+individual investigations.
+1. Quantum chemistry and quantum simulation
+The idea to perform simulations of quantum systems
+on a quantum computer is as old as the field itself and is
+often attributed to Feynman[44]. Of particular interest
+is the study of electronic structure in the field of quan-
+tum chemistry, which has a wide range of applications
+within material science, drug discovery, and chemical
+engineering[45].
+The variational quantum eigensolver (VQE)[19] aims
+to efficiently estimate the ground state energy of a molec-
+ular system. Hence, it solves the variational optimization
+problem
+min
+θ
+⟨Ψ(θ)| ˆH|Ψ(θ)⟩ = min
+θ
+⟨Ψ0| ˆU †(θ) ˆH ˆU (θ)|Ψ0⟩ , (3)
+where ˆU (θ) |Ψ0⟩ is assumed to be an accurate representa-
+tion of the target ground state wave function and ˆH de-
+notes the molecular electronic Hamiltonian. There have
+been numerous advances in the field of VQE (see, e.g.,
+[46–81]). For a comprehensive review, refer to [45, 82].
+Tabulated in Table II are the respective best case sce-
+narios for scalability, compilability, connectivity, robust-
+ness, and parallelizability. In terms of the VQE, sophis-
+ticated term grouping techniques such as explicit double
+factorization[80] or full rank optimization[76] are claimed
+to reach reasonable energies for a linear scaling num-
+ber of measurement circuits, O(N ), w.r.t. the number
+of qubits N . All of these can be measured independently
+and therefore simultaneously on multiple quantum pro-
+cessing units (QPUs) such that VQEs possess a circuit-
+based parallelizability. Circuit ans¨ atze of linear depth
+scaling have been developed (e.g., the k-UpCCGSD[53] or
+the hardware-efficient ansatz (HEA)[55]). In case of the
+HEA, only native device gates and a linear qubit topol-
+ogy are required. The number of measurement shots is
+well-known to scale independently of the VQE system
+size with the squared inverse of the targeted accuracy of
+the expectation values.[45]
+In terms of its overall ARL, VQEs are currently based
+on level 3 since there are multiple resource estimations
+(see, e.g., references [45, 83, 84]) that might indicate util-
+ity under special circumstances. At the same time, there
+have been no reports of classical (ideal or noisy) simula-
+tions that could prove this utility. It remains question-
+able if under the assumptions of linear scaling circuits,
+VQEs can still compete against the well-understood va-
+riety of classical quantum chemistry methods.
+Recently, a quantum restricted Boltzmann machine
+(QRBM) approach was formulated by Xia and Kais to
+solve the electronic structure problem [33]. Their pro-
+posed QRBM is based on Carleo and Troyer’s original
+work [85] and can be identified as a direct competitor to
+the VQE framework. In contrast to VQEs, their QRBM
+involves a completely classical energy estimation. The
+central idea is to use the quantum computer as a sam-
+pling device that reproduces the optimal molecular wave
+function amplitudes in the measured probability distri-
+bution.
+In their approach, each node of the classical RBM
+structure of a visible and a hidden neural network layer
+is mapped to individual qubits. Since all nodes of the
+visible layer need to be connected to all nodes of the hid-
+den layer, the total circuit depth scales as O(nm) for n
+visible and m hidden layers. Furthermore, this high de-
+gree of connectivity demands an all-to-all qubit topology
+between both layers. Since they rely on specific post-
+measurement states, to perform the algorithm in an op-
+timal fashion, classical control in the form of mid-circuit
+measurements is required.
+In contrast to VQEs, QRBMs have the advantage that
+they involve only a single measurement circuit but re-
+quire O
+  n
+np
+
+measurement shots for np particles in n or-
+bitals (= visible layers) in the worst case scenario when
+every possible np-particle basis state needs to be sampled.
+Also, since there is only one circuit, multiple QPUs can
+only increase the total shot rate of that circuit. Overall,
+QRBMs reached ARL–2 with their entry publication [33]
+detailing a working proof of concept implementation.
+An alternative method to extract the ground state of
+a quantum many-body system is to evolve the Hamilto-
+nian in imaginary time (under the Wick rotation τ = it)
+[86]. Since the corresponding evolution operator e− ˆHτ is
+non-unitary, imaginary time evolution may be a useful
+tool in simulating open quantum systems [87]. In their
+recent publication [34], McArdle et al. propose a varia-
+tional quantum imaginary time evolution algorithm (Var-
+QiTE). The key idea is in replacing the imaginary-time
+evolved state |ψ(τ )⟩ by the equivalent parametric state
+|ϕ(⃗θ(τ ))⟩. Then, by applying the variational principle to
+the Wick-rotated Schr¨ odinger equation, the authors are
+
+--- Page 7 ---
+7
+Table II: Classification of selected quantum applications according to their application readiness level (ARL, cf.
+Figures 2 and 3) as well as their extended classification labels (cf. Table I). If multiple circuits / algorithms are
+available, only the optimal extended labels are shown.
+Application ARL Scalability Compilability Connectivity Robustness Parallelizability
+#Circuits Depth #Shots
+Quantum chemistry and quantum simulation
+VQE[19] 3 O(N ) O(N ) O(1) native gates linear variational circuit-based
+QRBM[33] 2 O(1) O(nm) O
+  n
+np
+
+classical control all-to-all variational shot-based
+VarQiTE[34] 2 O(tq(q + p)) O(q) O(1) non-native gates all-to-all variational circuit-based
+Binary and multi-class classification
+QK[35] 2 O
+ |T |
+2
+
+O(N ) O(2N ) non-native gates linear non-variational circuit-based
+QVC[35, 36] 2 O(|T |) O(N ) O(1) non-native gates linear variational circuit-based
+Re-Uploading[37] 2 O(|T |) O(L) O(1) non-native gates circular variational circuit-based
+Generative modeling
+QCBM[38, 39] 2 O(1) O(N ) O(2N ) native gates linear variational shot-based
+QNBM[40] 2 O(1) O(E) O(2nout ) classical control all-to-all variational shot-based
+Quantum neural networks
+QCNN[41] 2 O(|T |) O(N ⌈log1/r N ⌉) O(1) classical control all-to-all variational circuit-based
+QGNN[42] 2 O(|T |) O(p) O(1) non-native gates all-to-all variational circuit-based
+Data analysis
+NISQ-TDA[43] 2 O(nv) O(V ) O(2V ) classical control all-to-all non-variational circuit-based
+N : number of qubits t: number of Trotter time steps E: number of graph edges
+ε: precision p: number of terms in Hamiltonian nout: number of output layer nodes
+n: number of visible layers q: number of ansatz parameters r: reduction rate of pooling layers
+m: number of hidden layers |T |: cardinality of training set V : number of graph vertices
+np: number of particles L number of re-uploading layers nv: number of sampling vectors
+able to derive an analytic equation for the evolution of
+the parameters,
+X
+j
+Aij ˙θj = Cj, (4)
+where they provide simple quantum circuits to compute
+Aij and Cj. Given t Trotter time steps, an N -qubit
+Hamiltonian with p terms, and an ansatz ϕ(⃗θ(τ )) with
+q parameters, their algorithm requires O(tq(q + p)) cir-
+cuits to evaluate the matrix A and vector C. Each circuit
+has depth O(q), and similar to VQE the number of shots
+scales independently of the system size. Advantageously,
+every circuit in each Trotter step can be implemented
+independently so the algorithm has circuit-based paral-
+lelizability. However, the algorithm as given requires all-
+to-all connectivity and uses non-native gates. The au-
+thors demonstrate the validity of their method on toy
+examples in quantum chemistry resulting in the ARL–2
+classification.
+2. Quantum machine learning
+In the context of computing, machine learning
+(ML) refers to a class of algorithms or computational
+paradigms where data is used to iteratively improve per-
+formance without explicit logic definition [88]. The tasks
+tackled with machine learning may include optimization,
+classification, and data generation.
+As a data-centric approach, the model must be able
+to capture the complexity of the training data. It can be
+difficult to extrapolate or generalize to larger datasets us-
+ing a simply trained model, and thus steps must be taken
+to ensure that the ML model is trained to be sufficiently
+general [89].
+There must be enough data points collected such that
+they can accurately capture the generalization of features
+within all possible input data - this can cause a tremen-
+dous increase in the amount of data points needed to
+train an ML model. Addressing the latter issue also re-
+quires powerful enough hardware to perform the training
+procedure in a reasonable amount of time, with a suffi-
+
+--- Page 8 ---
+8
+ciently fast clock speed and enough memory to store the
+parameters and intermediate calculations. With the ad-
+vancement leaps being undertaken in the field of ML in
+recent years (see [90, 91]), many of these issues have been
+addressed by concerted efforts to build larger and larger
+datasets (such as in [92]) or training on supercomput-
+ing clusters (such as in [93]), though these advancements
+still require that one has access to these datasets and a
+sufficiently performant cluster, which can be a barrier to
+training and running ML models given a modest amount
+of time and resources.
+These issues may be addressed using quantum machine
+learning (QML) models, which can be generalized using
+a smaller amount of training data than their classical
+counterparts[94]. Additionally, QML algorithms are ca-
+pable of achieving equal or better prediction accuracy
+while making use of the same number of parameters,
+largely in part because of the accessible feature space
+of qubits being dictated by the traversable Hilbert space,
+which is exponential in the number of qubits, with sig-
+nificantly higher dimensionality than a feature space dic-
+tated by the same number of classical bits [95]. This is
+not to mention the additional advantage that QML ap-
+proaches have over classical ones in describing quantum
+data[96]. As the field of machine learning (ML) reaches
+maturity, QML is still a nascent field with many oppor-
+tunities for improvements.
+– Binary and multi-class classification –
+One of the central tasks tackled by ML algorithms is bi-
+nary or multi-class classification. Given a d-dimensional
+data set Ω ⊂ Rd, which is assumed to be labeled by a
+map m : Ω 7→ {ci} to class labels ci, the objective is to
+construct an optimal approximate map ˜ m from only a
+given subset of all data points in Ω.
+In the classical support vector machine (SVM)
+approach[97], a separating hyperplane is optimized in the
+data space to distinguish among differently labeled ele-
+ments. This relies on the computation of inner products
+⟨⃗ xi|⃗ xj⟩ in Rd for ⃗ xi, ⃗ xj ∈ Ω. In general, such separating
+hyperplanes may be hard to find in the original (linear)
+feature space of the data set elements. Therefore, in the
+more general case, feature mappings ϕ are used to al-
+low for complex non-linear representations via the kernel
+⟨ϕ(⃗ xi)|ϕ(⃗ xj)⟩.
+The potential benefits of a quantum kernel (QK)
+have been widely discussed[36, 98]. The general idea is
+that relatively simple encoding circuits may reach non-
+trivial states in the underlying complex high-dimensional
+Hilbert space, which are hard to compute classically.
+In a straightforward QK approach [35], the quantum
+device can be used to calculate the inner products
+⟨0| ˆU (⃗ xi)† ˆU (⃗ xj)|0⟩. The targeted inner product is then
+directly related to the probability p to measure an all-
+zero state, i.e., | ⟨0| ˆU (⃗ xi)† ˆU (⃗ xj)|0⟩ |2 = p(0 . . .0). The
+resulting kernel matrix can then be used in a consecutive
+classical support vector machine to find the separating
+hyperplane.
+In contrast to the QK method, which still uses a classi-
+cal computer to estimate the separating hyperplane, the
+quantum variational classifier (QVC) approach [35, 36]
+aims to find a separating hyperplane directly on the
+quantum device by optimizing a parametrized training
+circuit. While the QK method relies on an accurate,
+near-perfect, quantum execution, the QVC approach
+may – at least to some degree – compensate noise in
+the training procedure. Each data point in the train-
+ing set requires a separate encoding circuit such that the
+total number of circuits scales linearly with |T |. To im-
+prove the overall efficiency, all of these circuits may be
+measured in parallel on separate QPUs.
+As a final classification algorithm in this assessment,
+consider the universal single qubit classification approach
+using data re-uploading [37]. Here, the central idea is
+to circumvent the no-cloning theorem [99–101] by re-
+peatedly ”uploading“ data to the qubit register. This is
+achieved by interleaving fixed encoding and parametrized
+training gates. In the original publication [37], both
+single-qubit and multi-qubit classification circuits with
+and without entanglement are compared, where the
+multi-qubit with entanglement case was found to be the
+most accurate. The number of required measurement
+shots depends only on the measurement of a single qubit’s
+state tomography and therefore scales constantly with all
+problem-relevant system sizes.
+In conclusion, all three assessed classification algo-
+rithms were able to reach ARL–2 because beneficial
+(compared to scaled-down classical competitors) proof
+of concept simulations were reported [35–37, 98]. De-
+tailed resource analyses for specific quantum hardware –
+required to progress to ARL–3 – are still missing in the
+literature. One of the most problematic issues might be
+a correspondence between the number of measurement
+circuits and the cardinality of the training data set T ,
+which may contain millions of data points in some prob-
+lems. Therefore (and in light of recent findings [94]), it
+is reasonable to focus the search for quantum utility of
+classification applications to problems where only very
+limited training data is available.
+– Generative modeling –
+Generative models are ML algorithms that extract un-
+seen, defining features from an input data set and output
+new unseen data of similar type. More precisely, a gener-
+ative model tries to approximate an unknown probability
+distribution from only a subset of data samples from the
+target distribution. Unsupervised generative modeling
+tasks are claimed to be one of the first applications that
+may lead to a quantum utility (see, e.g., [40, 102–104]).
+Both the Quantum Circuit and the Quantum Neuron
+Born machines (QCBM and QNBM, respectively) [38–40]
+are designed for generative modeling. The main theoret-
+ical concept behind both approaches is rather straight-
+forward: Each bit string x corresponding to state |x⟩
+is mapped to a specific (discrete) measurement outcome
+of the targeted probability distribution. A variational
+
+--- Page 9 ---
+9
+parametrized quantum circuit is then trained such that
+the measured bit string probabilities | ⟨x|ψ⟩ |2 (accord-
+ing to Born’s rule — hence the name) match the target
+distribution.
+In case of the QCBM [38, 39], a standard hardware-
+efficient ansatz requiring only hardware-native gates and
+a linear qubit connectivity may be used. The latter scales
+linearly with the number of qubits, N , and can – at least
+in principle – learn probability distributions of 2 N out-
+comes. However, to sample such distributions also re-
+quires an exponentially scaling number of measurement
+shots, O(2N ).
+Recently, Gili et al. introduced non-linear activation
+functions in the form of quantum neurons [105] into the
+QCBM framework [40]. Conceptually, their circuits re-
+semble multi-layered neural network structures that can
+involve an arbitrary number of nodes per layer. Each
+node (input, hidden, and visible) is represented by an
+individual qubit, whereas the qubit’s connectivity is en-
+forced by the layer connection in the underlying network.
+Connected network nodes need to be connected in the
+corresponding qubit topology. To enforce non-linear ac-
+tivations, ”rerun until success“ type circuits involving the
+classical control feature of mid-circuit measurements are
+used.
+Overall, both the QCBM and the QNBM approach
+are currently based on ARL–2 because beneficial proof
+of concept simulations comparing to scaled-down clas-
+sical competitors have been reported [38–40]. Detailed
+resource estimations for a given problem and a given
+quantum hardware to progress to ARL–3 have not been
+reported.
+– Quantum neural networks –
+The quantum convolutional neural network
+(QCNN) [41] represents a class of quantum neural
+network, that introduces trainable (parametrized)
+convolutional layers, and conditional pooling layers,
+which reduce the number of active qubits by employing
+conditional mid-circuit measurements. Given an arbi-
+trary input state ρin encoded to N qubits, a QCNN
+contains log 1
+r
+(N ) total layers (containing consecutive
+convolutional and pooling layers) for qubit reduction
+rate r denoting the fraction of qubits eliminated by each
+pooling layer.
+In contrast to other QNNs, QCNNs are known to
+be efficiently trainable [41] and do not exhibit Barren
+plateaus [106]. Assuming linear scaling sub-circuits for
+encoding, convolutional, and pooling layers, their total
+circuit depth scales as O(N ⌈log1/r N ⌉). The required
+number of measurement shots, on the other hand, scales
+independent of the problem size assuming that sufficient
+numbers of pooling layers are introduced to condense the
+circuits to the same number of finally measured qubits.
+For a sufficiently large number of pooling layers, the re-
+quired qubit topology exceeds a 3D nearest neighbor con-
+nectivity, effectively requiring an all-to-all connectivity.
+With a supervised learning problem in mind, QCNNs in-
+volve O(|T |) different quantum circuits, which may be
+measured on multiple parallel QPUs simultaneously.
+Another approach to overcoming the difficulties of
+training QNNs is the quantum graph neural network for-
+malism (QGNNs) as presented by Verdon et al. in their
+recent pre-print [42]. A similar approach has recently
+been tested on a neutral atom quantum computer by
+Albrecht et al.[107] Many problems of interest are de-
+scribed by quadratic Hamiltonians which have a natu-
+ral graph structure where each vertex represents a qubit,
+and each edge indicates a pairwise interaction. The goal
+of QGNNs is to obtain a learned low-dimensional rep-
+resentation of the feature graph describing the problem
+Hamiltonian. In the original publication[42], the authors
+start with a general representation of a QGNN and go
+on to propose several specific ans¨ atze by enforcing con-
+ditions on the training parameters that arise from the
+physics of the particular problem. For example, by en-
+forcing invariance under node permutations the authors
+demonstrate a quantum graph convolutional neural net-
+work (QGCNN) which turns out to be a general form
+of the QAOA ansatz. Other problems considered by the
+authors include learning Hamiltonian dynamics, graph
+clustering and determining graph isomorphism.
+Similar to QCNNs, QGNNs require O(|T |) circuits to
+train the network where |T | is the size of the training
+set, each of which can be executed in parallel on sepa-
+rate QPUs. For the more constrained ans¨ atze, each cir-
+cuit has depth scaling with the number of terms in the
+Hamiltonian O(p). In general, a quadratic Hamiltonian
+involves interactions between all pairs of qubits so the
+training circuits require all-to-all connectivity. The au-
+thors demonstrate four potential applications (including
+those mentioned above) of QGNNs via numerical imple-
+mentation, therefore achieving the ARL–2 classification.
+3. Data analysis
+Topological data analysis (TDA) is used to analyze
+complex high-dimensional data. It aims to reduce such
+data structures to a small set of local and global signature
+values associated with interpretable analytical value [43].
+In essence, it involves the estimation of the persistent ho-
+mology [108] of a given data graph, which contains the
+changing pattern of the graph’s Betti numbers. TDA is
+claimed to have many fields of applications [43] rang-
+ing from astrophysics [109], neuroscience [110], genet-
+ics [111], and the analysis of deep neural networks [112].
+On classical computers, TDA can be a task of tremen-
+dous difficulty[113]. Fault-tolerant quantum algorithms
+have been developed that may one day reach an expo-
+nential advantage over its classical competitors [113] on
+real hardware. Recently, Akhalwaya et al. published a
+novel approach to TDA in the NISQ era of quantum
+computing called NISQ-TDA [43]. In their approach, the
+TDA problem is reframed to a stochastic matrix rank es-
+
+--- Page 10 ---
+10
+timation using the Chebyshev method [114, 115]. The
+full quantum algorithm requires N qubits for N data
+points and involves (i) the generation of a random ini-
+tial state of zero mean, (ii) the application of a counting
+algorithm using log 2 N ancilla qubits, (iii) the applica-
+tion and mid-circuit measurement of CCNOT gates onto
+ancilla qubits controlled by all connected (within the ap-
+plied distance threshold) data points, and (iv) the ap-
+plication of a Jordan-Wigner mapped boundary opera-
+tor. The total circuit depth is claimed to scale linearly
+with the number of data graph vertices, V , for a fixed
+polynomial degree on quantum devices that support mid-
+circuit measurements [43]. Since their final measurement
+involves to estimate the norm of their projected quan-
+tum states, the number of required measurement shots
+scales exponentially with the number of analyzed data
+graph vertices. Explicit resource estimations in terms of,
+e.g., runtimes for a specific quantum device running a
+classically demanding TDA problem were not reported.
+Therefore, NISQ-TDA is classified as ARL–2 but shows
+promising features to progress to ARL–3.
+IV. CONCLUSION
+In this paper, the general concept of a practical quan-
+tum advantage – coined by the term quantum utility (cf.
+Def. 1) – and its assessment in terms of application readi-
+ness levels (ARLs, cf. Figures 2 and 3) was introduced.
+In essence, quantum utility represents a milestone that
+is coupled to both the practical application and the quan-
+tum device running the latter. To assess the maturity
+of a given application in the pursuit of quantum utility
+for a fixed quantum device, subsection II C introduced
+ARLs. These were deeply inspired by NASA’s technology
+readiness levels (TRLs) [32] defining a five level scheme
+highlighting an application’s progress towards quantum
+utility via (ARL–1) conceptualization, (ARL–2) proof of
+concept, (ARL–3) proof of scalability, (ARL–4) utility
+in simulation, and finally (ARL–5) quantum utility. Fur-
+thermore, extended classification labels (cf. Table I) were
+provided to ease utility investigations in a compact and
+informative fashion by detailing a quantum application’s
+requirements in terms of scalability, gate compilability,
+qubit connectivity, robustness to noise, and paralleliz-
+ability to multiple quantum units.
+To demonstrate the ARL classification scheme, section
+III includes a survey of different quantum applications
+from the fields of quantum chemistry, quantum simula-
+tion, quantum machine learning, and data analysis. Each
+application was assessed in terms of both their current
+ARLs and their extended classification labels in the re-
+spective best case scenarios. All results were collected in
+Table II and briefly discussed in the consecutive subsec-
+tions.
+As of yet, VQEs are the only application from the pre-
+sented survey that were able to reach ARL–3. This is
+because detailed resource estimations, e.g., full algorithm
+QPU timings, are seldom reported in the literature –
+especially in the case of similar device comparisons as
+targeted by quantum utility. However, it is reasonable
+to assume that many of the displayed applications can
+and will easily progress to ARL–3 or higher given their
+promising scaling and algorithm features.
+This paper may be understood as a ”call to arms“ for
+the quantum industry, researchers, algorithm developers
+or anyone interested, to pursue, think about and aim for
+quantum utility in their developments. Especially mo-
+bile or edge-based applications may provide a much more
+tangible target when tackled by edge-deployable quan-
+tum hardware of appropriate size, weight, and cost. We
+strongly believe such applications to be among the first
+to demonstrate a genuine quantum advantage, paving the
+way to truly ubiquitous quantum computing.
+[1] F. Arute, K. Arya, R. Babbush, D. Bacon, J. C.
+Bardin, R. Barends, R. Biswas, S. Boixo, F. G. S. L.
+Brandao, D. A. Buell, B. Burkett, Y. Chen, Z. Chen,
+B. Chiaro, R. Collins, W. Courtney, A. Dunsworth,
+E. Farhi, B. Foxen, A. Fowler, C. Gidney, M. Giustina,
+R. Graff, K. Guerin, S. Habegger, M. P. Harrigan,
+M. J. Hartmann, A. Ho, M. Hoffmann, T. Huang,
+T. S. Humble, S. V. Isakov, E. Jeffrey, Z. Jiang,
+D. Kafri, K. Kechedzhi, J. Kelly, P. V. Klimov,
+S. Knysh, A. Korotkov, F. Kostritsa, D. Landhuis,
+M. Lindmark, E. Lucero, D. Lyakh, S. Mandr` a,
+J. R. McClean, M. McEwen, A. Megrant, X. Mi,
+K. Michielsen, M. Mohseni, J. Mutus, O. Naaman,
+M. Neeley, C. Neill, M. Y. Niu, E. Ostby, A. Petukhov,
+J. C. Platt, C. Quintana, E. G. Rieffel, P. Roushan,
+N. C. Rubin, D. Sank, K. J. Satzinger, V. Smelyanskiy,
+K. J. Sung, M. D. Trevithick, A. Vainsencher,
+B. Villalonga, T. White, Z. J. Yao, P. Yeh, A. Zalcman,
+H. Neven, and J. M. Martinis, “Quantum supremacy
+using a programmable superconducting processor,”
+Nature, vol. 574, p. 505, 2019. [Online]. Available:
+https://doi.org/10.1038/s41586-019-1666-5
+[2] H.-S. Zhong, H. Wang, Y.-H. Deng, M.-C. Chen,
+L.-C. Peng, Y.-H. Luo, J. Qin, D. Wu, X. Ding,
+Y. Hu, P. Hu, X.-Y. Yang, W.-J. Zhang, H. Li,
+Y. Li, X. Jiang, L. Gan, G. Yang, L. You, Z. Wang,
+L. Li, N.-L. Liu, C.-Y. Lu, and J.-W. Pan, “Quantum
+computational advantage using photons,” Science,
+vol. 370, p. 1460, 2020. [Online]. Available: https:
+//www.science.org/doi/abs/10.1126/science.abe8770
+[3] H.-S. Zhong, Y.-H. Deng, J. Qin, H. Wang, M.-C.
+Chen, L.-C. Peng, Y.-H. Luo, D. Wu, S.-Q. Gong,
+H. Su, Y. Hu, P. Hu, X.-Y. Yang, W.-J. Zhang, H. Li,
+Y. Li, X. Jiang, L. Gan, G. Yang, L. You, Z. Wang,
+L. Li, N.-L. Liu, J. J. Renema, C.-Y. Lu, and J.-W.
+Pan, “Phase-programmable gaussian boson sampling
+using stimulated squeezed light,” Phys. Rev. Lett. ,
+vol. 127, p. 180502, 2021. [Online]. Available: https:
+
+--- Page 11 ---
+11
+//link.aps.org/doi/10.1103/PhysRevLett.127.180502
+[4] L. S. Madsen, F. Laudenbach, M. F. Askarani,
+F. Rortais, T. Vincent, J. F. F. Bulmer, F. M.
+Miatto, L. Neuhaus, L. G. Helt, M. J. Collins,
+A. E. Lita, T. Gerrits, S. W. Nam, V. D. Vaidya,
+M. Menotti, I. Dhand, Z. Vernon, N. Quesada,
+and J. Lavoie, “Quantum computational advantage
+with a programmable photonic processor,” Nature,
+vol. 606, p. 75, 2022. [Online]. Available: https:
+//doi.org/10.1038/s41586-022-04725-x
+[5] J. Preskill, “Quantum computing and the entanglement
+frontier,” arXiv:1203.5813, 2012. [Online]. Available:
+https://arxiv.org/abs/1203.5813
+[6] S. Aaronson and L. Chen, “Complexity-theoretic foun-
+dations of quantum supremacy experiments,” in Pro-
+ceedings of the 32nd Computational Complexity Confer-
+ence, ser. CCC ’17. Dagstuhl, DEU: Schloss Dagstuhl–
+Leibniz-Zentrum fuer Informatik, 2017. [Online]. Avail-
+able: https://dl.acm.org/doi/10.5555/3135595.3135617
+[7] S. Aaronson and A. Arkhipov, “The computational
+complexity of linear optics,” in Proceedings of the
+Forty-Third Annual ACM Symposium on Theory of
+Computing, ser. STOC ’11. New York, NY, USA:
+Association for Computing Machinery, 2011, p. 333.
+[Online]. Available: https://doi.org/10.1145/1993636.
+1993682
+[8] N. Moll, P. Barkoutsos, L. S. Bishop, J. M. Chow,
+A. Cross, D. J. Egger, S. Filipp, A. Fuhrer, J. M.
+Gambetta, M. Ganzhorn, A. Kandala, A. Mezzacapo,
+P. M¨ uller, W. Riess, G. Salis, J. Smolin, I. Taver-
+nelli, and K. Temme, “Quantum optimization using
+variational algorithms on near-term quantum devices,”
+Quantum Sci. Technol., vol. 3, p. 030503, 2018. [Online].
+Available: https://doi.org/10.1088/2058-9565/aab822
+[9] A. Cross, L. Bishop, S. Sheldon, P. Nation, and
+J. Gambetta, “Validating quantum computers using
+randomized model circuits,” Phys. Rev. A , vol.
+100, p. 032328, 2019. [Online]. Available: https:
+//doi.org/10.1103/PhysRevA.100.032328
+[10] A. Wack, H. Paik, A. Javadi-Abhari, P. Jurcevic,
+I. Faro, J. M. Gambetta, and B. R. Johnson, “Quality,
+speed, and scale: three key attributes to measure
+the performance of near-term quantum computers,”
+arXiv:2110.14108, 2021. [Online]. Available: https:
+//doi.org/10.48550/arXiv.2110.14108
+[11] M. A. Nielsen and I. L. Chuang, Quantum Computa-
+tion and Quantum Information . Cambridge University
+Press, 2000.
+[12] M. Cerezo, A. Arrasmith, R. Babbush, S. C.
+Benjamin, S. Endo, K. Fujii, J. R. McClean,
+K. Mitarai, X. Yuan, L. Cincio, and P. J. Coles,
+“Variational quantum algorithms,” Nat. Rev. Phys. ,
+vol. 3, p. 625, 2021. [Online]. Available: https:
+//doi.org/10.1038/s42254-021-00348-9
+[13] R. Blume-Kohout and K. C. Young, “A volumet-
+ric framework for quantum computer benchmarks,”
+Quantum, vol. 4, p. 362, 2020. [Online]. Available:
+https://doi.org/10.22331/q-2020-11-15-362
+[14] D. Mills, S. Sivarajah, T. L. Scholten, and R. Duncan,
+“Application-Motivated, Holistic Benchmarking of a
+Full Quantum Computing Stack,” Quantum, vol. 5,
+p. 415, 2021. [Online]. Available: https://doi.org/10.
+22331/q-2021-03-22-415
+[15] S. Boixo, S. V. Isakov, V. N. Smelyanskiy, R. Babbush,
+N. Ding, Z. Jiang, M. J. Bremner, J. M. Martinis, and
+H. Neven, “Characterizing quantum supremacy in near-
+term devices,” Nat. Phys., vol. 14, p. 595, 2018. [Online].
+Available: https://doi.org/10.1038/s41567-018-0124-x
+[16] R. Kueng, D. M. Long, A. C. Doherty, and
+S. T. Flammia, “Comparing experiments to the
+fault-tolerance threshold,” Phys. Rev. Lett. , vol.
+117, p. 170502, 2016. [Online]. Available: https:
+//link.aps.org/doi/10.1103/PhysRevLett.117.170502
+[17] T. Proctor, K. Rudinger, K. Young, E. Nielsen,
+and R. Blume-Kohout, “Measuring the capabilities
+of quantum computers,” Nat. Phys. , vol. 18, p. 75,
+2022. [Online]. Available: https://doi.org/10.1038/
+s41567-021-01409-7
+[18] J. J. Wallman and J. Emerson, “Noise tailoring
+for scalable quantum computation via randomized
+compiling,” Phys. Rev. A , vol. 94, p. 052325, 2016.
+[Online]. Available: https://link.aps.org/doi/10.1103/
+PhysRevA.94.052325
+[19] A. Peruzzo, J. McClean, P. Shadbolt, M.-H. Yung,
+X.-Q. Zhou, P. J. Love, A. Aspuru-Guzik, and
+J. L. O’brien, “A variational eigenvalue solver on
+a photonic quantum processor,” Nat. Commun. ,
+vol. 5, p. 1, 2014. [Online]. Available: https:
+//doi.org/10.1038/ncomms5213
+[20] S. Martiel, T. Ayral, and C. Allouche, “Benchmark-
+ing quantum coprocessors in an application-centric,
+hardware-agnostic, and scalable way,” IEEE Trans.
+Quantum Eng. , vol. 2, p. 1, 2021. [Online]. Available:
+https://doi.org/10.1109/TQE.2021.3090207
+[21] T. Lubinski, S. Johri, P. Varosy, J. Coleman, L. Zhao,
+J. Necaise, C. H. Baldwin, K. Mayer, and T. Proctor,
+“Application-oriented performance benchmarks for
+quantum computing,” arXiv:2110.03137, 2021. [Online].
+Available: https://doi.org/10.48550/arXiv.2110.03137
+[22] J. R. Finˇ zgar, P. Ross, J. Klepsch, and A. Luckow,
+“Quark: A framework for quantum computing
+application benchmarking,” in 2022 IEEE International
+Conference on Quantum Computing and Engineering
+(QCE), 2022, p. 226. [Online]. Available: https:
+//doi.org/10.1109/QCE53715.2022.00042
+[23] M. W. Doherty, “Quantum accelerators: a new
+trajectory of quantum computers,” Digitale Welt ,
+vol. 5, p. 74, 2021. [Online]. Available: https:
+//doi.org/10.1007/s42354-021-0342-8
+[24] S. S. Gill, A. Kumar, H. Singh, M. Singh, K. Kaur,
+M. Usman, and R. Buyya, “Quantum computing: A
+taxonomy, systematic review and future directions,”
+Softw. Pract. Exp. , vol. 52, p. 66, 2022. [Online].
+Available: https://onlinelibrary.wiley.com/doi/abs/10.
+1002/spe.3039
+[25] R. Rietsche, C. Dremel, S. Bosch, L. Steinacker,
+M. Meckel, and J.-M. Leimeister, “Quantum
+computing,” Electron. Mark. , vol. 32, p. 2525,
+2022. [Online]. Available: https://doi.org/10.1007/
+s12525-022-00570-y
+[26] J. F. F. Bulmer, B. A. Bell, R. S. Chadwick,
+A. E. Jones, D. Moise, A. Rigazzi, J. Thorbecke,
+U.-U. Haus, T. V. Vaerenbergh, R. B. Patel, I. A.
+Walmsley, and A. Laing, “The boundary for quantum
+advantage in gaussian boson sampling,” Sci. Adv. ,
+vol. 8, p. eabl9236, 2022. [Online]. Available: https:
+//www.science.org/doi/abs/10.1126/sciadv.abl9236
+[27] Y. Wu, W.-S. Bao, and S. Cao, “Strong quantum
+
+--- Page 12 ---
+12
+computational advantage using a superconducting
+quantum processor,” Phys. Rev. Lett. , vol. 127, p.
+180501, 2021. [Online]. Available: https://link.aps.org/
+doi/10.1103/PhysRevLett.127.180501
+[28] T. Nguyen, D. Arya, M. W. Doherty, N. Herrmann,
+J. Kuhlmann, F. Preis, P. Scott, and S. Yin,
+“Software for massively parallel quantum computing,”
+arXiv:2211.13355, 2022. [Online]. Available: https:
+//arxiv.org/abs/2211.13355
+[29] B. Subramaniam and W.-c. Feng, “The green index: A
+metric for evaluating system-wide energy efficiency in
+hpc systems,” in 2012 IEEE 26th International Parallel
+and Distributed Processing Symposium Workshops &
+PhD Forum , 2012, p. 1007. [Online]. Available:
+https://doi.org/10.1109/IPDPSW.2012.123
+[30] A. Auff` eves, “Quantum technologies need a quantum
+energy initiative,” PRX Quantum , vol. 3, p. 020101,
+2022. [Online]. Available: https://link.aps.org/doi/10.
+1103/PRXQuantum.3.020101
+[31] M. Fellous-Asiani, J. H. Chai, Y. Thonnart, H. K. Ng,
+R. S. Whitney, and A. Auff` eves, “Optimizing resource
+efficiencies for scalable full-stack quantum computers,”
+arXiv:2209.05469, 2022. [Online]. Available: https:
+//arxiv.org/abs/2209.05469
+[32] International Organization for Standardization, ISO
+16290:2013: Space systems – Definition of the Tech-
+nology Readiness Levels (TRLs) and their criteria of
+assessment. Vernier, Geneva, Switzerland: Interna-
+tional Organization for Standardization, 2013. [Online].
+Available: https://www.iso.org/standard/56064.html
+[33] R. Xia and S. Kais, “Quantum machine learning
+for electronic structure calculations,” Nat. Commun. ,
+vol. 9, p. 4195, 2018. [Online]. Available: https:
+//doi.org/10.1038/s41467-018-06598-z
+[34] S. McArdle, T. Jones, S. Endo, Y. Li, S. C.
+Benjamin, and X. Yuan, “Variational ansatz-based
+quantum simulation of imaginary time evolution,” Npj
+Quantum Inf. , vol. 5, p. 75, 2019. [Online]. Available:
+https://doi.org/10.1038/s41534-019-0187-2
+[35] M. Schuld and N. Killoran, “Quantum machine
+learning in feature hilbert spaces,” Phys. Rev. Lett. ,
+vol. 122, p. 040504, 2019. [Online]. Available: https:
+//link.aps.org/doi/10.1103/PhysRevLett.122.040504
+[36] V. Havl ´ ıˇ cek, A. D. C´ orcoles, K. Temme, A. W.
+Harrow, A. Kandala, J. M. Chow, and J. M. Gambetta,
+“Supervised learning with quantum-enhanced feature
+spaces,” Nature, vol. 567, p. 209, 2019. [Online].
+Available: https://doi.org/10.1038/s41586-019-0980-2
+[37] A. P´ erez-Salinas, A. Cervera-Lierta, E. Gil-Fuster,
+and J. I. Latorre, “Data re-uploading for a universal
+quantum classifier,” Quantum, vol. 4, p. 226,
+2020. [Online]. Available: https://doi.org/10.22331/
+q-2020-02-06-226
+[38] M. Benedetti, D. Garcia-Pintos, O. Perdomo,
+V. Leyton-Ortega, Y. Nam, and A. Perdomo-
+Ortiz, “Variational ansatz-based quantum simula-
+tion of imaginary time evolution,” Npj Quantum
+Inf., vol. 5, p. 45, 2019. [Online]. Available:
+https://doi.org/10.1038/s41534-019-0187-2
+[39] K. Gili, M. Hibat-Allah, M. Mauri, C. Ballance,
+and A. Perdomo-Ortiz, “Do quantum circuit born
+machines generalize?” Quantum Sci. Technol. ,
+vol. 8, no. 3, p. 035021, 2023. [Online]. Available:
+https://dx.doi.org/10.1088/2058-9565/acd578
+[40] K. Gili, M. Sveistrys, and C. Ballance, “Introducing
+nonlinear activations into quantum generative models,”
+Phys. Rev. A, vol. 107, p. 012406, 2023. [Online]. Avail-
+able: https://link.aps.org/doi/10.1103/PhysRevA.107.
+012406
+[41] I. Cong, S. Choi, and M. D. Lukin, “Quantum
+convolutional neural networks,” Nat. Phys. , vol. 15,
+p. 1273, 2019. [Online]. Available: https://doi.org/10.
+1038/s41567-019-0648-8
+[42] G. Verdon, T. McCourt, E. Luzhnica, V. Singh,
+S. Leichenauer, and J. Hidary, “Quantum graph neural
+networks,” arXiv:1909.12264, 2019. [Online]. Available:
+https://arxiv.org/abs/1909.12264
+[43] I. Y. Akhalwaya, S. Ubaru, K. L. Clarkson, M. S. Squil-
+lante, V. Jejjala, Y.-H. He, K. Naidoo, V. Kalantzis,
+and L. Horesh, “Towards quantum advantage on noisy
+quantum computers,” arXiv:2209.09371, 2022. [Online].
+Available: https://arxiv.org/abs/2209.09371
+[44] R. P. Feynman, “Simulating physics with computers,”
+Int. J. Theor. Phys. , vol. 21, p. 467, 1982. [Online].
+Available: https://doi.org/10.1007/BF02650179
+[45] J. Tilly, H. Chen, S. Cao, D. Picozzi, K. Setia,
+Y. Li, E. Grant, L. Wossnig, I. Rungger, G. H.
+Booth, and J. Tennyson, “The variational quantum
+eigensolver: A review of methods and best practices,”
+Phys. Rep. , vol. 986, p. 1, 2022. [Online]. Avail-
+able: https://www.sciencedirect.com/science/article/
+pii/S0370157322003118
+[46] J. Romero, R. Babbush, J. R. McClean, C. Hempel,
+P. J. Love, and A. Aspuru-Guzik, “Strategies
+for quantum computing molecular energies using
+the unitary coupled cluster ansatz,” Quantum Sci.
+Technol., vol. 4, p. 014008, 2018. [Online]. Available:
+https://dx.doi.org/10.1088/2058-9565/aad3e4
+[47] W. Mizukami, K. Mitarai, Y. O. Nakagawa,
+T. Yamamoto, T. Yan, and Y.-y. Ohnishi, “Or-
+bital optimized unitary coupled cluster theory for
+quantum computer,” Phys. Rev. Res. , vol. 2,
+p. 033421, 2020. [Online]. Available: https:
+//link.aps.org/doi/10.1103/PhysRevResearch.2.033421
+[48] G.-L. R. Anselmetti, D. Wierichs, C. Gogolin, and
+R. M. Parrish, “Local, expressive, quantum-number-
+preserving vqe ans¨ atze for fermionic systems,” New J.
+Phys., vol. 23, p. 113010, 2021. [Online]. Available:
+https://dx.doi.org/10.1088/1367-2630/ac2cb3
+[49] B. T. Gard, L. Zhu, G. S. Barron, N. J. Mayhall,
+S. E. Economou, and E. Barnes, “Efficient symmetry-
+preserving state preparation circuits for the variational
+quantum eigensolver algorithm,” Npj Quantum Inf. ,
+vol. 6, p. 10, 2020. [Online]. Available: https:
+//doi.org/10.1038/s41534-019-0240-1
+[50] R. Wiersema, C. Zhou, Y. de Sereville, J. F.
+Carrasquilla, Y. B. Kim, and H. Yuen, “Exploring
+entanglement and optimization within the hamiltonian
+variational ansatz,” PRX Quantum , vol. 1, p. 020319,
+2020. [Online]. Available: https://link.aps.org/doi/10.
+1103/PRXQuantum.1.020319
+[51] P. K. Barkoutsos, J. F. Gonthier, I. Sokolov,
+N. Moll, G. Salis, A. Fuhrer, M. Ganzhorn, D. J.
+Egger, M. Troyer, A. Mezzacapo, S. Filipp, and
+I. Tavernelli, “Quantum algorithms for electronic
+structure calculations: Particle-hole hamiltonian and
+optimized wave-function expansions,” Phys. Rev.
+A, vol. 98, p. 022322, 2018. [Online]. Available:
+
+--- Page 13 ---
+13
+https://link.aps.org/doi/10.1103/PhysRevA.98.022322
+[52] D. Wecker, M. B. Hastings, and M. Troyer, “Progress to-
+wards practical quantum variational algorithms,” Phys.
+Rev. A , vol. 92, p. 042303, 2015. [Online]. Available:
+https://link.aps.org/doi/10.1103/PhysRevA.92.042303
+[53] J. Lee, W. J. Huggins, M. Head-Gordon, and K. B.
+Whaley, “Generalized unitary coupled cluster wave
+functions for quantum computation,” J. Chem. Theory
+Comput., vol. 15, p. 311, 2019. [Online]. Available:
+https://doi.org/10.1021/acs.jctc.8b01004
+[54] A. Peruzzo, J. McClean, P. Shadbolt, M.-H. Yung,
+X.-Q. Zhou, P. J. Love, A. Aspuru-Guzik, and
+J. L. O’Brien, “A variational eigenvalue solver on
+a photonic quantum processor,” Nat. Commun. ,
+vol. 5, p. 4213, 2014. [Online]. Available: https:
+//doi.org/10.1038/ncomms5213
+[55] A. Kandala, A. Mezzacapo, K. Temme, M. Takita,
+M. Brink, J. M. Chow, and J. M. Gambetta,
+“Hardware-efficient variational quantum eigensolver
+for small molecules and quantum magnets,” Nature,
+vol. 549, p. 242, 2017. [Online]. Available: https:
+//doi.org/10.1038/nature23879
+[56] R. A. Lang, I. G. Ryabinkin, and A. F. Izmaylov,
+“Unitary transformation of the electronic hamiltonian
+with an exact quadratic truncation of the baker-
+campbell-hausdorff expansion,” J. Chem. Theory
+Comput., vol. 17, p. 66, 2021. [Online]. Available:
+https://doi.org/10.1021/acs.jctc.0c00170
+[57] Z.-J. Zhang, T. H. Kyaw, J. S. Kottmann, M. Degroote,
+and A. Aspuru-Guzik, “Mutual information-assisted
+adaptive variational quantum eigensolver,” Quantum
+Sci. Technol., vol. 6, p. 035001, 2021. [Online]. Avail-
+able: https://dx.doi.org/10.1088/2058-9565/abdca4
+[58] I. G. Ryabinkin, T.-C. Yen, S. N. Genin, and
+A. F. Izmaylov, “Qubit coupled cluster method:
+A systematic approach to quantum chemistry on
+a quantum computer,” J. Chem. Theory Comput. ,
+vol. 14, p. 6317, 2018. [Online]. Available: https:
+//doi.org/10.1021/acs.jctc.8b00932
+[59] Y. S. Yordanov, V. Armaos, C. H. W. Barnes, and
+D. R. M. Arvidsson-Shukur, “Qubit-excitation-based
+adaptive variational quantum eigensolver,” Commun.
+Phys., vol. 4, p. 228, 2021. [Online]. Available:
+https://doi.org/10.1038/s42005-021-00730-0
+[60] Y. Zhang, L. Cincio, C. F. A. Negre, P. Czarnik,
+P. J. Coles, P. M. Anisimov, S. M. Mniszewski,
+S. Tretiak, and P. A. Dub, “Variational quantum
+eigensolver with reduced circuit complexity,” Npj
+Quantum Inf. , vol. 8, p. 96, 2022. [Online]. Available:
+https://doi.org/10.1038/s41534-022-00599-z
+[61] I. G. Ryabinkin, R. A. Lang, S. N. Genin, and A. F.
+Izmaylov, “Iterative qubit coupled cluster approach
+with efficient screening of generators,” J. Chem. Theory
+Comput., vol. 16, p. 1055, 2020. [Online]. Available:
+https://doi.org/10.1021/acs.jctc.9b01084
+[62] H. L. Tang, V. Shkolnikov, G. S. Barron, H. R.
+Grimsley, N. J. Mayhall, E. Barnes, and S. E.
+Economou, “Qubit-adapt-vqe: An adaptive algorithm
+for constructing hardware-efficient ans¨ atze on a
+quantum processor,” PRX Quantum , vol. 2, p.
+020310, 2021. [Online]. Available: https://link.aps.org/
+doi/10.1103/PRXQuantum.2.020310
+[63] H. R. Grimsley, S. E. Economou, E. Barnes, and N. J.
+Mayhall, “An adaptive variational algorithm for exact
+molecular simulations on a quantum computer,” Nat.
+Commun., vol. 10, p. 3007, 2019. [Online]. Available:
+https://doi.org/10.1038/s41467-019-10988-2
+[64] M. Ostaszewski, E. Grant, and M. Benedetti,
+“Structure optimization for parameterized quantum
+circuits,” Quantum, vol. 5, p. 391, 2021. [Online].
+Available: https://doi.org/10.22331/q-2021-01-28-391
+[65] P. Jordan and E. Wigner, “ ¨Uber das paulische ¨Aquiv-
+alenzverbot,” Z. Phys. , vol. 47, p. 631, 1928. [Online].
+Available: https://doi.org/10.1007/BF01331938
+[66] S. B. Bravyi and A. Y. Kitaev, “Fermionic quantum
+computation,” Ann. Phys. , vol. 298, p. 210, 2002.
+[Online]. Available: https://www.sciencedirect.com/
+science/article/pii/S0003491602962548
+[67] J. T. Seeley, M. J. Richard, and P. J. Love, “The
+bravyi-kitaev transformation for quantum computation
+of electronic structure,” J. Chem. Phys. , vol. 137, p.
+224109, 2012. [Online]. Available: https://doi.org/10.
+1063/1.4768229
+[68] Z. Jiang, A. Kalev, W. Mruczkiewicz, and H. Neven,
+“Optimal fermion-to-qubit mapping via ternary trees
+with applications to reduced quantum states learning,”
+Quantum, vol. 4, p. 276, 2020. [Online]. Available:
+https://doi.org/10.22331/q-2020-06-04-276
+[69] Y. Shee, P.-K. Tsai, C.-L. Hong, H.-C. Cheng, and H.-
+S. Goan, “Qubit-efficient encoding scheme for quantum
+simulations of electronic structure,” Phys. Rev. Res. ,
+vol. 4, p. 023154, 2022. [Online]. Available: https:
+//link.aps.org/doi/10.1103/PhysRevResearch.4.023154
+[70] J. Cotler and F. Wilczek, “Quantum overlapping
+tomography,” Phys. Rev. Lett. , vol. 124, p. 100401,
+2020. [Online]. Available: https://link.aps.org/doi/10.
+1103/PhysRevLett.124.100401
+[71] C. Hadfield, “Adaptive pauli shadows for energy esti-
+mation,” arXiv:2105.12207, 2021. [Online]. Available:
+https://arxiv.org/abs/2105.12207
+[72] C. Hadfield, S. Bravyi, R. Raymond, and A. Mezzacapo,
+“Measurements of quantum hamiltonians with locally-
+biased classical shadows,” arXiv:2006.15788, 2020.
+[Online]. Available: https://arxiv.org/abs/2006.15788
+[73] P. Gokhale, O. Angiuli, Y. Ding, K. Gui, T. Tomesh,
+M. Suchara, M. Martonosi, and F. T. Chong,
+“Minimizing state preparations in variational quantum
+eigensolver by partitioning into commuting families,”
+arXiv:1907.13623, 2019. [Online]. Available: https:
+//arxiv.org/abs/1907.13623
+[74] P. Gokhale and F. T. Chong, “ o(n3) measurement
+cost for variational quantum eigensolver on molecu-
+lar hamiltonians,” arXiv:1908.11857, 2019. [Online].
+Available: https://arxiv.org/abs/1908.11857
+[75] I. Hamamura and T. Imamichi, “Efficient evaluation of
+quantum observables using entangled measurements,”
+Npj Quantum Inf. , vol. 6, p. 56, 2020. [Online].
+Available: https://doi.org/10.1038/s41534-020-0284-2
+[76] T.-C. Yen and A. F. Izmaylov, “Cartan sub-
+algebra approach to efficient measurements of
+quantum observables,” PRX Quantum , vol. 2,
+p. 040320, 2021. [Online]. Available: https:
+//link.aps.org/doi/10.1103/PRXQuantum.2.040320
+[77] O. Oumarou, M. Scheurer, R. M. Parrish, E. G.
+Hohenstein, and C. Gogolin, “Accelerating quantum
+computations of chemistry through regularized com-
+pressed double factorization,” arXiv:2212.07957, 2022.
+
+--- Page 14 ---
+14
+[Online]. Available: https://arxiv.org/abs/2212.07957
+[78] M. Motta, E. Ye, J. R. McClean, Z. Li, A. J.
+Minnich, R. Babbush, and G. K.-L. Chan, “Low rank
+representations for quantum simulation of electronic
+structure,” Npj Quantum Inf. , vol. 7, p. 83,
+2021. [Online]. Available: https://doi.org/10.1038/
+s41534-021-00416-z
+[79] I. D. Kivlichan, J. McClean, N. Wiebe, C. Gidney,
+A. Aspuru-Guzik, G. K.-L. Chan, and R. Babbush,
+“Quantum simulation of electronic structure with
+linear depth and connectivity,” Phys. Rev. Lett. , vol.
+120, p. 110501, 2018. [Online]. Available: https:
+//link.aps.org/doi/10.1103/PhysRevLett.120.110501
+[80] W. J. Huggins, J. R. McClean, N. C. Rubin,
+Z. Jiang, N. Wiebe, K. B. Whaley, and R. Babbush,
+“Efficient and noise resilient measurements for quantum
+chemistry on near-term quantum computers,” Npj
+Quantum Inf. , vol. 7, p. 23, 2021. [Online]. Available:
+https://doi.org/10.1038/s41534-020-00341-7
+[81] T.-C. Yen, V. Verteletskyi, and A. F. Izmaylov, “Mea-
+suring all compatible operators in one series of single-
+qubit measurements using unitary transformations,” J.
+Chem. Theory Comput., vol. 16, p. 2400, 2020. [Online].
+Available: https://doi.org/10.1021/acs.jctc.0c00008
+[82] D. A. Fedorov, B. Peng, N. Govind, and Y. Alexeev,
+“Vqe method: a short survey and recent developments,”
+Mater. Theory , vol. 6, p. 2, 2022. [Online]. Available:
+https://doi.org/10.1186/s41313-021-00032-6
+[83] J. F. Gonthier, M. D. Radin, C. Buda, E. J. Doskocil,
+C. M. Abuan, and J. Romero, “Measurements as a
+roadblock to near-term practical quantum advantage
+in chemistry: Resource analysis,” Phys. Rev. Res. ,
+vol. 4, p. 033154, 2022. [Online]. Available: https:
+//link.aps.org/doi/10.1103/PhysRevResearch.4.033154
+[84] K. Dalton, C. K. Long, Y. S. Yordanov, C. G.
+Smith, C. H. W. Barnes, N. Mertig, and D. R. M.
+Arvidsson-Shukur, “Variational quantum chemistry
+requires gate-error probabilities below the fault-
+tolerance threshold,” arXiv:2211.04505, 2022. [Online].
+Available: https://arxiv.org/abs/2211.04505
+[85] G. Carleo and M. Troyer, “Solving the quantum many-
+body problem with artificial neural networks,” Science,
+vol. 355, p. 602, 2017. [Online]. Available: https:
+//www.science.org/doi/abs/10.1126/science.aag2302
+[86] P. J. Love, “Cooling with imaginary time,” Nat.
+Phys., vol. 16, p. 130, 2020. [Online]. Available:
+https://doi.org/10.1038/s41567-019-0709-z
+[87] H. Kamakari, S.-N. Sun, M. Motta, and A. J.
+Minnich, “Digital quantum simulation of open quantum
+systems using quantum imaginary–time evolution,”
+PRX Quantum , vol. 3, p. 010320, 2022. [Online].
+Available: https://doi.org/10.1103/PRXQuantum.3.
+010320
+[88] C. Janiesch, P. Zschech, and K. Heinrich, “Machine
+learning and deep learning,” Electron. Mark., vol. 31,
+p. 685, 2021. [Online]. Available: https://doi.org/10.
+1007/s12525-021-00475-2
+[89] M. Mohri, A. Rostamizadeh, and A. Talwalkar, Founda-
+tions of Machine Learning , 2nd ed. Cambridge, Mas-
+sachusetts: The MIT Press, 2018.
+[90] D. Silver, A. Huang, C. J. Maddison, A. Guez,
+L. Sifre, G. van den Driessche, J. chrittwieser,
+I. Antonoglou, V. Panneershelvam, M. Lanctot,
+S. Dieleman, D. Grewe, J. Nham, N. Kalchbrenner,
+I. Sutskever, T. Lillicrap, M. Leach, K. Kavukcuoglu,
+T. Graepel, and D. Hassabis, “Mastering the game
+of go with deep neural networks and tree search,”
+Nature, vol. 529, p. 484, 2016. [Online]. Available:
+https://doi.org/10.1038/nature16961
+[91] A. Ramesh, P. Dhariwal, A. Nichol, C. Chu,
+and M. Chen, “Hierarchical text-conditional image
+generation with clip latents,” arXiv:2204.06125, 2022.
+[Online]. Available: https://arxiv.org/abs/2204.06125
+[92] J. Deng, W. Dong, R. Socher, L.-J. Li, K. Li, and
+L. Fei-Fei, “Imagenet: A large-scale hierarchical image
+database,” in 2009 IEEE Conference on Computer
+Vision and Pattern Recognition , 2009, p. 248.
+[Online]. Available: https://doi.org/10.1109/CVPR.
+2009.5206848
+[93] S. Smith, M. Patwary, B. Norick, P. LeGresley,
+S. Rajbhandari, J. Casper, Z. Liu, S. Prabhumoye,
+G. Zerveas, V. Korthikanti, E. Zhang, R. Child,
+R. Y. Aminabadi, J. Bernauer, X. Song, M. Shoeybi,
+Y. He, M. Houston, S. Tiwary, and B. Catanzaro,
+“Using deepspeed and megatron to train megatron-
+turing nlg 530b, a large-scale generative language
+model,” arXiv:2201.11990, 2022. [Online]. Available:
+https://arxiv.org/abs/2201.11990
+[94] M. C. Caro, H.-Y. Huang, M. Cerezo, K. Sharma,
+A. Sornborger, L. Cincio, and P. J. Coles, “General-
+ization in quantum machine learning from few training
+data,” Nat. Commun. , vol. 13, p. 4919, 2022. [Online].
+Available: https://doi.org/10.1038/s41467-022-32550-3
+[95] N. Mishra, M. Kapil, H. Rakesh, A. Anand,
+N. Mishra, A. Warke, S. Sarkar, S. Dutta, S. Gupta,
+A. P. Dash, R. Gharat, Y. Chatterjee, S. Roy,
+S. Raj, V. K. Jain, S. Bagaria, S. Chaudhary,
+V. Singh, R. Maji, P. Dalei, B. K. Behera,
+S. Mukhopadhyay, and P. K. Panigrahi”, “Quantum
+machine learning: A review and current status,” in Data
+Management, Analytics and Innovation . Singapore:
+Springer Singapore, 2021, p. 101. [Online]. Available:
+https://doi.org/10.1007/978-981-15-5619-7 8
+[96] H.-Y. Huang, M. Broughton, J. Cotler, S. Chen,
+J. Li, M. Mohseni, H. Neven, R. Babbush, R. Kueng,
+J. Preskill, and J. R. McClean, “Quantum advantage
+in learning from experiments,” Science, vol. 376, p.
+1182, 2022. [Online]. Available: https://www.science.
+org/doi/abs/10.1126/science.abn7293
+[97] V. N. Vapnik, The Nature of Statistical Learning The-
+ory. Springer New York, NY, 1995.
+[98] S. Mensa, E. Sahin, F. Tacchino, P. K. Barkoutsos, and
+I. Tavernelli, “Quantum machine learning framework
+for virtual screening in drug discovery: a prospective
+quantum advantage,” arXiv:2204.04017, 2022. [Online].
+Available: https://arxiv.org/abs/2204.04017
+[99] J. L. Park, “The concept of transition in quantum
+mechanics,” Found. Phys., vol. 1, p. 23, 1970. [Online].
+Available: https://doi.org/10.1007/BF00708652
+[100] W. K. Wootters and W. H. Zurek, “A single quantum
+cannot be cloned,” Nature, vol. 299, p. 802, 1982.
+[Online]. Available: https://doi.org/10.1038/299802a0
+[101] D. Dieks, “Communication by epr devices,” Phys.
+Lett. A , vol. 92, p. 271, 1982. [Online]. Avail-
+able: https://www.sciencedirect.com/science/article/
+pii/0375960182900846
+[102] M. Benedetti, D. Garcia-Pintos, O. Perdomo,
+V. Leyton-Ortega, Y. Nam, and A. Perdomo-Ortiz,
+
+--- Page 15 ---
+15
+“A generative modeling approach for benchmarking
+and training shallow quantum circuits,” Npj Quan-
+tum Inf. , vol. 5, p. 45, 2019. [Online]. Available:
+https://doi.org/10.1038/s41534-019-0157-8
+[103] C. Zoufal, A. Lucchi, and S. Woerner, “Quantum
+generative adversarial networks for learning and
+loading random distributions,” Npj Quantum Inf. ,
+vol. 5, p. 1, 2019. [Online]. Available: https:
+//doi.org/10.1038/s41534-019-0223-2
+[104] J. Tian, X. Sun, Y. Du, S. Zhao, Q. Liu, K. Zhang,
+W. Yi, W. Huang, C. Wang, X. Wu, M.-H.
+Hsieh, T. Liu, W. Yang, and D. Tao, “Recent
+advances for quantum neural networks in generative
+learning,” arXiv:2206.03066, 2022. [Online]. Available:
+https://arxiv.org/abs/2206.03066
+[105] Y. Cao, G. G. Guerreschi, and A. Aspuru-
+Guzik, “Quantum neuron: an elementary building
+block for machine learning on quantum comput-
+ers,” arXiv:1711.11240, 2017. [Online]. Available:
+https://arxiv.org/abs/1711.11240
+[106] A. Pesah, M. Cerezo, S. Wang, T. Volkoff, A. T. Sorn-
+borger, and P. J. Coles, “Absence of barren plateaus
+in quantum convolutional neural networks,” Phys.
+Rev. X , vol. 11, p. 041011, 2021. [Online]. Available:
+https://link.aps.org/doi/10.1103/PhysRevX.11.041011
+[107] B. Albrecht, C. Dalyac, L. Leclerc, L. Ortiz-Guti´ errez,
+S. Thabet, M. D’Arcangelo, J. R. K. Cline, V. E.
+Elfving, L. Lassabli` ere, H. Silv´ erio, B. Ximenez,
+L.-P. Henry, A. Signoles, and L. Henriet, “Quantum
+feature maps for graph machine learning on a neutral
+atom quantum processor,” Phys. Rev. A , vol. 107,
+p. 042615, Apr 2023. [Online]. Available: https:
+//link.aps.org/doi/10.1103/PhysRevA.107.042615
+[108] R. Ghrist, “Barcodes: The persistent topology of
+data,” Bull. Amer. Math. Soc. , vol. 45, p. 61,
+2008. [Online]. Available: http://dx.doi.org/10.1090/
+S0273-0979-07-01191-3
+[109] A. Cole and G. Shiu, “Persistent homology and
+non-gaussianity,” J. Cosmol. Astropart. Phys. , vol.
+2018, p. 25, 2018. [Online]. Available: https:
+//dx.doi.org/10.1088/1475-7516/2018/03/025
+[110] C. Giusti, E. Pastalkova, C. Curto, and V. Itskov,
+“Clique topology reveals intrinsic geometric structure
+in neural correlations,” Proc. Natl. Acad. Sci. U.S.A. ,
+vol. 112, p. 13455, 2015. [Online]. Available: https:
+//www.pnas.org/doi/abs/10.1073/pnas.1506407112
+[111] R. Rabad´ an, Y. Mohamedi, U. Rubin, T. Chu,
+A. N. Alghalith, O. Elliott, L. Arn´ es, S. Cal,
+A. J. Obaya, A. J. Levine, and P. G. C´ amara,
+“Identification of relevant genetic alterations in cancer
+using topological data analysis,” Nat. Commun. ,
+vol. 11, p. 3808, 2020. [Online]. Available: https:
+//doi.org/10.1038/s41467-020-17659-7
+[112] G. Naitzat, A. Zhitnikov, and L.-H. Lim, “Topology
+of deep neural networks,” J. Mach. Learn. Res. ,
+vol. 21, p. 1, 2020. [Online]. Available: http:
+//jmlr.org/papers/v21/20-345.html
+[113] S. Lloyd, S. Garnerone, and P. Zanardi, “Quantum
+algorithms for topological and geometric analysis of
+data,” Nat. Commun. , vol. 7, p. 10138, 2016. [Online].
+Available: https://doi.org/10.1038/ncomms10138
+[114] S. Ubaru and Y. Saad, “Fast methods for estimating
+the numerical rank of large matrices,” in Proceedings
+of The 33rd International Conference on Machine
+Learning, M. F. Balcan and K. Q. Weinberger,
+Eds., vol. 48, 2016, p. 468. [Online]. Available:
+https://proceedings.mlr.press/v48/ubaru16.html
+[115] S. Ubaru, Y. Saad, and A.-K. Seghouane, “Fast
+Estimation of Approximate Matrix Ranks Using
+Spectral Densities,” Neural Comput. , vol. 29, p. 1317,
+2017. [Online]. Available: https://doi.org/10.1162/
+NECO a 00951
