@@ -1,0 +1,29 @@
+\label{app:analysis-corpus}
+
+Table~\ref{tab:analysis-corpus-appendix} lists the papers used as the analysis corpus for circuit-resource extraction and figure construction.
+These papers are not included in the reference list unless they are separately cited in the main text as conceptual or methodological sources.
+The purpose of this table is to make transparent which studies were inspected for width, depth, gate count, shots, feasibility, workflow, and resource-estimation evidence.
+
+\small
+\begin{longtable}{p{0.24\linewidth}p{0.12\linewidth}p{0.23\linewidth}p{0.23\linewidth}}
+\caption{Analysis corpus for circuit-resource extraction and figure construction.}
+\label{tab:analysis-corpus-appendix}\\
+\toprule
+Study & Problem & Extracted evidence & Use in this study \\
+\midrule
+\endfirsthead
+\toprule
+Study & Problem & Extracted evidence & Use in this study \\
+\midrule
+\endhead
+Azad et al. (2022), ``Solving Vehicle Routing Problem Using Quantum Approximate Optimization Algorithm'' & VRP & qubits, QAOA layer depth $p$, simulator setting & Early VRP-QAOA baseline in Figures A--C. \\
+Azfar et al. (2025), ``Quantum-Assisted Vehicle Routing: Realizing QAOA-based Approach on Gate-Based Quantum Computer'' & VRP & qubits, $p$, transpiled gate counts, shots/runtime, hardware warnings & Gate-based implementation and hardware workflow gap. \\
+Fitzek et al. (2024), ``Applying quantum approximate optimization to the heterogeneous vehicle routing problem'' & HVRP & qubits, $p$, gate-scaling discussion, optimizer runs & Heterogeneous-fleet QAOA simulation and scaling evidence. \\
+Leonidas et al. (2023), ``Qubit efficient quantum algorithms for the vehicle routing problem on NISQ processors'' & VRPTW & full/minimal encoding qubits, ansatz layers, shots, backend comparison & Qubit-efficient encoding and NISQ workflow evidence. \\
+Palackal et al. (2023), ``Quantum-Assisted Solution Paths for the Capacitated Vehicle Routing Problem'' & CVRP / TSP decomposition & TSP-subproblem qubits, QAOA/VQE settings, feasibility/runtime warnings & Feasibility and workflow-gap evidence. \\
+Xie et al. (2023), ``A Feasibility-Preserved Quantum Approximate Solver for the Capacitated Vehicle Routing Problem'' & CVRP & register-based width formula, AOA depth, feasibility-preserving mixer, gate-scaling discussion & Feasibility-preserving formulation and constraint-handling evidence. \\
+Onah and Michielsen (2025), ``Requirements for Early Quantum Utility and Quantum Utility in the Capacitated Vehicle Routing Problem'' & CVRP & resource-estimated qubits, depth, quantum volume, go/no-go conditions & Resource-estimation and utility-gap evidence. \\
+Glos et al. (2022), ``Space-efficient binary optimization for variational quantum computing'' & TSP/encoding theory & QUBO/HOBO/mixed encoding width-depth bounds & Width-depth trade-off background for encoding choices. \\
+\bottomrule
+\end{longtable}
+\normalsize

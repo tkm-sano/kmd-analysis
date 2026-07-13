@@ -1,0 +1,5 @@
+variable,distribution,minimum,maximum,theoretical_mean,theoretical_standard_deviation,unit,source_or_rationale,evidence_status
+customer_demand_kg,Discrete uniform integer,5,30,17.5,7.5,kg,Retained from the prior explicitly synthetic Tokyo scenario rule; no observed shipment weights are available.,Synthetic data with assumed parameters
+service_time_min,Discrete uniform integer,5,15,10.0,3.1622776601683795,min,Retained from the prior benchmark-style synthetic service-time rule; no observed Tokyo stop-service times are available.,Synthetic data with assumed parameters
+time_window_start,Constant,0,0,0.0,0.0,min from departure,Placeholder field only; visit-level time-window feasibility is not evaluated.,Synthetic data with assumed parameters
+time_window_end,Constant,480,480,480.0,0.0,min from departure,Base operating horizon; visit-level time-window feasibility is not evaluated.,Synthetic data with assumed parameters

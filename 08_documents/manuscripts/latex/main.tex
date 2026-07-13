@@ -1,0 +1,66 @@
+\documentclass[ja=standard,a4paper,11pt,lualatex]{bxjsarticle}
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue
+}
+
+\title{EV・物流システムにおけるVRP/CVRP/EVRP問題規模と量子最適化技術のStage-Based Gap Assessment}
+\author{}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\input{sections/00_abstract}
+
+\section{Introduction}
+\input{sections/01_introduction}
+
+\section{Background and Related Work}
+\input{sections/02_background}
+
+\section{Survey}
+\input{sections/02_5_survey}
+
+\section{Method}
+\input{sections/03_method}
+
+\section{Results}
+\input{sections/04_results}
+
+\section{Discussion}
+\input{sections/05_discussion}
+
+\section{Conclusion}
+\input{sections/06_conclusion}
+
+\appendix
+\section{Analysis Corpus Used for Extraction}
+\input{sections/appendix_analysis_corpus}
+
+\section{Extracted Circuit-Resource Data}
+\input{sections/appendix_extracted_circuit_resources}
+
+\section{Detailed Socio-Technical Transition Results}
+\input{sections/table_e_transition_results}
+
+\section{Writing Notes}
+\input{sections/notes_for_writing}
+
+\bibliographystyle{plain}
+\bibliography{../literature/references}
+
+\end{document}

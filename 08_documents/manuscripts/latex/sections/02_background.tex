@@ -1,0 +1,30 @@
+\subsection{Quantum Technologies and Optimization in Transportation}
+
+交通社会における量子技術応用には、量子コンピューティングだけでなく、量子センシング、通信、シミュレーション、機械学習など複数の方向がある。
+したがって、本研究は交通分野における量子技術全体を扱うものではない。
+一方で、交通・物流分野における量子コンピューティング応用のユースケース調査やレビューでは、経路計画、配車、スケジューリング、交通制御、倉庫・配送計画、ネットワーク設計などの最適化問題が中心的な入口として扱われている。
+QED-Cのtransportation and logisticsに関する報告は、同分野の量子コンピューティング応用としてoptimization, machine learning, simulationを挙げたうえで、専門家ワークショップで特定されたユースケースの圧倒的多数がoptimization problemsであり、多くがplanning operationsに帰着すると整理している\cite{qedc2024transportlogistics}。
+また、交通・物流におけるquantum and quantum-inspired optimisationのsystematic reviewは、vehicle routing, factory scheduling, network design, traffic operations, energy managementを主要な問題領域として整理し、実運用への展開にはpilot trials, open datasets, robust experimental protocolsが必要であると指摘している\cite{liu2025quantumtransportreview}。
+量子アニーリング関連技術に限定した交通最適化レビューでも、routing problemsが最終データセット73件中56件を占め、その内訳としてVRPとTSPが大きな割合を占めることが報告されている\cite{mohammed2025qatransportreview}。
+
+このため、本研究では、交通社会における量子応用を広く扱うのではなく、まずEV・物流におけるVRP/CVRP/EVRPに対する量子最適化を対象とする。
+これは、交通社会の将来構想を量子技術全体へ直接接続するのではなく、既存研究が比較的多く蓄積している組合せ最適化問題を入口として、PoCやresource estimationへ進むためのギャップを評価するためである。
+USDOTも交通分野における量子技術の議論において、quantum computing, quantum sensingを含む広い技術群を扱いつつ、quantum computingの応用方向としてoptimization, material simulation, machine learningを挙げており、交通分野で量子応用探索やワークショップが進みつつあることを示している\cite{usdot2026quantumtransport}。
+
+\subsection{Quantum Optimization for Routing Problems}
+
+QAOAやVQAは、量子回路による評価と古典optimizerによるパラメータ更新を組み合わせるhybrid quantum-classical workflowを前提とする。
+VRP/CVRP/EVRPを量子計算へ写像するためには、QUBO、Ising、HOBO、route-based formulation、minimal encodingなどの定式化が必要であり、この段階でbinary variablesやancilla registerが決まる。
+これらは回路のwidthに直接影響し、mixer、penalty term、高次相互作用、feasibility preserving designはdepthやworkflow complexityにも影響する。
+
+\subsection{NISQ, Quantum Utility, and Readiness}
+
+NISQデバイスでは、50--100 qubit規模であってもgate noiseが信頼実行可能な回路サイズを制限する。
+そのため、実用候補性を議論するには、qubit数だけでなく、depth、gate fidelity、shots、optimizer iteration、transpilation、feasible solution rateを含めて見る必要がある。
+本研究ではARLを主指標ではなく、各width/depth値がどの技術段階で得られたかを示す補助分類として扱う。
+
+\subsection{EV and Logistics Stages}
+
+EV・物流側の社会段階は、EV stockから単一VRPインスタンスの車両数を直接推定するのではなく、問題複雑性を増やす運用条件として整理する。
+候補となる段階は、small fleet/simple routing、urban constrained logistics、EV-integrated routing、large-scale dynamic EV logisticsである。
+EV stock、物流需要、充電インフラ、電力価格、政策、都市構造は量子計算が直接変える変数ではなく、社会段階を定義する外生・古典側変数として扱う。

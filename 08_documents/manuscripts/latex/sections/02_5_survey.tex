@@ -1,0 +1,84 @@
+\subsection{Survey Scope}
+
+本研究のsurveyは、量子VRP/CVRP/EVRP研究を網羅的に列挙することではなく、stage-based gap assessmentに必要な証拠を抽出できる文献群を整理することを目的とする。
+そのため、survey対象は三つの役割に分ける。
+第一に、QAOA、NISQ、VQA、application-oriented benchmark、ARL、resource estimationなど、分析枠組みを支える概念・方法論文献である。
+第二に、Figure~\ref{fig:width}とTable~\ref{tab:gap-matrix}を作成するために、width、depth、gate count、shots、feasibility、workflow情報を抽出した分析対象文献である。
+第三に、社会側readinessやEVRP制約、dynamic routing、量子技術ロードマップを位置づける背景資料である。
+
+\subsection{Survey Papers to Be Covered}
+
+Table~\ref{tab:survey-paper-list} lists the papers and source documents that should be covered in the survey section.
+The table separates sources used as conceptual or methodological references from papers used as the extraction corpus.
+Papers in the extraction corpus are listed here to clarify the survey scope, but they are not cited through BibTeX in the main text; their bibliographic details are instead provided in Appendix~\ref{app:analysis-corpus}.
+
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{2pt}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.30\linewidth}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.27\linewidth}}
+\caption{Papers and source documents to be covered in the survey.}
+\label{tab:survey-paper-list}\\
+\toprule
+Source ID & Paper or source & Survey role & What to extract or discuss \\
+\midrule
+\endfirsthead
+\toprule
+Source ID & Paper or source & Survey role & What to extract or discuss \\
+\midrule
+\endhead
+qaoa-2014 & Farhi et al., ``A Quantum Approximate Optimization Algorithm'' & Conceptual method & QAOA layer structure, $p$, cost/mixer alternation, definition-level width/depth. \\
+nisq-2018 & Preskill, ``Quantum Computing in the NISQ era and beyond'' & Conceptual method & NISQ noise, limited reliable circuit size, need for higher-fidelity gates and FTQC. \\
+vqa-2021 & Cerezo et al., ``Variational quantum algorithms'' & Conceptual method & Hybrid quantum-classical workflow, optimizer loop, NISQ relevance and limitations. \\
+bench-2021 & Lubinski et al., ``Application-oriented performance benchmarks for quantum computing'' & Benchmark method & Width/depth as application-oriented benchmark dimensions and volumetric evaluation. \\
+bench-2023 & Lubinski et al., ``Optimization applications as quantum performance benchmarks'' & Benchmark method & Optimization benchmark design and interpretation of application-level quantum performance. \\
+bench-2024 & Lubinski et al., ``Quantum algorithm exploration using application-oriented performance benchmarks'' & Benchmark method & Application-oriented benchmark extension and evidence classification. \\
+utility-2023 & Herrmann et al., ``Quantum utility -- definition and assessment of a practical quantum advantage'' & Readiness method & Quantum utility, application readiness levels, and distinction from this study's QRL. \\
+resource-2022 & Beverland et al., ``Assessing requirements to scale to practical quantum advantage'' & Resource-estimation method & Full-stack resource estimation and practical quantum advantage requirements. \\
+vrp-2020 & Azad et al., ``Solving Vehicle Routing Problem Using Quantum Approximate Optimization Algorithm'' & Analysis corpus & Small VRP-QAOA simulation width/depth; early VRP-QAOA baseline. \\
+vrp-2025 & Azfar et al., ``Quantum-Assisted Vehicle Routing'' & Analysis corpus & Gate-based VRP-QAOA, qubits, transpiled gates, shots/runtime, infeasible-state warning. \\
+hvrp-2024 & Fitzek et al., ``Applying quantum approximate optimization to the heterogeneous vehicle routing problem'' & Analysis corpus & HVRP QAOA instances, qubits, $p$, gate-scaling discussion. \\
+vrptw-2023 & Leonidas et al., ``Qubit efficient quantum algorithms for the vehicle routing problem on NISQ processors'' & Analysis corpus & Full/minimal encoding, route variables, qubits, ansatz layers, backend comparison. \\
+cvrp-2023a & Palackal et al., ``Quantum-Assisted Solution Paths for the Capacitated Vehicle Routing Problem'' & Analysis corpus & CVRP-to-TSP decomposition, QAOA/VQE comparison, feasibility and runtime warnings. \\
+cvrp-2023b & Xie et al., ``A Feasibility-Preserved Quantum Approximate Solver for the Capacitated Vehicle Routing Problem'' & Analysis corpus & Feasibility-preserving AOA, register-based width formula, depth 1--9 experiments, gate complexity. \\
+cvrp-2025 & Onah and Michielsen, ``Requirements for Early Quantum Utility and Quantum Utility in the Capacitated Vehicle Routing Problem'' & Analysis corpus & CVRP resource estimation, HOBO/QUBO width, depth, quantum volume and utility gap. \\
+encoding-2022 & Glos et al., ``Space-efficient binary optimization for variational quantum computing'' & Analysis corpus & QUBO/HOBO/mixed encoding width-depth trade-off for routing-style binary optimization. \\
+logistics-2024 & Phillipson et al., logistics quantum-computing overview & Background context & Logistics quantum-computing landscape and current practical barriers. \\
+dynamic-vrp-2013 & Pillac et al., ``A review of dynamic vehicle routing problems'' & Social context & Dynamic VRP concepts and operational complexity for SRL definition. \\
+evrptw-2014 & Schneider et al., ``The electric vehicle-routing problem with time windows and recharging stations'' & Social context & EVRP constraints, time windows, charging stations, EV-specific routing complexity. \\
+ev-routing-2020 & Frederhausen and Klumpp, commercial EV routing review & Social context & Urban logistics and commercial EV routing conditions. \\
+doe-roadmap-2024 & U.S. DOE, ``Quantum Information Science Applications Roadmap'' & Roadmap context & Quantum technology roadmap and future-stage comparison. \\
+trl-2020 & NASA technology readiness assessment guidance & Readiness method & General readiness-level logic and caution in interpreting stage labels. \\
+systems-2000 & Sterman, ``Business Dynamics'' & Systems method & Systems-thinking framing; not used as full stock-flow simulation evidence. \\
+socio-tech-2002 & Geels, socio-technical transition framework & Socio-technical method & Socio-technical transition framing for connecting social demand and technology readiness. \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{Conceptual and Methodological Sources}
+
+概念・方法論文献は、量子アルゴリズムの構造、NISQ制約、hybrid workflow、アプリケーション志向ベンチマーク、量子utility、resource estimationの考え方を定義するために用いる。
+QAOAの基本構造はFarhi et al.に基づき、NISQにおけるノイズと回路サイズ制約はPreskillに基づく。
+VQA/QAOAのhybrid quantum-classical workflowはCerezo et al.を参照する。
+Application-oriented performance benchmarkとwidth/depthを用いたvolumetricな評価視点はLubinski et al.を参照する。
+Quantum utilityとapplication readinessの段階評価はHerrmann et al.を参照し、実用的量子優位に必要なfull-stack resource estimationの観点はBeverland et al.を参照する
+\cite{farhi2014qaoa,preskill2018nisq,cerezo2021vqa,lubinski2021applicationbenchmarks,lubinski2024optimizationbenchmarks,lubinski2024applicationbenchmarks,herrmann2023quantumutility,beverland2022practicaladvantage}。
+
+\subsection{Analysis Corpus for Circuit-Resource Extraction}
+
+分析対象文献は、概念・方法論の引用文献とは区別する。
+これらは一般的主張を支えるReferencesとしてではなく、図表作成のために調査し、回路資源・workflow証拠を抽出したcorpusとして扱う。
+分析対象文献から抽出した具体データは、\texttt{circuit\_resources.csv} に記録し、Appendix~\ref{app:extracted-circuit-resources}に再掲する。
+分析対象文献の一覧はAppendix~\ref{app:analysis-corpus}に記載する。
+
+このcorpusでは、同一論文内でもinstance、encoding、実行環境が異なる場合は別の抽出単位として扱う。
+例えば、full encodingとminimal encoding、QUBOとHOBO、small simulationとhardware-oriented execution、resource estimationは同じ意味のデータではない。
+したがって、surveyでは単に「どの論文があるか」ではなく、「どの文献から、どの種類の証拠が抽出できるか」を整理する。
+
+\subsection{Social and Roadmap Sources}
+
+社会側readinessを定義するためには、EV stockを単一のVRP車両数へ直接変換するのではなく、EV・物流システムにおける制約条件、運用複雑性、dynamic routing、充電制約、都市物流条件を段階として整理する。
+そのため、dynamic VRP、EVRPTW、commercial EV routing、量子技術ロードマップに関する資料を背景資料として用いる
+\cite{pillac2013dynamicvrp,schneider2014evrptw,frederhausen2020commercialevrouting,doe2024qisapplicationsroadmap}。
+
+これらの背景資料は、量子回路資源値を直接与えるものではない。
+本研究では、社会側資料をSRLの定義・制約軸の整理に用い、量子側のwidth/depth抽出データとは別レイヤーとして扱う。
