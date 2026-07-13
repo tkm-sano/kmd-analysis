@@ -1,0 +1,13 @@
+check_id,description,expected,observed,status
+SC01,CELL-ID uniqueness,130,130,PASS
+SC02,all original CELL-IDs retained,109,109,PASS
+SC03,major CSV row counts and hashes unchanged,"{'outputs/synthesized/synthetic_customers.csv': {'row_count': 17500, 'sha256': 'aaee0257cf82b6d04e5de812a23220b76267bb5ca742bda0695286d2065d2878'}, 'outputs/synthesized/route_results.csv': {'row_count': 8100, 'sha256': '56e737c1dd055681d04eea22297d856d65225860b644f15c0907074111a8fa02'}, 'outputs/synthesized/constraint_summary.csv': {'row_count': 7, 'sha256': 'bde2bba032dc7d7483767c41dbbdf5b2cc40725f83c139941fe5c634bcf98eaa'}, 'outputs/tables/constraint_definitions.csv': {'row_count': 7, 'sha256': 'aeea2cf437416e6ab338fd38593264ecc9e232d5e60986a3c3a35a864d43dead'}}","{'outputs/synthesized/synthetic_customers.csv': {'row_count': 17500, 'sha256': 'aaee0257cf82b6d04e5de812a23220b76267bb5ca742bda0695286d2065d2878'}, 'outputs/synthesized/route_results.csv': {'row_count': 8100, 'sha256': '56e737c1dd055681d04eea22297d856d65225860b644f15c0907074111a8fa02'}, 'outputs/synthesized/constraint_summary.csv': {'row_count': 7, 'sha256': 'bde2bba032dc7d7483767c41dbbdf5b2cc40725f83c139941fe5c634bcf98eaa'}, 'outputs/tables/constraint_definitions.csv': {'row_count': 7, 'sha256': 'aeea2cf437416e6ab338fd38593264ecc9e232d5e60986a3c3a35a864d43dead'}}",PASS
+SC04,existing aggregate rates unchanged,"{'Payload capacity': 0.0, 'Operating-time limit': 0.3351851851851852, 'Range feasibility': 0.6444444444444445, 'SOC feasibility': nan, 'Charging-station access': 0.10691358024691358, 'Charging-assisted range feasibility': 0.33295019157088124, 'Charging-duration feasibility': 0.15302124149309135}","{'Payload capacity': 0.0, 'Operating-time limit': 0.3351851851851852, 'Range feasibility': 0.6444444444444445, 'SOC feasibility': nan, 'Charging-station access': 0.10691358024691358, 'Charging-assisted range feasibility': 0.33295019157088124, 'Charging-duration feasibility': 0.15302124149309135}",PASS
+SC05,matrix constraint names nonempty,0,0,PASS
+SC06,current representation level assigned,5,5,PASS
+SC07,SOC remains NOT_EVALUATED,True,True,PASS
+SC08,provisional matrix has uncertainty labels,"['PROVISIONAL', 'CONCEPTUAL_PROPOSAL', 'REQUIRES_EXPERT_REVIEW', 'NOT_YET_VALIDATED']","['PROVISIONAL', 'CONCEPTUAL_PROPOSAL', 'REQUIRES_EXPERT_REVIEW', 'NOT_YET_VALIDATED']",PASS
+SC09,Discussion and Future Work are separate sections,True,"{'discussion': True, 'future': True}",PASS
+SC10,prohibited overclaim phrases absent,0,0,PASS
+SC11,enhanced registry has all required stage columns,7,7,PASS
+SC12,stage analysis reached validation without execution error,True,True,PASS

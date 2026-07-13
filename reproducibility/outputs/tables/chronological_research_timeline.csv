@@ -1,0 +1,10 @@
+date_or_phase,question,evidence_available,decision,action,output,change_from_previous_phase
+Initial framing,技術指標だけで社会実装を評価できるか,slides 2–5,応用要件を先に定義,研究論理を構成,core logic,開始点
+Literature and metric review,規模・幅を比較できるか,slides 6–8; papers,gapを3分類,evidence extraction,gap framework,metric focusから拡張
+Problem-scale comparison,代表性とは何か,slide 9,規模×制約coverage,application definition,concept figure,規模単独から変更
+Transportation scenario definition,要件を計算可能にするには,slides 10–12; public inputs,synthetic proxyを採用,factorial design,27 structures,応用定義を具体化
+Synthetic data construction,比較顧客をどう作るか,mesh/code,paired population sampling,"17,500 customers",customer CSV,データ作成
+Constraint operationalization,どの制約が未充足か,route/code,individual route flags,"56,700 evaluations",constraint tables,計算へ移行
+Sensitivity analysis,仮定依存はどれか,parameter registry,Bootstrap/OAT,CI/sensitivity,summary tables,単一値から拡張
+Reproducibility audit,第三者が再計算できるか,frozen files/code,hash/regression/tests,audit notebook,validation tables,監査層を追加
+Current revision,なぜ分析したか追跡できるか,user requirements/artifacts,reasoning/action trail追加,registries/metadata,current notebook,説明責任を追加
