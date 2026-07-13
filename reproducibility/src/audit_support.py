@@ -82,11 +82,12 @@ def preflight_check(
         )
 
     for directory in [root / "03_data", root / "05_src", root / "02_literature"]:
-        record("PREFLIGHT-DIR", str(directory), directory.is_dir(), "required directory")
+        record("PREFLIGHT-DIR", str(directory.relative_to(root)), directory.is_dir(), "required directory")
 
     for input_id, (path, required_columns) in required_files.items():
         exists = path.is_file()
-        record("PREFLIGHT-FILE", input_id, exists, str(path))
+        display_path = str(path.relative_to(root)) if path.is_relative_to(root) else path.name
+        record("PREFLIGHT-FILE", input_id, exists, display_path)
         if exists and required_columns is not None:
             try:
                 observed = list(pd.read_csv(path, nrows=0).columns)
@@ -117,12 +118,13 @@ def preflight_check(
         output_root.mkdir(parents=True, exist_ok=True)
         with tempfile.NamedTemporaryFile(dir=output_root, delete=True) as handle:
             handle.write(b"audit-write-test")
-        record("PREFLIGHT-WRITE", str(output_root), True, "write/delete succeeded")
+        display_output = str(output_root.relative_to(root)) if output_root.is_relative_to(root) else output_root.name
+        record("PREFLIGHT-WRITE", display_output, True, "write/delete succeeded")
     except Exception as error:
         record("PREFLIGHT-WRITE", str(output_root), False, repr(error))
     try:
         info = git_information(root)
-        record("PREFLIGHT-GIT", str(root), True, json.dumps(info, ensure_ascii=False))
+        record("PREFLIGHT-GIT", ".", True, json.dumps(info, ensure_ascii=False))
     except Exception as error:
         record("PREFLIGHT-GIT", str(root), False, repr(error))
     return pd.DataFrame(rows)
@@ -191,6 +193,11 @@ def provenance_table(specifications: list[dict[str, object]]) -> pd.DataFrame:
         else:
             row_count = column_count = np.nan
         row = dict(spec)
+        try:
+            repository_root = find_repository_root(path.parent)
+            row["processed_file"] = str(path.relative_to(repository_root))
+        except (FileNotFoundError, ValueError):
+            row["processed_file"] = path.name
         row.update(
             {
                 "row_count": row_count,
