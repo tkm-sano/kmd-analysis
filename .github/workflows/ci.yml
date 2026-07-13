@@ -1,0 +1,62 @@
+name: Repository checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install lightweight test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            numpy==1.26.4 \
+            pandas==2.2.3 \
+            scikit-learn==1.5.2 \
+            pytest==8.3.3
+
+      - name: Run reproducibility tests
+        run: python -m pytest -q reproducibility/tests/test_audit.py
+
+      - name: Verify the minimal artifact policy
+        run: |
+          python - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          tracked = subprocess.check_output(
+              ["git", "ls-files"], text=True
+          ).splitlines()
+          notebooks = sorted(path for path in tracked if path.endswith(".ipynb"))
+          expected_notebook = "reproducibility/quantum_transport_reproducibility_audit_revised.ipynb"
+          assert notebooks == [expected_notebook], notebooks
+          json.loads(Path(expected_notebook).read_text(encoding="utf-8"))
+
+          pdfs = sorted(path for path in tracked if path.lower().endswith(".pdf"))
+          assert pdfs == ["output/pdf/quantum_transport_reproducibility_audit_revised.pdf"], pdfs
+          assert not any(path.lower().endswith(".zip") for path in tracked)
+          assert not any(path.startswith("03_data/raw/") for path in tracked)
+          assert not any("/pdf_derived/text/" in path for path in tracked)
+
+          figures = sorted(Path("06_outputs/figures/active/png").glob("figure_*.png"))
+          tables = sorted(Path("06_outputs/tables/png").glob("*.png"))
+          assert len(figures) == 17, len(figures)
+          assert len(tables) == 5, len(tables)
+          print("notebook=1 pdf=1 figures=17 tables=5; no tracked raw/PDF/ZIP corpus")
+          PY
