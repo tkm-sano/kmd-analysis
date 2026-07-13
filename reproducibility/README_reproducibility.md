@@ -21,7 +21,7 @@ Run from this directory. The notebook discovers the repository root by searching
 
 ## Inputs and outputs
 
-Frozen inputs remain in the repository’s `03_data/processed` and `02_literature` trees. All generated data, figures, audit tables, logs, and manifests are written under `reproducibility/outputs`.
+Frozen inputs remain in the repository’s `03_data/processed` and `02_literature` trees. All generated data, figures, audit tables, logs, and manifests are written under `reproducibility/outputs`. This directory is intentionally not versioned: it is recreated by executing the authoritative notebook. The versioned deliverables are `quantum_transport_reproducibility_audit_revised.ipynb`, its PDF export under `output/pdf/`, and the curated final PNG assets under `06_outputs/`.
 
 The notebook dynamically checks required files, columns, imports, input hashes, record counts, key uniqueness, missing evaluation handling, regenerated/stored equivalence, output creation, and slide-result reconciliation. A failed critical test downgrades the final status.
 

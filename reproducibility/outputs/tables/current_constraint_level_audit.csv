@@ -1,6 +1,0 @@
-Constraint,Conceptual operational requirement,Current operationalization,Current representation level,What is represented,What is not represented,Evidence source,Status
-Payload capacity,車両の重量・容積・積載順序を含む積載可能性,"合成需要の合計と2,000 kgの静的上限を比較",L1-L2,ルート別の重量合計と単一車両容量,複数車種，動的需要，積載順序，容積,constraint_registry; route_results,CURRENT_NOTEBOOK_EVIDENCE
-Operating time,勤務時間，時間窓，移動・サービス・待機・休憩,距離/固定速度＋合成サービス時間を480分上限と比較,L1,固定速度の移動時間，サービス時間，全体上限,顧客別時間窓，渋滞，待機，休憩，充電時間,constraint_registry; parameter_registry,CURRENT_NOTEBOOK_EVIDENCE
-Driving range,走行中のエネルギー状態と航続可能性,全ルート距離を81.2 kmの固定閾値と比較,L1,静的な使用可能航続距離,逐次SOC，積載，気温，勾配，回生,constraint_registry; parameter_registry,CURRENT_NOTEBOOK_EVIDENCE
-Charging access,運行中に利用可能な充電機会,ルートノードと候補connection間の地理距離,L1,候補への直線距離と条件別閾値,道路迂回，空き，互換性，出力，待ち時間，利用制限,constraint_registry; charger candidates,CURRENT_NOTEBOOK_EVIDENCE
-SOC,走行・充電に伴う逐次エネルギー状態,逐次状態遷移を実装していない,L0,なし,到着SOC，消費，充電，予備SOCの状態遷移,constraint_registry; validation T13,NOT_EVALUATED

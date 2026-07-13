@@ -1,6 +1,0 @@
-research_question,why_it_mattered,required_evidence,selected_method,concrete_action,output,interpretation,remaining_uncertainty
-規模・車両数で制約負荷はどう変わるか,資源解釈前に規模応答が必要,対応付けた顧客集合とroute flags,3×3×3 factorial＋100 seeds,build_analysis_configurations; construct_route_proxies,scenario/estimand tables,モデル条件付き規模応答,水準根拠・外的妥当性
-充電条件で地理的アクセスはどう変わるか,EV固有要件の一側面,OCM connection属性と距離,3 screening conditions,build_eligible_charger_candidates; evaluate_routes_by_condition,charger candidates; access rates,地理的候補アクセス,実利用・SOC・queue
-どの制約が未充足か,量子定式化へ含める要件を検討,route-level numerator/denominator,個別制約評価,build_constraint_evaluations,constraint_summary,拘束性の分析信号,共同実行可能性
-結果はseedで安定するか,合成配置差を把握,paired seed clusters,cluster Bootstrap,cluster_bootstrap_constraint_summary,95% CI,固定モデル下seed変動,モデル不確実性
-結果は仮定に依存するか,単一基準値の過剰解釈回避,low/base/high response,OAT,run_oat_sensitivity,sensitivity_detail,局所モデル応答,相互作用
