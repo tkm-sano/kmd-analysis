@@ -1,0 +1,19 @@
+decision_id,date_or_stage,question_faced,available_information,options_considered,selected_option,rationale,action_taken,expected_consequence,observed_consequence,validation,subsequent_decision,evidence,status
+D01,Initial framing,なぜ交通・配送を対象としたか,スライド3の適用領域比較,交通; 他領域,交通・配送,問題インスタンスと運用要件を複数水準で定義可能,輸送を初期領域に設定,適用要件と資源解釈を具体化,公開データと制約を構造化,slide trace,EV配送条件へ具体化,slide 3,CONTEMPORANEOUS_RECORD
+D02,Scenario definition,なぜEV配送条件を扱うか,range・SOC・charging gap,通常VRP; EVRP,EV配送側の制約,EV固有要件を明示するため（再構成）,航続距離・充電等を評価対象化,運用要件の追加負荷を示す,距離・充電関連の未充足を算出,constraint registry,SOC未評価を分離,slides 8–13; code,RETROSPECTIVE_RECONSTRUCTION
+D03,Data construction,なぜ合成顧客か,実注文データなし; 人口メッシュあり,実注文; 合成,人口加重合成,RATIONALE_NOT_DOCUMENTED（可用資産から合理的に再構成可能）,"17,500行を生成",比較可能な顧客集合,保存済み結果と一致,regression test,実需要較正を将来課題化,public dataset; code,DIRECTLY_OBSERVABLE
+D04,Geographic scope,なぜ東京都域か,東京の人口・充電・P31処理資産,東京; 他地域,東京都本土プロキシ,RATIONALE_NOT_DOCUMENTED,東京入力を統合,共通地理範囲,東京合成シナリオを生成,bounds/hash tests,一般化限界を明記,public dataset,NOT_DOCUMENTED
+D05,Factor design,なぜ顧客数25/50/100か,スライド設定,他水準を含む,25/50/100,RATIONALE_NOT_DOCUMENTED,3水準を直積化,規模応答を比較,27構造を生成,count test,規模別集計,slide 18; config,CONTEMPORANEOUS_RECORD
+D06,Factor design,なぜ車両数1/3/5か,スライド設定,他水準を含む,1/3/5,RATIONALE_NOT_DOCUMENTED,3水準を直積化,ルート分割応答を比較,1/3/5ルートを生成,route count test,重み付け差を明記,slide 18; config,CONTEMPORANEOUS_RECORD
+D07,Randomization,なぜ100 seedか,スライド設定,他反復数,100,RATIONALE_NOT_DOCUMENTED,100顧客集合を生成,合成空間変動を観察,各顧客数100集合,seed completeness test,cluster Bootstrap,slide 18; code,CONTEMPORANEOUS_RECORD
+D08,Depot,なぜデポプロキシか,P31候補; 実デポなし,実デポ; 固定点; proxy,最近傍P31候補,RATIONALE_NOT_DOCUMENTED,顧客重心最近傍を選択,各集合に出発点を付与,シナリオでデポが変化,coordinate tests,デポ依存を限界化,public dataset; code,DIRECTLY_OBSERVABLE
+D09,Assignment,なぜKMeansか,顧客座標; 車両数,最適割当; random; KMeans,KMeans,RATIONALE_NOT_DOCUMENTED,seed固定n_init=20,空間的に近い顧客を群分け,車両数と同数のクラスタ,route count regression,制約評価へ進む,code,DIRECTLY_OBSERVABLE
+D10,Visit order,なぜ最近傍順か,クラスタ内座標,TSP最適化; 道路順; greedy,greedy最近傍,RATIONALE_NOT_DOCUMENTED,デポ往復順を生成,共通距離proxy,非最適距離を生成,stored route comparison,道路・最適性限界を明記,code,DIRECTLY_OBSERVABLE
+D11,Distance,なぜ道路ネットワークを使わないか,network distance unavailable記録,network; Haversine,Haversine×係数,network data unavailable; 係数根拠は未確認,距離に1.25を適用,道路迂回を粗く近似,route_proxy_distanceを生成,nonnegative/regression tests,road-networkを次段階へ,code output,DIRECTLY_OBSERVABLE
+D12,Constraints,なぜrange/payload/time/accessか,slides 8–13,他制約を含む,個別4領域＋簡略充電,スライド研究範囲,各feasible flagを評価,拘束的要件を識別,制約別率を生成,rate tests,SOCを別扱い,slides; code,CONTEMPORANEOUS_RECORD
+D13,Scope limit,なぜSOC/待ちを評価しないか,状態遷移・queueデータなし,実装; 未評価,NOT_EVALUATED,必要実装・データが存在しない,分母0として保持,過剰主張を回避,SOC rateはNaN,T13 test,将来課題へ移す,code; limitation,DIRECTLY_OBSERVABLE
+D14,Evaluation unit,なぜルート単位か,車両別route proxy,顧客; scenario; route,route,RATIONALE_NOT_DOCUMENTED,route feasible flagsを作成,車両ルートごとの負荷比較,車両数で寄与が変化,estimand table,他weightingを併記,code,DIRECTLY_OBSERVABLE
+D15,Uncertainty,なぜBootstrapか,100 paired seeds,解析式; row bootstrap; cluster bootstrap,seed-cluster Bootstrap,対応設計維持（実装docstring）,"1,000回復元抽出",seed変動区間,percentile CI,stored summary comparison,OATへ進む,code comments/output,DIRECTLY_OBSERVABLE
+D16,Sensitivity,なぜOATか,low/base/high registry,global/factorial; OAT,OAT,RATIONALE_NOT_DOCUMENTED,一変数ずつ変更,仮定別応答を分離,234行の応答,sensitivity table,相互作用を未解決化,code,DIRECTLY_OBSERVABLE
+D17,Literature,なぜ回路幅を残すか,slide 7 values; source uncertainty,削除; 計算値扱い; reference,REFERENCE_ONLY,研究論理との接点を残し過剰主張を避ける（再構成）,証拠レジストリ化,量子側との限定的接続,4値SOURCE_NOT_VERIFIED,status audit,page/equation検証を課題化,slides; local papers,RETROSPECTIVE_RECONSTRUCTION
+D18,Audit revision,なぜ再現性監査を追加したか,提出用監査要件; frozen outputs,結果提示のみ; audit,第三者監査Notebook,現ユーザー要求,preflight/manifest/testsを追加,再実行・追跡可能性,18 tests PASS,clean execution,説明と研究時系列を分離,current revision,CONTEMPORANEOUS_RECORD

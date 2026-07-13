@@ -1,0 +1,6 @@
+Constraint,Current representation,Current level,Next representation level,Additional variables or data required,Additional dependency introduced,Candidate technology stage,Validation required
+Payload capacity,合成需要合計と単一容量,L1-L2,複数車種・容積・積載順序を含む明示的制約,車種別容量，容積，品目，積卸順序,車両選択と訪問順との結合,Stage 2-3,OR・物流専門家レビュー，観測積載データ
+Operating time,固定速度＋サービス時間＋全体上限,L1,顧客別時間窓＋待機・休憩,arrival-time，waiting-time，break variables；時間窓データ,訪問順，交通，充電との時間依存,Stage 3,OR・物流専門家レビュー，運行記録
+Driving range,固定81.2 km閾値,L1,逐次SOCと状態依存消費,辺別消費，積載，気温，勾配，SOC変数,訪問順，積載，充電選択との状態依存,Stage 3,車両・エネルギーモデル検証
+Charging access,候補への地理的近接性,L1,充電停止選択＋互換性・可用性・待ち,道路迂回，connector，power，availability，queue data,SOC，時間窓，施設状態との結合,Stage 3-4,充電・物流専門家レビュー，運用データ
+SOC,未評価,L0,固定航続距離代理（L1），その後に逐次SOC（L3）,初期SOC，予備SOC，辺別消費，充電量，充電曲線,距離，積載，時間，充電の逐次結合,Stage 2 then Stage 3,車両・OR・物流専門家レビュー

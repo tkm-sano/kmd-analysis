@@ -1,0 +1,43 @@
+check_id,item,status,detail
+PREFLIGHT-DIR,/Users/tstakuma/Desktop/github/research/03_data,PASS,required directory
+PREFLIGHT-DIR,/Users/tstakuma/Desktop/github/research/05_src,PASS,required directory
+PREFLIGHT-DIR,/Users/tstakuma/Desktop/github/research/02_literature,PASS,required directory
+PREFLIGHT-FILE,source_deck,PASS,/Users/tstakuma/Desktop/github/research/07_presentations/current/0712_MDR2_v2_enriched_appendix.pptx
+PREFLIGHT-FILE,population_mesh,PASS,/Users/tstakuma/Desktop/github/research/03_data/processed/estat_tokyo_mesh_population_cells.csv
+PREFLIGHT-COLUMNS,population_mesh,PASS,missing=[]; observed_columns=5
+PREFLIGHT-FILE,charger_connections,PASS,/Users/tstakuma/Desktop/github/research/03_data/processed/open_charge_map_tokyo_boundary_clipped_connections.csv
+PREFLIGHT-COLUMNS,charger_connections,PASS,missing=[]; observed_columns=18
+PREFLIGHT-FILE,depot_candidates,PASS,/Users/tstakuma/Desktop/github/research/03_data/processed/evrp_constraint_gap_inputs/depot_candidates_public_proxy_snapshot.csv
+PREFLIGHT-COLUMNS,depot_candidates,PASS,missing=[]; observed_columns=12
+PREFLIGHT-FILE,vehicle_specs,PASS,/Users/tstakuma/Desktop/github/research/03_data/processed/evrp_constraint_gap_inputs/vehicle_specs_public_source_snapshot.csv
+PREFLIGHT-COLUMNS,vehicle_specs,PASS,missing=[]; observed_columns=16
+PREFLIGHT-FILE,analysis_parameters,PASS,/Users/tstakuma/Desktop/github/research/03_data/processed/evrp_constraint_gap_inputs/analysis_parameters.csv
+PREFLIGHT-COLUMNS,analysis_parameters,PASS,missing=[]; observed_columns=7
+PREFLIGHT-FILE,quantum_evidence,PASS,/Users/tstakuma/Desktop/github/research/03_data/processed/evrp_constraint_gap_inputs/quantum_vrp_evidence_registry.csv
+PREFLIGHT-COLUMNS,quantum_evidence,PASS,missing=[]; observed_columns=38
+PREFLIGHT-FILE,circuit_resources,PASS,/Users/tstakuma/Desktop/github/research/02_literature/extraction_tables/circuit_resources.csv
+PREFLIGHT-COLUMNS,circuit_resources,PASS,missing=[]; observed_columns=14
+PREFLIGHT-FILE,paper_registry,PASS,/Users/tstakuma/Desktop/github/research/02_literature/references/papers.csv
+PREFLIGHT-COLUMNS,paper_registry,PASS,missing=[]; observed_columns=18
+PREFLIGHT-FILE,stored_customers,PASS,/Users/tstakuma/Desktop/github/research/03_data/processed/scenario/synthetic_customers.csv
+PREFLIGHT-COLUMNS,stored_customers,PASS,missing=[]; observed_columns=16
+PREFLIGHT-FILE,stored_routes,PASS,/Users/tstakuma/Desktop/github/research/03_data/processed/route_proxy/route_proxy_results.csv
+PREFLIGHT-COLUMNS,stored_routes,PASS,missing=[]; observed_columns=77
+PREFLIGHT-FILE,stored_summary,PASS,/Users/tstakuma/Desktop/github/research/03_data/processed/constraints/constraint_summary.csv
+PREFLIGHT-COLUMNS,stored_summary,PASS,missing=[]; observed_columns=23
+PREFLIGHT-MODULE,numpy,PASS,import succeeded
+PREFLIGHT-MODULE,pandas,PASS,import succeeded
+PREFLIGHT-MODULE,scipy,PASS,import succeeded
+PREFLIGHT-MODULE,sklearn,PASS,import succeeded
+PREFLIGHT-MODULE,matplotlib,PASS,import succeeded
+PREFLIGHT-MODULE,geopandas,PASS,import succeeded
+PREFLIGHT-MODULE,shapely,PASS,import succeeded
+PREFLIGHT-MODULE,pyproj,PASS,import succeeded
+PREFLIGHT-MODULE,requests,PASS,import succeeded
+PREFLIGHT-MODULE,pydantic,PASS,import succeeded
+PREFLIGHT-MODULE,pptx,PASS,import succeeded
+PREFLIGHT-MODULE,nbformat,PASS,import succeeded
+PREFLIGHT-MODULE,pytest,PASS,import succeeded
+PREFLIGHT-PYTHON,3.11.8,PASS,Python >= 3.11 required
+PREFLIGHT-WRITE,/Users/tstakuma/Desktop/github/research/reproducibility/outputs,PASS,write/delete succeeded
+PREFLIGHT-GIT,/Users/tstakuma/Desktop/github/research,PASS,"{""git_commit"": ""368d995f2ccba5e3a89b8d68cd5dbe7b1df0939e"", ""git_branch"": ""agent/restructure-research-repository"", ""git_dirty"": true, ""git_status_porcelain"": ""D 001_20260712_file_inventory.csv\n D 001_20260712_readme.md\n D 002_20260712_file_inventory.md\n D 002_20260712_research_structure.md\n D 003_20260712_research_environment.md\n D 003_20260712_usage_map.csv\n D 004_20260712_cleanup_plan.md\n D 004_20260712_data_provenance.md\n D 005_20260712_cleanup_report.md\n D 005_20260712_markdown_audit.csv\n D 006_20260712_folder_structure.md\n D 006_20260712_markdown_migration_map.md\n D 007_20260712_deleted_markdown_log.csv\n D 008_20260712_presentation_asset_map.csv\n D 009_20260712_presentation_asset_map.md\n D 010_20260712_code_data_dependency_map.csv\n D 011_20260712_code_data_dependency_map.md\n D 012_20260712_file_renaming_map.csv\n D 013_20260712_file_renaming_map.md\n D 07_presentations/current/701_20260712_v02_mdr2_presentation.pptx\n D 201_20260712_reference_inventory.csv\n D 202_20260712_analysis_method.md\n D 202_20260712_reference_inventory.md\n D 203_20260712_presentation_asset_map.md\n D 203_20260712_slide_ready_references.txt\n D environment_cleanup_deletion_log.csv\n D environment_cleanup_git_status_after.txt\n D environment_cleanup_git_status_before.txt\n D environment_cleanup_inventory.csv\n D environment_cleanup_plan.md\n D environment_cleanup_quarantine_log.csv\n D environment_cleanup_report.md\n D github_large_file_deletion_log.json\n D latest_only_cleanup_plan.md\n D latest_only_cleanup_report.md\n D latest_only_deletion_log.csv\n D latest_only_git_status_after.txt\n?? 00_project_management/folder_structure.md\n?? 00_project_management/research_environment.md\n?? 01_research_design/analysis_method.md\n?? 01_research_design/research_structure.md\n?? 02_literature/references/reference_inventory.csv\n?? 02_literature/references/reference_inventory.md\n?? 03_data/metadata/data_provenance.md\n?? 07_presentations/current/0712_MDR2_v2_enriched_appendix.pptx\n?? 07_presentations/references/\n?? README.md\n?? output/\n?? reproducibility/""}"
