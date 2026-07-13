@@ -1,0 +1,3959 @@
+===== PAGE 1 =====
+
+Application-Oriented Performance Benchmarks for Quantum Computing
+Thomas Lubinski,1, 2 Sonika Johri,3 Paul Varosy,4 Jeremiah Coleman,5 Luning
+Zhao,3 Jason Necaise,6 Charles H. Baldwin, 7 Karl Mayer,7 and Timothy Proctor 8
+(Quantum Economic Development Consortium (QED-C) collaboration) ∗
+1Quantum Circuits Inc, 25 Science Park, New Haven, CT 06511
+2QED-C Technical Advisory Committee on Standards and Performance Benchmarks Chairman
+3IonQ Inc, 4505 Campus Dr, College Park, MD 20740, USA
+4Department of Physics, Colorado School of Mines, Golden, CO 80401, USA
+5Department of Electrical and Computer Engineering, Princeton University, Princeton, NJ, 08544, USA
+6D-Wave Systems, Burnaby, British Columbia, Canada, V5G 4M9, Canada
+7Quantinuum, 303 S. Technology Ct, Broomﬁeld, CO 80021, USA
+8Quantum Performance Laboratory, Sandia National Laboratories, Livermore, CA 94550, USA
+(Dated: January 11, 2023)
+In this work we introduce an open source suite of quantum application-oriented performance benchmarks that
+is designed to measure the eﬀectiveness of quantum computing hardware at executing quantum applications.
+These benchmarks probe a quantum computer’s performance on various algorithms and small applications as
+the problem size is varied, by mapping out the ﬁdelity of the results as a function of circuit width and depth
+using the framework of volumetric benchmarking. In addition to estimating the ﬁdelity of results generated
+by quantum execution, the suite is designed to benchmark certain aspects of the execution pipeline in order to
+provide end-users with a practical measure of both the quality of and the time to solution. Our methodology
+is constructed to anticipate advances in quantum computing hardware that are likely to emerge in the next ﬁve
+years. This benchmarking suite is designed to be readily accessible to a broad audience of users and provides
+benchmarks that correspond to many well-known quantum computing algorithms.
+CONTENTS
+I. Introduction 2
+II. Background 3
+A. Component-Level Speciﬁcations 3
+B. Quantum V olume 4
+C. V olumetric Benchmarks 4
+III. Application-Oriented Benchmarks 5
+A. The Algorithms in the Benchmarking Suite 5
+B. Constructing Benchmarking Circuits 6
+C. The Benchmarking Procedure 7
+D. V olumetric Positioning 7
+E. V olumetric Backgrounds 7
+F. Circuit Depth 8
+G. Quantifying Result Quality with Circuit Fidelity 9
+H. Implementation Rules 10
+IV . Benchmark Results and Analysis 11
+A. Benchmark Results on a Quantum Simulator 11
+B. Benchmark Results on Quantum Hardware 12
+C. Comparison to Generic Benchmarks 16
+D. Impact of Compiler Optimization Techniques 17
+∗ This work was sponsored by the Quantum Economic Development Con-
+sortium (QED-C) and was performed under the auspices of the QED-C
+Technical Advisory Committee on Standards and Performance Benchmarks.
+The authors acknowledge many committee members for their input to and
+feedback on the project and this manuscript.
+V . Measuring Execution Time 18
+A. Total Execution Time 18
+B. Quantum Execution Time 19
+VI. Summary and Conclusions 20
+Data and Code Availability 21
+Acknowledgement 21
+A. Selected Algorithms and Applications 22
+1. Shallow Oracle-Based Algorithms 22
+2. Quantum Fourier Transform 22
+3. Grover’s Search Algorithm 24
+4. Phase and Amplitude Estimation 24
+5. Hamiltonian Simulation 25
+6. Monte Carlo Sampling 25
+7. Variational Quantum Eigensolver 26
+8. Shor’s Order Finding 27
+B. Limitations of the Average Result Fidelity 28
+C. Issues with Di ﬀerent Quantum Computing APIs 28
+D. Advances in Quantum Computers 29
+1. Mid-Circuit Measurements 29
+2. Circuit Parameterization 30
+3. Multiply-Controlled Gates 30
+4. Close Classical /Quantum Integration 30
+References 32
+arXiv:2110.03137v3  [quant-ph]  10 Jan 2023
+
+===== PAGE 2 =====
+
+2
+I. INTRODUCTION
+Over the past decade, quantum computers have evolved
+from exploratory physics experiments into cloud-accessible
+hardware, heralding their transformation into early-stage com-
+mercial products. A broad audience of users has now begun
+to explore and interact with quantum computers, inspiring re-
+search into practical quantum algorithms [ 1] and garnering
+attention from the academic, government, and business com-
+munities. With recent demonstrations of quantum advantage
+[2, 3], it seems increasingly likely that quantum computers
+will someday outperform their classical counterparts for practi-
+cally relevant tasks. Unlike contemporary classical computers,
+though, the information processing capabilities of current quan-
+tum computers are limited primarily by errors, not by their size
+or speed.
+Quantum computers can experience a wide range of complex
+errors. Many of these errors result from noise in or miscalibra-
+tions of the lowest-level components in the system—quantum
+gate operations and the qubits they act on. Component-level
+benchmarks and characterization protocols, such as random-
+ized benchmarking [ 4, 5] or gate set tomography [ 6], can
+provide insight into the type and magnitude of these errors.
+These tools are critical for experimental e ﬀorts to improve
+hardware. But many users seeking to run an application on a
+quantum computer are not concerned with low-level details,
+but rather how likely their application is to execute success-
+fully. Extrapolating low-level performance metrics to predict
+the performance of a speciﬁc application is challenging, and
+these extrapolations are often inaccurate [7, 8].
+The limited predictive power of low-level performance met-
+rics has contributed to an increasing focus on benchmarks that
+concisely and directly summarize the holistic performance of a
+quantum computer [8–10]. A notable example is the quantum
+volume benchmark [10], which is designed to probe the eﬀec-
+tive useful size of a speciﬁc quantum computer and summarize
+it in one number: the quantum volume. The quantum volume
+has been widely adopted and reported by the community. How-
+ever, due to the complexity of errors in quantum hardware,
+neither a device’s quantum volume nor any other single metric
+is likely to accurately predict its performance on all applica-
+tions [7, 8]. There is thus a pressing need for a diverse set of
+application-centric metrics and benchmarks that test the per-
+formance of quantum computers on practically relevant tasks.
+Such benchmarks will enable hardware developers to quantify
+their progress in commercially relevant ways, and will make
+it possible for end users to more accurately predict how the
+available hardware will perform on their application.
+In this paper, we introduce an extensible suite of quantum
+performance benchmarks that are application-oriented. These
+benchmarks are designed to test quantum computers on a di-
+verse range of tasks that are based on quantum computing
+applications and algorithms. Our suite complements other
+recent benchmarking methods [ 11–17] that use, e.g., small
+chemistry problems or basic quantum circuits as benchmarks.
+Demonstrated in Figure 1, each benchmark in our suite is de-
+rived from an algorithm or application and speciﬁes a scalable
+family of quantum circuits. The benchmark suite is intended
+to evaluate the capability of quantum hardware to successfully
+execute meaningful computational tasks, and to reﬂect likely
+use cases for quantum computers. The benchmarking suite is
+available as a public, open-source repository with extensive
+documentation [18]. Validated implementations of our bench-
+marks are supplied in multiple common quantum programming
+languages, including Qiskit [19], Cirq [20], Braket [21] and
+Q# [22], and can be rapidly deployed on nearly all major cloud
+quantum computers.
+Our benchmarking suite consists of a set of benchmarks that
+are each based on an algorithm or application, and each bench-
+mark is designed to measure proxies for the quality of and the
+time to solution for its corresponding application. In analyz-
+ing the results of these benchmarks, we primarily adopt the
+framework of volumetric benchmarking [23], as shown in Fig-
+ure 1. This approach, which generalizes the quantum volume,
+displays the result quality for each application as a function of
+the circuit width (often this is equal to the problem size) and
+the computation’s length (circuit depth). To enable algorithmic
+volumetric benchmarks, we deﬁne a normalized measure of
+result quality that makes results from di ﬀerent applications
+comparable, and we deﬁne a normalized, device-independent
+measure of circuit depth that removes many of the complica-
+tions associated with diverse native gate sets and dissimilar
+device connectivities. This analysis makes it possible to easily
+compare the performance of di ﬀerence quantum computing
+devices on the same tasks.
+Our benchmarking suite is intended to be an evolving code
+base, accepting contributions from the quantum computing
+research community. Throughout this paper we highlight the
+limitations of the ﬁrst version of our benchmarking suite, re-
+ported here, and suggest paths towards enhancing the suite.
+Indeed, there is evidence from classical computing that a suite
+of successful benchmarks will evolve signiﬁcantly over time
+as weaknesses are uncovered and as hardware evolves. A com-
+pelling example is the evolution of the SPEC (Standard Per-
+formance Evaluation Corporation) benchmark suite [24, 25],
+one of the most successful suites for benchmarking classical
+computers. Starting in the late 1980s with 10 benchmarks, this
+suite went through at least 5 major revisions over the next two
+decades, stabilizing in 2006 with 25 benchmarks, only 6 of
+which have some resemblance to those of the early suite.
+The remainder of this paper is structured as follows. Section
+II provides background on the fundamentals guiding this work.
+Section III introduces our application-oriented benchmarks
+and our methodology. In Section IV we present results from
+executing subsets of the benchmark suite on quantum simu-
+lators and quantum hardware. We discuss the challenges of
+measuring execution time in Section V, and we conclude in
+Section VI. Appendix A contains a detailed description of each
+of our application-oriented benchmarks. The limitations of
+our current benchmarking suite are highlighted throughout the
+paper, and Appendices C and B address some of them in detail.
+In Appendix D we analyze the adaptations to our suite that will
+be required to address recent technological enhancements such
+as mid-circuit measurements, parameterized gate operations,
+and hybrid classical-quantum computations.
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 3 =====
+
+3
+1 2 3 4 7 10 17 27 43 69110176281450721 1K 2K 3K 5K 8K12K
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17Circuit Width
+QV=32
+Bernstein-Vazirani (1)
+Deutsch-Jozsa
+Hidden Shift
+Bernstein-Vazirani (2)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=qasm_simulator 2022-10-15 20:22:17 UTC
+1 2 3 5 9 15 26 44 77132227390670 1K 2K 3K 6K10K17K30K51K
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17Circuit Width
+QV=32
+Quantum Fourier Transform (2)
+Phase Estimation
+Quantum Fourier Transform (1)
+Amplitude Estimation
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=qasm_simulator 2022-10-15 21:16:20 UTC
+1 2 5 11 23 52113249549 1K 3K 6K13K28K62K137K301K662K1M 3M 7M
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17Circuit Width
+QV=32
+Hamiltonian Simulation
+VQE Simulation (1)
+Monte Carlo Sampling (2)
+Shor's Order Finding (2)
+Grover's Search
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=qasm_simulator 2022-10-15 20:22:22 UTC
+FIG. 1. Quantum Application-Oriented Performance Benchmarks. The results of executing our quantum application-oriented performance
+benchmarking suite on a simulator of a noisy quantum computer, with results split into benchmarks based on three loose categories of algorithm:
+tutorial, subroutine, and functional. For each benchmark, circuits are run for a variety of problem sizes. This typically correspond to the circuit’s
+width, i.e., the number of qubits it acts on, which here range from 2 to 12 qubits. The result ﬁdelity, a measure of the result quality, is computed
+for each circuit execution, and is shown as a colored square positioned at the corresponding circuit’s width and normalized depth. Results
+for circuits of equal width and similar depth are averaged together. The results of the application-oriented benchmarks are shown on top of a
+‘volumetric background’ (grey-scale squares). Here and throughout this paper, except where stated, this volumetric background is a heuristic
+extrapolation of a device’s quantum volume (here, 32) to predict the region in which a circuit’s result ﬁdelity will be above1/2 (the grey squares).
+Note that this extrapolation is not expected to always be accurate (see discussion in main text) but it is nevertheless useful. This is because
+any deviations between the performance of the algorithmic benchmarks and the prediction of the volumetric background signify that, for the
+processor in question, the performance of these algorithms is diﬃcult to predict from the processor’s quantum volume alone.
+II. BACKGROUND
+In this section we review the methods on which our work is
+based. To place our work in context, in Section II A we begin
+with a brief discussion of the component-level performance
+metrics that are typically available to users of the current gen-
+eration of hardware. Throughout this paper we will compare
+a quantum computer’s performance on our benchmarks with
+its quantum volume, so in Section II B we review the quantum
+volume metric. To present results from our benchmarks we
+will primarily use the framework of volumetric benchmarking.
+In Section II C we review this methodology and explain how it
+provides the underpinning for the analysis of our application
+benchmarks.
+A. Component-Level Speciﬁcations
+There are many techniques for estimating component-level
+performance of quantum computing devices, e.g., randomized
+benchmarking [4, 5] and gate set tomography [6]. Hardware
+providers use these techniques to calibrate and test their sys-
+tems, and they often publish performance metrics extracted
+from the results of these experiments. The measures of perfor-
+mance that providers report to users of their systems typically
+include one- and two-qubit gate ﬁdelity, state preparation and
+measurement (SPAM) ﬁdelity, and measures of how long each
+qubit can retain quantum information (T1 and T2 coherence
+times). For example, Figure 2 shows the contents of the text
+ﬁle that the Amazon Braket cloud service [26] presents to users
+FIG. 2. An example of component-level performance metrics.The
+component-level performance metrics provided by Amazon Braket
+for the IonQ Quantum Processing Unit.
+of the IonQ Quantum Processing Unit (QPU), and Figure 3
+shows similar information that Google [27] provide for its We-
+ber device (Sycamore class). Other quantum computing cloud
+services, such as IBM Quantum Services [28], provide similar
+types of information about their machines.
+Component-level performance metrics provide a lot of infor-
+mation about a machine, but they have at least two important
+limitations. Firstly, component-level performance metrics are
+typically not suﬃcient to accurately predict a device’s perfor-
+mance on an algorithm [7, 8]. This is because summary metrics
+cannot capture the full complexity of errors in quantum com-
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 4 =====
+
+4
+FIG. 3. An example of component-level performance metrics.The
+component-level performance metrics provided by Google for its
+Weber device.
+puting components (e.g., individual gates and readouts), and
+not all sources of error are even apparent when testing a single
+component (e.g., crosstalk [29, 30]). Second, component-level
+metrics are challenging for non-specialists to interpret. It is
+often diﬃcult for a prospective quantum computer user to ex-
+trapolate from component-level metrics to predict how their
+application will perform.
+B. Quantum Volume
+In this work we compare results from our benchmarks to
+predictions extrapolated from a device’s quantum volume, and
+so we now review the quantum volume. IBM introduced the
+quantum volume (QV) metric [10] in recognition of the need
+for a simple way to quantify and compare the capabilities of
+quantum computing devices. The quantum volume is a single
+metric that is inﬂuenced by multiple factors contributing to
+the overall performance of a quantum computer, including its
+number of qubits, systemic errors, device connectivity, and
+compiler eﬃciency. Several vendors and users have welcomed
+this as a step towards quantifying what a quantum computer
+can do [ 31]. IBM publishes the quantum volume for each
+machine that it makes available to external users through IBM
+Quantum Services [ 28], as shown in Figure 4. Note that a
+device with more qubits does not always have a larger quantum
+volume.
+A quantum computer’s quantum volume is deﬁned in terms
+of its average performance on a particular set of random cir-
+cuits, which we refer to as the quantum volume circuits. An
+n-qubit quantum volume circuit is a square circuit consisting
+of n layers of Haar-random SU(4) unitaries between⌊n/2⌋ ran-
+domly selected qubit pairs (where⌊n/2⌋ rounds n/2 down to the
+nearest integer). A device’s quantum volume is deﬁned to be
+2n with n being both the width (the number of qubits) and
+the depth (the number of layers) of the largest quantum vol-
+ume circuits that can be executed ‘successfully’ on a speciﬁed
+quantum device. So a quantum computer that can successfully
+execute 5 layer quantum volume circuits on 5 qubits, but not 6
+FIG. 4. Quantum volume examples. The number of qubits and the
+quantum volume for a selection of IBM Q machines, accessed via
+IBM Quantum Services.
+layer quantum volume circuits on 6 qubits, would have a quan-
+tum volume of 25 or 32. A device is considered to implement
+n-qubit quantum volume circuits successfully if, on average,
+it produces more ‘heavy outputs’ than a set threshold of 2/3
+with two-sigma conﬁdence. Quantum volume is deﬁned as the
+exponential of the circuit depth as this is intended to represent
+the challenge of simulating the same circuit on a classical com-
+puter. Note, however, that no single number can summarize
+the many dimensions that make up a quantum computer’s per-
+formance characteristics [7, 32]. For example, the quantum
+volume is not guaranteed to reliably predict the performance
+of wide and shallow circuits, or deep and narrow circuits.
+C. Volumetric Benchmarks
+To present results from our benchmarks we will primarily
+use the framework of volumetric benchmarking [ 23], which
+we now review. V olumetric benchmarking is a framework
+for constructing and visualizing the results of large, ﬂexible
+families of benchmarks. It consists of (1) choosing a family of
+circuits to use as a benchmark, (2) selecting circuits from this
+family and executing them on the hardware to be benchmarked,
+and then (3) plotting the observed performance of the hardware
+on these circuits as a function of the circuits’ width and depth.
+The results are plotted in the depth× width ‘volumetric space’,
+as illustrated in Figure 5. The data points (here, grey-scale
+squares) show the result quality for the tested circuits of that
+shape (width and depth), and in this example the metric of
+result quality takes one of two values: ‘success’ (grey squares)
+or ‘fail’ (white squares). Note that Figure 5 also contains the
+location of the quantum volume circuits (black squares) and
+a quantum volume region (grey rectangle) that we explain in
+Section III D.
+V olumetric benchmarking can be used to estimate and report
+the performance of both wide shallow circuits and narrow deep
+circuits, in addition to square circuits like those tested in the
+quantum volume benchmark. Furthermore, volumetric bench-
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 5 =====
+
+5
+FIG. 5. An example of volumetric benchmarking. V olumetric
+benchmarking results for a hypothetical 12-qubit quantum computer,
+whereby a quantum computer’s performance on some family of cir-
+cuits is mapped out as a function of circuit width and depth. This ex-
+ample uses a binary measure of performance: grey and white squares
+show the circuit shapes at which the test circuits succeeded and failed,
+respectively, according to this metric. The location of the quantum
+volume circuits, that would be used to extract the quantum volume,
+are shown in bold. Here and throughout, ‘depth’ for all circuits is
+deﬁned with respect to a particular standardized gate set, and in this
+gate set the quantum volume circuits are not square.
+marking is not restricted to a single kind of circuit (e.g., the spe-
+ciﬁc random circuits of the quantum volume benchmark). This
+makes volumetric benchmarking an ideal framework within
+which to place application-oriented benchmarks.
+III. APPLICATION-ORIENTED BENCHMARKS
+In this section we introduce our application-oriented bench-
+marking suite, and we explain how we analyze the data and
+present the results. A quantum algorithm or application (e.g.,
+Grover’s Search) does not itself directly constituent a well-
+deﬁned benchmark, so in this section we explain both what
+algorithms and applications are included in our suite and how
+they are converted into speciﬁc benchmarks. Our benchmark-
+ing suite consists of four components:
+1. A set of algorithms or subroutines{A} [e.g., Grover’s
+Search or the Quantum Fourier Transform (QFT)], each
+with a variable input size n.
+2. For each algorithmA, one or more recipes for turning
+that algorithm into a set of quantum circuits{C}n for each
+input problem size n. These circuits are always closely
+related to, but are not necessarily identical to, the circuits
+that deﬁne the algorithm. Note that these circuits are
+speciﬁed using a hardware-agnostic gate set, and they
+therefore must be compiled into a speciﬁc device’s native
+operations before they are run (see Section III C).
+3. A procedure for using a given family of circuits{C}n as
+a benchmark, including a method for selecting circuits
+from{C}n to run (such as sampling from a distribution
+over{C}n) and, e.g., a method for varying n.
+4. Methods for analyzing the data.
+Below we introduce each of these components in turn. In
+Section III A we state the algorithms that we have initially in-
+cluded in our benchmarking suite (component 1 above). In Sec-
+tion III B we discuss how we turn an algorithm into a speciﬁc
+set of circuits (component 2 above), what should be consid-
+ered when doing so, and the limitations of some of our current
+benchmarking circuits. In Section III C we introduce the exper-
+imental procedure for running a circuit set{C}n (component 3
+above). In Sections III D-III G we introduce the methods for
+analyzing the data (component 4 above). In Section III D we
+explain how and why we present the results of the benchmark-
+ing using volumetric benchmarking plots, and in Section III E
+we explain how we generate ‘volumetric backgrounds’ that
+are independent predictions for a quantum computer’s perfor-
+mance on the application-oriented benchmarks. These plots
+necessitate deﬁning a circuit’sdepth, and so in Section III F we
+discuss three diﬀerent ways in a which a circuit’s depth could
+be deﬁned—each with strengths and weaknesses—and state
+the choice that we made in this work. The benchmarking suite
+currently focuses primarily on result quality (rather than, e.g.,
+time to solution) and this can be quantiﬁed in many ways. In
+Section III G we discuss the merits of diﬀerent choices for this
+quality metric, and introduce our choice: a normalized version
+of classical ﬁdelity. Having introduced our benchmarking suite,
+in Section III H we then discuss what constitutes reasonable
+usage of the benchmarks, i.e., what are the rules of use?
+A. The Algorithms in the Benchmarking Suite
+Our benchmarking suite is based on a set of quantum al-
+gorithms or applications, i.e., every benchmark in our suite
+is built from a quantum algorithm. Our intention is that this
+benchmarking suite will evolve over time (as has, e.g., the
+SPEC benchmark suite [24, 25] for classical computers), and
+a particularly important part of this evolution will be changes
+in the applications and algorithms it contains. The initial set
+of algorithms and applications that we chose is summarized in
+Table I.
+We refer to our suite as ‘application-oriented benchmarks’
+(rather than ‘application benchmarks’) because our suite does
+not—and is not intended to—only include complete and prac-
+tically useful algorithms. This is reﬂected in the three informal
+categories into which we place the algorithms we have se-
+lected: ‘functional’, ‘subroutines’ and ‘tutorial’. In our suite,
+we include complete algorithms that are anticipated to be use-
+ful within the functional category. It could be argued that an
+‘application-oriented’ benchmarking suite should only contain
+benchmarks based on complete, useful algorithms—but we
+do not take this position, for two reasons. First, many algo-
+rithms use the same subroutines, e.g, the QFT, and so it is
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 6 =====
+
+6
+Application-Oriented Benchmarks
+Deutsch-Jozsa
+Tutorial Bernstein-Vazirani
+Hidden Shift
+Quantum Fourier Transform
+Subroutine Phase Estimation
+Amplitude Estimation
+Grover’s Search
+Hamiltonian Simulation
+Functional Monte Carlo Sampling
+Variational Quantum Eigensolver
+Shor’s Period Finding
+TABLE I. The initial set of quantum algorithms and applications
+included within our application-oriented benchmarking suite. We
+anticipate that the algorithms included within our suite will expand
+and evolve over time, e.g., quantum error correction subroutines are
+an important quantum computational primitive that are not currently
+represented in this suite. We ﬁnd it useful to separate the current suite
+of algorithms into three informal categories: tutorial, subroutine, and
+functional.
+valuable to benchmark a quantum computer’s performance on
+those subroutines. This is true even if that subroutine is, on its
+own, not computationally useful (e.g., the QFT with a product
+state input and followed immediately by a computational basis
+measurement can be eﬃciently simulated classically). This is
+the motivation for including the algorithms that are within our
+subroutine category.
+Second, the ultimate practical applications of quantum com-
+puters are currently uncertain—both the problems that quantum
+computers will solve and the algorithms that will be used to
+solve those problem remain unclear. Diversity in a bench-
+marking suite is therefore important, i.e., the properties of the
+algorithms and circuits within our benchmarking suite should
+be diverse. This motivates include simple oracle algorithms
+(e.g., Deutsch-Jozsa) within our suite, as, unlike most of the
+other algorithms we have included, they require only shallow
+(i.e., low depth) circuits. We collect these algorithms in the
+tutorial category (termed as such because these algorithms are
+commonly used to introduce concepts in quantum computing).
+Note that the need for a diverse benchmarking suite is also an
+important motivation for including many of the other nomi-
+nally useful algorithms that we selected. This is because, e.g.,
+Shor’s algorithm is unlikely to execute with suﬃciently low
+error except when run on error corrected logical qubits—so the
+main scientiﬁc reason for using Shor’s algorithm, run directly
+on physical qubits, to benchmark near-term hardware is to in-
+crease the diversity of the tasks with which hardware is tested.
+We anticipate that as near-term (i.e., NISQ) and long-term (i.e.,
+fault-tolerant error-corrected) applications of quantum com-
+puters become clearer, our benchmarking suite will evolve to
+reﬂect this.
+B. Constructing Benchmarking Circuits
+Each of our benchmarks is based on an algorithm, but an
+algorithm does not itself deﬁne a unique benchmark. For ex-
+ample, most algorithms are deﬁned for a large class of input
+problems and a quantum computer cannot be benchmarked
+by exhaustively testing every problem instance. In our bench-
+marking suite, a speciﬁc benchmark A for an algorithmA is
+deﬁned by a method for (1) turning that algorithm into a set
+of circuits{C}n for each input problem size n, (2) selecting
+Ncircs circuits to run from{C}n, and (3) selecting Nparams val-
+ues for all adjustable parameters (if any) within each selected
+circuitC. Applying this procedure for a speciﬁed n results
+in Ncircs× Nparams ‘complete’ circuits to be run. A ‘complete’
+circuit means that all gates within the circuit are speciﬁed (in-
+cluding their parameter values, if any), the circuit begins with
+all qubits initialized in the|0⟩ state, and the circuit ends with
+a computational basis measurement of all qubits. In all cases,
+the circuit set{C}n consists of a subset of the circuits that im-
+plement the algorithmA or some simple adaptation of those
+circuits.
+For each algorithm that we chose, we designed one or more
+benchmarks—deﬁned by the three ingredients above—based
+on that algorithm. Complete speciﬁcations for each benchmark
+are provided in Appendix A. When designing our benchmarks
+we aimed to satisfy two competing criteria. Firstly, it should be
+feasible to run and analyze the data produced by a benchmark.
+For example, ideally a benchmark’s circuits should be designed
+so that the data analysis can be implemented with polynomial
+(in n) time and space classical computations—although note
+that a benchmark with exponentially scaling classical compu-
+tation requirements is not necessarily infeasible to run in the
+near term. Second, a quantum computer’s performance on a
+benchmark A built from an algorithm A should reﬂect that
+computer’s performance onA as closely as possible. Satisfy-
+ing both criteria is challenging, as they are conﬂicting. This is
+because the quantum circuits of a useful quantum algorithm
+applied to a classically intractable problem instance cannot
+be eﬃciently simulated on a classical computer, so we cannot
+simply compare the output of these circuits to the results of a
+classical simulation. Any feasible benchmark must circumvent
+this challenge.
+Many of our initial benchmarks satisfy one but not both of
+the above criteria. For example, our QFT(1) benchmark inputs
+a random computational basis state (|x⟩ where x∈ [0..2n]) into
+the standard QFT circuit, adds one to the resultant Fourier basis
+state (using single qubit gates we map F|x⟩→ F|x + 1⟩ where
+x + 1 is modulo 2n arithmetic and F is the QFT unitary), and
+then applies the inverse QFT. The correct output bit string is
+the binary representation of x + 1—which can evidently be e ﬃ-
+ciently computed—so this benchmark is feasible to implement
+on any number of qubits. However, this benchmark does not
+test the action of the device’s imperfect implementation of the
+QFT on entangled input states (although it does test the inverse
+QFT’s action on entangled states), which are the input of the
+QFT in all its practical applications. Conversely, some of our
+other benchmarks require classical simulations that are expo-
+nentially expensive in the number of qubits. Improving each
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 7 =====
+
+7
+of our benchmarks so that they all satisfying the above criteria
+is important work that is already ongoing (see discussion in
+Section VI).
+C. The Benchmarking Procedure
+Here we explain the procedure that we use to execute a
+benchmark A. Executing an application benchmark A consists
+of (1) choosing a range of problem sizes at which to probe per-
+formance, (2) generating a set of circuits for each problem size,
+which are selected from A’s circuit set{C}n using the method
+speciﬁed by A, and (3) executing the circuits and measuring
+key components of performance, notably the result ﬁdelity and
+the execution time. We implement this methodology using
+Algorithm 1:
+Algorithm1 Benchmark Execution Loop
+1: target← backend_id
+2: initialize_metrics()
+3: for problem_size← min_size, max_size do ⊿ N1
+4: for circuit_id← 1, max_circuits do ⊿ N2
+5: execute_classical()
+6: circuit⇐ create_circuit(circuit_id)
+7: circuit⇐ compile_load_circuit(circuit)
+8: for params← 1, max_params do ⊿ N3
+9: execute_quantum(target, circuit, params, shots)
+10: end for
+11: collect_circuit_metrics()
+12: end for
+13: collect_group_metrics()
+14: end for
+The algorithm deﬁnes three nested loops. The outer loop
+(labelled N1) is a sweep over the range of problem sizes. The
+middle loop (N2) represents multiple interleaved executions of
+classical and quantum execution routines. In all our existing
+benchmarks the classical routines consist solely of circuit con-
+struction and compilation. In this step each of the benchmark’s
+circuits is compiled into the native operations of the hardware
+under test, using the provider’s compilers (our benchmarks
+therefore test both the performance of the provider’s classical
+compilation algorithms and the performance of the quantum
+hardware). Future benchmarks may use additional classical
+computation (e.g., benchmarks based on variational algorithms
+that include the classical optimization loop). Each iteration
+of the middle loop constructs a quantum circuit, which can
+be a parameterized circuit. The inner loop ( N3) consists of
+executing that circuit, for some range of parameter values if it
+is a parameterized circuit. Our procedure for implementing a
+benchmark explicitly contains some user-speciﬁed variables—
+including the number of shots per circuit (Nshots) and the total
+number of circuits at each n (Ncircs× Nparams)—and implicitly
+contains much implementation freedom (e.g., the circuit com-
+pilation algorithm can be chosen by the user). In Section III H
+we discuss a tentative set of rules for what choices for these
+explicit and implicit user-speciﬁed variables are permissible.
+D. Volumetric Positioning
+Our benchmarking suite usesvolumetric benchmarking plots
+[23] to visualize the results of our quantum application bench-
+marks. We now explain how we use volumetric benchmarking
+plots (a necessary component for volumetric benchmarking
+plots is deﬁning a circuit’s depth—we defer this important
+point to Section III F). Each of our application-oriented bench-
+marks is associated with a family of circuits that is parameter-
+ized by the input problem size, i.e., each input size n deﬁnes a
+circuit ensemble{C}n. Each application’s circuit family has a
+particular ‘footprint’ that represents the way in which the shape
+of the circuits—i.e., their width and depth—varies as a func-
+tion of the input size. We can therefore report the performance
+of our application benchmarks in the depth× width ‘volumet-
+ric space’. In this work, for each application benchmark A a
+ﬁxed input size n always corresponds to a single circuit width
+w. Note that often w = n, i.e., a problem instance of size w
+uses an n-qubit circuit, but this is not always the case (e.g.,
+our Bernstein-Vazirani(2) benchmark uses mid-circuit
+measurements to implement the Bernstein-Vazirani algorithm
+using n = 2 qubit circuits for any input problem size w). In
+contrast, a benchmark A’s circuits can have a range of depths
+for each input size. For example, the algorithms in the ‘tuto-
+rial’ category use a varied-depth oracle circuit that encodes the
+problem instance. We therefore use the circuits’ mean depth
+to deﬁne that ensemble’s volumetric position, and we report
+average performance over the circuit ensemble.
+To illustrate this idea, we executed our benchmarking suite
+on a quantum simulator. The lower plot of Figure 6 shows the
+result ﬁdelity (see below) for a single benchmark plotted in the
+volumetric space. Figure 1 shows the result ﬁdelity for each
+of our benchmarks, plotted in the volumetric space and sepa-
+rated into the three categories of benchmark. Each benchmark
+consists of running its circuits for a range of problem sizes,
+which closely correspond to the circuits’ widths. Each data
+point (small rectangles) summarizes the results for the circuits
+of a particular problem size. The rectangle’s location indicates
+the circuits’ width and average depth, and the color indicates
+the average quality of the result for that circuit shape. We quan-
+tify the quality of the result using the average result ﬁdelity,
+deﬁned in Section III G. The width and depth of benchmarking
+circuits for diﬀerent applications can be similar, resulting in
+overlap on the volumetric plots. Whenever this is the case
+the result ﬁdelities from the overlapping circuits for diﬀerent
+applications are averaged together. We use this averaging in
+Figure 1, and throughout this paper except where stated.
+E. Volumetric Backgrounds
+Algorithmic benchmarks directly probe a quantum com-
+puter’s performance on application-like tasks, but performance
+on these tasks can also be predicted from a processor’s known
+performance data (e.g., RB error rates). Discrepancies between
+these predictions and experimental results can reveal the pres-
+ence and size of interesting and important physical eﬀects, e.g.,
+crosstalk. Throughout this work, we compare the results of
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 8 =====
+
+8
+our application-oriented benchmarks to a prediction by placing
+them on top of what we call a ‘volumetric background’, shown
+by the grey-scale rectangles in Figure 1. A volumetric back-
+ground means a prediction for the result ﬁdelity, as a function
+of circuit width and depth, obtained from some method that is
+independent of our application oriented benchmarks. In Figure
+1 and throughout most of this paper, we use a volumetric back-
+ground that is extrapolated from the corresponding device’s
+quantum volume. For visual clarity, we use a binary ‘success’
+(grey squares) or ‘fail’ (white squares) background, with ‘suc-
+cess’ corresponding to a result ﬁdelity of at least 1/2 [33]. We
+use this type of volumetric background throughout this paper,
+except where stated.
+Predicting a circuit’s result ﬁdelity from a processor’s quan-
+tum volume requires an extrapolation. We use the following
+heuristic methodology that is arguable the best guess for the
+result ﬁdelity of a width w and depth d circuit given only a
+processor’s quantum volume. A widthw and depth d circuit is
+predicted to have a result ﬁdelity above 1/2 if wd< (log2(VQ))2
+where VQ is the quantum volume [ 10]. That is, a circuit is
+predicted to succeed if its depth× width is no larger than the
+largest successful quantum volume circuits. Note that here,
+as throughout, we use the standardized circuit depth (see Sec-
+tion III F) and with this deﬁnition for the circuit depth quantum
+volume circuits are not square.
+No volumetric background is likely to accurately predict the
+performance of all circuits, including our application oriented
+benchmarks. This is because a circuit’s performance is not
+only a function of its shape, i.e., its volumetric position, as it
+also depends on the type of errors present and whether those er-
+rors change with time or with number of qubits. A volumetric
+background inferred from a quantum volume involves particu-
+larly large extrapolations, as discussed in Section IV C. For this
+reason, we also include a ‘quantum volume region’ (the large
+grey square in Figure 1), alongside any volumetric background
+extrapolated from a quantum volume. This quantum volume
+region encompasses all circuit shapes that are smaller than
+the largest successful quantum volume circuit, and so circuits
+within this region will have high result ﬁdelity under weaker
+assumptions.
+F. Circuit Depth
+We will primarily present our results in the volumetric space,
+meaning that a circuit’s shape, i.e., its depth and width, spec-
+iﬁes where results from that circuit will appear in our plots.
+Here we introduce and motivate the normalized deﬁnition for
+circuit depth that we use. A circuit’s depth is the number of lay-
+ers of logic gates it contains. However, any speciﬁc quantum
+computation can be implemented with many diﬀerent circuits,
+perhaps deﬁned over di ﬀerent gate sets, that have di ﬀerent
+depths. Our benchmark circuits are deﬁned in terms of a high-
+level API (such as Qiskit) and these ‘high-level circuits’ use
+algorithm-speciﬁc gate sets that often contain gates that are
+not directly implementable on many devices. In order to run a
+high-level circuit, it must be converted (transpiled) to the set
+of primitive quantum gates that the hardware executes. This
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Avg Result Fidelity
+2 3 4 5 6 7
+Circuit Width (Number of Qubits)
+0
+25
+50
+75
+100
+125
+150Circuit Depth
+Algorithmic Depth
+Normalized Depth
+Benchmark Results - Quantum Fourier Transform (1) - Qiskit
+Device=qasm_simulator_7  2022-10-26 04:37:43 UTC
+1 2 3 5 9 15 26 44 77132227390670 1K 2K 3K 6K10K17K30K51K
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12Circuit Width
+QV=32
+Quantum Fourier Transform (1)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=qasm_simulator_7  2022-10-16 04:37:55 UTC
+FIG. 6. Demonstrating our methodology. Demonstrating our
+methodology by executing our QFT(1) benchmark up to 7 qubits
+on a noisy quantum computer simulator. The upper plot shows the
+average result ﬁdelity as a function of circuit width. The middle plot
+shows both the circuit’s normalized depth (the depth of the circuit
+after it has been transpiled into our standard gate set) and the circuit’s
+algorithmic depth (the depth when written in the high-level API used
+to deﬁne the benchmarks), as a function of circuit width. The lower
+plot presents these data on a volumetric background, in order to visu-
+alize the ‘footprint’ and result ﬁdelity of the benchmark circuits. In
+this and all volumetric plots, the circuit depth refers to normalized
+depth.
+transpiled circuit’s depth—which we call the ‘physical depth’—
+is often larger than the depth of the original high-level circuit.
+For example, Toﬀoli gates (multiply-controlled NOT gates) are
+often used in high-level descriptions of algorithms, but each
+Toﬀoli gate must be decomposed into many one- and two-qubit
+gates in order to run it on most quantum hardware.
+As discussed in detail in Ref. [23], there are (at least) three
+useful kinds of deﬁnition for a benchmarking circuit’s depth:
+• Algorithmic depth. For each algorithm, express its cir-
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 9 =====
+
+9
+cuits in a canonical form using a natural, algorithm-
+speciﬁc gate set. The depth of these canonical circuits is
+what we call algorithmic depth. For example, there is a
+well-known canonical form for the circuits of the QFT.
+Similarly, Grover’s Search consists of repeating two sub-
+routines (diﬀusion and oracle subroutines) which could
+be considered the natural gate set for Grover’s algorithm.
+• Normalized depth. Choose a basis (gate set) and a canon-
+ical programmability constraints—e.g., some set of one-
+and two-qubit gates with all-to-all connectivity—and
+some classical compilation algorithm for transpiling a
+circuit into this gate set. Normalized depth is computed
+by transpiling a high-level circuit into this canonical gate
+set, and computing that transpiled circuit’s depth.
+• Physical depth . Transpile a high-level circuit into a
+processor’s native operations. The depth of this ‘low-
+level’ circuit deﬁnes the physical depth.
+These three kinds of deﬁnition for a circuit’s depth have
+complementary strengths and weaknesses. Using an algorithm-
+speciﬁc deﬁnition for depth (‘algorithmic depth’) makes it
+possible to directly connect depth to computationally-relevant
+quantities, such as the number of queries to the oracle in
+Grover’s algorithm. However, this kind of depth deﬁnition
+makes it challenging to compare the results of di ﬀerent al-
+gorithmic benchmarks. At the other extreme, physical depth
+enables transparent comparison between the results of diﬀer-
+ent algorithmic benchmarks on the same processor (we expect
+circuits with similar physical depths to have similar result ﬁdeli-
+ties). However, a particular benchmark circuit’s physical depth
+varies across devices (because, e.g., it depends on a device’s
+connectivity) making cross-device comparisons challenging.
+Furthermore, physical depth is not always made available by
+quantum computing providers, and it is not consistently de-
+ﬁned as there are ambiguities in what a processor’s ‘native
+operations’ are.
+In this work we chose to use a particular version of normal-
+ized depth. This is a device- and algorithm-independent deﬁ-
+nition for depth, obtained by specifying a device-independent
+basis (a gate set) to which the circuit is transpiled. The middle
+plot of Figure 6 shows an example of the depth of circuits from
+the QFT(1) benchmark when (1) written in a high-level API
+(this is ‘algorithmic depth’) and (2) after the circuits have been
+transpiled to our standard basis, i.e., the normalized depth of
+the circuit. In this example, and in most of the benchmarks, the
+normalized depth is larger than the circuit depth when written
+in a high-level API.
+The basis that we selected consists of arbitrary single-qubit
+rotations around the 3 Pauli axes, a CNOT gate, and a measure-
+ment gate. We assume that CNOT gates can be applied between
+any pair of qubits (i.e., all qubit pairs are connected), and that
+gates on distinct qubits can be applied in parallel. This gate
+set, denoted by [‘rx’, ‘ry’, ‘rz’, ‘cx’] in Qiskit, is a widely used
+universal basis [34] that is hardware-agnostic. Note, however,
+that this (or any other) basis choice is unavoidably subjective.
+Each benchmark circuit is transpiled to this basis to compute
+a normalized circuit depth. Note that ﬁnding a minimal depth
+compilation into this gate set is not feasible (due to the classical
+computational complexity of the problem)—so the normalized
+depth depends on the heuristic classical algorithm used by the
+transpiler (we use Qiskit’s compilation algorithm). This is
+arguably an undesirable property of normalized deﬁnitions for
+depth. When executed on hardware, the circuit is (necessarily)
+transpiled to the basis speciﬁc to that hardware, which will
+often include the addition of qubit SW AP gates so as to respect
+the topology of that hardware. Throughout this paper, ‘circuit
+depth’ always refers to our normalized deﬁnition for circuit
+depth unless otherwise stated.
+G. Quantifying Result Quality with Circuit Fidelity
+Quantum computing hardware errors are the main roadblock
+to useful quantum computations, so our benchmarking suite fo-
+cuses on measuring their impact on each algorithm. Currently
+our benchmarking suite uses one metric to quantify result qual-
+ity: a normalized version of classical ﬁdelity, introduced below,
+that we refer to as ‘result ﬁdelity’. Like all options for quantify-
+ing result quality, this version of ﬁdelity has both strengths and
+weaknesses, and we are not advocating its exclusive adoption.
+We anticipate that future versions of our benchmarking suite
+will compute multiple metrics for result quality, as we discuss
+further below.
+Result ﬁdelity is deﬁned in terms of the observed and ideal
+output probability distributions for a circuit. Each time an
+n-qubit circuitC is executed on quantum computing hardware
+we obtain a sample from some distribution Poutput over n-bit
+strings, where Poutput(x) is the probability of observing bit
+string x. This will diﬀer from the distribution Pideal that would
+be sampled from ifC was run on a perfect quantum computer.
+The error in the implementation ofC can therefore be quanti-
+ﬁed by the discrepancy between Poutput and Pideal. There are
+many complementary ways to quantify the closeness of (or
+distance between) two probability distributions. The metric we
+use is a normalized version of the classical ﬁdelity Fs [19, 35]
+(note that classical ﬁdelity is related to the classical Hellinger
+distance [36]). The classical ﬁdelity Fs is deﬁned by
+Fs(Pideal, Poutput) =
+
+∑
+x
+√
+Poutput(x)Pideal(x)
+
+2
+. (1)
+Our normalized ﬁdelity is given by
+F(Pideal, Poutput) = max
+{
+Fraw(Pideal, Poutput), 0
+}
+, (2)
+where
+Fraw(Pideal, Poutput) = Fs(Pideal, Poutput)− Fs(Pideal, Puni)
+1− Fs(Pideal, Puni) . (3)
+This normalized ﬁdelity is deﬁned for all probability distri-
+butions except the uniform distribution Puni—in which case
+the denominator in Eq. (3) is zero—but it is poorly behaved
+whenever Fs(Pideal, Puni)≈ 1. However, benchmarking circuits
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 10 =====
+
+10
+for which Fs(Pideal, Puni)≈ 1 should be avoided as whenever
+Pideal is close to Puni it is diﬃcult to observe the eﬀect of errors
+(as the approximate impact of many kinds of errors, includ-
+ing depolarization, is to cause Poutput to be a mixture of Pideal
+and Puni). Note that this does not preclude designing bench-
+marks based on algorithms that, on some practically relevant
+inputs, are intended to produce coherent superpositions over all
+computational basis states with uniform (or close to uniform)
+amplitudes. In such cases, those algorithms should be con-
+verted into benchmark circuits that do not have this property.
+For example, the QFT maps a computational basis state to a
+uniform superposition of computational basis states, so our
+QFT(1) benchmark follows the QFT by the inverse QFT, so
+that these circuits’ error-free output state is a computational
+basis state.
+Directly computing F (or Fs) for a circuit C requires cal-
+culating that circuit’sPideal on a classical computer (meaning
+simulatingC) and estimating Poutput by runningC Nshots times
+on the processor being tested. The classical simulation is
+exponentially expensive for generalC, and the number of ex-
+perimental shots (Nshots) needed for low-uncertainty estimates
+of F can also grow quickly with n. This is why we aim to
+design benchmarking circuits for which Pideal can be eﬃciently
+computed.
+The reason that we use F instead of the standard ﬁdelity
+(Fs) is that Fs is non-zero even when the output of the circuit
+is completely random, i.e., when Poutput = Puni. Moreover,
+the value of Fs(Pideal, Puni) depends on Pideal (it depends on
+the sparsity of Pideal). This is particularly inconvenient for
+comparisons between the results of diﬀerent benchmarks, as
+the sparsity of Pideal varies. The normalized ﬁdelity has the
+property that F(Pideal, Puni) = 0, which is convenient because
+errors in quantum computing hardware often cause Poutput to
+converge towards Puni as circuits get larger or deeper. We have
+empirically found that the normalized ﬁdelities of di ﬀerent
+benchmarks, at similar circuit shapes, are more correlated than
+the standard ﬁdelities are.
+Any metric for result quality has strengths and weaknesses.
+One inconvenient property of the normalized ﬁdelity is that its
+‘raw’ versionFraw is negative if Pideal is closer to the uniform
+distribution than to the observed distribution. The maximum in
+Eq. (2) removes this unwanted eﬀect, but is ad hoc. Alternative
+metrics for quantifying the closeness of Pideal and Poutput will
+be added to our benchmarking suite in the future. Furthermore,
+note that the quality with which a quantum circuit is imple-
+mented can also be quantiﬁed in terms of the closeness between
+the desired and actual quantum evolutions—using metrics like
+quantum process ﬁdelity and diamond distance. Quantities like
+process ﬁdelity are not functions of only Pideal and Poutput, as
+they can only be measured by embedding a circuit C within
+multiple diﬀerent contexts (e.g., ending the circuit with a va-
+riety of subroutines that simulate measurements in di ﬀerent
+bases). We anticipate adding techniques for measuring, e.g.,
+process ﬁdelity, to our benchmarking suite in the future.
+Throughout this work, ‘result ﬁdelity’ refers to the normal-
+ized ﬁdelity F of Eq. (2). Typically, we average this ﬁdelity
+over a circuit ensemble, which we denote by ¯F, but note that
+other statistics of the set of circuits’ result ﬁdelities could also
+be computed (Appendix B provides an example that highlights
+the limitations of averaging). Figure 6 shows how we present
+the average result ﬁdelity of a set of benchmark circuits, along
+with their widths and normalized depths, using the example of
+the QFT(1) benchmark run on a simulation of a noisy quan-
+tum computer. The benchmark sweeps over a range of circuit
+widths and computes the average result ﬁdelity for the circuits
+of that width, the average depth of the original high-level cir-
+cuits, and the average normalized depth, i.e., the depth of the
+circuits after transpilation to the standard basis. This ﬁdelity
+and depth data are shown, versus circuit width, in the upper
+two plots of Figure 6. The lower plot in Figure 6 shows the
+same data plotted on a volumetric background, which is the
+primary method that we use to visualize our results.
+H. Implementation Rules
+Our benchmarking suite will likely be used to compare the
+performance of diﬀerent devices and competing technologies,
+so it is important to discuss what constitutes reasonable usage
+of these benchmarks. Methods for benchmarking quantum
+computers typically have user-adjustable aspects, which can be
+both explicit inputs (i.e. adjustable variables) of the benchmark-
+ing routine or details of how the benchmarks are implemented
+that are not formally speciﬁed by the benchmarking procedure.
+Not all choices for these variables and implementation details
+will necessary constitute reasonable usage of a benchmarking
+method.
+Quantum computing is still an early-stage technology and
+we believe that it is important to avoid prescriptive benchmark-
+ing suites with inﬂexible rules. Nevertheless, we think that
+it is valuable to outline some implementation principles for
+our benchmarking suite that can be considered a tentative stan-
+dard practice. Deviations from these suggestions may well
+be reasonable and useful, but they should be justiﬁed. Our
+benchmarking suite contains many distinct benchmarks, and
+we anticipate that the number of benchmarks will grow in the
+future. We consider it to be reasonable for a user to choose
+which of these benchmarks to run. This is because di ﬀerent
+benchmarks test performance on di ﬀerent tasks, and a user
+might not consider all the tasks to be relevant. Note, how-
+ever, that when the aim is to compare two or more devices
+we strongly recommend running the same set of benchmarks
+on all devices whenever feasible (for the experimental results
+presented herein we did not run all our benchmarks on each
+tested processor, but these results are explicitly not intended to
+be used to compare diﬀerent processors).
+Each individual benchmark in our suite has three important
+adjustable parameters: the values of n for which performance
+is tested (corresponding to the input problem size, which often
+also corresponds to the number of qubits in the circuits), the
+number of circuits ( Ncircs) that are selected from the bench-
+marking circuit set{C}n, and the number of times each circuit
+is run (Nshots). We consider it to be reasonable for a user to
+choose the values of n to test, but if two or more processors
+are to be tested and the results compared either (a) the same
+values of n should be used for all processors, or (b) a principled
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 11 =====
+
+11
+methodology should be chosen for selecting the values of n to
+use (and this methodology should be stated). For example, one
+reasonable strategy is to increasen until either the result ﬁdelity
+drops below a threshold value (e.g., 10%) or the maximum
+number of qubits available is reached.
+We recommend that the number of circuits sampled from
+{C}n at each n is at least Ncircs≥ 10. Note, however, that small
+values for Ncircs may sometimes be necessary to keep the total
+number of circuits that need executing small—as was the case
+in our experiments, where we ﬁxed Ncircs = 3 due to through-
+put limitations with some hardware (for repeatability, we also
+ran the same circuits on all devices that we tested, by using a
+single random seed in each pseudo-random number generator).
+Whenever the total number of circuits to be run is≫ 1, this is
+not unreasonable as it will simply result in larger statistically
+ﬂuctuations in the performance observed at a given circuit
+shape (meaning that there will be more “speckle” in a volumet-
+ric benchmarking plot) whenever there is signiﬁcant variation
+in a processor’s result ﬁdelity on circuits within{C}n. In con-
+trast, however, note that it not permissible to discard circuits
+selected from{C}n, e.g., because a processor’s result ﬁdelity
+on those circuits is observed to be low (i.e., post-selection of
+the circuits for high result ﬁdelity). Finally, we recommend
+that Nshots≥ 1000 (this recommendation was followed in all
+our experiments [37]), although fewer shots per circuit may
+be reasonable for many purpose (e.g., for computing average
+result ﬁdelity when Ncircs≫ 1). When small values for Nshots
+or Ncircs are used they should be clearly stated and, ideally,
+statistical uncertainties on all estimated quantities should be
+computed (currently the benchmarking suite does not automat-
+ically compute standard errors).
+Our benchmarking suite permits broad implementation free-
+dom. One particularly important freedom is that the bench-
+marking circuits can be compiled into other circuits that are
+logical equivalent (i.e., they implement the same unitary evolu-
+tion). This is necessary if a benchmark’s results are to reﬂect
+the performance a user can expect to achieve using a provider’s
+end-to-end stack. However, for benchmarks whose circuits are,
+by design, eﬃciently classically simulatable, arbitrary compi-
+lations cannot be permitted—because all such circuits can be
+compiled into simple quantum circuits (e.g., all processing can
+be oﬀ-loaded to a classical co-processor). Our current bench-
+marking suite does not directly address these challenges, and
+compilers designed to game these benchmarks could compress
+some of our benchmarking circuits into trivial circuits (or even
+oﬄoad all the computation to a classical co-processor). Ad-
+dressing these challenges without forbidding all compilation is
+diﬃcult, but judiciously placed “compilation barriers” within
+circuits is a promising solution (this idea is discussed in detail
+in Ref. [23]). In future versions of our benchmarking suite, we
+anticipate encoding explicit rules for what kinds of compilation
+are allowed for each benchmarking circuit—which will only
+be possible if quantum computing providers facilitate these
+ﬂexible and user-speciﬁable compiler restrictions.
+One important role for benchmarking suites is testing and
+comparing diﬀerent error mitigation or reduction strategies,
+e.g., dynamically decoupled gates or zero noise extrapolation.
+Some error mitigation strategies are not a scalable solution
+to reducing the errors in a quantum computation, e.g., one
+strategy for mitigating errors is to just replace experimental
+data with data obtained by simulating a perfect quantum com-
+pute. This is obviously absurd (it is infeasible for any useful
+computation), and it would be unreasonable for a quantum
+computing provider to employ this strategy when running a
+benchmarking suite. However, it is not clear how to forbid
+unreasonable error mitigation strategies while leaving room for
+innovation. Instead, we advocate clear and detailed explana-
+tions for all error mitigation strategies employed when running
+any benchmarking suite, including this one.
+IV . BENCHMARK RESULTS AND ANALYSIS
+In this section we present results from executing our
+application-oriented benchmarks on both a quantum simula-
+tor (Section IV A) and a selection of physical devices (Sec-
+tion IV B). All of the benchmarks in our suite have been im-
+plemented using the Qiskit API. Some, but not all, have been
+implemented using the Cirq and Braket APIs (see discussion in
+Appendix C). Throughout, all executions of our benchmarking
+suite on a quantum simulator are performed using the Qiskit
+implementation of the benchmarking suite, as it provides rich
+circuit analysis features. Execution on all of the hardware was
+also performed using the Qiskit version of our benchmarks,
+with the exception of the experiments on Rigetti Computing’s
+hardware, which used the Braket version of our benchmarks.
+A. Benchmark Results on a Quantum Simulator
+Execution of the entire suite of benchmark programs results
+in a data ﬁle that stores all of the metrics collected for the tested
+device. Plotting all of the accumulated average result ﬁdelity
+data on a single volumetric background produces charts like
+the ones shown in Figure 7, which were generated by running
+our benchmarks on the Qiskit Aer simulator. These simulations
+used all-to-all connectivity between the qubits, and a simple
+error model in which each n-qubit gate was subject to n-qubit
+depolarizing errors, for n = 1, 2. For the simulation that gen-
+erated the upper plot of Figure 7, the one- and two-qubit gate
+error rates were 0.003 and 0.03, respectively. These error rates
+are similar to those found in some current devices (although
+note that current devices suﬀer more complex, structured forms
+of error than pure depolarization). The quantum volume was
+determined to be 32, by executing the quantum volume pro-
+tocol directly on this simulator, and this was used to generate
+the volumetric background (see Section III D). For the lower
+plot of Figure 7, the one- and two-qubit gate error rates were
+0.0005 and 0.005, respectively, resulting in a quantum volume
+of 2048.
+For both plots in Figure 7, there is close agreement between
+the average result ﬁdelities of all the application benchmarks.
+There is also close agreement between the application bench-
+marks and the volumetric background. This is expected here
+due to the simplicity of the error model and the use of all-to-all
+connectivity. For more complex errors (e.g., coherent errors)
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 12 =====
+
+12
+1 2 4 8 16 32 64128256512 1K 2K 4K 8K16K33K66K131K262K524K1M
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17Circuit Width
+QV=32
+Bernstein-Vazirani (1)
+Deutsch-Jozsa
+Hidden Shift
+Hamiltonian Simulation
+Phase Estimation
+Quantum Fourier Transform (1)
+VQE Simulation (1)
+Amplitude Estimation
+Monte Carlo Sampling (2)
+Shor's Order Finding (1)
+Grover's Search
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=qasm_simulator-current  2022-10-16 04:37:56 UTC
+1 2 4 8 16 32 64128256512 1K 2K 4K 8K16K33K66K131K262K524K1M
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17Circuit Width
+QV=2048
+Bernstein-Vazirani (1)
+Deutsch-Jozsa
+Hidden Shift
+Hamiltonian Simulation
+Phase Estimation
+Quantum Fourier Transform (1)
+VQE Simulation (1)
+Amplitude Estimation
+Monte Carlo Sampling (2)
+Shor's Order Finding (1)
+Grover's Search
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=qasm_simulator-future  2022-10-16 04:36:22 UTC
+FIG. 7. Demonstrating our benchmarks on a quantum simulator.
+Results from running our suite of application-oriented benchmarks on
+a quantum simulator (colored squares) on top of a volumetric back-
+ground (grey-scale squares) extrapolated from the quantum volume.
+The simulator uses all-to-all qubit connectivity and two diﬀerent error
+rate scales (details in main text) that result in quantum volumes of
+32 and 2048, as shown in each plot. Each volumetric background
+is extrapolated from the quantum volume using a simple heuristic
+(see Section III D) that is designed to predict the regions in which a
+circuit’s result ﬁdelity will be above1/2.
+the exact structure of a circuit can impact its performance, as
+errors can, e.g., coherently add or cancel [8]. This means that
+circuits of the same shape can have very diﬀerent performance,
+potentially resulting in signiﬁcant di ﬀerences between a de-
+vice’s performance on diﬀerent applications. Similarly, if there
+is limited qubit connectivity, after a circuit is transpiled to a
+device’s primitive gates there can be an increase in the circuit
+depth that is large and strongly dependent on both the appli-
+cation and the device’s connectivity. This can cause a sharper
+decrease in performance with increasing circuit width than
+anticipated by a volumetric background extrapolated from the
+quantum volume (using our simple heuristic), and this result
+ﬁdelity decrease can be application dependent. We observe
+some of these eﬀects in our experimental results.
+B. Benchmark Results on Quantum Hardware
+In this section we present the results of executing our
+application-oriented benchmarks on various providers’ hard-
+ware. This section is not intended to perform or highlight
+comparisons between diﬀerent systems, but rather to demon-
+strate our benchmarking suite. Quantum computing hardware
+is changing rapidly, and we did not have access to the lat-
+est hardware from all providers. Any comparisons would be
+quickly outdated, and therefore potentially misleading or erro-
+neous. Here we present a few representative samples of results
+and highlight several conclusions that we can draw from these
+results.
+Rigetti Computing
+One of the ﬁrst quantum computers available to the public
+was provided by Rigetti Computing. Rigetti’s devices are based
+on superconducting qubit technology, and they can be accessed
+using the Amazon Braket Service [21]. Here, we show results
+obtained from executing a subset of our benchmarks on Rigetti
+Aspen-9, which is a 32-qubit machine [38], using the Amazon
+Braket version of our benchmarks.
+Figure 8 shows the result ﬁdelity as a function of the cir-
+cuit width (the number of qubits) obtained when running the
+Hidden Shift and QFT(2) benchmarks on Rigetti Aspen-9.
+The Hidden Shift benchmark was executed on the ﬁrst 8
+qubits of Aspen-9. The QFT(2) benchmark was executed on
+only the ﬁrst 6 qubits of Aspen-9. This was because, as shown
+in Figure 8, the result ﬁdelity became negligible at around 5-6
+qubits.
+The result ﬁdelity decreases as the circuit width increases,
+as expected. There are numerous factors that contribute to
+the precise form of the result ﬁdelity decay that we observe,
+including the qubit connectivity. This is because, in general,
+these benchmarks use controlled rotation gates between non-
+connected qubits, which must be implemented using multiple
+two-qubit gates between pairs of connected qubits.
+This is a fundamental consequence of limited qubit con-
+nectivity, but note that none of our benchmarks are tailored to
+utilize the subset of qubits in a device that have the best connec-
+tivity for the given application. Instead, the results represent
+what a user would experience when executing applications
+using the qubits 1 through n, for an n-qubit circuit—although
+note that a provider’s compiler can employ intelligent qubit
+selection strategies (see discussion in Section IV D).
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 13 =====
+
+13
+2 4 6 8
+Circuit Width (Number of Qubits)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Avg Result Fidelity
+Benchmark Results - Hidden Shift - Braket
+Device=qpu_rigetti_Aspen-9  2021-09-22 22:47:03 UTC
+2 3 4 5 6
+Circuit Width (Number of Qubits)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Avg Result Fidelity
+Benchmark Results - Quantum Fourier Transform (2) - Braket
+Device=qpu_rigetti_Aspen-9  2021-09-23 16:04:10 UTC
+FIG. 8. Demonstrating two benchmarks on Rigetti Aspen-9. The
+result ﬁdelity observed when running our Hidden Shift benchmark
+(upper plot) and QFT(2) benchmark (lower plot) on Rigetti Aspen-9.
+For each benchmark, we show the average result ﬁdelity as a function
+of circuit width (the number of qubits). ( Data collected via cloud
+service.)
+IBM Quantum
+IBM Quantum provides a large selection of quantum com-
+puting devices through IBM Quantum Services [28]. IBM Q’s
+devices are based on superconducting qubit technology. Below
+we present results from several of those machines. Note that
+there are larger and more recent IBM Q systems, including
+systems that have larger quantum volumes than those that we
+tested.
+Figure 9 shows results from running the QFT(2) benchmark
+on IBM Q Casablanca, which is a 7 qubit device. We show the
+average result ﬁdelity and average circuit depth as a function
+of the circuit width (the number of qubits). The lower plot of
+the ﬁgure shows both the normalized circuit depth (which is
+what ‘circuit depth’ refers to throughout this paper unless oth-
+erwise stated) and the depth of the circuits when written in the
+high-level API used to deﬁne the benchmark (see Section III).
+Note that neither of these depths correspond to the depth of
+the circuits after they have been transpiled to the device’s na-
+tive operations (i.e., the circuit’s physical depth), which will
+typically be larger.
+Figure 10 shows the results of running a subset of the bench-
+marking suite on IBM Q Casablanca and IBM Q Guadalupe.
+IBM Q Casablanca and IBM Q Guadalupe are 7 and 16 qubit
+devices, respectively, that both have a quantum volume of
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Avg Result Fidelity
+2 3 4 5 6 7
+Circuit Width (Number of Qubits)
+0
+20
+40
+60
+80Circuit Depth
+Algorithmic Depth
+Normalized Depth
+Benchmark Results - Quantum Fourier Transform (2) - Qiskit
+Device=ibmq_casablanca  2022-10-26 04:37:25 UTC
+FIG. 9. Demonstrating a QFT-based benchmark on IBM Q
+Casablanca. Results from running the QFT(2) benchmark, the sec-
+ond of our two QFT-based benchmarks, on IBM Q Casablanca. The
+upper and lower plots show the average result ﬁdelity and circuit
+depth, respectively, as a function of circuit width (the number of
+qubits). (Data collected via cloud service.)
+32. Some of these benchmarks use circuits with a depth of
+well over 1000 (e.g., Grover’s Search benchmark), and we
+observed low result ﬁdelities for all such circuits. All appli-
+cation circuits whose volumetric positions are in the region
+predicted to have low result ﬁdelity by the volumetric back-
+ground (white squares and blank region) do have low result
+ﬁdelities. However, there are application circuits with low
+result ﬁdelities (e.g., red squares) whose volumetric positions
+fall within the high result ﬁdelity region of the volumetric back-
+ground (grey squares). We observe that performance drops oﬀ
+with increasing width much more quickly than predicted by
+the volumetric background. This is likely primarily because
+this volumetric background is extrapolated from the quantum
+volume using a simple heuristic that does not account for a
+device’s connectivity. This could potentially be addressed with
+a more sophisticated heuristic, or by instead using measured
+volumetric backgrounds (see Section IV C).
+Mid-circuit measurement and qubit reset to make qubits
+reusable is a recent quantum computing enhancement, and
+IBM has introduced this feature for some of their systems. Our
+benchmark suite has been designed so that it can be adapted
+to include circuits that utilize mid-circuit measurements, as
+we now brieﬂy demonstrate. As we review in Appendix D 1,
+the eﬀect of this advance is that certain applications can be
+implemented with circuits over fewer qubits, as qubits can
+be reused. Figure 11 shows the results of executing two
+benchmarks, constructed from the Bernstein-Vazirani algo-
+rithm, on IBM Q Lagos, which is a 7 qubit device. In both
+versions of the benchmark the algorithm’s input is an n bit
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 14 =====
+
+14
+1 2 4 8 16 32 64128256512 1K 2K 4K 8K16K33K66K131K262K524K1M
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12Circuit Width
+QV=32
+Bernstein-Vazirani (1)
+Deutsch-Jozsa
+Hidden Shift
+Hamiltonian Simulation
+Quantum Fourier Transform (2)
+Phase Estimation
+Quantum Fourier Transform (1)
+Monte Carlo Sampling (2)
+Grover's Search
+Amplitude Estimation
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=ibmq_casablanca  2022-10-26 03:57:49 UTC
+1 2 4 8 16 32 64128256512 1K 2K 4K 8K16K33K66K131K262K524K1M
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17Circuit Width
+QV=32
+Bernstein-Vazirani
+Quantum Fourier Transform (2)
+Quantum Fourier Transform (1)
+VQE Simulation (1)
+Amplitude Estimation
+Grover's Search
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=ibmq_guadalupe  2022-10-16 04:38:05 UTC
+FIG. 10. Benchmarking results on IBM Q Casablanca and
+Guadalupe. The result ﬁdelities obtained when running subsets of
+our benchmarking suite on IBM Q Casablanca and IBM Q Guadalupe.
+The volumetric backgrounds (grey squares) extrapolated from each
+device’s quantum volume (32 in both cases) do not accurately pre-
+dict the performance of wide circuits on IBM Q Guadalupe. ( Data
+collected via cloud service.)
+integer, and on IBM Q Lagos n ranges from 2 to 6. In the
+Bernstein-Vazirani(1) benchmark, an n bit integer input
+uses an n + 1 qubit circuit, so the circuit widths range from 3 to
+7. In the Bernstein-Vazirani(2) benchmark, an n bit inte-
+ger input uses only 2 qubits for alln, one of which is repeatedly
+reset and reused with the aid of mid-circuit measurements. This
+results in width 2 circuits for all n. In Figure 11 we observe
+that the result ﬁdelity drops precipitously when the width of the
+circuit exceeds 5, which places it outside the quantum volume
+region (the grey rectangle). In the Bernstein-Vazirani(2)
+benchmark, the circuits’ widths do not exceed 2, and we ob-
+serve a larger result ﬁdelity for the same problem instances.
+This illustrates the potential value of mid-circuit measurements
+for increasing an algorithm’s result ﬁdelity.
+1 2 3 4 7 10 17 27 43 69110176281450721 1K 2K 3K 5K 8K12K
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12Circuit Width
+QV=32
+Bernstein-Vazirani (1)
+Bernstein-Vazirani (2)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=ibm_lagos  2022-10-15 20:22:39 UTC
+FIG. 11. Benchmarks that use mid-circuit measurements.
+Results from running the Bernstein-Vazirani(1) and
+Bernstein-Vazirani(2) benchmarks on IBM Q Lagos. These
+benchmarks are based on two di ﬀerent implementations of the
+Bernstein-Vazirani algorithm: Bernstein-Vazirani(1) uses n + 1
+qubit circuits for n-bit inputs, whereas Bernstein-Vazirani(2)
+uses mid-circuit measurements to reuse one of the qubits, and
+therefore needs only 2 qubits for any size input. Both benchmarks
+use the same random 2-6 bit algorithm inputs. We observe higher
+result ﬁdelity when using mid-circuit measurements to reduce the
+width of the circuits. (Data collected via cloud service.)
+Quantinuum
+Quantinuum System Model H1.1 was released commercially
+in 2020 [39]. This quantum computing system currently en-
+codes up to 12 qubits in trapped atomic ions using the quantum
+charged coupled architecture [40]. The qubits are fully con-
+nected by using ion transport operations to rearrange the ions
+to interact any pair of qubits. The system has an average
+single-qubit gate ﬁdelity of 99.99(1)% and average two-qubit
+gate ﬁdelity of 99.70(5)%, as measured using standard ran-
+domized benchmarking [41]. The system is also capable of
+applying high-ﬁdelity mid-circuit measurement and reset to
+any qubit [42].
+Figure 12 shows the results of executing a subset of our
+application-oriented benchmarks on the Quantinuum H1-1.
+For these tests the code was slightly edited to more eas-
+ily run with the Quantinuum API but the qiskit version is
+also supported. These results show that the Quantinuum
+system can run 12-qubit, moderate-depth circuits that con-
+tain interactions between many pairs of qubits and still ob-
+tain moderate to high ﬁdelity results. Furthermore, these
+results are broadly consistent with the component-level ﬁ-
+delities measured by one- and two-qubit randomized bench-
+marking. The Bernstein-Vazirani(1), Hidden-Shift,
+and Hamiltonian Simulation benchmarks all return high-
+ﬁdelity results ( ¯F≥ 0.77) for all qubit numbers up to the 12
+qubit system size limit. Benchmarks that require deeper cir-
+cuits, such as the QFT(1) and QFT(2) benchmarks and the
+Phase Estimation benchmark, still produce results that are
+distinguishable from random outputs. The smallest ﬁdelity for
+the QFT (1) was ¯F = 0.07, which was obtained for the case
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 15 =====
+
+15
+1 2 4 8 16 32 64128256512 1K 2K 4K 8K16K33K66K131K262K524K1M
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17Circuit Width
+QV=1024
+Bernstein-Vazirani (1)
+Hidden Shift
+Hamiltonian Simulation
+Quantum Fourier Transform (2)
+Phase Estimation
+Quantum Fourier Transform (1)
+Amplitude Estimation
+Monte Carlo Sampling (2)
+Bernstein-Vazirani (2)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=Quantinuum-H1.1  2022-10-16 04:38:09 UTC
+FIG. 12. Benchmark results on Quantinuum’s H1.1. The result
+ﬁdelities obtained when running our benchmarking suite on H1.1,
+which is a 12-qubit device. Each benchmark was run with 500 shots
+and at most ﬁve random circuits per qubit number. For all wide and
+shallow circuits the result ﬁdelity is high. Quantinuum has measured
+the quantum volume of this device to be 1024 [ 43], and this value
+is used to construct the volumetric background region. The volu-
+metric background is broadly predictive of the performance of our
+algorithmic benchmarks. (Data collected by Quantinuum in-house.)
+of n = 12. Overall, we observe that the volumetric background
+extrapolated from a quantum volume of 1024 [ 43] provides
+a broadly, but not entirely, accurate prediction of the perfor-
+mance of our algorithmic benchmarks.
+The H1.1 can implement mid-circuit measurement
+and reset operations, which we benchmarked using the
+Bernstein-Vazirani(2) benchmark. We see that while
+both our benchmarks based on the Bernstein-Vazirani
+algorithm achieve high ﬁdelity results ( ¯F > 0.929),
+Bernstein-Vazirani(2) performs slightly better than
+Bernstein-Vazirani(1) for larger register size. The
+Bernstein-Vazirani(2) benchmark can also be imple-
+mented for larger algorithm input sizes ( n > 12) as it only
+uses two qubits for any input, although we did not do this
+in our experiments, whereas the Bernstein-Vazirani(1)
+benchmark is limited to n≤ 12 due to the machine’s current
+restriction to 12 qubits.
+IonQ
+IonQ is a provider of quantum computers that are available
+via Amazon Braket [26], Microsoft Azure Quantum [22] and
+Google Cloud [44]. IonQ systems support most leading quan-
+tum programming environments, and we executed our bench-
+marks on the IonQ system using the Qiskit provider module
+supplied by IonQ. Their hardware utilizes trapped ytterbium
+ions where qubits are encoded in two states of the ground
+1 2 4 8 16 32 64128256512 1K 2K 4K 8K16K33K66K131K262K524K1M
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17Circuit Width
+Bernstein-Vazirani (1)
+Deutsch-Jozsa
+Hidden Shift
+Hamiltonian Simulation
+Quantum Fourier Transform (2)
+Phase Estimation
+Quantum Fourier Transform (1)
+VQE Simulation (1)
+Amplitude Estimation
+Grover's Search
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=ionq_qpu  2022-10-16 04:38:12 UTC
+FIG. 13. Benchmark results on IonQ’s cloud-accessible system.
+The result ﬁdelities obtained when running our benchmarking suite on
+IonQ’s Harmony cloud-accessible system, which features 11 qubits.
+For all wide and shallow circuits the result ﬁdelity is high. IonQ does
+not publish a quantum volume for this device, and we did not measure
+it directly, so we do not include a volumetric background in this plot.
+(Data collected via cloud service.)
+hyperﬁne manifold. The IonQ system currently on the cloud
+consists of 11 qubits that are fully connected.
+Figure 13 shows results from executing a subset of the
+application-oriented benchmarks on the IonQ system. IonQ
+does not publish a quantum volume metric for this device, and
+we chose not to run the quantum volume circuits on any of
+the tested hardware. In Figure 13 we observe high-ﬁdelity
+results for the Bernstein-Vazirani(1), Deutsch-Jozsa
+and Hidden Shift benchmarks for all qubit numbers, up to
+the current system limit of n = 11. For benchmarks that
+use deeper circuits we observe a steeper decrease in result
+ﬁdelity with n, and the observed performance is broadly, but
+not entirely, consistent with the predictions of the volumetric
+background.
+IonQ has recently introduced its next-generation quantum
+hardware [45]. This hardware is purported to feature an or-
+der of magnitude reduction in gate error rates in comparison
+to IonQ’s current system on the cloud. Figure 14 shows the
+results from running a subset of our benchmarking suite on
+this device, including benchmarks from all 3 categories in
+Table I. We observe a signiﬁcant increase in performance
+in comparison to the previous generation hardware, as is
+apparent by comparing Figs. 13 and 14. For instance, the
+Bernstein-Vazirani(1) benchmark is run for up to 21
+qubits, and the result ﬁdelity for the largest circuit is 70%. This
+can be compared with the result ﬁdelity for the largest circuit
+for the Bernstein Vazirani(1) benchmark on the cloud
+quantum computer, which is 78% for 11 qubits. Note that the
+maximum width and depth of theHamiltonian Simulation
+and Phase Estimation benchmark circuits here exceeds that
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 16 =====
+
+16
+1 2 4 8 16 32 64128256512 1K 2K 4K 8K16K33K66K131K262K524K1M
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23Circuit Width
+Bernstein-Vazirani (1)
+Hamiltonian Simulation
+Phase Estimation
+Quantum Fourier Transform (1)
+Amplitude Estimation
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=ionq_qpu_2  2022-10-16 04:38:14 UTC
+FIG. 14. Benchmark results on IonQ’s Aria system. The result
+ﬁdelities obtained when running our benchmarking suite on up to 21
+qubits of IonQ’s Aria system. We observe a signiﬁcant performance
+improvement in comparison to the previous generation of IonQ hard-
+ware. IonQ does not publish a quantum volume for this device, and
+we did not measure it directly, so we do not include a volumetric
+background in this plot. (Data collected by IonQ in-house.)
+in all other IonQ experiments, as here we tested up to 14 qubits.
+Compatible Hardware
+Our application-oriented benchmarking suite is designed to
+be applicable to any gate-based quantum computer, and our im-
+plementation of that suite is applicable to any platform that can
+be interfaced with Qiskit, Cirq, Braket, or Q#. Table II contains
+a non-exhaustive list of hardware that that we did not test in
+this work but that is compatible with our implementation of our
+benchmarking suite. Note that support for diﬀerent quantum
+hardware devices by these programming environments will
+evolve over time.
+Hardware Programming Environment
+Google QCS Cirq
+Alpine Quantum Qiskit
+Technologies Cirq
+TABLE II. The Application-Oriented Benchmark Suite introduced
+in this work can be executed on other quantum computing hardware,
+using the programming environments speciﬁed.
+C. Comparison to Generic Benchmarks
+In this work we have compared results from our application-
+oriented benchmarks with a volumetric background. As intro-
+duced in Section III D, a volumetric background is a prediction
+for the result ﬁdelity of circuits, as a function of circuit shape
+(i.e., volumetric position), that is constructed from the results
+of some independent benchmark or performance data. So far
+in this paper, we have considered only volumetric backgrounds
+that are extrapolated from a single performance metric: the
+quantum volume.
+Our simulated and experimental results show that this extrap-
+olated volumetric background can provide reasonably accurate
+predictions of application performance in some instances (par-
+ticularly with all-to-all connectivity devices) but not always.
+There are many reasons why we should not expect our vol-
+umetric background extrapolated from the quantum volume
+to always accurately predict performance, including: (1) the
+extrapolation uses a very simple heuristic that does not account
+for device connectivity (see Section III D), and (2) we often
+extrapolate the quantum volume to predict the performance of
+circuits containing signiﬁcantly more qubits than were used in
+any of the quantum volume circuits.
+Predictions of the performance of a suite of algorithmic
+benchmarks from a single number, like the quantum volume,
+are unlikely to be consistently accurate—due to the complexi-
+ties of quantum computer’s errors and their interactions with
+other characteristics of a processor (e.g., connectivity). Fur-
+thermore, it is diﬃcult for any generic benchmark to reliably
+predict the performance of a diverse suite of algorithms. To
+understand why, below we brieﬂy explore one alternative to
+volumetric backgrounds based on the quantum volume: a vol-
+umetric background created by running ‘randomized mirror
+circuits’ [8]. For this illustrative comparison, we focus on
+a single device, IBM Q Casablanca, and the particular class
+of randomized mirror circuits used in Ref. [8]. Figure 15 (a)
+shows the result ﬁdelities obtained when running randomized
+mirror circuits on IBM Q Casablanca.
+We use the data in Figure 15 (a) to construct a volumet-
+ric background by (1) using the average result ﬁdelity for
+randomized mirror circuits of a given shape as our predictor
+for the performance of other circuits of this shape, and (2)
+extrapolating this to all circuit depths using the theory for
+randomized mirror circuits presented in [ 46]. This volumet-
+ric background is shown in Figure 15, alongside the average
+result ﬁdelities of three of our application benchmarks: the
+Bernstein-Vazirani(1) benchmark, the QFT(1) bench-
+mark, and the Grover’s Search benchmark. To facilitate
+a more precise comparison to the results of the application-
+oriented benchmarks, here we (1) do not average together the
+results for application-oriented benchmarks with similar vol-
+umetric positions, and (2) we use a color-scale volumetric
+background. The general trend of all three benchmarks and
+the volumetric background are unsurprisingly in agreement:
+result ﬁdelity decreases with increasing circuit width and depth.
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 17 =====
+
+17
+FIG. 15. Comparing mirror circuit and application-oriented
+benchmarks. (a) Results from running randomized mirror circuits
+[8] on IBM Q Casablanca. At each circuit shape 40 circuits were
+sampled and run. The maximum, average, and minimum result ﬁ-
+delity that was observed at each circuit shape is shown, in concentric
+squares. (b) The average result ﬁdelity of the mirror circuits is extrap-
+olated to arbitrary depths to create a volumetric background (squares),
+and compared to the results from running a subset of the application
+benchmarks on IBM Q Casablanca (diamonds, circles and stars). We
+observe good correlation between the di ﬀerent benchmarks at low
+width, but an increasing discrepancy between the volumetric back-
+ground and the applications as the circuit width increases. This is
+likely primarily due to the diﬀerent frequency with which gates be-
+tween non-connected qubits are used in the four diﬀerent benchmarks.
+Mirror circuit benchmarks that mimic the frequency with which a
+particular algorithms uses gates between non-connected qubits might
+reduce this discrepancy, which would result in a randomized bench-
+mark that is no longer algorithm agnostic, but this is not explored
+herein.
+However, there are substantial diﬀerences between the rates at
+which the performance of each type of circuit drops oﬀ with
+increasing circuit size.
+There are multiple possible reasons for the observed discrep-
+ancy between the result ﬁdelity of randomized mirror circuits
+and algorithmic benchmarks. Perhaps the most important is
+that each of the four circuit families (the three algorithms and
+the randomized mirror circuits) requires a diﬀerent number of
+physical two-qubit gates at a ﬁxed normalized circuit depth.
+When transpiled into the standardized gate set with all-to-all
+connectivity (which is used to deﬁne normalized circuit depth)
+each circuit family will use a diﬀerent average number of two-
+qubit gates at ﬁxed depth d. Furthermore, the rate that each
+pair of qubits are coupled in these circuits will vary, and so
+each circuit family will incur a diﬀerent CNOT overhead when
+it is transpiled to the physical gate set of IBM Q Casablanca
+(which has limited connectivity). The randomized mirror cir-
+cuits incur no CNOT overhead at this transpilation stage, as
+they were designed to contain only CNOT gates between con-
+nected qubits. This is a compelling explanation for why the
+predictions from the randomized mirror circuits are systemati-
+cally over-optimistic. The physical CNOT count discrepancy
+will typically increase with the number of qubits (i.e., circuit
+width), which explains the faster result ﬁdelity decrease with
+circuit width that we observe for the application benchmarks
+versus the randomized mirror circuit. It is possible to design
+randomized mirror circuits that use the same number of phys-
+ical CNOT gates as any given application benchmark (on av-
+erage and at a given depth d), but this physical CNOT density
+varies between algorithmic benchmarks—so any randomized
+benchmark that is designed to match this density is no longer
+algorithm agnostic.
+The discrepancies between the results of our application-
+oriented benchmarks and both the volumetric backgrounds in-
+ferred from randomized mirror circuit data and from a device’s
+quantum volume are indicative of the challenges associated
+with predicting algorithm performance from generic bench-
+marks. One way to potentially remove the discrepancy we ob-
+serve in Figure 15 is to use physical depth to deﬁne a circuit’s
+volumetric position. This would mean that an application’s
+volumetric ‘footprint’ will be device-dependent (something we
+choose to avoid in this work). We leave an investigation of this
+to future work.
+D. Impact of Compiler Optimization Techniques
+In our experiments on hardware, the benchmarks were inten-
+tionally run using the provider’s default settings for the tran-
+spilation and execution of the circuits. This is how many users
+work with a programming system, even a quantum one. Many
+of quantum computing programming packages oﬀer compila-
+tion options that will modify the circuits before execution to
+account for device characteristics, such as qubit connectivity
+or timing parameters. While using these parameters can result
+in better performance, it is often di ﬃcult for users to know
+which parameters should be used or what values to choose for
+each target device. Providers also may elect to deliberately
+exclude automatic optimization techniques to avoid interfering
+with users’ custom optimizations. The result can be that users
+fail to obtain the best possible performance from a vendor’s
+hardware by default.
+Figure 16 illustrates the impact of a simple compiler opti-
+mization and layout strategy as applied to execution on the IBM
+Q Guadalupe device. Note that the ﬁdelity obtained for circuits
+that are wide and shallow is signiﬁcantly improved using this
+strategy because it optimizes the layout of the circuit for the
+qubit connectivity of the device. In this case, the Qiskit exe-
+cution method was conﬁgured to use optimization_level = 3,
+which provides the highest circuit optimization but at the ex-
+pense of longer execution time for the classical circuit op-
+timizer [19]. Additionally, the execution was conﬁgured to
+use layout_method = ‘sabre′ and routing_method = ‘sabre′,
+which apply information about the connectivity of the target de-
+vice to layout the circuit and route interactions between qubits
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 18 =====
+
+18
+1 2 4 8 16 32 64128256512 1K 2K 4K 8K16K33K66K131K262K524K1M
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12Circuit Width
+QV=32
+Bernstein-Vazirani (1)
+Deutsch-Jozsa
+Hidden Shift
+Hamiltonian Simulation
+Quantum Fourier Transform (2)
+Phase Estimation
+Quantum Fourier Transform (1)
+VQE Simulation (1)
+Grover's Search
+Amplitude Estimation
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=ibmq_casablanca-opt3-sabre  2022-10-26 04:07:46 UTC
+1 2 4 8 16 32 64128256512 1K 2K 4K 8K16K33K66K131K262K524K1M
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17Circuit Width
+QV=32
+Bernstein-Vazirani (1)
+Hamiltonian Simulation
+Quantum Fourier Transform (2)
+Phase Estimation
+Quantum Fourier Transform (1)
+VQE Simulation (1)
+Amplitude Estimation
+Grover's Search
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=ibmq_guadalupe-opt3-sabre  2022-10-16 04:38:20 UTC
+FIG. 16. Benchmarking results on IBM Q Casablanca and
+Guadalupe with compiler optimizations. The result ﬁdelities ob-
+tained when running a subset of our benchmarking suite on the IBM Q
+Casablanca and Guadalupe systems using the compiler optimization
+strategy deﬁned in the text. There is an improvement in result ﬁdelity
+for wide circuits, as compared with the results shown in Figure 10.
+(Data collected via cloud service.)
+optimally.
+On the H1.1 system we experimented with using arbitrary
+angle two-qubit gates to implement the QFT(1) and QFT(2)
+benchmarks. As shown in Fig. 17, these circuit optimiza-
+tions increased the results ﬁdelity. In trapped-ion systems,
+two-qubit gates are typically implemented with the Mølmer-
+Sørenson interaction. In most cases, the resulting gate is pro-
+duced with a ﬁxed laser power that ideally results in the uni-
+tary exp[−i(π/4)XX], which is equivalent to CNOT up to lo-
+cal unitaries. A controlled- Z(θ) operation, which appears in
+many of the application oriented benchmarks, requires two
+CNOTs. The Mølmer-Sørenson gate can also be implemented
+with an arbitrary angle exp[−i(φ/2)XX] by varying the laser
+power as a function of φ. The resulting gate is equivalent to
+a controlled-Z(θ) gate up to local unitaries. This modiﬁca-
+2 3 4 5 6 7 8 9 10 11 12
+0.0
+0.5
+1.0Avg Fidelity
+Benchmark Results - Quantum Fourier Transform (1) and (2)
+Device=Quantinuum H1.1 2021-12-18 17:38:21 UTC
+Fixed angles
+Arb. angles
+2 3 4 5 6 7 8 9 10 11 12
+Circuit Width (Number of Qubits)
+0.0
+0.5
+1.0Avg Fidelity
+FIG. 17. Benchmarking results on Quantinuum’s H1.1 with com-
+piler optimizations. The result ﬁdelities obtained when running a
+subset of our benchmarking suite on H1.1 using arbitrary angles. For
+both QFT-based benchmarks the number of two-qubit interactions is
+roughly cut in half and the errors are further reduced by decreasing
+the angle of two-qubit rotations. ( Data collected by Quantinuum
+in-house.)
+tion halves the number of two-qubit interactions required to
+implement controlled-Z(θ) (for most θ) and may further de-
+crease two-qubit errors that scale with φ. From the QFT(1)
+and QFT(2) benchmarks plotted in Fig. 17, we can verify that
+the arbitrary angle gates are yielding a signiﬁcant improve-
+ment. For example, for QFT(1) without arbitrary angle gates
+the ﬁdelity for n = 12 qubits was 0.07 but with the arbitrary
+angle gates it had a 3× improvement to 0.216.
+V . MEASURING EXECUTION TIME
+Most existing quantum computing benchmarks focus on
+measuring result quality, but the time taken to run an applica-
+tion is also an important metric of performance [ 47–50]. In
+particular, the time to solution is a crucial metric when com-
+paring quantum and classical computations, e.g., comparing
+quantum and classical compute times was central to recent
+demonstrations of quantum advantage [2, 3]. Our benchmark-
+ing suite is designed to quantify various aspects of the time
+to solution, as we explain below. In Section V A we discuss
+how to measure and subdivide the total execution time. In
+Section V B we then turn to the component of execution time
+that our benchmarking suite currently focuses on: the time
+taken to execute the quantum circuits.
+A. Total Execution Time
+The total time required to execute a complete quantum ap-
+plication is evidently a critical aspect of a quantum computer’s
+performance. In order to understand a quantum computer’s per-
+formance in detail, the total execution time should ideally be
+divided into the times taken for distinct sub-tasks (e.g., circuit
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 19 =====
+
+19
+compilation), and an ideal benchmarking suite would measure
+each such time. In general, a quantum application is a hybrid
+quantum-classical computation consisting of running one or
+more quantum circuits interleaved with classical processing.
+We therefore suggest that the following non-exhaustive set of
+sub-tasks and associated compute times will be important to
+measure:
+1. Compilation time (tcompile)—the time spent compiling
+an application’s circuits, written in a high-level language
+(e.g., Q# or Qiskit), into the hardware’s native operations
+and language (e.g., OpenQASM, or perhaps the pulse-
+level description of the circuit).
+2. Classical computation time ( tclassical)—the time spent
+implementing classical computations to, e.g., process
+data from quantum circuits already run (as in variational
+algorithms [51–53]).
+3. Quantum execution time ( tquantum(N))—the time re-
+quired for N shots of a circuit. This is the only time
+that we report on in this work.
+An additional component in the total execution time when us-
+ing shared-usage cloud-access quantum hardware is the queu-
+ing time, i.e., the time that circuits spend in a queue waiting to
+be executed. This is an artifact of shared-usage access models,
+and arguably its main importance here is that it can complicate
+reliable measurements of other aspects of the total execution
+time.
+To illustrate the potential utility of measuring diﬀerent com-
+ponents of total execution time, we consider one aspect of
+running variational quantum algorithms. These algorithms
+involve repeated execution of a parameterized circuit for dif-
+ferent parameter values. There are two distinct ways in which
+these circuits, that diﬀer only in the parameter values, can be
+implemented. Each such circuit can be recompiled from a
+high-level language description (incurring the tcompile cost each
+time), or a single parameterized circuit can be compiled with
+its parameters set and updated using low-level classical con-
+trols. These two methods for running parameterized circuits
+will result in di ﬀerent compute times, and avoiding recom-
+pilation could potentially result in substantial compute time
+savings. Our Variational Quantum Eigensolver bench-
+mark has been designed to enable this comparison, by looping
+over multiple instances of a circuit with di ﬀering parameter
+values. Furthermore, we suggest that benchmarks that can
+reveal and quantify other potential improvements in compute
+time will be important tools for testing and improving quantum
+computers.
+B. Quantum Execution Time
+The aspect of execution time that our current benchmarking
+suite focuses on is quantum execution time tquantum(N). This
+is the time taken to run N ‘shots’ of a quantum circuit (as the
+results from quantum circuits are probabilistic in nature, they
+are each typically run many times, with an individual circuit
+execution referred to as a ‘shot’). The quantum execution time
+2 3 4 5 6 7 8 9 10 11 12 13 14 15
+Circuit Width (Number of Qubits)
+0
+2
+4
+6
+8
+10Avg Execution Time (sec)
+Benchmark Results - Quantum Fourier Transform (1) - Qiskit
+Device=qasm_simulator_15  2021-09-22 22:40:27 UTC
+2 3 4 5 6 7 8 9 10 11 12 13 14 15
+Circuit Width (Number of Qubits)
+0
+2
+4
+6
+8
+10Avg Execution Time (sec)
+Benchmark Results - Quantum Fourier Transform (1) - Qiskit
+Device=ibmq_guadalupe_15  2021-09-22 22:40:30 UTC
+FIG. 18. Measuring quantum execution time. The average quan-
+tum execution time observed when running the QFT(1) benchmark
+up to 15 qubits, with N = 1000 shots, on a Qiskit Aer simulation of a
+noisy quantum computer (upper plot) and IBM Q Guadalupe (lower
+plot). (Data collected via cloud service.)
+depends on both the circuit (e.g., it will increase with the circuit
+depth), and on the number of shots N. In our experiments we
+use N = 1000, and we do not study the dependence of tquantum
+on N. Note that is important to use the same value of N when
+comparing diﬀerent devices.
+The quantum execution time is not directly accessible to a
+quantum computer user, but cloud quantum computers typi-
+cally return a quantity that is analogous to tquantum(N), follow-
+ing the execution of the quantum circuit. This time is recorded
+by our benchmarking suite, and it is what we report. Note,
+however, that the precise meaning of the timing information
+returned by a provider’s API is not always clear to the end
+user (and is possibly di ﬀerent for diﬀerent providers). This
+should be kept in mind when comparing quantum execution
+time results between platforms.
+Figure 18 shows the average time to execute the circuits of
+the QFT(1) benchmark, as a function of circuit width, for a
+quantum simulator and for IBM Q Guadalupe. The execution
+time increases exponentially on the simulator, and linearly on
+this quantum hardware. Note that the exponential growth in the
+time to simulate these circuits does not imply that these circuits
+are classically hard to simulate [ 54], only that this classical
+simulator exhibits exponential simulation time scaling on these
+circuits.
+Figure 19 shows results from running the same QFT(1)
+benchmark on Rigetti Aspen-9 and IBM Q Casablanca. The av-
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 20 =====
+
+20
+2 3 4 5 6 7
+Circuit Width (Number of Qubits)
+0.0
+2.5
+5.0
+7.5
+10.0
+12.5
+15.0
+17.5Avg Execution Time (sec)
+Benchmark Results - Quantum Fourier Transform (1) - Braket
+Device=qpu_rigetti_Aspen-9  2021-09-22 22:42:35 UTC
+2 3 4 5 6 7
+Circuit Width (Number of Qubits)
+0
+2
+4
+6
+8Avg Execution Time (sec)
+Benchmark Results - Quantum Fourier Transform (1) - Qiskit
+Device=ibmq_casablanca  2021-09-22 22:41:54 UTC
+FIG. 19. System diﬀerences in quantum execution time. We ob-
+serve signiﬁcant diﬀerences in the quantum execution time between
+diﬀerent systems. This example shows the average quantum execu-
+tion time observed when running the QFT(1) benchmark on Rigetti
+Aspen-9 (upper plot) and IBM Q Casablanca (lower plot). Note the
+diﬀerent minimum execution times and the diﬀerent rates of increase
+with circuit width. (Data collected via cloud service.)
+erage execution time is shown as a function of the circuit width
+(the number of qubits) up to 7 qubits. On IBM Q Casablanca,
+the execution time is approximately independent of circuit
+width, suggesting a minimal execution time of∼ 7 seconds for
+any circuit. The increase in execution time is small as circuit
+width and depth increase (although note that this trend should
+not be naively extrapolated to larger widths and depths). In
+contrast, on Rigetti Aspen-9 the minimum execution time is
+about 4 seconds and there is a steep increase in execution time
+as circuit width increases (we conjecture that this is because all
+gates are serialized on Aspen-9, meaning that gates on distinct
+qubits that could be applied in parallel are applied in serial).
+We found that there is signiﬁcant variation in the execution
+time proﬁle across the many diﬀerent devices that we tested.
+VI. SUMMARY AND CONCLUSIONS
+Quantum computing is an emerging technology, and exist-
+ing quantum computers experience a wide range of complex
+errors. To understand the capabilities of current and near-term
+quantum hardware the research community needs a robust set
+of performance benchmarks and metrics. In this work we in-
+troduced a suite of quantum application-oriented performance
+benchmarks and demonstrated them on a selection of cloud-
+accessible quantum computers. Our benchmarking suite is
+based on a variety of well-known quantum algorithms, and it
+is designed to probe the eﬀectiveness of quantum hardware at
+executing applications. Each of our application benchmarks
+tests a quantum computer’s performance on variants of that
+application’s quantum circuits. They are designed to map out
+performance as a function of the input problem’s size. We
+measure performance both in terms of result ﬁdelity and the
+quantum execution time, providing users with proxies for both
+the quality of and the time to solution.
+The initial version of our benchmarking suite, reported here,
+has a variety of limitations that we have highlighted throughout.
+Our intention is that our benchmarking suite will evolve to ad-
+dress both these limitations and new benchmarking needs—as
+has been the case with successful classical computing bench-
+marking suites such as SPEC [ 24, 25]. For this reason, we
+expect that the ﬁrst version of our suite of benchmark pro-
+grams, that we have presented in this paper, will be enhanced
+substantially over time. Indeed, since the initial version of this
+paper was released on arXiv there has been broad community
+engagement to enhance our benchmarking suite, and we antici-
+pate reporting on these expansions and improvements to our
+suite in future publications.
+One important limitation of some of our benchmarks is that
+they require exponentially expensive classical computations to
+implement, and they will be infeasible for O(100) qubits. Our
+benchmarks that circumvent this problem do so by using only
+circuits that can be eﬃciently classically simulated. However,
+such benchmarking circuits must be designed with care so
+that a quantum computer’s performance on the benchmark is
+indicative of its performance on the algorithm on which it is
+based when applied to practically useful problems. A general-
+purpose solution to this benchmark design problem was re-
+cently introduced [ 55] that enables e ﬃciently measurement
+of the process ﬁdelity of any algorithmic circuit. Integrating
+this technique with our algorithmic benchmarks would ensure
+that all our benchmarks are scalable and robust, making them
+practical to run on hundreds or thousands of qubits. Integrat-
+ing this technique [ 55] and related methods [ 8, 56] into our
+benchmarking suite is a promising avenue for future research.
+Another limitation of our benchmarking suite is that our
+measurements of execution time are currently rudimentary. We
+primarily quantify compute time in terms of the time required
+to execute each quantum circuit. This is rudimentary because
+the deﬁnition of this time can vary by provider, and it neglects
+the classical co-processing inherent in quantum applications
+(e.g., circuit compilation time) that must be quantiﬁed for
+an accurate measure of the total compute time. We suggest
+that further research is required into how to delineate and
+consistently measure each aspect of total compute time.
+Our primary method for summarizing a quantum computer’s
+result quality on our benchmarks is volumetric benchmarking
+[8, 23] plots, which display performance as a function of the
+problem input size (circuit width) and the quantum computa-
+tion’s length (circuit depth). This framework enables transpar-
+ent comparisons between applications, as well as comparisons
+to other performance metrics. In this work we compared per-
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 21 =====
+
+21
+formance on our benchmarks to predictions extrapolated from
+the quantum volume [ 10] metric. Our experimental results
+demonstrate that, on the tested devices, the quantum volume
+is broadly predictive of application performance. However,
+the reliability of extrapolating the quantum volume to predict
+application performance varies between devices. A more quan-
+titative and comprehensive comparison between performance
+on application-oriented benchmarks and application-agnostic
+benchmarks (e.g., the quantum volume benchmark [10] or mir-
+ror circuit benchmarks [8]) would constitute interesting future
+work.
+The performance of the hardware that we tested suggests
+that substantial advances are required for quantum computers
+to outperform their classical counterparts on useful tasks. For
+example, our volumetric plots clearly communicate that an im-
+provement in the quantum volume from, e.g. 32 to 2048, will
+not make it possible to successfully execute Shor’s algorithms
+on useful problem instances—which, as is well-known, will al-
+most certainly require large-scale quantum computers running
+fault tolerant quantum error correction. However, the potential
+for advances in algorithms, in quantum computing hardware,
+and in the software stack mean that quantum advantage on
+some problem might be achievable in the near-term. As new
+algorithms are developed they can be added to our suite, and
+our benchmarks can quantify the performance gains provide
+by technological advances. Therefore, our suite is well-suited
+to tracking progress towards useful quantum advantage.
+Cloud-accessible quantum computers are attracting a wide
+audience of potential users, but the challenges in understanding
+their capabilities is a signiﬁcant barrier to adoption of quan-
+tum computing. Our benchmarking suite makes it easy for
+new users to quickly assess a machine’s ability to implement
+applications, and our volumetric visualization of the results is
+designed to be simple and intuitive. We therefore anticipate
+that our benchmarking suite will encourage adoption of quan-
+tum computing, and further economic development within the
+industry.
+DATA AND CODE A V AILABILITY
+The code for the benchmark suite introduced in this work
+is available at https://github.com/SRI-International/QC-App-
+Oriented-Benchmarks. Detailed instructions are provided
+in the repository. The source code for quantum volume
+and volumetric benchmarking are contained in their respec-
+tive public repositories [ 57, 58]. All data and code re-
+quired to reproduce all plots shown herein are available at
+https://doi.org/10.5281/zenodo.6972744.
+ACKNOWLEDGEMENT
+We acknowledge the use of IBM Quantum services for
+this work. The views expressed are those of the authors,
+and do not reﬂect the o ﬃcial policy or position of IBM or
+the IBM Quantum team. IBM Quantum. https: //quantum-
+computing.ibm.com/, 2021. We acknowledge IonQ for the con-
+tribution of results from hardware not yet generally available.
+We acknowledge Quantinuum for contributing the results from
+their commercial H1.1 hardware. Timothy Proctor’s contribu-
+tion to this work was supported in part by the U.S. Department
+of Energy, Oﬃce of Science, O ﬃce of Advanced Scientiﬁc
+Computing Research through the Quantum Testbed Program.
+Sandia National Laboratories is a multi-program laboratory
+managed and operated by National Technology and Engineer-
+ing Solutions of Sandia, LLC., a wholly owned subsidiary of
+Honeywell International, Inc., for the U.S. Department of En-
+ergy’s National Nuclear Security Administration under contract
+DE-NA-0003525. Publisher acknowledges the U.S. Govern-
+ment license to provide public access under the DOE Public
+Access Plan (https://www.energy.gov/downloads/doe-public-
+access-plan). All statements of fact, opinion or conclusions
+contained herein are those of the authors and should not be
+construed as representing the oﬃcial views or policies of the
+U.S. Department of Energy, or the U.S. Government.
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 22 =====
+
+22
+Appendix A: Selected Algorithms and Applications
+In this appendix we examine the quantum programs that
+we selected for use as benchmarks, and describe how we
+turned those programs into benchmarks. Complete details
+for every benchmark can be found at https://github.com/SRI-
+International/QC-App-Oriented-Benchmarks. In this appendix,
+all of numerical results presented are based on execution of the
+application circuits on a noisy simulator with a speciﬁc noise
+model. The noise model consists of one- and two-qubit depo-
+larizing errors with error rates of 0.003 and 0.03, respectively.
+1. Shallow Oracle-Based Algorithms
+The ﬁrst group of quantum programs that we converted into
+benchmarks consist of three ‘oracle’ algorithms.
+• Deutsch-Jozsa Algorithm [59]
+• Bernstein-Vazirani Algorithm [13, 60, 61]
+• Hidden Shift Problem [13, 61, 62]
+All of these algorithms share a simple structure in which
+the primary qubits of the circuit are initialized into a quantum
+superposition and a ‘secret’ integer value is embedded into
+the circuit using a special ‘oracle’ operation. The oracle uses
+quantum gates to manipulate the relative phases of the qubits
+to eﬀectively ‘hide’ the integer, encoded as a string of ones and
+zeros, in the resulting quantum state. At the end of the circuit,
+the quantum state is transformed back into the computational
+basis and the secret integer value is revealed.
+FIG. 20. An example of a circuit that implements the Bernstein-
+Vazirani algorithm, with illustrative Bloch spheres that denote the
+states of the qubits throughout the circuit.
+Figure 20 shows a circuit diagram for the Bernstein-Vazirani
+algorithm (BV) on 5 qubits, one of which is used as an ancilla
+or accessory qubit. An example of an oracle circuit U f encod-
+ing the integer value 13 (bit string ‘1101’) is shown in Figure
+21. Each ‘1’ bit is encoded using a controlled NOT gate on the
+5th ancilla qubit.
+To illustrate how these circuits work, we have inserted small
+Bloch sphere icons into the main circuit diagram before and
+after the oracle and again before the measurements. The oracle
+operates on the uniform superposition generated by Hadamard
+gates on the ﬁrst 4 qubits to encode the secret integer into a
+FIG. 21. An example of the circuit that implements the Bernstein-
+Vazirani Oracle function U f . This example encodes the integer 13.
+quantum state. Each qubit that performs a CNOT operation will
+experience phase kickback that rotates the phase of its quantum
+state by π/2. The ﬁnal set of Hadamard gates transforms the
+qubits back into the computational basis and the value encoded
+in the oracle is revealed upon measurement.
+The main circuit of the Deutsch-Jozsa algorithm (DJ) is
+identical to the Bernstein-Vazirani algorithm, but it uses a
+slightly more complex oracle that encodes either a ‘constant’ or
+‘balanced’ function. The oracle is very similar to the Bernstein-
+Vazirani—it also uses a sequence of CNOT gates—so it is not
+shown here.
+FIG. 22. Examples of circuits that implement the oracle functions for
+the Hidden Shift algorithm: U f (left) and Ug (right).
+The Hidden Shift algorithm (HS) applies two oracle func-
+tions in a row, which contrasts with the DJ and BV algorithms.
+The ﬁrst application of the oracle is identical to the second
+application, except that it includes a hidden ‘shift’—a secret
+integer that encodes a diﬀerence between the values returned
+from the two oracles (shown in Figure 22). The two oracles
+together result in a circuit depth for the HS that is nearly double
+that of the BV and DJ algorithms. Due to the similarities be-
+tween these algorithms, we group them together as the ‘tutorial’
+category.
+To construct benchmarks out of each of these algorithms,
+each circuit of a speciﬁc width is executed multiple times with
+a random integer encoded in the oracle. Figure 23 shows the
+results obtained from executing these 3 benchmarks on the
+noisy simulator, for between 2 and 12 qubits.
+2. Quantum Fourier Transform
+The QFT [63] and its inverse are used extensively as compo-
+nents of many well-known quantum applications, e.g., Shor’s
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 23 =====
+
+23
+1 2 3 4 7 10 17 27 43 69110176281450721 1K 2K 3K 5K 8K12K
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17Circuit Width
+QV=32
+Bernstein-Vazirani (1)
+Deutsch-Jozsa
+Hidden Shift
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=qasm_simulator  2022-10-16 04:38:24 UTC
+FIG. 23. Results from running the three oracle algorithm benchmarks
+on a simulator.
+algorithm. We constructed two benchmarks based on the QFT.
+The ﬁrst of these benchmarks, which we refer to as the QFT(1)
+benchmark, is shown in Figure 24 and is as follows. The n
+qubits are initialized to encode a random integer x (x = 13
+in the example shown in Figure 24). This is followed by the
+standard QFT circuit, which encodes the input integer value
+into the Fourier basis, through a series of Hadamard gates and
+controlled Z rotations. Then a set of simple rotation gates
+are applied that add 1 modulo 2n, in the Fourier basis, to the
+input state. This is then followed by the standard circuit for
+implementing the inverse QFT, which converts the Fourier ba-
+sis state back into the computational basis, and then all the
+qubits are measured. The resulting bit string should be the x+1
+modulo 2n (in the example of Figure 24, 14, rather than the
+initial value of 13). This benchmark can be thought of as a
+type of Loschmidt echo, or a simple form of mirror circuit [8],
+in which the QFT is undone by the inverse QFT that follows it.
+The inclusion of the +1 operation in the middle of the circuit
+prevents a transpiler from easily compiling this circuit down to
+an identity (although note that this current implementation is
+does not strictly prevent compilation down a simpler operation).
+Additionally, it adds sensitivity to errors that would be can-
+celed by a perfect Loschmidt echo (a forwards and backwards
+evolution experiment) but that do impact the performance of
+the QFT. Note, however, that a randomly selected operation in
+the center of the circuit is required to guarantee sensitivity to
+all errors [8]—and this benchmark will likely be updated in
+the future to include this random operation.
+The QFT sub-circuit used in the QFT(1) benchmark is dis-
+played in Figure 25. The inverse QFT sub-circuit is not shown
+as it is a mirror image of the QFT circuit (with gates replaced
+with their inverses, meaning that the rotation angles are negated
+and the Hadmard gates are unchanged). Note that this QFT
+implementation does not use SWAP gates (so it e ﬀectively
+FIG. 24. An example of the circuits used in the QFT(1) benchmark.
+FIG. 25. The standard circuit that implements the n = 4 qubit QFT.
+The standard n-qubit QFT circuit is used in the ﬁrst of our QFT-based
+benchmarks.
+reverses the order of the qubits) which simpliﬁes its use in the
+benchmark programs.
+Our second QFT benchmark [QFT(2)] executes only a stan-
+dard circuit for the inverse QFT. In the QFT(2) benchmark,
+the inverse QFT operates on a quantum state that is prepared
+in a Fourier basis state. In this method, instead of creating
+that quantum state using the QFT (which converts any com-
+putational basis state into a Fourier basis state), we use a set
+of one-qubit gates—speciﬁcally, a series of Hadamard gates
+and Z rotations, to encode a speciﬁc integer value x in the
+Fourier basis. Figure 26 demonstrates this circuit, for the case
+of encoding the integer value 6. The inverse QFT reverses
+that operation, so if there are no errors the measurement result
+should be the bit string encoding x.
+FIG. 26. An example of the circuits used in the QFT(2) benchmark.
+The circuits of the QFT(2) benchmark are similar to the
+second half of circuits of the QFT(1) benchmark, so the circuit
+depth in QFT(2) is approximately half that in QFT(1) (for
+ﬁxed n). A useful consequence of this is that the benchmarks
+can be used to cross-validate each other: if both benchmarks
+are a good quantiﬁcation of a quantum computer’s performance
+on the QFT and its inverse, and the QFT and its inverse have
+approximately the same error, then the result ﬁdelity from
+QFT(1) will be approximately the square of the result ﬁdelity
+from QFT(2).
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 24 =====
+
+24
+1 2 3 5 9 15 26 44 77132227390670 1K 2K 3K 6K10K17K30K51K
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17Circuit Width
+QV=32
+Quantum Fourier Transform (2)
+Quantum Fourier Transform (1)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=qasm_simulator  2022-10-16 04:38:27 UTC
+FIG. 27. Results from running the two QFT-based benchmarks on a
+simulator.
+Figure 27 shows the results obtained from executing the
+QFT(1) and QFT(2) benchmarks. We see the expected rela-
+tionship between the ﬁdelities of the two benchmarks (note
+that this simple relationship can be proven to hold for simple
+depolarizing errors like those used in this simulation).
+3. Grover’s Search Algorithm
+Grover’s algorithm [64], also referred to as the quantum
+search algorithm, is one of the most well known quantum al-
+gorithms due to its quadratic run-time speedup over the best
+known classical algorithm. This algorithm aims to ﬁnd the
+correct item from an un-ordered list. It achieves a quantum
+speedup by starting in a uniform superposition and using re-
+peated calls to a quantum oracle to amplify the probability of
+measuring the correct state. The ampliﬁcation used in Grover’s
+algorithm was then generalized into amplitude ampliﬁcation
+[65], which is used in the Amplitude Estimation and Monte
+Carlo algorithms.
+Our benchmark based on Grover’s Search algorithm is de-
+signed so that the oracle marks a given bit string with a phase
+of−1. At each circuit width, multiple circuits are constructed
+by generating random bit strings of length equal to the width
+of the circuit. Figure 28 shows the results of executing the
+Grover’s Search benchmark on a simulator. This volumet-
+ric plot highlights the fast increase in circuit depth with increas-
+ing circuit width for this algorithm—which causes a rapid drop
+in the result ﬁdelity as the circuit width grows. This occurs
+because Grover’s algorithm for n-qubits uses many n-qubit
+Toﬀoli gates. These gates need to be decomposed into one-
+and two-qubit primitive gates, which substantially increases
+the depth. Note that shallower decompositions of n-qubit Tof-
+foli gates are possible using ancilla qubits, which we do not do
+1 2 4 8 16 32 64128256512 1K 2K 4K 8K16K33K66K131K262K524K1M
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12Circuit Width
+QV=32
+Grover's Search
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=qasm_simulator  2022-10-16 04:38:29 UTC
+FIG. 28. Results from running the Grover’s Search Benchmark
+on a simulator.
+here.
+4. Phase and Amplitude Estimation
+Quantum Phase Estimation [66] is another important quan-
+tum subroutine that is fundamental to many quantum algo-
+rithms, including Shor’s algorithm [67]. The goal of the al-
+gorithm is to estimate the eigenvalues of a unitary operator
+by calculating the corresponding phases. A generalization of
+phase estimation is amplitude estimation [65], where the goal
+is to estimate the amplitudes of a quantum state. Due to the
+importance of phase estimation and amplitude estimation as
+subroutines for more complicated quantum algorithms, bench-
+marking based on these routines will provide insight into the
+capabilities of a quantum computer.
+The Phase Estimation benchmark is based on picking a
+unitary whose phase is to be measured. We choose a phase gate
+with eigenvalues exp(±iθ), where θ is deﬁned to a precision
+2−k, where k is the number of qubits in the register that stores
+the measured phase. The benchmark selects random values
+forθ of the form n
+2k , where k represents the total number of
+measured qubits and n is an integer between 0 and 2k− 1.
+The Amplitude Estimation benchmark contains two
+quantum subroutines: quantum circuits that implement quan-
+tum amplitude ampliﬁcation and quantum phase estimation.
+The quantum amplitude ampliﬁcation is used to encode the
+amplitudes of a target quantum state into a phase which can be
+extracted using phase estimation. This benchmark performs
+the simplest case of quantum amplitude estimation where, sim-
+ilar to phase estimation, we chose speciﬁc circuits such that the
+amplitudes are speciﬁed to a precision which can be exactly
+encoded in the available qubits.
+Figure 29 shows the results obtained when executing our
+Phase Estimation and Amplitude Estimation bench-
+marks. Note the depth of the Phase Estimation bench-
+mark’s circuits scale similarly to the depth of the circuits in the
+two QFT-based benchmarks. This is because the QFT is the
+subroutine of phase estimation that uses the deepest circuits.
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 25 =====
+
+25
+1 2 4 8 16 32 64128256512 1K 2K 4K 8K16K33K66K131K262K524K1M
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17Circuit Width
+QV=32
+Phase Estimation
+Amplitude Estimation
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=qasm_simulator  2022-10-16 04:38:31 UTC
+FIG. 29. Results from running the Phase Estimation and
+Amplitude Estimation benchmarks on a simulator.
+The Amplitude Estimation benchmark, on the other hand,
+involves deeper circuits due to the quantum amplitude ampli-
+ﬁcation protocol. This ﬁgure shows that a quantum computer
+with a quantum volume of 32 is incapable of high ﬁdelity im-
+plementations of the Amplitude Estimation algorithm (at least
+when implemented in its standard form), even for tiny problem
+instances.
+5. Hamiltonian Simulation
+One of the most promising applications for quantum comput-
+ers is in the simulation of quantum systems [68]. Many simula-
+tion problem require simulating the evolution of a Hamiltonian,
+so we designed a benchmark based on Hamiltonian evolution.
+The Hamiltonian we choose is the anti-ferromagnetic Heisen-
+berg chain of 1-D spins with disordered x- and z-ﬁelds and an
+open boundary condition:
+H = J
+n−2∑
+i=0
+⃗σi·⃗σi+1 + w
+n−1∑
+i=0
+(hx,iσx
+i + hz,iσz
+i ), (A1)
+where J and w are the strength of the interactions and the disor-
+dered ﬁelds respectively, hx,i and hz,i give the strength of the X
+and Z disordered ﬁelds at site i, n is the total number of qubits,
+andσ{x,y,z} are the usual Pauli operators. In this benchmark,
+J = 1, w = 10, and hx,i and hz,i are randomly generated in the
+range (−1, 1). The algorithm initializes the qubits in a product
+state and evolves them according to a Trotterized version of
+the Hamiltonian [69]. The Trotterization implements the term
+exp(−iJ⃗σi·⃗σi+1) exactly using a construction from Vatan and
+Williams [70]. We use a ﬁxed number of Trotter steps.
+Figure 30 shows the results of running the Hamiltonian
+Simulation benchmark on a simulator. Note that the depth
+1 2 4 8 16 32 64128256512 1K 2K 4K 8K16K33K66K131K262K524K1M
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17Circuit Width
+QV=32
+Hamiltonian Simulation
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=qasm_simulator  2022-10-16 04:38:33 UTC
+FIG. 30. Results from running the Hamiltonian Simulation
+benchmark on a simulator.
+of the circuits does not increase with increasing width, due to
+the form of the Hamiltonian that we choose. This benchmark
+uses exponentially scaling classical computations, as the error-
+free circuit output is computed using a general-purpose circuit
+simulation.
+One way to construct a Hamiltonian simulation benchmark
+that does not require expoentially expensive classical compu-
+tations is to use a phenomenon called many-body localization
+[71, 72], where evolution under a random Hamiltonian such
+as the one in Eq. A1 preserves certain quantities. However,
+long evolution times are required for many body localization,
+resulting in circuits containing thousands of circuit layers. A
+benchmark based on this method would therefore arguably not
+be useful for current hardware.
+6. Monte Carlo Sampling
+Classical Monte Carlo algorithms use random processes to
+solve problems numerically where other methods might be
+infeasible. A quantum algorithm which has a quadratic speed
+up over classical Monte Carlo algorithms was proposed by
+Woerner and Egger [73], which we have used here as the ba-
+sis for our Monte Carlo Sampling benchmark. The Monte
+Carlo sampling algorithm aims to compute the expected value
+of some function f (X), where X is a random variable that p(X)
+distributed. The algorithms uses two oracles. One of these
+oracles,R, is deﬁned by
+R|0⟩n|0⟩ =
+∑
+i
+√
+p(X = i)|i⟩n|0⟩. (A2)
+This encodes the probability distribution p(X) into the ampli-
+tudes of n qubit states. The other oracle,F , is deﬁned by
+F|i⟩n|0⟩ =|i⟩n
+(√
+1− f (i)|0⟩ +
+√
+f (i)|1⟩
+)
+. (A3)
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 26 =====
+
+26
+1 2 6 14 33 80191459 1K 3K 6K15K36K88K210K505K1M 3M 7M17M40M
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12Circuit Width
+QV=32
+Monte Carlo Sampling (2)Monte Carlo Sampling (1)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=qasm_simulator  2022-10-16 04:38:34 UTC
+FIG. 31. Results from running the two benchmarks based on the
+Monte Carlo Sampling algorithm on a simulator.
+This encodes the function value f (i) into the amplitude of a
+single auxiliary qubit. By applyingR andF on a n + 1 qubit
+system initialized to the zero state, we obtain
+FR|0⟩n|0⟩ =∑
+i
+|i⟩n
+(√
+p(X = i)
+√
+1− f (i)|0⟩ +
+√
+p(X = i)
+√
+f (i)|1⟩
+)
+.
+(A4)
+Recall that for the amplitude estimation, given the operatorA,
+A|0⟩n+1 =
+√
+1− a|ψ0⟩| 0⟩ +√a|ψ1⟩| 1⟩, (A5)
+the amplitude estimation algorithm yields a. The Monte Carlo
+Sampling algorithm works by applying
+A =FR (A6)
+and then perform amplitude estimation on the resultant state to
+produce
+a =
+∑
+i
+p(X = i) f (i) = E[ f (X)], (A7)
+which is the expectation value of the f function.
+We implemented two benchmarks based on running the
+Monte Carlo Sampling algorithm for diﬀerent choices of f and
+p. Monto Carlo Samping(1) enables the user to choose f
+and p. For general distributions and functions, the circuits of
+this benchmark are very deep. Monto Carlo Samping(2)
+ﬁxes p to the uniform distribution (thisR oracle can then be
+implemented using only Hadamard gates), and the ﬁxes f to
+the parity function [ f (i) = 1 if i has an odd number of 1’s in
+its binary expansions and f (i) = 0 otherwise], which means
+that theF oracle can be implement using only CNOT gates.
+Figure 31 shows results from both versions of our benchmark.
+7. Variational Quantum Eigensolver
+Solving the electronic structure problem is one of the most
+promising applications for quantum computers, with potential
+contributions to drug discovery [74], developing new materials
+and catalysts for more eﬃcient light-harvesting and CO2 reduc-
+tion [75], understanding high-temperature super conductivity
+[74], and other important use cases [76]. In the NISQ era, one
+of the most promising approaches is the variational quantum
+eigensolver (VQE) [51, 52].
+The VQE algorithm implements a parameterized circuit for
+a chosen wavefunction ansatz. It then measures the energy ex-
+pectation value of the wave function and optimizes the circuit
+parameters towards a direction that lowers the energy expec-
+tation value. The VQE algorithm is based on the variational
+principle [77],
+E =
+⣨
+Ψ(⃗θ)
+⏐⏐⏐H
+⏐⏐⏐Ψ(⃗θ)
+⟩
+⣨
+Ψ(⃗θ)
+⏐⏐⏐Ψ(⃗θ)
+⟩ ≥ E0, (A8)
+in which the energy expectation value of an parameterized
+wave function Ψ(⃗θ) is lower bounded by the exact ground state
+energy E0. In other words, the optimal parameter⃗θ∗ that mini-
+mizes the energy expectation value corresponds to the closest
+description to the exact ground state within the ﬂexibility of the
+wave function ansatz. Herein, H is the electronic Hamiltonian
+deﬁned as
+H =
+∑
+pq
+hpqa†
+paq + 1
+2
+∑
+pqrs
+gpqrsa†
+pa†
+qasar, (A9)
+in which hpq, gpqrs are the one- and two-electron integrals, and
+a, a† are the Fermionic annihilation and creation operators.
+An important aspect of the VQE algorithm is the choice
+of the wave function ansatz. Many choices exist, and for our
+VQE-based benchmark we choose to use the unitary Coupled
+Cluster with singles and doubles ansatz (unitary-CCSD). This
+ansatz is deﬁned by [78]
+|Ψ⟩ = eT−T†
+|Φ⟩ (A10)
+where T is the cluster operator and|Φ⟩ is the reference state,
+which is chosen to be the Hartree-Fock (HF) state. The cluster
+operator is deﬁned by
+T =
+∑
+i,a
+ta
+i aia†
+a +
+∑
+i> j,a>b
+tab
+i j aia†
+aa ja†
+b (A11)
+in which i, j indicate molecular orbitals that are occupied in
+the HF state, and a, b indicate molecular orbitals that are empty
+in the HF state. ta
+j and tab
+i j are the wave function parameters
+associated with single and double excitations.
+The unitary CCSD ansatz is a variant of the widely used
+traditional CCSD ansatz. Unlike the traditional CCSD ansatz,
+which fails to model strongly correlated systems, the unitary
+CCSD ansatz has been shown to produce highly accurate re-
+sults in both weakly and strongly correlated systems. However,
+there is no known classical method that can evaluate the energy
+expectation value of the unitary CCSD ansatz with polynomial
+cost. In contrast, its unitary nature means that it is natural to
+implement on a quantum computer.
+Both the electronic Hamiltonian and the unitary CCSD
+ansatz are deﬁned with Fermionic operators. In order to imple-
+ment them on a quantum computer, one needs to ﬁrst transform
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 27 =====
+
+27
+1 2 4 8 16 32 64128256512 1K 2K 4K 8K16K33K66K131K262K524K1M
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12Circuit Width
+QV=32
+VQE Simulation (1)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=qasm_simulator  2022-10-15 20:23:06 UTC
+FIG. 32. Results from running VQE(1), one of our two VQE-based
+benchmarks, on a simulator.
+them to Pauli operators. Our VQE benchmarks use the Jordan-
+Wigner transformation [79]:
+a†
+p→ I⊗p−1⊗ [1
+2(σx
+p− iσy
+p)]⊗σz⊗N−p,
+ap→ I⊗p−1⊗ [1
+2(σx
+p + iσy
+p)]⊗σz⊗N−p,
+(A12)
+where I, X, Y and Z are Pauli matrices andN is the total number
+of qubits. Upon the Jordan-Wigner transformation, both the
+Hamiltonian and the cluster operator becomes a weighted sum
+of Pauli words
+H(T) =
+M∑
+i
+gi(ti)Pi, (A13)
+where Pi is a tensor product of Pauli matrices,
+Pi ={I,σ x,σ y,σ z}⊗N. (A14)
+The VQE algorithm proceeds by iteratively evaluating and
+optimizing the energy by varying the wave function parameters,
+until the minimum is found.
+The full VQE algorithm includes both a quantum and a clas-
+sical part. The former is used to implement the ansatz and mea-
+sure the energy, and the latter is applied to optimize the ansatz
+parameters. Our initial VQE-based benchmark, VQE(1), only
+implements the quantum part of the algorithm. For VQE(1),
+we randomly sample the wave function parameters and choose
+a ﬁxed measurement basis (varying the measurement basis is
+generally necessary to measure the expectation value of the
+Hamiltonian H(T)).
+In our benchmarks, the Hamiltonian and the wave function
+is implemented for the NaH molecule with a bond length of
+1.9 Angstrom with the STO-6G basis[ 77]. By changing the
+number of orbitals to simulate, we vary the number of qubits.
+The smallest case is n = 4 qubits, which corresponds to 2
+electrons and 4 spin orbitals. Figure 32 shows the results of
+executing VQE(1) on a quantum simulator up to 10 qubits.
+8. Shor’s Order Finding
+Shor’s factoring algorithm [ 67] is one of the most well-
+known applications of quantum computing. Shor’s factoring
+algorithm includes both a quantum and classical subroutine.
+The quantum subroutine ﬁnds the smallest integer period, or the
+order, of a periodic function while the classical subroutine uses
+this order to determine the factors of a number in polynomial
+time. This process may need to be repeated multiple times,
+in case an invalid order is generated. Since the order ﬁnding
+routine is the bottleneck of integer factorization, our focus is
+on benchmarking the quantum subroutine of order ﬁnding.
+The algorithm is designed for ﬁnding the order of functions
+that take the form f (x) = ax mod N where a< N. The order
+r of this function is the r satisfying ar mod N = 1. If r is
+known, a classical computer can compute the prime factors
+of N in polynomial time. Our benchmarks based on Shor’s
+order ﬁnding algorithm generate random values of r and N
+from which a corresponding base value a can be analytically
+calculated. The quantum algorithm for order ﬁnding is actually
+a variation of quantum phase estimation where the chosen uni-
+tary operator performs modular exponentiation. This modular
+exponentiation encodes the order in the phases of a quantum
+state.
+We constructed two benchmarks based on Shor’s order
+ﬁnding algorithm, Shor’s Order Finding(1) and Shor’s
+Order Finding(2) , based on variants of Shor’s algorithm
+introduced by Stephane Bearuegard [ 80]. Shor’s Order
+Finding(1) is based on the standard formulation of Shor’s
+algorithm, and it requires 4n + 2 qubits where n is the problem
+instance size (meaning that N is an n bit integer). Shor’s
+Order Finding(2) uses a version of Shor’s algorithm that
+utilizes mid-circuit measurements to reduce the number of
+qubits. This method uses 2n + 3 qubits. Figure 33 shows
+the results obtained executing both these benchmarks on a
+1 2 5 11 23 52113249549 1K 3K 6K13K28K62K137K301K662K1M 3M 7M
+Circuit Depth
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17Circuit Width
+QV=32
+Shor's Order Finding (1)
+Shor's Order Finding (2)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Avg Result Fidelity
+Volumetric Positioning - All Applications (Merged)
+Device=qasm_simulator  2022-10-16 04:38:37 UTC
+FIG. 33. Shor’s Order Finding Algorithms
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 28 =====
+
+28
+simulator.
+Appendix B: Limitations of the Average Result Fidelity
+In this appendix we illustrate some of the limitations inherent
+to using the average result ﬁdelity to quantify performance,
+using an example. This example illustrates the limitations of
+both ﬁdelity and of averaging this ﬁdelity over multiple circuits.
+We use the Deutsch-Jozsa benchmark are our example. The
+Deutsch-Jozsa algorithm is an n + 1 qubit oracle algorithm that
+computes whether f :{0, 1}n→{ 0, 1} is a balanced or constant
+function using a single call to an oracle that implements f .
+If the function is constant the ﬁrst n qubits should all return
+0, and otherwise at least one of the qubits should return 1.
+In our benchmark we randomly choose the oracle: with 50%
+probability f is a balanced function, and with 50% probability
+f is constant. The balanced function that we use is the parity
+function, in which case all the qubits should return 1. Now
+consider two quantum computers, QA and QB, that always
+return the bit strings 0000... and 1000... , respectively. In
+both cases, if we run the Deutsch-Jozsa algorithm we always
+get the correct algorithm output for one of the two inputs, and
+the incorrect output for the other, i.e., arguably QA and QB
+perform equally badly on this algorithm. But we ﬁnd that
+¯Fs = 0.5 for QA and ¯Fs = 0 for QB, where ¯Fs is Fs averaged
+over the balanced and constant oracle. This is because for QB,
+Fs(Poutput, Pideal) = 0 for both inputs (as Pideal(111... ) = 1 for
+the balanced function) [81].
+This example illustrates two points. First, the ﬁdelity be-
+tween Pideal and Poutput for a particular algorithm input does not
+directly correspond to the probability of obtaining the correct
+result on that input. In this example, QB always returns the
+correct algorithm result on the balanced function input, even
+though Fs(Pideal, Poutput) = 0. To avoid this e ﬀect we would
+need an algorithm-speciﬁc metric for result quality. We sug-
+gest that the result ﬁdelity should be complemented (but not
+replaced) with such metrics. Second, quantifying performance
+using only an average over problem instances can obscure
+important performance information. We suggest that it will
+be important to also study, e.g., worst-case performance over
+problem instances.
+Similar eﬀects to those discussed above were apparent in
+our experiments. Figure 34 shows the results of running the
+Deutsch-Jozsa benchmark on (a) a quantum simulator with
+depolarizing errors, and (b) IBM Q Guadalupe. In the simula-
+tion we observe that the average result ﬁdelity decays towards
+zero as the number of qubits increases (note that our normal-
+ized result ﬁdelity F is designed so that it decays towards zero
+in the presence of depolarizing errors, unlike Fs). In contrast,
+the average result ﬁdelity for IBM Q Guadalupe decays quickly
+to∼ 0.5 with increased circuit width, and then decays slowly.
+The constant oracle uses a shallow O(1) depth circuit contain-
+ing no two-qubit gates, and its correct result is 000... . In
+contrast, the balanced oracle uses O(n) two-qubit gates and
+its correct result is 111... . The constant oracle can therefore
+be expected to perform much better than the balanced oracle
+on IBM Q Guadalupe, which has high-ﬁdelity one-qubit gates
+3 4 5 6 7 8 9 10 11 12
+Circuit Width (Number of Qubits)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Avg Result Fidelity
+Benchmark Results - Deutsch-Jozsa - Qiskit
+Device=qasm_simulator  2021-09-22 23:36:11 UTC
+3 4 5 6 7 8 9 10 11 12
+Circuit Width (Number of Qubits)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Avg Result Fidelity
+Benchmark Results - Deutsch-Jozsa - Qiskit
+Device=ibmq_guadalupe  2021-09-22 22:38:46 UTC
+FIG. 34. Demonstrating the limitations of average result ﬁdelity
+using an example. Results from running the Deutsch-Jozsa bench-
+mark on a simulator (upper plot) with depolarizing errors and IBM Q
+Guadalupe (lower plot). Unlike in the simulation, the average result
+ﬁdelity on IBM Q Guadalupe decays quickly to∼ 0.5 with increasing
+circuit width but then decays slowly. This suggests a strong asymme-
+try in the result ﬁdelities for the two problem instances—the balanced
+and unbalanced function oracles—and, as discussed in the main text,
+this asymmetry is consistent with known noise mechanisms in IBM
+Q Guadalupe.
+[28] and which (like all superconducting systems) experiences
+substantial T1 decay that adds a bias towards returning the
+000... bit string. This strong asymmetry in the performance
+on the constant and balanced oracles would explain the results
+of Fig. 34, and it illustrates that average result ﬁdelities must
+be interpreted and compared with care.
+Appendix C: Issues with Diﬀerent Quantum Computing APIs
+Quantum applications are being implemented using a vari-
+ety of APIs, e.g., Qiskit, Cirq, Braket, and Q#. These APIs
+have many features in common, and our benchmark suite was
+initially designed to execute consistently across these multiple
+quantum programming environments. However, certain con-
+straints exist that make it challenging to accomplish complete
+consistency across all APIs.
+As a consequence of these diﬀerences, all of the benchmarks
+have been implemented using the Qiskit API. Some, but not
+all, have been implemented using the Cirq and Braket APIs.
+Throughout, all executions of our benchmarking suite on a
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 29 =====
+
+29
+quantum simulator are performed using the Qiskit implemen-
+tation of our benchmarking suite, as it provides rich circuit
+analysis features. Execution on all of the hardware was also
+performed using the Qiskit version of our benchmarks, with the
+exception of the experiments on Rigetti Computing’s hardware,
+which used the Braket version of our benchmarks.
+Our benchmarking circuits are deﬁned in a high-level and
+algorithm-speciﬁc gate set, and then transpiled (1) to a stan-
+dard gate set that we use to deﬁne each circuit’s ‘depth’ [see
+Section III F], and (2) to the native operations of a particu-
+lar quantum computer in order to run the circuits. There are
+two challenges to consistently implementing this methodol-
+ogy across di ﬀerent APIs. Firstly, the permitted gates dif-
+fer between APIs. For example, in the Amazon Braket API,
+there is not direct support for controlled subcircuits which are
+used in our deﬁnitions of the Monte Carlo Sampling and
+Amplitude Estimation benchmarks. These benchmarks are
+therefore not currently available in the Braket implementation
+of our suite. Second, we deﬁne a standarized notion of cir-
+cuit depth by compiling to a standard gate set. However, the
+depth of the resultant circuit will depend on the performance
+of the compilation algorithm, which will be API dependent.
+The majority of our experiments to date have used the Qiskit
+API, limiting cross-API comparisons. An API-independent
+deﬁnition of circuit depth will likely be necessary to enable
+consistent result comparisons across diﬀerent APIs.
+In addition to issues related to circuit compiling, a variety of
+other API issues exist that make it challenging to consistently
+implement our benchmarking suite and to gather all of the data
+of interest. These issues include a requirement in Cirq to in-
+clude topology information in the circuit deﬁnition, the limited
+availability of the transpiled circuit and detailed metrics of the
+execution time in Braket and Cirq, and minor issues relating
+to circuit visualizations. For our work, the Qiskit platform
+provided the best overall set of features for implementing this
+suite of benchmarks and generating the analysis described in
+this manuscript.
+Appendix D: Advances in Quantum Computers
+Developing a suite of performance benchmarks early in a
+technology’s development establishes markers with which to
+measure advances in both hardware components and support-
+ing software. In order to provide this beneﬁt over multiple
+product cycles, they must be designed to anticipate advances
+in technology that may emerge in the next ﬁve years. Factoring
+such advances into benchmarks from the beginning helps to
+ensure that future comparisons are meaningful.
+We considered speciﬁc enhancements that have been widely
+discussed within the quantum computing community, and we
+reviewed how these would impact the code structure of the
+application benchmark programs. Examples include new hard-
+ware features such as mid-circuit measurement, parameterized
+gate operations, and tighter integration of classical / quantum
+computation. Some of these advances are available now on
+a limited set of quantum computers. With input from the
+community as well as the providers of quantum computing
+hardware, the suite can evolve to eﬀectively gauge the impact
+of performance improvements that result from these continuing
+advances.
+1. Mid-Circuit Measurements
+In the ﬁrst quantum computers introduced by commercial
+providers, classical measurement of qubit state was permitted
+only at the end of the circuit and qubits were not reusable.
+Recently, IBM [82, 83], Quantinuum [42, 84] and others have
+introduced ways to perform measurement at any stage of the
+quantum circuit. The measurements are recorded, qubits are
+reset to an initial state, and additional computation can be
+performed while qubit coherence is maintained by the quantum
+hardware. The measurements collected during execution may
+be retrieved by the user with an API call.
+This feature provides an option for constructing algorithms
+with a smaller number of qubits. Ref. Nation and Johnson [82]
+describe an implementation of a Bernstein-Vazirani circuit on
+IBM hardware using only 2 qubits to encode a 12-bit secret
+string. The ﬁdelity in the measurement result is signiﬁcantly
+greater than the equivalent 13-qubit circuit due to the use of
+only two qubits. Figure 35 shows a smaller version of that
+circuit that is equivalent to a 5-qubit implementation.
+Our benchmark suite has some initial benchmarks that can
+test, and take advantage of, mid-circuit measurements. The cur-
+rent benchmarks that use mid-circuit measurement do so to im-
+plement algorithms using a smaller number of qubits. That rep-
+resents the same problem as a circuit implemented with a larger
+number of qubits (a ‘qubit-equivalent’ problem size). In the
+Bernstein-Vazirani(1) benchmark, a sweep is performed
+over a progressively larger number of qubits, encoding a larger
+secret integer each time. In the Bernstein-Vazirani(2) the
+same sweep over problem input size is implemented using only
+two-qubit circuits. In this case, the depth of the circuit grows
+instead of the width.
+Similarly, Shor’s Order Finding(2) benchmark imple-
+ments Shor’s order ﬁnding algorithm using a single qubit quan-
+tum phase estimation circuit, implemented with mid-circuit
+measurement. The eﬀect of the mid-circuit measurement on
+Shor’s algorithm can be seen in the reduction in circuit width,
+and in the ﬁdelity of the results, in Figure 33.
+FIG. 35. A quantum circuit on 2 qubits that uses mid-circuit
+measurements to eﬃciently implement the Bernstein-Vazirani algo-
+rithm. This circuit implements the same computation as the stan-
+dard Bernstein-Vazirani circuit on 5 qubits. This is the basis for the
+Bernstein-Vazirani(2) benchmark.
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 30 =====
+
+30
+2. Circuit Parameterization
+Some quantum algorithms are highly iterative, e.g., the VQE
+algorithm or the quantum approximate optimization algorithm
+(QAOA). These algorithms introduce an additional iteration
+layer that involves modifying the circuit before executing an-
+other round of shots. The circuit is typically changed only by
+modifying the rotation angles (parameters) on the gates in the
+circuit before executing it again. An example of this is the
+parameterized ansatz circuit in the VQE algorithm, an example
+of which is shown in Figure 36 taken from [11].
+FIG. 36. An example of a parameterized quantum circuit, containing
+a single parameter (θ), from a small instance of the VQE algorithm
+using the UCC ansatz.
+Modiﬁcation of rotation angles prior to execution can be
+done by creating the circuit from scratch in a high-level lan-
+guage (e.g. Qiskit), followed by compilation for the backend
+target. The time taken to create, compile, and re-load the circuit
+for execution can be signiﬁcant—on the order of a few seconds
+to minutes for larger circuits. For an algorithm that requires
+hundreds or thousands of iterations, this circuit preparation
+time dramatically impacts the total execution time.
+The Qiskit and Cirq programming APIs both support a form
+of parameter deﬁnition within circuits using Python sympy
+objects that improves performance by reducing compilation,
+but still requires reloading of the circuit. It is possible that
+future advances in quantum computer control systems will
+reduce the latency between parameterized executions so that it
+is negligible, which would oﬀer the optimal execution time for
+such applications.
+The VQE-based benchmarks include the execution of a pa-
+rameterized circuit. The ansatz circuit is executed repeatedly
+but with diﬀerent angles applied to its gates. This is imple-
+mented by creating, compiling, and executing the circuit each
+time as a new circuit. Currently, the benchmarking suite cannot
+take advantage of any parameterized circuit representations
+and execution. In a future work, the benchmarks could be
+enhanced with the addition of a method to deﬁne the ansatz as
+a parameterized circuit.
+3. Multiply-Controlled Gates
+Several of the benchmark circuits are deﬁned using multiply-
+controlled gate operations. This is a type of gate in which
+the operation applied to the target qubit is controlled by more
+than just a single qubit. The many-qubit To ﬀoli gate is used
+in the deﬁnition of many of the benchmarks. None of to-
+day’s hardware is able to implement these operations natively.
+Any multiply-controlled gate needs to be transpiled into many
+smaller primitive gate operations. Figure 37 shows the decom-
+position of a standard To ﬀoli gate (an 3-qubit Toﬀoli gate)
+which has two control qubits.
+FIG. 37. The standard decomposition of the standard Toﬀoli gate into
+CNOT gates..
+Some of our benchmarks use n-qubit Toﬀoli gates with n
+proportional to the circuit width. The transpiled depth of an n-
+qubit Toﬀoli gate increases quickly with n. Thus the transpiled
+circuits grow in depth very rapidly as circuit width increases.
+This is readily seen in the volumetric positioning proﬁle for
+the Grover’s Search benchmark in Figure 28.
+It is possible that hardware advances will lead to native
+implementations of some multiply-controlled gates (although
+note that n-qubit controlled gates for arbitrary n cannot be
+implemented in constant time). For example, Bækkegaard
+et al. [85] have described a possible native implementation of
+a Toﬀoli gate as a CCZ gate. If multiply-controlled gates are
+implemented natively, benchmarks that are deﬁned using them
+will quantify the performance improvement that they provide.
+4. Close Classical /Quantum Integration
+Increased attention is being given to the total execution
+time of quantum applications [ 47, 50]. Quantum computers
+are increasingly able to execute complex applications that in-
+clude multiple iterations of quantum circuits as subroutines
+interleaved with classical computation. The total time taken
+by the application to arrive at a solution, aggregated over all
+stages of the execution, can be hours or even days. Architec-
+tural improvements in the implementation of the hardware and
+ﬁrmware of the quantum computer can result in signiﬁcant
+reduction in these execution times.
+In a recent IBM blog post, Johnson and Faro [47] report on
+enhancements to their quantum computing architecture that
+results in a reduction in the ‘time to solution’ for a speciﬁc
+chemistry problem, from several days to nine hours. This
+is signiﬁcant in that it represents a focus on the evolutionary
+reduction in the time taken to compute a solution, and not solely
+on the relative asymptotic scaling time of quantum computing
+as compared to classical. This trend is likely to continue, as
+evidenced by current research into quantum accelerators [48]
+and other architectural optimizations [49, 50].
+Karalekas et al. [86] described a quantum-classical-cloud
+architecture that supports a tight coupling between execution
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 31 =====
+
+31
+of the classical and quantum parts of a hybrid algorithm with
+adjacent hardware, to enable faster execution of such programs
+over the cloud. IBM’s announcement of public availability of
+the Qiskit Runtime in IBM Quantum [ 87] is another step in
+this direction. In a solution of this type, a user may upload
+a quantum program and run it with di ﬀerent inputs and con-
+ﬁgurations each time each time it is executed without having
+to reload the program. Currently, the benchmarks have not
+been structured to take advantage of Qiskit Runtime. Classical
+and quantum computation can be integrated even further, by
+implementing classical computations alongside the execution
+of a quantum circuit, within the coherence time of the qubits
+Wehden et al. [88]. For example, Ref. Takita et al. [89] discuss
+how such a feature would improve the implementation of a
+quantum phase estimation algorithm. Our benchmarking suite
+will require updates to fully test tightly integrated classical and
+quantum processing.
+Precise measurement of the execution times for various
+stages of a combined quantum/classical application may have
+particular value in gauging the evolution and impact of quan-
+tum/classical computing integration. Currently, the benchmark
+suite collects and reports on the quantum-speciﬁc execution
+time reported by the target system, as well as the circuit cre-
+ation, launch and queue times. The iterative nature of the
+benchmarks means that the total execution time for any one
+benchmark program is a rough indicator for overall total time
+to solution for that type of application (factoring out the highly
+variable queue times). An analysis of execution times aggre-
+gated over multiple executions is not reported systematically
+or compared in the current suite.
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 32 =====
+
+32
+[1] John Preskill. Quantum computing in the NISQ era and beyond.
+Quantum, 2:79, 2018. URL https://quantum-journal.or
+g/papers/q-2018-08-06-79/ .
+[2] Frank Arute, Kunal Arya, Ryan Babbush, Dave Bacon, Joseph C
+Bardin, Rami Barends, Rupak Biswas, Sergio Boixo, Fernando
+G S L Brandao, David A Buell, Brian Burkett, Yu Chen, Zi-
+jun Chen, Ben Chiaro, Roberto Collins, William Courtney, An-
+drew Dunsworth, Edward Farhi, Brooks Foxen, Austin Fowler,
+Craig Gidney, Marissa Giustina, Rob Gra ﬀ, Keith Guerin,
+Steve Habegger, Matthew P Harrigan, Michael J Hartmann,
+Alan Ho, Markus Ho ﬀmann, Trent Huang, Travis S Humble,
+Sergei V Isakov, Evan Jeﬀrey, Zhang Jiang, Dvir Kafri, Kostyan-
+tyn Kechedzhi, Julian Kelly, Paul V Klimov, Sergey Knysh,
+Alexander Korotkov, Fedor Kostritsa, David Landhuis, Mike
+Lindmark, Erik Lucero, Dmitry Lyakh, Salvatore Mandrà, Jar-
+rod R McClean, Matthew McEwen, Anthony Megrant, Xiao
+Mi, Kristel Michielsen, Masoud Mohseni, Josh Mutus, Ofer
+Naaman, Matthew Neeley, Charles Neill, Murphy Yuezhen
+Niu, Eric Ostby, Andre Petukhov, John C Platt, Chris Quin-
+tana, Eleanor G Rie ﬀel, Pedram Roushan, Nicholas C Rubin,
+Daniel Sank, Kevin J Satzinger, Vadim Smelyanskiy, Kevin J
+Sung, Matthew D Trevithick, Amit Vainsencher, Benjamin Villa-
+longa, Theodore White, Z Jamie Yao, Ping Yeh, Adam Zalcman,
+Hartmut Neven, and John M Martinis. Quantum supremacy
+using a programmable superconducting processor. Nature, 574
+(7779):505–510, 2019. ISSN 0028-0836, 1476-4687. doi:
+10.1038/s41586-019-1666-5. URL http://dx.doi.org/1
+0.1038/s41586-019-1666-5 .
+[3] Han-Sen Zhong, Hui Wang, Yu-Hao Deng, Ming-Cheng Chen,
+Li-Chao Peng, Yi-Han Luo, Jian Qin, Dian Wu, Xing Ding,
+Yi Hu, Peng Hu, Xiao-Yan Yang, Wei-Jun Zhang, Hao Li, Yux-
+uan Li, Xiao Jiang, Lin Gan, Guangwen Yang, Lixing You, Zhen
+Wang, Li Li, Nai-Le Liu, Chao-Yang Lu, and Jian-Wei Pan.
+Quantum computational advantage using photons. Science, 370
+(6523):1460–1463, 2020. ISSN 0036-8075, 1095-9203. doi:
+10.1126/science.abe8770. URL http://dx.doi.org/10.11
+26/science.abe8770.
+[4] E. Knill, D. Leibfried, R. Reichle, J. Britton, R. B. Blakestad,
+J. D. Jost, C. Langer, R. Ozeri, S. Seidelin, and D. J. Wineland.
+Randomized benchmarking of quantum gates. Phys. Rev. A, 77:
+012307, Jan 2008. doi:10.1103 /PhysRevA.77.012307. URL
+https://link.aps.org/doi/10.1103/PhysRevA.77.012
+307.
+[5] Easwar Magesan, J. M. Gambetta, and Joseph Emerson. Scal-
+able and robust randomized benchmarking of quantum pro-
+cesses. Phys. Rev. Lett. , 106:180504, May 2011. doi:
+10.1103/PhysRevLett.106.180504. URL https://link.a
+ps.org/doi/10.1103/PhysRevLett.106.180504.
+[6] Robin Blume-Kohout, John King Gamble, Erik Nielsen, Ken-
+neth Rudinger, Jonathan Mizrahi, Kevin Fortier, and Peter
+Maunz. Demonstration of qubit operations below a rigorous
+fault tolerance threshold with gate set tomography. Nat. Com-
+mun., 8:14485, February 2017. doi:10.1038 /ncomms14485.
+URL https://www.nature.com/articles/ncomms14485.
+[7] Daniel C Murphy and Kenneth R Brown. Controlling error
+orientation to improve quantum algorithm success rates. Phys.
+Rev. A, 99(3):032318, 2019. URL https://journals.aps.o
+rg/pra/abstract/10.1103/PhysRevA.99.032318.
+[8] Timothy Proctor, Kenneth Rudinger, Kevin Young, Erik Nielsen,
+and Robin Blume-Kohout. Measuring the capabilities of quan-
+tum computers, 2020.
+[9] Sergio Boixo, Sergei V . Isakov, Vadim N. Smelyanskiy,
+Ryan Babbush, Nan Ding, Zhang Jiang, Michael J. Bremner,
+John M. Martinis, and Hartmut Neven. Characterizing quantum
+supremacy in near-term devices. Nature Physics, 14(6):595–600,
+Apr 2018. ISSN 1745-2481. doi:10.1038 /s41567-018-0124-x.
+URL http://dx.doi.org/10.1038/s41567-018-0124-x .
+[10] Andrew W. Cross, Lev S. Bishop, Sarah Sheldon, Paul D. Nation,
+and Jay M. Gambetta. Validating quantum computers using
+randomized model circuits. Physical Review A , 100(3), Sep
+2019. ISSN 2469-9934. doi:10.1103/physreva.100.032328. URL
+http://dx.doi.org/10.1103/PhysRevA.100.032328.
+[11] Alexander J. McCaskey, Zachary P. Parks, Jacek Jakowski,
+Shirley V . Moore, T. Morris, Travis S. Humble, and Raphael C.
+Pooser. Quantum chemistry as a benchmark for near-term quan-
+tum computers, 2019.
+[12] Kristel Michielsen, Madita Nocon, Dennis Willsch, Feng-
+ping Jin, Thomas Lippert, and Hans De Raedt. Bench-
+marking gate-based quantum computers. Computer Physics
+Communications, 220:44–55, 2017. ISSN 0010-4655. doi:
+https://doi.org/10.1016/j.cpc.2017.06.011. URL https://www.
+sciencedirect.com/science/article/pii/S001046551
+7301935.
+[13] K. Wright, K. M. Beck, S. Debnath, J. M. Amini, Y . Nam,
+N. Grzesiak, J.-S. Chen, N. C. Pisenti, M. Chmielewski,
+C. Collins, and et al. Benchmarking an 11-qubit quantum
+computer. Nature Communications, 10(1), Nov 2019. ISSN
+2041-1723. doi:10.1038 /s41467-019-13534-2. URL http:
+//dx.doi.org/10.1038/s41467-019-13534-2 .
+[14] Daniel Koch, Brett Martin, Saahil Patel, Laura Wessing, and
+Paul M. Alsing. Demonstrating nisq era challenges in algorithm
+design on ibm’s 20 qubit quantum computer.AIP Advances, 10
+(9):095101, Sep 2020. ISSN 2158-3226. doi:10.1063/5.0015526.
+URL http://dx.doi.org/10.1063/5.0015526.
+[15] Daniel Mills, Seyon Sivarajah, Travis L. Scholten, and Ross
+Duncan. Application-motivated, holistic benchmarking of a
+full quantum computing stack. Quantum, 5:415, Mar 2021.
+ISSN 2521-327X. doi:10.22331/q-2021-03-22-415. URL http:
+//dx.doi.org/10.22331/q-2021-03-22-415 .
+[16] Michele Amoretti. An E ﬀective Framework for Full-Stack
+Benchmarking of Quantum Computers. Quantum Views, 5:
+52, April 2021. doi:10.22331/qv-2021-04-26-52. URL https:
+//doi.org/10.22331/qv-2021-04-26-52 .
+[17] Arjan Cornelissen, Johannes Bausch, and András Gilyén. Scal-
+able benchmarks for gate-based quantum computers, 2021.
+[18] Application-Oriented Performance Benchmarks for Quantum
+Computing. URL https://github.com/SRI-Internation
+al/QC-App-Oriented-Benchmarks .
+[19] Qiskit Open Source Quantum Development. https://qiskit
+.org, 2021. Qiskit website.
+[20] Google Cirq Qantum AI.https://quantumai.google/cirq,
+2021. Google Cirq website.
+[21] Amazon Braket. https://aws.amazon.com/braket , 2021.
+Amazon Braket website.
+[22] Microsoft Q# and the Quantum Development Kit. https://
+azure.microsoft.com/en-us/resources/development-
+kit/quantum-computing/, 2021. Microsoft Q# website.
+[23] Robin Blume-Kohout and Kevin C. Young. A volumetric frame-
+work for quantum computer benchmarks. Quantum, 4:362,
+November 2020. ISSN 2521-327X. doi:10.22331 /q-2020-11-
+15-362. URL https://doi.org/10.22331/q-2020-11-1
+5-362.
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 33 =====
+
+33
+[24] Standard Performance Evaluation Corporation. URL https:
+//spec.org/. SPEC Benchmark Suite, accessed 2021-05-28.
+[25] John L. Hennessy and Patterson. Computer Architecture: a
+Quantitative Approach. Morgan Kaufmann, 2019.
+[26] Amazon Braket > Devices > IonQ. https://us-west-1.co
+nsole.aws.amazon.com/braket/home?region=us-west-
+1#/devices/arn:aws:braket:::device/qpu/ionq/ionQ
+device, 2021. Amazon Braket website, accessed 2021-05-24.
+[27] Google Quantum AI Quantum Computer Datasheet. https:
+//quantumai.google/hardware/datasheet/weber.pdf ,
+2021. Weber datasheet, accessed 2021-05-24.
+[28] IBM Quantum. https://quantum-computing.ibm.com ,
+2021. accessed 2021-05-15.
+[29] Mohan Sarovar, Timothy Proctor, Kenneth Rudinger, Kevin
+Young, Erik Nielsen, and Robin Blume-Kohout. Detecting
+crosstalk errors in quantum information processors. Quantum,
+4:321, 2020. URL https://quantum-journal.org/pape
+rs/q-2020-09-11-321/ .
+[30] Jay M Gambetta, AD Córcoles, Seth T Merkel, Blake R John-
+son, John A Smolin, Jerry M Chow, Colm A Ryan, Chad Rigetti,
+S Poletto, Thomas A Ohki, et al. Characterization of addressabil-
+ity by simultaneous randomized benchmarking. Phys. Rev. Lett.,
+109(24):240504, 2012. URL https://journals.aps.org/p
+rl/abstract/10.1103/PhysRevLett.109.240504.
+[31] Patty Lee. Quantum V olume: The Power of Quantum Computers.
+https://www.honeywell.com , 2020. Chief Scientist for
+Honeywell Quantum Solutions. Retrieved 2021-05-25.
+[32] Scott Aaronson. Turn down the quantum volume, Mar 2020.
+URL https://www.scottaaronson.com/blog/?p=4649.
+[33] Note1. In the quantum volume protocol, success is quantiﬁed in
+terms of the heavy output probability (HOP) rather than result
+ﬁdelity. The success threshold used for the HOP in the quantum
+volume protocol is 2/3, which approximately corresponds to a
+threshold for result ﬁdelity of 1/2.
+[34] Colin P. Williams.Quantum Gates, pages 51–122. Springer Lon-
+don, London, 2011. ISBN 978-1-84628-887-6. doi:10.1007/978-
+1-84628-887-6_2. URL https://doi.org/10.1007/978-1-
+84628-887-6_2.
+[35] Michael A Nielsen and Isaac Chuang. Quantum computation
+and quantum information, 2002.
+[36] Ernst Hellinger. Neue begründung der theorie quadratischer
+formen von unendlichvielen veränderlichen. Journal für die
+reine und angewandte Mathematik, 1909(136):210–271, 1909.
+[37] Note2. In all experiments Nshots = 1000, except the VQE(1)
+experiments where Nshots = 4098 due to a coding oversight.
+[38] Amazon Braket > Devices > Rigetti. https://us-west-1.co
+nsole.aws.amazon.com/braket/home?region=us-west-
+1#/devices/arn:aws:braket:::device/qpu/rigetti/A
+spen-9, 2021. Amazon Braket website, accessed 2021-08-18.
+[39] Achieving quantum volume 128 on the honeywell quantum
+computer, Sep 2020. URL https://www.honeywell.com/
+us/en/news/2020/09/achieving-quantum-volume-128-
+on-the-honeywell-quantum-computer .
+[40] J. M. Pino, J. M. Dreiling, C. Figgatt, J. P. Gaebler, S. A.
+Moses, M. S. Allman, C. H. Baldwin, M. Foss-Feig, D. Hayes,
+K. Mayer, and et al. Demonstration of the trapped-ion quan-
+tum ccd computer architecture, Apr 2021. URL https:
+//www.nature.com/articles/s41586-021-03318-4 .
+[41] Honeywell. Honeywell sets new record for quantum computing
+performance, 2021. URL https://www.honeywell.com/us
+/en/news/2021/03/honeywell-sets-new-record-for
+-quantum-computing-performance .
+[42] J. P. Gaebler, C. H. Baldwin, S. A. Moses, J. M. Dreiling, C. Fig-
+gatt, M. Foss-Feig, D. Hayes, and J. M. Pino. Suppression
+of mid-circuit measurement crosstalk errors with micromotion,
+2021.
+[43] Honeywell. Honeywell sets another record for quantum comput-
+ing performance, 2021. URL https://www.honeywell.com/
+us/en/news/2021/07/honeywell-sets-another-reco
+rd-for-quantum-computing-performance .
+[44] IonQ Quantum Cloud. https://console.cloud.google
+.com/marketplace/product/ionq-public/ionq?pli=1 ,
+2021. Amazon Braket website, accessed 2021-08-18.
+[45] Elton Yechao Zhu, Sonika Johri, Dave Bacon, Mert Esencan,
+Jungsang Kim, Mark Muir, Nikhil Murgai, Jason Nguyen, Neal
+Pisenti, Adam Schouela, Ksenia Sosnova, and Ken Wright. Gen-
+erative quantum learning of joint probability distribution func-
+tions, 2021.
+[46] Timothy Proctor, Stefan Serita, Erik Nielsen, Robin Blume-
+Kohout, and Kevin Young. Scalable randomized benchmarking
+of quantum computers using mirror circuits. In preparation.
+[47] Blake Johnson and Ismael Faro. Ibm quantum delivers 120x
+speedup of quantum workloads with qiskit runtime, May 2021.
+URL https://research.ibm.com/blog/120x-quantum
+-speedup?lnk=ushpv18re2.
+[48] K. Bertels, A. Sarkar, T. Hubregtsen., M. Serrao, A. A. Moue-
+denne, A. Yadav, A. Krol, and I. Ashraf. Quantum computer
+architecture: Towards full-stack quantum accelerators. 2020
+Design, Automation & Test in Europe Conference & Exhibi-
+tion (DATE), Mar 2020. doi:10.23919/date48585.2020.9116502.
+URL http://dx.doi.org/10.23919/DATE48585.2020.9
+116502.
+[49] Matthias Möller and Cornelis Vuik. On the impact of quan-
+tum computing technology on future developments in high-
+performance scientiﬁc computing. Ethics and Information Tech-
+nology, 19(4):253–269, Aug 2017. ISSN 1572-8439. doi:
+10.1007/s10676-017-9438-0. URL http://dx.doi.org/1
+0.1007/s10676-017-9438-0 .
+[50] Yudong Cao and Timothy Hirzel. Quantum acceleration in 2020,
+Dec 2020. URL https://www.infoq.com/articles/qua
+ntum-acceleration-2020/.
+[51] Alberto Peruzzo, Jarrod McClean, Peter Shadbolt, Man-Hong
+Yung, Xiao-Qi Zhou, Peter J. Love, Alán Aspuru-Guzik, and
+Jeremy L. O’Brien. A variational eigenvalue solver on a photonic
+quantum processor. Nature Communications, 5(1):4213, Jul
+2014. ISSN 2041-1723. doi:10.1038 /ncomms5213. URL http
+s://doi.org/10.1038/ncomms5213.
+[52] Jarrod R McClean, Jonathan Romero, Ryan Babbush, and Alán
+Aspuru-Guzik. The theory of variational hybrid quantum-
+classical algorithms. New Journal of Physics , 18(2):023023,
+feb 2016. doi:10.1088 /1367-2630/18/2/023023. URL https:
+//doi.org/10.1088/1367-2630/18/2/023023.
+[53] Edward Farhi, Jeﬀrey Goldstone, and Sam Gutmann. A quantum
+approximate optimization algorithm, 2014.
+[54] Note3. The QFT acting on standard input states can be eﬃciently
+simulated on a classical computer using a special-purpose simu-
+lation algorithm.
+[55] Timothy Proctor, Stefan Seritan, Erik Nielsen, Kenneth
+Rudinger, Kevin Young, Robin Blume-Kohout, and Mohan
+Sarovar. Establishing trust in quantum computations. arXiv
+preprint arXiv:2204.07568, 2022.
+[56] Samuele Ferracin, Theodoros Kapourniotis, and Animesh Datta.
+Accrediting outputs of noisy intermediate-scale quantum com-
+puting devices. New J. Phys., 21(11):113038, 2019. ISSN 1367-
+2630. doi:10.1088/1367-2630/ab4fd6. URL https://iopsci
+ence.iop.org/article/10.1088/1367-2630/ab4fd6.
+[57] The Qiskit Team. Measuring quantum volume, Aug 2021. URL
+https://qiskit.org/textbook/ch-quantum-hardware/
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 34 =====
+
+34
+measuring-quantum-volume.html.
+[58] Sandia Quantum Performance Lab. pyGSTi. https://github
+.com/pyGSTio/pyGSTi, 2021. Github repository.
+[59] David Deutsch and Richard Jozsa. Rapid solution of problems
+by quantum computation. Proceedings of the Royal Society of
+London. Series A: Mathematical and Physical Sciences , 439
+(1907):553–558, 1992. doi:10.1098/rspa.1992.0167. URL http
+s://royalsocietypublishing.org/doi/abs/10.1098/r
+spa.1992.0167.
+[60] Ethan Bernstein and Umesh Vazirani. Quantum complexity
+theory. SIAM Journal on Computing, 26(5):1411–1473, 1997.
+doi:10.1137/S0097539796300921. URL https://doi.org/
+10.1137/S0097539796300921.
+[61] Norbert M. Linke, Dmitri Maslov, Martin Roetteler, Shantanu
+Debnath, Caroline Figgatt, Kevin A. Landsman, Kenneth Wright,
+and Christopher Monroe. Experimental comparison of two
+quantum computing architectures. Proceedings of the National
+Academy of Sciences , 114(13):3305–3310, Mar 2017. ISSN
+1091-6490. doi:10.1073 /pnas.1618020114. URL http://dx
+.doi.org/10.1073/pnas.1618020114.
+[62] Martin Rötteler. Quantum algorithms for highly
+non-linear Boolean functions , pages 448–457. doi:
+10.1137/1.9781611973075.37. URL h t t p s : / / e p u b s .
+siam.org/doi/abs/10.1137/1.9781611973075.37.
+[63] D. Coppersmith. An approximate fourier transform useful in
+quantum factoring", ibm research report rc19642 ,; r. cle. 1994.
+[64] Lov K. Grover. A fast quantum mechanical algorithm for
+database search. In Proceedings of the Twenty-Eighth Annual
+ACM Symposium on Theory of Computing , STOC ’96, page
+212–219, New York, NY , USA, 1996. Association for Comput-
+ing Machinery. ISBN 0897917855. doi:10.1145/237814.237866.
+URL https://doi.org/10.1145/237814.237866.
+[65] Gilles Brassard, Peter Høyer, Michele Mosca, and Alain Tapp.
+Quantum amplitude ampliﬁcation and estimation. Quantum
+Computation and Information, page 53–74, 2002. ISSN 0271-
+4132. doi:10.1090/conm/305/05215. URL http://dx.doi.o
+rg/10.1090/conm/305/05215.
+[66] A. Kitaev. Quantum measurements and the abelian stabilizer
+problem. Electron. Colloquium Comput. Complex., 3, 1996.
+[67] Peter W. Shor. Polynomial-time algorithms for prime fac-
+torization and discrete logarithms on a quantum computer.
+SIAM Journal on Computing , 26(5):1484–1509, 1997. doi:
+10.1137/S0097539795293172. URL https://doi.org/10.1
+137/S0097539795293172.
+[68] Richard P. Feynman. Simulating physics with computers. Inter-
+national Journal of Theoretical Physics , 21(6):467–488, Jun
+1982. ISSN 1572-9575. doi:10.1007 /BF02650179. URL
+https://doi.org/10.1007/BF02650179.
+[69] Masuo Suzuki. Generalized trotter’s formula and systematic
+approximants of exponential operators and inner derivations
+with applications to many-body problems. Communications in
+Mathematical Physics, 51(2):183–190, Jun 1976. ISSN 1432-
+0916. doi:10.1007/BF01609348. URL https://doi.org/10
+.1007/BF01609348.
+[70] Farrokh Vatan and Colin Williams. Optimal quantum circuits
+for general two-qubit gates. Phys. Rev. A, 69:032315, Mar 2004.
+doi:10.1103/PhysRevA.69.032315. URL https://link.aps
+.org/doi/10.1103/PhysRevA.69.032315.
+[71] Andrew M. Childs, Dmitri Maslov, Yunseong Nam, Neil J.
+Ross, and Yuan Su. Toward the ﬁrst quantum simulation with
+quantum speedup. Proceedings of the National Academy of
+Sciences, 115(38):9456–9461, 2018. ISSN 0027-8424. doi:
+10.1073/pnas.1801723115. URL https://www.pnas.org/c
+ontent/115/38/9456.
+[72] D. Zhu, S. Johri, N. H. Nguyen, C. Huerta Alderete, K. A. Lands-
+man, N. M. Linke, C. Monroe, and A. Y . Matsuura. Probing
+many-body localization on a noisy quantum computer.Phys. Rev.
+A, 103:032606, Mar 2021. doi:10.1103/PhysRevA.103.032606.
+URL https://link.aps.org/doi/10.1103/PhysRevA.
+103.032606.
+[73] Stefan Woerner and Daniel J. Egger. Quantum risk analysis.
+npj Quantum Information, 5(1):15, Feb 2019. ISSN 2056-6387.
+doi:10.1038/s41534-019-0130-6. URL https://doi.org/10
+.1038/s41534-019-0130-6 .
+[74] S. McArdle, S. Endo, A. Aspuru-Guzik, S. C. Benjamin, and
+X. Yuan. Quantum computational chemistry. Rev. Mod. Phys.,
+92:015003, 2020.
+[75] V . V . Burg, G. H. Low, T. Häner, D. S. Steiger, M. Reiher,
+M. Roetteler, and M. Troyer. Quantum computing enhanced
+computational catalysis. Phys. Rev. Research, 3:033055, 2021.
+[76] M. Reiher, N. Wiebe, K. M. Svore, D. Wecker, and M. Troyer.
+Elucidating reactions mechanisms on quantum computers. Proc.
+Natl. Acad. Sci., 114(29):7555–7560, 2017.
+[77] Attila Szabo and Neil S. Ostlund. Modern Quantum Chemistry:
+Introduction to Advanced Electronic Structure Theory. Dover
+Publications, Mineola, N.Y ., 1996.
+[78] Yudong Cao, Jonathan Romero, Jonathan P. Olson, Matthias
+Degroote, Peter D. Johnson, Mária Kieferová, Ian D. Kivlichan,
+Tim Menke, Borja Peropadre, Nicolas P. D. Sawaya, and et al.
+Quantum chemistry in the age of quantum computing. Chemical
+Reviews, 119(19):10856–10915, Aug 2019. ISSN 1520-6890.
+doi:10.1021/acs.chemrev.8b00803. URL http://dx.doi.org
+/10.1021/acs.chemrev.8b00803.
+[79] P. Jordan and E. Wigner. Über das paulische äquivalenzverbot.
+Zeitschrift für Physik, 47(9):631–651, Sep 1928. ISSN 0044-
+3328. doi:10.1007/BF01331938. URL https://doi.org/10
+.1007/BF01331938.
+[80] Stephane Beauregard. Circuit for shor’s algorithm using 2n+3
+qubits. Quantum Info. Comput. , 3(2):175–185, March 2003.
+ISSN 1533-7146.
+[81] Note4. Here we have used Fs rather than the normalized ﬁdelity
+F for simplicity; the result for F diﬀers only by a small n-
+dependent factor.
+[82] Nation and Johnson. How to measure and reset a qubit in the
+middle of a circuit execution, Feb 2021. URL https://www.
+ibm.com/blogs/research/2021/02/quantum-mid-cir
+cuit-measurement.
+[83] Mid-Circuit Measurements Tutorial. https://quantum-comp
+uting.ibm.com/lab/docs/iql/manage/systems/midcir
+cuit-measurement/, 2021. IBM Quantum Lab.
+[84] Samuel Moore. Honeywell’s ion trap quantum computer makes
+big leap, Mar 2020. URL https://spectrum.ieee.org/se
+archContent?q=quantum%2Bsupremacy.
+[85] T. Bækkegaard, L. Kristensen, N. Loft, C. Andersen, David
+Petrosyan, and N. Zinner. Realization of eﬃcient quantum gates
+with a superconducting qubit-qutrit circuit. Scientiﬁc Reports, 9,
+09 2019. doi:10.1038/s41598-019-49657-1.
+[86] Peter J Karalekas, Nikolas A Tezak, Eric C Peterson, Colm A
+Ryan, Marcus P da Silva, and Robert S Smith. A quantum-
+classical cloud platform optimized for variational hybrid algo-
+rithms. Quantum Science and Technology, 5(2):024003, Apr
+2020. ISSN 2058-9565. doi:10.1088 /2058-9565/ab7559. URL
+http://dx.doi.org/10.1088/2058-9565/ab7559.
+[87] Qiskit Runtime. https://quantum-computing.ibm.com/
+lab/docs/iql/runtime/, 2021. IBM Quantum Lab.
+[88] Wehden, Gambetta, and Faro. Ibm’s roadmap for building an
+open quantum software ecosystem, Feb 2021. URL https:
+//www.ibm.com/blogs/research/2021/02/quantum-dev
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023
+
+===== PAGE 35 =====
+
+35
+elopment-roadmap.
+[89] Takita, Lekuch, and Corcoles. Quantum circuits get a dynamic
+upgrade with the help of concurrent classical computation, Feb
+2021. URL https://www.ibm.com/blogs/research/202
+1/02/quantum-phase-estimation.
+Application-Oriented Performance Benchmarks for Quantum Computing January 11, 2023

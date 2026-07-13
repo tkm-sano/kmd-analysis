@@ -1,0 +1,1402 @@
+===== PAGE 1 =====
+
+A Feasibility-Preserved Quantum Approximate
+Solver for the Capacitated Vehicle Routing Problem
+1st Ningyi Xie
+Graduate School of Science and Technology
+University of Tsukuba
+Ibaraki Prefecture, Japan
+nyxie@cavelab.cs.tsukuba.ac.jp
+2nd Xinwei Lee
+School of Computing and Information Systems
+Singapore Management University
+Ibaraki Prefecture, Japan
+xwlee@smu.edu.sg
+3rd Dongsheng Cai
+Faculty of Engineering, Information and Systems
+University of Tsukuba
+Ibaraki Prefecture, Japan
+cai@cs.tsukuba.ac.jp
+4th Yoshiyuki Saito
+Graduate School of Computer Science and Engineering
+University of Aizu
+Fukushima Prefecture, Japan
+d8241104@u-aizu.ac.jp
+5th Nobuyoshi Asai
+School of Computer Science and Engineering
+University of Aizu
+Fukushima Prefecture, Japan
+nobuyoshi.asai@gmail.com
+6th Hoong Chuin Lau
+School of Computing and Information Systems
+Singapore Management University
+80 Stamford Road, Singapore
+hclau@smu.edu.sg
+Abstract—The Capacitated Vehicle Routing Problem (CVRP)
+is an NP-optimization problem (NPO) that arises in various fields
+including transportation and logistics. The CVRP extends from
+the Vehicle Routing Problem (VRP), aiming to determine the
+most efficient plan for a fleet of vehicles to deliver goods to
+a set of customers, subject to the limited carrying capacity of
+each vehicle. As the number of possible solutions skyrockets
+when the number of customers increases, finding the optimal
+solution remains a significant challenge. Recently, the Quan-
+tum Approximate Optimization Algorithm (QAOA), a quantum-
+classical hybrid algorithm, has exhibited enhanced performance
+in certain combinatorial optimization problems compared to
+classical heuristics. However, its ability diminishes notably in
+solving constrained optimization problems including the CVRP.
+This limitation primarily arises from the typical approach of
+encoding the given problems as penalty-inclusive binary opti-
+mization problems. In this case, the QAOA faces challenges in
+sampling solutions satisfying all constraints. Addressing this, our
+work presents a new binary encoding for the CVRP, with an
+alternative objective function of minimizing the shortest path
+that bypasses the vehicle capacity constraint of the CVRP. The
+search space is further restricted by the constraint-preserving
+mixing operation. We examine and discuss the effectiveness of
+the proposed encoding under the framework of the variant of the
+QAOA, Quantum Alternating Operator Ansatz (AOA), through
+its application to several illustrative examples. Compared to the
+typical QAOA approach, the proposed method not only preserves
+the feasibility but also achieves a significant enhancement in the
+probability of measuring optimal solutions.
+I. I NTRODUCTION
+The Capacitated Vehicle Routing Problem (CVRP) is an
+NP-hard combinatorial optimization problem attracted signifi-
+cant attention from both industry and science due to its broad
+Depot(V0)
+V10
+V2
+V3
+V4
+V5V6 V7
+V8
+V9
+V1
+q9
+q1
+w7,2
+Qw8,0
+distance
+costs
+customer
+demands
+vehicle
+capacity
+Fig. 1. Visualization of the CVRP.
+applicability and inherent complexity, since its proposal in [1].
+The objective of the CVRP is to find an optimal set of routes
+for a fleet of vehicles to serve a set of customers, seeking to
+minimize the time or total distance, etc. The problem can be
+defined on a graph G = (V, E), as shown in Figure 1. For an
+N-customer CVRP, we define V = {V0, V1, . . . , VN } to be the
+set of vertices, with the vertex V0 as the depot, and vertex Vi,
+i ∈ {1, 2, . . . , N}, signifies the location of the customer i with
+a certain demand qi. Here, E is defined to be a set of directed
+edges. Each edge (i, j) ∈ E has a weight wij, indicating the
+distance for traveling from customer i to customer j. With
+vehicles having a capacity Q (Q ⩾ qi), the solution comprises
+a set of routes that meet the following constraints:
+arXiv:2308.08785v3  [quant-ph]  21 Apr 2024
+
+===== PAGE 2 =====
+
+• Depot Constraint: All routes must start and end at the
+depot;
+• Customer Visit Constraint: Each customer must be visited
+exactly once by one of the vehicles;
+• Vehicle Capacity Constraint: The total demand of cus-
+tomers along a route must not exceed the capacity of the
+vehicle.
+This paper presents a quantum heuristic method focuses on
+achieving the solution with the shortest total distance.
+Recently, there has been significant progress in quantum
+computing. A plethora of quantum algorithms has been pro-
+posed [2]–[4], aiming to achieve computational advantages
+over their classical counterparts. One of them in solving
+combinatorial optimization problems is the Quantum Approx-
+imate Optimization Algorithm (QAOA) [5] or its variant the
+Quantum Alternating Operator Ansatz (AOA) [6].
+Given a binary assignment combinatorial problem (F, C),
+the objective is to find the optimal solution x∗ ∈ F ⊆ {0, 1}n,
+corresponding to the minimum of C(x), where n denotes the
+number of required decision bits. The QAOA encodes the
+solution, using an n-qubit parameterized state that evolves
+from the ground state of the initial Hamiltonian ( HM ) through
+a trotterized adiabatic time evolution in p steps. The param-
+eters are optimized to force the prepared state to approach
+the ground state of the cost-based Hamiltonian ( HC), which
+encodes the optimal solution to the given problem. Thus, the
+QAOA gives the approximate solution for the combinatorial
+optimization problems.
+The advantage of the QAOA to solve unconstrained com-
+binatorial problems, such as Max-Cut, is discussed in [7],
+[8]. However, the QAOA solutions suffer from a low feasible
+solution ratio for constrained problems whose F ⫋ {0, 1}n,
+with several experimental studies illustrating this limitation
+even in toy examples [9]–[12]. Since the penalty terms are
+incorporated for infeasible solutions, as shown in Figure 2(a),
+the energy landscape produced by QAOA has many local
+minima and barren plateaus in the typical parameter range.
+Instead of penalizing the infeasible solutions, the variant
+AOA aims to preserve the feasibility by specifying a mixing
+operation according to the constraints. Additionally, recent
+studies [13], [14] suggest that initializing the state as an
+equal superposition of all feasible states could be beneficial.
+Figure 2(b) shows that the energy landscape becomes smoother
+and more conducive to optimization when the ansatz is ini-
+tialized from an equal superposition and further employs the
+Grover Mixer [15] to preserve the feasibility. However, either
+finding constraint-preserving mixers or identifying operations
+for preparing such initial states present challenges, which
+limits the range of applicability for the AOA. This limitation
+extends to the currently binary-formulated CVRPs [12], [16].
+In this work, we explore the application of the AOA for
+solving the CVRP 1. We propose an O(N 2) binary variable
+encoding of the solution. This problem encoding enables
+1The implementation is available at https://github.com/NingyiXie/GM QA
+OA for CVRP
+0
+1
+2
+3
+4
+5
+6
+0 1 2 3 4 5 6
+Energy
+50
+100
+150
+200
+250
+300
+(a) QAOA
+0
+1
+2
+3
+4
+5
+6
+0 1 2 3 4 5 6
+Energy
+2.2
+2.3
+2.4
+2.5
+2.6
+2.7
+ (b) GM-QAOA
+Fig. 2. The energy landscapes of depth- 1 (a) QAOA and (b) Grover-Mixer
+Quantum Alternating Operator Ansatz (GM-QAOA) for solving the Traveling
+Salesman Problem (TSP). The red lines track the optimization process. The
+optimizer finds the position of the lowest energy state in the GM-QAOA,
+while it becomes trapped in a local minimum within the QAOA.
+the existence of constraint-preserving mixers that restrict the
+customer visit constraint, as well as the operation to prepare a
+uniform superposition for initializing. Concurrently, the solu-
+tion decoding process is conditionally executed to bypass the
+vehicle capacity constraint. Considering the cost Hamiltonian
+also becomes condition-dependent in this framework, we pro-
+pose an auxiliary circuit for condition encoding. Incorporating
+this with other operations, the quantum circuit comprises
+O(pN 2(N + (log2 Q)2)) gates. Besides, the encoding inher-
+ently satisfies the depot constraint, thus, the AOA solver we
+developed effectively preserves the feasibility. Additionally,
+the AOA states result in a higher probability of measuring
+optimal states, as evidenced by our experimental results.
+The paper is organized as follows. Section II gives a back-
+ground of the AOA. Section III describes previous research
+on quantum solutions for the CVRP. The proposed method is
+described in Section IV and numerically analyzed in Section
+V. Finally, we conclude this paper in Section VI.
+II. T HE QUANTUM ALTERNATING OPERATOR ANSATZ
+In the QAOA and its variants [5], [6], [13], [15], the initial
+step typically involves the encoding of the given problem
+into a binary assignment combinatorial problem, denoted as
+(F, C). When F ⫋ {0, 1}n, the problem is constrained. For
+the encoded combinatorial problem with a equality constraints
+and b inequality constraints,
+min
+x∈{0,1}n
+C(x)
+subject to hj(x) = 0, i= 1, . . . , a,
+gi(x) ≤ 0, j = 1, . . . , b,
+(1)
+the QAOA typically converts the problem into a quadratic
+unconstrained binary optimization (QUBO) problem [17] or
+a higher-order binary optimization (HOBO) problem [18], by
+combining the cost function and penalty terms in Lagrange
+
+===== PAGE 3 =====
+
+form, as follows,
+min
+x,y∈{0,1}n+m
+C(x, y),
+C(x, y) =C(x) +
+aX
+i=1
+λihi(x)2 +
+bX
+i=1
+µi(gi(x) +
+X
+j=0
+2jyij)2
+(2)
+where multipliers λ and µ are predefined. The variable y
+contains m bits, serving as slack variables.
+In contrast, the search space in the AOA is ideally restricted
+to the feasible set F , thereby negating the need for further
+transformation as,
+min
+x∈F
+C(x). (3)
+Inspired by adiabatic quantum computing [19], the QAOAs
+prepare a parameterized state denoted by |ψp(γ, β)⟩. This
+state evolves from an initial state |ψ0⟩ through a series of
+p repetitions, wherein two distinctive types of operations are
+employed, the phase separation operation UP and the mixing
+operation UM , as the following formulation,
+|ψp(γ, β)⟩ :=
+pY
+j=1
+UM (βj)UP (γj)|ψ0⟩. (4)
+• The phase separation, UP , encodes the given problem,
+functioning such that UP (γ)|x⟩ = e−iγC (x)|x⟩. Generally,
+it is defined as UP (γ) := e−iγHC , where cost Hamiltonian
+HC satisfies ⟨x|HC|x⟩ = C(x). HC is constructed by
+replacing binary variables with (I − Zi)/2, where Zi
+denotes the Pauli- Z operation acting on the ith qubit.
+• UM (β) := e−iβHM facilitates transitions between dif-
+ferent quantum states in search space. As the AOA
+necessitates that UM preserves the feasible subspace, the
+HM is tailored according to the feasible set F , ensuring
+that
+⟨x′|HM |x⟩ = 0, x /∈ F ⊕ x′ /∈ F. (5)
+The mixing operation for the proposed CVRP encoding
+is discussed in Section IV-E.
+• The initial state |ψ0⟩ can be any state that encodes
+feasible solutions. However, experimental results in [13],
+[14] suggest that an equal amplitude superposition of all
+feasible states as,
+|ψ0⟩ = |F ⟩ := US|0⟩⊗n = 1p
+|F |
+X
+x∈F
+|x⟩, (6)
+may be more advantageous compared to a random selec-
+tion, where US is the preparation operation. At present,
+US has been polynomially formulated for the uncon-
+strained problems, the permutation-based problems (i.e.,
+problems involving the ordering of elements), and the
+problems whose feasible set F exactly contains solutions
+with the same Hamming weight [15].
+The depth p is pre-defined. γ = [γ1, γ2, . . . , γp] and β =
+[β1, β2, . . . , βp] are trainable parameters. They are tuned to
+find the ground state of HC by optimizing the expected value
+Ep(γ, β):
+Ep(γ, β) := ⟨ψp(γ, β)|HC|ψp(γ, β)⟩. (7)
+III. R ELATED WORK
+Recently, several QUBO formulations have been proposed
+for the CVRP and its variants. The QUBO formulations for the
+CVRP are derived in [12], [16]. The solutions are encoded us-
+ing T ×N ×K decision bits, where T , N, and K, respectively,
+represent the number of time steps, customers, and vehicles.
+Both introduce additional qubits as slack variables, while [12]
+uses a logarithmic encoding as same to Equation (2), which
+requires fewer qubits. As the vehicle number K is predefined,
+the search space may not cover the optimal solution in some
+cases. [20] adopts a similar encoding strategy, presenting a
+QUBO formulation for the CVRP with Time Windows. In
+[9], [21], the binary variables are implemented to represent
+the decisions associated with the solution edges of the VRP
+and the Multi-depot CVRP.
+An alternative approach to the CVRP lies in the 2-Phase-
+Heuristic [22]. In the first phase, customers are clustered into
+several groups such that the total demand of each group does
+not surpass the vehicle’s capacity. The second phase addresses
+the Traveling Salesman Problem (TSP) within each group. [16]
+propose a hybrid solution that adopts a classical algorithm
+[23] for the clustering phase, while the remaining TSPs are
+solved using quantum annealing [24]. Both phases can be
+converted into QUBO forms. Specifically, the clustering phase
+is an adaptation of the Multiple Knapsack problem (MKP).
+The QUBO forms of the MKP and the TSP are discussed in
+detail in [10]–[12], [16], [25], [26].
+Both 1-Phase and 2-Phase (i.e., TSP and MKP) QUBO
+formulations for solving the CVRP include penalty terms.
+The use of the QAOA to solve such QUBOs is anticipated to
+yield poor-quality results due to the intricate energy landscape.
+Meanwhile, as the 1-Phase CVRP encoding [12], [16] and
+MKP encoding [11] lack constraint-preserving mixers for their
+feasible sets to the best of our knowledge, the AOA is not
+applicable. To mitigate these limitations, this study introduces
+a new formulation for the CVRP. Herein, the solution encoding
+is divided into two parts: the first represents a permutation of
+customers while the second remains unconstrained, serving to
+transform the routes into cyclical paths. Employing the mixers
+outlined in [6], [15] for the permutation matrix encoding, the
+AOA can be applied to solve the CVRP. Notably, our encoding
+does not need a predetermination of vehicle number, which
+expands the search space but with fewer decision bits.
+IV. AOA FOR CVRP
+In this section, we describe the proposed problem encoding
+and the structure of the quantum circuit.
+A. The Problem Encoding
+The CVRP can be conceptualized as planning the shortest
+singular route undertaken by one vehicle, permitted to refill
+its capacity at the depot. While the solution is identified as
+
+===== PAGE 4 =====
+
+Algorithm 1: Solution decoding
+Input: Encoding x, y; Demands q; Capacity Q
+Output: Solution s
+1 i ← arg maxx1;
+2 s ← [(0, i)];
+3 d ← qi;
+4 for t ∼ [2, 3, . . . , N] do
+5 j ← arg maxxt;
+6 if d + qj ⩽ Q and yt = 0then
+7 append (i, j) to s;
+8 d ← d + qj;
+9 else
+10 append (i, 0) to s;
+11 append (0, j) to s;
+12 d ← qj;
+13 i ← j;
+14 append (i, 0) to s;
+15 return s;
+the collection of sub-routes, each starting and ending at the
+depot. In this scenario, customers are served sequentially,
+whereby the order in which customers are visited corresponds
+to a permutation. For an N-customer CVRP defined on graph
+G = (V, E), where |V | = N +1, a one-hot vector xt ∈ {0, 1}N ,
+subject to PN
+i=1 xt,i = 1, is employed to represent the customer
+being served at time step t ∈ {1, 2, . . . , N}. xt,i = 1signifies
+that the customer i is visited at time step t. Furthermore,
+considering that each customer is visited exactly once, these
+one-hot vectors encode different customer numbers. Thus, the
+feasible space of x is derived as follows:
+Fx := {x| x ∈ {0, 1}N ×N ; (8a)
+∀ t ∈ {1, 2, . . . , N},
+NX
+i=1
+xt,i = 1; (8b)
+∀ i ∈ {1, 2, . . . , N},
+NX
+t=1
+xt,i = 1}, (8c)
+where x is defined as a permutation matrix.
+The vehicle is granted the option to return to the depot
+before reaching the customer at time steps ranging from 2
+to N. This decision is encoded through another binary string
+y := y2y3 . . . yN , with yt = 1indicating a depot visit between
+time steps t − 1 and t. In addition, a depot visit also arises
+when the current capacity fails to satisfy the demand of the
+next customer. To address these possibilities, we introduce
+conditional functions within the process of decoding a solu-
+tion, as summarized in Algorithm 1, and further elucidated
+with an example illustrated in Figure 3. Thus, y enjoys an
+unconstrained feasible space, extending over Fy := {0, 1}N −1.
+Consider the decoding processing (i.e. Algorithm 1) as
+function D. Given the set of demands q, and vehicle capacity
+x5
+x4
+x3
+x2
+x1
+y5
+y4
+y3
+y2
+(a) An example of solution encoding
+for a 5-customer CVRP.
+Depot
+V1, 2
+V5, 1
+V4, 1
+V3, 2 V2, 1
+Q = 3
+(b) The decoded solution. The
+node (Vi, qi) indicates the loca-
+tion of the customer i and the
+demand qi.
+Fig. 3. Visualization of the proposed problem encoding. Permutation matrix
+x exhibit a certain order of customer visits, delineated as [3, 4, 5, 1, 2]. The
+vehicle returns to the depot before visiting V4 and V1, as decision bit y2 = 1
+and the insufficiency of the vehicle’s capacity at time step 3 to meet the
+demand of V1.
+Q, the cost function of the total distance can be formulated as
+follows,
+C(x, y) :=
+X
+(i,j)∈D(x,y,q,Q)
+wij, (9)
+where wij represents the distance traveling from location Vi
+to location Vj.
+B. Preparation Operation
+We employ N numbers of N-qubit quantum registers to
+encode the permutation matrix x. [15] have introduced a
+preparation unitary Ux for preparing the equal superposition
+of all possible permutations as:
+|Fx⟩ := Ux|0⟩⊗N 2
+= 1√
+N !
+X
+x∈Fx
+|x⟩. (10)
+This superposition is constructed register by register, involving
+the following two key steps. First, the constraint of the register
+(i.e., (8b) in Equation (8)) under construction is satisfied
+applying the O(N ) or O(N 2) gates controlled by the last
+register, while preserving the state of other registers. Second,
+the last register is updated to satisfy the column constraint (i.e.,
+(8c) in Equation (8)). Hence, the superposition can be prepared
+by utilizing an O(N 3) size circuit, see details in [15].
+The decision vector y is encoded by an (N − 1 )-qubit
+quantum register. As y is unconstrained, the corresponding
+equal superposition can be prepared using Hadamard gates
+(H), as follows:
+|Fy⟩ := H ⊗(N −1)|0⟩⊗(N −1) = 1√
+2(N −1)
+X
+y∈Fy
+|y⟩. (11)
+Thus, we have the operation US for preparing an equal
+amplitude superposition of all feasible states, as follows,
+US := Ux ⊗ H ⊗(N −1). (12)
+
+===== PAGE 5 =====
+
+Algorithm 2: Condition encoding
+Input: Encoding x, y; Demands q; Capacity Q
+Output: Conditions a
+1 c ← 0;
+2 d ← 0;
+3 for t ∼ [1, 2, . . . , N] do
+/* Log the satisfied demand */
+4 for i ∼ [1, 2, . . . , N] do
+5 if xti = 1then
+6 d ← d + qi;
+/* -- */
+7 if t ̸= 1then
+/* Encode the condition */
+8 if d > Qand yt = 0then
+9 at ← 1;
+10 if yt = 1then
+11 at ← 1;
+/* -- */
+12 if t ̸= 1and t ̸= N then
+/* Recover register */
+13 for i ∼ [1, 2, . . . , N] do
+14 if at = 1and ci = 1then
+15 d ← d − qi;
+16 if at = 1then
+17 c ← 0 (requires another register r);
+/* -- */
+18 if t ̸= N then
+/* Log the satisfied customer */
+19 for i ∼ [1, 2, . . . , N] do
+20 if xti = 1then
+21 ci ← 1;
+/* -- */
+22 return a;
+C. Phase Separation Operation
+Unlike typical processing, a direct derivation of the cost
+Hamiltonian from the cost function is unavailable in our pro-
+posal. Instead, we introduce additional ancilla bits, denoted as
+a, to signify the conditions at each time step t ∈ {2, 3, . . . , N},
+as follows,
+at =
+(
+1 if yt = 1, or capacity insufficiency ,
+0 otherwise. (13)
+It enables the reformulation of the cost function to be:
+C(x, a) :=
+NX
+i=1
+w0ix1,i +
+NX
+i=1
+wi0xN−1,i (14a)
++
+NX
+t=2
+[(1 − at)
+NX
+i,j=1;i̸=j
+wijxt−1,ixt,j (14b)
++ at
+NX
+i,j=1;i̸=j
+(wi0xt−1,i + w0jxt,j)]. (14c)
+Specifically, the terms in (14a) compute the distances of
+the first and last locations transitioning to or from the de-
+pot, respectively. The terms in (14b) and (14c), respectively,
+represent the distances of two possible routes that the vehicle
+travels intermediate pair of locations under two conditions,
+according to Equation (13).
+We replace all binary variables belonging to x and a by
+(I − Z)/2 to obtain the cost Hamiltonian HC that satisfies
+⟨x, a|HC|x, a⟩ = C(x, a). The ancilla qubits in register a are
+entangled with the decision qubits in register x, ythrough the
+unitary operation UE. As we further discussed in Section IV-D,
+operation UE serves to store depot visit conditions for each
+time step into register a, aligning it with the criteria set by
+Equation (13). The phase separation operation is formulated
+as follows,
+UP (γ) := U †
+Ee−iγHC UE, (15)
+where e−iγHC can be decomposed into O(N 2) number of
+CNOT and z-axis rotation gates [27].
+D. Condition Encoding Operation
+To encode conditions into register a, we introduce another
+three ancilla registers: d, c, and r. The register d and c,
+respectively containing ⌈log2(Q+max(q)+1) ⌉ and N qubits,
+serve to track the satisfied demands and customers in the sub-
+route. The register r is used to recover register c.
+As the illustrative circuit shown in Figure 4, the condition
+encoding operation is constructed under the process outlined
+in Algorithm 2, employing 4 procedures as discussed in detail
+in the followings:
+1) Log the satisfied demand: At each time step t, we
+initially augment register d with the demand of the customer
+currently being visited. This operation is carried out by
+employing N number of xt,i-controlled [+qi] gates, for all
+i ∈ {1, 2, . . . , N}. As xt preserves hamming weight of 1, only
+one [+qi] gate can be activated to add the satisfied demand to
+d. The [+qi] gate works as follows,
+[+qi]n |d⟩ := |(d + qi) mod 2n⟩, (16)
+where n is the number of qubits acting on and d encodes the
+satisfied demand in binary.
+Suppose ˜qi = ˜qi,K−1 . . .˜qi,0 is a binary representation of qi,
+we can decompose the [+qi]n gate as,
+[+qi]n =
+K−1Y
+k=0,˜qi,k=1
+
++2k
+n
+=
+K−1Y
+k=0,˜qi,k=1
+ 0 I2k
+I2n−2k 0
+
+=
+K−1Y
+k=0,˜qi,k=1
+[+1]n−k ⊗ I2k ,
+(17)
+
+===== PAGE 6 =====
+
+x11 : • • •
+x12 : • • •
+x13 : • • •
+x14 : • • •
+x21 : • •
+x22 : • •
+x23 : • •
+x24 : • •
+x31 : • •
+x32 : • •
+x33 : • •
+x34 : • •
+x41 : •
+x42 : •
+x43 : •
+x44 : •
+y2 : •
+y3 : •
+y4 : •
+a2 : • • • • • • • •
+a3 : • • • • • • • •
+a4 :
+d2 :
++q1 +q2 +q3 +q4 +q1 +q2 +q3 +q4 > Q -q1 -q2 -q3 -q4 +q1 +q2 +q3 +q4 > Q -q1 -q2 -q3 -q4 +q1 +q2 +q3 +q4 > Qd1 :
+d0 :
+c1 : • • •
+c2 : • • •
+c3 : • • •
+c4 : • • •
+r31 : •
+r32 : •
+r33 : •
+r34 : •
+Log the satisﬁed demand and
+served customer into the regis-
+ters d and c.
+Log the satisﬁed
+demand.
+Encode
+the current
+condition.
+Recover the registers d and c,
+if ancilla at in state 1.
+Log the served
+customer.
+Recover the register c,
+using the additional
+register rt.
+Fig. 4. The circuit of condition encoding operation UE. The depot visit condition for each time step is stored into the ancilla register a, segmented by
+full-row barriers. Each step consists of four typical procedures separated by partial-row barriers. First, the satisfied demand of the customer is logged into
+register d. Then, register d and decision qubit yt control the flip of at, where at = 1suggests a depot visit. After that, if such a depot visit occurs, the register
+d and c are recovered. Finally, the visited customer number is recorded into register c.
+where I2k denotes a Identity matrix of size 2k. [28] exhibits
+a construction that turns [+1]n into O(n) Toffoli, CNOT, and
+Pauli-X gates. The number of [+1] operations required to
+generate [+qi] is tied to the count of ‘1’ present in ˜qi. As
+qi ⩽ Q, it is restricted to O(log2 Q). Hence, this logging
+operation requires O(N (log2 Q)2) gates.
+2) Encode the condition: The encoding of the condition at
+time step t is implemented following the logging of satisfied
+demand. As depicted in Equation (13), at turns to 1 when
+yt = 1or in the case of capacity insufficiency. Hence, our first
+operation involves the deployment of a CNOT gate, designed
+to flip the state of at when yt is in state |1⟩.
+The register d encodes the sum of the current demand and
+demands previously satisfied, implying a depot visit when
+the encoded number exceeds Q. To account for all distinct
+circumstances where d is larger than Q, we employ a series
+of multi-controlled Pauli- X gates to flip at, denoted as,
+[> Q] :=
+K−1Y
+i=0, ˜Qi=0
+M CXdK−1dK−2...di
+˜QK−1... ˜Qi+11 ,
+(K = ⌈log2(Q+max(q)+1) ⌉),
+(18)
+where ˜Q is a binary representation of Q. M CXcq
+cs denotes the
+multi-controlled Pauli- X gate, with cq as the control qubits
+and cs as the control states of cq. A demonstrative example
+of [> Q] is provided in Figure 5. [> Q] is controlled by yt,
+and can only be activated when yt is in state |0⟩. It prevents
+a double flip of at when capacity insufficiency occurs and yt
+is in state |1⟩.
+An n-controlled Pauli-X gate can be realized via O(n) Tof-
+foli, CNOT, and single-qubit gates. Thus, we can implement
+[> Q] within O((log2 Q)2) size circuit.
+3) Recover the registers and log the satisfied customer
+number: Here, we discuss the last 2 procedures. Qubit at, in
+|1⟩ state, signals a depot visit, signifying the starting of a new
+sub-route at the time step t. In this case, the satisfied demand
+should only encompass the last recording. As the customers
+at :
+d4 :
+> 9
+•
+d3 : • •
+d2 : = •
+d1 : •
+d0 :
+Fig. 5. The decomposition of [> Q], where Q = 9, can be presented
+in a binary format as ‘01001’. According to Equation (18), the [> 9] can
+be decomposed into a sequence of three multi-controlled Pauli- X gates.
+Specifically, the control states for each gate are identified as ‘1’, ‘011’, and
+‘0101’, each, respectively, corresponding to control qubits d4, d4d3d2, and
+d4d3d2d1.
+who have been served are monitored using register c, that ci
+being in state |1⟩ indicates the customer i has been visited, we
+can employ ci- and at-controlled operations [−qi] to isolate
+the current demand. [−qi] is the inverse operation of [+qi]:
+[−qi] = [+qi]† , (19)
+which allows us to minus the demands from the previous
+sub-route encoded in register d. Simultaneously, this operation
+ensures that the initial state of d in the subsequent time step
+encodes a number that does not surpass Q. Hence, d + qi is
+confined to the range [min(q), Q+ max(q)], and d requires
+⌈log2(Q+max(q)+1) ⌉ qubits.
+Register c is recovered back to |0⟩ states, at the beginning of
+a new sub-route. Two approaches for executing this recovery
+are presented in Figure 4. At time step 2, c only logs
+the customer number pertaining to the visit at time step 1.
+Therefore, x1,i share the same state as ci. We can recover c
+through the application of Toffoli gates, utilizing x1 and a2
+as controllers. For time step 3 to N −1, we introduce another
+register rt for recovery. A Toffoli gate is applied on ci, at, and
+rt,i, followed by a CNOT gate on ci and rt,i, where rt,i serves
+as the target and control qubit in two operations, respectively.
+
+===== PAGE 7 =====
+
+a : |0⟩ /
+UE
+e−iγjHC
+U†
+E
+x : |0⟩ / Ux
+UM (βj)
+y : |0⟩ / H
+d : |0⟩ /
+c : |0⟩ /
+r : |0⟩ /
+repeat p times, using angles ( γ1,β 1), (γ2,β 2),..., (γp,β p)
+for each repetition, respectively
+UP (γj )
+N−1
+N 2
+N−1
+⌈log2(Q+max(q)+1 )⌉
+N
+N (N−3 )
+Fig. 6. The overall AOA circuit of the CVRP for preparing the state |ψp(γ, β)⟩. x and y are the decision registers, supported by the ancilla registers a, d, c,
+and r. Ux and H initialize the equal amplitude superposition of all feasible states. Then, the operations UP (γj ) and UM (βj ) are repeated p times, where the
+mixing operation UM (βj ) is optional. It can be selected from alternatives such as Partialized Mixer U (P M)
+M (βj ), Grover Mixer U (GM )
+M (βj ), or other mixers
+that can preserve the constraints of register x. Parameters γ and β are tuned by minimizing the expected value Ep(γ, β) := ⟨ψp(γ, β)|U †
+E HCUE |ψp(γ, β)⟩.
+Following these operations, ci is in state |0⟩, regardless of its
+previous state, when at is |1⟩.
+After completing the recovery, the current satisfied customer
+number is logged into register c using CNOT gates. This
+guarantees the conservation of the current satisfied demand
+in register d.
+It should be noted that during the last time step, these 2
+procedures are unnecessary as the encoding process is finished.
+Consequently, r comprises N −3 number of N-qubit register.
+Recovering register d requires O(N (log2 Q)2) gates, which is
+the same as when logging to d, while register c requires O(N )
+gates.
+E. Mixing Operation
+The mixing operation acts on the register x and y. It is
+required to preserve the state of register x as a superposition
+composed of permutation matrix encodings, with the encoding
+of every single state belonging to the set Fx. We discuss
+two possible applicable mixers under this requirement as
+following.
+1) Partialized Mixer: [6] introduces a mixer specifically
+designed for permutation matrix encoding. The Hamiltonian
+of this mixer is the aggregate of the same constructed partial
+Hamiltonian. The partial Hamiltonian is designed to satisfy the
+swapping between two rows of the permutation matrix that
+HP S,{i,j}|xi, xj⟩ = |xi, xj⟩, ∀i, j∈ {1, 2, . . . , N}, i̸= j.
+(20)
+It is defined as,
+HP S,{i,j} :=
+N −1X
+u=1
+NX
+v=u+1
+HS,{i,j},{u,v},
+HS,{i,j},{u,v} := S+
+xiu S+
+xjv S−
+xiv S−
+xju + S−
+xiu S−
+xjv S+
+xiv S+
+xju ,
+S+ := X + iY, S − := X − iY,
+(21)
+where X and Y denote the Pauli- X and Pauli- Y , respec-
+tively. Similar to the XY-Mixer used for one-hot encoding as
+discussed in [13], the partial Hamiltonian can also construct
+complete-graph and ring mixers as follows,
+Hcomplete :=
+N −1X
+i=1
+NX
+j=i+1
+HP S,{i,j},
+Hring :=
+NX
+i=1
+HP S,{i,i+1}.
+(22)
+Here, we opt for the ring mixer for the register x. As the
+register y remains unconstrained, we straightforwardly adopt
+the X-mixer. Finally, the mixer is defined,
+U (P M)
+M (β) := e−iβHring ⊗ e−iβ PN
+t=2 Xyt
+≈
+ NY
+i=1
+N −1Y
+u=1
+NY
+v=u+1
+e−iβHS,{i,i+ 1},{u,v}
+!  NY
+t=2
+e−iβXyt
+!
+,
+(23)
+requiring O(N 3) basic gates for implementation
+2) Grover Mixer: [15] provides a general form of mixer
+that preserves the constraints but requires a preparation unitary
+for the equal superposition of all feasible states, known as
+the Grover Mixer. The Hamiltonian of the Grover Mixer is
+defined as |F ⟩⟨F |. Thus, the mixing operation has a Grover-
+like form [2],
+U (GM )
+M (β) := e−iβ|F ⟩⟨F |
+= US(I − (1 − e−iβ)|0⟩⟨0|⊗n)U †
+S,
+(24)
+which is composed of O(US + n) gates, where n is the qubits
+number. For solving the CVRP, the mixer acts on the register
+x and y, requiring O(N 3) basic gates.
+As proven in [15], the Grover Mixer restricts the search
+space to F , and the states that correspond to an identical
+objective value have the same amplitude.
+
+===== PAGE 8 =====
+
+0x9240
+0x9242
+0x9244
+0x9246
+0x9420
+0x9422
+0x9424
+0x9426
+0xa140
+0xa142
+0xa144
+0xa146
+0xa410
+0xa412
+0xa414
+0xa416
+0xc120
+0xc122
+0xc124
+0xc126
+0xc210
+0xc212
+0xc214
+0xc216
+0x10a40
+0x10a42
+0x10a44
+0x10a46
+0x10c20
+0x10c22
+0x10c24
+0x10c26
+0x120c0
+0x120c2
+0x120c4
+0x120c6
+0x12408
+0x1240a
+0x1240c
+0x1240e
+0x140a0
+0x140a2
+0x140a4
+0x140a6
+0x14208
+0x1420a
+0x1420c
+0x1420e
+0x20940
+0x20942
+0x20944
+0x20946
+0x20c10
+0x20c12
+0x20c14
+0x20c16
+0x210c0
+0x210c2
+0x210c4
+0x210c6
+0x21408
+0x2140a
+0x2140c
+0x2140e
+0x24090
+0x24092
+0x24094
+0x24096
+0x24108
+0x2410a
+0x2410c
+0x2410e
+0x40920
+0x40922
+0x40924
+0x40926
+0x40a10
+0x40a12
+0x40a14
+0x40a16
+0x410a0
+0x410a2
+0x410a4
+0x410a6
+0x41208
+0x4120a
+0x4120c
+0x4120e
+0x42090
+0x42092
+0x42094
+0x42096
+0x42108
+0x4210a
+0x4210c
+0x4210e
+Solution Encoding
+0.000
+0.005
+0.010
+0.015
+Probability
+0.0 0.2 0.4 0.6 0.8 1.0
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+V1,1
+V2,2
+V3,1
+V4,2
+Depot
+(a) P 1: Q = 3, V = {(0.66, 0.41), {(0.67, 0.23), 1}, {(0.81, 0.64), 2}, {(0.17, 0.26), 2}, {(0.92, 0.46), 1}}.
+0x9241
+0x9243
+0x9245
+0x9247
+0x9421
+0x9423
+0x9425
+0x9427
+0xa141
+0xa143
+0xa145
+0xa147
+0xa411
+0xa413
+0xa415
+0xa417
+0xc121
+0xc123
+0xc125
+0xc127
+0xc211
+0xc213
+0xc215
+0xc217
+0x10a41
+0x10a43
+0x10a45
+0x10a47
+0x10c21
+0x10c23
+0x10c25
+0x10c27
+0x120c1
+0x120c3
+0x120c5
+0x120c7
+0x12409
+0x1240b
+0x1240d
+0x1240f
+0x140a1
+0x140a3
+0x140a5
+0x140a7
+0x14209
+0x1420b
+0x1420d
+0x1420f
+0x20941
+0x20943
+0x20945
+0x20947
+0x20c11
+0x20c13
+0x20c15
+0x20c17
+0x210c1
+0x210c3
+0x210c5
+0x210c7
+0x21409
+0x2140b
+0x2140d
+0x2140f
+0x24091
+0x24093
+0x24095
+0x24097
+0x24109
+0x2410b
+0x2410d
+0x2410f
+0x40921
+0x40923
+0x40925
+0x40927
+0x40a11
+0x40a13
+0x40a15
+0x40a17
+0x410a1
+0x410a3
+0x410a5
+0x410a7
+0x41209
+0x4120b
+0x4120d
+0x4120f
+0x42091
+0x42093
+0x42095
+0x42097
+0x42109
+0x4210b
+0x4210d
+0x4210f
+Solution Encoding
+0.000
+0.005
+0.010
+0.015
+Probability
+0.0 0.2 0.4 0.6 0.8 1.0
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+V1,1
+V2,3
+V3,1
+V4,2
+Depot
+(b) P 2: Q = 4, V = {(0.05, 0.68), {(0.80, 0.80), 1}, {(0.97, 0.44), 3}, {(0.83, 0.25), 1}, {(0.05, 0.49), 2}}.
+Fig. 7. Two different problems (a) and (b), with the optimal solutions (left), and the measured probability distributions of prepared states using depth- 1 circuits
+(right). The bars in cyan denote the probabilities of measured optimal encodings. Due to the property of the Grover Mixer, the encodings corresponding to
+the same objective value share the same measured probability.
+F . Resource Evaluation
+Figure 6 shows the end-product circuit that is composed
+of the operations discussed in this entire section. The circuit
+require 6 quantum register sets as x, y, a, d, c, and r, involving
+2N 2 − ⌈log2(Q+max(q)+1) ⌉ −2 (25)
+qubits in total. The quantum state evolves via p pairs of phase
+separation and mixing operation, whose costs are, respectively,
+O(N 2(log2 Q)2) and O(N 3), after decomposing into Toffoli,
+CNOT, and single-qubit gates.
+V. E XPERIMENTS
+A. Experiment Environment and Evaluation Metrics
+We choose the Grover Mixer for the mixing operation and
+measure the register x and y directly. We employ Qiskit’s
+statevector simulator [29] to perform the quantum circuit
+simulation, which provides a noise-free probability distribu-
+tion of measured states when calculating the expected value.
+Concurrently, the Constrained Optimization BY Linear Ap-
+proximation (COBYLA) optimizer [30] is adopted to find
+appropriate parameters for circuits.
+Due to the limitation of the simulation environment, we can
+only construct simple problems. Here, we mainly focus on the
+convergence of the prepared state, ideally reaching the ground
+state of the cost Hamiltonian ( HC). We propose to evaluate
+the convergence using the optimality gap: computed as,
+α := Ep(γ, β)
+C(f ∗) − 1, (26)
+where f ∗ encodes an optimal solution that corresponds to
+the minimal cost value. It signifies the energy difference
+between the prepared state and the ground state, a lower value
+0 9 19 29 39 49
+iteration
+0.06
+0.08
+0.10
+0.12
+0.14
+0.16
+0.18
+0.20optimality gap
+gap
+ratio
+0.15
+0.20
+0.25
+0.30
+0.35
+0.40
+optimality ratio
+Fig. 8. The optimality gap and the optimality ratio of depth- 2 circuit for P 2
+during the optimization.
+of optimality gap corresponds to a more desirable outcome.
+Furthermore, another metric optimality ratio,
+ropt := # optimal shots
+# shots , (27)
+is introduced. The statevector simulator allows the direct
+computation of ropt as, P
+f ∗ |⟨f ∗|ψp(γ, β)⟩|2. This metric
+indicates the probability of measuring the optimal solution,
+which directly affects the performance of the solver in real
+practice. For the results from QAOA, we extend our evaluation
+to include the feasibility ratio:
+rf eas:= # feasible shots
+# shots . (28)
+Here, it is calculated as P
+f ∈F |⟨f |ψp(γ, β)⟩|2.
+B. Results and Discussion
+We begin by building two distinct instances of a 4-customer
+problem, denoted as P 1 and P 2. We simply assume that the
+
+===== PAGE 9 =====
+
+1 3 5 7 9
+circuit depth
+0.00
+0.01
+0.02
+0.03
+0.04optimality gap
+gap
+ratio
+0.45
+0.50
+0.55
+0.60
+0.65
+0.70
+0.75
+0.80
+optimality ratio
+Fig. 9. The optimality gap and the optimality ratio of depth- 1 to depth- 9
+circuits for P 3s.
+vehicle is permitted to travel between any pair of locations
+with a bidirectional, consistent distance. Notably, the optimal
+solutions for P 1 and P 2, respectively, consist of 3 and 2
+routes.
+We initially solve the problems with the depth- 1 circuits.
+Figure 7 shows the measured probability distribution of the op-
+timized circuits for both problem instances. In the case of P 1,
+the optimal encodings dominate the distribution, resulting in a
+significant optimality ratio of 0.597. Meanwhile, the optimality
+gap being 0.013 also indicates that the circuit of P 1 converges
+well. However, in P 2, although the probability of optimal
+encodings is the highest, the optimality ratio is only 0.241.
+This falls below the sum of the secondary peak probabilities.
+The reason for this due to the discrepancy in the number of
+encodings associated with the shortest total path in the feasible
+set. While the number of optimal encodings in P 2 is 14, the
+number of encodings corresponding to the subsequent highest
+probability is 23. To improve the results, we apply a depth-
+2 circuit, observing enhanced performance even in the early
+optimization stage. As illustrated in Figure 8, the optimality
+surpasses 0.35 in the middle, ultimately reaching 0.43.
+We expand the investigation to include deeper circuits on
+48 randomly generated 3-customer problem instances, P 3s.
+As circuit depth increases, the optimality gap approaches zero
+while the optimality ratio increases, as shown in Figure 9.
+Compared to the QAOA solver with QUBO encoding,
+our proposed method demonstrates an entirely different order
+of magnitude enhancement across all evaluative metrics, as
+shown in Figure 10 and Table I. Attributed to our encoding, the
+search space can be narrowed to the feasible set, thereby vastly
+reducing the universe of potential solutions when compared
+to penalty-inclusive QUBO encoding with the conventional
+QAOA approach. Consistent with the conclusions drawn in [9],
+[12], it is less reliable to use QAOA for solving constrained
+combinatorial problems. Furthermore, as the route number is
+predefined as ⌈PN−1
+i=1 qi/Q⌉, the search space of QUBO for
+P 1 fails to cover the optimal solution.
+TABLE I
+THE EVALUATION RESULTS (AVG.) FOR THE OPTIMIZED DEPTH -1
+CIRCUITS WITH DIFFERENT PROBLEM ENCODING .
+P 1 P 2 P 3s
+Encoding Ours QUBO Ours QUBO Ours QUBO
+optimality gap 1.27e−2 1.68e+2 1.04e−1 1.60e+2 3.91e−2 8.50e+2
+feasibility ratio 1 1 .77e−5 1 1 .78e−5 1 5 .76e−4
+optimality ratio 5.97e−1 0 2 .41e−1 1.30e−5 5.31e−1 4.65e−6
+VI. C ONCLUSION
+Limiting the search space in the feasible subspace and ini-
+tializing from the equal amplitude superposition of all feasible
+states have been numerically proven to enhance the solution
+quality for QAOAs when solving constrained combinatorial
+optimization problems [13]. However, the applicable range of
+problems is limited, as the current families of mixing and
+preparation operations are suitable for fewer types of feasible
+sets. Via reformulation of the problem encoding, this challenge
+might be mitigated.
+In this work, we re-encode the CVRP, allowing quantum
+states to initialize from an equal amplitude superposition of
+all feasible states, and enabling the solver to preserve the
+customer visit constraint via mixers. Meanwhile, the vehicle
+capacity constraint is ensured through conditional decoding.
+Following this, we introduce ancilla conditional indicator bits
+to derive the cost Hamiltonian. We further demonstrate a
+method to encode conditions into the ancilla qubits using
+a polynomial number of basic gates for the phase separa-
+tion operation. These approaches also carry the potential for
+extensions to other constrained combinatorial optimization
+problems, for example, the Knapsack Problems, as they have
+similar problem structures.
+Using statevector simulation, we validate that the developed
+AOA solver indeed preserves feasibility by several illustrative
+problems. Furthermore, we show that the solver outperforms
+the conventional QAOA approach, exhibiting not only higher
+feasibility ratios, but also higher optimality ratios, and reduced
+optimality gaps. Notably, these metrics show improvements
+in the order of magnitude, emphasizing the effectiveness and
+potential of our proposal.
+Despite the advantages of the AOA framework, our pro-
+posed method has several drawbacks. The designed circuit,
+although with a polynomial number of gates, requires many
+multi-controlled Toffoli (MCT) gates. The MCT gate is not
+friendly to topological quantum devices, as it might need ad-
+ditional SW AP gates to adapt to the topology. Also, the bit-flip
+noises in real quantum devices can easily destroy the feasible
+space preserved by the mixers. Thus, it is questionable whether
+our proposed method is suitable to run on near-term Noisy
+Intermediate-Scale Quantum (NISQ) [31] devices. Future work
+must focus on further optimizations and robustness against
+quantum noise for practical deployment.
+
+===== PAGE 10 =====
+
+0.00 0.02 0.04 0.06 0.08 0.10
+20
+40
+60
+80
+100
+120
+140
+160
+optimality gap
+0.2 0.4 0.6 0.8 1.0
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+4.0
+1e 5
+ optimality ratio
+0.95 1.00 1.05
+0.0000
+0.0005
+0.0010
+0.0015
+0.0020
+0.0025
+0.0030
+0.0035
+0.0040
+feasibility ratio
+Ours
+QUBO
+P1 P2 P3s
+Fig. 10. The evaluation results for the optimized depth- 1 circuits with our and QUBO encoding.
+REFERENCES
+[1] G. B. Dantzig and J. H. Ramser, “The truck dispatching problem,”
+Management science, vol. 6, no. 1, pp. 80–91, 1959.
+[2] L. K. Grover, “A fast quantum mechanical algorithm for database
+search,” in Proceedings of the twenty-eighth annual ACM symposium
+on Theory of computing , 1996, pp. 212–219.
+[3] P. W. Shor, “Polynomial-time algorithms for prime factorization and
+discrete logarithms on a quantum computer,”SIAM review, vol. 41, no. 2,
+pp. 303–332, 1999.
+[4] A. Montanaro, “Quantum algorithms: an overview,” npj Quantum Infor-
+mation, vol. 2, no. 1, pp. 1–8, 2016.
+[5] E. Farhi, J. Goldstone, and S. Gutmann, “A quantum approximate
+optimization algorithm,” arXiv preprint arXiv:1411.4028 , 2014.
+[6] S. Hadfield, Z. Wang, B. O’gorman, E. G. Rieffel, D. Venturelli, and
+R. Biswas, “From the quantum approximate optimization algorithm to a
+quantum alternating operator ansatz,” Algorithms, vol. 12, no. 2, p. 34,
+2019.
+[7] G. E. Crooks, “Performance of the quantum approximate opti-
+mization algorithm on the maximum cut problem,” arXiv preprint
+arXiv:1811.08419, 2018.
+[8] C. Moussa, H. Calandra, and V . Dunjko, “To quantum or not to quan-
+tum: towards algorithm selection in near-term quantum optimization,”
+Quantum Science and Technology , vol. 5, no. 4, p. 044009, 2020.
+[9] U. Azad, B. K. Behera, E. A. Ahmed, P. K. Panigrahi, and A. Farouk,
+“Solving vehicle routing problem using quantum approximate opti-
+mization algorithm,” IEEE Transactions on Intelligent Transportation
+Systems, 2022.
+[10] A. Glos, A. Krawiec, and Z. Zimbor ´as, “Space-efficient binary opti-
+mization for variational quantum computing,” npj Quantum Information,
+vol. 8, no. 1, p. 39, 2022.
+[11] A. Awasthi, F. B ¨ar, J. Doetsch, H. Ehm, M. Erdmann, M. Hess,
+J. Klepsch, P. A. Limacher, A. Luckow, C. Niedermeieret al., “Quantum
+computing techniques for multi-knapsack problems,” arXiv preprint
+arXiv:2301.05750, 2023.
+[12] L. Palackal, B. Poggel, M. Wulff, H. Ehm, J. M. Lorenz, and C. B.
+Mendl, “Quantum-assisted solution paths for the capacitated vehicle
+routing problem,” arXiv preprint arXiv:2304.09629 , 2023.
+[13] Z. Wang, N. C. Rubin, J. M. Dominy, and E. G. Rieffel, “Xy mixers:
+Analytical and numerical results for the quantum alternating operator
+ansatz,” Physical Review A , vol. 101, no. 1, p. 012320, 2020.
+[14] J. Cook, S. Eidenbenz, and A. B ¨artschi, “The quantum alternating
+operator ansatz on max-k vertex cover,” Bulletin of the American
+Physical Society, vol. 65, 2020.
+[15] A. B ¨artschi and S. Eidenbenz, “Grover mixers for qaoa: Shifting
+complexity from mixer design to state preparation,” in 2020 IEEE
+International Conference on Quantum Computing and Engineering
+(QCE). IEEE, 2020, pp. 72–82.
+[16] S. Feld, C. Roch, T. Gabor, C. Seidel, F. Neukart, I. Galter, W. Mauerer,
+and C. Linnhoff-Popien, “A hybrid solution method for the capacitated
+vehicle routing problem using a quantum annealer,” Frontiers in ICT ,
+vol. 6, p. 13, 2019.
+[17] E. Boros, P. L. Hammer, and G. Tavares, “Local search heuristics
+for quadratic unconstrained binary optimization (qubo),” Journal of
+Heuristics, vol. 13, pp. 99–132, 2007.
+[18] A. Mandal, A. Roy, S. Upadhyay, and H. Ushijima-Mwesigwa, “Com-
+pressed quadratization of higher order binary optimization problems,” in
+Proceedings of the 17th ACM International Conference on Computing
+Frontiers, 2020, pp. 126–131.
+[19] E. Farhi, J. Goldstone, S. Gutmann, and M. Sipser, “Quantum compu-
+tation by adiabatic evolution,” arXiv preprint quant-ph/0001106 , 2000.
+[20] H. Irie, G. Wongpaisarnsin, M. Terabe, A. Miki, and S. Taguchi,
+“Quantum annealing of vehicle routing problem with time, state and
+capacity,” 2019.
+[21] R. Harikrishnakumar, S. Nannapaneni, N. H. Nguyen, J. E. Steck, and
+E. C. Behrman, “A quantum annealing approach for dynamic multi-depot
+capacitated vehicle routing problem,” arXiv preprint arXiv:2005.12478,
+2020.
+[22] G. Laporte and F. Semet, “Classical heuristics for the capacitated vrp,”
+in The vehicle routing problem . SIAM, 2002, pp. 109–128.
+[23] K. Shin and S. Han, “A centroid-based heuristic algorithm for the ca-
+pacitated vehicle routing problem,” Computing and Informatics, vol. 30,
+no. 4, pp. 721–732, 2011.
+[24] D. de Falco and D. Tamascelli, “An introduction to quantum annealing,”
+RAIRO-Theoretical Informatics and Applications, vol. 45, no. 1, pp. 99–
+116, 2011.
+[25] A. Lucas, “Ising formulations of many np problems,” Frontiers in
+physics, vol. 2, p. 5, 2014.
+[26] Y . Ruan, S. Marsh, X. Xue, Z. Liu, J. Wang et al., “The quantum approx-
+imate algorithm for solving traveling salesman problem,” Computers,
+Materials and Continua , vol. 63, no. 3, pp. 1237–1247, 2020.
+[27] J. T. Seeley, M. J. Richard, and P. J. Love, “The bravyi-kitaev transfor-
+mation for quantum computation of electronic structure,” The Journal
+of chemical physics , vol. 137, no. 22, 2012.
+[28] C. Gidney, “Constructing large increment gates,”
+2015. [Online]. Available: https://algassert.com/circuits/2015/06/12/
+Constructing-Large-Increment-Gates.html
+[29] Qiskit contributors, “Qiskit: An open-source framework for quantum
+computing,” 2023.
+[30] M. J. Powell, A direct search optimization method that models the
+objective and constraint functions by linear interpolation . Springer,
+1994.
+[31] J. Preskill, “Quantum computing in the nisq era and beyond,” Quantum,
+vol. 2, p. 79, 2018.
