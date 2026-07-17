@@ -7,6 +7,9 @@ The data-governance, minimum-area validation, classical-versus-Qiskit-Aer-QAOA
 route comparison, CI, and server-migration tasks are recorded in
 [`implementation_plan.md`](implementation_plan.md).
 
+The assumptions, interpretation, commands, and operating rules for staged
+map review are recorded in [`visualization/README.md`](visualization/README.md).
+
 ## Source-code boundaries
 
 - `network/`: OSM acquisition adapters, clipping, map matching, and SUMO
