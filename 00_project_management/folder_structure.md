@@ -26,7 +26,7 @@ compose.yaml
 
 The repository root contains `README.md`, `LICENSE`, Git and Docker configuration, the numbered research directories, the self-contained `reproducibility/` package, and the isolated `docker/` environments. Current presentations are stored under `07_presentations/current/`; temporary execution logs and historical cleanup inventories are not retained.
 
-The Tokyo traffic-simulation extension is additive and uses dedicated subtrees: raw and processed inputs under `03_data/{raw,processed}/traffic_simulation/`, implementation under `05_src/traffic_simulation/`, reproducible run products under `reproducibility/outputs/traffic_simulation/`, and reviewed final artifacts under `06_outputs/traffic_simulation/`. It does not replace or overwrite the frozen synthetic EVRP analysis.
+The Tokyo traffic-simulation extension is additive and uses dedicated subtrees: source-specific raw inputs under `03_data/raw/traffic_simulation/`, generated inputs under `03_data/processed/traffic_simulation/`, source records in `03_data/metadata/traffic_simulation_sources.csv`, implementation under `05_src/traffic_simulation/`, reproducible run products under `reproducibility/outputs/traffic_simulation/`, and reviewed final artifacts under `06_outputs/traffic_simulation/`. Canonical paths are defined in `05_src/traffic_simulation/paths.py`; new modules do not use host-specific paths or fixed parent indexes. This extension does not replace or overwrite the frozen synthetic EVRP analysis.
 
 ## Naming
 

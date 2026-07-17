@@ -3,7 +3,9 @@
 ## Platform
 
 - Operating system: macOS
-- Project root: the directory where this repository is checked out
+- Project root: discovered from repository sentinels; stored metadata and
+  runtime code use repository-relative paths and do not depend on a checkout
+  location
 - Python environment: create a project-local `.venv` when needed; it is excluded from Git
 - Package specification for the submission audit: `reproducibility/requirements-lock.txt`
 - Version control: Git
@@ -24,7 +26,8 @@ python -m venv .venv
 
 ## Known dependencies and risks
 
-- Some files are macOS `compressed,dataless` placeholders and cannot be hashed or read until downloaded.
+- The repository has been moved outside iCloud-managed Desktop storage; verify
+  that new checkouts contain no macOS `dataless` placeholders before hashing.
 - Geospatial operations require compatible GDAL/GEOS/PROJ dependencies supplied through GeoPandas wheels or the local environment.
 - Network access may be needed only for explicit data-refresh scripts; computational reproduction uses the retained frozen processed inputs. Raw source snapshots are not distributed in Git.
 - Random seeds and scenario parameters must remain explicit in the notebook and analysis code.
