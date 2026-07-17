@@ -1,0 +1,59 @@
+schema_version: 1
+updated_at: "2026-07-17"
+current_stage_id: sumo_network
+current_summary_ja: OSM道路原典と入力レビュー地図が揃い、SUMO道路網の生成・構造検証へ進む段階
+stages:
+  - id: environment
+    label_ja: Docker・リポジトリ環境
+    status: completed
+    evidence:
+      - compose.yaml
+      - docker/analysis/Dockerfile
+  - id: data_governance
+    label_ja: データ取得・来歴規約
+    status: completed
+    evidence:
+      - 03_data/metadata/acquisition/README.md
+      - 03_data/metadata/traffic_simulation_sources.csv
+  - id: study_area
+    label_ja: N03大田区研究範囲
+    status: completed
+    evidence:
+      - reproducibility/config/traffic_simulation/study_areas.yml
+      - 03_data/metadata/acquisition/20260717_mlit_n03_2026_tokyo_acquisition.md
+  - id: baseline_inputs
+    label_ja: JARTIC・OSM基礎入力
+    status: completed
+    evidence:
+      - 03_data/metadata/acquisition/20260717_jartic_traffic_volume_acquisition.md
+      - 03_data/metadata/acquisition/20260717_osm_ota_ward_acquisition.md
+  - id: input_visualization
+    label_ja: 入力道路・観測点レビュー地図
+    status: completed
+    evidence:
+      - 05_src/traffic_simulation/visualization/render_study_area.py
+      - 05_src/traffic_simulation/visualization/README.md
+  - id: sumo_network
+    label_ja: SUMO道路網生成・構造検証
+    status: in_progress
+    evidence: []
+  - id: demand_and_observations
+    label_ja: 観測拡充・交通需要生成
+    status: planned
+    evidence: []
+  - id: calibration_validation
+    label_ja: 交通モデル較正・独立検証
+    status: planned
+    evidence: []
+  - id: delivery_instance
+    label_ja: 共通配送問題・コスト行列固定
+    status: planned
+    evidence: []
+  - id: classical_qaoa
+    label_ja: 古典最適化・Aer QAOA実行
+    status: planned
+    evidence: []
+  - id: simulation_evaluation
+    label_ja: 同一SUMO環境で走行・比較評価
+    status: planned
+    evidence: []
