@@ -17,11 +17,16 @@ The project mixed current scripts, raw and processed data, generated figures, le
 07_presentations/{current,assets,references,archived_versions}/
 08_documents/{manuscripts,abstracts,supplementary}/
 reproducibility/{config,data,outputs,src,tests}/
+docker/{analysis}/
+compose.yaml
+.dockerignore
 90_archive/ (removed after adopting the latest-only policy)
 99_quarantine/ (temporary review only; cleared after confirmation)
 ```
 
-The repository root contains only `README.md`, `LICENSE`, `.gitignore`, the numbered research directories, and the self-contained `reproducibility/` package. Current presentations are stored under `07_presentations/current/`; temporary execution logs and historical cleanup inventories are not retained.
+The repository root contains `README.md`, `LICENSE`, Git and Docker configuration, the numbered research directories, the self-contained `reproducibility/` package, and the isolated `docker/` environments. Current presentations are stored under `07_presentations/current/`; temporary execution logs and historical cleanup inventories are not retained.
+
+The Tokyo traffic-simulation extension is additive and uses dedicated subtrees: raw and processed inputs under `03_data/{raw,processed}/traffic_simulation/`, implementation under `05_src/traffic_simulation/`, reproducible run products under `reproducibility/outputs/traffic_simulation/`, and reviewed final artifacts under `06_outputs/traffic_simulation/`. It does not replace or overwrite the frozen synthetic EVRP analysis.
 
 ## Naming
 
