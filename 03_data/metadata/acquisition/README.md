@@ -16,6 +16,8 @@
 6. 分析利用前に、構造、対象範囲、対象期間、欠損、異常フラグ、行数またはフィーチャ数を検証する。
 7. 生成データは `03_data/processed/traffic_simulation/` 以下だけに保存し、出力先を出典台帳へ記録する。
 8. 生データと生成物がGitから除外され、この記録、出典台帳、実装コード、テストがGit管理対象であることを確認する。
+9. 研究上の選択、機械的に決まる値、表示上の選択を分け、残る恣意性とその統制方法を記録する。
+10. 実行した構造分析と未実施の交通・最適化分析を区別し、コード上・運用上の既知問題を記録する。
 
 手順を大きく変更した場合は、変更日と理由を取得記録へ追記する。再現性に関係する修正理由を説明できるよう、失敗した取得方法も削除せず残す。
 
@@ -23,3 +25,6 @@
 
 - [`20260717_jartic_traffic_volume_acquisition.md`](20260717_jartic_traffic_volume_acquisition.md)：JARTICの1時間交通量の取得、正規化、検証記録。
 - [`20260717_mlit_n03_2026_tokyo_acquisition.md`](20260717_mlit_n03_2026_tokyo_acquisition.md)：国土数値情報N03東京都版の取得、原本検証、大田区境界生成、固定設定、恣意性の統制記録。
+- [`20260717_osm_ota_ward_acquisition.md`](20260717_osm_ota_ward_acquisition.md)：日付固定Geofabrik関東PBFの取得、大田区BBOX抽出、構造分析、実行結果、恣意性、既知問題の記録。
+
+可視化の生成・閲覧・解釈・表示上の恣意性・不具合履歴は、[`../../../05_src/traffic_simulation/visualization/README.md`](../../../05_src/traffic_simulation/visualization/README.md)を参照する。
