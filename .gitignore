@@ -253,10 +253,17 @@ docker-compose.override.yml
 # reviewed final artifacts belong in 06_outputs/traffic_simulation/.
 03_data/processed/traffic_simulation/**
 !03_data/processed/traffic_simulation/**/
+!03_data/processed/traffic_simulation/README.md
 !03_data/processed/traffic_simulation/**/.gitkeep
 
-# Third-party source material is fetched locally; version only registries and frozen processed inputs
-03_data/raw/
+# Third-party source material is fetched locally; version only registries and
+# directory documentation.  Keep the traffic-simulation skeleton so every
+# environment uses the same source-specific paths without tracking downloads.
+03_data/raw/**
+!03_data/raw/traffic_simulation/
+!03_data/raw/traffic_simulation/README.md
+!03_data/raw/traffic_simulation/**/
+!03_data/raw/traffic_simulation/**/.gitkeep
 02_literature/references/pdf_derived/pdfs/*
 !02_literature/references/pdf_derived/pdfs/.gitkeep
 02_literature/references/pdf_derived/text/
