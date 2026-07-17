@@ -22,4 +22,4 @@
 ## 取得記録一覧
 
 - [`20260717_jartic_traffic_volume_acquisition.md`](20260717_jartic_traffic_volume_acquisition.md)：JARTICの1時間交通量の取得、正規化、検証記録。
-- [`20260717_mlit_n03_2026_tokyo_acquisition.md`](20260717_mlit_n03_2026_tokyo_acquisition.md)：国土数値情報N03東京都版の取得、原本検証、台帳登録記録。
+- [`20260717_mlit_n03_2026_tokyo_acquisition.md`](20260717_mlit_n03_2026_tokyo_acquisition.md)：国土数値情報N03東京都版の取得、原本検証、大田区境界生成、固定設定、恣意性の統制記録。

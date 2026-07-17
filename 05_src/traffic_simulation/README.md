@@ -3,8 +3,9 @@
 This directory is an additive research layer. It must not overwrite the
 existing synthetic EVRP analysis or its frozen inputs and outputs.
 
-The data-governance, minimum-area validation, CI, and server-migration tasks
-are recorded in [`implementation_plan.md`](implementation_plan.md).
+The data-governance, minimum-area validation, classical-versus-Qiskit-Aer-QAOA
+route comparison, CI, and server-migration tasks are recorded in
+[`implementation_plan.md`](implementation_plan.md).
 
 ## Source-code boundaries
 
