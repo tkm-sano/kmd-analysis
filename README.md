@@ -10,14 +10,13 @@ The study does not claim real-world routing performance or practical quantum adv
 
 - Current presentation: `07_presentations/current/0712_MDR2_v2_enriched_appendix.pptx`
 - Authoritative analysis and submission notebook: `reproducibility/quantum_transport_reproducibility_audit_revised.ipynb`
-- PDF export: `output/pdf/quantum_transport_reproducibility_audit_revised.pdf`
 - Analysis runner: `05_src/constraint_evaluation/run_tokyo_synthetic_evrp_analysis.py`
 - Renderer: `05_src/visualization/render_tokyo_synthetic_evrp_outputs.py`
 - Literature extraction tables: `02_literature/extraction_tables/`
 - Curated final PNG tables: `06_outputs/tables/`
 - Notebook figures: regenerated under `reproducibility/outputs/figures/` when the authoritative notebook is executed
 
-Only the authoritative notebook, its PDF export, and curated final PNG tables are versioned as deliverables. Notebook figures—including the complete circuit-width survey figures—are regenerated locally under `reproducibility/outputs/figures/` and excluded by `.gitignore`, together with intermediate CSVs, validation logs, and duplicate SVG/PDF renderings.
+Only the authoritative notebook and curated final PNG tables are versioned as deliverables. Notebook figures—including the complete circuit-width survey figures—are regenerated locally under `reproducibility/outputs/figures/` and excluded by `.gitignore`, together with intermediate CSVs, validation logs, PDF exports, and duplicate SVG/PDF renderings.
 
 ## Execution order
 
