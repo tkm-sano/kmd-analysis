@@ -7,8 +7,13 @@ environment described in `reproducibility/requirements-lock.txt`.
 
 - `analysis`: Python 3.11 environment for road-network processing,
   time-dependent routing, calibration, and classical EVRP baselines.
-- `sumo`: pinned Eclipse SUMO environment for network conversion and
+- `sumo`: pinned Eclipse SUMO 1.24.0 environment for network conversion and
   microscopic traffic simulation.
+
+Both services use `linux/amd64` as the canonical research platform. On Apple
+Silicon Macs this runs through Docker Desktop's architecture emulation; on an
+AMD64 Linux server it runs natively. The SUMO image is pinned by digest because
+the upstream `v1_25_0` tag currently reports SUMO 1.24.0 at runtime.
 
 The repository is mounted at `/workspace`. Raw third-party data and generated
 outputs remain on the host and are not copied into container images.

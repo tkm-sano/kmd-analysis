@@ -2,6 +2,7 @@ name: tokyo-traffic-research
 
 services:
   analysis:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: docker/analysis/Dockerfile
@@ -14,10 +15,10 @@ services:
     tty: true
 
   sumo:
-    image: ghcr.io/eclipse-sumo/sumo:v1_25_0
+    platform: linux/amd64
+    image: ghcr.io/eclipse-sumo/sumo@sha256:a49874e6e5e355de055e6a10eefd819d48fab8f0047c3130f782a7dfdf1cc189
     working_dir: /workspace
     volumes:
       - .:/workspace
     stdin_open: true
     tty: true
-
