@@ -1,0 +1,24 @@
+schema_version: 1
+study_areas:
+  ota_ward:
+    version: 1
+    status: active
+    name_ja: 東京都大田区行政区域
+    geometry_type: administrative_boundary
+    boundary_source:
+      dataset: MLIT_N03
+      source_registry_id: mlit_n03_2026_tokyo
+      code_field: N03_007
+      code_value: "13111"
+      prefecture_field: N03_001
+      prefecture_value: 東京都
+      municipality_field: N03_004
+      municipality_value: 大田区
+    api_crs: EPSG:4326
+    metric_crs: EPSG:6677
+    acquisition_extent_method: boundary_envelope
+    network_clip_method: intersects_boundary
+    intended_uses:
+      - osm_acquisition
+      - sumo_network_validation
+      - jartic_edge_mapping
