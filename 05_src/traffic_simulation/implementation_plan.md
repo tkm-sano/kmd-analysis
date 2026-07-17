@@ -192,14 +192,322 @@ SUMOでは、`tau`、`sigma`、`speedFactor` の分布、`actionStepLength`、�
 
 ## 6. テスト用の最小地域を決める
 
-いきなり東京全域には進まず、環境検証用の小規模地域を1つ決める。候補は以下のとおり。
+いきなり東京全域には進まず、最初の環境・データ統合検証には国土数値情報N03の大田区行政界を使用する。研究対象範囲の正本は行政界ポリゴンとし、OSM等の矩形問い合わせに必要なBBOXはポリゴンの外接矩形から機械的に生成する。
 
-- 大田区周辺
-- 東京港・臨海部
-- 環状七号線の一部
-- 物流拠点間の主要経路
+| 項目 | 設定 |
+|---|---|
+| 地域ID | `ota_ward` |
+| 名称 | 東京都大田区行政区域 |
+| 境界原典 | 国土数値情報N03行政区域データ |
+| 選択条件 | `N03_007="13111"`（大田区） |
+| 研究対象形状 | N03の大田区行政界ポリゴン |
+| 取得用BBOX | 行政界ポリゴンをEPSG:4326へ変換後、外接矩形を機械生成 |
+| 距離計算用座標系 | `EPSG:6677` |
+| 用途 | OSM取得、SUMO道路網生成、JARTIC観測点対応付け、起動試験 |
 
-選定した範囲で「OSM取得 → `netconvert` → SUMO起動」まで確認してから対象地域を拡張する。
+N03は行政区域コード `N03_007`、都道府県名 `N03_001`、市区町村名 `N03_004` を持つ。大田区は行政区域コード `13111` で選択し、名称条件 `N03_001="東京都"`、`N03_004="大田区"` も併用して誤選択を検出する。JARTIC観測点数、交通量、欠測、異常の有無は地域選定条件に使用しない。行政界確定後に全観測点を空間結合し、境界内の件数と品質状態を結果として報告する。
+
+### 6.1 対象地域設定を固定する
+
+- 地域ID、行政界の出典ID、選択属性、座標系を追跡可能な設定として保存する。
+- 行政界の座標値やBBOXを取得・加工スクリプトへ直接記述せず、登録済みN03原本から生成する。
+- OSM取得用BBOXと研究対象の行政界ポリゴンを区別し、分析対象判定には行政界ポリゴンを使用する。
+- N03の基準年または行政界が変わる場合は設定版を上げ、既存原本と生成物を上書きしない。
+
+#### 6.1.1 N03行政界を先に取得する
+
+OSM取得より先に、国土数値情報N03の2026年版原本を取得・登録する。
+
+| 項目 | 設定 |
+|---|---|
+| データセット | 国土数値情報N03行政区域データ、2026年版 |
+| 配布ファイル | `N03-20260101_13_GML.zip`（東京都版） |
+| 出典台帳ID | `mlit_n03_2026_tokyo` |
+| 生データ保存先 | `03_data/raw/traffic_simulation/boundaries/N03-20260101_13_GML.zip` |
+| 取得記録 | `03_data/metadata/acquisition/YYYYMMDD_mlit_n03_2026_tokyo_acquisition.md` |
+| 境界抽出実装 | `05_src/traffic_simulation/network/prepare_study_area.py` |
+| 境界抽出テスト | `05_src/traffic_simulation/validation/test_prepare_study_area.py` |
+| 大田区境界出力 | `03_data/processed/traffic_simulation/road_network/boundaries/ota_ward_n03_2026.parquet` |
+
+手順は以下とする。
+
+1. 国土交通省の公式配布ページから2026年版原本を取得する。
+2. 配布ページURL、実ダウンロードURL、取得日、利用規約、原本名、SHA-256を出典台帳へ記録する。
+3. ZIP原本を改変せず保存し、展開物や加工境界と混在させない。
+4. ZIP内のメタデータ、CRS、必須属性 `N03_001`、`N03_004`、`N03_007` を検証する。
+5. `N03_007="13111"`、`N03_001="東京都"`、`N03_004="大田区"` をすべて満たす地物を選択する。
+6. 同一行政区域の複数ポリゴンを統合し、空形状、自己交差、面積0を拒否する。
+7. 行政界をCRS情報付きGeoParquetとして加工先へ保存する。
+8. 加工境界のSHA-256、地物数、面積、原本CRS、境界BBOXを品質サマリーへ記録する。
+9. 生データと加工境界がGit除外対象で、出典台帳、取得記録、コード、テストがGit管理対象であることを確認する。
+
+配布ページのHTMLを原本として扱わず、実際のN03 ZIPを原本とする。配布URLが変更された場合も、同じファイル名だけで同一性を判断せずSHA-256を照合する。
+
+#### 6.1.2 作成する設定・実装・テストファイル
+
+対象地域の設定は次の3ファイルに分ける。
+
+| 役割 | パス | Git管理 |
+|---|---|---|
+| 地域設定の正本 | `reproducibility/config/traffic_simulation/study_areas.yml` | する |
+| 設定の読込・検証 | `05_src/traffic_simulation/network/study_areas.py` | する |
+| 設定の単体テスト | `05_src/traffic_simulation/validation/test_study_areas.py` | する |
+
+`study_areas.yml` は取得データや生成物ではなく、解析条件を固定する設定ファイルである。ホスト固有の絶対パス、APIキー、取得済みファイルの実体は含めない。
+
+初期設定は次の形式とする。
+
+```yaml
+schema_version: 1
+study_areas:
+  ota_ward:
+    version: 1
+    status: active
+    name_ja: 東京都大田区行政区域
+    geometry_type: administrative_boundary
+    boundary_source:
+      dataset: MLIT_N03
+      source_registry_id: mlit_n03_2026_tokyo
+      code_field: N03_007
+      code_value: "13111"
+      prefecture_field: N03_001
+      prefecture_value: 東京都
+      municipality_field: N03_004
+      municipality_value: 大田区
+    api_crs: EPSG:4326
+    metric_crs: EPSG:6677
+    acquisition_extent_method: boundary_envelope
+    network_clip_method: intersects_boundary
+    intended_uses:
+      - osm_acquisition
+      - sumo_network_validation
+      - jartic_edge_mapping
+```
+
+YAMLには行政界の座標や手入力BBOXを保存せず、N03原本の出典台帳IDと属性選択条件を保存する。OSM取得時は、選択した行政界を `api_crs` へ変換した後、`west`、`south`、`east`、`north` の外接矩形をコードで算出する。算出した実行時BBOXは出典台帳と取得記録へ証跡として記録する。
+
+#### 6.1.3 地域IDと版管理のルール
+
+- 地域IDには英小文字、数字、アンダースコアだけを使用する。
+- 地域IDはファイル名、出典台帳ID、CLI引数、生成物名で共通して使用する。
+- 同じ地域ID・同じ `version` の境界原典、基準年、選択条件を取得後に書き換えない。
+- N03の基準年や選択方法を変更する場合は `version` を上げ、別の行政区域を対象にする場合は新しい地域IDを作る。
+- `status` は `draft`、`active`、`retired` のいずれかとする。
+- 行政界の版を更新しても過去の取得・生成結果を再現できるよう、出典台帳IDを固定する。
+- 使用停止した設定も削除せず `retired` とし、過去の出典台帳・生成物との対応を維持する。
+
+#### 6.1.4 座標系のルール
+
+- N03原本のCRSはファイルのメタデータから読み取る。2026年版で想定するJGD2011経緯度は `EPSG:6668` だが、CRS情報をコードで無条件に上書きしない。
+- `api_crs` はOSM等の外部APIとBBOX交換に使用し、`EPSG:4326` とする。
+- `metric_crs` は距離、近傍、バッファ、道路対応付けに使用し、東京周辺では `EPSG:6677` とする。
+- 経緯度の値をメートルとして計算しない。
+- 座標系が不明な入力を推測で変換せず、取得記録または原典で確認できない場合は処理を停止する。
+- GeoParquet、GeoJSON、対応表等の出力には、可能な限りCRS情報を保持する。
+- CSV等、CRSを埋め込めない形式では、列名または付随メタデータへEPSGコードを記録する。
+
+#### 6.1.5 読み込みコードのルール
+
+`study_areas.py` は次の責務だけを持つ。
+
+- `study_areas.yml` を共通パスから読み込む。
+- `schema_version` と必須項目を検証する。
+- 指定された地域IDが存在し、`active` であることを確認する。
+- 出典台帳IDからN03原本を解決し、SHA-256一致を確認する。
+- 行政区域コード、都道府県名、市区町村名の3条件で大田区だけを選択する。
+- 選択結果が0件または複数の異なる行政区域になる場合は停止し、同一区域の複数ポリゴンは統合する。
+- 行政界を `api_crs` へ変換し、外接矩形について `west < east`、`south < north` と経緯度範囲を確認する。
+- 原本CRS、`api_crs`、`metric_crs` が有効であることを `pyproj` で確認する。
+- 呼出側へ変更不能な `StudyArea` オブジェクトを返す。
+- 行政界、取得用BBOX、投影後行政界を生成する処理を一か所に集約する。
+
+取得・変換・対応付けの各スクリプトは、次のように地域IDを受け取る。
+
+```bash
+python -m traffic_simulation.network.fetch_osm --region ota_ward
+```
+
+正式な取得・加工では `--bbox` による任意値の直接指定を使用せず、追跡可能な `--region` を必須とする。探索的な直接指定を将来許可する場合も、出典台帳へ登録する正式原本とは別扱いにする。
+
+#### 6.1.6 設定テストのルール
+
+`test_study_areas.py` では少なくとも以下を検査する。
+
+- `ota_ward` を正常に読み込める。
+- N03の `N03_007="13111"`、`N03_001="東京都"`、`N03_004="大田区"` だけを選択する。
+- 原本CRSを保持し、`api_crs` が `EPSG:4326`、`metric_crs` が `EPSG:6677` である。
+- 行政界から算出したBBOXが行政界全体を包含する。
+- BBOXの東西または南北が逆になる異常を拒否する。
+- 範囲外の経緯度を拒否する。
+- 不明な地域ID、重複した地域ID、不明な状態、未対応のスキーマ版を拒否する。
+- ホスト固有の絶対パスや秘密情報に相当する項目を設定へ含めない。
+- 取得済みJARTICデータを行政界へ空間結合し、境界内外の判定を再現できる。
+- JARTIC観測点数や品質フラグを変更しても行政界の選択結果が変わらない。
+
+#### 6.1.7 ファイル名と保存先のルール
+
+ファイル名には少なくともデータ種別、地域ID、観測時点または取得日を含める。
+
+```text
+03_data/raw/traffic_simulation/osm/
+  osm_ota_ward_YYYYMMDD.osm.xml
+  osm_ota_ward_YYYYMMDD_request.overpassql
+
+03_data/processed/traffic_simulation/road_network/
+  ota_ward_YYYYMMDD.net.xml
+
+03_data/processed/traffic_simulation/sumo_inputs/
+  ota_ward_YYYYMMDD.sumocfg
+
+03_data/metadata/acquisition/
+  YYYYMMDD_osm_ota_ward_acquisition.md
+```
+
+- 配布元の原本名に意味がある場合は `original_filename` として出典台帳に保持する。
+- 生データ、問い合わせ文、API応答は `03_data/raw/` に保存しGitへ登録しない。
+- `netconvert` 等で再生成できるファイルは `03_data/processed/` に保存しGitへ登録しない。
+- 取得記録、地域設定、コード、テスト、出典台帳はGitへ登録する。
+- ファイル名にスペース、ホスト名、ユーザー名、絶対パスを含めない。
+- 同名ファイルが存在する場合は上書きせず、SHA-256一致なら既存原本を検証し、不一致なら処理を停止する。
+
+#### 6.1.8 ファイル間の参照ルール
+
+```text
+N03 raw snapshot + traffic_simulation_sources.csv
+  └─ prepare_study_area.py
+       └─ ota_ward administrative-boundary GeoParquet
+            └─ study_areas.yml の地域ID・属性選択条件・CRS
+                 ├─ fetch_osm.py
+                 │    ├─ 境界外接BBOX
+                 │    ├─ raw OSM snapshot
+                 │    ├─ traffic_simulation_sources.csv
+                 │    └─ acquisition Markdown
+                 ├─ SUMO network builder
+                 │    └─ processed *.net.xml / *.sumocfg
+                 └─ JARTIC edge mapper
+                      └─ jartic_edge_mapping.csv
+```
+
+- 出典台帳は生データから加工後出力までの来歴を保持する。
+- 取得記録Markdownは実行手順、判断、検証結果、失敗と修正を保持する。
+- YAMLは解析条件の正本であり、MarkdownからBBOXを読み取って処理しない。
+- PythonコードはYAMLを読み込み、MarkdownやCSVへ重複した設定値を手作業で転記しない。ただし出典台帳と取得記録には、実行時に使用した値を証跡として出力する。
+- 生データや生成物から地域設定を逆推定しない。
+
+### 6.2 OSM道路データを取得する
+
+実装予定ファイルは以下とする。
+
+```text
+05_src/traffic_simulation/network/fetch_osm.py
+05_src/traffic_simulation/validation/test_fetch_osm.py
+```
+
+取得・記録手順は以下の順で行う。
+
+1. 日付または取得時点を固定できるOSM原典を選ぶ。地域PBFの切り出しを優先し、Overpass等を使う場合も問い合わせ全文と取得日時を保存する。
+2. 原本または問い合わせ応答を `03_data/raw/traffic_simulation/osm/` に改変せず保存する。
+3. ファイル名に地域IDと取得日を含め、既存原本を上書きしない。
+4. SHA-256、配布元URL、取得日時、BBOX、ライセンス、原本ファイル名を `03_data/metadata/traffic_simulation_sources.csv` に登録する。
+5. `03_data/metadata/acquisition/_template.md` を複製し、`03_data/metadata/acquisition/YYYYMMDD_osm_ota_ward_acquisition.md` に取得・検証手順を日本語で記録する。
+6. OSM/XMLまたはPBFとして読めること、行政界から生成した取得用BBOXと交差すること、道路要素が空でないことを検証する。
+7. 生データがGit除外対象で、取得記録、出典台帳、コード、テストだけがGit管理対象であることを確認する。
+
+### 6.3 SUMO道路網を生成する
+
+OSM原本の検証後、`netconvert` を用いて最小地域のSUMOネットワークを生成する。
+
+```text
+N03大田区行政界
+  → EPSG:4326の取得用BBOXを機械生成
+  → OSM原本取得
+  → 行政界と交差する道路を抽出
+  → netconvert
+  → SUMO *.net.xml
+  → 構造検証
+```
+
+- 生成処理は `05_src/traffic_simulation/network/` に実装する。
+- 使用した `netconvert` のバージョンと全オプションを取得記録または実行メタデータへ残す。
+- 加工済み道路網は `03_data/processed/traffic_simulation/road_network/` に保存する。
+- SUMO設定・追加ファイルは `03_data/processed/traffic_simulation/sumo_inputs/` に保存する。
+- 原本、加工途中、生成物を混在させない。
+- OSMの信号位置を利用できても、実際の信号現示、サイクル、オフセットを再現したとはみなさない。
+
+構造検証では少なくとも以下を確認する。
+
+- `netconvert` がエラー終了しない。
+- ノード、エッジ、レーンが0件ではない。
+- 主要道路が行政界内で不自然に途切れておらず、行政界を横断する接続エッジが保持されている。
+- 自動車が走行できないエッジだけのネットワークになっていない。
+- 生成ファイルがSUMOから読み込める。
+- 固定されたホスト絶対パスが生成設定に混入していない。
+
+### 6.4 SUMO起動試験を行う
+
+需要を追加する前に、最小構成の `.sumocfg` を用いてCLI版SUMOを起動する。
+
+1. 道路網だけを読み込む構成を作る。
+2. 短時間の無需要または最小需要で終了コード0を確認する。
+3. ログと生成物は `reproducibility/outputs/traffic_simulation/` に保存する。
+4. GUIでの目視確認は補助確認とし、自動検証はCLIで再実行可能にする。
+
+### 6.5 JARTIC観測点をSUMOエッジへ対応付ける
+
+道路網の構造検証後、取得済みJARTIC観測点をSUMOの有向エッジ候補へ対応付ける。
+
+```text
+JARTIC MultiPoint（EPSG:4326）
+  → EPSG:6677へ投影
+  → 距離・道路種別・方位による候補抽出
+  → 路線の起点・終点方向を確認
+  → 上り・下りをSUMO有向エッジへ割当
+  → 低信頼度候補を人手確認
+```
+
+- JARTICの上り・下りは実測値として保持し、方角だけでSUMO方向を推定しない。
+- 対応確認前は `direction_status=unresolved` を維持する。
+- 距離閾値は設定値とし、コードへ固定しない。
+- 本線、側道、交差道路が近接する場合は距離だけで自動確定しない。
+- 1観測断面が複数のSUMOエッジに対応しても、交通量を各エッジへ重複加算しない。
+- 自動対応できない地点は手動補正表へ記録し、判断理由をGit管理する。
+
+想定する成果物は以下とする。
+
+```text
+03_data/processed/traffic_simulation/calibration/jartic_edge_mapping.csv
+05_src/traffic_simulation/calibration/jartic_edge_overrides.csv
+```
+
+### 6.6 最小地域の完了条件
+
+次の条件をすべて満たすまでは、東京全域へ拡張しない。
+
+- [ ] 地域ID、N03出典台帳ID、行政区域コード、基準年が共通設定として固定されている。
+- [ ] N03原本、SHA-256、出典台帳、取得記録、大田区境界GeoParquetが揃っている。
+- [ ] 研究対象ポリゴンとOSM取得用BBOXが明確に区別されている。
+- [ ] OSM原本、SHA-256、出典台帳、取得記録が揃っている。
+- [ ] OSM取得テストが外部APIへの実通信なしで再実行できる。
+- [ ] `netconvert` によるSUMOネットワーク生成が成功する。
+- [ ] SUMO CLIの短時間起動試験が終了コード0になる。
+- [ ] 構造テストでノード、エッジ、レーン、主要接続を確認できる。
+- [ ] 大田区行政界内JARTIC観測点の候補エッジを生成できる。
+- [ ] 上り・下りの方向確認状態と未解決地点が明示されている。
+- [ ] 交通量の重複割当がない。
+- [ ] 生データと生成物がGitへ登録されていない。
+- [ ] コード、テスト、設定、出典台帳、取得記録だけで処理を再現できる。
+
+### 6.7 拡張順序
+
+最小地域の完了後は、次の順で段階的に拡張する。
+
+1. 大田区周辺の隣接範囲
+2. 東京港・臨海部
+3. 環状七号線等の主要物流経路
+4. 物流拠点間の主要経路
+5. 東京23区または東京都全域
+
+各拡張段階で、原本取得、SHA-256、取得記録、道路網構造検証、JARTIC対応付け品質を再確認する。
 
 ## 7. CIを追加する
 
