@@ -1,0 +1,23 @@
+name: tokyo-traffic-research
+
+services:
+  analysis:
+    build:
+      context: .
+      dockerfile: docker/analysis/Dockerfile
+    working_dir: /workspace
+    environment:
+      PYTHONPATH: /workspace/05_src
+    volumes:
+      - .:/workspace
+    stdin_open: true
+    tty: true
+
+  sumo:
+    image: ghcr.io/eclipse-sumo/sumo:v1_25_0
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+    stdin_open: true
+    tty: true
+
