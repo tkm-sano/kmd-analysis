@@ -1,19 +1,20 @@
 # Tokyo Traffic × Quantum Routing Research
 
-This repository develops a public-data-based traffic approximation for Ota Ward, Tokyo, and is designed to compare a non-optimizing baseline, classical optimization, and QAOA on Qiskit Aer using the same synthetic electric-vehicle delivery problem.
+This repository builds a public-data-based traffic approximation for Ota Ward, Tokyo, and compares a non-optimizing baseline, classical optimization, and QAOA on Qiskit Aer using the same synthetic electric-vehicle delivery problem.
 
 > **Primary research question**
 >
 > Under identical vehicles, capacity, battery, departure time, demand, traffic, weather, and evaluation conditions, how much does route-order optimization change population-equivalent delivery coverage, and how do classical optimization and Aer-based QAOA differ in outcome and computational resources?
 
-## Scope
+## Research objective
 
-This research does not claim to provide a complete digital twin of Tokyo, reconstruct an operator's real delivery routes, predict customer orders, or demonstrate quantum advantage. Its purpose is to compare classical and quantum-computing methods under controlled, reproducible conditions using:
+This research builds a reproducible traffic-simulation and route-optimization framework for Ota Ward that:
 
-- a traffic approximation calibrated and independently validated against public observations;
-- a governed synthetic delivery problem;
-- traceable sources, assumptions, and transformation rules; and
-- identical road, demand, vehicle, traffic, and evaluation conditions across methods.
+- constructs a governed road environment from date-pinned OSM data and the official N03 administrative boundary;
+- calibrates and independently validates traffic conditions with public observations;
+- generates traceable population-based delivery demand and EV delivery scenarios;
+- compares a non-optimizing baseline, classical optimization, and Qiskit Aer QAOA under identical conditions; and
+- quantifies how route optimization changes population-equivalent delivery coverage, operational outcomes, solution quality, and computational-resource requirements.
 
 ## Study design
 
@@ -29,6 +30,47 @@ This research does not claim to provide a complete digital twin of Tokyo, recons
 10. Add EV constraints, driver-experience effects, weather, and incidents incrementally so that their effects remain separable.
 
 The classical and QAOA branches must share the same frozen problem instance, road network, vehicle constraints, traffic conditions, route-conversion rules, and simulation seeds. Raw solver output, decoded solutions, repaired solutions, and SUMO outcomes are stored separately.
+
+## Methodology overview
+
+```mermaid
+%%{init: {"theme": "dark", "themeVariables": {"background": "#0d1117", "lineColor": "#8b949e", "textColor": "#ffffff"}}}%%
+flowchart TD
+    D1["1. Open data<br/>N03 · OSM · JARTIC · census · public statistics"]
+    D2["2. Provenance control<br/>date · license · version · SHA-256"]
+    D3["3. Common research inputs<br/>Ota boundary · governed roads · synthetic demand"]
+    D4["4. Validated traffic environment<br/>SUMO network · calibration · independent validation"]
+    D5["5. Frozen delivery problem<br/>same demand · vehicles · constraints · seeds"]
+
+    M1["6A. Non-optimizing baseline"]
+    M2["6B. Classical optimization"]
+    M3["6C. Qiskit Aer QAOA"]
+
+    D6["7. Visit order → common road-path conversion"]
+    D7["8. Same SUMO environment"]
+    E1["9A. Operational and social effects<br/>distance · time · energy · delivered amount · population-equivalent coverage"]
+    E2["9B. Computational resources<br/>runtime · solution quality · QUBO and circuit indicators"]
+    D8["10. Final comparison<br/>population-equivalent coverage ↔ computational resources"]
+
+    D1 --> D2 --> D3 --> D4 --> D5
+    D5 --> M1
+    D5 --> M2
+    D5 --> M3
+    M1 --> D6
+    M2 --> D6
+    M3 --> D6
+    D6 --> D7 --> E1 --> D8
+    M1 --> E2
+    M2 --> E2
+    M3 --> E2
+    E2 --> D8
+
+    classDef textOnly fill:none,stroke:none,color:#ffffff;
+    class D1,D2,D3,D4,D5,M1,M2,M3,D6,D7,E1,E2,D8 textOnly;
+    linkStyle default stroke:#8b949e,stroke-width:2px;
+```
+
+The diagram separates the two final lines of evidence. The common SUMO runs measure operational and social effects, while the solver records measure computational effort. Their final relationship is evaluated without treating a simulated QAOA resource indicator as a confirmed physical-hardware requirement or quantum advantage. Delivery constraints and EV constraints are added in controlled stages only after the preceding problem formulation passes feasibility, decoding, and small-instance validation.
 
 ## Current status
 
@@ -48,18 +90,111 @@ Status date: **2026-07-18**. The machine-readable source of truth is [`research_
 
 The formal QAOA comparison has not yet been implemented or executed. The current phase governs and validates the road-network inputs required before optimization results can be interpreted.
 
+## Open-data inputs
+
+The study uses public sources for different, explicitly separated roles. A source used for geometry is not automatically treated as evidence for speed, demand, or legal traffic restrictions.
+
+| Open-data snapshot | Provider | Research role | Current treatment |
+|---|---|---|---|
+| N03 administrative boundaries, 2026 | MLIT National Land Numerical Information | Define the Ota Ward study boundary | Select Ota Ward by municipality code and names, dissolve the six source features, and preserve the resulting geometry without smoothing, simplification, or buffering |
+| Kanto OpenStreetMap PBF, dated 2026-07-16 | Geofabrik / OpenStreetMap contributors | Base road geometry, connectivity, and candidate road attributes | Pin the regional PBF by date and SHA-256, then extract the acquisition BBOX mechanically derived from the N03 boundary |
+| One-hour road-type-3 traffic observations, 2026-07-04 22:00 JST | JARTIC / MLIT xROAD | Initial traffic observation and processing validation | Preserve source directions and anomaly flags; use observed traffic and speed for calibration or validation, never as an unqualified legal speed limit |
+| 2020 census 500 m population mesh, JGD2011 mesh 5339 | Statistics Bureau of Japan / e-Stat | Spatial distribution for synthetic demand | Read the exact official ZIP member, decode the documented fields, intersect it with the N03 boundary, and area-weight boundary meshes |
+| Ota Ward population, 2024-04-01 | Ota City open data | Target total for the 2024 population distribution | Rescale the area-weighted 2020 mesh distribution to the published ward total of 736,652 |
+| Japan total population, 2024-10-01 | Statistics Bureau of Japan | Denominator for the national parcel-equivalent rate | Read the published total of 123,802,000 using the source unit conversion recorded in configuration |
+| FY2024 national parcel-delivery total | MLIT | Numerator for the national parcel-equivalent rate | Use 5,031,470,000 parcels as a national aggregate; do not reinterpret it as observed Ota Ward orders or stops |
+
+The machine-readable registry is [`traffic_simulation_sources.csv`](03_data/metadata/traffic_simulation_sources.csv). It records provider URLs, acquisition dates, source periods and areas, licenses, original filenames, SHA-256 values, processing scripts, derived outputs, and known limitations. Human-readable acquisition records document the actual download and verification operations:
+
+- [JARTIC traffic observation](03_data/metadata/acquisition/20260717_jartic_traffic_volume_acquisition.md)
+- [N03 Tokyo administrative boundary](03_data/metadata/acquisition/20260717_mlit_n03_2026_tokyo_acquisition.md)
+- [OSM PBF and Ota Ward extraction](03_data/metadata/acquisition/20260717_osm_ota_ward_acquisition.md)
+- [Population and parcel statistics](03_data/metadata/acquisition/20260718_ota_baseline_open_statistics_acquisition.md)
+
+Raw source files are stored under `03_data/raw/traffic_simulation/` and excluded from Git. Their recorded hashes, not filenames alone, identify the governed snapshots used by the study.
+
+## Transformation rules
+
+### Boundary and coordinate systems
+
+- Ota Ward is selected from N03 using municipality code `13111` together with the recorded prefecture, municipality, and ward names.
+- The six N03 source features are dissolved into one study boundary without manually adjusting the shape to improve later results.
+- Source coordinates use JGD2011 (`EPSG:6668`), web/API exchange uses WGS 84 (`EPSG:4326`), and area and distance calculations use Japan Plane Rectangular CS IX (`EPSG:6677`).
+- The OSM acquisition BBOX is the minimum rectangle derived from the boundary. It controls data acquisition only; the N03 polygon remains the analysis boundary.
+
+### Road geometry, attributes, and SUMO conversion
+
+- Date-pinned OSM supplies the base geometry and connectivity. The governed workflow uses a regional PBF, not Overpass.
+- The PBF is clipped to the recorded acquisition BBOX, converted to OSM XML with a fixed tool version, and then passed to the digest-pinned SUMO `netconvert` service. Python validation and preprocessing remain in the separate `analysis` service.
+- SUMO uses left-hand traffic. Internal junction links are retained, U-turns are limited to dead ends, and isolated edges are reported rather than silently deleted.
+- Missing, supplemented, unresolved, and conflicting OSM attributes are reported with their source, derivation, date, and confidence. They are not silently delegated to SUMO or typemap defaults.
+- `oneway` is checked in this order: explicit OSM value, OSM implicit rule, public regulation data, and road-census evidence. A general road with no applicable evidence is interpreted as bidirectional under OSM data-consumption rules and labelled as a derived value, not a field-confirmed fact.
+- `lanes` is checked using explicit and directional OSM tags, road-census data, road ledgers, limited aerial-image review, and finally a versioned structural placeholder only where permitted.
+- `maxspeed` is checked using explicit, directional, and conditional OSM tags followed by public regulation information, road-census evidence, official documents, and dated legal derivation rules. Observed travel speed is not substituted for a legal speed limit.
+- External road attributes are not joined by nearest distance alone. Matching considers distance, direction, overlap, road name or number, road class, and vertical layer. Ambiguous elevated roads, surface roads, carriageways, side roads, and complex junctions receive lower confidence and require review when they are critical.
+- Structural-review networks may use documented placeholders on noncritical roads for connectivity and visualization checks. Formal experimental networks stop when critical route, calibration, or validation roads contain unresolved attributes, conflicts, low-confidence matches, or unrecorded manual values.
+- Junction heuristics may generate candidates, but formal conversion uses a reviewed integration table; automatic junction merging is disabled for the formal network.
+
+The authoritative policy and the current SUMO configuration are [`network_attribute_governance.md`](05_src/traffic_simulation/network_attribute_governance.md) and [`sumo_network.yml`](reproducibility/config/traffic_simulation/sumo_network.yml). The formal SUMO network has not yet been generated, so the rules above distinguish implemented input governance from the next conversion stage.
+
+### Traffic observations
+
+- A JARTIC observation site is expanded into source-defined directional rows only when the source contains those directions; the procedure does not invent an up/down split.
+- Loop, ultrasonic, power-outage, and missing-data flags are preserved. Invalid observations remain invalid or missing rather than being imputed silently.
+- Calibration observations and independent-validation observations must be separated by location or period before model fitting.
+
 ## Governed synthetic demand
 
-The initial baseline area-weights the 2020 census 500 m population distribution at the N03 Ota Ward boundary and rescales it to the ward's population on April 1, 2024. It uses a population-normalized rate derived from the fiscal-year 2024 national parcel-delivery total published by Japan's Ministry of Land, Infrastructure, Transport and Tourism.
+The implemented baseline converts public population and parcel statistics into a reproducible one-day, population-proportional demand surface. The operation is fixed by [`baseline_demand.yml`](reproducibility/config/traffic_simulation/baseline_demand.yml) and performed by [`prepare_baseline_demand.py`](05_src/traffic_simulation/demand/prepare_baseline_demand.py).
+
+The processing sequence is:
+
+1. Verify the configured source filenames and SHA-256 values before reading any data.
+2. Read only the recorded census ZIP member using its documented CP932 encoding and population field.
+3. Reconstruct the official nine-digit JGD2011 500 m mesh geometries for mesh 5339.
+4. Intersect the meshes with the unmodified N03 Ota Ward boundary. Fully contained meshes retain their population; boundary meshes receive an area ratio calculated in `EPSG:6677`.
+5. Rescale the area-weighted 2020 spatial distribution to the official Ota Ward population on April 1, 2024.
+6. Allocate whole people with the largest-remainder method. Equal remainders are resolved by ascending mesh code, making the result deterministic.
+7. Derive the national daily parcel-equivalent rate as `5,031,470,000 / 123,802,000 / 365`.
+8. Multiply each mesh's allocated population by that rate, then allocate the one-day integer demand with the same largest-remainder and tie-breaking rules.
+9. Write a GeoParquet demand surface and a JSON quality summary only after total, geometry, boundary, and lineage checks pass.
+
+The resulting rate is `0.111345933951539499` parcel-equivalents per person per day. The unrounded ward expectation is approximately `82,023.205`; deterministic integer allocation produces 82,023 parcel-equivalents.
 
 | Item | Current generated result |
 |---|---:|
 | 500 m meshes intersecting Ota Ward | 191 |
+| Fully contained meshes | 122 |
+| Boundary-intersecting meshes | 69 |
+| Area-weighted 2020 population before rescaling | 747,271.088683 |
 | Allocated 2024 population | 736,652 |
 | Population-normalized parcel rate | 0.111345934 parcel-equivalents/person/day |
 | One-day synthetic demand | 82,023 parcel-equivalents |
 
-These values are not observed orders, customers, destinations, or delivery stops. They form a population-proportional baseline scenario derived from national parcel statistics. The equations, boundary treatment, largest-remainder allocation, and prohibited interpretations are documented in [`baseline_demand_and_comparator.md`](05_src/traffic_simulation/demand/baseline_demand_and_comparator.md).
+The operation was validated and run in Docker as follows:
+
+```bash
+docker compose build analysis
+
+docker compose run --rm analysis \
+  pytest -q \
+  05_src/traffic_simulation/validation/test_prepare_baseline_demand.py
+
+docker compose run --rm analysis \
+  python -m traffic_simulation.demand.prepare_baseline_demand
+
+docker compose run --rm analysis \
+  pytest -q 05_src/traffic_simulation/validation
+```
+
+The processor writes:
+
+- `03_data/processed/traffic_simulation/demand/ota_ward_baseline_demand_2024_500m.parquet`
+- `03_data/processed/traffic_simulation/validation/ota_ward_baseline_demand_2024_500m_quality_summary.json`
+
+Outputs are write-once by design: the processor refuses to overwrite an existing governed result. Reproduction should use a fresh workspace, or deliberately archive and remove the old generated outputs after confirming their lineage; an overwrite flag is not provided. Generated data remain excluded from Git.
+
+These values are not observed orders, customers, destinations, delivery stops, or household order probabilities. The national total includes multiple parcel-flow types and is used only as a population-normalized aggregate. The mesh result is therefore a governed synthetic baseline for controlled comparison, not a reconstruction of actual Ota Ward deliveries. The equations, boundary treatment, allocation rules, quality checks, and prohibited interpretations are documented in [`baseline_demand_and_comparator.md`](05_src/traffic_simulation/demand/baseline_demand_and_comparator.md).
 
 ## Compared methods
 
