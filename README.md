@@ -31,6 +31,35 @@ This research builds a reproducible traffic-simulation and route-optimization fr
 
 The classical and QAOA branches must share the same frozen problem instance, road network, vehicle constraints, traffic conditions, route-conversion rules, and simulation seeds. Raw solver output, decoded solutions, repaired solutions, and SUMO outcomes are stored separately.
 
+### Pros and cons of the frozen-instance design
+
+Here, *frozen instance* means that the experimental inputs remain unchanged across the solver branches. It is distinct from a *static delivery formulation*, in which no new information arrives after optimization begins. Freezing an instance is an experimental control; using an offline static formulation defines the initial operational scope.
+
+**Advantages**
+
+- Giving the non-optimizing baseline, classical solver, and QAOA the same instance enables a controlled comparison under common input conditions. It does not by itself guarantee complete fairness because computational budgets, stopping criteria, and hyperparameters may differ.
+- Fixing demand, vehicles, constraints, traffic conditions, cost matrices, and seeds makes the experiments easier to reproduce and audit.
+- Common inputs allow differences in solution quality and constraint satisfaction to be analyzed primarily in relation to the solution method and formulation.
+- A static formulation can still represent time windows, arrival times, known time-dependent travel costs, vehicle loads, and route-level SOC transitions.
+- Fixed instances make it easier to validate QUBO conversion, constraint penalties, decoding, and feasibility checks in controlled stages.
+- Changing one governed condition at a time helps separate its effect on solution quality, feasibility, and computational scale.
+- Different demand distributions and traffic conditions can be represented as separate frozen instances, allowing comparison across multiple scenarios without requiring online simulation updates.
+
+**Scope and limitations**
+
+- The initial formal comparison will not update a plan in response to orders or cancellations received after optimization begins.
+- It will not reoptimize in response to subsequently observed congestion, incidents, vehicle failures, or charger-status changes.
+- Traffic conditions will be supplied as exogenous costs, so the initial comparison will not model feedback in which delivery-route choices change congestion and the changed congestion then alters the delivery plan.
+- Any state represented by an aggregate or precomputed value will not reproduce the corresponding detailed within-route evolution. The implemented formulation must report which states, if any, receive this treatment.
+- The evaluation will not include the online cost of regenerating a QUBO, converting it to an Ising model, rebuilding or transpiling a circuit, or retuning QAOA parameters after an information update.
+- It will not establish end-to-end real-time performance including repeated measurements, classical-quantum data transfer, decoding, and decision latency.
+- Solution quality for an offline frozen instance cannot by itself establish performance in an online delivery operation with sequential information updates.
+
+**External validity**
+
+- Results may depend on the selected demand distribution, study area, traffic conditions, vehicle assumptions, model parameters, and seeds.
+- External validity therefore requires evaluation on multiple governed instances that vary demand distributions, customer and vehicle counts, time-window tightness, charging conditions, and traffic scenarios, including held-out instances where applicable.
+
 ## Methodology overview
 
 ```mermaid
