@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/types_file.xsd">
+    <!--
+      Tokyo motorized-network whitelist, version 1.
+
+      Type identifiers and priorities follow SUMO 1.24.0
+      data/typemap/osmNetconvert.typ.xml. Access is restricted to the
+      motorized vehicle classes governed by sumo_network.yml. Supported OSM
+      access tags are processed according to the pinned netconvert
+      configuration. Generated permissions must be audited to ensure that
+      they do not exceed the baseline permissions defined here.
+
+      speed, numLanes, and oneway are intentionally absent. Their absence is
+      not a validation mechanism because netconvert may apply importer-level
+      or global defaults. In particular, an unresolved oneway value may
+      produce a one-direction edge, while unresolved speed and numLanes may
+      fall back to 13.89 m/s and one lane. Before netconvert, the governed
+      preprocessing validator must reject every retained way that lacks an
+      approved value and provenance for each required attribute. After
+      netconvert, the generated network must be audited for unapproved
+      default-derived values.
+
+      Priorities are retained from the pinned SUMO typemap because they may
+      affect junction right-of-way computation. They are not interpreted as
+      empirical road-importance scores.
+    -->
+
+    <!-- Shared motor roads retained by the initial network profile. -->
+    <type id="highway.motorway"       priority="14" allow="passenger taxi bus coach delivery truck motorcycle"/>
+    <type id="highway.trunk"          priority="13" allow="passenger taxi bus coach delivery truck motorcycle moped"/>
+    <type id="highway.primary"        priority="12" allow="passenger taxi bus coach delivery truck motorcycle moped"/>
+    <type id="highway.secondary"      priority="11" allow="passenger taxi bus coach delivery truck motorcycle moped"/>
+    <type id="highway.tertiary"       priority="10" allow="passenger taxi bus coach delivery truck motorcycle moped"/>
+    <type id="highway.motorway_link"  priority="9"  allow="passenger taxi bus coach delivery truck motorcycle"/>
+    <type id="highway.trunk_link"     priority="8"  allow="passenger taxi bus coach delivery truck motorcycle moped"/>
+    <type id="highway.primary_link"   priority="7"  allow="passenger taxi bus coach delivery truck motorcycle moped"/>
+    <type id="highway.secondary_link" priority="6"  allow="passenger taxi bus coach delivery truck motorcycle moped"/>
+    <type id="highway.tertiary_link"  priority="5"  allow="passenger taxi bus coach delivery truck motorcycle moped"/>
+    <type id="highway.unclassified"   priority="4"  allow="passenger taxi bus coach delivery truck motorcycle moped"/>
+    <type id="highway.residential"    priority="3"  allow="passenger taxi bus coach delivery truck motorcycle moped"/>
+    <type id="highway.living_street"  priority="2"  allow="passenger taxi bus coach delivery truck motorcycle moped"/>
+    <type id="highway.service"        priority="1"  allow="passenger taxi bus coach delivery truck motorcycle moped"/>
+
+    <!-- SUMO compound service types and dedicated motorized bus links. -->
+    <type id="highway.service|psv"  priority="1" allow="bus delivery"/>
+    <type id="highway.service|bus"  priority="1" allow="bus delivery"/>
+    <type id="highway.bus_guideway" priority="1" allow="bus"/>
+    <type id="highway.busway"       priority="1" allow="bus"/>
+
+    <!-- Known SUMO 1.24.0 OSM types outside the initial motorized scope. -->
+    <type id="highway.unsurfaced"   discard="true"/>
+    <type id="highway.track"        discard="true"/>
+    <type id="highway.footway"      discard="true"/>
+    <type id="highway.pedestrian"   discard="true"/>
+    <type id="highway.path"         discard="true"/>
+    <type id="highway.bridleway"    discard="true"/>
+    <type id="highway.cycleway"     discard="true"/>
+    <type id="highway.step"         discard="true"/>
+    <type id="highway.steps"        discard="true"/>
+    <type id="highway.stairs"       discard="true"/>
+    <type id="highway.raceway"      discard="true"/>
+    <type id="highway.ford"         discard="true"/>
+    <type id="highway.construction" discard="true"/>
+    <type id="railway.preserved"    discard="true"/>
+    <type id="railway.tram"         discard="true"/>
+    <type id="railway.subway"       discard="true"/>
+    <type id="railway.light_rail"   discard="true"/>
+    <type id="railway.rail"         discard="true"/>
+    <type id="railway.highspeed"    discard="true"/>
+    <type id="railway.construction" discard="true"/>
+</types>

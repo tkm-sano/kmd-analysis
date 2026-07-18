@@ -1,20 +1,26 @@
 schema_version: 1
-config_id: ota_ward_sumo_network_20260716_v3
-config_version: 3
+config_id: ota_ward_sumo_network_20260716_v8
+config_version: 8
 decision_date: "2026-07-18"
-change_summary: Report all attribute states and gate structural and formal networks by road criticality
+change_summary: Fix structural imputation rules, formal admissibility, oneway resolution, access precedence, and use-specific vClass profiles
 policy_document: 05_src/traffic_simulation/network_attribute_governance.md
 status:
   specification: approved
   implementation: pending
+  runtime_validation: failed_governance_fixture
   formal_build_ready: false
   pending_requirements:
-    - custom_typemap
     - attribute_governance_implementation
     - external_source_acquisition_and_matching
     - structural_placeholder_values
     - junction_join_review
     - reviewed_junction_join_node_file
+    - governed_osm_materialization_validator
+    - sumo_vehicle_input_validator
+    - netconvert_log_and_output_auditor
+    - osm_access_fixture_runtime_tests
+    - access_permission_mapping_resolution
+    - design_decision_sensitivity_execution
 
 study_area:
   region_id: ota_ward
@@ -95,6 +101,8 @@ osm_attribute_baseline_audit:
       - unclassified
       - living_street
       - service
+      - bus_guideway
+      - busway
   simple_value_validators:
     lanes: positive_integer
     maxspeed: positive_plain_numeric_kmh
@@ -148,14 +156,88 @@ vehicle_scope:
     - ship
   shared_motor_roads_are_retained: true
   multimodal_expansion_requires_new_config_version: true
+  use_profiles:
+    delivery_routing:
+      vclasses:
+        - delivery
+        - truck
+      dedicated_bus_links: excluded_in_v1_explicit_delivery_exception_requires_new_governed_compound_type_and_config_version
+    background_traffic:
+      vclasses:
+        - passenger
+        - taxi
+        - bus
+        - coach
+        - delivery
+        - truck
+        - motorcycle
+      moped_status: retained_in_network_scope_but_not_generated_without_separate_demand_rationale
+
+typemap_policy:
+  policy_id: tokyo_motorized_v1
+  path: reproducibility/config/traffic_simulation/osm_tokyo_motorized.typ.xml
+  sha256: 4e4273a5a73b8d1298751aeee141a387dc6a1524d64ed8ddd704cae8db0af590
+  design_record: 03_data/metadata/acquisition/20260718_sumo_tokyo_motorized_typemap_design.md
+  source_basis:
+    project: eclipse-sumo/sumo
+    version: "1.24.0"
+    path: data/typemap/osmNetconvert.typ.xml
+    url: https://raw.githubusercontent.com/eclipse-sumo/sumo/v1_24_0/data/typemap/osmNetconvert.typ.xml
+    sha256: e3de4b6aadd2e6bf0d0f6186d84c621bbf807e65b81bba9aec8fe0d7b0d77786
+  inclusion_policy: explicit_whitelist
+  enforcement_status: pending_build_pipeline
+  unknown_type_policy: reject_unmatched_and_report_explicit_discard
+  access_processing_scope: supported_tags_in_pinned_netconvert_configuration
+  absence_of_type_defaults_is_validation: false
+  typemap_must_not_default:
+    - lanes
+    - maxspeed
+    - oneway
+  retained_shared_highway_types:
+    - motorway
+    - motorway_link
+    - trunk
+    - trunk_link
+    - primary
+    - primary_link
+    - secondary
+    - secondary_link
+    - tertiary
+    - tertiary_link
+    - residential
+    - unclassified
+    - living_street
+    - service
+  retained_compound_type_ids:
+    - highway.service|psv
+    - highway.service|bus
+  retained_dedicated_motorized_type_ids:
+    - highway.bus_guideway
+    - highway.busway
 
 access_resolution:
-  explicit_tag_priority:
-    - motor_vehicle
-    - vehicle
+  osm_override_application_order:
     - access
+    - vehicle
+    - motor_vehicle
+    - class_specific
+    - direction_specific
+    - lane_specific
+  final_permission_composition: intersection_of_research_scope_and_resolved_osm_permissions
+  resolve_osm_overrides_before_research_scope_intersection: true
+  unknown_or_unsupported_rule: unresolved
+  unsupported_conditional_rule: unresolved
+  class_specific_tags_to_validate:
+    - motorcar
+    - hgv
+    - bus
+    - delivery
+  lane_specific_tags_to_validate:
+    - access:lanes
+    - vehicle:lanes
   service_is_classification_not_permission_override: true
-  most_specific_explicit_restriction_wins: true
+  most_specific_explicit_restriction_expected: true
+  exact_precedence_requires_pinned_runtime_fixture_validation: true
   evidence_priority:
     - versioned_source_backed_override
     - explicit_osm_attribute
@@ -163,6 +245,191 @@ access_resolution:
   structural_placeholder_profiles:
     - structural
   allow_silent_typemap_fallback: false
+  enforcement:
+    compute_expected_permissions_before_netconvert: true
+    compare_expected_with_generated_permissions: true
+    patch_generated_permissions_if_runtime_importer_mismatch: true
+    patch_operation: intersection_only
+    patch_must_not_expand_typemap_baseline: true
+    revalidate_connections_after_patch: true
+  lane_specific_access:
+    enabled: true
+    pinned_netconvert_option: osm.lane-access
+    runtime_fixture_validation_required: true
+    fixture_tags:
+      - access
+      - vehicle
+      - motor_vehicle
+      - motorcar
+      - hgv
+      - bus
+      - delivery
+      - access:lanes
+      - vehicle:lanes
+  runtime_fixture:
+    path: 05_src/traffic_simulation/validation/fixtures/osm_typemap_governance.osm.xml
+    last_run_date: "2026-07-18"
+    netconvert_version: "1.24.0"
+    status: failed
+    observed_failures:
+      - unknown_bus_compound_type
+      - generated_bicycle_permission_exceeds_typemap_baseline
+      - motor_vehicle_no_delivery_yes_did_not_restrict_as_expected
+      - vehicle_lanes_introduced_private_permission
+      - missing_attributes_accepted_with_global_defaults
+      - missing_oneway_accepted_as_one_direction_edge
+      - osm_defaults_annotation_did_not_report_missing_oneway
+
+vehicle_input_policy:
+  allowed_vclasses:
+    - passenger
+    - taxi
+    - bus
+    - coach
+    - delivery
+    - truck
+    - motorcycle
+    - moped
+  forbidden_vclasses:
+    - ignoring
+    - custom1
+    - custom2
+    - evehicle
+  inspect_elements:
+    - vType
+    - vehicle
+    - flow
+    - trip
+  reject_ungoverned_vclass: true
+  validate_referenced_vtype: true
+  ev_delivery_representation:
+    road_vclass: delivery
+    powertrain_model: sumo_battery_device
+    evehicle_vclass_allowed: false
+    rationale: vClass governs road permissions while the battery device governs electric powertrain behavior
+
+design_decision_assessment:
+  impact_ranking_before_sensitivity: prohibited
+  items:
+    priority:
+      category: design_choice_with_regional_validity_limit
+      source: sumo_1_24_0_osmNetconvert_typemap
+      regional_validity: not_empirically_calibrated_for_tokyo
+      primary_effects:
+        - junction_right_of_way
+        - stops
+        - delay
+        - realized_travel_time
+      does_not_directly_change_static_route_cost_when_priority_factor_is_zero: true
+    road_type_whitelist:
+      category: research_scope_design_choice
+      primary_effects:
+        - network_connectivity
+        - reachable_customers
+        - route
+        - distance
+    vclass_permissions:
+      category: vehicle_access_design_choice
+      primary_effects:
+        - reachable_edges_by_vclass
+        - reachable_customers_by_vclass
+        - route
+        - distance
+    dedicated_bus_links:
+      category: network_representation_design_choice
+      delivery_access_allowed: false
+      primary_effects:
+        - background_bus_network
+        - prohibited_delivery_entry
+    typemap_attribute_omission:
+      category: evidence_governance_design_choice
+      rationale: require an adopted value and provenance instead of an unrecorded typemap value
+    incomplete_pre_and_post_validators:
+      category: implementation_and_quality_assurance_risk
+      severity: high
+      blocks_formal_build: true
+    governance_fixture_values:
+      category: synthetic_test_input
+      representative_of_tokyo: false
+      isolated_from_formal_experiments: true
+      assessment: fit_for_behavioral_testing_only
+
+design_sensitivity:
+  status: factors_preregistered_execution_pending
+  prohibit_post_hoc_condition_selection: true
+  thresholds:
+    status: pending_preregistration_with_rationale
+    do_not_infer_small_effect_from_unspecified_threshold: true
+  effect_size:
+    primary: relative_change_from_baseline
+    zero_baseline_policy: report_absolute_change_and_mark_relative_change_undefined
+  factors:
+    priority:
+      baseline: sumo_1_24_0
+      alternatives:
+        - id: uniform_priority_1
+          value_for_all_retained_types: 1
+        - id: simplified_three_level_hierarchy
+          values:
+            "3":
+              - highway.motorway
+              - highway.motorway_link
+              - highway.trunk
+              - highway.trunk_link
+              - highway.primary
+              - highway.primary_link
+            "2":
+              - highway.secondary
+              - highway.secondary_link
+              - highway.tertiary
+              - highway.tertiary_link
+            "1":
+              - highway.unclassified
+              - highway.residential
+              - highway.living_street
+              - highway.service
+              - highway.service|psv
+              - highway.service|bus
+              - highway.bus_guideway
+              - highway.busway
+      primary_metrics:
+        - junction_waiting_time
+        - stop_count
+        - travel_time
+        - delay
+    service_permissions:
+      baseline: governed_motorized_allow_set
+      alternatives:
+        - delivery_disallowed
+      primary_metrics:
+        - delivery_reachable_edge_count
+        - reachable_customer_count
+        - route_distance
+    dedicated_bus_links:
+      baseline: retained_for_bus_only
+      alternatives:
+        - excluded_from_network
+      primary_metrics:
+        - bus_reachable_edge_count
+        - delivery_entry_violation_count
+        - connected_component_count
+    track_inclusion:
+      baseline: excluded
+      alternatives:
+        - retain_only_with_explicit_governed_motor_vehicle_evidence
+      primary_metrics:
+        - connected_component_count
+        - reachable_customer_count
+        - route_distance
+    unresolved_attributes:
+      baseline: stop_before_netconvert
+      alternatives:
+        - structural_profile_only_explicit_placeholder
+      primary_metrics:
+        - fallback_intrusion_count
+        - direction_difference_count
+        - capacity_difference
+        - travel_time_difference
 
 attribute_resolution:
   governed_attributes:
@@ -179,6 +446,14 @@ attribute_resolution:
     - reason
     - reviewer
     - reviewed_at
+  derived_validated_model_requires:
+    - model_id
+    - model_version
+    - training_population
+    - validation_population
+    - validation_metrics
+    - acceptance_rule
+    - validation_record
   value_states:
     - observed
     - authoritative_external
@@ -186,6 +461,7 @@ attribute_resolution:
     - derived_osm_rule
     - reviewed_manual
     - approved_assumption
+    - derived_validated_model
     - structural_placeholder
     - unresolved
     - conflict
@@ -201,6 +477,21 @@ attribute_resolution:
     record_all_invalid_values: true
     allow_silent_sumo_defaults: false
     allow_silent_typemap_defaults: false
+    pre_netconvert_materialization_gate:
+      required_for_every_retained_way:
+        - lanes
+        - maxspeed
+        - oneway
+      required_provenance_fields:
+        - adopted_value
+        - value_state
+        - source_registry_id
+        - derivation_method
+      reject_states:
+        - unresolved
+        - conflict
+        - invalid
+      list_structural_placeholders_separately: true
     report_path: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_road_attribute_audit.csv
     report_fields:
       - osm_way_id
@@ -226,6 +517,8 @@ attribute_resolution:
         research_results_allowed: false
       formal:
         allow_structural_placeholder: false
+        allow_derived_validated_model: true
+        require_validation_record_for_derived_model: true
         require_zero_states_on_critical_roads:
           - unresolved
           - conflict
@@ -239,6 +532,16 @@ network_profiles:
     purpose: connectivity_visualization_smoke_and_provisional_routing
     output_subdirectory: structural
     research_results_allowed: false
+    allowed_uses:
+      - topology_validation
+      - connectivity_validation
+      - permission_validation
+      - visualization
+    prohibited_uses:
+      - travel_time_evaluation
+      - capacity_evaluation
+      - delivery_performance
+      - classical_qaoa_comparison
   formal:
     purpose: calibration_validation_delivery_and_classical_qaoa_experiments
     output_subdirectory: formal
@@ -294,11 +597,22 @@ attribute_rules:
       - implied_osm_rule
       - public_regulation
       - road_traffic_census
+    explicit_yes: materialize_yes
+    explicit_no: materialize_no
+    explicit_reverse: reverse_way_direction_and_materialize_yes
+    roundabout_without_explicit_value: derived_yes_osm_rule
+    motorway_without_explicit_value: derived_yes_osm_rule
+    motorway_link_without_explicit_value: unresolved
     ordinary_road_without_oneway_tag: derived_bidirectional_osm_rule
+    materialize_derived_bidirectional_as: "no"
+    statistical_placeholder_allowed: false
+    conflict_policy: stop
+    absent_typemap_value_may_fallback_to: oneway_true
+    require_materialized_value_before_netconvert: true
   lanes:
     check_order:
-      - osm_lanes
       - osm_directional_lane_tags
+      - osm_lanes
       - road_traffic_census
       - road_ledger
       - scoped_aerial_imagery_review
@@ -311,7 +625,8 @@ attribute_rules:
   maxspeed:
     check_order:
       - explicit_osm
-      - directional_and_conditional_osm
+      - directional_osm
+      - conditional_osm
       - jartic_traffic_regulations
       - road_traffic_census
       - other_public_authority_source
@@ -329,6 +644,47 @@ attribute_rules:
     - attribute_definition
     - license
     - match_confidence
+
+structural_imputation:
+  status: rule_fixed_values_pending_data_summary
+  allowed_attributes:
+    - lanes
+    - maxspeed
+  prohibited_attributes:
+    - oneway
+    - access
+  applicable_profile: structural
+  applicable_criticality: noncritical_only
+  lanes:
+    source_population: explicit_osm_values_in_fixed_ota_ward_extract
+    grouping:
+      - highway
+      - oneway_status
+    statistic: unique_mode
+    minimum_sample_size: 30
+    minimum_mode_share: 0.50
+    tie_policy: unresolved
+    insufficient_evidence_policy: unresolved
+    prohibit_automatic_fallback_to_adjacent_highway_class: true
+  maxspeed_kmh:
+    source_population: explicit_numeric_osm_values_in_fixed_ota_ward_extract
+    grouping:
+      - highway
+    statistic: unique_mode
+    minimum_sample_size: 30
+    minimum_mode_share: 0.50
+    tie_policy: unresolved
+    insufficient_evidence_policy: unresolved
+    prohibit_automatic_fallback_to_adjacent_highway_class: true
+  record:
+    - source_extract_sha256
+    - group
+    - sample_size
+    - distribution
+    - selected_mode
+    - mode_share
+    - decision
+  formal_use_allowed: false
 
 road_criticality:
   pre_critical:
@@ -474,6 +830,8 @@ netconvert:
     ignore-errors.edge-type: false
     xml-validation: local
     xml-validation.net: local
+    osm.lane-access: true
+    osm.annotate-defaults: true
   candidate_generation_overrides:
     junctions.join: true
     junctions.join-dist: 10.0
@@ -481,6 +839,21 @@ netconvert:
   formal_conversion_options:
     junctions.join: false
     node-files: reproducibility/config/traffic_simulation/ota_ward_junction_joins.nod.xml
+
+routing:
+  baseline_objective: travel_time
+  common_options:
+    weights.priority-factor: 0.0
+  priority_policy:
+    direct_priority_penalty_in_static_route_choice: false
+    expected_direct_effects:
+      - none_when_priority_factor_is_zero
+    expected_simulation_effects:
+      - junction_right_of_way
+      - waiting_time
+      - stops
+      - realized_travel_time
+    rerouting_with_realized_travel_times_may_change_routes_indirectly: true
 
 traffic_lights:
   source_priority:
@@ -507,6 +880,20 @@ failure_policy:
   allow_absolute_host_paths: false
   overwrite_outputs: false
   abort_on_any_missing_osm_attribute: false
+  abort_on_unmaterialized_governed_attribute: true
+  abort_on_forbidden_or_ungoverned_vclass: true
+  abort_on_generated_permission_exceeding_typemap: true
+  abort_on_unapproved_default_derived_value: true
+  netconvert_log_audit:
+    fatal_patterns:
+      - Unknown type
+      - Unknown compound type
+      - Discarding unknown compound
+      - Could not add edge
+    reconcile_or_fail_patterns:
+      - Discarding edge
+    explicit_typemap_discards_are_reportable_not_fatal: true
+    fail_on_unreconciled_exclusion: true
   abort_on_invalid_attribute: true
   abort_on_attribute_conflict: true
   abort_on_direction_resolution_failure: true
@@ -514,6 +901,22 @@ failure_policy:
   abort_formal_on_unresolved_critical_attribute: true
   abort_formal_on_low_confidence_critical_match: true
   abort_formal_on_structural_placeholder: true
+  pre_netconvert_formal_zero_counts:
+    - unresolved_oneway
+    - unresolved_lanes
+    - unresolved_maxspeed
+    - unresolved_access
+    - access_conflicts
+    - invalid_lane_counts
+    - unknown_conditional_rules
+  post_netconvert_zero_counts:
+    - unmanaged_vclasses
+    - unexpected_oneway_edges
+    - unexpected_reverse_edges
+    - lane_count_mismatches
+    - speed_mismatches
+    - permission_mismatches
+    - untracked_edges
 
 provenance:
   distinguish_value_classes:
@@ -523,6 +926,7 @@ provenance:
     - derived_osm_rule
     - reviewed_manual
     - approved_assumption
+    - derived_validated_model
     - structural_placeholder
     - unresolved
     - conflict

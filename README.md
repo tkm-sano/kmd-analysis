@@ -340,6 +340,8 @@ See [`visualization/README.md`](05_src/traffic_simulation/visualization/README.m
 
 ## Repository guide
 
+For a one-screen view of the intended final layout, artifact flow, Git boundaries, and not-yet-implemented locations, see the [final target repository structure](00_project_management/folder_structure.md#final-target-structure).
+
 | Path | Contents |
 |---|---|
 | [`00_project_management/`](00_project_management/) | Environment, folder policy, and research management |
@@ -356,6 +358,7 @@ See [`visualization/README.md`](05_src/traffic_simulation/visualization/README.m
 
 ## Key documents
 
+- [Traffic-simulation research study guide](00_project_management/traffic_simulation_study_guide.md)
 - [Traffic-simulation implementation plan](05_src/traffic_simulation/implementation_plan.md)
 - [Road-attribute and external-data matching governance](05_src/traffic_simulation/network_attribute_governance.md)
 - [Synthetic-demand and non-optimizing-baseline specification](05_src/traffic_simulation/demand/baseline_demand_and_comparator.md)

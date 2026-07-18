@@ -864,14 +864,14 @@ reproducibility/outputs/traffic_simulation/visualization/
 
 #### 9.5.3 最初に固定する変換規則
 
-次の変換規則を2026年7月18日の初期規則として採用する。`sumo_network.yml`を正本とし、実行時の追加引数やPythonコードの暗黙値で変更しない。設定ファイルと補助表はまだ未実装であり、本節は実装時に従う決定済み仕様を示す。
+次の変換規則を2026年7月18日の初期規則として採用する。`sumo_network.yml`を正本とし、実行時の追加引数やPythonコードの暗黙値で変更しない。設定ファイルと自動車系typemapは実装済みである。typemapの属性省略だけではSUMOのimporter-levelまたはglobal defaultを防げないため、閉じたホワイトリストの実効性は前処理validator、SUMO車両入力validator、変換ログ・生成ネットワーク監査の実装後に成立する。これらの属性ガバナンス処理、補助表、変換・検証パイプラインはまだ未実装であり、本節は後続実装が従う決定済み仕様を示す。
 
 ##### 入力形式と左側通行
 
 - 登録済み大田区抽出PBFを入力原典とし、期待SHA-256を実行前に照合する。
 - `netconvert`へPBFを直接渡さない。`analysis`側の前処理で固定版`osmium`を使い、検証済みPBFからOSM XMLを生成する。
 - OSM XMLは中間生成物としてGitへ登録せず、PBF SHA-256、`osmium`版、変換コマンド、OSM XML SHA-256をmanifestへ保存する。
-- 日本の法定通行方向に合わせ、正式変換では`--lefthand=true`を固定する。これは道路の一方通行方向を反転する設定ではなく、左側通行を前提とするレーン・交差点構造を生成する設定である。
+- 日本の法定通行方向に合わせ、正式変換では`--lefthand=true`を固定する。`netconvert`の既定値は右側通行であるため、暗黙値へ委ねない。これは道路の一方通行方向を反転する設定ではなく、左側通行を前提とするレーン・交差点構造を生成する設定である。
 
 ##### 採用する交通モード
 
@@ -883,15 +883,33 @@ passenger,taxi,bus,coach,delivery,truck,motorcycle,moped
 
 歩行者、自転車、鉄道、船舶専用リンクは初期道路網から除外する。ただし、自動車との共用道路を、歩行者・自転車が通行可能であることだけを理由に除外しない。緊急車両、行政車両、路面電車等を含むマルチモーダル版は初期版へ暗黙に追加せず、別設定版として構築する。採否はOSMの`access`、`vehicle`、`motor_vehicle`、`service`とSUMO vehicle classの変換結果を使って判定し、道路種別名だけで決定しない。
 
+SUMO需要入力では上記8クラスだけを許可し、lane permissionsを迂回する`ignoring`、意味を管理していない`custom1`と`custom2`、typemap対象外の`evehicle`を禁止する。EV配送車は`vClass="delivery"`で道路利用区分を表し、電動パワートレインはSUMO battery deviceで別に設定する。`vType`、`vehicle`、`flow`、`trip`の直接指定と参照先vTypeを変換・シミュレーション前に検査する。
+
+8クラスはネットワーク全体の管理集合であり、全typeが8クラスを許可する意味ではない。通常道路は8クラス、motorwayとmotorway_linkはmopedを除く7クラス、service compoundはbusとdeliveryの2クラス、専用バス道路はbusだけを許可する。
+
+用途別の車両生成集合は管理集合と分ける。配送経路用途は`delivery`と`truck`、初期背景交通用途は`passenger`、`taxi`、`bus`、`coach`、`delivery`、`truck`、`motorcycle`とする。`moped`は道路permissionsの管理対象には残すが、需要根拠を別途固定するまで背景交通として生成しない。専用バス道路は現行v1では配送経路から除外し、配送例外を採用する場合は新しいgoverned compound type、fixtureおよび設定版を必要とする。
+
 ##### 道路属性の証拠優先順位
 
 道路属性、外部データ対応、重要度、空中写真、人手レビュー、構造確認用placeholder、正式実験品質ゲートの文章上の正本は`05_src/traffic_simulation/network_attribute_governance.md`とする。機械可読設定の正本は`sumo_network.yml`とし、両者が矛盾する場合は変換を停止する。
 
 欠損方針は`report_then_gate_by_criticality`に固定する。OSM属性の欠損だけでは一律停止せず、欠損、補完、未解決、矛盾、不正、導出値を全件記録する。構造確認用ネットワークでは非重要道路に限り版管理した`structural_placeholder`を許容するが、正式実験用ネットワークでは最終配送経路、較正区間、独立検証区間、事前・事後重要道路の`unresolved`、`conflict`、`invalid`をゼロにし、`structural_placeholder`を残さない。
 
+ただし、これは未解決属性を`netconvert`へ渡してよいという意味ではない。保持対象wayは変換前に`lanes`、`maxspeed`、`oneway`の採用値と来歴をすべてmaterializeし、不足時はprofileにかかわらず停止する。一般道路をOSM規則から双方向と導出した場合も`oneway=no`を変換用XMLへ明示する。欠損のまま渡すと一方向edgeが生成され得るうえ、`osm.annotate-defaults`がこのfallbackを記録しないことをfixtureで確認している。構造確認用で許可される`structural_placeholder`も採用値と来歴を持たせ、他の値状態と分離して一覧化する。変換後はpermissionsとdefault由来値を監査する。
+
+`oneway`には統計的placeholderを使わない。明示値`yes`、`no`、`-1`を優先し、`-1`はway方向を反転して`yes`へmaterializeする。明示値がないroundaboutとmotorwayはOSM暗黙規則による`yes`、motorway_linkは`unresolved`、その他の一般道路はOSMデータ消費規則による`no`とする。構造確認用の`lanes`と`maxspeed`だけは、固定大田区抽出の明示値から算出した一意な最頻値を使用できる。`lanes`は道路種別と方向状態、`maxspeed`は道路種別で集約し、標本数30以上かつ最頻値比率50%以上を要求する。同率、標本不足、比率不足では近隣道路種別へ移らず`unresolved`とする。この代表値を正式実験へ使用しない。
+
+OSM accessタグは`access`、`vehicle`、`motor_vehicle`、車種別、方向別、lane別の順に具体的な規則で上書きした後、研究対象vClass集合との積集合を取る。前処理でway・方向・laneごとの期待permissionsを保存し、SUMO出力と比較する。固定SUMO importerと一致しない場合に許可する後処理は期待集合との積集合による縮小だけとし、typemapの基本集合を拡張しない。補正後に接続を再検査し、不一致が残れば停止する。
+
 外部データを単純最近傍で自動採用せず、距離、方向、重複率、路線名・番号、道路分類、立体階層を組み合わせる。高架・地上道路の重複、上下線・側道の競合、複雑交差点等は低信頼または要レビューとし、重要道路では人手確認を必須とする。低信頼な外部値は構造確認用ネットワークにも採用しない。
 
 OSM turn restrictionは可能な限り保持し、除外または変換不能件数を品質サマリーへ記録する。具体的なデータ源、属性別確認順、値状態、停止・警告条件、空中写真の制約は正本文書に従う。
+
+##### 設計判断と感度分析
+
+`priority`、道路ホワイトリスト、permissions、専用バス道路、属性省略、validator未完成、fixture合成値を同じ恣意性尺度で順位付けしない。`priority`は東京への地域適合性を要する設計判断、ホワイトリストとpermissionsは研究範囲・通行条件の設計判断、validator未完成は実装リスク、fixtureは正式実験から隔離した合成テスト入力として区別する。
+
+静的経路探索では`weights.priority-factor=0`を固定し、priorityを経路コストへ直接加えない。priority感度では交差点待ち時間、停止、遅延、旅行時間を確認する。ホワイトリストとpermissionsの感度では接続成分、利用可能edge、到達可能顧客、経路、距離を確認する。比較条件、指標、閾値は結果確認前に登録し、事後的に都合のよい条件を採用しない。代替条件の機械可読な正本は`sumo_network.yml`の`design_sensitivity`とする。
 
 ##### ジャンクション統合
 
@@ -916,6 +934,8 @@ OSM turn restrictionは可能な限り保持し、除外または変換不能件
 - Uターン接続は原則生成せず、行き止まりで退出に必要な場合だけ許可する。実装時に固定SUMO版の対応オプションを`netconvert --help`で検証し、意図と生成オプションをテストする。
 - 孤立edgeは自動削除せず、連結成分として品質サマリーへ出力してから採否を判断する。
 - `ignore-errors`は使用せず、入力または変換エラー時はfail-fastとする。XML検証はネットワークを必要としないローカル検証に固定する。
+- lane単位のaccess制約を処理する`osm.lane-access=true`と、default利用の監査を補助する`osm.annotate-defaults=true`を固定する。
+- `Unknown type`、`Unknown compound type`、`Could not add edge`は停止対象とする。`Discarding edge`は明示的にdiscardしたtypeと全件照合し、説明できない除外が1件でもあれば停止する。
 
 ##### 設定・来歴に必須の項目
 
@@ -975,24 +995,25 @@ analysisサービス
 2. 登録済みOSM出典台帳行、抽出PBF、品質サマリーの整合とSHA-256を再検証する。
 3. 使用中のSUMO、`netconvert`、`osmium`の版をDocker内で取得する。
 4. `sumo_network.yml`へ変換規則を固定し、設定自体のスキーマ検証を作る。
-5. 自動車系保持対象wayの属性を検査し、欠損、導出、補完、未解決、矛盾、不正、重要度、対応付け信頼度のレポートを生成する。
+5. 自動車系保持対象wayの属性を検査し、欠損、導出、補完、未解決、矛盾、不正、重要度、対応付け信頼度のレポートを生成する。変換用OSM XMLへ進む全wayについて`lanes`、`maxspeed`、`oneway`の採用値と来歴が揃わなければ停止する。
 6. 構造確認用と正式実験用の品質ゲートを別々に評価し、停止・警告理由を保存する。
 7. `osm_tokyo_motorized.typ.xml`、ジャンクション統合レビュー表、確認済み正式統合入力を作成して相互整合を検証する。
 8. `build_sumo_network.py prepare`を実装し、検証済みPBFからOSM XMLを生成した後、指定ネットワークprofileの`.netccfg`とbuild manifestを機械生成する。
 9. 候補生成専用runでジャンクション統合候補を出力し、人がレビューした結果だけを正式統合入力へ反映する。正式runでは自動統合が無効であることを検証する。
-10. 実PBFや外部通信を必要としない`test_sumo_network.py`を作り、コマンド生成、属性状態、重要度別ゲート、警告、入力不整合、出力検証、失敗時清掃を検査する。
-11. `build_sumo_network.py validate`を実装し、`net.xml`と実行ログの構造・来歴検証およびbuild summary生成を行う。
-12. `docker/run_sumo_network_build.sh`を実装し、prepare、`sumo`サービスでのconvert、validateをfail-fastで直列実行する。
-13. Docker内で単体テストを通した後、まず構造確認用ネットワークを生成する。
-14. 構造確認用ネットワークから暫定経路と事後重要道路を抽出し、重要道路の属性と低信頼対応をレビューする。
-15. 正式品質ゲートを満たした後、同じ固定入力から正式実験用ネットワークを生成する。
-16. 生成した各`net.xml`を`sumo`サービスのSUMO CLIで無需要状態として読み込み、終了コードと警告を保存する。
-17. ノード、エッジ、レーン、ジャンクション、接続、信号、内部エッジ、孤立成分を`analysis`サービスで機械集計する。
-18. 高速道路、主要幹線、行政界端、橋梁・トンネル、羽田空港・臨海部等の主要接続を構造検査する。
-19. `render_sumo_network.py`でOSM道路とSUMO道路網を重ね、欠落、切断、過剰統合、信号位置をレビューする。
-20. 入力SHA-256、設定SHA-256、実行コマンド、SUMOイメージdigest、版、件数、警告、失敗、修正、恣意性を生成記録Markdownへ残す。
-21. 生データ、`.netccfg`、manifest、`net.xml`、品質サマリー、HTMLがGit除外対象であることを確認する。
-22. 全完了条件を満たした後だけ、`research_stage.yml`の`sumo_network`を`completed`へ変更し、次工程を`in_progress`へ進める。
+10. 実PBFや外部通信を必要としない`test_sumo_network.py`を作り、コマンド生成、属性状態、重要度別ゲート、禁止vClass、警告、入力不整合、出力検証、失敗時清掃を検査する。
+11. way単位とlane単位のaccessタグを含む小規模OSM fixtureをSUMO 1.24.0で変換し、typemapの基本permissionsを超えないことと、期待した制限が反映されることを検査する。
+12. `build_sumo_network.py validate`を実装し、`net.xml`と実行ログの未知type、説明不能なedge除外、permissions、default由来値、構造、来歴を検証してbuild summaryを生成する。
+13. `docker/run_sumo_network_build.sh`を実装し、prepare、`sumo`サービスでのconvert、validateをfail-fastで直列実行する。
+14. Docker内で単体テストを通した後、まず構造確認用ネットワークを生成する。
+15. 構造確認用ネットワークから暫定経路と事後重要道路を抽出し、重要道路の属性と低信頼対応をレビューする。
+16. 正式品質ゲートを満たした後、同じ固定入力から正式実験用ネットワークを生成する。
+17. 生成した各`net.xml`を`sumo`サービスのSUMO CLIで無需要状態として読み込み、終了コードと警告を保存する。
+18. ノード、エッジ、レーン、ジャンクション、接続、信号、内部エッジ、孤立成分を`analysis`サービスで機械集計する。
+19. 高速道路、主要幹線、行政界端、橋梁・トンネル、羽田空港・臨海部等の主要接続を構造検査する。
+20. `render_sumo_network.py`でOSM道路とSUMO道路網を重ね、欠落、切断、過剰統合、信号位置をレビューする。
+21. 入力SHA-256、設定SHA-256、実行コマンド、SUMOイメージdigest、版、件数、警告、失敗、修正、恣意性を生成記録Markdownへ残す。
+22. 生データ、`.netccfg`、manifest、`net.xml`、品質サマリー、HTMLがGit除外対象であることを確認する。
+23. 全完了条件を満たした後だけ、`research_stage.yml`の`sumo_network`を`completed`へ変更し、次工程を`in_progress`へ進める。
 
 利用者向けコマンドはprofileを必須とし、次の2つに分離する。
 
@@ -1048,6 +1069,9 @@ OSMの信号位置を利用しても実際の現示、サイクル、オフセ�
 
 - [ ] `sumo_network.yml`に変換規則と設定版が固定されている。
 - [ ] 欠損、導出、補完、未解決、矛盾、不正、重要度、対応付け信頼度が全件記録される。
+- [ ] 保持対象の全wayについて`lanes`、`maxspeed`、`oneway`の採用値と来歴が変換前に検証され、不足時に停止する。
+- [ ] `ignoring`、`custom1`、`custom2`および管理対象外vClassが全SUMO入力で拒否される。
+- [ ] way単位・lane単位access fixtureのSUMO 1.24.0変換試験が成功し、生成permissionsがtypemapの基本permissionsを超えない。
 - [ ] 構造確認用と正式実験用の設定ID、出力、manifest、SHA-256が分離されている。
 - [ ] 正式実験用の重要道路に`unresolved`、`conflict`、`invalid`、`structural_placeholder`が残っていない。
 - [ ] 重要道路の低信頼対応が人手確認され、確認者、確認日、根拠が記録されている。
@@ -1065,6 +1089,10 @@ OSMの信号位置を利用しても実際の現示、サイクル、オフセ�
 - [ ] SUMO CLIが生成ネットワークをエラーなく読み込める。
 - [ ] OSM道路とSUMO道路網の比較地図が生成され、既知の欠落・切断が記録されている。
 - [ ] 警告、除外、補完、失敗と修正、残る恣意性が生成記録に残っている。
+- [ ] 未知type、未知compound type、edge追加失敗、説明不能なedge除外、未承認default由来値がゼロである。
+- [ ] 設計判断、東京への地域適合性、実装リスク、fixture合成値が別分類で記録されている。
+- [ ] `weights.priority-factor=0`が基準経路設定と実行manifestで照合されている。
+- [ ] 事前登録した代替条件と要因別指標による設計感度分析が正式な結論前に実行されている。
 - [ ] 生成物がGitから除外され、設定、コード、テスト、記録だけがGit管理対象である。
 - [ ] 同じ入力と設定から再生成した構造件数とSHA-256が一致する、または差の理由が説明されている。
 

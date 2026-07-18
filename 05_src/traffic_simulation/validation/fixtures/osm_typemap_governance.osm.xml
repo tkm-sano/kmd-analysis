@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="research-governance-fixture">
+  <bounds minlat="35.0000" minlon="139.0000" maxlat="35.0060" maxlon="139.0010"/>
+
+  <node id="1" lat="35.0000" lon="139.0000"/>
+  <node id="2" lat="35.0000" lon="139.0010"/>
+  <node id="3" lat="35.0010" lon="139.0000"/>
+  <node id="4" lat="35.0010" lon="139.0010"/>
+  <node id="5" lat="35.0020" lon="139.0000"/>
+  <node id="6" lat="35.0020" lon="139.0010"/>
+  <node id="7" lat="35.0030" lon="139.0000"/>
+  <node id="8" lat="35.0030" lon="139.0010"/>
+  <node id="9" lat="35.0040" lon="139.0000"/>
+  <node id="10" lat="35.0040" lon="139.0010"/>
+  <node id="11" lat="35.0050" lon="139.0000"/>
+  <node id="12" lat="35.0050" lon="139.0010"/>
+
+  <way id="100">
+    <nd ref="1"/>
+    <nd ref="2"/>
+    <tag k="highway" v="residential"/>
+    <tag k="lanes" v="1"/>
+    <tag k="maxspeed" v="30"/>
+    <tag k="oneway" v="yes"/>
+    <tag k="access" v="no"/>
+    <tag k="bus" v="yes"/>
+  </way>
+
+  <way id="200">
+    <nd ref="3"/>
+    <nd ref="4"/>
+    <tag k="highway" v="residential"/>
+    <tag k="lanes" v="1"/>
+    <tag k="maxspeed" v="30"/>
+    <tag k="oneway" v="yes"/>
+    <tag k="motor_vehicle" v="no"/>
+    <tag k="delivery" v="yes"/>
+  </way>
+
+  <way id="300">
+    <nd ref="5"/>
+    <nd ref="6"/>
+    <tag k="highway" v="residential"/>
+    <tag k="lanes" v="2"/>
+    <tag k="maxspeed" v="30"/>
+    <tag k="oneway" v="yes"/>
+    <tag k="access:lanes" v="no|yes"/>
+  </way>
+
+  <way id="400">
+    <nd ref="7"/>
+    <nd ref="8"/>
+    <tag k="highway" v="residential"/>
+    <tag k="lanes" v="2"/>
+    <tag k="maxspeed" v="30"/>
+    <tag k="oneway" v="yes"/>
+    <tag k="vehicle:lanes" v="no|yes"/>
+  </way>
+
+  <way id="500">
+    <nd ref="9"/>
+    <nd ref="10"/>
+    <tag k="highway" v="residential"/>
+    <tag k="lanes" v="1"/>
+    <tag k="maxspeed" v="30"/>
+    <tag k="oneway" v="yes"/>
+  </way>
+
+  <!-- Negative case: netconvert can materialize defaults unless preprocessing rejects it. -->
+  <way id="600">
+    <nd ref="11"/>
+    <nd ref="12"/>
+    <tag k="highway" v="residential"/>
+  </way>
+</osm>
