@@ -1,0 +1,36 @@
+schema_version: 1
+baseline_demand:
+  version: 1
+  status: active
+  region_id: ota_ward
+  target_days: 1
+  population:
+    mesh_source_registry_id: estat_census_2020_500m_jgd2011_mesh5339
+    mesh_definition_registry_id: estat_t001141_definition
+    mesh_crs: EPSG:6668
+    mesh_member: tblT001141H5339.txt
+    source_encoding: cp932
+    mesh_code_column: KEY_CODE
+    population_column: T001141001
+    ota_total_source_registry_id: ota_population_20240401
+    ota_total_sheet: "1 "
+    ota_total_cell: B4
+    expected_ota_total: 736652
+    boundary_allocation: area_weighted
+    integer_allocation: largest_remainder
+    tie_breaker: mesh_code_ascending
+  demand_proxy:
+    parcel_source_registry_id: mlit_parcel_2024
+    national_population_source_registry_id: statistics_bureau_population_20241001
+    national_population_sheet: 第1表
+    national_population_cell: B13
+    national_population_unit_multiplier: 1000
+    expected_national_population: 123802000
+    annual_parcel_count: 5031470000
+    annual_days: 365
+    unit: parcel_equivalent
+    integer_allocation: largest_remainder
+    tie_breaker: mesh_code_ascending
+  outputs:
+    population_and_demand: 03_data/processed/traffic_simulation/demand/ota_ward_baseline_demand_2024_500m.parquet
+    quality_summary: 03_data/processed/traffic_simulation/validation/ota_ward_baseline_demand_2024_500m_quality_summary.json

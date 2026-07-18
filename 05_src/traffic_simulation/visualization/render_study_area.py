@@ -29,6 +29,10 @@ from shapely.geometry import (
 )
 from shapely.geometry.base import BaseGeometry
 
+from traffic_simulation.demand.prepare_baseline_demand import (
+    load_config as load_baseline_demand_config,
+    output_paths as baseline_demand_output_paths,
+)
 from traffic_simulation.network.study_areas import StudyArea, load_study_area
 from traffic_simulation.paths import REPOSITORY_ROOT, RUN_OUTPUT_ROOT, SOURCE_REGISTRY
 from traffic_simulation.research_stage import ResearchProgress, load_research_progress
@@ -41,6 +45,7 @@ VALID_COLOR: Final = "#2e7d32"
 MIXED_COLOR: Final = "#ef6c00"
 INVALID_COLOR: Final = "#c62828"
 SIGNAL_COLOR: Final = "#6a1b9a"
+DEMAND_PALETTE: Final = ("#ffffcc", "#fed976", "#fd8d3c", "#e31a1c", "#800026")
 ROAD_FILTER: Final = (
     "w/highway=motorway,motorway_link,trunk,trunk_link,primary,primary_link,"
     "secondary,secondary_link,tertiary,tertiary_link,unclassified,residential,"
@@ -95,6 +100,98 @@ class OsmRoadData:
     @property
     def rendered_road_count(self) -> int:
         return sum(len(features) for features in self.features_by_layer.values())
+
+
+@dataclass(frozen=True, slots=True)
+class BaselineDemandData:
+    """Provenance-checked population and parcel-equivalent demand meshes."""
+
+    frame: gpd.GeoDataFrame
+    path: Path
+    sha256: str
+    q_base: str
+    population_total: int
+    demand_total: int
+    partial_boundary_mesh_count: int
+
+
+def load_baseline_demand(region_id: str) -> BaselineDemandData:
+    """Load the governed demand output and verify its quality summary."""
+
+    config = load_baseline_demand_config()
+    if config.region_id != region_id:
+        raise ValueError(
+            f"baseline-demand region mismatch: {config.region_id} != {region_id}"
+        )
+    parquet_path, summary_path = baseline_demand_output_paths(config)
+    if not parquet_path.is_file() or not summary_path.is_file():
+        raise FileNotFoundError(
+            "baseline-demand outputs do not exist; run "
+            "traffic_simulation.demand.prepare_baseline_demand first"
+        )
+    try:
+        summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise ValueError("baseline-demand quality summary is invalid JSON") from exc
+    if not isinstance(summary, dict):
+        raise ValueError("baseline-demand quality summary must be a JSON object")
+    actual_sha256 = sha256_file(parquet_path)
+    expected_summary = {
+        "region_id": region_id,
+        "config_sha256": config.config_sha256,
+        "population_and_demand_sha256": actual_sha256,
+    }
+    mismatches = [
+        key for key, value in expected_summary.items() if summary.get(key) != value
+    ]
+    if mismatches:
+        raise ValueError(
+            "baseline-demand metadata mismatch: " + ", ".join(mismatches)
+        )
+
+    frame = gpd.read_parquet(parquet_path)
+    required = {
+        "region_id",
+        "mesh_code",
+        "census_population_2020",
+        "boundary_overlap_ratio",
+        "boundary_class",
+        "population_2024",
+        "demand_parcel_equivalent",
+        "geometry",
+    }
+    missing = required - set(frame.columns)
+    if missing:
+        raise ValueError(f"baseline-demand output lacks columns: {sorted(missing)}")
+    if frame.empty or frame.crs is None:
+        raise ValueError("baseline-demand output is empty or lacks a CRS")
+    if not frame["region_id"].eq(region_id).all():
+        raise ValueError("baseline-demand output contains another region")
+    if frame["mesh_code"].duplicated().any():
+        raise ValueError("baseline-demand output contains duplicate mesh codes")
+    if not frame.geometry.geom_type.isin(["Polygon", "MultiPolygon"]).all():
+        raise ValueError("baseline-demand output contains non-polygon geometry")
+    population_total = int(frame["population_2024"].sum())
+    demand_total = int(frame["demand_parcel_equivalent"].sum())
+    checks = {
+        "intersecting_mesh_count": len(frame),
+        "allocated_population_2024": population_total,
+        "allocated_demand_parcel_equivalent": demand_total,
+    }
+    inconsistent = [key for key, value in checks.items() if summary.get(key) != value]
+    if inconsistent:
+        raise ValueError(
+            "baseline-demand totals mismatch: " + ", ".join(inconsistent)
+        )
+    return BaselineDemandData(
+        frame=frame.to_crs("EPSG:4326"),
+        path=parquet_path,
+        sha256=actual_sha256,
+        q_base=str(summary.get("q_base") or ""),
+        population_total=population_total,
+        demand_total=demand_total,
+        partial_boundary_mesh_count=int(summary["partial_boundary_mesh_count"]),
+    )
 
 
 def resolve_repository_path(value: str, *, label: str) -> Path:
@@ -410,6 +507,7 @@ def _research_progress_html(progress: ResearchProgress) -> str:
 def _summary_panel(
     area: StudyArea,
     osm_roads: OsmRoadData | None,
+    baseline_demand: BaselineDemandData | None,
     research_progress: ResearchProgress,
 ) -> Element:
     west, south, east, north = area.acquisition_bbox
@@ -426,6 +524,25 @@ def _summary_panel(
       <div>Extract SHA-256:<br>
         <span style="font-family: monospace; overflow-wrap: anywhere;">
           {html.escape(osm_roads.extract_sha256)}
+        </span>
+      </div>
+        """
+    demand_content = ""
+    if baseline_demand is not None:
+        demand_content = f"""
+      <hr style="margin: 6px 0;">
+      <div style="font-weight: bold;">Synthetic demand</div>
+      <div>Intersecting 500 m meshes: {len(baseline_demand.frame):,}</div>
+      <div>Partial boundary meshes:
+        {baseline_demand.partial_boundary_mesh_count:,}</div>
+      <div>Estimated 2024 population:
+        {baseline_demand.population_total:,}</div>
+      <div>Parcel-equivalent demand / day:
+        {baseline_demand.demand_total:,}</div>
+      <div>q_base: {html.escape(baseline_demand.q_base)}</div>
+      <div>Output SHA-256:<br>
+        <span style="font-family: monospace; overflow-wrap: anywhere;">
+          {html.escape(baseline_demand.sha256)}
         </span>
       </div>
         """
@@ -454,12 +571,32 @@ def _summary_panel(
         </span>
       </div>
       {osm_content}
+      {demand_content}
     </div>
     """
     return Element(content)
 
 
-def _legend() -> Element:
+def _legend(baseline_demand: BaselineDemandData | None = None) -> Element:
+    demand_content = ""
+    if baseline_demand is not None:
+        population_breaks = _quantile_breaks(baseline_demand.frame["population_2024"])
+        demand_breaks = _quantile_breaks(
+            baseline_demand.frame["demand_parcel_equivalent"]
+        )
+        demand_content = (
+            '<hr style="margin:5px 0;">'
+            '<div style="font-weight:bold;">500 m mesh fills</div>'
+            '<div>Display-only quintiles; not analysis thresholds</div>'
+            f'<div>Population: {_break_labels(population_breaks)}</div>'
+            f'<div>Demand/day: {_break_labels(demand_breaks)}</div>'
+            + "".join(
+                f'<span style="display:inline-block;width:20px;height:8px;'
+                f'background:{color};"></span>'
+                for color in DEMAND_PALETTE
+            )
+            + '<div>light = lower / dark = higher</div>'
+        )
     content = f"""
     <div style="position: fixed; bottom: 25px; left: 10px; z-index: 9999;
                 background: rgba(255,255,255,0.94); border: 1px solid #555;
@@ -478,9 +615,95 @@ def _legend() -> Element:
       <div><span style="color:{INVALID_COLOR};">●</span>
         all measurements invalid</div>
       <div>Black ring: outside administrative boundary</div>
+      {demand_content}
     </div>
     """
     return Element(content)
+
+
+def _quantile_breaks(values: pd.Series) -> tuple[float, ...]:
+    """Return deterministic display-only quintile upper bounds."""
+
+    numeric = pd.to_numeric(values, errors="raise")
+    if numeric.isna().any() or (numeric < 0).any():
+        raise ValueError("visualized demand values must be non-negative numbers")
+    return tuple(float(numeric.quantile(value)) for value in (0.2, 0.4, 0.6, 0.8, 1.0))
+
+
+def _break_labels(breaks: Sequence[float]) -> str:
+    return " / ".join(f"≤{value:,.0f}" for value in breaks)
+
+
+def _palette_color(value: Any, breaks: Sequence[float]) -> str:
+    numeric = float(value)
+    for index, upper in enumerate(breaks):
+        if numeric <= upper:
+            return DEMAND_PALETTE[index]
+    return DEMAND_PALETTE[-1]
+
+
+def add_baseline_demand_layers(
+    map_object: folium.Map, baseline_demand: BaselineDemandData
+) -> None:
+    """Add switchable population and parcel-equivalent demand mesh fills."""
+
+    frame = baseline_demand.frame.copy()
+    frame["boundary_overlap_percent"] = (
+        frame["boundary_overlap_ratio"].astype(float) * 100
+    ).round(2)
+    collection = json.loads(frame.to_json(drop_id=True))
+    tooltip = {
+        "fields": [
+            "mesh_code",
+            "boundary_class",
+            "boundary_overlap_percent",
+            "census_population_2020",
+            "population_2024",
+            "demand_parcel_equivalent",
+        ],
+        "aliases": [
+            "Mesh code",
+            "Boundary class",
+            "Boundary overlap (%)",
+            "Census population 2020",
+            "Estimated population 2024",
+            "Parcel-equivalent demand / day",
+        ],
+        "localize": True,
+        "sticky": False,
+    }
+    population_breaks = _quantile_breaks(frame["population_2024"])
+    demand_breaks = _quantile_breaks(frame["demand_parcel_equivalent"])
+    folium.GeoJson(
+        collection,
+        name=f"Estimated population 2024 (500 m, {len(frame):,})",
+        style_function=lambda feature: {
+            "color": "#5d4037",
+            "weight": 0.45,
+            "fillColor": _palette_color(
+                feature["properties"]["population_2024"], population_breaks
+            ),
+            "fillOpacity": 0.62,
+        },
+        highlight_function=lambda _: {"weight": 2, "color": "#212121"},
+        tooltip=folium.GeoJsonTooltip(**tooltip),
+        show=False,
+    ).add_to(map_object)
+    folium.GeoJson(
+        collection,
+        name=f"Synthetic demand / day (500 m, {len(frame):,})",
+        style_function=lambda feature: {
+            "color": "#5d4037",
+            "weight": 0.45,
+            "fillColor": _palette_color(
+                feature["properties"]["demand_parcel_equivalent"], demand_breaks
+            ),
+            "fillOpacity": 0.62,
+        },
+        highlight_function=lambda _: {"weight": 2, "color": "#212121"},
+        tooltip=folium.GeoJsonTooltip(**tooltip),
+        show=True,
+    ).add_to(map_object)
 
 
 def add_osm_layers(map_object: folium.Map, roads: OsmRoadData) -> None:
@@ -710,6 +933,7 @@ def build_map(
     area: StudyArea,
     *,
     osm_roads: OsmRoadData | None = None,
+    baseline_demand: BaselineDemandData | None = None,
     jartic_inputs: Sequence[tuple[str, gpd.GeoDataFrame]] = (),
     basemap: bool = True,
     research_progress: ResearchProgress | None = None,
@@ -724,6 +948,8 @@ def build_map(
         control_scale=True,
         prefer_canvas=True,
     )
+    if baseline_demand is not None:
+        add_baseline_demand_layers(map_object, baseline_demand)
     if osm_roads is not None:
         add_osm_layers(map_object, osm_roads)
     add_boundary_layers(map_object, area)
@@ -736,8 +962,10 @@ def build_map(
             source_label=label,
         )
     progress = research_progress or load_research_progress()
-    map_object.get_root().html.add_child(_summary_panel(area, osm_roads, progress))
-    map_object.get_root().html.add_child(_legend())
+    map_object.get_root().html.add_child(
+        _summary_panel(area, osm_roads, baseline_demand, progress)
+    )
+    map_object.get_root().html.add_child(_legend(baseline_demand))
     folium.LayerControl(collapsed=False).add_to(map_object)
     map_object.fit_bounds([[area.south, area.west], [area.north, area.east]])
     road_count = osm_roads.rendered_road_count if osm_roads is not None else 0
@@ -784,6 +1012,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="Normalized JARTIC GeoParquet; may be specified more than once",
     )
     parser.add_argument(
+        "--baseline-demand",
+        action="store_true",
+        help=(
+            "Add the governed 500 m estimated-population and synthetic-demand "
+            "outputs after verifying their metadata and SHA-256"
+        ),
+    )
+    parser.add_argument(
         "--output",
         help=(
             "Repository-relative HTML path; defaults to "
@@ -814,6 +1050,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             if args.osm_source_id
             else None
         )
+        baseline_demand = (
+            load_baseline_demand(args.region) if args.baseline_demand else None
+        )
         inputs: list[tuple[str, gpd.GeoDataFrame]] = []
         for value in args.jartic:
             path = resolve_repository_path(value, label="JARTIC path")
@@ -825,6 +1064,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         map_object, marker_count, road_count, signal_count = build_map(
             area,
             osm_roads=osm_roads,
+            baseline_demand=baseline_demand,
             jartic_inputs=inputs,
             basemap=not args.no_basemap,
         )
@@ -837,6 +1077,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     print(f"OSM rendered motor-road ways: {road_count}")
     print(f"OSM traffic signals: {signal_count}")
     print(f"JARTIC markers: {marker_count}")
+    if baseline_demand is not None:
+        print(f"baseline-demand meshes: {len(baseline_demand.frame)}")
+        print(f"estimated population 2024: {baseline_demand.population_total}")
+        print(f"parcel-equivalent demand / day: {baseline_demand.demand_total}")
     print(f"map: {output_path.relative_to(REPOSITORY_ROOT)}")
     if args.no_basemap:
         print("note: opening the HTML requires network access for Leaflet assets")

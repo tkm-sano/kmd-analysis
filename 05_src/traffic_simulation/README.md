@@ -10,6 +10,18 @@ route comparison, CI, and server-migration tasks are recorded in
 The assumptions, interpretation, commands, and operating rules for staged
 map review are recorded in [`visualization/README.md`](visualization/README.md).
 
+The authoritative rules for road attributes, external-data matching,
+structural placeholders, human review, and formal-network quality gates are
+recorded in
+[`network_attribute_governance.md`](network_attribute_governance.md).
+
+The open-statistics calculation and the non-optimizing baseline comparator are
+specified in
+[`demand/baseline_demand_and_comparator.md`](demand/baseline_demand_and_comparator.md).
+The implemented population and parcel-equivalent demand preparation uses
+[`../../reproducibility/config/traffic_simulation/baseline_demand.yml`](../../reproducibility/config/traffic_simulation/baseline_demand.yml)
+and [`demand/prepare_baseline_demand.py`](demand/prepare_baseline_demand.py).
+
 ## Source-code boundaries
 
 - `network/`: OSM acquisition adapters, clipping, map matching, and SUMO

@@ -18,6 +18,34 @@ the upstream `v1_25_0` tag currently reports SUMO 1.24.0 at runtime.
 The repository is mounted at `/workspace`. Raw third-party data and generated
 outputs remain on the host and are not copied into container images.
 
+## SUMO network-build execution boundary
+
+The network-build workflow deliberately keeps Python analysis and SUMO
+execution in separate services:
+
+- `analysis` validates governed YAML, source-registry rows, study-area
+  versions, and SHA-256 values; it generates a `.netccfg` and build manifest,
+  then validates the resulting `.net.xml`.
+- `sumo` is the only service allowed to execute `netconvert`, `sumo`, and
+  `duarouter`. Its digest-pinned image is the canonical SUMO environment.
+
+Both services exchange generated files through the shared `/workspace` bind
+mount. Do not install a second SUMO copy in the `analysis` image, invoke the
+Docker daemon from inside `analysis`, or type unrecorded `netconvert` options
+directly at the command line. The generated `.netccfg` must come from the
+Git-managed `reproducibility/config/traffic_simulation/sumo_network.yml`.
+
+The planned user-facing entry point is:
+
+```bash
+docker/run_sumo_network_build.sh structural ota_ward osm_geofabrik_kanto_20260716
+docker/run_sumo_network_build.sh formal ota_ward osm_geofabrik_kanto_20260716
+```
+
+It will run prepare in `analysis`, conversion in `sumo`, and validation in
+`analysis`, stopping immediately if any phase fails. This entry point and the
+SUMO network configuration are planned and are not implemented yet.
+
 ## Initial checks
 
 Start Docker Desktop (or another compatible Docker daemon) before running

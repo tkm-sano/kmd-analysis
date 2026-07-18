@@ -1,5 +1,5 @@
 schema_version: 1
-updated_at: "2026-07-17"
+updated_at: "2026-07-18"
 current_stage_id: sumo_network
 current_summary_ja: OSM道路原典と入力レビュー地図が揃い、SUMO道路網の生成・構造検証へ進む段階
 stages:
@@ -41,19 +41,59 @@ stages:
     label_ja: 観測拡充・交通需要生成
     status: planned
     evidence: []
-  - id: calibration_validation
-    label_ja: 交通モデル較正・独立検証
+  - id: optimization_implementation_validation
+    label_ja: 最適化基盤検証・配送EV制約の段階追加
+    status: planned
+    evidence: []
+  - id: signal_vehicle_driver
+    label_ja: 信号・車両・運転行動設定
+    status: planned
+    evidence: []
+  - id: calibration
+    label_ja: 交通モデル較正
+    status: planned
+    evidence: []
+  - id: independent_validation
+    label_ja: 独立データ検証
+    status: planned
+    evidence: []
+  - id: environment_scenarios
+    label_ja: 天候・事故等の環境シナリオ固定
     status: planned
     evidence: []
   - id: delivery_instance
-    label_ja: 共通配送問題・コスト行列固定
+    label_ja: 正式コスト行列・共通配送問題固定
     status: planned
     evidence: []
   - id: classical_qaoa
-    label_ja: 古典最適化・Aer QAOA実行
+    label_ja: 古典最適化・Aer QAOA正式比較
     status: planned
     evidence: []
   - id: simulation_evaluation
     label_ja: 同一SUMO環境で走行・比較評価
+    status: planned
+    evidence: []
+  - id: driver_sensitivity
+    label_ja: 熟練ドライバー差の感度分析
+    status: planned
+    evidence: []
+  - id: ev_delivery_evaluation
+    label_ja: EV配送・配送可能人口相当評価
+    status: planned
+    evidence: []
+  - id: spatial_expansion
+    label_ja: 段階的な空間拡張
+    status: planned
+    evidence: []
+  - id: ci_reproducibility
+    label_ja: CI・再現性検査
+    status: planned
+    evidence: []
+  - id: hayate_reproduction
+    label_ja: hayate再現
+    status: planned
+    evidence: []
+  - id: final_artifacts
+    label_ja: 最終成果物・限界の固定
     status: planned
     evidence: []

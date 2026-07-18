@@ -9,6 +9,8 @@ Use the following source-specific directories:
 - `boundaries/`: administrative and study-area boundaries, including MLIT N03.
 - `charging/`: charging-station API responses and source snapshots.
 - `driver_behavior/`: licensed external driver-behavior datasets or extracts.
+- `demand_proxy/`: official aggregate statistics used only to derive synthetic
+  demand proxies; parcel counts here are not customer or stop records.
 - `freight/`: freight-flow and aggregate freight-demand source tables.
 - `freight_network/`: designated freight-road GIS data, including MLIT N12.
 - `gtfs/`: public-transport GTFS and GTFS-RT snapshots.
