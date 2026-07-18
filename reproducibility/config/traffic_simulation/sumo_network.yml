@@ -1,0 +1,549 @@
+schema_version: 1
+config_id: ota_ward_sumo_network_20260716_v3
+config_version: 3
+decision_date: "2026-07-18"
+change_summary: Report all attribute states and gate structural and formal networks by road criticality
+policy_document: 05_src/traffic_simulation/network_attribute_governance.md
+status:
+  specification: approved
+  implementation: pending
+  formal_build_ready: false
+  pending_requirements:
+    - custom_typemap
+    - attribute_governance_implementation
+    - external_source_acquisition_and_matching
+    - structural_placeholder_values
+    - junction_join_review
+    - reviewed_junction_join_node_file
+
+study_area:
+  region_id: ota_ward
+  study_area_version: 1
+  boundary_config: reproducibility/config/traffic_simulation/study_areas.yml
+  acquisition_extent_method: boundary_envelope
+  analysis_extent_method: intersects_boundary
+  keep_bbox_connectors: true
+
+source:
+  source_registry: 03_data/metadata/traffic_simulation_sources.csv
+  source_registry_id: osm_geofabrik_kanto_20260716
+  snapshot_date: "2026-07-16"
+  raw_pbf:
+    path: 03_data/raw/traffic_simulation/osm/kanto-260716.osm.pbf
+    sha256: aef890f28b652ed7bd2b0d77e86f263219b479fe3eedbdd8610dcfc1572c420d
+  extracted_pbf:
+    path: 03_data/processed/traffic_simulation/road_network/osm_extracts/osm_ota_ward_20260716.osm.pbf
+    sha256: 10d554a13e89b815ca416c272d23d9477d52e312fa3d299f466fb3c01cf9d041
+    extraction_strategy: complete_ways
+    quality_summary: 03_data/processed/traffic_simulation/validation/osm_ota_ward_20260716_quality_summary.json
+
+execution_environment:
+  platform: linux/amd64
+  analysis_service: analysis
+  sumo_service: sumo
+  sumo_image: ghcr.io/eclipse-sumo/sumo@sha256:a49874e6e5e355de055e6a10eefd819d48fab8f0047c3130f782a7dfdf1cc189
+  expected_versions:
+    osmium: "1.15.0"
+    netconvert: "1.24.0"
+    sumo: "1.24.0"
+  responsibility:
+    analysis:
+      - verify_governed_inputs
+      - convert_pbf_to_osm_xml
+      - generate_netccfg_and_manifest
+      - validate_network_and_build_summary
+    sumo:
+      - run_netconvert_from_generated_netccfg
+      - run_sumo_cli_smoke_test
+
+paths:
+  output_root: 03_data/processed/traffic_simulation/road_network/sumo
+  osm_xml: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716.osm.xml
+  custom_typemap: reproducibility/config/traffic_simulation/osm_tokyo_motorized.typ.xml
+  junction_join_review: reproducibility/config/traffic_simulation/ota_ward_junction_join_review.csv
+  reviewed_junction_joins: reproducibility/config/traffic_simulation/ota_ward_junction_joins.nod.xml
+  junction_join_candidates: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_junction_join_candidates.xml
+  netccfg: 03_data/processed/traffic_simulation/road_network/sumo/{profile}/ota_ward_20260716.netccfg
+  manifest: 03_data/processed/traffic_simulation/road_network/sumo/{profile}/ota_ward_20260716_build_manifest.json
+  network: 03_data/processed/traffic_simulation/road_network/sumo/{profile}/ota_ward_20260716.net.xml
+  build_log: 03_data/processed/traffic_simulation/road_network/sumo/{profile}/ota_ward_20260716_netconvert.log
+  build_summary: 03_data/processed/traffic_simulation/road_network/sumo/{profile}/ota_ward_20260716_build_summary.json
+  attribute_audit_report: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_road_attribute_audit.csv
+  external_match_report: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_external_road_matches.csv
+  visualization: reproducibility/outputs/traffic_simulation/visualization/ota_ward_sumo_network.html
+
+osm_attribute_baseline_audit:
+  method_version: 1
+  purpose: pre_resolution_coverage_baseline
+  input: extracted_pbf
+  output: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_osm_attribute_baseline.json
+  selection:
+    geometry: way_linestring
+    stage: before_access_and_vclass_resolution
+    highway_types:
+      - motorway
+      - motorway_link
+      - trunk
+      - trunk_link
+      - primary
+      - primary_link
+      - secondary
+      - secondary_link
+      - tertiary
+      - tertiary_link
+      - residential
+      - unclassified
+      - living_street
+      - service
+  simple_value_validators:
+    lanes: positive_integer
+    maxspeed: positive_plain_numeric_kmh
+    oneway_allowed:
+      - "yes"
+      - "no"
+      - "-1"
+  length:
+    method: haversine_between_consecutive_geojson_coordinates
+    earth_radius_m: 6371008.8
+  interpretation:
+    unit: osm_way
+    missing_or_invalid_is_unresolved_in_baseline_only: true
+    does_not_apply_external_supplements: true
+    does_not_apply_osm_implied_rules: true
+    does_not_measure_sumo_edges: true
+    acquisition_extent_is_bbox_not_exact_boundary_clip: true
+
+preprocessing:
+  pbf_to_osm_xml:
+    enabled: true
+    tool: osmium
+    input: extracted_pbf
+    output_format: osm
+    overwrite: false
+    verify_input_sha256: true
+    record_output_sha256: true
+    record_command: true
+    record_tool_version: true
+
+traffic_side:
+  lefthand: true
+  rationale: Japanese statutory left-hand traffic
+  reverse_osm_oneway_direction: false
+
+vehicle_scope:
+  model: motorized_v1
+  keep_vclasses:
+    - passenger
+    - taxi
+    - bus
+    - coach
+    - delivery
+    - truck
+    - motorcycle
+    - moped
+  excluded_dedicated_modes:
+    - pedestrian
+    - bicycle
+    - rail
+    - ship
+  shared_motor_roads_are_retained: true
+  multimodal_expansion_requires_new_config_version: true
+
+access_resolution:
+  explicit_tag_priority:
+    - motor_vehicle
+    - vehicle
+    - access
+  service_is_classification_not_permission_override: true
+  most_specific_explicit_restriction_wins: true
+  evidence_priority:
+    - versioned_source_backed_override
+    - explicit_osm_attribute
+  allow_structural_placeholder: true
+  structural_placeholder_profiles:
+    - structural
+  allow_silent_typemap_fallback: false
+
+attribute_resolution:
+  governed_attributes:
+    - lanes
+    - maxspeed
+    - oneway
+    - access
+    - turn_restrictions
+  preserve_osm_turn_restrictions: true
+  record_unconverted_turn_restrictions: true
+  manual_override_requires:
+    - osm_id
+    - source
+    - reason
+    - reviewer
+    - reviewed_at
+  value_states:
+    - observed
+    - authoritative_external
+    - explicit_osm
+    - derived_osm_rule
+    - reviewed_manual
+    - approved_assumption
+    - structural_placeholder
+    - unresolved
+    - conflict
+    - invalid
+  missing_attribute_policy:
+    name: report_then_gate_by_criticality
+    inspect_after_vehicle_scope_filter: true
+    record_all_missing_values: true
+    record_all_derived_values: true
+    record_all_supplemented_values: true
+    record_all_unresolved_values: true
+    record_all_conflicts: true
+    record_all_invalid_values: true
+    allow_silent_sumo_defaults: false
+    allow_silent_typemap_defaults: false
+    report_path: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_road_attribute_audit.csv
+    report_fields:
+      - osm_way_id
+      - highway
+      - name
+      - attribute
+      - source_value
+      - adopted_value
+      - value_state
+      - source_registry_id
+      - derivation_method
+      - reference_date
+      - match_status
+      - match_confidence
+      - criticality
+      - decision
+      - reviewer
+      - reviewed_at
+    profiles:
+      structural:
+        allow_noncritical_structural_placeholder: true
+        allow_low_confidence_external_value: false
+        research_results_allowed: false
+      formal:
+        allow_structural_placeholder: false
+        require_zero_states_on_critical_roads:
+          - unresolved
+          - conflict
+          - invalid
+        require_human_review_for_low_confidence_critical_matches: true
+        require_sensitivity_for_critical_approved_assumptions: true
+  fallback_types: {}
+
+network_profiles:
+  structural:
+    purpose: connectivity_visualization_smoke_and_provisional_routing
+    output_subdirectory: structural
+    research_results_allowed: false
+  formal:
+    purpose: calibration_validation_delivery_and_classical_qaoa_experiments
+    output_subdirectory: formal
+    research_results_allowed: true
+    requires_structural_review_complete: true
+
+external_sources:
+  prohibited:
+    - drm_db
+    - drm_pf
+  road_geometry_and_connectivity_base: osm
+  supplements:
+    road_traffic_census:
+      uses:
+        - lanes
+        - designated_maxspeed
+        - road_width
+        - oneway
+        - traffic_volume
+        - travel_speed
+    jartic_traffic_regulations:
+      uses:
+        - designated_maxspeed
+        - variable_maxspeed
+        - oneway
+        - road_closure
+        - vehicle_prohibition
+        - time_vehicle_and_day_conditions
+      absence_does_not_prove_no_regulation: true
+      preserve_monthly_snapshot: true
+    road_ledgers:
+      use_for_critical_road_manual_review: true
+    national_land_information_n13_2024:
+      use_as_auxiliary_geometry: true
+      derive_exact_lanes_from_width_class: false
+      treat_as_network_topology_authority: false
+    national_road_facility_inspection_database:
+      uses:
+        - bridge_identification
+        - tunnel_identification
+        - structural_criticality
+    traffic_observations:
+      uses:
+        - demand
+        - calibration
+        - independent_validation
+      use_observed_speed_as_maxspeed: false
+
+attribute_rules:
+  oneway:
+    check_order:
+      - explicit_osm
+      - implied_osm_rule
+      - public_regulation
+      - road_traffic_census
+    ordinary_road_without_oneway_tag: derived_bidirectional_osm_rule
+  lanes:
+    check_order:
+      - osm_lanes
+      - osm_directional_lane_tags
+      - road_traffic_census
+      - road_ledger
+      - scoped_aerial_imagery_review
+      - noncritical_structural_placeholder
+    validate_consistency_with:
+      - lanes_forward
+      - lanes_backward
+      - lanes_both_ways
+      - oneway
+  maxspeed:
+    check_order:
+      - explicit_osm
+      - directional_and_conditional_osm
+      - jartic_traffic_regulations
+      - road_traffic_census
+      - other_public_authority_source
+      - dated_legal_derivation
+    reject_conditional_or_multiple_value_without_review: false
+    legal_derivation_requires:
+      - law_effective_date
+      - road_state_reference_date
+      - vehicle_scope
+  source_order_is_not_unconditional_overwrite_priority: true
+  resolve_conflicts_by:
+    - legal_or_administrative_authority
+    - reference_date
+    - segment_match_quality
+    - attribute_definition
+    - license
+    - match_confidence
+
+road_criticality:
+  pre_critical:
+    - jartic_observation_road
+    - road_traffic_census_road
+    - major_road
+    - bridge
+    - tunnel
+    - grade_separated_road
+    - major_intersection
+    - calibration_segment
+    - independent_validation_segment
+  post_critical:
+    - provisional_delivery_route_edge
+    - frequently_used_scenario_edge
+    - attribute_sensitive_edge
+  promote_post_critical_before_formal_build: true
+
+external_matching:
+  nearest_neighbor_only: false
+  features:
+    - centerline_distance_m
+    - direction_difference_deg
+    - overlap_ratio
+    - route_name_match
+    - route_number_match
+    - road_class_match
+    - grade_level_match
+  statuses:
+    - high_confidence_auto
+    - needs_review
+    - human_confirmed
+    - human_rejected
+    - unmatched
+    - conflict
+  force_low_confidence_or_review_for:
+    - elevated_and_ground_overlap
+    - divided_carriageway_candidate_competition
+    - mainline_and_frontage_road_competition
+    - complex_intersection
+    - grade_level_mismatch
+    - small_score_margin_between_top_candidates
+  human_review_if_critical: true
+  allow_low_confidence_value_adoption: false
+
+aerial_imagery:
+  role: visual_support
+  scope:
+    - final_delivery_route
+    - calibration_segment
+    - independent_validation_segment
+    - ambiguous_external_match_on_critical_road
+  may_support:
+    - road_geometry
+    - median
+    - mainline_and_frontage_road
+    - elevated_and_ground_relationship
+    - bridge_and_tunnel_portal
+  must_not_determine_alone:
+    - designated_maxspeed
+    - oneway_regulation
+    - vehicle_prohibition
+    - time_or_vehicle_condition
+    - signal_program
+    - exact_lane_connections
+  inconclusive_policy: unresolved_conflict_or_documented_approved_assumption
+  required_metadata:
+    - source
+    - image_or_tile_id
+    - source_url
+    - photographed_at
+    - accessed_at
+    - resolution
+    - license_or_terms
+    - interpretation
+    - visibility_limitations
+    - reviewer
+    - reviewed_at
+
+junction_joining:
+  policy: heuristic_candidates_then_reviewed_table
+  candidate_generation:
+    formal_network: false
+    automatic_join: true
+    join_distance_m: 10.0
+    output: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_junction_join_candidates.xml
+    git_tracked: false
+  review:
+    required: true
+    review_table: reproducibility/config/traffic_simulation/ota_ward_junction_join_review.csv
+    required_fields:
+      - candidate_id
+      - source_node_ids
+      - decision
+      - reason
+      - reviewer
+      - reviewed_at
+      - references
+    allowed_decisions:
+      - accept
+      - reject
+    inspect:
+      - distance
+      - connected_roads
+      - traffic_signals
+      - bridge
+      - tunnel
+      - divided_carriageway
+  formal_conversion:
+    automatic_join: false
+    require_reviewed_node_file: true
+    reviewed_node_file: reproducibility/config/traffic_simulation/ota_ward_junction_joins.nod.xml
+    require_one_to_one_review_mapping: true
+    reject_unreviewed_joins: true
+
+netconvert:
+  common_options:
+    lefthand: true
+    keep-edges.by-vclass:
+      - passenger
+      - taxi
+      - bus
+      - coach
+      - delivery
+      - truck
+      - motorcycle
+      - moped
+    output.original-names: true
+    write-license: true
+    geometry.remove: true
+    no-internal-links: false
+    ramps.guess: false
+    roundabouts.guess: false
+    no-turnarounds.except-deadend: true
+    remove-edges.isolated: false
+    tls.guess: false
+    tls.guess-signals: true
+    tls.discard-simple: true
+    tls.join: false
+    tls.default-type: static
+    ignore-errors: false
+    ignore-errors.connections: false
+    ignore-errors.edge-type: false
+    xml-validation: local
+    xml-validation.net: local
+  candidate_generation_overrides:
+    junctions.join: true
+    junctions.join-dist: 10.0
+    junctions.join-output: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_junction_join_candidates.xml
+  formal_conversion_options:
+    junctions.join: false
+    node-files: reproducibility/config/traffic_simulation/ota_ward_junction_joins.nod.xml
+
+traffic_lights:
+  source_priority:
+    - explicit_osm_signal_information
+    - sumo_structural_initialization
+  generated_program_is_observed_timing: false
+  observed_timing_calibration_stage: signal_vehicle_driver_configuration
+
+geometry_and_connectivity:
+  preserve_internal_links: true
+  preserve_original_osm_ids: true
+  infer_additional_ramps: false
+  infer_additional_roundabouts: false
+  turnarounds: deadends_only
+  automatically_remove_isolated_edges: false
+  report_connected_components: true
+
+failure_policy:
+  fail_fast: true
+  allow_unknown_cli_options: false
+  allow_runtime_option_overrides: false
+  allow_arbitrary_input_path: false
+  allow_arbitrary_bbox: false
+  allow_absolute_host_paths: false
+  overwrite_outputs: false
+  abort_on_any_missing_osm_attribute: false
+  abort_on_invalid_attribute: true
+  abort_on_attribute_conflict: true
+  abort_on_direction_resolution_failure: true
+  abort_on_unsourced_manual_value: true
+  abort_formal_on_unresolved_critical_attribute: true
+  abort_formal_on_low_confidence_critical_match: true
+  abort_formal_on_structural_placeholder: true
+
+provenance:
+  distinguish_value_classes:
+    - observed
+    - authoritative_external
+    - explicit_osm
+    - derived_osm_rule
+    - reviewed_manual
+    - approved_assumption
+    - structural_placeholder
+    - unresolved
+    - conflict
+    - invalid
+  record:
+    - input_sha256
+    - intermediate_osm_xml_sha256
+    - config_sha256
+    - typemap_sha256
+    - junction_review_sha256
+    - reviewed_node_file_sha256
+    - tool_versions
+    - sumo_image_digest
+    - generated_commands
+    - warnings
+    - excluded_roads
+    - unconverted_restrictions
+    - road_attribute_audit
+    - external_match_audit
+    - pre_and_post_critical_roads
+    - structural_placeholder_usage
+    - structural_counts
+    - connected_components
+  update_rule: increment_config_version_and_do_not_mix_outputs

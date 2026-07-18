@@ -415,6 +415,7 @@ HTMLは実行時生成物であり、コード、設定、登録済み入力か�
 ```text
 render_study_area.py
   → N03行政界、BBOX、登録済みOSM道路・信号、JARTIC地点
+  → 500mメッシュ別2024年推定人口・1日合成需要
 
 render_sumo_network.py
   → SUMOエッジ、レーン、ジャンクション、接続、孤立成分
@@ -510,7 +511,7 @@ reproducibility/outputs/traffic_simulation/visualization/
 - OSMタグの空欄は値がないことを示す。車線数、制限速度、通行条件を0または規制なしとして補完しない。
 - 背景タイルとLeaflet関連資産を外部配信元から読むため、ネットワークがない環境では完全には表示できない。研究用PBF自体は外部背景に依存しない。
 - `render_study_area.py`にはPBF来歴検証、表示用抽出、分類、HTML構築が集まっている。後続のSUMO・ルート可視化を追加する前に、台帳解決と共通地図部品を共有モジュールへ分離する余地がある。
-- 現在は`test_render_study_area.py`という専用の自動テストがない。既存検証テスト、生成件数確認、HTML文字列検査、ブラウザ表示確認を組み合わせているが、レイヤー生成とJavaScript初期化の回帰テストを追加する必要がある。
+- 合成需要レイヤーには`test_render_baseline_demand.py`があり、入力ハッシュ、合計、レイヤー名、ツールチップ、色分類を検査する。道路を含む`render_study_area.py`全体の専用テストはまだなく、既存検証テスト、生成件数確認、HTML文字列検査、ブラウザ表示確認を組み合わせている。
 - ブラウザによる見た目の確認は実行環境差を受けるため、自動構造検査を置き換えない。
 - 研究工程は明示的な管理判断で更新するため、設定更新を忘れると地図の現在地が古くなる。工程変更時は実装計画と`research_stage.yml`を同時に更新する。
 
@@ -537,3 +538,59 @@ reproducibility/outputs/traffic_simulation/visualization/
 - ブラウザコンソールにJavaScriptエラーがないことを確認した。
 
 この修正は表示コードだけに作用し、OSM PBF、道路抽出件数、N03行政界、JARTIC加工データ、分析条件を変更していない。
+
+## 15. 500m人口・合成需要の可視化
+
+### 15.1 入力と生成手順
+
+入力の正本は`reproducibility/config/traffic_simulation/baseline_demand.yml`である。可視化処理は設定からGeoParquetと品質要約を解決し、地域ID、設定SHA-256、GeoParquet SHA-256、行数、人口合計、需要合計が一致した場合だけ表示する。任意の需要ファイルをCLIで直接指定しない。
+
+```bash
+docker compose run --rm analysis \
+  python -m traffic_simulation.visualization.render_study_area \
+  --region ota_ward \
+  --baseline-demand \
+  --output \
+  reproducibility/outputs/traffic_simulation/visualization/ota_ward_baseline_demand.html \
+  --overwrite
+```
+
+閲覧する。
+
+```bash
+open \
+  /Users/tstakuma/github/research/reproducibility/outputs/traffic_simulation/visualization/ota_ward_baseline_demand.html
+```
+
+### 15.2 レイヤーと見方
+
+| レイヤー | 初期表示 | 意味 |
+|---|---|---|
+| `Synthetic demand / day (500 m, 191)` | 表示 | 1日当たり宅配便個数相当量 |
+| `Estimated population 2024 (500 m, 191)` | 非表示 | 2020年分布を2024年大田区人口へ比例調整した推定人口 |
+| `N03 administrative boundary` | 表示 | 面積按分に用いた大田区境界 |
+
+メッシュへポインターを合わせると、メッシュコード、全面包含・境界分類、境界交差率、2020年国勢調査人口、2024年推定人口、1日合成需要を表示する。合成需要レイヤーと人口レイヤーを同時表示すると重なるため、比較時は一方ずつ表示する。
+
+色は各表示値の五分位で、薄色が低いメッシュ、濃色が高いメッシュを表す。五分位境界は凡例へ表示する。これは同一地図内の分布を読みやすくする表示上の分類であり、需要の高低を決める研究上の閾値、配送優先度、最適化重み、サービス可否判定には使用しない。別地域・別設定の地図間では五分位境界が変わり得るため、色だけを直接比較しない。
+
+### 15.3 2026年7月18日の生成結果
+
+- 表示メッシュ：191件
+- 全面包含：122件
+- 境界メッシュ：69件
+- 2024年推定人口合計：736,652人
+- 1日合成需要合計：82,023宅配便個数相当
+- GeoParquet SHA-256：`e7caeb262665ba3396834bb54e2dff296b3cbbd02af6922e906eb683829f5048`
+- `test_render_baseline_demand.py`と`test_prepare_baseline_demand.py`：合計17件成功
+
+生成HTMLについて、両メッシュレイヤー名、凡例、191メッシュ、合計値、入力SHA-256およびLeaflet初期化コードの存在を機械検査した。この実行環境ではブラウザ操作接続を利用できなかったため、2026年7月18日の実ブラウザ目視確認は未実施である。目視未実施を機械検査済みと混同しない。
+
+### 15.4 解釈上の禁止事項
+
+- 表示値を実注文、実顧客、実配送先または配送停止回数と呼ばない。
+- 2024年推定メッシュ人口を2024年のメッシュ実測値と呼ばない。
+- 面積按分した境界メッシュ内で人口が均一だったと断定しない。
+- 濃色メッシュを自動的に優先配送先へ設定しない。
+- 色分けを使って入力値、境界または最適化結果を手修正しない。
+- 地図表示だけで人口・需要合計やSHA-256の検証を代替しない。

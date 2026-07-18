@@ -26,5 +26,6 @@
 - [`20260717_jartic_traffic_volume_acquisition.md`](20260717_jartic_traffic_volume_acquisition.md)：JARTICの1時間交通量の取得、正規化、検証記録。
 - [`20260717_mlit_n03_2026_tokyo_acquisition.md`](20260717_mlit_n03_2026_tokyo_acquisition.md)：国土数値情報N03東京都版の取得、原本検証、大田区境界生成、固定設定、恣意性の統制記録。
 - [`20260717_osm_ota_ward_acquisition.md`](20260717_osm_ota_ward_acquisition.md)：日付固定Geofabrik関東PBFの取得、大田区BBOX抽出、構造分析、実行結果、恣意性、既知問題の記録。
+- [`20260718_ota_baseline_open_statistics_acquisition.md`](20260718_ota_baseline_open_statistics_acquisition.md)：未最適化・古典最適化・Aer QAOAの共通需要入力に用いる人口メッシュ、大田区人口、全国人口、全国宅配便取扱実績の取得・検証記録。
 
 可視化の生成・閲覧・解釈・表示上の恣意性・不具合履歴は、[`../../../05_src/traffic_simulation/visualization/README.md`](../../../05_src/traffic_simulation/visualization/README.md)を参照する。
