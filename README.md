@@ -113,6 +113,57 @@ The machine-readable registry is [`traffic_simulation_sources.csv`](03_data/meta
 
 Raw source files are stored under `03_data/raw/traffic_simulation/` and excluded from Git. Their recorded hashes, not filenames alone, identify the governed snapshots used by the study.
 
+### Planned and conditional data inputs
+
+The following sources are planned or under consideration but are not part of the current completed input set. Each source must pass license, coverage, reference-date, schema, and SHA-256 checks before it can enter a formal experiment.
+
+| Planned source | Intended use | Admission rule and limitation |
+|---|---|---|
+| Additional JARTIC 5-minute and one-hour observations | Represent weekdays, weekends, and morning, daytime, evening, and night periods; split calibration and validation observations | Acquire multiple dates before the retention window expires; preserve missing and anomaly states and do not treat partial road coverage as ward-wide observation |
+| 2021 Road Traffic Census, Tokyo section and hourly tables | Supplement traffic counts, travel speed, road width, lanes, road class, and candidate legal-speed or direction evidence | Match survey sections to OSM using geometry and road identity, check changes between survey and OSM dates, and never overwrite OSM automatically |
+| Metropolitan Police Department traffic-count statistics | Add major-intersection, screenline, prefectural-border, and other static traffic observations | Register the original ZIP and attribution terms; use as an independent public observation rather than as individual vehicle OD |
+| JARTIC traffic-regulation information | Candidate evidence for designated speed, one-way rules, closures, vehicle restrictions, direction, and conditional regulations | Confirm content and reuse terms first; distinguish regulation data from live traffic and do not interpret an absent record as proof that no regulation exists |
+| N13 road data, road ledgers, and the National Road Facility Inspection Database | Review road class, width category, vertical relationships, bridges, tunnels, and other critical structures | Use as supporting evidence on important roads; do not replace the OSM topology or infer an exact lane count from a width category |
+| Scoped aerial imagery | Review ambiguous carriageways, side roads, medians, elevated and surface roads, bridge approaches, and complex junction geometry | Restrict review to critical or ambiguous roads; record capture date and review lineage and never infer legal restrictions, signal timing, or exact lane connections from imagery alone |
+| National Freight Flow Survey, P31 logistics hubs, and N12 important logistics roads | Constrain aggregate freight generation, depot candidates, and freight-corridor scenarios | Treat published aggregates and candidate facilities as scenario evidence, not customer-level destinations, operator routes, or observed delivery OD; P31's age must be recorded |
+| Population, household, land-use, and public-transport-supply data | Constrain the spatial and temporal distribution of synthetic background traffic | Preserve the distinction between aggregate constraints and generated vehicle trips; do not label the resulting OD as observed OD |
+| Open Charge Map and manufacturer EV specifications | Define candidate chargers, vehicle, battery, payload, range, energy, and charging scenarios | Verify API terms and model-specific specification dates; charger existence, power, status, availability, and waiting time are not guaranteed by the candidate record |
+| Toei Bus GTFS or GTFS-JP | Optional representation of scheduled bus supply in background traffic | Reacquire and register the original feed before use; schedules do not directly observe road traffic volume or delivery demand |
+| Japan Meteorological Agency weather observations | Join rainfall, temperature, wind, snow, or visibility to matching traffic-observation dates | Add only after the normal-weather traffic model passes calibration and independent validation; estimate effects from evidence and keep hypothetical coefficients separate |
+| Public incident, construction, lane-restriction, and closure records | Build time-dependent observed disruption scenarios | Record location and start/end time; implement events through SUMO additional files, rerouters, or TraCI rather than rewriting static road geometry |
+| Heterogeneous driving-behavior evidence | Test how a mixed population of driving profiles changes traffic friction, energy use, and delivery outcomes | Overseas evidence may define relative source-group and individual differences only; it does not identify the composition or absolute behavior of Tokyo drivers |
+
+Actual carrier customer OD, delivery-vehicle GPS trajectories, depot fleet schedules, charger occupancy, complete curbside loading activity, full-network real-time speed, and intersection-level signal phases are not assumed to be publicly available. If they remain unavailable, the study uses documented synthetic inputs or explicit scenarios and keeps `observed`, `estimated`, and `assumed` values separate. Planned data do not become formal inputs merely by being listed here; accepted snapshots must also be added to the source registry and an acquisition record.
+
+### Planned heterogeneous driving-behavior evidence
+
+No overseas dataset below is currently an accepted formal input. The primary reference is the [Expert Driving Dataset](https://www.nature.com/articles/s41597-026-07223-1), with its [Figshare release](https://springernature.figshare.com/articles/dataset/29664056) and [processing repository](https://github.com/AIR-DISCOVER/ExpertDrivingDataset). It contains instrumented runs by 10 source-labelled expert and 10 source-labelled novice drivers in the same Lincoln MKZ on a fixed 5.7 km urban route under 13 reported conditions. The effective independent sample is 20 drivers, not 260 condition rows. The study will preserve the labels `source_expert` and `source_novice`; they describe groups in the source experiment and do not establish Tokyo driver classes, delivery-driver experience, population shares, gender-general behavior, or vehicle-type effects. Eye-tracking analyses are further limited by the smaller available eye-tracking subset.
+
+The evidence roles are deliberately separated:
+
+| Evidence | Admitted role | Prohibited interpretation |
+|---|---|---|
+| Expert Driving Dataset CAN, GNSS, condition, and visual-scene records | Primary reference for relative operational differences and within-group heterogeneity; estimate context-adjusted speed, acceleration, braking, stop, harsh-event, and variability outcomes | The Traffic Recorder output is visual traffic exposure, not measured traffic volume; the passenger comfort score is a trip-level pre/post evaluation and is not duplicated across conditions |
+| [inD](https://www.ind-dataset.com/) and [INTERACTION](https://interaction-dataset.com/) | Soft plausibility reference for urban intersections, yielding, following, and lane changes | No experience label and no direct transfer of foreign absolute values to Tokyo |
+| [highD](https://www.highd-dataset.com/) | Soft distribution-distance reference for highway following and lane-changing behavior | Not a binary acceptance gate and not the primary urban reference |
+| [Honda HRI Driving Dataset](https://usa.honda-ri.com/hdd) | Semantic maneuver and event-extraction support | No source experience grouping for estimating an expertise effect |
+| [PSAD](https://github.com/Shun-Gan/PSAD-dataset) | Bound incident-perception and response-delay sensitivity scenarios | Responses to accident-video stimuli are not actual on-road braking, steering, or collision-avoidance trajectories |
+
+The integration is governed as follows:
+
+1. Register the exact release, access terms, acquisition date, source files, and SHA-256 before analysis. Raw or restricted records remain outside Git.
+2. Keep the canonical condition-level table separate from trip-level evaluations. Store visual traffic exposure under that name, never as traffic volume.
+3. Estimate source-group effects with driver random effects and condition covariates. Use driver-cluster bootstrap or hierarchical Bayesian intervals and partial pooling; do not create fixed profiles from accidental differences among 20 people.
+4. Separate free-flow-like segments from signal, lead-vehicle, pedestrian, curve, and stop-control effects where the data permit. Express harsh events as normalized rates per time or distance rather than raw counts.
+5. Validate timestamps before calculating jerk, resample to a declared regular grid, document missing-data and smoothing rules, and test sensitivity to preprocessing choices.
+6. Transfer relative deviations by variable type: log ratios for positive variables, additive or standardized deviations for signed variables, logits for proportions, normalized-rate ratios for counts, and log standard-deviation ratios for variability. A preregistered `lambda` is a transfer-sensitivity parameter, not a data-estimated Tokyo coefficient.
+7. Do not assign observed outputs one-to-one to SUMO parameters. Select the car-following model first, generate candidate parameter sets, simulate the source contexts, and estimate parameters by joint multi-output distribution distance. In particular, `sigma` is not a general jerk control, `actionStepLength` is not an observed response frequency, `tau` is not itself reaction time, and ordinary `accel`/`decel` choices must remain distinct from `emergencyDecel`.
+8. Avoid double-counting delayed response through both `actionStepLength` and the SUMO Driver State device. Initially represent PSAD-derived incident response through one explicit TraCI delayed-action mechanism and evaluate it only as a bounded sensitivity scenario.
+9. Compare a parameter-mean-matched homogeneous control and a low-density output-matched homogeneous control with three experiment families: `M` changes profile composition for total effects, `V` changes variance while holding the mean approximately fixed, and `C` changes mean capability while holding variance approximately fixed.
+10. Fix profile-generation, vehicle-assignment, departure, route, incident, and simulation seeds. Use common random numbers across paired scenarios.
+
+For the initial classical-versus-QAOA comparison, the frozen point-to-point cost matrix is exogenous to each optimizer and SUMO supplies the common post-optimization evaluation environment. This phase therefore does not claim congestion-aware optimization. An optimize–simulate–update-cost–reoptimize feedback loop is a separate later experiment.
+
 ## Transformation rules
 
 ### Boundary and coordinate systems
@@ -121,6 +172,7 @@ Raw source files are stored under `03_data/raw/traffic_simulation/` and excluded
 - The six N03 source features are dissolved into one study boundary without manually adjusting the shape to improve later results.
 - Source coordinates use JGD2011 (`EPSG:6668`), web/API exchange uses WGS 84 (`EPSG:4326`), and area and distance calculations use Japan Plane Rectangular CS IX (`EPSG:6677`).
 - The OSM acquisition BBOX is the minimum rectangle derived from the boundary. It controls data acquisition only; the N03 polygon remains the analysis boundary.
+- N03 supplies only the administrative study boundary; it supplies no road geometry, connectivity, lane count, direction, or speed attribute. Those road-network roles begin with OSM and the governed supplementary evidence below.
 
 ### Road geometry, attributes, and SUMO conversion
 
