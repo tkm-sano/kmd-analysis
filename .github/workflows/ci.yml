@@ -51,12 +51,25 @@ jobs:
           pdfs = sorted(path for path in tracked if path.lower().endswith(".pdf"))
           assert pdfs == [], pdfs
           assert not any(path.lower().endswith(".zip") for path in tracked)
-          assert not any(path.startswith("03_data/raw/") for path in tracked)
+          allowed_raw_documentation = {
+              "03_data/raw/traffic_simulation/README.md",
+          }
+          unexpected_raw = sorted(
+              path
+              for path in tracked
+              if path.startswith("03_data/raw/")
+              and path not in allowed_raw_documentation
+              and not path.endswith("/.gitkeep")
+          )
+          assert unexpected_raw == [], unexpected_raw
           assert not any("/pdf_derived/text/" in path for path in tracked)
 
           figures = sorted(Path("06_outputs/figures/active/png").glob("figure_*.png"))
           tables = sorted(Path("06_outputs/tables/png").glob("*.png"))
           assert len(figures) == 0, len(figures)
           assert len(tables) == 5, len(tables)
-          print("notebook=1 pdf=0 figures=0 tables=5; no tracked raw/PDF/ZIP corpus")
+          print(
+              "notebook=1 pdf=0 figures=0 tables=5; "
+              "raw paths contain documentation/placeholders only"
+          )
           PY
