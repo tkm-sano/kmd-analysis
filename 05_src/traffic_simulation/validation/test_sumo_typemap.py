@@ -260,7 +260,7 @@ def test_structural_imputation_is_rule_based_and_formal_use_is_forbidden() -> No
     assert formal["require_validation_record_for_derived_model"] is True
 
 
-def test_access_precedence_and_permission_enforcement_only_reduce_scope() -> None:
+def test_permissions_are_materialized_before_final_conversion_and_only_audited_after() -> None:
     config = load_config()
     resolution = config["access_resolution"]
     enforcement = resolution["enforcement"]
@@ -281,15 +281,16 @@ def test_access_precedence_and_permission_enforcement_only_reduce_scope() -> Non
     assert resolution["unknown_or_unsupported_rule"] == "unresolved"
     assert enforcement["compute_expected_permissions_before_netconvert"] is True
     assert enforcement["compare_expected_with_generated_permissions"] is True
-    assert enforcement["patch_operation"] == (
-        "evidence_backed_exact_expected_permissions"
-    )
-    assert enforcement["evidence_required_for_restriction_or_specific_exception"] is True
+    assert enforcement["materialize_expected_permissions_before_final_netconvert"] is True
+    assert enforcement["materialization_target"] == "explicit_final_netconvert_input"
+    assert enforcement["final_netconvert_must_build_connections_from_materialized_permissions"] is True
+    assert enforcement["patch_generated_net_xml"] is False
+    assert enforcement["post_netconvert_operation"] == "audit_only"
     assert enforcement["prohibit_unsourced_automatic_expansion"] is True
-    assert enforcement["patch_may_expand_importer_output_only_with_evidence"] is True
-    assert enforcement["patch_must_not_expand_typemap_baseline"] is True
-    assert enforcement["require_exact_expected_permission_match_after_patch"] is True
-    assert enforcement["revalidate_connections_after_patch"] is True
+    assert enforcement["materialized_permissions_must_not_expand_typemap_baseline"] is True
+    assert enforcement["require_exact_expected_permission_match_after_conversion"] is True
+    assert enforcement["mismatch_policy"] == "stop_fix_input_and_rerun_final_netconvert"
+    assert enforcement["validate_lane_and_connection_permissions"] is True
 
 
 def test_formal_network_precedes_demand_calibration_and_validation() -> None:
@@ -300,8 +301,10 @@ def test_formal_network_precedes_demand_calibration_and_validation() -> None:
         "structural_network",
         "structural_debug",
         "governed_attributes_and_permissions",
+        "signal_junction_and_link_structure",
         "formal_baseline_network",
-        "demand_and_signal_inputs",
+        "demand_inputs",
+        "signal_timing_calibration",
         "calibration",
         "independent_validation",
         "delivery_classical_qaoa_evaluation",
@@ -310,6 +313,7 @@ def test_formal_network_precedes_demand_calibration_and_validation() -> None:
     assert order["demand_simulation_requires_formal_network"] is True
     assert order["structural_placeholders_must_be_zero_before_calibration"] is True
     assert order["changing_formal_network_invalidates_downstream_calibration"] is True
+    assert order["changing_signal_junction_or_link_structure_is_formal_network_change"] is True
 
 
 def test_structural_gate_uses_preregistered_measurable_metrics() -> None:
@@ -383,6 +387,122 @@ def test_formal_review_covers_the_selectable_candidate_subgraph() -> None:
     assert set(scope["terminals"]) == {"depots", "all_customers", "charging_facilities"}
     assert scope["include_all_reachable_edges_between_terminals"] is True
     assert scope["final_selected_routes_only_is_prohibited"] is True
+
+
+def test_requirement_matrix_does_not_conflate_policy_with_validation() -> None:
+    status = load_config()["status"]
+    matrix = status["requirement_matrix"]
+
+    assert status["formal_build_ready"] is False
+    assert matrix["typemap_xml"]["xsd_validation"] == "passed"
+    assert matrix["typemap_xml"]["runtime_validation"] == (
+        "not_applicable_xsd_validation_only"
+    )
+    assert matrix["permission_governance"]["implementation"] == "not_implemented"
+    assert matrix["permission_governance"]["runtime_validation"] == "failed"
+    assert matrix["formal_network"]["implementation"] == "not_built"
+    assert matrix["formal_network"]["formal_eligibility"] is False
+
+
+def test_signal_structure_is_part_of_formal_network_but_timing_is_calibrated() -> None:
+    policy = load_config()["traffic_lights"]
+
+    assert policy["structure"]["must_be_fixed_before_formal_network"] is True
+    assert policy["structure"]["includes_connection_to_tls_link_mapping"] is True
+    assert policy["structure"]["change_invalidates_calibration_and_validation"] is True
+    assert policy["timing"]["calibrated_after_demand_input"] is True
+
+
+def test_connectivity_gate_is_vclass_directional_and_reports_length() -> None:
+    gate = load_config()["structural_quality_gate"]
+    evaluation = gate["vclass_directional_evaluation"]
+
+    assert set(gate["metrics"]["retained_osm_way_rate"]["report_units"]) == {
+        "way_count",
+        "way_length_m",
+    }
+    assert evaluation["directed_reachability_required"] is True
+    assert evaluation["depot_to_all_customers_and_chargers_required"] is True
+    assert evaluation["all_customers_and_chargers_to_depot_return_required"] is True
+    assert set(evaluation["vclasses"]) == GOVERNED_VCLASSES
+
+
+def test_seeds_are_separated_by_role() -> None:
+    registry = load_config()["calibration_policy"]["seed_registry"]
+
+    assert set(registry["shared_environment_seeds"]) == {
+        "instance_seed",
+        "demand_generation_seed",
+        "traffic_simulation_seed",
+    }
+    assert set(registry["algorithm_specific_seed_sets"]) == {
+        "classical_solver_seed",
+        "qaoa_parameter_seed",
+        "qaoa_sampling_seed",
+    }
+    assert registry["same_integer_across_algorithm_specific_seeds_has_no_equivalence_claim"] is True
+
+
+def test_small_reproducibility_artifacts_and_test_evidence_are_versioned() -> None:
+    config = load_config()
+    artifacts = config["artifact_retention"]
+    evidence = config["test_execution_evidence"]
+
+    assert artifacts["large_generated_artifacts"]["git_tracked"] is False
+    assert artifacts["small_reproducibility_artifacts"]["immutable_versioning_required"] is True
+    assert set(artifacts["small_reproducibility_artifacts"]["required"]) == {
+        "netccfg",
+        "build_manifest_json",
+        "build_summary_json",
+        "warning_classification_json",
+        "artifact_checksums_txt",
+    }
+    assert set(evidence["required_fields"]) == {
+        "git_commit",
+        "container_digest",
+        "exact_command",
+        "test_collection_hash",
+        "exit_code",
+        "log_sha256",
+        "started_at",
+        "finished_at",
+    }
+
+
+def test_surface_and_vehicle_class_policies_are_explicit() -> None:
+    config = load_config()
+    typemap = config["typemap_policy"]
+    delivery = config["vehicle_scope"]["use_profiles"]["delivery_routing"]
+
+    assert typemap["road_function_and_surface_are_separate_axes"] is True
+    assert typemap["surface_assessment"]["primary_tag"] == "surface"
+    assert typemap["surface_assessment"]["retained_highway_may_still_be_unpaved"] is True
+    assert delivery["vehicle_to_vclass_mapping"] == {
+        "small_delivery_van": "delivery",
+        "heavy_freight_vehicle": "truck",
+    }
+    assert delivery["vehicle_vclass_is_immutable_within_problem_instance"] is True
+
+
+def test_configuration_dates_and_policy_documents_are_unambiguous() -> None:
+    config = load_config()
+
+    assert config["config_id"] == "ota_ward_sumo_network_v11"
+    assert config["config_version"] == 11
+    assert config["created_at"] == "2026-07-18"
+    assert config["last_updated_at"] == "2026-07-19"
+    assert config["configuration_lineage_date"] == "2026-07-16"
+    documents = config["policy_documents"]
+    assert set(documents) == {
+        "attribute_governance",
+        "current_specification",
+        "change_log",
+        "network_build_protocol",
+        "traffic_calibration_protocol",
+        "optimization_protocol",
+    }
+    for path in documents.values():
+        assert (ROOT / path).is_file()
 
 
 def test_network_scope_and_use_specific_vclass_profiles_are_distinct() -> None:

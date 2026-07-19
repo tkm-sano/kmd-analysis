@@ -1,9 +1,18 @@
 schema_version: 1
-config_id: ota_ward_sumo_network_20260716_v10
-config_version: 10
+config_id: ota_ward_sumo_network_v11
+config_version: 11
+created_at: "2026-07-18"
+last_updated_at: "2026-07-19"
+configuration_lineage_date: "2026-07-16"
 decision_date: "2026-07-19"
-change_summary: Require a formal network before calibration and preregister reproducibility, provenance, and calibration gates
-policy_document: 05_src/traffic_simulation/network_attribute_governance.md
+change_summary: Materialize permissions before final conversion, include signal structure in formal topology, and separate current specifications from history
+policy_documents:
+  attribute_governance: 05_src/traffic_simulation/network_attribute_governance.md
+  current_specification: 05_src/traffic_simulation/network_current_specification.md
+  change_log: 03_data/metadata/acquisition/20260718_sumo_tokyo_motorized_typemap_design.md
+  network_build_protocol: 05_src/traffic_simulation/network_build_and_validation_protocol.md
+  traffic_calibration_protocol: 05_src/traffic_simulation/traffic_calibration_protocol.md
+  optimization_protocol: 05_src/traffic_simulation/optimization_comparison_protocol.md
 status:
   specification: approved
   implementation: in_progress
@@ -32,9 +41,50 @@ status:
     - quantitative_structural_gate_threshold_preregistration
     - full_runtime_environment_fingerprint
     - osm_way_to_sumo_lane_provenance_validation
-    - evidence_backed_permission_patch_and_comparison
+    - pre_netconvert_permission_materializer
+    - permission_materialization_runtime_fixture
+    - signal_structure_review_and_formalization
     - calibration_metric_threshold_preregistration
     - calibration_seed_and_warmup_preregistration
+    - versioned_small_build_artifact_publication
+    - pinned_sumo_documentation_snapshots
+  requirement_matrix:
+    typemap_xml:
+      policy: policy_fixed
+      implementation: implemented
+      unit_validation: unit_tested
+      xsd_validation: passed
+      runtime_validation: not_applicable_xsd_validation_only
+      real_data_validation: not_run
+      formal_eligibility: blocked_by_permission_governance
+    attribute_resolver:
+      policy: policy_fixed
+      implementation: implemented_partial_scope
+      unit_validation: unit_tested
+      runtime_validation: not_applicable_preprocessor
+      real_data_validation: not_run
+      formal_eligibility: blocked_by_unresolved_real_data_attributes
+    permission_governance:
+      policy: policy_fixed
+      implementation: not_implemented
+      unit_validation: policy_tested_only
+      runtime_validation: failed
+      real_data_validation: not_run
+      formal_eligibility: false
+    signal_structure:
+      policy: policy_fixed
+      implementation: not_implemented
+      unit_validation: policy_tested_only
+      runtime_validation: not_run
+      real_data_validation: not_run
+      formal_eligibility: false
+    formal_network:
+      policy: policy_fixed
+      implementation: not_built
+      unit_validation: not_applicable
+      runtime_validation: not_run
+      real_data_validation: not_run
+      formal_eligibility: false
 
 study_area:
   region_id: ota_ward
@@ -111,6 +161,7 @@ paths:
   imputation_summary: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_imputation_summary.json
   external_match_report: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_external_road_matches.csv
   visualization: reproducibility/outputs/traffic_simulation/visualization/ota_ward_sumo_network.html
+  versioned_build_record_root: 06_outputs/traffic_simulation/network_build_records/{build_id}
 
 osm_attribute_baseline_audit:
   method_version: 1
@@ -196,6 +247,10 @@ vehicle_scope:
         - delivery
         - truck
       dedicated_bus_links: excluded_in_v1_explicit_delivery_exception_requires_new_governed_compound_type_and_config_version
+      vehicle_to_vclass_mapping:
+        small_delivery_van: delivery
+        heavy_freight_vehicle: truck
+      vehicle_vclass_is_immutable_within_problem_instance: true
     background_traffic:
       vclasses:
         - passenger
@@ -223,6 +278,16 @@ typemap_policy:
   unknown_type_policy: reject_unmatched_and_report_explicit_discard
   access_processing_scope: supported_tags_in_pinned_netconvert_configuration
   absence_of_type_defaults_is_validation: false
+  road_function_and_surface_are_separate_axes: true
+  track_exclusion_reason: land_access_function_outside_initial_general_motorized_network
+  unsurfaced_highway_tag_status: deprecated_not_primary_surface_classifier
+  surface_assessment:
+    primary_tag: surface
+    supporting_tags:
+      - smoothness
+      - tracktype
+    retained_highway_may_still_be_unpaved: true
+    unpaved_policy_status: pending_formal_rule
   typemap_must_not_default:
     - lanes
     - maxspeed
@@ -261,7 +326,7 @@ access_resolution:
   resolve_osm_overrides_before_research_scope_intersection: true
   unknown_or_unsupported_rule: unresolved
   unsupported_conditional_rule: unresolved
-  preserve_source_access_tags_until_post_netconvert_verification: true
+  preserve_source_access_tags_until_permission_materialization: true
   permission_expectations_artifact_required: true
   resolver_fixtures:
     positive: 05_src/traffic_simulation/validation/fixtures/osm_attribute_resolution_positive.osm.xml
@@ -287,14 +352,16 @@ access_resolution:
   enforcement:
     compute_expected_permissions_before_netconvert: true
     compare_expected_with_generated_permissions: true
-    patch_generated_permissions_if_runtime_importer_mismatch: true
-    patch_operation: evidence_backed_exact_expected_permissions
-    evidence_required_for_restriction_or_specific_exception: true
+    materialize_expected_permissions_before_final_netconvert: true
+    materialization_target: explicit_final_netconvert_input
+    final_netconvert_must_build_connections_from_materialized_permissions: true
+    patch_generated_net_xml: false
+    post_netconvert_operation: audit_only
+    require_exact_expected_permission_match_after_conversion: true
+    mismatch_policy: stop_fix_input_and_rerun_final_netconvert
     prohibit_unsourced_automatic_expansion: true
-    patch_may_expand_importer_output_only_with_evidence: true
-    patch_must_not_expand_typemap_baseline: true
-    require_exact_expected_permission_match_after_patch: true
-    revalidate_connections_after_patch: true
+    materialized_permissions_must_not_expand_typemap_baseline: true
+    validate_lane_and_connection_permissions: true
   lane_specific_access:
     enabled: true
     pinned_netconvert_option: osm.lane-access
@@ -928,6 +995,14 @@ traffic_lights:
     - sumo_structural_initialization
   generated_program_is_observed_timing: false
   observed_timing_calibration_stage: signal_vehicle_driver_configuration
+  structure:
+    includes_signalized_junction_selection: true
+    includes_connection_to_tls_link_mapping: true
+    must_be_fixed_before_formal_network: true
+    change_invalidates_calibration_and_validation: true
+  timing:
+    includes_cycle_phase_split_and_offset: true
+    calibrated_after_demand_input: true
 
 geometry_and_connectivity:
   preserve_internal_links: true
@@ -948,8 +1023,10 @@ network_stage_order:
     - structural_network
     - structural_debug
     - governed_attributes_and_permissions
+    - signal_junction_and_link_structure
     - formal_baseline_network
-    - demand_and_signal_inputs
+    - demand_inputs
+    - signal_timing_calibration
     - calibration
     - independent_validation
     - delivery_classical_qaoa_evaluation
@@ -957,6 +1034,7 @@ network_stage_order:
   demand_simulation_requires_formal_network: true
   structural_placeholders_must_be_zero_before_calibration: true
   changing_formal_network_invalidates_downstream_calibration: true
+  changing_signal_junction_or_link_structure_is_formal_network_change: true
 
 structural_quality_gate:
   threshold_status: pending_preregistration_with_rationale
@@ -965,6 +1043,9 @@ structural_quality_gate:
     retained_osm_way_rate:
       denominator: governed_osm_ways
       numerator: governed_osm_ways_with_explained_sumo_output_or_approved_discard
+      report_units:
+        - way_count
+        - way_length_m
     major_road_reachability_rate:
       unit: preregistered_major_road_pair
     largest_component_drivable_length_share:
@@ -973,6 +1054,7 @@ structural_quality_gate:
       comparison: expected_osm_direction_vs_generated_sumo_edges
     representative_od_route_success_rate:
       od_set: preregistered_depot_customer_charger_pairs
+      evaluate_by_vclass_and_direction: true
     sumo_load_status:
       required_exit_code: 0
       require_xml_validation_success: true
@@ -982,6 +1064,19 @@ structural_quality_gate:
         - approved
         - informational
       unclassified_warning_policy: stop
+  vclass_directional_evaluation:
+    vclasses:
+      - delivery
+      - truck
+      - passenger
+      - taxi
+      - bus
+      - coach
+      - motorcycle
+      - moped
+    directed_reachability_required: true
+    depot_to_all_customers_and_chargers_required: true
+    all_customers_and_chargers_to_depot_return_required: true
   formal_promotion_requires_all_thresholds_registered: true
 
 formal_candidate_subgraph:
@@ -1041,6 +1136,16 @@ calibration_policy:
     warmup_period_required: true
     warmup_rule_status: pending_preregistration
     common_random_numbers_for_comparisons: true
+  seed_registry:
+    shared_environment_seeds:
+      - instance_seed
+      - demand_generation_seed
+      - traffic_simulation_seed
+    algorithm_specific_seed_sets:
+      - classical_solver_seed
+      - qaoa_parameter_seed
+      - qaoa_sampling_seed
+    same_integer_across_algorithm_specific_seeds_has_no_equivalence_claim: true
   changing_network_or_demand_definition_invalidates_calibration: true
 
 failure_policy:
@@ -1094,6 +1199,42 @@ failure_policy:
     - speed_mismatches
     - permission_mismatches
     - untracked_edges
+
+artifact_retention:
+  large_generated_artifacts:
+    git_tracked: false
+    examples:
+      - normalized_osm_xml
+      - net_xml
+  small_reproducibility_artifacts:
+    immutable_versioning_required: true
+    storage: git_or_content_addressed_immutable_artifact_store
+    required:
+      - netccfg
+      - build_manifest_json
+      - build_summary_json
+      - warning_classification_json
+      - artifact_checksums_txt
+  git_index_required_if_external_storage_used: true
+
+reference_evidence:
+  priority_order:
+    - pinned_sumo_1_24_0_runtime_fixture
+    - sumo_v1_24_0_source_or_xsd
+    - dated_hashed_official_document_snapshot
+    - current_official_documentation
+  current_documentation_url_alone_is_not_version_pinned_evidence: true
+
+test_execution_evidence:
+  required_fields:
+    - git_commit
+    - container_digest
+    - exact_command
+    - test_collection_hash
+    - exit_code
+    - log_sha256
+    - started_at
+    - finished_at
 
 provenance:
   distinguish_value_classes:
