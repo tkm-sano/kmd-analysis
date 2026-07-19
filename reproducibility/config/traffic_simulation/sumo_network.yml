@@ -1,26 +1,34 @@
 schema_version: 1
-config_id: ota_ward_sumo_network_20260716_v8
-config_version: 8
-decision_date: "2026-07-18"
-change_summary: Fix structural imputation rules, formal admissibility, oneway resolution, access precedence, and use-specific vClass profiles
+config_id: ota_ward_sumo_network_20260716_v9
+config_version: 9
+decision_date: "2026-07-19"
+change_summary: Make attribute resolution fail closed for unsupported OSM semantics and persist complete resolver evidence
 policy_document: 05_src/traffic_simulation/network_attribute_governance.md
 status:
   specification: approved
-  implementation: pending
+  implementation: in_progress
   runtime_validation: failed_governance_fixture
   formal_build_ready: false
+  implemented_components:
+    - governed_osm_xml_attribute_resolver
+    - pre_netconvert_required_attribute_gate
+    - expected_way_direction_lane_permission_audit
+    - structural_unique_mode_rule_evaluator
+    - resolver_permission_expectations_artifact
+    - resolver_imputation_distribution_artifact
   pending_requirements:
     - attribute_governance_implementation
     - external_source_acquisition_and_matching
     - structural_placeholder_values
     - junction_join_review
     - reviewed_junction_join_node_file
-    - governed_osm_materialization_validator
     - sumo_vehicle_input_validator
     - netconvert_log_and_output_auditor
     - osm_access_fixture_runtime_tests
     - access_permission_mapping_resolution
     - design_decision_sensitivity_execution
+    - attribute_specific_criticality_schema_and_evidence
+    - lane_allocation_sensitivity_execution
 
 study_area:
   region_id: ota_ward
@@ -75,6 +83,8 @@ paths:
   build_log: 03_data/processed/traffic_simulation/road_network/sumo/{profile}/ota_ward_20260716_netconvert.log
   build_summary: 03_data/processed/traffic_simulation/road_network/sumo/{profile}/ota_ward_20260716_build_summary.json
   attribute_audit_report: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_road_attribute_audit.csv
+  permission_expectations: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_permission_expectations.json
+  imputation_summary: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_imputation_summary.json
   external_match_report: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_external_road_matches.csv
   visualization: reproducibility/outputs/traffic_simulation/visualization/ota_ward_sumo_network.html
 
@@ -227,6 +237,11 @@ access_resolution:
   resolve_osm_overrides_before_research_scope_intersection: true
   unknown_or_unsupported_rule: unresolved
   unsupported_conditional_rule: unresolved
+  preserve_source_access_tags_until_post_netconvert_verification: true
+  permission_expectations_artifact_required: true
+  resolver_fixtures:
+    positive: 05_src/traffic_simulation/validation/fixtures/osm_attribute_resolution_positive.osm.xml
+    negative_missing_required: 05_src/traffic_simulation/validation/fixtures/osm_attribute_resolution_negative.osm.xml
   class_specific_tags_to_validate:
     - motorcar
     - hgv
@@ -463,6 +478,10 @@ attribute_resolution:
     - approved_assumption
     - derived_validated_model
     - structural_placeholder
+    - missing
+    - valid_but_unsupported
+    - conditional
+    - directionally_asymmetric
     - unresolved
     - conflict
     - invalid
@@ -491,6 +510,10 @@ attribute_resolution:
         - unresolved
         - conflict
         - invalid
+        - missing
+        - valid_but_unsupported
+        - conditional
+        - directionally_asymmetric
       list_structural_placeholders_separately: true
     report_path: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_road_attribute_audit.csv
     report_fields:
@@ -523,6 +546,10 @@ attribute_resolution:
           - unresolved
           - conflict
           - invalid
+          - missing
+          - valid_but_unsupported
+          - conditional
+          - directionally_asymmetric
         require_human_review_for_low_confidence_critical_matches: true
         require_sensitivity_for_critical_approved_assumptions: true
   fallback_types: {}
@@ -599,7 +626,7 @@ attribute_rules:
       - road_traffic_census
     explicit_yes: materialize_yes
     explicit_no: materialize_no
-    explicit_reverse: reverse_way_direction_and_materialize_yes
+    explicit_reverse: valid_but_unsupported_stop_until_directional_tag_safe_transform
     roundabout_without_explicit_value: derived_yes_osm_rule
     motorway_without_explicit_value: derived_yes_osm_rule
     motorway_link_without_explicit_value: unresolved
@@ -631,7 +658,7 @@ attribute_rules:
       - road_traffic_census
       - other_public_authority_source
       - dated_legal_derivation
-    reject_conditional_or_multiple_value_without_review: false
+    reject_conditional_or_multiple_value_without_review: true
     legal_derivation_requires:
       - law_effective_date
       - road_state_reference_date
@@ -657,6 +684,7 @@ structural_imputation:
   applicable_criticality: noncritical_only
   lanes:
     source_population: explicit_osm_values_in_fixed_ota_ward_extract
+    sample_unit: osm_way_count
     grouping:
       - highway
       - oneway_status
@@ -668,6 +696,7 @@ structural_imputation:
     prohibit_automatic_fallback_to_adjacent_highway_class: true
   maxspeed_kmh:
     source_population: explicit_numeric_osm_values_in_fixed_ota_ward_extract
+    sample_unit: osm_way_count
     grouping:
       - highway
     statistic: unique_mode
@@ -687,6 +716,16 @@ structural_imputation:
   formal_use_allowed: false
 
 road_criticality:
+  status: pending_attribute_specific_schema_and_evidence
+  required_future_fields:
+    - osm_way_id
+    - attribute
+    - criticality
+    - decision_rule_id
+    - reason
+    - evidence_source
+    - reviewer
+    - reviewed_at
   pre_critical:
     - jartic_observation_road
     - road_traffic_census_road
