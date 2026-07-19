@@ -1,18 +1,18 @@
-# 東京自動車系SUMO typemap：時系列作業記録
+# 東京自動車系SUMO typemap：変更履歴
 
 ## 記録情報
 
 - 記録日：2026-07-18
 - 実施者：研究環境管理者（Codex支援）
 - 状態：`implemented_runtime_validation_failed`
-- 設定ID：`ota_ward_sumo_network_20260716_v10`
+- 設定ID：`ota_ward_sumo_network_v11`
 - typemap方針ID：`tokyo_motorized_v1`
 - 対象ファイル：`reproducibility/config/traffic_simulation/osm_tokyo_motorized.typ.xml`
 - 関連設定：`reproducibility/config/traffic_simulation/sumo_network.yml`
 - 関連方針：`05_src/traffic_simulation/network_attribute_governance.md`
 - 関連実装計画：`05_src/traffic_simulation/implementation_plan.md`
 
-本ファイルを、このtypemapの設計、作成、検証に関する唯一の作業メモとする。第三者データの取得記録やSUMO道路網の生成記録ではない。
+本ファイルはtypemapと関連する道路網ガバナンスの時系列変更履歴である。現在有効な仕様は`05_src/traffic_simulation/network_current_specification.md`を参照し、過去節を現行仕様として部分引用しない。構築、較正、最適化の手順は各protocol文書へ分離する。
 
 ## 時系列作業ログ
 
@@ -371,6 +371,28 @@ v9更新後、resolverとtypemapの対象テストは`42 passed`、固定`analys
 
 v10更新後、resolverとtypemapの対象テストは`47 passed`、固定`analysis`コンテナ内のvalidation suiteは`175 passed`であった。これは設定と既存実装の静的整合性を検査した結果であり、実PBFからのformalネットワーク生成や交通較正を検証した結果ではない。
 
+### 20. permissions生成順、信号構造、現行仕様の責務を修正した
+
+2026年7月19日、v10の「生成後に根拠付きpermissionsへ完全一致させる」方針を再検討した。生成済み`net.xml`のlane permissionsを拡張しても、そのclassに必要なconnectionが生成済みである保証がないため、formal生成前の停止事項と判断した。また、信号交差点の採否とconnectionからTLS linkへの対応は時間制御ではなくネットワーク構造であり、formal基準ネットワークより前に確定すべきと整理した。
+
+設定をv10からv11へ更新し、次を決定した。
+
+- 期待permissionsを最終`netconvert`前の明示入力へmaterializeし、最終変換でlaneとconnectionを再構築する。
+- 生成`net.xml`は編集せず、lane・connectionの完全一致監査だけを行う。不一致時は入力を修正して最終変換から再実行する。
+- 信号交差点とTLS link構造をformalネットワークの一部とし、サイクル、現示、スプリット、オフセットを需要投入後の較正対象とする。
+- 構造ゲートをvClass別・有向で評価し、デポから顧客・充電施設への到達と帰着可能性を分離する。保持率はway数と道路長の両方で報告する。
+- 道路機能と舗装状態を分離する。`highway=track`は土地アクセス機能を理由に除外し、未舗装性は`surface`を中心に`smoothness`、`tracktype`を補助として判定する。
+- 共通環境seedと解法固有seedを分離し、同じ整数を異種アルゴリズムへ渡しても同等乱数とは解釈しない。
+- 小型配送車を`delivery`、重量貨物車を`truck`へ固定し、同一問題内で都合よくvClassを切り替えない。
+- 大容量の正規化OSMと`net.xml`はGit外に置けるが、`.netccfg`、manifest、build summary、warning分類、checksum一覧はGitまたは改変不能なartifact storageで版管理する。
+- SUMO 1.24.0 fixture、`v1_24_0`ソース・XSD、取得日とSHA-256を固定した公式文書、最新版文書の順に証拠を優先する。
+- pytest件数だけでなく、commit、container digest、完全コマンド、collection hash、終了コード、log hash、開始・終了時刻を試験証拠として保存する。
+- 本ファイルを変更履歴とし、現行仕様、network build、交通較正、最適化比較を別文書へ分離する。
+
+要件状態を`policy_fixed`、実装、単体検証、runtime検証、実データ検証、formal適格性へ分解した。permissions materializer、信号構造レビュー、artifact publicationは方針固定のみで未実装である。固定SUMO runtime fixtureは不合格、実PBF検証は未実施であり、`formal_build_ready: false`を維持する。
+
+v11更新後、resolverとtypemapの対象テストは`54 passed`、固定`analysis`コンテナ内のvalidation suiteは`182 passed`であった。typemapのXSD検証成功はruntime検証とは分類せず、permission importer fixtureの不合格を解消したとは扱わない。
+
 ## 最終的に固定した内容
 
 - 採用方式：自動車系道路typeの明示的ホワイトリスト
@@ -390,11 +412,13 @@ v10更新後、resolverとtypemapの対象テストは`47 passed`、固定`analy
 - SUMO入力vClass：管理対象8クラスだけを許可し、`ignoring`、`custom1`、`custom2`、`evehicle`を禁止する
 - EV配送表現：`vClass="delivery"`とSUMO battery deviceを組み合わせ、`evehicle`を禁止する
 - access処理：`osm.lane-access=true`を固定し、fixtureと生成permissions監査で動作を確認する
-- permissions処理：OSM内の上書き関係を先に解決し、根拠付き期待値へ完全一致させる。根拠のない拡張とtypemap基本集合を超える拡張は禁止する
+- permissions処理：期待値を最終変換前の明示入力へmaterializeし、生成`net.xml`は編集せずlane・connectionを完全一致監査する
 - resolver監査：期待permissionsと補完完全分布を専用JSONへ保存し、accessタグは変換後照合が完成するまで保持する
 - 用途別vClass：配送経路用と背景交通用を分け、ネットワークの管理集合8クラスと混同しない
 - 工程順序：placeholderを除去したformal基準ネットワークを需要投入・較正より前に完成させる
 - 実行環境：SUMO、PROJ、依存環境を含むコンテナdigestと全入力・設定・コマンドのfingerprintを保存する
+- 信号：交差点とTLS link構造はformal前、時間制御は需要投入後に固定・較正する
+- 道路表面：道路機能と舗装状態を分離し、`surface`を主要判定タグとする
 
 ## 残作業と変更管理
 
@@ -410,4 +434,4 @@ docker compose run --rm analysis \
 
 priority階層は東京の実道路優先関係を検証した結果ではない。また、SUMOの`motorcycle`は日本の排気量区分別規制を完全には表現しない。採用type、vehicle class、priorityを変更する場合は、typemap方針IDと`sumo_network.yml`の設定版を上げ、変更理由と再検証結果を本ファイルへ時系列で追記する。
 
-Git管理対象は、カスタムtypemap、`sumo_network.yml`、typemap単体テスト、本記録とする。生成されるOSM XML、`.netccfg`、manifest、`net.xml`、build summaryはGit管理対象外とし、後続のSUMO道路網生成記録にSHA-256と実行結果を保存する。
+Git管理対象には、カスタムtypemap、`sumo_network.yml`、テスト、現行仕様、protocol、変更履歴を含める。大容量の生成OSM XMLと`net.xml`はGit管理外にできるが、`.netccfg`、manifest、build summary、warning分類、checksum一覧はGitまたは改変不能なcontent-addressed artifact storageで版管理し、外部保存時はGit管理のindexから参照できるようにする。

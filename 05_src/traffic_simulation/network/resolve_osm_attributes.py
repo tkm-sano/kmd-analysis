@@ -226,7 +226,7 @@ def load_policy(
     profile: str,
     config_path: Path = CONFIG_PATH,
 ) -> ResolverPolicy:
-    """Load and strictly validate the v10 resolver policy."""
+    """Load and strictly validate the v11 resolver policy."""
 
     with config_path.open(encoding="utf-8") as handle:
         config = yaml.safe_load(handle)
@@ -234,8 +234,8 @@ def load_policy(
         raise ValueError("SUMO network config must be a mapping")
     if profile not in {"structural", "formal"}:
         raise ValueError(f"unsupported network profile: {profile}")
-    if config.get("config_version") != 10:
-        raise ValueError("resolve_osm_attributes requires sumo_network config v10")
+    if config.get("config_version") != 11:
+        raise ValueError("resolve_osm_attributes requires sumo_network config v11")
 
     vehicle_scope = config.get("vehicle_scope", {})
     typemap_policy = config.get("typemap_policy", {})
@@ -248,7 +248,7 @@ def load_policy(
     if oneway.get("explicit_reverse") != (
         "valid_but_unsupported_stop_until_directional_tag_safe_transform"
     ):
-        raise ValueError("reverse oneway must fail closed in config v10")
+        raise ValueError("reverse oneway must fail closed in config v11")
     if oneway.get("statistical_placeholder_allowed") is not False:
         raise ValueError("oneway statistical placeholders must be prohibited")
     if access.get("osm_override_application_order") != [

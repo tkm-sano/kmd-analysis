@@ -56,11 +56,11 @@ def tags_for(tree: ElementTree.ElementTree, way_id: str) -> dict[str, str]:
     return {tag.attrib["k"]: tag.attrib["v"] for tag in way.findall("tag")}
 
 
-def test_load_policy_matches_v10_and_fixture_paths() -> None:
+def test_load_policy_matches_v11_and_fixture_paths() -> None:
     policy = resolver.load_policy("structural")
 
-    assert policy.config_id == "ota_ward_sumo_network_20260716_v10"
-    assert policy.config_version == 10
+    assert policy.config_id == "ota_ward_sumo_network_v11"
+    assert policy.config_version == 11
     assert policy.profile == "structural"
     assert policy.lane_imputation_minimum_sample_size == 30
     assert policy.lane_imputation_minimum_mode_share == 0.5
