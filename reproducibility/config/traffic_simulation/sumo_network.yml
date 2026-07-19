@@ -1,8 +1,8 @@
 schema_version: 1
-config_id: ota_ward_sumo_network_20260716_v9
-config_version: 9
+config_id: ota_ward_sumo_network_20260716_v10
+config_version: 10
 decision_date: "2026-07-19"
-change_summary: Make attribute resolution fail closed for unsupported OSM semantics and persist complete resolver evidence
+change_summary: Require a formal network before calibration and preregister reproducibility, provenance, and calibration gates
 policy_document: 05_src/traffic_simulation/network_attribute_governance.md
 status:
   specification: approved
@@ -29,6 +29,12 @@ status:
     - design_decision_sensitivity_execution
     - attribute_specific_criticality_schema_and_evidence
     - lane_allocation_sensitivity_execution
+    - quantitative_structural_gate_threshold_preregistration
+    - full_runtime_environment_fingerprint
+    - osm_way_to_sumo_lane_provenance_validation
+    - evidence_backed_permission_patch_and_comparison
+    - calibration_metric_threshold_preregistration
+    - calibration_seed_and_warmup_preregistration
 
 study_area:
   region_id: ota_ward
@@ -60,6 +66,24 @@ execution_environment:
     osmium: "1.15.0"
     netconvert: "1.24.0"
     sumo: "1.24.0"
+  required_build_manifest_fingerprint:
+    - sumo_container_image_digest
+    - sumo_version
+    - netconvert_version
+    - proj_version
+    - osmium_version
+    - analysis_container_image_digest
+    - python_version
+    - python_dependency_lock_sha256
+    - locale
+    - platform
+    - output_precision_options
+    - typemap_sha256
+    - osm_input_sha256
+    - network_config_sha256
+    - netccfg_sha256
+    - exact_command
+  missing_fingerprint_field_policy: stop
   responsibility:
     analysis:
       - verify_governed_inputs
@@ -264,8 +288,12 @@ access_resolution:
     compute_expected_permissions_before_netconvert: true
     compare_expected_with_generated_permissions: true
     patch_generated_permissions_if_runtime_importer_mismatch: true
-    patch_operation: intersection_only
+    patch_operation: evidence_backed_exact_expected_permissions
+    evidence_required_for_restriction_or_specific_exception: true
+    prohibit_unsourced_automatic_expansion: true
+    patch_may_expand_importer_output_only_with_evidence: true
     patch_must_not_expand_typemap_baseline: true
+    require_exact_expected_permission_match_after_patch: true
     revalidate_connections_after_patch: true
   lane_specific_access:
     enabled: true
@@ -909,6 +937,111 @@ geometry_and_connectivity:
   turnarounds: deadends_only
   automatically_remove_isolated_edges: false
   report_connected_components: true
+  provenance_relation:
+    cardinality: osm_way_to_many_sumo_edges_to_many_sumo_lanes
+    require_original_osm_name_output: true
+    require_every_lane_traceable_to_osm_or_explicit_generation_rule: true
+    unmapped_lane_policy: stop
+
+network_stage_order:
+  required_sequence:
+    - structural_network
+    - structural_debug
+    - governed_attributes_and_permissions
+    - formal_baseline_network
+    - demand_and_signal_inputs
+    - calibration
+    - independent_validation
+    - delivery_classical_qaoa_evaluation
+  calibration_requires_formal_network: true
+  demand_simulation_requires_formal_network: true
+  structural_placeholders_must_be_zero_before_calibration: true
+  changing_formal_network_invalidates_downstream_calibration: true
+
+structural_quality_gate:
+  threshold_status: pending_preregistration_with_rationale
+  result_blind_threshold_selection_required: true
+  metrics:
+    retained_osm_way_rate:
+      denominator: governed_osm_ways
+      numerator: governed_osm_ways_with_explained_sumo_output_or_approved_discard
+    major_road_reachability_rate:
+      unit: preregistered_major_road_pair
+    largest_component_drivable_length_share:
+      weight: drivable_edge_length_m
+    direction_mismatch_count:
+      comparison: expected_osm_direction_vs_generated_sumo_edges
+    representative_od_route_success_rate:
+      od_set: preregistered_depot_customer_charger_pairs
+    sumo_load_status:
+      required_exit_code: 0
+      require_xml_validation_success: true
+    warning_counts:
+      classes:
+        - fatal
+        - approved
+        - informational
+      unclassified_warning_policy: stop
+  formal_promotion_requires_all_thresholds_registered: true
+
+formal_candidate_subgraph:
+  review_scope: all_edges_selectable_by_any_compared_algorithm
+  terminals:
+    - depots
+    - all_customers
+    - charging_facilities
+  include_all_reachable_edges_between_terminals: true
+  include_preregistered_alternative_route_buffer: true
+  final_selected_routes_only_is_prohibited: true
+
+traffic_observation_policy:
+  acquisition_runs_in_parallel_with_network_pipeline: true
+  time_limited_sources:
+    - jartic_5_minute
+    - jartic_1_hour
+  periodic_snapshot_automation_status: pending
+  temporal_alignment:
+    same_date_and_time_window_preferred: true
+    mixed_time_observations_require_adjustment_and_uncertainty_record: true
+    required_context:
+      - weekday_or_holiday
+      - weather
+      - incidents
+      - roadworks
+      - school_holiday_period
+      - special_events
+      - sensor_missingness
+      - traffic_regulations
+
+calibration_policy:
+  prerequisite_network_profile: formal
+  prohibit_structural_placeholder: true
+  stage_order:
+    - fix_network_lanes_and_signal_structure
+    - fit_observable_demand
+    - fit_capacity_and_saturation_flow
+    - fit_route_choice
+    - fit_travel_time_speed_and_queue
+    - local_parameter_refinement
+  simultaneous_free_calibration_of_all_parameter_groups: false
+  parameter_registry_required_fields:
+    - parameter
+    - initial_value
+    - search_range
+    - evidence
+    - objective_metric
+    - fixed_conditions
+    - stopping_rule
+  metric_threshold_status: pending_preregistration_with_rationale
+  result_blind_threshold_selection_required: true
+  stochastic_evaluation:
+    multiple_seeds_required: true
+    seed_set_status: pending_variance_based_design
+    replication_count_method: output_variance_and_required_confidence_interval
+    warmup_period_required: true
+    warmup_rule_status: pending_preregistration
+    common_random_numbers_for_comparisons: true
+  changing_network_or_demand_definition_invalidates_calibration: true
 
 failure_policy:
   fail_fast: true
@@ -931,6 +1064,11 @@ failure_policy:
       - Could not add edge
     reconcile_or_fail_patterns:
       - Discarding edge
+    warning_classes:
+      fatal: explicit_fatal_patterns
+      approved: versioned_approval_registry_with_reason
+      informational: versioned_information_registry
+    unclassified_warning_policy: stop
     explicit_typemap_discards_are_reportable_not_fatal: true
     fail_on_unreconciled_exclusion: true
   abort_on_invalid_attribute: true

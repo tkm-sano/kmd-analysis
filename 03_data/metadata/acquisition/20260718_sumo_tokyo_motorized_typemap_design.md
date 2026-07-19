@@ -5,7 +5,7 @@
 - 記録日：2026-07-18
 - 実施者：研究環境管理者（Codex支援）
 - 状態：`implemented_runtime_validation_failed`
-- 設定ID：`ota_ward_sumo_network_20260716_v7`
+- 設定ID：`ota_ward_sumo_network_20260716_v10`
 - typemap方針ID：`tokyo_motorized_v1`
 - 対象ファイル：`reproducibility/config/traffic_simulation/osm_tokyo_motorized.typ.xml`
 - 関連設定：`reproducibility/config/traffic_simulation/sumo_network.yml`
@@ -346,6 +346,31 @@ access resolverはv8で明示した`access`、`vehicle`、`motor_vehicle`、`mot
 
 v9更新後、resolverとtypemapの対象テストは`42 passed`、固定`analysis`コンテナ内のvalidation suiteは`170 passed`であった。これは前処理の停止境界と静的整合性を検査した結果であり、既知のSUMO runtime fixture不合格、permissions後処理、実PBF build、定量評価への適格性を解消するものではない。
 
+### 19. formal先行順序と交通モデル品質ゲートを固定した
+
+2026年7月19日、道路構造、需要・信号、較正、独立検証、配送最適化を分離する段階方針を再検討した。`structural_placeholder`を含む道路網で較正した後にformal道路属性を変更すると、較正値が構造誤差を補償し得るため、formal基準ネットワークの完成を需要投入と較正より前へ明示的に移した。
+
+設定をv9からv10へ更新し、次を決定した。
+
+- `structural生成 → 構造デバッグ → 属性・permissions確定 → formal基準ネットワーク → 需要・信号 → 較正 → 独立検証 → 配送・古典・QAOA評価`の順序を必須とする。
+- formalネットワークまたは需要定義を変更した場合、それ以前の較正・検証結果を失効させる。
+- 構造ゲートでは、管理対象OSM wayの説明可能な保持率、主要道路対の到達可能率、最大連結成分の道路長割合、方向不一致件数、代表OD経路成功率、SUMO読込、warning分類を計算する。
+- 合格数値は結果を見る前に根拠付きで登録し、未登録の間はformalへ昇格させない。普遍的根拠のない95%等の値をコードへ仮置きしない。
+- warningを停止対象、承認済み、情報通知へ分類し、未分類warningは停止する。
+- OSM wayとSUMO laneを一対一と仮定せず、`OSM way → 複数SUMO edge → 複数lane`の来歴を保存する。全laneをOSM由来情報または明示生成規則へ追跡できなければ停止する。
+- permissions後処理は縮小だけに限定せず、明示OSMタグ、公的規制情報またはレビュー済み証拠から導出した期待値へ完全一致させる。根拠のない拡張とtypemap基本集合を超える拡張は禁止する。
+- SUMO版だけでなく、両コンテナのdigest、PROJ、`osmium`、Python、依存lock、platform、locale、出力精度、全入力・設定・`.netccfg`のSHA-256および完全なコマンドをbuild manifestへ保存する。
+- JARTIC等の保存期間が短い観測データは道路網パイプラインと並行取得する。モデル投入はformal完成後とする。
+- 交通量、速度、旅行時間、渋滞、信号条件は原則として同一日・同一時間帯で組み合わせ、異なる日時を混ぜる場合は補正と追加不確かさを記録する。
+- 較正は需要、容量・飽和交通流、経路選択、旅行時間・速度・待ち行列、局所微調整の順に行い、全パラメータ群を同時に自由化しない。
+- 較正・検証は事前固定した複数seed、ウォームアップ規則、評価時間帯で行い、反復数は出力分散と必要な信頼区間から決める。
+- 道路属性レビューは最終経路だけでなく、デポ、全顧客、充電施設間で全比較手法が選択可能な候補部分グラフを対象とする。
+- 古典手法とQAOAは同一インスタンス、目的関数、制約、実行可能性判定、復号・修復規則、seed集合で比較し、同一予算比較と最良基準比較を分離する。
+
+これらは方法論と停止条件の固定であり、具体的な構造ゲート閾値、較正指標閾値、seed集合、ウォームアップ時間、JARTIC定期取得、permissions後処理および来歴監査の実装完了を意味しない。これらをv10の未完了要件へ登録し、`runtime_validation: failed_governance_fixture`と`formal_build_ready: false`を維持した。
+
+v10更新後、resolverとtypemapの対象テストは`47 passed`、固定`analysis`コンテナ内のvalidation suiteは`175 passed`であった。これは設定と既存実装の静的整合性を検査した結果であり、実PBFからのformalネットワーク生成や交通較正を検証した結果ではない。
+
 ## 最終的に固定した内容
 
 - 採用方式：自動車系道路typeの明示的ホワイトリスト
@@ -365,9 +390,11 @@ v9更新後、resolverとtypemapの対象テストは`42 passed`、固定`analys
 - SUMO入力vClass：管理対象8クラスだけを許可し、`ignoring`、`custom1`、`custom2`、`evehicle`を禁止する
 - EV配送表現：`vClass="delivery"`とSUMO battery deviceを組み合わせ、`evehicle`を禁止する
 - access処理：`osm.lane-access=true`を固定し、fixtureと生成permissions監査で動作を確認する
-- permissions処理：OSM内の上書き関係を先に解決し、研究対象集合との積集合だけを許可する
+- permissions処理：OSM内の上書き関係を先に解決し、根拠付き期待値へ完全一致させる。根拠のない拡張とtypemap基本集合を超える拡張は禁止する
 - resolver監査：期待permissionsと補完完全分布を専用JSONへ保存し、accessタグは変換後照合が完成するまで保持する
 - 用途別vClass：配送経路用と背景交通用を分け、ネットワークの管理集合8クラスと混同しない
+- 工程順序：placeholderを除去したformal基準ネットワークを需要投入・較正より前に完成させる
+- 実行環境：SUMO、PROJ、依存環境を含むコンテナdigestと全入力・設定・コマンドのfingerprintを保存する
 
 ## 残作業と変更管理
 
