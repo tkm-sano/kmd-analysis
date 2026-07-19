@@ -394,14 +394,80 @@ def test_requirement_matrix_does_not_conflate_policy_with_validation() -> None:
     matrix = status["requirement_matrix"]
 
     assert status["formal_build_ready"] is False
+    assert status["formal_build_requires_all_requirement_matrix_entries_eligible"] is True
     assert matrix["typemap_xml"]["xsd_validation"] == "passed"
     assert matrix["typemap_xml"]["runtime_validation"] == (
-        "not_applicable_xsd_validation_only"
+        "failed_importer_governance_fixture"
     )
-    assert matrix["permission_governance"]["implementation"] == "not_implemented"
-    assert matrix["permission_governance"]["runtime_validation"] == "failed"
+    assert matrix["attribute_resolver"]["runtime_validation"] == (
+        "positive_and_negative_xml_fixtures_passed"
+    )
+    assert matrix["permission_materializer"]["implementation"] == "not_implemented"
+    assert matrix["permission_materializer"]["runtime_validation"] == "not_run"
     assert matrix["formal_network"]["implementation"] == "not_built"
     assert matrix["formal_network"]["formal_eligibility"] is False
+
+
+def test_permission_materializer_format_and_mapping_rules_are_fixed() -> None:
+    contract = load_config()["permission_materialization"]
+
+    assert contract["contract_version"] == "sumo_plain_xml_permissions_v1"
+    assert contract["implementation_status"] == "not_implemented"
+    assert contract["fixture_status"] == "not_run"
+    assert contract["target_sumo_version"] == "1.24.0"
+    assert contract["materialized_output"]["mutate_provisional_files_in_place"] is False
+    assert contract["materialized_output"]["final_net_xml_is_audit_only"] is True
+    assert contract["provenance_mapping"]["lane_orig_id_source"] == (
+        "lane_param_key_origId"
+    )
+    assert contract["provenance_mapping"]["prohibit_edge_id_sign_as_direction_evidence"] is True
+    lane_rule = contract["lane_expectation_rule"]
+    assert lane_rule["mapping_formula"] == (
+        "sumo_lane_index_equals_lane_count_minus_one_minus_resolver_lane_position"
+    )
+    assert lane_rule["expected_set_must_be_subset_of_typemap_baseline"] is True
+    assert lane_rule["fixture_must_confirm_order_under_lefthand_true"] is True
+    connection_rule = contract["connection_expectation_rule"]
+    assert connection_rule["candidate_source"] == "provisional_connections_only"
+    assert connection_rule["synthesize_missing_or_turn_restricted_connections"] is False
+    assert connection_rule["empty_expected_set"] == "remove_connection_and_record_reason"
+
+
+def test_requirement_matrix_covers_every_current_formal_blocker() -> None:
+    matrix = load_config()["status"]["requirement_matrix"]
+    required = {
+        "registered_source_and_extract",
+        "typemap_xml",
+        "attribute_resolver",
+        "permission_expectation_artifact",
+        "permission_materializer",
+        "permission_post_conversion_audit",
+        "reverse_oneway_handler",
+        "formal_attribute_evidence",
+        "junction_join_review",
+        "signal_structure",
+        "vehicle_input_validator",
+        "build_prepare_and_validate_pipeline",
+        "environment_and_manifest_fingerprint",
+        "warning_and_exclusion_audit",
+        "structural_quality_gate",
+        "formal_candidate_subgraph_review",
+        "reproducibility_artifact_publication",
+        "formal_network",
+    }
+
+    assert set(matrix) == required
+    state_fields = {
+        "policy",
+        "implementation",
+        "unit_validation",
+        "xsd_validation",
+        "runtime_validation",
+        "real_data_validation",
+        "formal_eligibility",
+    }
+    assert all(set(state) == state_fields for state in matrix.values())
+    assert all(state["formal_eligibility"] is not True for state in matrix.values())
 
 
 def test_signal_structure_is_part_of_formal_network_but_timing_is_calibrated() -> None:
@@ -487,8 +553,8 @@ def test_surface_and_vehicle_class_policies_are_explicit() -> None:
 def test_configuration_dates_and_policy_documents_are_unambiguous() -> None:
     config = load_config()
 
-    assert config["config_id"] == "ota_ward_sumo_network_v11"
-    assert config["config_version"] == 11
+    assert config["config_id"] == "ota_ward_sumo_network_v12"
+    assert config["config_version"] == 12
     assert config["created_at"] == "2026-07-18"
     assert config["last_updated_at"] == "2026-07-19"
     assert config["configuration_lineage_date"] == "2026-07-16"
