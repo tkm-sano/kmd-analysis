@@ -1,11 +1,11 @@
 schema_version: 1
-config_id: ota_ward_sumo_network_v11
-config_version: 11
+config_id: ota_ward_sumo_network_v12
+config_version: 12
 created_at: "2026-07-18"
 last_updated_at: "2026-07-19"
 configuration_lineage_date: "2026-07-16"
 decision_date: "2026-07-19"
-change_summary: Materialize permissions before final conversion, include signal structure in formal topology, and separate current specifications from history
+change_summary: Fix the SUMO plain-XML permission materializer contract and enumerate every formal-build blocker without overstating verification
 policy_documents:
   attribute_governance: 05_src/traffic_simulation/network_attribute_governance.md
   current_specification: 05_src/traffic_simulation/network_current_specification.md
@@ -18,6 +18,7 @@ status:
   implementation: in_progress
   runtime_validation: failed_governance_fixture
   formal_build_ready: false
+  formal_build_requires_all_requirement_matrix_entries_eligible: true
   implemented_components:
     - governed_osm_xml_attribute_resolver
     - pre_netconvert_required_attribute_gate
@@ -26,6 +27,7 @@ status:
     - resolver_permission_expectations_artifact
     - resolver_imputation_distribution_artifact
   pending_requirements:
+    - registered_source_hash_manifest_reverification
     - attribute_governance_implementation
     - external_source_acquisition_and_matching
     - structural_placeholder_values
@@ -43,38 +45,151 @@ status:
     - osm_way_to_sumo_lane_provenance_validation
     - pre_netconvert_permission_materializer
     - permission_materialization_runtime_fixture
+    - permission_lane_and_connection_post_conversion_audit
+    - reverse_oneway_safe_transform_or_confirmed_zero_occurrence
+    - formal_attribute_evidence_and_validated_imputation
     - signal_structure_review_and_formalization
+    - build_prepare_and_validate_pipeline
+    - formal_candidate_subgraph_review
+    - final_sumo_network_load
     - calibration_metric_threshold_preregistration
     - calibration_seed_and_warmup_preregistration
     - versioned_small_build_artifact_publication
     - pinned_sumo_documentation_snapshots
   requirement_matrix:
+    registered_source_and_extract:
+      policy: policy_fixed
+      implementation: implemented
+      unit_validation: sha256_values_configured
+      xsd_validation: not_applicable
+      runtime_validation: acquisition_and_extraction_completed
+      real_data_validation: baseline_quality_summary_exists
+      formal_eligibility: pending_manifest_reverification
     typemap_xml:
       policy: policy_fixed
       implementation: implemented
       unit_validation: unit_tested
       xsd_validation: passed
-      runtime_validation: not_applicable_xsd_validation_only
-      real_data_validation: not_run
-      formal_eligibility: blocked_by_permission_governance
+      runtime_validation: failed_importer_governance_fixture
+      real_data_validation: not_run_with_formal_pipeline
+      formal_eligibility: false
     attribute_resolver:
       policy: policy_fixed
       implementation: implemented_partial_scope
       unit_validation: unit_tested
-      runtime_validation: not_applicable_preprocessor
+      xsd_validation: not_applicable
+      runtime_validation: positive_and_negative_xml_fixtures_passed
       real_data_validation: not_run
-      formal_eligibility: blocked_by_unresolved_real_data_attributes
-    permission_governance:
+      formal_eligibility: false
+    permission_expectation_artifact:
+      policy: policy_fixed
+      implementation: implemented
+      unit_validation: unit_tested
+      xsd_validation: not_applicable_json
+      runtime_validation: resolver_fixtures_passed
+      real_data_validation: not_run
+      formal_eligibility: false
+    permission_materializer:
+      policy: policy_fixed
+      implementation: not_implemented
+      unit_validation: contract_tested_only
+      xsd_validation: source_schema_inspected_not_output_validated
+      runtime_validation: not_run
+      real_data_validation: not_run
+      formal_eligibility: false
+    permission_post_conversion_audit:
       policy: policy_fixed
       implementation: not_implemented
       unit_validation: policy_tested_only
-      runtime_validation: failed
+      xsd_validation: not_applicable
+      runtime_validation: not_run
+      real_data_validation: not_run
+      formal_eligibility: false
+    reverse_oneway_handler:
+      policy: stop_until_safe_transformation_exists
+      implementation: unsupported_value_is_reported_and_stopped
+      unit_validation: unit_tested
+      xsd_validation: not_applicable
+      runtime_validation: not_run
+      real_data_validation: baseline_count_recorded_not_formal_gate_run
+      formal_eligibility: conditional_on_zero_occurrences
+    formal_attribute_evidence:
+      policy: partial_policy_fixed
+      implementation: not_implemented
+      unit_validation: policy_tested_only
+      xsd_validation: not_applicable
+      runtime_validation: not_run
+      real_data_validation: not_run
+      formal_eligibility: false
+    junction_join_review:
+      policy: policy_fixed
+      implementation: not_implemented
+      unit_validation: policy_tested_only
+      xsd_validation: not_applicable
+      runtime_validation: not_run
       real_data_validation: not_run
       formal_eligibility: false
     signal_structure:
       policy: policy_fixed
       implementation: not_implemented
       unit_validation: policy_tested_only
+      xsd_validation: not_applicable
+      runtime_validation: not_run
+      real_data_validation: not_run
+      formal_eligibility: false
+    vehicle_input_validator:
+      policy: policy_fixed
+      implementation: not_implemented
+      unit_validation: policy_tested_only
+      xsd_validation: not_applicable
+      runtime_validation: not_run
+      real_data_validation: not_run
+      formal_eligibility: false
+    build_prepare_and_validate_pipeline:
+      policy: policy_fixed
+      implementation: not_implemented
+      unit_validation: not_run
+      xsd_validation: not_applicable
+      runtime_validation: not_run
+      real_data_validation: not_run
+      formal_eligibility: false
+    environment_and_manifest_fingerprint:
+      policy: policy_fixed
+      implementation: not_implemented
+      unit_validation: policy_tested_only
+      xsd_validation: not_applicable
+      runtime_validation: pinned_sumo_commands_run_without_formal_manifest
+      real_data_validation: not_run
+      formal_eligibility: false
+    warning_and_exclusion_audit:
+      policy: policy_fixed
+      implementation: not_implemented
+      unit_validation: policy_tested_only
+      xsd_validation: not_applicable
+      runtime_validation: known_fixture_warnings_recorded_not_auditor_validated
+      real_data_validation: not_run
+      formal_eligibility: false
+    structural_quality_gate:
+      policy: metrics_fixed_thresholds_pending_preregistration
+      implementation: not_implemented
+      unit_validation: policy_tested_only
+      xsd_validation: not_applicable
+      runtime_validation: not_run
+      real_data_validation: not_run
+      formal_eligibility: false
+    formal_candidate_subgraph_review:
+      policy: scope_fixed
+      implementation: not_implemented
+      unit_validation: policy_tested_only
+      xsd_validation: not_applicable
+      runtime_validation: not_run
+      real_data_validation: not_run
+      formal_eligibility: false
+    reproducibility_artifact_publication:
+      policy: policy_fixed
+      implementation: not_implemented
+      unit_validation: policy_tested_only
+      xsd_validation: not_applicable
       runtime_validation: not_run
       real_data_validation: not_run
       formal_eligibility: false
@@ -82,6 +197,7 @@ status:
       policy: policy_fixed
       implementation: not_built
       unit_validation: not_applicable
+      xsd_validation: not_run
       runtime_validation: not_run
       real_data_validation: not_run
       formal_eligibility: false
@@ -389,6 +505,105 @@ access_resolution:
       - missing_attributes_accepted_with_global_defaults
       - missing_oneway_accepted_as_one_direction_edge
       - osm_defaults_annotation_did_not_report_missing_oneway
+
+permission_materialization:
+  contract_version: sumo_plain_xml_permissions_v1
+  implementation_status: not_implemented
+  fixture_status: not_run
+  target_sumo_version: "1.24.0"
+  evidence:
+    schema_files_inspected_in_pinned_container:
+      - /usr/share/sumo/data/xsd/edges_file.xsd
+      - /usr/share/sumo/data/xsd/connections_file.xsd
+    provisional_plain_export_probe:
+      date: "2026-07-19"
+      fixture: 05_src/traffic_simulation/validation/fixtures/osm_attribute_resolution_positive.osm.xml
+      status: passed_with_known_importer_governance_warning
+      establishes_only:
+        - plain_edge_lane_origId_provenance_is_emitted
+        - plain_edge_and_connection_files_are_accepted_interfaces
+      does_not_establish:
+        - permission_materializer_correctness
+        - lane_index_mapping_correctness
+        - connection_expectation_correctness
+        - formal_build_eligibility
+  provisional_export:
+    input: normalized_topology_osm_xml_after_permission_expectation_capture
+    remove_consumed_access_tags_from_topology_copy: true
+    preserve_permission_expectations_as_separate_immutable_json: true
+    required_netconvert_options:
+      plain-output-prefix: governed_provisional
+      plain-output.lanes: true
+      output.original-names: true
+      lefthand: true
+      osm.lane-access: true
+    required_files:
+      nodes: governed_provisional.nod.xml
+      edges: governed_provisional.edg.xml
+      connections: governed_provisional.con.xml
+      traffic_lights: governed_provisional.tll.xml
+    required_roots:
+      nodes: nodes
+      edges: edges
+      connections: connections
+      traffic_lights: tlLogics
+  materialized_output:
+    mutate_provisional_files_in_place: false
+    edges: governed_permissions.edg.xml
+    connections: governed_permissions.con.xml
+    edge_permission_location: lane_allow_attribute
+    connection_permission_location: connection_allow_attribute
+    permission_serialization: space_separated_lexicographically_sorted_vclasses
+    remove_disallow_when_writing_allow: true
+    empty_lane_permission_serialization: allow_empty_string
+    empty_connection_policy: remove_connection_and_record_reason
+    final_netconvert_inputs:
+      node-files: governed_provisional.nod.xml
+      edge-files: governed_permissions.edg.xml
+      connection-files: governed_permissions.con.xml
+      tllogic-files: governed_provisional.tll.xml
+    final_net_xml_is_audit_only: true
+  provenance_mapping:
+    lane_orig_id_source: lane_param_key_origId
+    each_lane_requires_exactly_one_osm_way_id: true
+    allow_one_osm_way_to_multiple_edges_and_lanes: true
+    direction_rule: compare_each_sumo_edge_orientation_with_normalized_osm_way_node_order
+    forward_definition: same_as_normalized_osm_way_node_order
+    backward_definition: opposite_to_normalized_osm_way_node_order
+    prohibit_edge_id_sign_as_direction_evidence: true
+    ambiguous_or_incomplete_mapping_policy: stop
+  lane_expectation_rule:
+    resolver_lane_order: osm_left_to_right_when_viewed_in_travel_direction
+    sumo_lane_index_order: right_to_left_when_viewed_in_travel_direction
+    mapping_formula: sumo_lane_index_equals_lane_count_minus_one_minus_resolver_lane_position
+    expected_allow_set: resolver_way_direction_lane_permission_intersect_typemap_baseline_intersect_governed_vclasses
+    require_equal_lane_count_for_mapped_direction: true
+    expected_set_must_be_subset_of_typemap_baseline: true
+    fixture_must_confirm_order_under_lefthand_true: true
+    fixture_mismatch_policy: stop_and_version_contract_before_real_data_use
+  connection_expectation_rule:
+    candidate_source: provisional_connections_only
+    synthesize_missing_or_turn_restricted_connections: false
+    expected_allow_set: from_lane_expected_allow_intersect_to_lane_expected_allow_intersect_provisional_connection_allow
+    absent_provisional_allow_means: unrestricted_before_endpoint_intersection
+    empty_expected_set: remove_connection_and_record_reason
+    nonempty_expected_set: write_exact_sorted_allow_set
+    final_audit:
+      require_every_nonempty_expected_connection: true
+      require_every_empty_expected_connection_absent: true
+      prohibit_unexplained_connections: true
+      require_exact_effective_allow_set: true
+  fixture_acceptance:
+    xsd_validation_required:
+      edges: /usr/share/sumo/data/xsd/edges_file.xsd
+      connections: /usr/share/sumo/data/xsd/connections_file.xsd
+    pinned_final_netconvert_exit_code: 0
+    pinned_sumo_network_load_required: true
+    exact_lane_permission_match_required: true
+    exact_connection_permission_match_required: true
+    zero_unmapped_lanes_required: true
+    zero_unmapped_connections_required: true
+    zero_unclassified_warnings_required: true
 
 vehicle_input_policy:
   allowed_vclasses:

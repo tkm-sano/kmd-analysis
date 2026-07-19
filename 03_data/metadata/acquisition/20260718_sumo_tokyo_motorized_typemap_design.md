@@ -393,6 +393,24 @@ v10更新後、resolverとtypemapの対象テストは`47 passed`、固定`analy
 
 v11更新後、resolverとtypemapの対象テストは`54 passed`、固定`analysis`コンテナ内のvalidation suiteは`182 passed`であった。typemapのXSD検証成功はruntime検証とは分類せず、permission importer fixtureの不合格を解消したとは扱わない。
 
+### 21. materializer契約とformal停止条件をv12で固定した
+
+2026年7月19日、Verification Stateを実装・実行済みの範囲と照合した。従来表ではtypemapのXSD検証をruntime非該当と記載していた一方、既に実行して不合格だったSUMO importer governance fixtureが同じ行に反映されていなかった。また、resolver、permissions期待値、materializer、変換後監査をまとめて記述しており、実装済み範囲を判別しにくかった。このため、設定をv11からv12へ更新し、policy、implementation、unit/static、XSD、runtime、real-data、formal eligibilityを要件ごとに分離した。
+
+SUMO 1.24.0の固定コンテナで`edges_file.xsd`と`connections_file.xsd`を確認し、`--plain-output-prefix`、`--plain-output.lanes true`、`--output.original-names true`を使用したprovisional plain exportを正常系resolver fixtureに対して実行した。`.edg.xml`のlaneへ`param key="origId"`が出力されることと、plain edge/connection XMLが再入力interfaceとして利用できることを確認した。ただし、この実行では既知の`bus` compound warningと不正なimporter permissionsが残り、接続を持たないfixtureであったため、materializer、lane順、connection規則の正しさを検証した証拠ではない。
+
+fixture実装前の契約として次を固定した。
+
+- resolverの期待値JSONを不変成果物として保存した後、消費済みaccessタグを除いたtopology用OSM copyからprovisional plain XMLを生成する。
+- materializerはprovisional fileを上書きせず、`governed_permissions.edg.xml`と`governed_permissions.con.xml`を生成する。最終`net.xml`は監査対象であり編集しない。
+- laneは`origId`でOSM wayへ追跡し、edge方向は正規化OSM node順との比較で決める。edge IDの符号は方向根拠に使わない。
+- resolver lane位置は進行方向から見たOSMの左から右、SUMO lane indexは右から左とし、`n` laneの位置`p`を`n - 1 - p`へ写像する。この規則は`--lefthand true`の固定fixtureで確認し、不一致なら実データへ進まず契約版を更新する。
+- lane期待集合はresolver期待値、typemap基本集合、管理vClass集合の積集合とする。空集合は`allow=""`、非空集合は辞書順の空白区切りで書き、`disallow`を併記しない。
+- connectionはprovisionalに存在する候補だけを扱い、from-lane、to-lane、provisional connection制限の積集合を期待値とする。空集合のconnectionは削除して理由を記録し、存在しないturnを新規生成しない。
+- materialized edge/connection XMLのXSD適合、最終`netconvert`成功、SUMO読込、lane・connection完全一致、未追跡要素ゼロ、未分類warningゼロをfixture合格条件とする。
+
+Verification Stateにはpermissions以外も含め、入力hash再検証、formal属性根拠、`oneway=-1`、junction join、信号junction/TLS-link、車両入力validator、prepare/validate pipeline、実行環境manifest、warning/exclusion監査、構造品質閾値、候補部分グラフreview、小型再現性成果物、最終SUMO loadをformal停止条件として列挙した。これらの方針assertionはruntimeまたは実データ検証の代替ではない。v12時点でmaterializerとformal networkは未実装・未生成であり、`formal_build_ready: false`を維持する。
+
 ## 最終的に固定した内容
 
 - 採用方式：自動車系道路typeの明示的ホワイトリスト

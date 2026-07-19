@@ -866,7 +866,7 @@ reproducibility/outputs/traffic_simulation/visualization/
 
 #### 9.5.3 最初に固定する変換規則
 
-次の変換規則を2026年7月18日の初期規則として採用し、2026年7月19日のレビューをv11まで反映した。`sumo_network.yml`を機械可読な正本とし、現行仕様は`network_current_specification.md`に限定する。設定ファイル、自動車系typemap、OSM XML属性resolver、変換前必須属性ゲート、期待permissions監査、permissions期待値JSON、補完分布JSONの生成は実装済みである。一方、期待permissionsを最終`netconvert`入力へmaterializeする処理、lane・connectionの変換後監査、SUMO車両入力validator、実データbuildは未実装である。閉じたホワイトリストとformal適格性はこれらのruntime検証後に成立する。
+次の変換規則を2026年7月18日の初期規則として採用し、2026年7月19日のレビューをv12まで反映した。`sumo_network.yml`を機械可読な正本とし、現行仕様は`network_current_specification.md`に限定する。設定ファイル、自動車系typemap、OSM XML属性resolver、変換前必須属性ゲート、期待permissions監査、permissions期待値JSON、補完分布JSONの生成は実装済みである。一方、SUMO 1.24.0 plain XMLを入出力とするpermissions materializer、lane・connectionの変換後監査、SUMO車両入力validator、実データbuildは未実装である。materializerのファイル形式、OSM lane順からSUMO lane indexへの写像、connection期待集合の計算規則はv12で事前固定したが、閉じたホワイトリストとformal適格性は固定版fixtureと全formal停止条件のruntime検証後にのみ成立する。
 
 ##### 入力形式と左側通行
 
