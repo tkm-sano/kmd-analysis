@@ -281,9 +281,108 @@ def test_access_precedence_and_permission_enforcement_only_reduce_scope() -> Non
     assert resolution["unknown_or_unsupported_rule"] == "unresolved"
     assert enforcement["compute_expected_permissions_before_netconvert"] is True
     assert enforcement["compare_expected_with_generated_permissions"] is True
-    assert enforcement["patch_operation"] == "intersection_only"
+    assert enforcement["patch_operation"] == (
+        "evidence_backed_exact_expected_permissions"
+    )
+    assert enforcement["evidence_required_for_restriction_or_specific_exception"] is True
+    assert enforcement["prohibit_unsourced_automatic_expansion"] is True
+    assert enforcement["patch_may_expand_importer_output_only_with_evidence"] is True
     assert enforcement["patch_must_not_expand_typemap_baseline"] is True
+    assert enforcement["require_exact_expected_permission_match_after_patch"] is True
     assert enforcement["revalidate_connections_after_patch"] is True
+
+
+def test_formal_network_precedes_demand_calibration_and_validation() -> None:
+    config = load_config()
+    order = config["network_stage_order"]
+
+    assert order["required_sequence"] == [
+        "structural_network",
+        "structural_debug",
+        "governed_attributes_and_permissions",
+        "formal_baseline_network",
+        "demand_and_signal_inputs",
+        "calibration",
+        "independent_validation",
+        "delivery_classical_qaoa_evaluation",
+    ]
+    assert order["calibration_requires_formal_network"] is True
+    assert order["demand_simulation_requires_formal_network"] is True
+    assert order["structural_placeholders_must_be_zero_before_calibration"] is True
+    assert order["changing_formal_network_invalidates_downstream_calibration"] is True
+
+
+def test_structural_gate_uses_preregistered_measurable_metrics() -> None:
+    gate = load_config()["structural_quality_gate"]
+
+    assert gate["threshold_status"] == "pending_preregistration_with_rationale"
+    assert gate["result_blind_threshold_selection_required"] is True
+    assert set(gate["metrics"]) == {
+        "retained_osm_way_rate",
+        "major_road_reachability_rate",
+        "largest_component_drivable_length_share",
+        "direction_mismatch_count",
+        "representative_od_route_success_rate",
+        "sumo_load_status",
+        "warning_counts",
+    }
+    assert gate["metrics"]["warning_counts"]["unclassified_warning_policy"] == "stop"
+    assert gate["formal_promotion_requires_all_thresholds_registered"] is True
+
+
+def test_runtime_manifest_and_one_to_many_provenance_are_required() -> None:
+    config = load_config()
+    fields = set(config["execution_environment"]["required_build_manifest_fingerprint"])
+    provenance = config["geometry_and_connectivity"]["provenance_relation"]
+
+    assert {
+        "sumo_container_image_digest",
+        "proj_version",
+        "analysis_container_image_digest",
+        "python_dependency_lock_sha256",
+        "locale",
+        "output_precision_options",
+        "typemap_sha256",
+        "osm_input_sha256",
+        "network_config_sha256",
+        "exact_command",
+    } <= fields
+    assert provenance["cardinality"] == (
+        "osm_way_to_many_sumo_edges_to_many_sumo_lanes"
+    )
+    assert provenance["require_every_lane_traceable_to_osm_or_explicit_generation_rule"] is True
+    assert provenance["unmapped_lane_policy"] == "stop"
+
+
+def test_observation_and_calibration_governance_are_fail_closed() -> None:
+    config = load_config()
+    observations = config["traffic_observation_policy"]
+    calibration = config["calibration_policy"]
+
+    assert observations["acquisition_runs_in_parallel_with_network_pipeline"] is True
+    assert observations["periodic_snapshot_automation_status"] == "pending"
+    assert observations["temporal_alignment"]["same_date_and_time_window_preferred"] is True
+    assert observations["temporal_alignment"][
+        "mixed_time_observations_require_adjustment_and_uncertainty_record"
+    ] is True
+    assert calibration["prerequisite_network_profile"] == "formal"
+    assert calibration["simultaneous_free_calibration_of_all_parameter_groups"] is False
+    assert calibration["metric_threshold_status"] == (
+        "pending_preregistration_with_rationale"
+    )
+    stochastic = calibration["stochastic_evaluation"]
+    assert stochastic["multiple_seeds_required"] is True
+    assert stochastic["warmup_period_required"] is True
+    assert stochastic["common_random_numbers_for_comparisons"] is True
+
+
+def test_formal_review_covers_the_selectable_candidate_subgraph() -> None:
+    scope = load_config()["formal_candidate_subgraph"]
+
+    assert scope["review_scope"] == "all_edges_selectable_by_any_compared_algorithm"
+    assert set(scope["terminals"]) == {"depots", "all_customers", "charging_facilities"}
+    assert scope["include_all_reachable_edges_between_terminals"] is True
+    assert scope["final_selected_routes_only_is_prohibited"] is True
 
 
 def test_network_scope_and_use_specific_vclass_profiles_are_distinct() -> None:
