@@ -833,7 +833,9 @@ reproducibility/config/traffic_simulation/sumo_network.yml
 reproducibility/config/traffic_simulation/osm_tokyo_motorized.typ.xml
 reproducibility/config/traffic_simulation/ota_ward_junction_join_review.csv
 reproducibility/config/traffic_simulation/ota_ward_junction_joins.nod.xml
+05_src/traffic_simulation/network/resolve_osm_attributes.py
 05_src/traffic_simulation/network/build_sumo_network.py
+05_src/traffic_simulation/validation/test_resolve_osm_attributes.py
 05_src/traffic_simulation/validation/test_sumo_network.py
 05_src/traffic_simulation/visualization/render_sumo_network.py
 docker/run_sumo_network_build.sh
@@ -864,7 +866,7 @@ reproducibility/outputs/traffic_simulation/visualization/
 
 #### 9.5.3 最初に固定する変換規則
 
-次の変換規則を2026年7月18日の初期規則として採用する。`sumo_network.yml`を正本とし、実行時の追加引数やPythonコードの暗黙値で変更しない。設定ファイルと自動車系typemapは実装済みである。typemapの属性省略だけではSUMOのimporter-levelまたはglobal defaultを防げないため、閉じたホワイトリストの実効性は前処理validator、SUMO車両入力validator、変換ログ・生成ネットワーク監査の実装後に成立する。これらの属性ガバナンス処理、補助表、変換・検証パイプラインはまだ未実装であり、本節は後続実装が従う決定済み仕様を示す。
+次の変換規則を2026年7月18日の初期規則として採用し、2026年7月19日のresolverレビューをv9へ反映した。`sumo_network.yml`を正本とし、実行時の追加引数やPythonコードの暗黙値で変更しない。設定ファイル、自動車系typemap、OSM XML属性resolver、変換前必須属性ゲート、期待permissions監査、permissions期待値JSON、補完分布JSONの生成は実装済みである。typemapの属性省略だけではSUMOのimporter-levelまたはglobal defaultを防げないため、閉じたホワイトリストの実効性はSUMO車両入力validator、`net.xml`へのpermissions適用、変換ログ・生成ネットワーク監査の実装後に成立する。外部属性補完、属性別重要道路判定、build・変換後検証パイプラインは未実装であり、本節の完了条件をまだ満たさない。
 
 ##### 入力形式と左側通行
 
@@ -893,13 +895,13 @@ SUMO需要入力では上記8クラスだけを許可し、lane permissionsを�
 
 道路属性、外部データ対応、重要度、空中写真、人手レビュー、構造確認用placeholder、正式実験品質ゲートの文章上の正本は`05_src/traffic_simulation/network_attribute_governance.md`とする。機械可読設定の正本は`sumo_network.yml`とし、両者が矛盾する場合は変換を停止する。
 
-欠損方針は`report_then_gate_by_criticality`に固定する。OSM属性の欠損だけでは一律停止せず、欠損、補完、未解決、矛盾、不正、導出値を全件記録する。構造確認用ネットワークでは非重要道路に限り版管理した`structural_placeholder`を許容するが、正式実験用ネットワークでは最終配送経路、較正区間、独立検証区間、事前・事後重要道路の`unresolved`、`conflict`、`invalid`をゼロにし、`structural_placeholder`を残さない。
+欠損方針は`report_then_gate_by_criticality`に固定する。欠損、補完、未解決、矛盾、不正、未対応だが有効、条件付き、方向非対称、導出値を区別して全件記録する。構造確認用ネットワークでは真の欠損かつ非重要道路に限り版管理した`structural_placeholder`を許容する。明示されている未対応値、矛盾値、条件付き値、方向非対称値は最頻値で上書きせず停止する。正式実験用ネットワークでは全ての停止状態と`structural_placeholder`を残さない。
 
 ただし、これは未解決属性を`netconvert`へ渡してよいという意味ではない。保持対象wayは変換前に`lanes`、`maxspeed`、`oneway`の採用値と来歴をすべてmaterializeし、不足時はprofileにかかわらず停止する。一般道路をOSM規則から双方向と導出した場合も`oneway=no`を変換用XMLへ明示する。欠損のまま渡すと一方向edgeが生成され得るうえ、`osm.annotate-defaults`がこのfallbackを記録しないことをfixtureで確認している。構造確認用で許可される`structural_placeholder`も採用値と来歴を持たせ、他の値状態と分離して一覧化する。変換後はpermissionsとdefault由来値を監査する。
 
-`oneway`には統計的placeholderを使わない。明示値`yes`、`no`、`-1`を優先し、`-1`はway方向を反転して`yes`へmaterializeする。明示値がないroundaboutとmotorwayはOSM暗黙規則による`yes`、motorway_linkは`unresolved`、その他の一般道路はOSMデータ消費規則による`no`とする。構造確認用の`lanes`と`maxspeed`だけは、固定大田区抽出の明示値から算出した一意な最頻値を使用できる。`lanes`は道路種別と方向状態、`maxspeed`は道路種別で集約し、標本数30以上かつ最頻値比率50%以上を要求する。同率、標本不足、比率不足では近隣道路種別へ移らず`unresolved`とする。この代表値を正式実験へ使用しない。
+`oneway`には統計的placeholderを使わない。明示値`yes`、`no`を採用する。`-1`はOSMとして有効だが、way反転時に左右・方向依存タグを網羅的に変換できる実装がないため、v9では原データを変更せず停止する。明示値がないroundaboutとmotorwayはOSM暗黙規則による`yes`、motorway_linkは`unresolved`、その他の一般道路はOSMデータ消費規則による`no`とする。構造確認用の`lanes`と`maxspeed`だけは、固定入力範囲の明示値をOSM way個数で数えた一意な最頻値を使用できる。この統計量は空間的なlocal modeでも道路延長重みでもない。属性別閾値を設定し、同率、標本不足、比率不足では近隣道路種別へ移らず停止する。この代表値を正式実験へ使用しない。
 
-OSM accessタグは`access`、`vehicle`、`motor_vehicle`、車種別、方向別、lane別の順に具体的な規則で上書きした後、研究対象vClass集合との積集合を取る。前処理でway・方向・laneごとの期待permissionsを保存し、SUMO出力と比較する。固定SUMO importerと一致しない場合に許可する後処理は期待集合との積集合による縮小だけとし、typemapの基本集合を拡張しない。補正後に接続を再検査し、不一致が残れば停止する。
+OSM accessタグは`access`、`vehicle`、`motor_vehicle`、コードで固定した車種階層、方向別、lane別の順に具体的な規則で上書きした後、研究対象vClass集合との積集合を取る。`designated`はキーとの組合せで検証し、一般`access=designated`は停止する。前処理でway・方向・laneごとの期待permissionsを専用JSONへ保存する。後処理実装と全lane照合が完了するまで元のaccessタグは正規化OSMから削除しない。固定SUMO importerと一致しない場合に許可する後処理は期待集合との積集合による縮小だけとし、typemapの基本集合を拡張しない。補正後に接続を再検査し、不一致が残れば停止する。
 
 外部データを単純最近傍で自動採用せず、距離、方向、重複率、路線名・番号、道路分類、立体階層を組み合わせる。高架・地上道路の重複、上下線・側道の競合、複雑交差点等は低信頼または要レビューとし、重要道路では人手確認を必須とする。低信頼な外部値は構造確認用ネットワークにも採用しない。
 

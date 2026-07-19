@@ -305,6 +305,47 @@ permissionsは、OSM内で`access`、`vehicle`、`motor_vehicle`、車種別、�
 - <https://wiki.openstreetmap.org/wiki/Key:maxspeed>
 - <https://sumo.dlr.de/docs/netconvert.html>
 
+### 17. OSM属性resolverと変換前品質ゲートを実装した
+
+2026年7月19日、`05_src/traffic_simulation/network/resolve_osm_attributes.py`を追加した。このモジュールは、固定設定v8を検証してからOSM XMLの保持対象wayを処理し、`oneway`、`lanes`、`maxspeed`を変換用XMLへmaterializeする。way・方向・laneごとにOSM access規則を広い規則から具体的な規則へ解決し、typemap基本permissionsとの積集合を期待値として監査CSVへ保存する。permissions計算に使用したaccessタグは、SUMO importerによる別解釈を避けるため、品質ゲート合格後の正規化XMLから除去する。
+
+`oneway=-1`はnode順と方向別タグを反転して`oneway=yes`へ正規化する。roundaboutとmotorwayの暗黙規則、motorway_link欠損の停止、一般道路の双方向導出も実装した。`lanes`と`maxspeed`は明示値を優先し、構造確認用では非重要道路に限り、v8で事前固定した一意最頻値規則を適用できる。重要度が未分類のwayへplaceholderを自動適用しない。formal profileでは構造用placeholderを使用しない。
+
+access resolverはv8で明示した`access`、`vehicle`、`motor_vehicle`、`motorcar`、`hgv`、`bus`、`delivery`と、方向別・lane別の対応タグを管理する。`goods`、`coach`、`taxi`、`psv`、`motorcycle`、`moped`等を含む未登録の車種別タグ、未対応値、条件付きタグ、曖昧な双方向lane指定、lane数不一致、管理外のaccess規則は`unresolved`として停止する。対応範囲の拡張は設定版を上げて行う。生成permissionsを広げる処理は実装していない。
+
+正常系と欠損負例を次へ分離した。
+
+```text
+05_src/traffic_simulation/validation/fixtures/osm_attribute_resolution_positive.osm.xml
+05_src/traffic_simulation/validation/fixtures/osm_attribute_resolution_negative.osm.xml
+```
+
+`test_resolve_osm_attributes.py`では、v8設定読込、最頻値条件、明示・暗黙方向、`-1`反転、構造用補完、formal停止、access上書き、lane別permissions、条件付き規則、属性矛盾、監査CSVおよび原子的XML出力を検査する。resolverとtypemapの対象テストは`36 passed`であった。
+
+この実装はPBFからOSM XMLへの変換、外部データ補完表の取込み、重要道路の機械判定、生成`net.xml`へのpermissions適用、変換ログ・出力監査、SUMO CLI読込を含まない。既存runtime fixtureの不合格は未解消であり、正式buildは引き続き禁止する。
+
+### 18. resolverレビューを反映し、停止境界と監査成果物を強化した
+
+2026年7月19日、17節の実装に対して、除外道路がXMLに残る、未対応の明示値を構造用最頻値で上書きし得る、双方向1車線を各方向1車線として扱う、accessタグ削除後の期待permissionsが専用成果物に残らない、`oneway=-1`反転が左右依存タグを壊し得る、というレビューを受けた。これらは定量評価以前に解消すべき実装上の問題と判断した。
+
+設定をv8からv9へ更新し、次を実装した。
+
+- 保持対象外の`highway=*` wayを正規化XMLツリーから物理的に削除する。
+- `missing`、`invalid`、`valid_but_unsupported`、`conflict`、`conditional`、`directionally_asymmetric`を分離し、構造用最頻値を真の欠損だけに適用する。
+- `50 mph`等の未対応明示値、方向別に異なる速度、条件付き速度、未対応方向別車線表現を補完で上書きせず停止する。
+- 双方向`lanes=1`を各方向1車線へ複製せず、lane方向配分を未解決として停止する。方向別タグのない偶数総車線は均等分割仮定を専用監査行へ記録し、感度分析未完了として扱う。
+- `oneway=-1`は有効なOSM値だが、左右・方向依存タグを安全に網羅変換できるまでは元wayを変更せず停止する。
+- accessタグを正規化XMLに保持し、way・方向・lane別の期待permissionsを必須JSONへ永続化する。生成`net.xml`への縮小方向の反映と全lane照合は後続実装とし、完了まで正式buildを禁止する。
+- `designated`をキーと値の組合せで評価し、一般キーの`access=designated`を停止する。車種別適用順はYAMLの並びではなくコード側の固定順から作る。
+- 車線数と速度の補完閾値を別フィールドとして読み、両者が同値であることをコードで強制しない。
+- 補完集計を「local」ではなく`input_extent_way_count_unique_mode`と呼び、入力OSM SHA-256、母集団範囲、way個数という標本単位、グループ定義、属性別閾値、完全分布、採用値、最頻値比率、判断を必須JSONへ保存する。
+
+補完母集団が入力範囲とOSM way分割に依存する問題、way個数重みと道路延長重みの比較、抽出範囲・集約範囲・閾値の感度分析、属性別criticalityの根拠スキーマはデータと事前登録を要する方法論課題であり、コードだけで値を決めなかった。これらをv9の未完了要件へ登録し、`structural`成果物は引き続き形状・接続確認専用、`formal_build_ready: false`とした。
+
+この節は17節の`oneway=-1`反転とaccessタグ削除の記述を置き換える。履歴を時系列で追跡できるよう、17節の初期実装記録自体は削除していない。
+
+v9更新後、resolverとtypemapの対象テストは`42 passed`、固定`analysis`コンテナ内のvalidation suiteは`170 passed`であった。これは前処理の停止境界と静的整合性を検査した結果であり、既知のSUMO runtime fixture不合格、permissions後処理、実PBF build、定量評価への適格性を解消するものではない。
+
 ## 最終的に固定した内容
 
 - 採用方式：自動車系道路typeの明示的ホワイトリスト
@@ -312,8 +353,10 @@ permissionsは、OSM内で`access`、`vehicle`、`motor_vehicle`、車種別、�
 - 専用バスリンク：保持するが配送車の通行は許可しない
 - 属性既定値：`speed`、`numLanes`、`oneway`をtypemapで補完しない。ただし、省略自体は欠損検出に使わない
 - `oneway`：双方向の導出値も`oneway=no`として変換前に明示し、欠損を`osmDefaults`監査へ委ねない
+- `oneway=-1`：左右・方向依存タグの安全な変換実装が完成するまで原データを変更せず停止する
 - `oneway`暗黙規則：roundaboutとmotorwayは`yes`、motorway_link欠損は`unresolved`とし、統計的placeholderを使わない
 - 構造用補完：`lanes`と`maxspeed`だけを対象に、一意な最頻値、標本数30以上、最頻値比率50%以上を要求する
+- 構造用補完の入力：真の欠損だけを対象とし、未対応明示値、矛盾、条件付き値、方向非対称値を上書きしない
 - 正式用補完：独立した検証記録を持つ`derived_validated_model`だけを許容し、未検証placeholderを禁止する
 - 通行側：`lefthand=true`を設定と実行で必須とし、一方通行方向自体は反転しない
 - priority：SUMO 1.24.0標準値を継承する
@@ -323,6 +366,7 @@ permissionsは、OSM内で`access`、`vehicle`、`motor_vehicle`、車種別、�
 - EV配送表現：`vClass="delivery"`とSUMO battery deviceを組み合わせ、`evehicle`を禁止する
 - access処理：`osm.lane-access=true`を固定し、fixtureと生成permissions監査で動作を確認する
 - permissions処理：OSM内の上書き関係を先に解決し、研究対象集合との積集合だけを許可する
+- resolver監査：期待permissionsと補完完全分布を専用JSONへ保存し、accessタグは変換後照合が完成するまで保持する
 - 用途別vClass：配送経路用と背景交通用を分け、ネットワークの管理集合8クラスと混同しない
 
 ## 残作業と変更管理

@@ -137,6 +137,10 @@ def test_typemap_does_not_supply_governed_road_attribute_defaults() -> None:
         "unresolved",
         "conflict",
         "invalid",
+        "missing",
+        "valid_but_unsupported",
+        "conditional",
+        "directionally_asymmetric",
     }
     assert materialization_gate["list_structural_placeholders_separately"] is True
     assert config["failure_policy"][
@@ -221,6 +225,9 @@ def test_left_hand_traffic_and_oneway_materialization_are_mandatory() -> None:
     )
     assert oneway["motorway_without_explicit_value"] == "derived_yes_osm_rule"
     assert oneway["motorway_link_without_explicit_value"] == "unresolved"
+    assert oneway["explicit_reverse"] == (
+        "valid_but_unsupported_stop_until_directional_tag_safe_transform"
+    )
     assert oneway["statistical_placeholder_allowed"] is False
     assert oneway["materialize_derived_bidirectional_as"] == "no"
     assert oneway["absent_typemap_value_may_fallback_to"] == "oneway_true"
