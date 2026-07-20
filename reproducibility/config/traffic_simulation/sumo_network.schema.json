@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/tkm-sano/kmd-analysis/schemas/sumo_network-v2.schema.json",
+  "title": "Governed SUMO network configuration",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "config_schema",
+    "config_validator",
+    "config_id",
+    "config_version",
+    "status"
+  ],
+  "properties": {
+    "schema_version": {"const": 2},
+    "config_schema": {
+      "const": "reproducibility/config/traffic_simulation/sumo_network.schema.json"
+    },
+    "config_validator": {
+      "const": "05_src/traffic_simulation/network/validate_sumo_network_config.py"
+    },
+    "config_id": {"type": "string", "pattern": "^ota_ward_sumo_network_v[0-9]+$"},
+    "config_version": {"type": "integer", "minimum": 1},
+    "status": {
+      "type": "object",
+      "required": [
+        "specification",
+        "formal_build_input_ready",
+        "formal_network_accepted",
+        "downstream_experiment_ready",
+        "eligibility_allowed_states",
+        "requirement_matrix",
+        "readiness_gates"
+      ],
+      "properties": {
+        "specification": {
+          "type": "object",
+          "required": ["state", "approved_scope", "formal_execution_authorized"],
+          "properties": {
+            "state": {"const": "current_governed_draft"},
+            "approved_scope": {"type": "array", "items": {"type": "string"}},
+            "formal_execution_authorized": {"type": "boolean"}
+          },
+          "additionalProperties": false
+        },
+        "formal_build_input_ready": {"type": "boolean"},
+        "formal_network_accepted": {"type": "boolean"},
+        "downstream_experiment_ready": {"type": "boolean"},
+        "eligibility_allowed_states": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": ["eligible", "ineligible", "pending", "conditional", "not_applicable"]
+          }
+        },
+        "requirement_matrix": {
+          "type": "object",
+          "additionalProperties": {"$ref": "#/$defs/requirement"}
+        },
+        "readiness_gates": {
+          "type": "object",
+          "required": [
+            "formal_build_input_ready",
+            "formal_network_acceptance",
+            "downstream_experiment_ready"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "eligibility": {
+      "type": "object",
+      "required": ["eligible", "state", "reason"],
+      "properties": {
+        "eligible": {"type": "boolean"},
+        "state": {
+          "enum": ["eligible", "ineligible", "pending", "conditional", "not_applicable"]
+        },
+        "reason": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "requirement": {
+      "type": "object",
+      "required": [
+        "gate",
+        "policy",
+        "implementation",
+        "unit_validation",
+        "xsd_validation",
+        "runtime_validation",
+        "real_data_validation",
+        "eligibility"
+      ],
+      "properties": {
+        "gate": {
+          "enum": [
+            "formal_build_input_ready",
+            "formal_network_acceptance",
+            "downstream_experiment_ready"
+          ]
+        },
+        "policy": {"type": "string"},
+        "implementation": {"type": "string"},
+        "unit_validation": {"type": "string"},
+        "xsd_validation": {"type": "string"},
+        "runtime_validation": {"type": "string"},
+        "real_data_validation": {"type": "string"},
+        "eligibility": {"$ref": "#/$defs/eligibility"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true
+}

@@ -9,16 +9,18 @@ The structural profile is used only to debug geometry, direction, connectivity, 
 1. Verify the registered PBF, typemap and configuration hashes.
 2. Convert PBF to raw OSM XML in the pinned analysis environment.
 3. Resolve attributes and compute way-direction-lane permission expectations.
-4. Materialize expected permissions into explicit final-conversion input.
-5. Run final `netconvert` from the materialized input.
-6. Audit, without editing `net.xml`, every generated lane and applicable connection.
-7. On mismatch, stop, fix the input and rerun final conversion.
+4. Generate provisional plain edges and connections.
+5. Materialize expected lane and connection permissions, removing zero-permission connections and all provisional TLS assignments.
+6. Review the final connection set, signalized junctions and complete connection-to-TLS-link mapping.
+7. Write reviewed connection and TLS files, then run final `netconvert`.
+8. Audit, without editing `net.xml`, every generated lane, connection and TLS mapping.
+9. On mismatch, stop, fix the governed input, invalidate affected reviews and rerun final conversion.
 
 ### Materializer I/O Contract
 
 The fixed interchange format is SUMO 1.24.0 plain XML. After the resolver has written immutable permission expectations, create a topology-only OSM copy with consumed access tags removed and run provisional `netconvert` with `--plain-output-prefix governed_provisional`, `--plain-output.lanes true`, `--output.original-names true`, `--lefthand true` and `--osm.lane-access true`. The required provisional files are `governed_provisional.nod.xml`, `.edg.xml`, `.con.xml` and `.tll.xml`.
 
-The materializer never mutates provisional files. It writes `governed_permissions.edg.xml` and `governed_permissions.con.xml`, conforming respectively to the pinned container's `edges_file.xsd` and `connections_file.xsd`. Final `netconvert` receives the provisional node/TLS files and materialized edge/connection files through `--node-files`, `--edge-files`, `--connection-files` and `--tllogic-files`. The generated `net.xml` is audit-only.
+The materializer never mutates provisional files. It writes `governed_permissions.edg.xml` and `governed_permissions.con.xml`, conforming respectively to the pinned container's `edges_file.xsd` and `connections_file.xsd`. It strips provisional `tl` and `linkIndex` assignments because connection removal can invalidate their indexing. Signal review then produces `governed_reviewed.con.xml` and `governed_reviewed.tll.xml`. Final `netconvert` receives the provisional node file, permission edge file and reviewed connection/TLS files through `--node-files`, `--edge-files`, `--connection-files` and `--tllogic-files`. The provisional `.tll.xml` cannot be final input. The generated `net.xml` is audit-only.
 
 Each plain lane must have exactly one `param key="origId"`. One OSM way may map to multiple edges and lanes. Direction is determined by comparing each edge orientation with the normalized OSM way node order; an edge ID sign is not evidence. Any incomplete or ambiguous mapping stops the build.
 
@@ -32,7 +34,7 @@ lane_allow = resolver_allow(way, direction, p)
              intersect governed_vclasses
 ```
 
-Lane counts must agree, the set must not exceed the typemap baseline, and `allow` is serialized as lexicographically sorted, space-separated vClasses. The materializer removes `disallow`; an empty lane set is serialized as `allow=""`. The pinned left-hand fixture must verify that SUMO 1.24.0 preserves this representation and lane ordering. Failure stops real-data use and requires a versioned contract change.
+Lane counts must agree, the set must not exceed the typemap baseline, and nonempty `allow` is serialized as lexicographically sorted, space-separated vClasses. A lane with an empty governed set is serialized as `disallow="all"`, recorded as explicitly non-drivable topology and cannot be used by any vClass. The pinned left-hand fixture must verify that SUMO 1.24.0 preserves this representation and lane ordering. Failure stops real-data use and requires a versioned contract change.
 
 ### Connection Permission Rule
 
@@ -46,11 +48,13 @@ connection_allow(c) = from_lane_allow(c)
 
 An absent provisional `allow` is unrestricted before the endpoint intersection. A nonempty set is written as an exact sorted `allow` value with `disallow` removed. A zero set causes the connection to be omitted and the reason to be recorded. Post-conversion audit requires every nonempty expected connection, prohibits every zero-set and unexplained connection, and compares effective permissions exactly.
 
+TLS structure is fixed only after this connection set. The review must assign every controlled connection exactly one valid link index and require every phase-state string to match the controlled-link count. Any later connection change invalidates the TLS review and stops the build.
+
 The materializer is not yet implemented. The earlier importer governance fixture failed, and a materialized-output fixture has not been run. XSD inspection and a provisional plain-export probe establish only that these interfaces and `origId` are available; they do not validate the mapping rules.
 
 ## Formal Build Completeness
 
-Permissions are only one formal gate. Formal generation also requires registered input/hash revalidation, zero unresolved governed attributes, accepted formal evidence or validated imputation, safe handling or zero occurrence of `oneway=-1`, reviewed junction joins and node file, reviewed signal junction/TLS-link structure, a vehicle-input validator, complete environment manifest, classified warnings and exclusions, preregistered structural thresholds, vClass-directional connectivity, candidate-subgraph review, immutable small artifacts, and successful final SUMO load. The current status of each requirement is authoritative in `network_current_specification.md` and `sumo_network.yml`; policy text or pytest assertions alone do not count as runtime or real-data verification.
+Readiness is acyclic and evaluated at three boundaries. `formal_build_input_ready` contains only requirements that can be completed before final `netconvert`. `formal_network_acceptance` contains post-conversion audits, quality gates, artifacts and SUMO load. `downstream_experiment_ready` begins only after network acceptance and contains candidate-subgraph, demand, calibration and comparison-design requirements. A post-build artifact is never a prerequisite for starting the build that creates it. The current typed state of each requirement is authoritative in `network_current_specification.md` and `sumo_network.yml`; policy text or pytest assertions alone do not count as runtime or real-data verification.
 
 ## Structural Gate
 

@@ -8,6 +8,8 @@ from xml.etree import ElementTree
 
 import yaml
 
+from traffic_simulation.network import validate_sumo_network_config as config_validator
+
 
 ROOT = Path(__file__).resolve().parents[3]
 CONFIG_PATH = ROOT / "reproducibility/config/traffic_simulation/sumo_network.yml"
@@ -300,8 +302,10 @@ def test_formal_network_precedes_demand_calibration_and_validation() -> None:
     assert order["required_sequence"] == [
         "structural_network",
         "structural_debug",
-        "governed_attributes_and_permissions",
-        "signal_junction_and_link_structure",
+        "governed_attributes_and_lane_permissions",
+        "provisional_connections",
+        "connection_permissions_and_final_connection_set",
+        "signal_junction_and_tls_link_review",
         "formal_baseline_network",
         "demand_inputs",
         "signal_timing_calibration",
@@ -393,8 +397,11 @@ def test_requirement_matrix_does_not_conflate_policy_with_validation() -> None:
     status = load_config()["status"]
     matrix = status["requirement_matrix"]
 
-    assert status["formal_build_ready"] is False
-    assert status["formal_build_requires_all_requirement_matrix_entries_eligible"] is True
+    assert status["formal_build_input_ready"] is False
+    assert status["formal_network_accepted"] is False
+    assert status["downstream_experiment_ready"] is False
+    assert status["specification"]["state"] == "current_governed_draft"
+    assert status["specification"]["formal_execution_authorized"] is False
     assert matrix["typemap_xml"]["xsd_validation"] == "passed"
     assert matrix["typemap_xml"]["runtime_validation"] == (
         "failed_importer_governance_fixture"
@@ -405,18 +412,23 @@ def test_requirement_matrix_does_not_conflate_policy_with_validation() -> None:
     assert matrix["permission_materializer"]["implementation"] == "not_implemented"
     assert matrix["permission_materializer"]["runtime_validation"] == "not_run"
     assert matrix["formal_network"]["implementation"] == "not_built"
-    assert matrix["formal_network"]["formal_eligibility"] is False
+    assert matrix["formal_network"]["eligibility"]["eligible"] is False
 
 
 def test_permission_materializer_format_and_mapping_rules_are_fixed() -> None:
     contract = load_config()["permission_materialization"]
 
-    assert contract["contract_version"] == "sumo_plain_xml_permissions_v1"
+    assert contract["contract_version"] == "sumo_plain_xml_permissions_v2"
     assert contract["implementation_status"] == "not_implemented"
     assert contract["fixture_status"] == "not_run"
     assert contract["target_sumo_version"] == "1.24.0"
     assert contract["materialized_output"]["mutate_provisional_files_in_place"] is False
     assert contract["materialized_output"]["final_net_xml_is_audit_only"] is True
+    empty_lane = contract["materialized_output"]["empty_lane_permission_policy"]
+    assert empty_lane["serialization"] == "disallow_all"
+    assert empty_lane["attribute"] == "disallow"
+    assert empty_lane["value"] == "all"
+    assert empty_lane["pinned_runtime_fixture_required"] is True
     assert contract["provenance_mapping"]["lane_orig_id_source"] == (
         "lane_param_key_origId"
     )
@@ -431,6 +443,18 @@ def test_permission_materializer_format_and_mapping_rules_are_fixed() -> None:
     assert connection_rule["candidate_source"] == "provisional_connections_only"
     assert connection_rule["synthesize_missing_or_turn_restricted_connections"] is False
     assert connection_rule["empty_expected_set"] == "remove_connection_and_record_reason"
+    handoff = contract["signal_structure_handoff"]
+    assert handoff["prohibit_provisional_tll_as_final_input"] is True
+    assert contract["materialized_output"][
+        "strip_all_provisional_tls_and_link_index_assignments"
+    ] is True
+    assert handoff["review_occurs_after_final_connection_set"] is True
+    assert contract["final_conversion"]["inputs"] == {
+        "node-files": "governed_provisional.nod.xml",
+        "edge-files": "governed_permissions.edg.xml",
+        "connection-files": "governed_reviewed.con.xml",
+        "tllogic-files": "governed_reviewed.tll.xml",
+    }
 
 
 def test_requirement_matrix_covers_every_current_formal_blocker() -> None:
@@ -454,20 +478,58 @@ def test_requirement_matrix_covers_every_current_formal_blocker() -> None:
         "formal_candidate_subgraph_review",
         "reproducibility_artifact_publication",
         "formal_network",
+        "demand_and_observation_inputs",
+        "calibration_design",
+        "optimization_comparison_design",
     }
 
     assert set(matrix) == required
     state_fields = {
         "policy",
+        "gate",
         "implementation",
         "unit_validation",
         "xsd_validation",
         "runtime_validation",
         "real_data_validation",
-        "formal_eligibility",
+        "eligibility",
     }
     assert all(set(state) == state_fields for state in matrix.values())
-    assert all(state["formal_eligibility"] is not True for state in matrix.values())
+    assert all(
+        isinstance(state["eligibility"]["eligible"], bool)
+        for state in matrix.values()
+    )
+    assert all(state["eligibility"]["eligible"] is False for state in matrix.values())
+
+
+def test_readiness_gates_are_acyclic_and_partition_requirements() -> None:
+    status = load_config()["status"]
+    gates = status["readiness_gates"]
+    assert list(gates) == [
+        "formal_build_input_ready",
+        "formal_network_acceptance",
+        "downstream_experiment_ready",
+    ]
+    assert gates["formal_network_acceptance"]["requires_gate"] == (
+        "formal_build_input_ready"
+    )
+    assert gates["downstream_experiment_ready"]["requires_gate"] == (
+        "formal_network_acceptance"
+    )
+    assigned = [name for gate in gates.values() for name in gate["requires"]]
+    assert len(assigned) == len(set(assigned))
+    assert set(assigned) == set(status["requirement_matrix"])
+    assert "formal_network" not in gates["formal_build_input_ready"]["requires"]
+    assert "formal_candidate_subgraph_review" in gates[
+        "downstream_experiment_ready"
+    ]["requires"]
+
+
+def test_governed_config_validator_and_schema_pass() -> None:
+    config = config_validator.load_config(CONFIG_PATH)
+    config_validator.validate_config(config)
+    assert (ROOT / config["config_schema"]).is_file()
+    assert (ROOT / config["config_validator"]).is_file()
 
 
 def test_signal_structure_is_part_of_formal_network_but_timing_is_calibrated() -> None:
@@ -550,13 +612,66 @@ def test_surface_and_vehicle_class_policies_are_explicit() -> None:
     assert delivery["vehicle_vclass_is_immutable_within_problem_instance"] is True
 
 
+def test_access_provenance_and_geometry_policies_are_consistent() -> None:
+    config = load_config()
+
+    assert config["access_resolution"]["allow_permission_placeholder"] is False
+    assert config["access_resolution"][
+        "allow_unresolved_record_in_structural_audit"
+    ] is True
+    assert config["netconvert"]["common_options"]["geometry.remove"] is False
+    assert config["netconvert"]["formal_conversion_options"]["geometry.remove"] is False
+    assert set(config["provenance"]["distinguish_value_classes"]) == set(
+        config["attribute_resolution"]["value_states"]
+    )
+
+
+def test_external_source_uses_and_runtime_stop_counts_are_governed() -> None:
+    config = load_config()
+    census = config["external_sources"]["supplements"]["road_traffic_census"]
+    regulations = config["external_sources"]["supplements"][
+        "jartic_traffic_regulations"
+    ]
+
+    assert set(census["verified_uses"]) == {
+        "lanes",
+        "road_width",
+        "traffic_volume",
+        "travel_speed",
+    }
+    assert set(census["candidate_uses_pending_field_definition_verification"]) == {
+        "designated_maxspeed",
+        "oneway",
+    }
+    assert set(regulations["required_record_fields"]) == {
+        "regulation_type",
+        "effective_from",
+        "effective_until",
+        "recurrence",
+        "vehicle_scope",
+        "legal_or_administrative_source",
+        "snapshot_date",
+    }
+    assert {
+        "unmapped_lanes",
+        "unmapped_connections",
+        "unexpected_connections",
+        "missing_expected_connections",
+        "tls_link_mapping_mismatches",
+        "tls_phase_state_length_mismatches",
+        "unclassified_warnings",
+        "unreconciled_removed_edges",
+    } <= set(config["failure_policy"]["post_netconvert_zero_counts"])
+
+
 def test_configuration_dates_and_policy_documents_are_unambiguous() -> None:
     config = load_config()
 
-    assert config["config_id"] == "ota_ward_sumo_network_v12"
-    assert config["config_version"] == 12
+    assert config["schema_version"] == 2
+    assert config["config_id"] == "ota_ward_sumo_network_v13"
+    assert config["config_version"] == 13
     assert config["created_at"] == "2026-07-18"
-    assert config["last_updated_at"] == "2026-07-19"
+    assert config["last_updated_at"] == "2026-07-20"
     assert config["configuration_lineage_date"] == "2026-07-16"
     documents = config["policy_documents"]
     assert set(documents) == {

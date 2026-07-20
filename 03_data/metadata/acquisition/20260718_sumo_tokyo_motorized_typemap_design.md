@@ -411,6 +411,24 @@ fixture実装前の契約として次を固定した。
 
 Verification Stateにはpermissions以外も含め、入力hash再検証、formal属性根拠、`oneway=-1`、junction join、信号junction/TLS-link、車両入力validator、prepare/validate pipeline、実行環境manifest、warning/exclusion監査、構造品質閾値、候補部分グラフreview、小型再現性成果物、最終SUMO loadをformal停止条件として列挙した。これらの方針assertionはruntimeまたは実データ検証の代替ではない。v12時点でmaterializerとformal networkは未実装・未生成であり、`formal_build_ready: false`を維持する。
 
+### 22. readiness gate、TLS handoff、型付き状態をv13で修正した
+
+2026年7月20日、v12の全要件を一つのformal build開始条件として評価すると、生成後にしか完了できないformal network、warning監査、成果物公開まで生成前に要求する循環が生じるとのレビューを受けた。また、`formal_eligibility`にbooleanと文字列が混在し、単純なtruth-value評価で未完了状態を合格と扱い得ることを確認した。
+
+設定をv12から`ota_ward_sumo_network_v13`へ更新し、次を変更した。
+
+- `formal_build_input_ready`、`formal_network_acceptance`、`downstream_experiment_ready`を依存順に分離し、requirement matrixを重複なく三つへ割り当てた。formal network生成物や候補部分グラフreviewをbuild開始条件に含めない。
+- 各要件の状態を`eligible: boolean`、列挙型`state`、必須`reason`へ統一した。設定をschema version 2とし、Git管理のJSON Schemaと、重複YAML key、型、ゲート分割、版番号、主要なcross-field invariantを検査する専用validatorを追加した。
+- specification状態を`current_governed_draft`へ変更し、固定済み方針と明示的blockerだけが承認範囲で、formal実行は未承認とした。
+- access permission placeholderを禁止し、structural auditへ未解決状態を記録できることとは別の設定にした。
+- permission materialization後にprovisional TLS assignmentを全て除去し、最終connection集合の確定後に`governed_reviewed.con.xml`と`governed_reviewed.tll.xml`を作る順序へ変更した。provisional `.tll.xml`はreview inputに限定し、最終変換では使用しない。
+- 空lane permissionsは`allow=""`ではなく、固定fixtureで受理を確認することを条件に`disallow="all"`で非走行laneとして表現する。空connectionは削除して理由を記録する。
+- governed provenanceの単純性を維持するため`geometry.remove=false`をcommon/formal双方で固定した。将来edge結合を採用する場合は、複数OSM way、premerge edge、removed nodeを表現する新しい来歴schemaと設定版を必要とする。
+- resolverの全value stateを最終provenance集合へ反映し、未追跡lane/connection、予期しない・欠落connection、TLS link/phase長不一致、未分類warning、未照合edge削除を正式なpost-conversionゼロ件条件へ追加した。
+- 道路交通センサスの確認済み用途をlane、道路幅、交通量、旅行速度へ限定し、指定最高速度と一方通行は具体的な項目定義確認待ちへ移した。JARTIC規制には規制種別、有効期間、反復、車種範囲、法的・行政的出典、snapshot日を必須とした。
+
+v13は循環しない合否判定とpermissionからTLSへのhandoffを定義したが、materializer、review UI、post-auditorおよびruntime fixtureの実装完了を意味しない。三つのreadiness状態は全てfalseである。
+
 ## 最終的に固定した内容
 
 - 採用方式：自動車系道路typeの明示的ホワイトリスト
