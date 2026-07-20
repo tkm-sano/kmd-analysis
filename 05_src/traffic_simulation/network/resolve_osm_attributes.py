@@ -226,7 +226,7 @@ def load_policy(
     profile: str,
     config_path: Path = CONFIG_PATH,
 ) -> ResolverPolicy:
-    """Load and strictly validate the v12 resolver policy."""
+    """Load and strictly validate the v13 resolver policy."""
 
     with config_path.open(encoding="utf-8") as handle:
         config = yaml.safe_load(handle)
@@ -234,8 +234,8 @@ def load_policy(
         raise ValueError("SUMO network config must be a mapping")
     if profile not in {"structural", "formal"}:
         raise ValueError(f"unsupported network profile: {profile}")
-    if config.get("config_version") != 12:
-        raise ValueError("resolve_osm_attributes requires sumo_network config v12")
+    if config.get("config_version") != 13:
+        raise ValueError("resolve_osm_attributes requires sumo_network config v13")
 
     vehicle_scope = config.get("vehicle_scope", {})
     typemap_policy = config.get("typemap_policy", {})
