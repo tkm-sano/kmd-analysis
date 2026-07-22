@@ -19,6 +19,8 @@ All failures are stable machine-readable codes. Messages may add context but MUS
 | RS011 | expectation schema/incompleteness | yes | failure | regenerate v2 artifact |
 | RS012 | unsafe output path/write | yes | failure | use new governed paths |
 
+CLI boundary mapping is fixed as follows: malformed/missing OSM, invalid node/way/tag/relation identity and XML parse failure map to `RS001`; invalid config, typemap or criticality state maps to `RS004`; permission artifact/schema/accounting failure maps to `RS011`; and path collision, existing output, staging/publication or filesystem write failure maps to `RS012`. Governed attribute blockers retain their more specific `RS003`, `RS007`, `RS008`, `RS009` or `RS010` codes in both the incomplete permission artifact and CLI failure report.
+
 ## Permission Materializer
 
 | Code | Detection | Retained output | Recovery |

@@ -65,7 +65,6 @@ status:
     - resolver_permission_expectations_artifact
     - resolver_imputation_distribution_artifact
   pending_requirements:
-    - resolver_v14_permission_expectation_artifact_migration
     - provisional_edge_provenance_artifact_implementation
     - registered_source_hash_manifest_reverification
     - attribute_governance_implementation
@@ -125,9 +124,9 @@ status:
       gate: formal_build_input_ready
       policy: policy_fixed
       implementation: implemented_partial_scope
-      unit_validation: unit_tested
+      unit_validation: strict_input_donor_trace_transaction_and_failure_contract_unit_tested
       xsd_validation: not_applicable
-      runtime_validation: positive_and_negative_xml_fixtures_passed
+      runtime_validation: positive_negative_bidirectional_and_failure_contract_fixtures_passed
       real_data_validation: not_run
       eligibility:
         eligible: false
@@ -136,15 +135,15 @@ status:
     permission_expectation_artifact:
       gate: formal_build_input_ready
       policy: policy_fixed
-      implementation: implemented_v13_shape_requires_v14_schema_migration
-      unit_validation: v13_shape_unit_tested_v14_contract_only
+      implementation: implemented_v14_schema_shape
+      unit_validation: v14_positive_negative_bidirectional_and_lane_local_trace_oracles_passed
       xsd_validation: not_applicable_json
-      runtime_validation: v14_artifact_not_run
+      runtime_validation: json_schema_validated_fixture_and_cli_failure_artifacts_passed
       real_data_validation: not_run
       eligibility:
         eligible: false
         state: pending
-        reason: v14_schema_artifact_not_implemented_or_generated
+        reason: v14_artifact_not_run_on_registered_extract
     permission_materializer:
       gate: formal_build_input_ready
       policy: policy_fixed
@@ -459,6 +458,7 @@ paths:
   attribute_audit_report: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_road_attribute_audit.csv
   permission_expectations: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_permission_expectations.json
   imputation_summary: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_imputation_summary.json
+  resolver_failure_report: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_resolver_failure_report.json
   external_match_report: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_external_road_matches.csv
   visualization: reproducibility/outputs/traffic_simulation/visualization/ota_ward_sumo_network.html
   versioned_build_record_root: 06_outputs/traffic_simulation/network_build_records/{build_id}
@@ -735,6 +735,17 @@ permission_materialization:
     schema: reproducibility/config/traffic_simulation/schemas/permission_expectations.schema.json
     require_complete_true: true
     require_zero_blockers: true
+    lane_rule_provenance:
+      granularity: each_way_direction_lane
+      record_only_rules_applied_to_that_lane: true
+      record_before_and_after_vclass_sets: true
+      categories:
+        - typemap_baseline
+        - derived_policy_intersection
+        - explicit_osm_general
+        - explicit_osm_class_specific
+        - explicit_osm_directional
+        - explicit_osm_lane_specific
   edge_provenance_artifact:
     schema_version: 1
     schema: reproducibility/config/traffic_simulation/schemas/edge_provenance.schema.json
@@ -1231,6 +1242,11 @@ attribute_rules:
       - lanes_backward
       - lanes_both_ways
       - oneway
+    directional_allocation:
+      formal_without_explicit_forward_and_backward: stop_RS008
+      structural_even_total_without_directional_tags: equal_split_with_audit_and_sensitivity
+      structural_odd_or_single_bidirectional_without_directional_tags: stop_RS008
+      lanes_both_ways: stop_RS008
   maxspeed:
     check_order:
       - explicit_osm
@@ -1264,7 +1280,14 @@ structural_imputation:
   applicable_profile: structural
   applicable_criticality: noncritical_only
   lanes:
-    source_population: explicit_osm_values_in_fixed_ota_ward_extract
+    source_population: resolver_eligible_explicit_osm_values_in_fixed_ota_ward_extract
+    donor_eligibility:
+      require_resolvable_oneway: true
+      prohibit_reverse_oneway: true
+      require_consistent_explicit_lanes: true
+      require_consistent_explicit_maxspeed: true
+      prohibit_conditional_tags: true
+      require_resolvable_permissions: true
     sample_unit: osm_way_count
     grouping:
       - highway
@@ -1276,7 +1299,9 @@ structural_imputation:
     insufficient_evidence_policy: unresolved
     prohibit_automatic_fallback_to_adjacent_highway_class: true
   maxspeed_kmh:
-    source_population: explicit_numeric_osm_values_in_fixed_ota_ward_extract
+    source_population: resolver_eligible_canonical_numeric_osm_values_in_fixed_ota_ward_extract
+    numeric_canonicalization: decimal_equivalent_values_share_one_plain_decimal_string
+    donor_eligibility: same_as_lanes
     sample_unit: osm_way_count
     grouping:
       - highway

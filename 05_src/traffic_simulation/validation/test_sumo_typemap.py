@@ -407,7 +407,13 @@ def test_requirement_matrix_does_not_conflate_policy_with_validation() -> None:
         "failed_importer_governance_fixture"
     )
     assert matrix["attribute_resolver"]["runtime_validation"] == (
-        "positive_and_negative_xml_fixtures_passed"
+        "positive_negative_bidirectional_and_failure_contract_fixtures_passed"
+    )
+    assert matrix["permission_expectation_artifact"]["implementation"] == (
+        "implemented_v14_schema_shape"
+    )
+    assert matrix["permission_expectation_artifact"]["real_data_validation"] == (
+        "not_run"
     )
     assert matrix["permission_materializer"]["implementation"] == "not_implemented"
     assert matrix["permission_materializer"]["runtime_validation"] == "not_run"

@@ -14,14 +14,18 @@ import csv
 import hashlib
 import json
 import re
+import sys
 import tempfile
 from collections import Counter
 from dataclasses import asdict, dataclass
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Any, Final, Iterable, Mapping, MutableMapping, Sequence
 from xml.etree import ElementTree
 
 import yaml
+from jsonschema import Draft202012Validator
+from referencing import Registry, Resource
 
 from traffic_simulation.paths import REPOSITORY_ROOT
 
@@ -29,6 +33,18 @@ from traffic_simulation.paths import REPOSITORY_ROOT
 CONFIG_PATH: Final = (
     REPOSITORY_ROOT
     / "reproducibility/config/traffic_simulation/sumo_network.yml"
+)
+PERMISSION_EXPECTATIONS_SCHEMA_PATH: Final = (
+    REPOSITORY_ROOT
+    / "reproducibility/config/traffic_simulation/schemas/permission_expectations.schema.json"
+)
+ARTIFACT_COMMON_SCHEMA_PATH: Final = (
+    REPOSITORY_ROOT
+    / "reproducibility/config/traffic_simulation/schemas/artifact_common.schema.json"
+)
+FAILURE_REPORT_SCHEMA_PATH: Final = (
+    REPOSITORY_ROOT
+    / "reproducibility/config/traffic_simulation/schemas/failure_report.schema.json"
 )
 LANES_PATTERN: Final = re.compile(r"[1-9][0-9]*\Z")
 MAXSPEED_PATTERN: Final = re.compile(r"[1-9][0-9]*(?:\.[0-9]+)?\Z")
@@ -139,7 +155,12 @@ class ResolutionResult:
     blockers: tuple[str, ...]
     retained_way_count: int
     excluded_way_count: int
+    excluded_relation_count: int
     permission_expectations: Mapping[str, Mapping[str, tuple[tuple[str, ...], ...]]]
+    permission_rule_traces: Mapping[
+        str,
+        Mapping[str, tuple[tuple[Mapping[str, Any], ...], ...]],
+    ]
     imputation_summary: Mapping[str, Mapping[str, ModeDecision]]
 
 
@@ -152,9 +173,13 @@ class ResolverPolicy:
     source_registry_id: str
     reference_date: str
     retained_highway_types: frozenset[str]
+    retained_type_ids: frozenset[str]
     governed_vclasses: frozenset[str]
     class_access_map: Mapping[str, frozenset[str]]
     typemap_permissions: Mapping[str, frozenset[str]]
+    typemap_path: str
+    typemap_sha256: str
+    typemap_policy_id: str
     profile: str
     lane_imputation_minimum_sample_size: int
     lane_imputation_minimum_mode_share: float
@@ -173,11 +198,17 @@ def sha256_file(path: Path) -> str:
 
 
 def _tags(way: ElementTree.Element) -> dict[str, str]:
-    return {
-        tag.attrib["k"]: tag.attrib["v"]
-        for tag in way.findall("tag")
-        if "k" in tag.attrib and "v" in tag.attrib
-    }
+    result: dict[str, str] = {}
+    way_id = way.attrib.get("id", "")
+    for tag in way.findall("tag"):
+        key = tag.attrib.get("k")
+        value = tag.attrib.get("v")
+        if not key or value is None or value == "":
+            raise ResolutionError(f"way {way_id} has malformed tag attributes")
+        if key in result:
+            raise ResolutionError(f"way {way_id} has duplicate tag {key}")
+        result[key] = value
+    return result
 
 
 def _set_tag(way: ElementTree.Element, key: str, value: str) -> None:
@@ -205,7 +236,10 @@ def _relative_repository_path(path: Path) -> str:
 def _load_typemap_permissions(
     typemap_path: Path, governed_vclasses: frozenset[str]
 ) -> dict[str, frozenset[str]]:
-    root = ElementTree.parse(typemap_path).getroot()
+    try:
+        root = ElementTree.parse(typemap_path).getroot()
+    except ElementTree.ParseError as error:
+        raise ValueError(f"invalid typemap XML: {error}") from error
     if root.tag != "types":
         raise ValueError("typemap root must be <types>")
     result: dict[str, frozenset[str]] = {}
@@ -213,6 +247,10 @@ def _load_typemap_permissions(
         type_id = element.attrib.get("id")
         if not type_id or element.attrib.get("discard") == "true":
             continue
+        if "disallow" in element.attrib:
+            raise ValueError(
+                f"typemap type {type_id} uses unsupported disallow permissions"
+            )
         permissions = frozenset(element.attrib.get("allow", "").split())
         if not permissions or not permissions <= governed_vclasses:
             raise ValueError(f"invalid governed permissions for typemap type {type_id}")
@@ -248,7 +286,7 @@ def load_policy(
     if oneway.get("explicit_reverse") != (
         "valid_but_unsupported_stop_until_directional_tag_safe_transform"
     ):
-        raise ValueError("reverse oneway must fail closed in config v11")
+        raise ValueError("reverse oneway must fail closed in config v14")
     if oneway.get("statistical_placeholder_allowed") is not False:
         raise ValueError("oneway statistical placeholders must be prohibited")
     if access.get("osm_override_application_order") != [
@@ -278,11 +316,15 @@ def load_policy(
         if key in configured_class_tags
     }
     shared = typemap_policy.get("retained_shared_highway_types", ())
+    compound_ids = typemap_policy.get("retained_compound_type_ids", ())
     dedicated_ids = typemap_policy.get("retained_dedicated_motorized_type_ids", ())
     retained = {str(value) for value in shared}
     retained.update(
         str(type_id).removeprefix("highway.") for type_id in dedicated_ids
     )
+    retained_type_ids = {f"highway.{value}" for value in shared}
+    retained_type_ids.update(str(type_id) for type_id in compound_ids)
+    retained_type_ids.update(str(type_id) for type_id in dedicated_ids)
 
     typemap_path = REPOSITORY_ROOT / str(typemap_policy.get("path", ""))
     if not typemap_path.is_file():
@@ -301,15 +343,25 @@ def load_policy(
             raise ValueError(f"unsupported {name} tie policy")
         if rule.get("prohibit_automatic_fallback_to_adjacent_highway_class") is not True:
             raise ValueError(f"{name} adjacent-class fallback must be prohibited")
+        minimum_sample_size = int(rule["minimum_sample_size"])
+        minimum_mode_share = float(rule["minimum_mode_share"])
+        if minimum_sample_size < 1:
+            raise ValueError(f"{name} minimum_sample_size must be at least 1")
+        if not 0 < minimum_mode_share <= 1:
+            raise ValueError(f"{name} minimum_mode_share must be in (0, 1]")
     return ResolverPolicy(
         config_id=str(config["config_id"]),
         config_version=int(config["config_version"]),
         source_registry_id=str(source["source_registry_id"]),
         reference_date=str(source["snapshot_date"]),
         retained_highway_types=frozenset(retained),
+        retained_type_ids=frozenset(retained_type_ids),
         governed_vclasses=governed_vclasses,
         class_access_map=class_access_map,
         typemap_permissions=permissions,
+        typemap_path=str(typemap_policy["path"]),
+        typemap_sha256=str(expected_typemap_hash),
+        typemap_policy_id=str(typemap_policy["policy_id"]),
         profile=profile,
         lane_imputation_minimum_sample_size=int(lane_rule["minimum_sample_size"]),
         lane_imputation_minimum_mode_share=float(lane_rule["minimum_mode_share"]),
@@ -347,7 +399,14 @@ def _simple_positive_integer(value: str | None) -> str | None:
 def _simple_maxspeed(value: str | None) -> str | None:
     if value is None or MAXSPEED_PATTERN.fullmatch(value) is None:
         return None
-    return value
+    try:
+        numeric = Decimal(value)
+    except InvalidOperation:
+        return None
+    if numeric <= 0:
+        return None
+    normalized = format(numeric.normalize(), "f")
+    return normalized.rstrip("0").rstrip(".") if "." in normalized else normalized
 
 
 def _direction_status(tags: Mapping[str, str]) -> str | None:
@@ -415,17 +474,27 @@ def _imputation_tables(
     for way in ways:
         tags = _tags(way)
         highway = tags.get("highway")
+        if tags.get("oneway") == "-1" or any(
+            key.endswith(":conditional") for key in tags
+        ):
+            continue
         direction = _direction_status(tags)
         lanes = _explicit_lane_total(tags)
-        speed = _simple_maxspeed(tags.get("maxspeed"))
-        if highway is None:
+        speed = _explicit_maxspeed(tags)
+        if highway is None or direction is None or lanes is None or speed is None:
             continue
         total = _simple_positive_integer(tags.get("lanes"))
         lane_values_conflict = total is not None and lanes is not None and total != lanes
-        if direction is not None and lanes is not None and not lane_values_conflict:
-            lane_values.setdefault((highway, direction), []).append(lanes)
-        if speed is not None and "maxspeed:conditional" not in tags:
-            speed_values.setdefault(highway, []).append(speed)
+        if lane_values_conflict:
+            continue
+        resolved_oneway = "yes" if direction == "oneway" else "no"
+        _, permission_error = _resolve_permissions(
+            tags, int(lanes), resolved_oneway, policy
+        )
+        if permission_error is not None:
+            continue
+        lane_values.setdefault((highway, direction), []).append(lanes)
+        speed_values.setdefault(highway, []).append(speed)
     lane_modes = {
         group: unique_mode(
             values,
@@ -829,8 +898,39 @@ def _apply_access_override(
     return True
 
 
+def _apply_traced_access_override(
+    permissions: set[str],
+    baseline: frozenset[str],
+    affected: frozenset[str],
+    key: str,
+    source_value: str,
+    lane_value: str,
+    category: str,
+    history: list[dict[str, Any]],
+) -> bool:
+    """Apply one OSM permission rule and retain its lane-local transition."""
+
+    before = sorted(permissions)
+    if not _apply_access_override(
+        permissions, baseline, affected, key, lane_value
+    ):
+        return False
+    history.append(
+        {
+            "rule_id": f"osm_access:{category}:{key}",
+            "category": category,
+            "source_tag": key,
+            "source_value": source_value,
+            "lane_value": lane_value,
+            "before_vclasses": before,
+            "after_vclasses": sorted(permissions),
+        }
+    )
+    return True
+
+
 def _lane_counts(
-    tags: Mapping[str, str], total_lanes: int, oneway: str
+    tags: Mapping[str, str], total_lanes: int, oneway: str, *, allow_equal_split: bool
 ) -> Mapping[str, int] | None:
     if oneway == "yes":
         return {"forward": total_lanes}
@@ -846,7 +946,7 @@ def _lane_counts(
         return counts
     if total_lanes == 1:
         return None
-    if total_lanes % 2 == 0:
+    if allow_equal_split and total_lanes % 2 == 0:
         return {"forward": total_lanes // 2, "backward": total_lanes // 2}
     return None
 
@@ -856,15 +956,46 @@ def _resolve_permissions(
     total_lanes: int,
     oneway: str,
     policy: ResolverPolicy,
+    *,
+    trace_sink: MutableMapping[
+        str, tuple[tuple[Mapping[str, Any], ...], ...]
+    ] | None = None,
 ) -> tuple[Mapping[str, tuple[tuple[str, ...], ...]] | None, str | None]:
     baseline = policy.typemap_permissions.get(_type_id(tags))
     if baseline is None:
         return None, f"no governed typemap permission set for {_type_id(tags)}"
-    counts = _lane_counts(tags, total_lanes, oneway)
+    counts = _lane_counts(
+        tags,
+        total_lanes,
+        oneway,
+        allow_equal_split=policy.profile == "structural",
+    )
     if counts is None:
         return None, "bidirectional lane allocation is unresolved"
+    if "both_ways" in counts:
+        return None, "lanes:both_ways is not supported by the v14 direction model"
     result: dict[str, list[set[str]]] = {
         direction: [set(baseline) for _ in range(count)]
+        for direction, count in counts.items()
+    }
+    histories: dict[str, list[list[dict[str, Any]]]] = {
+        direction: [
+            [
+                {
+                    "rule_id": f"typemap:{policy.typemap_policy_id}:{_type_id(tags)}",
+                    "category": "typemap_baseline",
+                    "before_vclasses": [],
+                    "after_vclasses": sorted(baseline),
+                },
+                {
+                    "rule_id": f"research_scope:{policy.config_id}",
+                    "category": "derived_policy_intersection",
+                    "before_vclasses": sorted(baseline),
+                    "after_vclasses": sorted(baseline & policy.governed_vclasses),
+                },
+            ]
+            for _ in range(count)
+        ]
         for direction, count in counts.items()
     }
     consumed_access_tags: set[str] = set()
@@ -874,19 +1005,35 @@ def _resolve_permissions(
         if key not in tags:
             continue
         consumed_access_tags.add(key)
-        for lanes in result.values():
-            for lane in lanes:
-                if not _apply_access_override(
-                    lane, baseline, policy.governed_vclasses, key, tags[key]
+        for direction, lanes in result.items():
+            for lane_index, lane in enumerate(lanes):
+                if not _apply_traced_access_override(
+                    lane,
+                    baseline,
+                    policy.governed_vclasses,
+                    key,
+                    tags[key],
+                    tags[key],
+                    "explicit_osm_general",
+                    histories[direction][lane_index],
                 ):
                     return None, f"unsupported access value {key}={tags[key]}"
     for key, affected in policy.class_access_map.items():
         if key not in tags:
             continue
         consumed_access_tags.add(key)
-        for lanes in result.values():
-            for lane in lanes:
-                if not _apply_access_override(lane, baseline, affected, key, tags[key]):
+        for direction, lanes in result.items():
+            for lane_index, lane in enumerate(lanes):
+                if not _apply_traced_access_override(
+                    lane,
+                    baseline,
+                    affected,
+                    key,
+                    tags[key],
+                    tags[key],
+                    "explicit_osm_class_specific",
+                    histories[direction][lane_index],
+                ):
                     return None, f"unsupported access value {key}={tags[key]}"
 
     for direction, lanes in result.items():
@@ -895,13 +1042,16 @@ def _resolve_permissions(
             if directional_key not in tags:
                 continue
             consumed_access_tags.add(directional_key)
-            for lane in lanes:
-                if not _apply_access_override(
+            for lane_index, lane in enumerate(lanes):
+                if not _apply_traced_access_override(
                     lane,
                     baseline,
                     policy.governed_vclasses,
                     directional_key,
                     tags[directional_key],
+                    tags[directional_key],
+                    "explicit_osm_directional",
+                    histories[direction][lane_index],
                 ):
                     return None, (
                         f"unsupported access value {directional_key}="
@@ -912,9 +1062,16 @@ def _resolve_permissions(
             if directional_key not in tags:
                 continue
             consumed_access_tags.add(directional_key)
-            for lane in lanes:
-                if not _apply_access_override(
-                    lane, baseline, affected, directional_key, tags[directional_key]
+            for lane_index, lane in enumerate(lanes):
+                if not _apply_traced_access_override(
+                    lane,
+                    baseline,
+                    affected,
+                    directional_key,
+                    tags[directional_key],
+                    tags[directional_key],
+                    "explicit_osm_directional",
+                    histories[direction][lane_index],
                 ):
                     return None, (
                         f"unsupported access value {directional_key}="
@@ -940,10 +1097,19 @@ def _resolve_permissions(
                     f"{len(values)} != {len(lanes)}"
                 )
             affected = policy.class_access_map.get(key, policy.governed_vclasses)
-            for lane, value in zip(lanes, values):
+            for lane_index, (lane, value) in enumerate(zip(lanes, values)):
                 if value == "":
                     continue
-                if not _apply_access_override(lane, baseline, affected, lane_key, value):
+                if not _apply_traced_access_override(
+                    lane,
+                    baseline,
+                    affected,
+                    lane_key,
+                    tags[lane_key],
+                    value,
+                    "explicit_osm_lane_specific",
+                    histories[direction][lane_index],
+                ):
                     return None, f"unsupported lane access value {lane_key}={value}"
 
     if oneway == "yes":
@@ -979,6 +1145,13 @@ def _resolve_permissions(
         direction: tuple(tuple(sorted(lane & set(baseline))) for lane in lanes)
         for direction, lanes in result.items()
     }
+    if trace_sink is not None:
+        trace_sink.update(
+            {
+                direction: tuple(tuple(history) for history in lane_histories)
+                for direction, lane_histories in histories.items()
+            }
+        )
     return normalized, None
 
 
@@ -996,7 +1169,15 @@ def resolve_tree(
     criticality_map = criticality_by_way or {}
     retained: list[ElementTree.Element] = []
     excluded = 0
+    excluded_relations = 0
+    node_ids: set[str] = set()
+    for node in root.findall("node"):
+        node_id = node.attrib.get("id", "")
+        if not node_id or node_id in node_ids:
+            raise ResolutionError("OSM input contains a missing or duplicate node id")
+        node_ids.add(node_id)
     seen_way_ids: set[str] = set()
+    excluded_way_ids: set[str] = set()
     for way in root.findall("way"):
         way_id = way.attrib.get("id", "")
         if not way_id:
@@ -1010,12 +1191,35 @@ def resolve_tree(
         )
         if duplicate_keys:
             raise ResolutionError(f"way {way_id} has duplicate tags: {duplicate_keys}")
-        highway = _tags(way).get("highway")
-        if highway in policy.retained_highway_types:
+        references = [node.attrib.get("ref", "") for node in way.findall("nd")]
+        if len(references) < 2 or any(
+            not reference or reference not in node_ids for reference in references
+        ):
+            raise ResolutionError(f"way {way_id} has invalid node references")
+        tags = _tags(way)
+        highway = tags.get("highway")
+        if highway is not None and _type_id(tags) in policy.retained_type_ids:
             retained.append(way)
         elif highway is not None:
             excluded += 1
+            excluded_way_ids.add(way_id)
             root.remove(way)
+    for relation in list(root.findall("relation")):
+        relation_id = relation.attrib.get("id", "")
+        if not relation_id:
+            raise ResolutionError("OSM input contains a relation without an id")
+        way_references = {
+            member.attrib.get("ref", "")
+            for member in relation.findall("member")
+            if member.attrib.get("type") == "way"
+        }
+        if any(not reference or reference not in seen_way_ids for reference in way_references):
+            raise ResolutionError(
+                f"relation {relation_id} has an unresolved way reference"
+            )
+        if way_references & excluded_way_ids:
+            root.remove(relation)
+            excluded_relations += 1
     if not retained:
         raise ResolutionError("OSM input contains no governed motorized ways")
     lane_modes, speed_modes = _imputation_tables(retained, policy)
@@ -1023,6 +1227,9 @@ def resolve_tree(
     audit_rows: list[AuditRow] = []
     blockers: list[str] = []
     expectations: dict[str, Mapping[str, tuple[tuple[str, ...], ...]]] = {}
+    permission_traces: dict[
+        str, Mapping[str, tuple[tuple[Mapping[str, Any], ...], ...]]
+    ] = {}
     for way in retained:
         original_tags = _tags(way)
         way_id = way.attrib.get("id", "")
@@ -1062,8 +1269,9 @@ def resolve_tree(
             continue
 
         permission_tags = _tags(way)
+        way_trace: dict[str, tuple[tuple[Mapping[str, Any], ...], ...]] = {}
         permissions, permission_error = _resolve_permissions(
-            permission_tags, lanes, oneway, policy
+            permission_tags, lanes, oneway, policy, trace_sink=way_trace
         )
         source_access = {
             key: value for key, value in permission_tags.items() if _is_access_tag(key)
@@ -1090,7 +1298,12 @@ def resolve_tree(
             "lanes:forward",
             "lanes:backward",
         } <= set(permission_tags):
-            lane_counts = _lane_counts(permission_tags, lanes, oneway)
+            lane_counts = _lane_counts(
+                permission_tags,
+                lanes,
+                oneway,
+                allow_equal_split=policy.profile == "structural",
+            )
             audit_rows.append(
                 _audit(
                     way_id=way_id,
@@ -1107,24 +1320,27 @@ def resolve_tree(
             )
 
         expectations[way_id] = permissions
+        permission_traces[way_id] = way_trace
         for direction, lane_permissions in permissions.items():
             for lane_index, allowed in enumerate(lane_permissions):
+                applied_trace = way_trace[direction][lane_index]
+                applied_osm_trace = [
+                    trace for trace in applied_trace if "source_tag" in trace
+                ]
                 audit_rows.append(
                     _audit(
                         way_id=way_id,
                         tags=permission_tags,
                         attribute=f"permissions.{direction}.lane_{lane_index}",
-                        source_value=json.dumps(source_access, sort_keys=True),
+                        source_value=json.dumps(applied_osm_trace, sort_keys=True),
                         adopted_value=" ".join(allowed),
-                        value_state="explicit_osm" if source_access else "derived_osm_rule",
+                        value_state=(
+                            "explicit_osm" if applied_osm_trace else "derived_osm_rule"
+                        ),
                         policy=policy,
                         derivation_method=(
-                            "osm_precedence_then_research_scope_intersection:"
-                            + (
-                                "permissive_access_semantics_recorded"
-                                if "permissive" in source_access.values()
-                                else "standard_access_semantics"
-                            )
+                            "permission_trace:"
+                            + ",".join(trace["rule_id"] for trace in applied_trace)
                         ),
                         criticality=criticality,
                         decision="adopted",
@@ -1146,7 +1362,9 @@ def resolve_tree(
         blockers=tuple(blockers),
         retained_way_count=len(retained),
         excluded_way_count=excluded,
+        excluded_relation_count=excluded_relations,
         permission_expectations=expectations,
+        permission_rule_traces=permission_traces,
         imputation_summary=summary,
     )
 
@@ -1155,38 +1373,48 @@ def write_audit_csv(rows: Sequence[AuditRow], path: Path) -> None:
     """Atomically write the complete attribute audit."""
 
     path.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.NamedTemporaryFile(
-        mode="w",
-        encoding="utf-8",
-        newline="",
-        dir=path.parent,
-        prefix=path.name + ".",
-        suffix=".part",
-        delete=False,
-    ) as handle:
-        temporary = Path(handle.name)
-        writer = csv.DictWriter(handle, fieldnames=AUDIT_FIELDS)
-        writer.writeheader()
-        writer.writerows(asdict(row) for row in rows)
-    temporary.replace(path)
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            newline="",
+            dir=path.parent,
+            prefix=path.name + ".",
+            suffix=".part",
+            delete=False,
+        ) as handle:
+            temporary = Path(handle.name)
+            writer = csv.DictWriter(handle, fieldnames=AUDIT_FIELDS)
+            writer.writeheader()
+            writer.writerows(asdict(row) for row in rows)
+        temporary.replace(path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
 
 
 def _write_json(payload: Mapping[str, Any], path: Path) -> None:
     """Atomically write a deterministic JSON audit artifact."""
 
     path.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.NamedTemporaryFile(
-        mode="w",
-        encoding="utf-8",
-        dir=path.parent,
-        prefix=path.name + ".",
-        suffix=".part",
-        delete=False,
-    ) as handle:
-        temporary = Path(handle.name)
-        json.dump(payload, handle, ensure_ascii=True, indent=2, sort_keys=True)
-        handle.write("\n")
-    temporary.replace(path)
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=path.parent,
+            prefix=path.name + ".",
+            suffix=".part",
+            delete=False,
+        ) as handle:
+            temporary = Path(handle.name)
+            json.dump(payload, handle, ensure_ascii=True, indent=2, sort_keys=True)
+            handle.write("\n")
+        temporary.replace(path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
 
 
 def _mode_payload(decision: ModeDecision) -> dict[str, Any]:
@@ -1199,18 +1427,380 @@ def _mode_payload(decision: ModeDecision) -> dict[str, Any]:
     }
 
 
+def _resolver_failure(row: AuditRow) -> dict[str, Any]:
+    """Convert one stopping audit decision to a stable v14 failure object."""
+
+    if row.attribute == "oneway" and row.derivation_method.startswith(
+        "reverse_oneway"
+    ):
+        code = "RS007"
+    elif row.attribute == "lanes" and "directional" in row.derivation_method:
+        code = "RS008"
+    elif row.attribute == "permissions":
+        if (
+            "lane allocation" in row.derivation_method
+            or "lanes:both_ways" in row.derivation_method
+        ):
+            code = "RS008"
+        else:
+            code = "RS010" if "typemap" in row.derivation_method else "RS009"
+    else:
+        code = "RS003"
+    return {
+        "code": code,
+        "message": (
+            f"way {row.osm_way_id} {row.attribute}: {row.derivation_method}"
+        ),
+        "component": "resolver",
+        "formal_blocker": True,
+        "location": f"osm/way/{row.osm_way_id}/{row.attribute}",
+        "context": {
+            "decision": row.decision,
+            "source_value": row.source_value,
+            "value_state": row.value_state,
+        },
+    }
+
+
+def _expectation_way_payloads(
+    result: ResolutionResult, policy: ResolverPolicy
+) -> list[dict[str, Any]]:
+    """Serialize internal permission sets as ordered v14 way records."""
+
+    way_by_id = {
+        way.attrib["id"]: way for way in result.tree.getroot().findall("way")
+    }
+    records: list[dict[str, Any]] = []
+    for way_id, directions in result.permission_expectations.items():
+        way = way_by_id[way_id]
+        tags = _tags(way)
+        sumo_type_id = _type_id(tags)
+        baseline = policy.typemap_permissions[sumo_type_id]
+        way_traces = result.permission_rule_traces[way_id]
+        direction_records: list[dict[str, Any]] = []
+        for direction in ("forward", "backward"):
+            if direction not in directions:
+                continue
+            lanes = directions[direction]
+            direction_records.append(
+                {
+                    "direction": direction,
+                    "lane_count": len(lanes),
+                    "lanes": [
+                        {
+                            "osm_lane_position": position,
+                            "expected_vclasses": list(allowed),
+                            "rule_ids": [
+                                "lane_order:left_to_right_in_respective_direction_v1",
+                                *(trace["rule_id"] for trace in way_traces[direction][position]),
+                            ],
+                            "rule_trace": list(way_traces[direction][position]),
+                        }
+                        for position, allowed in enumerate(lanes)
+                    ],
+                }
+            )
+        records.append(
+            {
+                "osm_way_id": way_id,
+                "highway": tags["highway"],
+                "sumo_type_id": sumo_type_id,
+                "typemap_baseline_vclasses": sorted(baseline),
+                "directions": direction_records,
+            }
+        )
+    return records
+
+
+def build_permission_expectations_payload(
+    result: ResolutionResult,
+    policy: ResolverPolicy,
+    input_path: Path,
+    normalized_output_path: Path | None = None,
+    normalized_content_path: Path | None = None,
+) -> dict[str, Any]:
+    """Build and validate the v14 permission-expectation artifact payload."""
+
+    failures = [
+        _resolver_failure(row) for row in result.audit_rows if row.decision == "stop"
+    ]
+    complete = (
+        not failures
+        and len(result.permission_expectations) == result.retained_way_count
+    )
+    if not complete and not failures:
+        failures.append(
+            {
+                "code": "RS011",
+                "message": "permission expectation accounting is incomplete",
+                "component": "resolver",
+                "formal_blocker": True,
+                "location": "permission_expectations/ways",
+                "context": {
+                    "expected_way_count": result.retained_way_count,
+                    "actual_way_count": len(result.permission_expectations),
+                },
+            }
+        )
+    payload: dict[str, Any] = {
+        "artifact_type": "permission_expectations",
+        "schema_version": 2,
+        "config_id": policy.config_id,
+        "config_version": policy.config_version,
+        "profile": policy.profile,
+        "complete": complete,
+        "blockers": failures,
+        "input_osm": {
+            "path": _relative_repository_path(input_path),
+            "sha256": sha256_file(input_path),
+        },
+        "typemap": {
+            "path": policy.typemap_path,
+            "sha256": policy.typemap_sha256,
+            "policy_id": policy.typemap_policy_id,
+        },
+        "governed_vclasses": sorted(policy.governed_vclasses),
+        "ways": _expectation_way_payloads(result, policy),
+    }
+    if complete:
+        content_path = normalized_content_path or normalized_output_path
+        if (
+            normalized_output_path is None
+            or content_path is None
+            or not content_path.is_file()
+        ):
+            raise ResolutionError(
+                "complete permission expectations require normalized OSM output"
+            )
+        payload["normalized_osm"] = {
+            "path": _relative_repository_path(normalized_output_path),
+            "sha256": sha256_file(content_path),
+        }
+    validate_permission_expectations_payload(payload)
+    return payload
+
+
+def validate_permission_expectations_payload(payload: Mapping[str, Any]) -> None:
+    """Validate one permission artifact against the pinned v14 JSON Schema."""
+
+    schema = json.loads(PERMISSION_EXPECTATIONS_SCHEMA_PATH.read_text(encoding="utf-8"))
+    common = json.loads(ARTIFACT_COMMON_SCHEMA_PATH.read_text(encoding="utf-8"))
+    registry = Registry().with_resource(
+        "artifact_common.schema.json", Resource.from_contents(common)
+    )
+    errors = sorted(
+        Draft202012Validator(schema, registry=registry).iter_errors(payload),
+        key=lambda error: tuple(str(part) for part in error.absolute_path),
+    )
+    if errors:
+        location = "/".join(str(part) for part in errors[0].absolute_path) or "$"
+        raise ResolutionError(
+            f"permission expectations schema validation failed at {location}: "
+            f"{errors[0].message}"
+        )
+
+
+def _validate_failure_report(payload: Mapping[str, Any]) -> None:
+    schema = json.loads(FAILURE_REPORT_SCHEMA_PATH.read_text(encoding="utf-8"))
+    common = json.loads(ARTIFACT_COMMON_SCHEMA_PATH.read_text(encoding="utf-8"))
+    registry = Registry().with_resource(
+        "artifact_common.schema.json", Resource.from_contents(common)
+    )
+    errors = list(Draft202012Validator(schema, registry=registry).iter_errors(payload))
+    if errors:
+        raise ResolutionError(
+            f"failure report schema validation failed: {errors[0].message}"
+        )
+
+
+def _external_failure(error: Exception) -> dict[str, Any]:
+    message = str(error) or type(error).__name__
+    lowered = message.lower()
+    if "schema" in lowered or "accounting" in lowered:
+        code = "RS011"
+    elif isinstance(error, (FileNotFoundError, ElementTree.ParseError)) or any(
+        marker in lowered
+        for marker in (
+            "osm input root",
+            "duplicate way",
+            "duplicate tag",
+            "malformed tag",
+            "node reference",
+            "relation",
+        )
+    ):
+        code = "RS001"
+    elif isinstance(error, (FileExistsError, OSError)) or any(
+        marker in lowered
+        for marker in (
+            "outside the repository",
+            "paths must be distinct",
+            "write",
+            "publication",
+            "output already exists",
+        )
+    ):
+        code = "RS012"
+    else:
+        code = "RS004"
+    return {
+        "code": code,
+        "message": message,
+        "component": "resolver",
+        "formal_blocker": True,
+        "location": "resolver_cli",
+        "context": {"exception_type": type(error).__name__},
+    }
+
+
+def _failure_report_payload(
+    error: Exception,
+    policy: ResolverPolicy | None,
+    permission_expectations_path: Path,
+    input_path: Path,
+    retained_candidates: Sequence[Path] = (),
+) -> dict[str, Any]:
+    failures = [_external_failure(error)]
+    same_failed_run = False
+    governed_gate_failure = isinstance(error, ResolutionError) and str(error).startswith(
+        "pre-netconvert materialization gate failed:"
+    )
+    if governed_gate_failure and permission_expectations_path.is_file():
+        try:
+            permission_payload = json.loads(
+                permission_expectations_path.read_text(encoding="utf-8")
+            )
+            same_input = input_path.is_file() and permission_payload.get(
+                "input_osm", {}
+            ).get("sha256") == sha256_file(input_path)
+            if (
+                same_input
+                and permission_payload.get("complete") is False
+                and permission_payload.get("blockers")
+            ):
+                failures = permission_payload["blockers"]
+                same_failed_run = True
+        except (OSError, json.JSONDecodeError):
+            pass
+    payload = {
+        "artifact_type": "failure_report",
+        "schema_version": 1,
+        "config_id": policy.config_id if policy else "ota_ward_sumo_network_v14",
+        "config_version": policy.config_version if policy else 14,
+        "component": "resolver",
+        "failures": failures,
+        "partial_outputs_published": False,
+        "retained_artifacts": [
+            {
+                "path": _relative_repository_path(path),
+                "sha256": sha256_file(path),
+            }
+            for path in retained_candidates
+            if same_failed_run and path.is_file()
+        ],
+        "recovery": "Correct the reported resolver input or policy and run with a new output set.",
+    }
+    _validate_failure_report(payload)
+    return payload
+
+
 def _write_tree(tree: ElementTree.ElementTree, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.NamedTemporaryFile(
-        mode="wb",
-        dir=path.parent,
-        prefix=path.name + ".",
-        suffix=".part",
-        delete=False,
-    ) as handle:
-        temporary = Path(handle.name)
-        tree.write(handle, encoding="utf-8", xml_declaration=True)
-    temporary.replace(path)
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="wb",
+            dir=path.parent,
+            prefix=path.name + ".",
+            suffix=".part",
+            delete=False,
+        ) as handle:
+            temporary = Path(handle.name)
+            tree.write(handle, encoding="utf-8", xml_declaration=True)
+        temporary.replace(path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+
+
+def _publish_artifact_set(
+    staged_files: Mapping[Path, Path],
+    removed_paths: Sequence[Path],
+    *,
+    overwrite: bool,
+    transaction_directory: Path,
+) -> None:
+    """Publish one resolver result set and roll back a failed replacement."""
+
+    destinations = (*staged_files.keys(), *removed_paths)
+    if len({path.resolve() for path in destinations}) != len(destinations):
+        raise ResolutionError("resolver publication contains duplicate destinations")
+    if not overwrite and any(path.exists() for path in destinations):
+        raise FileExistsError("resolver output appeared during publication")
+
+    backup_directory = transaction_directory / "publication-backup"
+    backup_directory.mkdir()
+    backups: dict[Path, Path] = {}
+    published: list[Path] = []
+    try:
+        for index, destination in enumerate(destinations):
+            if destination.exists():
+                backup = backup_directory / f"{index:02d}.backup"
+                destination.replace(backup)
+                backups[destination] = backup
+        for destination, staged in staged_files.items():
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            staged.replace(destination)
+            published.append(destination)
+    except Exception:
+        for destination in published:
+            destination.unlink(missing_ok=True)
+        for destination, backup in backups.items():
+            if backup.exists():
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                backup.replace(destination)
+        raise
+
+
+def _imputation_summary_payload(
+    result: ResolutionResult,
+    policy: ResolverPolicy,
+    source_hash: str,
+    criticality_source_path: Path | None,
+) -> dict[str, Any]:
+    return {
+        "config_id": policy.config_id,
+        "criticality_source_sha256": (
+            sha256_file(criticality_source_path)
+            if criticality_source_path is not None
+            else None
+        ),
+        "group_definitions": {
+            "lanes": ["highway", "oneway_status"],
+            "maxspeed": ["highway"],
+        },
+        "input_extent": "fixed_input_osm_xml",
+        "input_osm_sha256": source_hash,
+        "excluded_relation_count": result.excluded_relation_count,
+        "sample_unit": "osm_way_count",
+        "thresholds": {
+            "lanes": {
+                "minimum_mode_share": policy.lane_imputation_minimum_mode_share,
+                "minimum_sample_size": policy.lane_imputation_minimum_sample_size,
+            },
+            "maxspeed": {
+                "minimum_mode_share": policy.speed_imputation_minimum_mode_share,
+                "minimum_sample_size": policy.speed_imputation_minimum_sample_size,
+            },
+        },
+        "groups": {
+            attribute: {
+                group: _mode_payload(decision)
+                for group, decision in decisions.items()
+            }
+            for attribute, decisions in result.imputation_summary.items()
+        },
+    }
 
 
 def resolve_file(
@@ -1246,60 +1836,91 @@ def resolve_file(
     if not overwrite and any(path.exists() for path in artifact_paths):
         raise FileExistsError("resolver output already exists; use --overwrite")
 
+    criticality_map = dict(criticality_by_way or {})
+    if criticality_map and criticality_source_path is None:
+        raise ValueError("criticality values require a hashable source file")
+    if criticality_source_path is not None and not criticality_source_path.is_file():
+        raise FileNotFoundError(criticality_source_path)
+
     tree = ElementTree.parse(input_path)
-    result = resolve_tree(tree, policy, criticality_by_way=criticality_by_way)
-    write_audit_csv(result.audit_rows, audit_path)
+    retained_input_way_ids = {
+        way.attrib.get("id", "")
+        for way in tree.getroot().findall("way")
+        if _tags(way).get("highway") is not None
+        and _type_id(_tags(way)) in policy.retained_type_ids
+    }
+    if criticality_source_path is not None:
+        unknown_values = sorted(
+            set(criticality_map.values())
+            - {"critical", "noncritical", "unclassified"}
+        )
+        if unknown_values:
+            raise ValueError(f"criticality source contains unknown values: {unknown_values}")
+        missing = sorted(retained_input_way_ids - set(criticality_map))
+        extra = sorted(set(criticality_map) - retained_input_way_ids)
+        if missing or extra:
+            raise ValueError(
+                "criticality coverage differs from retained ways: "
+                f"missing={missing}, extra={extra}"
+            )
+
+    result = resolve_tree(tree, policy, criticality_by_way=criticality_map)
     source_hash = sha256_file(input_path)
-    _write_json(
-        {
-            "blockers": list(result.blockers),
-            "complete": not result.blockers
-            and len(result.permission_expectations) == result.retained_way_count,
-            "config_id": policy.config_id,
-            "input_osm_sha256": source_hash,
-            "permission_expectations": result.permission_expectations,
-            "profile": policy.profile,
-            "retained_way_count": result.retained_way_count,
-        },
-        permission_expectations_path,
-    )
-    _write_json(
-        {
-            "config_id": policy.config_id,
-            "criticality_source_sha256": (
-                sha256_file(criticality_source_path)
-                if criticality_source_path is not None
-                else None
+    with tempfile.TemporaryDirectory(
+        prefix=".resolver-stage-", dir=REPOSITORY_ROOT
+    ) as staging_name:
+        staging = Path(staging_name)
+        staged_output = staging / "normalized.osm.xml"
+        staged_audit = staging / "audit.csv"
+        staged_permissions = staging / "permission_expectations.json"
+        staged_summary = staging / "imputation_summary.json"
+
+        write_audit_csv(result.audit_rows, staged_audit)
+        _write_json(
+            _imputation_summary_payload(
+                result, policy, source_hash, criticality_source_path
             ),
-            "group_definitions": {
-                "lanes": ["highway", "oneway_status"],
-                "maxspeed": ["highway"],
-            },
-            "input_extent": "fixed_input_osm_xml",
-            "input_osm_sha256": source_hash,
-            "sample_unit": "osm_way_count",
-            "thresholds": {
-                "lanes": {
-                    "minimum_mode_share": policy.lane_imputation_minimum_mode_share,
-                    "minimum_sample_size": policy.lane_imputation_minimum_sample_size,
+            staged_summary,
+        )
+        if result.blockers:
+            _write_json(
+                build_permission_expectations_payload(result, policy, input_path),
+                staged_permissions,
+            )
+            _publish_artifact_set(
+                {
+                    audit_path: staged_audit,
+                    permission_expectations_path: staged_permissions,
+                    imputation_summary_path: staged_summary,
                 },
-                "maxspeed": {
-                    "minimum_mode_share": policy.speed_imputation_minimum_mode_share,
-                    "minimum_sample_size": policy.speed_imputation_minimum_sample_size,
+                (output_path,),
+                overwrite=overwrite,
+                transaction_directory=staging,
+            )
+        else:
+            _write_tree(result.tree, staged_output)
+            _write_json(
+                build_permission_expectations_payload(
+                    result,
+                    policy,
+                    input_path,
+                    normalized_output_path=output_path,
+                    normalized_content_path=staged_output,
+                ),
+                staged_permissions,
+            )
+            _publish_artifact_set(
+                {
+                    output_path: staged_output,
+                    audit_path: staged_audit,
+                    permission_expectations_path: staged_permissions,
+                    imputation_summary_path: staged_summary,
                 },
-            },
-            "groups": {
-                attribute: {
-                    group: _mode_payload(decision)
-                    for group, decision in decisions.items()
-                }
-                for attribute, decisions in result.imputation_summary.items()
-            },
-        },
-        imputation_summary_path,
-    )
+                (),
+                overwrite=overwrite,
+                transaction_directory=staging,
+            )
     if result.blockers:
-        output_path.unlink(missing_ok=True)
         preview = "; ".join(result.blockers[:5])
         suffix = (
             ""
@@ -1307,7 +1928,6 @@ def resolve_file(
             else f"; +{len(result.blockers) - 5} more"
         )
         raise ResolutionError(f"pre-netconvert materialization gate failed: {preview}{suffix}")
-    _write_tree(result.tree, output_path)
     return result
 
 
@@ -1323,6 +1943,13 @@ def _load_criticality(path: Path | None) -> dict[str, str]:
     result = {row["osm_way_id"]: row["criticality"] for row in rows}
     if len(result) != len(rows):
         raise ValueError("criticality CSV contains duplicate osm_way_id")
+    if any(not way_id for way_id in result):
+        raise ValueError("criticality CSV contains an empty osm_way_id")
+    unknown_values = sorted(
+        set(result.values()) - {"critical", "noncritical", "unclassified"}
+    )
+    if unknown_values:
+        raise ValueError(f"criticality CSV contains unknown values: {unknown_values}")
     return result
 
 
@@ -1336,6 +1963,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--audit-csv", required=True, type=Path)
     parser.add_argument("--permission-expectations-json", required=True, type=Path)
     parser.add_argument("--imputation-summary-json", required=True, type=Path)
+    parser.add_argument("--failure-report-json", required=True, type=Path)
     parser.add_argument("--criticality-csv", type=Path)
     parser.add_argument("--overwrite", action="store_true")
     return parser
@@ -1343,18 +1971,66 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    policy = load_policy(args.profile)
-    result = resolve_file(
-        args.input_osm,
-        args.output_osm,
-        args.audit_csv,
-        args.permission_expectations_json,
-        args.imputation_summary_json,
-        policy,
-        criticality_by_way=_load_criticality(args.criticality_csv),
-        criticality_source_path=args.criticality_csv,
-        overwrite=args.overwrite,
-    )
+    policy: ResolverPolicy | None = None
+    try:
+        _relative_repository_path(args.failure_report_json)
+        all_paths = (
+            args.input_osm,
+            args.output_osm,
+            args.audit_csv,
+            args.permission_expectations_json,
+            args.imputation_summary_json,
+            args.failure_report_json,
+        )
+        if len({path.resolve() for path in all_paths}) != len(all_paths):
+            raise ValueError("failure report and resolver paths must be distinct")
+        if args.failure_report_json.exists() and not args.overwrite:
+            raise FileExistsError("failure report output already exists; use --overwrite")
+        policy = load_policy(args.profile)
+        result = resolve_file(
+            args.input_osm,
+            args.output_osm,
+            args.audit_csv,
+            args.permission_expectations_json,
+            args.imputation_summary_json,
+            policy,
+            criticality_by_way=_load_criticality(args.criticality_csv),
+            criticality_source_path=args.criticality_csv,
+            overwrite=args.overwrite,
+        )
+    except Exception as error:
+        try:
+            report = _failure_report_payload(
+                error,
+                policy,
+                args.permission_expectations_json,
+                args.input_osm,
+                (
+                    args.audit_csv,
+                    args.permission_expectations_json,
+                    args.imputation_summary_json,
+                ),
+            )
+            if args.failure_report_json.exists() and not args.overwrite:
+                raise FileExistsError("failure report output already exists")
+            _write_json(report, args.failure_report_json)
+        except Exception as report_error:
+            print(
+                json.dumps(
+                    {
+                        "code": "RS012",
+                        "message": str(report_error),
+                        "original_error": str(error),
+                    },
+                    ensure_ascii=True,
+                    sort_keys=True,
+                ),
+                file=sys.stderr,
+            )
+            return 3
+        print(json.dumps(report, ensure_ascii=True, sort_keys=True), file=sys.stderr)
+        return 2
+    args.failure_report_json.unlink(missing_ok=True)
     print(
         json.dumps(
             {
@@ -1362,6 +2038,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "profile": policy.profile,
                 "retained_way_count": result.retained_way_count,
                 "excluded_way_count": result.excluded_way_count,
+                "excluded_relation_count": result.excluded_relation_count,
                 "audit_rows": len(result.audit_rows),
                 "input_osm": _relative_repository_path(args.input_osm),
                 "output_osm": _relative_repository_path(args.output_osm),

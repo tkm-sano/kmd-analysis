@@ -494,3 +494,21 @@ docker compose run --rm analysis \
 priority階層は東京の実道路優先関係を検証した結果ではない。また、SUMOの`motorcycle`は日本の排気量区分別規制を完全には表現しない。採用type、vehicle class、priorityを変更する場合は、typemap方針IDと`sumo_network.yml`の設定版を上げ、変更理由と再検証結果を本ファイルへ時系列で追記する。
 
 Git管理対象には、カスタムtypemap、`sumo_network.yml`、テスト、現行仕様、protocol、変更履歴を含める。大容量の生成OSM XMLと`net.xml`はGit管理外にできるが、`.netccfg`、manifest、build summary、warning分類、checksum一覧はGitまたは改変不能なcontent-addressed artifact storageで版管理し、外部保存時はGit管理のindexから参照できるようにする。
+
+### 24. Resolverのpermission成果物をv14形式へ移行した
+
+2026年7月22日、`ota_ward_sumo_network_v14`の実装として、Resolverが出力する旧map形式のpermissions JSONを、`permission_expectations.schema.json` version 2に適合する成果物へ置換した。成果物にはartifact/config identity、profile、入力OSM、成功時の正規化OSM、typemapのpath・SHA-256・policy ID、管理対象vClass、OSM way、SUMO type、方向、車線位置、期待vClass集合、適用rule IDを記録する。失敗時は文字列だけでなく、stable RS code、component、location、value stateおよびsource valueを持つ型付きblockerを記録し、正規化OSMは公開しない。
+
+productionコードからgoldenを生成しない方針に従い、正常fixture、欠損属性fixtureおよびforward/backward各2車線の双方向fixtureに対する独立oracleを追加した。両方向ともOSMの各進行方向から見た左から右の順を保持し、Resolver内でbackward配列を反転しない。JSON Schema検証、旧v13 map-only形状の拒否、入力・出力hashおよびrule provenanceをテスト対象とした。
+
+この変更はfixture上のv14成果物実装を示すが、登録済み大田区OSM extractに対する実行証拠ではない。`permission_expectation_artifact`の状態は`pending`とし、formal build input readinessはfalseのまま維持する。次の停止条件は登録済みextractでのResolver実行ではなく、まずexact `edge_provenance.json`を生成するProvisional Buildの実装とする。
+
+### 25. Resolver v14のformal安全性と監査粒度を修正した
+
+2026年7月22日、`ota_ward_sumo_network_v14` Resolverの外部レビューで、formal profileでも双方向偶数車線を等分できること、停止wayが構造用補完donorへ混入し得ること、permission provenanceがway上の全access tagを全laneへ付与すること、および`--overwrite`中の失敗で異なるrunの成果物が混在し得ることが指摘された。これらはformal利用を妨げる実装上の問題として修正した。
+
+formalでは`lanes:forward`と`lanes:backward`の明示を必須とし、等分仮定はstructuralの偶数総車線だけへ限定した。補完donorは、解決可能なoneway、整合する明示lanesとcanonical maxspeed、conditional不在、permission解決成功を全て満たすwayだけとした。`oneway=-1`や方向別speed矛盾を持つwayはdonorから除外する。`service|bus`と`service|psv`を含む保持判定はexact SUMO type IDへ統一した。
+
+permission artifactには、typemap baseline、研究vClass積集合、実際に適用した一般・車種・方向・車線別OSM tagについて、laneごとのsource value、lane value、適用前後vClass集合を順序付きtraceとして保存する。他方向・他laneだけに作用するtagは記録しない。全成果物はstagingで生成・検査後、backupとrollbackを伴って一括公開する。書込み例外時の`.part`も削除する。
+
+さらに、malformed tag、node/Relation参照、criticality sourceとcoverage、typemap `disallow`禁止、補完閾値範囲、Decimal速度正規化を検証対象とした。Resolver CLIはfailure report pathを必須入力とし、通常のblockerは固有RS codeを保持し、XML/input identityを`RS001`、config/typemap/criticalityを`RS004`、Schema/accountingを`RS011`、path/write/publicationを`RS012`へ分類する。fixture検証は実データ適格性の代替ではないため、全readiness状態はfalseのまま維持する。
