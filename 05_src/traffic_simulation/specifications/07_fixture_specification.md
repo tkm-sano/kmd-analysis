@@ -10,7 +10,7 @@ Every code in `08_failure_taxonomy.md` has one mandatory negative-oracle fixture
 
 | Test ID | Class | Required case | Expected result |
 |---|---|---|---|
-| RS-TST-001..013 | positive/negative | Existing resolver cases plus backward multi-lane order and v2 expectation artifact | exact artifact or RS code |
+| RS-TST-001..013 | positive/negative/repeat | Strict OSM identity/reference cases, donor eligibility, compound types, formal/structural lane allocation, lane-local forward/backward trace, v2 artifact, transactional rollback and CLI failure report | exact artifact or RS code |
 | PM-TST-001 | negative | incomplete expectation, hash/config/schema mismatch | PM001-PM005 |
 | PM-TST-002 | boundary/negative | single edge, split edge, joined-node lineage, ambiguous direction | exact direction or PM006-PM009 |
 | PM-TST-003 | positive/negative | forward/backward two-lane order, gap, duplicate, count mismatch | exact index map or PM010-PM013 |

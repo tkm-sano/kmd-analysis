@@ -10,7 +10,7 @@ The machine-readable authority is `requirements_traceability.yml`. Every normati
 |---|---:|---|---|---|
 | `SIM-REQ` | 8 | `SIM-TST` | research comparison fixtures | specified, downstream pending |
 | `ARC-REQ` | 6 | `ARC-TST` | config/manifest state fixtures | partial |
-| `RS-REQ` | 13 | `RS-TST` | resolver XML/JSON fixtures | v13 implementation requires v14 artifact migration |
+| `RS-REQ` | 13 | `RS-TST` | resolver XML/JSON fixtures | v14 artifact implemented; registered extract pending |
 | `PM-REQ` | 11 | `PM-TST` | materializer plain-XML fixtures | not implemented |
 | `TLS-REQ` | 10 | `TLS-TST` | reviewed TLS fixtures | not implemented |
 | `BLD-REQ` | 11 | `BLD-TST` | pinned final-build fixtures | not implemented |

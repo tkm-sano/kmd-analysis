@@ -15,6 +15,7 @@
         "complete": {"type": "boolean"},
         "blockers": {"type": "array", "items": {"$ref": "artifact_common.schema.json#/$defs/failure"}},
         "input_osm": {"$ref": "artifact_common.schema.json#/$defs/file_ref"},
+        "normalized_osm": {"$ref": "artifact_common.schema.json#/$defs/file_ref"},
         "typemap": {
           "type": "object",
           "required": ["path", "sha256", "policy_id"],
@@ -48,11 +49,29 @@
                       "type": "array", "minItems": 1,
                       "items": {
                         "type": "object",
-                        "required": ["osm_lane_position", "expected_vclasses", "rule_ids"],
+                        "required": ["osm_lane_position", "expected_vclasses", "rule_ids", "rule_trace"],
                         "properties": {
                           "osm_lane_position": {"type": "integer", "minimum": 0},
                           "expected_vclasses": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
-                          "rule_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}
+                          "rule_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+                          "rule_trace": {
+                            "type": "array",
+                            "minItems": 2,
+                            "items": {
+                              "type": "object",
+                              "required": ["rule_id", "category", "before_vclasses", "after_vclasses"],
+                              "properties": {
+                                "rule_id": {"type": "string", "minLength": 1},
+                                "category": {"enum": ["typemap_baseline", "derived_policy_intersection", "explicit_osm_general", "explicit_osm_class_specific", "explicit_osm_directional", "explicit_osm_lane_specific"]},
+                                "source_tag": {"type": "string", "minLength": 1},
+                                "source_value": {"type": "string", "minLength": 1},
+                                "lane_value": {"type": "string", "minLength": 1},
+                                "before_vclasses": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+                                "after_vclasses": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+                              },
+                              "additionalProperties": false
+                            }
+                          }
                         },
                         "additionalProperties": false
                       }
@@ -70,6 +89,6 @@
     }
   ],
   "if": {"properties": {"complete": {"const": true}}},
-  "then": {"properties": {"blockers": {"maxItems": 0}, "ways": {"minItems": 1}}},
+  "then": {"required": ["normalized_osm"], "properties": {"blockers": {"maxItems": 0}, "ways": {"minItems": 1}}},
   "else": {"properties": {"blockers": {"minItems": 1}}}
 }

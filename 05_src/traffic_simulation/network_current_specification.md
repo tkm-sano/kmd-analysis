@@ -46,6 +46,8 @@ The fixed materializer interface is SUMO 1.24.0 plain XML. A provisional convers
 
 Resolver lane positions are OSM left-to-right as viewed in each respective travel direction, while SUMO lane indices are right-to-left. Forward and backward both use `sumo_index = n - 1 - p`; the Resolver does not reverse backward OSM lists. The expected lane allow-set is the intersection of the resolver expectation, typemap baseline, governed vClasses and effective provisional restriction. A partially empty edge keeps empty lanes as `disallow="all"`; a directed edge whose lanes are all empty is removed with incident connections before TLS review. Connections are explicit lane-to-lane candidates and are never synthesized. The pinned fixture must confirm these rules before real-data use.
 
+For bidirectional roads, the formal Resolver requires explicit `lanes:forward` and `lanes:backward`; equal division of an even total is structural-only and is audited as an assumption. Structural imputation donors must themselves pass direction, lane, speed, conditional-tag and permission eligibility checks. Permission provenance is lane-local: a directional or lane-specific access tag is recorded only for the lanes to which it was applied.
+
 ## Signal Structure
 
 Signalized-junction selection and connection-to-TLS-link mapping are network structure. In pinned SUMO 1.24.0 plain XML, TLS connection/link records belong to `.tll.xml`, not the permission `.con.xml` connection type. Provisional TLS output is review evidence only. After the governed connection set is fixed, reviewers produce `governed_reviewed.con.xml`, `governed_reviewed.tll.xml` and a hash-bound review manifest. Every controlled connection must have a reviewed link index, and each phase-state length must equal the controlled-link count. A later connection or signal-structure change invalidates the review, calibration and validation.
@@ -74,8 +76,8 @@ Structural output is not valid for travel-time, capacity, delivery or solver-com
 |---|---|---|---|---|
 | Build input | Registered PBF, extract and hashes | implemented | acquisition/extraction completed; manifest recheck pending | pending |
 | Build input | Typemap XML | implemented | XSD passed; importer governance fixture failed | ineligible |
-| Build input | Attribute resolver | partial governed scope implemented | XML fixtures passed; registered extract not run | pending |
-| Build input | Permission expectation JSON | v13 shape implemented; v14 schema migration absent | v13 resolver fixtures passed; no eligible v14 artifact generated | ineligible |
+| Build input | Attribute resolver | partial governed scope implemented | strict input, donor, compound type, relation, transaction and CLI failure fixtures passed; registered extract not run | pending |
+| Build input | Permission expectation JSON | v14 Schema output with lane-local rule trace implemented | positive, negative and bidirectional fixture oracles passed; registered extract not run | pending |
 | Build input | Permission materializer | contract fixed, implementation absent | materialized fixture not run | ineligible |
 | Build input | `oneway=-1` | fail-closed detection only | formal occurrence check not run | conditional |
 | Build input | Formal attribute evidence/imputation | not implemented | not run | pending |
