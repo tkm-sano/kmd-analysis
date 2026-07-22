@@ -41,7 +41,7 @@ flowchart TD
 | **進行中** | **SUMO道路網生成・構造検証** |
 | 次 | 観測拡充、交通需要、最適化基盤検証、較正、独立検証、環境シナリオ、正式配送問題、古典・QAOA正式比較、走行比較 |
 
-機械可読な状態の正本は`reproducibility/config/traffic_simulation/research_stage.yml`とする。生成地図はこの設定を読み、左上パネルへ現在工程と全工程を表示する。工程の作業量が均等ではないため、恣意的な百分率は表示しない。工程が完了したときは、証拠ファイルを`evidence`へ登録し、`status`と`current_stage_id`を同じ変更で更新する。成果物の存在だけから状態を自動昇格させない。
+機械可読な状態の正本は`reproducibility/config/traffic_simulation/research_stage.yml`とする。リポジトリ直下の`RESEARCH_STATUS.md`はこのYAMLから生成する閲覧用ダッシュボードであり、直接編集しない。生成地図も同じ設定を読み、左上パネルへ現在工程と全工程を表示する。工程の作業量が均等ではないため、恣意的な百分率は表示しない。工程が完了したときは、証拠ファイルを`evidence`へ登録し、`status`と`current_stage_id`を同じ変更で更新する。成果物の存在だけから状態を自動昇格させない。
 
 ## 5. データ取得規約を作る
 
@@ -866,7 +866,7 @@ reproducibility/outputs/traffic_simulation/visualization/
 
 #### 9.5.3 最初に固定する変換規則
 
-次の変換規則を2026年7月18日の初期規則として採用し、2026年7月22日のレビューをv14まで反映した。`sumo_network.yml`を機械可読な状態・設定の正本、`specifications/`をコンポーネント契約、`schemas/`を成果物形式の正本とする。設定ファイル、自動車系typemap、OSM XML属性resolver、変換前必須属性ゲート、v13形式の期待permissions監査と補完分布JSONは実装済みである。一方、v14 expectation artifactへの移行、exact edge provenance、permissions materializer、TLS Review、Final Build、Post-build Audit、SUMO車両入力validator、実データbuildは未実装である。全規範要件、failure code、fixture catalogue、traceabilityを実装前に固定し、三段階readiness gateのruntime検証後にのみ正式利用を許可する。
+次の変換規則を2026年7月18日の初期規則として採用し、2026年7月22日のレビューをv14まで反映した。`sumo_network.yml`を機械可読な状態・設定の正本、`specifications/`をコンポーネント契約、`schemas/`を成果物形式の正本とする。設定ファイル、自動車系typemap、OSM XML属性resolver、変換前必須属性ゲート、v14形式の期待permissions成果物と補完分布JSONは実装済みである。v14成果物は入力・正規化OSMとtypemapのhash、way/type/direction/laneごとの適用rule trace、型付きRS blockerを保持する。formalでの暗黙の方向別車線等分を禁止し、構造用補完donorをResolver適格wayへ限定し、全成果物をstaging・rollback付きで一括公開し、CLI失敗をSchema適合failure reportへ変換する。一方、登録済み実OSMでのResolver実行、exact edge provenance、permissions materializer、TLS Review、Final Build、Post-build Audit、SUMO車両入力validator、実データbuildは未実装である。全規範要件、failure code、fixture catalogue、traceabilityを実装前に固定し、三段階readiness gateのruntime検証後にのみ正式利用を許可する。
 
 ##### 入力形式と左側通行
 
@@ -1309,7 +1309,7 @@ docker/quantum/requirements.txt
 compose.yaml の quantum サービス
 ```
 
-`reproducibility/requirements-lock.txt`にある既存Qiskit環境は過去の監査再現用であり、新しい最適化実験の依存関係を無条件に追加しない。専用環境で`qiskit-optimization`を含む互換バージョンを固定し、アップグレード時は結果互換性を再検証する。
+`legacy/non_sumo_route_proxy_analysis/reproducibility/requirements-lock.txt`にある既存Qiskit環境は過去の監査再現用であり、新しい最適化実験の依存関係を無条件に追加しない。専用環境で`qiskit-optimization`を含む互換バージョンを固定し、アップグレード時は結果互換性を再検証する。
 
 #### 9.11.6 実装境界と成果物
 
