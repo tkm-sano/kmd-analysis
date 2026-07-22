@@ -44,7 +44,7 @@ jobs:
               ["git", "ls-files"], text=True
           ).splitlines()
           notebooks = sorted(path for path in tracked if path.endswith(".ipynb"))
-          expected_notebook = "reproducibility/quantum_transport_reproducibility_audit_revised.ipynb"
+          expected_notebook = "legacy/non_sumo_route_proxy_analysis/reproducibility/quantum_transport_reproducibility_audit_revised.ipynb"
           assert notebooks == [expected_notebook], notebooks
           json.loads(Path(expected_notebook).read_text(encoding="utf-8"))
 
@@ -65,7 +65,9 @@ jobs:
           assert not any("/pdf_derived/text/" in path for path in tracked)
 
           figures = sorted(Path("06_outputs/figures/active/png").glob("figure_*.png"))
-          tables = sorted(Path("06_outputs/tables/png").glob("*.png"))
+          tables = sorted(
+              Path("legacy/non_sumo_route_proxy_analysis/outputs/tables/png").glob("*.png")
+          )
           assert len(figures) == 0, len(figures)
           assert len(tables) == 5, len(tables)
           print(
