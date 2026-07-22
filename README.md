@@ -103,6 +103,99 @@ flowchart TD
 
 The diagram separates the two final lines of evidence. The common SUMO runs measure operational and social effects, while the solver records measure computational effort. Their final relationship is evaluated without treating a simulated QAOA resource indicator as a confirmed physical-hardware requirement or quantum advantage. Delivery constraints and EV constraints are added in controlled stages only after the preceding problem formulation passes feasibility, decoding, and small-instance validation.
 
+### Operational impact propagation
+
+The following diagram explains how a change in delivery-planning method propagates through route construction and traffic simulation to the study's final outcomes. It is a model-level processing and evaluation relationship, not proof of a real-world causal effect. Economic valuation, emissions, customer satisfaction, social welfare, and regional-equity claims are outside the current scope.
+
+```mermaid
+flowchart LR
+    subgraph input["Common experimental conditions"]
+        road["Validated road network"]
+        traffic["Traffic demand, signals,<br/>and congestion conditions"]
+        demand["Population-based<br/>synthetic delivery demand"]
+        vehicle["Vehicles, payload, battery,<br/>and charging conditions"]
+        time["Departure times and<br/>delivery time windows"]
+        random["Preregistered<br/>random conditions"]
+    end
+
+    subgraph method["Compared delivery-planning methods"]
+        baseline["Non-optimizing<br/>visit-order baseline"]
+        classical["Classical optimization"]
+        quantum["Quantum approximate optimization<br/>on a circuit simulator"]
+    end
+
+    subgraph planning["Delivery-plan construction"]
+        assignment["Assignment of deliveries<br/>to vehicles"]
+        order["Customer visit order"]
+        feasibility["Planned-constraint<br/>feasibility check"]
+        route["Road routes generated<br/>under common rules"]
+    end
+
+    subgraph simulation["Traffic simulation"]
+        driving["Vehicle movement in the<br/>same traffic environment"]
+        distance["Realized driving distance"]
+        duration["Realized travel time"]
+        delay["Traffic and signal delay"]
+        electricity["Electricity use and<br/>remaining battery charge"]
+        charging["Charging events"]
+    end
+
+    subgraph delivery["Delivery-completion decision"]
+        deadline["Delivery deadline satisfied"]
+        capacity["Payload constraint satisfied"]
+        battery["Battery and charging<br/>conditions satisfied"]
+        return_condition["Return or terminal<br/>condition satisfied"]
+        completed["Completed delivery amount<br/>satisfying all conditions"]
+    end
+
+    subgraph outcome["Operational and population-based outcomes"]
+        completion_rate["Delivery completion rate"]
+        population_result["Population-equivalent<br/>delivery coverage"]
+        method_difference["Differences among the baseline,<br/>classical method, and circuit-simulated method"]
+    end
+
+    road --> route
+    traffic --> driving
+    demand --> assignment
+    vehicle --> assignment
+    vehicle --> feasibility
+    time --> feasibility
+    random --> driving
+
+    baseline --> assignment
+    classical --> assignment
+    quantum --> assignment
+
+    assignment --> order
+    order --> feasibility
+    feasibility --> route
+    route --> driving
+
+    driving --> distance
+    driving --> duration
+    driving --> delay
+    driving --> electricity
+    driving --> charging
+
+    duration --> deadline
+    delay --> deadline
+    assignment --> capacity
+    electricity --> battery
+    charging --> battery
+    driving --> return_condition
+
+    deadline --> completed
+    capacity --> completed
+    battery --> completed
+    return_condition --> completed
+
+    completed --> completion_rate
+    completed --> population_result
+    population_result --> method_difference
+```
+
+The diagram is limited to operational propagation: the planning method changes assignment and visit order, which changes road routes and realized vehicle movement, which in turn changes completed delivery volume and population-equivalent coverage. Solver quality and computational-resource reporting remain separate from this impact pathway.
+
 ## Current status
 
 The current stage, blockers, next actions, and research-use decisions are shown in the generated [`RESEARCH_STATUS.md`](RESEARCH_STATUS.md) dashboard. Its sole machine-readable source of truth is [`research_stage.yml`](reproducibility/config/traffic_simulation/research_stage.yml); the dashboard must not be edited directly.
