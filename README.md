@@ -6,7 +6,7 @@ This repository builds a public-data-based traffic approximation for Ota Ward, T
 
 > **Primary research question**
 >
-> Under identical vehicles, capacity, battery, departure time, demand, traffic, weather, and evaluation conditions, how much does route-order optimization change population-equivalent delivery coverage, and how do classical optimization and Aer-based QAOA differ in outcome and computational resources?
+> Under identical vehicles, capacity, battery, departure time, demand, traffic, weather, and evaluation conditions, how much does route-order optimization change population-equivalent demand fulfillment, and how do classical optimization and Aer-based QAOA differ in outcome and computational resources?
 
 ## Research objective
 
@@ -16,7 +16,7 @@ This research builds a reproducible traffic-simulation and route-optimization fr
 - calibrates and independently validates traffic conditions with public observations;
 - generates traceable population-based delivery demand and EV delivery scenarios;
 - compares a non-optimizing baseline, classical optimization, and Qiskit Aer QAOA under identical conditions; and
-- quantifies how route optimization changes population-equivalent delivery coverage, operational outcomes, solution quality, and computational-resource requirements.
+- quantifies how route optimization changes population-equivalent demand fulfillment, operational outcomes, solution quality, and computational-resource requirements.
 
 ## Study design
 
@@ -28,7 +28,7 @@ This research builds a reproducible traffic-simulation and route-optimization fr
 6. Build synthetic delivery demand from population meshes and public aggregate statistics.
 7. Give the same frozen delivery problem to the non-optimizing baseline, a classical solver, and Aer-based QAOA.
 8. Convert each visit order into road paths using the same rules and run them in the same SUMO environment.
-9. Compare population-equivalent delivery coverage, driving outcomes, solution quality, runtime, and QAOA resources.
+9. Compare population-equivalent demand fulfillment, driving outcomes, solution quality, runtime, and QAOA resources.
 10. Add EV constraints, driver-experience effects, weather, and incidents incrementally so that their effects remain separable.
 
 The classical and QAOA branches must share the same frozen problem instance, road network, vehicle constraints, traffic conditions, route-conversion rules, and simulation seeds. Raw solver output, decoded solutions, repaired solutions, and SUMO outcomes are stored separately.
@@ -79,9 +79,9 @@ flowchart TD
 
     D6["7. Visit order → common road-path conversion"]
     D7["8. Same SUMO environment"]
-    E1["9A. Operational and social effects<br/>distance · time · energy · delivered amount · population-equivalent coverage"]
+    E1["9A. Operational and social-proxy measures<br/>distance · time · energy · completed demand · population-equivalent demand fulfillment"]
     E2["9B. Computational resources<br/>runtime · solution quality · QUBO and circuit indicators"]
-    D8["10. Final comparison<br/>population-equivalent coverage ↔ computational resources"]
+    D8["10. Final comparison<br/>population-equivalent demand fulfillment ↔ computational resources"]
 
     D1 --> D2 --> D3 --> D4 --> D5
     D5 --> M1
@@ -105,68 +105,63 @@ The diagram separates the two final lines of evidence. The common SUMO runs meas
 
 ### Conceptual correspondence among technical, operational, and population-proxy measures
 
-The following diagram organizes correspondences among three distinct analytical levels: technical aspects of the modeled delivery system, operational evaluation concepts, and population-based social proxies. It is not a causal model, an impact-propagation pathway, a software or data-processing sequence, a research workflow, or evidence of policy effects or social benefits. Undirected lines denote conceptual correspondence or an alternative analytical representation; they do not claim that one concept causes another.
+The following diagram relates technical aspects of the modeled delivery system and operational evaluation concepts to one final population proxy: population-equivalent demand fulfillment. It is not a causal model, a temporal sequence, a software or data-processing flow, a research workflow, or evidence of policy effects or social benefits. Undirected lines identify measurement, decision, and aggregation correspondences; the left-to-right layout only organizes concepts at different analytical levels around a single aggregate proxy.
 
-Operational measurements are not monetized. Population-equivalent delivery coverage is a model-based conversion of completed delivery volume into population units under a prespecified demand-conversion rule; it is not the number of people who received a delivery. An increase in this proxy must not be interpreted as an increase in social welfare or economic benefit. Emissions, customer satisfaction, social welfare, regional equity, delivery costs, and revenue are outside the current evaluation scope. Solution quality and computational resources are assessed through a separate evaluation stream.
+Operational measurements are not monetized. Population-equivalent demand fulfillment is a model-based conversion of completed synthetic demand into population units under a prespecified demand-conversion rule; it is not the number of people who received a delivery. An increase in this proxy must not be interpreted as an increase in social welfare or economic benefit. Emissions, customer satisfaction, social welfare, regional equity, delivery costs, and revenue are outside the current evaluation scope. Solution quality and computational resources are assessed through a separate evaluation stream.
 
 [Detailed Japanese conceptual framework, terminology review, and interpretation limits](05_src/traffic_simulation/impact_propagation/operational_impact_propagation_ja.md)
 
 ```mermaid
 flowchart LR
-    conditions["Common evaluation conditions<br/>Demand · traffic · time constraints<br/>Vehicle and charging conditions"]
+    subgraph premises["Evaluation and interpretation premises for the entire diagram"]
+        conditions["Demand · roads and traffic · time · vehicles<br/>Battery · charging · evaluation period · conversion rule"]
+    end
 
     subgraph technical["Technical aspects"]
-        planning["Technical feasibility of<br/>delivery planning"]
-        movement["Traffic-conditioned<br/>driving performance"]
-        energy["Energy-operational feasibility<br/>of electric delivery"]
+        planning["Delivery-plan<br/>constraint satisfaction"]
+        driving["Delivery-driving results under<br/>road and traffic conditions"]
+        ev["Delivery completion under<br/>battery and charging conditions"]
     end
 
     subgraph operational["Operational evaluation concepts<br/>Not monetized"]
-        resources["Transport-resource use"]
-        completion["Constraint-compliant<br/>delivery completion"]
-        volume["Achieved delivery volume"]
+        use["Distance, time, and electricity<br/>used in delivery operation"]
+        completion["Delivery completion satisfying<br/>the evaluation conditions"]
+        amount["Completed delivery demand<br/>Parcel-equivalent units"]
     end
 
-    subgraph social["Population-based social proxies"]
-        regional["Regional demand fulfillment"]
-        spatial["Spatial extent of<br/>delivery achievement"]
-        population["Population-equivalent<br/>delivery coverage<br/>Not actual recipients"]
+    subgraph social["Population-based social proxy"]
+        regional["Regional delivery-demand<br/>fulfillment"]
+        population["Population-equivalent<br/>demand fulfillment<br/>Not actual recipients"]
     end
 
-    planning ---|Operational representation| resources
-    planning ---|Corresponds to| completion
-    movement ---|Operational representation| resources
-    movement ---|Corresponds to| completion
-    energy ---|Operational representation| resources
-    energy ---|Corresponds to| completion
+    planning ---|Plan-stage constraint status is referenced| completion
+    driving ---|Expressed as realized distance, time, and delay| use
+    driving ---|Deadline and return conditions are referenced| completion
+    ev ---|Expressed as realized electricity and charging values| use
+    ev ---|Battery and charging conditions are referenced| completion
+    completion ---|Completed demand units are counted once| amount
+    amount ---|Aggregated by prespecified spatial unit| regional
+    regional ---|Converted by per-person demand and<br/>capped by regional population| population
 
-    completion ---|Different operational aspect| volume
-    volume ---|Regional representation| regional
-    regional ---|Spatial representation| spatial
-    regional ---|Population-unit representation| population
-
-    conditions -.- planning
-    conditions -.- completion
-    conditions -.- regional
+    conditions ~~~ planning
 ```
 
-The dotted lines identify evaluation conditions as shared interpretive premises, not as causes. The concepts and their empirical counterparts are distinguished as follows:
+The invisible link between the premise box and the technical layer is used only for diagram layout. The premises apply to the entire framework and are not depicted as causes. Spatial mapping is supplementary: it visualizes mesh-level completed volume or fulfillment rates, but it is not required to calculate the final population proxy.
 
-| Concept | Corresponding study measurements | Conceptual meaning | Interpretation caution |
-|---|---|---|---|
-| Technical feasibility of delivery planning | Route feasibility, planned-route characteristics, and satisfaction of delivery constraints are measured. | These measurements describe whether visit sequences and routes are consistent with the modeled delivery constraints. | They do not by themselves establish algorithmic superiority or completion under simulated driving conditions. |
-| Traffic-conditioned driving performance | Realized distance, travel time, traffic delay, and signal delay in SUMO are measured. | These measurements describe driving characteristics under the specified road network and traffic conditions. | They do not measure the general performance of the road network or Tokyo traffic as a whole. |
-| Energy-operational feasibility of electric delivery | Electricity use, remaining battery charge, battery depletion, charging events, and charging waits are measured. | These measurements describe consistency between delivery operation and the specified vehicle, battery, and charging conditions. | They do not validate real-vehicle efficiency, charging-infrastructure conditions, or operating cost. |
-| Transport-resource use | Distance, time, delay, electricity use, charging events, and charging waits are measured. | These measurements express the modeled use of movement, time, and energy resources during delivery operation. | They are not converted into monetary cost and do not imply a normative burden assessment. |
-| Constraint-compliant delivery completion | Constraint violations, feasible-delivery status, completion rate, and failed runs are measured. | These measurements express whether delivery meets the prespecified completion conditions in each evaluated run. | Completion in one run is distinct from statistical stability across seeds or changing conditions. |
-| Achieved delivery volume | Delivery units completed while satisfying deadline, capacity, battery, and terminal conditions are aggregated over the study area. | This is the realized model-based delivery volume for the specified evaluation period and conditions. | It is not the theoretical maximum service capacity. |
-| Regional demand fulfillment | Completed delivery volume, synthetic demand, and their fulfillment ratio are measured for each population mesh. | These measurements express achieved delivery relative to modeled demand at the regional unit of analysis. | The demand is synthetic and is not a record of actual orders. |
-| Spatial extent of delivery achievement | The locations, count, and geographic distribution of population meshes meeting a prespecified fulfillment criterion are measured. | These measurements express regional fulfillment as a spatial distribution or extent. | The result depends on the fulfillment threshold and does not evaluate general road accessibility or regional equity. |
-| Population-equivalent delivery coverage | Mesh-level completed volume is converted using public population, a prespecified per-person demand rate, and the evaluation period, with each mesh capped at its population. | This is an aggregate model-based proxy that expresses delivery achievement in population units. | It is not actual recipients, unique beneficiaries, social welfare, economic benefit, or service availability in the real world. |
+| Concept | One-sentence definition | Study operationalization | Observation unit | Measurement unit | Aggregation unit | Decision or calculation rule | Difference from adjacent concepts | Interpretation caution |
+|---|---|---|---|---|---|---|---|---|
+| Delivery-plan constraint satisfaction | The planned assignment, visit order, and route satisfy every mandatory planning constraint. | Inspect decoded plans for assignment, capacity, route continuity, endpoints, and planning-time constraints. | Plan, constraint, demand | Binary, violation count, ratio | Plan, constraint type, method | Mark the whole plan infeasible if any mandatory constraint fails; retain whole-plan feasibility separately from per-constraint rates. | It concerns the plan before traffic simulation, unlike delivery completion under realized driving and EV conditions. | It is not solver termination, objective quality, simulated drivability, or real-world feasibility. |
+| Delivery-driving results under road and traffic conditions | These are vehicle-movement results obtained when a delivery plan is run under specified network and traffic conditions. | Use SUMO to measure each vehicle, route, and run. | Vehicle, route, run | km, minutes, timestamp | Vehicle, route, run, method | Measure from departure through the required terminal or return; record route-generation or simulation failure rather than zero distance or time. | It uses simulated realized values rather than plan values; EV-specific conditions are assessed separately. | It is not observed real-world performance or a general measure of Tokyo traffic. |
+| Delivery completion under battery and charging conditions | The delivery run satisfies every prespecified battery-state and charging condition. | Record electricity, charge state at key events, depletion, charging events, charging time, and waits. | Vehicle, segment, stop, charging event, run | kWh, charge percentage, events, minutes, binary | Vehicle, run, method | Mark the run unsatisfied if charge falls below the allowed minimum; distinguish charger arrival, charging start, charging end, and pass-through. | It concerns EV energy conditions rather than general distance, time, or delay. | It does not validate real-vehicle efficiency, battery degradation, actual charger availability, or cost. |
+| Distance, time, electricity, and charging used in delivery operation | These are separate absolute movement, time, energy, and charging quantities recorded during delivery. | Retain total distance, travel time, traffic and signal delay, electricity, charging events, charging time, and charging waits separately. | Vehicle, route, charging event, run | km, minutes, kWh, events | Vehicle, run, method | Aggregate each measure in its own unit; define any per-completed-demand efficiency measure separately. | It records quantities rather than deciding completion or counting completed demand. | The values are neither combined into one score nor monetized. |
+| Delivery completion satisfying the evaluation conditions | Each delivery demand satisfies every mandatory planning, arrival, deadline, capacity, EV, duplicate, undelivered, and terminal condition. | Inspect each frozen demand identifier after simulated execution and retain delivery- and run-level status. | Delivery demand, run | Binary, completion ratio, failed-run count | Demand, vehicle, run, method | Count a demand as complete only if every mandatory condition passes; retain demand-level completion separately from whole-run success. | It includes realized driving and EV conditions; completed delivery demand is the quantity counted after this decision. | Partial compliance and single-run completion are not overall completion or cross-run stability. |
+| Completed delivery demand | This is synthetic demand satisfying the completion conditions, counted before population conversion. | Sum completed frozen demand identifiers in parcel-equivalent units by region, vehicle, and run. | Delivery demand | Parcel-equivalent units | Region, vehicle, run, method | Count each demand identifier at most once and exclude undelivered, duplicated, route-failed, and simulation-failed demand. | It is a quantity; regional fulfillment compares that quantity with modeled demand. | It is not actual parcels, orders, customers, stops, weight, population, or maximum capacity. |
+| Regional delivery-demand fulfillment | This is completed demand and its share of modeled demand within each prespecified region. | Use population meshes as the spatial units and retain mesh identifier, population, assigned demand, completed demand, uncompleted demand, and fulfillment ratio. | Region, delivery demand | Parcel-equivalent units, ratio | Region, run, method | Divide regional completed demand by regional assigned demand; mark zero-demand regions as no demand, and assign each demand identifier to one region only. | It is the regional representation preceding conversion to population units. | Population mesh is an operationalization, not the concept itself; the measure is not observed-order fulfillment or regional equity. |
+| Population-equivalent demand fulfillment | This is regional completed demand converted to population units, capped by each region's population, and summed without duplication. | Use mesh-level completed demand, public population, the fixed per-person demand rate, and evaluation period for each run and method. | Region, run | Person-equivalent | Run, method, study area | Divide regional completed demand by per-person demand over the evaluation period, cap at regional population, sum unrounded regional values, and round only the displayed total under a prespecified rule. | Regional fulfillment is expressed in demand units and ratios; this concept is the final population-unit aggregate. | It is not recipients, beneficiaries, future deliverable population, service availability, road accessibility, maximum capacity, welfare, or economic benefit. |
 
-Completed delivery volume appears at several levels but has a different analytical unit in each. It is aggregated over the whole delivery system as achieved delivery volume, compared with synthetic demand within each mesh as regional demand fulfillment, and converted and aggregated in population units as population-equivalent delivery coverage.
+Completed demand appears at several levels but has a different analytical unit in each: total parcel-equivalent demand, demand and fulfillment ratios by region, and the final population-unit aggregate. Population mesh is the study's spatial operationalization, not the general concept. Spatial maps remain supplementary and are not used to calculate the population proxy.
 
-Solution quality and computational resources remain a separate method-comparison stream. Objective values, feasible-solution status, optimality indicators, runtime, problem and QUBO size, circuit width and depth, iterations, and circuit evaluations describe computational properties of the planning methods. They are not part of the conceptual correspondence above, and circuit-simulation resource indicators are not evidence of physical-hardware requirements or quantum advantage.
+Solution quality and computational resources remain a separate method-comparison stream. Plan constraint satisfaction asks whether a feasible plan was obtained; solution quality asks how good that feasible plan is under the objective; computational resources describe what was required to obtain it. A better objective value does not necessarily imply shorter realized travel time, more completed demand, or greater population-equivalent demand fulfillment. Circuit-simulation resource indicators are not evidence of physical-hardware requirements or quantum advantage.
 
 ## Current status
 
@@ -356,14 +351,11 @@ Delivery and EV constraints will not be introduced all at once. Each constraint 
 
 ## Main evaluation
 
-For population mesh `g` and method `m`, let `N_g` be the public population, `q` the synthetic demand per person over the evaluation period, and `C_gm` the amount delivered before the deadline. A candidate definition of population-equivalent delivery coverage is:
+Population-equivalent demand fulfillment is calculated separately for every method and run. For each population mesh, the study first fixes the completed parcel-equivalent demand and the applicable per-person demand over the evaluation period. It divides completed demand by that per-person value to express the result in person-equivalent units, caps the result at the mesh's public population, and sums the unrounded mesh values without duplication. Only the displayed total is rounded under a rule fixed before results are inspected.
 
-```text
-P_gm = min(N_g, C_gm / q)
-P_m  = sum_g(P_gm)
-```
+The principal conversion divides completed demand by per-person demand; it does not multiply regional population by an integer-demand fulfillment ratio. Those approaches are equivalent only when assigned regional demand equals regional population multiplied by the per-person rate and evaluation period without rounding. The study's integer allocation can break that equality, so the two approaches must not be mixed.
 
-In addition to differences among the baseline, classical, and QAOA results, the study will store driving distance, travel time, delay, completion rate, constraint violations, energy use, charging, solution quality, runtime, QUBO size, and circuit-evaluation counts separately. `P_m` is a population-equivalent measure based on public population and synthetic demand; it is not the number of real people who received a delivery.
+In addition to differences among the baseline, classical, and QAOA results, the study will store driving distance, travel time, delay, completion rate, constraint violations, energy use, charging, solution quality, runtime, QUBO size, and circuit-evaluation counts separately. Population-equivalent demand fulfillment is based on public population and synthetic demand; it is not the number of real people who received a delivery.
 
 ## Reproducible environments
 

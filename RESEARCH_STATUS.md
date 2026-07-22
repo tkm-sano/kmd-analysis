@@ -67,7 +67,7 @@ flowchart LR
 | 14 | `classical_qaoa` | 古典最適化・Aer QAOA正式比較 | 未着手 | - |
 | 15 | `simulation_evaluation` | 同一SUMO環境で走行・比較評価 | 未着手 | - |
 | 16 | `driver_sensitivity` | 熟練ドライバー差の感度分析 | 未着手 | - |
-| 17 | `ev_delivery_evaluation` | EV配送・配送可能人口相当評価 | 未着手 | - |
+| 17 | `ev_delivery_evaluation` | EV配送・配送需要充足人口相当評価 | 未着手 | - |
 | 18 | `spatial_expansion` | 段階的な空間拡張 | 未着手 | - |
 | 19 | `ci_reproducibility` | CI・再現性検査 | 未着手 | - |
 | 20 | `hayate_reproduction` | hayate再現 | 未着手 | - |
