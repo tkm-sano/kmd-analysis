@@ -1,7 +1,31 @@
-schema_version: 1
-updated_at: "2026-07-18"
+schema_version: 2
+updated_at: "2026-07-22"
 current_stage_id: sumo_network
-current_summary_ja: OSM道路原典と入力レビュー地図が揃い、SUMO道路網の生成・構造検証へ進む段階
+current_summary_ja: OSM道路原典と入力レビュー地図が揃い、v14 Resolverの実データ検証とSUMO道路網の生成・構造検証を進める段階
+readiness:
+  - id: specification
+    label_ja: 道路網仕様
+    status: governed_draft
+    status_label_ja: 統制済みドラフト
+    note_ja: v14仕様とResolver fixtureは整備済みだが、formal実行は未承認
+  - id: formal_network
+    label_ja: 正式SUMO道路網
+    status: not_accepted
+    status_label_ja: 未承認
+    note_ja: permission materializerと実ネットワーク検証が未完了
+  - id: downstream_experiment
+    label_ja: 下流実験
+    status: not_ready
+    status_label_ja: 実行不可
+    note_ja: 承認済みformalネットワークがないため、較正・配送・QAOA評価へ進まない
+blockers:
+  - 登録済み大田区OSM抽出データに対するv14 Resolverの実行と監査が未完了
+  - permission materializerが未実装で、SUMO 1.24.0固定fixtureも未実行
+  - formal属性証拠、ジャンクション・TLSレビュー、prepare/validateパイプライン、事後監査が未完了
+next_actions:
+  - 登録済み大田区OSM抽出データへv14 Resolverを実行し、停止理由、補完、permission期待値をレビューする
+  - permission materializerを実装し、SUMO 1.24.0固定fixtureでlane・connection期待値を検証する
+  - prepare/validateパイプラインとbuild manifestを実装し、構造確認用ネットワークを生成する
 stages:
   - id: environment
     label_ja: Docker・リポジトリ環境
