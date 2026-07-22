@@ -105,7 +105,9 @@ The diagram separates the two final lines of evidence. The common SUMO runs meas
 
 ### Operational impact propagation
 
-The following diagram explains how a change in delivery-planning method propagates through route construction and traffic simulation to the study's final outcomes. It is a model-level processing and evaluation relationship, not proof of a real-world causal effect. Economic valuation, emissions, customer satisfaction, social welfare, and regional-equity claims are outside the current scope.
+The following diagram explains how differences in generated delivery plans propagate across three layers: the technical system, operational resource use, and population-based social proxy outcomes. It is a model-level processing and evaluation relationship, not proof of a real-world causal effect. The middle layer identifies economic relevance without monetary valuation, while the final layer is not a count of observed recipients. Emissions, customer satisfaction, social welfare, and regional-equity claims are outside the current scope.
+
+[Japanese version of the operational impact propagation diagram](05_src/traffic_simulation/impact_propagation/operational_impact_propagation_ja.md)
 
 ```mermaid
 flowchart LR
@@ -118,40 +120,30 @@ flowchart LR
         random["Preregistered<br/>random conditions"]
     end
 
-    subgraph method["Compared delivery-planning methods"]
-        baseline["Non-optimizing<br/>visit-order baseline"]
-        classical["Classical optimization"]
-        quantum["Quantum approximate optimization<br/>on a circuit simulator"]
-    end
-
-    subgraph planning["Delivery-plan construction"]
+    subgraph technical["Technical system"]
         assignment["Assignment of deliveries<br/>to vehicles"]
         order["Customer visit order"]
         feasibility["Planned-constraint<br/>feasibility check"]
         route["Road routes generated<br/>under common rules"]
+        driving["Vehicle movement in the<br/>same traffic environment"]
     end
 
-    subgraph simulation["Traffic simulation"]
-        driving["Vehicle movement in the<br/>same traffic environment"]
+    subgraph resource["Operational resource use<br/>Economic relevance, not monetized"]
         distance["Realized driving distance"]
-        duration["Realized travel time"]
+        duration["Realized vehicle travel time"]
         delay["Traffic and signal delay"]
         electricity["Electricity use and<br/>remaining battery charge"]
         charging["Charging events"]
     end
 
-    subgraph delivery["Delivery-completion decision"]
+    subgraph social["Delivery completion and population-based social proxy<br/>Not observed recipients"]
         deadline["Delivery deadline satisfied"]
         capacity["Payload constraint satisfied"]
         battery["Battery and charging<br/>conditions satisfied"]
         return_condition["Return or terminal<br/>condition satisfied"]
         completed["Completed delivery amount<br/>satisfying all conditions"]
-    end
-
-    subgraph outcome["Operational and population-based outcomes"]
         completion_rate["Delivery completion rate"]
         population_result["Population-equivalent<br/>delivery coverage"]
-        method_difference["Differences among the baseline,<br/>classical method, and circuit-simulated method"]
     end
 
     road --> route
@@ -161,10 +153,6 @@ flowchart LR
     vehicle --> feasibility
     time --> feasibility
     random --> driving
-
-    baseline --> assignment
-    classical --> assignment
-    quantum --> assignment
 
     assignment --> order
     order --> feasibility
@@ -191,10 +179,9 @@ flowchart LR
 
     completed --> completion_rate
     completed --> population_result
-    population_result --> method_difference
 ```
 
-The diagram is limited to operational propagation: the planning method changes assignment and visit order, which changes road routes and realized vehicle movement, which in turn changes completed delivery volume and population-equivalent coverage. Solver quality and computational-resource reporting remain separate from this impact pathway.
+The technical layer transforms assignments and visit orders into road routes and realized vehicle movement. The operational-resource layer records distance, time, delay, electricity use, and charging as economically relevant quantities without converting them into costs. These quantities feed the delivery-completion conditions and the population-based social proxy layer, which reports completed delivery volume, completion rate, and population-equivalent coverage. Solver quality and computational-resource reporting remain separate from this impact pathway.
 
 ## Current status
 
