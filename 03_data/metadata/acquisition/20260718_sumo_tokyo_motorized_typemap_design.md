@@ -429,6 +429,29 @@ Verification Stateにはpermissions以外も含め、入力hash再検証、forma
 
 v13は循環しない合否判定とpermissionからTLSへのhandoffを定義したが、materializer、review UI、post-auditorおよびruntime fixtureの実装完了を意味しない。三つのreadiness状態は全てfalseである。
 
+### 23. 実装前の完全仕様パッケージをv14で固定した
+
+2026年7月22日、fixtureとPermission Materializerを実装する前に、研究利用条件からPost-build Auditまでの責任境界、全入出力形式、failure code、fixture catalogue、要件・試験対応を一つの仕様体系として固定する必要があると判断した。設定を`ota_ward_sumo_network_v13`から`ota_ward_sumo_network_v14`へ更新した。
+
+`05_src/traffic_simulation/specifications/`へ、研究要件、network build architecture、Resolver、Permission Materializer、TLS Review、Final Build、Post-build Audit、fixture、failure taxonomy、traceabilityの10文書を追加した。設定値と状態は`sumo_network.yml`、コンポーネントの規範動作はこれらの仕様書、成果物形式はJSON Schemaを正本とし、同じ判断を複数文書が独立に決定しない構成とした。
+
+Materializerのformal edge方向判定では座標近傍照合を禁止し、Provisional Buildが生成する`edge_provenance.json`のOSM node lineage indexを使用する。source start indexがend indexより小さい場合をforward、大きい場合をbackwardとし、同値、欠落または曖昧な場合は停止する。OSMのlane listはforward/backwardとも各進行方向から見た左から右であり、Resolver内でbackward listを反転しない。SUMO lane indexは右端を0とするため、両方向に`n - 1 - p`を適用する。
+
+Permission tokenについて、省略、`all`、明示allow、明示disallowの集合演算を固定し、空token、未知・管理外class、allow/disallow併記を停止対象とした。一部laneだけ空の場合は`disallow="all"`、directed edgeの全laneが空の場合はedgeとincident connectionを削除する。connectionは`from,to,fromLane,toLane`を一意キーとする明示lane-to-lane要素だけを対象とし、turnを新規推測しない。
+
+固定SUMO 1.24.0の`connections_file.xsd`と`tllogic_file.xsd`を再確認し、`tl`、`linkIndex`、`linkIndex2`を持つTLS connection recordは`.tll.xml`側に存在し、permission `.con.xml`のconnection typeには存在しないことを記録した。このためMaterializerはprovisional TLS assignmentをconnectionから削除するのではなく、provisional `.tll.xml`をfinal inputへコピーしない。最終connection集合の確定後、TLS Reviewがreviewed `.tll.xml`とhash-bound manifestを生成する。
+
+`reproducibility/config/traffic_simulation/schemas/`へ共通artifact、permission expectations、edge provenance、materialization audit/summary、failure report、TLS review manifest、build manifest/summary、post-build audit、requirements traceabilityのSchemaを追加した。70件の規範要件を個別test ID、fixture class、実装状態へ対応付けたmachine-readable registryも追加した。
+
+v14は仕様の解釈を固定する版であり、v14形式のResolver artifact、edge provenance、Materializer、TLS Review、Final Build、Post-build Auditおよび対応fixtureの実装完了を意味しない。現行Resolverが出力するv13形式のpermissions JSONはv14 Materializerの適格入力ではなく、schema migrationを次工程のblockerとして登録した。
+
+外部仕様根拠：
+
+- <https://wiki.openstreetmap.org/wiki/Lanes>
+- <https://wiki.openstreetmap.org/wiki/Forward_and_backward>
+- <https://sumo.dlr.de/docs/Networks/PlainXML.html>
+- pinned SUMO 1.24.0 XSD: `edges_file.xsd`, `connections_file.xsd`, `tllogic_file.xsd`
+
 ## 最終的に固定した内容
 
 - 採用方式：自動車系道路typeの明示的ホワイトリスト

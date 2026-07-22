@@ -1,13 +1,13 @@
 schema_version: 2
 config_schema: reproducibility/config/traffic_simulation/sumo_network.schema.json
 config_validator: 05_src/traffic_simulation/network/validate_sumo_network_config.py
-config_id: ota_ward_sumo_network_v13
-config_version: 13
+config_id: ota_ward_sumo_network_v14
+config_version: 14
 created_at: "2026-07-18"
-last_updated_at: "2026-07-20"
+last_updated_at: "2026-07-22"
 configuration_lineage_date: "2026-07-16"
-decision_date: "2026-07-20"
-change_summary: Separate acyclic readiness gates, type eligibility states, and place reviewed TLS structure after permission materialization
+decision_date: "2026-07-22"
+change_summary: Define complete component contracts, artifact schemas, failure codes, fixture catalogue, and requirements traceability before implementation
 policy_documents:
   attribute_governance: 05_src/traffic_simulation/network_attribute_governance.md
   current_specification: 05_src/traffic_simulation/network_current_specification.md
@@ -15,6 +15,30 @@ policy_documents:
   network_build_protocol: 05_src/traffic_simulation/network_build_and_validation_protocol.md
   traffic_calibration_protocol: 05_src/traffic_simulation/traffic_calibration_protocol.md
   optimization_protocol: 05_src/traffic_simulation/optimization_comparison_protocol.md
+  requirements_traceability: reproducibility/config/traffic_simulation/requirements_traceability.yml
+artifact_schema_registry:
+  common: reproducibility/config/traffic_simulation/schemas/artifact_common.schema.json
+  permission_expectations: reproducibility/config/traffic_simulation/schemas/permission_expectations.schema.json
+  edge_provenance: reproducibility/config/traffic_simulation/schemas/edge_provenance.schema.json
+  permission_materialization_audit: reproducibility/config/traffic_simulation/schemas/permission_materialization_audit.schema.json
+  materialization_summary: reproducibility/config/traffic_simulation/schemas/materialization_summary.schema.json
+  failure_report: reproducibility/config/traffic_simulation/schemas/failure_report.schema.json
+  tls_review_manifest: reproducibility/config/traffic_simulation/schemas/tls_review_manifest.schema.json
+  build_manifest: reproducibility/config/traffic_simulation/schemas/build_manifest.schema.json
+  build_summary: reproducibility/config/traffic_simulation/schemas/build_summary.schema.json
+  post_build_audit: reproducibility/config/traffic_simulation/schemas/post_build_audit.schema.json
+  requirements_traceability: reproducibility/config/traffic_simulation/schemas/requirements_traceability.schema.json
+normative_specifications:
+  research_requirements: 05_src/traffic_simulation/specifications/00_research_simulation_requirements.md
+  architecture: 05_src/traffic_simulation/specifications/01_network_build_architecture.md
+  resolver: 05_src/traffic_simulation/specifications/02_resolver_specification.md
+  permission_materializer: 05_src/traffic_simulation/specifications/03_permission_materializer_specification.md
+  tls_review: 05_src/traffic_simulation/specifications/04_tls_review_specification.md
+  final_build: 05_src/traffic_simulation/specifications/05_final_build_specification.md
+  post_build_audit: 05_src/traffic_simulation/specifications/06_post_build_audit_specification.md
+  fixtures: 05_src/traffic_simulation/specifications/07_fixture_specification.md
+  failure_taxonomy: 05_src/traffic_simulation/specifications/08_failure_taxonomy.md
+  traceability: 05_src/traffic_simulation/specifications/09_requirements_traceability.md
 status:
   specification:
     state: current_governed_draft
@@ -41,6 +65,8 @@ status:
     - resolver_permission_expectations_artifact
     - resolver_imputation_distribution_artifact
   pending_requirements:
+    - resolver_v14_permission_expectation_artifact_migration
+    - provisional_edge_provenance_artifact_implementation
     - registered_source_hash_manifest_reverification
     - attribute_governance_implementation
     - external_source_acquisition_and_matching
@@ -110,15 +136,15 @@ status:
     permission_expectation_artifact:
       gate: formal_build_input_ready
       policy: policy_fixed
-      implementation: implemented
-      unit_validation: unit_tested
+      implementation: implemented_v13_shape_requires_v14_schema_migration
+      unit_validation: v13_shape_unit_tested_v14_contract_only
       xsd_validation: not_applicable_json
-      runtime_validation: resolver_fixtures_passed
+      runtime_validation: v14_artifact_not_run
       real_data_validation: not_run
       eligibility:
         eligible: false
         state: pending
-        reason: registered_extract_expectation_artifact_not_generated
+        reason: v14_schema_artifact_not_implemented_or_generated
     permission_materializer:
       gate: formal_build_input_ready
       policy: policy_fixed
@@ -664,7 +690,7 @@ access_resolution:
       - osm_defaults_annotation_did_not_report_missing_oneway
 
 permission_materialization:
-  contract_version: sumo_plain_xml_permissions_v2
+  contract_version: sumo_plain_xml_permissions_v3
   implementation_status: not_implemented
   fixture_status: not_run
   target_sumo_version: "1.24.0"
@@ -704,6 +730,19 @@ permission_materialization:
       edges: edges
       connections: connections
       traffic_lights: tlLogics
+  expectation_artifact:
+    schema_version: 2
+    schema: reproducibility/config/traffic_simulation/schemas/permission_expectations.schema.json
+    require_complete_true: true
+    require_zero_blockers: true
+  edge_provenance_artifact:
+    schema_version: 1
+    schema: reproducibility/config/traffic_simulation/schemas/edge_provenance.schema.json
+    coordinate_matching_in_formal_profile: prohibited
+    direction_source: exact_osm_node_lineage_indices
+    forward_rule: source_start_index_less_than_source_end_index
+    backward_rule: source_start_index_greater_than_source_end_index
+    equal_or_ambiguous_index_policy: stop_PM008
   materialized_output:
     mutate_provisional_files_in_place: false
     edges: governed_permissions.edg.xml
@@ -719,9 +758,13 @@ permission_materialization:
       pinned_runtime_fixture_required: true
       retain_only_as_explicitly_non_drivable_topology: true
       prohibit_use_by_any_vclass: true
+    all_lanes_empty_edge_policy:
+      action: remove_directed_edge_and_incident_connections
+      reason_code: zero_permission_edge
+      apply_before_tls_review: true
     empty_connection_policy: remove_connection_and_record_reason
     final_net_xml_is_audit_only: true
-    strip_all_provisional_tls_and_link_index_assignments: true
+    tls_artifact_action: do_not_copy_provisional_tll_to_final_inputs
   provenance_mapping:
     lane_orig_id_source: lane_param_key_origId
     each_lane_requires_exactly_one_osm_way_id: true
@@ -740,6 +783,18 @@ permission_materialization:
     expected_set_must_be_subset_of_typemap_baseline: true
     fixture_must_confirm_order_under_lefthand_true: true
     fixture_mismatch_policy: stop_and_version_contract_before_real_data_use
+    osm_lane_order_for_both_directions: left_to_right_viewed_in_respective_travel_direction
+    backward_values_are_not_reversed_by_resolver: true
+  permission_token_normalization:
+    universe: governed_vclasses
+    neither_allow_nor_disallow: all_governed_vclasses
+    allow_all: all_governed_vclasses
+    disallow_all: empty_set
+    explicit_allow: listed_governed_vclasses
+    explicit_disallow: governed_vclasses_minus_listed
+    reject_empty_token: true
+    reject_unknown_or_unmanaged_token: true
+    reject_simultaneous_allow_and_disallow: true
   connection_expectation_rule:
     candidate_source: provisional_connections_only
     synthesize_missing_or_turn_restricted_connections: false
@@ -747,6 +802,19 @@ permission_materialization:
     absent_provisional_allow_means: unrestricted_before_endpoint_intersection
     empty_expected_set: remove_connection_and_record_reason
     nonempty_expected_set: write_exact_sorted_allow_set
+    identity_fields:
+      - from
+      - to
+      - fromLane
+      - toLane
+    require_explicit_lane_to_lane_connection: true
+    supported_nonconnection_elements:
+      - prohibition
+      - delete
+    preserve_supported_element_only_with_resolved_references: true
+    prohibited_elements:
+      - crossing
+      - walkingArea
     final_audit:
       require_every_nonempty_expected_connection: true
       require_every_empty_expected_connection_absent: true
@@ -762,6 +830,8 @@ permission_materialization:
     require_total_connection_to_tls_link_mapping: true
     require_phase_state_length_equal_controlled_link_count: true
     connection_change_after_review_policy: invalidate_tls_review_and_stop
+    tls_connection_assignment_location: tllogic_file_connection_elements
+    pinned_tllogic_xsd: /usr/share/sumo/data/xsd/tllogic_file.xsd
   final_conversion:
     requires_permission_fixture_passed: true
     requires_signal_structure_review_passed: true
@@ -774,6 +844,7 @@ permission_materialization:
     xsd_validation_required:
       edges: /usr/share/sumo/data/xsd/edges_file.xsd
       connections: /usr/share/sumo/data/xsd/connections_file.xsd
+      traffic_lights: /usr/share/sumo/data/xsd/tllogic_file.xsd
     pinned_final_netconvert_exit_code: 0
     pinned_sumo_network_load_required: true
     exact_lane_permission_match_required: true
@@ -781,6 +852,20 @@ permission_materialization:
     zero_unmapped_lanes_required: true
     zero_unmapped_connections_required: true
     zero_unclassified_warnings_required: true
+  deterministic_serialization:
+    encoding: UTF-8
+    xml_declaration: required
+    newline: LF
+    generator_timestamp_comment: prohibited
+    retained_element_order: source_order
+    lane_order: numeric_index_ascending
+    vclass_order: lexicographic
+    atomic_write: true
+    overwrite_existing_output: false
+  output_artifacts:
+    audit_schema: reproducibility/config/traffic_simulation/schemas/permission_materialization_audit.schema.json
+    summary_schema: reproducibility/config/traffic_simulation/schemas/materialization_summary.schema.json
+    failure_schema: reproducibility/config/traffic_simulation/schemas/failure_report.schema.json
 
 vehicle_input_policy:
   allowed_vclasses:

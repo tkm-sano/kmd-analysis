@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "permission_expectations.schema.json",
+  "allOf": [
+    {"$ref": "artifact_common.schema.json#/$defs/identity"},
+    {
+      "type": "object",
+      "required": ["artifact_type", "schema_version", "config_id", "config_version", "profile", "complete", "blockers", "input_osm", "typemap", "governed_vclasses", "ways"],
+      "properties": {
+        "artifact_type": {"const": "permission_expectations"},
+        "schema_version": {"const": 2},
+        "config_id": {"type": "string"},
+        "config_version": {"type": "integer"},
+        "profile": {"enum": ["structural", "formal"]},
+        "complete": {"type": "boolean"},
+        "blockers": {"type": "array", "items": {"$ref": "artifact_common.schema.json#/$defs/failure"}},
+        "input_osm": {"$ref": "artifact_common.schema.json#/$defs/file_ref"},
+        "typemap": {
+          "type": "object",
+          "required": ["path", "sha256", "policy_id"],
+          "properties": {
+            "path": {"$ref": "artifact_common.schema.json#/$defs/relative_path"},
+            "sha256": {"$ref": "artifact_common.schema.json#/$defs/sha256"},
+            "policy_id": {"type": "string", "minLength": 1}
+          },
+          "additionalProperties": false
+        },
+        "governed_vclasses": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "ways": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["osm_way_id", "highway", "sumo_type_id", "typemap_baseline_vclasses", "directions"],
+            "properties": {
+              "osm_way_id": {"type": "string", "pattern": "^-?[0-9]+$"},
+              "highway": {"type": "string", "minLength": 1},
+              "sumo_type_id": {"type": "string", "minLength": 1},
+              "typemap_baseline_vclasses": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+              "directions": {
+                "type": "array", "minItems": 1, "maxItems": 2,
+                "items": {
+                  "type": "object",
+                  "required": ["direction", "lane_count", "lanes"],
+                  "properties": {
+                    "direction": {"enum": ["forward", "backward"]},
+                    "lane_count": {"type": "integer", "minimum": 1},
+                    "lanes": {
+                      "type": "array", "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "required": ["osm_lane_position", "expected_vclasses", "rule_ids"],
+                        "properties": {
+                          "osm_lane_position": {"type": "integer", "minimum": 0},
+                          "expected_vclasses": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+                          "rule_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}
+                        },
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  ],
+  "if": {"properties": {"complete": {"const": true}}},
+  "then": {"properties": {"blockers": {"maxItems": 0}, "ways": {"minItems": 1}}},
+  "else": {"properties": {"blockers": {"minItems": 1}}}
+}

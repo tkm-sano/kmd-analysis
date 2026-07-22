@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "permission_materialization_audit.schema.json",
+  "allOf": [
+    {"$ref": "artifact_common.schema.json#/$defs/identity"},
+    {
+      "type": "object",
+      "required": ["artifact_type", "schema_version", "config_id", "config_version", "status", "inputs", "edge_records", "lane_records", "connection_records", "failures"],
+      "properties": {
+        "artifact_type": {"const": "permission_materialization_audit"},
+        "schema_version": {"const": 1},
+        "config_id": {"type": "string"},
+        "config_version": {"type": "integer"},
+        "status": {"enum": ["passed", "failed"]},
+        "inputs": {"type": "array", "minItems": 3, "items": {"$ref": "artifact_common.schema.json#/$defs/file_ref"}},
+        "edge_records": {"type": "array", "items": {"$ref": "#/$defs/action_record"}},
+        "lane_records": {"type": "array", "items": {"$ref": "#/$defs/action_record"}},
+        "connection_records": {"type": "array", "items": {"$ref": "#/$defs/action_record"}},
+        "failures": {"type": "array", "items": {"$ref": "artifact_common.schema.json#/$defs/failure"}}
+      },
+      "additionalProperties": false
+    }
+  ],
+  "if": {"properties": {"status": {"const": "passed"}}},
+  "then": {"properties": {"failures": {"maxItems": 0}}},
+  "else": {"properties": {"failures": {"minItems": 1}}},
+  "$defs": {
+    "action_record": {
+      "type": "object",
+      "required": ["identity", "action", "reason", "expected_vclasses", "output_vclasses"],
+      "properties": {
+        "identity": {"type": "object", "minProperties": 1},
+        "action": {"enum": ["retained", "permission_updated", "disabled", "removed", "preserved"]},
+        "reason": {"type": "string", "minLength": 1},
+        "expected_vclasses": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "output_vclasses": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    }
+  }
+}

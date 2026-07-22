@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "build_manifest.schema.json",
+  "allOf": [
+    {"$ref": "artifact_common.schema.json#/$defs/identity"},
+    {
+      "type": "object",
+      "required": ["artifact_type", "schema_version", "config_id", "config_version", "run_id", "profile", "inputs", "environment", "command", "working_directory", "canonicalizer_version", "started_at"],
+      "properties": {
+        "artifact_type": {"const": "build_manifest"},
+        "schema_version": {"const": 1},
+        "config_id": {"type": "string"},
+        "config_version": {"type": "integer"},
+        "run_id": {"type": "string", "minLength": 1},
+        "profile": {"enum": ["structural", "formal"]},
+        "inputs": {"type": "array", "minItems": 4, "items": {"$ref": "artifact_common.schema.json#/$defs/file_ref"}},
+        "environment": {
+          "type": "object",
+          "required": ["sumo_container_digest", "analysis_container_digest", "sumo_version", "netconvert_version", "proj_version", "osmium_version", "python_version", "dependency_lock_sha256", "platform", "locale"],
+          "properties": {
+            "sumo_container_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+            "analysis_container_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+            "sumo_version": {"type": "string"},
+            "netconvert_version": {"type": "string"},
+            "proj_version": {"type": "string"},
+            "osmium_version": {"type": "string"},
+            "python_version": {"type": "string"},
+            "dependency_lock_sha256": {"$ref": "artifact_common.schema.json#/$defs/sha256"},
+            "platform": {"type": "string"},
+            "locale": {"type": "string"}
+          },
+          "additionalProperties": false
+        },
+        "command": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "working_directory": {"type": "string", "minLength": 1},
+        "canonicalizer_version": {"type": "string", "minLength": 1},
+        "started_at": {"type": "string", "format": "date-time"}
+      },
+      "additionalProperties": false
+    }
+  ]
+}

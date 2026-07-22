@@ -10,7 +10,7 @@ The structural profile is used only to debug geometry, direction, connectivity, 
 2. Convert PBF to raw OSM XML in the pinned analysis environment.
 3. Resolve attributes and compute way-direction-lane permission expectations.
 4. Generate provisional plain edges and connections.
-5. Materialize expected lane and connection permissions, removing zero-permission connections and all provisional TLS assignments.
+5. Materialize expected lane and connection permissions and remove zero-permission connections; keep provisional TLS output as review evidence only.
 6. Review the final connection set, signalized junctions and complete connection-to-TLS-link mapping.
 7. Write reviewed connection and TLS files, then run final `netconvert`.
 8. Audit, without editing `net.xml`, every generated lane, connection and TLS mapping.
@@ -20,9 +20,9 @@ The structural profile is used only to debug geometry, direction, connectivity, 
 
 The fixed interchange format is SUMO 1.24.0 plain XML. After the resolver has written immutable permission expectations, create a topology-only OSM copy with consumed access tags removed and run provisional `netconvert` with `--plain-output-prefix governed_provisional`, `--plain-output.lanes true`, `--output.original-names true`, `--lefthand true` and `--osm.lane-access true`. The required provisional files are `governed_provisional.nod.xml`, `.edg.xml`, `.con.xml` and `.tll.xml`.
 
-The materializer never mutates provisional files. It writes `governed_permissions.edg.xml` and `governed_permissions.con.xml`, conforming respectively to the pinned container's `edges_file.xsd` and `connections_file.xsd`. It strips provisional `tl` and `linkIndex` assignments because connection removal can invalidate their indexing. Signal review then produces `governed_reviewed.con.xml` and `governed_reviewed.tll.xml`. Final `netconvert` receives the provisional node file, permission edge file and reviewed connection/TLS files through `--node-files`, `--edge-files`, `--connection-files` and `--tllogic-files`. The provisional `.tll.xml` cannot be final input. The generated `net.xml` is audit-only.
+The materializer never mutates provisional files. It writes `governed_permissions.edg.xml` and `governed_permissions.con.xml`, conforming respectively to the pinned container's `edges_file.xsd` and `connections_file.xsd`. In pinned SUMO 1.24.0, the TLS connection records containing `tl`, `linkIndex` and `linkIndex2` belong to `.tll.xml`; those attributes are not part of the permission `.con.xml` connection type. The materializer therefore does not copy provisional `.tll.xml` into final inputs. Signal review produces `governed_reviewed.con.xml` and `governed_reviewed.tll.xml` after the permission connection set is fixed. Final `netconvert` receives the provisional node file, permission edge file and reviewed connection/TLS files through `--node-files`, `--edge-files`, `--connection-files` and `--tllogic-files`. The generated `net.xml` is audit-only.
 
-Each plain lane must have exactly one `param key="origId"`. One OSM way may map to multiple edges and lanes. Direction is determined by comparing each edge orientation with the normalized OSM way node order; an edge ID sign is not evidence. Any incomplete or ambiguous mapping stops the build.
+Each external plain edge must have an exact record in `edge_provenance.json`. One OSM way may map to multiple edges and lanes. Direction is determined from the ordered OSM source-node subsequence and its start/end indices; an edge ID sign or coordinate-nearest match is not evidence. `param key="origId"` is retained as a cross-check, not as the complete lineage record. Any incomplete or ambiguous mapping stops the build.
 
 ### Lane Permission Rule
 

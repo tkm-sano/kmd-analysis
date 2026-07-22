@@ -418,7 +418,7 @@ def test_requirement_matrix_does_not_conflate_policy_with_validation() -> None:
 def test_permission_materializer_format_and_mapping_rules_are_fixed() -> None:
     contract = load_config()["permission_materialization"]
 
-    assert contract["contract_version"] == "sumo_plain_xml_permissions_v2"
+    assert contract["contract_version"] == "sumo_plain_xml_permissions_v3"
     assert contract["implementation_status"] == "not_implemented"
     assert contract["fixture_status"] == "not_run"
     assert contract["target_sumo_version"] == "1.24.0"
@@ -445,10 +445,22 @@ def test_permission_materializer_format_and_mapping_rules_are_fixed() -> None:
     assert connection_rule["empty_expected_set"] == "remove_connection_and_record_reason"
     handoff = contract["signal_structure_handoff"]
     assert handoff["prohibit_provisional_tll_as_final_input"] is True
-    assert contract["materialized_output"][
-        "strip_all_provisional_tls_and_link_index_assignments"
-    ] is True
+    assert contract["materialized_output"]["tls_artifact_action"] == (
+        "do_not_copy_provisional_tll_to_final_inputs"
+    )
     assert handoff["review_occurs_after_final_connection_set"] is True
+    assert handoff["tls_connection_assignment_location"] == (
+        "tllogic_file_connection_elements"
+    )
+    assert contract["edge_provenance_artifact"][
+        "coordinate_matching_in_formal_profile"
+    ] == "prohibited"
+    assert contract["lane_expectation_rule"][
+        "backward_values_are_not_reversed_by_resolver"
+    ] is True
+    assert contract["materialized_output"]["all_lanes_empty_edge_policy"][
+        "action"
+    ] == "remove_directed_edge_and_incident_connections"
     assert contract["final_conversion"]["inputs"] == {
         "node-files": "governed_provisional.nod.xml",
         "edge-files": "governed_permissions.edg.xml",
@@ -668,10 +680,10 @@ def test_configuration_dates_and_policy_documents_are_unambiguous() -> None:
     config = load_config()
 
     assert config["schema_version"] == 2
-    assert config["config_id"] == "ota_ward_sumo_network_v13"
-    assert config["config_version"] == 13
+    assert config["config_id"] == "ota_ward_sumo_network_v14"
+    assert config["config_version"] == 14
     assert config["created_at"] == "2026-07-18"
-    assert config["last_updated_at"] == "2026-07-20"
+    assert config["last_updated_at"] == "2026-07-22"
     assert config["configuration_lineage_date"] == "2026-07-16"
     documents = config["policy_documents"]
     assert set(documents) == {
@@ -681,6 +693,7 @@ def test_configuration_dates_and_policy_documents_are_unambiguous() -> None:
         "network_build_protocol",
         "traffic_calibration_protocol",
         "optimization_protocol",
+        "requirements_traceability",
     }
     for path in documents.values():
         assert (ROOT / path).is_file()
