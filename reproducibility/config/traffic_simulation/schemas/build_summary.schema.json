@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "build_summary.schema.json",
+  "allOf": [
+    {"$ref": "artifact_common.schema.json#/$defs/identity"},
+    {
+      "type": "object",
+      "required": ["artifact_type", "schema_version", "config_id", "config_version", "run_id", "status", "manifest", "exit_code", "started_at", "finished_at", "log", "failures"],
+      "properties": {
+        "artifact_type": {"const": "build_summary"},
+        "schema_version": {"const": 1},
+        "config_id": {"type": "string"},
+        "config_version": {"type": "integer"},
+        "run_id": {"type": "string", "minLength": 1},
+        "status": {"enum": ["passed", "failed"]},
+        "manifest": {"$ref": "artifact_common.schema.json#/$defs/file_ref"},
+        "output_net": {"$ref": "artifact_common.schema.json#/$defs/file_ref"},
+        "semantic_sha256": {"$ref": "artifact_common.schema.json#/$defs/sha256"},
+        "exit_code": {"type": "integer"},
+        "started_at": {"type": "string", "format": "date-time"},
+        "finished_at": {"type": "string", "format": "date-time"},
+        "log": {"$ref": "artifact_common.schema.json#/$defs/file_ref"},
+        "failures": {"type": "array", "items": {"$ref": "artifact_common.schema.json#/$defs/failure"}}
+      },
+      "additionalProperties": false
+    }
+  ],
+  "if": {"properties": {"status": {"const": "passed"}}},
+  "then": {"required": ["output_net", "semantic_sha256"], "properties": {"exit_code": {"const": 0}, "failures": {"maxItems": 0}}},
+  "else": {"properties": {"failures": {"minItems": 1}}}
+}

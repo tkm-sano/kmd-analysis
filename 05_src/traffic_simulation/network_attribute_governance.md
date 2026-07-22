@@ -1,6 +1,6 @@
 # 道路属性・外部データ対応・SUMOネットワーク品質管理規約
 
-更新日：2026年7月18日
+更新日：2026年7月22日
 方針名：`report_then_gate_by_criticality`
 適用対象：大田区を起点とする東京交通シミュレーション道路網
 
@@ -15,6 +15,8 @@
 - OSM属性の欠損を一律の停止条件にしない。
 - 欠損値、補完値、未解決値、矛盾値、不正値を全件記録する。
 - 欠損値をSUMOまたはtypemapの既定値へ黙って渡さない。
+- typemapから`speed`、`numLanes`、`oneway`を省略しても欠損検出にはならず、`netconvert`がimporter-levelまたはglobal defaultを適用し得るものとして扱う。特に未解決の`oneway`は一方向edgeとして生成され得る。
+- `netconvert`へ渡す保持対象wayは、`lanes`、`maxspeed`、`oneway`の採用値と来歴を必ず持つ。生OSMでの欠損は許容しても、未解決のまま変換へ渡さない。
 - 採用値ごとに出典、導出方法、基準日、信頼度、適用範囲を保存する。
 - 道路形状と接続関係の基礎データには、日付固定したOSM PBFを使用する。
 - DRM-DBおよびDRM-PFは使用しない。
@@ -34,7 +36,12 @@
 | `derived_osm_rule` | OSMの暗黙規則から導出した値 |
 | `reviewed_manual` | 根拠資料を人が確認して採用した値 |
 | `approved_assumption` | 正式に承認し、適用範囲と感度分析条件を持つ研究上の仮定 |
+| `derived_validated_model` | 事前定義し、独立した検証記録を持つ補完モデルから導出した値 |
 | `structural_placeholder` | 構造確認用ネットワークだけに使う技術的仮置き値 |
+| `missing` | 入力に値が存在しない |
+| `valid_but_unsupported` | 構文上有効だが現行規則では安全に解釈できない |
+| `conditional` | 条件付きであり現行静的表現へ一意に変換できない |
+| `directionally_asymmetric` | 方向別値が異なり現行の単一値表現へ変換できない |
 | `unresolved` | 採用値が存在しない |
 | `conflict` | 複数情報が矛盾し、採否が未決定 |
 | `invalid` | 値または属性間関係が不正 |
@@ -59,7 +66,7 @@
 
 ### 4.2 正式実験用ネットワーク
 
-正式実験用ネットワークでは、最終配送経路、JARTIC較正区間、独立検証区間、事前・事後重要道路の`unresolved`、`conflict`、`invalid`をゼロにする。全採用値の出典と導出方法を追跡可能にする。
+正式実験用ネットワークでは、全保持道路の`unresolved`、`conflict`、`invalid`および未検証`structural_placeholder`をゼロにする。採用値は、OSM明示値、公的外部値、OSM仕様から一意に導出した値、確認済み手動値、または独立した検証記録を持つ`derived_validated_model`のいずれかとし、全採用値の出典と導出方法を追跡可能にする。道路種別の代表値を置いただけの`structural_placeholder`を正式実験へ昇格させない。
 
 重要道路に`approved_assumption`が残る場合は、適用理由と下限・基準・上限を事前に固定し、正式な結果確定前に感度分析を行う。`structural_placeholder`が残る重要道路を正式実験用ネットワークへ含めない。
 
@@ -69,7 +76,7 @@
 
 ### 5.1 全国道路・街路交通情勢調査
 
-主要道路の車線数、指定最高速度、道路幅員、一方通行、交通量、旅行速度の補完候補に使用する。調査基本区間とOSM wayの対応付けを行い、調査年とOSM基準日の差、道路改良、規制変更を確認する。
+車線数、道路幅員、交通量、旅行速度について、具体的な項目定義を確認した範囲で補完・較正候補に使用する。指定最高速度と一方通行は、箇所別基本表等の具体的なヘッダと定義書で該当項目を確認するまで候補状態に留め、採用値の根拠にしない。調査基本区間とOSM wayの対応付けを行い、調査年とOSM基準日の差、道路改良、規制変更を確認する。
 
 ### 5.2 JARTIC交通規制情報
 
@@ -120,22 +127,26 @@ JARTIC等の交通量と実走速度は、SUMOの交通需要設定、較正、�
 1. OSM明示値
 2. OSMの暗黙規則
 3. 基準日と区間対応を確認した公的規制情報
-4. 全国道路・街路交通情勢調査
+4. 項目定義を確認した公的規制情報
 
 一般道路で`oneway`が欠損し、暗黙の一方通行規則にも該当しない場合は、OSMデータ消費上の規則として双方向と解釈し、`derived_osm_rule`と記録する。実地確認済みとは扱わない。
+
+明示値は`yes`、`no`、`-1`をOSM上の有効値として識別する。ただし、`-1`は左右・方向依存タグを含む完全な安全変換が未実装であるため、現行版では原wayを変更せず`valid_but_unsupported`として停止する。明示値がない`junction=roundabout`と`highway=motorway`は暗黙の一方通行として`derived_osm_rule`を記録する。`highway=motorway_link`は一般に一方通行であることだけを根拠に自動決定せず、明示値がなければ`unresolved`とする。`oneway`に統計的な`structural_placeholder`を使用しない。複数タグまたは資料が矛盾する場合は`conflict`として停止する。
 
 ### 6.2 `lanes`
 
 次を確認する。
 
-1. OSMの`lanes`
-2. `lanes:forward`、`lanes:backward`、`lanes:both_ways`等
+1. `lanes:forward`、`lanes:backward`、`lanes:both_ways`等
+2. OSMの`lanes`
 3. 全国道路・街路交通情勢調査
 4. 道路台帳
 5. 対象を限定した空中写真による補助確認
 6. 構造確認用の非重要道路だけに使用する`structural_placeholder`
 
 `lanes`、方向別車線タグ、`oneway`、中央分離帯、道路形状の間に矛盾がないかを検査する。画像だけで正確な車線接続を確定しない。
+
+構造確認用の補完候補は、固定した大田区OSM抽出の明示値について、道路種別と一方通行・双方向の組合せごとに車線数の一意な最頻値を計算する。標本数30以上、最頻値比率50%以上をともに満たす場合だけ`structural_placeholder`として採用し、同率最頻値、標本不足または比率不足は`unresolved`とする。近い道路種別へ自動的にフォールバックしない。30件と50%は真値ではなく、結果確認前に固定した本研究の運用基準である。
 
 ### 6.3 `maxspeed`
 
@@ -144,11 +155,12 @@ JARTIC等の交通量と実走速度は、SUMOの交通需要設定、較正、�
 1. OSM明示値
 2. 方向別・条件付きタグ
 3. JARTIC交通規制情報
-4. 全国道路・街路交通情勢調査
-5. 警察、道路管理者等の公的資料
-6. 法令上の導出規則
+4. 警察、道路管理者等の公的資料
+5. 法令上の導出規則
 
 `maxspeed:conditional`や複数値を直ちに不正値とせず、方向、時間帯、曜日、車種、条件、区間を確認する。法令から導出する場合は、法令の適用日、対象車種、道路状態の基準日を保存する。
+
+構造確認用の補完候補は、固定した大田区OSM抽出の明示的な数値`maxspeed`について、道路種別ごとに一意な最頻値を計算する。標本数30以上、最頻値比率50%以上をともに満たす場合だけ`structural_placeholder`として採用し、同率最頻値、標本不足または比率不足は`unresolved`とする。近い道路種別へ自動的にフォールバックしない。この値は規制値の推定または東京に対する真値とは扱わず、正式実験へ使用しない。
 
 上記の番号は確認順であり、無条件の上書き順位ではない。複数情報が競合する場合は、法的・管理上の権威性、基準日、区間一致、定義、ライセンス、対応付け信頼度を比較し、機械的に解消できなければ`conflict`とする。
 
@@ -203,6 +215,7 @@ JARTIC等の交通量と実走速度は、SUMOの交通需要設定、較正、�
 
 ### 9.1 即時停止
 
+- 保持対象wayの`lanes`、`maxspeed`、`oneway`に採用値または必須来歴がない
 - 不正な車線数、速度、方向値
 - 属性間の矛盾
 - 方向解釈の失敗
@@ -210,6 +223,9 @@ JARTIC等の交通量と実走速度は、SUMOの交通需要設定、較正、�
 - 検出された誤対応または立体階層の誤り
 - 必要な欠損・矛盾・補完レポートを生成できない
 - 設定と本規約の矛盾
+- `vType`、`vehicle`、`flow`、`trip`の入力に`ignoring`、`custom1`、`custom2`または管理対象外のvClassがある
+- `netconvert`ログに未知type、未知compound type、edge追加失敗、または明示的discardと照合できないedge除外がある
+- 生成ネットワークのpermissionsがtypemapの基本permissionsを超える、または承認されていないdefault由来値がある
 
 ### 9.2 正式実験の停止
 
@@ -230,7 +246,7 @@ JARTIC等の交通量と実走速度は、SUMOの交通需要設定、較正、�
 
 ## 10. ジャンクションと変換環境
 
-- 日本の左側通行を固定する。
+- 日本の左側通行を`lefthand=true`で固定し、`netconvert`の右側通行defaultへ委ねない。OSMの一方通行方向自体は反転しない。
 - PBFを固定版`osmium`でOSM XMLへ変換し、`netconvert`へPBFを直接渡さない。
 - Pythonによる設定検証・前後処理は`analysis`、`netconvert`実行はdigest固定`sumo`サービスに分離する。
 - ジャンクションヒューリスティックは10 mの候補生成だけに使用する。
@@ -239,6 +255,89 @@ JARTIC等の交通量と実走速度は、SUMOの交通需要設定、較正、�
 - internal linkを保持し、ランプ・ラウンドアバウトの追加推定を初期版では行わない。
 - Uターンは行き止まりだけに許可し、孤立edgeを自動削除しない。
 - `ignore-errors`を使用せず、入力・設定・変換エラーはfail-fastとする。
+- `osm.lane-access=true`を固定し、way単位とlane単位のaccessタグを持つ小規模fixtureでSUMO 1.24.0の変換結果を検証する。
+- `osm.annotate-defaults=true`を固定し、生成ネットワークと実行ログを監査する。ただし、注釈だけを欠損検出の代用にはしない。
+
+SUMO入力で許可するvClassは`sumo_network.yml`の`vehicle_input_policy.allowed_vclasses`だけとする。permissionsを無視できる`ignoring`、研究上の意味を定義していない`custom1`と`custom2`、typemapで許可していない`evehicle`を禁止する。EV配送車は`vClass="delivery"`とSUMO battery deviceの組合せで表し、道路利用区分と電動パワートレインを分離する。入力XML上の直接指定だけでなく、各vehicle、flow、tripが参照するvTypeも解決して検査する。
+
+ネットワークが管理する最大集合8クラスと、用途別に実際に生成する車両集合を区別する。配送経路用途は`delivery`と`truck`、初期背景交通用途は`passenger`、`taxi`、`bus`、`coach`、`delivery`、`truck`、`motorcycle`とする。`moped`は道路permissionsの管理集合には残すが、需要根拠を別途固定するまで背景交通として生成しない。用途別集合を分けても、同じ道路網で管理対象外vClassを許可しない原則は変えない。
+
+OSM access規則は、`access`、`vehicle`、`motor_vehicle`、車種別、方向別、lane別の順に、広い規則から具体的な規則へ上書きして解決する。その後に研究対象集合との積集合を取り、最終permissionsを次で定義する。
+
+```text
+P_final = P_research_scope intersect P_OSM_resolved
+```
+
+個別タグによる例外を解決する前に全タグを単純な積集合へ入れない。未対応の条件付き規則または解釈不能な上書き関係は`unresolved`とする。前処理でway・方向・laneごとの期待permissionsを保存し、SUMO 1.24.0の生成結果と比較する。importerの結果が一致しない場合は、生成permissionsを期待集合との積集合へ縮小する決定的な後処理だけを許可し、typemapの基本集合を拡張しない。補正後はlane間およびedge間の接続可能性を再検査し、不一致が残れば停止する。
+
+専用バス道路は背景交通用に保持し、現行v1では`bus`だけを許可する。OSMに配送例外が明示されていても、現行bus-only typemapへ後処理で`delivery`を追加しない。例外を採用する場合は、対応するgoverned compound type、根拠、fixtureおよび新しい設定版を先に作成する。
+
+`access=no`、`vehicle=no`、`motor_vehicle=no`、`motorcar=no`、`hgv=no`、`bus=yes`、`delivery=yes`、`access:lanes`、`vehicle:lanes`を含むfixtureを用意し、way単位とlane単位の制約を別々に検証する。生成permissionsがtypemapの基本permissionsを拡張していないことを確認し、意図した縮小と一致しない場合は停止する。
+
+2026年7月18日のfixture実変換では、未知bus compound、`bicycle`および`private`のpermissions追加、`motor_vehicle=no`の期待外処理、欠損属性へのdefault適用を確認したため不合格とした。`oneway`欠損wayは逆方向edgeなしで生成され、`osmDefaults`注釈にも`oneway`は記録されなかった。詳細は単一の時系列記録`03_data/metadata/acquisition/20260718_sumo_tokyo_motorized_typemap_design.md`に残す。この不一致を解決し、同じfixtureが合格するまで正式変換を許可しない。
+
+fixtureは前処理負例とruntime正常系に分離する。必須属性欠損は前処理負例として`netconvert`前に拒否し、runtime正常系には`lanes`、`maxspeed`、`oneway`をすべてmaterializeする。runtime正常系では、way・方向・laneごとの期待permissions、方向edge、車線数、速度および追跡元OSM IDとの完全一致を要求する。管理対象外vClass、予期しない正逆方向edge、permissions不一致および未追跡edgeの許容件数はゼロとする。
+
+### 10.1 設計判断、地域適合性、実装リスク、テスト入力の区別
+
+次の項目を単一の「恣意性」尺度で順位付けしない。影響の大小は、作用経路に対応した感度分析前には確定しない。
+
+| 項目 | 分類 | 現在の位置付け | 主に確認する影響 |
+|---|---|---|---|
+| SUMO標準`priority` | 地域適合性の制限を伴う設計判断 | SUMO 1.24.0へ固定するが、東京で実証的に較正された値ではない | 交差点通行権、停止、待ち時間、遅延、実現旅行時間 |
+| 道路ホワイトリスト | 研究対象範囲の設計判断 | motorized-onlyの基準条件 | 接続成分、到達可能顧客、経路、距離 |
+| vClass permissions | 車種別通行条件の設計判断 | 管理対象は8クラス。通常道路は8、motorwayはmopedを除く7、service compoundは2、専用バス道路は1クラス | 車種別利用可能edge、到達可能性、経路、距離 |
+| 専用バス道路 | ネットワーク表現上の設計判断 | bus用に保持し、deliveryの進入を許可しない | 背景バス網、配送車の不正進入 |
+| typemapでの属性省略 | 根拠付き値を要求する設計判断 | 方針自体は合理的だが、単独では欠損停止を保証しない | validatorと監査が機能する場合のfallback排除 |
+| validator・監査未完成 | 実装・品質保証上のリスク | 高リスクであり正式buildを停止する | 誤速度、誤車線数、誤方向、過剰permissions |
+| fixture数値 | 合成テスト入力 | 東京代表値ではないが、正式実験から隔離した挙動検査には適合する | 単位変換、単車線・複数車線、方向、欠損、access処理 |
+
+標準`priority`の継承は研究者による結果確認後の個別調整を避け、再現性を高める。一方、上流標準typemapはドイツの市街地外道路向けとして説明されており、東京への地域適合性を保証しない。`priority`はright-of-wayへ影響するが、基準条件では`weights.priority-factor=0`を固定するため、静的な経路コストへpriorityペナルティを直接加えない。シミュレーションでは待ち時間と実現旅行時間が変わり得て、その実現旅行時間で再経路探索する場合には経路へ間接的に影響し得る。
+
+### 10.2 設計感度分析
+
+正式な結論前に、`sumo_network.yml`の`design_sensitivity`へ固定した条件を比較する。結果を確認してから都合のよい条件、指標、閾値を選ばない。
+
+| 要因 | 基準条件 | 代替条件 | 主指標 |
+|---|---|---|---|
+| `priority` | SUMO 1.24.0標準値 | 全typeを1、固定した3段階階層 | 交差点待ち時間、停止回数、旅行時間、遅延 |
+| service permissions | 現在の管理対象allow | deliveryを除外 | delivery利用可能edge、到達可能顧客、経路距離 |
+| 専用バス道路 | bus専用で保持 | ネットワークから除外 | bus利用可能edge、配送車進入違反、接続成分 |
+| `track` | 除外 | 明示的なmotor_vehicle根拠があるものだけ保持 | 接続成分、到達可能顧客、経路距離 |
+| 未解決属性 | 変換前停止 | structural profile限定の明示的placeholder | fallback混入、方向差、容量差、旅行時間差 |
+
+各指標`M`について、基準値が0でなければ`abs(M_alternative - M_baseline) / abs(M_baseline)`を相対変化として報告する。基準値が0の場合は相対変化を未定義とし、絶対差を報告する。「影響が小さい」と判定する数値閾値は、根拠とともに結果確認前に別途登録する。閾値が未登録の間は、相対変化が小さいという合否判定を行わない。
+
+### 10.3 計算機実験における設定の固定・検証方針
+
+本研究は、すべての設定値に唯一の正解が存在するとは仮定しない。公式実装の既定値、標準ベンチマーク、先行研究、対象データからの導出値、または研究目的に基づいて事前定義した値から基準設定を選び、採用理由、版、適用範囲および代替条件を開示する。基準設定に求めるのは東京に対する真値であることではなく、第三者が同じ条件を再構成でき、研究上の仮定と観測値を区別できることである。
+
+今回のXMLおよびSUMOネットワーク設定には、次の手順を適用する。
+
+1. 研究目的と評価対象を定義する。
+2. 基準設定、比較する代替設定、評価指標および判定閾値を、主要結果の確認前に固定する。
+3. 設定ファイル、入力、前処理、コマンド、ソフトウェア版、seed、実行環境および出力評価方法を保存する。
+4. Verificationにより、実装が意図した仕様どおり動くことを自動テストとvalidatorで確認する。
+5. Validationにより、研究で主張する現実対象をモデルが必要な範囲で表現しているかを独立した資料または観測と比較する。
+6. 結果への影響が大きい可能性があり、自然な値が一意でなく、研究者判断を含み、結論を変え得る設定に限定して感度分析またはrobustness checkを行う。
+7. 基準条件と事前登録した代替条件の結果を、都合のよい条件だけ選ばず報告する。
+
+VerificationとValidationを混同しない。前者には、速度単位変換、車線数、方向、道路ホワイトリスト、vClass permissions、未解決属性の停止、fixtureの正式実験からの隔離を含める。後者には、道路延長・道路種別構成・接続性、主要道路の分類、配送地点の到達可能性、および主要地点間の距離・旅行時間が極端に不自然でないことの確認を含める。テストが通ることだけを、東京交通の再現性の証拠とはしない。
+
+本研究の現段階の主張は「東京の公開データを基礎として構成した固定的な評価ネットワーク」に限定する。「東京交通を忠実に再現した」と主張する場合は、車線数・速度分布、交通量、旅行時間、渋滞遅延等について、較正用データと独立検証用データを分離した追加Validationを要求する。
+
+感度分析は設定値を変えたときの結果依存性を調べるものとし、ablation studyは構成要素を除いたときの寄与を調べるものとして区別する。道路ホワイトリスト、配送車permissionsおよび`priority`は前者の主要対象とする。fixtureのIDや合成座標は正式実験へ入らないため感度分析の対象とせず、意図した境界条件を検査できることをVerificationで示す。validatorの有無を比較する場合は性能条件ではなく、品質保証機構の必要性を確認するablationとして扱う。
+
+記録の分担は次のとおりとする。
+
+| 場所 | 記録内容 |
+|---|---|
+| 論文本文 | 結論に重要な基準設定、採用理由、主要な感度分析および妥当性の制限 |
+| 論文付録 | 設定一覧、代替条件、追加結果および詳細な品質指標 |
+| リポジトリ | XML、機械可読設定、コード、validator、fixture、manifestおよび来歴 |
+| README | 必要環境、再実行手順、正本への導線および現在の実装状態 |
+
+この方針は、設定の恣意性をゼロと主張するものではない。設定選択を追跡可能にし、実装誤りを検出し、主要な判断に対する結果の頑健性と研究主張の適用範囲を示すためのものである。
 
 ## 11. 感度分析と古典・QAOA比較
 
@@ -357,6 +456,15 @@ docker compose run --rm analysis \
 ## 15. 参照先
 
 - SUMO OSM import: <https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html>
+- OSM `oneway`: <https://wiki.openstreetmap.org/wiki/Key:oneway>
+- OSM `access`: <https://wiki.openstreetmap.org/wiki/Key:access>
+- OSM `lanes`: <https://wiki.openstreetmap.org/wiki/Key:lanes>
+- OSM `maxspeed`: <https://wiki.openstreetmap.org/wiki/Key:maxspeed>
+- NeurIPS Paper Checklist: <https://neurips.cc/public/guides/PaperChecklist>
+- ACM Artifact Review and Badging: <https://reviewers.acm.org/training-course/artifact-review-and-badging>
+- IEEE Research Reproducibility: <https://journals.ieeeauthorcenter.ieee.org/create-your-ieee-journal-article/research-reproducibility/>
+- IEEE 1012 System, Software, and Hardware Verification and Validation: <https://standards.ieee.org/ieee/1012/7324/>
+- ACM SIGSOFT Empirical Standards: <https://www2.sigsoft.org/EmpiricalStandards/about/>
 - JARTICオープンデータ: <https://www.jartic.or.jp/service/opendata/>
 - JARTIC交通規制情報説明書: <https://www.jartic.or.jp/d/opendata/typeD_kisei_73.pdf>
 - 令和3年度全国道路・街路交通情勢調査: <https://www.mlit.go.jp/road/census/r3/index.html>

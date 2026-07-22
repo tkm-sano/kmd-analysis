@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "artifact_common.schema.json",
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "relative_path": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"},
+    "identity": {
+      "type": "object",
+      "required": ["artifact_type", "schema_version", "config_id", "config_version"],
+      "properties": {
+        "artifact_type": {"type": "string", "minLength": 1},
+        "schema_version": {"type": "integer", "minimum": 1},
+        "config_id": {"type": "string", "pattern": "^ota_ward_sumo_network_v[0-9]+$"},
+        "config_version": {"type": "integer", "minimum": 1}
+      }
+    },
+    "file_ref": {
+      "type": "object",
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"$ref": "#/$defs/relative_path"},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      },
+      "additionalProperties": false
+    },
+    "failure": {
+      "type": "object",
+      "required": ["code", "message", "component", "formal_blocker"],
+      "properties": {
+        "code": {"type": "string", "pattern": "^(RS|PM|TLS|BLD|PA)[0-9]{3}$"},
+        "message": {"type": "string", "minLength": 1},
+        "component": {"enum": ["resolver", "permission_materializer", "tls_review", "final_build", "post_build_audit"]},
+        "formal_blocker": {"const": true},
+        "location": {"type": "string"},
+        "context": {"type": "object"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

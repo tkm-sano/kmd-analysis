@@ -1,0 +1,47 @@
+{
+  "artifact_type": "permission_expectations",
+  "schema_version": 2,
+  "config_id": "ota_ward_sumo_network_v14",
+  "config_version": 14,
+  "typemap": {
+    "path": "reproducibility/config/traffic_simulation/osm_tokyo_motorized.typ.xml",
+    "policy_id": "tokyo_motorized_v1",
+    "sha256": "4e4273a5a73b8d1298751aeee141a387dc6a1524d64ed8ddd704cae8db0af590"
+  },
+  "governed_vclasses": [
+    "bus",
+    "coach",
+    "delivery",
+    "moped",
+    "motorcycle",
+    "passenger",
+    "taxi",
+    "truck"
+  ],
+  "positive_input_sha256": "6f709685d94f95b17720517cf0c524481ce3dd470242286600c439d2127500c4",
+  "positive_permissions": {
+    "100": {"forward": [["bus"]]},
+    "200": {"forward": [["delivery"]]},
+    "300": {"forward": [[], ["bus", "coach", "delivery", "moped", "motorcycle", "passenger", "taxi", "truck"]]},
+    "400": {"forward": [[], ["bus", "coach", "delivery", "moped", "motorcycle", "passenger", "taxi", "truck"]]},
+    "500": {"forward": [["bus", "coach", "delivery", "moped", "motorcycle", "passenger", "taxi", "truck"]]}
+  },
+  "source_access_tags": {
+    "100": ["access", "bus"],
+    "200": ["delivery", "motor_vehicle"],
+    "300": ["access:lanes"],
+    "400": ["vehicle:lanes"],
+    "500": []
+  },
+  "bidirectional_permissions": {
+    "700": {
+      "forward": [["bus", "coach", "delivery", "moped", "motorcycle", "passenger", "taxi", "truck"], []],
+      "backward": [[], ["bus", "coach", "delivery", "moped", "motorcycle", "passenger", "taxi", "truck"]]
+    }
+  },
+  "negative": {
+    "complete": false,
+    "blocker_codes": ["RS003", "RS003"],
+    "way_count": 0
+  }
+}

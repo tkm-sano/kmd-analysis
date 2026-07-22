@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "materialization_summary.schema.json",
+  "allOf": [
+    {"$ref": "artifact_common.schema.json#/$defs/identity"},
+    {
+      "type": "object",
+      "required": ["artifact_type", "schema_version", "config_id", "config_version", "status", "audit", "outputs", "counts", "failures"],
+      "properties": {
+        "artifact_type": {"const": "materialization_summary"},
+        "schema_version": {"const": 1},
+        "config_id": {"type": "string"},
+        "config_version": {"type": "integer"},
+        "status": {"enum": ["passed", "failed"]},
+        "audit": {"$ref": "artifact_common.schema.json#/$defs/file_ref"},
+        "outputs": {"type": "array", "items": {"$ref": "artifact_common.schema.json#/$defs/file_ref"}},
+        "counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "failures": {"type": "array", "items": {"$ref": "artifact_common.schema.json#/$defs/failure"}}
+      },
+      "additionalProperties": false
+    }
+  ],
+  "if": {"properties": {"status": {"const": "passed"}}},
+  "then": {"properties": {"outputs": {"minItems": 2}, "failures": {"maxItems": 0}}},
+  "else": {"properties": {"outputs": {"maxItems": 0}, "failures": {"minItems": 1}}}
+}

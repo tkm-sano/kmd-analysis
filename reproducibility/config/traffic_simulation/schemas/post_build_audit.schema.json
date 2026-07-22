@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "post_build_audit.schema.json",
+  "allOf": [
+    {"$ref": "artifact_common.schema.json#/$defs/identity"},
+    {
+      "type": "object",
+      "required": ["artifact_type", "schema_version", "config_id", "config_version", "run_id", "status", "formal_network_accepted", "inputs", "checks", "zero_counts", "thresholds", "warning_counts", "failures"],
+      "properties": {
+        "artifact_type": {"const": "post_build_audit"},
+        "schema_version": {"const": 1},
+        "config_id": {"type": "string"},
+        "config_version": {"type": "integer"},
+        "run_id": {"type": "string", "minLength": 1},
+        "status": {"enum": ["passed", "failed"]},
+        "formal_network_accepted": {"type": "boolean"},
+        "inputs": {"type": "array", "minItems": 4, "items": {"$ref": "artifact_common.schema.json#/$defs/file_ref"}},
+        "checks": {"type": "object", "additionalProperties": {"enum": ["passed", "failed", "not_applicable"]}},
+        "zero_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "thresholds": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["metric", "registered", "passed"],
+            "properties": {
+              "metric": {"type": "string"},
+              "registered": {"type": "boolean"},
+              "passed": {"type": "boolean"}
+            },
+            "additionalProperties": false
+          }
+        },
+        "warning_counts": {
+          "type": "object",
+          "required": ["BLOCKING", "ACKNOWLEDGED", "INFORMATIONAL", "UNCLASSIFIED"],
+          "properties": {
+            "BLOCKING": {"type": "integer", "minimum": 0},
+            "ACKNOWLEDGED": {"type": "integer", "minimum": 0},
+            "INFORMATIONAL": {"type": "integer", "minimum": 0},
+            "UNCLASSIFIED": {"type": "integer", "minimum": 0}
+          },
+          "additionalProperties": false
+        },
+        "failures": {"type": "array", "items": {"$ref": "artifact_common.schema.json#/$defs/failure"}}
+      },
+      "additionalProperties": false
+    }
+  ],
+  "if": {"properties": {"formal_network_accepted": {"const": true}}},
+  "then": {
+    "properties": {
+      "status": {"const": "passed"},
+      "failures": {"maxItems": 0},
+      "warning_counts": {
+        "properties": {
+          "BLOCKING": {"const": 0},
+          "UNCLASSIFIED": {"const": 0}
+        }
+      }
+    }
+  },
+  "else": {"properties": {"status": {"const": "failed"}, "failures": {"minItems": 1}}}
+}

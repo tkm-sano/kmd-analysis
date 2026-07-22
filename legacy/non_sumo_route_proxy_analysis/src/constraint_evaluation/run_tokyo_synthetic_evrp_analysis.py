@@ -66,6 +66,7 @@ from validation_utils import (
 
 
 T = TypeVar("T")
+ARCHIVE_RELATIVE_ROOT = Path("legacy/non_sumo_route_proxy_analysis")
 
 
 def parse_args() -> argparse.Namespace:
@@ -136,7 +137,7 @@ class AnalysisPipeline:
         self.root = root
         self.args = args
         self.run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-        self.outputs = root / "outputs"
+        self.outputs = root / ARCHIVE_RELATIVE_ROOT / "reproducibility/outputs"
         self.data_root = self.outputs / "data"
         self.table_csv = self.outputs / "tables" / "csv"
         self.validation = self.outputs / "validation"
@@ -233,7 +234,8 @@ def main() -> None:
     pipeline = AnalysisPipeline(root, args)
     pipeline.prepare()
     assumptions = BaselineAssumptions()
-    input_dir = root / "data" / "processed" / "evrp_constraint_gap_inputs"
+    archive_root = root / ARCHIVE_RELATIVE_ROOT
+    input_dir = archive_root / "data" / "processed" / "evrp_constraint_gap_inputs"
 
     inputs: dict[str, pd.DataFrame] = {}
     input_inventory: list[dict[str, object]] = []
@@ -241,14 +243,14 @@ def main() -> None:
     def validate_inputs() -> None:
         specifications = {
             "mesh": {
-                "path": root / "03_data/processed/413_20260705_estat_tokyo_mesh_population_cells.csv",
+                "path": root / "03_data/processed/estat_tokyo_mesh_population_cells.csv",
                 "required": ["mesh_code", "total_population"],
                 "numeric": ["mesh_code", "total_population"],
                 "keys": ["mesh_code"],
                 "role": "Population-weighted synthetic customer-location proxy",
             },
             "chargers": {
-                "path": root / "03_data/processed/428_20260705_open_charge_map_tokyo_boundary_clipped_connections.csv",
+                "path": root / "03_data/processed/open_charge_map_tokyo_boundary_clipped_connections.csv",
                 "required": [
                     "ocm_id",
                     "connection_id",
@@ -265,14 +267,14 @@ def main() -> None:
                 "role": "Open Charge Map candidate connection geography and reported attributes",
             },
             "depots": {
-                "path": input_dir / "419_20260711_depot_candidates_public_proxy_snapshot.csv",
+                "path": input_dir / "depot_candidates_public_proxy_snapshot.csv",
                 "required": ["scenario_depot_id", "latitude", "longitude", "limitation"],
                 "numeric": ["latitude", "longitude"],
                 "keys": ["scenario_depot_id"],
                 "role": "Public logistics-facility depot-candidate proxy snapshot",
             },
             "vehicles": {
-                "path": input_dir / "423_20260711_vehicle_specs_public_source_snapshot.csv",
+                "path": input_dir / "vehicle_specs_public_source_snapshot.csv",
                 "required": [
                     "scenario_vehicle_id",
                     "vehicle_model",
@@ -287,7 +289,7 @@ def main() -> None:
                 "role": "Manufacturer-specification vehicle scenario snapshot",
             },
             "parameters": {
-                "path": input_dir / "418_20260711_analysis_parameters.csv",
+                "path": input_dir / "analysis_parameters.csv",
                 "required": ["parameter", "low", "base", "high", "unit", "evidence_status", "source_or_rationale"],
                 "numeric": [],
                 "keys": ["parameter"],
@@ -301,14 +303,14 @@ def main() -> None:
                 "role": "Synthetic demand/service generation distributions",
             },
             "quantum_evidence": {
-                "path": input_dir / "421_20260711_quantum_vrp_evidence_registry.csv",
+                "path": input_dir / "quantum_vrp_evidence_registry.csv",
                 "required": ["reference_id", "paper_title", "authors", "year", "doi", "url", "page_or_section"],
                 "numeric": ["year"],
                 "keys": ["reference_id"],
                 "role": "Conservative local-note quantum-VRP evidence registry",
             },
             "provenance": {
-                "path": input_dir / "420_20260711_input_provenance.csv",
+                "path": input_dir / "input_provenance.csv",
                 "required": ["input_id", "canonical_path", "sha256", "evidence_status", "limitation"],
                 "numeric": [],
                 "keys": ["input_id"],
@@ -353,7 +355,7 @@ def main() -> None:
                 "step": "Population mesh",
                 "mode": "Validated processed-data fallback",
                 "raw_source_status": "Data unavailable in reproducible run (macOS dataless placeholder at audit time)",
-                "processed_input": "03_data/processed/413_20260705_estat_tokyo_mesh_population_cells.csv",
+                "processed_input": "03_data/processed/estat_tokyo_mesh_population_cells.csv",
                 "result": "Readable and schema-validated",
                 "limitation": "Raw-to-processed regeneration was not executed.",
             },
@@ -361,7 +363,7 @@ def main() -> None:
                 "step": "Charger candidates",
                 "mode": "Validated processed-data fallback",
                 "raw_source_status": "Data unavailable in reproducible run (macOS dataless placeholder at audit time)",
-                "processed_input": "03_data/processed/428_20260705_open_charge_map_tokyo_boundary_clipped_connections.csv",
+                "processed_input": "03_data/processed/open_charge_map_tokyo_boundary_clipped_connections.csv",
                 "result": "Readable and schema-validated",
                 "limitation": "Candidate attributes have substantial missingness; availability is not established.",
             },

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tls_review_manifest.schema.json",
+  "allOf": [
+    {"$ref": "artifact_common.schema.json#/$defs/identity"},
+    {
+      "type": "object",
+      "required": ["artifact_type", "schema_version", "config_id", "config_version", "state", "permission_connections", "reviewed_nodes", "reviewer", "reviewed_at", "evidence", "tls_programs", "failures"],
+      "properties": {
+        "artifact_type": {"const": "tls_review_manifest"},
+        "schema_version": {"const": 1},
+        "config_id": {"type": "string"},
+        "config_version": {"type": "integer"},
+        "state": {"enum": ["not_required", "review_required", "reviewed", "invalidated", "rejected"]},
+        "permission_connections": {"$ref": "artifact_common.schema.json#/$defs/file_ref"},
+        "reviewed_nodes": {"$ref": "artifact_common.schema.json#/$defs/file_ref"},
+        "reviewed_connections": {"$ref": "artifact_common.schema.json#/$defs/file_ref"},
+        "reviewed_tls": {"$ref": "artifact_common.schema.json#/$defs/file_ref"},
+        "reviewer": {"type": "string", "minLength": 1},
+        "reviewed_at": {"type": "string", "format": "date-time"},
+        "evidence": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "tls_programs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["tls_id", "controlled_connection_count", "link_indices", "phase_state_lengths", "timing_provenance"],
+            "properties": {
+              "tls_id": {"type": "string", "minLength": 1},
+              "controlled_connection_count": {"type": "integer", "minimum": 1},
+              "link_indices": {"type": "array", "uniqueItems": true, "items": {"type": "integer", "minimum": 0}},
+              "phase_state_lengths": {"type": "array", "minItems": 1, "items": {"type": "integer", "minimum": 1}},
+              "timing_provenance": {"enum": ["initialized", "observed", "calibrated"]}
+            },
+            "additionalProperties": false
+          }
+        },
+        "failures": {"type": "array", "items": {"$ref": "artifact_common.schema.json#/$defs/failure"}}
+      },
+      "additionalProperties": false
+    }
+  ],
+  "if": {"properties": {"state": {"const": "reviewed"}}},
+  "then": {"required": ["reviewed_connections", "reviewed_tls"], "properties": {"failures": {"maxItems": 0}, "tls_programs": {"minItems": 1}}},
+  "else": {
+    "if": {"properties": {"state": {"const": "not_required"}}},
+    "then": {"properties": {"tls_programs": {"maxItems": 0}, "failures": {"maxItems": 0}}},
+    "else": {"properties": {"failures": {"minItems": 1}}}
+  }
+}

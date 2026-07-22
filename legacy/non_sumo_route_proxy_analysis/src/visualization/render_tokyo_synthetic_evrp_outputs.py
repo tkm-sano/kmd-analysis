@@ -42,6 +42,7 @@ RESEARCH_NOTE = (
     "観測失敗率を示すものではない。各数値は車両性能、顧客需要、配送可能時間、充電条件、"
     "およびルート生成方法の仮定に依存する。"
 )
+ARCHIVE_RELATIVE_ROOT = Path("legacy/non_sumo_route_proxy_analysis")
 
 
 def parse_args() -> argparse.Namespace:
@@ -90,10 +91,10 @@ class Renderer:
 
     def __init__(self, root: Path, reproduce: bool) -> None:
         self.root = root
-        self.outputs = root / "outputs"
-        self.figure_png = self.outputs / "06_outputs/figures/active/png"
-        self.figure_svg = self.outputs / "06_outputs/figures/active/svg"
-        self.figure_source = self.outputs / "06_outputs/figures/active/source_data"
+        self.outputs = root / ARCHIVE_RELATIVE_ROOT / "reproducibility/outputs"
+        self.figure_png = self.outputs / "figures/active/png"
+        self.figure_svg = self.outputs / "figures/active/svg"
+        self.figure_source = self.outputs / "figures/active/source_data"
         self.table_png = self.outputs / "tables/png"
         self.table_svg = self.outputs / "tables/svg"
         self.table_csv = self.outputs / "tables/csv"
@@ -232,7 +233,9 @@ def _render_tables(renderer: Renderer) -> None:
         ),
     ]
     for stem, question, columns, font_size in table_specs:
-        raw = renderer.read(f"06_outputs/tables/csv/{stem}.csv")
+        raw = renderer.read(
+            f"legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/tables/csv/{stem}.csv"
+        )
         display = raw[columns].copy()
         if stem == "table_01_scenario_design":
             display["route_generation_method"] = "KMeans + nearest-neighbor proxy"
@@ -760,51 +763,51 @@ def main() -> None:
     renderer = Renderer(root, args.reproduce)
 
     configurations = renderer.read(
-        "03_data/processed/scenario/446_20260711_scenario_configurations.csv",
+        "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/scenario/446_20260711_scenario_configurations.csv",
         ["scenario_id", "customer_count", "vehicle_count", "charger_condition"],
     )
     customers = renderer.read(
-        "03_data/processed/scenario/447_20260711_synthetic_customers.csv",
+        "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/scenario/447_20260711_synthetic_customers.csv",
         ["customer_configuration_id", "latitude", "longitude", "demand_kg"],
     )
     edges = renderer.read(
-        "03_data/processed/route_proxy/438_20260711_route_proxy_edges.csv",
+        "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/route_proxy/438_20260711_route_proxy_edges.csv",
         ["base_route_proxy_id", "proxy_edge_order", "from_latitude", "to_latitude"],
     )
     routes = renderer.read(
-        "03_data/processed/route_proxy/440_20260711_route_proxy_results.csv",
+        "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/route_proxy/440_20260711_route_proxy_results.csv",
         ["scenario_route_proxy_id", "route_proxy_distance_km", "charger_condition"],
     )
     constraint_summary = renderer.read(
-        "03_data/processed/constraints/407_20260711_constraint_summary.csv",
+        "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/constraints/407_20260711_constraint_summary.csv",
         ["constraint_name", "route_weighted_unmet_rate"],
     )
     case_rates = renderer.read(
-        "03_data/processed/constraints/405_20260711_constraint_case_rates.csv",
+        "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/constraints/405_20260711_constraint_case_rates.csv",
         ["scenario_id", "seed", "constraint_name", "case_unmet_rate"],
     )
     scenario_summary = renderer.read(
-        "03_data/processed/constraints/scenario_407_20260711_constraint_summary.csv",
+        "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/constraints/scenario_407_20260711_constraint_summary.csv",
         ["scenario_id", "constraint_name", "confidence_interval_lower", "confidence_interval_upper"],
     )
     sensitivity = renderer.read(
-        "03_data/processed/constraints/411_20260711_sensitivity_summary.csv",
+        "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/constraints/411_20260711_sensitivity_summary.csv",
         ["parameter", "level", "constraint_name", "unmet_rate_change_from_base"],
     )
     chargers = renderer.read(
-        "03_data/processed/charger_access/403_20260711_eligible_charger_candidates.csv",
+        "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/charger_access/403_20260711_eligible_charger_candidates.csv",
         ["charger_candidate_id", "charger_condition", "latitude", "longitude"],
     )
     evidence = renderer.read(
-        "03_data/processed/quantum_gap/434_20260711_quantum_vrp_evidence.csv",
+        "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/quantum_gap/434_20260711_quantum_vrp_evidence.csv",
         ["reference_id", "customer_scale_coverage", "capacity_coverage"],
     )
     integrated = renderer.read(
-        "06_outputs/tables/csv/691_20260711_table_04_integrated_research_summary.csv",
+        "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/tables/csv/691_20260711_table_04_integrated_research_summary.csv",
         ["constraint_or_requirement", "route_weighted_unmet_rate", "evidence_gap"],
     )
     limitations = renderer.read(
-        "03_data/processed/scenario/442_20260711_assumptions_and_limitations.csv", ["topic", "limitation"]
+        "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/scenario/442_20260711_assumptions_and_limitations.csv", ["topic", "limitation"]
     )
 
     _render_tables(renderer)

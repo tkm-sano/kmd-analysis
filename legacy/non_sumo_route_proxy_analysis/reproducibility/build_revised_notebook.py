@@ -9,7 +9,8 @@ from pathlib import Path
 import nbformat as nbf
 
 HERE = Path(__file__).resolve().parent
-ROOT = HERE.parent
+ROOT = HERE.parents[2]
+ARCHIVE_ROOT = HERE.parent
 TARGET = HERE / "quantum_transport_reproducibility_audit_revised.ipynb"
 sys.path.insert(0, str(HERE / "src"))
 from localize_notebook_ja import localize_markdown_cells
@@ -25,15 +26,15 @@ input_paths = {
     "source_deck": ROOT / "07_presentations" / "current" / "0712_MDR2_v2_enriched_appendix.pptx",
     "population_mesh": ROOT / "03_data/processed/estat_tokyo_mesh_population_cells.csv",
     "charger_connections": ROOT / "03_data/processed/open_charge_map_tokyo_boundary_clipped_connections.csv",
-    "depot_candidates": ROOT / "03_data/processed/evrp_constraint_gap_inputs/depot_candidates_public_proxy_snapshot.csv",
-    "vehicle_specs": ROOT / "03_data/processed/evrp_constraint_gap_inputs/vehicle_specs_public_source_snapshot.csv",
-    "analysis_parameters": ROOT / "03_data/processed/evrp_constraint_gap_inputs/analysis_parameters.csv",
-    "quantum_evidence": ROOT / "03_data/processed/evrp_constraint_gap_inputs/quantum_vrp_evidence_registry.csv",
+    "depot_candidates": ARCHIVE_ROOT / "data/processed/evrp_constraint_gap_inputs/depot_candidates_public_proxy_snapshot.csv",
+    "vehicle_specs": ARCHIVE_ROOT / "data/processed/evrp_constraint_gap_inputs/vehicle_specs_public_source_snapshot.csv",
+    "analysis_parameters": ARCHIVE_ROOT / "data/processed/evrp_constraint_gap_inputs/analysis_parameters.csv",
+    "quantum_evidence": ARCHIVE_ROOT / "data/processed/evrp_constraint_gap_inputs/quantum_vrp_evidence_registry.csv",
     "circuit_resources": ROOT / "02_literature/extraction_tables/circuit_resources.csv",
     "paper_registry": ROOT / "02_literature/references/papers.csv",
-    "stored_customers": ROOT / "03_data/processed/scenario/synthetic_customers.csv",
-    "stored_routes": ROOT / "03_data/processed/route_proxy/route_proxy_results.csv",
-    "stored_summary": ROOT / "03_data/processed/constraints/constraint_summary.csv",
+    "stored_customers": ARCHIVE_ROOT / "data/processed/scenario/synthetic_customers.csv",
+    "stored_routes": ARCHIVE_ROOT / "data/processed/route_proxy/route_proxy_results.csv",
+    "stored_summary": ARCHIVE_ROOT / "data/processed/constraints/constraint_summary.csv",
 }
 expected_hashes = {key: sha256(path) for key, path in input_paths.items()}
 
@@ -369,14 +370,14 @@ import matplotlib.pyplot as plt
 
 START_TIME=datetime.now(timezone.utc)
 candidate=Path.cwd().resolve()
-support_candidates=[candidate/'src',candidate/'reproducibility/src',candidate.parent/'reproducibility/src']
+support_candidates=[candidate/'src',candidate/'legacy/non_sumo_route_proxy_analysis/reproducibility/src',candidate.parent/'src']
 support_dir=next((p for p in support_candidates if (p/'audit_support.py').is_file()),None)
 if support_dir is None:
     raise FileNotFoundError(f'audit_support.py not found from {{candidate}}; checked {{support_candidates}}')
 sys.path.insert(0,str(support_dir))
 from audit_support import *
 ROOT=find_repository_root(candidate)
-HERE=ROOT/'reproducibility'
+HERE=ROOT/'legacy/non_sumo_route_proxy_analysis/reproducibility'
 OUTPUTS=HERE/'outputs'
 FIGURES=OUTPUTS/'figures'; TABLES=OUTPUTS/'tables'; LOGS=OUTPUTS/'logs'; MANIFESTS=OUTPUTS/'manifests'; SYNTH=OUTPUTS/'synthesized'
 for directory in [FIGURES,TABLES,LOGS,MANIFESTS,SYNTH]: directory.mkdir(parents=True,exist_ok=True)
@@ -385,15 +386,15 @@ required_files={{
  'source_deck':(ROOT/'07_presentations/current/0712_MDR2_v2_enriched_appendix.pptx',None),
  'population_mesh':(ROOT/'03_data/processed/estat_tokyo_mesh_population_cells.csv',['mesh_code','total_population']),
  'charger_connections':(ROOT/'03_data/processed/open_charge_map_tokyo_boundary_clipped_connections.csv',['connection_id','latitude','longitude','connection_type','power_kw']),
- 'depot_candidates':(ROOT/'03_data/processed/evrp_constraint_gap_inputs/depot_candidates_public_proxy_snapshot.csv',['scenario_depot_id','latitude','longitude','selection_rule']),
- 'vehicle_specs':(ROOT/'03_data/processed/evrp_constraint_gap_inputs/vehicle_specs_public_source_snapshot.csv',['scenario_vehicle_id','battery_kwh','catalog_range_km','payload_kg']),
- 'analysis_parameters':(ROOT/'03_data/processed/evrp_constraint_gap_inputs/analysis_parameters.csv',['parameter','low','base','high','unit']),
- 'quantum_evidence':(ROOT/'03_data/processed/evrp_constraint_gap_inputs/quantum_vrp_evidence_registry.csv',['reference_id','paper_title','url']),
+ 'depot_candidates':(ROOT/'legacy/non_sumo_route_proxy_analysis/data/processed/evrp_constraint_gap_inputs/depot_candidates_public_proxy_snapshot.csv',['scenario_depot_id','latitude','longitude','selection_rule']),
+ 'vehicle_specs':(ROOT/'legacy/non_sumo_route_proxy_analysis/data/processed/evrp_constraint_gap_inputs/vehicle_specs_public_source_snapshot.csv',['scenario_vehicle_id','battery_kwh','catalog_range_km','payload_kg']),
+ 'analysis_parameters':(ROOT/'legacy/non_sumo_route_proxy_analysis/data/processed/evrp_constraint_gap_inputs/analysis_parameters.csv',['parameter','low','base','high','unit']),
+ 'quantum_evidence':(ROOT/'legacy/non_sumo_route_proxy_analysis/data/processed/evrp_constraint_gap_inputs/quantum_vrp_evidence_registry.csv',['reference_id','paper_title','url']),
  'circuit_resources':(ROOT/'02_literature/extraction_tables/circuit_resources.csv',['paper_id','problem','instance_or_scope','circuit_width_qubits','source_location']),
  'paper_registry':(ROOT/'02_literature/references/papers.csv',['id','title','authors','year','problem','url','doi']),
- 'stored_customers':(ROOT/'03_data/processed/scenario/synthetic_customers.csv',['customer_configuration_id','seed','customer_id']),
- 'stored_routes':(ROOT/'03_data/processed/route_proxy/route_proxy_results.csv',['scenario_id','seed','route_proxy_distance_km']),
- 'stored_summary':(ROOT/'03_data/processed/constraints/constraint_summary.csv',['constraint_name','route_weighted_unmet_rate']),
+ 'stored_customers':(ROOT/'legacy/non_sumo_route_proxy_analysis/data/processed/scenario/synthetic_customers.csv',['customer_configuration_id','seed','customer_id']),
+ 'stored_routes':(ROOT/'legacy/non_sumo_route_proxy_analysis/data/processed/route_proxy/route_proxy_results.csv',['scenario_id','seed','route_proxy_distance_km']),
+ 'stored_summary':(ROOT/'legacy/non_sumo_route_proxy_analysis/data/processed/constraints/constraint_summary.csv',['constraint_name','route_weighted_unmet_rate']),
 }}
 required_modules=['numpy','pandas','scipy','sklearn','matplotlib','geopandas','shapely','pyproj','requests','pydantic','pptx','nbformat','pytest']
 preflight=preflight_check(ROOT,OUTPUTS,required_files,required_modules)
@@ -575,7 +576,7 @@ display(parameter_registry)""",
 md("12. Scenario Design", "SCENARIO-DESIGN-01", protocol("construct the factorial design", "frozen inputs and registered parameters", "charger screening, vehicle selection, Cartesian product", "27 scenario structures", "unique IDs and factor completeness", "scenario settings are analytical assumptions"))
 code(
     "SOURCE-IMPORTS-01",
-    """for directory in [ROOT/'05_src/scenario_generation',ROOT/'05_src/sensitivity']:
+    """for directory in [ROOT/'legacy/non_sumo_route_proxy_analysis/src/scenario_generation',ROOT/'legacy/non_sumo_route_proxy_analysis/src/sensitivity']:
     if str(directory) not in sys.path: sys.path.insert(0,str(directory))
 from scenario_utils import BaselineAssumptions, prepare_population_mesh, generate_synthetic_customers, build_charger_condition_definitions, build_eligible_charger_candidates, select_baseline_vehicle, build_analysis_configurations, construct_route_proxies, evaluate_routes_by_condition, EARTH_RADIUS_KM
 from monte_carlo_utils import build_constraint_evaluations, build_case_rates, cluster_bootstrap_constraint_summary, run_oat_sensitivity

@@ -61,7 +61,8 @@ def main() -> None:
     """Write a clean, deterministic notebook source file."""
 
     root = find_repository_root(Path(__file__).resolve())
-    output = root / "04_notebooks/500_20260711_tokyo_synthetic_evrp_constraint_gap_analysis.ipynb"
+    archive_root = root / "legacy/non_sumo_route_proxy_analysis"
+    output = archive_root / "reproducibility/tokyo_synthetic_evrp_constraint_gap_analysis.ipynb"
     notebook = nbf.v4.new_notebook()
     notebook.metadata = {
         "kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"},
@@ -263,9 +264,9 @@ print(f"REPRODUCE_ALL={REPRODUCE_ALL}; RUN_SCRIPTS={RUN_SCRIPTS}")"""
             """input_specs = {
     "population_mesh": (ROOT / "03_data/processed/413_20260705_estat_tokyo_mesh_population_cells.csv", ["mesh_code", "total_population"]),
     "charger_connections": (ROOT / "03_data/processed/428_20260705_open_charge_map_tokyo_boundary_clipped_connections.csv", ["connection_id", "latitude", "longitude"]),
-    "depot_candidates": (ROOT / "03_data/processed/evrp_constraint_gap_inputs/419_20260711_depot_candidates_public_proxy_snapshot.csv", ["scenario_depot_id", "latitude", "longitude"]),
-    "vehicle_specs": (ROOT / "03_data/processed/evrp_constraint_gap_inputs/423_20260711_vehicle_specs_public_source_snapshot.csv", ["scenario_vehicle_id", "battery_kwh", "catalog_range_km"]),
-    "quantum_evidence": (ROOT / "03_data/processed/evrp_constraint_gap_inputs/421_20260711_quantum_vrp_evidence_registry.csv", ["reference_id", "paper_title", "page_or_section"]),
+    "depot_candidates": (ROOT / "legacy/non_sumo_route_proxy_analysis/data/processed/evrp_constraint_gap_inputs/depot_candidates_public_proxy_snapshot.csv", ["scenario_depot_id", "latitude", "longitude"]),
+    "vehicle_specs": (ROOT / "legacy/non_sumo_route_proxy_analysis/data/processed/evrp_constraint_gap_inputs/vehicle_specs_public_source_snapshot.csv", ["scenario_vehicle_id", "battery_kwh", "catalog_range_km"]),
+    "quantum_evidence": (ROOT / "legacy/non_sumo_route_proxy_analysis/data/processed/evrp_constraint_gap_inputs/quantum_vrp_evidence_registry.csv", ["reference_id", "paper_title", "page_or_section"]),
 }
 input_preview = []
 for name, (path, required) in input_specs.items():
@@ -308,7 +309,7 @@ if RUN_SCRIPTS:
         "analysis_csv_generation",
         [
             sys.executable,
-            str(ROOT / "05_src/constraint_evaluation/run_tokyo_synthetic_evrp_analysis.py"),
+            str(ROOT / "legacy/non_sumo_route_proxy_analysis/src/constraint_evaluation/run_tokyo_synthetic_evrp_analysis.py"),
             "--reproduce",
             "--seed-count", str(SEED_COUNT),
             "--bootstrap-iterations", str(BOOTSTRAP_ITERATIONS),
@@ -323,7 +324,7 @@ else:
     STEP_STATUS.append({"step_name": "analysis_csv_generation", "status": "validated_existing", "return_code": 0, "duration_seconds": 0.0, "stdout_log": "Not run", "stderr_log": "Not run", "warning": "", "error": ""})
 
 preprocessing_status = read_csv_checked(
-    ROOT / "03_data/processed/scenario/444_20260711_open_data_preprocessing_status.csv",
+    ROOT / "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/scenario/444_20260711_open_data_preprocessing_status.csv",
     required_columns=["step", "mode", "raw_source_status", "result", "limitation"],
     require_nonempty=True,
 )
@@ -350,7 +351,7 @@ display(preprocessing_status)"""
     cells.append(
         nbf.v4.new_code_cell(
             """scenario_configurations = read_csv_checked(
-    ROOT / "03_data/processed/scenario/446_20260711_scenario_configurations.csv",
+    ROOT / "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/scenario/446_20260711_scenario_configurations.csv",
     required_columns=["scenario_id", "customer_count", "vehicle_count", "charger_condition", "usable_range_km"],
     unique_keys=["scenario_id"],
     require_nonempty=True,
@@ -383,13 +384,13 @@ print(f"Scenario configurations: {len(scenario_configurations)} (expected 27)")"
     cells.append(
         nbf.v4.new_code_cell(
             """customers = read_csv_checked(
-    ROOT / "03_data/processed/scenario/447_20260711_synthetic_customers.csv",
+    ROOT / "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/scenario/447_20260711_synthetic_customers.csv",
     required_columns=["customer_configuration_id", "seed", "customer_id", "latitude", "longitude", "demand_kg", "service_time_min", "evidence_status"],
     unique_keys=["customer_configuration_id", "customer_id"],
     require_nonempty=True,
 )
 randomization = read_csv_checked(
-    ROOT / "03_data/processed/scenario/443_20260711_monte_carlo_randomization_registry.csv",
+    ROOT / "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/scenario/443_20260711_monte_carlo_randomization_registry.csv",
     required_columns=["seed", "customer_locations_randomized", "customer_demands_randomized", "charger_availability_randomized", "speed_randomized"],
     require_nonempty=True,
 )
@@ -419,13 +420,13 @@ print(f"Customer-count-specific configurations: {customers['customer_configurati
     cells.append(
         nbf.v4.new_code_cell(
             """routes = read_csv_checked(
-    ROOT / "03_data/processed/route_proxy/440_20260711_route_proxy_results.csv",
+    ROOT / "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/route_proxy/440_20260711_route_proxy_results.csv",
     required_columns=["scenario_route_proxy_id", "base_route_proxy_id", "haversine_distance_km", "road_adjusted_distance_km", "network_distance_km", "route_proxy_distance_km", "route_proxy_limitation"],
     unique_keys=["scenario_route_proxy_id"],
     require_nonempty=True,
 )
 distance_summary = read_csv_checked(
-    ROOT / "03_data/processed/route_proxy/437_20260711_route_distance_summary.csv",
+    ROOT / "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/route_proxy/437_20260711_route_distance_summary.csv",
     required_columns=["mean", "median", "standard_deviation", "percentile_5", "percentile_95", "maximum", "distance_unmet_rate"],
     require_nonempty=True,
 )
@@ -453,7 +454,7 @@ display(distance_summary)"""
     cells.append(
         nbf.v4.new_code_cell(
             """constraint_summary = read_csv_checked(
-    ROOT / "03_data/processed/constraints/407_20260711_constraint_summary.csv",
+    ROOT / "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/constraints/407_20260711_constraint_summary.csv",
     required_columns=["constraint_name", "route_weighted_unmet_rate", "case_weighted_unmet_rate", "evaluated_route_count", "numerator_definition", "denominator_definition", "evidence_status"],
     require_nonempty=True,
 )
@@ -462,8 +463,8 @@ display(constraint_summary[[
     "confidence_interval_lower", "confidence_interval_upper", "evaluated_route_count",
     "spatial_sensitivity", "evidence_status",
 ]])
-display(read_csv_checked(ROOT / "03_data/processed/constraints/409_20260711_payload_diagnostics.csv", require_nonempty=True))
-display(read_csv_checked(ROOT / "03_data/processed/constraints/412_20260711_time_constraint_diagnostics.csv", require_nonempty=True))"""
+display(read_csv_checked(ROOT / "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/constraints/409_20260711_payload_diagnostics.csv", require_nonempty=True))
+display(read_csv_checked(ROOT / "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/constraints/412_20260711_time_constraint_diagnostics.csv", require_nonempty=True))"""
         )
     )
 
@@ -489,7 +490,7 @@ display(read_csv_checked(ROOT / "03_data/processed/constraints/412_20260711_time
     ROOT / "06_outputs/reports/validation/687_20260711_statistical_validation.csv", require_nonempty=True
 )
 sensitivity = read_csv_checked(
-    ROOT / "03_data/processed/constraints/411_20260711_sensitivity_summary.csv",
+    ROOT / "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/constraints/411_20260711_sensitivity_summary.csv",
     required_columns=["parameter", "level", "constraint_name", "route_weighted_unmet_rate", "unmet_rate_change_from_base"],
     require_nonempty=True,
 )
@@ -521,12 +522,12 @@ display(
     cells.append(
         nbf.v4.new_code_cell(
             """charger_definitions = read_csv_checked(
-    ROOT / "03_data/processed/charger_access/402_20260711_charger_condition_definitions.csv",
+    ROOT / "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/charger_access/402_20260711_charger_condition_definitions.csv",
     required_columns=["charger_condition", "eligible_charger_candidate_count", "maximum_access_distance_km", "condition_definition"],
     require_nonempty=True,
 )
 charger_results = read_csv_checked(
-    ROOT / "03_data/processed/charger_access/404_20260711_route_charger_access_results.csv",
+    ROOT / "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/charger_access/404_20260711_route_charger_access_results.csv",
     required_columns=["charger_geographically_accessible", "charger_arrival_soc_feasible", "charging_assisted_range_feasible", "charging_duration_feasible"],
     require_nonempty=True,
 )
@@ -557,7 +558,7 @@ display(Markdown(
     cells.append(
         nbf.v4.new_code_cell(
             """quantum_evidence = read_csv_checked(
-    ROOT / "03_data/processed/quantum_gap/434_20260711_quantum_vrp_evidence.csv",
+    ROOT / "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/quantum_gap/434_20260711_quantum_vrp_evidence.csv",
     required_columns=["reference_id", "paper_title", "authors", "year", "doi", "url", "page_or_section", "execution_type"],
     require_nonempty=True,
 )
@@ -593,7 +594,7 @@ display(quantum_gap[["evaluation_item", "analysis_importance", "quantum_vrp_cove
 if RUN_SCRIPTS:
     run_step(
         "csv_driven_rendering",
-        [sys.executable, str(ROOT / "05_src/visualization/render_tokyo_synthetic_evrp_outputs.py"), "--reproduce"],
+        [sys.executable, str(ROOT / "legacy/non_sumo_route_proxy_analysis/src/visualization/render_tokyo_synthetic_evrp_outputs.py"), "--reproduce"],
     )
 else:
     if not render_manifest_path.exists():
@@ -634,7 +635,7 @@ display(read_csv_checked(ROOT / "06_outputs/tables/csv/691_20260711_table_04_int
     require_nonempty=True,
 )
 limitations = read_csv_checked(
-    ROOT / "03_data/processed/scenario/442_20260711_assumptions_and_limitations.csv",
+    ROOT / "legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/data/scenario/442_20260711_assumptions_and_limitations.csv",
     required_columns=["topic", "limitation", "status"],
     require_nonempty=True,
 )
@@ -691,7 +692,7 @@ final_manifest = generate_output_manifest(
 
 counts = {
     "table_csv_count": len(list((ROOT / "06_outputs/tables/csv").glob("table_*.csv"))),
-    "table_png_count": len(list((ROOT / "06_outputs/tables/png").glob("table_*.png"))),
+    "table_png_count": len(list((ROOT / "legacy/non_sumo_route_proxy_analysis/outputs/tables/png").glob("table_*.png"))),
     "table_svg_count": len(list((ROOT / "06_outputs/tables/svg").glob("table_*.svg"))),
     "figure_png_count": len(list((ROOT / "06_outputs/06_outputs/figures/active/active/png").glob("figure_*.png"))),
     "figure_svg_count": len(list((ROOT / "06_outputs/06_outputs/figures/active/active/svg").glob("figure_*.svg"))),
