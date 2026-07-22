@@ -9,6 +9,9 @@
     "config_validator",
     "config_id",
     "config_version",
+    "policy_documents",
+    "artifact_schema_registry",
+    "normative_specifications",
     "status"
   ],
   "properties": {
@@ -21,6 +24,21 @@
     },
     "config_id": {"type": "string", "pattern": "^ota_ward_sumo_network_v[0-9]+$"},
     "config_version": {"type": "integer", "minimum": 1},
+    "policy_documents": {
+      "type": "object",
+      "required": ["requirements_traceability"],
+      "additionalProperties": {"$ref": "#/$defs/repository_path"}
+    },
+    "artifact_schema_registry": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"$ref": "#/$defs/repository_path"}
+    },
+    "normative_specifications": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"$ref": "#/$defs/repository_path"}
+    },
     "status": {
       "type": "object",
       "required": [
@@ -69,6 +87,11 @@
     }
   },
   "$defs": {
+    "repository_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    },
     "eligibility": {
       "type": "object",
       "required": ["eligible", "state", "reason"],

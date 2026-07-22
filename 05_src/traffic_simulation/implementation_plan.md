@@ -866,7 +866,7 @@ reproducibility/outputs/traffic_simulation/visualization/
 
 #### 9.5.3 最初に固定する変換規則
 
-次の変換規則を2026年7月18日の初期規則として採用し、2026年7月20日のレビューをv13まで反映した。`sumo_network.yml`を機械可読な正本とし、現行仕様は`network_current_specification.md`に限定する。設定ファイル、自動車系typemap、OSM XML属性resolver、変換前必須属性ゲート、期待permissions監査、permissions期待値JSON、補完分布JSONの生成は実装済みである。一方、SUMO 1.24.0 plain XMLを入出力とするpermissions materializer、lane・connection・TLSの変換後監査、SUMO車両入力validator、実データbuildは未実装である。materializerのファイル形式、OSM lane順からSUMO lane indexへの写像、connection期待集合、permission確定後のTLS review順序はv13で事前固定した。formal build入力準備、formal network受入れ、下流実験準備は別ゲートであり、閉じたホワイトリストと各段階の適格性は固定版fixtureと該当ゲートのruntime検証後にのみ成立する。
+次の変換規則を2026年7月18日の初期規則として採用し、2026年7月22日のレビューをv14まで反映した。`sumo_network.yml`を機械可読な状態・設定の正本、`specifications/`をコンポーネント契約、`schemas/`を成果物形式の正本とする。設定ファイル、自動車系typemap、OSM XML属性resolver、変換前必須属性ゲート、v13形式の期待permissions監査と補完分布JSONは実装済みである。一方、v14 expectation artifactへの移行、exact edge provenance、permissions materializer、TLS Review、Final Build、Post-build Audit、SUMO車両入力validator、実データbuildは未実装である。全規範要件、failure code、fixture catalogue、traceabilityを実装前に固定し、三段階readiness gateのruntime検証後にのみ正式利用を許可する。
 
 ##### 入力形式と左側通行
 

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "failure_report.schema.json",
+  "allOf": [
+    {"$ref": "artifact_common.schema.json#/$defs/identity"},
+    {
+      "type": "object",
+      "required": ["artifact_type", "schema_version", "config_id", "config_version", "component", "failures", "partial_outputs_published", "retained_artifacts", "recovery"],
+      "properties": {
+        "artifact_type": {"const": "failure_report"},
+        "schema_version": {"const": 1},
+        "config_id": {"type": "string"},
+        "config_version": {"type": "integer"},
+        "component": {"enum": ["resolver", "permission_materializer", "tls_review", "final_build", "post_build_audit"]},
+        "failures": {"type": "array", "minItems": 1, "items": {"$ref": "artifact_common.schema.json#/$defs/failure"}},
+        "partial_outputs_published": {"const": false},
+        "retained_artifacts": {"type": "array", "items": {"$ref": "artifact_common.schema.json#/$defs/file_ref"}},
+        "recovery": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  ]
+}

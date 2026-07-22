@@ -2,9 +2,9 @@
 
 ## Status
 
-- Configuration: `ota_ward_sumo_network_v13`
+- Configuration: `ota_ward_sumo_network_v14`
 - Created: 2026-07-18
-- Last updated: 2026-07-20
+- Last updated: 2026-07-22
 - Configuration lineage date: 2026-07-16
 - Runtime permission fixture: failed
 - Formal build input ready: no
@@ -12,7 +12,7 @@
 - Downstream experiment ready: no
 - Specification state: current governed draft; formal execution is not authorized
 
-The machine-readable authority is `reproducibility/config/traffic_simulation/sumo_network.yml`. Its typed state contract is `reproducibility/config/traffic_simulation/sumo_network.schema.json`, and cross-field invariants are enforced by `validate_sumo_network_config.py`. This document contains only currently effective requirements. Historical decisions are kept in `03_data/metadata/acquisition/20260718_sumo_tokyo_motorized_typemap_design.md`.
+The machine-readable authority is `reproducibility/config/traffic_simulation/sumo_network.yml`. Its typed state contract is `reproducibility/config/traffic_simulation/sumo_network.schema.json`, and cross-field invariants are enforced by `validate_sumo_network_config.py`. Normative component contracts are under `05_src/traffic_simulation/specifications`; artifact formats are under `reproducibility/config/traffic_simulation/schemas`. This document is a current-state summary rather than a second normative implementation contract. Historical decisions are kept in `03_data/metadata/acquisition/20260718_sumo_tokyo_motorized_typemap_design.md`.
 
 ## Attribute Mapping
 
@@ -42,13 +42,13 @@ Generated `net.xml` permissions must not be edited. Post-conversion processing i
 
 This materializer and its fixed-SUMO runtime fixture are not implemented. Permission governance therefore remains formal-blocking.
 
-The fixed materializer interface is SUMO 1.24.0 plain XML. A provisional conversion writes `.nod.xml`, lane-expanded `.edg.xml`, `.con.xml` and `.tll.xml`; the materializer writes new `governed_permissions.edg.xml` and `governed_permissions.con.xml` files and never edits the provisional files or final `net.xml` in place. Each lane must carry exactly one OSM way ID through `param key="origId"`. Edge direction is determined from its orientation relative to the normalized OSM node order, never from the sign of a SUMO edge ID.
+The fixed materializer interface is SUMO 1.24.0 plain XML. A provisional conversion writes `.nod.xml`, lane-expanded `.edg.xml`, `.con.xml`, `.tll.xml` and exact `edge_provenance.json`; the materializer writes new `governed_permissions.edg.xml` and `governed_permissions.con.xml` files and never edits provisional files or final `net.xml` in place. Each external lane must carry exactly one OSM way ID through `param key="origId"`. Edge direction comes from exact source-node lineage indices. Coordinate-nearest matching and the sign of a SUMO edge ID are prohibited as formal direction evidence.
 
-Resolver lane positions are OSM left-to-right in the travel direction, while SUMO lane indices are right-to-left. For `n` lanes, resolver position `p` maps to SUMO index `n - 1 - p`. The expected lane allow-set is the intersection of the resolver expectation, the typemap baseline and the governed vClass set. A lane with an empty set is provisionally represented as `disallow="all"` and remains non-drivable; this representation requires the pinned fixture before use. A candidate connection is retained only when the intersection of its from-lane allow-set, to-lane allow-set and any provisional connection restriction is nonempty. Empty intersections are removed and recorded; connections absent from the provisional topology are never synthesized. The pinned left-hand fixture must confirm these rules before real-data use. A mismatch changes the contract and configuration version; it is not repaired after conversion.
+Resolver lane positions are OSM left-to-right as viewed in each respective travel direction, while SUMO lane indices are right-to-left. Forward and backward both use `sumo_index = n - 1 - p`; the Resolver does not reverse backward OSM lists. The expected lane allow-set is the intersection of the resolver expectation, typemap baseline, governed vClasses and effective provisional restriction. A partially empty edge keeps empty lanes as `disallow="all"`; a directed edge whose lanes are all empty is removed with incident connections before TLS review. Connections are explicit lane-to-lane candidates and are never synthesized. The pinned fixture must confirm these rules before real-data use.
 
 ## Signal Structure
 
-Signalized-junction selection and connection-to-TLS-link mapping are network structure. Provisional TLS assignments are review input only and are stripped during permission materialization. After the governed connection set is fixed, reviewers produce `governed_reviewed.con.xml` and `governed_reviewed.tll.xml`. The final conversion cannot reuse `governed_provisional.tll.xml`. Every controlled connection must have a reviewed link index, and each phase-state length must equal the controlled-link count. Cycle length, phases, splits and offsets are timing parameters and are calibrated after demand input. A later connection or signal-structure change invalidates the review, calibration and validation.
+Signalized-junction selection and connection-to-TLS-link mapping are network structure. In pinned SUMO 1.24.0 plain XML, TLS connection/link records belong to `.tll.xml`, not the permission `.con.xml` connection type. Provisional TLS output is review evidence only. After the governed connection set is fixed, reviewers produce `governed_reviewed.con.xml`, `governed_reviewed.tll.xml` and a hash-bound review manifest. Every controlled connection must have a reviewed link index, and each phase-state length must equal the controlled-link count. A later connection or signal-structure change invalidates the review, calibration and validation.
 
 ## Required Order
 
@@ -75,7 +75,7 @@ Structural output is not valid for travel-time, capacity, delivery or solver-com
 | Build input | Registered PBF, extract and hashes | implemented | acquisition/extraction completed; manifest recheck pending | pending |
 | Build input | Typemap XML | implemented | XSD passed; importer governance fixture failed | ineligible |
 | Build input | Attribute resolver | partial governed scope implemented | XML fixtures passed; registered extract not run | pending |
-| Build input | Permission expectation JSON | implemented | resolver fixtures passed; registered extract not run | pending |
+| Build input | Permission expectation JSON | v13 shape implemented; v14 schema migration absent | v13 resolver fixtures passed; no eligible v14 artifact generated | ineligible |
 | Build input | Permission materializer | contract fixed, implementation absent | materialized fixture not run | ineligible |
 | Build input | `oneway=-1` | fail-closed detection only | formal occurrence check not run | conditional |
 | Build input | Formal attribute evidence/imputation | not implemented | not run | pending |
