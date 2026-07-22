@@ -7,21 +7,21 @@
   runtime code use repository-relative paths and do not depend on a checkout
   location
 - Python environment: create a project-local `.venv` when needed; it is excluded from Git
-- Package specification for the submission audit: `reproducibility/requirements-lock.txt`
+- Package specification for the submission audit: `legacy/non_sumo_route_proxy_analysis/reproducibility/requirements-lock.txt`
 - Version control: Git
 
 ## Required Python packages
 
-Core packages include pandas, NumPy, SciPy, scikit-learn, Matplotlib, GeoPandas, Shapely, NetworkX, Seaborn, Jupyter, nbformat, and nbclient. The submission-audit environment is pinned in `reproducibility/requirements-lock.txt`.
+Core packages include pandas, NumPy, SciPy, scikit-learn, Matplotlib, GeoPandas, Shapely, NetworkX, Seaborn, Jupyter, nbformat, and nbclient. The submission-audit environment is pinned in `legacy/non_sumo_route_proxy_analysis/reproducibility/requirements-lock.txt`.
 
 ## Reproduction commands
 
 ```bash
 python -m venv .venv
-.venv/bin/pip install -r reproducibility/requirements-lock.txt
-.venv/bin/jupyter nbconvert --to notebook --execute reproducibility/quantum_transport_reproducibility_audit_revised.ipynb --output-dir /tmp --output quantum_transport_reproducibility_audit_executed.ipynb --ExecutePreprocessor.timeout=1200
-.venv/bin/python 05_src/constraint_evaluation/run_tokyo_synthetic_evrp_analysis.py --reproduce
-.venv/bin/python 05_src/visualization/render_tokyo_synthetic_evrp_outputs.py --reproduce
+.venv/bin/pip install -r legacy/non_sumo_route_proxy_analysis/reproducibility/requirements-lock.txt
+.venv/bin/jupyter nbconvert --to notebook --execute legacy/non_sumo_route_proxy_analysis/reproducibility/quantum_transport_reproducibility_audit_revised.ipynb --output-dir /tmp --output quantum_transport_reproducibility_audit_executed.ipynb --ExecutePreprocessor.timeout=1200
+.venv/bin/python legacy/non_sumo_route_proxy_analysis/src/constraint_evaluation/run_tokyo_synthetic_evrp_analysis.py --reproduce
+.venv/bin/python legacy/non_sumo_route_proxy_analysis/src/visualization/render_tokyo_synthetic_evrp_outputs.py --reproduce
 ```
 
 ## Known dependencies and risks

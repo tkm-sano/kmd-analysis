@@ -1,8 +1,8 @@
 from pathlib import Path
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[2]
-DATA = ROOT / "03_data/processed"
+ARCHIVE_ROOT = Path(__file__).resolve().parents[2]
+DATA = ARCHIVE_ROOT / "data/processed"
 
 def test_expected_counts():
     assert len(pd.read_csv(DATA / "scenario/scenario_configurations.csv")) == 27
@@ -28,6 +28,6 @@ def test_customer_schema_and_coordinates():
 
 def test_haversine_known_example():
     import sys
-    sys.path.insert(0, str(ROOT / "05_src/scenario_generation"))
+    sys.path.insert(0, str(ARCHIVE_ROOT / "src/scenario_generation"))
     from scenario_utils import haversine_km
     assert abs(float(haversine_km(35.6812,139.7671,35.6895,139.6917)) - 6.88) < 0.25

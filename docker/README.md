@@ -1,7 +1,7 @@
 # Docker environments for the Tokyo traffic extension
 
 These services extend the repository without replacing the frozen research
-environment described in `reproducibility/requirements-lock.txt`.
+environment described in `legacy/non_sumo_route_proxy_analysis/reproducibility/requirements-lock.txt`.
 
 ## Services
 
@@ -55,7 +55,7 @@ the daemon, but builds and container runs require it.
 ```bash
 docker compose build analysis
 docker compose run --rm analysis python --version
-docker compose run --rm analysis pytest -q reproducibility/tests/test_audit.py
+docker compose run --rm analysis pytest -q legacy/non_sumo_route_proxy_analysis/reproducibility/tests/test_audit.py
 docker compose run --rm sumo sumo --version
 docker compose run --rm sumo netconvert --version
 ```

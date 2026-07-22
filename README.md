@@ -105,7 +105,7 @@ The diagram separates the two final lines of evidence. The common SUMO runs meas
 
 ## Current status
 
-Status date: **2026-07-18**. The machine-readable source of truth is [`research_stage.yml`](reproducibility/config/traffic_simulation/research_stage.yml).
+The current stage, blockers, next actions, and research-use decisions are shown in the generated [`RESEARCH_STATUS.md`](RESEARCH_STATUS.md) dashboard. Its sole machine-readable source of truth is [`research_stage.yml`](reproducibility/config/traffic_simulation/research_stage.yml); the dashboard must not be edited directly.
 
 | Status | Stage |
 |---|---|
@@ -349,7 +349,7 @@ For a one-screen view of the intended final layout, artifact flow, Git boundarie
 | [`02_literature/`](02_literature/) | Quantum routing, benchmarking, and literature records |
 | [`03_data/metadata/`](03_data/metadata/) | Data provenance, acquisition records, and source registry |
 | [`05_src/traffic_simulation/`](05_src/traffic_simulation/) | Traffic environment, demand, calibration, validation, and visualization |
-| [`05_src/constraint_evaluation/`](05_src/constraint_evaluation/) | Existing synthetic EVRP constraint analysis |
+| [`legacy/non_sumo_route_proxy_analysis/`](legacy/non_sumo_route_proxy_analysis/) | Archived non-SUMO synthetic EVRP route-proxy data, code, figures, and reproduction package |
 | [`06_outputs/`](06_outputs/) | Reviewed figures, tables, maps, and reports |
 | [`07_presentations/current/`](07_presentations/current/) | Current presentation artifacts |
 | [`reproducibility/config/`](reproducibility/config/) | Versioned experiment and traffic settings |
@@ -366,7 +366,7 @@ For a one-screen view of the intended final layout, artifact flow, Git boundarie
 - [Data-acquisition record policy](03_data/metadata/acquisition/README.md)
 - [Docker environments and SUMO execution boundary](docker/README.md)
 - [Folder structure and retention policy](00_project_management/folder_structure.md)
-- [Prior reproducibility-audit notebook](reproducibility/quantum_transport_reproducibility_audit_revised.ipynb)
+- [Prior reproducibility-audit notebook](legacy/non_sumo_route_proxy_analysis/reproducibility/quantum_transport_reproducibility_audit_revised.ipynb)
 
 ## Data and model governance
 
@@ -383,7 +383,7 @@ The governing principle is traceability: every adopted value should identify its
 
 ## Prior research line
 
-The repository retains the quantum-routing literature analysis and Tokyo synthetic EVRP constraint analysis that preceded the traffic-simulation extension. That research line keeps its frozen inputs and reproducibility audit; the new traffic layer is additive and does not overwrite it.
+The non-SUMO Tokyo synthetic EVRP route-proxy analysis that preceded the traffic-simulation extension is consolidated under [`legacy/non_sumo_route_proxy_analysis/`](legacy/non_sumo_route_proxy_analysis/). It is retained for provenance and historical reproduction and is not a source of formal SUMO results. The current traffic layer does not overwrite it or read its proxy outcomes as traffic observations.
 
 ## Limitations
 
