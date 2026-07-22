@@ -31,7 +31,7 @@ jobs:
             pytest==8.3.3
 
       - name: Run reproducibility tests
-        run: python -m pytest -q reproducibility/tests/test_audit.py
+        run: python -m pytest -q legacy/non_sumo_route_proxy_analysis/reproducibility/tests/test_audit.py
 
       - name: Verify the minimal artifact policy
         run: |
