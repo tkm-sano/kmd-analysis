@@ -28,19 +28,19 @@
 
     <!-- Shared motor roads retained by the initial network profile. -->
     <type id="highway.motorway"       priority="14" allow="passenger taxi bus coach delivery truck motorcycle"/>
-    <type id="highway.trunk"          priority="13" allow="passenger taxi bus coach delivery truck motorcycle moped"/>
-    <type id="highway.primary"        priority="12" allow="passenger taxi bus coach delivery truck motorcycle moped"/>
-    <type id="highway.secondary"      priority="11" allow="passenger taxi bus coach delivery truck motorcycle moped"/>
-    <type id="highway.tertiary"       priority="10" allow="passenger taxi bus coach delivery truck motorcycle moped"/>
+    <type id="highway.trunk"          priority="13" allow="passenger taxi bus coach delivery truck motorcycle"/>
+    <type id="highway.primary"        priority="12" allow="passenger taxi bus coach delivery truck motorcycle"/>
+    <type id="highway.secondary"      priority="11" allow="passenger taxi bus coach delivery truck motorcycle"/>
+    <type id="highway.tertiary"       priority="10" allow="passenger taxi bus coach delivery truck motorcycle"/>
     <type id="highway.motorway_link"  priority="9"  allow="passenger taxi bus coach delivery truck motorcycle"/>
-    <type id="highway.trunk_link"     priority="8"  allow="passenger taxi bus coach delivery truck motorcycle moped"/>
-    <type id="highway.primary_link"   priority="7"  allow="passenger taxi bus coach delivery truck motorcycle moped"/>
-    <type id="highway.secondary_link" priority="6"  allow="passenger taxi bus coach delivery truck motorcycle moped"/>
-    <type id="highway.tertiary_link"  priority="5"  allow="passenger taxi bus coach delivery truck motorcycle moped"/>
-    <type id="highway.unclassified"   priority="4"  allow="passenger taxi bus coach delivery truck motorcycle moped"/>
-    <type id="highway.residential"    priority="3"  allow="passenger taxi bus coach delivery truck motorcycle moped"/>
-    <type id="highway.living_street"  priority="2"  allow="passenger taxi bus coach delivery truck motorcycle moped"/>
-    <type id="highway.service"        priority="1"  allow="passenger taxi bus coach delivery truck motorcycle moped"/>
+    <type id="highway.trunk_link"     priority="8"  allow="passenger taxi bus coach delivery truck motorcycle"/>
+    <type id="highway.primary_link"   priority="7"  allow="passenger taxi bus coach delivery truck motorcycle"/>
+    <type id="highway.secondary_link" priority="6"  allow="passenger taxi bus coach delivery truck motorcycle"/>
+    <type id="highway.tertiary_link"  priority="5"  allow="passenger taxi bus coach delivery truck motorcycle"/>
+    <type id="highway.unclassified"   priority="4"  allow="passenger taxi bus coach delivery truck motorcycle"/>
+    <type id="highway.residential"    priority="3"  allow="passenger taxi bus coach delivery truck motorcycle"/>
+    <type id="highway.living_street"  priority="2"  allow="passenger taxi bus coach delivery truck motorcycle"/>
+    <type id="highway.service"        priority="1"  allow="passenger taxi bus coach delivery truck motorcycle"/>
 
     <!-- SUMO compound service types and dedicated motorized bus links. -->
     <type id="highway.service|psv"  priority="1" allow="bus delivery"/>
@@ -48,7 +48,7 @@
     <type id="highway.bus_guideway" priority="1" allow="bus"/>
     <type id="highway.busway"       priority="1" allow="bus"/>
 
-    <!-- Known SUMO 1.24.0 OSM types outside the initial motorized scope. -->
+    <!-- Known SUMO 1.24.0 OSM types outside the governed motorized-only scope. -->
     <type id="highway.unsurfaced"   discard="true"/>
     <type id="highway.track"        discard="true"/>
     <type id="highway.footway"      discard="true"/>

@@ -10,6 +10,13 @@
 
 方針の文章上の正本は本ファイル、機械可読設定の正本は`reproducibility/config/traffic_simulation/sumo_network.yml`とする。両者が矛盾する場合は正式変換を停止し、同じ変更で整合させる。実装順序と研究全体の工程は`implementation_plan.md`に記録する。
 
+正本の責任範囲は属性別に分ける。`lanes`と`maxspeed`のcriticality、
+証拠の適用可能性、証拠順位およびstructural placeholder gateは
+`specifications/attribute_criticality_and_evidence_specification.md`を正本とする。
+本規約は`oneway`、access、permission、全属性に共通する証拠登録形式、
+出典管理および外部データ対応の監査要件を正本として定める。Resolver仕様は
+これらを実行するコンポーネント境界だけを定め、証拠順位を重複定義しない。
+
 ## 2. 基本原則
 
 - OSM属性の欠損を一律の停止条件にしない。
@@ -129,9 +136,9 @@ JARTIC等の交通量と実走速度は、SUMOの交通需要設定、較正、�
 3. 基準日と区間対応を確認した公的規制情報
 4. 項目定義を確認した公的規制情報
 
-一般道路で`oneway`が欠損し、暗黙の一方通行規則にも該当しない場合は、OSMデータ消費上の規則として双方向と解釈し、`derived_osm_rule`と記録する。実地確認済みとは扱わない。
+一般道路で`oneway`が明示されず、暗黙の一方通行規則にも該当しない場合は、OSMの通常解釈と本研究で固定したResolver規則に基づき、実効的な通行方向を双方向として解決する。これは欠損値を観測値`no`で補完する処理ではない。監査では元タグの不在、実効値`no`、`derived_osm_rule`および適用規則を分離して記録し、実地確認済みとは扱わない。
 
-明示値は`yes`、`no`、`-1`をOSM上の有効値として識別する。ただし、`-1`は左右・方向依存タグを含む完全な安全変換が未実装であるため、現行版では原wayを変更せず`valid_but_unsupported`として停止する。明示値がない`junction=roundabout`と`highway=motorway`は暗黙の一方通行として`derived_osm_rule`を記録する。`highway=motorway_link`は一般に一方通行であることだけを根拠に自動決定せず、明示値がなければ`unresolved`とする。`oneway`に統計的な`structural_placeholder`を使用しない。複数タグまたは資料が矛盾する場合は`conflict`として停止する。
+明示値は`yes`、`no`、`-1`をOSM上の有効値として識別する。ただし、`-1`は左右・方向依存タグを含む完全な安全変換が未実装であるため、現行版では原wayを変更せず`valid_but_unsupported`として停止する。明示値がない`junction=roundabout`と`highway=motorway`は暗黙の一方通行として`derived_osm_rule`を記録する。`highway=motorway_link`は一般に一方通行であることだけを根拠に自動決定せず、明示値がなければ`unresolved`とする。`oneway`タグ欠損には、同種道路または周辺道路の最頻値を統計的な`structural_placeholder`として使用しない。複数タグまたは資料が矛盾する場合は`conflict`として停止する。
 
 ### 6.2 `lanes`
 
@@ -249,7 +256,7 @@ JARTIC等の交通量と実走速度は、SUMOの交通需要設定、較正、�
 - 日本の左側通行を`lefthand=true`で固定し、`netconvert`の右側通行defaultへ委ねない。OSMの一方通行方向自体は反転しない。
 - PBFを固定版`osmium`でOSM XMLへ変換し、`netconvert`へPBFを直接渡さない。
 - Pythonによる設定検証・前後処理は`analysis`、`netconvert`実行はdigest固定`sumo`サービスに分離する。
-- ジャンクションヒューリスティックは10 mの候補生成だけに使用する。
+- SUMOのジャンクション統合ヒューリスティック、すなわちSUMO内蔵の経験則による機械的な候補探索は、近接する複数のOSMノードを一つのSUMOジャンクションとして扱う可能性がある組合せの抽出にだけ使用する。道路形状が平面上で交差するか、または道路間を車両が移動できるかを確定する処理とは扱わない。10 mは候補探索幅であり、統合の決定基準ではない。
 - 正式変換は人手確認済み統合表から作成した`.nod.xml`だけを使用し、自動統合を無効にする。
 - OSM信号位置を利用しても、実信号現示、サイクル、オフセットを再現したとは扱わない。
 - internal linkを保持し、ランプ・ラウンドアバウトの追加推定を初期版では行わない。
@@ -260,7 +267,7 @@ JARTIC等の交通量と実走速度は、SUMOの交通需要設定、較正、�
 
 SUMO入力で許可するvClassは`sumo_network.yml`の`vehicle_input_policy.allowed_vclasses`だけとする。permissionsを無視できる`ignoring`、研究上の意味を定義していない`custom1`と`custom2`、typemapで許可していない`evehicle`を禁止する。EV配送車は`vClass="delivery"`とSUMO battery deviceの組合せで表し、道路利用区分と電動パワートレインを分離する。入力XML上の直接指定だけでなく、各vehicle、flow、tripが参照するvTypeも解決して検査する。
 
-ネットワークが管理する最大集合8クラスと、用途別に実際に生成する車両集合を区別する。配送経路用途は`delivery`と`truck`、初期背景交通用途は`passenger`、`taxi`、`bus`、`coach`、`delivery`、`truck`、`motorcycle`とする。`moped`は道路permissionsの管理集合には残すが、需要根拠を別途固定するまで背景交通として生成しない。用途別集合を分けても、同じ道路網で管理対象外vClassを許可しない原則は変えない。
+ネットワークが管理する最大集合7クラスと、用途別に実際に生成する車両集合を区別する。配送経路用途は`delivery`と`truck`、背景交通用途は`passenger`、`taxi`、`bus`、`coach`、`delivery`、`truck`、`motorcycle`とする。`moped`は管理集合と需要生成の両方から除外する。用途別集合を分けても、同じ道路網で管理対象外vClassを許可しない原則は変えない。専用バス道路は背景交通のため保持し、`bus`だけを許可する。
 
 OSM access規則は、`access`、`vehicle`、`motor_vehicle`、車種別、方向別、lane別の順に、広い規則から具体的な規則へ上書きして解決する。その後に研究対象集合との積集合を取り、最終permissionsを次で定義する。
 
@@ -286,7 +293,7 @@ fixtureは前処理負例とruntime正常系に分離する。必須属性欠損
 |---|---|---|---|
 | SUMO標準`priority` | 地域適合性の制限を伴う設計判断 | SUMO 1.24.0へ固定するが、東京で実証的に較正された値ではない | 交差点通行権、停止、待ち時間、遅延、実現旅行時間 |
 | 道路ホワイトリスト | 研究対象範囲の設計判断 | motorized-onlyの基準条件 | 接続成分、到達可能顧客、経路、距離 |
-| vClass permissions | 車種別通行条件の設計判断 | 管理対象は8クラス。通常道路は8、motorwayはmopedを除く7、service compoundは2、専用バス道路は1クラス | 車種別利用可能edge、到達可能性、経路、距離 |
+| vClass permissions | 車種別通行条件の設計判断 | 管理対象は7クラス。通常道路とmotorwayは7、service compoundは2、専用バス道路は1クラス | 車種別利用可能edge、到達可能性、経路、距離 |
 | 専用バス道路 | ネットワーク表現上の設計判断 | bus用に保持し、deliveryの進入を許可しない | 背景バス網、配送車の不正進入 |
 | typemapでの属性省略 | 根拠付き値を要求する設計判断 | 方針自体は合理的だが、単独では欠損停止を保証しない | validatorと監査が機能する場合のfallback排除 |
 | validator・監査未完成 | 実装・品質保証上のリスク | 高リスクであり正式buildを停止する | 誤速度、誤車線数、誤方向、過剰permissions |
@@ -363,7 +370,7 @@ OSM、外部データ、空中写真参照、typemap、設定、補完表、SUMO
 
 ### 13.1 分析対象と再現方法
 
-2026年7月16日スナップショットの大田区取得BBOXについて、正式なアクセス権解決前の初期自動車系道路候補を事前集計した。分析コード、テスト、機械可読な定義は次のとおりである。
+2026年7月16日スナップショットの大田区取得BBOXについて、正式なアクセス権解決前の本研究対象となる自動車系道路候補を事前集計した。分析コード、テスト、機械可読な定義は次のとおりである。
 
 - 分析コード：`05_src/traffic_simulation/network/analyze_osm_attributes.py`
 - テスト：`05_src/traffic_simulation/validation/test_analyze_osm_attributes.py`
@@ -394,7 +401,7 @@ docker compose run --rm analysis \
 - `maxspeed`：単位を伴わない1以上の数値文字列。km/hとして扱う
 - `oneway`：`yes`、`no`、`-1`のいずれか
 - タグがないか空文字なら`missing`、タグがあって上記形式に合わなければ`invalid`
-- この基礎集計では`missing`と`invalid`を合わせて`unresolved`と呼ぶ
+- この基礎集計の`missing`と`invalid`は、正式なResolver適用前の入力状態として集計する。`oneway`タグの欠損は、それだけでは実効方向が`unresolved`であることを意味しない
 
 道路延長はGeoJSONの各LineStringについて隣接座標間のHaversine距離を合計した。地球半径は6,371,008.8 mに固定した。way数と延長を併記することで、短い生活道路が多数を占める場合にway数だけで欠損影響を過大評価しないようにした。
 
@@ -402,19 +409,19 @@ docker compose run --rm analysis \
 
 対象は26,201 way、概算延長3,053.925 kmであった。
 
-| 属性 | 欠損・不正way | 割合 | 対象延長割合 |
+| 属性 | 明示タグ欠損・単純形式不正way | 割合 | 対象延長割合 |
 |---|---:|---:|---:|
 | `lanes` | 22,630 | 86.37% | 76.96% |
 | `maxspeed` | 23,128 | 88.27% | 78.39% |
 | `oneway` | 19,753 | 75.39% | 65.48% |
-| いずれか未解決 | 24,823 | 94.74% | 未集計 |
+| いずれかで明示値なし・単純形式不正 | 24,823 | 94.74% | 未集計 |
 | 3属性すべてが単純形式で有効 | 1,378 | 5.26% | 未集計 |
 
 `maxspeed`の内訳は欠損23,119 way、不正9 wayであり、不正値は複数値を含む`50;40`であった。他の2属性はこの単純形式判定における不正値がなく、表の値はすべて欠損である。
 
-未解決属性の組合せは次のとおりである。
+Resolver適用前に明示値がないか、単純形式で不正となった属性の組合せは次のとおりである。
 
-| 未解決属性 | way数 | 割合 |
+| 明示値なし・単純形式不正の属性 | way数 | 割合 |
 |---|---:|---:|
 | `lanes,maxspeed,oneway` | 17,838 | 68.08% |
 | `lanes,maxspeed` | 3,848 | 14.69% |
@@ -428,6 +435,17 @@ docker compose run --rm analysis \
 少なくとも1属性が未解決となった割合は、`service`で99.80%、`residential`で99.73%、`unclassified`で98.64%、`tertiary`で82.38%、`primary`で36.30%、`trunk`で33.67%であった。主要道路ほど明示属性が比較的多い一方、候補全体の大部分を占める生活・サービス道路では少ない。
 
 関連タグも別途数えた。`lanes`がない一方で方向別車線タグがあるwayは2、`width`があるwayは213、`lane_markings`があるwayは884であった。`maxspeed`がない一方で`maxspeed:type`または`maxspeed:advisory`等の速度関連タグがあるwayは13であった。これらは自動的な補完値ではなく、次段階の解釈・矛盾検査の候補である。`oneway`がない`motorway`・`motorway_link`および`junction=roundabout`は0 wayであった。
+
+`oneway`は、明示タグの充足率とは別に、規則適用後の解決状態を次のように整理する。
+
+| 集計概念 | 現在の状態 |
+|---|---:|
+| `oneway`タグが明示されていないway | 19,753 |
+| OSM規則と固定Resolver規則を適用しても意味を導出できないway | 基礎集計上0 |
+| 意味と入力値は妥当だが、現行Resolverが安全に変換できない`oneway=-1` | 1 |
+| SUMO生成後も方向edge構造が期待と一致しないway | Post-build Audit前のため未確定 |
+
+したがって、19,753件のタグ欠損を19,753件の方向不明とは数えない。現在の課題は、`oneway=-1`の安全な生成方向表現、方向依存タグとの整合、およびSUMO生成後のedge構造監査である。正式な実データResolverとPost-build Auditが未完了であるため、「全道路を安全に変換できる」とはまだ判定しない。
 
 ### 13.3 解釈上の制限
 

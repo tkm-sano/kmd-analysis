@@ -103,22 +103,24 @@ flowchart TD
 
 The diagram separates the two final lines of evidence. The common SUMO runs measure operational and social effects, while the solver records measure computational effort. Their final relationship is evaluated without treating a simulated QAOA resource indicator as a confirmed physical-hardware requirement or quantum advantage. Delivery constraints and EV constraints are added in controlled stages only after the preceding problem formulation passes feasibility, decoding, and small-instance validation.
 
-### Conceptual correspondence among technical, operational, and population-proxy measures
+### Conceptual correspondence among technical, human-factor, operational, and population-proxy measures
 
-The following diagram relates technical aspects of the modeled delivery system and operational evaluation concepts to one final population proxy: population-equivalent demand fulfillment. It is not a causal model, a temporal sequence, a software or data-processing flow, a research workflow, or evidence of policy effects or social benefits. Undirected lines identify measurement, decision, and aggregation correspondences; the left-to-right layout only organizes concepts at different analytical levels around a single aggregate proxy.
+The following diagram relates technical and human-factor aspects of the modeled delivery system and operational evaluation concepts to one final population proxy: population-equivalent demand fulfillment. It is not a causal model, a temporal sequence, a software or data-processing flow, a research workflow, or evidence of policy effects or social benefits. Undirected lines identify measurement, association, decision, and aggregation correspondences; the left-to-right layout only organizes concepts at different analytical levels around a single aggregate proxy.
 
-Operational measurements are not monetized. Population-equivalent demand fulfillment is a model-based conversion of completed synthetic demand into population units under a prespecified demand-conversion rule; it is not the number of people who received a delivery. An increase in this proxy must not be interpreted as an increase in social welfare or economic benefit. Emissions, customer satisfaction, social welfare, regional equity, delivery costs, and revenue are outside the current evaluation scope. Solution quality and computational resources are assessed through a separate evaluation stream.
+Operational measurements are not monetized. Population-equivalent demand fulfillment is a model-based conversion of completed synthetic demand into population units under a prespecified demand-conversion rule; it is not the number of people who received a delivery. An increase in this proxy must not be interpreted as an increase in social welfare or economic benefit. Emissions, customer satisfaction, social welfare, regional equity, delivery costs, and revenue are outside the current evaluation scope. Solution quality and computational resources are assessed through a separate evaluation stream. Driver physiology and driving behavior are a later, separately governed Human Factors analysis and are not current formal inputs.
 
 [Detailed Japanese conceptual framework, terminology review, and interpretation limits](05_src/traffic_simulation/impact_propagation/operational_impact_propagation_ja.md)
 
 ```mermaid
 flowchart LR
     subgraph premises["Evaluation and interpretation premises for the entire diagram"]
-        conditions["Demand · roads and traffic · time · vehicles<br/>Battery · charging · evaluation period · conversion rule"]
+        conditions["Demand · roads and traffic · time · vehicles<br/>Battery · charging · driving profile · measurement conditions · conversion rule"]
     end
 
-    subgraph technical["Technical aspects"]
+    subgraph technical["Technical and human-factor concepts"]
         planning["Delivery-plan feasibility"]
+        physiology["Driver physiological and<br/>attentional state<br/>Later-stage analysis"]
+        behavior["Driving-behavior<br/>characteristics<br/>Later-stage sensitivity"]
         driving["Delivery-driving characteristics under<br/>road and traffic conditions"]
         ev["EV-delivery<br/>energy feasibility"]
     end
@@ -139,6 +141,9 @@ flowchart LR
 
     driving ---|Distance, time, and delay components are aggregated| movement
     ev ---|Electricity and charging components are aggregated| energy
+    physiology ---|Analyzed for association with| behavior
+    behavior ---|Control and response measures correspond to| driving
+    behavior ---|Acceleration and braking measures correspond to| energy
     planning ---|Plan-stage constraint status is referenced| completion
     driving ---|Arrival, deadline, and return values are referenced| completion
     ev ---|Battery and charging conditions are referenced| completion
@@ -151,11 +156,13 @@ flowchart LR
     conditions ~~~ planning
 ```
 
-The invisible link between the premise box and the technical layer is used only for diagram layout. The premises apply to the entire framework and are not depicted as causes. Regional fulfillment is used for regional comparison, but the final population proxy is calculated from regional completed demand, not from the regional fulfillment ratio. Spatial mapping remains supplementary.
+The invisible link between the premise box and the technical and human-factor layer is used only for diagram layout. The premises apply to the entire framework and are not depicted as causes. Physiological state and driving behavior are analyzed as associated measurements; the diagram does not assert that a physiological measurement causes a driving action. Regional fulfillment is used for regional comparison, but the final population proxy is calculated from regional completed demand, not from the regional fulfillment ratio. Spatial mapping remains supplementary.
 
 | Concept | One-sentence definition | Study operationalization | Observation unit | Measurement unit | Aggregation unit | Decision or calculation rule | Difference from adjacent concepts | Interpretation caution |
 |---|---|---|---|---|---|---|---|---|
 | Delivery-plan feasibility | The delivery plan satisfies every mandatory planning constraint. | Inspect decoded assignments, visit orders, routes, capacities, continuity, endpoints, returns, and planning-time constraints. | Plan | Binary | Plan, method | Assign one only if every mandatory constraint passes; retain violation counts and per-constraint rates as supplementary values. | It concerns the plan before traffic simulation and differs from objective quality and demand-completion status. | It is not solver termination, simulated drivability, or real-world feasibility. |
+| Driver physiological and attentional state | These are physiological and attention-related measurements recorded for a driver during a governed run. | In the later Human Factors stage, retain only available governed measures such as EEG, heart-rate, and eye-tracking variables with synchronized run and driver identifiers. | Driver, time window, run | Source-defined physiological and gaze units | Driver, condition, run, source group | Analyze prespecified summaries and associations without converting them into a single ability score. | It describes measured human state; driving-behavior characteristics describe vehicle-control actions. | It is not expertise, driving quality, mental diagnosis, or evidence that a quantum-generated plan caused a physiological response. |
+| Driving-behavior characteristics | These are vehicle-control and response characteristics observed under a governed driving condition. | In the later sensitivity stage, retain acceleration, braking, steering, response, and stability measures supported by the accepted source data and simulation mapping. | Driver, vehicle, time window, run | Source-defined control and response units | Driver, condition, run, source group | Keep source-labelled groups and individual variation separate; do not infer Tokyo population shares. | It concerns human vehicle-control behavior; delivery-driving characteristics concern realized distance, time, and delay. | The labels `source_expert` and `source_novice` do not establish Tokyo delivery-driver classes or causal physiological mechanisms. |
 | Delivery-driving characteristics under road and traffic conditions | These are the distance, time, and delay characteristics of delivery vehicles under specified network and traffic conditions. | Use SUMO to measure distance, travel time, traffic and signal delay, departure, completion, and return time. | Vehicle, run | km, minutes, timestamp | Vehicle, run, method | Record route-generation, insertion, or simulation failure rather than zero distance or time. | Delivery travel quantities aggregate components of these characteristics; EV energy conditions are separate. | They are not observed real-world records or a general measure of Tokyo traffic. |
 | EV-delivery energy feasibility | The delivery run satisfies every mandatory battery-state and charging condition. | Inspect charge state at key events, depletion, permitted charging, and completion within the evaluation time. | Vehicle, run | Binary | Vehicle, run, method | Assign zero if charge falls below the minimum, depletion occurs, charging violates the rules, or the run does not finish in time. | EV energy-use quantities explain use; this concept expresses whether mandatory conditions were satisfied. | It does not validate real-vehicle efficiency, battery degradation, charger availability, or cost. |
 | Delivery travel quantities | These are the vehicle movement and vehicle-time quantities associated with delivery operation. | Retain distance, travel time, traffic delay, and signal delay separately. | Vehicle, run | km, minutes | Vehicle, run, method | Sum only like components across vehicles and do not combine distance and time into one value. | It excludes electricity and charging quantities and does not express completion status. | It is not delivery efficiency, monetary cost, or economic value. |
@@ -169,11 +176,15 @@ The invisible link between the premise box and the technical layer is used only 
 
 Completed demand appears at several levels but has a different analytical unit in each: study-area parcel-equivalent demand, regional parcel-equivalent demand, the regional fulfillment ratio, regional person-equivalent values, and the final study-area person-equivalent aggregate. Population mesh is the study's spatial operationalization, not the general concept. Spatial maps remain supplementary.
 
-Solution quality and computational resources remain a separate method-comparison stream. Delivery-plan feasibility asks whether all mandatory planning constraints were met; solution quality asks how good that feasible plan is under the objective; computational resources describe what was required to obtain it. A better objective value does not necessarily imply shorter realized travel time, more completed demand, or greater population-equivalent demand fulfillment. Circuit-simulation resource indicators are not evidence of physical-hardware requirements or quantum advantage.
+Solution quality and computational resources remain a separate method-comparison stream. Delivery-plan feasibility asks whether all mandatory planning constraints were met; solution quality asks how good that feasible plan is under the objective; computational resources describe what was required to obtain it. A better objective value does not necessarily imply shorter realized travel time, more completed demand, or greater population-equivalent demand fulfillment. Circuit-simulation resource indicators are not evidence of physical-hardware requirements or quantum advantage. The current Expert Driving Dataset was not collected using classical- or quantum-generated delivery plans, so it cannot establish a solver-to-interface-to-physiology relationship. Such an HCI claim would require a separate controlled plan-presentation and driver-response experiment.
 
 ## Current status
 
 The current stage, blockers, next actions, and research-use decisions are shown in the generated [`RESEARCH_STATUS.md`](RESEARCH_STATUS.md) dashboard. Its sole machine-readable source of truth is [`research_stage.yml`](reproducibility/config/traffic_simulation/research_stage.yml); the dashboard must not be edited directly.
+
+The relationship among current operations, governed definitions, fixed numeric
+settings, derived counts and still-undecided values is summarized in
+[`network_workflow_decisions_and_parameters.md`](05_src/traffic_simulation/network_workflow_decisions_and_parameters.md).
 
 | Status | Stage |
 |---|---|
@@ -230,13 +241,13 @@ The following sources are planned or under consideration but are not part of the
 | Toei Bus GTFS or GTFS-JP | Optional representation of scheduled bus supply in background traffic | Reacquire and register the original feed before use; schedules do not directly observe road traffic volume or delivery demand |
 | Japan Meteorological Agency weather observations | Join rainfall, temperature, wind, snow, or visibility to matching traffic-observation dates | Add only after the normal-weather traffic model passes calibration and independent validation; estimate effects from evidence and keep hypothetical coefficients separate |
 | Public incident, construction, lane-restriction, and closure records | Build time-dependent observed disruption scenarios | Record location and start/end time; implement events through SUMO additional files, rerouters, or TraCI rather than rewriting static road geometry |
-| Heterogeneous driving-behavior evidence | Test how a mixed population of driving profiles changes traffic friction, energy use, and delivery outcomes | Overseas evidence may define relative source-group and individual differences only; it does not identify the composition or absolute behavior of Tokyo drivers |
+| Heterogeneous driving-behavior evidence | Test later how a mixed population of driving profiles changes traffic friction, energy use, and delivery outcomes | Overseas evidence may define relative source-group and individual differences only; pedestrian-related fields are contextual covariates for motorized driving and do not introduce pedestrian agents or a pedestrian mode |
 
 Actual carrier customer OD, delivery-vehicle GPS trajectories, depot fleet schedules, charger occupancy, complete curbside loading activity, full-network real-time speed, and intersection-level signal phases are not assumed to be publicly available. If they remain unavailable, the study uses documented synthetic inputs or explicit scenarios and keeps `observed`, `estimated`, and `assumed` values separate. Planned data do not become formal inputs merely by being listed here; accepted snapshots must also be added to the source registry and an acquisition record.
 
 ### Planned heterogeneous driving-behavior evidence
 
-No overseas dataset below is currently an accepted formal input. The primary reference is the [Expert Driving Dataset](https://www.nature.com/articles/s41597-026-07223-1), with its [Figshare release](https://springernature.figshare.com/articles/dataset/29664056) and [processing repository](https://github.com/AIR-DISCOVER/ExpertDrivingDataset). It contains instrumented runs by 10 source-labelled expert and 10 source-labelled novice drivers in the same Lincoln MKZ on a fixed 5.7 km urban route under 13 reported conditions. The effective independent sample is 20 drivers, not 260 condition rows. The study will preserve the labels `source_expert` and `source_novice`; they describe groups in the source experiment and do not establish Tokyo driver classes, delivery-driver experience, population shares, gender-general behavior, or vehicle-type effects. Eye-tracking analyses are further limited by the smaller available eye-tracking subset.
+No overseas dataset below is currently an accepted formal input or part of the core comparison. It is retained for a separately governed later stage. The primary reference is the [Expert Driving Dataset](https://www.nature.com/articles/s41597-026-07223-1), with its [Figshare release](https://springernature.figshare.com/articles/dataset/29664056) and [processing repository](https://github.com/AIR-DISCOVER/ExpertDrivingDataset). It contains instrumented runs by 10 source-labelled expert and 10 source-labelled novice drivers in the same Lincoln MKZ on a fixed 5.7 km urban route under 13 reported conditions. The effective independent sample is 20 drivers, not 260 condition rows. The study will preserve the labels `source_expert` and `source_novice`; they describe groups in the source experiment and do not establish Tokyo driver classes, delivery-driver experience, population shares, gender-general behavior, or vehicle-type effects. Eye-tracking analyses are further limited by the smaller available eye-tracking subset.
 
 The evidence roles are deliberately separated:
 
@@ -284,7 +295,7 @@ For the initial classical-versus-QAOA comparison, the frozen point-to-point cost
 - `maxspeed` is checked using explicit, directional, and conditional OSM tags followed by public regulation information, road-census evidence, official documents, and dated legal derivation rules. Observed travel speed is not substituted for a legal speed limit.
 - External road attributes are not joined by nearest distance alone. Matching considers distance, direction, overlap, road name or number, road class, and vertical layer. Ambiguous elevated roads, surface roads, carriageways, side roads, and complex junctions receive lower confidence and require review when they are critical.
 - Structural-review networks may use documented placeholders on noncritical roads for connectivity and visualization checks. Formal experimental networks stop when critical route, calibration, or validation roads contain unresolved attributes, conflicts, low-confidence matches, or unrecorded manual values.
-- Junction heuristics may generate candidates, but formal conversion uses a reviewed integration table; automatic junction merging is disabled for the formal network.
+- SUMO heuristics are used only to extract candidates for merging multiple nearby OSM nodes into one SUMO junction. This is not a test of whether road geometries cross or whether vehicles can move between them. Formal conversion uses a reviewed merge table, with automatic junction merging disabled.
 
 The authoritative policy and the current SUMO configuration are [`network_attribute_governance.md`](05_src/traffic_simulation/network_attribute_governance.md) and [`sumo_network.yml`](reproducibility/config/traffic_simulation/sumo_network.yml). The formal SUMO network has not yet been generated, so the rules above distinguish implemented input governance from the next conversion stage.
 

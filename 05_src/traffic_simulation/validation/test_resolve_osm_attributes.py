@@ -27,10 +27,10 @@ BIDIRECTIONAL_FIXTURE = (
     / "05_src/traffic_simulation/validation/fixtures/"
     "osm_attribute_resolution_bidirectional.osm.xml"
 )
-V14_ORACLE = (
+V15_ORACLE = (
     resolver.REPOSITORY_ROOT
     / "05_src/traffic_simulation/validation/fixtures/"
-    "permission_expectations_v14.oracle.json"
+    "permission_expectations_v15.oracle.json"
 )
 
 
@@ -79,26 +79,29 @@ def artifact_permissions(payload: dict[str, object]) -> dict[str, object]:
     }
 
 
-def test_load_policy_matches_v14_and_fixture_paths() -> None:
+def test_load_policy_matches_v15_and_fixture_paths() -> None:
     policy = resolver.load_policy("structural")
 
-    assert policy.config_id == "ota_ward_sumo_network_v14"
-    assert policy.config_version == 14
+    assert policy.config_id == "ota_ward_sumo_network_v15"
+    assert policy.config_version == 15
     assert policy.profile == "structural"
     assert policy.typemap_path == (
         "reproducibility/config/traffic_simulation/osm_tokyo_motorized.typ.xml"
     )
-    assert policy.typemap_policy_id == "tokyo_motorized_v1"
+    assert policy.typemap_policy_id == "tokyo_motorized_v2"
     assert policy.lane_imputation_minimum_sample_size == 30
     assert policy.lane_imputation_minimum_mode_share == 0.5
     assert policy.speed_imputation_minimum_sample_size == 30
     assert policy.speed_imputation_minimum_mode_share == 0.5
     assert {"residential", "motorway", "busway"} <= policy.retained_highway_types
     assert policy.typemap_permissions["highway.residential"] == policy.governed_vclasses
+    assert "moped" not in policy.governed_vclasses
+    assert "moped" not in resolver.ACCESS_BASE_KEYS
+    assert "moped" not in resolver.ACCESS_CLASS_MAP
     assert POSITIVE_FIXTURE.is_file()
     assert NEGATIVE_FIXTURE.is_file()
     assert BIDIRECTIONAL_FIXTURE.is_file()
-    assert V14_ORACLE.is_file()
+    assert V15_ORACLE.is_file()
 
 
 @pytest.mark.parametrize(
@@ -151,7 +154,13 @@ def test_negative_fixture_reports_all_required_attributes_and_does_not_impute_un
     rows = {row.attribute: row for row in result.audit_rows}
 
     assert tags_for(result.tree, "600")["oneway"] == "no"
+    assert rows["oneway"].source_value == ""
+    assert rows["oneway"].adopted_value == "no"
     assert rows["oneway"].value_state == "derived_osm_rule"
+    assert (
+        rows["oneway"].derivation_method
+        == "ordinary_road_derived_bidirectional_osm_rule"
+    )
     assert rows["lanes"].value_state == "missing"
     assert rows["maxspeed"].value_state == "missing"
     assert len(result.blockers) == 2
@@ -189,6 +198,13 @@ def test_reverse_oneway_stops_without_mutating_direction_dependent_semantics() -
     assert normalized_tags["oneway"] == "-1"
     assert normalized_tags["access:forward"] == "no"
     assert normalized_tags["access:backward"] == "yes"
+    reverse_row = next(
+        row for row in result.audit_rows if row.attribute == "oneway"
+    )
+    assert reverse_row.source_value == "-1"
+    assert reverse_row.adopted_value == ""
+    assert reverse_row.value_state == "valid_but_unsupported"
+    assert reverse_row.decision == "stop"
     assert result.permission_expectations == {}
 
 
@@ -429,7 +445,7 @@ def test_resolve_file_writes_audit_but_not_xml_when_gate_fails(
     assert summary_path.is_file()
     assert not output_path.exists()
     permissions = json.loads(permissions_path.read_text())
-    oracle = json.loads(V14_ORACLE.read_text())
+    oracle = json.loads(V15_ORACLE.read_text())
     resolver.validate_permission_expectations_payload(permissions)
     assert permissions["artifact_type"] == "permission_expectations"
     assert permissions["schema_version"] == 2
@@ -473,7 +489,7 @@ def test_resolve_file_writes_normalized_xml_and_complete_audit(
     normalized = ElementTree.parse(output_path)
     assert tags_for(normalized, "100")["access"] == "no"
     permissions = json.loads(permissions_path.read_text())
-    oracle = json.loads(V14_ORACLE.read_text())
+    oracle = json.loads(V15_ORACLE.read_text())
     resolver.validate_permission_expectations_payload(permissions)
     assert permissions["complete"] is True
     assert permissions["blockers"] == []
@@ -501,7 +517,7 @@ def test_resolve_file_writes_normalized_xml_and_complete_audit(
     assert summary["input_osm_sha256"] == resolver.sha256_file(input_path)
 
 
-def test_v14_artifact_preserves_forward_and_backward_osm_lane_order(
+def test_v15_artifact_preserves_forward_and_backward_osm_lane_order(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     policy = resolver.load_policy("formal")
@@ -523,7 +539,7 @@ def test_v14_artifact_preserves_forward_and_backward_osm_lane_order(
     )
 
     permissions = json.loads(permissions_path.read_text())
-    oracle = json.loads(V14_ORACLE.read_text())
+    oracle = json.loads(V15_ORACLE.read_text())
     assert artifact_permissions(permissions) == oracle["bidirectional_permissions"]
     way = permissions["ways"][0]
     assert [direction["direction"] for direction in way["directions"]] == [
@@ -559,18 +575,18 @@ def test_v14_artifact_preserves_forward_and_backward_osm_lane_order(
     ] == ["no", "yes"]
 
 
-def test_v13_map_only_permission_artifact_is_rejected_by_v14_schema() -> None:
+def test_v13_map_only_permission_artifact_is_rejected_by_v15_schema() -> None:
     with pytest.raises(resolver.ResolutionError, match="schema validation failed"):
         resolver.validate_permission_expectations_payload(
             {
-                "config_id": "ota_ward_sumo_network_v14",
+                "config_id": "ota_ward_sumo_network_v15",
                 "complete": True,
                 "permission_expectations": {"1": {"forward": [["delivery"]]}},
             }
         )
 
 
-def test_v14_artifact_failure_rolls_back_the_whole_previous_output_set(
+def test_v15_artifact_failure_rolls_back_the_whole_previous_output_set(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     policy = resolver.load_policy("structural")
@@ -585,11 +601,11 @@ def test_v14_artifact_failure_rolls_back_the_whole_previous_output_set(
         path.write_text(f"old:{path.name}", encoding="utf-8")
 
     def fail_artifact(*args: object, **kwargs: object) -> dict[str, object]:
-        raise resolver.ResolutionError("forced v14 artifact failure")
+        raise resolver.ResolutionError("forced v15 artifact failure")
 
     monkeypatch.setattr(resolver, "build_permission_expectations_payload", fail_artifact)
 
-    with pytest.raises(resolver.ResolutionError, match="forced v14 artifact failure"):
+    with pytest.raises(resolver.ResolutionError, match="forced v15 artifact failure"):
         resolver.resolve_file(
             input_path,
             output_path,
@@ -819,7 +835,8 @@ def test_relation_referencing_an_excluded_way_is_removed() -> None:
     tree.getroot().append(
         ElementTree.fromstring(
             '<relation id="10"><member type="way" ref="1" role="from"/>'
-            '<member type="way" ref="2" role="to"/></relation>'
+            '<member type="way" ref="2" role="to"/>'
+            '<tag k="type" v="restriction"/></relation>'
         )
     )
 
@@ -828,7 +845,44 @@ def test_relation_referencing_an_excluded_way_is_removed() -> None:
     assert result.tree.getroot().find("relation") is None
 
 
-def test_typemap_disallow_is_rejected_in_allow_only_v14_contract(
+def test_non_road_relation_is_removed_before_missing_reference_validation() -> None:
+    tree = make_tree(
+        [way_xml(1, tags={"lanes": "1", "maxspeed": "30", "oneway": "yes"})]
+    )
+    tree.getroot().append(
+        ElementTree.fromstring(
+            '<relation id="10"><member type="way" ref="999" role="outer"/>'
+            '<tag k="type" v="multipolygon"/>'
+            '<tag k="natural" v="water"/></relation>'
+        )
+    )
+
+    result = resolver.resolve_tree(tree, resolver.load_policy("formal"))
+
+    assert result.excluded_relation_count == 1
+    assert result.tree.getroot().find("relation") is None
+
+
+def test_turn_restriction_with_missing_way_reference_stops() -> None:
+    tree = make_tree(
+        [way_xml(1, tags={"lanes": "1", "maxspeed": "30", "oneway": "yes"})]
+    )
+    tree.getroot().append(
+        ElementTree.fromstring(
+            '<relation id="10"><member type="way" ref="1" role="from"/>'
+            '<member type="way" ref="999" role="to"/>'
+            '<tag k="type" v="restriction"/></relation>'
+        )
+    )
+
+    with pytest.raises(
+        resolver.ResolutionError,
+        match="relation 10 has an unresolved way reference",
+    ):
+        resolver.resolve_tree(tree, resolver.load_policy("formal"))
+
+
+def test_typemap_disallow_is_rejected_in_allow_only_v15_contract(
     tmp_path: Path,
 ) -> None:
     typemap = tmp_path / "typemap.xml"

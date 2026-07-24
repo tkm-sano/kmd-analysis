@@ -1,13 +1,13 @@
 schema_version: 2
-updated_at: "2026-07-22"
+updated_at: "2026-07-23"
 current_stage_id: sumo_network
-current_summary_ja: OSM道路原典と入力レビュー地図が揃い、v14 Resolverの実データ検証とSUMO道路網の生成・構造検証を進める段階
+current_summary_ja: v15 Resolver全件Dry Runを基準に、属性別criticalityの実装と307件の決定表規則・fixtureを整備する段階
 readiness:
   - id: specification
     label_ja: 道路網仕様
     status: governed_draft
     status_label_ja: 統制済みドラフト
-    note_ja: v14仕様とResolver fixtureは整備済みだが、formal実行は未承認
+    note_ja: v15 Resolverの登録済み入力Dry Runは完了したが、46,056 blockerが残りformal実行は未承認
   - id: formal_network
     label_ja: 正式SUMO道路網
     status: not_accepted
@@ -19,13 +19,17 @@ readiness:
     status_label_ja: 実行不可
     note_ja: 承認済みformalネットワークがないため、較正・配送・QAOA評価へ進まない
 blockers:
-  - 登録済み大田区OSM抽出データに対するv14 Resolverの実行と監査が未完了
+  - lanes・maxspeedの属性別criticalityはP0の語彙・成果物分離・failure・donor規則を仕様化済みだが、classification・resolutionのschema、predicate証拠、classifier、fixtureが未実装
+  - permission未解決264行、車線・速度表現未対応41行、oneway=-1 1行、車線矛盾1行が未解決
+  - v15 relation scopeがバス向けturn restriction 3件を除外しており、次版closure・Resolver規則が未実装
   - permission materializerが未実装で、SUMO 1.24.0固定fixtureも未実行
   - formal属性証拠、ジャンクション・TLSレビュー、prepare/validateパイプライン、事後監査が未完了
 next_actions:
-  - 登録済み大田区OSM抽出データへv14 Resolverを実行し、停止理由、補完、permission期待値をレビューする
-  - permission materializerを実装し、SUMO 1.24.0固定fixtureでlane・connection期待値を検証する
-  - prepare/validateパイプラインとbuild manifestを実装し、構造確認用ネットワークを生成する
+  - 属性別criticalityのschema・classifierとsynthetic fixtureを実装するが、実データ分類は次版closure受理まで公開しない
+  - type=restriction:bus 3件を次版のrelation closure・Resolver対象へ含め、参照完全性とturn restriction保持をfixtureで検証する
+  - 次版closureの候補母集団を受理してから、全way・属性・profileの実データcriticalityを新しい入力hashから生成する
+  - 307件を排他的に登録した決定表について、優先度順に規則と独立fixtureを実装し、未実装項目は停止状態を維持する
+  - Resolver blocker解消と並行してpermission materializerを実装し、SUMO 1.24.0固定fixtureでlane・connection期待値を検証する
 stages:
   - id: environment
     label_ja: Docker・リポジトリ環境

@@ -2,7 +2,12 @@
 
 ## Registry Rule
 
-The machine-readable authority is `requirements_traceability.yml`. Every normative requirement in specifications 00-06 MUST have exactly one registry entry, one or more test IDs, a fixture class and a current implementation state. Test IDs may be `specified_not_implemented`; this blocks the relevant readiness gate but does not make the specification ambiguous.
+The machine-readable authority is `requirements_traceability.yml`. Every
+normative requirement in specifications 00-06 and the attribute-criticality
+specification MUST have exactly one registry entry, one or more test IDs, a
+fixture class and a current implementation state. Test IDs may be
+`specified_not_implemented`; this blocks the relevant readiness gate but does
+not make the specification ambiguous.
 
 ## Coverage Summary
 
@@ -10,7 +15,8 @@ The machine-readable authority is `requirements_traceability.yml`. Every normati
 |---|---:|---|---|---|
 | `SIM-REQ` | 8 | `SIM-TST` | research comparison fixtures | specified, downstream pending |
 | `ARC-REQ` | 6 | `ARC-TST` | config/manifest state fixtures | partial |
-| `RS-REQ` | 13 | `RS-TST` | resolver XML/JSON fixtures | v14 artifact implemented; registered extract pending |
+| `RS-REQ` | 14 | `RS-TST` | resolver XML/JSON fixtures | v15 artifact implemented; relation-scope accounting pending |
+| `AC-REQ` | 10 | `AC-TST` | classification and resolution JSON fixtures | specified, schemas and implementation pending |
 | `PM-REQ` | 11 | `PM-TST` | materializer plain-XML fixtures | not implemented |
 | `TLS-REQ` | 10 | `TLS-TST` | reviewed TLS fixtures | not implemented |
 | `BLD-REQ` | 11 | `BLD-TST` | pinned final-build fixtures | not implemented |

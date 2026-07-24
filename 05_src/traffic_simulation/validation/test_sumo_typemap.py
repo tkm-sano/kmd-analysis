@@ -28,7 +28,6 @@ GOVERNED_VCLASSES = {
     "delivery",
     "truck",
     "motorcycle",
-    "moped",
 }
 GOVERNED_ATTRIBUTES = {"numLanes", "speed", "oneway"}
 FORBIDDEN_VCLASSES = {"ignoring", "custom1", "custom2", "evehicle"}
@@ -63,6 +62,14 @@ def test_typemap_path_and_vclasses_match_governed_config() -> None:
     )
     assert policy["absence_of_type_defaults_is_validation"] is False
     assert set(vehicle_scope["keep_vclasses"]) == GOVERNED_VCLASSES
+    assert vehicle_scope["scope_duration"] == "entire_research"
+    assert vehicle_scope["multimodal_expansion_outside_research_scope"] is True
+    assert set(vehicle_scope["excluded_dedicated_modes"]) == {
+        "pedestrian",
+        "bicycle",
+        "rail",
+        "ship",
+    }
 
 
 def test_retained_types_are_an_explicit_configured_whitelist() -> None:
@@ -91,11 +98,15 @@ def test_retained_types_are_an_explicit_configured_whitelist() -> None:
         for type_id in retained
         for vclass in types[type_id]["allow"].split()
     } == GOVERNED_VCLASSES
-    assert len(types["highway.residential"]["allow"].split()) == 8
+    assert len(types["highway.residential"]["allow"].split()) == 7
     assert len(types["highway.motorway"]["allow"].split()) == 7
-    assert "moped" not in types["highway.motorway"]["allow"].split()
+    assert all(
+        "moped" not in attributes.get("allow", "").split()
+        for attributes in types.values()
+    )
     assert len(types["highway.service|bus"]["allow"].split()) == 2
     assert types["highway.busway"]["allow"] == "bus"
+    assert types["highway.bus_guideway"]["allow"] == "bus"
 
 
 def test_vehicle_inputs_cannot_bypass_typemap_permissions() -> None:
@@ -243,9 +254,18 @@ def test_structural_imputation_is_rule_based_and_formal_use_is_forbidden() -> No
     assert set(imputation["allowed_attributes"]) == {"lanes", "maxspeed"}
     assert set(imputation["prohibited_attributes"]) == {"oneway", "access"}
     assert imputation["applicable_profile"] == "structural"
-    assert imputation["applicable_criticality"] == "noncritical_only"
+    assert imputation["applicable_criticality"] == {
+        "lanes": "L1",
+        "maxspeed": "S1",
+    }
     assert imputation["formal_use_allowed"] is False
     assert imputation["lanes"]["grouping"] == ["highway", "oneway_status"]
+    lane_donors = imputation["lanes"]["donor_eligibility"]
+    speed_donors = imputation["maxspeed_kmh"]["donor_eligibility"]
+    assert lane_donors["require_consistent_explicit_lanes"] is True
+    assert "require_consistent_explicit_maxspeed" not in lane_donors
+    assert speed_donors["require_canonical_numeric_explicit_maxspeed"] is True
+    assert "require_consistent_explicit_lanes" not in speed_donors
     for rule in (imputation["lanes"], imputation["maxspeed_kmh"]):
         assert rule["statistic"] == "unique_mode"
         assert rule["minimum_sample_size"] == 30
@@ -410,10 +430,14 @@ def test_requirement_matrix_does_not_conflate_policy_with_validation() -> None:
         "positive_negative_bidirectional_and_failure_contract_fixtures_passed"
     )
     assert matrix["permission_expectation_artifact"]["implementation"] == (
-        "implemented_v14_schema_shape"
+        "implemented_v15_schema_shape"
     )
     assert matrix["permission_expectation_artifact"]["real_data_validation"] == (
-        "not_run"
+        "incomplete_schema_valid_artifact_emitted_from_registered_input"
+    )
+    assert matrix["permission_expectation_artifact"]["eligibility"]["eligible"] is False
+    assert matrix["attribute_resolver"]["real_data_validation"] == (
+        "structural_dry_run_completed_with_governed_blockers"
     )
     assert matrix["permission_materializer"]["implementation"] == "not_implemented"
     assert matrix["permission_materializer"]["runtime_validation"] == "not_run"
@@ -686,11 +710,12 @@ def test_configuration_dates_and_policy_documents_are_unambiguous() -> None:
     config = load_config()
 
     assert config["schema_version"] == 2
-    assert config["config_id"] == "ota_ward_sumo_network_v14"
-    assert config["config_version"] == 14
+    assert config["config_id"] == "ota_ward_sumo_network_v15"
+    assert config["config_version"] == 15
     assert config["created_at"] == "2026-07-18"
-    assert config["last_updated_at"] == "2026-07-22"
+    assert config["last_updated_at"] == "2026-07-23"
     assert config["configuration_lineage_date"] == "2026-07-16"
+    assert config["decision_date"] == "2026-07-23"
     documents = config["policy_documents"]
     assert set(documents) == {
         "attribute_governance",
@@ -699,6 +724,8 @@ def test_configuration_dates_and_policy_documents_are_unambiguous() -> None:
         "network_build_protocol",
         "traffic_calibration_protocol",
         "optimization_protocol",
+        "attribute_criticality_and_evidence",
+        "resolver_exception_decision_table",
         "requirements_traceability",
     }
     for path in documents.values():
@@ -721,7 +748,65 @@ def test_network_scope_and_use_specific_vclass_profiles_are_distinct() -> None:
         "truck",
         "motorcycle",
     }
-    assert "moped" not in profiles["background_traffic"]["vclasses"]
+    assert scope["excluded_motorized_vclasses"] == {
+        "moped": "outside_delivery_research_scope"
+    }
+
+
+def test_later_stage_context_inputs_are_not_core_comparison_inputs() -> None:
+    policy = load_config()["later_stage_context_inputs"]
+
+    assert policy["core_comparison_input"] is False
+    assert policy["introduction_requires_separate_stage_and_recorded_rationale"] is True
+    retained = policy["retained_for_later_use"]
+    assert set(retained) == {
+        "overseas_driving_behavior",
+        "weather",
+        "incidents",
+        "pedestrian_related_driving_behavior_fields",
+    }
+    assert (
+        retained["pedestrian_related_driving_behavior_fields"][
+            "pedestrian_agents_or_pedestrian_network_mode"
+        ]
+        is False
+    )
+
+
+def test_moped_access_tags_are_explicitly_outside_resolution_scope() -> None:
+    config = load_config()
+
+    assert config["access_resolution"]["out_of_scope_class_tags_ignored"] == [
+        "moped"
+    ]
+
+
+def test_missing_oneway_tag_is_distinct_from_unresolved_direction() -> None:
+    policy = load_config()["attribute_rules"]["oneway"]
+
+    assert policy["ordinary_road_without_oneway_tag"] == (
+        "derived_bidirectional_osm_rule"
+    )
+    assert policy["materialize_derived_bidirectional_as"] == "no"
+    assert policy["missing_source_tag_is_not_unresolved_by_itself"] is True
+    assert policy["preserve_source_absence_and_derivation_in_audit"] is True
+    assert policy["statistical_placeholder_allowed"] is False
+
+
+def test_only_turn_restriction_relations_are_retained() -> None:
+    policy = load_config()["relation_resolution"]
+
+    assert policy["retained_types"] == ["restriction"]
+    assert policy["discard_other_types_before_member_reference_validation"] is True
+    assert policy["retained_relation_missing_way_reference_policy"] == "stop"
+    assert policy["excluded_relation_count_required"] is True
+    assert policy["input_closure"] == {
+        "base_elements": "all_nodes_and_ways_from_registered_bbox_extract",
+        "retained_relations": "restriction_relations_present_in_bbox_extract",
+        "referenced_element_authority": "registered_regional_raw_pbf",
+        "recursively_add_referenced_elements": True,
+        "record_intermediate_pbf_and_xml_sha256": True,
+    }
 
 
 def test_design_decisions_and_sensitivity_metrics_are_separated() -> None:

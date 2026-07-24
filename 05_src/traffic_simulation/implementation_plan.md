@@ -859,7 +859,7 @@ reproducibility/outputs/traffic_simulation/visualization/
 
 #### 9.5.3 最初に固定する変換規則
 
-次の変換規則を2026年7月18日の初期規則として採用し、2026年7月22日のレビューをv14まで反映した。`sumo_network.yml`を機械可読な状態・設定の正本、`specifications/`をコンポーネント契約、`schemas/`を成果物形式の正本とする。設定ファイル、自動車系typemap、OSM XML属性resolver、変換前必須属性ゲート、v14形式の期待permissions成果物と補完分布JSONは実装済みである。v14成果物は入力・正規化OSMとtypemapのhash、way/type/direction/laneごとの適用rule trace、型付きRS blockerを保持する。formalでの暗黙の方向別車線等分を禁止し、構造用補完donorをResolver適格wayへ限定し、全成果物をstaging・rollback付きで一括公開し、CLI失敗をSchema適合failure reportへ変換する。一方、登録済み実OSMでのResolver実行、exact edge provenance、permissions materializer、TLS Review、Final Build、Post-build Audit、SUMO車両入力validator、実データbuildは未実装である。全規範要件、failure code、fixture catalogue、traceabilityを実装前に固定し、三段階readiness gateのruntime検証後にのみ正式利用を許可する。
+次の変換規則を2026年7月18日の初期規則として採用し、2026年7月23日のレビューをv15まで反映した。`sumo_network.yml`を機械可読な状態・設定の正本、`specifications/`をコンポーネント契約、`schemas/`を成果物形式の正本とする。設定ファイル、自動車系typemap、OSM XML属性resolver、変換前必須属性ゲート、v15形式の期待permissions成果物と補完分布JSONは実装済みである。v15成果物は入力・正規化OSMとtypemapのhash、way/type/direction/laneごとの適用rule trace、型付きRS blockerを保持する。formalでの暗黙の方向別車線等分を禁止し、構造用補完donorをResolver適格wayへ限定し、全成果物をstaging・rollback付きで一括公開し、CLI失敗をSchema適合failure reportへ変換する。一方、登録済み実OSMでのResolver実行、exact edge provenance、permissions materializer、TLS Review、Final Build、Post-build Audit、SUMO車両入力validator、実データbuildは未実装である。全規範要件、failure code、fixture catalogue、traceabilityを実装前に固定し、三段階readiness gateのruntime検証後にのみ正式利用を許可する。
 
 ##### 入力形式と左側通行
 
@@ -870,19 +870,21 @@ reproducibility/outputs/traffic_simulation/visualization/
 
 ##### 採用する交通モード
 
-初期道路網は自動車系単一モードとし、次のSUMO vehicle classを保持対象とする。
+本研究の道路網は、道路網生成、交通シミュレーション、配送評価および手法比較の全工程を通じて自動車系単一モードとする。保持対象は次のSUMO vehicle classに限定する。
 
 ```text
-passenger,taxi,bus,coach,delivery,truck,motorcycle,moped
+passenger,taxi,bus,coach,delivery,truck,motorcycle
 ```
 
-歩行者、自転車、鉄道、船舶専用リンクは初期道路網から除外する。ただし、自動車との共用道路を、歩行者・自転車が通行可能であることだけを理由に除外しない。緊急車両、行政車両、路面電車等を含むマルチモーダル版は初期版へ暗黙に追加せず、別設定版として構築する。採否はOSMの`access`、`vehicle`、`motor_vehicle`、`service`とSUMO vehicle classの変換結果を使って判定し、道路種別名だけで決定しない。
+歩行者、自転車、鉄道および船舶専用リンクは、本研究で使用するすべての道路網から除外する。ただし、自動車との共用道路を、歩行者・自転車も通行可能であることだけを理由に除外しない。歩行者、自転車、鉄道および船舶を含むマルチモーダル版は後続段階でも構築せず、本研究の範囲外とする。`moped`、緊急車両、行政車両など上記7クラスに含まれない自動車系クラスも、追加の研究対象にはしない。採否はOSMの`access`、`vehicle`、`motor_vehicle`、`service`とSUMO vehicle classの変換結果を使って判定し、道路種別名だけで決定しない。
 
-SUMO需要入力では上記8クラスだけを許可し、lane permissionsを迂回する`ignoring`、意味を管理していない`custom1`と`custom2`、typemap対象外の`evehicle`を禁止する。EV配送車は`vClass="delivery"`で道路利用区分を表し、電動パワートレインはSUMO battery deviceで別に設定する。`vType`、`vehicle`、`flow`、`trip`の直接指定と参照先vTypeを変換・シミュレーション前に検査する。
+SUMO需要入力では上記7クラスだけを許可し、lane permissionsを迂回する`ignoring`、意味を管理していない`custom1`と`custom2`、typemap対象外の`evehicle`を禁止する。EV配送車は`vClass="delivery"`で道路利用区分を表し、電動パワートレインはSUMO battery deviceで別に設定する。`vType`、`vehicle`、`flow`、`trip`の直接指定と参照先vTypeを変換・シミュレーション前に検査する。
 
-8クラスはネットワーク全体の管理集合であり、全typeが8クラスを許可する意味ではない。通常道路は8クラス、motorwayとmotorway_linkはmopedを除く7クラス、service compoundはbusとdeliveryの2クラス、専用バス道路はbusだけを許可する。
+7クラスはネットワーク全体の管理集合であり、全typeが7クラスを許可する意味ではない。通常道路、motorwayおよびmotorway_linkは7クラス、service compoundはbusとdeliveryの2クラス、専用バス道路はbusだけを許可する。
 
-用途別の車両生成集合は管理集合と分ける。配送経路用途は`delivery`と`truck`、初期背景交通用途は`passenger`、`taxi`、`bus`、`coach`、`delivery`、`truck`、`motorcycle`とする。`moped`は道路permissionsの管理対象には残すが、需要根拠を別途固定するまで背景交通として生成しない。専用バス道路は現行v1では配送経路から除外し、配送例外を採用する場合は新しいgoverned compound type、fixtureおよび設定版を必要とする。
+用途別の車両生成集合は管理集合と分ける。配送経路用途は`delivery`と`truck`、背景交通用途は`passenger`、`taxi`、`bus`、`coach`、`delivery`、`truck`、`motorcycle`とする。専用バス道路は背景交通を表すために保持するが、現行v1では配送経路から除外する。配送例外を採用する場合は新しいgoverned compound type、fixtureおよび設定版を必要とする。
+
+海外の運転行動データ、天候、事故、および運転行動データに含まれる歩行者関連項目は削除せず、コア比較の後に行う文脈分析または感度分析の候補として保持する。歩行者関連項目は自動車運転者が直面した状況の共変量として扱い、歩行者需要、歩行者agentまたは歩行者ネットワークを追加する根拠にはしない。これらを導入する場合は、通常天候の基準モデルとは別段階にし、根拠、変換規則および評価条件を記録する。
 
 ##### 道路属性の証拠優先順位
 
@@ -892,7 +894,7 @@ SUMO需要入力では上記8クラスだけを許可し、lane permissionsを�
 
 ただし、これは未解決属性を`netconvert`へ渡してよいという意味ではない。保持対象wayは変換前に`lanes`、`maxspeed`、`oneway`の採用値と来歴をすべてmaterializeし、不足時はprofileにかかわらず停止する。一般道路をOSM規則から双方向と導出した場合も`oneway=no`を変換用XMLへ明示する。欠損のまま渡すと一方向edgeが生成され得るうえ、`osm.annotate-defaults`がこのfallbackを記録しないことをfixtureで確認している。構造確認用で許可される`structural_placeholder`も採用値と来歴を持たせ、他の値状態と分離して一覧化する。変換後はpermissionsとdefault由来値を監査する。
 
-`oneway`には統計的placeholderを使わない。明示値`yes`、`no`を採用する。`-1`はOSMとして有効だが、way反転時に左右・方向依存タグを網羅的に変換できる実装がないため、v9では原データを変更せず停止する。明示値がないroundaboutとmotorwayはOSM暗黙規則による`yes`、motorway_linkは`unresolved`、その他の一般道路はOSMデータ消費規則による`no`とする。構造確認用の`lanes`と`maxspeed`だけは、固定入力範囲の明示値をOSM way個数で数えた一意な最頻値を使用できる。この統計量は空間的なlocal modeでも道路延長重みでもない。属性別閾値を設定し、同率、標本不足、比率不足では近隣道路種別へ移らず停止する。この代表値を正式実験へ使用しない。
+`oneway`タグ欠損には、同種道路または周辺道路の最頻値を統計的placeholderとして使用しない。一般道路のタグ欠損は、OSMの通常解釈と固定Resolver規則により実効的に双方向と解決するのであり、観測値`oneway=no`で欠損補完したとは扱わない。元タグの不在、実効値`no`、導出状態および適用規則を監査で分離する。明示値`yes`、`no`を採用する。`-1`はOSMとして有効だが、way反転時に左右・方向依存タグを網羅的に変換できる実装がないため、現行版では原データを変更せず`valid_but_unsupported`として停止する。明示値がないroundaboutとmotorwayはOSM暗黙規則による`yes`、motorway_linkは`unresolved`、その他の一般道路はOSMデータ消費規則による`no`とする。構造確認用の`lanes`と`maxspeed`だけは、固定入力範囲の明示値についてOSM way個数で数えた一意な最頻値を使用できる。この統計量は空間的なlocal modeでも道路延長重みでもない。属性別閾値を設定し、同率、標本不足、比率不足では近隣道路種別へ移らず停止する。この代表値を正式実験へ使用しない。
 
 OSM accessタグは`access`、`vehicle`、`motor_vehicle`、コードで固定した車種階層、方向別、lane別の順に具体的な規則で上書きした後、研究対象vClass集合との積集合を取る。`designated`はキーとの組合せで検証し、一般`access=designated`は停止する。way・方向・laneごとの期待permissionsを専用JSONへ保存し、最終`netconvert`前の明示入力へmaterializeする。最終変換ではmaterialize済みpermissionsからlaneとconnectionを構築する。生成`net.xml`は変更せず完全一致監査だけを行い、不一致時は入力を修正して最終`netconvert`から再実行する。
 
@@ -908,15 +910,15 @@ OSM turn restrictionは可能な限り保持し、除外または変換不能件
 
 ##### ジャンクション統合
 
-ジャンクション統合は「ヒューリスティックで候補生成し、正式変換は確認済み統合表を使用する」方式に固定する。自動統合結果をそのまま正式道路網へ採用しない。
+ジャンクション統合は「SUMO内蔵の経験則を用いて統合候補を機械的に抽出し、正式変換は確認済み統合表を使用する」方式に固定する。ここでいうヒューリスティックとは、現実の交差点構造を確定する判定ではなく、設定した探索距離と道路ネットワークの構造を基に、近接する複数のOSMノードを一つのSUMOジャンクションとして扱う可能性がある組合せを候補として提示する処理である。道路形状が平面上で交差しているか、または道路間を車両が移動できるかを確定する処理ではない。自動統合結果をそのまま正式道路網へ採用しない。
 
-1. 候補生成専用runでは`junctions.join=true`、初期探索距離10 mを使い、統合候補と生成ログを出力する。
+1. 候補抽出専用runでは`junctions.join=true`、初期探索距離10 mを使い、統合候補と生成ログを出力する。
 2. 候補ごとに元OSMノード、距離、接続道路、信号、橋梁・トンネル・上下線等を地図と属性で確認する。
 3. `ota_ward_junction_join_review.csv`へ候補ID、採用・棄却、理由、確認者、確認日、参照情報を記録する。
 4. 採用済み候補だけから`ota_ward_junction_joins.nod.xml`を作成し、レビュー表との一対一対応を検証する。
 5. 正式変換では自動統合を無効にし、確認済み`ota_ward_junction_joins.nod.xml`だけを明示入力として使用する。
 
-候補探索距離10 mは統合の決定基準ではなく、レビュー対象を抽出するための初期探索幅である。候補生成物はGit管理しないが、確認済み統合表、正式入力、判断理由はGit管理する。レビュー前候補、棄却候補、確認済み正式入力を同じファイルへ混在させない。統合表にないノードを正式変換時のヒューリスティックで追加統合してはならない。
+候補探索距離10 mは統合の決定基準ではなく、レビュー対象を抽出するための初期探索幅である。候補抽出結果はGit管理しないが、確認済み統合表、正式入力、判断理由はGit管理する。レビュー前候補、棄却候補、確認済み正式入力を同じファイルへ混在させない。統合表にないノードを正式変換時のヒューリスティックで追加統合してはならない。
 
 ##### 信号・形状・接続の初期規則
 
@@ -945,7 +947,7 @@ OSM turn restrictionは可能な限り保持し、除外または変換不能件
 - `oneway`、`lanes`、`maxspeed`、turn restrictionの扱い
 - `report_then_gate_by_criticality`による欠損・補完レポート、構造確認用・正式実験用品質ゲート
 - OSM信号位置の変換規則
-- 候補生成用ジャンクション規則、確認済み統合表、正式変換での自動統合禁止
+- 候補抽出用ジャンクション規則、確認済み統合表、正式変換での自動統合禁止
 - 形状単純化、内部リンク、ランプ、ラウンドアバウト、Uターンの変換規則
 - OSM IDを後続のJARTIC対応付けまで追跡する方法
 - BBOX内の接続道路保持とN03行政界による分析対象判定の区別
@@ -988,15 +990,19 @@ build manifestには、両コンテナのimage digest、SUMO、`netconvert`、PR
 
 #### 9.5.5 実行手順
 
+全26,201 wayを一件ずつ目視確認しない。明示値と固定規則で決定できる通常ケースはResolverで全件処理し、人が確認する対象を`unresolved`、`conflict`、`valid_but_unsupported`、`invalid`および事前登録していない`unexpected`へ限定する。ResolverのDry Runは、正規化OSMを正式変換へ渡すためではなく、全件audit、permission期待値、補完分布、型付きFailure Codeおよび例外キューを得るために実行する。
+
+判断規則は、コードへ直接追加する前に決定表へ固定し、その条件を再現する小型fixtureと独立期待値を作る。実データで新しい例外を発見した場合も原OSMや個別wayをその場で手修正せず、決定表、fixture、Resolver、全件Dry Runの順に更新する。人による目視確認は、例外、橋梁・トンネル、複雑交差点、方向依存タグ、新規規則適用箇所など、自動検証で捉えにくい高リスク対象の補助確認として行う。
+
 1. `research_stage.yml`で現在工程が`sumo_network`であることを確認する。
 2. 登録済みOSM出典台帳行、抽出PBF、品質サマリーの整合とSHA-256を再検証する。
 3. 使用中のSUMO、`netconvert`、`osmium`の版をDocker内で取得する。
 4. `sumo_network.yml`へ変換規則を固定し、設定自体のスキーマ検証を作る。
-5. 自動車系保持対象wayの属性を検査し、欠損、導出、補完、未解決、矛盾、不正、重要度、対応付け信頼度のレポートを生成する。変換用OSM XMLへ進む全wayについて`lanes`、`maxspeed`、`oneway`の採用値と来歴が揃わなければ停止する。
+5. 自動車系保持対象wayについてResolverをDry Runし、欠損、導出、補完、未解決、矛盾、不正、実装未対応、重要度、対応付け信頼度の全件auditと例外キューを生成する。変換用OSM XMLへ進む全wayについて`lanes`、`maxspeed`、`oneway`の採用値と来歴が揃わなければ停止する。
 6. 構造確認用と正式実験用の品質ゲートを別々に評価し、停止・警告理由を保存する。
 7. `osm_tokyo_motorized.typ.xml`、ジャンクション統合レビュー表、確認済み正式統合入力を作成して相互整合を検証する。
 8. `build_sumo_network.py prepare`を実装し、検証済みPBFからOSM XMLを生成した後、指定ネットワークprofileの`.netccfg`とbuild manifestを機械生成する。
-9. 候補生成専用runでジャンクション統合候補を出力し、人がレビューした結果だけを正式統合入力へ反映する。正式runでは自動統合が無効であることを検証する。
+9. 候補抽出専用runでジャンクション統合候補を出力し、人がレビューした結果だけを正式統合入力へ反映する。正式runでは自動統合が無効であることを検証する。
 10. 実PBFや外部通信を必要としない`test_sumo_network.py`を作り、コマンド生成、属性状態、重要度別ゲート、禁止vClass、警告、入力不整合、出力検証、失敗時清掃を検査する。
 11. way単位とlane単位のaccessタグを含む小規模OSM fixtureをSUMO 1.24.0で変換し、typemapの基本permissionsを超えないことと、期待した制限が反映されることを検査する。
 12. `build_sumo_network.py validate`を実装し、`net.xml`と実行ログの未知type、説明不能なedge除外、permissions、default由来値、構造、来歴を検証してbuild summaryを生成する。
@@ -1088,7 +1094,7 @@ OSMの信号位置を利用しても実際の現示、サイクル、オフセ�
 - [ ] 正式実験用の重要道路に`unresolved`、`conflict`、`invalid`、`structural_placeholder`が残っていない。
 - [ ] 重要道路の低信頼対応が人手確認され、確認者、確認日、根拠が記録されている。
 - [ ] PBFからOSM XMLへの前処理が固定版`osmium`で再現され、入力・出力SHA-256が記録されている。
-- [ ] 自動ジャンクション統合が候補生成runだけに限定され、正式変換はレビュー済み統合表だけを使用している。
+- [ ] 自動ジャンクション統合が候補抽出runだけに限定され、正式変換はレビュー済み統合表だけを使用している。
 - [ ] 統合レビュー表と正式`.nod.xml`の採用候補が一対一で対応し、判断理由、確認者、確認日が記録されている。
 - [ ] OSM抽出PBF、地域設定、変換設定のSHA-256または版が照合されている。
 - [ ] SUMO、`netconvert`、`osmium`の版と全変換オプションが記録されている。

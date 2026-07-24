@@ -2,9 +2,9 @@
 
 ## Status
 
-- Configuration: `ota_ward_sumo_network_v14`
+- Configuration: `ota_ward_sumo_network_v15`
 - Created: 2026-07-18
-- Last updated: 2026-07-22
+- Last updated: 2026-07-23
 - Configuration lineage date: 2026-07-16
 - Runtime permission fixture: failed
 - Formal build input ready: no
@@ -13,6 +13,10 @@
 - Specification state: current governed draft; formal execution is not authorized
 
 The machine-readable authority is `reproducibility/config/traffic_simulation/sumo_network.yml`. Its typed state contract is `reproducibility/config/traffic_simulation/sumo_network.schema.json`, and cross-field invariants are enforced by `validate_sumo_network_config.py`. Normative component contracts are under `05_src/traffic_simulation/specifications`; artifact formats are under `reproducibility/config/traffic_simulation/schemas`. This document is a current-state summary rather than a second normative implementation contract. Historical decisions are kept in `03_data/metadata/acquisition/20260718_sumo_tokyo_motorized_typemap_design.md`.
+
+For a process-oriented view that separates operations, definitions, numeric
+settings, mechanically derived values and pending decisions, see
+`05_src/traffic_simulation/network_workflow_decisions_and_parameters.md`.
 
 ## Attribute Mapping
 
@@ -25,14 +29,22 @@ The machine-readable authority is `reproducibility/config/traffic_simulation/sum
 
 No unsupported explicit OSM value may be replaced by a structural placeholder. `oneway=-1`, directionally asymmetric speeds, unsupported conditionals, bidirectional single-lane allocation and unresolved permissions stop conversion until a governed representation exists.
 
+An absent `oneway` tag is not itself classified as an unresolved travel direction. For an ordinary road, the Resolver preserves the source absence in its audit, derives the effective value `no` from the fixed OSM interpretation rule, records `derived_osm_rule`, and materializes that effective value for conversion. This is rule-based interpretation, not mode-value imputation. The valid value `oneway=-1` is classified separately as `valid_but_unsupported` until reverse-direction generation and direction-dependent tags can be handled safely.
+
+The 26,201 candidate ways are not reviewed individually. Deterministic rules process ordinary cases and the Dry Run records every decision, while human review is limited to `unresolved`, `conflict`, `valid_but_unsupported`, `invalid` and unregistered `unexpected` cases. A newly observed exception is first represented in the decision table and a small fixture, then implemented and rerun over the complete input. Direct one-off editing of the source OSM or a generated `net.xml` is prohibited.
+
 ## Network Scope
 
 - Geography: Ota Ward boundary with retained acquisition-envelope connectors.
 - Traffic side: Japanese left-hand traffic.
-- Governed vClasses: `passenger`, `taxi`, `bus`, `coach`, `delivery`, `truck`, `motorcycle`, `moped`.
+- Governed vClasses: `passenger`, `taxi`, `bus`, `coach`, `delivery`, `truck`, `motorcycle`.
+- Mode scope: motorized-only throughout network generation, traffic simulation, delivery evaluation and method comparison; no multimodal network is planned within this research.
+- `moped` is outside the governed delivery-research scope. Its class-specific OSM access tags do not affect the seven governed classes. Dedicated bus links remain in the network and allow `bus` only.
 - Small delivery vans use `delivery`; heavy freight vehicles use `truck`. A vehicle cannot change vClass within an optimization instance.
-- `highway=track` is excluded because its land-access function is outside the initial general motorized network, not because it is necessarily unpaved.
+- `highway=track` is excluded because its land-access function is outside the governed motorized network, not because it is necessarily unpaved.
 - Surface state is evaluated independently from road function using `surface`, with `smoothness` and `tracktype` as supporting evidence. The formal unpaved-road rule is pending.
+
+Overseas driving-behavior evidence, weather and incident data, and pedestrian-related fields in driving-behavior sources are retained for later-stage contextual or sensitivity analyses. They are not inputs to the core comparison. Pedestrian-related fields are covariates describing a motorized driver's context; they do not add pedestrian agents or a pedestrian network mode.
 
 ## Permission Governance
 
@@ -51,6 +63,8 @@ For bidirectional roads, the formal Resolver requires explicit `lanes:forward` a
 ## Signal Structure
 
 Signalized-junction selection and connection-to-TLS-link mapping are network structure. In pinned SUMO 1.24.0 plain XML, TLS connection/link records belong to `.tll.xml`, not the permission `.con.xml` connection type. Provisional TLS output is review evidence only. After the governed connection set is fixed, reviewers produce `governed_reviewed.con.xml`, `governed_reviewed.tll.xml` and a hash-bound review manifest. Every controlled connection must have a reviewed link index, and each phase-state length must equal the controlled-link count. A later connection or signal-structure change invalidates the review, calibration and validation.
+
+SUMO's junction-joining heuristic is used only to extract candidates for treating multiple nearby OSM nodes as one SUMO junction. It does not determine whether road geometries cross or whether vehicles can move between them. The 10 m distance is a candidate-search width, not an acceptance rule. Formal conversion disables automatic joining and applies only reviewed joins recorded in the governed node file.
 
 ## Required Order
 
@@ -76,10 +90,10 @@ Structural output is not valid for travel-time, capacity, delivery or solver-com
 |---|---|---|---|---|
 | Build input | Registered PBF, extract and hashes | implemented | acquisition/extraction completed; manifest recheck pending | pending |
 | Build input | Typemap XML | implemented | XSD passed; importer governance fixture failed | ineligible |
-| Build input | Attribute resolver | partial governed scope implemented | strict input, donor, compound type, relation, transaction and CLI failure fixtures passed; registered extract not run | pending |
-| Build input | Permission expectation JSON | v14 Schema output with lane-local rule trace implemented | positive, negative and bidirectional fixture oracles passed; registered extract not run | pending |
+| Build input | Attribute resolver | partial governed scope implemented | registered structural Dry Run completed; 24,346 ways retain blockers | pending |
+| Build input | Permission expectation JSON | v15 Schema output with lane-local rule trace implemented | registered input emitted an incomplete Schema-valid artifact with 46,056 blockers | pending |
 | Build input | Permission materializer | contract fixed, implementation absent | materialized fixture not run | ineligible |
-| Build input | `oneway=-1` | fail-closed detection only | formal occurrence check not run | conditional |
+| Build input | `oneway=-1` | fail-closed detection only | one occurrence confirmed and stopped in registered structural Dry Run | conditional |
 | Build input | Formal attribute evidence/imputation | not implemented | not run | pending |
 | Build input | Junction join review/node file | not implemented | not run | pending |
 | Build input | Post-permission signal/TLS review | not implemented | not run | pending |

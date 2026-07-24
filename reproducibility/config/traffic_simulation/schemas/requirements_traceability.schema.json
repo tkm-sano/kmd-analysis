@@ -13,9 +13,9 @@
         "type": "object",
         "required": ["requirement_id", "component", "test_ids", "fixture_class", "implementation_state"],
         "properties": {
-          "requirement_id": {"type": "string", "pattern": "^(SIM|ARC|RS|PM|TLS|BLD|PA)-REQ-[0-9]{3}$"},
-          "component": {"enum": ["research", "architecture", "resolver", "permission_materializer", "tls_review", "final_build", "post_build_audit"]},
-          "test_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^(SIM|ARC|RS|PM|TLS|BLD|PA)-TST-[0-9]{3}$"}},
+          "requirement_id": {"type": "string", "pattern": "^(SIM|ARC|RS|AC|PM|TLS|BLD|PA)-REQ-[0-9]{3}$"},
+          "component": {"enum": ["research", "architecture", "resolver", "attribute_criticality", "permission_materializer", "tls_review", "final_build", "post_build_audit"]},
+          "test_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^(SIM|ARC|RS|AC|PM|TLS|BLD|PA)-TST-[0-9]{3}$"}},
           "fixture_class": {"enum": ["positive", "boundary", "negative", "repeat", "research_comparison", "state_contract"]},
           "implementation_state": {"enum": ["implemented", "partial", "specified_not_implemented"]}
         },

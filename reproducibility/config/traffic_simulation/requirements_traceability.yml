@@ -1,5 +1,5 @@
 schema_version: 1
-config_id: ota_ward_sumo_network_v14
+config_id: ota_ward_sumo_network_v15
 requirements:
   - {requirement_id: SIM-REQ-001, component: research, test_ids: [SIM-TST-001], fixture_class: research_comparison, implementation_state: specified_not_implemented}
   - {requirement_id: SIM-REQ-002, component: research, test_ids: [SIM-TST-002], fixture_class: research_comparison, implementation_state: specified_not_implemented}
@@ -28,6 +28,17 @@ requirements:
   - {requirement_id: RS-REQ-011, component: resolver, test_ids: [RS-TST-011], fixture_class: positive, implementation_state: partial}
   - {requirement_id: RS-REQ-012, component: resolver, test_ids: [RS-TST-012], fixture_class: positive, implementation_state: implemented}
   - {requirement_id: RS-REQ-013, component: resolver, test_ids: [RS-TST-013], fixture_class: repeat, implementation_state: implemented}
+  - {requirement_id: RS-REQ-014, component: resolver, test_ids: [RS-TST-014], fixture_class: boundary, implementation_state: specified_not_implemented}
+  - {requirement_id: AC-REQ-001, component: attribute_criticality, test_ids: [AC-TST-001], fixture_class: negative, implementation_state: specified_not_implemented}
+  - {requirement_id: AC-REQ-002, component: attribute_criticality, test_ids: [AC-TST-002], fixture_class: negative, implementation_state: specified_not_implemented}
+  - {requirement_id: AC-REQ-003, component: attribute_criticality, test_ids: [AC-TST-003], fixture_class: negative, implementation_state: specified_not_implemented}
+  - {requirement_id: AC-REQ-004, component: attribute_criticality, test_ids: [AC-TST-004], fixture_class: negative, implementation_state: specified_not_implemented}
+  - {requirement_id: AC-REQ-005, component: attribute_criticality, test_ids: [AC-TST-005], fixture_class: boundary, implementation_state: specified_not_implemented}
+  - {requirement_id: AC-REQ-006, component: attribute_criticality, test_ids: [AC-TST-006], fixture_class: boundary, implementation_state: specified_not_implemented}
+  - {requirement_id: AC-REQ-007, component: attribute_criticality, test_ids: [AC-TST-007], fixture_class: negative, implementation_state: specified_not_implemented}
+  - {requirement_id: AC-REQ-008, component: attribute_criticality, test_ids: [AC-TST-008], fixture_class: boundary, implementation_state: specified_not_implemented}
+  - {requirement_id: AC-REQ-009, component: attribute_criticality, test_ids: [AC-TST-009], fixture_class: negative, implementation_state: specified_not_implemented}
+  - {requirement_id: AC-REQ-010, component: attribute_criticality, test_ids: [AC-TST-010], fixture_class: state_contract, implementation_state: specified_not_implemented}
   - {requirement_id: PM-REQ-001, component: permission_materializer, test_ids: [PM-TST-001], fixture_class: boundary, implementation_state: specified_not_implemented}
   - {requirement_id: PM-REQ-002, component: permission_materializer, test_ids: [PM-TST-002], fixture_class: boundary, implementation_state: specified_not_implemented}
   - {requirement_id: PM-REQ-003, component: permission_materializer, test_ids: [PM-TST-003], fixture_class: boundary, implementation_state: specified_not_implemented}

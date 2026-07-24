@@ -1,18 +1,17 @@
 {
   "artifact_type": "permission_expectations",
   "schema_version": 2,
-  "config_id": "ota_ward_sumo_network_v14",
-  "config_version": 14,
+  "config_id": "ota_ward_sumo_network_v15",
+  "config_version": 15,
   "typemap": {
     "path": "reproducibility/config/traffic_simulation/osm_tokyo_motorized.typ.xml",
-    "policy_id": "tokyo_motorized_v1",
-    "sha256": "4e4273a5a73b8d1298751aeee141a387dc6a1524d64ed8ddd704cae8db0af590"
+    "policy_id": "tokyo_motorized_v2",
+    "sha256": "81c7ed6c5f40ce0e06071bbba0ecc52b5abc2b2d8b8da64dc9cb2b3296c253be"
   },
   "governed_vclasses": [
     "bus",
     "coach",
     "delivery",
-    "moped",
     "motorcycle",
     "passenger",
     "taxi",
@@ -22,9 +21,9 @@
   "positive_permissions": {
     "100": {"forward": [["bus"]]},
     "200": {"forward": [["delivery"]]},
-    "300": {"forward": [[], ["bus", "coach", "delivery", "moped", "motorcycle", "passenger", "taxi", "truck"]]},
-    "400": {"forward": [[], ["bus", "coach", "delivery", "moped", "motorcycle", "passenger", "taxi", "truck"]]},
-    "500": {"forward": [["bus", "coach", "delivery", "moped", "motorcycle", "passenger", "taxi", "truck"]]}
+    "300": {"forward": [[], ["bus", "coach", "delivery", "motorcycle", "passenger", "taxi", "truck"]]},
+    "400": {"forward": [[], ["bus", "coach", "delivery", "motorcycle", "passenger", "taxi", "truck"]]},
+    "500": {"forward": [["bus", "coach", "delivery", "motorcycle", "passenger", "taxi", "truck"]]}
   },
   "source_access_tags": {
     "100": ["access", "bus"],
@@ -35,8 +34,8 @@
   },
   "bidirectional_permissions": {
     "700": {
-      "forward": [["bus", "coach", "delivery", "moped", "motorcycle", "passenger", "taxi", "truck"], []],
-      "backward": [[], ["bus", "coach", "delivery", "moped", "motorcycle", "passenger", "taxi", "truck"]]
+      "forward": [["bus", "coach", "delivery", "motorcycle", "passenger", "taxi", "truck"], []],
+      "backward": [[], ["bus", "coach", "delivery", "motorcycle", "passenger", "taxi", "truck"]]
     }
   },
   "negative": {

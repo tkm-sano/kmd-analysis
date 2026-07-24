@@ -6,7 +6,7 @@
 - 実施者：研究環境管理者（Codex支援）
 - 状態：`implemented_runtime_validation_failed`
 - 設定ID：`ota_ward_sumo_network_v11`
-- typemap方針ID：`tokyo_motorized_v1`
+- typemap方針ID：`tokyo_motorized_v2`
 - 対象ファイル：`reproducibility/config/traffic_simulation/osm_tokyo_motorized.typ.xml`
 - 関連設定：`reproducibility/config/traffic_simulation/sumo_network.yml`
 - 関連方針：`05_src/traffic_simulation/network_attribute_governance.md`
@@ -512,3 +512,37 @@ formalでは`lanes:forward`と`lanes:backward`の明示を必須とし、等分�
 permission artifactには、typemap baseline、研究vClass積集合、実際に適用した一般・車種・方向・車線別OSM tagについて、laneごとのsource value、lane value、適用前後vClass集合を順序付きtraceとして保存する。他方向・他laneだけに作用するtagは記録しない。全成果物はstagingで生成・検査後、backupとrollbackを伴って一括公開する。書込み例外時の`.part`も削除する。
 
 さらに、malformed tag、node/Relation参照、criticality sourceとcoverage、typemap `disallow`禁止、補完閾値範囲、Decimal速度正規化を検証対象とした。Resolver CLIはfailure report pathを必須入力とし、通常のblockerは固有RS codeを保持し、XML/input identityを`RS001`、config/typemap/criticalityを`RS004`、Schema/accountingを`RS011`、path/write/publicationを`RS012`へ分類する。fixture検証は実データ適格性の代替ではないため、全readiness状態はfalseのまま維持する。
+
+### 26. 自動車系単一モードを全研究工程の範囲として明確化した
+
+2026年7月23日、`ota_ward_sumo_network_v14`について、「初期道路網は自動車系単一モード」とする記述が、後続段階で歩行者、自転車、鉄道または船舶を含むマルチモーダル道路網へ拡張する可能性を残していたため、研究範囲を明確化した。本研究は、道路網生成、交通シミュレーション、配送評価および手法比較の全工程を通じて、`passenger`、`taxi`、`bus`、`coach`、`delivery`、`truck`、`motorcycle`、`moped`の統制済み8クラスだけを道路permissionsの管理集合とする。
+
+歩行者、自転車、鉄道および船舶の専用リンクと需要は後続工程でも追加せず、マルチモーダル版は本研究の範囲外とした。自動車との共用道路は、歩行者または自転車も通行可能であることだけを理由には除外しない。緊急車両、行政車両など管理集合外の自動車系SUMO classも追加しない。
+
+この変更は、保持type、8クラスの集合、lane permissionまたはconnection permissionの実効値を変更せず、研究期間に関する既存方針の曖昧さを除くものである。そのためconfig identityはv14を維持した。一方、typemap内コメントを統一したことでファイルSHA-256は`0e3a618cb47108a3b78af77ea8fa738c9ef25fb4864756a0bfa032ef3d457120`へ変わったため、`sumo_network.yml`と独立fixture oracleの登録hashを同時に更新した。旧hashを参照する未承認のfixture成果物は新hashで再検証し、異なるtypemap hashの成果物を混在させない。
+
+### 27. mopedを除外し、専用バスと後続利用データの位置付けを固定した
+
+2026年7月23日、配送研究との対応を再確認し、`moped`を道路permissionsの管理集合、SUMO車両入力、背景交通生成、到達可能性評価およびResolverの車種別解決対象から除外した。通常道路とmotorwayを含む保持道路の最大管理集合は、`passenger`、`taxi`、`bus`、`coach`、`delivery`、`truck`、`motorcycle`の7クラスとなる。これは実効permission集合を変更するため、設定を`ota_ward_sumo_network_v14`から`ota_ward_sumo_network_v15`へ更新した。
+
+専用バス道路は配送車の経路候補ではないが、背景交通としてのバス運行と道路網上の交通条件を表すために保持する。`highway.busway`と`highway.bus_guideway`は引き続き`bus`だけを許可し、配送例外を暗黙に追加しない。vehicle class集合の変更に伴いtypemap方針IDを`tokyo_motorized_v2`へ上げた。typemapのSHA-256は`81c7ed6c5f40ce0e06071bbba0ecc52b5abc2b2d8b8da64dc9cb2b3296c253be`へ更新し、独立oracleも`permission_expectations_v15.oracle.json`として更新した。
+
+海外の運転行動データ、天候、事故、および運転行動データに含まれる歩行者関連項目は削除しない。ただし、これらはコア比較の入力ではなく、別に統制する後続段階の文脈分析または感度分析に限って使用する。海外データの絶対値を東京へ直接移植せず、天候と事故は通常条件の基準モデルが較正・独立検証された後に導入する。歩行者関連項目は自動車運転者が直面した状況を表す共変量であり、歩行者agent、歩行者需要または歩行者ネットワークモードを導入するものではない。
+
+### 28. onewayタグ欠損と方向未解決を区別した
+
+2026年7月23日、`ota_ward_sumo_network_v15`の`oneway`基礎集計におけるタグ欠損を、そのまま通行方向の未解決件数として読める表現が残っていたため修正した。一般道路で`oneway`タグが明示されていない場合は、元タグの不在を保持したまま、OSMの通常解釈と固定Resolver規則により実効値`no`を導出する。これは最頻値による欠損補完ではなく、監査上は`source_value=""`、`adopted_value="no"`、`value_state="derived_osm_rule"`および適用規則として分離する。
+
+対象26,201 wayのうち、明示的な`oneway`タグがないwayは19,753であるが、欠損集合に`motorway`、`motorway_link`または`junction=roundabout`はなく、基礎集計上、タグ欠損だけを理由に意味を導出できないwayは0である。一方、保持候補にある`oneway=-1`の1 wayは意味と入力値が妥当であり、`invalid`または`unknown`ではなく`valid_but_unsupported`、failure code `RS007`として扱う。正式な実データResolver実行とPost-build Auditは未完了であるため、安全に変換可能な全件数と生成後の方向edge不一致件数は未確定のままとする。
+
+この変更はResolverの実効動作を変更せず、既存の監査状態、機械可読設定およびテストを明示化するものである。`oneway`タグ欠損には同種道路や周辺道路の最頻値を使用しないという方針も、より具体的な表現へ統一した。
+
+同時に、26,201 wayを一件ずつ目視確認するのではなく、明示値と固定規則で通常ケースを全件処理し、`unresolved`、`conflict`、`valid_but_unsupported`、`invalid`および未登録の`unexpected`だけを人のレビュー対象とする運用を固定した。新規例外は個別データを直接修正せず、決定表、fixture、Resolver、登録済み入力の全件Dry Runの順に反映する。進捗正本もv15 ResolverのDry Runと例外キュー生成を次作業として更新した。
+
+### 29. 登録済み入力でv15 Resolverの全件Dry Runを実行した
+
+2026年7月23日、`ota_ward_sumo_network_v15`を用いて登録済み大田区入力の`structural` Dry Runを実行した。BBOX抽出PBFのSHA-256は取得記録と一致した。`complete_ways`抽出には部分relationが含まれるため、道路接続に不要なrelationを参照検証前に除外し、抽出内581件のturn restriction relationについては、登録済み関東PBFから参照node・wayを再帰的に補足したResolver専用入力を作成した。非道路relationは削除するが、不完全なturn restriction relationは停止する規則を固定した。
+
+最終入力では26,220 wayを処理し、83,884 audit行を生成した。24,346 wayに46,056 blockerが残り、正規化OSMは公開されなかった。内訳は、bulk欠損45,749行、permission未解決264行、車線表現未対応19行、速度表現未対応22行、`oneway=-1` 1行、車線矛盾1行である。permission期待値が完全なwayは1,874であった。`oneway`は、一般道路の双方向導出19,764、明示値6,455、妥当だが実装未対応の逆向き一方通行1であった。
+
+全件実行により、除外wayを約170万nodeを持つXML rootから一件ずつ削除する二次的処理も発見した。除外対象を収集してrootを一度だけfilterする線形処理へ変更し、fixtureで同じ除外結果を確認した。実行コマンド、relation closure、入力・成果物hash、Failure Code分布および次作業は`03_data/metadata/acquisition/20260723_ota_ward_v15_resolver_dry_run.md`へ固定した。正式ネットワーク適格性はfalseのままである。

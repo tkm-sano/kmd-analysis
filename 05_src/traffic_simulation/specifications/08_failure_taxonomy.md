@@ -13,13 +13,40 @@ All failures are stable machine-readable codes. Messages may add context but MUS
 | RS005 | prohibited imputation | yes | audit | remove placeholder/adopt evidence |
 | RS006 | formal placeholder/stopping state | yes | audit | resolve all states |
 | RS007 | `oneway=-1` unsupported | yes | audit | implement safe transform or exclude occurrence |
-| RS008 | lane-order ambiguity | yes | audit | correct directional lane tags |
-| RS009 | unsupported access semantics | yes | audit | add versioned rule/evidence |
-| RS010 | permission composition mismatch | yes | failure | fix resolver/config |
-| RS011 | expectation schema/incompleteness | yes | failure | regenerate v2 artifact |
-| RS012 | unsafe output path/write | yes | failure | use new governed paths |
+| RS008 | lane-list read-order ambiguity | yes | audit | correct directional lane tags |
+| RS009 | Resolver lane-position convention mismatch | yes | audit/failure | restore leftmost-first Resolver indexing |
+| RS010 | unsupported access semantics | yes | audit | add versioned rule/evidence |
+| RS011 | permission composition mismatch | yes | failure | fix resolver/config |
+| RS012 | expectation schema/incompleteness | yes | failure | regenerate the governed artifact |
+| RS013 | unsafe output path/write | yes | failure | use new governed paths |
+| RS014 | relation scope, closure or governed vehicle-restriction failure | yes | closure audit/failure | fix the relation-scope policy or closure |
 
-CLI boundary mapping is fixed as follows: malformed/missing OSM, invalid node/way/tag/relation identity and XML parse failure map to `RS001`; invalid config, typemap or criticality state maps to `RS004`; permission artifact/schema/accounting failure maps to `RS011`; and path collision, existing output, staging/publication or filesystem write failure maps to `RS012`. Governed attribute blockers retain their more specific `RS003`, `RS007`, `RS008`, `RS009` or `RS010` codes in both the incomplete permission artifact and CLI failure report.
+CLI boundary mapping for the next Resolver version is fixed as follows:
+malformed/missing OSM, invalid node/way/tag identity and XML parse failure map
+to `RS001`; invalid config or typemap state maps to `RS004`; permission
+artifact/schema/accounting failure maps to `RS012`; path collision, existing
+output, staging/publication or filesystem write failure maps to `RS013`; and
+relation identity, scope or closure failure maps to `RS014`. Governed
+attribute blockers retain their more specific `RS003`, `RS007`, `RS008`,
+`RS009`, `RS010` or `RS011` codes in both the incomplete permission artifact
+and CLI failure report. Executed v15 artifacts retain their original codes and
+are not rewritten; implementation and fixtures MUST migrate together before a
+new production run.
+
+## Attribute Criticality and Evidence
+
+| Code | Detection | Formal blocker | Recovery |
+|---|---|---|---|
+| AC001 | retained tuple missing | yes | generate complete tuple coverage |
+| AC002 | tuple duplicated | yes | enforce unique tuple identity |
+| AC003 | unknown rule ID | yes | register or correct the rule |
+| AC004 | contradictory predicates | yes | repair governed predicate artifacts |
+| AC005 | evidence not applicable | yes | provide direction/segment/time/vehicle-compatible evidence |
+| AC006 | unresolved evidence conflict | yes | apply a registered conflict rule or stop |
+| AC007 | required review incomplete | yes | complete review provenance |
+| AC008 | structural-placeholder gate failed | yes | remove placeholder or satisfy every gate |
+| AC009 | source, policy or classification hash mismatch | yes | regenerate from aligned inputs |
+| AC010 | invalid action/state/review combination | yes | emit a permitted state transition |
 
 ## Permission Materializer
 

@@ -16,6 +16,24 @@
 
 可視化は品質確認を補助するものであり、地図を見た印象だけでデータやモデルの合否を決めるものではない。地物数、CRS、SHA-256、接続性、制約状態等の自動検査を置き換えない。
 
+特定のOSM restriction relationを確認する場合は、
+`render_osm_relation_sample.py`を使用する。この地図は登録済み原本PBFを
+SHA-256で再検証し、指定relationの`from`・`via`・`to`と約350 mの周辺道路を
+表示する。relationの可視化は採用判断やSUMO connectionの生成を意味しない。
+
+```bash
+docker compose run --rm analysis \
+  python -m traffic_simulation.visualization.render_osm_relation_sample \
+  --relation-id 16016504
+```
+
+既定出力は次である。
+
+```text
+reproducibility/outputs/traffic_simulation/visualization/
+  ota_ward_osm_relation_16016504.html
+```
+
 ## 2. 現在の可視化方式
 
 現在の出力は、FoliumとLeafletによる操作可能な静的HTML地図である。

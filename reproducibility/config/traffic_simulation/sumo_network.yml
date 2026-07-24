@@ -1,13 +1,13 @@
 schema_version: 2
 config_schema: reproducibility/config/traffic_simulation/sumo_network.schema.json
 config_validator: 05_src/traffic_simulation/network/validate_sumo_network_config.py
-config_id: ota_ward_sumo_network_v14
-config_version: 14
+config_id: ota_ward_sumo_network_v15
+config_version: 15
 created_at: "2026-07-18"
-last_updated_at: "2026-07-22"
+last_updated_at: "2026-07-23"
 configuration_lineage_date: "2026-07-16"
-decision_date: "2026-07-22"
-change_summary: Define complete component contracts, artifact schemas, failure codes, fixture catalogue, and requirements traceability before implementation
+decision_date: "2026-07-23"
+change_summary: Remove moped from the governed motorized scope, retain bus-only dedicated links, and defer contextual datasets to later stages
 policy_documents:
   attribute_governance: 05_src/traffic_simulation/network_attribute_governance.md
   current_specification: 05_src/traffic_simulation/network_current_specification.md
@@ -15,6 +15,8 @@ policy_documents:
   network_build_protocol: 05_src/traffic_simulation/network_build_and_validation_protocol.md
   traffic_calibration_protocol: 05_src/traffic_simulation/traffic_calibration_protocol.md
   optimization_protocol: 05_src/traffic_simulation/optimization_comparison_protocol.md
+  attribute_criticality_and_evidence: 05_src/traffic_simulation/specifications/attribute_criticality_and_evidence_specification.md
+  resolver_exception_decision_table: reproducibility/config/traffic_simulation/resolver_exception_decision_table.yml
   requirements_traceability: reproducibility/config/traffic_simulation/requirements_traceability.yml
 artifact_schema_registry:
   common: reproducibility/config/traffic_simulation/schemas/artifact_common.schema.json
@@ -32,6 +34,7 @@ normative_specifications:
   research_requirements: 05_src/traffic_simulation/specifications/00_research_simulation_requirements.md
   architecture: 05_src/traffic_simulation/specifications/01_network_build_architecture.md
   resolver: 05_src/traffic_simulation/specifications/02_resolver_specification.md
+  attribute_criticality: 05_src/traffic_simulation/specifications/attribute_criticality_and_evidence_specification.md
   permission_materializer: 05_src/traffic_simulation/specifications/03_permission_materializer_specification.md
   tls_review: 05_src/traffic_simulation/specifications/04_tls_review_specification.md
   final_build: 05_src/traffic_simulation/specifications/05_final_build_specification.md
@@ -127,23 +130,23 @@ status:
       unit_validation: strict_input_donor_trace_transaction_and_failure_contract_unit_tested
       xsd_validation: not_applicable
       runtime_validation: positive_negative_bidirectional_and_failure_contract_fixtures_passed
-      real_data_validation: not_run
+      real_data_validation: structural_dry_run_completed_with_governed_blockers
       eligibility:
         eligible: false
         state: pending
-        reason: governed_scope_not_run_on_registered_extract
+        reason: registered_input_run_complete_but_attribute_and_permission_blockers_remain
     permission_expectation_artifact:
       gate: formal_build_input_ready
       policy: policy_fixed
-      implementation: implemented_v14_schema_shape
-      unit_validation: v14_positive_negative_bidirectional_and_lane_local_trace_oracles_passed
+      implementation: implemented_v15_schema_shape
+      unit_validation: v15_positive_negative_bidirectional_and_lane_local_trace_oracles_passed
       xsd_validation: not_applicable_json
       runtime_validation: json_schema_validated_fixture_and_cli_failure_artifacts_passed
-      real_data_validation: not_run
+      real_data_validation: incomplete_schema_valid_artifact_emitted_from_registered_input
       eligibility:
         eligible: false
         state: pending
-        reason: v14_artifact_not_run_on_registered_extract
+        reason: registered_input_artifact_incomplete_with_46056_blockers
     permission_materializer:
       gate: formal_build_input_ready
       policy: policy_fixed
@@ -174,8 +177,8 @@ status:
       implementation: unsupported_value_is_reported_and_stopped
       unit_validation: unit_tested
       xsd_validation: not_applicable
-      runtime_validation: not_run
-      real_data_validation: baseline_count_recorded_not_formal_gate_run
+      runtime_validation: fail_closed_behavior_confirmed_in_registered_dry_run
+      real_data_validation: one_occurrence_confirmed_in_registered_structural_dry_run
       eligibility:
         eligible: false
         state: conditional
@@ -446,6 +449,7 @@ execution_environment:
 paths:
   output_root: 03_data/processed/traffic_simulation/road_network/sumo
   osm_xml: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716.osm.xml
+  resolver_input_pbf: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_resolver_input.osm.pbf
   custom_typemap: reproducibility/config/traffic_simulation/osm_tokyo_motorized.typ.xml
   junction_join_review: reproducibility/config/traffic_simulation/ota_ward_junction_join_review.csv
   reviewed_junction_joins: reproducibility/config/traffic_simulation/ota_ward_junction_joins.nod.xml
@@ -459,6 +463,8 @@ paths:
   permission_expectations: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_permission_expectations.json
   imputation_summary: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_imputation_summary.json
   resolver_failure_report: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_resolver_failure_report.json
+  resolver_exception_queue: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_resolver_exception_queue.csv
+  resolver_dry_run_summary: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_resolver_dry_run_summary.json
   external_match_report: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_external_road_matches.csv
   visualization: reproducibility/outputs/traffic_simulation/visualization/ota_ward_sumo_network.html
   versioned_build_record_root: 06_outputs/traffic_simulation/network_build_records/{build_id}
@@ -525,6 +531,7 @@ traffic_side:
 
 vehicle_scope:
   model: motorized_v1
+  scope_duration: entire_research
   keep_vclasses:
     - passenger
     - taxi
@@ -533,14 +540,13 @@ vehicle_scope:
     - delivery
     - truck
     - motorcycle
-    - moped
   excluded_dedicated_modes:
     - pedestrian
     - bicycle
     - rail
     - ship
   shared_motor_roads_are_retained: true
-  multimodal_expansion_requires_new_config_version: true
+  multimodal_expansion_outside_research_scope: true
   use_profiles:
     delivery_routing:
       vclasses:
@@ -560,12 +566,13 @@ vehicle_scope:
         - delivery
         - truck
         - motorcycle
-      moped_status: retained_in_network_scope_but_not_generated_without_separate_demand_rationale
+  excluded_motorized_vclasses:
+    moped: outside_delivery_research_scope
 
 typemap_policy:
-  policy_id: tokyo_motorized_v1
+  policy_id: tokyo_motorized_v2
   path: reproducibility/config/traffic_simulation/osm_tokyo_motorized.typ.xml
-  sha256: 4e4273a5a73b8d1298751aeee141a387dc6a1524d64ed8ddd704cae8db0af590
+  sha256: 81c7ed6c5f40ce0e06071bbba0ecc52b5abc2b2d8b8da64dc9cb2b3296c253be
   design_record: 03_data/metadata/acquisition/20260718_sumo_tokyo_motorized_typemap_design.md
   source_basis:
     project: eclipse-sumo/sumo
@@ -579,7 +586,7 @@ typemap_policy:
   access_processing_scope: supported_tags_in_pinned_netconvert_configuration
   absence_of_type_defaults_is_validation: false
   road_function_and_surface_are_separate_axes: true
-  track_exclusion_reason: land_access_function_outside_initial_general_motorized_network
+  track_exclusion_reason: land_access_function_outside_governed_motorized_network
   unsurfaced_highway_tag_status: deprecated_not_primary_surface_classifier
   surface_assessment:
     primary_tag: surface
@@ -636,6 +643,8 @@ access_resolution:
     - hgv
     - bus
     - delivery
+  out_of_scope_class_tags_ignored:
+    - moped
   lane_specific_tags_to_validate:
     - access:lanes
     - vehicle:lanes
@@ -670,6 +679,7 @@ access_resolution:
       - vehicle
       - motor_vehicle
       - motorcar
+
       - hgv
       - bus
       - delivery
@@ -688,6 +698,27 @@ access_resolution:
       - missing_attributes_accepted_with_global_defaults
       - missing_oneway_accepted_as_one_direction_edge
       - osm_defaults_annotation_did_not_report_missing_oneway
+
+relation_resolution:
+  retained_types:
+    - restriction
+  executed_v15_scope: exact_type_restriction_only
+  known_formal_scope_blockers:
+    - source_type: "restriction:bus"
+      observed_count: 3
+      action: retain_in_next_config_version_and_fixture_before_formal_build
+  next_version_required_retained_types:
+    - restriction
+    - "restriction:bus"
+  discard_other_types_before_member_reference_validation: true
+  retained_relation_missing_way_reference_policy: stop
+  excluded_relation_count_required: true
+  input_closure:
+    base_elements: all_nodes_and_ways_from_registered_bbox_extract
+    retained_relations: restriction_relations_present_in_bbox_extract
+    referenced_element_authority: registered_regional_raw_pbf
+    recursively_add_referenced_elements: true
+    record_intermediate_pbf_and_xml_sha256: true
 
 permission_materialization:
   contract_version: sumo_plain_xml_permissions_v3
@@ -887,7 +918,6 @@ vehicle_input_policy:
     - delivery
     - truck
     - motorcycle
-    - moped
   forbidden_vclasses:
     - ignoring
     - custom1
@@ -1118,7 +1148,7 @@ attribute_resolution:
       - reviewed_at
     profiles:
       structural:
-        allow_noncritical_structural_placeholder: true
+        allow_L1_or_S1_structural_placeholder: true
         allow_low_confidence_external_value: false
         research_results_allowed: false
       formal:
@@ -1225,6 +1255,8 @@ attribute_rules:
     motorway_link_without_explicit_value: unresolved
     ordinary_road_without_oneway_tag: derived_bidirectional_osm_rule
     materialize_derived_bidirectional_as: "no"
+    missing_source_tag_is_not_unresolved_by_itself: true
+    preserve_source_absence_and_derivation_in_audit: true
     statistical_placeholder_allowed: false
     conflict_policy: stop
     absent_typemap_value_may_fallback_to: oneway_true
@@ -1236,7 +1268,7 @@ attribute_rules:
       - road_traffic_census
       - road_ledger
       - scoped_aerial_imagery_review
-      - noncritical_structural_placeholder
+      - L1_structural_placeholder
     validate_consistency_with:
       - lanes_forward
       - lanes_backward
@@ -1244,7 +1276,7 @@ attribute_rules:
       - oneway
     directional_allocation:
       formal_without_explicit_forward_and_backward: stop_RS008
-      structural_even_total_without_directional_tags: equal_split_with_audit_and_sensitivity
+      structural_even_total_without_directional_tags: apply_structural_placeholder_with_registered_rule
       structural_odd_or_single_bidirectional_without_directional_tags: stop_RS008
       lanes_both_ways: stop_RS008
   maxspeed:
@@ -1278,17 +1310,20 @@ structural_imputation:
     - oneway
     - access
   applicable_profile: structural
-  applicable_criticality: noncritical_only
+  applicable_criticality:
+    lanes: L1
+    maxspeed: S1
   lanes:
     source_population: resolver_eligible_explicit_osm_values_in_fixed_ota_ward_extract
     donor_eligibility:
       require_resolvable_oneway: true
       prohibit_reverse_oneway: true
       require_consistent_explicit_lanes: true
-      require_consistent_explicit_maxspeed: true
-      prohibit_conditional_tags: true
+      prohibit_lane_conditional_or_conflicting_tags: true
       require_resolvable_permissions: true
+      exclude_target_missing_lane_tuple: true
     sample_unit: osm_way_count
+    direction_treatment: group_by_resolved_oneway_status
     grouping:
       - highway
       - oneway_status
@@ -1301,8 +1336,15 @@ structural_imputation:
   maxspeed_kmh:
     source_population: resolver_eligible_canonical_numeric_osm_values_in_fixed_ota_ward_extract
     numeric_canonicalization: decimal_equivalent_values_share_one_plain_decimal_string
-    donor_eligibility: same_as_lanes
+    donor_eligibility:
+      require_resolvable_oneway: true
+      prohibit_reverse_oneway: true
+      require_canonical_numeric_explicit_maxspeed: true
+      prohibit_speed_conditional_directional_variable_or_conflicting_tags: true
+      require_resolvable_permissions: true
+      exclude_target_missing_maxspeed_tuple: true
     sample_unit: osm_way_count
+    direction_treatment: one_canonical_value_per_eligible_way
     grouping:
       - highway
     statistic: unique_mode
@@ -1322,16 +1364,36 @@ structural_imputation:
   formal_use_allowed: false
 
 road_criticality:
-  status: pending_attribute_specific_schema_and_evidence
-  required_future_fields:
+  status: v1_specification_written_schema_classifier_fixtures_pending
+  specification: 05_src/traffic_simulation/specifications/attribute_criticality_and_evidence_specification.md
+  exception_decision_table: reproducibility/config/traffic_simulation/resolver_exception_decision_table.yml
+  classification_unit: osm_way_id_attribute_profile
+  classification_required_future_fields:
     - osm_way_id
     - attribute
-    - criticality
-    - decision_rule_id
-    - reason
-    - evidence_source
+    - profile
+    - criticality_level
+    - criticality_rule_id
+    - predicate_evidence
+    - source_artifact_sha256
+    - classification_config_sha256
+  resolution_required_future_fields:
+    - classification_record_id
+    - classification_artifact_sha256
+    - evidence_required
+    - evidence_candidates
+    - selected_evidence_id
+    - rejected_evidence_ids
+    - conflict_resolution_rule_id
+    - resolution_action
+    - resolution_rule_id
+    - value_state
+    - adopted_value
+    - unit
+    - review_status
     - reviewer
     - reviewed_at
+    - stop_failure_codes
   pre_critical:
     - jartic_observation_road
     - road_traffic_census_road
@@ -1456,7 +1518,6 @@ netconvert:
       - delivery
       - truck
       - motorcycle
-      - moped
     output.original-names: true
     write-license: true
     geometry.remove: false
@@ -1590,7 +1651,6 @@ structural_quality_gate:
       - bus
       - coach
       - motorcycle
-      - moped
     directed_reachability_required: true
     depot_to_all_customers_and_chargers_required: true
     all_customers_and_chargers_to_depot_return_required: true
@@ -1624,6 +1684,23 @@ traffic_observation_policy:
       - special_events
       - sensor_missingness
       - traffic_regulations
+
+later_stage_context_inputs:
+  core_comparison_input: false
+  introduction_requires_separate_stage_and_recorded_rationale: true
+  retained_for_later_use:
+    overseas_driving_behavior:
+      role: bounded_relative_profile_and_sensitivity_evidence
+      direct_transfer_of_absolute_values_to_tokyo: prohibited
+    weather:
+      role: observed_context_and_later_weather_scenarios
+      prerequisite: normal_weather_model_calibrated_and_independently_validated
+    incidents:
+      role: observed_context_and_later_disruption_scenarios
+      static_road_geometry_rewrite: prohibited
+    pedestrian_related_driving_behavior_fields:
+      role: contextual_covariates_for_later_driver_behavior_analysis
+      pedestrian_agents_or_pedestrian_network_mode: false
 
 calibration_policy:
   prerequisite_network_profile: formal

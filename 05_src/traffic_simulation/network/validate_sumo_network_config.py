@@ -38,12 +38,17 @@ TRACE_FIELDS = {
     "fixture_class",
     "implementation_state",
 }
-REQUIREMENT_PATTERN = re.compile(r"\b(?:SIM|ARC|RS|PM|TLS|BLD|PA)-REQ-[0-9]{3}\b")
-TEST_PATTERN = re.compile(r"\b(?:SIM|ARC|RS|PM|TLS|BLD|PA)-TST-[0-9]{3}\b")
-FAILURE_PATTERN = re.compile(r"\b(?:RS|PM|TLS|BLD|PA)[0-9]{3}\b")
+REQUIREMENT_PATTERN = re.compile(
+    r"\b(?:SIM|ARC|RS|AC|PM|TLS|BLD|PA)-REQ-[0-9]{3}\b"
+)
+TEST_PATTERN = re.compile(
+    r"\b(?:SIM|ARC|RS|AC|PM|TLS|BLD|PA)-TST-[0-9]{3}\b"
+)
+FAILURE_PATTERN = re.compile(r"\b(?:RS|AC|PM|TLS|BLD|PA)[0-9]{3}\b")
 UNRESOLVED_MARKER_PATTERN = re.compile(r"\b(?:TBD|TODO|FIXME)\b", re.IGNORECASE)
 EXPECTED_FAILURE_CODES = {
-    *(f"RS{number:03d}" for number in range(1, 13)),
+    *(f"RS{number:03d}" for number in range(1, 15)),
+    *(f"AC{number:03d}" for number in range(1, 11)),
     *(f"PM{number:03d}" for number in range(1, 29)),
     *(f"TLS{number:03d}" for number in range(1, 11)),
     *(f"BLD{number:03d}" for number in range(1, 15)),

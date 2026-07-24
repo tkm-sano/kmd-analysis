@@ -1,0 +1,414 @@
+schema_version: 1
+decision_table_id: ota_ward_v15_resolver_exceptions_v1
+status: classification_complete_resolution_pending
+authority:
+  specification: 05_src/traffic_simulation/specifications/02_resolver_specification.md
+  criticality_specification: 05_src/traffic_simulation/specifications/attribute_criticality_and_evidence_specification.md
+baseline:
+  run_id: ota-ward-v15-structural-20260723-01
+  config_id: ota_ward_sumo_network_v15
+  config_version: 15
+  exception_queue: 03_data/processed/traffic_simulation/validation/ota_ward_20260716_resolver_exception_queue.csv
+  exception_queue_sha256: 89a0edc656244619dd81e2dc53ddd1b6c6d0abc2650dab7604de110ff7cad858
+  rule_or_data_exception_rows: 307
+  counting_unit: attribute_way_row
+policies:
+  categories_are_mutually_exclusive: true
+  every_baseline_exception_must_match_exactly_one_entry: true
+  unmatched_policy: stop
+  overlapping_match_policy: stop
+  one_off_osm_edit_allowed: false
+  resolution_requires_fixture: true
+  unimplemented_resolution_action: stop
+  conditional_without_complete_context: stop
+  lower_precedence_rule_must_not_override_applicable_higher_evidence: true
+resolution_states:
+  - deterministic_normal_case
+  - governed_structural_case
+  - exception_case
+decision_statuses:
+  - specification_required
+  - fixture_required
+  - implementation_required
+  - ready_for_fixture_execution
+  - implemented
+entries:
+  - id: EXC-ONEWAY-001
+    attribute: oneway
+    observed_state: valid_but_unsupported
+    match:
+      derivation_method: reverse_oneway_requires_directional_tag_safe_transform
+      source_value: "-1"
+    baseline_rows: 1
+    baseline_distinct_ways: 1
+    class: exception_case
+    current_action: stop
+    failure_code: RS007
+    target_rule: preserve_source_way_direction_and_reverse_only_the_governed_sumo_edge_direction_with_all_direction_dependent_semantics_remapped
+    decision_status: specification_required
+    required_fixtures:
+      - reverse_geometry_and_from_to
+      - reverse_directional_lanes_and_speed
+      - reverse_lane_permissions
+      - reverse_turn_restriction
+
+  - id: EXC-LANES-001
+    attribute: lanes
+    observed_state: valid_but_unsupported
+    match:
+      derivation_method: incomplete_or_unsupported_directional_lane_encoding
+    observed_subgroups:
+      lanes_both_ways_present: 15
+      forward_and_backward_without_supported_total_encoding: 4
+    baseline_rows: 19
+    baseline_distinct_ways: 19
+    class: exception_case
+    current_action: stop
+    failure_code: RS008
+    target_rule: no_automatic_directional_allocation_until_each_encoding_has_an_explicit_rule
+    decision_status: specification_required
+    required_fixtures:
+      - lanes_both_ways
+      - directional_pair_without_total
+      - reversible_or_center_lane
+
+  - id: EXC-LANES-002
+    attribute: lanes
+    observed_state: conflict
+    match:
+      derivation_method: directional_and_total_lanes_disagree
+    baseline_rows: 1
+    baseline_distinct_ways: 1
+    class: exception_case
+    current_action: stop
+    failure_code: RS008
+    target_rule: retain_conflict_until_authoritative_evidence_resolves_the_segment
+    decision_status: specification_required
+    required_fixtures:
+      - total_directional_conflict
+
+  - id: EXC-SPEED-001
+    attribute: maxspeed
+    observed_state: valid_but_unsupported
+    match:
+      derivation_method: unsupported_explicit_maxspeed_encoding
+      source_tags:
+        maxspeed: "50;40"
+    observed_values:
+      "50;40": 9
+    baseline_rows: 9
+    baseline_distinct_ways: 9
+    class: exception_case
+    current_action: stop
+    failure_code: RS003
+    target_rule: classify_multiple_value_semantics_before_any_numeric_adoption
+    decision_status: specification_required
+    required_fixtures:
+      - supported_single_numeric
+      - multiple_value_fail_closed
+      - multiple_value_with_directional_evidence
+
+  - id: EXC-SPEED-002
+    attribute: maxspeed
+    observed_state: valid_but_unsupported
+    match:
+      derivation_method: unsupported_explicit_maxspeed_encoding
+      source_tags:
+        maxspeed:type: "JP:urban"
+    observed_values:
+      "JP:urban": 7
+    baseline_rows: 7
+    baseline_distinct_ways: 7
+    class: exception_case
+    current_action: stop
+    failure_code: RS003
+    target_rule: require_dated_japanese_legal_rule_and_compatible_road_state_before_derivation
+    decision_status: specification_required
+    required_fixtures:
+      - japanese_legal_type_supported
+      - unknown_or_undated_legal_type
+
+  - id: EXC-SPEED-003
+    attribute: maxspeed
+    observed_state: valid_but_unsupported
+    match:
+      derivation_method: unsupported_explicit_maxspeed_encoding
+      source_tags:
+        maxspeed:advisory: "40"
+    observed_values:
+      "40": 6
+    baseline_rows: 6
+    baseline_distinct_ways: 6
+    class: exception_case
+    current_action: stop
+    failure_code: RS003
+    target_rule: advisory_speed_must_not_be_materialized_as_legal_maxspeed
+    decision_status: fixture_required
+    required_fixtures:
+      - advisory_does_not_replace_missing_legal_maxspeed
+
+  - id: EXC-PERM-001
+    attribute: permissions
+    observed_state: unresolved
+    match:
+      derivation_method: bidirectional lane allocation is unresolved
+    baseline_rows: 62
+    baseline_distinct_ways: 62
+    class: exception_case
+    current_action: stop
+    failure_code: RS008
+    target_rule: require_resolved_directional_lane_allocation_before_lane_permission_materialization
+    decision_status: specification_required
+    required_fixtures:
+      - even_total_without_lane_semantics
+      - odd_total_stop
+      - lane_specific_access_stop
+      - reversible_or_tidal_stop
+
+  - id: EXC-PERM-002
+    attribute: permissions
+    observed_state: unresolved
+    match:
+      derivation_method: "unsupported access tags: ['hgv:conditional']"
+    baseline_rows: 79
+    baseline_distinct_ways: 79
+    class: exception_case
+    current_action: stop
+    failure_code: RS009
+    target_rule: evaluate_only_with_registered_time_vehicle_and_condition_context
+    decision_status: specification_required
+    required_fixtures:
+      - hgv_condition_active
+      - hgv_condition_inactive
+      - hgv_condition_context_missing
+
+  - id: EXC-PERM-003
+    attribute: permissions
+    observed_state: unresolved
+    match:
+      derivation_method: "unsupported access tags: ['motorcycle']"
+    baseline_rows: 74
+    baseline_distinct_ways: 74
+    class: exception_case
+    current_action: stop
+    failure_code: RS009
+    target_rule: map_supported_motorcycle_values_to_the_governed_motorcycle_vclass_without_expanding_typemap_baseline
+    decision_status: specification_required
+    required_fixtures:
+      - motorcycle_designated
+      - motorcycle_no
+      - motorcycle_typemap_intersection
+
+  - id: EXC-PERM-004
+    attribute: permissions
+    observed_state: unresolved
+    match:
+      derivation_method: "unsupported access tags: ['motor_vehicle:conditional']"
+    baseline_rows: 9
+    baseline_distinct_ways: 9
+    class: exception_case
+    current_action: stop
+    failure_code: RS009
+    target_rule: evaluate_only_with_complete_registered_condition_context
+    decision_status: specification_required
+    required_fixtures:
+      - motor_vehicle_time_condition
+      - motor_vehicle_hazmat_condition
+      - motor_vehicle_condition_context_missing
+
+  - id: EXC-PERM-005
+    attribute: permissions
+    observed_state: unresolved
+    match:
+      derivation_method: "unsupported access tags: ['psv']"
+    baseline_rows: 9
+    baseline_distinct_ways: 9
+    class: exception_case
+    current_action: stop
+    failure_code: RS009
+    target_rule: define_psv_mapping_to_governed_bus_and_taxi_classes_with_typemap_intersection
+    decision_status: specification_required
+    required_fixtures:
+      - psv_yes_after_access_no
+      - psv_typemap_intersection
+
+  - id: EXC-PERM-006
+    attribute: permissions
+    observed_state: unresolved
+    match:
+      derivation_method: "unsupported access tags: ['goods:conditional', 'vehicle:conditional']"
+    baseline_rows: 7
+    baseline_distinct_ways: 7
+    class: exception_case
+    current_action: stop
+    failure_code: RS009
+    target_rule: define_conditional_precedence_and_vehicle_context
+    decision_status: specification_required
+    required_fixtures:
+      - combined_goods_vehicle_condition
+      - malformed_or_missing_context
+
+  - id: EXC-PERM-007
+    attribute: permissions
+    observed_state: unresolved
+    match:
+      derivation_method: "unsupported access value access=private"
+    baseline_rows: 7
+    baseline_distinct_ways: 7
+    class: exception_case
+    current_action: stop
+    failure_code: RS009
+    target_rule: decide_private_road_inclusion_before_permission_resolution
+    decision_status: specification_required
+    required_fixtures:
+      - private_without_override
+      - private_with_explicit_motor_vehicle_override
+
+  - id: EXC-PERM-008
+    attribute: permissions
+    observed_state: unresolved
+    match:
+      derivation_method: "unsupported access tags: ['goods', 'motor_vehicle:conditional']"
+    baseline_rows: 3
+    baseline_distinct_ways: 3
+    class: exception_case
+    current_action: stop
+    failure_code: RS009
+    target_rule: define_class_and_conditional_precedence
+    decision_status: specification_required
+    required_fixtures:
+      - goods_and_motor_vehicle_condition
+
+  - id: EXC-PERM-009
+    attribute: permissions
+    observed_state: unresolved
+    match:
+      derivation_method: "unsupported access tags: ['goods', 'vehicle:conditional']"
+    baseline_rows: 3
+    baseline_distinct_ways: 3
+    class: exception_case
+    current_action: stop
+    failure_code: RS009
+    target_rule: define_class_and_conditional_precedence
+    decision_status: specification_required
+    required_fixtures:
+      - goods_and_vehicle_condition
+
+  - id: EXC-PERM-010
+    attribute: permissions
+    observed_state: unresolved
+    match:
+      derivation_method: "unsupported access tags: ['psv:lanes']"
+    baseline_rows: 3
+    baseline_distinct_ways: 3
+    class: exception_case
+    current_action: stop
+    failure_code: RS009
+    target_rule: define_lane_local_psv_mapping_after_directional_lane_resolution
+    decision_status: specification_required
+    required_fixtures:
+      - psv_lanes_complete
+      - psv_lanes_empty_token
+      - psv_lane_count_mismatch
+
+  - id: EXC-PERM-011
+    attribute: permissions
+    observed_state: unresolved
+    match:
+      derivation_method: "unsupported access value access=destination"
+    baseline_rows: 3
+    baseline_distinct_ways: 3
+    class: exception_case
+    current_action: stop
+    failure_code: RS009
+    target_rule: decide_destination_access_representation_and_routing_scope
+    decision_status: specification_required
+    required_fixtures:
+      - destination_without_override
+      - destination_with_vehicle_override
+
+  - id: EXC-PERM-012
+    attribute: permissions
+    observed_state: unresolved
+    match:
+      derivation_method: "unsupported access value hgv=destination"
+    baseline_rows: 3
+    baseline_distinct_ways: 3
+    class: exception_case
+    current_action: stop
+    failure_code: RS009
+    target_rule: decide_destination_semantics_for_governed_truck_class
+    decision_status: specification_required
+    required_fixtures:
+      - hgv_destination
+
+  - id: EXC-PERM-013
+    attribute: permissions
+    observed_state: unresolved
+    match:
+      derivation_method: "unsupported access tags: ['goods:conditional']"
+    baseline_rows: 1
+    baseline_distinct_ways: 1
+    class: exception_case
+    current_action: stop
+    failure_code: RS009
+    target_rule: define_goods_condition_and_weight_context
+    decision_status: specification_required
+    required_fixtures:
+      - goods_weight_condition
+
+  - id: EXC-PERM-014
+    attribute: permissions
+    observed_state: unresolved
+    match:
+      derivation_method: "unsupported access value access=permit"
+    baseline_rows: 1
+    baseline_distinct_ways: 1
+    class: exception_case
+    current_action: stop
+    failure_code: RS009
+    target_rule: decide_permit_context_and_inclusion
+    decision_status: specification_required
+    required_fixtures:
+      - permit_context_missing
+
+expected_totals:
+  by_attribute:
+    oneway: 1
+    lanes: 20
+    maxspeed: 22
+    permissions: 264
+  by_failure_code:
+    RS003: 22
+    RS007: 1
+    RS008: 82
+    RS009: 202
+  all_entries: 307
+next_run_comparison_fields:
+  - resolved_since_previous_run
+  - new_since_previous_run
+  - unchanged_since_previous_run
+  - failure_code_changed
+  - resolution_method_changed
+relation_scope_findings:
+  counting_unit: relation
+  included_in_rule_or_data_exception_rows: false
+  entries:
+    - id: EXC-RELATION-001
+      source_type: "restriction:bus"
+      baseline_relations: 3
+      relation_ids:
+        - "16016504"
+        - "16016506"
+        - "16026064"
+      observed_restrictions:
+        only_straight_on: 2
+        no_straight_on: 1
+      current_v15_action: discarded_before_member_validation
+      formal_action: stop
+      target_rule: retain_and_close_vehicle_specific_turn_restrictions_applicable_to_governed_vclasses
+      decision_status: specification_required
+      required_fixtures:
+        - bus_only_straight_on
+        - bus_no_straight_on
+        - vehicle_specific_restriction_member_closure

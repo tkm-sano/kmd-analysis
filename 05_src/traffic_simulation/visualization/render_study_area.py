@@ -354,6 +354,7 @@ def prepare_osm_roads(
     area: StudyArea,
     *,
     osmium_command: str = "osmium",
+    display_extent: BaseGeometry | None = None,
 ) -> OsmRoadData:
     """Filter, export, clip, and group registered OSM roads for display."""
 
@@ -362,10 +363,32 @@ def prepare_osm_roads(
         key: [] for key in ROAD_LAYER_STYLES
     }
     signals: list[dict[str, Any]] = []
-    bbox_geometry = area.api_boundary.envelope
+    clip_geometry = display_extent or area.api_boundary.envelope
+    if clip_geometry.is_empty:
+        raise ValueError("OSM display extent must not be empty")
 
     with tempfile.TemporaryDirectory(prefix="render-osm-") as temporary_directory:
         temporary = Path(temporary_directory)
+        filter_input_path = extract_path
+        if display_extent is not None:
+            local_extract_path = temporary / "display-extent.osm.pbf"
+            west, south, east, north = display_extent.bounds
+            _run_osmium(
+                [
+                    osmium_command,
+                    "extract",
+                    "--strategy",
+                    "complete_ways",
+                    "--bbox",
+                    f"{west},{south},{east},{north}",
+                    "--output-format",
+                    "pbf",
+                    "--output",
+                    str(local_extract_path),
+                    str(extract_path),
+                ]
+            )
+            filter_input_path = local_extract_path
         filtered_path = temporary / "roads.osm.pbf"
         exported_path = temporary / "roads.geojsonseq"
         _run_osmium(
@@ -378,7 +401,7 @@ def prepare_osm_roads(
                 "pbf",
                 "--output",
                 str(filtered_path),
-                str(extract_path),
+                str(filter_input_path),
                 ROAD_FILTER,
                 "n/highway=traffic_signals",
             ]
@@ -421,7 +444,7 @@ def prepare_osm_roads(
                 ):
                     continue
                 geometry = shape(raw_geometry)
-                if geometry.is_empty or not geometry.intersects(bbox_geometry):
+                if geometry.is_empty or not geometry.intersects(clip_geometry):
                     continue
                 osm_id = str(feature.get("id") or "")
 
@@ -439,7 +462,7 @@ def prepare_osm_roads(
                 highway = str(properties.get("highway") or "")
                 if not highway:
                     continue
-                clipped = geometry.intersection(bbox_geometry)
+                clipped = geometry.intersection(clip_geometry)
                 parts = [part for part in _line_parts(clipped) if part.length > 0]
                 if not parts:
                     continue
@@ -937,6 +960,8 @@ def build_map(
     jartic_inputs: Sequence[tuple[str, gpd.GeoDataFrame]] = (),
     basemap: bool = True,
     research_progress: ResearchProgress | None = None,
+    fit_extent: BaseGeometry | None = None,
+    add_layer_control: bool = True,
 ) -> tuple[folium.Map, int, int, int]:
     """Build the interactive review map without writing it to disk."""
 
@@ -966,8 +991,11 @@ def build_map(
         _summary_panel(area, osm_roads, baseline_demand, progress)
     )
     map_object.get_root().html.add_child(_legend(baseline_demand))
-    folium.LayerControl(collapsed=False).add_to(map_object)
-    map_object.fit_bounds([[area.south, area.west], [area.north, area.east]])
+    if add_layer_control:
+        folium.LayerControl(collapsed=False).add_to(map_object)
+    extent = fit_extent or area.api_boundary.envelope
+    west, south, east, north = extent.bounds
+    map_object.fit_bounds([[south, west], [north, east]])
     road_count = osm_roads.rendered_road_count if osm_roads is not None else 0
     signal_count = len(osm_roads.signal_features) if osm_roads is not None else 0
     return map_object, marker_count, road_count, signal_count

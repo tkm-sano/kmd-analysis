@@ -62,7 +62,6 @@ ACCESS_BASE_KEYS: Final = (
     "taxi",
     "psv",
     "motorcycle",
-    "moped",
     "delivery",
 )
 ACCESS_CLASS_MAP: Final = {
@@ -74,7 +73,6 @@ ACCESS_CLASS_MAP: Final = {
     "taxi": frozenset({"taxi"}),
     "psv": frozenset({"bus", "taxi"}),
     "motorcycle": frozenset({"motorcycle"}),
-    "moped": frozenset({"moped"}),
     "delivery": frozenset({"delivery"}),
 }
 CLASS_ACCESS_PRECEDENCE: Final = (
@@ -83,7 +81,6 @@ CLASS_ACCESS_PRECEDENCE: Final = (
     "hgv",
     "delivery",
     "motorcycle",
-    "moped",
     "psv",
     "coach",
     "bus",
@@ -264,7 +261,7 @@ def load_policy(
     profile: str,
     config_path: Path = CONFIG_PATH,
 ) -> ResolverPolicy:
-    """Load and strictly validate the v14 resolver policy."""
+    """Load and strictly validate the v15 resolver policy."""
 
     with config_path.open(encoding="utf-8") as handle:
         config = yaml.safe_load(handle)
@@ -272,8 +269,8 @@ def load_policy(
         raise ValueError("SUMO network config must be a mapping")
     if profile not in {"structural", "formal"}:
         raise ValueError(f"unsupported network profile: {profile}")
-    if config.get("config_version") != 14:
-        raise ValueError("resolve_osm_attributes requires sumo_network config v14")
+    if config.get("config_version") != 15:
+        raise ValueError("resolve_osm_attributes requires sumo_network config v15")
 
     vehicle_scope = config.get("vehicle_scope", {})
     typemap_policy = config.get("typemap_policy", {})
@@ -286,7 +283,7 @@ def load_policy(
     if oneway.get("explicit_reverse") != (
         "valid_but_unsupported_stop_until_directional_tag_safe_transform"
     ):
-        raise ValueError("reverse oneway must fail closed in config v14")
+        raise ValueError("reverse oneway must fail closed in config v15")
     if oneway.get("statistical_placeholder_allowed") is not False:
         raise ValueError("oneway statistical placeholders must be prohibited")
     if access.get("osm_override_application_order") != [
@@ -302,6 +299,15 @@ def load_policy(
         "intersection_of_research_scope_and_resolved_osm_permissions"
     ):
         raise ValueError("unsupported final permission composition")
+    if access.get("out_of_scope_class_tags_ignored") != ["moped"]:
+        raise ValueError("v15 requires moped access tags to be explicitly out of scope")
+    relation = config.get("relation_resolution", {})
+    if relation.get("retained_types") != ["restriction"]:
+        raise ValueError("v15 retains only OSM turn-restriction relations")
+    if relation.get("discard_other_types_before_member_reference_validation") is not True:
+        raise ValueError("non-road relations must be discarded before reference validation")
+    if relation.get("retained_relation_missing_way_reference_policy") != "stop":
+        raise ValueError("incomplete turn-restriction relations must stop")
 
     governed_vclasses = frozenset(vehicle_scope.get("keep_vclasses", ()))
     if not governed_vclasses:
@@ -973,7 +979,7 @@ def _resolve_permissions(
     if counts is None:
         return None, "bidirectional lane allocation is unresolved"
     if "both_ways" in counts:
-        return None, "lanes:both_ways is not supported by the v14 direction model"
+        return None, "lanes:both_ways is not supported by the v15 direction model"
     result: dict[str, list[set[str]]] = {
         direction: [set(baseline) for _ in range(count)]
         for direction, count in counts.items()
@@ -1170,6 +1176,7 @@ def resolve_tree(
     retained: list[ElementTree.Element] = []
     excluded = 0
     excluded_relations = 0
+    excluded_elements: set[ElementTree.Element] = set()
     node_ids: set[str] = set()
     for node in root.findall("node"):
         node_id = node.attrib.get("id", "")
@@ -1203,11 +1210,16 @@ def resolve_tree(
         elif highway is not None:
             excluded += 1
             excluded_way_ids.add(way_id)
-            root.remove(way)
+            excluded_elements.add(way)
     for relation in list(root.findall("relation")):
         relation_id = relation.attrib.get("id", "")
         if not relation_id:
             raise ResolutionError("OSM input contains a relation without an id")
+        relation_tags = _tags(relation)
+        if relation_tags.get("type") != "restriction":
+            excluded_elements.add(relation)
+            excluded_relations += 1
+            continue
         way_references = {
             member.attrib.get("ref", "")
             for member in relation.findall("member")
@@ -1218,8 +1230,12 @@ def resolve_tree(
                 f"relation {relation_id} has an unresolved way reference"
             )
         if way_references & excluded_way_ids:
-            root.remove(relation)
+            excluded_elements.add(relation)
             excluded_relations += 1
+    if excluded_elements:
+        root[:] = [
+            element for element in root if element not in excluded_elements
+        ]
     if not retained:
         raise ResolutionError("OSM input contains no governed motorized ways")
     lane_modes, speed_modes = _imputation_tables(retained, policy)
@@ -1428,7 +1444,7 @@ def _mode_payload(decision: ModeDecision) -> dict[str, Any]:
 
 
 def _resolver_failure(row: AuditRow) -> dict[str, Any]:
-    """Convert one stopping audit decision to a stable v14 failure object."""
+    """Convert one stopping audit decision to a stable v15 failure object."""
 
     if row.attribute == "oneway" and row.derivation_method.startswith(
         "reverse_oneway"
@@ -1465,7 +1481,7 @@ def _resolver_failure(row: AuditRow) -> dict[str, Any]:
 def _expectation_way_payloads(
     result: ResolutionResult, policy: ResolverPolicy
 ) -> list[dict[str, Any]]:
-    """Serialize internal permission sets as ordered v14 way records."""
+    """Serialize internal permission sets as ordered v15 way records."""
 
     way_by_id = {
         way.attrib["id"]: way for way in result.tree.getroot().findall("way")
@@ -1519,7 +1535,7 @@ def build_permission_expectations_payload(
     normalized_output_path: Path | None = None,
     normalized_content_path: Path | None = None,
 ) -> dict[str, Any]:
-    """Build and validate the v14 permission-expectation artifact payload."""
+    """Build and validate the v15 permission-expectation artifact payload."""
 
     failures = [
         _resolver_failure(row) for row in result.audit_rows if row.decision == "stop"
@@ -1581,7 +1597,7 @@ def build_permission_expectations_payload(
 
 
 def validate_permission_expectations_payload(payload: Mapping[str, Any]) -> None:
-    """Validate one permission artifact against the pinned v14 JSON Schema."""
+    """Validate one permission artifact against the pinned v15 JSON Schema."""
 
     schema = json.loads(PERMISSION_EXPECTATIONS_SCHEMA_PATH.read_text(encoding="utf-8"))
     common = json.loads(ARTIFACT_COMMON_SCHEMA_PATH.read_text(encoding="utf-8"))
@@ -1685,8 +1701,8 @@ def _failure_report_payload(
     payload = {
         "artifact_type": "failure_report",
         "schema_version": 1,
-        "config_id": policy.config_id if policy else "ota_ward_sumo_network_v14",
-        "config_version": policy.config_version if policy else 14,
+        "config_id": policy.config_id if policy else "ota_ward_sumo_network_v15",
+        "config_version": policy.config_version if policy else 15,
         "component": "resolver",
         "failures": failures,
         "partial_outputs_published": False,

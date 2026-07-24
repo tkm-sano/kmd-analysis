@@ -97,7 +97,7 @@ def test_all_normative_requirements_have_registered_tests() -> None:
     registry, texts = governed_traceability(config)
 
     validator.validate_traceability(config, registry, texts)
-    assert len(registry["requirements"]) == 70
+    assert len(registry["requirements"]) == 81
 
 
 def test_missing_traceability_requirement_is_rejected() -> None:
@@ -128,7 +128,7 @@ def test_failure_taxonomy_is_complete_and_fixture_identified() -> None:
     validator.validate_failure_taxonomy(
         texts["failure_taxonomy"], texts["fixtures"], list(texts.values())
     )
-    assert len(validator.EXPECTED_FAILURE_CODES) == 79
+    assert len(validator.EXPECTED_FAILURE_CODES) == 91
 
 
 def test_missing_failure_code_is_rejected() -> None:
