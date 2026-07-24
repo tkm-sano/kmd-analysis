@@ -282,6 +282,55 @@ def test_structural_imputation_is_rule_based_and_formal_use_is_forbidden() -> No
     assert formal["require_validation_record_for_derived_model"] is True
 
 
+def test_attribute_classification_basic_design_is_machine_registered() -> None:
+    policy = load_config()["road_criticality"]
+
+    assert policy["population_source"] == "accepted_relation_closure_candidate_ways"
+    assert policy["population_hash_binding"] == "relation_closed_osm_sha256"
+    assert policy["subgraph_role_enum"] == [
+        "final",
+        "topology_support",
+        "excluded",
+    ]
+    assert policy["one_profile_per_artifact"] is True
+    assert policy["record_id_format"] == "acr:<osm_way_id>:<attribute>:<profile>"
+    assert policy["record_order"] == [
+        "numeric_osm_way_id_ascending",
+        "lanes_before_maxspeed",
+        "structural_before_formal",
+        "record_revision_ascending",
+    ]
+    assert policy["classification_rule_priority"]["lanes"] == [
+        f"LANE-CRIT-{number:03d}" for number in range(1, 8)
+    ]
+    assert policy["classification_rule_priority"]["maxspeed"] == [
+        f"SPEED-CRIT-{number:03d}" for number in range(1, 7)
+    ]
+    assert policy["review_status_enum"] == [
+        "machine_classified",
+        "review_required",
+        "reviewed",
+        "stopped",
+    ]
+    assert policy["record_sha256_canonicalization"]["standard"] == (
+        "RFC_8785_JSON_Canonicalization_Scheme"
+    )
+    assert (
+        policy["semantic_validator"]
+        == "05_src/traffic_simulation/network/validate_attribute_classification.py"
+    )
+    assert set(policy["implemented_schemas"]) == {
+        "classification_predicates.schema.json",
+        "attribute_classification.schema.json",
+        "attribute_classification_fixture.schema.json",
+    }
+    predicates = policy["predicate_artifact"]
+    assert predicates["one_record_per_population_way"] is True
+    assert predicates["evidence_required_for_false_and_true"] is True
+    assert "is_accepted_delivery_route" in predicates["required_predicates"]
+    assert "topology_support_without_reason" in predicates["forbidden_combinations"]
+
+
 def test_permissions_are_materialized_before_final_conversion_and_only_audited_after() -> None:
     config = load_config()
     resolution = config["access_resolution"]
@@ -713,7 +762,7 @@ def test_configuration_dates_and_policy_documents_are_unambiguous() -> None:
     assert config["config_id"] == "ota_ward_sumo_network_v15"
     assert config["config_version"] == 15
     assert config["created_at"] == "2026-07-18"
-    assert config["last_updated_at"] == "2026-07-23"
+    assert config["last_updated_at"] == "2026-07-25"
     assert config["configuration_lineage_date"] == "2026-07-16"
     assert config["decision_date"] == "2026-07-23"
     documents = config["policy_documents"]

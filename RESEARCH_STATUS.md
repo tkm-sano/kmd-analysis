@@ -3,7 +3,7 @@
 
 # 研究進捗ダッシュボード
 
-**状態更新日:** 2026-07-23
+**状態更新日:** 2026-07-25
 
 ## 現在地
 
@@ -37,7 +37,7 @@ flowchart LR
 
 ## 現在の阻害事項
 
-- lanes・maxspeedの属性別criticalityはP0の語彙・成果物分離・failure・donor規則を仕様化済みだが、classification・resolutionのschema、predicate証拠、classifier、fixtureが未実装
+- lanes・maxspeedの属性別criticalityは3 schemaとcross-record semantic validatorを実装済みだが、predicate generator、classifier、独立production fixtureが未実装
 - permission未解決264行、車線・速度表現未対応41行、oneway=-1 1行、車線矛盾1行が未解決
 - v15 relation scopeがバス向けturn restriction 3件を除外しており、次版closure・Resolver規則が未実装
 - permission materializerが未実装で、SUMO 1.24.0固定fixtureも未実行
@@ -45,7 +45,7 @@ flowchart LR
 
 ## 次の作業
 
-1. 属性別criticalityのschema・classifierとsynthetic fixtureを実装するが、実データ分類は次版closure受理まで公開しない
+1. 3 schemaとsemantic validatorを基準としてpredicate generator、classifier、独立fixtureを実装するが、実データ分類は次版closure受理まで公開しない
 2. type=restriction:bus 3件を次版のrelation closure・Resolver対象へ含め、参照完全性とturn restriction保持をfixtureで検証する
 3. 次版closureの候補母集団を受理してから、全way・属性・profileの実データcriticalityを新しい入力hashから生成する
 4. 307件を排他的に登録した決定表について、優先度順に規則と独立fixtureを実装し、未実装項目は停止状態を維持する

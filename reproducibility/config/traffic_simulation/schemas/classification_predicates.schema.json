@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "classification_predicates.schema.json",
+  "allOf": [
+    {"$ref": "artifact_common.schema.json#/$defs/identity"},
+    {
+      "type": "object",
+      "required": [
+        "artifact_type",
+        "schema_version",
+        "config_id",
+        "config_version",
+        "run_id",
+        "complete",
+        "relation_closed_osm",
+        "predicate_policy",
+        "population_way_count",
+        "records"
+      ],
+      "properties": {
+        "artifact_type": {"const": "attribute_classification_predicates"},
+        "schema_version": {"const": 1},
+        "config_id": {"type": "string"},
+        "config_version": {"type": "integer"},
+        "run_id": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
+        "complete": {"const": true},
+        "relation_closed_osm": {"$ref": "artifact_common.schema.json#/$defs/file_ref"},
+        "predicate_policy": {"$ref": "artifact_common.schema.json#/$defs/file_ref"},
+        "population_way_count": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Total number of governed candidate ways in the accepted relation-closed classification population."
+        },
+        "records": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/predicate_record"}
+        }
+      },
+      "additionalProperties": false
+    }
+  ],
+  "$defs": {
+    "predicate_evidence": {
+      "type": "object",
+      "required": [
+        "value",
+        "source_artifact_type",
+        "source_artifact_sha256",
+        "source_record_locator",
+        "derivation_rule_id"
+      ],
+      "properties": {
+        "value": {"type": "boolean"},
+        "source_artifact_type": {"type": "string", "minLength": 1},
+        "source_artifact_sha256": {"$ref": "artifact_common.schema.json#/$defs/sha256"},
+        "source_record_locator": {"type": "string", "minLength": 1},
+        "derivation_rule_id": {
+          "type": "string",
+          "pattern": "^PRED-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "subgraph_role_evidence": {
+      "type": "object",
+      "required": [
+        "asserted_role",
+        "source_artifact_type",
+        "source_artifact_sha256",
+        "source_record_locator",
+        "derivation_rule_id"
+      ],
+      "properties": {
+        "asserted_role": {
+          "enum": ["final", "topology_support", "excluded"]
+        },
+        "source_artifact_type": {"type": "string", "minLength": 1},
+        "source_artifact_sha256": {
+          "$ref": "artifact_common.schema.json#/$defs/sha256"
+        },
+        "source_record_locator": {"type": "string", "minLength": 1},
+        "derivation_rule_id": {
+          "type": "string",
+          "pattern": "^PRED-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicate_set": {
+      "type": "object",
+      "required": [
+        "is_calibration_segment",
+        "is_validation_segment",
+        "is_major_junction_approach",
+        "is_bridge",
+        "is_tunnel",
+        "is_grade_separated",
+        "has_directional_lane_semantics",
+        "has_reversible_lane_semantics",
+        "has_tidal_flow_semantics",
+        "has_turn_lane_semantics",
+        "has_bus_or_psv_lane_semantics",
+        "has_conflicting_lane_semantics",
+        "has_directional_speed_semantics",
+        "has_conditional_speed_semantics",
+        "has_variable_speed_semantics",
+        "has_vehicle_specific_speed_semantics",
+        "has_advisory_or_multiple_speed_semantics",
+        "is_accepted_delivery_route",
+        "is_sensitivity_elevated"
+      ],
+      "properties": {
+        "is_calibration_segment": {"$ref": "#/$defs/predicate_evidence"},
+        "is_validation_segment": {"$ref": "#/$defs/predicate_evidence"},
+        "is_major_junction_approach": {"$ref": "#/$defs/predicate_evidence"},
+        "is_bridge": {"$ref": "#/$defs/predicate_evidence"},
+        "is_tunnel": {"$ref": "#/$defs/predicate_evidence"},
+        "is_grade_separated": {"$ref": "#/$defs/predicate_evidence"},
+        "has_directional_lane_semantics": {"$ref": "#/$defs/predicate_evidence"},
+        "has_reversible_lane_semantics": {"$ref": "#/$defs/predicate_evidence"},
+        "has_tidal_flow_semantics": {"$ref": "#/$defs/predicate_evidence"},
+        "has_turn_lane_semantics": {"$ref": "#/$defs/predicate_evidence"},
+        "has_bus_or_psv_lane_semantics": {"$ref": "#/$defs/predicate_evidence"},
+        "has_conflicting_lane_semantics": {"$ref": "#/$defs/predicate_evidence"},
+        "has_directional_speed_semantics": {"$ref": "#/$defs/predicate_evidence"},
+        "has_conditional_speed_semantics": {"$ref": "#/$defs/predicate_evidence"},
+        "has_variable_speed_semantics": {"$ref": "#/$defs/predicate_evidence"},
+        "has_vehicle_specific_speed_semantics": {"$ref": "#/$defs/predicate_evidence"},
+        "has_advisory_or_multiple_speed_semantics": {"$ref": "#/$defs/predicate_evidence"},
+        "is_accepted_delivery_route": {"$ref": "#/$defs/predicate_evidence"},
+        "is_sensitivity_elevated": {"$ref": "#/$defs/predicate_evidence"}
+      },
+      "additionalProperties": false
+    },
+    "predicate_record": {
+      "type": "object",
+      "required": [
+        "osm_way_id",
+        "subgraph_role",
+        "subgraph_role_evidence",
+        "topology_support_reason",
+        "predicates"
+      ],
+      "properties": {
+        "osm_way_id": {"type": "string", "pattern": "^[1-9][0-9]*$"},
+        "subgraph_role": {"enum": ["final", "topology_support", "excluded"]},
+        "subgraph_role_evidence": {"$ref": "#/$defs/subgraph_role_evidence"},
+        "topology_support_reason": {
+          "type": ["string", "null"],
+          "minLength": 1
+        },
+        "predicates": {"$ref": "#/$defs/predicate_set"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"subgraph_role": {"const": "topology_support"}}},
+          "then": {
+            "properties": {"topology_support_reason": {"type": "string"}}
+          },
+          "else": {
+            "properties": {"topology_support_reason": {"type": "null"}}
+          }
+        },
+        {
+          "if": {"properties": {"subgraph_role": {"const": "excluded"}}},
+          "then": {
+            "properties": {
+              "predicates": {
+                "properties": {
+                  "is_accepted_delivery_route": {
+                    "properties": {"value": {"const": false}}
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "not": {
+            "properties": {
+              "predicates": {
+                "properties": {
+                  "is_calibration_segment": {
+                    "properties": {"value": {"const": true}}
+                  },
+                  "is_validation_segment": {
+                    "properties": {"value": {"const": true}}
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    }
+  }
+}

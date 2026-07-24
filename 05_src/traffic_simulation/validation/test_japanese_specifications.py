@@ -54,13 +54,15 @@ def test_criticality_translation_contains_every_failure_identifier() -> None:
         assert tokens(japanese, pattern) == tokens(english, pattern)
 
 
-def test_classification_and_resolution_are_separate_in_both_languages() -> None:
+def test_classification_and_resolution_object_contract_is_in_both_languages() -> None:
     for path in (
         "attribute_criticality_and_evidence_specification.md",
         "ja/attribute_criticality_and_evidence_specification_ja.md",
     ):
         content = (SPECIFICATIONS / path).read_text(encoding="utf-8")
-        assert "attribute_criticality_classification.json" in content
-        assert "attribute_resolution_decisions.json" in content
+        assert "attribute_classification_predicates.json" in content
+        assert "classification_record_id" in content
+        assert "acr:<osm_way_id>:<attribute>:<profile>" in content
         assert "`evidence_candidates`" in content
         assert "`selected_evidence_id`" in content
+        assert "`subgraph_role`" in content

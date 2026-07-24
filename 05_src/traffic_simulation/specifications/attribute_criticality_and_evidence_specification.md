@@ -67,75 +67,193 @@ be copied into acceptance logic or treated as expected production totals.
 Changing a network from `structural` to `formal` requires reclassification.
 The structural classification is not promoted automatically.
 
-## Classification and Resolution Artifacts
+## Population and Subgraph Roles
 
-Classification decides impact level; resolution decides whether and how a
-value may be adopted. They are separate hash-linked artifacts and MUST NOT be
-combined into one flat record.
+The classification population is the governed candidate-way set in an OSM
+input whose relation-closure acceptance gate has passed. The regional PBF and
+the pre-closure BBOX extract are not classification populations. A changed
+relation-closed input SHA-256 requires a new classification run.
 
-`attribute_criticality_classification.json` MUST contain exactly one record for
-every retained `(osm_way_id, attribute)` pair for the selected profile.
+Every governed candidate way, including a way not retained in the final SUMO
+network, MUST have exactly one `subgraph_role`:
 
-| Field | Meaning |
-|---|---|
-| `osm_way_id` | Stable OSM way identifier from the relation-closed input |
-| `attribute` | Exactly `lanes` or `maxspeed` |
-| `profile` | Exactly `structural` or `formal` |
-| `criticality_level` | Attribute-specific level defined below |
-| `criticality_rule_id` | One rule that produced the level |
-| `predicate_evidence` | Hash-bound facts used by the rule |
-| `source_artifact_sha256` | Hash of the classified relation-closed input |
-| `classification_config_sha256` | Hash of the classification policy |
+```text
+final
+topology_support
+excluded
+```
 
-`attribute_resolution_decisions.json` MUST contain exactly one decision for
-every classification tuple that is retained for value resolution.
+Multiple role booleans are prohibited. An `excluded` way remains in the
+classification artifact with lane level `L0`, speed level `S0`,
+`resolution_action=exclude`, `value_state=excluded`, and
+`resolved_value=null`. A `topology_support` way is classified because it can
+affect relation, connection or conversion behavior. Its base levels are
+`L1/S1` in `structural` and `L2/S2` in `formal`, subject to promotion to
+`L3/S3`.
 
-| Field | Meaning |
-|---|---|
-| `classification_record_id` | Stable reference to the exact classification record |
-| `classification_artifact_sha256` | Hash of the complete classification artifact |
-| `evidence_required` | Evidence class required before adopting a value |
-| `evidence_candidates` | Array of every applicable or rejected candidate considered |
-| `selected_evidence_id` | Selected candidate, or empty while stopped |
-| `rejected_evidence_ids` | Candidate IDs not selected |
-| `conflict_resolution_rule_id` | Registered rule used to resolve a conflict, or empty |
-| `resolution_action` | One allowed action defined in this specification |
-| `resolution_rule_id` | Rule that resolves the value, or empty while stopped |
-| `value_state` | Controlled value-origin or stopping state |
-| `adopted_value` | Adopted canonical value, or empty while stopped/excluded |
-| `unit` | Attribute-compatible unit, or empty where not applicable |
-| `review_status` | `machine_resolved`, `review_required`, `reviewed`, or `stopped` |
-| `reviewer` | Required only for a reviewed decision |
-| `reviewed_at` | Required only for a reviewed decision |
-| `stop_failure_codes` | One or more governed codes when stopped |
+## Tuple, Record and Revision Contract
 
-Each evidence candidate MUST identify its source, value, unit, direction,
-segment, vehicle scope, observation/reference period, licence, source hash and
-matching confidence. The policy schema MUST fix the confidence scale,
-acceptance threshold and tie behavior before confidence may select evidence.
+The tuple is `(osm_way_id, attribute, profile)`. The way ID is a positive
+decimal string, attribute is `lanes` or `maxspeed`, and profile is
+`structural` or `formal`. One artifact contains one profile and exactly one
+active record per tuple, including excluded ways.
 
-Unknown fields, duplicate or missing tuples, unknown rule IDs, predicate
-contradictions, evidence without a registered source hash and a classification
-hash mismatch MUST stop before Resolver execution.
+The stable record ID is:
+
+```text
+acr:<osm_way_id>:<attribute>:<profile>
+```
+
+Records are sorted by numeric way ID and then `lanes` before `maxspeed`.
+Classification and resolution are separate objects in the same record:
+
+```json
+{
+  "classification_record_id": "acr:123456789:lanes:formal",
+  "osm_way_id": "123456789",
+  "attribute": "lanes",
+  "profile": "formal",
+  "classification": {
+    "criticality_level": "L2",
+    "selected_rule_id": "LANE-CRIT-006",
+    "matched_rule_ids": ["LANE-CRIT-006"]
+  },
+  "resolution": {
+    "resolution_action": "stop_unresolved",
+    "resolution_rule_id": null,
+    "value_state": "missing",
+    "resolved_value": null
+  }
+}
+```
+
+The resolution object also records `evidence_required`,
+`evidence_candidates`, `selected_evidence_id`, `rejected_evidence_ids`,
+`conflict_resolution_rule_id`, units, review provenance and stopping codes as
+applicable. Each candidate identifies source, value, unit, direction, segment,
+vehicle scope, period, licence, source hash and matching confidence. Confidence
+cannot select evidence until its scale, threshold and tie behavior are fixed
+by policy.
+
+The artifact is an immutable run snapshot. A changed decision creates a new
+snapshot with the same `classification_record_id`, an incremented
+`record_revision`, a new `record_sha256`, the prior
+`supersedes_record_sha256`, and a governed `revision_reason_code`. Prior
+snapshots are retained; multiple active revisions of one tuple MUST NOT appear
+in one snapshot.
+
+### Canonical record hash and ordering
+
+`record_sha256` is the SHA-256 of the UTF-8 RFC 8785 JSON Canonicalization
+Scheme representation of the record after removing only `record_sha256`
+itself. RFC 8785 controls object-key, whitespace and number serialization;
+array order is preserved. Explicit `null` and an omitted field are different,
+and every field required by the schema remains present during hashing.
+
+Records are ordered by numeric `osm_way_id`, then `lanes` before `maxspeed`,
+then `structural` before `formal`, and finally `record_revision` ascending.
+The profile key remains in the ordering contract even though a current
+artifact contains one profile.
+
+### Semantic validation
+
+JSON Schema validates the local shape and state machine. The registered
+`validate_attribute_classification.py` validator separately collects
+cross-record failures with `ACV` codes. It verifies derived record IDs,
+artifact/record profile agreement, tuple and evidence-ID uniqueness,
+population coverage, both attributes per way, rule selection against
+`road_criticality.classification_rule_priority`, evidence references,
+completion state, revision history supplied explicitly to the validator,
+RFC 8785 hashes, canonical ordering and referenced-file SHA-256 values.
+Each record's `source_artifact_sha256` must equal the top-level predicate
+artifact hash, and `classification_config_sha256` must equal the top-level
+classification-policy hash.
+
+The validator does not search directories to infer revision or evidence
+sources. Every non-top-level source must be registered explicitly through the
+validator source index, and predecessor snapshots must be supplied as history.
+This prevents a same-named but unrelated file from being accepted implicitly.
+Its CLI returns all detected errors in one JSON result:
+
+```json
+{
+  "valid": false,
+  "errors": [
+    {
+      "code": "ACV001",
+      "json_pointer": "/records/0/classification_record_id",
+      "message": "classification_record_id does not match osm_way_id, attribute, and profile",
+      "expected": "acr:123:lanes:formal",
+      "actual": "acr:999:maxspeed:structural"
+    }
+  ]
+}
+```
+
+## Predicate Artifact
+
+The classifier MUST consume `attribute_classification_predicates.json` and
+MUST NOT rediscover predicates directly from OSM, routes, calibration settings
+or reviews. The predicate artifact contains exactly one record per population
+way, complete population and source hashes, the exclusive `subgraph_role`, and
+at least these governed facts:
+
+```text
+is_calibration_segment
+is_validation_segment
+is_major_junction_approach
+is_bridge
+is_tunnel
+is_grade_separated
+has_directional_lane_semantics
+has_reversible_lane_semantics
+has_tidal_flow_semantics
+has_turn_lane_semantics
+has_bus_or_psv_lane_semantics
+has_conflicting_lane_semantics
+has_directional_speed_semantics
+has_conditional_speed_semantics
+has_variable_speed_semantics
+has_vehicle_specific_speed_semantics
+has_advisory_or_multiple_speed_semantics
+is_accepted_delivery_route
+is_sensitivity_elevated
+```
+
+Every predicate value requires a source artifact type and SHA-256, source
+record locator and derivation rule ID. Unsupported evidence-free booleans are
+prohibited.
+
+`subgraph_role_evidence` is categorical rather than boolean. It records
+`asserted_role` plus the same source provenance, and semantic validation
+requires `asserted_role` to equal `subgraph_role`.
+`topology_support_reason` is always present: it is a nonempty string only for
+`topology_support` and is `null` for `final` and `excluded`.
 
 ## Predicate Consistency Before Classification
 
-The classifier first validates predicate consistency and only then applies the
-ordered first-match rules. It MUST stop rather than silently assign a level
-when one way is simultaneously:
+Validation occurs in this order: schema; artifact/source hashes; duplicate way
+IDs; complete population coverage; role enum; role contradictions;
+calibration/validation exclusivity; structural contradictions;
+attribute-specific predicates; then classification rules.
 
-- excluded and a calibration or independent-validation segment;
-- excluded and an accepted delivery route;
-- excluded and required as topology support;
-- outside the final subgraph and present in a retained governed route; or
-- assigned any other predicate combination prohibited by the versioned
-  classification policy.
+The classifier stops before first-match evaluation when:
 
-If a way is completely excluded and is neither topology support nor part of a
-retained governed route, its lane and maxspeed records MUST be `L0` and `S0`.
-Different lane and maxspeed levels are permitted only where their
-attribute-specific predicates differ and the classification records show that
-difference.
+- `excluded` is combined with calibration, validation, accepted-route,
+  sensitivity-elevated or major-junction status;
+- `topology_support` lacks a governed support reason;
+- one way is both a calibration and independent-validation segment; or
+- one way is both bridge and tunnel without a governed way split or individual
+  review.
+
+Bridge/tunnel coexistence is not made unconditionally exclusive in JSON
+Schema because a split or reviewed exception can make it valid. A future
+predicate-generator artifact must expose that adjudication before the
+semantic validator can enforce this conditional case; until then such a case
+remains stopped rather than guessed.
+
+Directional-lane and bus/PSV-lane semantics may coexist. Different lane and
+maxspeed levels are permitted where their attribute-specific predicates differ.
 
 ## Lane Criticality
 
@@ -157,7 +275,7 @@ determines the level:
 
 | Rule ID | Predicate | Level |
 |---|---|---|
-| `LANE-CRIT-001` | governed subgraph decision is `excluded` and the way is not required as topology support | `L0` |
+| `LANE-CRIT-001` | `subgraph_role=excluded` | `L0` |
 | `LANE-CRIT-002` | the way is a calibration or independent-validation segment | `L3` |
 | `LANE-CRIT-003` | the way is a reviewed major-junction approach, bridge, tunnel or grade-separated structure whose lane count affects a governed connection | `L3` |
 | `LANE-CRIT-004` | directional, reversible, tidal-flow, turn-lane, bus-lane, PSV-lane or conflicting lane tags require interpretation | `L3` |
@@ -187,7 +305,7 @@ traffic speed as a legal speed limit.
 
 | Rule ID | Predicate | Level |
 |---|---|---|
-| `SPEED-CRIT-001` | governed subgraph decision is `excluded` and no retained route requires the way | `S0` |
+| `SPEED-CRIT-001` | `subgraph_role=excluded` | `S0` |
 | `SPEED-CRIT-002` | the way is a calibration or independent-validation segment | `S3` |
 | `SPEED-CRIT-003` | directional, conditional, variable, vehicle-specific, advisory or multiple speed expressions require interpretation | `S3` |
 | `SPEED-CRIT-004` | an accepted delivery route or registered sensitivity result promotes the way | `S3` |
@@ -271,29 +389,39 @@ origin.
 
 The permitted combinations are:
 
-| Resolution action | Permitted value state | Review status |
-|---|---|---|
-| `adopt_explicit` | `explicit_osm` | `machine_resolved` or `reviewed` |
-| `derive_osm_rule` | `derived_osm_rule` | `machine_resolved` or `reviewed` |
-| `adopt_external_evidence` | `authoritative_external` | `machine_resolved` or `reviewed` |
-| `apply_governed_rule` | `derived_validated_model` | `machine_resolved` or `reviewed` |
-| `apply_structural_placeholder` | `structural_placeholder` | `machine_resolved` or `reviewed` |
-| `require_human_review` | any unresolved/stopping state | `review_required` |
-| `stop_unresolved` | `missing`, `unresolved`, `conflict`, `valid_but_unsupported`, `conditional`, `directionally_asymmetric`, or `invalid` | `stopped` |
-| `exclude` | `excluded` | `machine_resolved` or `reviewed` |
+| Resolution action | Permitted value state | `resolved_value` | Review status |
+|---|---|---|---|
+| `adopt_explicit` | `explicit_osm` | required | `machine_classified` or `reviewed` |
+| `derive_osm_rule` | `derived_osm_rule` | required | `machine_classified` or `reviewed` |
+| `adopt_external_evidence` | `authoritative_external` | required | `reviewed` |
+| `apply_governed_rule` | `derived_validated_model` | required | `machine_classified` or `reviewed` |
+| `apply_structural_placeholder` | `structural_placeholder` | required | `machine_classified` or `reviewed` |
+| `require_human_review` | `missing`, `conflict`, `conditional`, `valid_but_unsupported`, or `directionally_asymmetric` | null | `review_required` |
+| `stop_unresolved` | `missing`, `unresolved`, `conflict`, `valid_but_unsupported`, `conditional`, `directionally_asymmetric`, or `invalid` | null | `stopped` |
+| `exclude` | `excluded` | null | `machine_classified` |
 
-No other action-state-review combination is valid. Human review does not
-authorize a new value state: after review, the decision MUST transition to one
-of the resolved actions above or remain stopped.
+`invalidated` is not a current resolution status. Supersession is represented
+only by revision metadata and the immutable prior snapshot. `L0/S0` permit
+only `exclude`; `L1/S1` permit all actions; `L2/S2` and `L3/S3` prohibit
+structural placeholders. Every adopted `L3/S3` decision requires `reviewed`.
+No other action-state-review-value combination is valid.
 
 ## Profile-specific Required Inputs
 
 | Input | `structural` | `formal` |
 |---|---|---|
-| complete classification artifact | required | required |
-| resolution-decision artifact | required for every retained unresolved tuple | required for every retained unresolved tuple |
+| complete predicate artifact | required | required |
+| combined classification-resolution artifact | required | required |
 | external evidence artifact | required when cited | required when cited |
 | structural-placeholder rule | required only when used | prohibited |
+
+## Resolution Order
+
+Resolution evaluates, in order: excluded role; applicable explicit OSM value;
+deterministic OSM semantic rule; applicable reviewed external evidence;
+permitted validated model; eligible `L1/S1` structural placeholder; human
+review; then governed unresolved stop. Criticality never supplies a value by
+itself.
 
 ## Structural Placeholder Gate
 
@@ -348,25 +476,41 @@ Before production classification, independent fixtures MUST cover:
 - exclusion versus topology-support retention; and
 - deterministic repeated classification.
 
-Classification fixture oracles MUST contain the expected level and rule ID.
-Resolution fixture oracles MUST separately contain the expected action, value
-state, review status and failure code. Production code MUST NOT generate its
-own oracle.
+Fixture oracles MUST keep expected classification and resolution objects
+separate within the expected tuple record. They contain the selected and
+matched rule IDs, level, action, value state, resolved value, review status and
+failure code. Production code MUST NOT generate its own oracle.
+
+A `repeat` fixture records baseline and repeated output hashes, byte or
+canonical-content comparison mode, and explicit JSON Pointers excluded from a
+canonical comparison. The runner removes only those pointers and then compares
+RFC 8785 content. Non-repeat fixtures carry an explicit `null`
+`repeat_assertion`.
+
+An oracle is authored in a separate fixture-authoring step and reviewed by a
+person other than the production-output generator author where practicable.
+The test runner verifies the oracle file hash and specification hash. Process
+independence cannot be proven from JSON content alone, so the author and
+review evidence must be retained in the fixture review record.
 
 ## Current Status
 
-This specification fixes the classification vocabulary, predicate-validation
-order and the separation between classification and resolution. The two
-schemas, predicate-source artifacts, classifier, resolver integration and
-fixtures are not implemented. Therefore the Ota Ward ways remain
+This specification fixes the population, tuple identity, predicate contract,
+classification order and the object boundary between classification and
+resolution. The predicate, combined attribute-classification and fixture
+schemas are implemented and registered in `sumo_network.yml`. The predicate
+generator, classifier, Resolver integration and independent production
+fixtures are not implemented. The cross-record semantic validator and its
+synthetic unit tests are implemented, but have not been applied to a
+next-version accepted real-data population. Therefore the Ota Ward ways remain
 `unclassified`, and this document does not change the 46,056-blocker Dry Run
 result or authorize a new Resolver run.
 
 For registered real-data execution, classification additionally depends on the
 population-acceptance gate in
 `02_resolver_specification.md#relation-closure-before-attribute-classification`.
-The classifier schema and synthetic fixtures may be developed before that gate
-passes, but no production classification artifact may be published against the
-v15 population. After the next-version closure is accepted, complete
+Additional independent fixtures may be developed before that gate passes, but
+no production classification artifact may be published against the v15
+population. After the next-version closure is accepted, complete
 `(osm_way_id, attribute, profile)` coverage must be generated from the new
 input rather than patched onto v15 records.

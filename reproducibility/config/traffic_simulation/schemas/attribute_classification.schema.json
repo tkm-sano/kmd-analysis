@@ -1,0 +1,445 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "attribute_classification.schema.json",
+  "allOf": [
+    {"$ref": "artifact_common.schema.json#/$defs/identity"},
+    {
+      "type": "object",
+      "required": [
+        "artifact_type",
+        "schema_version",
+        "config_id",
+        "config_version",
+        "run_id",
+        "profile",
+        "complete",
+        "relation_closed_osm",
+        "predicate_artifact",
+        "classification_policy",
+        "population_way_count",
+        "records",
+        "blockers"
+      ],
+      "properties": {
+        "artifact_type": {"const": "attribute_classification"},
+        "schema_version": {"const": 1},
+        "config_id": {"type": "string"},
+        "config_version": {"type": "integer"},
+        "run_id": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
+        "profile": {"enum": ["structural", "formal"]},
+        "complete": {"type": "boolean"},
+        "relation_closed_osm": {"$ref": "artifact_common.schema.json#/$defs/file_ref"},
+        "predicate_artifact": {"$ref": "artifact_common.schema.json#/$defs/file_ref"},
+        "classification_policy": {"$ref": "artifact_common.schema.json#/$defs/file_ref"},
+        "population_way_count": {"type": "integer", "minimum": 1},
+        "records": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/attribute_record"}
+        },
+        "blockers": {
+          "type": "array",
+          "items": {"$ref": "artifact_common.schema.json#/$defs/failure"}
+        }
+      },
+      "additionalProperties": false
+    }
+  ],
+  "if": {"properties": {"complete": {"const": true}}},
+  "then": {
+    "properties": {
+      "blockers": {"maxItems": 0},
+      "records": {
+        "minItems": 1,
+        "items": {
+          "properties": {
+            "resolution": {
+              "properties": {
+                "resolution_action": {
+                  "not": {
+                    "enum": ["require_human_review", "stop_unresolved"]
+                  }
+                },
+                "review_status": {
+                  "not": {
+                    "enum": ["review_required", "stopped"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "else": {"properties": {"blockers": {"minItems": 1}}},
+  "$defs": {
+    "sha256_or_null": {
+      "oneOf": [
+        {"$ref": "artifact_common.schema.json#/$defs/sha256"},
+        {"type": "null"}
+      ]
+    },
+    "evidence_candidate": {
+      "type": "object",
+      "required": [
+        "evidence_id",
+        "source",
+        "value",
+        "unit",
+        "direction",
+        "segment",
+        "vehicle_scope",
+        "reference_period",
+        "license",
+        "source_sha256",
+        "matching_confidence",
+        "applicable",
+        "rejection_reason_code"
+      ],
+      "properties": {
+        "evidence_id": {"type": "string", "minLength": 1},
+        "source": {"type": "string", "minLength": 1},
+        "value": {"type": ["integer", "number", "string", "null"]},
+        "unit": {"type": ["string", "null"], "minLength": 1},
+        "direction": {"enum": ["forward", "backward", "both", "not_applicable"]},
+        "segment": {"type": "string", "minLength": 1},
+        "vehicle_scope": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "reference_period": {"type": "string", "minLength": 1},
+        "license": {"type": "string", "minLength": 1},
+        "source_sha256": {"$ref": "artifact_common.schema.json#/$defs/sha256"},
+        "matching_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "applicable": {"type": "boolean"},
+        "rejection_reason_code": {"type": ["string", "null"], "minLength": 1}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"applicable": {"const": true}}},
+          "then": {
+            "properties": {"rejection_reason_code": {"type": "null"}}
+          },
+          "else": {
+            "properties": {
+              "rejection_reason_code": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "classification": {
+      "type": "object",
+      "required": ["criticality_level", "selected_rule_id", "matched_rule_ids"],
+      "properties": {
+        "criticality_level": {"enum": ["L0", "L1", "L2", "L3", "S0", "S1", "S2", "S3"]},
+        "selected_rule_id": {"type": "string", "pattern": "^(LANE|SPEED)-CRIT-[0-9]{3}$"},
+        "matched_rule_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^(LANE|SPEED)-CRIT-[0-9]{3}$"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "resolution": {
+      "type": "object",
+      "required": [
+        "resolution_action",
+        "resolution_rule_id",
+        "value_state",
+        "resolved_value",
+        "unit",
+        "evidence_required",
+        "evidence_candidates",
+        "selected_evidence_id",
+        "rejected_evidence_ids",
+        "conflict_resolution_rule_id",
+        "review_status",
+        "reviewer",
+        "reviewed_at",
+        "stop_failure_codes"
+      ],
+      "properties": {
+        "resolution_action": {
+          "enum": [
+            "adopt_explicit",
+            "derive_osm_rule",
+            "adopt_external_evidence",
+            "apply_governed_rule",
+            "apply_structural_placeholder",
+            "require_human_review",
+            "stop_unresolved",
+            "exclude"
+          ]
+        },
+        "resolution_rule_id": {"type": ["string", "null"], "minLength": 1},
+        "value_state": {
+          "enum": [
+            "explicit_osm",
+            "derived_osm_rule",
+            "authoritative_external",
+            "derived_validated_model",
+            "structural_placeholder",
+            "missing",
+            "unresolved",
+            "conflict",
+            "valid_but_unsupported",
+            "conditional",
+            "directionally_asymmetric",
+            "invalid",
+            "excluded"
+          ]
+        },
+        "resolved_value": {"type": ["integer", "string", "null"]},
+        "unit": {"type": ["string", "null"], "minLength": 1},
+        "evidence_required": {"type": "string", "minLength": 1},
+        "evidence_candidates": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/evidence_candidate"}
+        },
+        "selected_evidence_id": {"type": ["string", "null"], "minLength": 1},
+        "rejected_evidence_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "conflict_resolution_rule_id": {"type": ["string", "null"], "minLength": 1},
+        "review_status": {
+          "enum": ["machine_classified", "review_required", "reviewed", "stopped"]
+        },
+        "reviewer": {"type": ["string", "null"], "minLength": 1},
+        "reviewed_at": {
+          "oneOf": [
+            {"type": "string", "format": "date-time"},
+            {"type": "null"}
+          ]
+        },
+        "stop_failure_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^AC[0-9]{3}$"}
+        }
+      },
+      "allOf": [
+        {
+          "oneOf": [
+            {"properties": {"resolution_action": {"const": "adopt_explicit"}, "value_state": {"const": "explicit_osm"}, "resolved_value": {"not": {"type": "null"}}, "review_status": {"enum": ["machine_classified", "reviewed"]}}, "required": ["resolved_value"]},
+            {"properties": {"resolution_action": {"const": "derive_osm_rule"}, "resolution_rule_id": {"type": "string"}, "value_state": {"const": "derived_osm_rule"}, "resolved_value": {"not": {"type": "null"}}, "review_status": {"enum": ["machine_classified", "reviewed"]}}, "required": ["resolved_value"]},
+            {"properties": {"resolution_action": {"const": "adopt_external_evidence"}, "value_state": {"const": "authoritative_external"}, "resolved_value": {"not": {"type": "null"}}, "evidence_candidates": {"minItems": 1}, "selected_evidence_id": {"type": "string"}, "review_status": {"const": "reviewed"}}, "required": ["resolved_value"]},
+            {"properties": {"resolution_action": {"const": "apply_governed_rule"}, "resolution_rule_id": {"type": "string"}, "value_state": {"const": "derived_validated_model"}, "resolved_value": {"not": {"type": "null"}}, "review_status": {"enum": ["machine_classified", "reviewed"]}}, "required": ["resolved_value"]},
+            {"properties": {"resolution_action": {"const": "apply_structural_placeholder"}, "value_state": {"const": "structural_placeholder"}, "resolved_value": {"not": {"type": "null"}}, "review_status": {"enum": ["machine_classified", "reviewed"]}}, "required": ["resolved_value"]},
+            {"properties": {"resolution_action": {"const": "require_human_review"}, "value_state": {"enum": ["missing", "conflict", "conditional", "valid_but_unsupported", "directionally_asymmetric"]}, "resolved_value": {"type": "null"}, "review_status": {"const": "review_required"}}},
+            {"properties": {"resolution_action": {"const": "stop_unresolved"}, "value_state": {"enum": ["missing", "unresolved", "conflict", "valid_but_unsupported", "conditional", "directionally_asymmetric", "invalid"]}, "resolved_value": {"type": "null"}, "review_status": {"const": "stopped"}}},
+            {"properties": {"resolution_action": {"const": "exclude"}, "value_state": {"const": "excluded"}, "resolved_value": {"type": "null"}, "review_status": {"const": "machine_classified"}}}
+          ]
+        },
+        {
+          "if": {"properties": {"review_status": {"const": "reviewed"}}},
+          "then": {
+            "properties": {
+              "reviewer": {"type": "string"},
+              "reviewed_at": {"type": "string", "format": "date-time"}
+            }
+          },
+          "else": {
+            "properties": {
+              "reviewer": {"type": "null"},
+              "reviewed_at": {"type": "null"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"resolution_action": {"enum": ["require_human_review", "stop_unresolved"]}}},
+          "then": {"properties": {"stop_failure_codes": {"minItems": 1}}},
+          "else": {"properties": {"stop_failure_codes": {"maxItems": 0}}}
+        }
+      ],
+      "additionalProperties": false
+    },
+    "attribute_record": {
+      "type": "object",
+      "required": [
+        "classification_record_id",
+        "osm_way_id",
+        "attribute",
+        "profile",
+        "subgraph_role",
+        "record_revision",
+        "record_sha256",
+        "supersedes_record_sha256",
+        "revision_reason_code",
+        "source_artifact_sha256",
+        "classification_config_sha256",
+        "classification",
+        "resolution"
+      ],
+      "properties": {
+        "classification_record_id": {
+          "type": "string",
+          "pattern": "^acr:[1-9][0-9]*:(lanes|maxspeed):(structural|formal)$"
+        },
+        "osm_way_id": {"type": "string", "pattern": "^[1-9][0-9]*$"},
+        "attribute": {"enum": ["lanes", "maxspeed"]},
+        "profile": {"enum": ["structural", "formal"]},
+        "subgraph_role": {"enum": ["final", "topology_support", "excluded"]},
+        "record_revision": {"type": "integer", "minimum": 1},
+        "record_sha256": {
+          "$ref": "artifact_common.schema.json#/$defs/sha256",
+          "description": "SHA-256 of the RFC 8785 canonical UTF-8 representation of this record with record_sha256 omitted; array order and explicit null fields are preserved."
+        },
+        "supersedes_record_sha256": {"$ref": "#/$defs/sha256_or_null"},
+        "revision_reason_code": {"type": "string", "pattern": "^ACR-[A-Z0-9]+(?:-[A-Z0-9]+)*$"},
+        "source_artifact_sha256": {"$ref": "artifact_common.schema.json#/$defs/sha256"},
+        "classification_config_sha256": {"$ref": "artifact_common.schema.json#/$defs/sha256"},
+        "classification": {"$ref": "#/$defs/classification"},
+        "resolution": {"$ref": "#/$defs/resolution"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"profile": {"const": "formal"}}},
+          "then": {
+            "properties": {
+              "resolution": {
+                "properties": {
+                  "resolution_action": {
+                    "not": {"const": "apply_structural_placeholder"}
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {"properties": {"record_revision": {"const": 1}}},
+          "then": {"properties": {"supersedes_record_sha256": {"type": "null"}}},
+          "else": {"properties": {"supersedes_record_sha256": {"$ref": "artifact_common.schema.json#/$defs/sha256"}}}
+        },
+        {
+          "if": {"properties": {"attribute": {"const": "lanes"}}},
+          "then": {
+            "properties": {
+              "classification": {
+                "properties": {
+                  "criticality_level": {"enum": ["L0", "L1", "L2", "L3"]},
+                  "selected_rule_id": {"pattern": "^LANE-CRIT-[0-9]{3}$"},
+                  "matched_rule_ids": {"items": {"pattern": "^LANE-CRIT-[0-9]{3}$"}}
+                }
+              },
+              "resolution": {
+                "properties": {
+                  "resolved_value": {"type": ["integer", "null"], "minimum": 1},
+                  "unit": {"enum": ["lanes", null]}
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "classification": {
+                "properties": {
+                  "criticality_level": {"enum": ["S0", "S1", "S2", "S3"]},
+                  "selected_rule_id": {"pattern": "^SPEED-CRIT-[0-9]{3}$"},
+                  "matched_rule_ids": {"items": {"pattern": "^SPEED-CRIT-[0-9]{3}$"}}
+                }
+              },
+              "resolution": {
+                "properties": {
+                  "resolved_value": {
+                    "oneOf": [
+                      {"type": "string", "pattern": "^[1-9][0-9]*(?:\\.[0-9]*[1-9])?$"},
+                      {"type": "null"}
+                    ]
+                  },
+                  "unit": {"enum": ["km/h", null]}
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {"properties": {"subgraph_role": {"const": "excluded"}}},
+          "then": {
+            "properties": {
+              "classification": {
+                "properties": {"criticality_level": {"enum": ["L0", "S0"]}}
+              },
+              "resolution": {
+                "properties": {
+                  "resolution_action": {"const": "exclude"},
+                  "value_state": {"const": "excluded"},
+                  "resolved_value": {"type": "null"}
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "classification": {
+                "properties": {
+                  "criticality_level": {"not": {"enum": ["L0", "S0"]}}
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification": {
+                "properties": {
+                  "criticality_level": {"enum": ["L0", "S0"]}
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "resolution": {
+                "properties": {
+                  "resolution_action": {"const": "exclude"}
+                }
+              }
+            }
+          },
+          "else": {
+            "if": {
+              "properties": {
+                "classification": {
+                  "properties": {
+                    "criticality_level": {"enum": ["L2", "L3", "S2", "S3"]}
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "resolution": {
+                  "properties": {
+                    "resolution_action": {
+                      "not": {"const": "apply_structural_placeholder"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification": {"properties": {"criticality_level": {"enum": ["L3", "S3"]}}},
+              "resolution": {"properties": {"resolution_action": {"enum": ["adopt_explicit", "derive_osm_rule", "adopt_external_evidence", "apply_governed_rule"]}}}
+            }
+          },
+          "then": {"properties": {"resolution": {"properties": {"review_status": {"const": "reviewed"}}}}}
+        }
+      ],
+      "additionalProperties": false
+    }
+  }
+}

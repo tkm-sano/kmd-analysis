@@ -62,71 +62,146 @@ logicへ固定値として埋め込んだり、productionの期待総数とし�
 networkを`structural`から`formal`へ変更する場合は再分類が必要である。
 structural分類を自動昇格してはならない。
 
-## Classification・Resolution artifact
+## 母集団とSubgraph role
 
-Classificationは影響levelを決め、resolutionは値を採用できるか、どの方法で
-採用するかを決める。両者は別々のhash-linked artifactとし、一つのflat recordへ
-混在させてはならない。
+分類母集団は、relation closure受入gateに合格したOSM入力内のgoverned
+candidate way集合とする。地域PBFやclosure前BBOX extractを直接母集団にしない。
+relation-closed入力SHA-256が変われば、新しいclassification runを必要とする。
 
-`attribute_criticality_classification.json`は、選択profileについて、保持する
-すべての`(osm_way_id, attribute)` pairごとに正確に1 recordを含まなければ
-ならない。
+全candidate wayは、最終SUMOネットワークへ残さないwayを含め、次の
+`subgraph_role`を正確に一つ持つ。
 
-| Field | 意味 |
-|---|---|
-| `osm_way_id` | relation-closed入力内の安定したOSM way ID |
-| `attribute` | `lanes`または`maxspeed` |
-| `profile` | `structural`または`formal` |
-| `criticality_level` | 本書で定義する属性別level |
-| `criticality_rule_id` | levelを決定した一つのrule |
-| `predicate_evidence` | ruleが使用したhash拘束済み事実 |
-| `source_artifact_sha256` | 分類対象relation-closed入力のhash |
-| `classification_config_sha256` | 分類policyのhash |
+```text
+final
+topology_support
+excluded
+```
 
-`attribute_resolution_decisions.json`は、値解決対象として保持する全
-classification tupleごとに正確に1 decisionを含まなければならない。
+複数booleanによるrole表現は禁止する。`excluded` wayもartifactへ残し、lanesを
+`L0`、maxspeedを`S0`、`resolution_action=exclude`、
+`value_state=excluded`、`resolved_value=null`とする。`topology_support`は
+relation、connection、変換へ影響し得るため分類対象とし、基本levelをstructuralで
+`L1/S1`、formalで`L2/S2`とする。高criticality predicateに該当すれば
+`L3/S3`へ昇格する。
 
-| Field | 意味 |
-|---|---|
-| `classification_record_id` | classification recordへの安定した参照 |
-| `classification_artifact_sha256` | classification artifact全体のhash |
-| `evidence_required` | 値採用前に必要な証拠class |
-| `evidence_candidates` | 検討した適用可能・却下候補の配列 |
-| `selected_evidence_id` | 選択候補。停止中は空 |
-| `rejected_evidence_ids` | 選択しなかった候補ID |
-| `conflict_resolution_rule_id` | conflict解決rule。未使用時は空 |
-| `resolution_action` | 本書で許可するaction |
-| `resolution_rule_id` | 値を解決するrule。停止中は空 |
-| `value_state` | 統制された値由来または停止state |
-| `adopted_value` | 採用canonical値。停止・除外時は空 |
-| `unit` | 属性に適合する単位。不要時は空 |
-| `review_status` | `machine_resolved`、`review_required`、`reviewed`、`stopped` |
-| `reviewer` | reviewed判断だけで必須 |
-| `reviewed_at` | reviewed判断だけで必須 |
-| `stop_failure_codes` | 停止時の一つ以上の統制code |
+## Tuple・Record・改訂contract
 
-各evidence candidateはsource、値、単位、方向、segment、vehicle scope、
-観測・基準期間、license、source hash、matching confidenceを持たなければ
-ならない。confidenceを選択に使う前に、policy schemaでscale、採用threshold、
-同率処理を固定する。
+tupleは`(osm_way_id, attribute, profile)`とする。way IDは正の10進文字列、
+attributeは`lanes`または`maxspeed`、profileは`structural`または`formal`とする。
+一artifactには一profileだけを含め、excluded wayを含む各tupleにactive recordを
+正確に一つ持つ。
 
-未知field、重複・欠損tuple、未知rule ID、predicate矛盾、登録source hashのない
-証拠、classification hash不一致はResolver実行前に停止しなければならない。
+安定record IDは次の形式とする。
+
+```text
+acr:<osm_way_id>:<attribute>:<profile>
+```
+
+recordはway IDを数値昇順に並べ、同じwayでは`lanes`、`maxspeed`の順にする。
+classificationとresolutionは同一record内の別objectとする。
+
+```json
+{
+  "classification_record_id": "acr:123456789:lanes:formal",
+  "osm_way_id": "123456789",
+  "attribute": "lanes",
+  "profile": "formal",
+  "classification": {
+    "criticality_level": "L2",
+    "selected_rule_id": "LANE-CRIT-006",
+    "matched_rule_ids": ["LANE-CRIT-006"]
+  },
+  "resolution": {
+    "resolution_action": "stop_unresolved",
+    "resolution_rule_id": null,
+    "value_state": "missing",
+    "resolved_value": null
+  }
+}
+```
+
+resolution objectは必要に応じて`evidence_required`、`evidence_candidates`、
+`selected_evidence_id`、`rejected_evidence_ids`、
+`conflict_resolution_rule_id`、単位、review来歴、停止codeも記録する。各候補は
+source、値、単位、方向、segment、vehicle scope、期間、license、source hash、
+matching confidenceを持つ。confidenceのscale、threshold、同率処理をpolicyで
+固定するまで値選択へ使わない。
+
+artifactはimmutableなrun snapshotとする。判断変更時は同じ
+`classification_record_id`で`record_revision`を増加させ、新しい
+`record_sha256`、以前の`supersedes_record_sha256`、統制済み
+`revision_reason_code`を持つ新snapshotを作る。旧snapshotを保持し、一snapshotに
+同じtupleの複数active revisionを含めない。
+
+### Canonical record hashと順序
+
+`record_sha256`は、recordから`record_sha256`自身だけを除外し、RFC 8785 JSON
+Canonicalization Schemeでcanonical化したUTF-8 byte列のSHA-256とする。
+object key、whitespace、数値表現はRFC 8785に従い、array順序は保持する。
+明示的`null`とfield省略は異なるものとして扱い、schemaが必須とするfieldは
+hash計算時にも省略しない。
+
+recordは、数値としての`osm_way_id`昇順、`lanes`から`maxspeed`、
+`structural`から`formal`、最後に`record_revision`昇順で並べる。現在のartifactは
+単一profileであるが、将来互換性のためprofile順序をcontractに残す。
+
+### Semantic validation
+
+JSON Schemaは局所的な形式と状態機械を検査する。登録済み
+`validate_attribute_classification.py`は、cross-record failureを`ACV` codeで
+可能な限り収集する。派生record ID、artifact・record profile一致、tupleと
+evidence IDの一意性、母集団被覆、wayごとの両属性、
+`road_criticality.classification_rule_priority`に基づくrule選択、evidence参照、
+完了状態、明示的に渡されたrevision履歴、RFC 8785 hash、canonical順序、
+参照fileのSHA-256を検査する。
+各recordの`source_artifact_sha256`はtop-level predicate artifact hashと一致し、
+`classification_config_sha256`はtop-level classification-policy hashと一致
+しなければならない。
+
+validatorはrevisionやevidence sourceをdirectoryから暗黙探索しない。top-level
+以外のsourceはsource indexへ明示登録し、predecessor snapshotはhistoryとして
+渡す。これにより、同名だが無関係なfileの誤採用を防ぐ。
+CLIは検出したfailureを一つで停止せず、`valid`、`errors`、`ACV` code、
+JSON Pointer、message、expected、actualを持つ一つのJSON結果として返す。
+
+## Predicate artifact
+
+classifierは`attribute_classification_predicates.json`を消費し、OSM、route、
+calibration設定、reviewからpredicateを直接再調査してはならない。predicate
+artifactは母集団wayごとに正確に一recordを持ち、完全な母集団・source hash、
+排他的`subgraph_role`と、英語正本に列挙した道路構造、lane・speed意味、
+accepted delivery route、sensitivity昇格の各predicateを保存する。
+
+全predicate値はsource artifact type・SHA-256、source record locator、
+derivation rule IDを必要とする。根拠のないbooleanは禁止する。
+
+`subgraph_role_evidence`はbooleanではなくcategory evidenceであり、
+`asserted_role`と同じsource provenanceを記録する。semantic validationは
+`asserted_role`と`subgraph_role`の一致を要求する。
+`topology_support_reason`は常時存在し、`topology_support`では非空文字列、
+`final`と`excluded`では`null`とする。
 
 ## 分類前のPredicate整合性検証
 
-classifierは、predicate整合性を先に検証し、その後に順序付きfirst-match ruleを
-適用する。同じwayが次の組合せを同時に持つ場合はlevelを黙って割り当てず停止する。
+検査順序は、schema、artifact・source hash、way ID重複、母集団完全被覆、role
+enum、role矛盾、calibration・validation排他性、道路構造矛盾、属性別predicate、
+classification ruleとする。
 
-- excludedかつcalibration・independent-validation segment
-- excludedかつaccepted delivery route
-- excludedかつtopology supportとして必要
-- final subgraph外かつ保持governed route内
-- 版管理済みclassification policyが禁止するその他の組合せ
+次の場合はfirst-match前に停止する。
 
-wayを完全に除外し、topology supportでも保持governed routeの一部でもない場合、
-laneとmaxspeed recordは`L0`と`S0`に揃える。属性固有predicateが異なり、その
-差をclassification recordで示す場合だけ、laneとmaxspeedで異なるlevelを許容する。
+- `excluded`とcalibration、validation、accepted route、sensitivity昇格または
+  major-junction状態の併存
+- `topology_support`に統制済みsupport reasonがない
+- 同じwayがcalibrationとindependent validationの両方
+- 同じwayがbridgeとtunnelの両方で、統制済みway分割または個別reviewがない
+
+bridgeとtunnelの併存は、way splitまたはreview済み例外により正当になり得るため、
+JSON Schemaで無条件の相互排他にはしない。将来のpredicate generator artifactが
+その裁定結果を明示するまでsemantic validatorは条件付きケースを確定できず、
+当該ケースは推測で通過させず停止状態を維持する。
+
+directional laneとbus・PSV lane意味は併存できる。属性別predicateが異なる場合は、
+lanesとmaxspeedで異なるlevelを許容する。
 
 ## Lane criticality
 
@@ -146,7 +221,7 @@ predicate整合性検証の合格後、次の順序で最初に一致したrule�
 
 | Rule ID | Predicate | Level |
 |---|---|---|
-| `LANE-CRIT-001` | governed subgraph判断が`excluded`で、wayがtopology supportとして不要 | `L0` |
+| `LANE-CRIT-001` | `subgraph_role=excluded` | `L0` |
 | `LANE-CRIT-002` | calibrationまたはindependent-validation segment | `L3` |
 | `LANE-CRIT-003` | lane数がgoverned connectionへ影響するreview済みmajor-junction approach、bridge、tunnel、grade-separated structure | `L3` |
 | `LANE-CRIT-004` | directional、reversible、tidal-flow、turn-lane、bus-lane、PSV-lane、conflictするlane tagの解釈が必要 | `L3` |
@@ -175,7 +250,7 @@ delivery feasibility、energy計算への影響を扱う。観測交通速度を
 
 | Rule ID | Predicate | Level |
 |---|---|---|
-| `SPEED-CRIT-001` | governed subgraph判断が`excluded`で保持routeにも不要 | `S0` |
+| `SPEED-CRIT-001` | `subgraph_role=excluded` | `S0` |
 | `SPEED-CRIT-002` | calibrationまたはindependent-validation segment | `S3` |
 | `SPEED-CRIT-003` | directional、conditional、variable、vehicle-specific、advisory、multiple speed表現の解釈が必要 | `S3` |
 | `SPEED-CRIT-004` | accepted delivery routeまたは登録済みsensitivity結果がwayを昇格 | `S3` |
@@ -252,28 +327,37 @@ excluded
 
 許容する組合せは次のとおりである。
 
-| Resolution action | 許容value state | Review status |
-|---|---|---|
-| `adopt_explicit` | `explicit_osm` | `machine_resolved`または`reviewed` |
-| `derive_osm_rule` | `derived_osm_rule` | `machine_resolved`または`reviewed` |
-| `adopt_external_evidence` | `authoritative_external` | `machine_resolved`または`reviewed` |
-| `apply_governed_rule` | `derived_validated_model` | `machine_resolved`または`reviewed` |
-| `apply_structural_placeholder` | `structural_placeholder` | `machine_resolved`または`reviewed` |
-| `require_human_review` | 未解決・停止state | `review_required` |
-| `stop_unresolved` | `missing`、`unresolved`、`conflict`、`valid_but_unsupported`、`conditional`、`directionally_asymmetric`、`invalid` | `stopped` |
-| `exclude` | `excluded` | `machine_resolved`または`reviewed` |
+| Resolution action | 許容value state | `resolved_value` | Review status |
+|---|---|---|---|
+| `adopt_explicit` | `explicit_osm` | 必須 | `machine_classified`または`reviewed` |
+| `derive_osm_rule` | `derived_osm_rule` | 必須 | `machine_classified`または`reviewed` |
+| `adopt_external_evidence` | `authoritative_external` | 必須 | `reviewed` |
+| `apply_governed_rule` | `derived_validated_model` | 必須 | `machine_classified`または`reviewed` |
+| `apply_structural_placeholder` | `structural_placeholder` | 必須 | `machine_classified`または`reviewed` |
+| `require_human_review` | `missing`、`conflict`、`conditional`、`valid_but_unsupported`、`directionally_asymmetric` | `null` | `review_required` |
+| `stop_unresolved` | `missing`、`unresolved`、`conflict`、`valid_but_unsupported`、`conditional`、`directionally_asymmetric`、`invalid` | `null` | `stopped` |
+| `exclude` | `excluded` | `null` | `machine_classified` |
 
-その他のaction・state・review組合せは禁止する。人手reviewは新しいvalue stateを
-許可しない。review後は解決済みactionへ遷移するか、停止を継続する。
+`invalidated`は現在のresolution statusとして使用しない。supersessionはrevision
+metadataとimmutableな旧snapshotだけで表現する。`L0/S0`は`exclude`だけ、
+`L1/S1`は全action、`L2/S2`と`L3/S3`はstructural placeholder以外を許容する。
+採用済み`L3/S3`は必ず`reviewed`とする。
 
 ## Profile別必須入力
 
 | Input | `structural` | `formal` |
 |---|---|---|
-| 完全なclassification artifact | 必須 | 必須 |
-| resolution-decision artifact | 保持する未解決tupleごとに必須 | 保持する未解決tupleごとに必須 |
+| 完全なpredicate artifact | 必須 | 必須 |
+| classification・resolution統合artifact | 必須 | 必須 |
 | external evidence artifact | 参照時に必須 | 参照時に必須 |
 | structural-placeholder rule | 使用時だけ必須 | 禁止 |
+
+## Resolution判断順序
+
+Resolutionは、excluded role、適用可能な明示OSM値、決定的OSM意味rule、適用可能で
+review済みの外部証拠、許可済み検証model、適格な`L1/S1` structural placeholder、
+人手review、統制済みunresolved stopの順に評価する。Criticality自体は値を生成
+しない。
 
 ## Structural placeholder gate
 
@@ -324,22 +408,37 @@ production classificationの前に、独立fixtureで次を検証しなければ
 - 除外とtopology-support保持の区別
 - 決定的な繰り返し分類
 
-Classification fixture oracleは期待levelとrule IDを含める。Resolution fixture
-oracleは期待action、value state、review status、failure codeを別に含める。
-production codeが自身のoracleを生成してはならない。
+fixture oracleは、期待tuple record内でclassification objectとresolution objectを
+分ける。selected・matched rule ID、level、action、value state、resolved value、
+review status、failure codeを含める。production codeが自身のoracleを生成しては
+ならない。
+
+`repeat` fixtureはbaseline・repeated output hash、byte比較またはcanonical content
+比較mode、canonical比較から除外する明示的JSON Pointerを記録する。runnerは指定
+pointerだけを除去し、RFC 8785 contentを比較する。repeat以外のfixtureは
+`repeat_assertion=null`を明示する。
+
+oracleはproduction output生成とは別のfixture authoring手順で作成し、可能な場合は
+production generator作成者とは別の者がreviewする。test runnerはoracle file hashと
+source specification hashを検査する。生成processの独立性はJSON内容だけでは完全に
+証明できないため、authorとreviewの証拠をfixture review recordへ保持する。
 
 ## 現在の状態
 
-本仕様は分類語彙、predicate検証順序、classificationとresolutionの分離を
-固定した。二つのschema、predicate-source artifact、classifier、Resolver統合、
-fixtureは未実装である。したがって、大田区wayは`unclassified`のままであり、
+本仕様は母集団、tuple identity、predicate contract、classification順序、
+classification・resolution object境界を固定した。predicate、統合attribute
+classification、fixtureの3 schemaは実装し、`sumo_network.yml`へ登録済みである。
+predicate generator、classifier、Resolver統合、独立production fixtureは未実装
+である。cross-record semantic validatorとsynthetic unit testは実装済みだが、
+次版で受理された実データ母集団には未適用である。したがって、大田区wayは
+`unclassified`のままであり、
 本書は46,056-blocker Dry Runの結果を変更せず、新しいResolver runも許可しない。
 
 登録済み実データの分類は、さらに
 `02_resolver_specification.md`の
 `Relation Closure Before Attribute Classification`で定義した母集団受入gate
-に依存する。classifier schemaとsynthetic fixtureはgate合格前に開発できるが、
-v15母集団に対するproduction classification artifactを公開してはならない。
+に依存する。追加の独立fixtureはgate合格前に開発できるが、v15母集団に対する
+production classification artifactを公開してはならない。
 次版closure受理後、新しい入力から完全な
 `(osm_way_id, attribute, profile)`被覆を生成し、v15 recordへ追加しては
 ならない。

@@ -1,0 +1,268 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "attribute_classification_fixture.schema.json",
+  "type": "object",
+  "required": [
+    "artifact_type",
+    "schema_version",
+    "fixture_id",
+    "case_type",
+    "requirement_ids",
+    "description",
+    "input_artifacts",
+    "expected",
+    "repeat_assertion",
+    "oracle"
+  ],
+  "properties": {
+    "artifact_type": {"const": "attribute_classification_fixture"},
+    "schema_version": {"const": 1},
+    "fixture_id": {
+      "type": "string",
+      "pattern": "^(?:AC[0-9]{3}-NEG-[0-9]{3}|AC-(?:POS|BND|REP)-[0-9]{3})$"
+    },
+    "case_type": {"enum": ["positive", "negative", "boundary", "repeat"]},
+    "requirement_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^AC-REQ-[0-9]{3}$"}
+    },
+    "description": {"type": "string", "minLength": 1},
+    "input_artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["role", "path", "sha256"],
+        "properties": {
+          "role": {
+            "enum": [
+              "predicate_input",
+              "classification_input",
+              "evidence_input",
+              "policy_input"
+            ]
+          },
+          "path": {"$ref": "artifact_common.schema.json#/$defs/relative_path"},
+          "sha256": {"$ref": "artifact_common.schema.json#/$defs/sha256"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "expected": {
+      "type": "object",
+      "required": ["outcome", "records", "failure_codes"],
+      "properties": {
+        "outcome": {"enum": ["success", "governed_stop"]},
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "classification_record_id",
+              "classification",
+              "resolution"
+            ],
+            "properties": {
+              "classification_record_id": {
+                "type": "string",
+                "pattern": "^acr:[1-9][0-9]*:(lanes|maxspeed):(structural|formal)$"
+              },
+              "classification": {
+                "$ref": "attribute_classification.schema.json#/$defs/classification"
+              },
+              "resolution": {
+                "$ref": "attribute_classification.schema.json#/$defs/resolution"
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "classification_record_id": {
+                      "pattern": "^acr:[1-9][0-9]*:lanes:"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "classification": {
+                      "properties": {
+                        "criticality_level": {
+                          "enum": ["L0", "L1", "L2", "L3"]
+                        },
+                        "selected_rule_id": {
+                          "pattern": "^LANE-CRIT-[0-9]{3}$"
+                        },
+                        "matched_rule_ids": {
+                          "items": {
+                            "pattern": "^LANE-CRIT-[0-9]{3}$"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "else": {
+                  "properties": {
+                    "classification": {
+                      "properties": {
+                        "criticality_level": {
+                          "enum": ["S0", "S1", "S2", "S3"]
+                        },
+                        "selected_rule_id": {
+                          "pattern": "^SPEED-CRIT-[0-9]{3}$"
+                        },
+                        "matched_rule_ids": {
+                          "items": {
+                            "pattern": "^SPEED-CRIT-[0-9]{3}$"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "additionalProperties": false
+          }
+        },
+        "failure_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^AC[0-9]{3}$"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"outcome": {"const": "success"}}},
+          "then": {
+            "properties": {
+              "failure_codes": {"maxItems": 0},
+              "records": {
+                "minItems": 1,
+                "items": {
+                  "properties": {
+                    "resolution": {
+                      "properties": {
+                        "review_status": {
+                          "enum": ["machine_classified", "reviewed"]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {"failure_codes": {"minItems": 1}},
+            "if": {
+              "properties": {
+                "records": {"minItems": 1}
+              }
+            },
+            "then": {
+              "properties": {
+                "records": {
+                  "contains": {
+                    "properties": {
+                      "resolution": {
+                        "anyOf": [
+                          {
+                            "properties": {
+                              "resolution_action": {
+                                "enum": [
+                                  "require_human_review",
+                                  "stop_unresolved"
+                                ]
+                              }
+                            }
+                          },
+                          {
+                            "properties": {
+                              "review_status": {
+                                "enum": ["review_required", "stopped"]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "minContains": 1
+                }
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "repeat_assertion": {
+      "type": ["object", "null"],
+      "required": [
+        "baseline_output_sha256",
+        "repeated_output_sha256",
+        "comparison_mode",
+        "excluded_json_pointers"
+      ],
+      "properties": {
+        "baseline_output_sha256": {
+          "$ref": "artifact_common.schema.json#/$defs/sha256"
+        },
+        "repeated_output_sha256": {
+          "$ref": "artifact_common.schema.json#/$defs/sha256"
+        },
+        "comparison_mode": {
+          "enum": ["byte_equal", "canonical_content_equal"]
+        },
+        "excluded_json_pointers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        }
+      },
+      "additionalProperties": false
+    },
+    "oracle": {
+      "type": "object",
+      "required": ["path", "sha256", "source_specification_sha256", "independently_authored"],
+      "properties": {
+        "path": {"$ref": "artifact_common.schema.json#/$defs/relative_path"},
+        "sha256": {"$ref": "artifact_common.schema.json#/$defs/sha256"},
+        "source_specification_sha256": {"$ref": "artifact_common.schema.json#/$defs/sha256"},
+        "independently_authored": {"const": true}
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"case_type": {"const": "negative"}}},
+      "then": {"properties": {"fixture_id": {"pattern": "^AC[0-9]{3}-NEG-[0-9]{3}$"}}}
+    },
+    {
+      "if": {"properties": {"case_type": {"const": "positive"}}},
+      "then": {"properties": {"fixture_id": {"pattern": "^AC-POS-[0-9]{3}$"}}}
+    },
+    {
+      "if": {"properties": {"case_type": {"const": "boundary"}}},
+      "then": {"properties": {"fixture_id": {"pattern": "^AC-BND-[0-9]{3}$"}}}
+    },
+    {
+      "if": {"properties": {"case_type": {"const": "repeat"}}},
+      "then": {
+        "properties": {
+          "fixture_id": {"pattern": "^AC-REP-[0-9]{3}$"},
+          "repeat_assertion": {"type": "object"}
+        }
+      },
+      "else": {
+        "properties": {"repeat_assertion": {"type": "null"}}
+      }
+    }
+  ],
+  "additionalProperties": false
+}

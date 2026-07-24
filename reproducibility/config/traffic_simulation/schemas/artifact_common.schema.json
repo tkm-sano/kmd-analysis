@@ -27,9 +27,9 @@
       "type": "object",
       "required": ["code", "message", "component", "formal_blocker"],
       "properties": {
-        "code": {"type": "string", "pattern": "^(RS|PM|TLS|BLD|PA)[0-9]{3}$"},
+        "code": {"type": "string", "pattern": "^(RS|AC|PM|TLS|BLD|PA)[0-9]{3}$"},
         "message": {"type": "string", "minLength": 1},
-        "component": {"enum": ["resolver", "permission_materializer", "tls_review", "final_build", "post_build_audit"]},
+        "component": {"enum": ["resolver", "attribute_criticality", "permission_materializer", "tls_review", "final_build", "post_build_audit"]},
         "formal_blocker": {"const": true},
         "location": {"type": "string"},
         "context": {"type": "object"}

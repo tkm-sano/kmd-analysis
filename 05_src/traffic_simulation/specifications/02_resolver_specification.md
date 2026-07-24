@@ -29,11 +29,11 @@ introduced.
 
 Inputs MUST be repository-relative, hash-registered OSM XML, versioned config
 and a governed typemap. A complete classification artifact is mandatory for
-both profiles. A resolution-decision artifact is mandatory whenever a retained
-tuple is not resolved directly from supported OSM semantics. External evidence
-is mandatory when a resolution decision cites it. A structural-placeholder
-rule is mandatory only when the structural profile requests a placeholder and
-is prohibited in the formal profile.
+both profiles. It contains separate classification and resolution objects
+within every tuple record. The complete predicate artifact is also mandatory.
+External evidence is mandatory when a resolution object cites it. A
+structural-placeholder rule is mandatory only when the structural profile
+requests a placeholder and is prohibited in the formal profile.
 
 Successful output consists of:
 
@@ -109,8 +109,9 @@ share the canonical value `40`. A way that later stops for a donor-eligibility
 condition is excluded from the affected attribute's donor population.
 
 Criticality is classified per `(osm_way_id, attribute, profile)`, not once per
-way. Classification and resolution are separate, hash-linked artifacts. The
-governing vocabulary, evidence precedence, artifact fields and
+way. Classification and resolution are separate objects in the same immutable
+profile snapshot, supported by a hash-linked predicate artifact. The governing
+vocabulary, evidence precedence, artifact fields and
 structural-placeholder gate are defined in
 `attribute_criticality_and_evidence_specification.md`. Until its schema,
 predicate artifacts, classifier and fixtures are implemented, omitted

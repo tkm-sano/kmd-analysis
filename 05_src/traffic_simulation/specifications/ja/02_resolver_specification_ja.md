@@ -29,10 +29,10 @@ closure仕様を分離するまでは、本書のclosure要件をResolver入力�
 
 入力は、リポジトリ相対パスで指定され、hash登録されたOSM XML、版管理済み
 設定、統制typemapでなければならない。完全なclassification artifactは両profile
-で必須である。保持tupleを対応済みOSM意味だけで解決できない場合は
-resolution-decision artifactが必須である。外部証拠を参照する場合はexternal
-evidence artifactが必須である。structural-placeholder ruleはstructuralで
-placeholderを使用する場合だけ必須とし、formalでは禁止する。
+で必須であり、全tuple record内に別々のclassification・resolution objectを持つ。
+完全なpredicate artifactも必須である。resolution objectが外部証拠を参照する
+場合はexternal evidence artifactが必須である。structural-placeholder ruleは
+structuralでplaceholderを使用する場合だけ必須とし、formalでは禁止する。
 
 - `normalized.osm.xml`
 - `permission_expectations.schema.json`に適合する
@@ -101,7 +101,8 @@ canonicalizationを使用する。対象tuple自身はsample属性が欠損し�
 
 Criticalityはway単位で一度だけではなく、
 `(osm_way_id, attribute, profile)`ごとに分類する。classificationとresolutionは
-別々のhash-linked artifactとする。統制語彙、証拠順位、artifact field、
+同じimmutable profile snapshot内の別objectとし、hash-linked predicate artifactを
+使用する。統制語彙、証拠順位、artifact field、
 structural-placeholder gateは
 `attribute_criticality_and_evidence_specification.md`で定義する。そのschema、
 predicate artifact、classifier、fixtureが実装されるまでは、criticality入力を
