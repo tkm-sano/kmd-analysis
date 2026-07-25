@@ -16,6 +16,10 @@ Classifier-Resolver execution remain pending.
 - `repeat/` contains the two pinned outputs for the repeat case.
 - `review.json` records the separate human-acceptance state.
 
+The manifest pins the input and oracle catalogues. `review.json` then records
+expected and observed hashes for the manifest, inputs, oracles and source
+specification. This direction avoids a manifest-review hash cycle.
+
 The fixture descriptors conform to
 `attribute_classification_fixture.schema.json`. Inputs and oracles are
 separate files so a future fixture runner can pass the input to production

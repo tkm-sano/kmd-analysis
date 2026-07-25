@@ -1368,18 +1368,89 @@ def validate_fixture_review_artifact(
     specification_path: Path = SPECIFICATION_PATH,
 ) -> SemanticValidationResult:
     collector = ErrorCollector()
-    checks = review.get("required_review_checks")
+    checks = review.get("review_checks")
     check_values = checks if isinstance(checks, list) else []
-    all_passed = bool(check_values) and all(
+    required_checks = [
+        check
+        for check in check_values
+        if isinstance(check, Mapping) and check.get("required") is True
+    ]
+    allowed_statuses = {
+        "not_reviewed",
+        "passed",
+        "failed",
+        "not_applicable",
+    }
+    check_ids: set[str] = set()
+    for index, check in enumerate(check_values):
+        pointer = f"/review_checks/{index}"
+        if not isinstance(check, Mapping):
+            collector.add(
+                "ACV021",
+                pointer,
+                "review check must be an object",
+                actual=check,
+            )
+            continue
+        check_id = check.get("check_id")
+        if not isinstance(check_id, str) or not check_id:
+            collector.add(
+                "ACV021",
+                f"{pointer}/check_id",
+                "review check requires a non-empty check ID",
+                actual=check_id,
+            )
+        elif check_id in check_ids:
+            collector.add(
+                "ACV021",
+                f"{pointer}/check_id",
+                "review check IDs must be unique",
+                actual=check_id,
+            )
+        else:
+            check_ids.add(check_id)
+        if check.get("status") not in allowed_statuses:
+            collector.add(
+                "ACV021",
+                f"{pointer}/status",
+                "review check status is not governed",
+                expected=sorted(allowed_statuses),
+                actual=check.get("status"),
+            )
+        for field in ("evidence_references", "finding_ids"):
+            if not isinstance(check.get(field), list):
+                collector.add(
+                    "ACV021",
+                    f"{pointer}/{field}",
+                    f"{field} must be an array",
+                    actual=check.get(field),
+                )
+        if check.get("status") in {"passed", "failed", "not_applicable"}:
+            for field in ("reviewed_by", "reviewed_at"):
+                if not isinstance(check.get(field), str) or not check.get(field):
+                    collector.add(
+                        "ACV021",
+                        f"{pointer}/{field}",
+                        f"completed review check requires {field}",
+                        actual=check.get(field),
+                    )
+    if not required_checks:
+        collector.add(
+            "ACV021",
+            "/review_checks",
+            "at least one required review check must be declared",
+            actual=checks,
+        )
+    all_passed = bool(required_checks) and all(
         isinstance(check, Mapping)
         and check.get("status") in {"passed", "not_applicable"}
-        for check in check_values
+        for check in required_checks
     )
-    findings = review.get("findings")
+    findings = review.get("blocking_findings")
     finding_values = findings if isinstance(findings, list) else []
     no_blocking_findings = not any(
         isinstance(finding, Mapping)
-        and finding.get("blocking") is True
+        and finding.get("severity") == "blocking"
         and finding.get("status") != "resolved"
         for finding in finding_values
     )
@@ -1399,30 +1470,74 @@ def validate_fixture_review_artifact(
 
     basis = review.get("authoring_basis")
     if isinstance(basis, Mapping) and specification_path.is_file():
+        for field in ("artifact_path", "artifact_version"):
+            if not isinstance(basis.get(field), str) or not basis.get(field):
+                collector.add(
+                    "ACV021",
+                    f"/authoring_basis/{field}",
+                    f"authoring basis requires {field}",
+                    actual=basis.get(field),
+                )
         specification_hash = file_sha256(specification_path)
-        if basis.get("sha256") != specification_hash:
+        if basis.get("artifact_sha256") != specification_hash:
             collector.add(
                 "ACV021",
-                "/authoring_basis/sha256",
+                "/authoring_basis/artifact_sha256",
                 "reviewed specification SHA-256 does not match",
                 expected=specification_hash,
-                actual=basis.get("sha256"),
+                actual=basis.get("artifact_sha256"),
             )
-        if oracles.get("source_specification_sha256") != basis.get("sha256"):
+        if oracles.get("source_specification_sha256") != basis.get(
+            "artifact_sha256"
+        ):
             collector.add(
                 "ACV021",
-                "/authoring_basis/sha256",
+                "/authoring_basis/artifact_sha256",
                 "review and oracle specification hashes differ",
                 expected=oracles.get("source_specification_sha256"),
-                actual=basis.get("sha256"),
+                actual=basis.get("artifact_sha256"),
             )
+    else:
+        collector.add(
+            "ACV021",
+            "/authoring_basis",
+            "review requires a resolvable structured authoring basis",
+            actual=basis,
+        )
 
-    observations = review.get("hash_observations")
-    if isinstance(observations, list):
-        for index, observation in enumerate(observations):
+    observations = review.get("observed_hashes")
+    required_observations = {
+        "manifest",
+        "inputs",
+        "oracles",
+        "source_specification",
+    }
+    if not isinstance(observations, Mapping):
+        collector.add(
+            "ACV021",
+            "/observed_hashes",
+            "observed hashes must be a keyed object",
+            actual=observations,
+        )
+    else:
+        if set(observations) != required_observations:
+            collector.add(
+                "ACV021",
+                "/observed_hashes",
+                "observed hashes must cover the governed artifact set exactly",
+                expected=sorted(required_observations),
+                actual=sorted(observations),
+            )
+        for key, observation in observations.items():
             if not isinstance(observation, Mapping):
+                collector.add(
+                    "ACV021",
+                    f"/observed_hashes/{key}",
+                    "hash observation must be an object",
+                    actual=observation,
+                )
                 continue
-            pointer = f"/hash_observations/{index}"
+            pointer = f"/observed_hashes/{key}"
             relative_path = observation.get("artifact_path")
             path = (
                 _resolve_relative_path(artifact_root, relative_path)
@@ -1432,17 +1547,175 @@ def validate_fixture_review_artifact(
             actual_hash = file_sha256(path) if path is not None and path.is_file() else None
             matched = (
                 actual_hash is not None
-                and observation.get("expected_hash") == actual_hash
-                and observation.get("observed_hash") == actual_hash
+                and observation.get("expected_sha256") == actual_hash
+                and observation.get("observed_sha256") == actual_hash
             )
-            if observation.get("matched") is not matched:
+            if observation.get("matches") is not matched:
                 collector.add(
                     "ACV021",
-                    f"{pointer}/matched",
+                    f"{pointer}/matches",
                     "stored hash observation does not match current bytes",
                     expected=matched,
-                    actual=observation.get("matched"),
+                    actual=observation.get("matches"),
                 )
+    reviewer = review.get("independent_reviewer")
+    if not isinstance(reviewer, Mapping):
+        collector.add(
+            "ACV021",
+            "/independent_reviewer",
+            "independent reviewer must be a structured object",
+            actual=reviewer,
+        )
+    elif review.get("collection_status") == "independently_accepted":
+        identity_present = any(
+            isinstance(reviewer.get(field), str) and reviewer.get(field)
+            for field in ("reviewer_id", "reviewer_name")
+        )
+        if not identity_present:
+            collector.add(
+                "ACV021",
+                "/independent_reviewer",
+                "accepted review requires reviewer ID or name",
+                actual=reviewer,
+            )
+        for field in ("reviewer_role", "independence_declaration", "reviewed_at"):
+            if not reviewer.get(field):
+                collector.add(
+                    "ACV021",
+                    f"/independent_reviewer/{field}",
+                    f"accepted review requires {field}",
+                    actual=reviewer.get(field),
+                )
+        for field in (
+            "relationship_to_fixture_author",
+            "relationship_to_production_code_author",
+        ):
+            if reviewer.get(field) in {None, "", "not_assessed"}:
+                collector.add(
+                    "ACV021",
+                    f"/independent_reviewer/{field}",
+                    f"accepted review requires an assessed {field}",
+                    actual=reviewer.get(field),
+                )
+    if not isinstance(findings, list):
+        collector.add(
+            "ACV021",
+            "/blocking_findings",
+            "blocking findings must be an array",
+            actual=findings,
+        )
+    else:
+        finding_ids: set[str] = set()
+        for index, finding in enumerate(findings):
+            pointer = f"/blocking_findings/{index}"
+            if not isinstance(finding, Mapping):
+                collector.add(
+                    "ACV021",
+                    pointer,
+                    "blocking finding must be an object",
+                    actual=finding,
+                )
+                continue
+            finding_id = finding.get("finding_id")
+            if not isinstance(finding_id, str) or not finding_id:
+                collector.add(
+                    "ACV021",
+                    f"{pointer}/finding_id",
+                    "blocking finding requires a non-empty finding ID",
+                    actual=finding_id,
+                )
+            elif finding_id in finding_ids:
+                collector.add(
+                    "ACV021",
+                    f"{pointer}/finding_id",
+                    "blocking finding IDs must be unique",
+                    actual=finding_id,
+                )
+            else:
+                finding_ids.add(finding_id)
+            if finding.get("severity") != "blocking":
+                collector.add(
+                    "ACV021",
+                    f"{pointer}/severity",
+                    "blocking_findings entries must have blocking severity",
+                    actual=finding.get("severity"),
+                )
+            if finding.get("status") not in {"open", "resolved"}:
+                collector.add(
+                    "ACV021",
+                    f"{pointer}/status",
+                    "blocking finding status is not governed",
+                    expected=["open", "resolved"],
+                    actual=finding.get("status"),
+                )
+
+    oracle_independence = review.get("oracle_independence")
+    if not isinstance(oracle_independence, Mapping):
+        collector.add(
+            "ACV021",
+            "/oracle_independence",
+            "oracle independence must be a structured object",
+            actual=oracle_independence,
+        )
+    elif (
+        review.get("collection_status") == "independently_accepted"
+        and oracle_independence.get("verification_status") != "passed"
+    ):
+        collector.add(
+            "ACV021",
+            "/oracle_independence/verification_status",
+            "accepted review requires verified oracle independence",
+            expected="passed",
+            actual=oracle_independence.get("verification_status"),
+        )
+    elif review.get("collection_status") == "independently_accepted":
+        if (
+            oracle_independence.get(
+                "oracles_authored_before_production_classifier"
+            )
+            is not True
+        ):
+            collector.add(
+                "ACV021",
+                "/oracle_independence/oracles_authored_before_production_classifier",
+                "accepted review requires pre-production oracle authorship",
+                actual=oracle_independence.get(
+                    "oracles_authored_before_production_classifier"
+                ),
+            )
+        if (
+            oracle_independence.get(
+                "production_code_used_to_generate_oracles"
+            )
+            is not False
+        ):
+            collector.add(
+                "ACV021",
+                "/oracle_independence/production_code_used_to_generate_oracles",
+                "accepted review requires oracles independent of production code",
+                actual=oracle_independence.get(
+                    "production_code_used_to_generate_oracles"
+                ),
+            )
+
+    author = review.get("author")
+    if not isinstance(author, Mapping) or not author.get("author_role"):
+        collector.add(
+            "ACV021",
+            "/author",
+            "fixture author must be a structured object with an author role",
+            actual=author,
+        )
+    if (
+        review.get("collection_status") == "independently_accepted"
+        and not review.get("reviewed_at")
+    ):
+        collector.add(
+            "ACV021",
+            "/reviewed_at",
+            "accepted review requires a completion timestamp",
+            actual=review.get("reviewed_at"),
+        )
     return collector.result()
 
 

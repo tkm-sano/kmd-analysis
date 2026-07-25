@@ -1,173 +1,203 @@
 {
   "acceptance_allowed": false,
   "artifact_type": "attribute_classification_fixture_review",
-  "authoring_basis": {
-    "path": "05_src/traffic_simulation/specifications/attribute_criticality_and_evidence_specification.md",
-    "sha256": "af5a45c7cb5b325ade6da7660c54d5318002403a80bfc748476d65563d5f50ba",
-    "specification_version": "1.1.0"
+  "author": {
+    "author_id": null,
+    "author_name": null,
+    "author_role": "fixture_author"
   },
+  "authoring_basis": {
+    "artifact_path": "05_src/traffic_simulation/specifications/attribute_criticality_and_evidence_specification.md",
+    "artifact_sha256": "af5a45c7cb5b325ade6da7660c54d5318002403a80bfc748476d65563d5f50ba",
+    "artifact_version": "1.1.0"
+  },
+  "blocking_findings": [],
   "collection_status": "awaiting_independent_human_acceptance",
-  "hash_observations": [
-    {
-      "algorithm": "SHA-256",
-      "artifact_path": "05_src/traffic_simulation/validation/fixtures/attribute_classification/inputs.json",
-      "canonicalization": "pretty_json_sorted_keys_utf8_lf",
-      "checked_at": "2026-07-25T00:00:00Z",
-      "checker": "fixture-collection-builder",
-      "expected_hash": "a8a3a5b27b3e4badfe7c74dd92ea1476679418e8c49a78529591b2fe5be88e56",
-      "matched": true,
-      "observed_hash": "a8a3a5b27b3e4badfe7c74dd92ea1476679418e8c49a78529591b2fe5be88e56"
-    },
-    {
-      "algorithm": "SHA-256",
-      "artifact_path": "05_src/traffic_simulation/validation/fixtures/attribute_classification/oracles.json",
-      "canonicalization": "pretty_json_sorted_keys_utf8_lf",
-      "checked_at": "2026-07-25T00:00:00Z",
-      "checker": "fixture-collection-builder",
-      "expected_hash": "22f4c887703b2676e5d71da1fd7ceb760dcd9c7d56560f4eeed55a1dfc6393dc",
-      "matched": true,
-      "observed_hash": "22f4c887703b2676e5d71da1fd7ceb760dcd9c7d56560f4eeed55a1dfc6393dc"
-    },
-    {
-      "algorithm": "SHA-256",
-      "artifact_path": "05_src/traffic_simulation/specifications/attribute_criticality_and_evidence_specification.md",
-      "canonicalization": "raw_file_bytes",
-      "checked_at": "2026-07-25T00:00:00Z",
-      "checker": "fixture-collection-builder",
-      "expected_hash": "af5a45c7cb5b325ade6da7660c54d5318002403a80bfc748476d65563d5f50ba",
-      "matched": true,
-      "observed_hash": "af5a45c7cb5b325ade6da7660c54d5318002403a80bfc748476d65563d5f50ba"
-    }
-  ],
-  "independent_review": {
-    "independence_attestation": {
-      "did_not_author_oracles": null,
-      "did_not_generate_expected_results_from_production_code": null,
-      "did_not_implement_reviewed_classifier_rules": null
-    },
+  "independent_reviewer": {
+    "independence_declaration": null,
+    "relationship_to_fixture_author": "not_assessed",
+    "relationship_to_production_code_author": "not_assessed",
     "reviewed_at": null,
     "reviewer_id": null,
     "reviewer_name": null,
     "reviewer_role": null
   },
-  "oracle_authorship_verification": {
-    "source_pointer": "oracles.json#/authorship",
-    "status": "pending"
+  "observed_hashes": {
+    "inputs": {
+      "algorithm": "SHA-256",
+      "artifact_path": "05_src/traffic_simulation/validation/fixtures/attribute_classification/inputs.json",
+      "canonicalization": "pretty_json_sorted_keys_utf8_lf",
+      "checked_at": "2026-07-25T00:00:00Z",
+      "checker": "fixture-collection-builder",
+      "expected_sha256": "a8a3a5b27b3e4badfe7c74dd92ea1476679418e8c49a78529591b2fe5be88e56",
+      "matches": true,
+      "observed_sha256": "a8a3a5b27b3e4badfe7c74dd92ea1476679418e8c49a78529591b2fe5be88e56"
+    },
+    "manifest": {
+      "algorithm": "SHA-256",
+      "artifact_path": "05_src/traffic_simulation/validation/fixtures/attribute_classification/manifest.json",
+      "canonicalization": "pretty_json_sorted_keys_utf8_lf",
+      "checked_at": "2026-07-25T00:00:00Z",
+      "checker": "fixture-collection-builder",
+      "expected_sha256": "fa761ac57ef366b146294a08a225791fcc7ef54b2684f28a1cd709aa425abf29",
+      "matches": true,
+      "observed_sha256": "fa761ac57ef366b146294a08a225791fcc7ef54b2684f28a1cd709aa425abf29"
+    },
+    "oracles": {
+      "algorithm": "SHA-256",
+      "artifact_path": "05_src/traffic_simulation/validation/fixtures/attribute_classification/oracles.json",
+      "canonicalization": "pretty_json_sorted_keys_utf8_lf",
+      "checked_at": "2026-07-25T00:00:00Z",
+      "checker": "fixture-collection-builder",
+      "expected_sha256": "22f4c887703b2676e5d71da1fd7ceb760dcd9c7d56560f4eeed55a1dfc6393dc",
+      "matches": true,
+      "observed_sha256": "22f4c887703b2676e5d71da1fd7ceb760dcd9c7d56560f4eeed55a1dfc6393dc"
+    },
+    "source_specification": {
+      "algorithm": "SHA-256",
+      "artifact_path": "05_src/traffic_simulation/specifications/attribute_criticality_and_evidence_specification.md",
+      "canonicalization": "raw_file_bytes",
+      "checked_at": "2026-07-25T00:00:00Z",
+      "checker": "fixture-collection-builder",
+      "expected_sha256": "af5a45c7cb5b325ade6da7660c54d5318002403a80bfc748476d65563d5f50ba",
+      "matches": true,
+      "observed_sha256": "af5a45c7cb5b325ade6da7660c54d5318002403a80bfc748476d65563d5f50ba"
+    }
   },
-  "required_review_checks": [
+  "oracle_independence": {
+    "authoring_process_description": "Expected results were authored from the normative specification before the production Classifier existed.",
+    "oracles_authored_before_production_classifier": true,
+    "production_code_used_to_generate_oracles": false,
+    "source_pointer": "oracles.json#/authorship",
+    "verification_status": "not_reviewed"
+  },
+  "review_checks": [
     {
-      "check_id": "REVIEW-CHECK-001",
-      "description": "expected classifications follow rule priority",
-      "evidence_refs": [],
+      "check_id": "FIX-REV-001",
+      "evidence_references": [],
       "finding_ids": [],
-      "notes": null,
       "recheck_status": "not_required",
+      "required": true,
+      "requirement": "expected classifications follow rule priority",
       "reviewed_at": null,
       "reviewed_by": null,
-      "status": "pending"
+      "reviewer_comment": null,
+      "status": "not_reviewed"
     },
     {
-      "check_id": "REVIEW-CHECK-002",
-      "description": "expected resolutions follow the action-state-review contract",
-      "evidence_refs": [],
+      "check_id": "FIX-REV-002",
+      "evidence_references": [],
       "finding_ids": [],
-      "notes": null,
       "recheck_status": "not_required",
+      "required": true,
+      "requirement": "expected resolutions follow the action-state-review contract",
       "reviewed_at": null,
       "reviewed_by": null,
-      "status": "pending"
+      "reviewer_comment": null,
+      "status": "not_reviewed"
     },
     {
-      "check_id": "REVIEW-CHECK-003",
-      "description": "negative cases map one-to-one to AC001 through AC010",
-      "evidence_refs": [],
+      "check_id": "FIX-REV-003",
+      "evidence_references": [],
       "finding_ids": [],
-      "notes": null,
       "recheck_status": "not_required",
+      "required": true,
+      "requirement": "negative cases map one-to-one to AC001 through AC010",
       "reviewed_at": null,
       "reviewed_by": null,
-      "status": "pending"
+      "reviewer_comment": null,
+      "status": "not_reviewed"
     },
     {
-      "check_id": "REVIEW-CHECK-004",
-      "description": "oracle catalogue was not produced by production code",
-      "evidence_refs": [],
+      "check_id": "FIX-REV-004",
+      "evidence_references": [],
       "finding_ids": [],
-      "notes": null,
       "recheck_status": "not_required",
+      "required": true,
+      "requirement": "oracle catalogue was not produced by production code",
       "reviewed_at": null,
       "reviewed_by": null,
-      "status": "pending"
+      "reviewer_comment": null,
+      "status": "not_reviewed"
     },
     {
-      "check_id": "REVIEW-CHECK-005",
-      "description": "fixture and source specification hashes match",
-      "evidence_refs": [
+      "check_id": "FIX-REV-005",
+      "evidence_references": [
+        "05_src/traffic_simulation/validation/fixtures/attribute_classification/manifest.json",
         "05_src/traffic_simulation/validation/fixtures/attribute_classification/inputs.json",
-        "05_src/traffic_simulation/validation/fixtures/attribute_classification/oracles.json"
+        "05_src/traffic_simulation/validation/fixtures/attribute_classification/oracles.json",
+        "05_src/traffic_simulation/specifications/attribute_criticality_and_evidence_specification.md"
       ],
       "finding_ids": [],
-      "notes": null,
       "recheck_status": "not_required",
-      "reviewed_at": "2026-07-25T00:00:00Z",
-      "reviewed_by": "fixture-collection-builder",
-      "status": "passed"
-    },
-    {
-      "check_id": "REVIEW-CHECK-006",
-      "description": "complete execution inputs identify every target tuple and evidence segment",
-      "evidence_refs": [],
-      "finding_ids": [],
-      "notes": null,
-      "recheck_status": "not_required",
+      "required": true,
+      "requirement": "fixture and source specification hashes match",
       "reviewed_at": null,
       "reviewed_by": null,
-      "status": "pending"
+      "reviewer_comment": null,
+      "status": "not_reviewed"
     },
     {
-      "check_id": "REVIEW-CHECK-007",
-      "description": "manifest coverage is backed by executable oracle assertions",
-      "evidence_refs": [],
+      "check_id": "FIX-REV-006",
+      "evidence_references": [],
       "finding_ids": [],
-      "notes": null,
       "recheck_status": "not_required",
+      "required": true,
+      "requirement": "complete execution inputs identify every target tuple and evidence segment",
       "reviewed_at": null,
       "reviewed_by": null,
-      "status": "pending"
+      "reviewer_comment": null,
+      "status": "not_reviewed"
     },
     {
-      "check_id": "REVIEW-CHECK-008",
-      "description": "failure-stage record emission follows the governed policy",
-      "evidence_refs": [],
+      "check_id": "FIX-REV-007",
+      "evidence_references": [],
       "finding_ids": [],
-      "notes": null,
       "recheck_status": "not_required",
+      "required": true,
+      "requirement": "manifest coverage is backed by executable oracle assertions",
       "reviewed_at": null,
       "reviewed_by": null,
-      "status": "pending"
+      "reviewer_comment": null,
+      "status": "not_reviewed"
     },
     {
-      "check_id": "REVIEW-CHECK-009",
-      "description": "directional and lifecycle assertions contain observable before-and-after state",
-      "evidence_refs": [],
+      "check_id": "FIX-REV-008",
+      "evidence_references": [],
       "finding_ids": [],
-      "notes": null,
       "recheck_status": "not_required",
+      "required": true,
+      "requirement": "failure-stage record emission follows the governed policy",
       "reviewed_at": null,
       "reviewed_by": null,
-      "status": "pending"
+      "reviewer_comment": null,
+      "status": "not_reviewed"
     },
     {
-      "check_id": "REVIEW-CHECK-010",
-      "description": "schema rejection and canonicalization cases cover the declared mutations",
-      "evidence_refs": [],
+      "check_id": "FIX-REV-009",
+      "evidence_references": [],
       "finding_ids": [],
-      "notes": null,
       "recheck_status": "not_required",
+      "required": true,
+      "requirement": "directional and lifecycle assertions contain observable before-and-after state",
       "reviewed_at": null,
       "reviewed_by": null,
-      "status": "pending"
+      "reviewer_comment": null,
+      "status": "not_reviewed"
+    },
+    {
+      "check_id": "FIX-REV-010",
+      "evidence_references": [],
+      "finding_ids": [],
+      "recheck_status": "not_required",
+      "required": true,
+      "requirement": "schema rejection and canonicalization cases cover the declared mutations",
+      "reviewed_at": null,
+      "reviewed_by": null,
+      "reviewer_comment": null,
+      "status": "not_reviewed"
     }
   ],
+  "reviewed_at": null,
   "schema_version": 2
 }

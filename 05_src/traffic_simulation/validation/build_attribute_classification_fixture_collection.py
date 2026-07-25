@@ -198,118 +198,6 @@ def desired_collection() -> dict[Path, bytes]:
             level = record["classification"]["criticality_level"]
             level_index[level].append(fixture_id)
 
-    review["schema_version"] = 2
-    review["authoring_basis"] = {
-        "path": relative(SPECIFICATION_PATH),
-        "sha256": specification_hash,
-        "specification_version": "1.1.0",
-    }
-    review["oracle_authorship_verification"] = {
-        "source_pointer": "oracles.json#/authorship",
-        "status": "pending",
-    }
-    observations = [
-        {
-            "artifact_path": relative(inputs_path),
-            "algorithm": "SHA-256",
-            "expected_hash": input_hash,
-            "observed_hash": input_hash,
-            "matched": True,
-            "checked_at": "2026-07-25T00:00:00Z",
-            "checker": "fixture-collection-builder",
-            "canonicalization": "pretty_json_sorted_keys_utf8_lf",
-        },
-        {
-            "artifact_path": relative(oracles_path),
-            "algorithm": "SHA-256",
-            "expected_hash": oracle_hash,
-            "observed_hash": oracle_hash,
-            "matched": True,
-            "checked_at": "2026-07-25T00:00:00Z",
-            "checker": "fixture-collection-builder",
-            "canonicalization": "pretty_json_sorted_keys_utf8_lf",
-        },
-        {
-            "artifact_path": relative(SPECIFICATION_PATH),
-            "algorithm": "SHA-256",
-            "expected_hash": specification_hash,
-            "observed_hash": specification_hash,
-            "matched": True,
-            "checked_at": "2026-07-25T00:00:00Z",
-            "checker": "fixture-collection-builder",
-            "canonicalization": "raw_file_bytes",
-        },
-    ]
-    review["hash_observations"] = observations
-    checks = review.get("required_review_checks", [])
-    if checks and isinstance(checks[0], str):
-        review["required_review_checks"] = [
-            {
-                "check_id": f"REVIEW-CHECK-{index:03d}",
-                "description": description,
-                "status": (
-                    "passed"
-                    if "hash" in description
-                    else "pending"
-                ),
-                "finding_ids": [],
-                "evidence_refs": (
-                    [relative(inputs_path), relative(oracles_path)]
-                    if "hash" in description
-                    else []
-                ),
-                "reviewed_by": (
-                    "fixture-collection-builder"
-                    if "hash" in description
-                    else None
-                ),
-                "reviewed_at": (
-                    "2026-07-25T00:00:00Z"
-                    if "hash" in description
-                    else None
-                ),
-                "notes": None,
-                "recheck_status": "not_required",
-            }
-            for index, description in enumerate(checks, start=1)
-        ]
-    review["independent_review"] = review.get(
-        "independent_review",
-        {
-            "reviewer_id": None,
-            "reviewer_name": None,
-            "reviewer_role": None,
-            "reviewed_at": None,
-            "independence_attestation": {
-                "did_not_author_oracles": None,
-                "did_not_generate_expected_results_from_production_code": None,
-                "did_not_implement_reviewed_classifier_rules": None,
-            },
-        },
-    )
-    review.pop("independent_reviewer", None)
-    review.pop("reviewed_at", None)
-    review.pop("author_role", None)
-    review.pop("oracles_authored_before_production_classifier", None)
-    review.pop("production_code_used_to_generate_oracles", None)
-    all_passed = all(
-        check["status"] in {"passed", "not_applicable"}
-        for check in review["required_review_checks"]
-    )
-    no_blocking_findings = not any(
-        finding.get("blocking") and finding.get("status") != "resolved"
-        for finding in review.get("findings", [])
-        if isinstance(finding, Mapping)
-    )
-    independently_accepted = (
-        review.get("collection_status") == "independently_accepted"
-    )
-    review["acceptance_allowed"] = (
-        independently_accepted and all_passed and no_blocking_findings
-    )
-    review_payload = json_bytes(review)
-    desired[review_path] = review_payload
-
     level_case_index = {
         level: sorted(set(case_ids))
         for level, case_ids in level_index.items()
@@ -344,13 +232,256 @@ def desired_collection() -> dict[Path, bytes]:
                 "path": relative(oracles_path),
                 "sha256": oracle_hash,
             },
-            "review": {
-                "path": relative(review_path),
-                "sha256": sha256_bytes(review_payload),
-            },
         },
     }
-    desired[manifest_path] = json_bytes(manifest)
+    manifest_payload = json_bytes(manifest)
+    desired[manifest_path] = manifest_payload
+    manifest_hash = sha256_bytes(manifest_payload)
+
+    review_requirements = [
+        "expected classifications follow rule priority",
+        "expected resolutions follow the action-state-review contract",
+        "negative cases map one-to-one to AC001 through AC010",
+        "oracle catalogue was not produced by production code",
+        "fixture and source specification hashes match",
+        "complete execution inputs identify every target tuple and evidence segment",
+        "manifest coverage is backed by executable oracle assertions",
+        "failure-stage record emission follows the governed policy",
+        "directional and lifecycle assertions contain observable before-and-after state",
+        "schema rejection and canonicalization cases cover the declared mutations",
+    ]
+    existing_checks = review.get(
+        "review_checks", review.get("required_review_checks", [])
+    )
+    check_by_requirement = {
+        str(check.get("requirement", check.get("description"))): check
+        for check in existing_checks
+        if isinstance(check, Mapping)
+    }
+    review_checks = []
+    for index, requirement in enumerate(review_requirements, start=1):
+        previous = check_by_requirement.get(requirement, {})
+        status = previous.get("status", "not_reviewed")
+        mechanically_reviewed = previous.get("reviewed_by") == (
+            "fixture-collection-builder"
+        )
+        if status == "pending" or mechanically_reviewed:
+            status = "not_reviewed"
+        default_evidence = (
+            [
+                relative(manifest_path),
+                relative(inputs_path),
+                relative(oracles_path),
+                relative(SPECIFICATION_PATH),
+            ]
+            if "hashes match" in requirement
+            else []
+        )
+        review_checks.append(
+            {
+                "check_id": f"FIX-REV-{index:03d}",
+                "requirement": requirement,
+                "required": True,
+                "status": status,
+                "evidence_references": (
+                    default_evidence
+                    if mechanically_reviewed
+                    else previous.get(
+                        "evidence_references",
+                        previous.get("evidence_refs", default_evidence),
+                    )
+                ),
+                "finding_ids": previous.get("finding_ids", []),
+                "reviewer_comment": previous.get(
+                    "reviewer_comment", previous.get("notes")
+                ),
+                "reviewed_by": (
+                    None if mechanically_reviewed else previous.get("reviewed_by")
+                ),
+                "reviewed_at": (
+                    None if mechanically_reviewed else previous.get("reviewed_at")
+                ),
+                "recheck_status": previous.get(
+                    "recheck_status", "not_required"
+                ),
+            }
+        )
+
+    prior_reviewer = review.get(
+        "independent_reviewer", review.get("independent_review", {})
+    )
+    if not isinstance(prior_reviewer, Mapping):
+        prior_reviewer = {}
+    attestation = prior_reviewer.get("independence_attestation", {})
+    if not isinstance(attestation, Mapping):
+        attestation = {}
+    independent_reviewer = {
+        "reviewer_id": prior_reviewer.get("reviewer_id"),
+        "reviewer_name": prior_reviewer.get("reviewer_name"),
+        "reviewer_role": prior_reviewer.get("reviewer_role"),
+        "relationship_to_fixture_author": prior_reviewer.get(
+            "relationship_to_fixture_author", "not_assessed"
+        ),
+        "relationship_to_production_code_author": prior_reviewer.get(
+            "relationship_to_production_code_author", "not_assessed"
+        ),
+        "independence_declaration": prior_reviewer.get(
+            "independence_declaration"
+        ),
+        "reviewed_at": prior_reviewer.get("reviewed_at"),
+    }
+    if independent_reviewer["independence_declaration"] is None and any(
+        value is not None for value in attestation.values()
+    ):
+        independent_reviewer["independence_declaration"] = dict(attestation)
+
+    observed_hashes = {}
+    for key, path, digest, canonicalization in (
+        (
+            "manifest",
+            manifest_path,
+            manifest_hash,
+            "pretty_json_sorted_keys_utf8_lf",
+        ),
+        (
+            "inputs",
+            inputs_path,
+            input_hash,
+            "pretty_json_sorted_keys_utf8_lf",
+        ),
+        (
+            "oracles",
+            oracles_path,
+            oracle_hash,
+            "pretty_json_sorted_keys_utf8_lf",
+        ),
+        (
+            "source_specification",
+            SPECIFICATION_PATH,
+            specification_hash,
+            "raw_file_bytes",
+        ),
+    ):
+        observed_hashes[key] = {
+            "artifact_path": relative(path),
+            "algorithm": "SHA-256",
+            "expected_sha256": digest,
+            "observed_sha256": digest,
+            "matches": True,
+            "checked_at": "2026-07-25T00:00:00Z",
+            "checker": "fixture-collection-builder",
+            "canonicalization": canonicalization,
+        }
+
+    previous_observations = review.get("observed_hashes")
+    artifacts_changed = (
+        isinstance(previous_observations, Mapping)
+        and set(previous_observations) == set(observed_hashes)
+        and any(
+            previous_observations[key].get("expected_sha256")
+            != observation["expected_sha256"]
+            for key, observation in observed_hashes.items()
+            if isinstance(previous_observations.get(key), Mapping)
+        )
+    )
+    collection_status = review.get(
+        "collection_status", "awaiting_independent_human_acceptance"
+    )
+    if artifacts_changed:
+        collection_status = "awaiting_independent_human_acceptance"
+        independent_reviewer = {
+            key: (
+                "not_assessed"
+                if key.startswith("relationship_to_")
+                else None
+            )
+            for key in independent_reviewer
+        }
+        for check in review_checks:
+            check["status"] = "not_reviewed"
+            check["finding_ids"] = []
+            check["reviewer_comment"] = None
+            check["reviewed_by"] = None
+            check["reviewed_at"] = None
+            check["recheck_status"] = "required"
+    prior_oracle_verification = review.get(
+        "oracle_independence",
+        review.get("oracle_authorship_verification", {}),
+    )
+    if not isinstance(prior_oracle_verification, Mapping):
+        prior_oracle_verification = {}
+    oracle_verification_status = prior_oracle_verification.get(
+        "verification_status", "not_reviewed"
+    )
+    if artifacts_changed:
+        oracle_verification_status = "not_reviewed"
+
+    blocking_findings = review.get(
+        "blocking_findings", review.get("findings", [])
+    )
+    if not isinstance(blocking_findings, list):
+        blocking_findings = []
+    required_checks = [
+        check for check in review_checks if check.get("required") is True
+    ]
+    all_passed = bool(required_checks) and all(
+        check["status"] in {"passed", "not_applicable"}
+        for check in required_checks
+    )
+    no_open_blocker = not any(
+        isinstance(finding, Mapping)
+        and finding.get("severity") == "blocking"
+        and finding.get("status") != "resolved"
+        for finding in blocking_findings
+    )
+    review = {
+        "artifact_type": "attribute_classification_fixture_review",
+        "schema_version": 2,
+        "author": review.get(
+            "author",
+            {
+                "author_id": None,
+                "author_name": None,
+                "author_role": "fixture_author",
+            },
+        ),
+        "authoring_basis": {
+            "artifact_path": relative(SPECIFICATION_PATH),
+            "artifact_version": "1.1.0",
+            "artifact_sha256": specification_hash,
+        },
+        "collection_status": collection_status,
+        "independent_reviewer": independent_reviewer,
+        "oracle_independence": {
+            "source_pointer": "oracles.json#/authorship",
+            "oracles_authored_before_production_classifier": (
+                oracles.get("authorship", {}).get(
+                    "production_classifier_existed_at_authorship"
+                )
+                is False
+            ),
+            "production_code_used_to_generate_oracles": not bool(
+                oracles.get("authorship", {}).get(
+                    "independent_from_production_code"
+                )
+            ),
+            "authoring_process_description": (
+                "Expected results were authored from the normative "
+                "specification before the production Classifier existed."
+            ),
+            "verification_status": oracle_verification_status,
+        },
+        "review_checks": review_checks,
+        "observed_hashes": observed_hashes,
+        "blocking_findings": blocking_findings,
+        "reviewed_at": None if artifacts_changed else review.get("reviewed_at"),
+        "acceptance_allowed": (
+            collection_status == "independently_accepted"
+            and all_passed
+            and no_open_blocker
+        ),
+    }
+    desired[review_path] = json_bytes(review)
     return desired
 
 

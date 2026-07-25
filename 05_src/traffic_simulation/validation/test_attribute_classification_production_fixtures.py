@@ -69,6 +69,7 @@ def test_fixture_manifest_has_exact_case_population_and_required_negatives() -> 
 
 def test_catalogue_and_case_hashes_are_pinned_to_actual_files() -> None:
     manifest = load_json(FIXTURE_ROOT / "manifest.json")
+    assert set(manifest["catalogues"]) == {"inputs", "oracles"}
     for entry in manifest["catalogues"].values():
         path = REPOSITORY_ROOT / entry["path"]
         assert path.is_file()
@@ -184,12 +185,15 @@ def test_fixture_collection_does_not_claim_human_acceptance() -> None:
     assert oracles["authorship"]["production_classifier_existed_at_authorship"] is False
     assert oracles["authorship"]["independent_from_production_code"] is True
     assert review["collection_status"] == "awaiting_independent_human_acceptance"
-    assert review["independent_review"]["reviewer_id"] is None
-    assert review["oracle_authorship_verification"]["status"] == "pending"
+    assert review["independent_reviewer"]["reviewer_id"] is None
+    assert (
+        review["oracle_independence"]["verification_status"]
+        == "not_reviewed"
+    )
     assert review["acceptance_allowed"] is False
     assert any(
-        check["status"] == "pending"
-        for check in review["required_review_checks"]
+        check["status"] == "not_reviewed"
+        for check in review["review_checks"]
     )
 
 
@@ -241,20 +245,25 @@ def test_manifest_coverage_resolves_to_oracle_assertions() -> None:
 def test_review_acceptance_is_derived_and_specification_is_pinned() -> None:
     review = load_json(FIXTURE_ROOT / "review.json")
     oracles = load_json(FIXTURE_ROOT / "oracles.json")
-    assert review["authoring_basis"]["sha256"] == file_sha256(SPECIFICATION_PATH)
+    assert review["schema_version"] == 2
+    assert review["authoring_basis"]["artifact_sha256"] == file_sha256(
+        SPECIFICATION_PATH
+    )
     assert (
-        review["authoring_basis"]["sha256"]
+        review["authoring_basis"]["artifact_sha256"]
         == oracles["source_specification_sha256"]
     )
     expected_acceptance = (
         review["collection_status"] == "independently_accepted"
         and all(
             check["status"] in {"passed", "not_applicable"}
-            for check in review["required_review_checks"]
+            for check in review["review_checks"]
+            if check["required"]
         )
         and not any(
-            finding["blocking"] and finding["status"] != "resolved"
-            for finding in review.get("findings", [])
+            finding["severity"] == "blocking"
+            and finding["status"] != "resolved"
+            for finding in review["blocking_findings"]
         )
     )
     assert review["acceptance_allowed"] is expected_acceptance
@@ -276,6 +285,79 @@ def test_review_acceptance_is_derived_and_specification_is_pinned() -> None:
     )
     assert not invalid.valid
     assert any(error.code == "ACV021" for error in invalid.errors)
+
+
+def test_review_observes_all_governed_artifacts_without_hash_cycle() -> None:
+    manifest = load_json(FIXTURE_ROOT / "manifest.json")
+    review = load_json(FIXTURE_ROOT / "review.json")
+
+    assert "review" not in manifest["catalogues"]
+    assert set(review["observed_hashes"]) == {
+        "manifest",
+        "inputs",
+        "oracles",
+        "source_specification",
+    }
+    for observation in review["observed_hashes"].values():
+        path = REPOSITORY_ROOT / observation["artifact_path"]
+        actual = file_sha256(path)
+        assert observation["algorithm"] == "SHA-256"
+        assert observation["expected_sha256"] == actual
+        assert observation["observed_sha256"] == actual
+        assert observation["matches"] is True
+
+
+def test_independent_acceptance_requires_complete_review_evidence() -> None:
+    review = load_json(FIXTURE_ROOT / "review.json")
+    oracles = load_json(FIXTURE_ROOT / "oracles.json")
+    accepted = copy.deepcopy(review)
+    accepted["collection_status"] = "independently_accepted"
+    accepted["reviewed_at"] = "2026-07-25T01:00:00Z"
+    accepted["independent_reviewer"].update(
+        {
+            "reviewer_id": "reviewer-001",
+            "reviewer_role": "independent_fixture_reviewer",
+            "relationship_to_fixture_author": "different_person",
+            "relationship_to_production_code_author": "different_person",
+            "independence_declaration": (
+                "I did not author the fixture oracle or production output."
+            ),
+            "reviewed_at": "2026-07-25T01:00:00Z",
+        }
+    )
+    accepted["oracle_independence"]["verification_status"] = "passed"
+    for check in accepted["review_checks"]:
+        check.update(
+            {
+                "status": "passed",
+                "reviewed_by": "reviewer-001",
+                "reviewed_at": "2026-07-25T01:00:00Z",
+            }
+        )
+    accepted["acceptance_allowed"] = True
+
+    result = validate_fixture_review_artifact(
+        accepted,
+        oracles,
+        artifact_root=REPOSITORY_ROOT,
+        specification_path=SPECIFICATION_PATH,
+    )
+    assert result.valid, result.to_dict()
+
+    incomplete = copy.deepcopy(accepted)
+    incomplete["independent_reviewer"]["independence_declaration"] = None
+    invalid = validate_fixture_review_artifact(
+        incomplete,
+        oracles,
+        artifact_root=REPOSITORY_ROOT,
+        specification_path=SPECIFICATION_PATH,
+    )
+    assert not invalid.valid
+    assert any(
+        error.json_pointer
+        == "/independent_reviewer/independence_declaration"
+        for error in invalid.errors
+    )
 
 
 def test_specialized_assertions_have_required_observable_content() -> None:

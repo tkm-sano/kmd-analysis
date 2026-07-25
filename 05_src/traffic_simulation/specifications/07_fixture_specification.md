@@ -42,6 +42,11 @@ independently authored expected-result source and includes executable
 assertions plus failure-stage record-emission policy. Descriptor coverage maps
 coverage IDs to assertion IDs. The manifest's complete level index, canonical
 level witnesses and scenario index are derived from descriptors and oracles.
+The manifest hashes the input and oracle catalogues but deliberately does not
+hash `review.json`. Instead, `review.json` records expected and observed
+SHA-256 values for the manifest, inputs, oracles and source specification.
+This one-way reference makes the review evidence complete without creating a
+manifest-review hash cycle.
 
 Derived descriptors, hashes, review hash observations and the manifest are
 maintained with:
