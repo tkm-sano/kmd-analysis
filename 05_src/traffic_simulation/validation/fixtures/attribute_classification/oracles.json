@@ -1,0 +1,1712 @@
+{
+  "artifact_type": "attribute_classification_oracle_catalog",
+  "authorship": {
+    "created_on": "2026-07-25",
+    "independent_from_production_code": true,
+    "production_classifier_existed_at_authorship": false
+  },
+  "cases": {
+    "AC-BND-001": {
+      "assertions": [
+        {
+          "assertion_id": "ASSERT-AC-BND-001-001",
+          "expected": {
+            "failure_codes": [],
+            "outcome": "success"
+          },
+          "subject_pointer": "/expected",
+          "type": "classification"
+        },
+        {
+          "assertion_id": "ASSERT-AC-BND-001-002",
+          "expected": {
+            "artifact_publication_allowed": true,
+            "failure_stage": "none",
+            "partial_records_allowed": false,
+            "records_emitted": true,
+            "resolution_emitted": true
+          },
+          "subject_pointer": "/expected/record_emission_policy",
+          "type": "record_emission"
+        }
+      ],
+      "failure_codes": [],
+      "outcome": "success",
+      "record_emission_policy": {
+        "artifact_publication_allowed": true,
+        "failure_stage": "none",
+        "partial_records_allowed": false,
+        "records_emitted": true,
+        "resolution_emitted": true
+      },
+      "records": [
+        {
+          "classification": {
+            "criticality_level": "L1",
+            "matched_rule_ids": [
+              "LANE-CRIT-007"
+            ],
+            "selected_rule_id": "LANE-CRIT-007"
+          },
+          "classification_record_id": "acr:3001:lanes:structural",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": null,
+              "minimum_authority": null,
+              "required": false,
+              "requirement_rule_id": null
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "adopt_explicit",
+            "resolution_rule_id": null,
+            "resolved_value": 1,
+            "review_status": "machine_classified",
+            "reviewed_at": null,
+            "reviewer": null,
+            "selected_evidence_id": null,
+            "stop_failure_codes": [],
+            "unit": "lanes",
+            "value_state": "explicit_osm"
+          }
+        },
+        {
+          "classification": {
+            "criticality_level": "S1",
+            "matched_rule_ids": [
+              "SPEED-CRIT-006"
+            ],
+            "selected_rule_id": "SPEED-CRIT-006"
+          },
+          "classification_record_id": "acr:3001:maxspeed:structural",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": null,
+              "minimum_authority": null,
+              "required": false,
+              "requirement_rule_id": null
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "adopt_explicit",
+            "resolution_rule_id": null,
+            "resolved_value": "30",
+            "review_status": "machine_classified",
+            "reviewed_at": null,
+            "reviewer": null,
+            "selected_evidence_id": null,
+            "stop_failure_codes": [],
+            "unit": "km/h",
+            "value_state": "explicit_osm"
+          }
+        }
+      ]
+    },
+    "AC-BND-002": {
+      "assertions": [
+        {
+          "assertion_id": "ASSERT-AC-BND-002-001",
+          "expected": {
+            "failure_codes": [],
+            "outcome": "success"
+          },
+          "subject_pointer": "/expected",
+          "type": "classification"
+        },
+        {
+          "assertion_id": "ASSERT-AC-BND-002-002",
+          "expected": {
+            "artifact_publication_allowed": true,
+            "failure_stage": "none",
+            "partial_records_allowed": false,
+            "records_emitted": true,
+            "resolution_emitted": true
+          },
+          "subject_pointer": "/expected/record_emission_policy",
+          "type": "record_emission"
+        }
+      ],
+      "failure_codes": [],
+      "outcome": "success",
+      "record_emission_policy": {
+        "artifact_publication_allowed": true,
+        "failure_stage": "none",
+        "partial_records_allowed": false,
+        "records_emitted": true,
+        "resolution_emitted": true
+      },
+      "records": [
+        {
+          "classification": {
+            "criticality_level": "L1",
+            "matched_rule_ids": [
+              "LANE-CRIT-007"
+            ],
+            "selected_rule_id": "LANE-CRIT-007"
+          },
+          "classification_record_id": "acr:3002:lanes:structural",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": null,
+              "minimum_authority": null,
+              "required": false,
+              "requirement_rule_id": null
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "adopt_explicit",
+            "resolution_rule_id": null,
+            "resolved_value": 2,
+            "review_status": "machine_classified",
+            "reviewed_at": null,
+            "reviewer": null,
+            "selected_evidence_id": null,
+            "stop_failure_codes": [],
+            "unit": "lanes",
+            "value_state": "explicit_osm"
+          }
+        },
+        {
+          "classification": {
+            "criticality_level": "S1",
+            "matched_rule_ids": [
+              "SPEED-CRIT-006"
+            ],
+            "selected_rule_id": "SPEED-CRIT-006"
+          },
+          "classification_record_id": "acr:3002:maxspeed:structural",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": null,
+              "minimum_authority": null,
+              "required": false,
+              "requirement_rule_id": null
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "adopt_explicit",
+            "resolution_rule_id": null,
+            "resolved_value": "40",
+            "review_status": "machine_classified",
+            "reviewed_at": null,
+            "reviewer": null,
+            "selected_evidence_id": null,
+            "stop_failure_codes": [],
+            "unit": "km/h",
+            "value_state": "explicit_osm"
+          }
+        },
+        {
+          "classification": {
+            "criticality_level": "L2",
+            "matched_rule_ids": [
+              "LANE-CRIT-006"
+            ],
+            "selected_rule_id": "LANE-CRIT-006"
+          },
+          "classification_record_id": "acr:3002:lanes:formal",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": null,
+              "minimum_authority": null,
+              "required": false,
+              "requirement_rule_id": null
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "adopt_explicit",
+            "resolution_rule_id": null,
+            "resolved_value": 2,
+            "review_status": "machine_classified",
+            "reviewed_at": null,
+            "reviewer": null,
+            "selected_evidence_id": null,
+            "stop_failure_codes": [],
+            "unit": "lanes",
+            "value_state": "explicit_osm"
+          }
+        },
+        {
+          "classification": {
+            "criticality_level": "S2",
+            "matched_rule_ids": [
+              "SPEED-CRIT-005"
+            ],
+            "selected_rule_id": "SPEED-CRIT-005"
+          },
+          "classification_record_id": "acr:3002:maxspeed:formal",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": null,
+              "minimum_authority": null,
+              "required": false,
+              "requirement_rule_id": null
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "adopt_explicit",
+            "resolution_rule_id": null,
+            "resolved_value": "40",
+            "review_status": "machine_classified",
+            "reviewed_at": null,
+            "reviewer": null,
+            "selected_evidence_id": null,
+            "stop_failure_codes": [],
+            "unit": "km/h",
+            "value_state": "explicit_osm"
+          }
+        }
+      ]
+    },
+    "AC-BND-003": {
+      "assertions": [
+        {
+          "assertion_id": "ASSERT-AC-BND-003-001",
+          "expected": {
+            "failure_codes": [],
+            "outcome": "success"
+          },
+          "subject_pointer": "/expected",
+          "type": "classification"
+        },
+        {
+          "assertion_id": "ASSERT-AC-BND-003-002",
+          "expected": {
+            "artifact_publication_allowed": true,
+            "failure_stage": "none",
+            "partial_records_allowed": false,
+            "records_emitted": true,
+            "resolution_emitted": true
+          },
+          "subject_pointer": "/expected/record_emission_policy",
+          "type": "record_emission"
+        },
+        {
+          "assertion_id": "ASSERT-AC-BND-003-003",
+          "expected": {
+            "caused_by_promotion_event_id": "PROMOTE-AC-BND-003-001",
+            "invalidated_artifact_id": "attribute-classification-v1",
+            "invalidated_at": "2026-07-25T00:00:00Z",
+            "invalidated_revision_id": "revision-1",
+            "invalidation_event_id": "INVAL-AC-BND-003-001",
+            "new_sha256": "6666666666666666666666666666666666666666666666666666666666666666",
+            "old_sha256": "5555555555555555555555555555555555555555555555555555555555555555",
+            "prior_classification": {
+              "lanes": "L2",
+              "maxspeed": "S2"
+            },
+            "promoted_classification": {
+              "lanes": "L3",
+              "maxspeed": "S3"
+            },
+            "reason_code": "ACR-PROMOTION",
+            "regenerate_artifacts": [
+              "attribute_classification",
+              "permission_expectation",
+              "sumo_network"
+            ],
+            "revision_lineage": {
+              "new_revision": 2,
+              "prior_revision": 1,
+              "supersedes_prior": true
+            }
+          },
+          "subject_pointer": "/expected/lifecycle",
+          "type": "artifact_invalidation"
+        },
+        {
+          "assertion_id": "ASSERT-AC-BND-003-004",
+          "expected": {
+            "adopted_values": {
+              "lanes": 2,
+              "maxspeed": "40"
+            },
+            "decision": "adopt_explicit_supported_osm",
+            "evidence_basis": "reviewed_explicit_supported_osm",
+            "new_revision": 2,
+            "old_revision": 1,
+            "prior_stop_code_cleared": "AC007",
+            "reviewed_at": "2026-07-25T00:00:00Z",
+            "reviewer": "independent-fixture-author",
+            "revision_reason_code": "ACR-PROMOTION",
+            "states": [
+              "review_required",
+              "reviewed",
+              "resolved"
+            ]
+          },
+          "subject_pointer": "/expected/review_transition",
+          "type": "review_transition"
+        }
+      ],
+      "failure_codes": [],
+      "outcome": "success",
+      "record_emission_policy": {
+        "artifact_publication_allowed": true,
+        "failure_stage": "none",
+        "partial_records_allowed": false,
+        "records_emitted": true,
+        "resolution_emitted": true
+      },
+      "records": [
+        {
+          "classification": {
+            "criticality_level": "L3",
+            "matched_rule_ids": [
+              "LANE-CRIT-005"
+            ],
+            "selected_rule_id": "LANE-CRIT-005"
+          },
+          "classification_record_id": "acr:3003:lanes:formal",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": "High-criticality resolution requires governed attribute-specific evidence.",
+              "minimum_authority": "reviewed_public_source",
+              "required": true,
+              "requirement_rule_id": "EVID-REQ-HIGH-001"
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "adopt_explicit",
+            "resolution_rule_id": null,
+            "resolved_value": 2,
+            "review_status": "reviewed",
+            "reviewed_at": "2026-07-25T00:00:00Z",
+            "reviewer": "independent-fixture-author",
+            "selected_evidence_id": null,
+            "stop_failure_codes": [],
+            "unit": "lanes",
+            "value_state": "explicit_osm"
+          }
+        },
+        {
+          "classification": {
+            "criticality_level": "S3",
+            "matched_rule_ids": [
+              "SPEED-CRIT-004"
+            ],
+            "selected_rule_id": "SPEED-CRIT-004"
+          },
+          "classification_record_id": "acr:3003:maxspeed:formal",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": "High-criticality resolution requires governed attribute-specific evidence.",
+              "minimum_authority": "reviewed_public_source",
+              "required": true,
+              "requirement_rule_id": "EVID-REQ-HIGH-001"
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "adopt_explicit",
+            "resolution_rule_id": null,
+            "resolved_value": "40",
+            "review_status": "reviewed",
+            "reviewed_at": "2026-07-25T00:00:00Z",
+            "reviewer": "independent-fixture-author",
+            "selected_evidence_id": null,
+            "stop_failure_codes": [],
+            "unit": "km/h",
+            "value_state": "explicit_osm"
+          }
+        }
+      ]
+    },
+    "AC-BND-004": {
+      "assertions": [
+        {
+          "assertion_id": "ASSERT-AC-BND-004-001",
+          "expected": {
+            "failure_codes": [
+              "AC007"
+            ],
+            "outcome": "governed_stop"
+          },
+          "subject_pointer": "/expected",
+          "type": "governed_stop"
+        },
+        {
+          "assertion_id": "ASSERT-AC-BND-004-002",
+          "expected": {
+            "artifact_publication_allowed": false,
+            "failure_stage": "resolution",
+            "partial_records_allowed": true,
+            "records_emitted": true,
+            "resolution_emitted": true
+          },
+          "subject_pointer": "/expected/record_emission_policy",
+          "type": "record_emission"
+        },
+        {
+          "assertion_id": "ASSERT-AC-BND-004-003",
+          "expected": {
+            "backward": "30",
+            "direction_records": [
+              {
+                "direction": "forward",
+                "value": "40"
+              },
+              {
+                "direction": "backward",
+                "value": "30"
+              }
+            ],
+            "forward": "40",
+            "forward_conditional": "30 @ (07:00-09:00)",
+            "oneway_case": {
+              "oneway": "yes",
+              "unused_backward_direction": "not_applicable"
+            },
+            "oneway_unused_direction_policy": "not_applicable",
+            "unit": "km/h",
+            "value_state": "conditional"
+          },
+          "subject_pointer": "/input/scenario/tuples/0/osm_attributes",
+          "type": "directional_semantics"
+        }
+      ],
+      "failure_codes": [
+        "AC007"
+      ],
+      "outcome": "governed_stop",
+      "record_emission_policy": {
+        "artifact_publication_allowed": false,
+        "failure_stage": "resolution",
+        "partial_records_allowed": true,
+        "records_emitted": true,
+        "resolution_emitted": true
+      },
+      "records": [
+        {
+          "classification": {
+            "criticality_level": "S3",
+            "matched_rule_ids": [
+              "SPEED-CRIT-003"
+            ],
+            "selected_rule_id": "SPEED-CRIT-003"
+          },
+          "classification_record_id": "acr:3004:maxspeed:formal",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": "High-criticality resolution requires governed attribute-specific evidence.",
+              "minimum_authority": "reviewed_public_source",
+              "required": true,
+              "requirement_rule_id": "EVID-REQ-HIGH-001"
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "require_human_review",
+            "resolution_rule_id": null,
+            "resolved_value": null,
+            "review_status": "review_required",
+            "reviewed_at": null,
+            "reviewer": null,
+            "selected_evidence_id": null,
+            "stop_failure_codes": [
+              "AC007"
+            ],
+            "unit": null,
+            "value_state": "conditional"
+          }
+        }
+      ]
+    },
+    "AC-POS-001": {
+      "assertions": [
+        {
+          "assertion_id": "ASSERT-AC-POS-001-001",
+          "expected": {
+            "failure_codes": [],
+            "outcome": "success"
+          },
+          "subject_pointer": "/expected",
+          "type": "classification"
+        },
+        {
+          "assertion_id": "ASSERT-AC-POS-001-002",
+          "expected": {
+            "artifact_publication_allowed": true,
+            "failure_stage": "none",
+            "partial_records_allowed": false,
+            "records_emitted": true,
+            "resolution_emitted": true
+          },
+          "subject_pointer": "/expected/record_emission_policy",
+          "type": "record_emission"
+        }
+      ],
+      "failure_codes": [],
+      "outcome": "success",
+      "record_emission_policy": {
+        "artifact_publication_allowed": true,
+        "failure_stage": "none",
+        "partial_records_allowed": false,
+        "records_emitted": true,
+        "resolution_emitted": true
+      },
+      "records": [
+        {
+          "classification": {
+            "criticality_level": "L0",
+            "matched_rule_ids": [
+              "LANE-CRIT-001"
+            ],
+            "selected_rule_id": "LANE-CRIT-001"
+          },
+          "classification_record_id": "acr:2001:lanes:structural",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": null,
+              "minimum_authority": null,
+              "required": false,
+              "requirement_rule_id": null
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "exclude",
+            "resolution_rule_id": null,
+            "resolved_value": null,
+            "review_status": "machine_classified",
+            "reviewed_at": null,
+            "reviewer": null,
+            "selected_evidence_id": null,
+            "stop_failure_codes": [],
+            "unit": null,
+            "value_state": "excluded"
+          }
+        },
+        {
+          "classification": {
+            "criticality_level": "S0",
+            "matched_rule_ids": [
+              "SPEED-CRIT-001"
+            ],
+            "selected_rule_id": "SPEED-CRIT-001"
+          },
+          "classification_record_id": "acr:2001:maxspeed:structural",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": null,
+              "minimum_authority": null,
+              "required": false,
+              "requirement_rule_id": null
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "exclude",
+            "resolution_rule_id": null,
+            "resolved_value": null,
+            "review_status": "machine_classified",
+            "reviewed_at": null,
+            "reviewer": null,
+            "selected_evidence_id": null,
+            "stop_failure_codes": [],
+            "unit": null,
+            "value_state": "excluded"
+          }
+        }
+      ]
+    },
+    "AC-POS-002": {
+      "assertions": [
+        {
+          "assertion_id": "ASSERT-AC-POS-002-001",
+          "expected": {
+            "failure_codes": [],
+            "outcome": "success"
+          },
+          "subject_pointer": "/expected",
+          "type": "classification"
+        },
+        {
+          "assertion_id": "ASSERT-AC-POS-002-002",
+          "expected": {
+            "artifact_publication_allowed": true,
+            "failure_stage": "none",
+            "partial_records_allowed": false,
+            "records_emitted": true,
+            "resolution_emitted": true
+          },
+          "subject_pointer": "/expected/record_emission_policy",
+          "type": "record_emission"
+        }
+      ],
+      "failure_codes": [],
+      "outcome": "success",
+      "record_emission_policy": {
+        "artifact_publication_allowed": true,
+        "failure_stage": "none",
+        "partial_records_allowed": false,
+        "records_emitted": true,
+        "resolution_emitted": true
+      },
+      "records": [
+        {
+          "classification": {
+            "criticality_level": "L1",
+            "matched_rule_ids": [
+              "LANE-CRIT-007"
+            ],
+            "selected_rule_id": "LANE-CRIT-007"
+          },
+          "classification_record_id": "acr:2002:lanes:structural",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": null,
+              "minimum_authority": null,
+              "required": false,
+              "requirement_rule_id": null
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "apply_structural_placeholder",
+            "resolution_rule_id": "LANE-PLACEHOLDER-001",
+            "resolved_value": 1,
+            "review_status": "machine_classified",
+            "reviewed_at": null,
+            "reviewer": null,
+            "selected_evidence_id": null,
+            "stop_failure_codes": [],
+            "unit": "lanes",
+            "value_state": "structural_placeholder"
+          }
+        },
+        {
+          "classification": {
+            "criticality_level": "S1",
+            "matched_rule_ids": [
+              "SPEED-CRIT-006"
+            ],
+            "selected_rule_id": "SPEED-CRIT-006"
+          },
+          "classification_record_id": "acr:2002:maxspeed:structural",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": null,
+              "minimum_authority": null,
+              "required": false,
+              "requirement_rule_id": null
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "apply_structural_placeholder",
+            "resolution_rule_id": "SPEED-PLACEHOLDER-001",
+            "resolved_value": "30",
+            "review_status": "machine_classified",
+            "reviewed_at": null,
+            "reviewer": null,
+            "selected_evidence_id": null,
+            "stop_failure_codes": [],
+            "unit": "km/h",
+            "value_state": "structural_placeholder"
+          }
+        }
+      ]
+    },
+    "AC-POS-003": {
+      "assertions": [
+        {
+          "assertion_id": "ASSERT-AC-POS-003-001",
+          "expected": {
+            "failure_codes": [],
+            "outcome": "success"
+          },
+          "subject_pointer": "/expected",
+          "type": "classification"
+        },
+        {
+          "assertion_id": "ASSERT-AC-POS-003-002",
+          "expected": {
+            "artifact_publication_allowed": true,
+            "failure_stage": "none",
+            "partial_records_allowed": false,
+            "records_emitted": true,
+            "resolution_emitted": true
+          },
+          "subject_pointer": "/expected/record_emission_policy",
+          "type": "record_emission"
+        },
+        {
+          "assertion_id": "ASSERT-AC-POS-003-003",
+          "expected": {
+            "canonicalization_rule": "RFC-8785",
+            "classification_config": true,
+            "fixture_descriptor": true,
+            "manifest_catalogue": true,
+            "predicate_artifact": true,
+            "source_specification": true
+          },
+          "subject_pointer": "/oracle",
+          "type": "hash_match"
+        }
+      ],
+      "failure_codes": [],
+      "outcome": "success",
+      "record_emission_policy": {
+        "artifact_publication_allowed": true,
+        "failure_stage": "none",
+        "partial_records_allowed": false,
+        "records_emitted": true,
+        "resolution_emitted": true
+      },
+      "records": [
+        {
+          "classification": {
+            "criticality_level": "L2",
+            "matched_rule_ids": [
+              "LANE-CRIT-006"
+            ],
+            "selected_rule_id": "LANE-CRIT-006"
+          },
+          "classification_record_id": "acr:2003:lanes:formal",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": null,
+              "minimum_authority": null,
+              "required": false,
+              "requirement_rule_id": null
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "adopt_explicit",
+            "resolution_rule_id": null,
+            "resolved_value": 2,
+            "review_status": "machine_classified",
+            "reviewed_at": null,
+            "reviewer": null,
+            "selected_evidence_id": null,
+            "stop_failure_codes": [],
+            "unit": "lanes",
+            "value_state": "explicit_osm"
+          }
+        },
+        {
+          "classification": {
+            "criticality_level": "S2",
+            "matched_rule_ids": [
+              "SPEED-CRIT-005"
+            ],
+            "selected_rule_id": "SPEED-CRIT-005"
+          },
+          "classification_record_id": "acr:2003:maxspeed:formal",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": null,
+              "minimum_authority": null,
+              "required": false,
+              "requirement_rule_id": null
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "adopt_explicit",
+            "resolution_rule_id": null,
+            "resolved_value": "40",
+            "review_status": "machine_classified",
+            "reviewed_at": null,
+            "reviewer": null,
+            "selected_evidence_id": null,
+            "stop_failure_codes": [],
+            "unit": "km/h",
+            "value_state": "explicit_osm"
+          }
+        }
+      ]
+    },
+    "AC-POS-004": {
+      "assertions": [
+        {
+          "assertion_id": "ASSERT-AC-POS-004-001",
+          "expected": {
+            "failure_codes": [],
+            "outcome": "success"
+          },
+          "subject_pointer": "/expected",
+          "type": "classification"
+        },
+        {
+          "assertion_id": "ASSERT-AC-POS-004-002",
+          "expected": {
+            "artifact_publication_allowed": true,
+            "failure_stage": "none",
+            "partial_records_allowed": false,
+            "records_emitted": true,
+            "resolution_emitted": true
+          },
+          "subject_pointer": "/expected/record_emission_policy",
+          "type": "record_emission"
+        },
+        {
+          "assertion_id": "ASSERT-AC-POS-004-003",
+          "expected": {
+            "multiple_matches_required": true,
+            "selected_rules": [
+              "LANE-CRIT-001",
+              "SPEED-CRIT-001"
+            ]
+          },
+          "subject_pointer": "/expected/records",
+          "type": "rule_priority"
+        },
+        {
+          "assertion_id": "ASSERT-AC-POS-004-004",
+          "expected": {
+            "conflict_resolution_rule_id": "EVID-CONFLICT-AUTHORITY-001",
+            "reject_inapplicable": true,
+            "resolve_applicable_conflict": true
+          },
+          "subject_pointer": "/expected/records",
+          "type": "evidence_selection"
+        }
+      ],
+      "failure_codes": [],
+      "outcome": "success",
+      "record_emission_policy": {
+        "artifact_publication_allowed": true,
+        "failure_stage": "none",
+        "partial_records_allowed": false,
+        "records_emitted": true,
+        "resolution_emitted": true
+      },
+      "records": [
+        {
+          "classification": {
+            "criticality_level": "L3",
+            "matched_rule_ids": [
+              "LANE-CRIT-001",
+              "LANE-CRIT-002"
+            ],
+            "selected_rule_id": "LANE-CRIT-001"
+          },
+          "classification_record_id": "acr:2004:lanes:formal",
+          "resolution": {
+            "conflict_resolution_rule_id": "EVID-CONFLICT-AUTHORITY-001",
+            "evidence_candidates": [
+              {
+                "applicable": false,
+                "direction": "both",
+                "evidence_id": "ledger-lanes-001",
+                "license": "public-data-license",
+                "matching_confidence": 1,
+                "reference_period": "2026-07",
+                "rejection_reason_code": "LOWER_AUTHORITY",
+                "segment": "way-2004",
+                "source": "public-road-ledger",
+                "source_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+                "unit": "lanes",
+                "value": 2,
+                "vehicle_scope": [
+                  "delivery"
+                ]
+              },
+              {
+                "applicable": true,
+                "direction": "both",
+                "evidence_id": "authority-lanes-002",
+                "license": "public-data-license",
+                "matching_confidence": 1,
+                "reference_period": "2026-07",
+                "rejection_reason_code": null,
+                "segment": "way-2004",
+                "source": "road-administrator-ledger",
+                "source_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+                "unit": "lanes",
+                "value": 2,
+                "vehicle_scope": [
+                  "delivery"
+                ]
+              }
+            ],
+            "evidence_requirement": {
+              "description": "High-criticality resolution requires governed attribute-specific evidence.",
+              "minimum_authority": "reviewed_public_source",
+              "required": true,
+              "requirement_rule_id": "EVID-REQ-HIGH-001"
+            },
+            "rejected_evidence_ids": [
+              "ledger-lanes-001"
+            ],
+            "resolution_action": "adopt_external_evidence",
+            "resolution_rule_id": null,
+            "resolved_value": 2,
+            "review_status": "reviewed",
+            "reviewed_at": "2026-07-25T00:00:00Z",
+            "reviewer": "independent-fixture-author",
+            "selected_evidence_id": "authority-lanes-002",
+            "stop_failure_codes": [],
+            "unit": "lanes",
+            "value_state": "authoritative_external"
+          }
+        },
+        {
+          "classification": {
+            "criticality_level": "S3",
+            "matched_rule_ids": [
+              "SPEED-CRIT-001",
+              "SPEED-CRIT-002"
+            ],
+            "selected_rule_id": "SPEED-CRIT-001"
+          },
+          "classification_record_id": "acr:2004:maxspeed:formal",
+          "resolution": {
+            "conflict_resolution_rule_id": "EVID-CONFLICT-AUTHORITY-001",
+            "evidence_candidates": [
+              {
+                "applicable": true,
+                "direction": "both",
+                "evidence_id": "regulation-speed-001",
+                "license": "public-data-license",
+                "matching_confidence": 1,
+                "reference_period": "2026-07",
+                "rejection_reason_code": null,
+                "segment": "way-2004",
+                "source": "traffic-regulation-ledger",
+                "source_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+                "unit": "km/h",
+                "value": "40",
+                "vehicle_scope": [
+                  "delivery"
+                ]
+              },
+              {
+                "applicable": true,
+                "direction": "both",
+                "evidence_id": "municipal-speed-002",
+                "license": "public-data-license",
+                "matching_confidence": 0.9,
+                "reference_period": "2026-07",
+                "rejection_reason_code": "LOWER_AUTHORITY",
+                "segment": "way-2004",
+                "source": "municipal-road-ledger",
+                "source_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+                "unit": "km/h",
+                "value": "45",
+                "vehicle_scope": [
+                  "delivery"
+                ]
+              }
+            ],
+            "evidence_requirement": {
+              "description": "High-criticality resolution requires governed attribute-specific evidence.",
+              "minimum_authority": "reviewed_public_source",
+              "required": true,
+              "requirement_rule_id": "EVID-REQ-HIGH-001"
+            },
+            "rejected_evidence_ids": [
+              "municipal-speed-002"
+            ],
+            "resolution_action": "adopt_external_evidence",
+            "resolution_rule_id": null,
+            "resolved_value": "40",
+            "review_status": "reviewed",
+            "reviewed_at": "2026-07-25T00:00:00Z",
+            "reviewer": "independent-fixture-author",
+            "selected_evidence_id": "regulation-speed-001",
+            "stop_failure_codes": [],
+            "unit": "km/h",
+            "value_state": "authoritative_external"
+          }
+        }
+      ]
+    },
+    "AC-REP-001": {
+      "assertions": [
+        {
+          "assertion_id": "ASSERT-AC-REP-001-001",
+          "expected": {
+            "failure_codes": [],
+            "outcome": "success"
+          },
+          "subject_pointer": "/expected",
+          "type": "classification"
+        },
+        {
+          "assertion_id": "ASSERT-AC-REP-001-002",
+          "expected": {
+            "artifact_publication_allowed": true,
+            "failure_stage": "none",
+            "partial_records_allowed": false,
+            "records_emitted": true,
+            "resolution_emitted": true
+          },
+          "subject_pointer": "/expected/record_emission_policy",
+          "type": "record_emission"
+        },
+        {
+          "assertion_id": "ASSERT-AC-REP-001-003",
+          "expected": {
+            "comparison": "raw_file_bytes",
+            "repeat_count": 2
+          },
+          "subject_pointer": "/repeat_assertion",
+          "type": "repeated_output_equality"
+        },
+        {
+          "assertion_id": "ASSERT-AC-REP-001-004",
+          "expected": {
+            "canonicalization_rule_id": "RFC-8785",
+            "distinguish_number_from_string": true,
+            "encoding": "UTF-8",
+            "line_ending_difference_is_byte_difference": true,
+            "line_endings": "LF",
+            "object_key_order": "canonicalized",
+            "ordered_arrays": "preserved",
+            "record_array_order": "governed_order_significant",
+            "set_like_arrays": "sorted_before_serialization",
+            "terminal_newline": true,
+            "terminal_newline_difference_is_byte_difference": true,
+            "unicode_normalization": "preserve_input_code_points",
+            "unordered_object_keys": "canonicalized"
+          },
+          "subject_pointer": "/repeat_assertion",
+          "type": "canonicalization"
+        }
+      ],
+      "failure_codes": [],
+      "outcome": "success",
+      "record_emission_policy": {
+        "artifact_publication_allowed": true,
+        "failure_stage": "none",
+        "partial_records_allowed": false,
+        "records_emitted": true,
+        "resolution_emitted": true
+      },
+      "records": [
+        {
+          "classification": {
+            "criticality_level": "L2",
+            "matched_rule_ids": [
+              "LANE-CRIT-006"
+            ],
+            "selected_rule_id": "LANE-CRIT-006"
+          },
+          "classification_record_id": "acr:4001:lanes:formal",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": null,
+              "minimum_authority": null,
+              "required": false,
+              "requirement_rule_id": null
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "adopt_explicit",
+            "resolution_rule_id": null,
+            "resolved_value": 2,
+            "review_status": "machine_classified",
+            "reviewed_at": null,
+            "reviewer": null,
+            "selected_evidence_id": null,
+            "stop_failure_codes": [],
+            "unit": "lanes",
+            "value_state": "explicit_osm"
+          }
+        },
+        {
+          "classification": {
+            "criticality_level": "S2",
+            "matched_rule_ids": [
+              "SPEED-CRIT-005"
+            ],
+            "selected_rule_id": "SPEED-CRIT-005"
+          },
+          "classification_record_id": "acr:4001:maxspeed:formal",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": null,
+              "minimum_authority": null,
+              "required": false,
+              "requirement_rule_id": null
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "adopt_explicit",
+            "resolution_rule_id": null,
+            "resolved_value": "40",
+            "review_status": "machine_classified",
+            "reviewed_at": null,
+            "reviewer": null,
+            "selected_evidence_id": null,
+            "stop_failure_codes": [],
+            "unit": "km/h",
+            "value_state": "explicit_osm"
+          }
+        }
+      ]
+    },
+    "AC001-NEG-001": {
+      "assertions": [
+        {
+          "assertion_id": "ASSERT-AC001-NEG-001-001",
+          "expected": {
+            "failure_codes": [
+              "AC001"
+            ],
+            "outcome": "governed_stop"
+          },
+          "subject_pointer": "/expected",
+          "type": "governed_stop"
+        },
+        {
+          "assertion_id": "ASSERT-AC001-NEG-001-002",
+          "expected": {
+            "artifact_publication_allowed": false,
+            "failure_stage": "schema",
+            "partial_records_allowed": false,
+            "records_emitted": false,
+            "resolution_emitted": false
+          },
+          "subject_pointer": "/expected/record_emission_policy",
+          "type": "record_emission"
+        },
+        {
+          "assertion_id": "ASSERT-AC001-NEG-001-003",
+          "expected": {
+            "mutations": [
+              "missing_required_field",
+              "enum_out_of_range",
+              "type_mismatch",
+              "invalid_sha256",
+              "invalid_timestamp",
+              "additional_property",
+              "invalid_record_id",
+              "attribute_level_mismatch"
+            ]
+          },
+          "subject_pointer": "/input/scenario/schema_mutations",
+          "type": "schema_rejection"
+        }
+      ],
+      "failure_codes": [
+        "AC001"
+      ],
+      "outcome": "governed_stop",
+      "record_emission_policy": {
+        "artifact_publication_allowed": false,
+        "failure_stage": "schema",
+        "partial_records_allowed": false,
+        "records_emitted": false,
+        "resolution_emitted": false
+      },
+      "records": []
+    },
+    "AC002-NEG-001": {
+      "assertions": [
+        {
+          "assertion_id": "ASSERT-AC002-NEG-001-001",
+          "expected": {
+            "failure_codes": [
+              "AC002"
+            ],
+            "outcome": "governed_stop"
+          },
+          "subject_pointer": "/expected",
+          "type": "governed_stop"
+        },
+        {
+          "assertion_id": "ASSERT-AC002-NEG-001-002",
+          "expected": {
+            "artifact_publication_allowed": false,
+            "failure_stage": "schema",
+            "partial_records_allowed": false,
+            "records_emitted": false,
+            "resolution_emitted": false
+          },
+          "subject_pointer": "/expected/record_emission_policy",
+          "type": "record_emission"
+        }
+      ],
+      "failure_codes": [
+        "AC002"
+      ],
+      "outcome": "governed_stop",
+      "record_emission_policy": {
+        "artifact_publication_allowed": false,
+        "failure_stage": "schema",
+        "partial_records_allowed": false,
+        "records_emitted": false,
+        "resolution_emitted": false
+      },
+      "records": []
+    },
+    "AC003-NEG-001": {
+      "assertions": [
+        {
+          "assertion_id": "ASSERT-AC003-NEG-001-001",
+          "expected": {
+            "failure_codes": [
+              "AC003"
+            ],
+            "outcome": "governed_stop"
+          },
+          "subject_pointer": "/expected",
+          "type": "governed_stop"
+        },
+        {
+          "assertion_id": "ASSERT-AC003-NEG-001-002",
+          "expected": {
+            "artifact_publication_allowed": false,
+            "failure_stage": "classification",
+            "partial_records_allowed": false,
+            "records_emitted": false,
+            "resolution_emitted": false
+          },
+          "subject_pointer": "/expected/record_emission_policy",
+          "type": "record_emission"
+        }
+      ],
+      "failure_codes": [
+        "AC003"
+      ],
+      "outcome": "governed_stop",
+      "record_emission_policy": {
+        "artifact_publication_allowed": false,
+        "failure_stage": "classification",
+        "partial_records_allowed": false,
+        "records_emitted": false,
+        "resolution_emitted": false
+      },
+      "records": []
+    },
+    "AC004-NEG-001": {
+      "assertions": [
+        {
+          "assertion_id": "ASSERT-AC004-NEG-001-001",
+          "expected": {
+            "failure_codes": [
+              "AC004"
+            ],
+            "outcome": "governed_stop"
+          },
+          "subject_pointer": "/expected",
+          "type": "governed_stop"
+        },
+        {
+          "assertion_id": "ASSERT-AC004-NEG-001-002",
+          "expected": {
+            "artifact_publication_allowed": false,
+            "failure_stage": "predicate",
+            "partial_records_allowed": false,
+            "records_emitted": false,
+            "resolution_emitted": false
+          },
+          "subject_pointer": "/expected/record_emission_policy",
+          "type": "record_emission"
+        }
+      ],
+      "failure_codes": [
+        "AC004"
+      ],
+      "outcome": "governed_stop",
+      "record_emission_policy": {
+        "artifact_publication_allowed": false,
+        "failure_stage": "predicate",
+        "partial_records_allowed": false,
+        "records_emitted": false,
+        "resolution_emitted": false
+      },
+      "records": []
+    },
+    "AC005-NEG-001": {
+      "assertions": [
+        {
+          "assertion_id": "ASSERT-AC005-NEG-001-001",
+          "expected": {
+            "failure_codes": [
+              "AC005"
+            ],
+            "outcome": "governed_stop"
+          },
+          "subject_pointer": "/expected",
+          "type": "governed_stop"
+        },
+        {
+          "assertion_id": "ASSERT-AC005-NEG-001-002",
+          "expected": {
+            "artifact_publication_allowed": false,
+            "failure_stage": "resolution",
+            "partial_records_allowed": true,
+            "records_emitted": true,
+            "resolution_emitted": true
+          },
+          "subject_pointer": "/expected/record_emission_policy",
+          "type": "record_emission"
+        }
+      ],
+      "failure_codes": [
+        "AC005"
+      ],
+      "outcome": "governed_stop",
+      "record_emission_policy": {
+        "artifact_publication_allowed": false,
+        "failure_stage": "resolution",
+        "partial_records_allowed": true,
+        "records_emitted": true,
+        "resolution_emitted": true
+      },
+      "records": [
+        {
+          "classification": {
+            "criticality_level": "L2",
+            "matched_rule_ids": [
+              "LANE-CRIT-006"
+            ],
+            "selected_rule_id": "LANE-CRIT-006"
+          },
+          "classification_record_id": "acr:1005:lanes:formal",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": null,
+              "minimum_authority": null,
+              "required": false,
+              "requirement_rule_id": null
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "stop_unresolved",
+            "resolution_rule_id": null,
+            "resolved_value": null,
+            "review_status": "stopped",
+            "reviewed_at": null,
+            "reviewer": null,
+            "selected_evidence_id": null,
+            "stop_failure_codes": [
+              "AC005"
+            ],
+            "unit": null,
+            "value_state": "valid_but_unsupported"
+          }
+        }
+      ]
+    },
+    "AC006-NEG-001": {
+      "assertions": [
+        {
+          "assertion_id": "ASSERT-AC006-NEG-001-001",
+          "expected": {
+            "failure_codes": [
+              "AC006"
+            ],
+            "outcome": "governed_stop"
+          },
+          "subject_pointer": "/expected",
+          "type": "governed_stop"
+        },
+        {
+          "assertion_id": "ASSERT-AC006-NEG-001-002",
+          "expected": {
+            "artifact_publication_allowed": false,
+            "failure_stage": "resolution",
+            "partial_records_allowed": true,
+            "records_emitted": true,
+            "resolution_emitted": true
+          },
+          "subject_pointer": "/expected/record_emission_policy",
+          "type": "record_emission"
+        }
+      ],
+      "failure_codes": [
+        "AC006"
+      ],
+      "outcome": "governed_stop",
+      "record_emission_policy": {
+        "artifact_publication_allowed": false,
+        "failure_stage": "resolution",
+        "partial_records_allowed": true,
+        "records_emitted": true,
+        "resolution_emitted": true
+      },
+      "records": [
+        {
+          "classification": {
+            "criticality_level": "L2",
+            "matched_rule_ids": [
+              "LANE-CRIT-006"
+            ],
+            "selected_rule_id": "LANE-CRIT-006"
+          },
+          "classification_record_id": "acr:1006:lanes:formal",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": null,
+              "minimum_authority": null,
+              "required": false,
+              "requirement_rule_id": null
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "stop_unresolved",
+            "resolution_rule_id": null,
+            "resolved_value": null,
+            "review_status": "stopped",
+            "reviewed_at": null,
+            "reviewer": null,
+            "selected_evidence_id": null,
+            "stop_failure_codes": [
+              "AC006"
+            ],
+            "unit": null,
+            "value_state": "conflict"
+          }
+        }
+      ]
+    },
+    "AC007-NEG-001": {
+      "assertions": [
+        {
+          "assertion_id": "ASSERT-AC007-NEG-001-001",
+          "expected": {
+            "failure_codes": [
+              "AC007"
+            ],
+            "outcome": "governed_stop"
+          },
+          "subject_pointer": "/expected",
+          "type": "governed_stop"
+        },
+        {
+          "assertion_id": "ASSERT-AC007-NEG-001-002",
+          "expected": {
+            "artifact_publication_allowed": false,
+            "failure_stage": "resolution",
+            "partial_records_allowed": true,
+            "records_emitted": true,
+            "resolution_emitted": true
+          },
+          "subject_pointer": "/expected/record_emission_policy",
+          "type": "record_emission"
+        }
+      ],
+      "failure_codes": [
+        "AC007"
+      ],
+      "outcome": "governed_stop",
+      "record_emission_policy": {
+        "artifact_publication_allowed": false,
+        "failure_stage": "resolution",
+        "partial_records_allowed": true,
+        "records_emitted": true,
+        "resolution_emitted": true
+      },
+      "records": [
+        {
+          "classification": {
+            "criticality_level": "S3",
+            "matched_rule_ids": [
+              "SPEED-CRIT-003"
+            ],
+            "selected_rule_id": "SPEED-CRIT-003"
+          },
+          "classification_record_id": "acr:1007:maxspeed:formal",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": "High-criticality resolution requires governed attribute-specific evidence.",
+              "minimum_authority": "reviewed_public_source",
+              "required": true,
+              "requirement_rule_id": "EVID-REQ-HIGH-001"
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "require_human_review",
+            "resolution_rule_id": null,
+            "resolved_value": null,
+            "review_status": "review_required",
+            "reviewed_at": null,
+            "reviewer": null,
+            "selected_evidence_id": null,
+            "stop_failure_codes": [
+              "AC007"
+            ],
+            "unit": null,
+            "value_state": "conditional"
+          }
+        }
+      ]
+    },
+    "AC008-NEG-001": {
+      "assertions": [
+        {
+          "assertion_id": "ASSERT-AC008-NEG-001-001",
+          "expected": {
+            "failure_codes": [
+              "AC008"
+            ],
+            "outcome": "governed_stop"
+          },
+          "subject_pointer": "/expected",
+          "type": "governed_stop"
+        },
+        {
+          "assertion_id": "ASSERT-AC008-NEG-001-002",
+          "expected": {
+            "artifact_publication_allowed": false,
+            "failure_stage": "resolution",
+            "partial_records_allowed": true,
+            "records_emitted": true,
+            "resolution_emitted": true
+          },
+          "subject_pointer": "/expected/record_emission_policy",
+          "type": "record_emission"
+        }
+      ],
+      "failure_codes": [
+        "AC008"
+      ],
+      "outcome": "governed_stop",
+      "record_emission_policy": {
+        "artifact_publication_allowed": false,
+        "failure_stage": "resolution",
+        "partial_records_allowed": true,
+        "records_emitted": true,
+        "resolution_emitted": true
+      },
+      "records": [
+        {
+          "classification": {
+            "criticality_level": "L2",
+            "matched_rule_ids": [
+              "LANE-CRIT-006"
+            ],
+            "selected_rule_id": "LANE-CRIT-006"
+          },
+          "classification_record_id": "acr:1008:lanes:formal",
+          "resolution": {
+            "conflict_resolution_rule_id": null,
+            "evidence_candidates": [],
+            "evidence_requirement": {
+              "description": null,
+              "minimum_authority": null,
+              "required": false,
+              "requirement_rule_id": null
+            },
+            "rejected_evidence_ids": [],
+            "resolution_action": "stop_unresolved",
+            "resolution_rule_id": null,
+            "resolved_value": null,
+            "review_status": "stopped",
+            "reviewed_at": null,
+            "reviewer": null,
+            "selected_evidence_id": null,
+            "stop_failure_codes": [
+              "AC008"
+            ],
+            "unit": null,
+            "value_state": "invalid"
+          }
+        }
+      ]
+    },
+    "AC009-NEG-001": {
+      "assertions": [
+        {
+          "assertion_id": "ASSERT-AC009-NEG-001-001",
+          "expected": {
+            "failure_codes": [
+              "AC009"
+            ],
+            "outcome": "governed_stop"
+          },
+          "subject_pointer": "/expected",
+          "type": "governed_stop"
+        },
+        {
+          "assertion_id": "ASSERT-AC009-NEG-001-002",
+          "expected": {
+            "artifact_publication_allowed": false,
+            "failure_stage": "schema",
+            "partial_records_allowed": false,
+            "records_emitted": false,
+            "resolution_emitted": false
+          },
+          "subject_pointer": "/expected/record_emission_policy",
+          "type": "record_emission"
+        }
+      ],
+      "failure_codes": [
+        "AC009"
+      ],
+      "outcome": "governed_stop",
+      "record_emission_policy": {
+        "artifact_publication_allowed": false,
+        "failure_stage": "schema",
+        "partial_records_allowed": false,
+        "records_emitted": false,
+        "resolution_emitted": false
+      },
+      "records": []
+    },
+    "AC010-NEG-001": {
+      "assertions": [
+        {
+          "assertion_id": "ASSERT-AC010-NEG-001-001",
+          "expected": {
+            "failure_codes": [
+              "AC010"
+            ],
+            "outcome": "governed_stop"
+          },
+          "subject_pointer": "/expected",
+          "type": "governed_stop"
+        },
+        {
+          "assertion_id": "ASSERT-AC010-NEG-001-002",
+          "expected": {
+            "artifact_publication_allowed": false,
+            "failure_stage": "schema",
+            "partial_records_allowed": false,
+            "records_emitted": false,
+            "resolution_emitted": false
+          },
+          "subject_pointer": "/expected/record_emission_policy",
+          "type": "record_emission"
+        },
+        {
+          "assertion_id": "ASSERT-AC010-NEG-001-003",
+          "expected": {
+            "empty_array": "explicitly_empty_collection",
+            "empty_string": "invalid",
+            "not_applicable": "not_applicable",
+            "null": "explicitly_no_value",
+            "omitted": "not_provided",
+            "unknown": "unresolved",
+            "whitespace_string": "invalid"
+          },
+          "subject_pointer": "/input/scenario/value_variants",
+          "type": "null_omission_distinction"
+        }
+      ],
+      "failure_codes": [
+        "AC010"
+      ],
+      "outcome": "governed_stop",
+      "record_emission_policy": {
+        "artifact_publication_allowed": false,
+        "failure_stage": "schema",
+        "partial_records_allowed": false,
+        "records_emitted": false,
+        "resolution_emitted": false
+      },
+      "records": []
+    }
+  },
+  "schema_version": 2,
+  "source_specification_sha256": "af5a45c7cb5b325ade6da7660c54d5318002403a80bfc748476d65563d5f50ba"
+}

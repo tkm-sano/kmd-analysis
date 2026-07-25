@@ -113,10 +113,12 @@ way. Classification and resolution are separate objects in the same immutable
 profile snapshot, supported by a hash-linked predicate artifact. The governing
 vocabulary, evidence precedence, artifact fields and
 structural-placeholder gate are defined in
-`attribute_criticality_and_evidence_specification.md`. Until its schema,
-predicate artifacts, classifier and fixtures are implemented, omitted
-criticality input leaves every retained way `unclassified` and no structural
-placeholder may pass.
+`attribute_criticality_and_evidence_specification.md`. Its four schemas,
+Predicate Generator, Semantic Validator and production fixture collection are
+implemented. Until the fixture collection is independently accepted and the
+Classifier and Resolver stages are implemented and verified against it,
+omitted combined classification-resolution input leaves every retained way
+`unclassified` and no structural placeholder may pass.
 
 The observed v15 exception population and its unresolved decision status are
 registered in

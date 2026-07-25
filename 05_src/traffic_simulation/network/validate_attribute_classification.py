@@ -291,6 +291,74 @@ def _validate_source_hash(
         )
 
 
+def _register_predicate_registry_sources(
+    registry_path: Path,
+    collector: ErrorCollector,
+    source_paths: dict[str, Path],
+    artifact_root: Path,
+    schema_dir: Path,
+) -> None:
+    try:
+        registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        collector.add(
+            "ACV014",
+            "/source_registry",
+            f"predicate source registry cannot be read as JSON: {error}",
+        )
+        return
+    if not isinstance(registry, Mapping):
+        collector.add(
+            "ACV014",
+            "/source_registry",
+            "predicate source registry root must be an object",
+            actual=registry,
+        )
+        return
+    _validate_schema(
+        registry,
+        "predicate_source_registry.schema.json",
+        collector,
+        schema_dir,
+    )
+    references: list[tuple[Any, str]] = [
+        (registry.get("relation_closed_osm"), "/source_registry/relation_closed_osm"),
+        (registry.get("role_source"), "/source_registry/role_source"),
+    ]
+    acceptance = registry.get("population_acceptance")
+    if isinstance(acceptance, Mapping) and acceptance.get("acceptance_artifact") is not None:
+        references.append(
+            (
+                acceptance.get("acceptance_artifact"),
+                "/source_registry/population_acceptance/acceptance_artifact",
+            )
+        )
+    external_sources = registry.get("external_predicate_sources")
+    if isinstance(external_sources, Mapping):
+        for predicate, source in external_sources.items():
+            if isinstance(source, Mapping):
+                references.append(
+                    (
+                        source.get("source"),
+                        f"/source_registry/external_predicate_sources/{predicate}/source",
+                    )
+                )
+    overrides = registry.get("predicate_overrides")
+    if isinstance(overrides, list):
+        for index, override in enumerate(overrides):
+            if isinstance(override, Mapping):
+                references.append(
+                    (
+                        override.get("source"),
+                        f"/source_registry/predicate_overrides/{index}/source",
+                    )
+                )
+    for ref, pointer in references:
+        path = _validate_file_ref(ref, pointer, collector, artifact_root)
+        if path is not None and isinstance(ref, Mapping):
+            source_paths[str(ref.get("sha256"))] = path
+
+
 def validate_predicate_artifact(
     artifact: Mapping[str, Any],
     *,
@@ -303,13 +371,24 @@ def validate_predicate_artifact(
         artifact, "classification_predicates.schema.json", collector, schema_dir
     )
     source_paths = dict(source_index or {})
-    for field in ("relation_closed_osm", "predicate_policy"):
+    registry_path: Path | None = None
+    for field in ("relation_closed_osm", "source_registry", "predicate_policy"):
         path = _validate_file_ref(
             artifact.get(field), f"/{field}", collector, artifact_root
         )
         ref = artifact.get(field)
         if path is not None and isinstance(ref, Mapping):
             source_paths[str(ref.get("sha256"))] = path
+        if field == "source_registry":
+            registry_path = path
+    if registry_path is not None:
+        _register_predicate_registry_sources(
+            registry_path,
+            collector,
+            source_paths,
+            artifact_root,
+            schema_dir,
+        )
 
     records = artifact.get("records")
     if not isinstance(records, list):
@@ -554,6 +633,27 @@ def _validate_resolution_state(
         )
 
 
+def _validate_evidence_requirement(
+    level: Any,
+    resolution: Mapping[str, Any],
+    base: str,
+    collector: ErrorCollector,
+    code: str,
+) -> None:
+    requirement = resolution.get("evidence_requirement")
+    if not isinstance(requirement, Mapping) or not isinstance(level, str):
+        return
+    expected = level in {"L3", "S3"}
+    if requirement.get("required") is not expected:
+        collector.add(
+            code,
+            f"{base}/evidence_requirement/required",
+            "evidence requirement does not match the criticality level",
+            expected=expected,
+            actual=requirement.get("required"),
+        )
+
+
 def _history_by_hash(
     history_artifacts: Sequence[Mapping[str, Any]],
 ) -> dict[str, Mapping[str, Any]]:
@@ -787,6 +887,18 @@ def validate_classification_artifact(
             _validate_resolution_state(
                 resolution, f"{base}/resolution", collector, "ACV009"
             )
+            level = (
+                classification.get("criticality_level")
+                if isinstance(classification, Mapping)
+                else None
+            )
+            _validate_evidence_requirement(
+                level,
+                resolution,
+                f"{base}/resolution",
+                collector,
+                "ACV009",
+            )
             _validate_evidence_references(
                 resolution, f"{base}/resolution", collector, source_paths
             )
@@ -996,6 +1108,117 @@ def _validate_repeat(
         )
 
 
+def _validate_fixture_assertions(
+    artifact: Mapping[str, Any],
+    expected: Mapping[str, Any],
+    collector: ErrorCollector,
+) -> None:
+    records = expected.get("records")
+    record_values = records if isinstance(records, list) else []
+    policy = expected.get("record_emission_policy")
+    if isinstance(policy, Mapping):
+        has_records = bool(record_values)
+        for field in ("records_emitted", "resolution_emitted"):
+            if policy.get(field) is not has_records:
+                collector.add(
+                    "ACV022",
+                    f"/expected/record_emission_policy/{field}",
+                    "record-emission policy does not match expected records",
+                    expected=has_records,
+                    actual=policy.get(field),
+                )
+        publication_expected = expected.get("outcome") == "success"
+        if policy.get("artifact_publication_allowed") is not publication_expected:
+            collector.add(
+                "ACV022",
+                "/expected/record_emission_policy/artifact_publication_allowed",
+                "artifact publication policy does not match fixture outcome",
+                expected=publication_expected,
+                actual=policy.get("artifact_publication_allowed"),
+            )
+
+    assertions = expected.get("assertions")
+    if not isinstance(assertions, list):
+        return
+    for index, assertion in enumerate(assertions):
+        if not isinstance(assertion, Mapping):
+            continue
+        assertion_type = assertion.get("type")
+        assertion_expected = assertion.get("expected")
+        values = assertion_expected if isinstance(assertion_expected, Mapping) else {}
+        pointer = f"/expected/assertions/{index}"
+        if assertion_type == "rule_priority":
+            multiple = [
+                record
+                for record in record_values
+                if isinstance(record, Mapping)
+                and isinstance(record.get("classification"), Mapping)
+                and len(record["classification"].get("matched_rule_ids", [])) > 1
+            ]
+            selected = [
+                record["classification"]["selected_rule_id"] for record in multiple
+            ]
+            if not multiple or selected != values.get("selected_rules"):
+                collector.add(
+                    "ACV022",
+                    pointer,
+                    "rule-priority assertion is not observable in expected records",
+                    expected=values,
+                    actual={"selected_rules": selected},
+                )
+        elif assertion_type == "evidence_selection":
+            resolutions = [
+                record.get("resolution")
+                for record in record_values
+                if isinstance(record, Mapping)
+                and isinstance(record.get("resolution"), Mapping)
+            ]
+            rejected_inapplicable = False
+            resolved_conflict = False
+            for resolution in resolutions:
+                candidates = {
+                    candidate.get("evidence_id"): candidate
+                    for candidate in resolution.get("evidence_candidates", [])
+                    if isinstance(candidate, Mapping)
+                }
+                rejected = resolution.get("rejected_evidence_ids", [])
+                rejected_inapplicable |= any(
+                    evidence_id in candidates
+                    and candidates[evidence_id].get("applicable") is False
+                    for evidence_id in rejected
+                )
+                resolved_conflict |= (
+                    len(candidates) > 1
+                    and isinstance(resolution.get("selected_evidence_id"), str)
+                    and bool(rejected)
+                    and resolution.get("conflict_resolution_rule_id")
+                    == values.get("conflict_resolution_rule_id")
+                )
+            if (
+                values.get("reject_inapplicable") is True
+                and not rejected_inapplicable
+            ) or (
+                values.get("resolve_applicable_conflict") is True
+                and not resolved_conflict
+            ):
+                collector.add(
+                    "ACV022",
+                    pointer,
+                    "evidence-selection assertion is not observable in records",
+                    expected=values,
+                )
+        elif assertion_type == "repeated_output_equality":
+            repeat = artifact.get("repeat_assertion")
+            if not isinstance(repeat, Mapping) or values.get("repeat_count") != 2:
+                collector.add(
+                    "ACV022",
+                    pointer,
+                    "repeat assertion lacks its two-run comparison contract",
+                    expected=values,
+                    actual=repeat,
+                )
+
+
 def validate_fixture_artifact(
     artifact: Mapping[str, Any],
     *,
@@ -1079,6 +1302,18 @@ def validate_fixture_artifact(
                         collector,
                         "ACV018",
                     )
+                    level = (
+                        classification.get("criticality_level")
+                        if isinstance(classification, Mapping)
+                        else None
+                    )
+                    _validate_evidence_requirement(
+                        level,
+                        resolution,
+                        f"/expected/records/{index}/resolution",
+                        collector,
+                        "ACV018",
+                    )
         outcome = expected.get("outcome")
         failure_codes = expected.get("failure_codes")
         if outcome == "success" and (
@@ -1100,6 +1335,7 @@ def validate_fixture_artifact(
                 "governed-stop fixture requires at least one failure code",
                 actual=failure_codes,
             )
+        _validate_fixture_assertions(artifact, expected, collector)
     oracle = artifact.get("oracle")
     if isinstance(oracle, Mapping):
         _validate_file_ref(oracle, "/oracle", collector, artifact_root)
@@ -1121,6 +1357,92 @@ def validate_fixture_artifact(
                 actual=str(specification_path),
             )
     _validate_repeat(artifact, collector, baseline_output, repeated_output)
+    return collector.result()
+
+
+def validate_fixture_review_artifact(
+    review: Mapping[str, Any],
+    oracles: Mapping[str, Any],
+    *,
+    artifact_root: Path = REPOSITORY_ROOT,
+    specification_path: Path = SPECIFICATION_PATH,
+) -> SemanticValidationResult:
+    collector = ErrorCollector()
+    checks = review.get("required_review_checks")
+    check_values = checks if isinstance(checks, list) else []
+    all_passed = bool(check_values) and all(
+        isinstance(check, Mapping)
+        and check.get("status") in {"passed", "not_applicable"}
+        for check in check_values
+    )
+    findings = review.get("findings")
+    finding_values = findings if isinstance(findings, list) else []
+    no_blocking_findings = not any(
+        isinstance(finding, Mapping)
+        and finding.get("blocking") is True
+        and finding.get("status") != "resolved"
+        for finding in finding_values
+    )
+    expected_acceptance = (
+        review.get("collection_status") == "independently_accepted"
+        and all_passed
+        and no_blocking_findings
+    )
+    if review.get("acceptance_allowed") is not expected_acceptance:
+        collector.add(
+            "ACV021",
+            "/acceptance_allowed",
+            "acceptance must be derived from status, checks and blocking findings",
+            expected=expected_acceptance,
+            actual=review.get("acceptance_allowed"),
+        )
+
+    basis = review.get("authoring_basis")
+    if isinstance(basis, Mapping) and specification_path.is_file():
+        specification_hash = file_sha256(specification_path)
+        if basis.get("sha256") != specification_hash:
+            collector.add(
+                "ACV021",
+                "/authoring_basis/sha256",
+                "reviewed specification SHA-256 does not match",
+                expected=specification_hash,
+                actual=basis.get("sha256"),
+            )
+        if oracles.get("source_specification_sha256") != basis.get("sha256"):
+            collector.add(
+                "ACV021",
+                "/authoring_basis/sha256",
+                "review and oracle specification hashes differ",
+                expected=oracles.get("source_specification_sha256"),
+                actual=basis.get("sha256"),
+            )
+
+    observations = review.get("hash_observations")
+    if isinstance(observations, list):
+        for index, observation in enumerate(observations):
+            if not isinstance(observation, Mapping):
+                continue
+            pointer = f"/hash_observations/{index}"
+            relative_path = observation.get("artifact_path")
+            path = (
+                _resolve_relative_path(artifact_root, relative_path)
+                if isinstance(relative_path, str)
+                else None
+            )
+            actual_hash = file_sha256(path) if path is not None and path.is_file() else None
+            matched = (
+                actual_hash is not None
+                and observation.get("expected_hash") == actual_hash
+                and observation.get("observed_hash") == actual_hash
+            )
+            if observation.get("matched") is not matched:
+                collector.add(
+                    "ACV021",
+                    f"{pointer}/matched",
+                    "stored hash observation does not match current bytes",
+                    expected=matched,
+                    actual=observation.get("matched"),
+                )
     return collector.result()
 
 

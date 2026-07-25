@@ -64,6 +64,57 @@ def prepare_sources(root: Path) -> dict[str, Path]:
     paths["policy"] = write_file(
         root, "policy.yml", yaml.safe_dump(policy, sort_keys=False)
     )
+    relation_ref = file_ref(root, "inputs/relation-closed.osm.xml")
+    external_sources = {
+        name: {
+            "source_artifact_type": "semantic_test_source",
+            "source": relation_ref,
+            "derivation_rule_id": f"PRED-TEST-{index:03d}",
+            "true_way_ids": [],
+            "false_scope": "all_other_population_ways",
+        }
+        for index, name in enumerate(
+            (
+                "is_calibration_segment",
+                "is_validation_segment",
+                "is_major_junction_approach",
+                "is_accepted_delivery_route",
+                "is_sensitivity_elevated",
+            ),
+            start=1,
+        )
+    }
+    registry = {
+        "artifact_type": "attribute_classification_predicate_source_registry",
+        "schema_version": 1,
+        "config_id": "ota_ward_sumo_network_v15",
+        "config_version": 15,
+        "run_id": "semantic-test",
+        "population_acceptance": {
+            "scope": "synthetic_fixture",
+            "accepted": True,
+            "acceptance_artifact": None,
+        },
+        "relation_closed_osm": relation_ref,
+        "role_source_artifact_type": "semantic_test_source",
+        "role_source": relation_ref,
+        "role_decisions": [
+            {
+                "osm_way_id": "123",
+                "subgraph_role": "final",
+                "topology_support_reason": None,
+                "source_record_locator": "ways/123",
+                "derivation_rule_id": "PRED-TEST-ROLE-001",
+            }
+        ],
+        "external_predicate_sources": external_sources,
+        "predicate_overrides": [],
+    }
+    paths["registry"] = write_file(
+        root,
+        "inputs/predicate-source-registry.json",
+        json.dumps(registry, sort_keys=True) + "\n",
+    )
     return paths
 
 
@@ -79,6 +130,7 @@ def predicate_evidence(source_hash: str, value: bool = False) -> dict[str, Any]:
 
 def predicate_artifact(root: Path, *, role: str = "final") -> dict[str, Any]:
     relation_ref = file_ref(root, "inputs/relation-closed.osm.xml")
+    registry_ref = file_ref(root, "inputs/predicate-source-registry.json")
     policy_ref = file_ref(root, "policy.yml")
     schema = json.loads(
         (
@@ -99,6 +151,7 @@ def predicate_artifact(root: Path, *, role: str = "final") -> dict[str, Any]:
         "run_id": "semantic-test",
         "complete": True,
         "relation_closed_osm": relation_ref,
+        "source_registry": registry_ref,
         "predicate_policy": policy_ref,
         "population_way_count": 1,
         "records": [
@@ -158,7 +211,12 @@ def resolution(
         "value_state": state,
         "resolved_value": value,
         "unit": unit,
-        "evidence_required": "Governed attribute evidence.",
+        "evidence_requirement": {
+            "required": False,
+            "requirement_rule_id": None,
+            "minimum_authority": None,
+            "description": None,
+        },
         "evidence_candidates": candidates or [],
         "selected_evidence_id": selected,
         "rejected_evidence_ids": rejected or [],
@@ -338,7 +396,7 @@ def error_codes(result: Any) -> set[str]:
 def fixture_artifact(root: Path, resolution_value: dict[str, Any]) -> dict[str, Any]:
     return {
         "artifact_type": "attribute_classification_fixture",
-        "schema_version": 1,
+        "schema_version": 2,
         "fixture_id": "AC-POS-001",
         "case_type": "positive",
         "requirement_ids": ["AC-REQ-001"],
@@ -363,6 +421,21 @@ def fixture_artifact(root: Path, resolution_value: dict[str, Any]) -> dict[str, 
                 }
             ],
             "failure_codes": [],
+            "assertions": [
+                {
+                    "assertion_id": "ASSERT-AC-POS-001-001",
+                    "type": "classification",
+                    "subject_pointer": "/expected/records/0",
+                    "expected": {"criticality_level": "L1"},
+                }
+            ],
+            "record_emission_policy": {
+                "failure_stage": "none",
+                "records_emitted": True,
+                "partial_records_allowed": False,
+                "resolution_emitted": True,
+                "artifact_publication_allowed": True,
+            },
         },
         "repeat_assertion": None,
         "oracle": {
@@ -726,6 +799,13 @@ def test_repeat_fixture_accepts_equal_canonical_content(tmp_path: Path) -> None:
         "repeated_output_sha256": file_sha256(repeated),
         "comparison_mode": "canonical_content_equal",
         "excluded_json_pointers": ["/time"],
+        "comparison_scope": "canonical_json_bytes",
+        "canonicalization_rule_id": "RFC-8785",
+        "encoding": "UTF-8",
+        "line_endings": "LF",
+        "terminal_newline": True,
+        "object_key_order": "canonicalized",
+        "record_array_order": "governed_order_significant",
     }
     result = validate_fixture_artifact(
         artifact,

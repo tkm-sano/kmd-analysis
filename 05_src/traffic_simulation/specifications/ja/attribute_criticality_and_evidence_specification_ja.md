@@ -120,11 +120,13 @@ classificationとresolutionは同一record内の別objectとする。
 }
 ```
 
-resolution objectは必要に応じて`evidence_required`、`evidence_candidates`、
+resolution objectは構造化した`evidence_requirement`、`evidence_candidates`、
 `selected_evidence_id`、`rejected_evidence_ids`、
 `conflict_resolution_rule_id`、単位、review来歴、停止codeも記録する。各候補は
 source、値、単位、方向、segment、vehicle scope、期間、license、source hash、
-matching confidenceを持つ。confidenceのscale、threshold、同率処理をpolicyで
+matching confidenceを持つ。`evidence_requirement`は要否、統制rule、最低権威
+水準、説明を分離し、`L3`と`S3`では必須、それ未満では不要を明示する。
+confidenceのscale、threshold、同率処理をpolicyで
 固定するまで値選択へ使わない。
 
 artifactはimmutableなrun snapshotとする。判断変更時は同じ
@@ -181,6 +183,29 @@ derivation rule IDを必要とする。根拠のないbooleanは禁止する。
 `topology_support_reason`は常時存在し、`topology_support`では非空文字列、
 `final`と`excluded`では`null`とする。
 
+### Predicate Generatorの契約
+
+`generate_attribute_classification_predicates.py`は、relation closure済みOSM
+XML、`predicate_source_registry.schema.json`に適合するsource registry、
+固定済み`sumo_network.yml` policyの三つを明示入力とする。統制対象母集団は、
+`highway` tagを持つ全OSM wayと、`topology_support`として明示登録した
+非highway wayだけで構成する。role registryはこの母集団を重複なく完全に
+被覆しなければならない。
+
+bridge、tunnel、grade separation、lane semantics、speed semanticsのpredicateは
+OSM tagから決定論的に導出する。calibration、independent validation、
+major junction、accepted delivery route、sensitivityのpredicateは、
+hash登録された外部sourceだけから得る。trueとfalseの両方にsource provenanceを
+保持する。review済みoverrideは、そのsource、locator、derivation rule IDを
+登録した場合に限り、一つの導出値を置換できる。
+
+生成はfail-closedである。未受理母集団、role被覆不足、母集団外の外部ID、
+source欠損・hash不一致、schema・semantic検証失敗、既存output pathを検出すると
+停止する。書込みはatomicで、recordはOSM way IDの数値昇順とする。登録済み
+実データにはpopulation acceptance artifactとconfig version 16以降を追加で
+要求するため、v15 Dry Runはproduction入力にできない。synthetic fixtureは
+`synthetic_fixture` scopeを明示し、実データ受理の証拠にはならない。
+
 ## 分類前のPredicate整合性検証
 
 検査順序は、schema、artifact・source hash、way ID重複、母集団完全被覆、role
@@ -196,9 +221,9 @@ classification ruleとする。
 - 同じwayがbridgeとtunnelの両方で、統制済みway分割または個別reviewがない
 
 bridgeとtunnelの併存は、way splitまたはreview済み例外により正当になり得るため、
-JSON Schemaで無条件の相互排他にはしない。将来のpredicate generator artifactが
-その裁定結果を明示するまでsemantic validatorは条件付きケースを確定できず、
-当該ケースは推測で通過させず停止状態を維持する。
+JSON Schemaで無条件の相互排他にはしない。predicate source registryは、この
+裁定をhash-linkedなreview済みoverrideとして明示する。その裁定がなければ、
+semantic validatorは推測せず停止する。
 
 directional laneとbus・PSV lane意味は併存できる。属性別predicateが異なる場合は、
 lanesとmaxspeedで異なるlevelを許容する。
@@ -292,7 +317,7 @@ reference date、segment・方向match、属性定義、license適合性、match
 
 ## Resolution actionと状態
 
-classifierは次のactionだけを出力できる。
+Resolverは次のresolution actionだけを出力できる。
 
 | Action | 意味 |
 |---|---|
@@ -343,14 +368,36 @@ metadataとimmutableな旧snapshotだけで表現する。`L0/S0`は`exclude`だ
 `L1/S1`は全action、`L2/S2`と`L3/S3`はstructural placeholder以外を許容する。
 採用済み`L3/S3`は必ず`reviewed`とする。
 
-## Profile別必須入力
+## Componentの責務
 
-| Input | `structural` | `formal` |
-|---|---|---|
-| 完全なpredicate artifact | 必須 | 必須 |
-| classification・resolution統合artifact | 必須 | 必須 |
-| external evidence artifact | 参照時に必須 | 参照時に必須 |
-| structural-placeholder rule | 使用時だけ必須 | 禁止 |
+処理境界を次のように固定する。
+
+```text
+Predicate Generator
+    -> classificationに必要な統制済み事実を生成する
+Classifier
+    -> criticality_level、selected_rule_id、matched_rule_idsを決定する
+Resolver
+    -> resolution action、value state、採用値、evidence、conflict結果、
+       review状態、stop codeを決定する
+Semantic Validator
+    -> 統合immutable artifactとsource hashを検証する
+```
+
+Classifierは属性値を選択・補完せず、resolution actionも出力しない。Resolverは
+Classifier結果、明示OSM値、登録済み外部証拠、許可済み検証model、
+structural-placeholder ruleを入力とする。将来一つの実行entry pointへ統合する場合も、
+object contractと判断責務は分離したままとする。
+
+## Profile別必須artifact
+
+| Artifact | 処理上の役割 | `structural` | `formal` |
+|---|---|---|---|
+| 完全なpredicate artifact | Classifier入力 | 必須 | 必須 |
+| classification result | Classifier出力・Resolver入力 | 必須 | 必須 |
+| external evidence artifact | Resolver入力 | 参照時に必須 | 参照時に必須 |
+| structural-placeholder rule | Resolver入力 | 使用時だけ必須 | 禁止 |
+| classification・resolution統合artifact | Resolver出力・Semantic Validator対象 | 必須 | 必須 |
 
 ## Resolution判断順序
 
@@ -413,10 +460,25 @@ fixture oracleは、期待tuple record内でclassification objectとresolution o
 review status、failure codeを含める。production codeが自身のoracleを生成しては
 ならない。
 
+`inputs.json`はcase indexではなく完全な実行入力catalogueとする。record生成前に
+停止するcaseも対象tupleを持ち、OSM属性、predicate、evidence candidate、profile、
+revision状態を記録する。各oracle caseはmachine-readable assertionとrecord発行
+方針を持つ。manifestのcoverageはcoverage IDとassertion IDを対応づけ、level・
+scenario索引は手書きせず導出する。
+
+negative fixture IDはfailure codeを含む`<code>-NEG-001`を維持する。positive、
+boundary、repeatは単一failureの証人ではないため、それぞれ`AC-POS`、`AC-BND`、
+`AC-REP` namespaceを使用する。
+
 `repeat` fixtureはbaseline・repeated output hash、byte比較またはcanonical content
 比較mode、canonical比較から除外する明示的JSON Pointerを記録する。runnerは指定
 pointerだけを除去し、RFC 8785 contentを比較する。repeat以外のfixtureは
 `repeat_assertion=null`を明示する。
+
+`review.json`は構造化したcheck結果、evidence参照、reviewer identity、独立性宣誓、
+observed hash、blocking findingを保存する。`acceptance_allowed`は、
+`collection_status=independently_accepted`、全必須check合格または非該当、
+未解決blocking findingなし、の全条件から導出する。
 
 oracleはproduction output生成とは別のfixture authoring手順で作成し、可能な場合は
 production generator作成者とは別の者がreviewする。test runnerはoracle file hashと
@@ -426,19 +488,44 @@ source specification hashを検査する。生成processの独立性はJSON内�
 ## 現在の状態
 
 本仕様は母集団、tuple identity、predicate contract、classification順序、
-classification・resolution object境界を固定した。predicate、統合attribute
-classification、fixtureの3 schemaは実装し、`sumo_network.yml`へ登録済みである。
-predicate generator、classifier、Resolver統合、独立production fixtureは未実装
-である。cross-record semantic validatorとsynthetic unit testは実装済みだが、
-次版で受理された実データ母集団には未適用である。したがって、大田区wayは
+classification・resolution object境界を固定した。predicate、
+predicate-source-registry、統合attribute classification、fixtureの4 schemaは
+実装し、`sumo_network.yml`へ登録済みである。predicate generator、
+fail-closed synthetic test、semantic validatorによるsource registry展開は
+実装済みである。ClassifierとResolverの各stageは未実装である。cross-record
+semantic validatorと独立production fixture collectionは実装済みである。
+fixture collectionはclassifierより前に作成し、production codeで
+oracleを生成していないが、独立human acceptanceと固定Classifier・Resolver実行は
+未完了である。
+これらは次版で受理された実データ母集団には未適用である。したがって、大田区wayは
 `unclassified`のままであり、
 本書は46,056-blocker Dry Runの結果を変更せず、新しいResolver runも許可しない。
 
 登録済み実データの分類は、さらに
 `02_resolver_specification.md`の
 `Relation Closure Before Attribute Classification`で定義した母集団受入gate
-に依存する。追加の独立fixtureはgate合格前に開発できるが、v15母集団に対する
-production classification artifactを公開してはならない。
+に依存する。fixture reviewとclassifier開発はgate合格前に進められるが、v15
+母集団に対するproduction classification artifactを公開してはならない。
 次版closure受理後、新しい入力から完全な
 `(osm_way_id, attribute, profile)`被覆を生成し、v15 recordへ追加しては
 ならない。
+
+## 現在の実装順序
+
+1. 現在の4 schema、Predicate Generator、Semantic Validator、RFC 8785 hash、
+   fixture collection、test、仕様書を検証してcommitする。
+2. 既存fixture collectionを独立human reviewし、blocking findingを解消し、
+   review済みhashを固定して`acceptance_allowed=true`を導出する。
+3. 実装済みPredicate Generatorを固定synthetic fixtureで再実行し、決定的な成功と
+   fail-closedの証拠を保持する。
+4. `criticality_level`、`selected_rule_id`、`matched_rule_ids`だけを決める
+   Classifierを実装する。
+5. 値、evidence選択、conflict、review状態、停止結果を決めるResolverを独立実装
+   する。または一つの実行program内で明示的に分離したstageとして実装する。
+6. positive、negative、boundary、repeat、revision、evidence conflict、
+   placeholder fixtureでClassifierとResolverを実行する。production outputを
+   独立oracleの書換えに使用してはならない。
+7. 既知の`type=restriction:bus` 3 relation、完全な参照、再集計した母集団、
+   新input hashを持つ次版relation closureを受理する。v15は使用不可のままとする。
+8. 受理済み母集団からstructural・formal artifactを別々に生成し、未解決tupleを
+   stop recordとして保持し、semantic validation後にatomic publishする。

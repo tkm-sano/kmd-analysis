@@ -1,0 +1,222 @@
+{
+  "artifact_type": "attribute_classification_fixture",
+  "case_type": "positive",
+  "description": "Reviewed external evidence is adopted for L3 and S3",
+  "expected": {
+    "assertions": [
+      {
+        "assertion_id": "ASSERT-AC-POS-004-001",
+        "expected": {
+          "failure_codes": [],
+          "outcome": "success"
+        },
+        "subject_pointer": "/expected",
+        "type": "classification"
+      },
+      {
+        "assertion_id": "ASSERT-AC-POS-004-002",
+        "expected": {
+          "artifact_publication_allowed": true,
+          "failure_stage": "none",
+          "partial_records_allowed": false,
+          "records_emitted": true,
+          "resolution_emitted": true
+        },
+        "subject_pointer": "/expected/record_emission_policy",
+        "type": "record_emission"
+      },
+      {
+        "assertion_id": "ASSERT-AC-POS-004-003",
+        "expected": {
+          "multiple_matches_required": true,
+          "selected_rules": [
+            "LANE-CRIT-001",
+            "SPEED-CRIT-001"
+          ]
+        },
+        "subject_pointer": "/expected/records",
+        "type": "rule_priority"
+      },
+      {
+        "assertion_id": "ASSERT-AC-POS-004-004",
+        "expected": {
+          "conflict_resolution_rule_id": "EVID-CONFLICT-AUTHORITY-001",
+          "reject_inapplicable": true,
+          "resolve_applicable_conflict": true
+        },
+        "subject_pointer": "/expected/records",
+        "type": "evidence_selection"
+      }
+    ],
+    "failure_codes": [],
+    "outcome": "success",
+    "record_emission_policy": {
+      "artifact_publication_allowed": true,
+      "failure_stage": "none",
+      "partial_records_allowed": false,
+      "records_emitted": true,
+      "resolution_emitted": true
+    },
+    "records": [
+      {
+        "classification": {
+          "criticality_level": "L3",
+          "matched_rule_ids": [
+            "LANE-CRIT-001",
+            "LANE-CRIT-002"
+          ],
+          "selected_rule_id": "LANE-CRIT-001"
+        },
+        "classification_record_id": "acr:2004:lanes:formal",
+        "resolution": {
+          "conflict_resolution_rule_id": "EVID-CONFLICT-AUTHORITY-001",
+          "evidence_candidates": [
+            {
+              "applicable": false,
+              "direction": "both",
+              "evidence_id": "ledger-lanes-001",
+              "license": "public-data-license",
+              "matching_confidence": 1,
+              "reference_period": "2026-07",
+              "rejection_reason_code": "LOWER_AUTHORITY",
+              "segment": "way-2004",
+              "source": "public-road-ledger",
+              "source_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+              "unit": "lanes",
+              "value": 2,
+              "vehicle_scope": [
+                "delivery"
+              ]
+            },
+            {
+              "applicable": true,
+              "direction": "both",
+              "evidence_id": "authority-lanes-002",
+              "license": "public-data-license",
+              "matching_confidence": 1,
+              "reference_period": "2026-07",
+              "rejection_reason_code": null,
+              "segment": "way-2004",
+              "source": "road-administrator-ledger",
+              "source_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+              "unit": "lanes",
+              "value": 2,
+              "vehicle_scope": [
+                "delivery"
+              ]
+            }
+          ],
+          "evidence_requirement": {
+            "description": "High-criticality resolution requires governed attribute-specific evidence.",
+            "minimum_authority": "reviewed_public_source",
+            "required": true,
+            "requirement_rule_id": "EVID-REQ-HIGH-001"
+          },
+          "rejected_evidence_ids": [
+            "ledger-lanes-001"
+          ],
+          "resolution_action": "adopt_external_evidence",
+          "resolution_rule_id": null,
+          "resolved_value": 2,
+          "review_status": "reviewed",
+          "reviewed_at": "2026-07-25T00:00:00Z",
+          "reviewer": "independent-fixture-author",
+          "selected_evidence_id": "authority-lanes-002",
+          "stop_failure_codes": [],
+          "unit": "lanes",
+          "value_state": "authoritative_external"
+        }
+      },
+      {
+        "classification": {
+          "criticality_level": "S3",
+          "matched_rule_ids": [
+            "SPEED-CRIT-001",
+            "SPEED-CRIT-002"
+          ],
+          "selected_rule_id": "SPEED-CRIT-001"
+        },
+        "classification_record_id": "acr:2004:maxspeed:formal",
+        "resolution": {
+          "conflict_resolution_rule_id": "EVID-CONFLICT-AUTHORITY-001",
+          "evidence_candidates": [
+            {
+              "applicable": true,
+              "direction": "both",
+              "evidence_id": "regulation-speed-001",
+              "license": "public-data-license",
+              "matching_confidence": 1,
+              "reference_period": "2026-07",
+              "rejection_reason_code": null,
+              "segment": "way-2004",
+              "source": "traffic-regulation-ledger",
+              "source_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+              "unit": "km/h",
+              "value": "40",
+              "vehicle_scope": [
+                "delivery"
+              ]
+            },
+            {
+              "applicable": true,
+              "direction": "both",
+              "evidence_id": "municipal-speed-002",
+              "license": "public-data-license",
+              "matching_confidence": 0.9,
+              "reference_period": "2026-07",
+              "rejection_reason_code": "LOWER_AUTHORITY",
+              "segment": "way-2004",
+              "source": "municipal-road-ledger",
+              "source_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+              "unit": "km/h",
+              "value": "45",
+              "vehicle_scope": [
+                "delivery"
+              ]
+            }
+          ],
+          "evidence_requirement": {
+            "description": "High-criticality resolution requires governed attribute-specific evidence.",
+            "minimum_authority": "reviewed_public_source",
+            "required": true,
+            "requirement_rule_id": "EVID-REQ-HIGH-001"
+          },
+          "rejected_evidence_ids": [
+            "municipal-speed-002"
+          ],
+          "resolution_action": "adopt_external_evidence",
+          "resolution_rule_id": null,
+          "resolved_value": "40",
+          "review_status": "reviewed",
+          "reviewed_at": "2026-07-25T00:00:00Z",
+          "reviewer": "independent-fixture-author",
+          "selected_evidence_id": "regulation-speed-001",
+          "stop_failure_codes": [],
+          "unit": "km/h",
+          "value_state": "authoritative_external"
+        }
+      }
+    ]
+  },
+  "fixture_id": "AC-POS-004",
+  "input_artifacts": [
+    {
+      "path": "05_src/traffic_simulation/validation/fixtures/attribute_classification/inputs.json",
+      "role": "classification_input",
+      "sha256": "a8a3a5b27b3e4badfe7c74dd92ea1476679418e8c49a78529591b2fe5be88e56"
+    }
+  ],
+  "oracle": {
+    "independently_authored": true,
+    "path": "05_src/traffic_simulation/validation/fixtures/attribute_classification/oracles.json",
+    "sha256": "22f4c887703b2676e5d71da1fd7ceb760dcd9c7d56560f4eeed55a1dfc6393dc",
+    "source_specification_sha256": "af5a45c7cb5b325ade6da7660c54d5318002403a80bfc748476d65563d5f50ba"
+  },
+  "repeat_assertion": null,
+  "requirement_ids": [
+    "AC-REQ-005",
+    "AC-REQ-007",
+    "AC-REQ-010"
+  ],
+  "schema_version": 2
+}

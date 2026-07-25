@@ -16,7 +16,7 @@
   ],
   "properties": {
     "artifact_type": {"const": "attribute_classification_fixture"},
-    "schema_version": {"const": 1},
+    "schema_version": {"const": 2},
     "fixture_id": {
       "type": "string",
       "pattern": "^(?:AC[0-9]{3}-NEG-[0-9]{3}|AC-(?:POS|BND|REP)-[0-9]{3})$"
@@ -52,7 +52,7 @@
     },
     "expected": {
       "type": "object",
-      "required": ["outcome", "records", "failure_codes"],
+      "required": ["outcome", "records", "failure_codes", "assertions", "record_emission_policy"],
       "properties": {
         "outcome": {"enum": ["success", "governed_stop"]},
         "records": {
@@ -132,6 +132,39 @@
           "type": "array",
           "uniqueItems": true,
           "items": {"type": "string", "pattern": "^AC[0-9]{3}$"}
+        },
+        "assertions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/assertion"}
+        },
+        "record_emission_policy": {
+          "type": "object",
+          "required": [
+            "failure_stage",
+            "records_emitted",
+            "partial_records_allowed",
+            "resolution_emitted",
+            "artifact_publication_allowed"
+          ],
+          "properties": {
+            "failure_stage": {
+              "enum": [
+                "none",
+                "schema",
+                "artifact",
+                "predicate",
+                "classification",
+                "resolution",
+                "publication"
+              ]
+            },
+            "records_emitted": {"type": "boolean"},
+            "partial_records_allowed": {"type": "boolean"},
+            "resolution_emitted": {"type": "boolean"},
+            "artifact_publication_allowed": {"type": "boolean"}
+          },
+          "additionalProperties": false
         }
       },
       "allOf": [
@@ -206,7 +239,14 @@
         "baseline_output_sha256",
         "repeated_output_sha256",
         "comparison_mode",
-        "excluded_json_pointers"
+        "excluded_json_pointers",
+        "comparison_scope",
+        "canonicalization_rule_id",
+        "encoding",
+        "line_endings",
+        "terminal_newline",
+        "object_key_order",
+        "record_array_order"
       ],
       "properties": {
         "baseline_output_sha256": {
@@ -222,8 +262,43 @@
           "type": "array",
           "uniqueItems": true,
           "items": {"type": "string", "minLength": 1}
-        }
+        },
+        "comparison_scope": {
+          "enum": ["raw_file_bytes", "canonical_json_bytes"]
+        },
+        "canonicalization_rule_id": {
+          "type": ["string", "null"],
+          "enum": ["RFC-8785", null]
+        },
+        "encoding": {"const": "UTF-8"},
+        "line_endings": {"const": "LF"},
+        "terminal_newline": {"type": "boolean"},
+        "object_key_order": {
+          "enum": ["serialized_order_significant", "canonicalized"]
+        },
+        "record_array_order": {"const": "governed_order_significant"}
       },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"comparison_mode": {"const": "byte_equal"}}
+          },
+          "then": {
+            "properties": {
+              "comparison_scope": {"const": "raw_file_bytes"},
+              "canonicalization_rule_id": {"type": "null"},
+              "object_key_order": {"const": "serialized_order_significant"}
+            }
+          },
+          "else": {
+            "properties": {
+              "comparison_scope": {"const": "canonical_json_bytes"},
+              "canonicalization_rule_id": {"const": "RFC-8785"},
+              "object_key_order": {"const": "canonicalized"}
+            }
+          }
+        }
+      ],
       "additionalProperties": false
     },
     "oracle": {
@@ -264,5 +339,37 @@
       }
     }
   ],
+  "$defs": {
+    "assertion": {
+      "type": "object",
+      "required": ["assertion_id", "type", "subject_pointer", "expected"],
+      "properties": {
+        "assertion_id": {
+          "type": "string",
+          "pattern": "^ASSERT-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+        },
+        "type": {
+          "enum": [
+            "classification",
+            "governed_stop",
+            "rule_priority",
+            "evidence_selection",
+            "review_transition",
+            "directional_semantics",
+            "repeated_output_equality",
+            "canonicalization",
+            "schema_rejection",
+            "artifact_invalidation",
+            "hash_match",
+            "null_omission_distinction",
+            "record_emission"
+          ]
+        },
+        "subject_pointer": {"type": "string", "pattern": "^/"},
+        "expected": {"type": "object"}
+      },
+      "additionalProperties": false
+    }
+  },
   "additionalProperties": false
 }

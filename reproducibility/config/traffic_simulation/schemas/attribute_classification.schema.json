@@ -118,11 +118,8 @@
       },
       "allOf": [
         {
-          "if": {"properties": {"applicable": {"const": true}}},
+          "if": {"properties": {"applicable": {"const": false}}},
           "then": {
-            "properties": {"rejection_reason_code": {"type": "null"}}
-          },
-          "else": {
             "properties": {
               "rejection_reason_code": {"type": "string", "minLength": 1}
             }
@@ -154,7 +151,7 @@
         "value_state",
         "resolved_value",
         "unit",
-        "evidence_required",
+        "evidence_requirement",
         "evidence_candidates",
         "selected_evidence_id",
         "rejected_evidence_ids",
@@ -197,7 +194,7 @@
         },
         "resolved_value": {"type": ["integer", "string", "null"]},
         "unit": {"type": ["string", "null"], "minLength": 1},
-        "evidence_required": {"type": "string", "minLength": 1},
+        "evidence_requirement": {"$ref": "#/$defs/evidence_requirement"},
         "evidence_candidates": {
           "type": "array",
           "items": {"$ref": "#/$defs/evidence_candidate"}
@@ -257,6 +254,53 @@
           "if": {"properties": {"resolution_action": {"enum": ["require_human_review", "stop_unresolved"]}}},
           "then": {"properties": {"stop_failure_codes": {"minItems": 1}}},
           "else": {"properties": {"stop_failure_codes": {"maxItems": 0}}}
+        }
+      ],
+      "additionalProperties": false
+    },
+    "evidence_requirement": {
+      "type": "object",
+      "required": [
+        "required",
+        "requirement_rule_id",
+        "minimum_authority",
+        "description"
+      ],
+      "properties": {
+        "required": {"type": "boolean"},
+        "requirement_rule_id": {
+          "type": ["string", "null"],
+          "pattern": "^EVID-REQ-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+        },
+        "minimum_authority": {
+          "type": ["string", "null"],
+          "enum": [
+            "explicit_supported_osm",
+            "reviewed_public_source",
+            "authoritative_external",
+            "reviewed_model",
+            null
+          ]
+        },
+        "description": {"type": ["string", "null"], "minLength": 1}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"required": {"const": true}}},
+          "then": {
+            "properties": {
+              "requirement_rule_id": {"type": "string"},
+              "minimum_authority": {"type": "string"},
+              "description": {"type": "string"}
+            }
+          },
+          "else": {
+            "properties": {
+              "requirement_rule_id": {"type": "null"},
+              "minimum_authority": {"type": "null"},
+              "description": {"type": "null"}
+            }
+          }
         }
       ],
       "additionalProperties": false

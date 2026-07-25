@@ -1,0 +1,173 @@
+{
+  "acceptance_allowed": false,
+  "artifact_type": "attribute_classification_fixture_review",
+  "authoring_basis": {
+    "path": "05_src/traffic_simulation/specifications/attribute_criticality_and_evidence_specification.md",
+    "sha256": "af5a45c7cb5b325ade6da7660c54d5318002403a80bfc748476d65563d5f50ba",
+    "specification_version": "1.1.0"
+  },
+  "collection_status": "awaiting_independent_human_acceptance",
+  "hash_observations": [
+    {
+      "algorithm": "SHA-256",
+      "artifact_path": "05_src/traffic_simulation/validation/fixtures/attribute_classification/inputs.json",
+      "canonicalization": "pretty_json_sorted_keys_utf8_lf",
+      "checked_at": "2026-07-25T00:00:00Z",
+      "checker": "fixture-collection-builder",
+      "expected_hash": "a8a3a5b27b3e4badfe7c74dd92ea1476679418e8c49a78529591b2fe5be88e56",
+      "matched": true,
+      "observed_hash": "a8a3a5b27b3e4badfe7c74dd92ea1476679418e8c49a78529591b2fe5be88e56"
+    },
+    {
+      "algorithm": "SHA-256",
+      "artifact_path": "05_src/traffic_simulation/validation/fixtures/attribute_classification/oracles.json",
+      "canonicalization": "pretty_json_sorted_keys_utf8_lf",
+      "checked_at": "2026-07-25T00:00:00Z",
+      "checker": "fixture-collection-builder",
+      "expected_hash": "22f4c887703b2676e5d71da1fd7ceb760dcd9c7d56560f4eeed55a1dfc6393dc",
+      "matched": true,
+      "observed_hash": "22f4c887703b2676e5d71da1fd7ceb760dcd9c7d56560f4eeed55a1dfc6393dc"
+    },
+    {
+      "algorithm": "SHA-256",
+      "artifact_path": "05_src/traffic_simulation/specifications/attribute_criticality_and_evidence_specification.md",
+      "canonicalization": "raw_file_bytes",
+      "checked_at": "2026-07-25T00:00:00Z",
+      "checker": "fixture-collection-builder",
+      "expected_hash": "af5a45c7cb5b325ade6da7660c54d5318002403a80bfc748476d65563d5f50ba",
+      "matched": true,
+      "observed_hash": "af5a45c7cb5b325ade6da7660c54d5318002403a80bfc748476d65563d5f50ba"
+    }
+  ],
+  "independent_review": {
+    "independence_attestation": {
+      "did_not_author_oracles": null,
+      "did_not_generate_expected_results_from_production_code": null,
+      "did_not_implement_reviewed_classifier_rules": null
+    },
+    "reviewed_at": null,
+    "reviewer_id": null,
+    "reviewer_name": null,
+    "reviewer_role": null
+  },
+  "oracle_authorship_verification": {
+    "source_pointer": "oracles.json#/authorship",
+    "status": "pending"
+  },
+  "required_review_checks": [
+    {
+      "check_id": "REVIEW-CHECK-001",
+      "description": "expected classifications follow rule priority",
+      "evidence_refs": [],
+      "finding_ids": [],
+      "notes": null,
+      "recheck_status": "not_required",
+      "reviewed_at": null,
+      "reviewed_by": null,
+      "status": "pending"
+    },
+    {
+      "check_id": "REVIEW-CHECK-002",
+      "description": "expected resolutions follow the action-state-review contract",
+      "evidence_refs": [],
+      "finding_ids": [],
+      "notes": null,
+      "recheck_status": "not_required",
+      "reviewed_at": null,
+      "reviewed_by": null,
+      "status": "pending"
+    },
+    {
+      "check_id": "REVIEW-CHECK-003",
+      "description": "negative cases map one-to-one to AC001 through AC010",
+      "evidence_refs": [],
+      "finding_ids": [],
+      "notes": null,
+      "recheck_status": "not_required",
+      "reviewed_at": null,
+      "reviewed_by": null,
+      "status": "pending"
+    },
+    {
+      "check_id": "REVIEW-CHECK-004",
+      "description": "oracle catalogue was not produced by production code",
+      "evidence_refs": [],
+      "finding_ids": [],
+      "notes": null,
+      "recheck_status": "not_required",
+      "reviewed_at": null,
+      "reviewed_by": null,
+      "status": "pending"
+    },
+    {
+      "check_id": "REVIEW-CHECK-005",
+      "description": "fixture and source specification hashes match",
+      "evidence_refs": [
+        "05_src/traffic_simulation/validation/fixtures/attribute_classification/inputs.json",
+        "05_src/traffic_simulation/validation/fixtures/attribute_classification/oracles.json"
+      ],
+      "finding_ids": [],
+      "notes": null,
+      "recheck_status": "not_required",
+      "reviewed_at": "2026-07-25T00:00:00Z",
+      "reviewed_by": "fixture-collection-builder",
+      "status": "passed"
+    },
+    {
+      "check_id": "REVIEW-CHECK-006",
+      "description": "complete execution inputs identify every target tuple and evidence segment",
+      "evidence_refs": [],
+      "finding_ids": [],
+      "notes": null,
+      "recheck_status": "not_required",
+      "reviewed_at": null,
+      "reviewed_by": null,
+      "status": "pending"
+    },
+    {
+      "check_id": "REVIEW-CHECK-007",
+      "description": "manifest coverage is backed by executable oracle assertions",
+      "evidence_refs": [],
+      "finding_ids": [],
+      "notes": null,
+      "recheck_status": "not_required",
+      "reviewed_at": null,
+      "reviewed_by": null,
+      "status": "pending"
+    },
+    {
+      "check_id": "REVIEW-CHECK-008",
+      "description": "failure-stage record emission follows the governed policy",
+      "evidence_refs": [],
+      "finding_ids": [],
+      "notes": null,
+      "recheck_status": "not_required",
+      "reviewed_at": null,
+      "reviewed_by": null,
+      "status": "pending"
+    },
+    {
+      "check_id": "REVIEW-CHECK-009",
+      "description": "directional and lifecycle assertions contain observable before-and-after state",
+      "evidence_refs": [],
+      "finding_ids": [],
+      "notes": null,
+      "recheck_status": "not_required",
+      "reviewed_at": null,
+      "reviewed_by": null,
+      "status": "pending"
+    },
+    {
+      "check_id": "REVIEW-CHECK-010",
+      "description": "schema rejection and canonicalization cases cover the declared mutations",
+      "evidence_refs": [],
+      "finding_ids": [],
+      "notes": null,
+      "recheck_status": "not_required",
+      "reviewed_at": null,
+      "reviewed_by": null,
+      "status": "pending"
+    }
+  ],
+  "schema_version": 2
+}

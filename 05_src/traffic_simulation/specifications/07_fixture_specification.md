@@ -11,6 +11,7 @@ Every code in `08_failure_taxonomy.md` has one mandatory negative-oracle fixture
 | Test ID | Class | Required case | Expected result |
 |---|---|---|---|
 | RS-TST-001..014 | positive/negative/repeat | Strict OSM identity/reference cases, relation-scope accounting, donor eligibility, compound types, formal/structural lane allocation, lane-local forward/backward trace, v2 artifact, transactional rollback and CLI failure report | exact artifact or RS code |
+| AC-TST-001..010 | positive/negative/boundary/repeat | All lane/speed criticality levels, tuple coverage, rule selection, predicate contradictions, evidence applicability/conflict, review, placeholder gate, source hashes, state machine, topology support, profile transition, promotion and deterministic repeat | exact classification-resolution oracle or AC code |
 | PM-TST-001 | negative | incomplete expectation, hash/config/schema mismatch | PM001-PM005 |
 | PM-TST-002 | boundary/negative | single edge, split edge, joined-node lineage, ambiguous direction | exact direction or PM006-PM009 |
 | PM-TST-003 | positive/negative | forward/backward two-lane order, gap, duplicate, count mismatch | exact index map or PM010-PM013 |
@@ -26,6 +27,34 @@ Every code in `08_failure_taxonomy.md` has one mandatory negative-oracle fixture
 | PA-TST-001..011 | positive/negative/repeat | XSD/load, lineage, permissions, TLS, warnings, thresholds | acceptance or PA code |
 
 The ranges in this table abbreviate test families only. They do not combine failure meanings: each failure code retains its own `<failure-code>-NEG-001` catalogue identity.
+
+The checked-in attribute-classification collection is stored under
+`validation/fixtures/attribute_classification/`. Its input catalogue and
+oracle catalogue are separate immutable files. Case descriptors bind both
+files by SHA-256. The collection was authored from the specification before
+the production predicate generator and classifier existed; production code
+did not generate its oracle. Independent human acceptance remains a separate
+review gate recorded in `review.json`.
+
+`inputs.json` is the complete execution-input catalogue. It identifies every
+target tuple, including failures before record emission. `oracles.json` is the
+independently authored expected-result source and includes executable
+assertions plus failure-stage record-emission policy. Descriptor coverage maps
+coverage IDs to assertion IDs. The manifest's complete level index, canonical
+level witnesses and scenario index are derived from descriptors and oracles.
+
+Derived descriptors, hashes, review hash observations and the manifest are
+maintained with:
+
+```bash
+PYTHONPATH=05_src python -m \
+  traffic_simulation.validation.build_attribute_classification_fixture_collection \
+  --write
+```
+
+CI uses the same command with `--check`. The builder copies, but does not
+author, oracle expectations; it refuses to proceed if the oracle's pinned
+specification hash differs from the current specification.
 
 ## Pinned Runtime Fixture Minimum Topology
 

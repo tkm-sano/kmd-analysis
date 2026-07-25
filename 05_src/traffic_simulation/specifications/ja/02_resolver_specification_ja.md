@@ -104,8 +104,10 @@ Criticalityはway単位で一度だけではなく、
 同じimmutable profile snapshot内の別objectとし、hash-linked predicate artifactを
 使用する。統制語彙、証拠順位、artifact field、
 structural-placeholder gateは
-`attribute_criticality_and_evidence_specification.md`で定義する。そのschema、
-predicate artifact、classifier、fixtureが実装されるまでは、criticality入力を
+`attribute_criticality_and_evidence_specification.md`で定義する。4 schema、
+Predicate Generator、Semantic Validator、production fixture collectionは
+実装済みである。fixture collectionの独立受理と、Classifier・Resolver stageの
+実装・固定fixture検証が完了するまでは、classification・resolution統合入力を
 省略した全wayを`unclassified`とし、structural placeholderを通過させては
 ならない。
 

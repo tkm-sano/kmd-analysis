@@ -13,6 +13,7 @@
         "run_id",
         "complete",
         "relation_closed_osm",
+        "source_registry",
         "predicate_policy",
         "population_way_count",
         "records"
@@ -25,6 +26,7 @@
         "run_id": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
         "complete": {"const": true},
         "relation_closed_osm": {"$ref": "artifact_common.schema.json#/$defs/file_ref"},
+        "source_registry": {"$ref": "artifact_common.schema.json#/$defs/file_ref"},
         "predicate_policy": {"$ref": "artifact_common.schema.json#/$defs/file_ref"},
         "population_way_count": {
           "type": "integer",

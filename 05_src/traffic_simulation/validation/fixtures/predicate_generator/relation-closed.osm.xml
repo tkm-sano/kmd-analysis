@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="predicate-generator-fixture">
+  <node id="1" lat="35.5600" lon="139.7000"/>
+  <node id="2" lat="35.5610" lon="139.7010"/>
+  <node id="3" lat="35.5620" lon="139.7020"/>
+  <node id="4" lat="35.5630" lon="139.7030"/>
+  <node id="5" lat="35.5640" lon="139.7040"/>
+  <way id="101">
+    <nd ref="1"/>
+    <nd ref="2"/>
+    <tag k="highway" v="primary"/>
+    <tag k="bridge" v="yes"/>
+    <tag k="layer" v="1"/>
+    <tag k="lanes" v="3"/>
+    <tag k="lanes:forward" v="2"/>
+    <tag k="lanes:backward" v="1"/>
+    <tag k="turn:lanes:forward" v="through|right"/>
+    <tag k="bus:lanes:forward" v="yes|designated"/>
+    <tag k="maxspeed:forward" v="50"/>
+    <tag k="maxspeed:conditional" v="30 @ (07:00-09:00)"/>
+    <tag k="maxspeed:hgv" v="40"/>
+    <tag k="maxspeed:advisory" v="35"/>
+  </way>
+  <way id="102">
+    <nd ref="2"/>
+    <nd ref="3"/>
+    <tag k="highway" v="service"/>
+    <tag k="bridge" v="no"/>
+    <tag k="tunnel" v="culvert"/>
+    <tag k="oneway" v="reversible"/>
+    <tag k="tidal" v="yes"/>
+    <tag k="lanes" v="2"/>
+    <tag k="lanes:forward" v="2"/>
+    <tag k="lanes:backward" v="1"/>
+    <tag k="maxspeed" v="30;50"/>
+    <tag k="maxspeed:variable" v="yes"/>
+  </way>
+  <way id="103">
+    <nd ref="3"/>
+    <nd ref="4"/>
+    <tag k="route" v="road"/>
+  </way>
+  <way id="104">
+    <nd ref="4"/>
+    <nd ref="5"/>
+    <tag k="highway" v="bus_guideway"/>
+    <tag k="name" v="Reversible Tidal Avenue"/>
+  </way>
+</osm>

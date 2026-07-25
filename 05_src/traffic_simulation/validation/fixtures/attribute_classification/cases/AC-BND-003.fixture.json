@@ -1,0 +1,180 @@
+{
+  "artifact_type": "attribute_classification_fixture",
+  "case_type": "boundary",
+  "description": "Accepted delivery route promotes both attributes before formal use",
+  "expected": {
+    "assertions": [
+      {
+        "assertion_id": "ASSERT-AC-BND-003-001",
+        "expected": {
+          "failure_codes": [],
+          "outcome": "success"
+        },
+        "subject_pointer": "/expected",
+        "type": "classification"
+      },
+      {
+        "assertion_id": "ASSERT-AC-BND-003-002",
+        "expected": {
+          "artifact_publication_allowed": true,
+          "failure_stage": "none",
+          "partial_records_allowed": false,
+          "records_emitted": true,
+          "resolution_emitted": true
+        },
+        "subject_pointer": "/expected/record_emission_policy",
+        "type": "record_emission"
+      },
+      {
+        "assertion_id": "ASSERT-AC-BND-003-003",
+        "expected": {
+          "caused_by_promotion_event_id": "PROMOTE-AC-BND-003-001",
+          "invalidated_artifact_id": "attribute-classification-v1",
+          "invalidated_at": "2026-07-25T00:00:00Z",
+          "invalidated_revision_id": "revision-1",
+          "invalidation_event_id": "INVAL-AC-BND-003-001",
+          "new_sha256": "6666666666666666666666666666666666666666666666666666666666666666",
+          "old_sha256": "5555555555555555555555555555555555555555555555555555555555555555",
+          "prior_classification": {
+            "lanes": "L2",
+            "maxspeed": "S2"
+          },
+          "promoted_classification": {
+            "lanes": "L3",
+            "maxspeed": "S3"
+          },
+          "reason_code": "ACR-PROMOTION",
+          "regenerate_artifacts": [
+            "attribute_classification",
+            "permission_expectation",
+            "sumo_network"
+          ],
+          "revision_lineage": {
+            "new_revision": 2,
+            "prior_revision": 1,
+            "supersedes_prior": true
+          }
+        },
+        "subject_pointer": "/expected/lifecycle",
+        "type": "artifact_invalidation"
+      },
+      {
+        "assertion_id": "ASSERT-AC-BND-003-004",
+        "expected": {
+          "adopted_values": {
+            "lanes": 2,
+            "maxspeed": "40"
+          },
+          "decision": "adopt_explicit_supported_osm",
+          "evidence_basis": "reviewed_explicit_supported_osm",
+          "new_revision": 2,
+          "old_revision": 1,
+          "prior_stop_code_cleared": "AC007",
+          "reviewed_at": "2026-07-25T00:00:00Z",
+          "reviewer": "independent-fixture-author",
+          "revision_reason_code": "ACR-PROMOTION",
+          "states": [
+            "review_required",
+            "reviewed",
+            "resolved"
+          ]
+        },
+        "subject_pointer": "/expected/review_transition",
+        "type": "review_transition"
+      }
+    ],
+    "failure_codes": [],
+    "outcome": "success",
+    "record_emission_policy": {
+      "artifact_publication_allowed": true,
+      "failure_stage": "none",
+      "partial_records_allowed": false,
+      "records_emitted": true,
+      "resolution_emitted": true
+    },
+    "records": [
+      {
+        "classification": {
+          "criticality_level": "L3",
+          "matched_rule_ids": [
+            "LANE-CRIT-005"
+          ],
+          "selected_rule_id": "LANE-CRIT-005"
+        },
+        "classification_record_id": "acr:3003:lanes:formal",
+        "resolution": {
+          "conflict_resolution_rule_id": null,
+          "evidence_candidates": [],
+          "evidence_requirement": {
+            "description": "High-criticality resolution requires governed attribute-specific evidence.",
+            "minimum_authority": "reviewed_public_source",
+            "required": true,
+            "requirement_rule_id": "EVID-REQ-HIGH-001"
+          },
+          "rejected_evidence_ids": [],
+          "resolution_action": "adopt_explicit",
+          "resolution_rule_id": null,
+          "resolved_value": 2,
+          "review_status": "reviewed",
+          "reviewed_at": "2026-07-25T00:00:00Z",
+          "reviewer": "independent-fixture-author",
+          "selected_evidence_id": null,
+          "stop_failure_codes": [],
+          "unit": "lanes",
+          "value_state": "explicit_osm"
+        }
+      },
+      {
+        "classification": {
+          "criticality_level": "S3",
+          "matched_rule_ids": [
+            "SPEED-CRIT-004"
+          ],
+          "selected_rule_id": "SPEED-CRIT-004"
+        },
+        "classification_record_id": "acr:3003:maxspeed:formal",
+        "resolution": {
+          "conflict_resolution_rule_id": null,
+          "evidence_candidates": [],
+          "evidence_requirement": {
+            "description": "High-criticality resolution requires governed attribute-specific evidence.",
+            "minimum_authority": "reviewed_public_source",
+            "required": true,
+            "requirement_rule_id": "EVID-REQ-HIGH-001"
+          },
+          "rejected_evidence_ids": [],
+          "resolution_action": "adopt_explicit",
+          "resolution_rule_id": null,
+          "resolved_value": "40",
+          "review_status": "reviewed",
+          "reviewed_at": "2026-07-25T00:00:00Z",
+          "reviewer": "independent-fixture-author",
+          "selected_evidence_id": null,
+          "stop_failure_codes": [],
+          "unit": "km/h",
+          "value_state": "explicit_osm"
+        }
+      }
+    ]
+  },
+  "fixture_id": "AC-BND-003",
+  "input_artifacts": [
+    {
+      "path": "05_src/traffic_simulation/validation/fixtures/attribute_classification/inputs.json",
+      "role": "classification_input",
+      "sha256": "a8a3a5b27b3e4badfe7c74dd92ea1476679418e8c49a78529591b2fe5be88e56"
+    }
+  ],
+  "oracle": {
+    "independently_authored": true,
+    "path": "05_src/traffic_simulation/validation/fixtures/attribute_classification/oracles.json",
+    "sha256": "22f4c887703b2676e5d71da1fd7ceb760dcd9c7d56560f4eeed55a1dfc6393dc",
+    "source_specification_sha256": "af5a45c7cb5b325ade6da7660c54d5318002403a80bfc748476d65563d5f50ba"
+  },
+  "repeat_assertion": null,
+  "requirement_ids": [
+    "AC-REQ-003",
+    "AC-REQ-007"
+  ],
+  "schema_version": 2
+}

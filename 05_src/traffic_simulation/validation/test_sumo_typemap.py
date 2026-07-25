@@ -321,14 +321,43 @@ def test_attribute_classification_basic_design_is_machine_registered() -> None:
     )
     assert set(policy["implemented_schemas"]) == {
         "classification_predicates.schema.json",
+        "predicate_source_registry.schema.json",
         "attribute_classification.schema.json",
         "attribute_classification_fixture.schema.json",
     }
+    fixtures = policy["fixture_collection"]
+    assert fixtures["schema_version"] == 2
+    assert fixtures["case_count"] == 19
+    assert fixtures["required_negative_case_count"] == 10
+    assert fixtures["oracle_generated_by_production_code"] is False
+    assert fixtures["independent_human_acceptance_complete"] is False
+    assert fixtures["input_contract"] == "complete_execution_input"
+    assert fixtures["coverage_contract"] == (
+        "coverage_id_to_oracle_assertion_ids"
+    )
+    assert fixtures["acceptance_allowed_is_derived"] is True
+    assert (ROOT / fixtures["builder"]).is_file()
+    for field in ("manifest", "inputs", "oracles", "review"):
+        assert (ROOT / fixtures[field]).is_file()
     predicates = policy["predicate_artifact"]
     assert predicates["one_record_per_population_way"] is True
     assert predicates["evidence_required_for_false_and_true"] is True
     assert "is_accepted_delivery_route" in predicates["required_predicates"]
     assert "topology_support_without_reason" in predicates["forbidden_combinations"]
+    generator = policy["predicate_generator"]
+    assert (ROOT / generator["implementation"]).is_file()
+    assert (ROOT / generator["source_registry_schema"]).is_file()
+    assert generator["requires_accepted_population"] is True
+    assert generator["real_data_requires_acceptance_artifact"] is True
+    assert generator["minimum_real_data_config_version"] == 16
+    assert set(generator["externally_governed_predicates"]) == {
+        "is_calibration_segment",
+        "is_validation_segment",
+        "is_major_junction_approach",
+        "is_accepted_delivery_route",
+        "is_sensitivity_elevated",
+    }
+    assert len(generator["osm_derived_predicates"]) == 14
 
 
 def test_permissions_are_materialized_before_final_conversion_and_only_audited_after() -> None:

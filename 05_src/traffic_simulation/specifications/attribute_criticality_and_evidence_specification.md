@@ -127,10 +127,12 @@ Classification and resolution are separate objects in the same record:
 }
 ```
 
-The resolution object also records `evidence_required`,
+The resolution object also records a structured `evidence_requirement`,
 `evidence_candidates`, `selected_evidence_id`, `rejected_evidence_ids`,
 `conflict_resolution_rule_id`, units, review provenance and stopping codes as
-applicable. Each candidate identifies source, value, unit, direction, segment,
+applicable. `evidence_requirement` separates the required flag, governing rule,
+minimum authority and explanation; `L3` and `S3` require it and lower levels
+must explicitly record that it is not required. Each candidate identifies source, value, unit, direction, segment,
 vehicle scope, period, licence, source hash and matching confidence. Confidence
 cannot select evidence until its scale, threshold and tie behavior are fixed
 by policy.
@@ -230,6 +232,33 @@ requires `asserted_role` to equal `subgraph_role`.
 `topology_support_reason` is always present: it is a nonempty string only for
 `topology_support` and is `null` for `final` and `excluded`.
 
+### Predicate Generator Contract
+
+`generate_attribute_classification_predicates.py` consumes three explicit
+inputs: a relation-closed OSM XML file, a
+`predicate_source_registry.schema.json`-conforming source registry, and the
+pinned `sumo_network.yml` policy. The governed population consists of every
+OSM way carrying a `highway` tag plus only those non-highway ways explicitly
+registered as `topology_support`. The role registry must cover that population
+exactly once.
+
+Bridge, tunnel, grade-separation, lane-semantics and speed-semantics
+predicates are derived deterministically from OSM tags. Calibration,
+independent-validation, major-junction, accepted-delivery-route and
+sensitivity predicates come only from hash-registered external sources.
+Both true and false values retain source provenance. A reviewed override may
+replace one derived value only when its own source, locator and derivation-rule
+ID are registered.
+
+Generation is fail-closed. It stops on an unaccepted population, incomplete
+role coverage, an out-of-population external ID, a missing or mismatched source
+hash, schema or semantic validation failure, or an existing output path.
+Writing is atomic and records are ordered by numeric OSM way ID. Registered
+real data additionally requires a population-acceptance artifact and
+configuration version 16 or later. The v15 Dry Run is therefore not an
+eligible production input. Synthetic fixtures use an explicit
+`synthetic_fixture` scope and cannot establish real-data acceptance.
+
 ## Predicate Consistency Before Classification
 
 Validation occurs in this order: schema; artifact/source hashes; duplicate way
@@ -247,10 +276,10 @@ The classifier stops before first-match evaluation when:
   review.
 
 Bridge/tunnel coexistence is not made unconditionally exclusive in JSON
-Schema because a split or reviewed exception can make it valid. A future
-predicate-generator artifact must expose that adjudication before the
-semantic validator can enforce this conditional case; until then such a case
-remains stopped rather than guessed.
+Schema because a split or reviewed exception can make it valid. The predicate
+source registry exposes a hash-linked reviewed override for that adjudication.
+Without such an adjudication, the semantic validator stops the case rather
+than guessing.
 
 Directional-lane and bus/PSV-lane semantics may coexist. Different lane and
 maxspeed levels are permitted where their attribute-specific predicates differ.
@@ -353,7 +382,7 @@ unresolved conflict stops.
 
 ## Resolution Actions and States
 
-The classifier may emit only these actions:
+The Resolver may emit only these resolution actions:
 
 | Action | Meaning |
 |---|---|
@@ -406,14 +435,38 @@ only `exclude`; `L1/S1` permit all actions; `L2/S2` and `L3/S3` prohibit
 structural placeholders. Every adopted `L3/S3` decision requires `reviewed`.
 No other action-state-review-value combination is valid.
 
-## Profile-specific Required Inputs
+## Component Responsibilities
 
-| Input | `structural` | `formal` |
-|---|---|---|
-| complete predicate artifact | required | required |
-| combined classification-resolution artifact | required | required |
-| external evidence artifact | required when cited | required when cited |
-| structural-placeholder rule | required only when used | prohibited |
+The processing boundary is:
+
+```text
+Predicate Generator
+    -> produces governed facts required for classification
+Classifier
+    -> determines criticality_level, selected_rule_id and matched_rule_ids
+Resolver
+    -> determines resolution action, value state, adopted value, evidence,
+       conflict outcome, review state and stop codes
+Semantic Validator
+    -> validates the combined immutable artifact and its source hashes
+```
+
+The Classifier MUST NOT select or impute an attribute value and MUST NOT emit a
+resolution action. The Resolver consumes the Classifier result together with
+explicit OSM values, registered external evidence, permitted validated models
+and structural-placeholder rules. Classification and resolution may later
+share one executable entry point, but their object contracts and decision
+responsibilities remain separate.
+
+## Profile-specific Required Artifacts
+
+| Artifact | Processing role | `structural` | `formal` |
+|---|---|---|---|
+| complete predicate artifact | Classifier input | required | required |
+| classification result | Classifier output and Resolver input | required | required |
+| external evidence artifact | Resolver input | required when cited | required when cited |
+| structural-placeholder rule | Resolver input | required only when used | prohibited |
+| combined classification-resolution artifact | Resolver output and Semantic Validator target | required | required |
 
 ## Resolution Order
 
@@ -481,11 +534,29 @@ separate within the expected tuple record. They contain the selected and
 matched rule IDs, level, action, value state, resolved value, review status and
 failure code. Production code MUST NOT generate its own oracle.
 
+`inputs.json` is a complete execution-input catalogue, not a case index. Every
+case identifies its target tuple even when validation stops before record
+emission, and records OSM attributes, predicates, evidence candidates, profile
+and revision state. Each oracle case declares machine-readable assertions and
+a record-emission policy. Manifest coverage links each coverage ID to assertion
+IDs; level and scenario indexes are derived rather than manually maintained.
+
+Negative fixture IDs retain the failure code form `<code>-NEG-001`. Positive,
+boundary and repeat IDs use `AC-POS`, `AC-BND` and `AC-REP` namespaces because
+they are not witnesses for one failure code. These are two governed namespaces,
+not inconsistent spellings of one namespace.
+
 A `repeat` fixture records baseline and repeated output hashes, byte or
 canonical-content comparison mode, and explicit JSON Pointers excluded from a
 canonical comparison. The runner removes only those pointers and then compares
 RFC 8785 content. Non-repeat fixtures carry an explicit `null`
 `repeat_assertion`.
+
+`review.json` stores structured check results, evidence references, reviewer
+identity and independence attestations, observed hashes and blocking findings.
+`acceptance_allowed` is derived: it is true if and only if collection status is
+`independently_accepted`, every required check passed or is not applicable, and
+no unresolved blocking finding remains.
 
 An oracle is authored in a separate fixture-authoring step and reviewed by a
 person other than the production-output generator author where practicable.
@@ -497,20 +568,50 @@ review evidence must be retained in the fixture review record.
 
 This specification fixes the population, tuple identity, predicate contract,
 classification order and the object boundary between classification and
-resolution. The predicate, combined attribute-classification and fixture
-schemas are implemented and registered in `sumo_network.yml`. The predicate
-generator, classifier, Resolver integration and independent production
-fixtures are not implemented. The cross-record semantic validator and its
-synthetic unit tests are implemented, but have not been applied to a
-next-version accepted real-data population. Therefore the Ota Ward ways remain
+resolution. The predicate, predicate-source-registry, combined
+attribute-classification and fixture schemas are implemented and registered in
+`sumo_network.yml`. The predicate generator, its fail-closed synthetic tests,
+and standalone source-registry expansion in the semantic validator are
+implemented. The Classifier and Resolver stages are not implemented. The
+cross-record semantic validator and independent production fixture collection
+are implemented. The fixture collection was
+authored before the classifier and is not generated by production code;
+independent human acceptance and pinned Classifier-Resolver execution remain
+pending.
+These artifacts have not been applied to a next-version accepted real-data
+population. Therefore the Ota Ward ways remain
 `unclassified`, and this document does not change the 46,056-blocker Dry Run
 result or authorize a new Resolver run.
 
 For registered real-data execution, classification additionally depends on the
 population-acceptance gate in
 `02_resolver_specification.md#relation-closure-before-attribute-classification`.
-Additional independent fixtures may be developed before that gate passes, but
-no production classification artifact may be published against the v15
+Fixture review and classifier development may proceed before that gate passes,
+but no production classification artifact may be published against the v15
 population. After the next-version closure is accepted, complete
 `(osm_way_id, attribute, profile)` coverage must be generated from the new
 input rather than patched onto v15 records.
+
+## Current Implementation Order
+
+1. Verify and commit the current four schemas, Predicate Generator, Semantic
+   Validator, RFC 8785 hashing, fixture collection, tests and specifications.
+2. Complete independent human review of the existing fixture collection,
+   resolve every blocking finding, pin the reviewed hashes and derive
+   `acceptance_allowed=true`.
+3. Re-run the implemented Predicate Generator against the pinned synthetic
+   fixture and retain deterministic success and fail-closed evidence.
+4. Implement the Classifier with responsibility limited to
+   `criticality_level`, `selected_rule_id` and `matched_rule_ids`.
+5. Implement the Resolver separately, or as an explicitly separated stage in
+   one executable, to determine values, evidence selection, conflicts, review
+   state and stopping outcomes.
+6. Execute the Classifier and Resolver against positive, negative, boundary,
+   repeat, revision, evidence-conflict and placeholder fixtures. Production
+   output MUST NOT be used to rewrite the independent oracle.
+7. Accept a next-version relation closure containing the three known
+   `type=restriction:bus` relations, complete references, recounted population
+   and new input hashes. The v15 population remains ineligible.
+8. Generate separate structural and formal artifacts for the accepted
+   population, retain stopped tuples as stop records, validate them
+   semantically and publish atomically.

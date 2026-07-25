@@ -1,0 +1,165 @@
+{
+  "artifact_type": "attribute_classification_fixture",
+  "case_type": "repeat",
+  "description": "Repeated formal classification is byte-identical",
+  "expected": {
+    "assertions": [
+      {
+        "assertion_id": "ASSERT-AC-REP-001-001",
+        "expected": {
+          "failure_codes": [],
+          "outcome": "success"
+        },
+        "subject_pointer": "/expected",
+        "type": "classification"
+      },
+      {
+        "assertion_id": "ASSERT-AC-REP-001-002",
+        "expected": {
+          "artifact_publication_allowed": true,
+          "failure_stage": "none",
+          "partial_records_allowed": false,
+          "records_emitted": true,
+          "resolution_emitted": true
+        },
+        "subject_pointer": "/expected/record_emission_policy",
+        "type": "record_emission"
+      },
+      {
+        "assertion_id": "ASSERT-AC-REP-001-003",
+        "expected": {
+          "comparison": "raw_file_bytes",
+          "repeat_count": 2
+        },
+        "subject_pointer": "/repeat_assertion",
+        "type": "repeated_output_equality"
+      },
+      {
+        "assertion_id": "ASSERT-AC-REP-001-004",
+        "expected": {
+          "canonicalization_rule_id": "RFC-8785",
+          "distinguish_number_from_string": true,
+          "encoding": "UTF-8",
+          "line_ending_difference_is_byte_difference": true,
+          "line_endings": "LF",
+          "object_key_order": "canonicalized",
+          "ordered_arrays": "preserved",
+          "record_array_order": "governed_order_significant",
+          "set_like_arrays": "sorted_before_serialization",
+          "terminal_newline": true,
+          "terminal_newline_difference_is_byte_difference": true,
+          "unicode_normalization": "preserve_input_code_points",
+          "unordered_object_keys": "canonicalized"
+        },
+        "subject_pointer": "/repeat_assertion",
+        "type": "canonicalization"
+      }
+    ],
+    "failure_codes": [],
+    "outcome": "success",
+    "record_emission_policy": {
+      "artifact_publication_allowed": true,
+      "failure_stage": "none",
+      "partial_records_allowed": false,
+      "records_emitted": true,
+      "resolution_emitted": true
+    },
+    "records": [
+      {
+        "classification": {
+          "criticality_level": "L2",
+          "matched_rule_ids": [
+            "LANE-CRIT-006"
+          ],
+          "selected_rule_id": "LANE-CRIT-006"
+        },
+        "classification_record_id": "acr:4001:lanes:formal",
+        "resolution": {
+          "conflict_resolution_rule_id": null,
+          "evidence_candidates": [],
+          "evidence_requirement": {
+            "description": null,
+            "minimum_authority": null,
+            "required": false,
+            "requirement_rule_id": null
+          },
+          "rejected_evidence_ids": [],
+          "resolution_action": "adopt_explicit",
+          "resolution_rule_id": null,
+          "resolved_value": 2,
+          "review_status": "machine_classified",
+          "reviewed_at": null,
+          "reviewer": null,
+          "selected_evidence_id": null,
+          "stop_failure_codes": [],
+          "unit": "lanes",
+          "value_state": "explicit_osm"
+        }
+      },
+      {
+        "classification": {
+          "criticality_level": "S2",
+          "matched_rule_ids": [
+            "SPEED-CRIT-005"
+          ],
+          "selected_rule_id": "SPEED-CRIT-005"
+        },
+        "classification_record_id": "acr:4001:maxspeed:formal",
+        "resolution": {
+          "conflict_resolution_rule_id": null,
+          "evidence_candidates": [],
+          "evidence_requirement": {
+            "description": null,
+            "minimum_authority": null,
+            "required": false,
+            "requirement_rule_id": null
+          },
+          "rejected_evidence_ids": [],
+          "resolution_action": "adopt_explicit",
+          "resolution_rule_id": null,
+          "resolved_value": "40",
+          "review_status": "machine_classified",
+          "reviewed_at": null,
+          "reviewer": null,
+          "selected_evidence_id": null,
+          "stop_failure_codes": [],
+          "unit": "km/h",
+          "value_state": "explicit_osm"
+        }
+      }
+    ]
+  },
+  "fixture_id": "AC-REP-001",
+  "input_artifacts": [
+    {
+      "path": "05_src/traffic_simulation/validation/fixtures/attribute_classification/inputs.json",
+      "role": "classification_input",
+      "sha256": "a8a3a5b27b3e4badfe7c74dd92ea1476679418e8c49a78529591b2fe5be88e56"
+    }
+  ],
+  "oracle": {
+    "independently_authored": true,
+    "path": "05_src/traffic_simulation/validation/fixtures/attribute_classification/oracles.json",
+    "sha256": "22f4c887703b2676e5d71da1fd7ceb760dcd9c7d56560f4eeed55a1dfc6393dc",
+    "source_specification_sha256": "af5a45c7cb5b325ade6da7660c54d5318002403a80bfc748476d65563d5f50ba"
+  },
+  "repeat_assertion": {
+    "baseline_output_sha256": "3a0f18c543daabf54c9161bb0bc491ce3c4952cb40a152a9885b942854c2e7fc",
+    "canonicalization_rule_id": null,
+    "comparison_mode": "byte_equal",
+    "comparison_scope": "raw_file_bytes",
+    "encoding": "UTF-8",
+    "excluded_json_pointers": [],
+    "line_endings": "LF",
+    "object_key_order": "serialized_order_significant",
+    "record_array_order": "governed_order_significant",
+    "repeated_output_sha256": "3a0f18c543daabf54c9161bb0bc491ce3c4952cb40a152a9885b942854c2e7fc",
+    "terminal_newline": true
+  },
+  "requirement_ids": [
+    "AC-REQ-001",
+    "AC-REQ-009",
+    "AC-REQ-010"
+  ],
+  "schema_version": 2
+}

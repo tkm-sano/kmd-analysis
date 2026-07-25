@@ -1,0 +1,738 @@
+{
+  "artifact_type": "attribute_classification_fixture_input_catalog",
+  "authorship": {
+    "created_on": "2026-07-25",
+    "method": "specification-derived static cases authored before production classifier implementation",
+    "production_code_used": false
+  },
+  "cases": {
+    "AC-BND-001": {
+      "description": "Topology-support way retains a governed nonempty reason",
+      "profile": "structural",
+      "scenario": {
+        "osm_way_id": "3001",
+        "subgraph_role": "topology_support",
+        "topology_support_reason": "Retained to preserve a turn-restriction relation.",
+        "tuples": [
+          {
+            "attribute": "lanes",
+            "evidence_candidates": [],
+            "osm_attributes": {
+              "lanes": 1
+            },
+            "osm_way_id": "3001",
+            "predicates": {},
+            "profile": "structural",
+            "record_revision": 1,
+            "subgraph_role": "topology_support",
+            "supersedes_record_sha256": null
+          },
+          {
+            "attribute": "maxspeed",
+            "evidence_candidates": [],
+            "osm_attributes": {
+              "maxspeed": "30"
+            },
+            "osm_way_id": "3001",
+            "predicates": {},
+            "profile": "structural",
+            "record_revision": 1,
+            "subgraph_role": "topology_support",
+            "supersedes_record_sha256": null
+          }
+        ]
+      },
+      "target_stage": "predicate_validator"
+    },
+    "AC-BND-002": {
+      "description": "Structural and formal profiles are classified independently",
+      "profile": "mixed",
+      "scenario": {
+        "osm_way_id": "3002",
+        "profiles": [
+          "structural",
+          "formal"
+        ],
+        "subgraph_role": "final",
+        "tuples": [
+          {
+            "attribute": "lanes",
+            "evidence_candidates": [],
+            "osm_attributes": {
+              "lanes": 2
+            },
+            "osm_way_id": "3002",
+            "predicates": {},
+            "profile": "structural",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          },
+          {
+            "attribute": "maxspeed",
+            "evidence_candidates": [],
+            "osm_attributes": {
+              "maxspeed": "40"
+            },
+            "osm_way_id": "3002",
+            "predicates": {},
+            "profile": "structural",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          },
+          {
+            "attribute": "lanes",
+            "evidence_candidates": [],
+            "osm_attributes": {
+              "lanes": 2
+            },
+            "osm_way_id": "3002",
+            "predicates": {},
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          },
+          {
+            "attribute": "maxspeed",
+            "evidence_candidates": [],
+            "osm_attributes": {
+              "maxspeed": "40"
+            },
+            "osm_way_id": "3002",
+            "predicates": {},
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          }
+        ]
+      },
+      "target_stage": "classifier"
+    },
+    "AC-BND-003": {
+      "description": "Accepted delivery route promotes both attributes before formal use",
+      "profile": "formal",
+      "scenario": {
+        "invalidate_prior_revision": true,
+        "osm_way_id": "3003",
+        "promotion_event": "accepted_delivery_route",
+        "revision_history": {
+          "invalidation_event_id": "INVAL-AC-BND-003-001",
+          "new_revision_id": "revision-2",
+          "prior_revision_id": "revision-1",
+          "promotion_event_id": "PROMOTE-AC-BND-003-001"
+        },
+        "subgraph_role": "final",
+        "tuples": [
+          {
+            "attribute": "lanes",
+            "evidence_candidates": [],
+            "osm_attributes": {
+              "lanes": 2
+            },
+            "osm_way_id": "3003",
+            "predicates": {},
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          },
+          {
+            "attribute": "maxspeed",
+            "evidence_candidates": [],
+            "osm_attributes": {
+              "maxspeed": "40"
+            },
+            "osm_way_id": "3003",
+            "predicates": {},
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          }
+        ]
+      },
+      "target_stage": "classifier"
+    },
+    "AC-BND-004": {
+      "description": "Unsupported conditional speed expression stops for review",
+      "profile": "formal",
+      "scenario": {
+        "conditional_expression": "30 @ (school_hours)",
+        "osm_way_id": "3004",
+        "subgraph_role": "final",
+        "supported_parser": false,
+        "tuples": [
+          {
+            "attribute": "maxspeed",
+            "evidence_candidates": [],
+            "osm_attributes": {
+              "maxspeed:backward": "30",
+              "maxspeed:forward": "40",
+              "maxspeed:forward:conditional": "30 @ (07:00-09:00)",
+              "oneway": "no"
+            },
+            "osm_way_id": "3004",
+            "predicates": {
+              "has_conditional_speed_semantics": true,
+              "has_directional_speed_semantics": true
+            },
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          }
+        ]
+      },
+      "target_stage": "resolution"
+    },
+    "AC-POS-001": {
+      "description": "Excluded way produces L0 and S0 records",
+      "profile": "structural",
+      "scenario": {
+        "osm_way_id": "2001",
+        "subgraph_role": "excluded",
+        "true_predicates": [],
+        "tuples": [
+          {
+            "attribute": "lanes",
+            "evidence_candidates": [],
+            "osm_attributes": {},
+            "osm_way_id": "2001",
+            "predicates": {},
+            "profile": "structural",
+            "record_revision": 1,
+            "subgraph_role": "excluded",
+            "supersedes_record_sha256": null
+          },
+          {
+            "attribute": "maxspeed",
+            "evidence_candidates": [],
+            "osm_attributes": {},
+            "osm_way_id": "2001",
+            "predicates": {},
+            "profile": "structural",
+            "record_revision": 1,
+            "subgraph_role": "excluded",
+            "supersedes_record_sha256": null
+          }
+        ]
+      },
+      "target_stage": "classifier"
+    },
+    "AC-POS-002": {
+      "description": "Structural profile permits governed L1 and S1 placeholders",
+      "profile": "structural",
+      "scenario": {
+        "osm_way_id": "2002",
+        "placeholder_rules": [
+          "LANE-PLACEHOLDER-001",
+          "SPEED-PLACEHOLDER-001"
+        ],
+        "subgraph_role": "final",
+        "tuples": [
+          {
+            "attribute": "lanes",
+            "evidence_candidates": [],
+            "osm_attributes": {},
+            "osm_way_id": "2002",
+            "predicates": {},
+            "profile": "structural",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          },
+          {
+            "attribute": "maxspeed",
+            "evidence_candidates": [],
+            "osm_attributes": {},
+            "osm_way_id": "2002",
+            "predicates": {},
+            "profile": "structural",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          }
+        ]
+      },
+      "target_stage": "classifier"
+    },
+    "AC-POS-003": {
+      "description": "Formal profile adopts explicit OSM values at L2 and S2",
+      "profile": "formal",
+      "scenario": {
+        "explicit_values": {
+          "lanes": 2,
+          "maxspeed": "40"
+        },
+        "osm_way_id": "2003",
+        "subgraph_role": "final",
+        "tuples": [
+          {
+            "attribute": "lanes",
+            "evidence_candidates": [],
+            "osm_attributes": {
+              "lanes": 2
+            },
+            "osm_way_id": "2003",
+            "predicates": {},
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          },
+          {
+            "attribute": "maxspeed",
+            "evidence_candidates": [],
+            "osm_attributes": {
+              "maxspeed": "40"
+            },
+            "osm_way_id": "2003",
+            "predicates": {},
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          }
+        ]
+      },
+      "target_stage": "classifier"
+    },
+    "AC-POS-004": {
+      "description": "Reviewed external evidence is adopted for L3 and S3",
+      "profile": "formal",
+      "scenario": {
+        "evidence_ids": [
+          "ledger-lanes-001",
+          "regulation-speed-001"
+        ],
+        "osm_way_id": "2004",
+        "subgraph_role": "final",
+        "true_predicates": [
+          "is_calibration_segment"
+        ],
+        "tuples": [
+          {
+            "attribute": "lanes",
+            "evidence_candidates": [
+              {
+                "applicable": false,
+                "direction": "both",
+                "evidence_id": "ledger-lanes-001",
+                "license": "public-data-license",
+                "matching_confidence": 1,
+                "reference_period": "2026-07",
+                "rejection_reason_code": "LOWER_AUTHORITY",
+                "segment": "way-2004",
+                "source": "public-road-ledger",
+                "source_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+                "unit": "lanes",
+                "value": 2,
+                "vehicle_scope": [
+                  "delivery"
+                ]
+              },
+              {
+                "applicable": true,
+                "direction": "both",
+                "evidence_id": "authority-lanes-002",
+                "license": "public-data-license",
+                "matching_confidence": 1,
+                "reference_period": "2026-07",
+                "rejection_reason_code": null,
+                "segment": "way-2004",
+                "source": "road-administrator-ledger",
+                "source_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+                "unit": "lanes",
+                "value": 2,
+                "vehicle_scope": [
+                  "delivery"
+                ]
+              }
+            ],
+            "osm_attributes": {},
+            "osm_way_id": "2004",
+            "predicates": {
+              "is_calibration_segment": true
+            },
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          },
+          {
+            "attribute": "maxspeed",
+            "evidence_candidates": [
+              {
+                "applicable": true,
+                "direction": "both",
+                "evidence_id": "regulation-speed-001",
+                "license": "public-data-license",
+                "matching_confidence": 1,
+                "reference_period": "2026-07",
+                "rejection_reason_code": null,
+                "segment": "way-2004",
+                "source": "traffic-regulation-ledger",
+                "source_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+                "unit": "km/h",
+                "value": "40",
+                "vehicle_scope": [
+                  "delivery"
+                ]
+              },
+              {
+                "applicable": true,
+                "direction": "both",
+                "evidence_id": "municipal-speed-002",
+                "license": "public-data-license",
+                "matching_confidence": 0.9,
+                "reference_period": "2026-07",
+                "rejection_reason_code": "LOWER_AUTHORITY",
+                "segment": "way-2004",
+                "source": "municipal-road-ledger",
+                "source_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+                "unit": "km/h",
+                "value": "45",
+                "vehicle_scope": [
+                  "delivery"
+                ]
+              }
+            ],
+            "osm_attributes": {},
+            "osm_way_id": "2004",
+            "predicates": {
+              "is_calibration_segment": true
+            },
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          }
+        ]
+      },
+      "target_stage": "classifier"
+    },
+    "AC-REP-001": {
+      "description": "Repeated formal classification is byte-identical",
+      "profile": "formal",
+      "scenario": {
+        "explicit_values": {
+          "lanes": 2,
+          "maxspeed": "40"
+        },
+        "osm_way_id": "4001",
+        "repeat_count": 2,
+        "subgraph_role": "final",
+        "tuples": [
+          {
+            "attribute": "lanes",
+            "evidence_candidates": [],
+            "osm_attributes": {
+              "lanes": 2
+            },
+            "osm_way_id": "4001",
+            "predicates": {},
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          },
+          {
+            "attribute": "maxspeed",
+            "evidence_candidates": [],
+            "osm_attributes": {
+              "maxspeed": "40"
+            },
+            "osm_way_id": "4001",
+            "predicates": {},
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          }
+        ]
+      },
+      "target_stage": "classifier"
+    },
+    "AC001-NEG-001": {
+      "description": "retained tuple missing",
+      "profile": "formal",
+      "scenario": {
+        "attribute": "maxspeed",
+        "fault": "omit_tuple",
+        "osm_way_id": "1001",
+        "schema_mutations": [
+          "missing_required_field",
+          "enum_out_of_range",
+          "type_mismatch",
+          "invalid_sha256",
+          "invalid_timestamp",
+          "additional_property",
+          "invalid_record_id",
+          "attribute_level_mismatch"
+        ],
+        "tuples": [
+          {
+            "attribute": "maxspeed",
+            "evidence_candidates": [],
+            "osm_attributes": {},
+            "osm_way_id": "1001",
+            "predicates": {},
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          }
+        ]
+      },
+      "target_stage": "semantic_validator"
+    },
+    "AC002-NEG-001": {
+      "description": "duplicate tuple",
+      "profile": "formal",
+      "scenario": {
+        "attribute": "lanes",
+        "fault": "duplicate_tuple",
+        "osm_way_id": "1002",
+        "tuples": [
+          {
+            "attribute": "lanes",
+            "evidence_candidates": [],
+            "osm_attributes": {},
+            "osm_way_id": "1002",
+            "predicates": {},
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          }
+        ]
+      },
+      "target_stage": "semantic_validator"
+    },
+    "AC003-NEG-001": {
+      "description": "unknown classification rule",
+      "profile": "formal",
+      "scenario": {
+        "fault": "unknown_rule",
+        "rule_id": "LANE-CRIT-999",
+        "tuples": [
+          {
+            "attribute": "lanes",
+            "evidence_candidates": [],
+            "osm_attributes": {},
+            "osm_way_id": "1003",
+            "predicates": {},
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          }
+        ]
+      },
+      "target_stage": "classifier"
+    },
+    "AC004-NEG-001": {
+      "description": "contradictory predicates",
+      "profile": "formal",
+      "scenario": {
+        "fault": "predicate_contradiction",
+        "true_predicates": [
+          "is_calibration_segment",
+          "is_validation_segment"
+        ],
+        "tuples": [
+          {
+            "attribute": "lanes",
+            "evidence_candidates": [],
+            "osm_attributes": {},
+            "osm_way_id": "1004",
+            "predicates": {
+              "is_calibration_segment": true,
+              "is_validation_segment": true
+            },
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          }
+        ]
+      },
+      "target_stage": "predicate_validator"
+    },
+    "AC005-NEG-001": {
+      "description": "selected evidence is inapplicable",
+      "profile": "formal",
+      "scenario": {
+        "evidence_id": "candidate-inapplicable",
+        "fault": "select_inapplicable_evidence",
+        "tuples": [
+          {
+            "attribute": "lanes",
+            "evidence_candidates": [],
+            "osm_attributes": {},
+            "osm_way_id": "1005",
+            "predicates": {},
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          }
+        ]
+      },
+      "target_stage": "resolution"
+    },
+    "AC006-NEG-001": {
+      "description": "evidence conflict remains unresolved",
+      "profile": "formal",
+      "scenario": {
+        "evidence_ids": [
+          "candidate-a",
+          "candidate-b"
+        ],
+        "fault": "unresolved_evidence_conflict",
+        "tuples": [
+          {
+            "attribute": "lanes",
+            "evidence_candidates": [],
+            "osm_attributes": {},
+            "osm_way_id": "1006",
+            "predicates": {},
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          }
+        ]
+      },
+      "target_stage": "resolution"
+    },
+    "AC007-NEG-001": {
+      "description": "required human review is incomplete",
+      "profile": "formal",
+      "scenario": {
+        "fault": "incomplete_review",
+        "review_status": "review_required",
+        "tuples": [
+          {
+            "attribute": "maxspeed",
+            "evidence_candidates": [],
+            "osm_attributes": {},
+            "osm_way_id": "1007",
+            "predicates": {},
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          }
+        ]
+      },
+      "target_stage": "resolution"
+    },
+    "AC008-NEG-001": {
+      "description": "formal profile attempts structural placeholder",
+      "profile": "formal",
+      "scenario": {
+        "attribute": "lanes",
+        "fault": "structural_placeholder_in_formal",
+        "tuples": [
+          {
+            "attribute": "lanes",
+            "evidence_candidates": [],
+            "osm_attributes": {},
+            "osm_way_id": "1008",
+            "predicates": {},
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          }
+        ]
+      },
+      "target_stage": "resolution"
+    },
+    "AC009-NEG-001": {
+      "description": "source or policy hash mismatch",
+      "profile": "formal",
+      "scenario": {
+        "fault": "hash_mismatch",
+        "field": "classification_config_sha256",
+        "tuples": [
+          {
+            "attribute": "lanes",
+            "evidence_candidates": [],
+            "osm_attributes": {},
+            "osm_way_id": "1009",
+            "predicates": {},
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          }
+        ]
+      },
+      "target_stage": "semantic_validator"
+    },
+    "AC010-NEG-001": {
+      "description": "resolution action and state are inconsistent",
+      "profile": "formal",
+      "scenario": {
+        "action": "adopt_explicit",
+        "fault": "invalid_resolution_state",
+        "state": "missing",
+        "tuples": [
+          {
+            "attribute": "lanes",
+            "evidence_candidates": [],
+            "osm_attributes": {},
+            "osm_way_id": "1010",
+            "predicates": {},
+            "profile": "formal",
+            "record_revision": 1,
+            "subgraph_role": "final",
+            "supersedes_record_sha256": null
+          }
+        ],
+        "value_variants": {
+          "empty_array": {
+            "state": "explicitly_empty_collection",
+            "value": []
+          },
+          "empty_string": {
+            "state": "invalid",
+            "value": ""
+          },
+          "not_applicable": {
+            "state": "not_applicable",
+            "value": "not_applicable"
+          },
+          "null": {
+            "state": "explicitly_no_value",
+            "value": null
+          },
+          "omitted": {
+            "state": "not_provided"
+          },
+          "unknown": {
+            "state": "unresolved",
+            "value": "unknown"
+          },
+          "whitespace_string": {
+            "state": "invalid",
+            "value": "   "
+          }
+        }
+      },
+      "target_stage": "semantic_validator"
+    }
+  },
+  "input_contract": {
+    "completeness": "complete_execution_input",
+    "empty_string_semantics": "invalid_unless_field_schema_explicitly_allows_it",
+    "null_semantics": "explicitly_no_value",
+    "omitted_field_semantics": "not_provided"
+  },
+  "schema_version": 2
+}

@@ -1,0 +1,71 @@
+{
+  "expected": {
+    "failure_codes": [],
+    "outcome": "success",
+    "records": [
+      {
+        "classification": {
+          "criticality_level": "L2",
+          "matched_rule_ids": [
+            "LANE-CRIT-006"
+          ],
+          "selected_rule_id": "LANE-CRIT-006"
+        },
+        "classification_record_id": "acr:4001:lanes:formal",
+        "resolution": {
+          "conflict_resolution_rule_id": null,
+          "evidence_candidates": [],
+          "rejected_evidence_ids": [],
+          "resolution_action": "adopt_explicit",
+          "resolution_rule_id": null,
+          "resolved_value": 2,
+          "review_status": "machine_classified",
+          "reviewed_at": null,
+          "reviewer": null,
+          "selected_evidence_id": null,
+          "stop_failure_codes": [],
+          "unit": "lanes",
+          "value_state": "explicit_osm",
+          "evidence_requirement": {
+            "required": false,
+            "requirement_rule_id": null,
+            "minimum_authority": null,
+            "description": null
+          }
+        }
+      },
+      {
+        "classification": {
+          "criticality_level": "S2",
+          "matched_rule_ids": [
+            "SPEED-CRIT-005"
+          ],
+          "selected_rule_id": "SPEED-CRIT-005"
+        },
+        "classification_record_id": "acr:4001:maxspeed:formal",
+        "resolution": {
+          "conflict_resolution_rule_id": null,
+          "evidence_candidates": [],
+          "rejected_evidence_ids": [],
+          "resolution_action": "adopt_explicit",
+          "resolution_rule_id": null,
+          "resolved_value": "40",
+          "review_status": "machine_classified",
+          "reviewed_at": null,
+          "reviewer": null,
+          "selected_evidence_id": null,
+          "stop_failure_codes": [],
+          "unit": "km/h",
+          "value_state": "explicit_osm",
+          "evidence_requirement": {
+            "required": false,
+            "requirement_rule_id": null,
+            "minimum_authority": null,
+            "description": null
+          }
+        }
+      }
+    ]
+  },
+  "fixture_id": "AC-REP-001"
+}

@@ -1,0 +1,125 @@
+{
+  "artifact_type": "attribute_classification_fixture",
+  "case_type": "boundary",
+  "description": "Unsupported conditional speed expression stops for review",
+  "expected": {
+    "assertions": [
+      {
+        "assertion_id": "ASSERT-AC-BND-004-001",
+        "expected": {
+          "failure_codes": [
+            "AC007"
+          ],
+          "outcome": "governed_stop"
+        },
+        "subject_pointer": "/expected",
+        "type": "governed_stop"
+      },
+      {
+        "assertion_id": "ASSERT-AC-BND-004-002",
+        "expected": {
+          "artifact_publication_allowed": false,
+          "failure_stage": "resolution",
+          "partial_records_allowed": true,
+          "records_emitted": true,
+          "resolution_emitted": true
+        },
+        "subject_pointer": "/expected/record_emission_policy",
+        "type": "record_emission"
+      },
+      {
+        "assertion_id": "ASSERT-AC-BND-004-003",
+        "expected": {
+          "backward": "30",
+          "direction_records": [
+            {
+              "direction": "forward",
+              "value": "40"
+            },
+            {
+              "direction": "backward",
+              "value": "30"
+            }
+          ],
+          "forward": "40",
+          "forward_conditional": "30 @ (07:00-09:00)",
+          "oneway_case": {
+            "oneway": "yes",
+            "unused_backward_direction": "not_applicable"
+          },
+          "oneway_unused_direction_policy": "not_applicable",
+          "unit": "km/h",
+          "value_state": "conditional"
+        },
+        "subject_pointer": "/input/scenario/tuples/0/osm_attributes",
+        "type": "directional_semantics"
+      }
+    ],
+    "failure_codes": [
+      "AC007"
+    ],
+    "outcome": "governed_stop",
+    "record_emission_policy": {
+      "artifact_publication_allowed": false,
+      "failure_stage": "resolution",
+      "partial_records_allowed": true,
+      "records_emitted": true,
+      "resolution_emitted": true
+    },
+    "records": [
+      {
+        "classification": {
+          "criticality_level": "S3",
+          "matched_rule_ids": [
+            "SPEED-CRIT-003"
+          ],
+          "selected_rule_id": "SPEED-CRIT-003"
+        },
+        "classification_record_id": "acr:3004:maxspeed:formal",
+        "resolution": {
+          "conflict_resolution_rule_id": null,
+          "evidence_candidates": [],
+          "evidence_requirement": {
+            "description": "High-criticality resolution requires governed attribute-specific evidence.",
+            "minimum_authority": "reviewed_public_source",
+            "required": true,
+            "requirement_rule_id": "EVID-REQ-HIGH-001"
+          },
+          "rejected_evidence_ids": [],
+          "resolution_action": "require_human_review",
+          "resolution_rule_id": null,
+          "resolved_value": null,
+          "review_status": "review_required",
+          "reviewed_at": null,
+          "reviewer": null,
+          "selected_evidence_id": null,
+          "stop_failure_codes": [
+            "AC007"
+          ],
+          "unit": null,
+          "value_state": "conditional"
+        }
+      }
+    ]
+  },
+  "fixture_id": "AC-BND-004",
+  "input_artifacts": [
+    {
+      "path": "05_src/traffic_simulation/validation/fixtures/attribute_classification/inputs.json",
+      "role": "classification_input",
+      "sha256": "a8a3a5b27b3e4badfe7c74dd92ea1476679418e8c49a78529591b2fe5be88e56"
+    }
+  ],
+  "oracle": {
+    "independently_authored": true,
+    "path": "05_src/traffic_simulation/validation/fixtures/attribute_classification/oracles.json",
+    "sha256": "22f4c887703b2676e5d71da1fd7ceb760dcd9c7d56560f4eeed55a1dfc6393dc",
+    "source_specification_sha256": "af5a45c7cb5b325ade6da7660c54d5318002403a80bfc748476d65563d5f50ba"
+  },
+  "repeat_assertion": null,
+  "requirement_ids": [
+    "AC-REQ-006",
+    "AC-REQ-007"
+  ],
+  "schema_version": 2
+}

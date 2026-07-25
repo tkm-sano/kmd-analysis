@@ -21,6 +21,7 @@ policy_documents:
 artifact_schema_registry:
   common: reproducibility/config/traffic_simulation/schemas/artifact_common.schema.json
   classification_predicates: reproducibility/config/traffic_simulation/schemas/classification_predicates.schema.json
+  predicate_source_registry: reproducibility/config/traffic_simulation/schemas/predicate_source_registry.schema.json
   attribute_classification: reproducibility/config/traffic_simulation/schemas/attribute_classification.schema.json
   attribute_classification_fixture: reproducibility/config/traffic_simulation/schemas/attribute_classification_fixture.schema.json
   permission_expectations: reproducibility/config/traffic_simulation/schemas/permission_expectations.schema.json
@@ -1369,7 +1370,7 @@ structural_imputation:
   formal_use_allowed: false
 
 road_criticality:
-  status: schemas_and_semantic_validator_implemented_generators_independent_fixtures_pending
+  status: schemas_semantic_validator_and_fixture_collection_implemented_fixture_acceptance_and_generators_pending
   specification: 05_src/traffic_simulation/specifications/attribute_criticality_and_evidence_specification.md
   exception_decision_table: reproducibility/config/traffic_simulation/resolver_exception_decision_table.yml
   population_source: accepted_relation_closure_candidate_ways
@@ -1413,8 +1414,23 @@ road_criticality:
       - SPEED-CRIT-006
   implemented_schemas:
     - classification_predicates.schema.json
+    - predicate_source_registry.schema.json
     - attribute_classification.schema.json
     - attribute_classification_fixture.schema.json
+  fixture_collection:
+    schema_version: 2
+    builder: 05_src/traffic_simulation/validation/build_attribute_classification_fixture_collection.py
+    manifest: 05_src/traffic_simulation/validation/fixtures/attribute_classification/manifest.json
+    inputs: 05_src/traffic_simulation/validation/fixtures/attribute_classification/inputs.json
+    oracles: 05_src/traffic_simulation/validation/fixtures/attribute_classification/oracles.json
+    review: 05_src/traffic_simulation/validation/fixtures/attribute_classification/review.json
+    case_count: 19
+    required_negative_case_count: 10
+    oracle_generated_by_production_code: false
+    independent_human_acceptance_complete: false
+    input_contract: complete_execution_input
+    coverage_contract: coverage_id_to_oracle_assertion_ids
+    acceptance_allowed_is_derived: true
   combined_record_required_future_fields:
     - classification_record_id
     - osm_way_id
@@ -1476,6 +1492,52 @@ road_criticality:
       - topology_support_without_reason
       - calibration_and_independent_validation
       - bridge_and_tunnel_without_split_or_review
+  predicate_generator:
+    implementation: 05_src/traffic_simulation/network/generate_attribute_classification_predicates.py
+    source_registry_schema: reproducibility/config/traffic_simulation/schemas/predicate_source_registry.schema.json
+    population_rule:
+      - every_relation_closed_osm_way_with_highway_tag
+      - explicitly_registered_topology_support_way_without_highway_tag
+    requires_accepted_population: true
+    real_data_requires_acceptance_artifact: true
+    minimum_real_data_config_version: 16
+    output_order: numeric_osm_way_id_ascending
+    osm_negative_values:
+      - ""
+      - "no"
+      - "false"
+      - "0"
+    externally_governed_predicates:
+      - is_calibration_segment
+      - is_validation_segment
+      - is_major_junction_approach
+      - is_accepted_delivery_route
+      - is_sensitivity_elevated
+    osm_derived_predicates:
+      - is_bridge
+      - is_tunnel
+      - is_grade_separated
+      - has_directional_lane_semantics
+      - has_reversible_lane_semantics
+      - has_tidal_flow_semantics
+      - has_turn_lane_semantics
+      - has_bus_or_psv_lane_semantics
+      - has_conflicting_lane_semantics
+      - has_directional_speed_semantics
+      - has_conditional_speed_semantics
+      - has_variable_speed_semantics
+      - has_vehicle_specific_speed_semantics
+      - has_advisory_or_multiple_speed_semantics
+    vehicle_specific_maxspeed_qualifiers:
+      - hgv
+      - goods
+      - bus
+      - coach
+      - psv
+      - taxi
+      - motorcar
+      - motorcycle
+      - delivery
   pre_critical:
     - jartic_observation_road
     - road_traffic_census_road

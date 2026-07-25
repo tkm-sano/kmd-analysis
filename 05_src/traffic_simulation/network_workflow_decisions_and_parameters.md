@@ -213,14 +213,25 @@ flowchart TD
 
 ## 10. 次に行うこと
 
-1. attribute criticalityのschema、predicate証拠、classifier、fixtureを作る。
-2. `restriction:bus` 3件を含む次版relation closureを実装し、参照完全性、
-   support element、候補way差分をmanifestへ記録する。
-3. 次版closureの母集団を受理した後、その入力から実データcriticalityを
-   全件生成する。v15の26,220 waysへ後から追加分類してはならない。
-4. 307件の決定表を頻度と影響の順に仕様確定し、fixtureを作る。
-5. permission materializerを解決済みfixture上で実装する。
-6. 全件Dry Runを再実行し、v15との差分を自動生成する。
+1. 現在の4 schema、Predicate Generator、Semantic Validator、fixture
+   collection、RFC 8785 hash、test、仕様書を検証してcommitする。
+2. 作成済みfixture collectionを独立human reviewし、`review.json`を完成させ、
+   blocking findingなしの状態で受理hashを固定する。
+3. 実装済みPredicate Generatorを固定fixtureで再検証し、決定的出力と
+   fail-closed failureを保存する。
+4. predicateから`criticality_level`、`selected_rule_id`、
+   `matched_rule_ids`だけを決めるClassifierを実装する。
+5. classification、明示OSM値、外部証拠、model、placeholder ruleから
+   resolution action、値、evidence、conflict、review・stop状態を決める
+   Resolver stageを実装する。
+6. 固定fixtureでClassifier・Resolverを検証する。production outputに合わせて
+   oracleを書き換えてはならない。
+7. `restriction:bus` 3件を含む次版relation closureを実装・受理し、参照完全性、
+   support element、候補way差分、入力hashをmanifestへ記録する。
+8. 受理済み次版母集団からstructural・formalを別artifactとして全件分類・解決し、
+   stop recordを保持してsemantic validation後にatomic publishする。
+9. 307件の決定表を頻度と影響の順に実装し、permission materializerへ進む。
+10. 全件Dry Runを再実行し、v15との差分を自動生成する。
 
 この段階ではformal SUMO道路網、較正済み交通、配送走行、QAOA比較の数値を
 生成しない。

@@ -77,6 +77,7 @@ def predicate_artifact() -> dict[str, Any]:
         "run_id": "fixture-run-001",
         "complete": True,
         "relation_closed_osm": file_ref("artifacts/relation-closed.osm.xml"),
+        "source_registry": file_ref("artifacts/predicate-source-registry.json"),
         "predicate_policy": file_ref("reproducibility/predicate-policy.yml"),
         "population_way_count": 1,
         "records": [
@@ -109,7 +110,12 @@ def resolution(
         "value_state": value_state,
         "resolved_value": resolved_value,
         "unit": "lanes" if resolved_value is not None else None,
-        "evidence_required": "An explicit, internally consistent OSM lanes tag.",
+        "evidence_requirement": {
+            "required": False,
+            "requirement_rule_id": None,
+            "minimum_authority": None,
+            "description": None,
+        },
         "evidence_candidates": [],
         "selected_evidence_id": None,
         "rejected_evidence_ids": [],
@@ -162,7 +168,7 @@ def classification_artifact() -> dict[str, Any]:
 def fixture_artifact() -> dict[str, Any]:
     return {
         "artifact_type": "attribute_classification_fixture",
-        "schema_version": 1,
+        "schema_version": 2,
         "fixture_id": "AC-POS-001",
         "case_type": "positive",
         "requirement_ids": ["AC-REQ-001"],
@@ -190,6 +196,21 @@ def fixture_artifact() -> dict[str, Any]:
                 }
             ],
             "failure_codes": [],
+            "assertions": [
+                {
+                    "assertion_id": "ASSERT-AC-POS-001-001",
+                    "type": "classification",
+                    "subject_pointer": "/expected/records/0",
+                    "expected": {"criticality_level": "L1"},
+                }
+            ],
+            "record_emission_policy": {
+                "failure_stage": "none",
+                "records_emitted": True,
+                "partial_records_allowed": False,
+                "resolution_emitted": True,
+                "artifact_publication_allowed": True,
+            },
         },
         "repeat_assertion": None,
         "oracle": {
@@ -394,6 +415,21 @@ def test_fixture_may_stop_before_expected_records_are_generated() -> None:
         "outcome": "governed_stop",
         "records": [],
         "failure_codes": ["AC001"],
+        "assertions": [
+            {
+                "assertion_id": "ASSERT-AC001-NEG-001",
+                "type": "governed_stop",
+                "subject_pointer": "/expected",
+                "expected": {"failure_codes": ["AC001"]},
+            }
+        ],
+        "record_emission_policy": {
+            "failure_stage": "schema",
+            "records_emitted": False,
+            "partial_records_allowed": False,
+            "resolution_emitted": False,
+            "artifact_publication_allowed": False,
+        },
     }
     assert_valid("attribute_classification_fixture.schema.json", artifact)
 
