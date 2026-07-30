@@ -385,10 +385,10 @@ def desired_collection() -> dict[Path, bytes]:
         )
     )
     collection_status = review.get(
-        "collection_status", "awaiting_independent_human_acceptance"
+        "collection_status", "independent_human_review_waived"
     )
     if artifacts_changed:
-        collection_status = "awaiting_independent_human_acceptance"
+        collection_status = "independent_human_review_waived"
         independent_reviewer = {
             key: (
                 "not_assessed"
@@ -451,6 +451,16 @@ def desired_collection() -> dict[Path, bytes]:
             "artifact_sha256": specification_hash,
         },
         "collection_status": collection_status,
+        "review_policy": {
+            "mode": "automated_validation_without_independent_human_review",
+            "independent_human_review_required": False,
+            "independent_human_review_waived": True,
+            "waiver_date": "2026-07-30",
+            "waiver_authority": "research_owner",
+            "claim_limit": (
+                "The fixture collection is not independently human accepted."
+            ),
+        },
         "independent_reviewer": independent_reviewer,
         "oracle_independence": {
             "source_pointer": "oracles.json#/authorship",

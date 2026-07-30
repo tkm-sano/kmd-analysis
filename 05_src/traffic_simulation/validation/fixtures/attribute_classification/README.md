@@ -45,9 +45,12 @@ The collection includes:
 
 `oracle.independently_authored=true` means that the oracle was authored from
 the normative specification rather than copied from production output. It
-does not mean that independent human review is complete. `review.json` keeps
-`acceptance_allowed=false` until a named reviewer checks the rule selection,
-resolution states, failure-code mapping and hashes.
+does not mean that independent human review is complete. The research owner
+waived independent human review on 2026-07-30. `review.json` therefore keeps
+`acceptance_allowed=false` and records the waiver; Classifier and Resolver
+development proceeds using the pinned oracle, automated integrity checks and
+semantic validation. Research reporting must not describe the fixture as
+independently human accepted.
 
 Production code MUST NOT update `oracles.json`. A changed specification or
 fixture decision requires a reviewed fixture revision and refreshed hashes;

@@ -115,18 +115,21 @@ vocabulary, evidence precedence, artifact fields and
 structural-placeholder gate are defined in
 `attribute_criticality_and_evidence_specification.md`. Its four schemas,
 Predicate Generator, Semantic Validator and production fixture collection are
-implemented. Until the fixture collection is independently accepted and the
-Classifier and Resolver stages are implemented and verified against it,
-omitted combined classification-resolution input leaves every retained way
-`unclassified` and no structural placeholder may pass.
+implemented. Independent human review of the fixture collection was waived by
+the research owner on 2026-07-30 and is not an implementation prerequisite.
+Until the Classifier and Resolver stages are implemented and verified against
+the pinned fixture collection, omitted combined classification-resolution
+input leaves every retained way `unclassified` and no structural placeholder
+may pass. Formal reporting must disclose that the fixture was not independently
+human accepted.
 
 The observed v15 exception population and its unresolved decision status are
 registered in
 `reproducibility/config/traffic_simulation/resolver_exception_decision_table.yml`.
 Every row must match exactly one decision-table entry before a later Resolver
 version may claim complete exception classification. A decision-table entry
-does not authorize a resolution until its rule and independent fixture are
-implemented.
+does not authorize a resolution until its rule and a fixture authored
+independently from production output are implemented.
 
 ## Permission Trace
 

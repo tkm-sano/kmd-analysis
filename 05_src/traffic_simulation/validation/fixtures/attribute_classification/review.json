@@ -8,11 +8,11 @@
   },
   "authoring_basis": {
     "artifact_path": "05_src/traffic_simulation/specifications/attribute_criticality_and_evidence_specification.md",
-    "artifact_sha256": "af5a45c7cb5b325ade6da7660c54d5318002403a80bfc748476d65563d5f50ba",
+    "artifact_sha256": "14a504255d9413c77c981858fafc99e4021bbf2283a94a761b1c1e22254402a2",
     "artifact_version": "1.1.0"
   },
   "blocking_findings": [],
-  "collection_status": "awaiting_independent_human_acceptance",
+  "collection_status": "independent_human_review_waived",
   "independent_reviewer": {
     "independence_declaration": null,
     "relationship_to_fixture_author": "not_assessed",
@@ -39,9 +39,9 @@
       "canonicalization": "pretty_json_sorted_keys_utf8_lf",
       "checked_at": "2026-07-25T00:00:00Z",
       "checker": "fixture-collection-builder",
-      "expected_sha256": "fa761ac57ef366b146294a08a225791fcc7ef54b2684f28a1cd709aa425abf29",
+      "expected_sha256": "0a5d87a99a075a722eb14b907986b500c449548b65878b5584cd251480cc9754",
       "matches": true,
-      "observed_sha256": "fa761ac57ef366b146294a08a225791fcc7ef54b2684f28a1cd709aa425abf29"
+      "observed_sha256": "0a5d87a99a075a722eb14b907986b500c449548b65878b5584cd251480cc9754"
     },
     "oracles": {
       "algorithm": "SHA-256",
@@ -49,9 +49,9 @@
       "canonicalization": "pretty_json_sorted_keys_utf8_lf",
       "checked_at": "2026-07-25T00:00:00Z",
       "checker": "fixture-collection-builder",
-      "expected_sha256": "22f4c887703b2676e5d71da1fd7ceb760dcd9c7d56560f4eeed55a1dfc6393dc",
+      "expected_sha256": "98b6a007e4828e42570a17d9255bdd029295afddf6307d1a6f3f63f8bc96664a",
       "matches": true,
-      "observed_sha256": "22f4c887703b2676e5d71da1fd7ceb760dcd9c7d56560f4eeed55a1dfc6393dc"
+      "observed_sha256": "98b6a007e4828e42570a17d9255bdd029295afddf6307d1a6f3f63f8bc96664a"
     },
     "source_specification": {
       "algorithm": "SHA-256",
@@ -59,9 +59,9 @@
       "canonicalization": "raw_file_bytes",
       "checked_at": "2026-07-25T00:00:00Z",
       "checker": "fixture-collection-builder",
-      "expected_sha256": "af5a45c7cb5b325ade6da7660c54d5318002403a80bfc748476d65563d5f50ba",
+      "expected_sha256": "14a504255d9413c77c981858fafc99e4021bbf2283a94a761b1c1e22254402a2",
       "matches": true,
-      "observed_sha256": "af5a45c7cb5b325ade6da7660c54d5318002403a80bfc748476d65563d5f50ba"
+      "observed_sha256": "14a504255d9413c77c981858fafc99e4021bbf2283a94a761b1c1e22254402a2"
     }
   },
   "oracle_independence": {
@@ -76,7 +76,7 @@
       "check_id": "FIX-REV-001",
       "evidence_references": [],
       "finding_ids": [],
-      "recheck_status": "not_required",
+      "recheck_status": "required",
       "required": true,
       "requirement": "expected classifications follow rule priority",
       "reviewed_at": null,
@@ -88,7 +88,7 @@
       "check_id": "FIX-REV-002",
       "evidence_references": [],
       "finding_ids": [],
-      "recheck_status": "not_required",
+      "recheck_status": "required",
       "required": true,
       "requirement": "expected resolutions follow the action-state-review contract",
       "reviewed_at": null,
@@ -100,7 +100,7 @@
       "check_id": "FIX-REV-003",
       "evidence_references": [],
       "finding_ids": [],
-      "recheck_status": "not_required",
+      "recheck_status": "required",
       "required": true,
       "requirement": "negative cases map one-to-one to AC001 through AC010",
       "reviewed_at": null,
@@ -112,7 +112,7 @@
       "check_id": "FIX-REV-004",
       "evidence_references": [],
       "finding_ids": [],
-      "recheck_status": "not_required",
+      "recheck_status": "required",
       "required": true,
       "requirement": "oracle catalogue was not produced by production code",
       "reviewed_at": null,
@@ -129,7 +129,7 @@
         "05_src/traffic_simulation/specifications/attribute_criticality_and_evidence_specification.md"
       ],
       "finding_ids": [],
-      "recheck_status": "not_required",
+      "recheck_status": "required",
       "required": true,
       "requirement": "fixture and source specification hashes match",
       "reviewed_at": null,
@@ -141,7 +141,7 @@
       "check_id": "FIX-REV-006",
       "evidence_references": [],
       "finding_ids": [],
-      "recheck_status": "not_required",
+      "recheck_status": "required",
       "required": true,
       "requirement": "complete execution inputs identify every target tuple and evidence segment",
       "reviewed_at": null,
@@ -153,7 +153,7 @@
       "check_id": "FIX-REV-007",
       "evidence_references": [],
       "finding_ids": [],
-      "recheck_status": "not_required",
+      "recheck_status": "required",
       "required": true,
       "requirement": "manifest coverage is backed by executable oracle assertions",
       "reviewed_at": null,
@@ -165,7 +165,7 @@
       "check_id": "FIX-REV-008",
       "evidence_references": [],
       "finding_ids": [],
-      "recheck_status": "not_required",
+      "recheck_status": "required",
       "required": true,
       "requirement": "failure-stage record emission follows the governed policy",
       "reviewed_at": null,
@@ -177,7 +177,7 @@
       "check_id": "FIX-REV-009",
       "evidence_references": [],
       "finding_ids": [],
-      "recheck_status": "not_required",
+      "recheck_status": "required",
       "required": true,
       "requirement": "directional and lifecycle assertions contain observable before-and-after state",
       "reviewed_at": null,
@@ -189,7 +189,7 @@
       "check_id": "FIX-REV-010",
       "evidence_references": [],
       "finding_ids": [],
-      "recheck_status": "not_required",
+      "recheck_status": "required",
       "required": true,
       "requirement": "schema rejection and canonicalization cases cover the declared mutations",
       "reviewed_at": null,
@@ -198,6 +198,14 @@
       "status": "not_reviewed"
     }
   ],
+  "review_policy": {
+    "claim_limit": "The fixture collection is not independently human accepted.",
+    "independent_human_review_required": false,
+    "independent_human_review_waived": true,
+    "mode": "automated_validation_without_independent_human_review",
+    "waiver_authority": "research_owner",
+    "waiver_date": "2026-07-30"
+  },
   "reviewed_at": null,
   "schema_version": 2
 }

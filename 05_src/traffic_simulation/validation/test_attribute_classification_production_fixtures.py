@@ -178,13 +178,23 @@ def test_repeat_outputs_are_pinned_and_byte_equal() -> None:
     ]
 
 
-def test_fixture_collection_does_not_claim_human_acceptance() -> None:
+def test_fixture_collection_records_human_review_waiver_without_acceptance() -> None:
     review = load_json(FIXTURE_ROOT / "review.json")
     oracles = load_json(FIXTURE_ROOT / "oracles.json")
 
     assert oracles["authorship"]["production_classifier_existed_at_authorship"] is False
     assert oracles["authorship"]["independent_from_production_code"] is True
-    assert review["collection_status"] == "awaiting_independent_human_acceptance"
+    assert review["collection_status"] == "independent_human_review_waived"
+    assert review["review_policy"] == {
+        "mode": "automated_validation_without_independent_human_review",
+        "independent_human_review_required": False,
+        "independent_human_review_waived": True,
+        "waiver_date": "2026-07-30",
+        "waiver_authority": "research_owner",
+        "claim_limit": (
+            "The fixture collection is not independently human accepted."
+        ),
+    }
     assert review["independent_reviewer"]["reviewer_id"] is None
     assert (
         review["oracle_independence"]["verification_status"]

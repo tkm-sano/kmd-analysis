@@ -3,7 +3,7 @@
 
 # 研究進捗ダッシュボード
 
-**状態更新日:** 2026-07-25
+**状態更新日:** 2026-07-30
 
 ## 現在地
 
@@ -37,7 +37,7 @@ flowchart LR
 
 ## 現在の阻害事項
 
-- lanes・maxspeedの属性別criticalityは4 schema、predicate generator、semantic validator、独立production fixture collectionを実装済みだが、fixtureの独立human acceptance、classifier、resolver stage、固定Classifier・Resolver実行証拠が未完了
+- lanes・maxspeedの属性別criticalityは4 schema、predicate generator、semantic validator、production codeから独立して作成したfixture collectionを実装済みである。独立human reviewは研究責任者判断で省略し、classifier、resolver stage、固定Classifier・Resolver実行証拠は未完了である
 - permission未解決264行、車線・速度表現未対応41行、oneway=-1 1行、車線矛盾1行が未解決
 - v15 relation scopeがバス向けturn restriction 3件を除外しており、次版closure・Resolver規則が未実装
 - permission materializerが未実装で、SUMO 1.24.0固定fixtureも未実行
@@ -45,13 +45,12 @@ flowchart LR
 
 ## 次の作業
 
-1. 現在の4 schema、predicate generator、semantic validator、fixture collection、RFC 8785 hash、test、仕様書を検証してcommitする
-2. 作成済みfixture collectionを独立human reviewで受理し、固定fixtureでpredicate generatorを再検証する
-3. predicateからlevelとrule IDだけを決めるclassifierと、値・evidence・review・stop状態を決めるresolver stageを順に実装し、固定fixtureで統合検証する
-4. type=restriction:bus 3件を次版のrelation closure・Resolver対象へ含め、参照完全性とturn restriction保持をfixtureで検証する
-5. 次版closureの候補母集団を受理してから、全way・属性・profileの実データcriticalityを新しい入力hashから生成する
-6. 307件を排他的に登録した決定表について、優先度順に規則と独立fixtureを実装し、未実装項目は停止状態を維持する
-7. Resolver blocker解消と並行してpermission materializerを実装し、SUMO 1.24.0固定fixtureでlane・connection期待値を検証する
+1. 固定fixtureでpredicate generatorを再検証し、独立human reviewを省略した判断と自動検証結果を保持する
+2. predicateからlevelとrule IDだけを決めるclassifierと、値・evidence・review・stop状態を決めるresolver stageを順に実装し、固定fixtureで統合検証する
+3. type=restriction:bus 3件を次版のrelation closure・Resolver対象へ含め、参照完全性とturn restriction保持をfixtureで検証する
+4. 次版closureの候補母集団を受理してから、全way・属性・profileの実データcriticalityを新しい入力hashから生成する
+5. 307件を排他的に登録した決定表について、優先度順に規則とproduction codeから独立したfixtureを実装し、未実装項目は停止状態を維持する
+6. Resolver blocker解消と並行してpermission materializerを実装し、SUMO 1.24.0固定fixtureでlane・connection期待値を検証する
 
 ## 全工程
 

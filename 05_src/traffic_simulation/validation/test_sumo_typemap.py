@@ -330,7 +330,14 @@ def test_attribute_classification_basic_design_is_machine_registered() -> None:
     assert fixtures["case_count"] == 19
     assert fixtures["required_negative_case_count"] == 10
     assert fixtures["oracle_generated_by_production_code"] is False
+    assert fixtures["independent_human_review_required"] is False
     assert fixtures["independent_human_acceptance_complete"] is False
+    assert fixtures["independent_human_review_waived"] is True
+    assert fixtures["independent_human_review_waiver_date"] == "2026-07-30"
+    assert (
+        fixtures["review_mode"]
+        == "automated_validation_without_independent_human_review"
+    )
     assert fixtures["input_contract"] == "complete_execution_input"
     assert fixtures["coverage_contract"] == (
         "coverage_id_to_oracle_assertion_ids"

@@ -33,8 +33,10 @@ The checked-in attribute-classification collection is stored under
 oracle catalogue are separate immutable files. Case descriptors bind both
 files by SHA-256. The collection was authored from the specification before
 the production predicate generator and classifier existed; production code
-did not generate its oracle. Independent human acceptance remains a separate
-review gate recorded in `review.json`.
+did not generate its oracle. The research owner waived independent human
+review on 2026-07-30. `review.json` records that decision without representing
+the collection as independently accepted. Automated integrity and semantic
+validation remain mandatory.
 
 `inputs.json` is the complete execution-input catalogue. It identifies every
 target tuple, including failures before record emission. `oracles.json` is the

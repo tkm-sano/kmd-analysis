@@ -479,6 +479,10 @@ pointerだけを除去し、RFC 8785 contentを比較する。repeat以外のfix
 observed hash、blocking findingを保存する。`acceptance_allowed`は、
 `collection_status=independently_accepted`、全必須check合格または非該当、
 未解決blocking findingなし、の全条件から導出する。
+研究責任者は2026-07-30に独立human reviewを省略すると決定した。この省略は
+`acceptance_allowed=true`を意味せず、独立受理済みと報告してはならない。
+実装順序から当該reviewを外すが、固定hash検査、semantic validation、
+production codeからのoracle独立性は引き続き必須とする。
 
 oracleはproduction output生成とは別のfixture authoring手順で作成し、可能な場合は
 production generator作成者とは別の者がreviewする。test runnerはoracle file hashと
@@ -495,8 +499,8 @@ fail-closed synthetic test、semantic validatorによるsource registry展開は
 実装済みである。ClassifierとResolverの各stageは未実装である。cross-record
 semantic validatorと独立production fixture collectionは実装済みである。
 fixture collectionはclassifierより前に作成し、production codeで
-oracleを生成していないが、独立human acceptanceと固定Classifier・Resolver実行は
-未完了である。
+oracleを生成していない。独立human reviewは研究責任者判断で省略し、固定
+Classifier・Resolver実行は未完了である。
 これらは次版で受理された実データ母集団には未適用である。したがって、大田区wayは
 `unclassified`のままであり、
 本書は46,056-blocker Dry Runの結果を変更せず、新しいResolver runも許可しない。
@@ -512,20 +516,16 @@ oracleを生成していないが、独立human acceptanceと固定Classifier・
 
 ## 現在の実装順序
 
-1. 現在の4 schema、Predicate Generator、Semantic Validator、RFC 8785 hash、
-   fixture collection、test、仕様書を検証してcommitする。
-2. 既存fixture collectionを独立human reviewし、blocking findingを解消し、
-   review済みhashを固定して`acceptance_allowed=true`を導出する。
-3. 実装済みPredicate Generatorを固定synthetic fixtureで再実行し、決定的な成功と
+1. 実装済みPredicate Generatorを固定synthetic fixtureで再実行し、決定的な成功と
    fail-closedの証拠を保持する。
-4. `criticality_level`、`selected_rule_id`、`matched_rule_ids`だけを決める
+2. `criticality_level`、`selected_rule_id`、`matched_rule_ids`だけを決める
    Classifierを実装する。
-5. 値、evidence選択、conflict、review状態、停止結果を決めるResolverを独立実装
+3. 値、evidence選択、conflict、review状態、停止結果を決めるResolverを独立実装
    する。または一つの実行program内で明示的に分離したstageとして実装する。
-6. positive、negative、boundary、repeat、revision、evidence conflict、
+4. positive、negative、boundary、repeat、revision、evidence conflict、
    placeholder fixtureでClassifierとResolverを実行する。production outputを
    独立oracleの書換えに使用してはならない。
-7. 既知の`type=restriction:bus` 3 relation、完全な参照、再集計した母集団、
+5. 既知の`type=restriction:bus` 3 relation、完全な参照、再集計した母集団、
    新input hashを持つ次版relation closureを受理する。v15は使用不可のままとする。
-8. 受理済み母集団からstructural・formal artifactを別々に生成し、未解決tupleを
+6. 受理済み母集団からstructural・formal artifactを別々に生成し、未解決tupleを
    stop recordとして保持し、semantic validation後にatomic publishする。
