@@ -72,11 +72,11 @@ flowchart TD
 |---|---|---|---|---|---|
 | 研究範囲 | N03から大田区を選択し統合する | 分析範囲は行政界、取得範囲は外接BBOX | 行政区域コード、CRS、BBOX座標、面積 | 境界Parquet、品質要約 | 完了 |
 | OSM取得 | 日付固定関東PBFを取得しBBOX抽出する | `complete_ways`、任意BBOX禁止、原本不変 | snapshot日、SHA-256、PBF表現許容差 | 原本PBF、抽出PBF、取得記録 | 完了 |
-| relation closure | 必要なrelationと参照要素を地域PBFから補う | 対象relation型、support elementと最終道路の区別 | 保持・除外relation数、追加node・way数 | closure ID、PBF、OSM XML | v15実行済み、`restriction:bus`対応が未完了 |
+| relation closure | 必要なrelationと参照要素を地域PBFから補う | 対象relation型、support elementと最終道路の区別 | 保持・除外relation数、追加node・way数 | closure ID、PBF、OSM XML、manifest | v16受理済み、Resolverへの接続は未完了 |
 | 道路採用 | typemap whitelistで道路型と車種を限定する | 自動車系のみ、moped除外、bus専用道路保持 | 道路型数、対象SUMO vClass | typemap XML | v15固定、runtime fixtureに未解決あり |
 | Resolver | `oneway`、lane、speed、accessを解釈する | 証拠優先順位、値状態、停止規則、profile差 | 明示値、導出値、欠損・例外件数 | audit、permission期待値、failure report | 全件Dry Run実行済み、46,056 blocker |
 | criticality | way・属性・profile単位で影響レベルを分類する | laneはL0-L3、speedはS0-S3、昇格・失効規則 | 各レベルの件数、証拠有無 | 将来のclassification artifact | 語彙と順序を仕様化、schema・実装未完了 |
-| 例外処理 | 例外を決定表へ排他的に割り当てる | 通常・structural・例外、未実装は停止 | 307属性例外と3 relation例外の内訳 | decision table YAML、fixture | 分類済み、解決規則・fixture未完了 |
+| 例外処理 | 例外を決定表へ排他的に割り当てる | 未知・重複一致は停止、分類は値を採用しない | 307属性例外の内訳 | decision table YAML、fixture、独立正解、全件照合結果 | 20規則を実装し、307行の排他的分類に合格。従来331件・現在335件の検証は全件合格。値解決は保留 |
 | permission materialization | way・方向・lane期待値をSUMO plain XMLへ移す | lane index、typemapとの積集合、空lane・connection処理 | lane数、connection数、クラス集合 | `.edg.xml`、`.con.xml`、監査 | 仕様のみ、未実装 |
 | junction・TLS | 統合候補を抽出し、採否と信号構造をレビューする | 幾何交差と接続を区別、自動統合禁止 | 候補探索幅、link index、phase長 | review CSV、`.nod.xml`、`.tll.xml` | 未実装 |
 | 構造道路網 | 構造確認用`netconvert`を実行する | structural用途は接続確認に限定 | node・edge・lane・connection・成分数 | structural `net.xml`、ログ | blockerにより未生成 |
@@ -98,11 +98,13 @@ flowchart TD
 | BBOX south | 35.528198081 | 同上 | 同上 |
 | BBOX east | 139.826027782 | 同上 | 同上 |
 | BBOX north | 35.613210171 | 同上 | 同上 |
-| v15 Dry Run候補way | 26,220 | BBOX内v15候補26,204とclosure追加16 | 可視化用旧集計26,201と区別 |
+| v16属性解決候補way | 26,220 | BBOX内候補26,204とclosure追加16 | v15と全way IDが同一でもrelation集合と入力hashは異なる |
+| v16最終分析対象way | 13,494 | governed wayとN03大田区境界の交差判定 | BBOX内候補数と区別 |
+| v16構造維持用way | 555 | 保持relationのmemberで最終分析対象外 | 配送分析対象と解釈しない |
 | closure追加node | 59 | restriction member補完 | IDと出力hashを保存 |
 | closure追加way | 16 | restriction member補完 | support elementとして別管理が必要 |
-| 保持した`type=restriction` | 581 | v15 closure規則 | 次版では車種別restrictionも対象 |
-| 見つかった`restriction:bus` | 3 | relation型別全件集計 | v15では除外、次版formal blocker |
+| 保持した`type=restriction` | 581 | v16 `REL-ORDINARY-001` | 通常規制として別集計 |
+| 保持した`restriction:bus` | 3 | v16 `REL-BUS-001` | バス規制として別集計 |
 | blocker row | 46,056 | Resolver全件Dry Run | 許容値ではなく停止理由 |
 | blockerを持つway | 24,346 | distinct way集計 | blocker rowと混同しない |
 | bulk missing | 45,749 | `value_state=missing`のstop row | criticality適用前の値 |
@@ -178,10 +180,15 @@ flowchart TD
 ### 定義済みだが未実装
 
 - laneとspeedの属性別criticality。
-- 307件の属性例外に対する排他的な決定表。
 - permission materializer、connection、TLS、final build、post-build auditの契約。
 - `oneway=-1`を元OSMの意味を保存して逆向きSUMO edgeへ写す方針。
-- `type=restriction:bus`を次版closureへ含める必要性。
+- `type=restriction:bus`を通常規制と分けて保持するv16 closure。
+
+### 実装済みだが値解決は保留
+
+- 307件の属性例外に対する20規則の排他的照合。
+- 通常、異常、境界の固定データと、production codeから独立した正解結果。
+- 一致なしまたは複数一致を停止する分類器と、全307行の一意一致試験。
 
 ### 未決定
 
@@ -205,33 +212,33 @@ flowchart TD
 | criticalityと証拠順位 | `05_src/traffic_simulation/specifications/attribute_criticality_and_evidence_specification.md` |
 | criticalityと証拠順位・日本語版 | `05_src/traffic_simulation/specifications/ja/attribute_criticality_and_evidence_specification_ja.md` |
 | 307件の例外とrelation scope | `reproducibility/config/traffic_simulation/resolver_exception_decision_table.yml` |
+| 日本・東京の例外分類規則 | `05_src/traffic_simulation/specifications/japan_tokyo_osm_exception_classification_rules.md` |
 | failure code | `05_src/traffic_simulation/specifications/08_failure_taxonomy.md` |
 | fixture要件 | `05_src/traffic_simulation/specifications/07_fixture_specification.md` |
 | v15全件Dry Runの事実 | `03_data/metadata/acquisition/20260723_ota_ward_v15_resolver_dry_run.md` |
+| v16 relation closureの事実 | `03_data/metadata/acquisition/20260730_ota_ward_relation_closure_v16.md` |
+| v16 relation closure設定 | `reproducibility/config/traffic_simulation/relation_closure_v16.yml` |
 | 実装順序と後続実験 | `05_src/traffic_simulation/implementation_plan.md` |
 | 変更履歴と判断理由 | `03_data/metadata/acquisition/20260718_sumo_tokyo_motorized_typemap_design.md` |
 
 ## 10. 次に行うこと
 
-1. 現在の4 schema、Predicate Generator、Semantic Validator、fixture
-   collection、RFC 8785 hash、test、仕様書を検証してcommitする。
-2. 作成済みfixture collectionを独立human reviewし、`review.json`を完成させ、
-   blocking findingなしの状態で受理hashを固定する。
-3. 実装済みPredicate Generatorを固定fixtureで再検証し、決定的出力と
+1. 実装済みPredicate Generatorを固定fixtureで再検証し、独立human reviewを
+   省略した判断を保持したまま、決定的出力と
    fail-closed failureを保存する。
-4. predicateから`criticality_level`、`selected_rule_id`、
+2. predicateから`criticality_level`、`selected_rule_id`、
    `matched_rule_ids`だけを決めるClassifierを実装する。
-5. classification、明示OSM値、外部証拠、model、placeholder ruleから
+3. classification、明示OSM値、外部証拠、model、placeholder ruleから
    resolution action、値、evidence、conflict、review・stop状態を決める
    Resolver stageを実装する。
-6. 固定fixtureでClassifier・Resolverを検証する。production outputに合わせて
+4. 固定fixtureでClassifier・Resolverを検証する。production outputに合わせて
    oracleを書き換えてはならない。
-7. `restriction:bus` 3件を含む次版relation closureを実装・受理し、参照完全性、
-   support element、候補way差分、入力hashをmanifestへ記録する。
-8. 受理済み次版母集団からstructural・formalを別artifactとして全件分類・解決し、
+5. 受理済みv16 relation closureをClassifier・Resolverへ接続する。
+6. v16母集団からstructural・formalを別artifactとして全件分類・解決し、
    stop recordを保持してsemantic validation後にatomic publishする。
-9. 307件の決定表を頻度と影響の順に実装し、permission materializerへ進む。
-10. 全件Dry Runを再実行し、v15との差分を自動生成する。
+7. 分類済み307件について各規則の値解決条件を実装し、停止を解消して
+   permission materializerへ進む。
+8. 全件Dry Runを再実行し、v15との差分を自動生成する。
 
 この段階ではformal SUMO道路網、較正済み交通、配送走行、QAOA比較の数値を
 生成しない。

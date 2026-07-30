@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/tkm-sano/kmd-analysis/relation_closure_manifest.schema.json",
+  "title": "Relation closure prepare manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_type",
+    "schema_version",
+    "config_id",
+    "config_version",
+    "run_id",
+    "status",
+    "generated_at",
+    "tool_versions",
+    "inputs",
+    "outputs",
+    "commands",
+    "relation_scope",
+    "element_counts",
+    "reference_validation",
+    "road_population",
+    "v15_comparison"
+  ],
+  "properties": {
+    "artifact_type": {"const": "relation_closure_manifest"},
+    "schema_version": {"const": 1},
+    "config_id": {"const": "ota_ward_relation_closure_v16"},
+    "config_version": {"const": 16},
+    "run_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["accepted", "failed"]},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "tool_versions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["osmium"],
+      "properties": {"osmium": {"type": "string", "minLength": 1}}
+    },
+    "inputs": {"$ref": "#/$defs/fileMap"},
+    "outputs": {"$ref": "#/$defs/fileMap"},
+    "commands": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "relation_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["retained_by_type", "retained_by_category", "retained_relation_ids_by_type", "rule_ids_by_type", "discarded_by_type", "required_relation_ids"],
+      "properties": {
+        "retained_by_type": {"$ref": "#/$defs/countMap"},
+        "retained_by_category": {"$ref": "#/$defs/countMap"},
+        "retained_relation_ids_by_type": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {"type": "integer", "minimum": 1},
+            "uniqueItems": true
+          }
+        },
+        "rule_ids_by_type": {
+          "type": "object",
+          "additionalProperties": {"type": "string", "minLength": 1}
+        },
+        "discarded_by_type": {"$ref": "#/$defs/countMap"},
+        "required_relation_ids": {
+          "type": "array",
+          "items": {"type": "integer", "minimum": 1},
+          "uniqueItems": true
+        }
+      }
+    },
+    "element_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bbox", "closed", "supplemented"],
+      "properties": {
+        "bbox": {"$ref": "#/$defs/elementCounts"},
+        "closed": {"$ref": "#/$defs/elementCounts"},
+        "supplemented": {"$ref": "#/$defs/elementCounts"}
+      }
+    },
+    "reference_validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "missing_node_references",
+        "missing_way_members",
+        "missing_relation_members",
+        "relation_cycles",
+        "duplicate_identifiers"
+      ],
+      "properties": {
+        "missing_node_references": {"type": "integer", "const": 0},
+        "missing_way_members": {"type": "integer", "const": 0},
+        "missing_relation_members": {"type": "integer", "const": 0},
+        "relation_cycles": {"type": "integer", "const": 0},
+        "duplicate_identifiers": {"type": "integer", "const": 0}
+      }
+    },
+    "road_population": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "governed_candidate_ways",
+        "final_analysis_target_ways",
+        "topology_support_ways",
+        "excluded_ways",
+        "candidate_by_highway",
+        "final_by_highway",
+        "candidate_by_origin"
+      ],
+      "properties": {
+        "governed_candidate_ways": {"type": "integer", "minimum": 0},
+        "final_analysis_target_ways": {"type": "integer", "minimum": 0},
+        "topology_support_ways": {"type": "integer", "minimum": 0},
+        "excluded_ways": {"type": "integer", "minimum": 0},
+        "candidate_by_highway": {"$ref": "#/$defs/countMap"},
+        "final_by_highway": {"$ref": "#/$defs/countMap"},
+        "candidate_by_origin": {"$ref": "#/$defs/countMap"}
+      }
+    },
+    "v15_comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["baseline_candidate_way_count", "added_candidate_way_ids", "removed_candidate_way_ids", "unchanged_candidate_way_count"],
+      "properties": {
+        "baseline_candidate_way_count": {"type": "integer", "minimum": 0},
+        "added_candidate_way_ids": {"type": "array", "items": {"type": "integer", "minimum": 1}, "uniqueItems": true},
+        "removed_candidate_way_ids": {"type": "array", "items": {"type": "integer", "minimum": 1}, "uniqueItems": true},
+        "unchanged_candidate_way_count": {"type": "integer", "minimum": 0}
+      }
+    }
+  },
+  "$defs": {
+    "fileMap": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    },
+    "countMap": {
+      "type": "object",
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    },
+    "elementCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nodes", "ways", "relations"],
+      "properties": {
+        "nodes": {"type": "integer", "minimum": 0},
+        "ways": {"type": "integer", "minimum": 0},
+        "relations": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}

@@ -106,16 +106,19 @@ Criticalityはway単位で一度だけではなく、
 structural-placeholder gateは
 `attribute_criticality_and_evidence_specification.md`で定義する。4 schema、
 Predicate Generator、Semantic Validator、production fixture collectionは
-実装済みである。fixture collectionの独立受理と、Classifier・Resolver stageの
+実装済みである。独立human reviewは研究責任者判断で省略しており、独立受理を
+完了条件として再要求しない。重要度Classifier・Resolver stageの
 実装・固定fixture検証が完了するまでは、classification・resolution統合入力を
 省略した全wayを`unclassified`とし、structural placeholderを通過させては
 ならない。
 
 観測されたv15例外母集団と未解決のdecision状態は、
 `reproducibility/config/traffic_simulation/resolver_exception_decision_table.yml`
-へ登録する。後続Resolver版が例外分類完了を主張するには、全行がちょうど1件の
-decision-table entryへ一致しなければならない。entryのruleと独立fixtureが
-実装されるまで、entryの存在だけで解決を許可してはならない。
+へ登録する。20件の例外分類rule、独立oracle、正常・異常・境界fixtureおよび
+排他的分類器は実装済みであり、v15例外307行はすべてちょうど1件の
+decision-table entryへ一致した。一致なしと複数一致は0件である。ただし、
+これは値解決の完了を意味しない。各entryのresolution ruleと必要証拠が
+実装されるまで、分類済みであることだけを根拠に解決を許可してはならない。
 
 ## Permission trace
 
@@ -124,6 +127,27 @@ decision-table entryへ一致しなければならない。entryのruleと独立
 class、方向、lane固有のOSM遷移を記録する。source tag・value、lane-local値、
 変更前後のvClass集合を含める。別方向または別laneへ適用されるtagを、その
 laneのtraceへ含めてはならない。
+
+## 全管理属性の被覆と停止記録
+
+監査記録は、保持する各道路について、`oneway`、`lanes`、`maxspeed`の判定を
+それぞれ正確に1件含まなければならない。通行権限についても、権限全体の停止、
+`blocked_by_prerequisite`による未実行記録、または方向・車線別の採用記録の
+いずれか一形式を必ず含める。前提属性による未実行記録は、原因となった停止を
+二重計上しないため、独立した続行阻害項目とは数えない。
+
+`decision=stop`である各行は、`stop_category`を正確に一つと、空でない
+`stop_category_rule_id`を持たなければならない。許可する区分は、
+`normal_rule`、`structural_confirmation_rule`、`exception_rule`、
+`additional_evidence_requirement`の4種類だけとする。停止でない行はこれらを
+持たない。区分は採るべき解決経路を示すものであり、値の採用や正式阻害の緩和を
+意味しない。
+
+正式用では`structural_placeholder`を0件とする。
+`permission_expectations.complete=true`には、保持道路の完全な被覆と続行阻害項目
+0件の両方を必要とする。阻害項目が一つでも残る間、正規化済みOSM XMLを公開して
+はならない。不完全な監査記録と通行権限期待値は失敗証拠として保存できるが、
+道路網生成入力には使用できない。
 
 ## 公開処理と入力完全性
 
@@ -166,9 +190,10 @@ v15が除外したgoverned vehicle固有restrictionを3件確認した。
 | `16026064` | `restriction:bus` | `only_straight_on` |
 
 `bus`はgoverned vClass universeに含まれるため、これらを道路外relationと分類
-できない。これは既知のformal scope blockerである。v15 closure、26,220件の
-候補way、Dry Runは不変baselineとして保持する。次版入力ではbaselineを暗黙に
-変更せず、新しいconfig identityとartifact pathを使用しなければならない。
+できなかった。この上流scope blockerは、2026年7月30日に受理した
+`ota_ward_relation_closure_v16`のprepare実行で解消した。v15 closure、
+26,220件の候補way、Dry Runは不変baselineとして保持し、v16はbaselineを
+暗黙に変更せず、新しいconfig identityとartifact pathを使用する。
 
 ### 次版closure方針
 
@@ -191,6 +216,22 @@ v15が除外したgoverned vehicle固有restrictionを3件確認した。
 vehicle universeへの適用可能性、restrictionの意味、source-tag形式には、
 明示的で版管理されたdecision ruleとfixtureが必要である。
 
+### 実行済みv16 closure
+
+受理済みv16実行は、`REL-ORDINARY-001`により`type=restriction` 581件、
+`REL-BUS-001`により`type=restriction:bus` 3件を保持した。登録済み関東PBF
+からmemberを再帰補完し、追加node 59件、追加way 16件、参照欠損0件、
+relation cycle 0件、OSM要素種別内の重複識別子0件を確認した。
+
+3件のbus restrictionが参照するwayはv15の通常restriction closureですでに
+補われていたため、属性解決候補は26,220件のままである。ただし、relation集合、
+config identity、run identity、PBF・XML hashは異なるため、同一artifactでは
+ない。要素役割artifactは、N03境界と交差する最終分析対象13,494 way、
+relation memberである構造維持用555 way、除外context 309,360 wayを分けて
+記録する。固定command、hash、件数は
+`03_data/metadata/acquisition/20260730_ota_ward_relation_closure_v16.md`
+に記録した。
+
 ### 母集団受入gate
 
 実データcriticality classifierは、次の条件がすべて合格した後に限り開始
@@ -206,8 +247,9 @@ vehicle universeへの適用可能性、restrictionの意味、source-tag形式�
 | v15との差分を明示 | 追加・除去・不変のway・relation ID |
 | 新artifactを独立識別 | 新config ID、run ID、path、SHA-256 |
 
-一つでも不合格なら、分類母集団は未受理とする。旧26,220-way母集団だけに
-criticality recordを生成し、後から新規wayを追加してはならない。
+v16 closureはこのgateを満たした。候補way IDがともに26,220件であっても、
+criticality recordはv16入力hashから再生成し、履歴v15 recordをv16として
+付け替えたり追加修正したりしてはならない。
 
 ### 下流成果物の無効化
 

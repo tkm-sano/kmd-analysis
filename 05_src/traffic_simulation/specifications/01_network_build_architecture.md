@@ -4,6 +4,7 @@
 
 | Component | Sole decision responsibility | Inputs | Outputs |
 |---|---|---|---|
+| Relation Closure | Governed relation scope, recursive member completion and analysis/support roles | registered BBOX PBF, regional source PBF, N03 boundary, closure config | relation-closed PBF/XML, element roles, closure manifest |
 | Resolver | OSM attribute interpretation and expected permissions | governed OSM XML, typemap, config, evidence tables | normalized OSM, permission expectations, audit, summary |
 | Provisional Build | SUMO topology creation and exact source lineage | normalized OSM, typemap, reviewed node joins | plain XML, edge provenance, provisional logs |
 | Permission Materializer | Lane/connection permission projection and zero-permission removal | expectations, provenance, provisional edge/connection XML | permission edge/connection XML, audit, summary/failure |
@@ -17,6 +18,8 @@ No downstream component MAY independently reinterpret OSM access tags or invent 
 
 ```text
 registered OSM + evidence + config
+  -> Relation Closure
+  -> relation-closed OSM + element roles + closure manifest
   -> Resolver
   -> normalized OSM + permission_expectations.json
   -> Provisional Build

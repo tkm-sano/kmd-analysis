@@ -3,8 +3,9 @@
 ## Status
 
 - Configuration: `ota_ward_sumo_network_v15`
+- Accepted relation-closure configuration: `ota_ward_relation_closure_v16`
 - Created: 2026-07-18
-- Last updated: 2026-07-23
+- Last updated: 2026-07-30
 - Configuration lineage date: 2026-07-16
 - Runtime permission fixture: failed
 - Formal build input ready: no
@@ -31,7 +32,24 @@ No unsupported explicit OSM value may be replaced by a structural placeholder. `
 
 An absent `oneway` tag is not itself classified as an unresolved travel direction. For an ordinary road, the Resolver preserves the source absence in its audit, derives the effective value `no` from the fixed OSM interpretation rule, records `derived_osm_rule`, and materializes that effective value for conversion. This is rule-based interpretation, not mode-value imputation. The valid value `oneway=-1` is classified separately as `valid_but_unsupported` until reverse-direction generation and direction-dependent tags can be handled safely.
 
-The 26,201 candidate ways are not reviewed individually. Deterministic rules process ordinary cases and the Dry Run records every decision, while human review is limited to `unresolved`, `conflict`, `valid_but_unsupported`, `invalid` and unregistered `unexpected` cases. A newly observed exception is first represented in the decision table and a small fixture, then implemented and rerun over the complete input. Direct one-off editing of the source OSM or a generated `net.xml` is prohibited.
+The accepted v16 closure contains 26,220 governed attribute-resolution
+candidate ways; 13,494 intersect the final N03 Ota Ward analysis boundary.
+These ways are not reviewed individually. Deterministic rules process ordinary
+cases and the Dry Run records every decision, while human review is limited to
+`unresolved`, `conflict`, `valid_but_unsupported`, `invalid` and unregistered
+`unexpected` cases. A newly observed exception is first represented in the
+decision table and a small fixture, then implemented and rerun over the
+complete input. Direct one-off editing of the source OSM or a generated
+`net.xml` is prohibited.
+
+The historical v15 Dry Run contains 307 non-missing rule/data exception rows.
+Twenty mutually exclusive exception-classification rules, normal, abnormal and
+boundary fixtures, and a production-independent oracle are implemented. All
+307 rows match exactly one rule; unmatched and overlapping counts are zero.
+The fixed analysis container passes the prior 331-test suite and the current
+335-test suite. This proves classification coverage only: the governed values
+remain unresolved and the v16 population has not yet passed the criticality
+Classifier and Resolver stages.
 
 ## Network Scope
 
@@ -88,17 +106,17 @@ Structural output is not valid for travel-time, capacity, delivery or solver-com
 
 | Gate | Requirement | Actual implementation | Runtime/real-data evidence | Current result |
 |---|---|---|---|---|
-| Build input | Registered PBF, extract and hashes | implemented | acquisition/extraction completed; manifest recheck pending | pending |
+| Build input | Registered PBF, relation scope, recursive closure and hashes | implemented | v16 real-data closure accepted; ordinary 581 and bus 3 restrictions retained; reference errors zero | eligible |
 | Build input | Typemap XML | implemented | XSD passed; importer governance fixture failed | ineligible |
-| Build input | Attribute resolver | partial governed scope implemented | registered structural Dry Run completed; 24,346 ways retain blockers | pending |
-| Build input | Permission expectation JSON | v15 Schema output with lane-local rule trace implemented | registered input emitted an incomplete Schema-valid artifact with 46,056 blockers | pending |
+| Build input | Attribute resolver | managed-attribute coverage, exclusive stop categories, fail-closed publication and 20-rule exception classifier implemented; criticality Classifier/v16 Resolver integration pending | all 307 v15 rule/data exceptions match exactly one rule; prior 331 and current 335 tests pass; v16 full attribute resolution not run | pending |
+| Build input | Permission expectation JSON | full-way completeness gate and lane-local rule trace implemented | fixture confirms `complete=false` and no normalized XML while blockers remain | pending |
 | Build input | Permission materializer | contract fixed, implementation absent | materialized fixture not run | ineligible |
 | Build input | `oneway=-1` | fail-closed detection only | one occurrence confirmed and stopped in registered structural Dry Run | conditional |
 | Build input | Formal attribute evidence/imputation | not implemented | not run | pending |
 | Build input | Junction join review/node file | not implemented | not run | pending |
 | Build input | Post-permission signal/TLS review | not implemented | not run | pending |
 | Build input | Vehicle-input validator | not implemented | not run | pending |
-| Build input | `prepare`/`validate` pipeline | not implemented | not run | pending |
+| Build input | relation-closure `prepare` pipeline | implemented | v16 registered inputs reproduced identical PBF/XML/ID/role hashes twice | eligible |
 | Build input | Environment/build manifest | not implemented | isolated commands only | pending |
 | Network acceptance | Lane/connection post-audit | not implemented | not run | pending |
 | Network acceptance | Warning/exclusion audit | not implemented | known warnings recorded only | pending |

@@ -4,6 +4,7 @@ status: classification_complete_resolution_pending
 authority:
   specification: 05_src/traffic_simulation/specifications/02_resolver_specification.md
   criticality_specification: 05_src/traffic_simulation/specifications/attribute_criticality_and_evidence_specification.md
+  japan_tokyo_rules: 05_src/traffic_simulation/specifications/japan_tokyo_osm_exception_classification_rules.md
 baseline:
   run_id: ota-ward-v15-structural-20260723-01
   config_id: ota_ward_sumo_network_v15
@@ -12,6 +13,13 @@ baseline:
   exception_queue_sha256: 89a0edc656244619dd81e2dc53ddd1b6c6d0abc2650dab7604de110ff7cad858
   rule_or_data_exception_rows: 307
   counting_unit: attribute_way_row
+  exception_population:
+    decision: stop
+    formal_blocker: true
+    included_value_states:
+      - unresolved
+      - valid_but_unsupported
+      - conflict
 policies:
   categories_are_mutually_exclusive: true
   every_baseline_exception_must_match_exactly_one_entry: true
@@ -22,6 +30,8 @@ policies:
   unimplemented_resolution_action: stop
   conditional_without_complete_context: stop
   lower_precedence_rule_must_not_override_applicable_higher_evidence: true
+  classification_does_not_resolve_or_adopt_values: true
+  japanese_legal_defaults_require_reference_date_and_applicable_road_state: true
 resolution_states:
   - deterministic_normal_case
   - governed_structural_case
@@ -31,6 +41,8 @@ decision_statuses:
   - fixture_required
   - implementation_required
   - ready_for_fixture_execution
+  - implemented
+classification_statuses:
   - implemented
 entries:
   - id: EXC-ONEWAY-001
@@ -45,6 +57,7 @@ entries:
     current_action: stop
     failure_code: RS007
     target_rule: preserve_source_way_direction_and_reverse_only_the_governed_sumo_edge_direction_with_all_direction_dependent_semantics_remapped
+    classification_status: implemented
     decision_status: specification_required
     required_fixtures:
       - reverse_geometry_and_from_to
@@ -66,6 +79,7 @@ entries:
     current_action: stop
     failure_code: RS008
     target_rule: no_automatic_directional_allocation_until_each_encoding_has_an_explicit_rule
+    classification_status: implemented
     decision_status: specification_required
     required_fixtures:
       - lanes_both_ways
@@ -83,6 +97,7 @@ entries:
     current_action: stop
     failure_code: RS008
     target_rule: retain_conflict_until_authoritative_evidence_resolves_the_segment
+    classification_status: implemented
     decision_status: specification_required
     required_fixtures:
       - total_directional_conflict
@@ -102,6 +117,7 @@ entries:
     current_action: stop
     failure_code: RS003
     target_rule: classify_multiple_value_semantics_before_any_numeric_adoption
+    classification_status: implemented
     decision_status: specification_required
     required_fixtures:
       - supported_single_numeric
@@ -123,6 +139,7 @@ entries:
     current_action: stop
     failure_code: RS003
     target_rule: require_dated_japanese_legal_rule_and_compatible_road_state_before_derivation
+    classification_status: implemented
     decision_status: specification_required
     required_fixtures:
       - japanese_legal_type_supported
@@ -143,6 +160,7 @@ entries:
     current_action: stop
     failure_code: RS003
     target_rule: advisory_speed_must_not_be_materialized_as_legal_maxspeed
+    classification_status: implemented
     decision_status: fixture_required
     required_fixtures:
       - advisory_does_not_replace_missing_legal_maxspeed
@@ -158,6 +176,7 @@ entries:
     current_action: stop
     failure_code: RS008
     target_rule: require_resolved_directional_lane_allocation_before_lane_permission_materialization
+    classification_status: implemented
     decision_status: specification_required
     required_fixtures:
       - even_total_without_lane_semantics
@@ -176,6 +195,7 @@ entries:
     current_action: stop
     failure_code: RS009
     target_rule: evaluate_only_with_registered_time_vehicle_and_condition_context
+    classification_status: implemented
     decision_status: specification_required
     required_fixtures:
       - hgv_condition_active
@@ -193,6 +213,7 @@ entries:
     current_action: stop
     failure_code: RS009
     target_rule: map_supported_motorcycle_values_to_the_governed_motorcycle_vclass_without_expanding_typemap_baseline
+    classification_status: implemented
     decision_status: specification_required
     required_fixtures:
       - motorcycle_designated
@@ -210,6 +231,7 @@ entries:
     current_action: stop
     failure_code: RS009
     target_rule: evaluate_only_with_complete_registered_condition_context
+    classification_status: implemented
     decision_status: specification_required
     required_fixtures:
       - motor_vehicle_time_condition
@@ -227,6 +249,7 @@ entries:
     current_action: stop
     failure_code: RS009
     target_rule: define_psv_mapping_to_governed_bus_and_taxi_classes_with_typemap_intersection
+    classification_status: implemented
     decision_status: specification_required
     required_fixtures:
       - psv_yes_after_access_no
@@ -243,6 +266,7 @@ entries:
     current_action: stop
     failure_code: RS009
     target_rule: define_conditional_precedence_and_vehicle_context
+    classification_status: implemented
     decision_status: specification_required
     required_fixtures:
       - combined_goods_vehicle_condition
@@ -259,6 +283,7 @@ entries:
     current_action: stop
     failure_code: RS009
     target_rule: decide_private_road_inclusion_before_permission_resolution
+    classification_status: implemented
     decision_status: specification_required
     required_fixtures:
       - private_without_override
@@ -275,6 +300,7 @@ entries:
     current_action: stop
     failure_code: RS009
     target_rule: define_class_and_conditional_precedence
+    classification_status: implemented
     decision_status: specification_required
     required_fixtures:
       - goods_and_motor_vehicle_condition
@@ -290,6 +316,7 @@ entries:
     current_action: stop
     failure_code: RS009
     target_rule: define_class_and_conditional_precedence
+    classification_status: implemented
     decision_status: specification_required
     required_fixtures:
       - goods_and_vehicle_condition
@@ -305,6 +332,7 @@ entries:
     current_action: stop
     failure_code: RS009
     target_rule: define_lane_local_psv_mapping_after_directional_lane_resolution
+    classification_status: implemented
     decision_status: specification_required
     required_fixtures:
       - psv_lanes_complete
@@ -322,6 +350,7 @@ entries:
     current_action: stop
     failure_code: RS009
     target_rule: decide_destination_access_representation_and_routing_scope
+    classification_status: implemented
     decision_status: specification_required
     required_fixtures:
       - destination_without_override
@@ -338,6 +367,7 @@ entries:
     current_action: stop
     failure_code: RS009
     target_rule: decide_destination_semantics_for_governed_truck_class
+    classification_status: implemented
     decision_status: specification_required
     required_fixtures:
       - hgv_destination
@@ -353,6 +383,7 @@ entries:
     current_action: stop
     failure_code: RS009
     target_rule: define_goods_condition_and_weight_context
+    classification_status: implemented
     decision_status: specification_required
     required_fixtures:
       - goods_weight_condition
@@ -368,6 +399,7 @@ entries:
     current_action: stop
     failure_code: RS009
     target_rule: decide_permit_context_and_inclusion
+    classification_status: implemented
     decision_status: specification_required
     required_fixtures:
       - permit_context_missing
@@ -405,9 +437,9 @@ relation_scope_findings:
         only_straight_on: 2
         no_straight_on: 1
       current_v15_action: discarded_before_member_validation
-      formal_action: stop
+      formal_action: retain_and_close
       target_rule: retain_and_close_vehicle_specific_turn_restrictions_applicable_to_governed_vclasses
-      decision_status: specification_required
+      decision_status: implemented
       required_fixtures:
         - bus_only_straight_on
         - bus_no_straight_on

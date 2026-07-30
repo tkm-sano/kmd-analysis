@@ -163,9 +163,76 @@ def test_negative_fixture_reports_all_required_attributes_and_does_not_impute_un
     )
     assert rows["lanes"].value_state == "missing"
     assert rows["maxspeed"].value_state == "missing"
+    assert rows["lanes"].stop_category == "structural_confirmation_rule"
+    assert rows["maxspeed"].stop_category == "structural_confirmation_rule"
+    assert rows["permissions"].decision == "blocked_by_prerequisite"
+    assert rows["permissions"].stop_category == ""
     assert len(result.blockers) == 2
     assert "lanes" in result.blockers[0]
     assert "maxspeed" in result.blockers[1]
+
+
+def test_stop_categories_are_exclusive_and_non_stops_have_none() -> None:
+    policy = resolver.load_policy("formal")
+    tags = {"highway": "residential"}
+    rows = [
+        resolver._audit(
+            way_id="1",
+            tags=tags,
+            attribute="lanes",
+            source_value="",
+            adopted_value="",
+            value_state="missing",
+            policy=policy,
+            derivation_method="no_admissible_lane_value",
+            criticality="unclassified",
+            decision="stop",
+        ),
+        resolver._audit(
+            way_id="2",
+            tags=tags,
+            attribute="lanes",
+            source_value="bad",
+            adopted_value="",
+            value_state="invalid",
+            policy=policy,
+            derivation_method="invalid_explicit_lane_value",
+            criticality="unclassified",
+            decision="stop",
+        ),
+        resolver._audit(
+            way_id="3",
+            tags=tags,
+            attribute="lanes",
+            source_value="",
+            adopted_value="",
+            value_state="governed_precondition_not_met",
+            policy=policy,
+            derivation_method="normal_precondition_gate",
+            criticality="unclassified",
+            decision="stop",
+        ),
+        resolver._audit(
+            way_id="4",
+            tags=tags,
+            attribute="lanes",
+            source_value="2",
+            adopted_value="2",
+            value_state="explicit_osm",
+            policy=policy,
+            derivation_method="explicit_osm_lanes",
+            criticality="unclassified",
+            decision="adopted",
+        ),
+    ]
+    assert [row.stop_category for row in rows] == [
+        "additional_evidence_requirement",
+        "exception_rule",
+        "normal_rule",
+        "",
+    ]
+    assert all(row.stop_category_rule_id for row in rows[:3])
+    assert rows[3].stop_category_rule_id == ""
 
 
 def test_reverse_oneway_stops_without_mutating_direction_dependent_semantics() -> None:
@@ -457,7 +524,17 @@ def test_resolve_file_writes_audit_but_not_xml_when_gate_fails(
     assert "normalized_osm" not in permissions
     with audit_path.open(newline="", encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
-    assert {row["attribute"] for row in rows} == {"oneway", "lanes", "maxspeed"}
+    assert {row["attribute"] for row in rows} == {
+        "oneway",
+        "lanes",
+        "maxspeed",
+        "permissions",
+    }
+    stopping_rows = [row for row in rows if row["decision"] == "stop"]
+    assert {row["stop_category"] for row in stopping_rows} == {
+        "additional_evidence_requirement"
+    }
+    assert all(row["stop_category_rule_id"] for row in stopping_rows)
 
 
 def test_resolve_file_writes_normalized_xml_and_complete_audit(

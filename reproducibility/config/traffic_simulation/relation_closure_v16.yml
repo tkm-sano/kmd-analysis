@@ -1,0 +1,113 @@
+schema_version: 1
+config_id: ota_ward_relation_closure_v16
+config_version: 16
+run_id: ota-ward-relation-closure-v16-20260730-01
+decision_date: "2026-07-30"
+study_area:
+  region_id: ota_ward
+  boundary_rule: intersects_n03_administrative_boundary
+inputs:
+  bbox_extract:
+    path: 03_data/processed/traffic_simulation/road_network/osm_extracts/osm_ota_ward_20260716.osm.pbf
+    sha256: 10d554a13e89b815ca416c272d23d9477d52e312fa3d299f466fb3c01cf9d041
+  regional_authority:
+    path: 03_data/raw/traffic_simulation/osm/kanto-260716.osm.pbf
+    sha256: aef890f28b652ed7bd2b0d77e86f263219b479fe3eedbdd8610dcfc1572c420d
+  v15_baseline:
+    relation_closed_pbf:
+      path: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_resolver_input.osm.pbf
+      sha256: 44374ffbb038a064c825a97445790d3584c16199d9a863c2c7acee29642d86b2
+    candidate_way_count: 26220
+outputs:
+  id_set: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.ids
+  relation_closed_pbf: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.pbf
+  relation_closed_xml: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+  element_roles: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16_element_roles.json
+  manifest: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16_manifest.json
+relation_policy:
+  retained:
+    restriction:
+      rule_id: REL-ORDINARY-001
+      category: ordinary_turn_restriction
+      governed_vclasses:
+        - passenger
+        - taxi
+        - bus
+        - coach
+        - delivery
+        - truck
+        - motorcycle
+    "restriction:bus":
+      rule_id: REL-BUS-001
+      category: bus_turn_restriction
+      governed_vclasses:
+        - bus
+  stop_type_prefixes:
+    - "restriction:"
+  unrelated_type_rule_id: REL-DISCARD-001
+  known_required_relation_ids:
+    - 16016504
+    - 16016506
+    - 16026064
+closure:
+  base_elements:
+    - node
+    - way
+  reference_authority: regional_authority
+  recursive_relation_members: true
+  missing_reference_policy: stop
+  relation_cycle_policy: stop
+  duplicate_identifier_policy: stop_within_element_namespace
+road_population:
+  governed_highway_types:
+    - motorway
+    - motorway_link
+    - trunk
+    - trunk_link
+    - primary
+    - primary_link
+    - secondary
+    - secondary_link
+    - tertiary
+    - tertiary_link
+    - residential
+    - unclassified
+    - living_street
+    - service
+    - bus_guideway
+    - busway
+  roles:
+    final_analysis_target: governed_highway_way_intersecting_n03_boundary
+    topology_support: governed_relation_member_not_in_final_analysis_target
+    excluded: retained_for_source_context_only
+tools:
+  osmium_version: 1.15.0
+  osmium_image_service: analysis
+  semantic_hash_note: Output byte hashes are fixed only for the registered toolchain and inputs.
+acceptance:
+  retained_relation_counts:
+    restriction: 581
+    "restriction:bus": 3
+  element_counts:
+    bbox:
+      nodes: 1709568
+      ways: 323393
+      relations: 2373
+    closed:
+      nodes: 1709627
+      ways: 323409
+      relations: 584
+    supplemented:
+      nodes: 59
+      ways: 16
+      relations: 0
+  road_population:
+    governed_candidate_ways: 26220
+    final_analysis_target_ways: 13494
+    topology_support_ways: 555
+    excluded_ways: 309360
+  output_sha256:
+    id_set: 9e9e25bc2db3c340a1fa1e085071a41626884ed2760c293ace226b11f4e9b789
+    relation_closed_pbf: ea9c20b4c1214c7f6cb00afb977638f5e9b69535c53787e2108006814e61591d
+    relation_closed_xml: 8b5157e48c3c87c2b4430f56d6abe292ce1ea5449b374ae4cb395fc19475b67d
+    element_roles: 09284abce54e6e2c0e3e424f3cf389c15051c8cbd04a2421034c2928fc7bbea2

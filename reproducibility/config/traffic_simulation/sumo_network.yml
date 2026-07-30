@@ -20,6 +20,7 @@ policy_documents:
   requirements_traceability: reproducibility/config/traffic_simulation/requirements_traceability.yml
 artifact_schema_registry:
   common: reproducibility/config/traffic_simulation/schemas/artifact_common.schema.json
+  relation_closure_manifest: reproducibility/config/traffic_simulation/schemas/relation_closure_manifest.schema.json
   classification_predicates: reproducibility/config/traffic_simulation/schemas/classification_predicates.schema.json
   predicate_source_registry: reproducibility/config/traffic_simulation/schemas/predicate_source_registry.schema.json
   attribute_classification: reproducibility/config/traffic_simulation/schemas/attribute_classification.schema.json
@@ -712,7 +713,7 @@ relation_resolution:
   known_formal_scope_blockers:
     - source_type: "restriction:bus"
       observed_count: 3
-      action: retain_in_next_config_version_and_fixture_before_formal_build
+      action: resolved_in_accepted_relation_closure_v16_pending_resolver_migration
   next_version_required_retained_types:
     - restriction
     - "restriction:bus"
@@ -725,6 +726,46 @@ relation_resolution:
     referenced_element_authority: registered_regional_raw_pbf
     recursively_add_referenced_elements: true
     record_intermediate_pbf_and_xml_sha256: true
+  accepted_upstream_closure:
+    config_id: ota_ward_relation_closure_v16
+    config: reproducibility/config/traffic_simulation/relation_closure_v16.yml
+    evidence: 03_data/metadata/acquisition/20260730_ota_ward_relation_closure_v16.md
+    relation_closed_pbf_sha256: ea9c20b4c1214c7f6cb00afb977638f5e9b69535c53787e2108006814e61591d
+    relation_closed_xml_sha256: 8b5157e48c3c87c2b4430f56d6abe292ce1ea5449b374ae4cb395fc19475b67d
+    candidate_way_count: 26220
+    resolver_migration_complete: false
+
+attribute_stop_records:
+  implementation_status: implemented_in_resolver_audit_v16_candidate
+  managed_attribute_coverage:
+    required_once_per_retained_way:
+      - oneway
+      - lanes
+      - maxspeed
+    permission_disposition_required_per_retained_way: true
+    permission_disposition_forms:
+      - aggregate_stop
+      - blocked_by_prerequisite
+      - one_or_more_direction_lane_results
+  exclusive_stop_categories:
+    normal_rule:
+      rule_id: STOP-NORMAL-001
+      meaning: a normal governed rule deliberately stops on an unmet precondition
+    structural_confirmation_rule:
+      rule_id: STOP-STRUCTURAL-001
+      meaning: a structural-only missing-value rule remains unresolved
+    exception_rule:
+      rule_id: STOP-EXCEPTION-001
+      meaning: an invalid, conflicting, conditional, asymmetric, or unsupported case requires an exception rule
+    additional_evidence_requirement:
+      rule_id: STOP-EVIDENCE-001
+      meaning: formal resolution requires registered evidence that is not available
+  invariants:
+    every_stop_has_exactly_one_category: true
+    non_stop_rows_have_no_stop_category: true
+    formal_structural_placeholder_count_must_equal: 0
+    complete_permission_expectations_require_full_way_coverage: true
+    normalized_osm_publication_requires_blocker_count: 0
 
 permission_materialization:
   contract_version: sumo_plain_xml_permissions_v3

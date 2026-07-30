@@ -18,6 +18,18 @@ The model-development lifecycle, Verification, calibration, independent
 Validation, evidence requirements, and formal-use gates are organized in
 [`simulation_model_development_and_vv.md`](simulation_model_development_and_vv.md).
 
+The current blockers, their evidence, downstream effects, resolution work, and
+acceptance criteria are documented in
+[`current_issues_and_blockers.md`](current_issues_and_blockers.md).
+
+The Japan/Tokyo interpretation policy and the implemented one-to-one
+classification rules for the 307 governed Resolver exception rows are recorded
+in
+[`japan_tokyo_osm_exception_classification_rules.md`](specifications/japan_tokyo_osm_exception_classification_rules.md).
+The fixed-input execution record, one-to-one row counts and the passing
+331/335-test verification results are recorded in
+[`20260730_ota_ward_v15_exception_rule_validation.md`](../../03_data/metadata/acquisition/20260730_ota_ward_v15_exception_rule_validation.md).
+
 The authoritative rules for road attributes, external-data matching,
 structural placeholders, human review, and formal-network quality gates are
 recorded in

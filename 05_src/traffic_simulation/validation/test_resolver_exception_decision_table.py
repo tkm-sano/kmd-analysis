@@ -40,6 +40,7 @@ def test_decision_table_accounts_for_the_full_v15_exception_population() -> None
     assert table["baseline"]["rule_or_data_exception_rows"] == 307
     assert len({entry["id"] for entry in entries}) == len(entries)
     assert all(entry["baseline_rows"] > 0 for entry in entries)
+    assert all(entry["classification_status"] == "implemented" for entry in entries)
     assert all(
         entry["baseline_distinct_ways"] == entry["baseline_rows"]
         for entry in entries
@@ -71,8 +72,10 @@ def test_unimplemented_decision_entries_remain_fail_closed() -> None:
 
     relation_entries = table["relation_scope_findings"]["entries"]
     assert sum(entry["baseline_relations"] for entry in relation_entries) == 3
-    assert all(entry["formal_action"] == "stop" for entry in relation_entries)
-    assert all(entry["decision_status"] != "implemented" for entry in relation_entries)
+    assert all(
+        entry["formal_action"] == "retain_and_close" for entry in relation_entries
+    )
+    assert all(entry["decision_status"] == "implemented" for entry in relation_entries)
 
 
 def test_decision_table_references_existing_authorities() -> None:

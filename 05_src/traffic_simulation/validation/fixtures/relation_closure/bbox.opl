@@ -1,0 +1,9 @@
+n1 v1 dV c0 t2026-07-16T00:00:00Z i1 u T x139.70 y35.55
+n2 v1 dV c0 t2026-07-16T00:00:00Z i1 u T x139.71 y35.55
+n3 v1 dV c0 t2026-07-16T00:00:00Z i1 u T x139.72 y35.55
+n4 v1 dV c0 t2026-07-16T00:00:00Z i1 u T x139.73 y35.55
+w10 v1 dV c0 t2026-07-16T00:00:00Z i1 u Thighway=residential Nn1,n2
+w11 v1 dV c0 t2026-07-16T00:00:00Z i1 u Thighway=residential Nn3,n4
+r100 v1 dV c0 t2026-07-16T00:00:00Z i1 u Trestriction=no_left_turn,type=restriction Mw10@from,n2@via,w11@to
+r101 v1 dV c0 t2026-07-16T00:00:00Z i1 u Trestriction=only_straight_on,type=restriction:bus Mw10@from,n2@via,w11@to
+r102 v1 dV c0 t2026-07-16T00:00:00Z i1 u Ttype=route Mw10@

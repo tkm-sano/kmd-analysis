@@ -11,7 +11,7 @@
 |---|---|
 | 現在工程 | 6 / 21: **SUMO道路網生成・構造検証** |
 | 完了工程 | 5工程 |
-| 概要 | v15 Resolver全件Dry Runを基準に、属性別criticalityの実装と307件の決定表規則・fixtureを整備する段階 |
+| 概要 | バス規制を含むv16母集団を受理し、v15属性例外307行の排他的分類を完了して、重要度Classifier・Resolverをv16入力へ接続する段階 |
 
 ```mermaid
 flowchart LR
@@ -31,15 +31,15 @@ flowchart LR
 
 | 対象 | 判定 | 説明 |
 |---|---|---|
-| 道路網仕様 | **統制済みドラフト** (`governed_draft`) | v15 Resolverの登録済み入力Dry Runは完了したが、46,056 blockerが残りformal実行は未承認 |
+| 道路網仕様 | **統制済みドラフト** (`governed_draft`) | v16参照補完母集団とv15属性例外307行の排他的分類は検証済みだが、重要度Classifier・Resolverのv16移行と属性値blocker解消が未完了 |
 | 正式SUMO道路網 | **未承認** (`not_accepted`) | permission materializerと実ネットワーク検証が未完了 |
 | 下流実験 | **実行不可** (`not_ready`) | 承認済みformalネットワークがないため、較正・配送・QAOA評価へ進まない |
 
 ## 現在の阻害事項
 
-- lanes・maxspeedの属性別criticalityは4 schema、predicate generator、semantic validator、production codeから独立して作成したfixture collectionを実装済みである。独立human reviewは研究責任者判断で省略し、classifier、resolver stage、固定Classifier・Resolver実行証拠は未完了である
-- permission未解決264行、車線・速度表現未対応41行、oneway=-1 1行、車線矛盾1行が未解決
-- v15 relation scopeがバス向けturn restriction 3件を除外しており、次版closure・Resolver規則が未実装
+- lanes・maxspeedの属性別criticalityは4 schema、predicate generator、semantic validator、production codeから独立して作成したfixture collectionを実装済みである。独立human reviewは研究責任者判断で省略した。例外分類器とは別に、重要度classifier、resolver stage、固定Classifier・Resolver実行証拠は未完了である
+- 307行は20規則へ排他的に分類済みだが、permission 264行、車線・速度42行、oneway 1行の属性値解決は未完了
+- v16 relation closureはバス向けturn restriction 3件を含めて受理済みだが、Classifier・Resolverは新入力hashへ未接続
 - permission materializerが未実装で、SUMO 1.24.0固定fixtureも未実行
 - formal属性証拠、ジャンクション・TLSレビュー、prepare/validateパイプライン、事後監査が未完了
 
@@ -47,10 +47,9 @@ flowchart LR
 
 1. 固定fixtureでpredicate generatorを再検証し、独立human reviewを省略した判断と自動検証結果を保持する
 2. predicateからlevelとrule IDだけを決めるclassifierと、値・evidence・review・stop状態を決めるresolver stageを順に実装し、固定fixtureで統合検証する
-3. type=restriction:bus 3件を次版のrelation closure・Resolver対象へ含め、参照完全性とturn restriction保持をfixtureで検証する
-4. 次版closureの候補母集団を受理してから、全way・属性・profileの実データcriticalityを新しい入力hashから生成する
-5. 307件を排他的に登録した決定表について、優先度順に規則とproduction codeから独立したfixtureを実装し、未実装項目は停止状態を維持する
-6. Resolver blocker解消と並行してpermission materializerを実装し、SUMO 1.24.0固定fixtureでlane・connection期待値を検証する
+3. 受理済みv16 closureをClassifier・Resolver入力へ接続し、全way・属性・profileの実データcriticalityを新しい入力hashから生成する
+4. 排他的分類済みの307件について、日本・東京の証拠条件を満たす値解決規則を優先度順に実装し、未解決項目は停止状態を維持する
+5. Resolver blocker解消と並行してpermission materializerを実装し、SUMO 1.24.0固定fixtureでlane・connection期待値を検証する
 
 ## 全工程
 
@@ -61,7 +60,7 @@ flowchart LR
 | 3 | `study_area` | N03大田区研究範囲 | 完了 | [study_areas.yml](reproducibility/config/traffic_simulation/study_areas.yml)<br>[20260717_mlit_n03_2026_tokyo_acquisition.md](03_data/metadata/acquisition/20260717_mlit_n03_2026_tokyo_acquisition.md) |
 | 4 | `baseline_inputs` | JARTIC・OSM基礎入力 | 完了 | [20260717_jartic_traffic_volume_acquisition.md](03_data/metadata/acquisition/20260717_jartic_traffic_volume_acquisition.md)<br>[20260717_osm_ota_ward_acquisition.md](03_data/metadata/acquisition/20260717_osm_ota_ward_acquisition.md) |
 | 5 | `input_visualization` | 入力道路・観測点レビュー地図 | 完了 | [render_study_area.py](05_src/traffic_simulation/visualization/render_study_area.py)<br>[README.md](05_src/traffic_simulation/visualization/README.md) |
-| 6 | `sumo_network` | **SUMO道路網生成・構造検証** | **進行中** | - |
+| 6 | `sumo_network` | **SUMO道路網生成・構造検証** | **進行中** | [relation_closure_v16.yml](reproducibility/config/traffic_simulation/relation_closure_v16.yml)<br>[20260730_ota_ward_relation_closure_v16.md](03_data/metadata/acquisition/20260730_ota_ward_relation_closure_v16.md)<br>[20260730_ota_ward_v15_exception_rule_validation.md](03_data/metadata/acquisition/20260730_ota_ward_v15_exception_rule_validation.md)<br>[build_sumo_network.py](05_src/traffic_simulation/network/build_sumo_network.py)<br>[classify_resolver_exceptions.py](05_src/traffic_simulation/network/classify_resolver_exceptions.py) |
 | 7 | `demand_and_observations` | 観測拡充・交通需要生成 | 未着手 | - |
 | 8 | `optimization_implementation_validation` | 最適化基盤検証・配送EV制約の段階追加 | 未着手 | - |
 | 9 | `signal_vehicle_driver` | 信号・車両・運転行動設定 | 未着手 | - |

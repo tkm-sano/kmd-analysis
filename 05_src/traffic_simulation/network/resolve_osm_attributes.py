@@ -16,7 +16,7 @@ import json
 import re
 import sys
 import tempfile
-from collections import Counter
+from collections import Counter, defaultdict
 from dataclasses import asdict, dataclass
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
@@ -101,8 +101,18 @@ AUDIT_FIELDS: Final = (
     "match_confidence",
     "criticality",
     "decision",
+    "stop_category",
+    "stop_category_rule_id",
     "reviewer",
     "reviewed_at",
+)
+STOP_CATEGORIES: Final = frozenset(
+    {
+        "normal_rule",
+        "structural_confirmation_rule",
+        "exception_rule",
+        "additional_evidence_requirement",
+    }
 )
 
 
@@ -128,6 +138,8 @@ class AuditRow:
     match_confidence: str
     criticality: str
     decision: str
+    stop_category: str = ""
+    stop_category_rule_id: str = ""
     reviewer: str = ""
     reviewed_at: str = ""
 
@@ -533,7 +545,45 @@ def _audit(
     criticality: str,
     decision: str,
     match_confidence: str = "not_applicable",
+    prerequisite_stop_categories: Sequence[str] = (),
 ) -> AuditRow:
+    stop_category = ""
+    stop_category_rule_id = ""
+    if decision == "stop":
+        unknown = set(prerequisite_stop_categories) - STOP_CATEGORIES
+        if unknown:
+            raise ResolutionError(f"unknown prerequisite stop categories: {sorted(unknown)}")
+        if prerequisite_stop_categories:
+            priority = (
+                "exception_rule",
+                "additional_evidence_requirement",
+                "structural_confirmation_rule",
+                "normal_rule",
+            )
+            stop_category = next(
+                item for item in priority if item in prerequisite_stop_categories
+            )
+            stop_category_rule_id = "STOP-DEPENDENCY-001"
+        elif value_state == "missing":
+            if policy.profile == "structural":
+                stop_category = "structural_confirmation_rule"
+                stop_category_rule_id = "STOP-STRUCTURAL-001"
+            else:
+                stop_category = "additional_evidence_requirement"
+                stop_category_rule_id = "STOP-EVIDENCE-001"
+        elif value_state in {
+            "invalid",
+            "unresolved",
+            "conflict",
+            "valid_but_unsupported",
+            "conditional",
+            "directionally_asymmetric",
+        }:
+            stop_category = "exception_rule"
+            stop_category_rule_id = "STOP-EXCEPTION-001"
+        else:
+            stop_category = "normal_rule"
+            stop_category_rule_id = "STOP-NORMAL-001"
     return AuditRow(
         osm_way_id=way_id,
         highway=tags.get("highway", ""),
@@ -549,6 +599,8 @@ def _audit(
         match_confidence=match_confidence,
         criticality=criticality,
         decision=decision,
+        stop_category=stop_category,
+        stop_category_rule_id=stop_category_rule_id,
     )
 
 
@@ -1277,11 +1329,31 @@ def resolve_tree(
         audit_rows.append(speed_row)
 
         if oneway is None or lanes is None or speed is None:
-            blockers.extend(
-                f"way {way_id} {row.attribute}: {row.value_state}"
+            stopped_prerequisites = [
+                row
                 for row in (oneway_row, lanes_row, speed_row)
                 if row.decision == "stop"
+            ]
+            blockers.extend(
+                f"way {way_id} {row.attribute}: {row.value_state}"
+                for row in stopped_prerequisites
             )
+            permission_row = _audit(
+                way_id=way_id,
+                tags=tags_after_direction,
+                attribute="permissions",
+                source_value="",
+                adopted_value="",
+                value_state="unresolved",
+                policy=policy,
+                derivation_method=(
+                    "blocked_by_unresolved_prerequisites:"
+                    + ",".join(row.attribute for row in stopped_prerequisites)
+                ),
+                criticality=criticality,
+                decision="blocked_by_prerequisite",
+            )
+            audit_rows.append(permission_row)
             continue
 
         permission_tags = _tags(way)
@@ -1365,6 +1437,10 @@ def resolve_tree(
         # Preserve source semantics until the post-netconvert permission patch and
         # exhaustive comparison are implemented. The JSON expectation is binding.
 
+    _validate_managed_attribute_coverage(
+        audit_rows,
+        retained_way_ids={way.attrib.get("id", "") for way in retained},
+    )
     summary = {
         "lanes": {
             f"{highway}|{direction}": decision
@@ -1383,6 +1459,79 @@ def resolve_tree(
         permission_rule_traces=permission_traces,
         imputation_summary=summary,
     )
+
+
+def _validate_managed_attribute_coverage(
+    rows: Sequence[AuditRow], *, retained_way_ids: set[str]
+) -> None:
+    """Require one disposition for every managed attribute on every retained way."""
+
+    grouped: dict[str, list[AuditRow]] = defaultdict(list)
+    for row in rows:
+        grouped[row.osm_way_id].append(row)
+        if row.decision == "stop":
+            if (
+                row.stop_category not in STOP_CATEGORIES
+                or not row.stop_category_rule_id
+            ):
+                raise ResolutionError(
+                    f"stopping row lacks one exclusive category: "
+                    f"{row.osm_way_id}/{row.attribute}"
+                )
+        elif row.stop_category or row.stop_category_rule_id:
+            raise ResolutionError(
+                f"non-stopping row has a stop category: "
+                f"{row.osm_way_id}/{row.attribute}"
+            )
+    if set(grouped) != retained_way_ids:
+        raise ResolutionError("audit way coverage differs from retained population")
+    for way_id in sorted(retained_way_ids, key=int):
+        way_rows = grouped[way_id]
+        for attribute in ("oneway", "lanes", "maxspeed"):
+            count = sum(row.attribute == attribute for row in way_rows)
+            if count != 1:
+                raise ResolutionError(
+                    f"way {way_id} must have exactly one {attribute} disposition"
+                )
+        permission_rows = [
+            row
+            for row in way_rows
+            if row.attribute == "permissions"
+            or row.attribute.startswith("permissions.")
+        ]
+        if not permission_rows:
+            raise ResolutionError(
+                f"way {way_id} lacks a permission disposition"
+            )
+        aggregate_stops = [
+            row
+            for row in permission_rows
+            if row.attribute == "permissions" and row.decision == "stop"
+        ]
+        lane_results = [
+            row
+            for row in permission_rows
+            if row.attribute.startswith("permissions.") and row.decision != "stop"
+        ]
+        dependency_rows = [
+            row
+            for row in permission_rows
+            if row.attribute == "permissions"
+            and row.decision == "blocked_by_prerequisite"
+        ]
+        disposition_kinds = sum(
+            bool(value)
+            for value in (aggregate_stops, lane_results, dependency_rows)
+        )
+        if disposition_kinds != 1:
+            raise ResolutionError(
+                f"way {way_id} permission disposition must be exactly one of "
+                "stop, dependency block, or lane results"
+            )
+        if len(aggregate_stops) > 1 or len(dependency_rows) > 1:
+            raise ResolutionError(
+                f"way {way_id} has duplicate aggregate permission dispositions"
+            )
 
 
 def write_audit_csv(rows: Sequence[AuditRow], path: Path) -> None:
@@ -1473,6 +1622,8 @@ def _resolver_failure(row: AuditRow) -> dict[str, Any]:
         "context": {
             "decision": row.decision,
             "source_value": row.source_value,
+            "stop_category": row.stop_category,
+            "stop_category_rule_id": row.stop_category_rule_id,
             "value_state": row.value_state,
         },
     }

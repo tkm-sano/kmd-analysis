@@ -126,14 +126,39 @@ human accepted.
 The observed v15 exception population and its unresolved decision status are
 registered in
 `reproducibility/config/traffic_simulation/resolver_exception_decision_table.yml`.
-Every row must match exactly one decision-table entry before a later Resolver
-version may claim complete exception classification. A decision-table entry
-does not authorize a resolution until its rule and a fixture authored
-independently from production output are implemented.
+The separate exception classifier, 20 mutually exclusive rules,
+production-independent oracle data, and normal, abnormal and boundary fixtures
+are implemented. All 307 governed non-missing exception rows match exactly one
+decision-table entry; unmatched and overlapping rows are zero. This
+classification result does not adopt an attribute value. Each entry remains
+stopped until its resolution rule and required Japanese/Tokyo evidence are
+implemented.
 
 ## Permission Trace
 
 Each way-direction-lane record contains only the rules applied to that lane. The ordered trace records typemap baseline, research-scope intersection and applicable general, class, directional or lane-specific OSM transitions, including source tag/value, lane-local value, and before/after vClass sets. A tag applying to another direction or lane MUST NOT appear in that lane's trace.
+
+## Complete managed-attribute and stop accounting
+
+The audit MUST contain exactly one `oneway`, `lanes` and `maxspeed`
+disposition for every retained way. It MUST also contain exactly one permission
+disposition form: one aggregate permission stop, one
+`blocked_by_prerequisite` record, or one or more adopted
+direction-and-lane permission records. A dependency record is not counted as a
+second blocker because its unresolved prerequisite is already the causal stop.
+
+Every row whose `decision=stop` MUST contain exactly one `stop_category` and a
+nonempty `stop_category_rule_id`. The closed category set is `normal_rule`,
+`structural_confirmation_rule`, `exception_rule` and
+`additional_evidence_requirement`. Non-stopping rows MUST contain neither
+field. Category assignment describes the governed resolution route; it does
+not adopt a value and does not downgrade a formal blocker.
+
+The formal profile MUST contain zero `structural_placeholder` values.
+`permission_expectations.complete=true` requires full retained-way coverage
+and zero blockers. The Resolver MUST publish no normalized OSM XML while any
+blocker remains. An incomplete audit and permission artifact may be published
+as failure evidence, but it is not a network-build input.
 
 ## Publication and Input Integrity
 
@@ -175,11 +200,12 @@ vehicle-specific restrictions that v15 omitted:
 | `16016506` | `restriction:bus` | `no_straight_on` |
 | `16026064` | `restriction:bus` | `only_straight_on` |
 
-Because `bus` is part of the governed vClass universe, these relations cannot
-be classified as unrelated non-road relations. They are a known formal
-scope blocker. The v15 closure, its 26,220 candidate ways and its Dry Run
-remain an immutable baseline; the next-version input MUST use a new config
-identity and new artifact paths rather than silently changing that baseline.
+Because `bus` is part of the governed vClass universe, these relations could
+not be classified as unrelated non-road relations. The upstream scope blocker
+was resolved by the accepted `ota_ward_relation_closure_v16` prepare run on
+2026-07-30. The v15 closure, its 26,220 candidate ways and its Dry Run remain
+an immutable baseline; v16 uses a new config identity and new artifact paths
+rather than silently changing that baseline.
 
 ### Next-version closure policy
 
@@ -205,6 +231,24 @@ Vehicle-specific restriction handling is not a string-prefix whitelist.
 Applicability to the governed vehicle universe, restriction semantics and
 source-tag form require an explicit versioned decision rule and fixture.
 
+### Executed v16 closure
+
+The accepted v16 run retains 581 `type=restriction` relations under
+`REL-ORDINARY-001` and three `type=restriction:bus` relations under
+`REL-BUS-001`. It recursively resolves members from the registered Kanto PBF
+and reports 59 supplemented nodes, 16 supplemented ways, zero missing
+references, zero relation cycles and zero duplicate identifiers within an OSM
+element namespace.
+
+The governed attribute-resolution population remains 26,220 ways because the
+three bus restrictions reference ways already supplied by the v15 ordinary
+restriction closure. This equality is not artifact equivalence: the retained
+relation set, config identity, run identity and PBF/XML hashes changed. The
+element-role artifact separately identifies 13,494 final N03-intersecting ways,
+555 relation-member topology-support ways and 309,360 excluded context ways.
+The fixed commands, hashes and counts are recorded in
+`03_data/metadata/acquisition/20260730_ota_ward_relation_closure_v16.md`.
+
 ### Population acceptance gate
 
 The real-data criticality classifier may start only after all of the following
@@ -220,9 +264,9 @@ conditions pass:
 | Change from v15 is explicit | added, removed and unchanged way/relation IDs |
 | New artifacts are independently identifiable | new config ID, run ID, paths and SHA-256 values |
 
-Failure of one condition leaves the classification population unaccepted.
-Criticality records MUST NOT be generated for only the old 26,220-way
-population and then patched with newly discovered ways.
+The v16 closure satisfies this gate. Criticality records MUST be regenerated
+from the v16 input hash and MUST NOT relabel or patch the historical v15
+records merely because both candidate populations contain 26,220 way IDs.
 
 ### Downstream invalidation
 
