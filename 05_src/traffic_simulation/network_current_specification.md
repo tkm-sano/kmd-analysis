@@ -2,7 +2,7 @@
 
 ## Status
 
-- Configuration: `ota_ward_sumo_network_v15`
+- Configuration: `ota_ward_sumo_network_v16`
 - Accepted relation-closure configuration: `ota_ward_relation_closure_v16`
 - Created: 2026-07-18
 - Last updated: 2026-07-30
@@ -46,10 +46,14 @@ The historical v15 Dry Run contains 307 non-missing rule/data exception rows.
 Twenty mutually exclusive exception-classification rules, normal, abnormal and
 boundary fixtures, and a production-independent oracle are implemented. All
 307 rows match exactly one rule; unmatched and overlapping counts are zero.
-The fixed analysis container passes the prior 331-test suite and the current
-335-test suite. This proves classification coverage only: the governed values
-remain unresolved and the v16 population has not yet passed the criticality
-Classifier and Resolver stages.
+The value-free Classifier and the separate attribute-value Resolver have now
+been executed over all 26,220 accepted v16 ways for both profiles. Each profile
+contains 52,440 tuples and passes JSON Schema and semantic validation. The
+structural artifact retains 785 stopped tuples; the formal artifact retains
+24,741 stopped tuples and contains no structural placeholder. Classification
+projections before and after resolution have identical SHA-256 values. This is
+complete execution coverage, not formal-input acceptance: the formal artifact
+remains `complete=false`.
 
 ## Network Scope
 
@@ -108,7 +112,7 @@ Structural output is not valid for travel-time, capacity, delivery or solver-com
 |---|---|---|---|---|
 | Build input | Registered PBF, relation scope, recursive closure and hashes | implemented | v16 real-data closure accepted; ordinary 581 and bus 3 restrictions retained; reference errors zero | eligible |
 | Build input | Typemap XML | implemented | XSD passed; importer governance fixture failed | ineligible |
-| Build input | Attribute resolver | managed-attribute coverage, exclusive stop categories, fail-closed publication and 20-rule exception classifier implemented; criticality Classifier/v16 Resolver integration pending | all 307 v15 rule/data exceptions match exactly one rule; prior 331 and current 335 tests pass; v16 full attribute resolution not run | pending |
+| Build input | Attribute resolver | value-free criticality classification and separate value resolution implemented; classification is immutable across resolution | all 26,220 v16 ways and 52,440 tuples per profile generated; Schema and semantic checks pass; structural 785 and formal 24,741 stopped tuples remain; formal placeholders zero | pending |
 | Build input | Permission expectation JSON | full-way completeness gate and lane-local rule trace implemented | fixture confirms `complete=false` and no normalized XML while blockers remain | pending |
 | Build input | Permission materializer | contract fixed, implementation absent | materialized fixture not run | ineligible |
 | Build input | `oneway=-1` | fail-closed detection only | one occurrence confirmed and stopped in registered structural Dry Run | conditional |

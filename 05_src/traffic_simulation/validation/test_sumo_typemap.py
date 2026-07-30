@@ -796,8 +796,8 @@ def test_configuration_dates_and_policy_documents_are_unambiguous() -> None:
     config = load_config()
 
     assert config["schema_version"] == 2
-    assert config["config_id"] == "ota_ward_sumo_network_v15"
-    assert config["config_version"] == 15
+    assert config["config_id"] == "ota_ward_sumo_network_v16"
+    assert config["config_version"] == 16
     assert config["created_at"] == "2026-07-18"
     assert config["last_updated_at"] == "2026-07-25"
     assert config["configuration_lineage_date"] == "2026-07-16"

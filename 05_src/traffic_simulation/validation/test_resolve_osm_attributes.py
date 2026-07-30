@@ -79,11 +79,11 @@ def artifact_permissions(payload: dict[str, object]) -> dict[str, object]:
     }
 
 
-def test_load_policy_matches_v15_and_fixture_paths() -> None:
+def test_load_policy_matches_v16_and_fixture_paths() -> None:
     policy = resolver.load_policy("structural")
 
-    assert policy.config_id == "ota_ward_sumo_network_v15"
-    assert policy.config_version == 15
+    assert policy.config_id == "ota_ward_sumo_network_v16"
+    assert policy.config_version == 16
     assert policy.profile == "structural"
     assert policy.typemap_path == (
         "reproducibility/config/traffic_simulation/osm_tokyo_motorized.typ.xml"
@@ -570,8 +570,8 @@ def test_resolve_file_writes_normalized_xml_and_complete_audit(
     resolver.validate_permission_expectations_payload(permissions)
     assert permissions["complete"] is True
     assert permissions["blockers"] == []
-    assert permissions["config_id"] == oracle["config_id"]
-    assert permissions["config_version"] == oracle["config_version"]
+    assert permissions["config_id"] == "ota_ward_sumo_network_v16"
+    assert permissions["config_version"] == 16
     assert permissions["artifact_type"] == oracle["artifact_type"]
     assert permissions["schema_version"] == oracle["schema_version"]
     assert permissions["typemap"] == oracle["typemap"]

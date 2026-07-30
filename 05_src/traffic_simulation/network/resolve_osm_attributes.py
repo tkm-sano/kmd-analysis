@@ -355,7 +355,7 @@ def load_policy(
     profile: str,
     config_path: Path = CONFIG_PATH,
 ) -> ResolverPolicy:
-    """Load and strictly validate the v15 resolver policy."""
+    """Load and strictly validate the current v16 resolver policy."""
 
     with config_path.open(encoding="utf-8") as handle:
         config = yaml.safe_load(handle)
@@ -363,8 +363,8 @@ def load_policy(
         raise ValueError("SUMO network config must be a mapping")
     if profile not in {"structural", "formal"}:
         raise ValueError(f"unsupported network profile: {profile}")
-    if config.get("config_version") != 15:
-        raise ValueError("resolve_osm_attributes requires sumo_network config v15")
+    if config.get("config_version") != 16:
+        raise ValueError("resolve_osm_attributes requires sumo_network config v16")
 
     vehicle_scope = config.get("vehicle_scope", {})
     typemap_policy = config.get("typemap_policy", {})
@@ -377,7 +377,7 @@ def load_policy(
     if oneway.get("explicit_reverse") != (
         "valid_but_unsupported_stop_until_directional_tag_safe_transform"
     ):
-        raise ValueError("reverse oneway must fail closed in config v15")
+        raise ValueError("reverse oneway must fail closed in config v16")
     if oneway.get("statistical_placeholder_allowed") is not False:
         raise ValueError("oneway statistical placeholders must be prohibited")
     if access.get("osm_override_application_order") != [
@@ -394,10 +394,10 @@ def load_policy(
     ):
         raise ValueError("unsupported final permission composition")
     if access.get("out_of_scope_class_tags_ignored") != ["moped"]:
-        raise ValueError("v15 requires moped access tags to be explicitly out of scope")
+        raise ValueError("v16 requires moped access tags to be explicitly out of scope")
     relation = config.get("relation_resolution", {})
     if relation.get("retained_types") != ["restriction"]:
-        raise ValueError("v15 retains only OSM turn-restriction relations")
+        raise ValueError("v16 retains only OSM turn-restriction relations")
     if relation.get("discard_other_types_before_member_reference_validation") is not True:
         raise ValueError("non-road relations must be discarded before reference validation")
     if relation.get("retained_relation_missing_way_reference_policy") != "stop":
@@ -1934,8 +1934,8 @@ def _failure_report_payload(
     payload = {
         "artifact_type": "failure_report",
         "schema_version": 1,
-        "config_id": policy.config_id if policy else "ota_ward_sumo_network_v15",
-        "config_version": policy.config_version if policy else 15,
+        "config_id": policy.config_id if policy else "ota_ward_sumo_network_v16",
+        "config_version": policy.config_version if policy else 16,
         "component": "resolver",
         "failures": failures,
         "partial_outputs_published": False,

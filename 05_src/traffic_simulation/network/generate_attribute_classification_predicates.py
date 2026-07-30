@@ -417,8 +417,11 @@ def _role_map(
             "non-highway role decisions must be topology_support",
             actual=sorted(invalid_nonhighway, key=int),
         )
-    population = highway_ids | support_without_highway
     role_ids = set(role_by_way)
+    if registry["population_acceptance"]["scope"] == "registered_real_data":
+        population = role_ids
+    else:
+        population = highway_ids | support_without_highway
     if role_ids != population:
         raise PredicateGenerationError(
             "PGEN004",

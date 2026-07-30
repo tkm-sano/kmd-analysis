@@ -250,12 +250,52 @@ def test_registered_v15_real_data_is_rejected(
     registry_path = make_registry(
         governed_workspace, scope="registered_real_data"
     )
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    registry["config_id"] = "ota_ward_sumo_network_v15"
+    registry["config_version"] = 15
+    write_json(registry_path, registry)
+    policy = yaml.safe_load(CONFIG_PATH.read_text(encoding="utf-8"))
+    policy["config_id"] = "ota_ward_sumo_network_v15"
+    policy["config_version"] = 15
+    policy_path = governed_workspace / "sumo-network-v15.yml"
+    policy_path.write_text(
+        yaml.safe_dump(policy, sort_keys=False),
+        encoding="utf-8",
+    )
 
     with pytest.raises(PredicateGenerationError) as error:
-        generate(governed_workspace, registry_path)
+        generate_predicate_artifact(
+            osm_path=governed_workspace / "relation-closed.osm.xml",
+            source_registry_path=registry_path,
+            policy_path=policy_path,
+        )
 
     assert error.value.error["code"] == "PGEN008"
     assert "minimum accepted population contract" in error.value.error["message"]
+
+
+def test_registered_v16_population_is_defined_by_accepted_role_decisions(
+    governed_workspace: Path,
+) -> None:
+    registry_path = make_registry(
+        governed_workspace, scope="registered_real_data"
+    )
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    registry["role_decisions"] = [
+        decision
+        for decision in registry["role_decisions"]
+        if decision["osm_way_id"] != "104"
+    ]
+    write_json(registry_path, registry)
+
+    artifact = generate(governed_workspace, registry_path)
+
+    assert artifact["population_way_count"] == 3
+    assert [record["osm_way_id"] for record in artifact["records"]] == [
+        "101",
+        "102",
+        "103",
+    ]
 
 
 def test_source_hash_mismatch_stops_generation(

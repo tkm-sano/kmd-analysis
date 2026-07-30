@@ -1,0 +1,64 @@
+{
+  "artifact_type": "v16_attribute_resolution_run_record",
+  "schema_version": 1,
+  "config_id": "ota_ward_sumo_network_v16",
+  "config_version": 16,
+  "run_id": "ota-ward-attribute-resolution-v16-20260730-01",
+  "executed_at": "2026-07-30",
+  "execution_command": "docker compose run --rm analysis python -m traffic_simulation.network.run_v16_attribute_resolution",
+  "output_directory": "03_data/processed/traffic_simulation/road_network/sumo/common/attribute_resolution_v16",
+  "source_population": {
+    "accepted_way_count": 26220,
+    "element_roles_sha256": "09284abce54e6e2c0e3e424f3cf389c15051c8cbd04a2421034c2928fc7bbea2",
+    "manifest_sha256": "41e5d6741115d6c99babf2625613c7355d2b4797b2cdf43fd809667748e95888",
+    "relation_closed_osm_sha256": "8b5157e48c3c87c2b4430f56d6abe292ce1ea5449b374ae4cb395fc19475b67d",
+    "role_counts": {
+      "excluded": 12175,
+      "final": 13494,
+      "topology_support": 551
+    },
+    "v15_records_reused": false
+  },
+  "fixture_oracle": {
+    "changed_by_execution": false,
+    "path": "05_src/traffic_simulation/validation/fixtures/attribute_classification/oracles.json",
+    "sha256": "98b6a007e4828e42570a17d9255bdd029295afddf6307d1a6f3f63f8bc96664a"
+  },
+  "profiles": {
+    "formal": {
+      "blocker_counts": {
+        "AC005": 24221,
+        "AC007": 520
+      },
+      "classification_projection_sha256": "353d089928223b3ad75961fec3a194510f8d081d2b7e61c54d43312132c3d59c",
+      "complete": false,
+      "record_count": 52440,
+      "schema_and_semantic_validation": "passed",
+      "structural_placeholder_count": 0
+    },
+    "structural": {
+      "blocker_counts": {
+        "AC005": 265,
+        "AC007": 520
+      },
+      "classification_projection_sha256": "b8012769a53e6bbeef9c76fa4f08473f029d1064beb895f897318d4d80a7e6f6",
+      "complete": false,
+      "record_count": 52440,
+      "schema_and_semantic_validation": "passed"
+    }
+  },
+  "outputs": {
+    "classification_predicates_sha256": "294b30d88ae10f128c6c1cf141e20c843d654c0b961acf03c4bbe90914e5b97b",
+    "external_predicate_assignments_sha256": "7a97af0caa3b5d2bb8cec991f28325a2f7c364bffd85c674f7978a8646097aae",
+    "formal_attribute_resolution_sha256": "a3050d31d1042f24fc85ad66c9f1c72c273f01e45b30caf4a7f6d9bdb9606a4d",
+    "formal_criticality_sha256": "e8b3679cbb952e2c0b192d3d63f03b2d25c3a65f7d5046e5de04cd9d2a4926ae",
+    "predicate_source_registry_sha256": "db35b87df289edcd73b6179c53040cf6cf7f3ec5b728874b6285066c9ad4fcc1",
+    "structural_attribute_resolution_sha256": "c6028ea29f4b30cf2812425ae3f95e4b8cbf3ddcbff36f796f3d8719bbea0921",
+    "structural_criticality_sha256": "a69e59a8b0a19babb8803d3e2cb3a4a6bdd08de3d011f8b7f8a481bc39bc201c"
+  },
+  "publication_state": {
+    "formal_input_allowed": false,
+    "reason": "The formal artifact retains 24741 stopped tuples.",
+    "unresolved_tuples_retained": true
+  }
+}

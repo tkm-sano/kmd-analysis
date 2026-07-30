@@ -260,8 +260,11 @@ def _validate_source_hash(
     pointer: str,
     collector: ErrorCollector,
     source_index: Mapping[str, Path],
+    verified_hashes: set[str] | None = None,
 ) -> None:
     if not isinstance(sha256, str):
+        return
+    if verified_hashes is not None and sha256 in verified_hashes:
         return
     path = source_index.get(sha256)
     if path is None:
@@ -289,6 +292,8 @@ def _validate_source_hash(
             expected=sha256,
             actual=actual_hash,
         )
+    elif verified_hashes is not None:
+        verified_hashes.add(sha256)
 
 
 def _register_predicate_registry_sources(
@@ -367,6 +372,7 @@ def validate_predicate_artifact(
     schema_dir: Path = SCHEMA_DIR,
 ) -> SemanticValidationResult:
     collector = ErrorCollector()
+    verified_hashes: set[str] = set()
     _validate_schema(
         artifact, "classification_predicates.schema.json", collector, schema_dir
     )
@@ -443,6 +449,7 @@ def validate_predicate_artifact(
                 f"{base}/subgraph_role_evidence/source_artifact_sha256",
                 collector,
                 source_paths,
+                verified_hashes,
             )
 
         predicates = record.get("predicates")
@@ -478,6 +485,7 @@ def validate_predicate_artifact(
                     f"{base}/predicates/{name}/source_artifact_sha256",
                     collector,
                     source_paths,
+                    verified_hashes,
                 )
     return collector.result()
 
@@ -529,6 +537,7 @@ def _validate_evidence_references(
     base: str,
     collector: ErrorCollector,
     source_index: Mapping[str, Path],
+    verified_hashes: set[str] | None = None,
 ) -> None:
     candidates = resolution.get("evidence_candidates")
     if not isinstance(candidates, list):
@@ -553,6 +562,7 @@ def _validate_evidence_references(
             f"{base}/evidence_candidates/{index}/source_sha256",
             collector,
             source_index,
+            verified_hashes,
         )
 
     selected = resolution.get("selected_evidence_id")
@@ -749,6 +759,7 @@ def validate_classification_artifact(
     schema_dir: Path = SCHEMA_DIR,
 ) -> SemanticValidationResult:
     collector = ErrorCollector()
+    verified_hashes: set[str] = set()
     _validate_schema(
         artifact, "attribute_classification.schema.json", collector, schema_dir
     )
@@ -900,7 +911,11 @@ def validate_classification_artifact(
                 "ACV009",
             )
             _validate_evidence_references(
-                resolution, f"{base}/resolution", collector, source_paths
+                resolution,
+                f"{base}/resolution",
+                collector,
+                source_paths,
+                verified_hashes,
             )
             if complete is True and (
                 resolution.get("resolution_action") in STOP_ACTIONS
@@ -949,6 +964,7 @@ def validate_classification_artifact(
             f"{base}/source_artifact_sha256",
             collector,
             source_paths,
+            verified_hashes,
         )
         config_hash = record.get("classification_config_sha256")
         if config_hash != expected_config_hash:
@@ -964,6 +980,7 @@ def validate_classification_artifact(
             f"{base}/classification_config_sha256",
             collector,
             source_paths,
+            verified_hashes,
         )
 
     way_count = len(attributes_by_way)

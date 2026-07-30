@@ -27,6 +27,10 @@ Validation, evidence requirements, and formal-use gates are organized in
 The current blockers, their evidence, downstream effects, resolution work, and
 acceptance criteria are documented in
 [`current_issues_and_blockers.md`](current_issues_and_blockers.md).
+The ordered Japanese procedure from the current v16 attribute-resolution state
+through rule approval, implementation, full-data rerun, and formal acceptance
+is documented in
+[`版16道路属性の正式解決に向けた実行手順`](attribute_resolution_execution_procedure.md).
 Accepted v16 road-population and relation-closure facts are kept separately in
 [`confirmed_network_population_and_relation_closure.md`](confirmed_network_population_and_relation_closure.md).
 Other implemented and verified facts are separated from open blockers in
@@ -36,9 +40,11 @@ The Japan/Tokyo interpretation policy and the implemented one-to-one
 classification rules for the 307 governed Resolver exception rows are recorded
 in
 [`japan_tokyo_osm_exception_classification_rules.md`](specifications/japan_tokyo_osm_exception_classification_rules.md).
-The fixed-input execution record, one-to-one row counts and the passing
+The fixed-input execution record, one-to-one row counts and the historical
 331/335-test verification results are recorded in
 [`20260730_ota_ward_v15_exception_rule_validation.md`](../../03_data/metadata/acquisition/20260730_ota_ward_v15_exception_rule_validation.md).
+The current traffic-simulation validation suite passes 355 tests after the
+v16 attribute-resolution execution.
 
 The authoritative rules for road attributes, external-data matching,
 structural placeholders, human review, and formal-network quality gates are
