@@ -53,31 +53,31 @@ ROAD_FILTER: Final = (
 )
 ROAD_LAYER_STYLES: Final = {
     "expressway": {
-        "label": "Expressway / trunk",
+        "label": "高速道路・幹線道路",
         "color": "#c62828",
         "weight": 3.2,
         "show": True,
     },
     "arterial": {
-        "label": "Primary / secondary",
+        "label": "主要道路",
         "color": "#ef6c00",
         "weight": 2.6,
         "show": True,
     },
     "collector": {
-        "label": "Tertiary / unclassified",
+        "label": "補助幹線・未分類道路",
         "color": "#2e7d32",
         "weight": 1.9,
         "show": True,
     },
     "residential": {
-        "label": "Residential / living street",
+        "label": "住宅道路・生活道路",
         "color": "#1976d2",
         "weight": 1.2,
         "show": False,
     },
     "service": {
-        "label": "Service / other motor road",
+        "label": "サービス道路・その他の自動車道路",
         "color": "#757575",
         "weight": 1.0,
         "show": False,
@@ -345,7 +345,7 @@ def _display_properties(
         "lanes": str(raw.get("lanes") or ""),
         "maxspeed": str(raw.get("maxspeed") or ""),
         "access": str(raw.get("access") or ""),
-        "inside_boundary": "yes" if inside_boundary else "no",
+        "inside_boundary": "はい" if inside_boundary else "いいえ",
     }
 
 
@@ -538,13 +538,13 @@ def _summary_panel(
     if osm_roads is not None:
         osm_content = f"""
       <hr style="margin: 6px 0;">
-      <div style="font-weight: bold;">Registered OSM roads</div>
-      <div>Source: {html.escape(osm_roads.source_id)}</div>
-      <div>Snapshot: {html.escape(osm_roads.snapshot_date)}</div>
-      <div>Registered highway ways: {osm_roads.highway_way_count:,}</div>
-      <div>Rendered motor-road ways: {osm_roads.rendered_road_count:,}</div>
-      <div>Traffic signals: {len(osm_roads.signal_features):,}</div>
-      <div>Extract SHA-256:<br>
+      <div style="font-weight: bold;">登録済みOSM道路</div>
+      <div>出典: {html.escape(osm_roads.source_id)}</div>
+      <div>地図基準日: {html.escape(osm_roads.snapshot_date)}</div>
+      <div>登録済み道路数: {osm_roads.highway_way_count:,}</div>
+      <div>表示対象の自動車道路数: {osm_roads.rendered_road_count:,}</div>
+      <div>信号数: {len(osm_roads.signal_features):,}</div>
+      <div>抽出ファイルのSHA-256:<br>
         <span style="font-family: monospace; overflow-wrap: anywhere;">
           {html.escape(osm_roads.extract_sha256)}
         </span>
@@ -554,16 +554,16 @@ def _summary_panel(
     if baseline_demand is not None:
         demand_content = f"""
       <hr style="margin: 6px 0;">
-      <div style="font-weight: bold;">Synthetic demand</div>
-      <div>Intersecting 500 m meshes: {len(baseline_demand.frame):,}</div>
-      <div>Partial boundary meshes:
+      <div style="font-weight: bold;">人口・合成配送需要</div>
+      <div>境界と交差する500メートルメッシュ数: {len(baseline_demand.frame):,}</div>
+      <div>境界で一部切れるメッシュ数:
         {baseline_demand.partial_boundary_mesh_count:,}</div>
-      <div>Estimated 2024 population:
+      <div>2024年推定人口:
         {baseline_demand.population_total:,}</div>
-      <div>Parcel-equivalent demand / day:
+      <div>1日当たり配送需要相当:
         {baseline_demand.demand_total:,}</div>
-      <div>q_base: {html.escape(baseline_demand.q_base)}</div>
-      <div>Output SHA-256:<br>
+      <div>人口から需要への基準換算係数: {html.escape(baseline_demand.q_base)}</div>
+      <div>出力ファイルのSHA-256:<br>
         <span style="font-family: monospace; overflow-wrap: anywhere;">
           {html.escape(baseline_demand.sha256)}
         </span>
@@ -574,21 +574,21 @@ def _summary_panel(
                 background: rgba(255,255,255,0.94); border: 1px solid #555;
                 border-radius: 4px; padding: 10px; font: 12px sans-serif;
                 max-width: 430px; max-height: 45vh; overflow-y: auto;">
-      <div style="font-weight: bold; margin-bottom: 5px;">Study area review</div>
+      <div style="font-weight: bold; margin-bottom: 5px;">研究対象地域の確認地図</div>
       {_research_progress_html(research_progress)}
       <hr style="margin: 7px 0;">
-      <div style="font-weight: bold; margin-bottom: 4px;">Study area inputs</div>
-      <div>Region: {html.escape(area.region_id)}</div>
-      <div>Name: {html.escape(area.name_ja)}</div>
-      <div>Version: {area.version}</div>
-      <div>Source: {html.escape(area.source_registry_id)}</div>
-      <div>Source CRS: {html.escape(area.source_crs.to_string())}</div>
-      <div>API CRS: {html.escape(area.api_crs.to_string())}</div>
-      <div>Metric CRS: {html.escape(area.metric_crs.to_string())}</div>
-      <div>Source features: {area.source_feature_count}</div>
-      <div>Area: {area.metric_boundary.area / 1_000_000:.6f} km²</div>
-      <div>BBOX: {west:.9f}, {south:.9f}, {east:.9f}, {north:.9f}</div>
-      <div style="margin-top: 5px;">Raw SHA-256:<br>
+      <div style="font-weight: bold; margin-bottom: 4px;">研究対象地域の入力</div>
+      <div>地域識別子: {html.escape(area.region_id)}</div>
+      <div>地域名: {html.escape(area.name_ja)}</div>
+      <div>設定版: {area.version}</div>
+      <div>出典: {html.escape(area.source_registry_id)}</div>
+      <div>原本の座標参照系: {html.escape(area.source_crs.to_string())}</div>
+      <div>表示用の座標参照系: {html.escape(area.api_crs.to_string())}</div>
+      <div>距離・面積用の座標参照系: {html.escape(area.metric_crs.to_string())}</div>
+      <div>統合前の行政界地物数: {area.source_feature_count}</div>
+      <div>面積: {area.metric_boundary.area / 1_000_000:.6f}平方キロメートル</div>
+      <div>取得用矩形範囲: {west:.9f}, {south:.9f}, {east:.9f}, {north:.9f}</div>
+      <div style="margin-top: 5px;">原本のSHA-256:<br>
         <span style="font-family: monospace; overflow-wrap: anywhere;">
           {html.escape(area.raw_sha256)}
         </span>
@@ -609,35 +609,35 @@ def _legend(baseline_demand: BaselineDemandData | None = None) -> Element:
         )
         demand_content = (
             '<hr style="margin:5px 0;">'
-            '<div style="font-weight:bold;">500 m mesh fills</div>'
-            '<div>Display-only quintiles; not analysis thresholds</div>'
-            f'<div>Population: {_break_labels(population_breaks)}</div>'
-            f'<div>Demand/day: {_break_labels(demand_breaks)}</div>'
+            '<div style="font-weight:bold;">500メートルメッシュの塗り分け</div>'
+            '<div>表示専用の五分位であり、分析上の基準値ではない</div>'
+            f'<div>人口: {_break_labels(population_breaks)}</div>'
+            f'<div>1日当たり配送需要相当: {_break_labels(demand_breaks)}</div>'
             + "".join(
                 f'<span style="display:inline-block;width:20px;height:8px;'
                 f'background:{color};"></span>'
                 for color in DEMAND_PALETTE
             )
-            + '<div>light = lower / dark = higher</div>'
+            + '<div>明るい色ほど少なく、暗い色ほど多い</div>'
         )
     content = f"""
     <div style="position: fixed; bottom: 25px; left: 10px; z-index: 9999;
                 background: rgba(255,255,255,0.94); border: 1px solid #555;
                 border-radius: 4px; padding: 9px; font: 12px sans-serif;">
-      <div style="font-weight: bold; margin-bottom: 4px;">Legend</div>
-      <div><span style="color:{BOUNDARY_COLOR};">━</span> N03 boundary</div>
-      <div><span style="color:{BBOX_COLOR};">┄</span> acquisition BBOX</div>
-      <div><span style="color:#c62828;">━</span> motorway / trunk</div>
-      <div><span style="color:#ef6c00;">━</span> primary / secondary</div>
-      <div><span style="color:#2e7d32;">━</span> tertiary / unclassified</div>
-      <div><span style="color:#1976d2;">━</span> residential</div>
-      <div><span style="color:#757575;">━</span> service / other</div>
-      <div><span style="color:{SIGNAL_COLOR};">◆</span> OSM traffic signal</div>
-      <div><span style="color:{VALID_COLOR};">●</span> all measurements valid</div>
-      <div><span style="color:{MIXED_COLOR};">●</span> mixed validity</div>
+      <div style="font-weight: bold; margin-bottom: 4px;">凡例</div>
+      <div><span style="color:{BOUNDARY_COLOR};">━</span> N03大田区行政界</div>
+      <div><span style="color:{BBOX_COLOR};">┄</span> 地図取得用の矩形範囲</div>
+      <div><span style="color:#c62828;">━</span> 高速道路・幹線道路</div>
+      <div><span style="color:#ef6c00;">━</span> 主要道路</div>
+      <div><span style="color:#2e7d32;">━</span> 補助幹線・未分類道路</div>
+      <div><span style="color:#1976d2;">━</span> 住宅道路・生活道路</div>
+      <div><span style="color:#757575;">━</span> サービス道路・その他</div>
+      <div><span style="color:{SIGNAL_COLOR};">◆</span> OSM登録信号</div>
+      <div><span style="color:{VALID_COLOR};">●</span> 全観測値が有効</div>
+      <div><span style="color:{MIXED_COLOR};">●</span> 有効値と無効値が混在</div>
       <div><span style="color:{INVALID_COLOR};">●</span>
-        all measurements invalid</div>
-      <div>Black ring: outside administrative boundary</div>
+        全観測値が無効</div>
+      <div>黒い外周: 大田区行政界外</div>
       {demand_content}
     </div>
     """
@@ -685,12 +685,12 @@ def add_baseline_demand_layers(
             "demand_parcel_equivalent",
         ],
         "aliases": [
-            "Mesh code",
-            "Boundary class",
-            "Boundary overlap (%)",
-            "Census population 2020",
-            "Estimated population 2024",
-            "Parcel-equivalent demand / day",
+            "地域メッシュコード",
+            "行政界との位置関係",
+            "行政界との重複率（パーセント）",
+            "2020年国勢調査人口",
+            "2024年推定人口",
+            "1日当たり配送需要相当",
         ],
         "localize": True,
         "sticky": False,
@@ -699,7 +699,7 @@ def add_baseline_demand_layers(
     demand_breaks = _quantile_breaks(frame["demand_parcel_equivalent"])
     folium.GeoJson(
         collection,
-        name=f"Estimated population 2024 (500 m, {len(frame):,})",
+        name=f"2024年推定人口（500メートル、{len(frame):,}件）",
         style_function=lambda feature: {
             "color": "#5d4037",
             "weight": 0.45,
@@ -714,7 +714,7 @@ def add_baseline_demand_layers(
     ).add_to(map_object)
     folium.GeoJson(
         collection,
-        name=f"Synthetic demand / day (500 m, {len(frame):,})",
+        name=f"1日当たり合成配送需要（500メートル、{len(frame):,}件）",
         style_function=lambda feature: {
             "color": "#5d4037",
             "weight": 0.45,
@@ -738,7 +738,7 @@ def add_osm_layers(map_object: folium.Map, roads: OsmRoadData) -> None:
             continue
         folium.GeoJson(
             {"type": "FeatureCollection", "features": list(features)},
-            name=f"OSM {style['label']} ({len(features):,})",
+            name=f"OSM {style['label']}（{len(features):,}件）",
             style_function=lambda _, style=style: {
                 "color": style["color"],
                 "weight": style["weight"],
@@ -760,15 +760,15 @@ def add_osm_layers(map_object: folium.Map, roads: OsmRoadData) -> None:
                     "inside_boundary",
                 ],
                 aliases=[
-                    "OSM ID",
-                    "Name",
-                    "Ref",
-                    "Highway",
-                    "Oneway",
-                    "Lanes",
-                    "Max speed",
-                    "Access",
-                    "Intersects N03 boundary",
+                    "OSM識別子",
+                    "道路名",
+                    "路線番号",
+                    "道路種別",
+                    "一方通行",
+                    "車線数",
+                    "最高速度",
+                    "通行条件",
+                    "N03大田区行政界と交差",
                 ],
                 sticky=False,
             ),
@@ -782,7 +782,7 @@ def add_osm_layers(map_object: folium.Map, roads: OsmRoadData) -> None:
                 "type": "FeatureCollection",
                 "features": list(roads.signal_features),
             },
-            name=f"OSM traffic signals ({len(roads.signal_features):,})",
+            name=f"OSM登録信号（{len(roads.signal_features):,}件）",
             marker=folium.CircleMarker(
                 radius=3,
                 color=SIGNAL_COLOR,
@@ -793,7 +793,7 @@ def add_osm_layers(map_object: folium.Map, roads: OsmRoadData) -> None:
             ),
             tooltip=folium.GeoJsonTooltip(
                 fields=["osm_id", "inside_boundary"],
-                aliases=["OSM ID", "Inside N03 boundary"],
+                aliases=["OSM識別子", "N03大田区行政界内"],
             ),
             show=False,
         ).add_to(map_object)
@@ -809,12 +809,12 @@ def add_boundary_layers(map_object: folium.Map, area: StudyArea) -> None:
             "name_ja": area.name_ja,
             "version": area.version,
             "source_registry_id": area.source_registry_id,
-            "role": "analysis_boundary",
+            "role": "分析対象の行政界",
         },
     )
     folium.GeoJson(
         boundary_feature,
-        name="N03 administrative boundary",
+        name="N03大田区行政界",
         style_function=lambda _: {
             "color": BOUNDARY_COLOR,
             "weight": 3,
@@ -823,7 +823,7 @@ def add_boundary_layers(map_object: folium.Map, area: StudyArea) -> None:
         },
         tooltip=folium.GeoJsonTooltip(
             fields=["name_ja", "region_id", "role"],
-            aliases=["Name", "Region", "Role"],
+            aliases=["地域名", "地域識別子", "役割"],
             localize=True,
         ),
         show=True,
@@ -833,12 +833,12 @@ def add_boundary_layers(map_object: folium.Map, area: StudyArea) -> None:
         area.api_boundary.envelope,
         {
             "region_id": area.region_id,
-            "role": "acquisition_bbox_only",
+            "role": "地図取得専用の矩形範囲",
         },
     )
     folium.GeoJson(
         bbox_feature,
-        name="Mechanically derived acquisition BBOX",
+        name="行政界から生成した地図取得用矩形範囲",
         style_function=lambda _: {
             "color": BBOX_COLOR,
             "weight": 2,
@@ -847,7 +847,7 @@ def add_boundary_layers(map_object: folium.Map, area: StudyArea) -> None:
         },
         tooltip=folium.GeoJsonTooltip(
             fields=["region_id", "role"],
-            aliases=["Region", "Role"],
+            aliases=["地域識別子", "役割"],
         ),
         show=True,
     ).add_to(map_object)
@@ -903,7 +903,7 @@ def add_jartic_layer(
 ) -> int:
     """Add de-duplicated observation locations colored by measurement validity."""
 
-    layer = folium.FeatureGroup(name=f"JARTIC: {source_label}", show=True)
+    layer = folium.FeatureGroup(name=f"JARTIC観測地点: {source_label}", show=True)
     marker_count = 0
     group_columns = ["source_id", "observation_code"]
     for (source_id, observation_code), rows in observations.groupby(
@@ -914,7 +914,7 @@ def add_jartic_layer(
         if "invalid_reasons" in rows:
             for value in rows["invalid_reasons"].dropna().astype(str):
                 reasons.extend(part for part in value.split(";") if part)
-        reason_text = "; ".join(dict.fromkeys(reasons)) or "none"
+        reason_text = "; ".join(dict.fromkeys(reasons)) or "なし"
 
         unique_points: dict[bytes, Point] = {}
         for geometry in rows.geometry:
@@ -925,13 +925,13 @@ def add_jartic_layer(
             popup = folium.Popup(
                 "<br>".join(
                     [
-                        f"Source: {html.escape(str(source_id))}",
-                        f"Observation code: {html.escape(str(observation_code))}",
-                        f"Valid rows: {valid_count}/{total_count}",
-                        f"Inside boundary: {'yes' if inside else 'no'}",
-                        f"Invalid reasons: {html.escape(reason_text)}",
-                        f"Longitude: {point.x:.8f}",
-                        f"Latitude: {point.y:.8f}",
+                        f"出典: {html.escape(str(source_id))}",
+                        f"観測地点コード: {html.escape(str(observation_code))}",
+                        f"有効行数: {valid_count}/{total_count}",
+                        f"大田区行政界内: {'はい' if inside else 'いいえ'}",
+                        f"無効理由: {html.escape(reason_text)}",
+                        f"経度: {point.x:.8f}",
+                        f"緯度: {point.y:.8f}",
                     ]
                 ),
                 max_width=420,

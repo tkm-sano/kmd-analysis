@@ -49,9 +49,14 @@ def test_demand_layers_render_switchable_population_and_demand() -> None:
     folium.LayerControl(collapsed=False).add_to(map_object)
     rendered = map_object.get_root().render()
 
-    assert "Estimated population 2024 (500 m, 2)" in rendered
-    assert "Synthetic demand / day (500 m, 2)" in rendered
-    assert "Parcel-equivalent demand / day" in rendered
+    expected_labels = (
+        "2024年推定人口（500メートル、2件）",
+        "1日当たり合成配送需要（500メートル、2件）",
+        "1日当たり配送需要相当",
+    )
+    for label in expected_labels:
+        escaped = json.dumps(label, ensure_ascii=True)[1:-1]
+        assert escaped in rendered
     assert "533935991" in rendered
 
 
