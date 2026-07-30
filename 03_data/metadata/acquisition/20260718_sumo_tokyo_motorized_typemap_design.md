@@ -2,27 +2,204 @@
 
 ## 記録情報
 
-- 記録日：2026-07-18
+```yaml
+document_role: change_history
+record_started_at: 2026-07-18
+record_updated_through: 2026-07-30
+current_configuration_id: ota_ward_sumo_network_v16
+current_configuration_version: 16
+current_typemap_policy_id: tokyo_motorized_v2
+current_specification_reference: 05_src/traffic_simulation/network_current_specification.md
+
+current_status:
+  policy: partially_fixed
+  implementation: partial
+  unit_static_validation: passed
+  xsd_validation: passed
+  runtime_governance_validation: failed
+  real_data_validation: partial
+  formal_build_ready: false
+```
+
 - 実施者：研究環境管理者（Codex支援）
-- 状態：`implemented_runtime_validation_failed`
-- 設定ID：`ota_ward_sumo_network_v11`
-- typemap方針ID：`tokyo_motorized_v2`
 - 対象ファイル：`reproducibility/config/traffic_simulation/osm_tokyo_motorized.typ.xml`
 - 関連設定：`reproducibility/config/traffic_simulation/sumo_network.yml`
 - 関連方針：`05_src/traffic_simulation/network_attribute_governance.md`
 - 関連実装計画：`05_src/traffic_simulation/implementation_plan.md`
 
-本ファイルはtypemapと関連する道路網ガバナンスの時系列変更履歴である。現在有効な仕様は`05_src/traffic_simulation/network_current_specification.md`を参照し、過去節を現行仕様として部分引用しない。構築、較正、最適化の手順は各protocol文書へ分離する。
+本文書は、typemap、道路属性解決処理、通行権限処理、SUMO実変換fixtureおよび
+formal build停止判断の**時系列変更履歴**である。本文書は現在有効な仕様書ではない。
+現在有効な値解決規則と道路網生成順序は
+`05_src/traffic_simulation/network_current_specification.md`を参照する。
+
+過去節を単独で現行仕様として引用してはならない。後続節で置き換えられた判断は、
+当時の設定と実装を説明する履歴としてのみ有効である。`decision_status`が
+`superseded`または`partially_superseded`である節を、新規実装の根拠として使用しては
+ならない。
+
+## 現行仕様との責務境界
+
+本文書が保持する内容は次に限定する。
+
+- typemap設計と設定版の変更経緯
+- 道路属性解決処理と通行権限反映処理の設計変更履歴
+- 固定試験用データ、静的検査、XSD検査および実行時検査の結果
+- 不合格内容と、それを受けた後続判断
+- formal buildを停止した理由
+
+Scenario Profile、方向付き道路モデル、車線、access、条件付き規制、速度、formal
+network build pipelineおよびVerification Stateの完全な現行仕様は、本文書では
+再定義しない。現行仕様、設定、個別仕様書および阻害事項の正本は次である。
+
+| 内容 | 現行参照先 |
+|---|---|
+| 現行道路網仕様 | `05_src/traffic_simulation/network_current_specification.md` |
+| 機械可読設定と要件状態 | `reproducibility/config/traffic_simulation/sumo_network.yml` |
+| 現在の阻害事項 | `05_src/traffic_simulation/current_issues_and_blockers.md` |
+| 版16属性解決の実行記録 | `03_data/metadata/acquisition/20260730_ota_ward_v16_attribute_resolution_run.json` |
+| 版16属性解決の今後の手順 | `05_src/traffic_simulation/attribute_resolution_execution_procedure.md` |
+| 詳細仕様群 | `05_src/traffic_simulation/specifications/` |
+
+Scenario Profile、方向付き道路モデル、方向別車線、access、条件付き規制および速度の
+追加決定は未完了である。初期正式仕様案は採用候補であり、現行仕様としては使用
+できない。
+
+## 現行方針を読むための要約
+
+この節は履歴を誤読しないための索引であり、完全な決定表ではない。
+
+### typemapの現行責務
+
+typemapの責務は、採用道路種別の初期ホワイトリスト、仮道路構造生成時の基礎
+vehicle class候補、明示的discard対象およびSUMO priorityの初期設定である。
+
+typemapは、正式な速度、正式な方向別車線数、正式な`oneway`、最終lane permissions
+または欠損属性の検証を決定しない。`speed`、`numLanes`、`oneway`をtypemapから
+省略しても、SUMO importerまたはglobal defaultによる補完は防止できない。
+
+```text
+typemap attribute omission
+!= missing-value validation
+```
+
+### permissionsの現行解釈
+
+初期設計では、typemap permissionsとOSM permissionsの積集合を最終値とした。
+この方式は後続判断で置き換えられた。現行方針では、typemap permissionsは仮候補、
+道路属性解決処理が証拠と規則から生成するexpected permissionsはformal authorityで
+ある。
+
+```text
+typemap permissions = provisional candidate permissions
+resolver expected permissions = formal authority
+final permissions = resolver expected permissions
+final permissions <= managed_vclass_universe
+```
+
+最終permissionsは生成済み`net.xml`を直接編集して反映しない。最終`netconvert`前の
+明示入力へ反映し、laneとconnectionを再生成した後、期待値との完全一致を監査する。
+この反映処理と実行時fixtureは未実装である。
+
+access規則の具体性は単一の並びではなく、次の軸を分けて扱う。
+
+```yaml
+specificity_axes:
+  spatial_scope: [way, direction, lane]
+  vehicle_scope: [access, vehicle, motor_vehicle, vehicle_class]
+  temporal_scope: [unconditional, conditional]
+  purpose_scope: [general, destination, delivery, customers]
+```
+
+比較原則は、空間軸では`lane > direction > way`、車種軸では
+`vehicle_class > motor_vehicle > vehicle > access`、時間軸では適用中のconditional
+ruleをunconditional ruleより具体的とし、目的軸ではexplicit purposeをgeneral
+purposeより具体的とする。異なる軸の規則が競合し一意に比較できない場合は、
+便宜的に値を選ばず`conflict`として停止する。完全なaccess決定表は現行access仕様へ
+委ねる。
+
+### 方向、車線およびplaceholderの現行解釈
+
+元OSM Wayは原典として変更しない。`oneway=-1`はWay基準のbackward方向を意味する。
+将来は元Wayと別の方向付き区間として表現する。方向依存タグ、relation、lane順を
+含む実行時fixtureが完成するまで、`oneway=-1`は停止対象として保持する。
+
+```text
+source Way direction
+!= travel direction
+!= SUMO edge ID sign
+```
+
+SUMO edge IDの符号または座標最近傍を、正式な方向根拠として使用しない。
+
+双方向道路で総車線数だけが明示され、方向別車線数がない場合、偶数総車線を均等配分
+した値をformal値として自動採用しない。構造確認用に限って使用する場合は
+`value_origin: model_assumed`および
+`assumption_id: BIDIRECTIONAL_EVEN_LANE_EQUAL_SPLIT_V1`を記録し、
+`formal_eligible: false`とする。formalでは
+`stop_code: LANE_DIRECTIONAL_ALLOCATION_MISSING`として停止する。
+`lanes:both_ways`、可逆車線および時間帯別車線は、受理済み規則がない間は
+`unsupported`または`unresolved`とする。
+
+一意最頻値、標本数30以上、最頻値比率50%以上による処理は
+`structural_placeholder_generation`であり、`formal_attribute_resolution`ではない。
+これは形状・接続確認専用であり、formal network、較正、独立検証または配送評価に
+使用できない。placeholderを含む道路網の較正結果をformal networkへ引き継がない。
+集計母集団、Way数重み、道路長重み、範囲および閾値感度は未完了であり、これらの
+閾値を東京の経験的代表値として解釈しない。
+
+### 車両クラスと値状態の現行解釈
+
+小型配送車はSUMO `delivery`、重量貨物車はSUMO `truck`、電動性はbattery deviceで
+表す方針である。ただし、積載量2,000 kgだけから`delivery`、`truck`またはOSM上の
+`hgv`該当性を確定しない。車両総重量、最大許容重量、車長、車幅、車高、軸重および
+`hgv`対応はScenario Profileで未決定である。未承認の固定値を本文書へ追加しない。
+
+値の解決結果は、可能な範囲で次の二軸として解釈する。
+
+```yaml
+resolution_status:
+  - resolved
+  - not_applicable
+  - unresolved
+  - conflict
+  - unsupported
+  - invalid
+value_origin:
+  - source_explicit
+  - source_normalized
+  - rule_derived
+  - evidence_derived
+  - model_assumed
+  - derived_validated_model
+```
+
+formal候補は、`resolution_status=resolved`であり、かつformalで承認された
+`value_origin`を持つ場合に限る。`model_assumed`と未検証placeholderはformal不適格
+である。`derived_validated_model`は、モデルID、版、学習母集団、検証母集団、
+評価指標、受入規則および独立検証記録が揃う場合だけformal候補となる。現行成果物の
+旧フィールドとの移行規則は未決定である。
 
 ## 時系列作業ログ
 
 ### 1. 作業目的を確定した
+
+```yaml
+decision_status: partially_superseded
+effective_configuration: {from: v4, until: v13}
+superseded_by: [section-23, section-26, section-27]
+```
 
 初期SUMO道路網へ採用するOSM道路種別とSUMO vehicle classを明示的なホワイトリストとして固定し、歩行者、自転車、鉄道、船舶等の対象外リンクが標準typemapの暗黙動作によって混入しない構成を目標とした。
 
 また、`lanes`、`maxspeed`、`oneway`の欠損をtypemap既定値で黙って補完しないことを前提とした。これらの属性は、後続の属性ガバナンス処理で値状態と根拠を記録したうえで、変換用OSM XMLへ明示する。
 
 ### 2. 固定Docker環境の利用可否を確認した
+
+```yaml
+decision_status: historical_failure
+effective_configuration: {from: v4, until: v4}
+superseded_by: [section-13]
+```
 
 研究環境で固定しているSUMOコンテナを使って`netconvert`の版を確認しようとしたが、Docker daemonが停止していたため実行できなかった。この時点ではホストへ別の`netconvert`を導入せず、研究設定と同じSUMO 1.24.0の公式ソースを参照して設計を進めることにした。
 
@@ -33,6 +210,12 @@ docker compose run --rm sumo netconvert --version
 ```
 
 ### 3. SUMO 1.24.0の上流資料を固定した
+
+```yaml
+decision_status: active
+effective_configuration: {from: v4, until: null}
+superseded_by: []
+```
 
 最新ブランチではなく、研究設定と一致するGit tag `v1_24_0`から次の資料を参照した。
 
@@ -57,11 +240,23 @@ e3de4b6aadd2e6bf0d0f6186d84c621bbf807e65b81bba9aec8fe0d7b0d77786
 
 ### 4. リポジトリ内の対象範囲と上流typemapを照合した
 
+```yaml
+decision_status: partially_superseded
+effective_configuration: {from: v4, until: v14}
+superseded_by: [section-26, section-27]
+```
+
 標準typemapからOSM type IDとpriorityを抽出し、`sumo_network.yml`の`vehicle_scope.keep_vclasses`および実装計画の初期交通モードと照合した。その結果、共用自動車道路、SUMOのservice compound type、専用バスリンクを採用対象とした。
 
 一方、歩行者、自転車、鉄道等の専用リンクと初期研究範囲外の道路種別は、暗黙に落とすのではなく`discard="true"`で明示的に除外する方針とした。typemapに存在しない未知typeは正式処理で採用せず、警告と除外件数をbuild summaryへ記録する方針とした。
 
 ### 5. typemapの採用規則を決定した
+
+```yaml
+decision_status: partially_superseded
+effective_configuration: {from: v4, until: v14}
+superseded_by: [section-12, section-19, section-26, section-27]
+```
 
 共用自動車道路として、次のOSM `highway`値を採用することにした。
 
@@ -99,6 +294,12 @@ passenger,taxi,bus,coach,delivery,truck,motorcycle,moped
 
 ### 6. カスタムtypemapを作成した
 
+```yaml
+decision_status: validation_record
+effective_configuration: {from: v4, until: v4}
+superseded_by: [section-12, section-14, section-26, section-27]
+```
+
 決定したホワイトリスト、許可vehicle class、除外type、標準priorityを反映して、次のファイルを作成した。
 
 ```text
@@ -122,11 +323,23 @@ d86ab83e7b8afa94c4d13e0669a146cf18809e2e6af3ce8fee1e24a6a1fcd8c2
 
 ### 7. 設定と実装計画へ反映した
 
+```yaml
+decision_status: superseded
+effective_configuration: {from: v4, until: v4}
+superseded_by: [section-12]
+```
+
 `sumo_network.yml`を設定版v4、設定ID `ota_ward_sumo_network_20260716_v4`へ更新した。`typemap_policy`へカスタムtypemapのパスとハッシュ、上流資料のURLとハッシュ、採用type、許可vehicle class、属性既定値を持たせない方針を記録した。
 
 また、カスタムtypemapを未実装要件から外し、残る属性ガバナンス処理、補助表、道路網生成パイプラインを`implementation_plan.md`の未実装作業として整理した。取得記録READMEから本ファイルを参照できるようにした。
 
 ### 8. 設定とXMLの不整合を検出するテストを追加した
+
+```yaml
+decision_status: validation_record
+effective_configuration: {from: v4, until: null}
+superseded_by: []
+```
 
 `05_src/traffic_simulation/validation/test_sumo_typemap.py`を追加し、次を検査するようにした。
 
@@ -138,6 +351,12 @@ d86ab83e7b8afa94c4d13e0669a146cf18809e2e6af3ce8fee1e24a6a1fcd8c2
 - 代表的な歩行者、自転車、鉄道、工事中typeが明示的にdiscardされる。
 
 ### 9. XSD検証と対象テストを実行した
+
+```yaml
+decision_status: validation_record
+effective_configuration: {from: v4, until: v4}
+superseded_by: []
+```
 
 SUMO 1.24.0のschemaを取得し、XMLを検証した。
 
@@ -167,6 +386,12 @@ PYTHONPATH=05_src pytest -q \
 
 ### 10. リポジトリ全体のテストと実行時検証を試みた
 
+```yaml
+decision_status: historical_failure
+effective_configuration: {from: v4, until: v4}
+superseded_by: [section-13]
+```
+
 ホスト環境でリポジトリ全体のpytestを実行したが、ホストPythonに`folium`がなく、`test_render_baseline_demand.py`のimport時に収集が停止した。`folium==0.20.0`は分析用Docker環境に固定されているため、ホストへ追加導入せず、Docker daemon復旧後に固定環境で再実行することにした。
 
 Docker daemonが停止しているため、次の実行時検証は未実施である。
@@ -179,9 +404,21 @@ Docker daemonが停止しているため、次の実行時検証は未実施で�
 
 ### 11. 現在の状態を確定した
 
+```yaml
+decision_status: superseded
+effective_configuration: {from: v4, until: v4}
+superseded_by: [section-13]
+```
+
 typemap、設定、整合性テスト、本記録は作成済みである。一方、固定SUMO環境での実変換が完了していないため、状態を`implemented_not_runtime_validated`とし、`status.implementation: pending`および`formal_build_ready: false`を維持した。
 
 ### 12. 欠損検出とpermissions迂回に関するレビューを反映した
+
+```yaml
+decision_status: partially_superseded
+effective_configuration: {from: v5, until: v8}
+superseded_by: [section-13, section-18, section-19, section-20]
+```
 
 初版作成後、typemapから`speed`、`numLanes`、`oneway`を省略しても、`netconvert`のimporter-levelまたはglobal defaultを防げず、属性欠損時の停止を保証しないとのレビューを受けた。SUMO公式文書でも`default.lanenumber=1`、`default.speed=13.89 m/s`が定義され、type属性自体は任意であることを再確認した。また、`ignoring`はlane permissionsを無視でき、`osm.lane-access`は既定で無効であることを確認した。
 
@@ -215,6 +452,12 @@ XMLのルール自体は変更せずコメントを訂正したため、ファ�
 
 ### 13. 固定SUMO 1.24.0でgovernance fixtureを実変換した
 
+```yaml
+decision_status: validation_record
+effective_configuration: {from: v5, until: null}
+superseded_by: []
+```
+
 Docker daemonが利用可能になったため、digest固定した`sumo`サービスで版を確認した。
 
 ```bash
@@ -239,6 +482,12 @@ docker compose run --rm sumo netconvert --version
 
 ### 14. `oneway`、左側通行、EV vClassの追加レビューを反映した
 
+```yaml
+decision_status: partially_superseded
+effective_configuration: {from: v6, until: v14}
+superseded_by: [section-18, section-26, section-27, section-28]
+```
+
 追加レビューで、type定義の`oneway`省略時は既定値`true`となるため、前処理漏れが道路を一方通行化し得るとの指摘を受けた。固定SUMO 1.24.0でfixtureを再変換し、`oneway`を欠くway 600について、正方向のedge `600`だけが生成され、逆方向edge `-600`が存在しないことを確認した。また、生成edgeの`osmDefaults`は`numLanes speed`だけを記録し、欠損`oneway`のfallbackを記録しなかった。
 
 この結果から、`osm.annotate-defaults=true`による変換後監査だけでは`oneway`欠損を検出できないと判断した。一般道路をOSM規則により双方向と導出した場合も、前処理で`oneway=no`と来歴を変換用XMLへ必ずmaterializeする。値または来歴がない保持wayは`netconvert`前に停止する。
@@ -256,6 +505,12 @@ EV配送車のvClassも明確化した。初期EV配送車は`vClass="delivery"`
 v6更新後、関連ホストテストは`41 passed`、analysisコンテナ内のvalidation suiteは`136 passed`、SUMO 1.24.0 XSD検証は成功した。設定ID、設定版、typemap SHA-256の一致も確認した。runtime fixtureは引き続き不合格であり、正式利用不可の状態は変えていない。
 
 ### 15. 設計判断の分類と感度分析を修正した
+
+```yaml
+decision_status: partially_superseded
+effective_configuration: {from: v7, until: v14}
+superseded_by: [section-26, section-27]
+```
 
 追加レビューを受け、`priority`、道路ホワイトリスト、vClass permissions、属性省略、validator未完成、fixture合成値を同じ「恣意性」尺度で評価する整理を修正した。感度分析前に影響の大小を順位付けせず、次のように区別する。
 
@@ -285,6 +540,12 @@ v7更新後、関連ホストテストは`42 passed`、analysisコンテナ内�
 
 ### 16. 属性補完規則、正式利用条件、access解決順を固定した
 
+```yaml
+decision_status: partially_superseded
+effective_configuration: {from: v8, until: v8}
+superseded_by: [section-18, section-19, section-25, section-30]
+```
+
 追加レビューを受け、構造確認用placeholderの具体値を先に決めず、値を決める統計規則と正式実験へ使用できる状態を先に固定した。固定大田区OSM抽出の明示値を母集団とし、`lanes`は道路種別と一方通行・双方向、`maxspeed`は道路種別で集約する。一意な最頻値、標本数30以上、最頻値比率50%以上を満たす場合だけ非重要道路の`structural_placeholder`として使用し、同率、標本不足または比率不足では近い道路種別へ移らず`unresolved`とする。具体値は分布集計後に別途固定する。
 
 `oneway`への統計補完は禁止した。明示値`yes`、`no`、`-1`を優先し、`-1`はway方向を反転して`yes`へmaterializeする。明示値がないroundaboutとmotorwayはOSM暗黙規則による`yes`、motorway_linkは`unresolved`、その他の一般道路はOSMデータ消費規則による`no`とした。現在の大田区基礎集計ではmotorway・motorway_linkの`oneway`欠損は0件だが、将来入力のために規則を固定した。
@@ -307,6 +568,12 @@ permissionsは、OSM内で`access`、`vehicle`、`motor_vehicle`、車種別、�
 
 ### 17. OSM属性resolverと変換前品質ゲートを実装した
 
+```yaml
+decision_status: superseded
+effective_configuration: {from: v8, until: v8}
+superseded_by: [section-18, section-19, section-20, section-24, section-30]
+```
+
 2026年7月19日、`05_src/traffic_simulation/network/resolve_osm_attributes.py`を追加した。このモジュールは、固定設定v8を検証してからOSM XMLの保持対象wayを処理し、`oneway`、`lanes`、`maxspeed`を変換用XMLへmaterializeする。way・方向・laneごとにOSM access規則を広い規則から具体的な規則へ解決し、typemap基本permissionsとの積集合を期待値として監査CSVへ保存する。permissions計算に使用したaccessタグは、SUMO importerによる別解釈を避けるため、品質ゲート合格後の正規化XMLから除去する。
 
 `oneway=-1`はnode順と方向別タグを反転して`oneway=yes`へ正規化する。roundaboutとmotorwayの暗黙規則、motorway_link欠損の停止、一般道路の双方向導出も実装した。`lanes`と`maxspeed`は明示値を優先し、構造確認用では非重要道路に限り、v8で事前固定した一意最頻値規則を適用できる。重要度が未分類のwayへplaceholderを自動適用しない。formal profileでは構造用placeholderを使用しない。
@@ -325,6 +592,12 @@ access resolverはv8で明示した`access`、`vehicle`、`motor_vehicle`、`mot
 この実装はPBFからOSM XMLへの変換、外部データ補完表の取込み、重要道路の機械判定、生成`net.xml`へのpermissions適用、変換ログ・出力監査、SUMO CLI読込を含まない。既存runtime fixtureの不合格は未解消であり、正式buildは引き続き禁止する。
 
 ### 18. resolverレビューを反映し、停止境界と監査成果物を強化した
+
+```yaml
+decision_status: partially_superseded
+effective_configuration: {from: v9, until: v13}
+superseded_by: [section-19, section-23, section-25, section-30]
+```
 
 2026年7月19日、17節の実装に対して、除外道路がXMLに残る、未対応の明示値を構造用最頻値で上書きし得る、双方向1車線を各方向1車線として扱う、accessタグ削除後の期待permissionsが専用成果物に残らない、`oneway=-1`反転が左右依存タグを壊し得る、というレビューを受けた。これらは定量評価以前に解消すべき実装上の問題と判断した。
 
@@ -347,6 +620,12 @@ access resolverはv8で明示した`access`、`vehicle`、`motor_vehicle`、`mot
 v9更新後、resolverとtypemapの対象テストは`42 passed`、固定`analysis`コンテナ内のvalidation suiteは`170 passed`であった。これは前処理の停止境界と静的整合性を検査した結果であり、既知のSUMO runtime fixture不合格、permissions後処理、実PBF build、定量評価への適格性を解消するものではない。
 
 ### 19. formal先行順序と交通モデル品質ゲートを固定した
+
+```yaml
+decision_status: partially_superseded
+effective_configuration: {from: v10, until: v10}
+superseded_by: [section-20, section-21, section-23]
+```
 
 2026年7月19日、道路構造、需要・信号、較正、独立検証、配送最適化を分離する段階方針を再検討した。`structural_placeholder`を含む道路網で較正した後にformal道路属性を変更すると、較正値が構造誤差を補償し得るため、formal基準ネットワークの完成を需要投入と較正より前へ明示的に移した。
 
@@ -373,6 +652,12 @@ v10更新後、resolverとtypemapの対象テストは`47 passed`、固定`analy
 
 ### 20. permissions生成順、信号構造、現行仕様の責務を修正した
 
+```yaml
+decision_status: partially_superseded
+effective_configuration: {from: v11, until: v11}
+superseded_by: [section-21, section-22, section-23]
+```
+
 2026年7月19日、v10の「生成後に根拠付きpermissionsへ完全一致させる」方針を再検討した。生成済み`net.xml`のlane permissionsを拡張しても、そのclassに必要なconnectionが生成済みである保証がないため、formal生成前の停止事項と判断した。また、信号交差点の採否とconnectionからTLS linkへの対応は時間制御ではなくネットワーク構造であり、formal基準ネットワークより前に確定すべきと整理した。
 
 設定をv10からv11へ更新し、次を決定した。
@@ -395,6 +680,12 @@ v11更新後、resolverとtypemapの対象テストは`54 passed`、固定`analy
 
 ### 21. materializer契約とformal停止条件をv12で固定した
 
+```yaml
+decision_status: partially_superseded
+effective_configuration: {from: v12, until: v12}
+superseded_by: [section-22, section-23]
+```
+
 2026年7月19日、Verification Stateを実装・実行済みの範囲と照合した。従来表ではtypemapのXSD検証をruntime非該当と記載していた一方、既に実行して不合格だったSUMO importer governance fixtureが同じ行に反映されていなかった。また、resolver、permissions期待値、materializer、変換後監査をまとめて記述しており、実装済み範囲を判別しにくかった。このため、設定をv11からv12へ更新し、policy、implementation、unit/static、XSD、runtime、real-data、formal eligibilityを要件ごとに分離した。
 
 SUMO 1.24.0の固定コンテナで`edges_file.xsd`と`connections_file.xsd`を確認し、`--plain-output-prefix`、`--plain-output.lanes true`、`--output.original-names true`を使用したprovisional plain exportを正常系resolver fixtureに対して実行した。`.edg.xml`のlaneへ`param key="origId"`が出力されることと、plain edge/connection XMLが再入力interfaceとして利用できることを確認した。ただし、この実行では既知の`bus` compound warningと不正なimporter permissionsが残り、接続を持たないfixtureであったため、materializer、lane順、connection規則の正しさを検証した証拠ではない。
@@ -413,6 +704,12 @@ Verification Stateにはpermissions以外も含め、入力hash再検証、forma
 
 ### 22. readiness gate、TLS handoff、型付き状態をv13で修正した
 
+```yaml
+decision_status: partially_superseded
+effective_configuration: {from: v13, until: v13}
+superseded_by: [section-23]
+```
+
 2026年7月20日、v12の全要件を一つのformal build開始条件として評価すると、生成後にしか完了できないformal network、warning監査、成果物公開まで生成前に要求する循環が生じるとのレビューを受けた。また、`formal_eligibility`にbooleanと文字列が混在し、単純なtruth-value評価で未完了状態を合格と扱い得ることを確認した。
 
 設定をv12から`ota_ward_sumo_network_v13`へ更新し、次を変更した。
@@ -430,6 +727,12 @@ Verification Stateにはpermissions以外も含め、入力hash再検証、forma
 v13は循環しない合否判定とpermissionからTLSへのhandoffを定義したが、materializer、review UI、post-auditorおよびruntime fixtureの実装完了を意味しない。三つのreadiness状態は全てfalseである。
 
 ### 23. 実装前の完全仕様パッケージをv14で固定した
+
+```yaml
+decision_status: partially_superseded
+effective_configuration: {from: v14, until: v14}
+superseded_by: [section-24, section-25, section-27, section-30]
+```
 
 2026年7月22日、fixtureとPermission Materializerを実装する前に、研究利用条件からPost-build Auditまでの責任境界、全入出力形式、failure code、fixture catalogue、要件・試験対応を一つの仕様体系として固定する必要があると判断した。設定を`ota_ward_sumo_network_v13`から`ota_ward_sumo_network_v14`へ更新した。
 
@@ -452,7 +755,16 @@ v14は仕様の解釈を固定する版であり、v14形式のResolver artifact
 - <https://sumo.dlr.de/docs/Networks/PlainXML.html>
 - pinned SUMO 1.24.0 XSD: `edges_file.xsd`, `connections_file.xsd`, `tllogic_file.xsd`
 
-## 最終的に固定した内容
+## v14仕様作成時点で固定した内容
+
+```yaml
+decision_status: partially_superseded
+effective_configuration: {from: v14, until: v14}
+superseded_by: [section-24, section-25, section-27, section-28, section-30]
+```
+
+この一覧はv14仕様作成時点の履歴であり、現在有効な仕様一覧ではない。後続節および
+現行仕様書と異なる場合は、後続節と現行仕様書を優先する。
 
 - 採用方式：自動車系道路typeの明示的ホワイトリスト
 - vehicle class：`passenger,taxi,bus,coach,delivery,truck,motorcycle,moped`の範囲内
@@ -479,7 +791,16 @@ v14は仕様の解釈を固定する版であり、v14形式のResolver artifact
 - 信号：交差点とTLS link構造はformal前、時間制御は需要投入後に固定・較正する
 - 道路表面：道路機能と舗装状態を分離し、`surface`を主要判定タグとする
 
-## 残作業と変更管理
+## v14仕様作成時点の残作業と変更管理
+
+```yaml
+decision_status: partially_superseded
+effective_configuration: {from: v14, until: v14}
+superseded_by: [section-24, section-25, section-27, section-29, section-30]
+```
+
+以下はv14時点の残作業記録である。現在の残作業は
+`05_src/traffic_simulation/current_issues_and_blockers.md`を参照する。
 
 固定環境で次を確認する。
 
@@ -497,6 +818,12 @@ Git管理対象には、カスタムtypemap、`sumo_network.yml`、テスト、�
 
 ### 24. Resolverのpermission成果物をv14形式へ移行した
 
+```yaml
+decision_status: partially_superseded
+effective_configuration: {from: v14, until: v15}
+superseded_by: [section-27, section-29, section-30]
+```
+
 2026年7月22日、`ota_ward_sumo_network_v14`の実装として、Resolverが出力する旧map形式のpermissions JSONを、`permission_expectations.schema.json` version 2に適合する成果物へ置換した。成果物にはartifact/config identity、profile、入力OSM、成功時の正規化OSM、typemapのpath・SHA-256・policy ID、管理対象vClass、OSM way、SUMO type、方向、車線位置、期待vClass集合、適用rule IDを記録する。失敗時は文字列だけでなく、stable RS code、component、location、value stateおよびsource valueを持つ型付きblockerを記録し、正規化OSMは公開しない。
 
 productionコードからgoldenを生成しない方針に従い、正常fixture、欠損属性fixtureおよびforward/backward各2車線の双方向fixtureに対する独立oracleを追加した。両方向ともOSMの各進行方向から見た左から右の順を保持し、Resolver内でbackward配列を反転しない。JSON Schema検証、旧v13 map-only形状の拒否、入力・出力hashおよびrule provenanceをテスト対象とした。
@@ -504,6 +831,12 @@ productionコードからgoldenを生成しない方針に従い、正常fixture
 この変更はfixture上のv14成果物実装を示すが、登録済み大田区OSM extractに対する実行証拠ではない。`permission_expectation_artifact`の状態は`pending`とし、formal build input readinessはfalseのまま維持する。次の停止条件は登録済みextractでのResolver実行ではなく、まずexact `edge_provenance.json`を生成するProvisional Buildの実装とする。
 
 ### 25. Resolver v14のformal安全性と監査粒度を修正した
+
+```yaml
+decision_status: partially_superseded
+effective_configuration: {from: v14, until: v15}
+superseded_by: [section-29, section-30]
+```
 
 2026年7月22日、`ota_ward_sumo_network_v14` Resolverの外部レビューで、formal profileでも双方向偶数車線を等分できること、停止wayが構造用補完donorへ混入し得ること、permission provenanceがway上の全access tagを全laneへ付与すること、および`--overwrite`中の失敗で異なるrunの成果物が混在し得ることが指摘された。これらはformal利用を妨げる実装上の問題として修正した。
 
@@ -515,6 +848,12 @@ permission artifactには、typemap baseline、研究vClass積集合、実際に
 
 ### 26. 自動車系単一モードを全研究工程の範囲として明確化した
 
+```yaml
+decision_status: superseded
+effective_configuration: {from: v14, until: v14}
+superseded_by: [section-27]
+```
+
 2026年7月23日、`ota_ward_sumo_network_v14`について、「初期道路網は自動車系単一モード」とする記述が、後続段階で歩行者、自転車、鉄道または船舶を含むマルチモーダル道路網へ拡張する可能性を残していたため、研究範囲を明確化した。本研究は、道路網生成、交通シミュレーション、配送評価および手法比較の全工程を通じて、`passenger`、`taxi`、`bus`、`coach`、`delivery`、`truck`、`motorcycle`、`moped`の統制済み8クラスだけを道路permissionsの管理集合とする。
 
 歩行者、自転車、鉄道および船舶の専用リンクと需要は後続工程でも追加せず、マルチモーダル版は本研究の範囲外とした。自動車との共用道路は、歩行者または自転車も通行可能であることだけを理由には除外しない。緊急車両、行政車両など管理集合外の自動車系SUMO classも追加しない。
@@ -523,6 +862,12 @@ permission artifactには、typemap baseline、研究vClass積集合、実際に
 
 ### 27. mopedを除外し、専用バスと後続利用データの位置付けを固定した
 
+```yaml
+decision_status: active
+effective_configuration: {from: v15, until: null}
+superseded_by: []
+```
+
 2026年7月23日、配送研究との対応を再確認し、`moped`を道路permissionsの管理集合、SUMO車両入力、背景交通生成、到達可能性評価およびResolverの車種別解決対象から除外した。通常道路とmotorwayを含む保持道路の最大管理集合は、`passenger`、`taxi`、`bus`、`coach`、`delivery`、`truck`、`motorcycle`の7クラスとなる。これは実効permission集合を変更するため、設定を`ota_ward_sumo_network_v14`から`ota_ward_sumo_network_v15`へ更新した。
 
 専用バス道路は配送車の経路候補ではないが、背景交通としてのバス運行と道路網上の交通条件を表すために保持する。`highway.busway`と`highway.bus_guideway`は引き続き`bus`だけを許可し、配送例外を暗黙に追加しない。vehicle class集合の変更に伴いtypemap方針IDを`tokyo_motorized_v2`へ上げた。typemapのSHA-256は`81c7ed6c5f40ce0e06071bbba0ecc52b5abc2b2d8b8da64dc9cb2b3296c253be`へ更新し、独立oracleも`permission_expectations_v15.oracle.json`として更新した。
@@ -530,6 +875,12 @@ permission artifactには、typemap baseline、研究vClass積集合、実際に
 海外の運転行動データ、天候、事故、および運転行動データに含まれる歩行者関連項目は削除しない。ただし、これらはコア比較の入力ではなく、別に統制する後続段階の文脈分析または感度分析に限って使用する。海外データの絶対値を東京へ直接移植せず、天候と事故は通常条件の基準モデルが較正・独立検証された後に導入する。歩行者関連項目は自動車運転者が直面した状況を表す共変量であり、歩行者agent、歩行者需要または歩行者ネットワークモードを導入するものではない。
 
 ### 28. onewayタグ欠損と方向未解決を区別した
+
+```yaml
+decision_status: active
+effective_configuration: {from: v15, until: null}
+superseded_by: []
+```
 
 2026年7月23日、`ota_ward_sumo_network_v15`の`oneway`基礎集計におけるタグ欠損を、そのまま通行方向の未解決件数として読める表現が残っていたため修正した。一般道路で`oneway`タグが明示されていない場合は、元タグの不在を保持したまま、OSMの通常解釈と固定Resolver規則により実効値`no`を導出する。これは最頻値による欠損補完ではなく、監査上は`source_value=""`、`adopted_value="no"`、`value_state="derived_osm_rule"`および適用規則として分離する。
 
@@ -541,6 +892,12 @@ permission artifactには、typemap baseline、研究vClass積集合、実際に
 
 ### 29. 登録済み入力でv15 Resolverの全件Dry Runを実行した
 
+```yaml
+decision_status: validation_record
+effective_configuration: {from: v15, until: v15}
+superseded_by: [section-30]
+```
+
 2026年7月23日、`ota_ward_sumo_network_v15`を用いて登録済み大田区入力の`structural` Dry Runを実行した。BBOX抽出PBFのSHA-256は取得記録と一致した。`complete_ways`抽出には部分relationが含まれるため、道路接続に不要なrelationを参照検証前に除外し、抽出内581件のturn restriction relationについては、登録済み関東PBFから参照node・wayを再帰的に補足したResolver専用入力を作成した。非道路relationは削除するが、不完全なturn restriction relationは停止する規則を固定した。
 
 最終入力では26,220 wayを処理し、83,884 audit行を生成した。24,346 wayに46,056 blockerが残り、正規化OSMは公開されなかった。内訳は、bulk欠損45,749行、permission未解決264行、車線表現未対応19行、速度表現未対応22行、`oneway=-1` 1行、車線矛盾1行である。permission期待値が完全なwayは1,874であった。`oneway`は、一般道路の双方向導出19,764、明示値6,455、妥当だが実装未対応の逆向き一方通行1であった。
@@ -549,8 +906,100 @@ permission artifactには、typemap baseline、研究vClass積集合、実際に
 
 ### 30. 版16母集団へ属性重要度分類と属性値解決を接続した
 
+```yaml
+decision_status: validation_record
+effective_configuration: {from: v16, until: null}
+superseded_by: []
+```
+
 2026年7月30日、受理済みrelation closure版16を属性重要度分類と属性値解決の入力にするため、設定を`ota_ward_sumo_network_v16`へ更新した。版16の受理manifest、relation-closed OSM XMLおよび道路役割成果物のSHA-256を出典台帳へ直接登録し、版15の分類・解決記録を前版として参照しない初回生成とする。
 
 属性値解決処理は分類専用成果物を読み取り専用として扱い、採用値、証拠候補と選択結果、競合解決規則、確認状態および停止コードだけを追加する。統合後はレコード全体の自己ハッシュを再計算するが、重要度、選択規則および一致規則は変更しない。未解決組は削除せず停止記録として保持し、一件でも残る場合は`complete=false`とする。
 
 外部管理の判定事実について、較正区間、独立検証区間、主要交差点進入部、受理済み配送経路および感度分析対象は、この時点で受理済みの正例割当がないことを明示する。空集合は値の欠損や暗黙の偽値ではなく、版16全道路を負の適用範囲とする独立成果物として固定する。後に正例を受理する場合は、その出典成果物と規則版を更新して分類レコードを新規改訂する。
+
+## 現在のVerification State
+
+この表は2026年7月30日時点の記録である。`pytest`合格、XSD適合、固定SUMO
+runtime fixture、実データ全件実行およびformal適格性は、相互に代替できない独立状態
+として記録する。
+
+| 対象 | Policy | Implementation | Unit/static | XSD | Runtime fixture | Real data | Formal eligible |
+|---|---|---|---|---|---|---|---|
+| typemap XML | fixed for v16 | implemented | passed | passed | failed importer governance fixture | not run with formal pipeline | no |
+| attribute resolver | partially fixed | partial | passed | JSON Schema passed | resolver fixtures passed | v16全件実行済み、停止組あり | no |
+| permissions resolver | partially fixed | partial | passed | JSON Schema passed | artifact fixtures passed; importer fixture failed | 不完全な成果物を生成済み | no |
+| permissions materializer | policy draft exists | not implemented | not completed | output XSD not exercised | not run | not run | no |
+| `oneway=-1` | fail-closed fixed; directed model incomplete | detection only | passed | not applicable | fail-closed fixture passed | 1件を停止として確認 | no |
+| lane mapping | partially fixed | partial resolver support | passed for resolver fixtures | not applicable | materializer fixture not run | formal全件解決未完了 | no |
+| final `net.xml` | partially fixed | not implemented | not completed | not completed | not run | not generated | no |
+
+集約状態は、方針が`partially_fixed`、実装が`partial`、単体・静的検査と既存XSD検査は
+合格、SUMO importer governance fixtureは不合格、実データ検証は一部完了、
+`formal_build_ready=false`である。
+
+## 現在も保持する既知の実行時失敗
+
+固定SUMO 1.24.0のgovernance fixtureでは、次の失敗を確認している。これらはtypemap
+またはSUMO importerを正式なpermissions resolverとして信頼しない根拠である。
+
+- `access=no`と車種別例外が期待どおり変換されなかった。
+- `motor_vehicle=no`と`delivery=yes`が期待どおり変換されなかった。
+- `access:lanes`が期待どおり反映されなかった。
+- `vehicle:lanes`により管理外classが追加された。
+- 欠損Wayが1 lane、13.89 m/sで生成された。
+- `oneway`欠損が変換後のdefault annotationだけでは検出できなかった。
+
+後続の静的試験、JSON Schema検査または版16属性解決の全件実行は、このruntime
+fixture不合格を解消した証拠ではない。
+
+## 現在の未完了事項
+
+- 版16formal属性解決には24,741停止組が残り、`complete=false`である。
+- Scenario Profileの車両寸法、重量、OSM車種対応および基準シナリオの詳細決定が
+  未完了である。
+- 方向付き道路モデル、`oneway=-1`の変換、方向依存タグ、relationおよびlane順の
+  一体fixtureが未完成である。
+- 条件付き規制の正式文法、目的別access、許可台帳および日本速度規則の適用条件が
+  未確定である。
+- permissions materializer、connection再生成、変換後完全一致監査が未実装である。
+- provisional build、TLS review、final build、post-build auditおよび最終SUMO読込が
+  未実施である。
+- structural placeholderの母集団、重み、範囲および閾値感度分析が未完了である。
+- formal道路網を用いた較正と独立検証は未実施である。
+
+## 現行仕様へ移すべき内容
+
+次の内容は変更履歴ではなく現行規範に属するため、承認後は現行仕様または機械可読
+設定を正本とする。本文書の要約だけでは実装根拠にならない。
+
+- accessの空間、車種、時間、目的の各具体性軸と軸間競合の停止規則
+- `resolution_status`と`value_origin`の二軸状態、および旧`value_state`からの移行規則
+- 方向付き道路モデルと`oneway=-1`の正式表現
+- 方向別車線、`lanes:both_ways`、可逆車線および時間帯別車線の正式規則
+- 車両プロファイルとOSM車種キーの対応
+- resolver expected permissionsをformal authorityとする入出力契約
+- 条件付き規制文法、許可台帳および速度証拠の決定表
+
+これらの一部は
+`05_src/traffic_simulation/specifications/initial_formal_attribute_resolution_specification_proposal.md`
+に採用候補として存在するが、追加決定が残るため現行仕様ではない。
+
+## 文書と実装・設定の不一致
+
+2026年7月30日時点で、次の不一致を確認した。本文書の修正だけでは解消しないため、
+後続の仕様・設定・実装変更までformal buildを停止する。
+
+1. 現行方針ではresolver expected permissionsをformal authorityとする一方、
+   `sumo_network.yml`と`resolve_osm_attributes.py`にはtypemap baselineとの積集合を
+   expected permissionsとするv14以前の契約が残る。
+2. 現行方針ではaccess具体性を複数軸で評価し、軸間競合を停止するが、現行Resolverは
+   v16設定の一次元的な適用順とtypemap baselineを前提とする。完全な多軸競合判定は
+   未実装である。
+3. 現行方針では`resolution_status`と`value_origin`を分離するが、版16成果物とSchema
+   は旧`value_state`を使用する。移行規則は未決定である。
+4. 現行方針では元Wayと別の方向付き区間を要求するが、方向付き道路生成器は未実装で
+   あり、現行コードは`oneway=-1`をfail-closedで停止する段階にある。
+5. typemapと設定には過去のpermissions候補が残るが、固定SUMO importer fixtureは
+   その解釈に不合格である。materializerと変換後監査が未実装であるため、最終
+   permissionsの実行証拠はない。
