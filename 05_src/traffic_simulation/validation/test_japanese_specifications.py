@@ -29,7 +29,7 @@ def test_resolver_translation_contains_every_normative_identifier() -> None:
 
 def test_criticality_translation_contains_every_rule_level_and_action() -> None:
     english = "attribute_criticality_and_evidence_specification.md"
-    japanese = "ja/attribute_criticality_and_evidence_specification_ja.md"
+    japanese = "../learning/attribute_criticality_and_evidence_specification_ja.md"
 
     for pattern in (
         r"LANE-CRIT-\d{3}",
@@ -44,7 +44,7 @@ def test_criticality_translation_contains_every_rule_level_and_action() -> None:
 
 def test_criticality_translation_contains_every_failure_identifier() -> None:
     english = "attribute_criticality_and_evidence_specification.md"
-    japanese = "ja/attribute_criticality_and_evidence_specification_ja.md"
+    japanese = "../learning/attribute_criticality_and_evidence_specification_ja.md"
 
     for pattern in (
         r"AC-REQ-\d{3}",
@@ -57,7 +57,7 @@ def test_criticality_translation_contains_every_failure_identifier() -> None:
 def test_classification_and_resolution_object_contract_is_in_both_languages() -> None:
     for path in (
         "attribute_criticality_and_evidence_specification.md",
-        "ja/attribute_criticality_and_evidence_specification_ja.md",
+        "../learning/attribute_criticality_and_evidence_specification_ja.md",
     ):
         content = (SPECIFICATIONS / path).read_text(encoding="utf-8")
         assert "attribute_classification_predicates.json" in content

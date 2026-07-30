@@ -210,7 +210,7 @@ flowchart TD
 | Resolverの必須条件 | `05_src/traffic_simulation/specifications/02_resolver_specification.md` |
 | Resolverの必須条件・日本語版 | `05_src/traffic_simulation/specifications/ja/02_resolver_specification_ja.md` |
 | criticalityと証拠順位 | `05_src/traffic_simulation/specifications/attribute_criticality_and_evidence_specification.md` |
-| criticalityと証拠順位・日本語版 | `05_src/traffic_simulation/specifications/ja/attribute_criticality_and_evidence_specification_ja.md` |
+| criticalityと証拠順位・学習用日本語版 | `05_src/traffic_simulation/learning/attribute_criticality_and_evidence_specification_ja.md` |
 | 307件の例外とrelation scope | `reproducibility/config/traffic_simulation/resolver_exception_decision_table.yml` |
 | 日本・東京の例外分類規則 | `05_src/traffic_simulation/specifications/japan_tokyo_osm_exception_classification_rules.md` |
 | failure code | `05_src/traffic_simulation/specifications/08_failure_taxonomy.md` |

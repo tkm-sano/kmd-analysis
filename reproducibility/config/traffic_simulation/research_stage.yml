@@ -19,14 +19,13 @@ readiness:
     status_label_ja: 実行不可
     note_ja: 承認済みformalネットワークがないため、較正・配送・QAOA評価へ進まない
 blockers:
-  - lanes・maxspeedの属性別criticalityは4 schema、predicate generator、semantic validator、production codeから独立して作成したfixture collectionを実装済みである。独立human reviewは研究責任者判断で省略した。例外分類器とは別に、重要度classifier、resolver stage、固定Classifier・Resolver実行証拠は未完了である
-  - 307行は20規則へ排他的に分類済みだが、permission 264行、車線・速度42行、oneway 1行の属性値解決は未完了
-  - v16 relation closureはバス向けturn restriction 3件を含めて受理済みだが、Classifier・Resolverは新入力hashへ未接続
+  - 明示値、外部証拠、model値、代替値から属性値を決め、evidence・conflict・review・stop状態を記録するresolver stageが未実装である
+  - permission 264行、車線・速度42行、oneway 1行の属性値解決規則・実装・固定試験が未完了である
+  - Classifier・Resolverはv16の受理済み入力hashへ未接続で、全way・両属性・両profileの実行証拠がない
   - permission materializerが未実装で、SUMO 1.24.0固定fixtureも未実行
   - formal属性証拠、ジャンクション・TLSレビュー、prepare/validateパイプライン、事後監査が未完了
 next_actions:
-  - 固定fixtureでpredicate generatorを再検証し、独立human reviewを省略した判断と自動検証結果を保持する
-  - predicateからlevelとrule IDだけを決めるclassifierと、値・evidence・review・stop状態を決めるresolver stageを順に実装し、固定fixtureで統合検証する
+  - 値・evidence・review・stop状態を決めるresolver stageを実装し、既存の分類オブジェクトを変更せず統合成果物へ継承する
   - 受理済みv16 closureをClassifier・Resolver入力へ接続し、全way・属性・profileの実データcriticalityを新しい入力hashから生成する
   - 排他的分類済みの307件について、日本・東京の証拠条件を満たす値解決規則を優先度順に実装し、未解決項目は停止状態を維持する
   - Resolver blocker解消と並行してpermission materializerを実装し、SUMO 1.24.0固定fixtureでlane・connection期待値を検証する

@@ -6,13 +6,13 @@
 日本語版を修正する。規則変更時は英語版、日本語版、設定、traceability、
 fixtureの整合を同じ変更で確認する。
 
-`Source revision`は英語正本と日本語版の同期基準を示す。未commitの同一変更内では
-`pending commit`とし、commit時にそのSHAへ置き換える。
+`Source revision`は英語正本と日本語版の同期基準を示す。同一コミットで同期した
+場合は「同一基準点」と記録し、具体的なコミットSHAはGit履歴から確認する。
 
 | 内容 | 英語正本 | 日本語版 | Source revision | 同期状態 |
 |---|---|---|---|---|
-| Resolverの対象、入出力、failure、relation closure | [`../02_resolver_specification.md`](../02_resolver_specification.md) | [`02_resolver_specification_ja.md`](02_resolver_specification_ja.md) | `pending commit` | working treeで同期 |
-| 属性別criticality、証拠順位、placeholder gate | [`../attribute_criticality_and_evidence_specification.md`](../attribute_criticality_and_evidence_specification.md) | [`attribute_criticality_and_evidence_specification_ja.md`](attribute_criticality_and_evidence_specification_ja.md) | `pending commit` | working treeで同期 |
+| Resolverの対象、入出力、failure、relation closure | [`../02_resolver_specification.md`](../02_resolver_specification.md) | [`02_resolver_specification_ja.md`](02_resolver_specification_ja.md) | 同一基準点 | 同期済み |
+| 属性別criticality、証拠順位、placeholder gate | [`../attribute_criticality_and_evidence_specification.md`](../attribute_criticality_and_evidence_specification.md) | [`学習用日本語版`](../../learning/attribute_criticality_and_evidence_specification_ja.md) | 同一基準点 | 英語正本の固定内容を学習用に翻訳 |
 
 ## 関連する正本と統制表
 

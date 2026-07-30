@@ -10,6 +10,7 @@ the responsibility of ``build_sumo_network.py``.
 from __future__ import annotations
 
 import argparse
+import copy
 import csv
 import hashlib
 import json
@@ -27,6 +28,9 @@ import yaml
 from jsonschema import Draft202012Validator
 from referencing import Registry, Resource
 
+from traffic_simulation.network.classify_attribute_criticality import (
+    validate_criticality_artifact,
+)
 from traffic_simulation.paths import REPOSITORY_ROOT
 
 
@@ -118,6 +122,84 @@ STOP_CATEGORIES: Final = frozenset(
 
 class ResolutionError(ValueError):
     """Raised when governed values cannot be safely materialized."""
+
+
+def load_classification_for_resolution(
+    path: Path,
+    *,
+    expected_profile: str,
+) -> tuple[dict[str, str], dict[str, Any]]:
+    """Load a classification artifact without changing its records."""
+
+    _relative_repository_path(path)
+    artifact = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(artifact, dict):
+        raise ValueError("criticality classification root must be an object")
+    validate_criticality_artifact(artifact)
+    for field in ("predicate_artifact", "classification_policy"):
+        reference = artifact[field]
+        source_path = REPOSITORY_ROOT / reference["path"]
+        if not source_path.is_file() or sha256_file(source_path) != reference["sha256"]:
+            raise ValueError(
+                f"criticality classification has an invalid {field} reference"
+            )
+    if artifact["profile"] != expected_profile:
+        raise ValueError(
+            "criticality classification profile differs from resolver profile"
+        )
+    records_by_way: dict[str, dict[str, Mapping[str, Any]]] = defaultdict(dict)
+    for record in artifact["records"]:
+        records_by_way[record["osm_way_id"]][record["attribute"]] = record
+
+    criticality_by_way: dict[str, str] = {}
+    for way_id, attributes in records_by_way.items():
+        if set(attributes) != {"lanes", "maxspeed"}:
+            raise ValueError(
+                f"classification does not cover lanes and maxspeed for way {way_id}"
+            )
+        levels = {
+            record["classification"]["criticality_level"]
+            for record in attributes.values()
+        }
+        if levels <= {"L0", "S0"}:
+            criticality_by_way[way_id] = "unclassified"
+        elif levels <= {"L1", "S1"}:
+            criticality_by_way[way_id] = "noncritical"
+        else:
+            criticality_by_way[way_id] = "critical"
+    return criticality_by_way, artifact
+
+
+def attach_resolution_without_overwriting_classification(
+    classification_artifact: Mapping[str, Any],
+    resolutions: Mapping[str, Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    """Pair Resolver objects with immutable Classifier records."""
+
+    validate_criticality_artifact(classification_artifact)
+    expected_ids = {
+        record["classification_record_id"]
+        for record in classification_artifact["records"]
+    }
+    if set(resolutions) != expected_ids:
+        raise ValueError("resolution coverage differs from classification coverage")
+    combined: list[dict[str, Any]] = []
+    for source_record in classification_artifact["records"]:
+        record_id = source_record["classification_record_id"]
+        resolution = resolutions[record_id]
+        if "classification" in resolution:
+            raise ValueError("Resolver output must not contain classification")
+        output_record = {
+            "classification_record": copy.deepcopy(source_record),
+            "resolution": copy.deepcopy(dict(resolution)),
+        }
+        if (
+            output_record["classification_record"]["classification"]
+            != source_record["classification"]
+        ):
+            raise AssertionError("Resolver changed Classifier output")
+        combined.append(output_record)
+    return combined
 
 
 @dataclass(frozen=True, slots=True)
@@ -2131,7 +2213,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--permission-expectations-json", required=True, type=Path)
     parser.add_argument("--imputation-summary-json", required=True, type=Path)
     parser.add_argument("--failure-report-json", required=True, type=Path)
-    parser.add_argument("--criticality-csv", type=Path)
+    criticality_group = parser.add_mutually_exclusive_group()
+    criticality_group.add_argument("--criticality-csv", type=Path)
+    criticality_group.add_argument("--criticality-classification-json", type=Path)
     parser.add_argument("--overwrite", action="store_true")
     return parser
 
@@ -2154,6 +2238,18 @@ def main(argv: Sequence[str] | None = None) -> int:
         if args.failure_report_json.exists() and not args.overwrite:
             raise FileExistsError("failure report output already exists; use --overwrite")
         policy = load_policy(args.profile)
+        classification_artifact: dict[str, Any] | None = None
+        if args.criticality_classification_json is not None:
+            criticality_map, classification_artifact = (
+                load_classification_for_resolution(
+                    args.criticality_classification_json,
+                    expected_profile=args.profile,
+                )
+            )
+            criticality_source_path = args.criticality_classification_json
+        else:
+            criticality_map = _load_criticality(args.criticality_csv)
+            criticality_source_path = args.criticality_csv
         result = resolve_file(
             args.input_osm,
             args.output_osm,
@@ -2161,10 +2257,12 @@ def main(argv: Sequence[str] | None = None) -> int:
             args.permission_expectations_json,
             args.imputation_summary_json,
             policy,
-            criticality_by_way=_load_criticality(args.criticality_csv),
-            criticality_source_path=args.criticality_csv,
+            criticality_by_way=criticality_map,
+            criticality_source_path=criticality_source_path,
             overwrite=args.overwrite,
         )
+        if classification_artifact is not None:
+            validate_criticality_artifact(classification_artifact)
     except Exception as error:
         try:
             report = _failure_report_payload(

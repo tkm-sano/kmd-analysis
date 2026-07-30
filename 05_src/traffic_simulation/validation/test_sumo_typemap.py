@@ -322,6 +322,7 @@ def test_attribute_classification_basic_design_is_machine_registered() -> None:
     assert set(policy["implemented_schemas"]) == {
         "classification_predicates.schema.json",
         "predicate_source_registry.schema.json",
+        "attribute_criticality_classification.schema.json",
         "attribute_classification.schema.json",
         "attribute_classification_fixture.schema.json",
     }

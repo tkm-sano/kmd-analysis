@@ -7,7 +7,7 @@ created_at: "2026-07-18"
 last_updated_at: "2026-07-25"
 configuration_lineage_date: "2026-07-16"
 decision_date: "2026-07-23"
-change_summary: Strengthen attribute-classification schemas and add RFC 8785 cross-record semantic validation
+change_summary: Implement value-free attribute criticality classification and a read-only Resolver boundary
 policy_documents:
   attribute_governance: 05_src/traffic_simulation/network_attribute_governance.md
   current_specification: 05_src/traffic_simulation/network_current_specification.md
@@ -22,6 +22,7 @@ artifact_schema_registry:
   common: reproducibility/config/traffic_simulation/schemas/artifact_common.schema.json
   relation_closure_manifest: reproducibility/config/traffic_simulation/schemas/relation_closure_manifest.schema.json
   classification_predicates: reproducibility/config/traffic_simulation/schemas/classification_predicates.schema.json
+  attribute_criticality_classification: reproducibility/config/traffic_simulation/schemas/attribute_criticality_classification.schema.json
   predicate_source_registry: reproducibility/config/traffic_simulation/schemas/predicate_source_registry.schema.json
   attribute_classification: reproducibility/config/traffic_simulation/schemas/attribute_classification.schema.json
   attribute_classification_fixture: reproducibility/config/traffic_simulation/schemas/attribute_classification_fixture.schema.json
@@ -1411,7 +1412,7 @@ structural_imputation:
   formal_use_allowed: false
 
 road_criticality:
-  status: schemas_semantic_validator_and_fixture_collection_implemented_fixture_acceptance_and_generators_pending
+  status: predicate_generator_and_value_free_classifier_implemented_resolver_value_selection_and_v16_execution_pending
   specification: 05_src/traffic_simulation/specifications/attribute_criticality_and_evidence_specification.md
   exception_decision_table: reproducibility/config/traffic_simulation/resolver_exception_decision_table.yml
   population_source: accepted_relation_closure_candidate_ways
@@ -1437,6 +1438,8 @@ road_criticality:
     preserve_array_order: true
     distinguish_null_from_omitted: true
   semantic_validator: 05_src/traffic_simulation/network/validate_attribute_classification.py
+  classifier: 05_src/traffic_simulation/network/classify_attribute_criticality.py
+  resolver_read_only_adapter: 05_src/traffic_simulation/network/resolve_osm_attributes.py
   classification_rule_priority:
     lanes:
       - LANE-CRIT-001
@@ -1456,6 +1459,7 @@ road_criticality:
   implemented_schemas:
     - classification_predicates.schema.json
     - predicate_source_registry.schema.json
+    - attribute_criticality_classification.schema.json
     - attribute_classification.schema.json
     - attribute_classification_fixture.schema.json
   fixture_collection:

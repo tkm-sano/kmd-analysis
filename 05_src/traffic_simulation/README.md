@@ -14,6 +14,12 @@ The Japanese implementation and verification procedure for applying
 vehicle-class permissions to the Ota Ward SUMO road network is documented in
 [`東京交通・EV配送研究の全工程と大田区道路網の通行権限実装手順`](learning/permission_materializer_reproducible_implementation_guide.md).
 
+The learning-oriented Japanese translation of the attribute-criticality,
+evidence, classification, and resolution contract is available in
+[`属性別重要度と証拠に関する仕様書`](learning/attribute_criticality_and_evidence_specification_ja.md).
+The English specification and machine-readable configuration remain
+authoritative.
+
 The model-development lifecycle, Verification, calibration, independent
 Validation, evidence requirements, and formal-use gates are organized in
 [`simulation_model_development_and_vv.md`](simulation_model_development_and_vv.md).
@@ -21,6 +27,10 @@ Validation, evidence requirements, and formal-use gates are organized in
 The current blockers, their evidence, downstream effects, resolution work, and
 acceptance criteria are documented in
 [`current_issues_and_blockers.md`](current_issues_and_blockers.md).
+Accepted v16 road-population and relation-closure facts are kept separately in
+[`confirmed_network_population_and_relation_closure.md`](confirmed_network_population_and_relation_closure.md).
+Other implemented and verified facts are separated from open blockers in
+[`confirmed_implementation_and_verification.md`](confirmed_implementation_and_verification.md).
 
 The Japan/Tokyo interpretation policy and the implemented one-to-one
 classification rules for the 307 governed Resolver exception rows are recorded

@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "attribute_criticality_classification.schema.json",
+  "allOf": [
+    {"$ref": "artifact_common.schema.json#/$defs/identity"},
+    {
+      "type": "object",
+      "required": [
+        "artifact_type",
+        "schema_version",
+        "config_id",
+        "config_version",
+        "run_id",
+        "profile",
+        "complete",
+        "relation_closed_osm",
+        "predicate_artifact",
+        "classification_policy",
+        "population_way_count",
+        "records"
+      ],
+      "properties": {
+        "artifact_type": {"const": "attribute_criticality_classification"},
+        "schema_version": {"const": 1},
+        "config_id": {"type": "string"},
+        "config_version": {"type": "integer"},
+        "run_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "profile": {"enum": ["structural", "formal"]},
+        "complete": {"const": true},
+        "relation_closed_osm": {
+          "$ref": "artifact_common.schema.json#/$defs/file_ref"
+        },
+        "predicate_artifact": {
+          "$ref": "artifact_common.schema.json#/$defs/file_ref"
+        },
+        "classification_policy": {
+          "$ref": "artifact_common.schema.json#/$defs/file_ref"
+        },
+        "population_way_count": {"type": "integer", "minimum": 1},
+        "records": {
+          "type": "array",
+          "minItems": 2,
+          "items": {"$ref": "#/$defs/classification_record"}
+        }
+      },
+      "additionalProperties": false
+    }
+  ],
+  "$defs": {
+    "sha256_or_null": {
+      "oneOf": [
+        {"$ref": "artifact_common.schema.json#/$defs/sha256"},
+        {"type": "null"}
+      ]
+    },
+    "classification": {
+      "type": "object",
+      "required": [
+        "criticality_level",
+        "selected_rule_id",
+        "matched_rule_ids"
+      ],
+      "properties": {
+        "criticality_level": {
+          "enum": ["L0", "L1", "L2", "L3", "S0", "S1", "S2", "S3"]
+        },
+        "selected_rule_id": {
+          "type": "string",
+          "pattern": "^(LANE|SPEED)-CRIT-[0-9]{3}$"
+        },
+        "matched_rule_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^(LANE|SPEED)-CRIT-[0-9]{3}$"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "classification_record": {
+      "type": "object",
+      "required": [
+        "classification_record_id",
+        "osm_way_id",
+        "attribute",
+        "profile",
+        "subgraph_role",
+        "record_revision",
+        "record_sha256",
+        "supersedes_record_sha256",
+        "revision_reason_code",
+        "source_artifact_sha256",
+        "classification_config_sha256",
+        "classification"
+      ],
+      "properties": {
+        "classification_record_id": {
+          "type": "string",
+          "pattern": "^acr:[1-9][0-9]*:(lanes|maxspeed):(structural|formal)$"
+        },
+        "osm_way_id": {"type": "string", "pattern": "^[1-9][0-9]*$"},
+        "attribute": {"enum": ["lanes", "maxspeed"]},
+        "profile": {"enum": ["structural", "formal"]},
+        "subgraph_role": {"enum": ["final", "topology_support", "excluded"]},
+        "record_revision": {"type": "integer", "minimum": 1},
+        "record_sha256": {
+          "$ref": "artifact_common.schema.json#/$defs/sha256"
+        },
+        "supersedes_record_sha256": {"$ref": "#/$defs/sha256_or_null"},
+        "revision_reason_code": {
+          "type": "string",
+          "pattern": "^ACR-[A-Z0-9]+(?:-[A-Z0-9]+)*$"
+        },
+        "source_artifact_sha256": {
+          "$ref": "artifact_common.schema.json#/$defs/sha256"
+        },
+        "classification_config_sha256": {
+          "$ref": "artifact_common.schema.json#/$defs/sha256"
+        },
+        "classification": {"$ref": "#/$defs/classification"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"record_revision": {"const": 1}}},
+          "then": {
+            "properties": {"supersedes_record_sha256": {"type": "null"}}
+          },
+          "else": {
+            "properties": {
+              "supersedes_record_sha256": {
+                "$ref": "artifact_common.schema.json#/$defs/sha256"
+              }
+            }
+          }
+        },
+        {
+          "if": {"properties": {"attribute": {"const": "lanes"}}},
+          "then": {
+            "properties": {
+              "classification": {
+                "properties": {
+                  "criticality_level": {"enum": ["L0", "L1", "L2", "L3"]},
+                  "selected_rule_id": {
+                    "pattern": "^LANE-CRIT-[0-9]{3}$"
+                  },
+                  "matched_rule_ids": {
+                    "items": {"pattern": "^LANE-CRIT-[0-9]{3}$"}
+                  }
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "classification": {
+                "properties": {
+                  "criticality_level": {"enum": ["S0", "S1", "S2", "S3"]},
+                  "selected_rule_id": {
+                    "pattern": "^SPEED-CRIT-[0-9]{3}$"
+                  },
+                  "matched_rule_ids": {
+                    "items": {"pattern": "^SPEED-CRIT-[0-9]{3}$"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    }
+  }
+}
