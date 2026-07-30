@@ -3,7 +3,7 @@
 
 # 研究進捗ダッシュボード
 
-**状態更新日:** 2026-07-30
+**状態更新日:** 2026-07-31
 
 ## 現在地
 
@@ -11,7 +11,7 @@
 |---|---|
 | 現在工程 | 6 / 21: **SUMO道路網生成・構造検証** |
 | 完了工程 | 5工程 |
-| 概要 | バス規制を含むv16母集団を受理し、v15属性例外307行の排他的分類を完了して、重要度Classifier・Resolverをv16入力へ接続する段階 |
+| 概要 | v16全件分類・属性解決を履歴として固定し、承認済み版17方針をSchema・Resolver・fixtureへ移行する段階 |
 
 ```mermaid
 flowchart LR
@@ -31,23 +31,23 @@ flowchart LR
 
 | 対象 | 判定 | 説明 |
 |---|---|---|
-| 道路網仕様 | **統制済みドラフト** (`governed_draft`) | v16参照補完母集団とv15属性例外307行の排他的分類は検証済みだが、重要度Classifier・Resolverのv16移行と属性値blocker解消が未完了 |
+| 道路網仕様 | **統制済みドラフト** (`governed_draft`) | v16全件実行は完了したがformalに24,741停止組が残る。版17のpermissions authority、access多軸比較、方向付き区間、車両プロファイル、二軸値状態は方針固定済みで実装移行中 |
 | 正式SUMO道路網 | **未承認** (`not_accepted`) | permission materializerと実ネットワーク検証が未完了 |
 | 下流実験 | **実行不可** (`not_ready`) | 承認済みformalネットワークがないため、較正・配送・QAOA評価へ進まない |
 
 ## 現在の阻害事項
 
-- 明示値、外部証拠、model値、代替値から属性値を決め、evidence・conflict・review・stop状態を記録するresolver stageが未実装である
-- permission 264行、車線・速度42行、oneway 1行の属性値解決規則・実装・固定試験が未完了である
-- Classifier・Resolverはv16の受理済み入力hashへ未接続で、全way・両属性・両profileの実行証拠がない
+- v16 formal属性成果物に24,741停止組が残りcomplete=falseである
+- 版17機械可読方針、基礎Schema、access比較・方向付き区間の独立関数は作成済みだが、production統合が未完了である
+- 方向付き区間生成のproduction接続、oneway=-1、方向依存属性・relation・lane順のruntime fixtureが未完了である
 - permission materializerが未実装で、SUMO 1.24.0固定fixtureも未実行
 - formal属性証拠、ジャンクション・TLSレビュー、prepare/validateパイプライン、事後監査が未完了
 
 ## 次の作業
 
-1. 値・evidence・review・stop状態を決めるresolver stageを実装し、既存の分類オブジェクトを変更せず統合成果物へ継承する
-2. 受理済みv16 closureをClassifier・Resolver入力へ接続し、全way・属性・profileの実データcriticalityを新しい入力hashから生成する
-3. 排他的分類済みの307件について、日本・東京の証拠条件を満たす値解決規則を優先度順に実装し、未解決項目は停止状態を維持する
+1. 検証済み版17機械可読方針、車両プロファイル、方向付き区間Schemaをproduction入力境界へ接続する
+2. accessの4軸Pareto比較と二軸値状態をproduction Resolverへ統合する
+3. 方向付き区間生成とoneway=-1のB方向生成をproductionへ接続し、relation・lane順fixtureを実装する
 4. Resolver blocker解消と並行してpermission materializerを実装し、SUMO 1.24.0固定fixtureでlane・connection期待値を検証する
 
 ## 全工程

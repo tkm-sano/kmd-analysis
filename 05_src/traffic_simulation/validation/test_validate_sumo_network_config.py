@@ -32,6 +32,34 @@ def test_current_governed_config_passes_cross_field_validation() -> None:
     validator.validate_config(governed_config())
 
 
+def test_approved_next_policy_must_target_exactly_the_next_version() -> None:
+    config = deepcopy(governed_config())
+    config["approved_next_configuration_policy"]["effective_from_config_version"] = 18
+
+    with pytest.raises(validator.ConfigurationError, match="target the next version"):
+        validator.validate_config(config)
+
+
+def test_approved_next_policy_id_must_match_policy_file() -> None:
+    config = deepcopy(governed_config())
+    config["approved_next_configuration_policy"]["policy_id"] = (
+        "unregistered_policy_v17"
+    )
+
+    with pytest.raises(validator.ConfigurationError, match="policy_id is out of sync"):
+        validator.validate_config(config)
+
+
+def test_approved_next_policy_cannot_relabel_v16_artifacts() -> None:
+    config = deepcopy(governed_config())
+    config["approved_next_configuration_policy"]["v16_artifact_treatment"] = (
+        "relabel_as_v17"
+    )
+
+    with pytest.raises(validator.ConfigurationError, match="preserve v16 artifacts"):
+        validator.validate_config(config)
+
+
 def test_governed_configuration_schema_is_enforced() -> None:
     config = deepcopy(governed_config())
     del config["normative_specifications"]

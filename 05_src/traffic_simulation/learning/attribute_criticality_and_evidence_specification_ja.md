@@ -1,5 +1,9 @@
 # 属性別重要度と証拠に関する仕様書
 
+> **版に関する注意**: 本文中の`value_state`は不変な版16成果物契約を説明する。
+> 版17の新規属性解決成果物は
+> `../specifications/10_approved_attribute_resolution_policy.md`に従い、
+> `resolution_status`と`value_origin`を使用する。
 > **文書種別**: 学習用日本語版
 > **規範性**: 非規範
 > **英語正本**:

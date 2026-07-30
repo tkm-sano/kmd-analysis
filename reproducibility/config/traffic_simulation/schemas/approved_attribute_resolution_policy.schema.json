@@ -1,0 +1,254 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "approved_attribute_resolution_policy.schema.json",
+  "title": "Approved road-attribute resolution policy",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "schema",
+    "policy_id",
+    "requirements_traceability",
+    "effective_configuration",
+    "policy_status",
+    "implementation_status",
+    "runtime_validation_status",
+    "formal_build_ready",
+    "permissions_authority",
+    "access_specificity",
+    "directed_road_model",
+    "managed_vehicle_profile",
+    "directional_lane_resolution",
+    "structural_placeholder",
+    "resolution_contract"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "schema": {
+      "const": "reproducibility/config/traffic_simulation/schemas/approved_attribute_resolution_policy.schema.json"
+    },
+    "policy_id": {"const": "ota_ward_attribute_resolution_policy_v17"},
+    "requirements_traceability": {
+      "const": "reproducibility/config/traffic_simulation/requirements_traceability_v17.yml"
+    },
+    "effective_configuration": {
+      "type": "object",
+      "required": ["from", "until"],
+      "properties": {
+        "from": {"const": 17},
+        "until": {"type": "null"}
+      },
+      "additionalProperties": false
+    },
+    "policy_status": {"const": "fixed"},
+    "implementation_status": {"enum": ["not_implemented", "partial", "implemented"]},
+    "runtime_validation_status": {"enum": ["not_run", "incomplete", "passed", "failed"]},
+    "formal_build_ready": {"const": false},
+    "permissions_authority": {
+      "type": "object",
+      "required": [
+        "typemap_role",
+        "formal_authority",
+        "final_permissions",
+        "managed_vclass_universe",
+        "final_permissions_must_be_subset_of_managed_universe",
+        "patch_final_net_xml",
+        "materialize_before_final_netconvert",
+        "regenerate_lanes_and_connections",
+        "post_conversion_exact_match_required"
+      ],
+      "properties": {
+        "typemap_role": {"const": "provisional_candidate_permissions"},
+        "formal_authority": {"const": "resolver_expected_permissions"},
+        "final_permissions": {"const": "resolver_expected_permissions"},
+        "managed_vclass_universe": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string"}
+        },
+        "final_permissions_must_be_subset_of_managed_universe": {"const": true},
+        "patch_final_net_xml": {"const": false},
+        "materialize_before_final_netconvert": {"const": true},
+        "regenerate_lanes_and_connections": {"const": true},
+        "post_conversion_exact_match_required": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "access_specificity": {
+      "type": "object",
+      "required": ["axes", "comparison", "maximal_rule_policy", "conditional_rule_requires_active_scenario_context"],
+      "properties": {
+        "axes": {
+          "type": "object",
+          "required": ["spatial_scope", "vehicle_scope", "temporal_scope", "purpose_scope"],
+          "properties": {
+            "spatial_scope": {"const": ["way", "direction", "lane"]},
+            "vehicle_scope": {"const": ["access", "vehicle", "motor_vehicle", "vehicle_class"]},
+            "temporal_scope": {"const": ["unconditional", "conditional"]},
+            "purpose_scope": {"const": ["general", "destination", "delivery", "customers"]}
+          },
+          "additionalProperties": false
+        },
+        "comparison": {"const": "pareto_dominance"},
+        "maximal_rule_policy": {
+          "type": "object",
+          "required": ["equal_results", "different_results", "conflict_stop_code"],
+          "properties": {
+            "equal_results": {"const": "adopt"},
+            "different_results": {"const": "conflict"},
+            "conflict_stop_code": {"const": "ACCESS_SPECIFICITY_CONFLICT"}
+          },
+          "additionalProperties": false
+        },
+        "conditional_rule_requires_active_scenario_context": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "directed_road_model": {
+      "type": "object",
+      "required": [
+        "source_way_mutation",
+        "id_template",
+        "segment_index_origin",
+        "segment_index_order",
+        "forward_code",
+        "backward_code",
+        "reverse_oneway_generation",
+        "prohibit_sumo_edge_id_sign_as_direction_evidence",
+        "prohibit_coordinate_nearest_as_direction_evidence",
+        "missing_relation_mapping_stop_code",
+        "ambiguous_relation_mapping_stop_code",
+        "implementation_until_complete"
+      ],
+      "properties": {
+        "source_way_mutation": {"const": "prohibited"},
+        "id_template": {"const": "way/{osm_way_id}/segment/{segment_index_4digits}/direction/{F|B}"},
+        "segment_index_origin": {"const": 0},
+        "segment_index_order": {"const": "source_way_node_order"},
+        "forward_code": {"const": "F"},
+        "backward_code": {"const": "B"},
+        "reverse_oneway_generation": {"const": "backward_only"},
+        "prohibit_sumo_edge_id_sign_as_direction_evidence": {"const": true},
+        "prohibit_coordinate_nearest_as_direction_evidence": {"const": true},
+        "missing_relation_mapping_stop_code": {"const": "RELATION_DIRECTED_MAPPING_MISSING"},
+        "ambiguous_relation_mapping_stop_code": {"const": "RELATION_DIRECTED_MAPPING_AMBIGUOUS"},
+        "implementation_until_complete": {"const": "fail_closed"}
+      },
+      "additionalProperties": false
+    },
+    "managed_vehicle_profile": {
+      "type": "object",
+      "required": ["path", "profile_id"],
+      "properties": {
+        "path": {"const": "reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml"},
+        "profile_id": {"const": "managed_urban_ev_delivery_v1"}
+      },
+      "additionalProperties": false
+    },
+    "directional_lane_resolution": {
+      "type": "object",
+      "required": [
+        "bidirectional_even_total_without_directional_tags",
+        "one_direction_with_explicit_total",
+        "unsupported_until_dedicated_rule"
+      ],
+      "properties": {
+        "bidirectional_even_total_without_directional_tags": {
+          "type": "object",
+          "required": ["structural", "formal"],
+          "properties": {
+            "structural": {
+              "type": "object",
+              "required": ["resolution_status", "value_origin", "assumption_id", "formal_eligible"],
+              "properties": {
+                "resolution_status": {"const": "resolved"},
+                "value_origin": {"const": "model_assumed"},
+                "assumption_id": {"const": "BIDIRECTIONAL_EVEN_LANE_EQUAL_SPLIT_V1"},
+                "formal_eligible": {"const": false}
+              },
+              "additionalProperties": false
+            },
+            "formal": {
+              "type": "object",
+              "required": ["resolution_status", "stop_code"],
+              "properties": {
+                "resolution_status": {"const": "unresolved"},
+                "stop_code": {"const": "LANE_DIRECTIONAL_ALLOCATION_MISSING"}
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "one_direction_with_explicit_total": {
+          "type": "object",
+          "required": ["resolution_status", "value_origin"],
+          "properties": {
+            "resolution_status": {"const": "resolved"},
+            "value_origin": {"const": "rule_derived"}
+          },
+          "additionalProperties": false
+        },
+        "unsupported_until_dedicated_rule": {
+          "const": ["lanes_both_ways", "reversible_lanes", "time_dependent_lanes"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "structural_placeholder": {
+      "type": "object",
+      "required": [
+        "process_name",
+        "formal_attribute_resolution",
+        "permitted_uses",
+        "prohibited_uses",
+        "transfer_calibration_to_formal_network"
+      ],
+      "properties": {
+        "process_name": {"const": "structural_placeholder_generation"},
+        "formal_attribute_resolution": {"const": false},
+        "permitted_uses": {"const": ["topology_review", "connection_review"]},
+        "prohibited_uses": {"const": ["formal_network", "calibration", "independent_validation", "delivery_evaluation"]},
+        "transfer_calibration_to_formal_network": {"const": false}
+      },
+      "additionalProperties": false
+    },
+    "resolution_contract": {
+      "type": "object",
+      "required": [
+        "schema",
+        "canonical_output_fields",
+        "legacy_value_state",
+        "resolution_status_values",
+        "value_origin_values",
+        "formal_approved_origins",
+        "formal_prohibited_origins"
+      ],
+      "properties": {
+        "schema": {"const": "reproducibility/config/traffic_simulation/schemas/attribute_resolution_v2.schema.json"},
+        "canonical_output_fields": {"const": ["resolution_status", "value_origin"]},
+        "legacy_value_state": {
+          "type": "object",
+          "required": ["read_compatibility_only", "write_in_new_artifacts"],
+          "properties": {
+            "read_compatibility_only": {"const": true},
+            "write_in_new_artifacts": {"const": false}
+          },
+          "additionalProperties": false
+        },
+        "resolution_status_values": {
+          "const": ["resolved", "not_applicable", "unresolved", "conflict", "unsupported", "invalid"]
+        },
+        "value_origin_values": {
+          "const": ["source_explicit", "source_normalized", "rule_derived", "evidence_derived", "model_assumed", "derived_validated_model"]
+        },
+        "formal_approved_origins": {
+          "const": ["source_explicit", "source_normalized", "rule_derived", "evidence_derived", "derived_validated_model"]
+        },
+        "formal_prohibited_origins": {"const": ["model_assumed"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

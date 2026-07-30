@@ -629,6 +629,32 @@ typemap_policy:
     - highway.bus_guideway
     - highway.busway
 
+approved_next_configuration_policy:
+  policy_id: ota_ward_attribute_resolution_policy_v17
+  policy: reproducibility/config/traffic_simulation/approved_attribute_resolution_policy_v17.yml
+  normative_specification: 05_src/traffic_simulation/specifications/10_approved_attribute_resolution_policy.md
+  requirements_traceability: reproducibility/config/traffic_simulation/requirements_traceability_v17.yml
+  managed_vehicle_profile: reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml
+  schemas:
+    policy: reproducibility/config/traffic_simulation/schemas/approved_attribute_resolution_policy.schema.json
+    resolution: reproducibility/config/traffic_simulation/schemas/attribute_resolution_v2.schema.json
+    directed_segment: reproducibility/config/traffic_simulation/schemas/directed_segment.schema.json
+    managed_vehicle_profile: reproducibility/config/traffic_simulation/schemas/managed_vehicle_profile.schema.json
+  effective_from_config_version: 17
+  policy_status: fixed
+  implementation_status: partial
+  runtime_validation_status: incomplete
+  formal_build_ready: false
+  v16_artifact_treatment: immutable_historical_evidence_not_relabelled_as_v17
+  required_before_v17_full_run:
+    - migrate_permissions_authority_from_typemap_intersection
+    - implement_access_specificity_pareto_dominance
+    - implement_directed_segment_generation_and_mapping
+    - validate_managed_vehicle_profile
+    - migrate_resolution_status_and_value_origin
+    - rerun_independent_fixtures
+    - run_registered_population_as_new_run
+
 access_resolution:
   osm_override_application_order:
     - access

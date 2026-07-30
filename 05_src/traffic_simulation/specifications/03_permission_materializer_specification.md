@@ -1,5 +1,9 @@
 # Permission Materializer Specification
 
+> Version note: v17 uses Resolver expected permissions as the formal authority.
+> Any v16 clause that intersects the final set with a typemap baseline is
+> superseded by `10_approved_attribute_resolution_policy.md`.
+
 ## Scope and Authority
 
 The Materializer projects already-decided permissions onto SUMO 1.24.0 plain XML. It MUST NOT interpret source access tags, choose a typemap type, guess topology, create a turn or finalize TLS logic.

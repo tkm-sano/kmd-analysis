@@ -1,8 +1,8 @@
-# 版16道路属性の正式解決に向けた実行手順
+# 版17道路属性の正式解決に向けた実行手順
 
 > **文書状態:** 実行計画
-> **開始位置:** 初期正式仕様案を作成済み、追加決定事項あり
-> **終了条件:** 版16正式用成果物が`complete=true`となり、阻害項目が0件になる
+> **開始位置:** 中核方針・機械可読設定・基礎JSON Schema固定済み、production統合・fixture移行前
+> **終了条件:** 版17正式用成果物が`complete=true`となり、阻害項目が0件になる
 > **禁止事項:** 未決定事項を実装者の推測で補わない
 
 ## 目次
@@ -13,7 +13,7 @@
 - [4. 工程0 現在状態を基準点として固定する](#4-工程0-現在状態を基準点として固定する)
 - [5. 工程1 追加決定事項を解消する](#5-工程1-追加決定事項を解消する)
 - [6. 工程2 正式仕様と機械可読設定を作る](#6-工程2-正式仕様と機械可読設定を作る)
-- [7. 工程3 Schemaを移行する](#7-工程3-schemaを移行する)
+- [7. 工程3 JSON Schemaと成果物を移行する](#7-工程3-json-schemaと成果物を移行する)
 - [8. 工程4 独立した固定試験用データを作る](#8-工程4-独立した固定試験用データを作る)
 - [9. 工程5 方向付き道路モデルを実装する](#9-工程5-方向付き道路モデルを実装する)
 - [10. 工程6 方向別車線を実装する](#10-工程6-方向別車線を実装する)
@@ -21,7 +21,7 @@
 - [12. 工程8 条件付き規制を実装する](#12-工程8-条件付き規制を実装する)
 - [13. 工程9 速度解決を実装する](#13-工程9-速度解決を実装する)
 - [14. 工程10 統合試験を行う](#14-工程10-統合試験を行う)
-- [15. 工程11 版16を全件再実行する](#15-工程11-版16を全件再実行する)
+- [15. 工程11 版17を全件実行する](#15-工程11-版17を全件実行する)
 - [16. 工程12 停止記録を解消する](#16-工程12-停止記録を解消する)
 - [17. 工程13 正式成果物を受理する](#17-工程13-正式成果物を受理する)
 - [18. 基準点コミット](#18-基準点コミット)
@@ -30,7 +30,7 @@
 
 ## 1. この手順の目的
 
-本文書は、版16の道路属性について、研究上の決定を正式仕様へ変換し、実装、固定試験、
+本文書は、版17の道路属性について、承認済み方針を実装、固定試験、
 実データ全件実行および正式受理まで進める順序を定める。
 
 対象は次のとおりである。
@@ -57,11 +57,18 @@
 | 構造確認用 | 52,440組、785停止 |
 | 正式用 | 52,440組、24,741停止 |
 | 初期正式仕様案 | 作成済み |
-| 追加決定 | `OPEN-PROP-001`から`015`が未解決 |
+| 版17中核方針 | 方針・機械可読設定・基礎JSON Schema固定済み |
+| 版17基礎実装 | access極大規則選択と方向付き区間生成の独立関数・単体試験を実装済み |
+| 版17production統合 | Resolver・成果物生成・実データ実行への接続は未完了 |
+| 残る追加決定 | 条件付き規制文法、許可台帳、日本速度規則、残る停止コードとfixture |
 | 正式道路網への利用 | 不可 |
 
 正本は次の文書である。
 
+- 承認済み版17中核方針:
+  `specifications/10_approved_attribute_resolution_policy.md`
+- 機械可読な版17中核方針:
+  `reproducibility/config/traffic_simulation/approved_attribute_resolution_policy_v17.yml`
 - 未決定事項:
   `specifications/attribute_resolution_decisions_to_finalize.md`
 - 初期正式仕様案:
@@ -85,7 +92,7 @@ flowchart TD
     H --> I[条件付き規制]
     I --> J[速度解決]
     J --> K[統合試験]
-    K --> L[版16全件再実行]
+    K --> L[版17全件実行]
     L --> M{正式用阻害項目は0件か}
     M -- いいえ --> N[証拠・規則・入力を追加]
     N --> C
@@ -100,7 +107,7 @@ flowchart TD
 ### 4.1 実施内容
 
 1. 作業ツリーの差分を確認する。
-2. 版16入力と現在の全件実行記録のSHA-256を確認する。
+2. 版16入力と現在の全件実行記録のSHA-256を確認し、履歴基準点として固定する。
 3. 現在の試験一式を実行する。
 4. 未コミット変更を目的別に確認する。
 5. 基準点コミットを作成する。
@@ -144,7 +151,8 @@ specifications/
 
 ### 5.2 実施内容
 
-`OPEN-PROP-001`から`015`について、次を記録する。
+未決定の`OPEN-PROP-005`、`009`から`012`および`015`について、次を記録する。
+方針固定済みの項目は再決定せず、版17機械可読方針との対応だけを確認する。
 
 - 採用する規則
 - 採用理由
@@ -158,22 +166,17 @@ specifications/
 
 ### 5.3 最低限必要な決定
 
-1. 研究用4,500 kg配送車両とOSM車種キーの対応
-2. 道路進入時の実重量計算
-3. OSM Wayの分割規則
-4. `lanes:both_ways`欠損時の扱い
-5. accessタグの具体性比較
-6. 目的地区域と配送先一致判定
-7. 条件式の正式文法
-8. 2026年7月16日に適用する日本速度規則表
-9. `JP:urban`に必要な道路状態の出典
-10. 通常・バス向け右左折規制の方向変換
-11. 既存`value_state`から新しい状態・由来への移行
-12. 名称付き停止理由と既存失敗コードの対応
+1. 目的地区域と配送先一致判定
+2. 条件式の正式文法
+3. 2026年7月16日に適用する日本速度規則表
+4. `JP:urban`に必要な道路状態の出典
+5. 名称付き停止理由と既存失敗コードの完全な対応
+6. production実装から独立した残りの正解成果物
 
 ### 5.4 完了条件
 
-- 全`OPEN-PROP-*`が`approved`または明示的な`out_of_scope`である。
+- 残る`OPEN-PROP-005`、`009`から`012`および`015`が`approved`または明示的な
+  `out_of_scope`である。
 - 同じ入力から複数の出力が導かれない。
 - 「適切に処理する」等の実装者判断を残す表現がない。
 - 必要な出典がローカル記録とSHA-256へ結び付いている。
@@ -184,15 +187,13 @@ specifications/
 
 ### 6.1 作成物
 
-初期案を承認済み正式仕様へ移す。予定する機械可読設定は、責任を分離して作る。
+承認済み版17方針を正本として、不足する機械可読設定を責任別に作る。
 
 ```text
 reproducibility/config/traffic_simulation/
-  formal_attribute_resolution_v16.yml
+  approved_attribute_resolution_policy_v17.yml
   scenario_profiles/
-    tokyo_delivery_v16.yml
-  vehicle_profiles/
-    managed_delivery_truck_v1.yml
+    managed_urban_ev_delivery_v1.yml
   legal_speed_rules/
     japan_road_speed_rules.yml
   conditional_profiles/
@@ -233,7 +234,7 @@ reproducibility/config/traffic_simulation/
 - 出典ファイルを取得できない。
 - 法令適用期間が一意でない。
 
-## 7. 工程3 Schemaを移行する
+## 7. 工程3 JSON Schemaと成果物を移行する
 
 ### 7.1 対象
 
@@ -246,7 +247,7 @@ value_origin
 
 ### 7.2 実施内容
 
-1. 新Schema版を作る。
+1. 作成済みの`attribute_resolution_v2.schema.json`をproductionの全出力境界へ接続する。
 2. 旧値から新しい二フィールドへの移行表を作る。
 3. 移行不能な旧値は停止する。
 4. 旧版成果物を上書きせず、新版成果物として生成する。
@@ -264,7 +265,8 @@ value_origin
 
 ### 7.4 完了条件
 
-- Schemaの正常、異常、境界試験が合格する。
+- JSON Schema単体の正常、異常、境界試験が合格する。
+- production Resolverが新Schemaだけを書き出し、旧`value_state`を書き出さない。
 - 意味整合検査が新Schemaを検査する。
 - 既存成果物の扱いが、保持、移行、無効化のいずれかへ分類されている。
 
@@ -442,21 +444,21 @@ docker compose run --rm analysis \
 
 ### 14.3 停止条件
 
-一件でも不合格なら版16全件実行へ進まない。
+一件でも不合格なら版17全件実行へ進まない。
 
-## 15. 工程11 版16を全件再実行する
+## 15. 工程11 版17を全件実行する
 
 ### 15.1 新規出力
 
-既存の`attribute_resolution_v16`を上書きしない。新しいrun識別子と出力ディレクトリを
-使用する。
+既存の`attribute_resolution_v16`を上書きしない。版17専用runner、run識別子および
+出力ディレクトリを使用する。版17runnerが未実装の間は、次のコマンドを実行しない。
 
 ```bash
 docker compose run --rm analysis \
-  python -m traffic_simulation.network.run_v16_attribute_resolution \
+  python -m traffic_simulation.network.run_v17_attribute_resolution \
   --output-dir \
   03_data/processed/traffic_simulation/road_network/sumo/common/\
-attribute_resolution_v16_r2
+attribute_resolution_v17
 ```
 
 実装時には、固定run IDをコードへ埋め込まず、設定または明示CLI入力から受け取るよう
@@ -464,7 +466,7 @@ attribute_resolution_v16_r2
 
 ### 15.2 入力条件
 
-- 受理済み版16relation closure
+- 受理済み版16relation closureを不変入力として参照する版17run
 - 受理済み役割成果物
 - 新版の正式仕様と設定
 - 新Schema
@@ -477,12 +479,12 @@ attribute_resolution_v16_r2
 docker compose run --rm analysis \
   python -m traffic_simulation.network.validate_attribute_classification \
   03_data/processed/traffic_simulation/road_network/sumo/common/\
-attribute_resolution_v16_r2/structural-attribute-resolution.json
+attribute_resolution_v17/structural-attribute-resolution.json
 
 docker compose run --rm analysis \
   python -m traffic_simulation.network.validate_attribute_classification \
   03_data/processed/traffic_simulation/road_network/sumo/common/\
-attribute_resolution_v16_r2/formal-attribute-resolution.json
+attribute_resolution_v17/formal-attribute-resolution.json
 ```
 
 次を別途照合する。
@@ -579,14 +581,14 @@ model_assumed = 0
 
 | 基準点 | 内容 |
 |---|---|
-| A | 現在状態と初期案 |
-| B | 全追加決定の承認 |
+| A | 版16実行状態と版17方針 |
+| B | 残る追加決定の承認 |
 | C | 正式仕様、機械可読設定、Schema |
 | D | 独立正解と固定試験用データ |
 | E | 方向付き道路と方向別車線 |
 | F | 通行許可、条件付き規制、速度 |
 | G | 統合試験合格 |
-| H | 版16全件実行 |
+| H | 版17全件実行 |
 | I | 正式用阻害項目0件と受理manifest |
 
 各コミット前に次を実行する。
@@ -615,7 +617,7 @@ pushは、コミット内容と生成物の扱いを確認してから行う。�
 | 8 | 条件付き規制解析・評価器 | 対象 |
 | 9 | 速度解決器と法令規則表 | 対象 |
 | 10 | 試験結果 | 小型記録だけ対象 |
-| 11 | 版16全件成果物 | 大容量本体は対象外、manifestは対象 |
+| 11 | 版17全件成果物 | 大容量本体は対象外、manifestは対象 |
 | 12 | 停止分類と改訂記録 | 対象 |
 | 13 | 受理manifest | 対象 |
 

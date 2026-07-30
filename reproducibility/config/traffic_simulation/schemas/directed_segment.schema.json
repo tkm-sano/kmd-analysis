@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "directed_segment.schema.json",
+  "title": "Directed road segment",
+  "type": "object",
+  "required": [
+    "directed_segment_id",
+    "source_way_id",
+    "source_segment_index",
+    "direction_relative_to_way",
+    "source_node_ids",
+    "travel_node_ids",
+    "travel_from_node",
+    "travel_to_node",
+    "derivation_rule_id"
+  ],
+  "properties": {
+    "directed_segment_id": {
+      "type": "string",
+      "pattern": "^way/[0-9]+/segment/[0-9]{4}/direction/[FB]$"
+    },
+    "source_way_id": {"type": "integer", "minimum": 1},
+    "source_segment_index": {"type": "integer", "minimum": 0, "maximum": 9999},
+    "direction_relative_to_way": {"enum": ["forward", "backward"]},
+    "source_node_ids": {
+      "type": "array",
+      "minItems": 2,
+      "items": {"type": "integer"}
+    },
+    "travel_node_ids": {
+      "type": "array",
+      "minItems": 2,
+      "items": {"type": "integer"}
+    },
+    "travel_from_node": {"type": "integer"},
+    "travel_to_node": {"type": "integer"},
+    "derivation_rule_id": {"type": "string", "minLength": 1}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "direction_relative_to_way": {"const": "forward"}
+        }
+      },
+      "then": {
+        "properties": {
+          "directed_segment_id": {"pattern": "/direction/F$"}
+        }
+      },
+      "else": {
+        "properties": {
+          "directed_segment_id": {"pattern": "/direction/B$"}
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

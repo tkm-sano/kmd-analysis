@@ -10,7 +10,12 @@ from typing import Any
 
 import yaml
 from jsonschema import Draft202012Validator
-from jsonschema.exceptions import SchemaError
+from jsonschema.exceptions import SchemaError, ValidationError
+
+from traffic_simulation.network.approved_attribute_resolution_policy import (
+    ApprovedPolicyError,
+    validate_approved_policy,
+)
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
@@ -293,7 +298,79 @@ def validate_config(config: dict[str, Any]) -> None:
     change_log = REPOSITORY_ROOT / config["policy_documents"]["change_log"]
     latest_change = change_log.read_text(encoding="utf-8").rsplit("\n### ", 1)[-1]
     if config_id not in latest_change:
-        raise ConfigurationError("latest change-log section config_id is out of sync")
+        next_policy = config.get("approved_next_configuration_policy")
+        if not isinstance(next_policy, dict):
+            raise ConfigurationError("latest change-log section config_id is out of sync")
+        required_next_policy_fields = {
+            "policy_id",
+            "policy",
+            "effective_from_config_version",
+            "policy_status",
+            "formal_build_ready",
+            "v16_artifact_treatment",
+        }
+        if not required_next_policy_fields.issubset(next_policy):
+            raise ConfigurationError(
+                "approved next configuration policy metadata is incomplete"
+            )
+        if (
+            next_policy["effective_from_config_version"]
+            != config["config_version"] + 1
+        ):
+            raise ConfigurationError(
+                "approved next configuration policy must target the next version"
+            )
+        if next_policy["policy_status"] != "fixed":
+            raise ConfigurationError(
+                "approved next configuration policy must have fixed status"
+            )
+        if next_policy["formal_build_ready"] is not False:
+            raise ConfigurationError(
+                "approved next configuration policy cannot claim formal build readiness"
+            )
+        if (
+            next_policy["v16_artifact_treatment"]
+            != "immutable_historical_evidence_not_relabelled_as_v17"
+        ):
+            raise ConfigurationError(
+                "approved next configuration policy must preserve v16 artifacts"
+            )
+        policy_path = REPOSITORY_ROOT / next_policy["policy"]
+        if not policy_path.is_file():
+            raise ConfigurationError(
+                "approved next configuration policy file does not exist"
+            )
+        try:
+            policy = validate_approved_policy(policy_path)
+        except (ApprovedPolicyError, yaml.YAMLError, ValidationError) as error:
+            raise ConfigurationError(
+                "approved next configuration policy validation failed"
+            ) from error
+        if policy.get("policy_id") != next_policy["policy_id"]:
+            raise ConfigurationError(
+                "approved next configuration policy_id is out of sync"
+            )
+        if (
+            policy["effective_configuration"]["from"]
+            != next_policy["effective_from_config_version"]
+        ):
+            raise ConfigurationError(
+                "approved next configuration policy effective version is out of sync"
+            )
+        for field in (
+            "policy_status",
+            "implementation_status",
+            "runtime_validation_status",
+            "formal_build_ready",
+        ):
+            if policy[field] != next_policy[field]:
+                raise ConfigurationError(
+                    f"approved next configuration policy {field} is out of sync"
+                )
+        if next_policy["policy_id"] not in latest_change:
+            raise ConfigurationError(
+                "latest change-log section is not registered as current or next policy"
+            )
 
 
 def validate_manifest_identity(config: dict[str, Any], manifest: dict[str, Any]) -> None:

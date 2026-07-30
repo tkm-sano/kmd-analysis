@@ -1,5 +1,11 @@
 # Resolver Specification
 
+> Version note: the v16 artifact and implementation clauses remain here for
+> reproducibility. For v17 and later, permission authority, access
+> specificity, Directed Segments, the managed vehicle, and the two-field
+> resolution contract are superseded by
+> `10_approved_attribute_resolution_policy.md`.
+
 Japanese translation:
 [`ja/02_resolver_specification_ja.md`](ja/02_resolver_specification_ja.md).
 Machine-readable configuration and this English specification remain

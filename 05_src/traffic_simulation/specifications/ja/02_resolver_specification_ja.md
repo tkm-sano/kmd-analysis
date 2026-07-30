@@ -1,5 +1,9 @@
 # Resolver仕様書
 
+> 版に関する注意：版16成果物と実装の再現に必要な旧条項は履歴として残す。版17以後の
+> permissions authority、access具体性、方向付き区間、管理車両および二軸値状態は
+> `../10_approved_attribute_resolution_policy.md`が優先する。
+
 ## 文書の位置付け
 
 本書は

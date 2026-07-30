@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "attribute_resolution_v2.schema.json",
+  "title": "Version 2 road-attribute resolution result",
+  "type": "object",
+  "required": [
+    "resolution_action",
+    "resolution_rule_id",
+    "resolution_status",
+    "value_origin",
+    "resolved_value",
+    "unit",
+    "review_status",
+    "stop_failure_codes"
+  ],
+  "properties": {
+    "resolution_action": {
+      "enum": [
+        "adopt_explicit",
+        "derive_osm_rule",
+        "adopt_external_evidence",
+        "apply_governed_rule",
+        "apply_structural_placeholder",
+        "require_human_review",
+        "stop_unresolved",
+        "exclude"
+      ]
+    },
+    "resolution_rule_id": {"type": ["string", "null"], "minLength": 1},
+    "resolution_status": {
+      "enum": [
+        "resolved",
+        "not_applicable",
+        "unresolved",
+        "conflict",
+        "unsupported",
+        "invalid"
+      ]
+    },
+    "value_origin": {
+      "oneOf": [
+        {
+          "enum": [
+            "source_explicit",
+            "source_normalized",
+            "rule_derived",
+            "evidence_derived",
+            "model_assumed",
+            "derived_validated_model"
+          ]
+        },
+        {"type": "null"}
+      ]
+    },
+    "resolved_value": {"type": ["integer", "number", "string", "null"]},
+    "unit": {"type": ["string", "null"], "minLength": 1},
+    "review_status": {
+      "enum": ["machine_classified", "review_required", "reviewed", "stopped"]
+    },
+    "stop_failure_codes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "assumption_id": {"type": ["string", "null"], "minLength": 1},
+    "formal_eligible": {"type": "boolean"}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"resolution_status": {"const": "resolved"}}
+      },
+      "then": {
+        "properties": {
+          "resolved_value": {"not": {"type": "null"}},
+          "value_origin": {"not": {"type": "null"}}
+        }
+      },
+      "else": {
+        "properties": {
+          "resolved_value": {"type": "null"},
+          "value_origin": {"type": "null"},
+          "formal_eligible": {"const": false}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"value_origin": {"const": "model_assumed"}}
+      },
+      "then": {
+        "required": ["assumption_id"],
+        "properties": {
+          "assumption_id": {"type": "string"},
+          "formal_eligible": {"const": false}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "resolution_status": {
+            "enum": ["unresolved", "conflict", "unsupported", "invalid"]
+          }
+        }
+      },
+      "then": {
+        "properties": {"stop_failure_codes": {"minItems": 1}}
+      }
+    }
+  ],
+  "not": {"required": ["value_state"]},
+  "additionalProperties": true
+}

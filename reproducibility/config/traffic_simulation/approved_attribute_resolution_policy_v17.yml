@@ -1,0 +1,135 @@
+schema_version: 1
+schema: reproducibility/config/traffic_simulation/schemas/approved_attribute_resolution_policy.schema.json
+policy_id: ota_ward_attribute_resolution_policy_v17
+requirements_traceability: reproducibility/config/traffic_simulation/requirements_traceability_v17.yml
+effective_configuration:
+  from: 17
+  until: null
+policy_status: fixed
+implementation_status: partial
+runtime_validation_status: incomplete
+formal_build_ready: false
+
+permissions_authority:
+  typemap_role: provisional_candidate_permissions
+  formal_authority: resolver_expected_permissions
+  final_permissions: resolver_expected_permissions
+  managed_vclass_universe:
+    - passenger
+    - taxi
+    - bus
+    - coach
+    - delivery
+    - truck
+    - motorcycle
+  final_permissions_must_be_subset_of_managed_universe: true
+  patch_final_net_xml: false
+  materialize_before_final_netconvert: true
+  regenerate_lanes_and_connections: true
+  post_conversion_exact_match_required: true
+
+access_specificity:
+  axes:
+    spatial_scope:
+      - way
+      - direction
+      - lane
+    vehicle_scope:
+      - access
+      - vehicle
+      - motor_vehicle
+      - vehicle_class
+    temporal_scope:
+      - unconditional
+      - conditional
+    purpose_scope:
+      - general
+      - destination
+      - delivery
+      - customers
+  comparison: pareto_dominance
+  maximal_rule_policy:
+    equal_results: adopt
+    different_results: conflict
+    conflict_stop_code: ACCESS_SPECIFICITY_CONFLICT
+  conditional_rule_requires_active_scenario_context: true
+
+directed_road_model:
+  source_way_mutation: prohibited
+  id_template: "way/{osm_way_id}/segment/{segment_index_4digits}/direction/{F|B}"
+  segment_index_origin: 0
+  segment_index_order: source_way_node_order
+  forward_code: F
+  backward_code: B
+  reverse_oneway_generation: backward_only
+  prohibit_sumo_edge_id_sign_as_direction_evidence: true
+  prohibit_coordinate_nearest_as_direction_evidence: true
+  missing_relation_mapping_stop_code: RELATION_DIRECTED_MAPPING_MISSING
+  ambiguous_relation_mapping_stop_code: RELATION_DIRECTED_MAPPING_AMBIGUOUS
+  implementation_until_complete: fail_closed
+
+managed_vehicle_profile:
+  path: reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml
+  profile_id: managed_urban_ev_delivery_v1
+
+directional_lane_resolution:
+  bidirectional_even_total_without_directional_tags:
+    structural:
+      resolution_status: resolved
+      value_origin: model_assumed
+      assumption_id: BIDIRECTIONAL_EVEN_LANE_EQUAL_SPLIT_V1
+      formal_eligible: false
+    formal:
+      resolution_status: unresolved
+      stop_code: LANE_DIRECTIONAL_ALLOCATION_MISSING
+  one_direction_with_explicit_total:
+    resolution_status: resolved
+    value_origin: rule_derived
+  unsupported_until_dedicated_rule:
+    - lanes_both_ways
+    - reversible_lanes
+    - time_dependent_lanes
+
+structural_placeholder:
+  process_name: structural_placeholder_generation
+  formal_attribute_resolution: false
+  permitted_uses:
+    - topology_review
+    - connection_review
+  prohibited_uses:
+    - formal_network
+    - calibration
+    - independent_validation
+    - delivery_evaluation
+  transfer_calibration_to_formal_network: false
+
+resolution_contract:
+  schema: reproducibility/config/traffic_simulation/schemas/attribute_resolution_v2.schema.json
+  canonical_output_fields:
+    - resolution_status
+    - value_origin
+  legacy_value_state:
+    read_compatibility_only: true
+    write_in_new_artifacts: false
+  resolution_status_values:
+    - resolved
+    - not_applicable
+    - unresolved
+    - conflict
+    - unsupported
+    - invalid
+  value_origin_values:
+    - source_explicit
+    - source_normalized
+    - rule_derived
+    - evidence_derived
+    - model_assumed
+    - derived_validated_model
+  formal_approved_origins:
+    - source_explicit
+    - source_normalized
+    - rule_derived
+    - evidence_derived
+    - derived_validated_model
+  formal_prohibited_origins:
+    - model_assumed

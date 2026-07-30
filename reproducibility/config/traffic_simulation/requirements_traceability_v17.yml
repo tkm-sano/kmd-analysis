@@ -1,0 +1,38 @@
+schema_version: 1
+config_id: ota_ward_sumo_network_v17
+requirements:
+  - requirement_id: RS-REQ-015
+    component: resolver
+    test_ids: [RS-TST-015]
+    fixture_class: state_contract
+    implementation_state: partial
+  - requirement_id: RS-REQ-016
+    component: resolver
+    test_ids: [RS-TST-016]
+    fixture_class: boundary
+    implementation_state: partial
+  - requirement_id: ARC-REQ-007
+    component: architecture
+    test_ids: [ARC-TST-007]
+    fixture_class: state_contract
+    implementation_state: partial
+  - requirement_id: RS-REQ-017
+    component: resolver
+    test_ids: [RS-TST-017]
+    fixture_class: state_contract
+    implementation_state: partial
+  - requirement_id: RS-REQ-018
+    component: resolver
+    test_ids: [RS-TST-018]
+    fixture_class: boundary
+    implementation_state: partial
+  - requirement_id: RS-REQ-019
+    component: resolver
+    test_ids: [RS-TST-019]
+    fixture_class: negative
+    implementation_state: specified_not_implemented
+  - requirement_id: RS-REQ-020
+    component: resolver
+    test_ids: [RS-TST-020]
+    fixture_class: state_contract
+    implementation_state: specified_not_implemented

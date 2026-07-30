@@ -1,0 +1,28 @@
+schema_version: 1
+schema: reproducibility/config/traffic_simulation/schemas/managed_vehicle_profile.schema.json
+vehicle_profile_id: managed_urban_ev_delivery_v1
+profile_status: fixed_model_assumption
+sumo_vclass: delivery
+powertrain: battery_electric
+osm_access_membership:
+  vehicle: true
+  motor_vehicle: true
+  goods: true
+  hgv: false
+trip_purpose: delivery
+maximum_permissible_mass_kg: 3500
+unladen_mass_kg: 1500
+maximum_payload_kg: 2000
+actual_payload_policy: remaining_delivery_load
+actual_mass_formula: unladen_mass_kg + actual_payload_kg
+length_m: 4.70
+width_m: 1.70
+height_m: 2.00
+maximum_axle_load_kg: 2000
+hazardous_goods: false
+permit_ids: []
+interpretation:
+  represents_measured_real_vehicle: false
+  hgv_membership_basis: maximum_permissible_mass_not_over_3500_kg
+  vclass_switch_within_experiment: prohibited
+  electric_powertrain_representation: sumo_battery_device

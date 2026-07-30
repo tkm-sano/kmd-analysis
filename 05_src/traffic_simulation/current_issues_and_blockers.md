@@ -1,7 +1,7 @@
 # 交通シミュレーション研究の現状の問題と阻害事項
 
 > **文書状態**: 現状説明・問題追跡文書
-> **状態基準日**: 2026-07-30
+> **状態基準日**: 2026-07-31
 > **現在工程**: 工程6「SUMO道路網生成・構造検証」
 > **正式道路網**: 未承認
 > **下流実験**: 実行不可
@@ -48,7 +48,7 @@
 
 | 対象 | 現在の判定 | 理由 |
 |---|---|---|
-| 道路網仕様 | 統制済みドラフト | 仕様と一部のデータ形式・試験は存在するが、実データの正式受入が未完了 |
+| 道路網仕様 | 版17中核方針固定・実装移行中 | 機械可読方針、基礎Schema、access比較・方向付き区間の独立関数は作成済みだが、production統合とfixture移行が未完了 |
 | 正式SUMO道路網 | 未承認 | 道路属性、通行権限、交差点、信号、最終生成、生成後監査が未完了 |
 | 交通モデル較正 | 開始不可 | 正式道路網が前提であり、観測データも不足 |
 | 独立データ検証 | 開始不可 | 較正済みモデルと、較正に使わない観測が必要 |
@@ -57,11 +57,9 @@
 
 現在の最優先問題は、次の三つである。
 
-1. 明示値、外部証拠、検証済みモデル、構造確認用代替値から採用値を決める
-   属性値解決処理を実装する。
-2. 受理済み版16母集団を重要度分類処理と属性値解決処理へ接続し、
-   全道路・全属性・両用途区分を新しい入力ハッシュから実行する。
-3. 決定済みの通行可能車種をSUMOの車線と車線間接続へ反映する処理を実装する。
+1. 版17のpermissions authority、access多軸比較、二軸値状態をproduction Resolverと成果物生成へ統合する。
+2. 作成済みの方向付き区間生成をproductionへ接続し、`oneway=-1`、方向依存属性・relation・lane順のfixtureを実装する。
+3. Resolver expected permissionsをSUMOの車線と車線間接続へ反映する処理を実装する。
 
 ## 3. 問題の読み方
 
@@ -304,7 +302,7 @@ graph TD
 試験用固定データと独立正解は
 `validation/fixtures/resolver_exception_rules/`に記録した。
 固定`analysis`コンテナによる例外分類実装時の検証では335件中335件が合格した。
-版16属性値解決実装後の直近の交通シミュレーション検証一式は`355 passed`であり、
+版17基礎契約追加後の直近の交通シミュレーション検証一式は`370 passed`であり、
 現在の既知のテスト不合格は0件である。例外分類の実行条件と詳細は
 `03_data/metadata/acquisition/20260730_ota_ward_v15_exception_rule_validation.md`
 に記録した。
@@ -318,7 +316,7 @@ graph TD
 
 **問題識別子:** `ISSUE-PERM-001`
 **種類:** 実装阻害、検証阻害
-**現在状態:** 仕様化済み・未実装
+**現在状態:** 版17authority方針固定・実装未完了
 
 道路属性解決処理は、地図上の道路、方向、車線ごとに通行可能車種の期待値を作る。
 しかし、その期待値をSUMOの道路・車線・車線間接続へ書き込む処理は未実装である。
@@ -327,7 +325,7 @@ graph TD
 
 - 地図上の道路とSUMO道路の正確な方向対応
 - 左から右の車線位置とSUMO車線番号の対応
-- 道路属性解決結果、道路種別基準、仮道路構造の通行権限の共通部分
+- Resolver expected permissionsをformal authorityとして扱い、typemap候補を上限にしない処理
 - 通行可能車種が空になる車線・道路・車線間接続の処理
 - 存在しない右左折接続を生成しない規則
 - 決定的なXML出力
@@ -453,10 +451,10 @@ SUMO道路識別子の符号や座標最近傍を、方向の証拠として使�
 
 | 優先 | 作業 | 解消する問題 | 並行実施 |
 |---:|---|---|---|
-| 1 | 正式用24,741停止組を規則・証拠・確認要求へ分解する | `ISSUE-ATTR-001`、`ISSUE-ATTR-002` | 通行権限反映の小型試験と並行可能 |
-| 2 | 307件の例外について証拠条件付きの値解決規則を実装する | `ISSUE-ATTR-003` | 停止組の分解結果と一体で実施 |
-| 3 | 版16全件を再実行し、正式用阻害項目0件を確認する | `ISSUE-ATTR-001`、`ISSUE-ATTR-002`、`ISSUE-ATTR-003` | 工程1・2完了後 |
-| 4 | 仮道路構造と道路対応履歴を正式生成する | `ISSUE-BUILD-001` | 通行権限反映開発と連携 |
+| 1 | 作成済みの版17 Schema、車両プロファイル、access比較および値状態をproduction Resolverと入出力境界へ統合する | `ISSUE-ATTR-001`、`ISSUE-ATTR-002` | 方向付き区間fixtureと並行可能 |
+| 2 | 作成済みの方向付き区間生成をproductionへ接続し、`oneway=-1`、方向依存属性、relationおよびlane順の小型fixtureを実装する | `ISSUE-ATTR-003`、`ISSUE-BUILD-001` | relation写像fixtureを含める |
+| 3 | 残る24,741停止組を規則・証拠・確認要求へ分解する | `ISSUE-ATTR-001`、`ISSUE-ATTR-002` | 通行権限反映の小型試験と並行可能 |
+| 4 | 版17全件を新しいrunとして実行し、正式用阻害項目0件を確認する | `ISSUE-ATTR-001`、`ISSUE-ATTR-002`、`ISSUE-ATTR-003` | 工程1～3完了後 |
 | 5 | 通行権限反映処理を固定SUMOで検証する | `ISSUE-PERM-001` | 小型データでは前倒し可能 |
 | 6 | 交差点・信号・最終道路網を検証する | `ISSUE-BUILD-002` | 実データ通行権限確定後 |
 | 7 | 観測を拡充し、較正・独立検証を行う | `ISSUE-VV-001` | 観測取得は道路網開発と並行可能 |
@@ -489,7 +487,9 @@ SUMO道路識別子の符号や座標最近傍を、方向の証拠として使�
 | 例外決定表 | `reproducibility/config/traffic_simulation/resolver_exception_decision_table.yml` |
 | 属性解決の詳細規則を作るための決定事項 | `05_src/traffic_simulation/specifications/attribute_resolution_decisions_to_finalize.md` |
 | 版16属性解決の初期正式仕様案 | `05_src/traffic_simulation/specifications/initial_formal_attribute_resolution_specification_proposal.md` |
-| 版16属性解決の実行手順 | `05_src/traffic_simulation/attribute_resolution_execution_procedure.md` |
+| 版17属性解決の実行手順 | `05_src/traffic_simulation/attribute_resolution_execution_procedure.md` |
+| 版17承認済み属性解決方針 | `05_src/traffic_simulation/specifications/10_approved_attribute_resolution_policy.md` |
+| 版17機械可読方針 | `reproducibility/config/traffic_simulation/approved_attribute_resolution_policy_v17.yml` |
 | 道路網生成・検証規則 | `05_src/traffic_simulation/network_build_and_validation_protocol.md` |
 | シミュレーションV&V | `05_src/traffic_simulation/simulation_model_development_and_vv.md` |
 | 全工程と通行権限実装手順 | `05_src/traffic_simulation/learning/permission_materializer_reproducible_implementation_guide.md` |

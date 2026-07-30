@@ -27,6 +27,11 @@ Validation, evidence requirements, and formal-use gates are organized in
 The current blockers, their evidence, downstream effects, resolution work, and
 acceptance criteria are documented in
 [`current_issues_and_blockers.md`](current_issues_and_blockers.md).
+The approved v17 road-attribute policy, whose implementation and runtime
+validation remain incomplete, is specified in
+[`10_approved_attribute_resolution_policy.md`](specifications/10_approved_attribute_resolution_policy.md)
+and
+[`approved_attribute_resolution_policy_v17.yml`](../../reproducibility/config/traffic_simulation/approved_attribute_resolution_policy_v17.yml).
 The ordered Japanese procedure from the current v16 attribute-resolution state
 through rule approval, implementation, full-data rerun, and formal acceptance
 is documented in
