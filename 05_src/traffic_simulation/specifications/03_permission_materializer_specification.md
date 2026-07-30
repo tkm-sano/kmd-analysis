@@ -39,7 +39,7 @@ This formula applies to forward and backward records. SUMO lane children MUST ha
 
 ## Permission Normalization
 
-The universe is the eight governed vClasses in `sumo_network.yml`. Tokens are ASCII, case-sensitive and deduplicated before comparison.
+The universe is the seven governed vClasses in `sumo_network.yml`. Tokens are ASCII, case-sensitive and deduplicated before comparison.
 
 | Plain XML state | Effective provisional set |
 |---|---|

@@ -10,6 +10,14 @@ route comparison, CI, and server-migration tasks are recorded in
 The assumptions, interpretation, commands, and operating rules for staged
 map review are recorded in [`visualization/README.md`](visualization/README.md).
 
+The Japanese implementation and verification procedure for applying
+vehicle-class permissions to the Ota Ward SUMO road network is documented in
+[`東京交通・EV配送研究の全工程と大田区道路網の通行権限実装手順`](learning/permission_materializer_reproducible_implementation_guide.md).
+
+The model-development lifecycle, Verification, calibration, independent
+Validation, evidence requirements, and formal-use gates are organized in
+[`simulation_model_development_and_vv.md`](simulation_model_development_and_vv.md).
+
 The authoritative rules for road attributes, external-data matching,
 structural placeholders, human review, and formal-network quality gates are
 recorded in
