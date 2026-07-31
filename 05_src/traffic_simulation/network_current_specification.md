@@ -8,7 +8,10 @@
 - Created: 2026-07-18
 - Last updated: 2026-07-31
 - Configuration lineage date: 2026-07-16
-- Runtime permission fixture: failed
+- Typemap importer governance fixture: failed
+- Permission materializer implementation: not_implemented
+- Permission materializer runtime fixture: not_run
+- Traffic simulation validation test suite: passed
 - Formal build input ready: no
 - Formal network accepted: no
 - Downstream experiment ready: no
@@ -25,6 +28,20 @@ Segment model, managed delivery vehicle, directional-lane restrictions, and
 two-field resolution contract. Its implementation and runtime validation are
 incomplete. The v16 run remains immutable historical evidence and is not
 relabeled as a v17 result.
+
+Status values in this summary distinguish `passed`, `failed`,
+`not_implemented`, `not_run`, `pending`, and `ineligible`. A missing
+implementation or absent runtime record is not reported as `failed`. The
+typemap importer governance fixture is the failed fixture recorded by the v16
+authority; it is distinct from the unimplemented Permission Materializer and
+its not-run runtime fixture.
+
+The current `sumo_network.yml` is the v16 state authority and still places the
+materializer and signal structure inside its legacy
+`formal_build_input_ready` gate. That machine-readable v16 history is not
+rewritten here. A v17 network-state configuration must express Attribute
+Resolution Acceptance and SUMO Network Integration Acceptance as separate
+gates before it can become the new state authority.
 
 For a process-oriented view that separates operations, definitions, numeric
 settings, mechanically derived values and pending decisions, see
@@ -118,13 +135,14 @@ Conditional access enters the applicable-rule set only when the registered
 scenario date, time, vehicle, weight, dimensions, and trip purpose provide all
 required context and the expression evaluates true. Unsupported syntax,
 missing context, or a permission result that changes within one simulation
-interval remains formal-blocking. The accepted conditional grammar, permit
-registry, and Japan speed-rule table are still pending.
+interval remains formal-blocking. Approval of the conditional grammar, permit
+registry, and Japan speed-rule table is still pending.
 
 For bidirectional roads, the formal Resolver requires explicit `lanes:forward` and `lanes:backward`; equal division of an even total is structural-only, uses assumption ID `BIDIRECTIONAL_EVEN_LANE_EQUAL_SPLIT_V1`, and is never formal eligible. Formal processing stops with `LANE_DIRECTIONAL_ALLOCATION_MISSING`. Structural imputation donors must themselves pass direction, lane, speed, conditional-tag and permission eligibility checks. Permission provenance is lane-local: a directional or lane-specific access tag is recorded only for the lanes to which it was applied.
 
 New v17 artifacts use `resolution_status` and `value_origin` as canonical
-fields. Legacy `value_state` is read compatibility only. The current v16
+fields under the approved v17 contract; they are not a proposal. Legacy
+`value_state` is read compatibility only. The current v16
 artifacts still use `value_state`; Schema, implementation, fixture, and
 full-data migration remain required.
 
@@ -140,6 +158,30 @@ candidates stop with `RELATION_DIRECTED_MAPPING_AMBIGUOUS`. Directional tags
 remain attached to source direction and target segment rather than being
 destructively swapped on the source Way.
 
+Access processing has three separate responsibilities. Static access
+normalization compares spatial, vehicle, purpose, lane, direction, and
+general/specific rules, removes Pareto-dominated rules, and selects the maximal
+static rules. Conditional parsing and evaluation handles date, time, holiday,
+vehicle, weight, dimensions, trip purpose, missing context, unsupported
+syntax, and within-interval changes. Final permission resolution combines the
+static and conditional results, adopts multiple maximal rules only when their
+results agree, stops differing maximal results with
+`ACCESS_SPECIFICITY_CONFLICT`, preserves lane-local provenance, and emits the
+complete permission expectation. The approved v17 policy and its normative
+explanation own these rules; this summary does not redefine them.
+
+`out_of_scope` never silently deletes an input record. Until the approved v17
+Schema is explicitly revised, exclusion is recorded in a separate exclusion
+manifest rather than by adding an unapproved `resolution_status` enum value.
+Each entry records the reason, rule ID, affected road, direction and lane,
+approver, approval date, and evidence SHA-256. If exclusions change the
+population definition, a new population/configuration version is required;
+the accepted v16 population of 26,220 ways is immutable. A v17 run reports the
+input, governed, and excluded populations separately. `complete=true` uses the
+declared governed population as its denominator, while permission completeness
+uses every governed way/direction/lane tuple. Excluded records remain
+accounted for and cannot be used to disguise blockers as zero.
+
 ## Signal Structure
 
 Signalized-junction selection and connection-to-TLS-link mapping are network structure. In pinned SUMO 1.24.0 plain XML, TLS connection/link records belong to `.tll.xml`, not the permission `.con.xml` connection type. Provisional TLS output is review evidence only. After the governed connection set is fixed, reviewers produce `governed_reviewed.con.xml`, `governed_reviewed.tll.xml` and a hash-bound review manifest. Every controlled connection must have a reviewed link index, and each phase-state length must equal the controlled-link count. A later connection or signal-structure change invalidates the review, calibration and validation.
@@ -149,32 +191,76 @@ SUMO's junction-joining heuristic is used only to extract candidates for treatin
 ## Required Order
 
 ```text
-structural network
-  -> topology, direction and connection debugging
-  -> governed attributes and lane permissions
-  -> provisional connections
-  -> connection permissions and final connection set
-  -> reviewed signal-junction and TLS-link structure
-  -> formal baseline network
+freeze current state and v16 history
+  -> approve remaining v17 decisions
+  -> finalize specification, machine-readable configuration and Schema
+  -> freeze independent fixtures and oracles
+  -> integrate Directed Segments into production
+  -> implement directional lanes
+  -> implement static access normalization
+  -> implement conditional parsing and evaluation
+  -> integrate static and conditional rules into final permission expectations
+  -> implement speed resolution
+  -> Resolver integration tests
+  -> v17 full-population run
+  -> resolve stop records
+  -> Attribute Resolution Acceptance
+  -> provisional structural build and exact edge provenance
+  -> Permission Materializer
+  -> final connection set
+  -> signal/TLS review
+  -> SUMO Network Integration Acceptance
   -> demand
-  -> signal timing and traffic calibration
+  -> calibration
   -> independent validation
   -> delivery, classical and QAOA evaluation
 ```
 
-Structural output is not valid for travel-time, capacity, delivery or
-solver-comparison results. Calibration performed on a network containing
-structural placeholders cannot be transferred to the formal network.
+Small-fixture provisional builds, Permission Materializer development, and
+pinned SUMO runtime fixtures may proceed in parallel with resolution of
+attribute stop records. A structural/provisional network exists only to
+develop and review topology, direction, connections, provenance, and the
+materializer. It may contain structural assumptions and may be generated as a
+small fixture or development output before all formal attribute stops are
+resolved. It is not a publishable real-data formal network and is invalid for
+travel-time, capacity, delivery, solver comparison, or calibration results.
+
+A formal network takes an Attribute Resolution Acceptance artifact as input,
+reflects governed permissions, final connections, and reviewed TLS structure,
+and becomes an accepted formal network only after SUMO Network Integration
+Acceptance. Downstream research may use it only after independent validation.
+Calibration performed on a network containing structural placeholders cannot
+be transferred to the formal network. Real-data formal network acceptance may
+not begin before Attribute Resolution Acceptance.
+
+## Acceptance Gates
+
+Attribute Resolution Acceptance applies only to the Resolver's formal
+attribute artifact. It requires `complete=true`, `blockers=[]`,
+`review_required=0`, `stop_unresolved=0`, `model_assumed=0`, matching declared
+population/record/coverage denominators, JSON Schema and semantic validation,
+an unchanged classification projection, recorded SHA-256 values for inputs,
+configuration, Schema, outputs and the independent oracle, zero unregistered
+states/rules/stop codes, and no structural/formal mixture. Passing this gate
+does not approve a SUMO network.
+
+SUMO Network Integration Acceptance follows the provisional build, exact edge
+provenance, Permission Materializer, lane and connection permission
+materialization, final connection set, signal/TLS review, final `net.xml`
+generation, and SUMO 1.24.0 load. It audits lanes, connections, turn
+restrictions, left-hand traffic, warnings, exclusions, and reachability. This
+second gate alone can approve the formal network.
 
 ## Verification State
 
 | Gate | Requirement | Actual implementation | Runtime/real-data evidence | Current result |
 |---|---|---|---|---|
 | Build input | Registered PBF, relation scope, recursive closure and hashes | implemented | v16 real-data closure accepted; ordinary 581 and bus 3 restrictions retained; reference errors zero | eligible |
-| Build input | Typemap XML | implemented | XSD passed; importer governance fixture failed | ineligible |
+| Build input | Typemap importer governance fixture | implemented | XSD passed; fixture failed | failed |
 | Build input | Attribute resolver | v16 value-free classification and value resolution implemented; v17 authority and two-field state migration incomplete | all 26,220 v16 ways and 52,440 tuples per profile generated; Schema and semantic checks pass; structural 785 and formal 24,741 stopped tuples remain; formal placeholders zero | pending |
 | Build input | Permission expectation JSON | full-way completeness gate and lane-local rule trace implemented | fixture confirms `complete=false` and no normalized XML while blockers remain | pending |
-| Build input | Permission materializer | contract fixed, implementation absent | materialized fixture not run | ineligible |
+| Build input | Permission materializer implementation | contract fixed; implementation absent | not applicable | not_implemented |
+| Build input | Permission materializer runtime fixture | depends on materializer implementation | not run | not_run |
 | Build input | `oneway=-1` | Directed Segment Schema and pure generator implemented; production mapping absent; current pipeline remains fail-closed | unit generation passed; one occurrence confirmed and stopped in registered structural Dry Run; integrated runtime fixture not run | conditional |
 | Build input | Managed vehicle profile | v17 model values, Schema and static consistency checks implemented; runtime-boundary validator not implemented | static profile and mass consistency validation passed | pending |
 | Build input | Access specificity | four-axis Pareto comparison, maximal-rule selection and conflict output implemented as an isolated utility; production integration absent | registered unit tests passed; conditional-expression runtime fixture not run | pending |
@@ -193,5 +279,6 @@ structural placeholders cannot be transferred to the formal network.
 | Downstream | Demand and observation inputs | not implemented | not run | pending |
 | Downstream | Calibration design | incomplete | thresholds, seeds and warm-up pending | pending |
 | Downstream | Optimization comparison design | policy partially fixed | instances and budgets pending | pending |
+| Validation | Traffic simulation pytest suite | implemented | latest recorded suite passed; retain the recorded count only in its evidence record | passed |
 
 Pytest counts are progress indicators, not sufficient evidence. Each recorded test run must include commit, container digest, exact command, collection hash, exit code, log hash and timestamps.

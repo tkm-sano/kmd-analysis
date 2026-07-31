@@ -12,11 +12,11 @@
 - [2. 現状の結論](#2-現状の結論)
 - [3. 問題の読み方](#3-問題の読み方)
 - [4. 問題間の依存関係](#4-問題間の依存関係)
-- [5. 道路属性の停止記録が残る](#5-道路属性の停止記録が残る)
+- [5. 版17契約とproduction統合が未完了](#5-版17契約とproduction統合が未完了)
 - [6. 版16全件実行は完了したが停止記録が残る](#6-版16全件実行は完了したが停止記録が残る)
 - [7. 307件の規則・データ例外は分類済み・解決保留](#7-307件の規則データ例外は分類済み解決保留)
 - [8. 通行権限をSUMOへ反映する処理が未実装](#8-通行権限をsumoへ反映する処理が未実装)
-- [9. 仮道路構造と道路対応履歴の正式生成が未実装](#9-仮道路構造と道路対応履歴の正式生成が未実装)
+- [9. provisional buildと道路対応履歴が未実装](#9-provisional-buildと道路対応履歴が未実装)
 - [10. 交差点・信号・最終道路網の検証が未実施](#10-交差点信号最終道路網の検証が未実施)
 - [11. 交通モデルの較正・独立検証データが不足](#11-交通モデルの較正独立検証データが不足)
 - [12. 配送・最適化の正式比較へ進めない](#12-配送最適化の正式比較へ進めない)
@@ -40,6 +40,12 @@
 `reproducibility/config/traffic_simulation/research_stage.yml`である。要件単位の
 実装状態は`reproducibility/config/traffic_simulation/requirements_traceability.yml`
 を正本とする。この文書は正本を説明するものであり、状態を独自に上書きしない。
+
+現行`sumo_network.yml`はv16の状態正本であり、legacy
+`formal_build_input_ready`へmaterializerとsignal structureを含めている。このv16履歴
+は本文書から上書きしない。v17用の新しい機械可読状態では、Attribute Resolution
+AcceptanceとSUMO Network Integration Acceptanceを別ゲートとして表現する必要が
+あり、これは未解消の設定移行事項である。
 
 ## 2. 現状の結論
 
@@ -88,39 +94,7 @@ v15道路属性解決処理の全件試行では、46,056行が停止として�
 したがって、46,056行すべてを手作業で確認する方針は採らない。通常欠損を決定表で
 処理し、人間または追加証拠が必要な例外だけを分離する。
 
-## 4. 問題間の依存関係
-
-```mermaid
-graph TD
-    A[正式用に24,741停止組が残る] --> B[道路属性の正式全件解決ができない]
-    V[証拠・確認・追加規則が未受理] --> B
-    B --> C[正規化した地図データを公開できない]
-    C --> D[仮SUMO道路を正式生成できない]
-    D --> E[通行権限を車線へ反映できない]
-    E --> F[交差点と信号を確定できない]
-    F --> G[正式SUMO道路網を承認できない]
-    G --> H[交通モデルを較正できない]
-    H --> I[独立データ検証ができない]
-    I --> J[正式コスト行列を作れない]
-    J --> K[配送と最適化の正式比較ができない]
-
-    L[観測データ不足] --> H
-    L --> I
-    N[通行権限反映処理が未実装] --> E
-```
-
-図は主要な阻害関係を示す。実装作業は一部並行できるが、正式成果物の受入は上流の
-合格を必要とする。例えば、小型試験データを使った通行権限反映処理の開発は、
-属性値の全件解決前でも進められる。しかし、実データの正式出力には受理済み
-母集団と完全な道路属性解決結果が必要である。
-
-## 5. 道路属性の停止記録が残る
-
-**問題識別子:** `ISSUE-ATTR-001`
-**種類:** 研究利用阻害、実装阻害
-**現在状態:** 未解決
-
-### 5.1 版15全件試行の結果
+版15全件試行の履歴値は次のとおりであり、版17結果へ再ラベルしない。
 
 | 項目 | 件数 |
 |---|---:|
@@ -133,8 +107,6 @@ graph TD
 | 通行可能車種期待値を生成できた道路 | 1,874本 |
 | 正規化地図データ | 未公開 |
 
-停止属性の内訳は次のとおりである。
-
 | 属性 | 停止行 |
 |---|---:|
 | 車線数 | 22,656 |
@@ -143,51 +115,79 @@ graph TD
 | 通行可能車種 | 264 |
 | 合計 | 46,056 |
 
-### 5.2 なぜ停止したか
+| 状態 | 件数 |
+|---|---:|
+| 欠損 | 45,749 |
+| 未解決 | 264 |
+| 有効だが未対応 | 42 |
+| 矛盾 | 1 |
 
-| 状態 | 件数 | 意味 |
-|---|---:|---|
-| 欠損 | 45,749 | 明示値がなく、現在の処理では採用可能な値を決めていない |
-| 未解決 | 264 | 通行規制や方向別車線配分を現行規則で解釈できない |
-| 有効だが未対応 | 42 | 値は存在するが、表現形式に対応する規則がない |
-| 矛盾 | 1 | 総車線数と方向別車線数が一致しない |
+## 4. 問題間の依存関係
 
-欠損は直ちに地図データの誤りを意味しない。通常道路では明示されない属性も多い。
-問題は、どの道路でどの根拠による補完を許し、どの道路では停止するかを、実装が
-まだ完全には決定できないことである。
+```mermaid
+graph TD
+    A[版17契約とproduction統合が未完了] --> B[版17全件runを実行できない]
+    B --> C[Attribute Resolution Acceptanceを通過できない]
+    V[版16の24,741停止組が示す証拠・規則課題] --> B
+    C --> D[実データformal network受理を開始できない]
+    D --> E[governed permissionsとfinal connectionsを確定できない]
+    E --> F[signal/TLS reviewを完了できない]
+    F --> G[SUMO Network Integration Acceptanceを通過できない]
+    G --> H[需要・交通モデル較正へ進めない]
+    H --> I[独立データ検証ができない]
+    I --> J[正式コスト行列を作れない]
+    J --> K[配送と最適化の正式比較ができない]
 
-### 5.3 解消条件
+    L[観測データ不足] --> H
+    L --> I
+    N[通行権限反映処理が未実装] --> E
+    P[小型fixtureによるprovisional build] -. 属性停止解消と並行 .-> C
+    P -. materializer開発 .-> N
+```
 
-- 次版母集団の全道路・全管理属性を分類する。
-- 各停止行が、通常規則、構造確認用規則、例外規則、追加証拠要求のいずれかへ
-  排他的に分類される。
-- 正式用では構造確認用代替値を残さない。
-- 通行権限期待値が全対象道路を被覆し、`complete=true`となる。
-- 続行阻害項目が0件になるまで正規化地図データを公開しない。
+図は主要な阻害関係を示す。実装作業は一部並行できるが、正式成果物の受入は上流の
+合格を必要とする。例えば、小型試験データを使った通行権限反映処理の開発は、
+属性値の全件解決前でも進められる。structural/provisional networkは、topology、
+direction、connection、provenance、materializer開発専用であり、structural
+assumptionを含み得る。小型fixtureや開発用出力として生成できるが、travel time、
+capacity、delivery、solver comparison、calibrationには使用できず、公開可能な
+実データformal networkとも区別する。実データformal networkの受理開始には
+Attribute Resolution Acceptance済みの正式属性成果物が必要である。
 
-### 5.4 実装済みの安全条件
+## 5. 版17契約とproduction統合が未完了
 
-道路属性解決処理の監査形式へ、`stop_category`と
-`stop_category_rule_id`を追加した。停止行は、通常規則、構造確認用規則、
-例外規則、追加証拠要求の4区分のうち正確に1区分へ入る。停止でない行に区分が
-付く場合もエラーとする。
+**問題識別子:** `ISSUE-ATTR-001`
+**種類:** 実装阻害、検証阻害
+**現在状態:** 未解決
 
-また、各保持道路について、一方通行、車線数、最高速度をそれぞれ1件、通行権限を
-停止、前提属性による未実行、方向・車線別採用のいずれか一形式で必ず記録する
-被覆検査を追加した。前提属性による未実行は、原因停止の二重計上を避けるため、
-独立した阻害項目には数えない。
+本問題は停止件数の解消ではなく、承認済み版17契約をproductionで実行可能にする
+責務を持つ。対象は次である。
 
-固定試験では、正式用の欠損が追加証拠要求へ、構造確認用の欠損が構造確認用規則へ
-分類され、停止中は正規化XMLを公開せず、通行権限期待値が
-`complete=false`となることを確認した。これらは公開条件の実装完了を意味するが、
-版16母集団の重要度分類・属性値解決の統合実行は完了したが、阻害項目0件を
-意味しない。したがって、本問題の状態は未解決のままである。
+- 作成済みの新Schemaをproduction入出力境界へ接続する。
+- `resolution_status`と`value_origin`をcanonical fieldsとして移行する。
+- Resolver expected permissionsをformal authorityとしてproductionへ統合する。
+- managed vehicle profileを全runtime境界で検証する。
+- Directed Segment、directional lane、static access、conditional access、final
+  permission resolution、speed resolutionをproductionへ統合する。
+- relationの`from`、`via`、`to`をDirected Segment候補へ写像し、zero candidateを
+  `RELATION_DIRECTED_MAPPING_MISSING`、multiple candidateを
+  `RELATION_DIRECTED_MAPPING_AMBIGUOUS`で停止する。
+
+Schema、managed vehicle profile、access比較、Directed Segment generatorには
+作成済みまたは単体試験済みの部分があるが、`implemented`、`integrated`、
+`runtime_validated`は別状態である。isolated utilityやunit test合格をproduction
+統合済みとは扱わない。
+
+解消条件は、必要な仕様、不足する機械可読設定、Schema、production実装、独立fixture
+およびoracleが統合され、新規run IDと出力先で版17全件runを実行可能になることで
+ある。formal停止0件や`complete=true`は`ISSUE-ATTR-002`の解消条件であり、本問題の
+close条件ではない。
 
 ## 6. 版16全件実行は完了したが停止記録が残る
 
 **問題識別子:** `ISSUE-ATTR-002`
-**種類:** データ阻害、確認阻害
-**現在状態:** 実装・全件実行済み、停止記録あり
+**種類:** データ阻害、検証阻害
+**現在状態:** 版16実装・全件実行済み、版17全件run前
 
 ### 6.1 実装済み
 
@@ -250,12 +250,13 @@ graph TD
 - 受理済み版16母集団から全組を新規生成し、版15の記録を流用しない。
 - 全件成果物がスキーマと意味整合検査に合格し、未解決組を停止記録として保持する。
 
-上記条件はすべて合格した。`ISSUE-ATTR-002`を完全に解消する追加条件は、停止記録を
-証拠または受理済み規則で解決し、正式用の阻害項目を0件にして
-`complete=true`とすることである。
+上記条件は版16履歴としてすべて合格した。`ISSUE-ATTR-002`は、版17全件run後に
+残るformal停止記録、証拠不足、確認未完了だけを追跡する。解消条件は、版17正式用
+成果物が`complete=true`、formal blockers 0件、review requirement 0件、未解決停止
+0件、formal `model_assumed` 0件を満たすことである。版17契約のproduction統合完了は
+`ISSUE-ATTR-001`の条件であり、本問題とは独立に判定する。
 
 ## 7. 307件の規則・データ例外は分類済み・解決保留
-
 **問題識別子:** `ISSUE-ATTR-003`
 **種類:** 実装阻害、データ阻害
 **現在状態:** 排他的分類を実装・実データ検証済み、属性値の解決は保留
@@ -273,7 +274,7 @@ graph TD
 
 主な例は次のとおりである。
 
-- `oneway=-1`に伴う形状、方向別車線、通行権限、右左折規制の反転
+- `oneway=-1`からのbackward Directed Segment生成（原典OSM Wayは変更しない）
 - `lanes:both_ways`等を含む方向別車線表現
 - 総車線数と方向別車線数の矛盾
 - `maxspeed=50;40`
@@ -282,6 +283,8 @@ graph TD
 - `hgv:conditional`、`motor_vehicle:conditional`等の条件付き通行規制
 - `motorcycle`、`psv`等の車種別通行規制
 - `access=destination`、`access=private`等のアクセス制限
+- `permit`、`delivery`の許可・目的判定
+- direction-specific speedとrelation mapping
 
 日本・東京の法制度とOSM地図表現に合わせた20規則を定義し、通常例、異常例、
 境界例を固定した。実装から生成していない独立正解と照合し、未知規則は0一致、
@@ -309,8 +312,14 @@ graph TD
 
 ただし、完了したのは例外分類であり、属性値の解決ではない。`JP:urban`からの
 速度採用、条件付き規制の時刻・車種評価、`private`・`permit`の許可確認、
-方向別車線と`oneway=-1`の安全な変換は未完了である。これらを暗黙の既定値で
-通過させず、停止状態を維持する。
+方向別車線と`oneway=-1`の安全な変換は未完了である。方向別属性はsource direction
+とtarget Directed Segmentの対応として保持し、relation mappingはzero/multiple
+candidateを明示停止する。これらを暗黙の既定値で通過させず、停止状態を維持する。
+
+formalの双方向道路は`lanes:forward`と`lanes:backward`の両方を明示的に要求する。
+総数だけの均等配分、統計的補完、総数と片方向値からの他方向値の算術自動採用は
+行わず、`LANE_DIRECTIONAL_ALLOCATION_MISSING`で停止する。算術導出を残す場合は
+structural-onlyとし、assumption IDと`model_assumed`相当の非formal由来を記録する。
 
 ## 8. 通行権限をSUMOへ反映する処理が未実装
 
@@ -336,15 +345,32 @@ PM-REQ-001からPM-REQ-011は、要件追跡表で
 `specified_not_implemented`である。小型試験データを固定SUMO 1.24.0へ入力し、
 道路網変換とSUMO読込みまで確認する必要がある。
 
-## 9. 仮道路構造と道路対応履歴の正式生成が未実装
+Resolver側の処理は、(1) static access normalization、(2) conditional expressionの
+parse/evaluation、(3) 両者を統合するfinal permission resolutionへ分離する。static
+工程ではcomplete permissionを生成せず、conditional工程ではmissing context、
+unsupported syntax、interval内変化を停止する。final工程で同結果の複数maximal rule
+を統合し、異結果を`ACCESS_SPECIFICITY_CONFLICT`で停止し、lane-local provenanceと
+完全なpermission expectationを生成する。
+
+状態は次のように分離する。実行証拠がない項目を`failed`とはしない。
+
+| 対象 | 状態 |
+|---|---|
+| typemap importer governance fixture | `failed` |
+| permission materializer implementation | `not_implemented` |
+| permission materializer runtime fixture | `not_run` |
+| 既存の交通シミュレーションpytest | `passed` |
+
+## 9. provisional buildと道路対応履歴が未実装
 
 **問題識別子:** `ISSUE-BUILD-001`
 **種類:** 実装阻害、検証阻害
 **現在状態:** 小型確認のみ
 
 `build_sumo_network.py prepare`のrelation closure工程は実装・受理済みである。
-一方、仮SUMO道路を生成して原本道路との対応履歴を作るProvisional Buildは
-未実装である。現時点の小型確認から、SUMO中間XMLと`origId`を出力できることは
+一方、仮SUMO道路を生成して原本道路との対応履歴を作るprovisional buildは
+未実装である。この開発は小型fixtureを用いてformal停止の解消と並行できる。
+現時点の小型確認から、SUMO中間XMLと`origId`を出力できることは
 分かっているが、次は証明できていない。
 
 - 一つの地図道路が複数SUMO道路へ分割された場合の完全な対応
@@ -356,6 +382,7 @@ PM-REQ-001からPM-REQ-011は、要件追跡表で
 
 SUMO道路識別子の符号や座標最近傍を、方向の証拠として使用してはならない。
 元の地図構成点の順序と開始・終了位置を記録した道路対応履歴が必要である。
+実データformal networkとしての受理はAttribute Resolution Acceptance後に限る。
 
 ## 10. 交差点・信号・最終道路網の検証が未実施
 
@@ -451,16 +478,51 @@ SUMO道路識別子の符号や座標最近傍を、方向の証拠として使�
 
 | 優先 | 作業 | 解消する問題 | 並行実施 |
 |---:|---|---|---|
-| 1 | 作成済みの版17 Schema、車両プロファイル、access比較および値状態をproduction Resolverと入出力境界へ統合する | `ISSUE-ATTR-001`、`ISSUE-ATTR-002` | 方向付き区間fixtureと並行可能 |
-| 2 | 作成済みの方向付き区間生成をproductionへ接続し、`oneway=-1`、方向依存属性、relationおよびlane順の小型fixtureを実装する | `ISSUE-ATTR-003`、`ISSUE-BUILD-001` | relation写像fixtureを含める |
-| 3 | 残る24,741停止組を規則・証拠・確認要求へ分解する | `ISSUE-ATTR-001`、`ISSUE-ATTR-002` | 通行権限反映の小型試験と並行可能 |
-| 4 | 版17全件を新しいrunとして実行し、正式用阻害項目0件を確認する | `ISSUE-ATTR-001`、`ISSUE-ATTR-002`、`ISSUE-ATTR-003` | 工程1～3完了後 |
-| 5 | 通行権限反映処理を固定SUMOで検証する | `ISSUE-PERM-001` | 小型データでは前倒し可能 |
-| 6 | 交差点・信号・最終道路網を検証する | `ISSUE-BUILD-002` | 実データ通行権限確定後 |
-| 7 | 観測を拡充し、較正・独立検証を行う | `ISSUE-VV-001` | 観測取得は道路網開発と並行可能 |
-| 8 | 正式配送問題と比較実験を実施する | `ISSUE-EXP-001` | 独立検証後 |
+| 1 | 現状と版16履歴を固定する | 全問題の基準点 | 観測取得は並行可能 |
+| 2 | 残る`OPEN-PROP`を承認する | `ISSUE-ATTR-001` | 小型fixture設計は並行可能 |
+| 3 | 条件式文法、速度規則、許可台帳、停止コード対応を機械可読化する | `ISSUE-ATTR-001`、`ISSUE-ATTR-003` | 独立oracle作成と調整可能 |
+| 4 | 新Schemaとproduction入出力境界を統合する | `ISSUE-ATTR-001` | provisional build開発は並行可能 |
+| 5 | 独立fixtureとoracleを固定する | `ISSUE-ATTR-001` | production出力から生成しない |
+| 6 | Directed Segmentとrelation mappingをproduction統合する | `ISSUE-ATTR-001`、`ISSUE-ATTR-003` | 小型provisional buildと並行可能 |
+| 7 | directional lanesを統合する | `ISSUE-ATTR-001`、`ISSUE-ATTR-003` | materializer fixture開発と並行可能 |
+| 8 | static access、conditional evaluation、final permission resolutionを統合する | `ISSUE-ATTR-001`、`ISSUE-ATTR-003` | 三責務を別々に検証する |
+| 9 | speed resolutionを統合する | `ISSUE-ATTR-001`、`ISSUE-ATTR-003` | 小型SUMO runtime fixtureと並行可能 |
+| 10 | Resolver統合試験を行う | `ISSUE-ATTR-001` | 全production境界を対象にする |
+| 11 | 版17全件runを新規runとして実行する | `ISSUE-ATTR-001`、`ISSUE-ATTR-002` | 既存runを上書きしない |
+| 12 | formal停止記録を反復解消する | `ISSUE-ATTR-002`、`ISSUE-ATTR-003` | 小型materializer開発と並行可能 |
+| 13 | Attribute Resolution Acceptance | `ISSUE-ATTR-002` | 実データformal buildの前提 |
+| 14 | provisional build、exact provenance、Permission Materializer、final connection setを生成する | `ISSUE-PERM-001`、`ISSUE-BUILD-001` | 小型fixture実装自体は前倒し可能 |
+| 15 | signal/TLS reviewとSUMO Network Integration Acceptance | `ISSUE-BUILD-002` | 実データでは工程13・14後 |
+| 16 | demand、calibration、independent validation、正式比較 | `ISSUE-VV-001`、`ISSUE-EXP-001` | 観測取得以外は正式道路網後 |
 
 ## 15. 問題解消の判定条件
+
+### 15.1 二段階の受理ゲート
+
+Attribute Resolution AcceptanceはResolverの正式属性成果物だけを受理する。
+`complete=true`、`blockers=[]`、`review_required=0`、`stop_unresolved=0`、
+`model_assumed=0`、母集団・レコード数・被覆一致、JSON Schema、意味整合、分類投影
+不変、入力・設定・Schema・出力・独立正解のSHA-256、未登録状態・規則・停止コード
+0件、structural/formal非混在を要求する。この合格は最終SUMO道路網の承認ではない。
+
+SUMO Network Integration Acceptanceはその後に、provisional structural build、exact
+edge provenance、Permission Materializer、lane/connection permissions、final connection
+set、signal junction/TLS link review、final `net.xml`、SUMO 1.24.0読込みを完了し、lane、
+connection、turn restriction、left-hand traffic、warning、reachabilityを監査する。
+生成済み`net.xml`は直接編集しない。
+
+### 15.2 母集団と除外
+
+`out_of_scope`は入力レコードの削除ではない。承認済み版17 Schemaのenumには
+`excluded`がないため、独断で追加せず、現時点ではexclusion manifestを必要実装と
+する。除外理由、規則ID、道路・方向・車線、承認者、承認日、根拠SHA-256を残す。
+母集団定義を変える場合は新しいpopulation/configuration versionを発行し、版16の
+26,220道路を上書きしない。版17では入力母集団、管理対象母集団、除外母集団を別々
+に数え、`complete=true`の分母を管理対象母集団、permission completenessの分母を
+全管理対象way/direction/lane tupleとしてmanifestに明記する。除外で阻害項目を
+見かけ上0件にしてはならない。
+
+### 15.3 共通条件
 
 問題一覧から項目を削除するだけでは解消済みとしない。少なくとも次を満たす。
 
