@@ -1,123 +1,147 @@
-# 版17道路属性の正式解決に向けた実行手順
+# 版17道路属性解決・道路網統合の実行手順
 
 > **文書状態:** 実行計画
 > **開始位置:** 中核方針・機械可読設定・基礎JSON Schema固定済み、production統合・fixture移行前
-> **終了条件:** 版17正式用成果物が`complete=true`となり、阻害項目が0件になる
+> **属性終了条件:** Attribute Resolution Acceptance合格
+> **道路網終了条件:** SUMO Network Integration Acceptance合格
 > **禁止事項:** 未決定事項を実装者の推測で補わない
 
 ## 目次
 
-- [1. この手順の目的](#1-この手順の目的)
-- [2. 現在位置](#2-現在位置)
-- [3. 全体の実行順序](#3-全体の実行順序)
-- [4. 工程0 現在状態を基準点として固定する](#4-工程0-現在状態を基準点として固定する)
-- [5. 工程1 追加決定事項を解消する](#5-工程1-追加決定事項を解消する)
-- [6. 工程2 正式仕様と機械可読設定を作る](#6-工程2-正式仕様と機械可読設定を作る)
-- [7. 工程3 JSON Schemaと成果物を移行する](#7-工程3-json-schemaと成果物を移行する)
-- [8. 工程4 独立した固定試験用データを作る](#8-工程4-独立した固定試験用データを作る)
-- [9. 工程5 方向付き道路モデルを実装する](#9-工程5-方向付き道路モデルを実装する)
-- [10. 工程6 方向別車線を実装する](#10-工程6-方向別車線を実装する)
-- [11. 工程7 通行許可を実装する](#11-工程7-通行許可を実装する)
-- [12. 工程8 条件付き規制を実装する](#12-工程8-条件付き規制を実装する)
-- [13. 工程9 速度解決を実装する](#13-工程9-速度解決を実装する)
-- [14. 工程10 統合試験を行う](#14-工程10-統合試験を行う)
-- [15. 工程11 版17を全件実行する](#15-工程11-版17を全件実行する)
-- [16. 工程12 停止記録を解消する](#16-工程12-停止記録を解消する)
-- [17. 工程13 正式成果物を受理する](#17-工程13-正式成果物を受理する)
-- [18. 基準点コミット](#18-基準点コミット)
-- [19. 工程ごとの成果物一覧](#19-工程ごとの成果物一覧)
-- [20. 中断と再開](#20-中断と再開)
+- [1. この手順の目的と正本](#1-この手順の目的と正本)
+- [2. 現在位置と状態表現](#2-現在位置と状態表現)
+- [3. structural networkとformal network](#3-structural-networkとformal-network)
+- [4. canonicalな実行順序](#4-canonicalな実行順序)
+- [5. 工程0 現在状態と版16履歴を固定する](#5-工程0-現在状態と版16履歴を固定する)
+- [6. 工程1 残る版17決定事項を承認する](#6-工程1-残る版17決定事項を承認する)
+- [7. 工程2 正式仕様・設定・Schemaを確定する](#7-工程2-正式仕様設定schemaを確定する)
+- [8. 工程3 独立fixtureとoracleを固定する](#8-工程3-独立fixtureとoracleを固定する)
+- [9. 工程4 Directed Segmentをproductionへ統合する](#9-工程4-directed-segmentをproductionへ統合する)
+- [10. 工程5 方向別車線を実装する](#10-工程5-方向別車線を実装する)
+- [11. 工程6 static accessを実装する](#11-工程6-static-accessを実装する)
+- [12. 工程7 conditional parserと評価器を実装する](#12-工程7-conditional-parserと評価器を実装する)
+- [13. 工程8 final permission resolutionを実装する](#13-工程8-final-permission-resolutionを実装する)
+- [14. 工程9 速度解決を実装する](#14-工程9-速度解決を実装する)
+- [15. 工程10 Resolver統合試験を行う](#15-工程10-resolver統合試験を行う)
+- [16. 工程11 版17を全件実行する](#16-工程11-版17を全件実行する)
+- [17. 工程12 停止記録を解消する](#17-工程12-停止記録を解消する)
+- [18. 工程13 Attribute Resolution Acceptance](#18-工程13-attribute-resolution-acceptance)
+- [19. 工程14 provisional structural buildとmaterializer](#19-工程14-provisional-structural-buildとmaterializer)
+- [20. 工程15 final connection setとsignal TLS review](#20-工程15-final-connection-setとsignal-tls-review)
+- [21. 工程16 SUMO Network Integration Acceptance](#21-工程16-sumo-network-integration-acceptance)
+- [22. 工程17以降の下流工程](#22-工程17以降の下流工程)
+- [23. 基準点コミットと成果物一覧](#23-基準点コミットと成果物一覧)
+- [24. 中断と再開](#24-中断と再開)
 
-## 1. この手順の目的
+## 1. この手順の目的と正本
 
-本文書は、版17の道路属性について、承認済み方針を実装、固定試験、
-実データ全件実行および正式受理まで進める順序を定める。
+本文書は、承認済み版17方針をproductionへ統合し、新規runとして全件実行し、
+正式属性成果物と最終SUMO道路網を別々のゲートで受理する順序を定める。版16の
+結果を版17として再ラベルせず、版16成果物、既存run、生成済み`net.xml`を上書き
+しない。
 
-対象は次のとおりである。
+正本の責務は次のとおりであり、本文書は同じ規則を独立に再定義しない。
 
-- `maxspeed:type=JP:urban`を含む速度解決
-- 時刻、曜日、祝日、車種、重量および利用目的に依存する条件付き規制
-- `private`、`permit`、`destination`、`delivery`等の通行許可
-- `lanes:forward`、`lanes:backward`、`lanes:both_ways`等の方向別車線
-- `oneway=-1`と方向依存タグ
-- 通常の右左折規制とバス向け規制
+| 責務 | 正本 |
+|---|---|
+| 機械可読なネットワーク状態 | `reproducibility/config/traffic_simulation/sumo_network.yml` |
+| typed state contract | `reproducibility/config/traffic_simulation/sumo_network.schema.json` |
+| 要件単位の実装状態 | `reproducibility/config/traffic_simulation/requirements_traceability.yml`および版17追跡表 |
+| 研究工程と利用可否 | `reproducibility/config/traffic_simulation/research_stage.yml` |
+| 版17属性解決方針 | `reproducibility/config/traffic_simulation/approved_attribute_resolution_policy_v17.yml` |
+| 版17方針のnormative explanation | `specifications/10_approved_attribute_resolution_policy.md` |
+| 現在状態summary | `network_current_specification.md` |
+| 問題追跡 | `current_issues_and_blockers.md` |
 
-通行権限反映、SUMO道路生成、交差点・信号処理は、本手順の正式属性成果物を入力として
-後続工程で実施する。
+`approved_attribute_resolution_policy_v17.yml`は作成済みの機械可読authorityである。
+新規作成物として扱わず、不足設定だけを追加または改版する。
 
-## 2. 現在位置
+現行`sumo_network.yml`はv16状態のauthorityで、legacy
+`formal_build_input_ready`にmaterializerとsignal structureを含む。この履歴は変更
+しない。v17のnetwork-state configurationを発行するときに、本手順の二つの受理
+ゲートを機械可読化し、それまでは当該差異を既知の設定移行事項として扱う。
 
-現在は次の状態である。
+## 2. 現在位置と状態表現
 
 | 項目 | 状態 |
 |---|---|
 | 版16道路母集団 | 26,220道路として受理済み |
-| 重要度分類 | 全件実行済み |
-| 属性値解決 | 全件実行済みだが停止記録あり |
-| 構造確認用 | 52,440組、785停止 |
-| 正式用 | 52,440組、24,741停止 |
-| 初期正式仕様案 | 作成済み |
-| 版17中核方針 | 方針・機械可読設定・基礎JSON Schema固定済み |
-| 版17基礎実装 | access極大規則選択と方向付き区間生成の独立関数・単体試験を実装済み |
-| 版17production統合 | Resolver・成果物生成・実データ実行への接続は未完了 |
-| 残る追加決定 | 条件付き規制文法、許可台帳、日本速度規則、残る停止コードとfixture |
-| 正式道路網への利用 | 不可 |
+| 版16構造確認用 | 52,440組、785停止 |
+| 版16正式用 | 52,440組、24,741停止、`complete=false` |
+| 版17方針 | fixed |
+| 新Schema、managed vehicle profile | implemented、production未統合、runtime境界未検証 |
+| access比較、Directed Segment generator | isolated utilityとしてimplemented、production未統合 |
+| typemap importer governance fixture | `failed` |
+| Permission Materializer実装 | `not_implemented` |
+| Permission Materializer runtime fixture | `not_run` |
+| 既存交通シミュレーションpytest | `passed` |
+| formal network | 未承認 |
 
-正本は次の文書である。
+状態値は`passed`、`failed`、`not_implemented`、`not_run`、`pending`、`ineligible`
+を区別する。方針固定、implemented、integrated、runtime_validatedも別々に記録する。
+単体試験合格だけでproduction利用可能とはしない。
 
-- 承認済み版17中核方針:
-  `specifications/10_approved_attribute_resolution_policy.md`
-- 機械可読な版17中核方針:
-  `reproducibility/config/traffic_simulation/approved_attribute_resolution_policy_v17.yml`
-- 未決定事項:
-  `specifications/attribute_resolution_decisions_to_finalize.md`
-- 初期正式仕様案:
-  `specifications/initial_formal_attribute_resolution_specification_proposal.md`
-- 例外決定表:
-  `reproducibility/config/traffic_simulation/resolver_exception_decision_table.yml`
-- 現在の阻害事項:
-  `current_issues_and_blockers.md`
+`resolution_status`と`value_origin`は承認済み版17契約のcanonical fieldsであり、案
+ではない。legacy `value_state`はread compatibilityだけに使用する。
 
-## 3. 全体の実行順序
+## 3. structural networkとformal network
+
+structural/provisional networkは、topology、direction、connection、provenance、
+Permission Materializerの開発・確認専用である。structural assumptionを含み得て、
+正式属性の全停止解消前でも小型fixtureまたは開発用出力として生成できる。ただし、
+travel time、capacity、delivery、solver comparison、calibrationには使用できず、
+公開可能な実データformal networkではない。
+
+formal networkは、Attribute Resolution Acceptance済みの正式属性成果物を入力とし、
+governed permissions、final connections、reviewed TLS structureを反映する。SUMO
+Network Integration Acceptanceに合格した場合だけ正式道路網として承認する。
+下流研究へ使用できるのは独立検証完了後である。
+
+小型fixtureを使うprovisional build、materializer、SUMO runtime fixtureの開発は、
+工程12の属性停止解消と並行できる。実データformal network acceptanceは工程13後
+でなければ開始しない。
+
+## 4. canonicalな実行順序
 
 ```mermaid
 flowchart TD
-    A[現在状態を固定] --> B[追加決定を承認]
-    B --> C[正式仕様と機械可読設定]
-    C --> D[Schema移行]
-    D --> E[独立正解と固定試験]
-    E --> F[方向付き道路モデル]
-    F --> G[方向別車線]
-    G --> H[通行許可]
-    H --> I[条件付き規制]
-    I --> J[速度解決]
-    J --> K[統合試験]
-    K --> L[版17全件実行]
-    L --> M{正式用阻害項目は0件か}
-    M -- いいえ --> N[証拠・規則・入力を追加]
-    N --> C
-    M -- はい --> O[正式成果物を受理]
+    A[現在状態と版16履歴を固定] --> B[残る版17決定を承認]
+    B --> C[仕様・設定・Schemaを確定]
+    C --> D[独立fixtureとoracleを固定]
+    D --> E[Directed Segmentをproduction統合]
+    E --> F[directional lanes]
+    F --> G[static access]
+    G --> H[conditional parser・評価器]
+    H --> I[final permission resolution]
+    I --> J[speed resolution]
+    J --> K[Resolver統合試験]
+    K --> L[版17全件run]
+    L --> M[停止記録を解消]
+    M --> N{Attribute Resolution Acceptance}
+    N -- 不合格 --> M
+    N -- 合格 --> O[provisional structural build・exact provenance]
+    O --> P[Permission Materializer]
+    P --> Q[final connection set]
+    Q --> R[signal/TLS review]
+    R --> S{SUMO Network Integration Acceptance}
+    S -- 不合格 --> O
+    S -- 合格 --> T[demand]
+    T --> U[calibration]
+    U --> V[independent validation]
+    V --> W[delivery・classical・QAOA evaluation]
+    X[小型fixture開発] -. 属性停止解消と並行 .-> O
 ```
 
-工程を入れ替えてはならない。特に、方向付き道路モデルが未確定のまま方向別車線、
-方向別権限または方向別速度を正式化しない。
+## 5. 工程0 現在状態と版16履歴を固定する
 
-## 4. 工程0 現在状態を基準点として固定する
+作業ツリー、版16入力、run記録、入力・出力・独立oracleのSHA-256を照合する。
+版16の受理済み件数、要件ID、失敗コード、run ID、SHA-256を変更しない。
 
-### 4.1 実施内容
-
-1. 作業ツリーの差分を確認する。
-2. 版16入力と現在の全件実行記録のSHA-256を確認し、履歴基準点として固定する。
-3. 現在の試験一式を実行する。
-4. 未コミット変更を目的別に確認する。
-5. 基準点コミットを作成する。
-
-### 4.2 検証コマンド
+実在する基準検証コマンドは次である。
 
 ```bash
 git status --short --branch
 git diff --check
-
 docker compose config
 docker compose run --rm analysis \
   python -m traffic_simulation.network.validate_sumo_network_config
@@ -125,523 +149,246 @@ docker compose run --rm analysis \
   pytest -q 05_src/traffic_simulation/validation
 ```
 
-入力SHA-256は、次の記録と一致させる。
-
-```text
-03_data/metadata/acquisition/
-  20260730_ota_ward_v16_attribute_resolution_run.json
-```
-
-### 4.3 停止条件
-
-- 試験が一件でも不合格である。
-- 版16入力のSHA-256が受理記録と異なる。
-- 独立正解のSHA-256が変更されている。
-- 内容を説明できない差分がある。
+不明な差分、版16入力SHA-256不一致、oracle SHA-256変更、試験不合格で停止する。
 
-## 5. 工程1 追加決定事項を解消する
+## 6. 工程1 残る版17決定事項を承認する
 
-### 5.1 入力
+`attribute_resolution_decisions_to_finalize.md`に残る`OPEN-PROP-005`、`009`から
+`012`、`015`を、`approved`または明示的な`out_of_scope`へする。条件式文法、
+2026年7月16日に適用する日本速度規則、`JP:urban`の証拠、許可台帳、停止コード
+対応、独立oracleを確定する。方針固定済み項目は再決定しない。
 
-```text
-specifications/
-  attribute_resolution_decisions_to_finalize.md
-  initial_formal_attribute_resolution_specification_proposal.md
-```
+`out_of_scope`は入力レコードを無言で削除する状態ではない。承認済み版17 Schemaの
+`resolution_status` enumに`excluded`はないため、独断でenumを変更せず、現時点では
+exclusion manifestを必要実装とする。各除外に理由、規則ID、道路・方向・車線、
+承認者、承認日、根拠SHA-256を記録する。
 
-### 5.2 実施内容
+除外が母集団定義を変える場合は新しいpopulation/configuration versionを発行する。
+版16の26,220道路は上書きしない。版17は入力母集団、管理対象母集団、除外母集団を
+別件数で記録し、`complete=true`の分母を管理対象母集団、permission completenessの
+分母を全管理対象way/direction/lane tupleとしてmanifestに明記する。除外でblocker
+を形式的に0件へ見せかけてはならない。
 
-未決定の`OPEN-PROP-005`、`009`から`012`および`015`について、次を記録する。
-方針固定済みの項目は再決定せず、版17機械可読方針との対応だけを確認する。
+## 7. 工程2 正式仕様・設定・Schemaを確定する
 
-- 採用する規則
-- 採用理由
-- 適用する道路、方向、車線、車種および期間
-- 使用する出典とSHA-256
-- 優先順位
-- 停止条件
-- 既存成果物を無効化する範囲
-- 必要な固定試験識別子
-- 承認者と承認日
+版17方針を正本として、不足する条件プロファイル、速度規則、許可台帳、停止コード
+対応を機械可読化し、既存設定との重複を避ける。作成済み
+`attribute_resolution_v2.schema.json`をproductionの全入出力境界へ接続し、
+`resolution_status`と`value_origin`へ移行する。
 
-### 5.3 最低限必要な決定
+formalでは`model_assumed`を拒否し、停止状態と停止コード、解決状態と値・由来、
+Schema版と設定版の整合を検査する。structuralとformalを同じrun成果物へ混在させ
+ない。仕様、設定、Schemaの識別子不一致、未登録規則・状態・停止コードで停止する。
 
-1. 目的地区域と配送先一致判定
-2. 条件式の正式文法
-3. 2026年7月16日に適用する日本速度規則表
-4. `JP:urban`に必要な道路状態の出典
-5. 名称付き停止理由と既存失敗コードの完全な対応
-6. production実装から独立した残りの正解成果物
+## 8. 工程3 独立fixtureとoracleを固定する
 
-### 5.4 完了条件
+production実装を変更する前に入力を作り、承認済み仕様からoracleを別経路で導出する。
+production出力から正解を生成せず、入力、oracle、manifest、参照仕様をSHA-256で
+固定する。
 
-- 残る`OPEN-PROP-005`、`009`から`012`および`015`が`approved`または明示的な
-  `out_of_scope`である。
-- 同じ入力から複数の出力が導かれない。
-- 「適切に処理する」等の実装者判断を残す表現がない。
-- 必要な出典がローカル記録とSHA-256へ結び付いている。
+通常、異常、境界、再実行、規則改訂、証拠競合、日付・時刻・重量境界、access
+優先順位、`oneway=-1`、通常・バスrestriction、`lanes:both_ways`、direction-specific
+speed、relation mapping、未登録構文を含める。
 
-未決定事項が一つでも残る場合は、工程2へ進まない。
+## 9. 工程4 Directed Segmentをproductionへ統合する
 
-## 6. 工程2 正式仕様と機械可読設定を作る
+原典OSM Wayは読み取り専用とする。`oneway=-1`ではbackward Directed Segmentだけを
+生成し、原典Wayの形状やタグを破壊的に反転しない。方向別属性はsource directionと
+target Directed Segmentの対応として保持する。
 
-### 6.1 作成物
+relationの`from`、`via`、`to`をDirected Segment候補へ写像する。zero candidateは
+`RELATION_DIRECTED_MAPPING_MISSING`、multiple candidateは
+`RELATION_DIRECTED_MAPPING_AMBIGUOUS`で停止する。SUMO edge IDの符号、座標最近傍、
+生成順をformal方向証拠に使用しない。exact provenanceを復元できない場合も停止する。
 
-承認済み版17方針を正本として、不足する機械可読設定を責任別に作る。
+## 10. 工程5 方向別車線を実装する
 
-```text
-reproducibility/config/traffic_simulation/
-  approved_attribute_resolution_policy_v17.yml
-  scenario_profiles/
-    managed_urban_ev_delivery_v1.yml
-  legal_speed_rules/
-    japan_road_speed_rules.yml
-  conditional_profiles/
-    tokyo_delivery_conditional_v1.yml
-  permit_registry/
-    managed_delivery_permits_v1.yml
-```
-
-これらのパスは予定配置である。作成時に既存設定構造との重複を確認し、同じ値を
-複数ファイルで管理しない。
-
-### 6.2 必須内容
-
-- 設定識別子と設定版
-- 適用開始日と終了日
-- 出典ファイル参照とSHA-256
-- 決定規則識別子
-- 優先順位
-- 停止コード
-- 正式用と構造確認用の利用可否
-
-### 6.3 検証
-
-各設定にはJSON Schemaと意味整合検査を作る。Schema合格だけでなく、次を検査する。
-
-- 期間の重複と空白
-- 規則優先順位の重複
-- 未登録車種
-- 未登録停止コード
-- 出典SHA-256不一致
-- 許可対象道路の母集団外参照
-- 条件プロファイルの未登録構文
-
-### 6.4 停止条件
+formalの双方向道路では`lanes:forward`と`lanes:backward`を明示的に要求する。総車線
+数だけから均等配分せず、統計的補完を使わない。総車線数と片方向値から他方向値が
+算術上一意でも、現行版17方針ではformal値に自動採用せず、
+`LANE_DIRECTIONAL_ALLOCATION_MISSING`で停止する。
 
-- 同じ規則の正本が複数ある。
-- 設定と仕様の識別子が一致しない。
-- 出典ファイルを取得できない。
-- 法令適用期間が一意でない。
+算術導出を使えるのはstructural-onlyで、承認済み規則に従い、assumption IDと
+`value_origin=model_assumed`相当の非formal由来、`formal_eligible=false`を必ず記録
+する。formal成果物へ混入させない。単方向道路の明示総車線数に関する承認済み
+`rule_derived`規則は版17正本に従う。
 
-## 7. 工程3 JSON Schemaと成果物を移行する
+## 11. 工程6 static accessを実装する
 
-### 7.1 対象
+static access normalizationは、spatial、vehicle、purpose、lane、direction、
+general/specific ruleを正規化し、Pareto-dominated rulesを除き、maximal static rules
+を選択する。この工程はconditionalタグを評価せず、最終permission expectationも
+まだ生成しない。`private`、`permit`、`destination`、`delivery`等を、登録済み車両・
+許可・目的文脈に対する静的規則として処理する。
 
-現在の`value_state`を次へ分離する案を実装する。
+## 12. 工程7 conditional parserと評価器を実装する
 
-```text
-resolution_status
-value_origin
-```
+承認済み文法だけを解析し、date、time、holiday、vehicle、weight、dimensions、trip
+purposeを評価する。missing contextをfalseとして通過させず、unsupported syntax、
+未登録token、interval内で結果が変化する条件を明示的に停止する。この工程の出力は
+評価済みconditional rulesであり、complete permission expectationではない。
 
-### 7.2 実施内容
+## 13. 工程8 final permission resolutionを実装する
 
-1. 作成済みの`attribute_resolution_v2.schema.json`をproductionの全出力境界へ接続する。
-2. 旧値から新しい二フィールドへの移行表を作る。
-3. 移行不能な旧値は停止する。
-4. 旧版成果物を上書きせず、新版成果物として生成する。
-5. レコードSHA-256を新版内容から再計算する。
-6. Schema版と設定版の互換表を作る。
+static rulesと評価済みconditional rulesを統合する。multiple maximal rulesが同じ
+結果なら一度だけ採用し、異なる結果なら`ACCESS_SPECIFICITY_CONFLICT`で停止する。
+lane-local provenanceを保持し、全管理対象way/direction/lane tupleを被覆するcomplete
+permission expectationを生成する。
 
-### 7.3 必要な検査
+Resolver expected permissionsを版17formal authorityとする。typemap permissionsを
+formal上限にせず、managed vClass universeだけを上限とする。unsupported、unresolved、
+conflict、invalidを暗黙の既定値で通過させない。
 
-- `resolved`なのに値がない状態を拒否する。
-- `model_assumed`を正式用で拒否する。
-- 停止状態なのに停止コードがない状態を拒否する。
-- 解決済みなのに停止コードがある状態を拒否する。
-- 状態と由来の禁止組合せを拒否する。
-- 旧成果物と新版成果物を同じrunへ混在させない。
+## 14. 工程9 速度解決を実装する
 
-### 7.4 完了条件
+direction-specific explicit value、一般値、日付・区間・方向が一致する公式証拠、
+承認済み日本速度規則の順序を正本どおりに評価する。指定速度、法定速度、助言速度、
+simulation speedを分離し、typemap既定速度は`model_assumed`としてformalから除外する。
+`JP:urban`を数値`maxspeed`と同一視せず、道路状態証拠がなければ停止する。
 
-- JSON Schema単体の正常、異常、境界試験が合格する。
-- production Resolverが新Schemaだけを書き出し、旧`value_state`を書き出さない。
-- 意味整合検査が新Schemaを検査する。
-- 既存成果物の扱いが、保持、移行、無効化のいずれかへ分類されている。
+## 15. 工程10 Resolver統合試験を行う
 
-## 8. 工程4 独立した固定試験用データを作る
-
-ここでいう「独立」は、正解結果を本番実装の出力から生成せず、承認済み仕様から
-別途導出することを意味する。独立した人間による受理工程は要求しない。人間による
-独立受理を省略した方針は開示したまま、正解結果と本番実装の生成経路を分離する。
-
-### 8.1 作成順序
-
-1. production実装を変更する前に入力を作る。
-2. 承認済み仕様だけを参照して正解を作る。
-3. 入力と正解の作成者、作成日、参照仕様SHA-256を記録する。
-4. 入力、正解、manifestをSHA-256で固定する。
-5. production実装から正解を生成していないことを記録する。
-
-### 8.2 必須事例
-
-- 通常、異常、境界
-- 同一入力の再実行
-- 規則改訂
-- 証拠競合
-- 日付境界
-- 条件式の時刻境界
-- 重量境界
-- access優先順位
-- `oneway=-1`
-- 通常の右左折規制
-- バス向け規制
-- `lanes:both_ways`
-- 方向別速度
-- 未登録構文
-
-### 8.3 禁止事項
-
-- 実装出力に合わせて正解を変更しない。
-- 実データの一行を説明なしに正解として転用しない。
-- 一つの正常例だけで規則全体を受理しない。
-
-## 9. 工程5 方向付き道路モデルを実装する
-
-### 9.1 実施内容
-
-1. 原典OSM Wayを読み取り専用で保持する。
-2. 承認済み分割規則から分割区間を生成する。
-3. `F`と`B`の方向付き区間を生成する。
-4. oneway規則から生成可能方向を決める。
-5. 元Way、分割区間、方向付き区間、SUMO edgeの来歴を生成する。
-6. 方向依存タグの適用先を記録する。
-7. 通常・バス向けrelationを方向付き接続へ対応させる。
-
-### 9.2 検査
-
-- 原典OSMが変更されていない。
-- `oneway=-1`では`B`だけが生成される。
-- 意図しない反対方向区間がない。
-- 元構成点順と走行構成点順を復元できる。
-- `from`、`to`、`via`の意味が変換前後で一致する。
-- `no_*`と`only_*`の接続集合が独立正解と一致する。
-
-### 9.3 停止条件
-
-- 未知の方向接尾辞がある。
-- 分割位置を一意に決められない。
-- relationを一つの接続集合へ対応できない。
-- 複数via等が承認済み範囲外である。
-
-## 10. 工程6 方向別車線を実装する
-
-### 10.1 実施内容
-
-1. `lanes`と方向別タグを構文解析する。
-2. 承認済み整合式を検査する。
-3. 一意な場合だけ欠けた一値を算術導出する。
-4. OSM車線位置をSUMO車線番号へ変換する。
-5. 車線別タグの要素数を検査する。
-6. `lanes:both_ways`、可逆車線、潮汐車線を承認済み範囲に従って処理する。
-
-### 10.2 検査
-
-- 総数と方向別合計が一致する。
-- 負数または0未満の差分を拒否する。
-- 総数だけから均等配分しない。
-- formalでは統計的補完を使用しない。
-- lane順がforward・backwardの独立正解と一致する。
-
-## 11. 工程7 通行許可を実装する
-
-### 11.1 実施内容
-
-1. 管理車両をOSM access階層へ対応させる。
-2. 車線、方向、車種、一般タグの具体性を評価する。
-3. `private`、`permit`を基準シナリオへ適用する。
-4. `destination`、`delivery`、`customers`を目的地文脈へ照合する。
-5. 条件付きタグは工程8の評価器へ渡す。
-6. laneごとの許可集合と規則来歴を生成する。
-
-### 11.2 検査
-
-- 具体タグと一般タグの優先順位が固定試験と一致する。
-- 同順位競合を暗黙に解消しない。
-- 許可IDがない`permit`を通行可能にしない。
-- 対象区域外の配送を`delivery`で通行可能にしない。
-- 他方向・他車線のタグを来歴へ混入させない。
-
-## 12. 工程8 条件付き規制を実装する
-
-### 12.1 実施内容
-
-1. 承認済み文法だけを受理する構文解析器を作る。
-2. `Asia/Tokyo`、祝日暦、車両、重量、目的を評価文脈へ設定する。
-3. 09:00から17:00の変化点を列挙する。
-4. 各区間の評価結果を求める。
-5. 全期間で値が同一か検査する。
-6. 同時に有効な規則の競合を検査する。
-
-### 12.2 検査
-
-- 不正構文を拒否する。
-- 未登録トークンを拒否する。
-- 欠損文脈を偽として扱わない。
-- 時刻境界の包含が仕様と一致する。
-- 夜間をまたぐ条件が仕様と一致する。
-- 全期間で値が変わる場合は停止する。
-- 同時に真となる異値規則は競合停止する。
-
-## 13. 工程9 速度解決を実装する
-
-### 13.1 実施内容
-
-1. 方向付き区間と期間に一致する公式証拠を検索する。
-2. OSMの方向別数値を評価する。
-3. OSMの一般数値を評価する。
-4. 必要な場合だけ適用日付き日本速度規則表を評価する。
-5. 指定速度、法定速度、助言速度、シミュレーション速度を分離して記録する。
-6. typemap既定速度を`model_assumed`として分離する。
-
-### 13.2 検査
-
-- 2026年7月16日へ有効な規則だけを使用する。
-- 2026年9月1日以降の規則を遡及適用しない。
-- 数値`maxspeed`と`JP:urban`を混同しない。
-- 指定速度証拠の区間、方向、日付を照合する。
-- 道路状態不足時に法令速度を推測しない。
-- typemap既定値を正式値へ昇格しない。
-
-## 14. 工程10 統合試験を行う
-
-### 14.1 実行順序
+個別試験の後に交通シミュレーション検証一式を実行する。
 
 ```bash
 docker compose run --rm analysis \
-  pytest -q \
-  05_src/traffic_simulation/validation/test_attribute_classification_schemas.py
-
+  pytest -q 05_src/traffic_simulation/validation/test_attribute_classification_schemas.py
 docker compose run --rm analysis \
-  pytest -q \
-  05_src/traffic_simulation/validation/test_resolve_attribute_values.py
-
+  pytest -q 05_src/traffic_simulation/validation/test_resolve_attribute_values.py
 docker compose run --rm analysis \
   pytest -q 05_src/traffic_simulation/validation
 ```
 
-新しい試験ファイルを追加した場合は、その個別試験を先に実行してから全体試験を行う。
+classification非変更、正常・異常・境界・再実行・規則改訂、oracle SHA-256不変、
+structural仮定のformal非混入、原子的出力を検査する。一件でも不合格なら全件runへ
+進まない。
 
-### 14.2 必須検査
+## 16. 工程11 版17を全件実行する
 
-- 分類結果を属性値解決が変更していない。
-- 正常、異常、境界、再実行、規則改訂が合格する。
-- 独立正解SHA-256が変更されていない。
-- 構造確認用仮定がformalへ混入しない。
-- 全レコードの自己ハッシュが一致する。
-- 失敗時に部分的な成功成果物を公開しない。
+版17専用runner、明示run ID、新しい出力先を使い、`attribute_resolution_v16`や既存
+runを上書きしない。現時点のコードベースには版17runnerが存在しないため、推測した
+CLIコマンドは記載しない。runner実装とCLI固定は`ISSUE-ATTR-001`の必要作業である。
 
-### 14.3 停止条件
+受理済み版16 relation closureを不変入力として参照し、新仕様・設定・Schema、fixture、
+oracle、外部証拠、祝日暦、速度規則、許可台帳からstructuralとformalを別成果物として
+生成する。run manifestに入力、設定、Schema、出力、oracleのSHA-256と母集団三件数を
+記録する。
 
-一件でも不合格なら版17全件実行へ進まない。
+### 16.1 validator実装の確認結果
 
-## 15. 工程11 版17を全件実行する
+実装済み`validate_attribute_classification`は、現行v16の
+`artifact_type=attribute_classification`統合形状について、classification Schema、
+resolutionを含む意味整合、被覆、completeと停止状態、record/self-hash、参照hash等を
+検査する。classification projectionだけに限定されたvalidatorではない。
 
-### 15.1 新規出力
+ただし、版17の`attribute_resolution_v2`成果物、permission expectation completeness、
+版17run manifestを包括検証するCLIではない。したがって版17成果物へこのコマンドを
+流用しない。次の責務を持つ版17検証処理は未実装であり、実装・CLI固定後に手順へ
+実コマンドを追加する。
 
-既存の`attribute_resolution_v16`を上書きしない。版17専用runner、run識別子および
-出力ディレクトリを使用する。版17runnerが未実装の間は、次のコマンドを実行しない。
+- classification Schema validation
+- attribute resolution Schema validation
+- semantic consistency validation
+- classification non-mutation validation
+- permission expectation completeness validation
+- record/self-hash validation
+- run manifest validation
+- unresolved and blocker count validation
 
-```bash
-docker compose run --rm analysis \
-  python -m traffic_simulation.network.run_v17_attribute_resolution \
-  --output-dir \
-  03_data/processed/traffic_simulation/road_network/sumo/common/\
-attribute_resolution_v17
-```
+## 17. 工程12 停止記録を解消する
 
-実装時には、固定run IDをコードへ埋め込まず、設定または明示CLI入力から受け取るよう
-実行器を先に修正する。
+停止を、入力修正、外部証拠、許可台帳、規則追加、承認済み除外、実装不具合へ排他的
+に分類する。停止記録を直接編集せず、原因分類、仕様・入力改訂、fixture/oracle追加、
+実装、個別試験、全体試験、新規runの順に反復する。oracleをproduction出力へ合わせて
+変更しない。
 
-### 15.2 入力条件
+formalで`complete=true`、`blockers=[]`、`review_required=0`、`stop_unresolved=0`、
+`model_assumed=0`になるまで工程13へ進まない。
 
-- 受理済み版16relation closureを不変入力として参照する版17run
-- 受理済み役割成果物
-- 新版の正式仕様と設定
-- 新Schema
-- 受理済み固定試験用データ
-- 外部証拠、祝日暦、速度規則、許可台帳
+## 18. 工程13 Attribute Resolution Acceptance
 
-### 15.3 実行後検査
+このゲートの対象はResolverが生成した正式属性成果物であり、次をすべて要求する。
 
-```bash
-docker compose run --rm analysis \
-  python -m traffic_simulation.network.validate_attribute_classification \
-  03_data/processed/traffic_simulation/road_network/sumo/common/\
-attribute_resolution_v17/structural-attribute-resolution.json
+- `complete=true`
+- `blockers=[]`
+- `review_required=0`
+- `stop_unresolved=0`
+- `model_assumed=0`
+- 入力・管理対象・除外母集団、レコード数、属性被覆、permission被覆が宣言分母と一致
+- classification Schemaとattribute resolution Schemaに合格
+- 意味整合、classification projection非変更、permission completenessに合格
+- record/self-hashとrun manifestに合格
+- 入力、設定、Schema、出力、独立oracleのSHA-256を記録
+- 未登録の状態、規則、停止コードが0件
+- structural成果物とformal成果物が混在しない
 
-docker compose run --rm analysis \
-  python -m traffic_simulation.network.validate_attribute_classification \
-  03_data/processed/traffic_simulation/road_network/sumo/common/\
-attribute_resolution_v17/formal-attribute-resolution.json
-```
+受理manifestへrun ID、設定・Schema版、件数、分布、試験結果、受理者、受理日、既知
+の限界を記録する。このゲートにはSUMO edge、lane permissions、connections、TLS、
+reachability等の最終道路網検査を含めない。合格しても最終SUMO道路網は未承認である。
 
-次を別途照合する。
+## 19. 工程14 provisional structural buildとmaterializer
 
-- 入力と出力のSHA-256
-- 母集団26,220道路
-- 各プロファイル52,440組
-- 版15記録の非流用
-- 分類前後の分類オブジェクト一致
-- formalの`model_assumed`が0件
-- 停止コード別件数
-- 未登録状態と未登録規則が0件
+Attribute Resolution Acceptance済みformal属性を実データformal buildの入力とする。
+provisional structural buildを行い、exact edge provenanceを生成する。Permission
+MaterializerはResolver expectationをlaneとconnectionの明示的なfinal `netconvert`
+入力へ反映する。provisionalファイルや生成済み`net.xml`を直接編集しない。
 
-## 16. 工程12 停止記録を解消する
+lane permissions、connection permissionsを反映し、空lane・edge、存在しない接続、
+lane順、方向対応を承認済み契約どおりに処理する。小型fixture実装は工程12と並行
+できるが、実データformal buildは工程13合格後だけに行う。
 
-### 16.1 分類
+## 20. 工程15 final connection setとsignal TLS review
 
-全停止記録を次へ排他的に分類する。
+materialized permissionsからfinal connection setを確定する。その後にsignal junction
+とTLS linkをreviewし、connection-to-link対応、controlled connection数、phase state
+長を固定する。connection set変更後はreviewをやり直す。
 
-- 入力データ修正が必要
-- 外部証拠が必要
-- 許可台帳が必要
-- 規則追加が必要
-- 対応範囲外として除外
-- 実装不具合
+## 21. 工程16 SUMO Network Integration Acceptance
 
-### 16.2 反復
+承認済み入力からfinal `net.xml`を生成し、SUMO 1.24.0で読み込む。次を監査する。
 
-停止記録を直接編集しない。次の順で修正する。
+- edge方向、車線数、車線順、lane permissions
+- connection permissionsとfinal connection set
+- 通常・バスturn restrictions
+- signal junction、TLS link、phase state長
+- left-hand traffic
+- warning、exclusion、未登録状態
+- 車種別reachability、最大走行可能成分、主要地点間往復到達性
+- exact provenance、manifest、出力SHA-256
 
-```text
-原因を分類
-→ 仕様または入力を改訂
-→ 固定試験と独立正解を追加
-→ 実装
-→ 個別試験
-→ 全体試験
-→ 新しいrunとして全件再実行
-```
+不一致時は上流入力または生成処理を修正して再生成する。`net.xml`を直接編集しない。
+このゲート合格時だけ正式道路網として承認する。
 
-正解を実装出力に合わせて変更しない。既存runを上書きしない。
+## 22. 工程17以降の下流工程
 
-### 16.3 完了条件
+正式道路網承認後にdemand、calibration、independent validationの順で進む。delivery、
+classical、QAOA evaluationへ進めるのは独立検証完了後だけである。structural networkの
+較正結果をformal networkへ移さない。
 
-正式用で次をすべて満たす。
+## 23. 基準点コミットと成果物一覧
 
-```text
-complete = true
-blockers = []
-review_required = 0
-stop_unresolved = 0
-model_assumed = 0
-```
-
-## 17. 工程13 正式成果物を受理する
-
-### 17.1 受理記録
-
-次を機械可読な受理manifestへ記録する。
-
-- run ID
-- 設定IDと版
-- Schema版
-- 入力・出力パスとSHA-256
-- 母集団件数とレコード件数
-- 状態・由来・停止コード分布
-- 試験件数と結果
-- 固定SUMO版とコンテナdigest
-- 受理者と受理日
-- 既知の限界
-
-### 17.2 固定SUMO検査
-
-正式属性成果物を入力として、固定SUMO 1.24.0で次を検査する。
-
-- edge方向
-- 車線数と車線順
-- lane permissions
-- connections
-- 通常・バス向け右左折規制
-- 意図しない反対方向edge
-- 左側通行
-- 読込み警告と除外
-
-### 17.3 下流工程への移行
-
-正式成果物受理後に限り、通行権限反映、仮道路構造、交差点・信号、最終道路網、
-交通較正へ進む。正式属性成果物の受理だけで最終SUMO道路網が承認されたとは
-みなさない。
-
-## 18. 基準点コミット
-
-少なくとも次の基準点でコミットする。
-
-| 基準点 | 内容 |
-|---|---|
-| A | 版16実行状態と版17方針 |
-| B | 残る追加決定の承認 |
-| C | 正式仕様、機械可読設定、Schema |
-| D | 独立正解と固定試験用データ |
-| E | 方向付き道路と方向別車線 |
-| F | 通行許可、条件付き規制、速度 |
-| G | 統合試験合格 |
-| H | 版17全件実行 |
-| I | 正式用阻害項目0件と受理manifest |
-
-各コミット前に次を実行する。
-
-```bash
-git diff --check
-docker compose run --rm analysis \
-  pytest -q 05_src/traffic_simulation/validation
-```
-
-pushは、コミット内容と生成物の扱いを確認してから行う。大容量生成成果物はGitへ
-直接追加せず、Git管理のmanifestからパスとSHA-256を参照する。
-
-## 19. 工程ごとの成果物一覧
-
-| 工程 | 成果物 | Git管理 |
+| 基準点 | 主な成果物 | Git管理 |
 |---|---|---|
-| 0 | 現状基準点 | コミット |
-| 1 | 承認済み決定記録 | 対象 |
-| 2 | 正式仕様と機械可読設定 | 対象 |
-| 3 | Schema、移行表、検査器 | 対象 |
-| 4 | 小型入力、独立正解、manifest | 対象 |
-| 5 | 方向付き道路生成器と来歴 | 対象 |
-| 6 | 方向別車線解決器 | 対象 |
-| 7 | 通行許可解決器 | 対象 |
-| 8 | 条件付き規制解析・評価器 | 対象 |
-| 9 | 速度解決器と法令規則表 | 対象 |
-| 10 | 試験結果 | 小型記録だけ対象 |
-| 11 | 版17全件成果物 | 大容量本体は対象外、manifestは対象 |
-| 12 | 停止分類と改訂記録 | 対象 |
-| 13 | 受理manifest | 対象 |
+| A | 現状と版16履歴 | コミット |
+| B | 承認済み決定、不足設定、Schema | 対象 |
+| C | 独立fixture、oracle、manifest | 対象 |
+| D | Directed Segment、directional lane | 対象 |
+| E | static access、conditional evaluator、final permission、speed | 対象 |
+| F | Resolver統合試験 | 小型記録を対象 |
+| G | 版17全件run | 大容量本体は対象外、manifestを対象 |
+| H | Attribute Resolution Acceptance manifest | 対象 |
+| I | provisional XML、exact provenance、materializer | 小型成果物とmanifestを対象 |
+| J | reviewed final connection/TLS manifest | 対象 |
+| K | SUMO Network Integration Acceptance manifest | 対象 |
 
-## 20. 中断と再開
+各基準点で`git diff --check`と交通シミュレーション検証一式を実行する。大容量成果物
+はGitへ直接追加せず、manifestからパスとSHA-256を参照する。
 
-### 20.1 中断する場合
+## 24. 中断と再開
 
-次を記録する。
+中断時は、最後に完了した工程、未完了の決定・試験、作業ツリー、最後に合格した
+コマンド、入力・中間成果物SHA-256、再開時の最初のコマンドを記録する。
 
-- 最後に完了した工程
-- 未完了の決定または試験
-- 作業ツリー状態
-- 最後に合格したコマンド
-- 入力・中間成果物のSHA-256
-- 再開時に最初に実行するコマンド
-
-### 20.2 再開する場合
-
-1. `git status`で作業ツリーを確認する。
-2. 正本文書と設定版を確認する。
-3. 入力SHA-256を再照合する。
-4. 最後に合格した試験を再実行する。
-5. 上流変更で無効になった成果物を確認する。
-6. 未完了工程の先頭から再開する。
-
-不完全な出力ディレクトリを成功成果物として再利用しない。再実行は新しいrun IDと
-新しい出力先で行う。
+再開時は、正本と版、作業ツリー、入力SHA-256を再確認し、最後の合格試験を再実行
+する。上流変更で無効化された成果物を確認し、未完了工程の先頭から再開する。
+不完全な出力を成功成果物として再利用せず、新しいrun IDと出力先を使用する。
