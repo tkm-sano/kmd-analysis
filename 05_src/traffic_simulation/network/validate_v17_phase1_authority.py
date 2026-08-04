@@ -298,6 +298,11 @@ def validate_phase1_authority(
         "materialization_omission_v17": schema_files["materialization_omission"],
         "semantic_invariants_v17": INVARIANT_SCHEMA_PATH,
         "sumo_network_v17": _repo_path(config["schema"]),
+        "governed_runtime_interval_context_v17": schema_files[
+            "governed_runtime_interval_context"
+        ],
+        "holiday_calendar_v17": schema_files["holiday_calendar"],
+        "warning_audit_v17": schema_files["warning_audit"],
         "approved_policy_index": _repo_path(policy["schema"]),
     }
     for name, schema_path in completion_schema_paths.items():

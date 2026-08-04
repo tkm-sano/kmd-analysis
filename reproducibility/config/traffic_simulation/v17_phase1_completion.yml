@@ -26,7 +26,7 @@ artifacts:
     sha256: 1242fed11ee976fbbfe8eebb9744a0f68aef759f1bcbd2a6d7008e63ae6a9874
   configuration:
     path: reproducibility/config/traffic_simulation/sumo_network_v17.yml
-    sha256: e6fc192ef28aed8eeddd911973427b2ba383ddaa19ee3c7c44665cad732c9813
+    sha256: 32b327da81d3a180416192aa541d79647b99cb1f84f06cf2c83aad481ff36dab
   policy_index:
     path: reproducibility/config/traffic_simulation/approved_attribute_resolution_policy_v17.yml
     sha256: cf24f6ee618d1584ca48a766163ad456f8399b357c80c54a84987c9d44d478bb
@@ -44,7 +44,7 @@ artifacts:
     sha256: bf925ab1c5faf68ebb3e28ce89a6b3b67598fbfa6c417e971684772906671a1a
   authority_validator:
     path: 05_src/traffic_simulation/network/validate_v17_phase1_authority.py
-    sha256: 9b2d6b67e86e35e4187fee431c5354104d7f9950c76c4fec68302a90d3ee4324
+    sha256: c19586ccbb03313f2a9467c676a5bd25211cdb71a4edc4c15ccfc4a04cba735e
   authority_tests:
     path: 05_src/traffic_simulation/validation/test_v17_phase1_authority.py
     sha256: 11f2a821c51325db99fe01fa1fb9fee6189b7ead78e63dd2c845e601d182d1fd
@@ -58,13 +58,16 @@ schemas:
   exclusion_manifest_v17: bfd1352dc804c074c16f3a02ec7d3f9adf67270180b7daa993368d9f05565322
   materialization_omission_v17: db6038a72da0695ed522b1f61068b942da775992f95ef1a8fe21ae667afe3f9a
   semantic_invariants_v17: de8adc4652ff47caa1002590a183891f88bc7e63f00fdaaf455ade62b505ba08
-  sumo_network_v17: ffb3bf39b76e69cbbc3d949ab5e410214fc267be66a39f98ffee6c6459ef90d6
+  sumo_network_v17: 1e8d32d38dd61dfcbcf1228f0df43f0674c2eb38b122ffe9fb8ef816db651a23
+  governed_runtime_interval_context_v17: ad4cdf63577b2f51be6545c2b50c4aabca33fa263a34e15d3e077f4e04666004
+  holiday_calendar_v17: e424c499a91561a9fac97f22c0db45df4efa12f42b2d3c4dace2d398eb4bc2c3
+  warning_audit_v17: d1c57021c1862afd842aa9f3ca33679557bf6b2bfb2ee21e483749951a5808ff
   approved_policy_index: 8d0241d7c0efee16eb4a7b1fd74b34ceb1ee9a7a36f71cf9821b0a00a04cc1ee
 verification:
   phase1_validator:
     command: PYTHONPATH=05_src python -m traffic_simulation.network.validate_v17_phase1_authority
     result: passed
-    schema_count: 11
+    schema_count: 14
     stop_code_count: 30
     invariant_count: 42
   focused_tests:

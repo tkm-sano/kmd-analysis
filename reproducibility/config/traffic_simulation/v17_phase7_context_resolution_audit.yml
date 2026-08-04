@@ -1,0 +1,43 @@
+schema_version: 1
+audit_id: ota_ward_attribute_resolution_v17_phase7_context_resolution_20260804
+configuration_id: ota_ward_sumo_network_v17
+scenario_context_id: ota_ward_delivery_20260716_0900_1700_jst_v1
+context_path: reproducibility/config/traffic_simulation/v17_governed_runtime_interval_context.yml
+context_sha256: e7a808f46d028db1242e117757619aecae54b6a7ffcc6a1d8ba3114afcb13edf
+input_path: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+before_fix:
+  governed_runtime_interval_context: not_fixed
+  access_context_missing_count:
+    formal: 5
+    structural: 5
+  records:
+    - {source_way_id: 91562466, source_key: 'vehicle:conditional', source_value: 'no @ (7:30-8:30)', required_field: time, stop_code: ACCESS_CONTEXT_MISSING}
+    - {source_way_id: 1091736060, source_key: 'vehicle:conditional', source_value: 'no @ (7:30-8:30)', required_field: time, stop_code: ACCESS_CONTEXT_MISSING}
+    - {source_way_id: 1091736618, source_key: 'motor_vehicle:conditional', source_value: 'no @ (7:30-8:30)', required_field: time, stop_code: ACCESS_CONTEXT_MISSING}
+    - {source_way_id: 1091736620, source_key: 'motor_vehicle:conditional', source_value: 'no @ (7:30-8:30)', required_field: time, stop_code: ACCESS_CONTEXT_MISSING}
+    - {source_way_id: 1537470976, source_key: 'vehicle:conditional', source_value: 'no @ (7:30-8:30)', required_field: time, stop_code: ACCESS_CONTEXT_MISSING}
+after_fix:
+  interval_start: '2026-07-16T09:00:00+09:00'
+  interval_end: '2026-07-16T17:00:00+09:00'
+  timezone: Asia/Tokyo
+  public_holiday: false
+  access_context_missing_count:
+    formal: 0
+    structural: 0
+  unresolved_context_records: []
+  resolution_for_previous_records: conditional_not_applicable_through_entire_interval
+  static_fallback_used_for_failed_conditional: false
+remaining_conditional_blockers:
+  formal:
+    count: 4
+    stop_codes: {ACCESS_CONDITIONAL_SYNTAX_UNSUPPORTED: 4}
+    source_way_ids: [115124257, 685082405, 685441657, 964947144]
+  structural:
+    count: 5
+    stop_codes: {ACCESS_CONDITIONAL_SYNTAX_UNSUPPORTED: 5}
+    source_way_ids: [115124257, 685082405, 685441657, 964935209, 964947144]
+classification:
+  configuration_missing_before_fix: true
+  implementation_defect: false
+  specification_unsupported_syntax_remaining: true
+  context_missing_treated_as_false: false

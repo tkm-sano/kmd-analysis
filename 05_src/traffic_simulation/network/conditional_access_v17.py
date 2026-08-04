@@ -652,6 +652,12 @@ def build_conditional_access_production_artifact(
     profile: str,
     scenario_context: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
+    if scenario_context is None:
+        from traffic_simulation.network.scenario_context_v17 import (
+            load_governed_runtime_context,
+        )
+
+        scenario_context = load_governed_runtime_context()
     static = build_static_access_production_artifact(
         input_path, profile=profile, scenario_context=scenario_context
     )

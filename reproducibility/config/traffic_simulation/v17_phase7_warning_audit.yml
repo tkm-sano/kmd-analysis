@@ -1,0 +1,164 @@
+schema_version: 1
+schema: reproducibility/config/traffic_simulation/schemas/warning_audit_v17.schema.json
+audit_id: ota_ward_attribute_resolution_v17_phase7_warning_audit_20260804
+configuration_id: ota_ward_sumo_network_v17
+recorded_at: '2026-08-04'
+scope: phase7_traffic_simulation_validation
+warning_filter_applied: false
+tests_skipped_to_reduce_warnings: false
+assertions_weakened: false
+
+governed_run:
+  command: docker compose run --rm -T analysis python -m pytest -q -W always 05_src/traffic_simulation/validation
+  test_suite: 05_src/traffic_simulation/validation
+  result: passed
+  test_count: 484
+  warning_event_count: 0
+  unique_warning_signature_count: 0
+  blocking_warning_count: 0
+  non_blocking_warning_count: 0
+  environment:
+    compose_path: compose.yaml
+    compose_sha256: 5089a8024331cf4a95d9aab3b4d3ba17e2af58ac3263729dae0be4a1c0d3d419
+    dockerfile_path: docker/analysis/Dockerfile
+    dockerfile_sha256: 52e8ed896702006d82b4db40124731b2173d2b072894c64ac5bf128b7181ccae
+    requirements_path: docker/analysis/requirements.txt
+    requirements_sha256: 0ba6c464a5bb550b54f9215cbe86ef770583d7d5e29cbb221bdf32c3936652e0
+    python: 3.11.15
+    numpy: 2.2.5
+    pandas: 2.2.3
+    pyarrow: 19.0.1
+    geopandas: 1.0.1
+    pytest: 8.3.3
+    numexpr: not_installed
+    bottleneck: not_installed
+  conclusion: blocking_warning_count_is_zero
+
+prior_host_diagnostic_run:
+  authority_for_phase7_verification: false
+  result: passed_with_environment_warnings
+  test_count: 476
+  warning_event_count: 24
+  unique_warning_signature_count: 4
+  environment_difference:
+    python: 3.11.8
+    numpy: 1.26.4
+    pandas: 3.0.2
+    pyarrow: 14.0.2
+    geopandas: 1.1.1
+    pytest: 7.4.0
+    numexpr: 2.8.7
+    bottleneck: 1.3.7
+  disposition: replaced_as_verification_evidence_by_governed_docker_run
+
+warning_classification:
+  - warning_id: V17-WARN-001
+    category: dependency
+    message: Pandas requires version '2.10.2' or newer of 'numexpr' (version '2.8.7' currently installed).
+    warning_category: UserWarning
+    origin:
+      package: pandas
+      file: pandas/core/computation/expressions.py
+      line: 22
+    affected_test_ids: [test_suite_collection]
+    occurrence_count: 1
+    blocking: false
+    blocking_reason: >-
+      The warning occurred only in the non-governed host environment. Pandas
+      disabled the incompatible optional acceleration module; the governed
+      image does not install numexpr and completed the same suite without this
+      warning. The host result is not used as Phase 7 verification authority.
+    recommended_action: use_the_governed_analysis_container
+    target_phase: 7
+    status: resolved_by_governed_environment
+
+  - warning_id: V17-WARN-002
+    category: dependency
+    message: Pandas requires version '1.4.2' or newer of 'bottleneck' (version '1.3.7' currently installed).
+    warning_category: UserWarning
+    origin:
+      package: pandas
+      file: pandas/core/arrays/masked.py
+      line: 56
+    affected_test_ids: [test_suite_collection]
+    occurrence_count: 1
+    blocking: false
+    blocking_reason: >-
+      The warning occurred only in the non-governed host environment. Pandas
+      disabled the incompatible optional acceleration module; the governed
+      image does not install bottleneck and completed the same suite without
+      this warning. The host result is not used as Phase 7 verification authority.
+    recommended_action: use_the_governed_analysis_container
+    target_phase: 7
+    status: resolved_by_governed_environment
+
+  - warning_id: V17-WARN-003
+    category: deprecated_api
+    message: make_block is deprecated and will be removed in a future version. Use pd.api.internals.create_dataframe_from_blocks or (recommended) higher-level public APIs instead.
+    warning_category: Pandas4Warning
+    origin:
+      package: pyarrow
+      file: pyarrow/pandas_compat.py
+      line: 739
+      call: block = _int.make_block(block_arr, placement=placement)
+    affected_test_ids:
+      - 05_src/traffic_simulation/validation/test_render_baseline_demand.py::test_load_baseline_demand_verifies_governed_output
+      - 05_src/traffic_simulation/validation/test_study_areas.py::test_writes_source_crs_boundary_and_refuses_overwrite
+    occurrences_by_test:
+      05_src/traffic_simulation/validation/test_render_baseline_demand.py::test_load_baseline_demand_verifies_governed_output: 5
+      05_src/traffic_simulation/validation/test_study_areas.py::test_writes_source_crs_boundary_and_refuses_overwrite: 3
+    occurrence_count: 8
+    blocking: false
+    blocking_reason: >-
+      This is a pyarrow 14.0.2 to pandas 3.0.2 compatibility warning in the
+      non-governed host environment. It is absent with the repository-pinned
+      pyarrow 19.0.1 and pandas 2.2.3, and no warning-bearing host result is
+      used as Phase 7 or Phase 8 input evidence.
+    recommended_action: use_the_governed_analysis_container
+    target_phase: 7
+    status: resolved_by_governed_environment
+
+  - warning_id: V17-WARN-004
+    category: deprecated_api
+    message: make_block is deprecated and will be removed in a future version. Use pd.api.internals.create_dataframe_from_blocks or (recommended) higher-level public APIs instead.
+    warning_category: Pandas4Warning
+    origin:
+      package: pyarrow
+      file: pyarrow/pandas_compat.py
+      line: 737
+      call: block = _int.make_block(pd_ext_arr, placement=placement)
+    affected_test_ids:
+      - 05_src/traffic_simulation/validation/test_render_baseline_demand.py::test_load_baseline_demand_verifies_governed_output
+      - 05_src/traffic_simulation/validation/test_study_areas.py::test_writes_source_crs_boundary_and_refuses_overwrite
+    occurrences_by_test:
+      05_src/traffic_simulation/validation/test_render_baseline_demand.py::test_load_baseline_demand_verifies_governed_output: 6
+      05_src/traffic_simulation/validation/test_study_areas.py::test_writes_source_crs_boundary_and_refuses_overwrite: 8
+    occurrence_count: 14
+    blocking: false
+    blocking_reason: >-
+      This is a pyarrow 14.0.2 to pandas 3.0.2 compatibility warning in the
+      non-governed host environment. It is absent with the repository-pinned
+      pyarrow 19.0.1 and pandas 2.2.3, and no warning-bearing host result is
+      used as Phase 7 or Phase 8 input evidence.
+    recommended_action: use_the_governed_analysis_container
+    target_phase: 7
+    status: resolved_by_governed_environment
+
+classification_summary:
+  governed_warning_events: 0
+  prior_host_warning_events: 24
+  prior_host_unique_signatures: 4
+  categories:
+    dependency: 2
+    deprecated_api: 2
+    configuration: 0
+    schema: 0
+    registry: 0
+    data_quality: 0
+    semantic_validation: 0
+    runtime_environment: 0
+    test_only: 0
+    unknown: 0
+  accepted_external_dependency_warnings: 0
+  blocking_warnings: 0
+  phase8_warning_gate: passed

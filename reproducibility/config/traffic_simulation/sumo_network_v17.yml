@@ -34,6 +34,9 @@ schemas:
   materialization_omission: reproducibility/config/traffic_simulation/schemas/materialization_omission_v17.schema.json
   environment_build_manifest: reproducibility/config/traffic_simulation/schemas/environment_build_manifest_v17.schema.json
   acceptance: reproducibility/config/traffic_simulation/schemas/attribute_resolution_acceptance_v17.schema.json
+  governed_runtime_interval_context: reproducibility/config/traffic_simulation/schemas/governed_runtime_interval_context_v17.schema.json
+  holiday_calendar: reproducibility/config/traffic_simulation/schemas/holiday_calendar_v17.schema.json
+  warning_audit: reproducibility/config/traffic_simulation/schemas/warning_audit_v17.schema.json
 registries:
   path: reproducibility/config/traffic_simulation/attribute_resolution_registries_v17.yml
   version: 1.0.0
@@ -47,6 +50,10 @@ scenario_context:
   managed_vehicle_profile: reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml
   require_interval: true
   require_holiday_calendar_version_when_referenced: true
+  governed_runtime_interval_context:
+    path: reproducibility/config/traffic_simulation/v17_governed_runtime_interval_context.yml
+    version: 1.0.0
+    sha256: e7a808f46d028db1242e117757619aecae54b6a7ffcc6a1d8ba3114afcb13edf
 direction_model:
   representation: directed_segment
   id_template: 'ds:{source_way_id}:{source_start_index}:{source_end_index}:{source_direction}'

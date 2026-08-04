@@ -1,0 +1,44 @@
+{
+  "artifact_type": "v17_phase7_governed_runtime_context_fixture_oracle",
+  "schema_version": 1,
+  "authorship": {
+    "fixture_author": "specification_fixture_author",
+    "oracle_author": "production_independent_oracle_author",
+    "production_output_used": false,
+    "authority": "repository_owner_directive_20260804"
+  },
+  "cases": [
+    {
+      "fixture_id": "V17-CONTEXT-POS-001",
+      "case_type": "positive",
+      "input": {
+        "path": "reproducibility/config/traffic_simulation/v17_governed_runtime_interval_context.yml"
+      },
+      "oracle": {
+        "scenario_context_id": "ota_ward_delivery_20260716_0900_1700_jst_v1",
+        "start_timestamp": "2026-07-16T09:00:00+09:00",
+        "end_timestamp": "2026-07-16T17:00:00+09:00",
+        "timezone": "Asia/Tokyo",
+        "public_holiday": false,
+        "vehicle_class": "delivery",
+        "trip_purpose": "delivery",
+        "permit_ids": [],
+        "authorization_ids": []
+      }
+    },
+    {
+      "fixture_id": "V17-CONTEXT-NEG-001",
+      "case_type": "negative",
+      "input": {
+        "base_fixture": "V17-CONTEXT-POS-001",
+        "remove_field": "vehicle_context.authorization_ids"
+      },
+      "oracle": {
+        "outcome": "stopped",
+        "resolution_status": "invalid",
+        "stop_code": "ACCESS_CONTEXT_MISSING",
+        "assertions": ["missing authorization_ids is not equivalent to an empty array"]
+      }
+    }
+  ]
+}

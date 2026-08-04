@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
 from pathlib import Path
 from typing import Any
 
 import yaml
+import jsonschema
 
 from traffic_simulation.network.conditional_access_v17 import (
     build_conditional_access_production_artifact,
@@ -14,6 +16,11 @@ from traffic_simulation.network.conditional_access_v17 import (
     evaluate_conditional_value,
 )
 from traffic_simulation.network.static_access_v17 import StaticAccessError
+from traffic_simulation.network.scenario_context_v17 import (
+    ScenarioContextError,
+    load_governed_runtime_context,
+    validate_governed_runtime_context,
+)
 from traffic_simulation.network.validate_v17_fixture_oracle import (
     FIXTURE_ROOT,
     validate_fixture_oracle,
@@ -29,6 +36,13 @@ COMPLETION_PATH = (
     / "reproducibility/config/traffic_simulation/v17_phase7_completion.yml"
 )
 PRODUCTION_FIXTURE = FIXTURE_ROOT / "directed_segments_phase4.osm.xml"
+WARNING_AUDIT_PATH = (
+    REPOSITORY_ROOT
+    / "reproducibility/config/traffic_simulation/v17_phase7_warning_audit.yml"
+)
+CONTEXT_FIXTURE_PATH = (
+    FIXTURE_ROOT / "governed_runtime_context_phase7.json"
+)
 
 
 class Phase7ConditionalAccessError(ValueError):
@@ -72,10 +86,68 @@ def _indexes() -> tuple[dict[str, Any], dict[str, Any]]:
     return fixtures, oracles
 
 
+def _validate_warning_audit() -> dict[str, Any]:
+    audit = _load_yaml(WARNING_AUDIT_PATH)
+    schema = _load_json(_repo_file(audit["schema"]))
+    jsonschema.Draft202012Validator.check_schema(schema)
+    jsonschema.Draft202012Validator(
+        schema, format_checker=jsonschema.FormatChecker()
+    ).validate(audit)
+    warnings = audit["warning_classification"]
+    warning_ids = [item["warning_id"] for item in warnings]
+    if len(warning_ids) != len(set(warning_ids)):
+        raise Phase7ConditionalAccessError("duplicate warning audit ID")
+    diagnostic_count = sum(item["occurrence_count"] for item in warnings)
+    if diagnostic_count != audit["prior_host_diagnostic_run"]["warning_event_count"]:
+        raise Phase7ConditionalAccessError("warning audit event total differs")
+    for item in warnings:
+        by_test = item.get("occurrences_by_test")
+        if by_test is not None and sum(by_test.values()) != item["occurrence_count"]:
+            raise Phase7ConditionalAccessError(
+                f"warning occurrence breakdown differs: {item['warning_id']}"
+            )
+    governed = audit["governed_run"]
+    if governed["warning_event_count"] != 0 or governed["blocking_warning_count"] != 0:
+        raise Phase7ConditionalAccessError("governed warning gate is not clean")
+    environment = governed["environment"]
+    for prefix in ("compose", "dockerfile", "requirements"):
+        path = _repo_file(environment[f"{prefix}_path"])
+        if _sha256(path) != environment[f"{prefix}_sha256"]:
+            raise Phase7ConditionalAccessError(
+                f"warning audit environment hash differs: {prefix}"
+            )
+    return audit
+
+
 def validate_phase7_conditional_access() -> dict[str, Any]:
     validate_phase6_static_access()
     validate_fixture_oracle()
+    governed_context = load_governed_runtime_context()
+    warning_audit = _validate_warning_audit()
     fixtures, oracles = _indexes()
+
+    context_cases = _load_json(CONTEXT_FIXTURE_PATH)["cases"]
+    positive_context = context_cases[0]["oracle"]
+    for field, expected in positive_context.items():
+        if governed_context[field] != expected:
+            raise Phase7ConditionalAccessError(
+                f"governed context oracle mismatch: {field}"
+            )
+    negative_context = context_cases[1]
+    context_artifact = _load_yaml(
+        _repo_file(context_cases[0]["input"]["path"])
+    )
+    broken_context = copy.deepcopy(context_artifact)
+    del broken_context["vehicle_context"]["authorization_ids"]
+    try:
+        validate_governed_runtime_context(broken_context)
+    except ScenarioContextError as error:
+        if error.stop_code != negative_context["oracle"]["stop_code"]:
+            raise Phase7ConditionalAccessError(
+                "governed negative context oracle mismatch"
+            ) from error
+    else:
+        raise Phase7ConditionalAccessError("missing authorization context passed")
 
     positive = fixtures["V17-POS-015"]
     selected = evaluate_conditional_value(
@@ -147,6 +219,19 @@ def validate_phase7_conditional_access() -> dict[str, Any]:
     ):
         raise Phase7ConditionalAccessError("Phase 7 finalized a permission prematurely")
 
+    governed_production = build_conditional_access_production_artifact(
+        PRODUCTION_FIXTURE, profile="formal"
+    )
+    if governed_production["scenario_context"]["scenario_context_id"] != governed_context[
+        "scenario_context_id"
+    ]:
+        raise Phase7ConditionalAccessError("governed context was not used by production")
+    if any(
+        item["stop_code"] == "ACCESS_CONTEXT_MISSING"
+        for item in governed_production["blockers"]
+    ):
+        raise Phase7ConditionalAccessError("governed fixture has missing context")
+
     completion = _load_yaml(COMPLETION_PATH)
     if completion.get("result") != "passed":
         raise Phase7ConditionalAccessError("Phase 7 completion record is not passed")
@@ -160,10 +245,16 @@ def validate_phase7_conditional_access() -> dict[str, Any]:
 
     return {
         "phase7_conditional_access": "passed",
-        "fixed_oracle_comparison_count": 3,
+        "fixed_oracle_comparison_count": 5,
         "production_fixture_conditional_rules": 1,
         "production_fixture_applicable_lane_tuples": 1,
         "production_fixture_blockers": 0,
+        "governed_runtime_interval_context": governed_context[
+            "scenario_context_id"
+        ],
+        "governed_blocking_warning_count": warning_audit["governed_run"][
+            "blocking_warning_count"
+        ],
         "final_permission_resolution": "pending_phase8",
         "two_run_determinism": "passed",
     }
@@ -179,7 +270,13 @@ def main() -> int:
     build_parser().parse_args()
     try:
         result = validate_phase7_conditional_access()
-    except (Phase7ConditionalAccessError, StaticAccessError, KeyError) as error:
+    except (
+        Phase7ConditionalAccessError,
+        ScenarioContextError,
+        StaticAccessError,
+        jsonschema.ValidationError,
+        KeyError,
+    ) as error:
         print(json.dumps({"phase7_conditional_access": "failed", "error": str(error)}))
         return 1
     print(json.dumps(result, sort_keys=True))

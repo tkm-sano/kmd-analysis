@@ -12,7 +12,7 @@ scenario_context_evaluation_status: integrated
 within_interval_change_status: fail_closed
 final_permission_resolution_status: pending_phase8
 runtime_full_population: executed_with_fail_closed_blockers
-governed_runtime_interval_context: not_fixed
+governed_runtime_interval_context: fixed
 attribute_resolution_acceptance: not_run
 formal_build_ready: false
 prerequisites:
@@ -37,17 +37,38 @@ prerequisites:
 artifacts:
   production_conditional_access_stage:
     path: 05_src/traffic_simulation/network/conditional_access_v17.py
-    sha256: 4a57d4871dadf9689587722ed92b4bfc101310d9058cdea0040bbd55a808bf44
+    sha256: e1ad194db0f11dddee00a4d0d7764bcaa84ebb97e4cb8d050bb00cee0447b97a
+  governed_context_loader:
+    path: 05_src/traffic_simulation/network/scenario_context_v17.py
+    sha256: c1631acd87ccb28c87aa1264f171346686451d18df34ab0992e4b2a10b9c601b
   phase7_validator:
     path: 05_src/traffic_simulation/network/validate_v17_phase7_conditional_access.py
-    sha256: 3acb731bb42360e97b0ff5e44564964e5151b10c3f1e346496e7969132281049
+    sha256: 93753ca7add2eb646be72a14c7dd1e2acd5f4e19556c2de7c48222f376c9e834
   phase7_tests:
     path: 05_src/traffic_simulation/validation/test_conditional_access_v17.py
     sha256: 7f8eae20819a2fb4d38667a06b5446d7925925ec29ce269f6b2b5ff29a3f4126
+  governed_context_tests:
+    path: 05_src/traffic_simulation/validation/test_scenario_context_v17.py
+    sha256: 60bf56edf46e46949c670940612e12e57f8ed3e3a31e4aaff748e4266c39c20b
+  governed_runtime_interval_context:
+    path: reproducibility/config/traffic_simulation/v17_governed_runtime_interval_context.yml
+    sha256: e7a808f46d028db1242e117757619aecae54b6a7ffcc6a1d8ba3114afcb13edf
+  holiday_calendar:
+    path: reproducibility/config/traffic_simulation/holiday_calendars/japan_national_holidays_2026_v1.yml
+    sha256: 05507ffd7fc6adaa00fe74c206b69a62603185290a93906917dd33ff2a901708
+  context_resolution_audit:
+    path: reproducibility/config/traffic_simulation/v17_phase7_context_resolution_audit.yml
+    sha256: 30e5f2db024cb2aabd0c9815dc71b70017469a85583a6abf5ee7ec869d14955f
+  warning_audit:
+    path: reproducibility/config/traffic_simulation/v17_phase7_warning_audit.yml
+    sha256: 10aaf1beadcdcae33f61aea131dc95f676b0b8324d47be950c58acc13803ef5b
 fixed_fixture:
   production_osm:
     path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/directed_segments_phase4.osm.xml
     sha256: 926946fdd904a39b9ef24538eb777b5762f4116e1ec633b7422366e046df02f1
+  governed_context_fixture_oracle:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/governed_runtime_context_phase7.json
+    sha256: cdb6503251c516e68b6dda0cbf6b6558753bf6e5db3a7ec7725da55067e981df
 conditional_contract:
   grammar_id: OSM_CONDITIONAL_V17_CORE
   clauses: value_at_parenthesized_condition
@@ -75,50 +96,64 @@ runtime_population:
   input_path: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
   source_way_count: 26220
   scenario_context:
+    scenario_context_id: ota_ward_delivery_20260716_0900_1700_jst_v1
     managed_vehicle_profile: managed_urban_ev_delivery_v1
-    interval: absent_fail_closed
+    interval_start: '2026-07-16T09:00:00+09:00'
+    interval_end: '2026-07-16T17:00:00+09:00'
+    timezone: Asia/Tokyo
+    holiday_calendar_id: japan_national_holidays_2026_v1
+    public_holiday: false
+    permit_ids: []
+    authorization_ids: []
   formal:
     source_ways_with_conditional_tags: 55
-    normalized_conditional_source_way_count: 46
+    normalized_conditional_source_way_count: 51
     normalized_conditional_rule_count: 0
-    conditional_access_lane_tuple_count: 6824
+    conditional_access_lane_tuple_count: 6984
     lane_tuples_with_applicable_conditional_rules: 0
-    conditional_access_blocker_count: 9
-    upstream_static_access_blocker_count: 562
+    conditional_access_blocker_count: 4
+    upstream_static_access_blocker_count: 519
     upstream_lane_blocker_count: 24138
     upstream_relation_blocker_count: 48
     blocker_stop_codes:
       ACCESS_CONDITIONAL_SYNTAX_UNSUPPORTED: 4
-      ACCESS_CONTEXT_MISSING: 5
-    semantic_sha256: d49ea0ac01a224466b884c811499c8e2fd04e5f46ce75011e83416a8d9e2a801
+    access_context_missing_count: 0
+    semantic_sha256: e950f882fd2f9c42f683e7da1f67a7b0a6f0d4814abd3a656cfe01a9baa72afb
   structural:
     source_ways_with_conditional_tags: 67
-    normalized_conditional_source_way_count: 57
+    normalized_conditional_source_way_count: 62
     normalized_conditional_rule_count: 0
-    conditional_access_lane_tuple_count: 15622
+    conditional_access_lane_tuple_count: 16330
     lane_tuples_with_applicable_conditional_rules: 0
-    conditional_access_blocker_count: 10
-    upstream_static_access_blocker_count: 772
+    conditional_access_blocker_count: 5
+    upstream_static_access_blocker_count: 594
     upstream_lane_blocker_count: 22861
     upstream_relation_blocker_count: 48
     blocker_stop_codes:
       ACCESS_CONDITIONAL_SYNTAX_UNSUPPORTED: 5
-      ACCESS_CONTEXT_MISSING: 5
-    semantic_sha256: 35d4c29385cac75ecf9ea6361a48e5281292aacf57625c4b6965c14625e80d69
+    access_context_missing_count: 0
+    semantic_sha256: 83c811d939080dd58f3f98fdb2eb3e285b4baf0bb14f8ee71e6355e6a09d70a2
   formal_build_gate: blocked_until_conditional_static_and_upstream_blockers_are_resolved
 verification:
   phase7_validator:
     command: PYTHONPATH=05_src python -m traffic_simulation.network.validate_v17_phase7_conditional_access
     result: passed
+    fixed_oracle_comparisons: 5
   phase7_tests:
     command: PYTHONPATH=05_src python -m pytest -q 05_src/traffic_simulation/validation/test_conditional_access_v17.py
     result: passed
     count: 15
-  traffic_simulation_regression:
-    command: PYTHONPATH=<temporary_dependencies>:05_src python -m pytest -q 05_src/traffic_simulation/validation
+  governed_context_tests:
+    command: PYTHONPATH=05_src python -m pytest -q 05_src/traffic_simulation/validation/test_scenario_context_v17.py
     result: passed
-    count: 476
-    warnings: 24
+    count: 8
+  traffic_simulation_regression:
+    command: docker compose run --rm -T analysis python -m pytest -q -W always 05_src/traffic_simulation/validation
+    result: passed
+    count: 484
+    warning_events: 0
+    unique_warning_signatures: 0
+    blocking_warnings: 0
 exit_conditions:
   conditional_grammar_registry_bound: true
   unsupported_syntax_stops: true
@@ -130,6 +165,11 @@ exit_conditions:
   lane_local_provenance_preserved: true
   static_fallback_after_failure_prohibited: true
   final_permission_resolution_not_claimed: true
+  governed_runtime_interval_context_fixed: true
+  governed_context_schema_and_semantics_valid: true
+  access_context_missing_full_population: 0
+  warning_events_in_governed_regression: 0
+  blocking_warnings: 0
   fixed_oracles_match: true
   two_run_determinism: true
 next_phase: 8

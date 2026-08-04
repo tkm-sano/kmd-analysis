@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "governed_runtime_interval_context_v17.schema.json",
+  "type": "object",
+  "required": ["schema_version", "schema", "scenario_context_id", "context_version", "status", "authority", "interval", "holiday_calendar", "vehicle_context"],
+  "properties": {
+    "schema_version": {"const": 17},
+    "schema": {"const": "reproducibility/config/traffic_simulation/schemas/governed_runtime_interval_context_v17.schema.json"},
+    "scenario_context_id": {"const": "ota_ward_delivery_20260716_0900_1700_jst_v1"},
+    "context_version": {"const": "1.0.0"},
+    "status": {"const": "fixed"},
+    "authority": {
+      "type": "object",
+      "required": ["interval_and_timezone", "authorization_assignment", "holiday_calendar"],
+      "properties": {
+        "interval_and_timezone": {"const": "repository_owner_directive_20260804"},
+        "authorization_assignment": {"const": "repository_owner_directive_20260804"},
+        "holiday_calendar": {"const": "cabinet_office_japan_2026"}
+      },
+      "additionalProperties": false
+    },
+    "interval": {
+      "type": "object",
+      "required": ["start_timestamp", "end_timestamp", "timezone", "duration_seconds"],
+      "properties": {
+        "start_timestamp": {"const": "2026-07-16T09:00:00+09:00"},
+        "end_timestamp": {"const": "2026-07-16T17:00:00+09:00"},
+        "timezone": {"const": "Asia/Tokyo"},
+        "duration_seconds": {"const": 28800}
+      },
+      "additionalProperties": false
+    },
+    "holiday_calendar": {
+      "type": "object",
+      "required": ["calendar_id", "calendar_version", "path", "sha256", "public_holiday"],
+      "properties": {
+        "calendar_id": {"const": "japan_national_holidays_2026_v1"},
+        "calendar_version": {"const": "1.0.0"},
+        "path": {"const": "reproducibility/config/traffic_simulation/holiday_calendars/japan_national_holidays_2026_v1.yml"},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "public_holiday": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "vehicle_context": {
+      "type": "object",
+      "required": ["vehicle_profile_id", "profile_path", "profile_sha256", "vehicle_class", "maximum_permissible_mass_kg", "length_m", "width_m", "height_m", "trip_purpose", "permit_ids", "authorization_ids"],
+      "properties": {
+        "vehicle_profile_id": {"const": "managed_urban_ev_delivery_v1"},
+        "profile_path": {"const": "reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml"},
+        "profile_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "vehicle_class": {"const": "delivery"},
+        "maximum_permissible_mass_kg": {"type": "number", "exclusiveMinimum": 0},
+        "length_m": {"type": "number", "exclusiveMinimum": 0},
+        "width_m": {"type": "number", "exclusiveMinimum": 0},
+        "height_m": {"type": "number", "exclusiveMinimum": 0},
+        "trip_purpose": {"const": "delivery"},
+        "permit_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "authorization_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

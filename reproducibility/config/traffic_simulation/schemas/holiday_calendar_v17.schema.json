@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "holiday_calendar_v17.schema.json",
+  "type": "object",
+  "required": ["schema_version", "schema", "calendar_id", "calendar_version", "jurisdiction", "timezone", "coverage", "source", "holidays"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "schema": {"const": "reproducibility/config/traffic_simulation/schemas/holiday_calendar_v17.schema.json"},
+    "calendar_id": {"const": "japan_national_holidays_2026_v1"},
+    "calendar_version": {"const": "1.0.0"},
+    "jurisdiction": {"const": "Japan"},
+    "timezone": {"const": "Asia/Tokyo"},
+    "coverage": {
+      "type": "object",
+      "required": ["start_date", "end_date"],
+      "properties": {
+        "start_date": {"const": "2026-01-01"},
+        "end_date": {"const": "2026-12-31"}
+      },
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "required": ["authority", "url", "retrieved_at", "download_sha256"],
+      "properties": {
+        "authority": {"const": "Cabinet Office, Government of Japan"},
+        "url": {"const": "https://www8.cao.go.jp/chosei/shukujitsu/syukujitsu.csv"},
+        "retrieved_at": {"type": "string", "format": "date"},
+        "download_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "holidays": {
+      "type": "array",
+      "minItems": 18,
+      "maxItems": 18,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["date", "name"],
+        "properties": {
+          "date": {"type": "string", "format": "date", "pattern": "^2026-"},
+          "name": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

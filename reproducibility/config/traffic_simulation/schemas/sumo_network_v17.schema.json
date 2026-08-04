@@ -49,7 +49,18 @@
     "schemas": {"type": "object", "minProperties": 7, "additionalProperties": {"type": "string", "pattern": "^reproducibility/config/traffic_simulation/schemas/.+\\.json$"}},
     "registries": {"$ref": "#/$defs/versionedArtifact"},
     "semantic_invariants": {"$ref": "#/$defs/versionedArtifact"},
-    "scenario_context": {"type": "object"},
+    "scenario_context": {
+      "type": "object",
+      "required": ["timezone", "managed_vehicle_profile", "require_interval", "require_holiday_calendar_version_when_referenced", "governed_runtime_interval_context"],
+      "properties": {
+        "timezone": {"const": "Asia/Tokyo"},
+        "managed_vehicle_profile": {"const": "reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml"},
+        "require_interval": {"const": true},
+        "require_holiday_calendar_version_when_referenced": {"const": true},
+        "governed_runtime_interval_context": {"$ref": "#/$defs/versionedArtifact"}
+      },
+      "additionalProperties": false
+    },
     "direction_model": {"type": "object"},
     "lane_resolution": {"type": "object"},
     "access_resolution": {
