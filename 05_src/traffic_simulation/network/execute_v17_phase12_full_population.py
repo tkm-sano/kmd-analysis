@@ -216,27 +216,47 @@ def _root_category(stop_code: str) -> str:
     return "missing_evidence"
 
 
-def _normalized_blocker(stage: str, blocker: Mapping[str, Any]) -> dict[str, Any]:
+def _normalized_blocker(
+    stage: str,
+    blocker: Mapping[str, Any],
+    *,
+    permission_record: Mapping[str, Any] | None = None,
+    root_cause_record_id: str | None = None,
+) -> dict[str, Any]:
     record_id = str(
         blocker.get("permission_record_id")
         or blocker.get("speed_record_id")
         or f"{stage}:{blocker.get('scope', 'record')}:{blocker.get('source_way_id', blocker.get('relation_id'))}:{blocker['stop_code']}"
     )
     is_permission = stage == "final_permission"
+    if is_permission and (permission_record is None or root_cause_record_id is None):
+        raise Phase12ExecutionError("permission blocker lacks a causal record")
     source_way_id = blocker.get("source_way_id")
-    root_ids = [record_id] if is_permission else []
+    root_ids = [root_cause_record_id] if is_permission else []
     return {
         "blocker_id": f"blocker:{stage}:{record_id}",
         "record_id": f"{stage}:{record_id}",
         "source_way_id": int(source_way_id) if source_way_id is not None else None,
-        "directed_segment_id": blocker.get("directed_segment_id"),
-        "lane_position": blocker.get("lane_position"),
-        "vehicle_class": blocker.get("vehicle_class"),
+        "directed_segment_id": (
+            permission_record["directed_segment_id"]
+            if permission_record is not None else blocker.get("directed_segment_id")
+        ),
+        "lane_position": (
+            permission_record["lane_position"]
+            if permission_record is not None else blocker.get("lane_position")
+        ),
+        "vehicle_class": (
+            permission_record["vehicle_class"]
+            if permission_record is not None else blocker.get("vehicle_class")
+        ),
         "attribute_name": stage,
         "stop_code": str(blocker["stop_code"]),
-        "root_cause_category": _root_category(str(blocker["stop_code"])),
+        "root_cause_category": (
+            "missing_registered_rule"
+            if is_permission else _root_category(str(blocker["stop_code"]))
+        ),
         "secondary_causes": [],
-        "root_cause_record_ids": [f"final_permission:{item}" for item in root_ids],
+        "root_cause_record_ids": root_ids,
         "research_scope_status": {
             "value": "governed",
             "reason": "The record belongs to the fixed Phase 12 governed population.",
@@ -253,14 +273,110 @@ def _normalized_blocker(stage: str, blocker: Mapping[str, Any]) -> dict[str, Any
     }
 
 
-def _blocker_inventory(formal_stages: Mapping[str, Any]) -> dict[str, Any]:
-    blockers = [
-        _normalized_blocker(item["stage"], item)
-        for item in _own_blockers(formal_stages)
+def _permission_causal_records(
+    formal_stages: Mapping[str, Any]
+) -> tuple[dict[str, str], list[dict[str, Any]]]:
+    permission = formal_stages["final_permission"]
+    unresolved = [
+        item
+        for item in permission["permission_records"]
+        if item["resolution_status"] != "resolved"
     ]
-    return build_blocker_inventory(
+    grouped: dict[tuple[int, str, str], list[Mapping[str, Any]]] = defaultdict(list)
+    for item in unresolved:
+        grouped[
+            (
+                int(item["source_way_id"]),
+                str(item["vehicle_class"]),
+                str(item["scenario_context_id"]),
+            )
+        ].append(item)
+
+    static_by_way = {
+        int(item["source_way_id"]): item
+        for item in formal_stages["static_access"]["normalized_rules"]
+    }
+    conditional_by_way = {
+        int(item["source_way_id"]): item
+        for item in formal_stages["conditional_access"]["conditional_rules"]
+    }
+    permission_to_root: dict[str, str] = {}
+    root_records: list[dict[str, Any]] = []
+    for (way_id, vehicle_class, context_id), records in sorted(grouped.items()):
+        identity = {
+            "cause_kind": "no_applicable_access_rule",
+            "source_way_id": way_id,
+            "vehicle_class": vehicle_class,
+            "scenario_context_id": context_id,
+        }
+        digest = _sha256_bytes(
+            json.dumps(identity, sort_keys=True, separators=(",", ":")).encode()
+        )
+        root_id = f"root-cause:access-rule-coverage:{digest}"
+        static_item = static_by_way.get(way_id, {})
+        conditional_item = conditional_by_way.get(way_id, {})
+        static_rules = list(static_item.get("rules", []))
+        conditional_rules = list(conditional_item.get("rules", []))
+        access_keys = {
+            str(rule.get("source_key"))
+            for rule in static_rules + conditional_rules
+            if rule.get("source_key")
+        }
+        access_keys.update(str(key) for key in static_item.get("deferred_conditional_tags", {}))
+        candidate_rule_ids = sorted(
+            {
+                str(rule["rule_id"])
+                for rule in static_rules + conditional_rules
+                if "rule_id" in rule
+            }
+        )
+        root_records.append({
+            "root_cause_record_id": root_id,
+            "source_way_id": way_id,
+            "vehicle_class": vehicle_class,
+            "scenario_context_id": context_id,
+            "root_cause_category": "missing_registered_rule",
+            "cause_kind": "no_applicable_access_rule",
+            "access_tag_keys": sorted(access_keys),
+            "candidate_rule_ids": candidate_rule_ids,
+            "affected_permission_record_count": len(records),
+            "resolution_status": "unresolved",
+            "stop_code": "ACCESS_PERMISSION_UNRESOLVED",
+        })
+        for item in records:
+            permission_to_root[str(item["permission_record_id"])] = root_id
+    return permission_to_root, root_records
+
+
+def _blocker_inventory(
+    formal_stages: Mapping[str, Any]
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    permission_by_id = {
+        str(item["permission_record_id"]): item
+        for item in formal_stages["final_permission"]["permission_records"]
+    }
+    permission_to_root, root_records = _permission_causal_records(formal_stages)
+    blockers = []
+    for item in _own_blockers(formal_stages):
+        permission_id = item.get("permission_record_id")
+        blockers.append(
+            _normalized_blocker(
+                item["stage"],
+                item,
+                permission_record=(
+                    permission_by_id[str(permission_id)]
+                    if permission_id is not None else None
+                ),
+                root_cause_record_id=(
+                    permission_to_root[str(permission_id)]
+                    if permission_id is not None else None
+                ),
+            )
+        )
+    inventory = build_blocker_inventory(
         blockers, inventory_id="ota_ward_v17_phase12_formal_blockers"
     )
+    return inventory, root_records
 
 
 def _status_counts(records: Sequence[Mapping[str, Any]]) -> Counter[str]:
@@ -328,7 +444,10 @@ def _components(segments: Sequence[Mapping[str, Any]]) -> int:
 
 
 def _population_accounting(
-    formal: Mapping[str, Any], structural: Mapping[str, Any], inventory: Mapping[str, Any]
+    formal: Mapping[str, Any],
+    structural: Mapping[str, Any],
+    inventory: Mapping[str, Any],
+    root_cause_records: Sequence[Mapping[str, Any]],
 ) -> dict[str, Any]:
     directed = formal["directed_segments"]
     lanes = formal["directional_lanes"]
@@ -362,6 +481,23 @@ def _population_accounting(
     permission_entries = [
         item for item in inventory["entries"] if item["attribute_name"] == "final_permission"
     ]
+    root_ids = {item["root_cause_record_id"] for item in root_cause_records}
+    causal_edges = []
+    for item in permission_entries:
+        if len(item["root_cause_record_ids"]) != 1:
+            raise Phase12ExecutionError(
+                f"permission blocker does not have exactly one causal link: {item['record_id']}"
+            )
+        root_id = item["root_cause_record_ids"][0]
+        if root_id not in root_ids:
+            raise Phase12ExecutionError(
+                f"permission blocker references an absent root cause: {root_id}"
+            )
+        causal_edges.append({
+            "root_cause_record_id": root_id,
+            "downstream_record_id": item["record_id"],
+            "relationship": "causes_permission_blocker",
+        })
     structural_tuples_by_way = Counter(
         int(item["source_way_id"]) for item in structural_records
     )
@@ -408,12 +544,13 @@ def _population_accounting(
         "configuration_id": "ota_ward_sumo_network_v17",
         "population_version": "ota_ward_relation_closure_v16",
         "population_units": units,
+        "root_cause_records": list(root_cause_records),
         "blocker_relationships": {
             "upstream_record_count": len(upstream_entries),
             "permission_blocker_count": len(permission_entries),
             "deduplicated_blocker_count": len(inventory["entries"]),
             "simple_sum_allowed": False,
-            "causal_edges": [],
+            "causal_edges": causal_edges,
             "suppressed_candidates": suppressed,
         },
         "profile_population_difference": {
@@ -522,12 +659,15 @@ def execute_run(
         )
         for profile, stages in stages_by_profile.items()
     }
-    inventory = _blocker_inventory(stages_by_profile["formal"])
+    inventory, root_cause_records = _blocker_inventory(stages_by_profile["formal"])
     exclusion = _exclusion_manifest(
         stages_by_profile["formal"]["final_permission"]["permission_records"]
     )
     accounting = _population_accounting(
-        stages_by_profile["formal"], stages_by_profile["structural"], inventory
+        stages_by_profile["formal"],
+        stages_by_profile["structural"],
+        inventory,
+        root_cause_records,
     )
     catalog = {item["artifact_id"]: item for item in contract["artifact_catalog"]}
     payloads = {
@@ -622,6 +762,10 @@ def execute_run(
         "formal_permission_records": len(stages_by_profile["formal"]["final_permission"]["permission_records"]),
         "structural_permission_records": len(stages_by_profile["structural"]["final_permission"]["permission_records"]),
         "formal_blockers": inventory["counts"]["total"],
+        "permission_causal_links": len(
+            accounting["blocker_relationships"]["causal_edges"]
+        ),
+        "permission_root_cause_records": len(root_cause_records),
     }
 
 

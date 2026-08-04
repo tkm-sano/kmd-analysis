@@ -57,6 +57,12 @@ be recorded as `candidate_suppressed`; absence of a downstream permission record
 reported as zero impact. Upstream and permission blocker counts SHALL NOT be added unless a
 deduplicated identity calculation is also supplied.
 
+For `ACCESS_PERMISSION_UNRESOLVED` caused by an empty applicable rule set, Phase 12 SHALL
+create one `no_applicable_access_rule` root-cause record per source Way, vehicle class, and
+Scenario Context. Every affected permission tuple SHALL link to that record. The root-cause
+record SHALL retain the observed access-tag keys, candidate rule IDs, and affected permission
+count. The link is diagnostic evidence and SHALL NOT change the permission status to resolved.
+
 ## 6. Population accounting
 
 Accounting SHALL be performed separately for each declared population unit. For every unit:

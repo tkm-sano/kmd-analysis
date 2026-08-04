@@ -2,13 +2,14 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "phase12_population_accounting_v17.schema.json",
   "type": "object",
-  "required": ["schema_version", "artifact_type", "configuration_id", "population_version", "population_units", "blocker_relationships", "profile_population_difference", "exclusion_audit", "exclusion_network_impact", "semantic_sha256"],
+  "required": ["schema_version", "artifact_type", "configuration_id", "population_version", "population_units", "root_cause_records", "blocker_relationships", "profile_population_difference", "exclusion_audit", "exclusion_network_impact", "semantic_sha256"],
   "properties": {
     "schema_version": {"const": 17},
     "artifact_type": {"const": "phase12_population_accounting"},
     "configuration_id": {"const": "ota_ward_sumo_network_v17"},
     "population_version": {"const": "ota_ward_relation_closure_v16"},
     "population_units": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/unit"}},
+    "root_cause_records": {"type": "array", "items": {"$ref": "#/$defs/rootCause"}},
     "blocker_relationships": {
       "type": "object",
       "required": ["upstream_record_count", "permission_blocker_count", "deduplicated_blocker_count", "simple_sum_allowed", "causal_edges", "suppressed_candidates"],
@@ -68,6 +69,24 @@
         "root_cause_record_id": {"type": "string", "minLength": 1},
         "downstream_record_id": {"type": "string", "minLength": 1},
         "relationship": {"const": "causes_permission_blocker"}
+      },
+      "additionalProperties": false
+    },
+    "rootCause": {
+      "type": "object",
+      "required": ["root_cause_record_id", "source_way_id", "vehicle_class", "scenario_context_id", "root_cause_category", "cause_kind", "access_tag_keys", "candidate_rule_ids", "affected_permission_record_count", "resolution_status", "stop_code"],
+      "properties": {
+        "root_cause_record_id": {"type": "string", "minLength": 1},
+        "source_way_id": {"type": "integer"},
+        "vehicle_class": {"type": "string", "minLength": 1},
+        "scenario_context_id": {"type": "string", "minLength": 1},
+        "root_cause_category": {"const": "missing_registered_rule"},
+        "cause_kind": {"const": "no_applicable_access_rule"},
+        "access_tag_keys": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "candidate_rule_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "affected_permission_record_count": {"type": "integer", "minimum": 1},
+        "resolution_status": {"const": "unresolved"},
+        "stop_code": {"const": "ACCESS_PERMISSION_UNRESOLVED"}
       },
       "additionalProperties": false
     },
