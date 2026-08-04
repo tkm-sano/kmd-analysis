@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "formal_blocker_inventory_v17.schema.json",
+  "type": "object",
+  "required": ["schema_version", "inventory_id", "configuration_id", "population_version", "policy_id", "entries", "counts", "semantic_sha256"],
+  "properties": {
+    "schema_version": {"const": 17},
+    "inventory_id": {"type": "string", "minLength": 1},
+    "configuration_id": {"const": "ota_ward_sumo_network_v17"},
+    "population_version": {"const": "ota_ward_relation_closure_v16"},
+    "policy_id": {"const": "FORMAL_BLOCKER_POLICY_V17"},
+    "entries": {"type": "array", "items": {"$ref": "#/$defs/entry"}},
+    "counts": {
+      "type": "object",
+      "required": ["total", "by_strategy", "by_root_cause"],
+      "properties": {
+        "total": {"type": "integer", "minimum": 0},
+        "by_strategy": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "by_root_cause": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}}
+      },
+      "additionalProperties": false
+    },
+    "semantic_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "$defs": {
+    "nullableInteger": {"type": ["integer", "null"]},
+    "nullableString": {"type": ["string", "null"]},
+    "entry": {
+      "type": "object",
+      "required": ["blocker_id", "record_id", "source_way_id", "directed_segment_id", "lane_position", "vehicle_class", "attribute_name", "stop_code", "root_cause_category", "secondary_causes", "root_cause_record_ids", "research_scope_status", "selected_strategy", "remediation"],
+      "properties": {
+        "blocker_id": {"type": "string", "minLength": 1},
+        "record_id": {"type": "string", "minLength": 1},
+        "source_way_id": {"$ref": "#/$defs/nullableInteger"},
+        "directed_segment_id": {"$ref": "#/$defs/nullableString"},
+        "lane_position": {"$ref": "#/$defs/nullableInteger"},
+        "vehicle_class": {"$ref": "#/$defs/nullableString"},
+        "attribute_name": {"type": "string", "minLength": 1},
+        "stop_code": {"type": "string", "minLength": 1},
+        "root_cause_category": {"enum": ["implementation_defect", "missing_registered_rule", "unsupported_source_syntax", "missing_scenario_context", "missing_vehicle_ontology", "missing_evidence", "genuine_rule_conflict", "outside_research_scope", "undetermined"]},
+        "secondary_causes": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "root_cause_record_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "research_scope_status": {"type": "object", "required": ["value", "reason", "evidence_ids"], "properties": {"value": {"enum": ["governed", "outside_scope", "undetermined"]}, "reason": {"type": "string", "minLength": 1}, "evidence_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}}, "additionalProperties": false},
+        "selected_strategy": {"type": "object", "required": ["value", "reason"], "properties": {"value": {"enum": ["preserve_and_resolve", "formal_exclusion", "remain_blocked"]}, "reason": {"type": "string", "minLength": 1}}, "additionalProperties": false},
+        "remediation": {"type": "object", "required": ["decision_id", "rule_id", "fixture_ids", "owner", "target_phase", "status"], "properties": {"decision_id": {"$ref": "#/$defs/nullableString"}, "rule_id": {"$ref": "#/$defs/nullableString"}, "fixture_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}, "owner": {"type": "string", "minLength": 1}, "target_phase": {"type": "integer", "minimum": 11, "maximum": 14}, "status": {"enum": ["planned", "in_progress", "blocked", "complete"]}}, "additionalProperties": false}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

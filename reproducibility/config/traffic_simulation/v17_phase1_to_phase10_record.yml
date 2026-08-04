@@ -1,0 +1,93 @@
+schema_version: 1
+record_id: ota_ward_attribute_resolution_v17_phase1_to_phase10_20260804
+record_type: cumulative_phase_completion_record
+policy_id: ota_ward_attribute_resolution_policy_v17
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+recorded_at: '2026-08-04'
+recorded_by: repository_implementation_agent
+requested_by: repository_owner_directive
+covered_phases: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+overall_status: phase10_complete
+next_phase: 11
+formal_build_ready: false
+attribute_resolution_acceptance: not_run
+
+predecessor_record:
+  path: reproducibility/config/traffic_simulation/v17_phase1_to_phase9_record.yml
+  sha256: b4517bce68d92b589d93a1be99a92fe557feb6992b5b7649ae64f3a47c93d018
+
+phase_records:
+  phase1: {path: reproducibility/config/traffic_simulation/v17_phase1_completion.yml, sha256: 6094d148ea5661d568ec80ac0aa81cc4d90bce135ae20156e1f3dee40043391a, result: passed}
+  phase2: {path: reproducibility/config/traffic_simulation/v17_phase2_completion.yml, sha256: 19f5105b991a6102a8a282c922d0d23d32b3ccb4dd1e8f8d1e97a7448c45443c, result: passed}
+  phase3: {path: reproducibility/config/traffic_simulation/v17_phase3_completion.yml, sha256: f3fb43a98f73009734b9815d1e8f183d899b70c9d50d2c1bb25cb613a25a795e, result: passed}
+  phase4: {path: reproducibility/config/traffic_simulation/v17_phase4_completion.yml, sha256: 08851fab4dfe929140c2d21a80fe10e70dcb000483168398648a8f65aa931204, result: passed}
+  phase5: {path: reproducibility/config/traffic_simulation/v17_phase5_completion.yml, sha256: 1180b53ea874a2019fc04743d8617fac9446ee672d145eb829b1763b1a001b12, result: passed}
+  phase6: {path: reproducibility/config/traffic_simulation/v17_phase6_completion.yml, sha256: 2a0bdeef001cf6755794d9f93a78b2947b42c35299cb3c00945769d22ab84d45, result: passed}
+  phase7: {path: reproducibility/config/traffic_simulation/v17_phase7_completion.yml, sha256: 1a15a35d3331861bd0984c64c11f1ff0e87af5767f2c4217f4d3a34752a30c53, result: passed}
+  phase8: {path: reproducibility/config/traffic_simulation/v17_phase8_completion.yml, sha256: 0acc3d89b9a823c983e9fae9c7e62980bae4cf156c7c040c59fbf029a1e02c19, result: passed}
+  phase9: {path: reproducibility/config/traffic_simulation/v17_phase9_completion.yml, sha256: cfdd91a98d7722888c3bf58acd246257a46deb2107705435d9bf060c84e34719, result: passed}
+  phase10: {path: reproducibility/config/traffic_simulation/v17_phase10_completion.yml, sha256: 50930bc4a84bfd3ce10e2b15193ed43510b7d52c7e99b30c46ef22584c112021, result: passed}
+
+phase10_outcome:
+  evidence_registry: FORMAL_EVIDENCE_METHODS_V17
+  evidence_registry_version: 1.0.0
+  evidence_registry_hash_bound: true
+  approved_method_count: 0
+  unapproved_method_policy: fail_closed
+  unapproved_method_stop_code: EVIDENCE_METHOD_NOT_APPROVED
+  model_assumed_donor_stop_code: EVIDENCE_DONOR_INELIGIBLE
+  manual_evidence_direct_output_edit: prohibited
+  manual_evidence_complete_regeneration_required: true
+  production_evidence_derived_count: 0
+  production_derived_validated_model_count: 0
+  unapproved_evidence_emission_count: 0
+  stop_records_imputed: false
+  governed_warning_events: 0
+  governed_blocking_warnings: 0
+
+runtime_snapshot:
+  audited_records:
+    directional_lanes: 2082
+    final_permissions: 6984
+    speed: 94745
+    total: 103811
+  resolved_value_origins:
+    rule_derived: 4106
+    source_explicit: 96
+    source_normalized: 16129
+  evidence_origin_audit_semantic_sha256: e8f00fba7d4e2a9b59cd947cb5b7d7c5dfea2ca9bf3f98be707ef21a5fc3f4f9
+
+verification:
+  phase10_validator: passed
+  fixed_oracle_comparisons: 2
+  phase10_tests: 19
+  traffic_simulation_regression: 534
+  warning_events: 0
+  two_run_determinism: passed
+
+phase11_handoff:
+  objective: execute_resolver_integration_tests
+  required_gates: [schema, semantic, oracle, metamorphic]
+  preserve_zero_unapproved_evidence_emissions: true
+  preserve_stop_records_without_imputation: true
+  attribute_resolution_acceptance_remains_phase14: true
+
+post_phase10_policy_adoption:
+  path: reproducibility/config/traffic_simulation/v17_formal_blocker_policy_adoption.yml
+  sha256: 8ca67c6d6d60080400a4e4e86dcdbbb721ede89a0721ccf7ecb049874ae767cf
+  result: passed
+  production_exclusion_rule_count: 0
+  phase13_completion_claimed: false
+
+phase9_to_phase14_execution_roadmap:
+  path: reproducibility/config/traffic_simulation/v17_phase9_to_phase14_execution_roadmap.yml
+  sha256: b7bfd849085585d6d5744168d3f4b5e34f2d22a943aaaf9af513b6404f5cf55f
+  status: fixed
+  current_step: phase12_full_population_runs
+  phase14_entry_condition: governed_blocker_count_zero
+
+interpretation:
+  phase_completion_means: required_implementation_and_verification_for_that_phase_passed
+  phase_completion_does_not_mean: formal_build_or_attribute_resolution_acceptance_passed
+  final_v17_acceptance_phase: 14

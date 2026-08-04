@@ -1,0 +1,124 @@
+schema_version: 1
+completion_id: ota_ward_attribute_resolution_v17_phase10_20260804
+policy_id: ota_ward_attribute_resolution_policy_v17
+configuration_id: ota_ward_sumo_network_v17
+completed_at: '2026-08-04'
+completed_by: repository_implementation_agent
+requested_by: repository_owner_directive
+result: passed
+formal_evidence_registry_status: approved_with_zero_methods
+production_evidence_boundary_status: integrated_fail_closed
+manual_evidence_contract_status: separate_hash_bound_artifact_required
+runtime_full_population_origin_audit: passed
+attribute_resolution_acceptance: not_run
+formal_build_ready: false
+prerequisites:
+  phase1: {path: reproducibility/config/traffic_simulation/v17_phase1_completion.yml, result: passed}
+  phase2: {path: reproducibility/config/traffic_simulation/v17_phase2_completion.yml, result: passed}
+  phase3: {path: reproducibility/config/traffic_simulation/v17_phase3_completion.yml, result: passed}
+  phase4: {path: reproducibility/config/traffic_simulation/v17_phase4_completion.yml, result: passed}
+  phase5: {path: reproducibility/config/traffic_simulation/v17_phase5_completion.yml, result: passed}
+  phase6: {path: reproducibility/config/traffic_simulation/v17_phase6_completion.yml, result: passed}
+  phase7: {path: reproducibility/config/traffic_simulation/v17_phase7_completion.yml, result: passed}
+  phase8: {path: reproducibility/config/traffic_simulation/v17_phase8_completion.yml, result: passed}
+  phase9: {path: reproducibility/config/traffic_simulation/v17_phase9_completion.yml, result: passed}
+artifacts:
+  evidence_resolution_stage:
+    path: 05_src/traffic_simulation/network/evidence_resolution_v17.py
+    sha256: 271f3de974f6997143a23eac2f4b1191f62f0ab95eaf702e22624220af339dac
+  formal_evidence_registry:
+    path: reproducibility/config/traffic_simulation/formal_evidence_methods_v17.yml
+    sha256: 5b30f100bafdb49593f4acfe064b1ab6c6cc13154b9ab8cdb475b9ba99a7915e
+  full_population_origin_audit:
+    path: reproducibility/config/traffic_simulation/v17_phase10_evidence_origin_audit.yml
+    sha256: 88c18b263fb3c62caa9bace27d92291a23224c567a073e2a8e78c3e1f40b6380
+  phase10_validator:
+    path: 05_src/traffic_simulation/network/validate_v17_phase10_evidence_resolution.py
+    sha256: 743c5874601d60ca0560a192df932f0a94e24021429286ad1232e276eb58a17a
+  phase10_tests:
+    path: 05_src/traffic_simulation/validation/test_evidence_resolution_v17.py
+    sha256: 6c30e8e0ba35743248be0967c0c4c38c3be75d65aab6e1e6f54d39f1ef621b7d
+schemas:
+  formal_evidence_methods:
+    path: reproducibility/config/traffic_simulation/schemas/formal_evidence_methods_v17.schema.json
+    sha256: 1596bd43b2fad10f322733a046f2a314d0729779355edc8f36355c42dde0d39e
+  manual_evidence_record:
+    path: reproducibility/config/traffic_simulation/schemas/manual_evidence_record_v17.schema.json
+    sha256: b015ade0770595fe44f6098c47435954ee99a95065c274551e560d2364598ddc
+fixed_fixture:
+  independent_inputs:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/inputs.json
+    sha256: 176722a33dc408745094d90871aa841908d85cfad593bdec2e8ae06c88065ca4
+  production_independent_oracles:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/oracle.json
+    sha256: fadd537e8cb4d43a62658fbd36c76de9c9b2ad0c4053cdf7b83130cb5a179bb4
+evidence_method_contract:
+  registry_id: FORMAL_EVIDENCE_METHODS_V17
+  registry_version: 1.0.0
+  approved_method_count: 0
+  no_method_approval_reason: validation_dataset_metrics_thresholds_and_independent_positive_oracles_not_registered
+  unapproved_method_stop_code: EVIDENCE_METHOD_NOT_APPROVED
+  ineligible_donor_stop_code: EVIDENCE_DONOR_INELIGIBLE
+  required_method_fields:
+    - eligible_population
+    - required_inputs
+    - donor_eligibility
+    - estimator_or_model
+    - validation_dataset
+    - validation_metrics
+    - acceptance_thresholds
+    - uncertainty_output
+    - provenance_fields
+    - approver_and_approval_date
+    - implementation_fixture_oracle_hashes
+  manual_evidence_direct_output_edit: prohibited
+  manual_evidence_requires_complete_regeneration: true
+runtime_population:
+  input_path: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+  scenario_context_id: ota_ward_delivery_20260716_0900_1700_jst_v1
+  audited_records:
+    directional_lanes: 2082
+    final_permissions: 6984
+    speed: 94745
+    total: 103811
+  value_origin_counts:
+    rule_derived: 4106
+    source_explicit: 96
+    source_normalized: 16129
+  evidence_derived_count: 0
+  derived_validated_model_count: 0
+  unapproved_evidence_emission_count: 0
+  audit_semantic_sha256: e8f00fba7d4e2a9b59cd947cb5b7d7c5dfea2ca9bf3f98be707ef21a5fc3f4f9
+  unresolved_records_imputed: false
+verification:
+  phase10_validator:
+    command: PYTHONPATH=05_src python -m traffic_simulation.network.validate_v17_phase10_evidence_resolution
+    result: passed
+    fixed_oracle_comparisons: 2
+  phase10_tests:
+    command: PYTHONPATH=05_src python -m pytest -q 05_src/traffic_simulation/validation/test_evidence_resolution_v17.py
+    result: passed
+    count: 19
+  traffic_simulation_regression:
+    command: docker compose run --rm -T analysis python -m pytest -q -W always 05_src/traffic_simulation/validation
+    result: passed
+    count: 534
+    warning_events: 0
+    blocking_warnings: 0
+exit_conditions:
+  evidence_registry_versioned: true
+  evidence_registry_hash_bound: true
+  no_method_approved_without_validation_evidence: true
+  unapproved_method_fails_closed: true
+  model_assumed_donor_fails_closed: true
+  donor_eligibility_contract_registered: true
+  validation_evidence_contract_registered: true
+  manual_evidence_separate_and_hash_bound: true
+  manual_direct_output_edit_prohibited: true
+  full_population_origin_audited: true
+  production_evidence_derived_count_zero: true
+  production_derived_validated_model_count_zero: true
+  stop_records_not_imputed: true
+  fixed_oracles_match: true
+  two_run_determinism: true
+next_phase: 11

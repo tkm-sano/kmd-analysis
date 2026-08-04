@@ -678,7 +678,11 @@ def build_conditional_access_production_artifact(
     blocked_ways: set[int] = set()
     for item in static["normalized_rules"]:
         way_id = int(item["source_way_id"])
-        conditional_tags = item["deferred_conditional_tags"]
+        conditional_tags = {
+            key: value
+            for key, value in item["deferred_conditional_tags"].items()
+            if key.split(":", 1)[0] in ACCESS_BASE_KEYS
+        }
         if not conditional_tags:
             continue
         lane_counts = lane_counts_by_way.get(way_id, {})

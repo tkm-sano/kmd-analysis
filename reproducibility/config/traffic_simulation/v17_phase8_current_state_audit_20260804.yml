@@ -1,0 +1,271 @@
+schema_version: 1
+audit_id: ota_ward_attribute_resolution_v17_phase8_current_state_audit_20260804
+audit_type: implementation_and_artifact_current_state_evaluation
+policy_id: ota_ward_attribute_resolution_policy_v17
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+recorded_at: '2026-08-04'
+recorded_by: repository_implementation_agent
+requested_by: repository_owner_directive
+evaluated_implementation_modified_by_audit: false
+record_creation_is_only_current_action: true
+
+audit_scope:
+  evaluated_phase: 8
+  repository_currently_completed_through_phase: 11
+  next_roadmap_phase: 12
+  source_osm_modified: false
+  generated_artifact_directly_modified: false
+  v16_artifact_modified_by_audit: false
+
+repository_revision_at_audit:
+  branch: agent/v17-phases-1-7
+  head_commit: 06d439ef8ca752188936ee02fb62510108a3200a
+  worktree_clean: false
+  phase8_to_phase11_primary_artifacts_tracked: false
+  interpretation: >-
+    Phase 8からPhase 11までの主要実装、test、fixture、completion recordはローカル作業
+    treeに存在するが、監査時点のGit indexには未収載であり、HEAD commitだけからは再現できない。
+
+authoritative_references:
+  phase8_completion:
+    path: reproducibility/config/traffic_simulation/v17_phase8_completion.yml
+    sha256: 0acc3d89b9a823c983e9fae9c7e62980bae4cf156c7c040c59fbf029a1e02c19
+  scenario_context:
+    path: reproducibility/config/traffic_simulation/v17_governed_runtime_interval_context.yml
+    sha256: e7a808f46d028db1242e117757619aecae54b6a7ffcc6a1d8ba3114afcb13edf
+  execution_roadmap:
+    path: reproducibility/config/traffic_simulation/v17_phase9_to_phase14_execution_roadmap.yml
+    sha256: b7bfd849085585d6d5744168d3f4b5e34f2d22a943aaaf9af513b6404f5cf55f
+
+phase8_status_evaluation:
+  phase_implementation_status: passed
+  validator_status: passed
+  dedicated_test_status: passed
+  dedicated_test_count: 11
+  formal_data_completion_status: incomplete
+  formal_build_ready: false
+  attribute_resolution_acceptance: not_run
+  phase9_entry_recommendation: allowed
+  current_operational_next_step: phase12_full_population_runs
+  interpretation: >-
+    Phase 8 passedはfinal permission production stageの実装gate通過を意味する。
+    governed blockerの解消、formal network完成またはAttribute Resolution Acceptance通過を意味しない。
+
+verification_results:
+  phase8_validator:
+    command: PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=05_src python -m traffic_simulation.network.validate_v17_phase8_final_permission
+    result: passed
+    fixed_oracle_comparison_count: 4
+    production_fixture_permission_records: 14
+    production_fixture_blockers: 0
+    permission_authority: resolver_expected_permissions
+    typemap_permission_authority: false
+    fixture_two_run_determinism: passed
+  phase8_tests:
+    command: PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=05_src pytest -q -p no:cacheprovider 05_src/traffic_simulation/validation/test_final_permission_v17.py
+    result: passed
+    count: 11
+  completion_reference_hashes:
+    result: passed
+    method: phase8_validator_sha256_verification
+  configured_full_population_output_file_count: 0
+
+full_population_regeneration:
+  execution_mode: read_only_in_memory
+  output_files_written: false
+  input_path: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+  scenario_context_id: ota_ward_delivery_20260716_0900_1700_jst_v1
+  formal:
+    governed_lane_tuples: 6984
+    permission_records: 6984
+    resolved_permissions: 2120
+    unresolved_permissions: 4864
+    conflicting_permissions: 0
+    permission_blockers: 4864
+    upstream_blockers: 24709
+    semantic_sha256: 854b02911da5f100794c84801ae5040c8a1a2e4f9e3a41b2c92fb947f020515c
+    matches_phase8_completion: true
+  structural:
+    governed_lane_tuples: 16330
+    permission_records: 16330
+    resolved_permissions: 2984
+    unresolved_permissions: 13346
+    conflicting_permissions: 0
+    permission_blockers: 13346
+    upstream_blockers: 23508
+    semantic_sha256: cc26369a41dcdce1a55c924c4db77d655aab9116d69e30c6ec503e5b58e8a65a
+    matches_phase8_completion: true
+
+formal_upstream_blocker_inventory:
+  count_unit: heterogeneous_upstream_blocker_entries_from_four_attribute_arrays
+  total_records: 24709
+  by_attribute:
+    conditional_access: 4
+    static_access: 519
+    directional_lanes: 24138
+    relation_mapping: 48
+  by_stop_code:
+    ACCESS_CONDITIONAL_SYNTAX_UNSUPPORTED: 4
+    ACCESS_VALUE_UNSUPPORTED: 27
+    ACCESS_VEHICLE_HIERARCHY_MISSING: 492
+    LANE_COUNT_CONFLICT: 6
+    LANE_DIRECTIONAL_ALLOCATION_MISSING: 24114
+    LANE_VECTOR_LENGTH_MISMATCH: 18
+    RELATION_DIRECTED_MAPPING_MISSING: 48
+  unique_source_way_count: 24661
+  unique_directed_segment_count_in_records: 0
+  unique_lane_tuple_count_in_records: 0
+  exact_duplicate_record_count: 0
+  source_ways_in_multiple_attribute_groups: 0
+  overlap_with_permission_blockers:
+    permission_record_id_count: 0
+    source_way_id_count: 0
+    directed_segment_id_count: 0
+    lane_tuple_id_count: 0
+  downstream_permission_impact: not_verified
+  qualification: >-
+    upstream recordは主にsource Way単位であり、relation blockerはrelation単位である。
+    Directed Segment IDまたはlane tuple IDが存在しないため、値0は影響ゼロではなく、
+    現在のrecord表現から一意に数えられないことを意味する。upstream-blocked sourceは
+    permission candidate生成前に除外されるため、upstream件数とpermission blocker件数の
+    単純加算を一意な影響record数として使用してはならない。
+
+formal_permission_blocker_evaluation:
+  total_records: 4864
+  unique_source_way_count: 1130
+  unique_directed_segment_count: 2437
+  unique_lane_tuple_count: 4864
+  downstream_stop_codes:
+    ACCESS_PERMISSION_UNRESOLVED: 4864
+  empty_maximal_rule_id_count: 4864
+  records_with_root_cause_record_ids: 0
+  root_cause_category: not_verified
+  interpretation: >-
+    ACCESS_PERMISSION_UNRESOLVEDはempty applicable/maximal rule setのdownstream stop codeであり、
+    自動的にroot causeとは扱えない。Phase 8 blocker projectionにはroot_cause_record_idsがなく、
+    Phase 12のformal blocker inventoryへ投入する前に明示的な因果link生成が必要である。
+
+profile_population_difference:
+  formal_record_count: 6984
+  structural_record_count: 16330
+  difference: 9346
+  by_assumption_id:
+    BIDIRECTIONAL_EVEN_LANE_EQUAL_SPLIT_V1: 9346
+  affected_attribute: directional_lanes_to_final_permission_population
+  additional_unique_source_way_count: 1201
+  additional_unique_directed_segment_count: 8912
+  formal_logical_population_is_structural_subset: true
+  missing_formal_record_detected: false
+  duplicate_structural_record_detected: false
+  unregistered_assumption_detected: false
+  result: registered_structural_assumption_fully_explains_difference
+
+scenario_context_evaluation:
+  scenario_context_id: ota_ward_delivery_20260716_0900_1700_jst_v1
+  path: reproducibility/config/traffic_simulation/v17_governed_runtime_interval_context.yml
+  sha256: e7a808f46d028db1242e117757619aecae54b6a7ffcc6a1d8ba3114afcb13edf
+  schema_validation: passed
+  semantic_validation: passed
+  interval_start: '2026-07-16T09:00:00+09:00'
+  interval_end: '2026-07-16T17:00:00+09:00'
+  timezone: Asia/Tokyo
+  holiday_calendar_id: japan_national_holidays_2026_v1
+  vehicle_profile_id: managed_urban_ev_delivery_v1
+  trip_purpose: delivery
+  permit_ids: []
+  authorization_ids: []
+  empty_array_semantics: explicit_known_negative_not_missing_context
+
+confirmed_problems:
+  - issue_id: CP-01
+    priority: high
+    title: full_population_and_blocker_inventory_not_persisted
+    evidence: configured_output_file_count_is_zero
+    required_action: persist_phase12_formal_structural_inventory_manifest_and_population_accounting
+  - issue_id: CP-02
+    priority: high
+    title: permission_blockers_lack_root_cause_record_ids
+    evidence: all_4864_permission_blockers_have_no_root_cause_link
+    required_action: generate_validated_permission_to_root_cause_links
+  - issue_id: CP-03
+    priority: high
+    title: phase8_to_phase11_primary_artifacts_are_untracked
+    evidence: git_status_reports_untracked_and_git_ls_files_rejects_phase8_primary_files
+    required_action: review_commit_and_push_intended_artifacts
+  - issue_id: CP-04
+    priority: medium
+    title: phase8_completion_full_population_audit_detail_is_incomplete
+    evidence: full_population_has_one_hash_per_profile_and_two_run_check_is_fixture_only
+    required_action: record_per_run_full_population_hashes_and_population_explanations
+
+potential_risks:
+  - issue_id: PR-01
+    priority: high
+    title: root_cause_group_lifecycle_contract_not_implemented
+    required_before: phase13_bulk_remediation
+  - issue_id: PR-02
+    priority: high
+    title: exclusion_network_impact_validation_not_implemented
+    required_before: first_production_exclusion
+  - issue_id: PR-03
+    priority: medium
+    title: exclusion_ratio_and_post_phase12_delta_audit_not_implemented
+    required_before: phase14_acceptance
+  - issue_id: PR-04
+    priority: medium
+    title: phase8_scenario_context_hash_binding_is_transitive_through_phase7
+    required_before: standalone_phase8_audit_distribution
+
+confirmed_not_problems:
+  - phase8_passed_while_formal_build_ready_false
+  - blockers_preserved_while_later_phase_implementation_proceeds
+  - formal_and_structural_profiles_are_separate_artifacts
+  - registered_structural_assumption_explains_population_difference
+  - attribute_resolution_acceptance_is_not_run
+  - empty_permit_and_authorization_arrays_are_explicit_known_negatives
+  - typemap_is_not_formal_permission_authority
+  - warnings_are_not_used_to_hide_blockers
+  - no_tracked_v16_named_file_diff_was_detected
+
+phase12_handoff:
+  objective: execute_full_population_structural_and_formal_runs
+  required_outputs:
+    - structural_full_population_artifact
+    - formal_full_population_artifact
+    - complete_blocker_inventory_with_root_cause_links
+    - exclusion_manifest
+    - population_accounting
+    - two_run_hash_comparison
+  required_aggregations:
+    - attribute_name
+    - stop_code
+    - root_cause_category
+  constraints:
+    - upstream_and_permission_blockers_are_not_simple_summed
+    - blocker_is_not_downgraded_to_warning
+    - typemap_is_not_permission_authority
+    - unresolved_value_is_not_defaulted
+    - exclusion_requires_registered_rule_and_outside_scope_evidence
+    - source_osm_and_generated_outputs_are_not_directly_edited
+    - v16_population_is_not_retroactively_changed
+
+commands_used:
+  - sed -n on the repository evaluation directive
+  - rg --files and rg -n for implementation artifact and audit-field discovery
+  - nl -ba and sed -n for line-level evidence inspection
+  - find reproducibility/outputs/traffic_simulation/attribute_resolution_v17 -type f
+  - git status --short
+  - git diff --name-only -- '*v16*'
+  - git ls-files --error-unmatch on Phase 8 primary artifacts
+  - shasum -a 256 on completion context and roadmap records
+  - PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=05_src python -m traffic_simulation.network.validate_v17_phase8_final_permission
+  - PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=05_src pytest -q -p no:cacheprovider 05_src/traffic_simulation/validation/test_final_permission_v17.py
+  - read-only in-memory formal and structural production regeneration and aggregation
+
+final_decision:
+  phase8_completion_revoked: false
+  phase9_entry: allowed
+  formal_build_possible: false
+  acceptance_possible: false
+  next_step: phase12_full_population_runs_and_complete_blocker_inventory

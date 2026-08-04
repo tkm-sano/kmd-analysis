@@ -1,0 +1,47 @@
+schema_version: 1
+audit_id: ota_ward_attribute_resolution_v17_phase10_evidence_origin_20260804
+policy_id: ota_ward_attribute_resolution_policy_v17
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+executed_at: '2026-08-04'
+result: passed
+input:
+  path: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+  profile: formal
+  scenario_context_id: ota_ward_delivery_20260716_0900_1700_jst_v1
+  timezone: Asia/Tokyo
+  interval_start: '2026-07-16T09:00:00+09:00'
+  interval_end: '2026-07-16T17:00:00+09:00'
+registry:
+  registry_id: FORMAL_EVIDENCE_METHODS_V17
+  registry_version: 1.0.0
+  approved_method_count: 0
+upstream_artifacts:
+  directional_lanes:
+    record_count: 2082
+    semantic_sha256: 764eb80325620008552066a64ddbc47becd4666f3fd7d2759bbcf92d1c3007d5
+  final_permissions:
+    record_count: 6984
+    semantic_sha256: 854b02911da5f100794c84801ae5040c8a1a2e4f9e3a41b2c92fb947f020515c
+  speed:
+    record_count: 94745
+    semantic_sha256: 1509066538c6aa382e375e18447089ba9ea66e05f7827007be778adaa41d702a
+audit:
+  approved_method_count: 0
+  stage_record_counts:
+    directional_lanes: 2082
+    final_permissions: 6984
+    speed: 94745
+  value_origin_counts:
+    rule_derived: 4106
+    source_explicit: 96
+    source_normalized: 16129
+  evidence_derived_count: 0
+  derived_validated_model_count: 0
+  unapproved_evidence_emission_count: 0
+  semantic_sha256: e8f00fba7d4e2a9b59cd947cb5b7d7c5dfea2ca9bf3f98be707ef21a5fc3f4f9
+interpretation:
+  unresolved_records_have_null_value_origin_and_remain_explicit: true
+  no_stop_record_was_imputed: true
+  no_formal_evidence_method_was_invented_or_approved: true
+  phase13_stop_resolution_claimed: false

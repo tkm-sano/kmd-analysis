@@ -1,0 +1,92 @@
+schema_version: 1
+record_id: ota_ward_attribute_resolution_v17_phase1_to_phase9_20260804
+record_type: cumulative_phase_completion_record
+policy_id: ota_ward_attribute_resolution_policy_v17
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+recorded_at: '2026-08-04'
+recorded_by: repository_implementation_agent
+requested_by: repository_owner_directive
+covered_phases: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+overall_status: phase9_complete
+next_phase: 10
+formal_build_ready: false
+attribute_resolution_acceptance: not_run
+
+predecessor_record:
+  path: reproducibility/config/traffic_simulation/v17_phase1_to_phase8_record.yml
+  sha256: 1a0a7aa003c6169a1b9739009b90aa537656134069df4e4be588ef99ad62ca6e
+
+phase_records:
+  phase1: {path: reproducibility/config/traffic_simulation/v17_phase1_completion.yml, sha256: 6094d148ea5661d568ec80ac0aa81cc4d90bce135ae20156e1f3dee40043391a, result: passed}
+  phase2: {path: reproducibility/config/traffic_simulation/v17_phase2_completion.yml, sha256: 19f5105b991a6102a8a282c922d0d23d32b3ccb4dd1e8f8d1e97a7448c45443c, result: passed}
+  phase3: {path: reproducibility/config/traffic_simulation/v17_phase3_completion.yml, sha256: f3fb43a98f73009734b9815d1e8f183d899b70c9d50d2c1bb25cb613a25a795e, result: passed}
+  phase4: {path: reproducibility/config/traffic_simulation/v17_phase4_completion.yml, sha256: 08851fab4dfe929140c2d21a80fe10e70dcb000483168398648a8f65aa931204, result: passed}
+  phase5: {path: reproducibility/config/traffic_simulation/v17_phase5_completion.yml, sha256: 1180b53ea874a2019fc04743d8617fac9446ee672d145eb829b1763b1a001b12, result: passed}
+  phase6: {path: reproducibility/config/traffic_simulation/v17_phase6_completion.yml, sha256: 2a0bdeef001cf6755794d9f93a78b2947b42c35299cb3c00945769d22ab84d45, result: passed}
+  phase7: {path: reproducibility/config/traffic_simulation/v17_phase7_completion.yml, sha256: 1a15a35d3331861bd0984c64c11f1ff0e87af5767f2c4217f4d3a34752a30c53, result: passed}
+  phase8: {path: reproducibility/config/traffic_simulation/v17_phase8_completion.yml, sha256: 0acc3d89b9a823c983e9fae9c7e62980bae4cf156c7c040c59fbf029a1e02c19, result: passed}
+  phase9: {path: reproducibility/config/traffic_simulation/v17_phase9_completion.yml, sha256: cfdd91a98d7722888c3bf58acd246257a46deb2107705435d9bf060c84e34719, result: passed}
+
+phase9_outcome:
+  production_speed_resolution: integrated
+  japan_speed_registry: JAPAN_SPEED_RULES_V17
+  japan_speed_registry_version: 1.0.0
+  japan_speed_registry_hash_bound: true
+  scenario_reference_date: '2026-07-16'
+  selected_legal_period: pre_20260901
+  post_20260901_rule_retroactive: false
+  jp_urban_direct_numeric_mapping: false
+  directional_asymmetry: preserved
+  conditional_interval_change: fail_closed
+  advisory_speed_is_legal_maxspeed: false
+  formal_model_assumed_speeds: 0
+  governed_warning_events: 0
+  governed_blocking_warnings: 0
+
+runtime_snapshot:
+  formal:
+    governed_directed_segments: 94745
+    speed_records: 94745
+    resolved_speeds: 16129
+    unresolved_speeds: 78601
+    unsupported_speeds: 15
+    speed_blockers: 78616
+    upstream_relation_blockers: 48
+    model_assumed_speeds: 0
+    semantic_sha256: 1509066538c6aa382e375e18447089ba9ea66e05f7827007be778adaa41d702a
+  structural:
+    governed_directed_segments: 94745
+    speed_records: 94745
+    resolved_speeds: 16129
+    unresolved_speeds: 78601
+    unsupported_speeds: 15
+    speed_blockers: 78616
+    upstream_relation_blockers: 48
+    model_assumed_speeds: 0
+    semantic_sha256: eeb406098d96ee2f0806ea9822aade8a208d91dee3c6dedb909c58c89a7b010e
+  blocker_stop_codes:
+    SPEED_RULE_NOT_REGISTERED: 78601
+    SPEED_VALUE_UNSUPPORTED: 15
+
+verification:
+  phase9_validator: passed
+  fixed_oracle_comparisons: 7
+  phase9_tests: 20
+  traffic_simulation_regression: 515
+  warning_events: 0
+  two_run_determinism: passed
+
+phase10_handoff:
+  objective: approve_and_implement_formal_evidence_resolution_methods
+  current_approved_evidence_method_count: 0
+  prohibit_unapproved_evidence_derived_values: true
+  prohibit_model_assumed_in_formal: true
+  inherit_speed_rule_not_registered_records: 78601
+  inherit_speed_value_unsupported_records: 15
+  preserve_japan_speed_registry_version: 1.0.0
+
+interpretation:
+  phase_completion_means: required_implementation_and_verification_for_that_phase_passed
+  phase_completion_does_not_mean: formal_build_or_attribute_resolution_acceptance_passed
+  final_v17_acceptance_phase: 14

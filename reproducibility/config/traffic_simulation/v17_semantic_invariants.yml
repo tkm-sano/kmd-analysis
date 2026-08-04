@@ -1,6 +1,6 @@
 schema_version: 17
 invariant_set_id: ota_ward_attribute_resolution_semantic_invariants_v17
-version: 1.0.0
+version: 1.1.0
 policy_id: ota_ward_attribute_resolution_policy_v17
 invariants:
   - {invariant_id: AR-STATE-001, scope: resolution_record, assertion: resolved records have a non-null effective value and origin and a null stop code, failure_status: invalid, stop_code: UNREGISTERED_STATE, severity: critical, target_phase: 3}
@@ -38,6 +38,10 @@ invariants:
   - {invariant_id: AR-EXCL-001, scope: population, assertion: input population equals governed plus excluded population, failure_status: gate_failed, stop_code: null, severity: critical, target_phase: 12}
   - {invariant_id: AR-EXCL-002, scope: exclusion_manifest, assertion: every exclusion uses a registered rule and matching population version, failure_status: invalid, stop_code: EXCLUSION_RULE_UNREGISTERED, severity: critical, target_phase: 12}
   - {invariant_id: AR-EXCL-003, scope: materialization_omission, assertion: an omission is not an exclusion and original tuples remain in permission denominators, failure_status: gate_failed, stop_code: null, severity: critical, target_phase: 12}
+  - {invariant_id: AR-BLOCK-001, scope: blocker_inventory, assertion: every blocker has exactly one preserve resolve formal exclusion or remain blocked strategy, failure_status: invalid, stop_code: UNREGISTERED_STATE, severity: critical, target_phase: 11}
+  - {invariant_id: AR-BLOCK-002, scope: blocker_strategy, assertion: missing attributes unsupported implementation volume schedule and acceptance pressure never authorize exclusion, failure_status: invalid, stop_code: EXCLUSION_RULE_UNREGISTERED, severity: critical, target_phase: 11}
+  - {invariant_id: AR-BLOCK-003, scope: permission_blocker, assertion: every permission blocker identifies its most upstream causal record IDs and is regenerated after upstream remediation, failure_status: invalid, stop_code: UNREGISTERED_STATE, severity: critical, target_phase: 11}
+  - {invariant_id: AR-BLOCK-004, scope: exclusion_manifest, assertion: excluded records are neither resolved nor members of the governed population and governed excluded IDs do not overlap, failure_status: invalid, stop_code: EXCLUSION_RULE_UNREGISTERED, severity: critical, target_phase: 12}
   - {invariant_id: AR-PROV-001, scope: hash_bearing_artifacts, assertion: identity and acceptance JSON use RFC 8785 and reject duplicate keys, failure_status: invalid, stop_code: UNREGISTERED_RULE, severity: critical, target_phase: 11}
   - {invariant_id: AR-PROV-002, scope: run_manifest, assertion: all required environment input configuration schema registry log and output hashes are recorded, failure_status: gate_failed, stop_code: null, severity: critical, target_phase: 12}
   - {invariant_id: AR-PROV-003, scope: deterministic_run, assertion: two clean identical runs produce identical canonical artifact hashes, failure_status: gate_failed, stop_code: null, severity: critical, target_phase: 14}

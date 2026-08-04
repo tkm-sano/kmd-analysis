@@ -2,12 +2,39 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "exclusion_manifest_v17.schema.json",
   "type": "object",
-  "required": ["configuration_id", "population_version", "entries", "population_counts"],
+  "required": ["schema_version", "manifest_id", "configuration_id", "population_version", "policy_id", "entries", "population_counts", "semantic_sha256"],
   "properties": {
+    "schema_version": {"const": 17},
+    "manifest_id": {"type": "string", "minLength": 1},
     "configuration_id": {"const": "ota_ward_sumo_network_v17"},
-    "population_version": {"type": "string"},
-    "entries": {"type": "array", "items": {"type": "object", "required": ["source_way_id", "directed_segment_id", "lane_position", "reason", "exclusion_rule_id", "approver", "approval_date", "evidence_sha256", "population_version"]}},
-    "population_counts": {"type": "object", "required": ["input", "governed", "excluded"], "properties": {"input": {"type": "integer", "minimum": 0}, "governed": {"type": "integer", "minimum": 0}, "excluded": {"type": "integer", "minimum": 0}}}
+    "population_version": {"const": "ota_ward_relation_closure_v16"},
+    "policy_id": {"const": "FORMAL_BLOCKER_POLICY_V17"},
+    "entries": {"type": "array", "items": {"$ref": "#/$defs/entry"}},
+    "population_counts": {"type": "object", "required": ["input", "governed", "excluded"], "properties": {"input": {"type": "integer", "minimum": 0}, "governed": {"type": "integer", "minimum": 0}, "excluded": {"type": "integer", "minimum": 0}}, "additionalProperties": false},
+    "semantic_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "required": ["record_id", "source_way_id", "directed_segment_id", "lane_position", "vehicle_class", "attribute_name", "reason", "exclusion_rule_id", "decision_id", "approver", "approval_date", "evidence_sha256", "configuration_id", "population_version"],
+      "properties": {
+        "record_id": {"type": "string", "minLength": 1},
+        "source_way_id": {"type": ["integer", "null"]},
+        "directed_segment_id": {"type": ["string", "null"]},
+        "lane_position": {"type": ["integer", "null"]},
+        "vehicle_class": {"type": ["string", "null"]},
+        "attribute_name": {"type": "string", "minLength": 1},
+        "reason": {"type": "string", "minLength": 1},
+        "exclusion_rule_id": {"type": "string", "minLength": 1},
+        "decision_id": {"type": "string", "minLength": 1},
+        "approver": {"type": "string", "minLength": 1},
+        "approval_date": {"type": "string", "format": "date"},
+        "evidence_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "configuration_id": {"const": "ota_ward_sumo_network_v17"},
+        "population_version": {"const": "ota_ward_relation_closure_v16"}
+      },
+      "additionalProperties": false
+    }
   },
   "additionalProperties": false
 }

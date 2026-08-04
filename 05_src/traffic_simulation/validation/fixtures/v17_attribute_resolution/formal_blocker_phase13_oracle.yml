@@ -1,0 +1,26 @@
+oracle_set_id: FORMAL_BLOCKER_PHASE13_ORACLE_V1
+oracle_version: 1.0.0
+independence:
+  derived_from_production_output: false
+  authored_from_normative_decision: true
+oracles:
+  - fixture_id: FB-POS-001
+    outcome: classified
+    selected_strategy: preserve_and_resolve
+    assertion: Missing directional-lane authority is remediation work and not exclusion.
+  - fixture_id: FB-POS-002
+    outcome: classified
+    selected_strategy: remain_blocked
+    assertion: A governed record without formal evidence remains fail-closed.
+  - fixture_id: FB-POS-003
+    outcome: classified
+    selected_strategy: preserve_and_resolve
+    assertion: Permission remediation retains the upstream root-cause record ID.
+  - fixture_id: FB-NEG-001
+    outcome: stopped
+    stop_code: EXCLUSION_RULE_UNREGISTERED
+    assertion: Outside-scope evidence cannot bypass the versioned rule requirement.
+  - fixture_id: FB-POS-004
+    outcome: classified
+    selected_strategy: formal_exclusion
+    assertion: Only the fixture-scoped registered rule permits formal exclusion.

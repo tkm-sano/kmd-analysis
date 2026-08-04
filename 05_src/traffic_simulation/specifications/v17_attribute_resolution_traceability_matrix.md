@@ -65,6 +65,10 @@ behavior must be integrated. Therefore `aligned` does not claim that a Phase
 | AR-EXCL-002 | 16.2 | Exclusions use approved registered entries. | registries | exclusion manifest | exclusion rules | `AR-EXCL-002` | 12 | aligned |
 | AR-EXCL-003 | 16.3 | Input equals governed plus excluded population. | acceptance | exclusion manifest | — | `AR-EXCL-001` | 12 | aligned |
 | AR-EXCL-004 | 16.4 | Materialization omission is separate and retained in denominators. | outputs | omission schema | — | `AR-EXCL-003` | 12 | aligned |
+| AR-BLOCK-001 | Blocker policy 5 | Every blocker receives exactly one strategy. | blocker policy | blocker inventory | strategy registry | `AR-BLOCK-001` | 11 | aligned |
+| AR-BLOCK-002 | Blocker policy 3, 10, 18 | Missing data, unsupported code, volume and schedule pressure cannot authorize exclusion. | blocker policy | blocker inventory | exclusion rules | `AR-BLOCK-002` | 11 | aligned |
+| AR-BLOCK-003 | Blocker policy 14 | Permission blockers identify upstream causal records and are regenerated. | blocker policy | blocker inventory | — | `AR-BLOCK-003` | 11 | aligned |
+| AR-BLOCK-004 | Blocker policy 2, 16 | Excluded records are not resolved or governed and population sets do not overlap. | blocker policy | exclusion manifest | exclusion rules | `AR-BLOCK-004` | 12 | aligned |
 | AR-PROV-001 | 17.1 | Every value identifies source/rule/evidence/model/assumption and activity. | acceptance | resolution record | — | `AR-PROV-002` | 11 | aligned |
 | AR-PROV-002 | 17.2 | Identity and acceptance JSON use RFC 8785 and reject duplicate keys. | semantic invariants | all JSON schemas | — | `AR-PROV-001` | 11 | aligned |
 | AR-PROV-003 | 17.3 | Run manifest records environment, command, hashes, logs, and seeds. | schemas | environment manifest | — | `AR-PROV-002` | 12 | aligned |

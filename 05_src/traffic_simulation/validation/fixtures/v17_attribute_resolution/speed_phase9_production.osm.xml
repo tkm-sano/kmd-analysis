@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="v17-phase9-production-fixture">
+  <node id="31" lat="35.0" lon="139.0"/>
+  <node id="32" lat="35.0" lon="139.1"/>
+  <node id="33" lat="35.0" lon="139.2"/>
+  <node id="34" lat="35.1" lon="139.0"/>
+  <node id="35" lat="35.1" lon="139.1"/>
+  <node id="36" lat="35.2" lon="139.0"/>
+  <node id="37" lat="35.2" lon="139.1"/>
+  <way id="3001">
+    <nd ref="31"/><nd ref="32"/>
+    <tag k="highway" v="primary"/>
+    <tag k="oneway" v="no"/>
+    <tag k="lanes" v="2"/>
+    <tag k="lanes:forward" v="1"/>
+    <tag k="lanes:backward" v="1"/>
+    <tag k="maxspeed:forward" v="50"/>
+    <tag k="maxspeed:backward" v="40"/>
+  </way>
+  <way id="3002">
+    <nd ref="34"/><nd ref="35"/>
+    <tag k="highway" v="residential"/>
+    <tag k="oneway" v="yes"/>
+    <tag k="lanes" v="1"/>
+    <tag k="maxspeed" v="60"/>
+    <tag k="maxspeed:advisory" v="40"/>
+  </way>
+  <way id="3003">
+    <nd ref="36"/><nd ref="37"/>
+    <tag k="highway" v="service"/>
+    <tag k="oneway" v="yes"/>
+    <tag k="lanes" v="1"/>
+    <tag k="maxspeed:conditional" v="30 @ (Mo-Fr 07:00-09:00)"/>
+  </way>
+</osm>

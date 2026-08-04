@@ -15,7 +15,7 @@
         "type": "object",
         "required": ["invariant_id", "scope", "assertion", "failure_status", "severity", "target_phase"],
         "properties": {
-          "invariant_id": {"type": "string", "pattern": "^AR-(STATE|ID|DIR|LANE|SPEED|ACCESS|COND|EVID|EXCL|PROV|ACC)-[0-9]{3}$"},
+        "invariant_id": {"type": "string", "pattern": "^AR-(STATE|ID|DIR|LANE|SPEED|ACCESS|COND|EVID|EXCL|BLOCK|PROV|ACC)-[0-9]{3}$"},
           "scope": {"type": "string"},
           "assertion": {"type": "string"},
           "failure_status": {"enum": ["unresolved", "conflict", "invalid", "valid_but_unsupported", "gate_failed"]},

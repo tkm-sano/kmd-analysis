@@ -1,0 +1,164 @@
+schema_version: 1
+completion_id: ota_ward_attribute_resolution_v17_phase9_20260804
+policy_id: ota_ward_attribute_resolution_policy_v17
+configuration_id: ota_ward_sumo_network_v17
+completed_at: '2026-08-04'
+completed_by: repository_implementation_agent
+requested_by: repository_owner_directive
+result: passed
+production_speed_resolution_status: integrated
+japan_speed_registry_status: approved_and_hash_bound
+directional_asymmetry_status: preserved
+conditional_speed_status: fail_closed_interval_evaluation
+advisory_speed_status: separated_from_legal_maxspeed
+runtime_full_population: executed_with_fail_closed_blockers
+attribute_resolution_acceptance: not_run
+formal_build_ready: false
+prerequisites:
+  phase1: {path: reproducibility/config/traffic_simulation/v17_phase1_completion.yml, result: passed}
+  phase2: {path: reproducibility/config/traffic_simulation/v17_phase2_completion.yml, result: passed}
+  phase3: {path: reproducibility/config/traffic_simulation/v17_phase3_completion.yml, result: passed}
+  phase4: {path: reproducibility/config/traffic_simulation/v17_phase4_completion.yml, result: passed}
+  phase5: {path: reproducibility/config/traffic_simulation/v17_phase5_completion.yml, result: passed}
+  phase6: {path: reproducibility/config/traffic_simulation/v17_phase6_completion.yml, result: passed}
+  phase7: {path: reproducibility/config/traffic_simulation/v17_phase7_completion.yml, result: passed}
+  phase8: {path: reproducibility/config/traffic_simulation/v17_phase8_completion.yml, result: passed}
+artifacts:
+  production_speed_resolution_stage:
+    path: 05_src/traffic_simulation/network/speed_resolution_v17.py
+    sha256: 8809cee8345dc4667079f8b27cfd909e7e9277affcbe2823acbed67d4099af06
+  japan_speed_registry:
+    path: reproducibility/config/traffic_simulation/japan_speed_rules_v17.yml
+    sha256: be5f16f86e4c2ee55ab9f7140018c6760d97c862175935183c7d63393b73dab7
+  phase9_validator:
+    path: 05_src/traffic_simulation/network/validate_v17_phase9_speed_resolution.py
+    sha256: b7315e0a026357eb05de5d4e70de43581673aa39ec46cf9cb02493f41bcf14d1
+  phase9_tests:
+    path: 05_src/traffic_simulation/validation/test_speed_resolution_v17.py
+    sha256: 64e53797b05c0e96c0dd7bb3835d820a43b6c678b2720d25208c1fab80aa8417
+schemas:
+  japan_speed_rules:
+    path: reproducibility/config/traffic_simulation/schemas/japan_speed_rules_v17.schema.json
+    sha256: a3650fde7af2d0bcd83d5afa494d91ff19ed82cf77d50a01176735b63a88cbd1
+  speed_resolution_record:
+    path: reproducibility/config/traffic_simulation/schemas/speed_resolution_record_v17.schema.json
+    sha256: 9ef040d75cf5e834748f6114a2f62fc9c9cae95667ef6183ae7dad9c5fd2587e
+fixed_fixture:
+  production_osm:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/speed_phase9_production.osm.xml
+    sha256: 85fad3dac1aaa9f41d8fba837815080762778f3fee4409b3588cd8e335f72404
+  independent_inputs:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/inputs.json
+    sha256: 176722a33dc408745094d90871aa841908d85cfad593bdec2e8ae06c88065ca4
+  production_independent_oracles:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/oracle.json
+    sha256: fadd537e8cb4d43a62658fbd36c76de9c9b2ad0c4053cdf7b83130cb5a179bb4
+speed_contract:
+  canonical_unit: km/h
+  sumo_conversion: speed_mps = speed_kmh / 3.6
+  priority:
+    - explicit_directional_maxspeed
+    - explicit_general_maxspeed
+    - supported_conditional_maxspeed
+    - registered_symbolic_value
+    - registered_japan_road_class_rule
+    - approved_evidence_method
+    - structural_only_typemap_assumption
+  directional_asymmetry: preserved
+  conditional_missing_context: SPEED_CONDITIONAL_CONTEXT_MISSING
+  conditional_within_interval_change: SPEED_WITHIN_INTERVAL_CHANGE
+  unregistered_symbolic_or_default: SPEED_RULE_NOT_REGISTERED
+  advisory_speed_is_legal_maxspeed: false
+  formal_model_assumed_allowed: false
+  structural_typemap_assumption_id: STRUCTURAL_TYPEMAP_SPEED_DEFAULT_V1
+  structural_typemap_default_configured: false
+japan_speed_rule_contract:
+  registry_id: JAPAN_SPEED_RULES_V17
+  registry_version: 1.0.0
+  scenario_reference_date: '2026-07-16'
+  amendment_effective_date: '2026-09-01'
+  pre_amendment_general_road_statutory_speed_kmh: 60
+  post_amendment_living_road_statutory_speed_kmh: 30
+  post_amendment_retained_general_road_speed_kmh: 60
+  designated_speed_overrides_statutory_speed: true
+  jp_urban_direct_numeric_mapping: prohibited
+  jp_urban_required_evidence:
+    - reference_date
+    - road_category
+    - vehicle_category
+    - designated_speed_present
+  missing_road_state_evidence: SPEED_RULE_NOT_REGISTERED
+  post_20260901_rule_not_retroactive: true
+  source_authority_count: 3
+runtime_population:
+  input_path: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+  scenario_context_id: ota_ward_delivery_20260716_0900_1700_jst_v1
+  formal:
+    governed_directed_segments: 94745
+    speed_records: 94745
+    resolved_speeds: 16129
+    unresolved_speeds: 78601
+    unsupported_speeds: 15
+    invalid_speeds: 0
+    conflicting_speeds: 0
+    model_assumed_speeds: 0
+    speed_blockers: 78616
+    upstream_relation_blockers: 48
+    blocker_stop_codes:
+      SPEED_RULE_NOT_REGISTERED: 78601
+      SPEED_VALUE_UNSUPPORTED: 15
+    record_coverage_complete: true
+    formal_speed_complete: false
+    semantic_sha256: 1509066538c6aa382e375e18447089ba9ea66e05f7827007be778adaa41d702a
+  structural:
+    governed_directed_segments: 94745
+    speed_records: 94745
+    resolved_speeds: 16129
+    unresolved_speeds: 78601
+    unsupported_speeds: 15
+    invalid_speeds: 0
+    conflicting_speeds: 0
+    model_assumed_speeds: 0
+    speed_blockers: 78616
+    upstream_relation_blockers: 48
+    blocker_stop_codes:
+      SPEED_RULE_NOT_REGISTERED: 78601
+      SPEED_VALUE_UNSUPPORTED: 15
+    record_coverage_complete: true
+    formal_speed_complete: false
+    semantic_sha256: eeb406098d96ee2f0806ea9822aade8a208d91dee3c6dedb909c58c89a7b010e
+  interpretation: missing_speed_and_road_state_evidence_remain_explicit_phase13_inputs
+verification:
+  phase9_validator:
+    command: PYTHONPATH=05_src python -m traffic_simulation.network.validate_v17_phase9_speed_resolution
+    result: passed
+    fixed_oracle_comparisons: 7
+  phase9_tests:
+    command: PYTHONPATH=05_src python -m pytest -q 05_src/traffic_simulation/validation/test_speed_resolution_v17.py
+    result: passed
+    count: 20
+  traffic_simulation_regression:
+    command: docker compose run --rm -T analysis python -m pytest -q -W always 05_src/traffic_simulation/validation
+    result: passed
+    count: 515
+    warning_events: 0
+    blocking_warnings: 0
+exit_conditions:
+  japan_speed_registry_versioned: true
+  japan_speed_registry_hash_bound: true
+  official_source_metadata_recorded: true
+  scenario_date_selects_pre_amendment_rule: true
+  post_amendment_rule_not_retroactive: true
+  jp_urban_not_directly_numeric: true
+  missing_jp_urban_evidence_fails_closed: true
+  directional_asymmetry_preserved: true
+  conditional_missing_context_fails_closed: true
+  conditional_interval_change_fails_closed: true
+  advisory_speed_separated: true
+  kmh_to_mps_conversion_validated: true
+  formal_model_assumed_count_zero: true
+  full_population_record_coverage_complete: true
+  full_population_blockers_not_hidden: true
+  fixed_oracles_match: true
+  two_run_determinism: true
+next_phase: 10

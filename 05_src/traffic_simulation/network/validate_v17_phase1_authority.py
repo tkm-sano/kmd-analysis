@@ -303,6 +303,16 @@ def validate_phase1_authority(
         ],
         "holiday_calendar_v17": schema_files["holiday_calendar"],
         "warning_audit_v17": schema_files["warning_audit"],
+        "final_permission_expectation_v17": schema_files[
+            "final_permission_expectation"
+        ],
+        "japan_speed_rules_v17": schema_files["japan_speed_rules"],
+        "speed_resolution_record_v17": schema_files["speed_resolution_record"],
+        "formal_evidence_methods_v17": schema_files["formal_evidence_methods"],
+        "manual_evidence_record_v17": schema_files["manual_evidence_record"],
+        "formal_blocker_policy_v17": schema_files["formal_blocker_policy"],
+        "formal_blocker_inventory_v17": schema_files["formal_blocker_inventory"],
+        "resolver_integration_v17": schema_files["resolver_integration"],
         "approved_policy_index": _repo_path(policy["schema"]),
     }
     for name, schema_path in completion_schema_paths.items():

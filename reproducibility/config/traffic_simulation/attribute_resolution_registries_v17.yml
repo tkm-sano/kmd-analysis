@@ -1,6 +1,6 @@
 schema_version: 17
 registry_bundle_id: ota_ward_attribute_resolution_registries_v17
-registry_version: 1.0.0
+registry_version: 1.3.0
 policy_id: ota_ward_attribute_resolution_policy_v17
 status: approved
 approved_by: repository_owner_directive
@@ -141,12 +141,25 @@ assumptions:
     prohibited_source_conditions: [unsupported_explicit_value, invalid_value, conflict, conditional_value]
 japan_speed_rules:
   registry_id: JAPAN_SPEED_RULES_V17
-  rules: []
+  registry_version: 1.0.0
+  path: reproducibility/config/traffic_simulation/japan_speed_rules_v17.yml
+  sha256: be5f16f86e4c2ee55ab9f7140018c6760d97c862175935183c7d63393b73dab7
   unresolved_policy: SPEED_RULE_NOT_REGISTERED
 evidence_methods:
-  methods: []
+  registry_id: FORMAL_EVIDENCE_METHODS_V17
+  registry_version: 1.0.0
+  path: reproducibility/config/traffic_simulation/formal_evidence_methods_v17.yml
+  sha256: 5b30f100bafdb49593f4acfe064b1ab6c6cc13154b9ab8cdb475b9ba99a7915e
+  approved_method_count: 0
   emit_evidence_derived_without_approved_method: false
   emit_derived_validated_model_without_approved_method: false
+formal_blocker_policy:
+  policy_id: FORMAL_BLOCKER_POLICY_V17
+  policy_version: 1.0.0
+  path: reproducibility/config/traffic_simulation/formal_blocker_policy_v17.yml
+  sha256: b8803b2f5cd67ac5b29847178827d42df5ad5aa0a26ea907b89f3c2a3dbf99c1
+  default_strategy: preserve_and_resolve
+  registered_exclusion_rule_count: 0
 exclusion_rules:
   rules: []
   unregistered_policy: EXCLUSION_RULE_UNREGISTERED

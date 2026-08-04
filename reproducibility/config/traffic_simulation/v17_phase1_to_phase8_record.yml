@@ -1,0 +1,80 @@
+schema_version: 1
+record_id: ota_ward_attribute_resolution_v17_phase1_to_phase8_20260804
+record_type: cumulative_phase_completion_record
+policy_id: ota_ward_attribute_resolution_policy_v17
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+recorded_at: '2026-08-04'
+recorded_by: repository_implementation_agent
+requested_by: repository_owner_directive
+covered_phases: [1, 2, 3, 4, 5, 6, 7, 8]
+overall_status: phase8_complete
+next_phase: 9
+formal_build_ready: false
+attribute_resolution_acceptance: not_run
+
+predecessor_record:
+  path: reproducibility/config/traffic_simulation/v17_phase1_to_phase7_record.yml
+  sha256: daa09939fd2381b1e14a4d0aa05dad1e124e43132d413db08f54dfc556ccbd02
+
+phase_records:
+  phase1: {path: reproducibility/config/traffic_simulation/v17_phase1_completion.yml, sha256: 6094d148ea5661d568ec80ac0aa81cc4d90bce135ae20156e1f3dee40043391a, result: passed}
+  phase2: {path: reproducibility/config/traffic_simulation/v17_phase2_completion.yml, sha256: 19f5105b991a6102a8a282c922d0d23d32b3ccb4dd1e8f8d1e97a7448c45443c, result: passed}
+  phase3: {path: reproducibility/config/traffic_simulation/v17_phase3_completion.yml, sha256: f3fb43a98f73009734b9815d1e8f183d899b70c9d50d2c1bb25cb613a25a795e, result: passed}
+  phase4: {path: reproducibility/config/traffic_simulation/v17_phase4_completion.yml, sha256: 08851fab4dfe929140c2d21a80fe10e70dcb000483168398648a8f65aa931204, result: passed}
+  phase5: {path: reproducibility/config/traffic_simulation/v17_phase5_completion.yml, sha256: 1180b53ea874a2019fc04743d8617fac9446ee672d145eb829b1763b1a001b12, result: passed}
+  phase6: {path: reproducibility/config/traffic_simulation/v17_phase6_completion.yml, sha256: 2a0bdeef001cf6755794d9f93a78b2947b42c35299cb3c00945769d22ab84d45, result: passed}
+  phase7: {path: reproducibility/config/traffic_simulation/v17_phase7_completion.yml, sha256: 1a15a35d3331861bd0984c64c11f1ff0e87af5767f2c4217f4d3a34752a30c53, result: passed}
+  phase8: {path: reproducibility/config/traffic_simulation/v17_phase8_completion.yml, sha256: 0acc3d89b9a823c983e9fae9c7e62980bae4cf156c7c040c59fbf029a1e02c19, result: passed}
+
+phase8_outcome:
+  production_final_permission_resolution: integrated
+  scope_and_axis_dominance: integrated
+  governed_tuple_record_coverage: complete
+  same_effect_maximal_provenance: preserved
+  conflicting_maxima: fail_closed
+  empty_maxima: fail_closed
+  lane_local_provenance: preserved
+  independent_rule_order_invariance: passed
+  permission_authority: resolver_expected_permissions
+  typemap_permission_authority: false
+  governed_warning_events: 0
+  governed_blocking_warnings: 0
+
+runtime_snapshot:
+  scenario_context_id: ota_ward_delivery_20260716_0900_1700_jst_v1
+  formal:
+    governed_lane_tuples: 6984
+    permission_records: 6984
+    resolved_permissions: 2120
+    unresolved_permissions: 4864
+    conflicting_permissions: 0
+    upstream_blockers: 24709
+    semantic_sha256: 854b02911da5f100794c84801ae5040c8a1a2e4f9e3a41b2c92fb947f020515c
+  structural:
+    governed_lane_tuples: 16330
+    permission_records: 16330
+    resolved_permissions: 2984
+    unresolved_permissions: 13346
+    conflicting_permissions: 0
+    upstream_blockers: 23508
+    semantic_sha256: cc26369a41dcdce1a55c924c4db77d655aab9116d69e30c6ec503e5b58e8a65a
+
+verification:
+  phase8_validator: passed
+  fixed_oracle_comparisons: 4
+  phase8_tests: 11
+  traffic_simulation_regression: 495
+  warning_events: 0
+  two_run_determinism: passed
+
+phase9_handoff:
+  objective: implement_speed_resolution_and_japan_speed_rule_registry
+  inherit_fail_closed_blockers: true
+  preserve_final_permission_authority: true
+  prohibit_typemap_speed_as_formal_evidence: true
+
+interpretation:
+  phase_completion_means: required_implementation_and_verification_for_that_phase_passed
+  phase_completion_does_not_mean: formal_build_or_attribute_resolution_acceptance_passed
+  final_v17_acceptance_phase: 14
