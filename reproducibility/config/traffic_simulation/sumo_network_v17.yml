@@ -1,0 +1,91 @@
+schema_version: 17
+schema: reproducibility/config/traffic_simulation/schemas/sumo_network_v17.schema.json
+configuration_id: ota_ward_sumo_network_v17
+policy_id: ota_ward_attribute_resolution_policy_v17
+population_version: ota_ward_relation_closure_v16
+status: phase1_complete
+formal_build_ready: false
+normative_specification: 05_src/traffic_simulation/specifications/10_approved_attribute_resolution_policy_v17_complete.md
+phase1_description: 05_src/traffic_simulation/specifications/v17_phase1_artifact_description.md
+history:
+  predecessor_configuration: ota_ward_sumo_network_v16
+  preserve_predecessor_artifacts: true
+  relabel_predecessor_results: false
+profiles:
+  structural:
+    allow_model_assumed: true
+    attribute_resolution_acceptance_eligible: false
+  formal:
+    allow_model_assumed: false
+    attribute_resolution_acceptance_eligible: true
+resolution_contract:
+  status_field: resolution_status
+  origin_field: value_origin
+  legacy_read_field: value_state
+  legacy_write_allowed: false
+  resolution_status: [resolved, unresolved, conflict, invalid, valid_but_unsupported]
+  value_origin: [source_explicit, source_normalized, rule_derived, evidence_derived, derived_validated_model, model_assumed]
+  formal_eligible_origins: [source_explicit, source_normalized, rule_derived, evidence_derived, derived_validated_model]
+schemas:
+  resolution_record: reproducibility/config/traffic_simulation/schemas/attribute_resolution_record_v17.schema.json
+  directed_segment: reproducibility/config/traffic_simulation/schemas/directed_segment_v17.schema.json
+  access_rule: reproducibility/config/traffic_simulation/schemas/access_rule_v17.schema.json
+  exclusion_manifest: reproducibility/config/traffic_simulation/schemas/exclusion_manifest_v17.schema.json
+  materialization_omission: reproducibility/config/traffic_simulation/schemas/materialization_omission_v17.schema.json
+  environment_build_manifest: reproducibility/config/traffic_simulation/schemas/environment_build_manifest_v17.schema.json
+  acceptance: reproducibility/config/traffic_simulation/schemas/attribute_resolution_acceptance_v17.schema.json
+registries:
+  path: reproducibility/config/traffic_simulation/attribute_resolution_registries_v17.yml
+  version: 1.0.0
+  sha256: ac11d68cb923d58ab1a4b78a6f776332f4cda353db7733cd8bf9c20cee66c089
+semantic_invariants:
+  path: reproducibility/config/traffic_simulation/v17_semantic_invariants.yml
+  version: 1.0.0
+  sha256: 972c570f889551d27ed0f9f5d5593a6bfc32d2f7e250ea99de6610cac0c22738
+scenario_context:
+  timezone: Asia/Tokyo
+  managed_vehicle_profile: reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml
+  require_interval: true
+  require_holiday_calendar_version_when_referenced: true
+direction_model:
+  representation: directed_segment
+  id_template: 'ds:{source_way_id}:{source_start_index}:{source_end_index}:{source_direction}'
+  source_directions: [forward, backward]
+  preserve_source_way: true
+  allow_source_way_reversal: false
+  formal_direction_evidence: exact_source_node_lineage
+  oneway_generation:
+    'yes': [forward]
+    'no': [forward, backward]
+    '-1': [backward]
+lane_resolution:
+  resolver_lane_order: left_to_right_in_travel_direction
+  sumo_lane_index_formula: n - 1 - p
+  formal_even_split_allowed: false
+  structural_assumption_ids: [BIDIRECTIONAL_EVEN_LANE_EQUAL_SPLIT_V1]
+access_resolution:
+  target_scope_dimensions: [direction, lane]
+  specificity_axes: [spatial, vehicle, temporal, purpose]
+  comparison: set_inclusion_pareto
+  independent_source_order_tiebreak: false
+  conflicting_maximal_rules: ACCESS_SPECIFICITY_CONFLICT
+permissions:
+  formal_authority: resolver_expected_permissions
+  typemap_role: provisional_topology_candidate
+  governed_vclasses: [passenger, taxi, bus, coach, delivery, truck, motorcycle]
+  patch_generated_net_xml: false
+attribute_resolution_acceptance:
+  require_complete: true
+  maximum_blockers: 0
+  maximum_review_required: 0
+  maximum_stop_unresolved: 0
+  maximum_model_assumed: 0
+  require_schema_validation: true
+  require_semantic_validation: true
+  require_oracle_validation: true
+  require_classification_projection_invariance: true
+  require_two_run_determinism: true
+outputs:
+  structural: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/structural
+  formal: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/formal
+  overwrite_existing: false

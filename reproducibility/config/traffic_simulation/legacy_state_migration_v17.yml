@@ -1,0 +1,50 @@
+schema_version: 1
+migration_registry_id: ota_ward_legacy_resolution_state_migration_v17
+policy_id: ota_ward_attribute_resolution_policy_v17
+read_compatibility_only: true
+v17_writer_emits_value_state: false
+successful_mappings:
+  explicit_osm:
+    required_action: adopt_explicit
+    resolution_status: resolved
+    value_origin: source_explicit
+  derived_osm_rule:
+    required_action: derive_osm_rule
+    resolution_status: resolved
+    value_origin: rule_derived
+  authoritative_external:
+    required_action: adopt_external_evidence
+    resolution_status: resolved
+    value_origin: evidence_derived
+  derived_validated_model:
+    required_action: apply_governed_rule
+    resolution_status: resolved
+    value_origin: derived_validated_model
+  structural_placeholder:
+    required_action: apply_structural_placeholder
+    resolution_status: resolved
+    value_origin: model_assumed
+    allowed_profiles: [structural]
+    assumption_id_from: resolution_rule_id
+nonresolved_mappings:
+  source_states:
+    - missing
+    - unresolved
+    - conflict
+    - valid_but_unsupported
+    - conditional
+    - directionally_asymmetric
+    - invalid
+  resolution_status: valid_but_unsupported
+  stop_code: LEGACY_STATE_MAPPING_UNSUPPORTED
+  preserve_fields_in_audit:
+    - legacy_state
+    - legacy_action
+    - legacy_stop_failure_codes
+excluded_mapping:
+  source_state: excluded
+  action: route_to_exclusion_manifest
+  resolution_record_emitted: false
+unknown_mapping:
+  resolution_status: valid_but_unsupported
+  stop_code: LEGACY_STATE_MAPPING_UNSUPPORTED

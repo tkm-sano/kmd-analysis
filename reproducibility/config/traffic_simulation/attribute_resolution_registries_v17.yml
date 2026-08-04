@@ -1,0 +1,152 @@
+schema_version: 17
+registry_bundle_id: ota_ward_attribute_resolution_registries_v17
+registry_version: 1.0.0
+policy_id: ota_ward_attribute_resolution_policy_v17
+status: approved
+approved_by: repository_owner_directive
+approved_at: '2026-08-03'
+state_origin:
+  resolution_status:
+    - value: resolved
+      definition: one materializable effective value exists under the active profile
+    - value: unresolved
+      definition: required information or an approved rule is missing
+    - value: conflict
+      definition: applicable evidence requires different results
+    - value: invalid
+      definition: a value violates registered syntax, type, range, or consistency
+    - value: valid_but_unsupported
+      definition: the source value is valid but has no approved v17 evaluator
+  value_origin:
+    - value: source_explicit
+      formal_eligible: true
+    - value: source_normalized
+      formal_eligible: true
+    - value: rule_derived
+      formal_eligible: true
+    - value: evidence_derived
+      formal_eligible: true
+    - value: derived_validated_model
+      formal_eligible: true
+    - value: model_assumed
+      formal_eligible: false
+  legacy_mappings:
+    derived_osm_rule: rule_derived
+stop_codes:
+  - {stop_code: LEGACY_STATE_MAPPING_UNSUPPORTED, resolution_status: valid_but_unsupported, review_required: true}
+  - {stop_code: ONEWAY_VALUE_INVALID, resolution_status: invalid, review_required: true}
+  - {stop_code: ONEWAY_VALUE_UNSUPPORTED, resolution_status: valid_but_unsupported, review_required: true}
+  - {stop_code: ONEWAY_RULE_NOT_REGISTERED, resolution_status: unresolved, review_required: true}
+  - {stop_code: DIRECTED_SEGMENT_LINEAGE_INVALID, resolution_status: invalid, review_required: true}
+  - {stop_code: RELATION_DIRECTED_MAPPING_MISSING, resolution_status: unresolved, review_required: true}
+  - {stop_code: RELATION_DIRECTED_MAPPING_AMBIGUOUS, resolution_status: conflict, review_required: true}
+  - {stop_code: LANE_COUNT_INVALID, resolution_status: invalid, review_required: true}
+  - {stop_code: LANE_COUNT_CONFLICT, resolution_status: conflict, review_required: true}
+  - {stop_code: LANE_DIRECTIONAL_ALLOCATION_MISSING, resolution_status: unresolved, review_required: true}
+  - {stop_code: LANE_VECTOR_LENGTH_MISMATCH, resolution_status: conflict, review_required: true}
+  - {stop_code: SPEED_VALUE_INVALID, resolution_status: invalid, review_required: true}
+  - {stop_code: SPEED_VALUE_UNSUPPORTED, resolution_status: valid_but_unsupported, review_required: true}
+  - {stop_code: SPEED_RULE_NOT_REGISTERED, resolution_status: unresolved, review_required: true}
+  - {stop_code: SPEED_CONDITIONAL_CONTEXT_MISSING, resolution_status: unresolved, review_required: true}
+  - {stop_code: SPEED_WITHIN_INTERVAL_CHANGE, resolution_status: conflict, review_required: true}
+  - {stop_code: ACCESS_VALUE_INVALID, resolution_status: invalid, review_required: true}
+  - {stop_code: ACCESS_VALUE_UNSUPPORTED, resolution_status: valid_but_unsupported, review_required: true}
+  - {stop_code: ACCESS_VEHICLE_HIERARCHY_MISSING, resolution_status: unresolved, review_required: true}
+  - {stop_code: ACCESS_CONDITIONAL_SYNTAX_UNSUPPORTED, resolution_status: valid_but_unsupported, review_required: true}
+  - {stop_code: ACCESS_CONTEXT_MISSING, resolution_status: unresolved, review_required: true}
+  - {stop_code: ACCESS_WITHIN_INTERVAL_CHANGE, resolution_status: conflict, review_required: true}
+  - {stop_code: ACCESS_SPECIFICITY_CONFLICT, resolution_status: conflict, review_required: true}
+  - {stop_code: ACCESS_PERMISSION_UNRESOLVED, resolution_status: unresolved, review_required: true}
+  - {stop_code: EVIDENCE_METHOD_NOT_APPROVED, resolution_status: unresolved, review_required: true}
+  - {stop_code: EVIDENCE_DONOR_INELIGIBLE, resolution_status: invalid, review_required: true}
+  - {stop_code: EXCLUSION_RULE_UNREGISTERED, resolution_status: invalid, review_required: true}
+  - {stop_code: UNREGISTERED_RULE, resolution_status: invalid, review_required: true}
+  - {stop_code: UNREGISTERED_STATE, resolution_status: invalid, review_required: true}
+  - {stop_code: UNREGISTERED_STOP_CODE, resolution_status: invalid, review_required: true}
+oneway_rules:
+  explicit_normalization:
+    yes: 'yes'
+    '1': 'yes'
+    'true': 'yes'
+    no: 'no'
+    '0': 'no'
+    'false': 'no'
+    '-1': '-1'
+    reverse: '-1'
+  absent_rules:
+    - rule_id: OSM_IMPLICIT_ROUNDABOUT_ONEWAY_YES
+      priority: 3000
+      predicate: junction_roundabout
+      canonical_value: 'yes'
+      value_origin: rule_derived
+    - rule_id: OSM_IMPLICIT_MOTORWAY_ONEWAY_YES
+      priority: 2000
+      predicate: highway_motorway
+      canonical_value: 'yes'
+      value_origin: rule_derived
+    - rule_id: OSM_ONEWAY_ABSENT_DEFAULT_NO
+      priority: 1000
+      predicate: ordinary_road_without_oneway
+      canonical_value: 'no'
+      value_origin: rule_derived
+vehicle_ontology:
+  governed_vclasses: [passenger, taxi, bus, coach, delivery, truck, motorcycle]
+  managed_vehicle:
+    profile_id: managed_urban_ev_delivery_v1
+    sumo_vclass: delivery
+    osm_hgv: false
+  domains:
+    access: [passenger, taxi, bus, coach, delivery, truck, motorcycle]
+    vehicle: [passenger, taxi, bus, coach, delivery, truck, motorcycle]
+    motor_vehicle: [passenger, taxi, bus, coach, delivery, truck, motorcycle]
+    hgv: [truck]
+    goods: [delivery, truck]
+access_values:
+  - {source_value: 'yes', effect: allowed, required_context: []}
+  - {source_value: designated, effect: allowed, required_context: []}
+  - {source_value: permissive, effect: allowed, required_context: []}
+  - {source_value: 'no', effect: denied, required_context: []}
+  - {source_value: destination, effect: contextual, required_context: [trip_purpose_destination]}
+  - {source_value: delivery, effect: contextual, required_context: [trip_purpose_delivery]}
+  - {source_value: customers, effect: contextual, required_context: [trip_purpose_customer]}
+  - {source_value: private, effect: contextual, required_context: [private_authorization]}
+  - {source_value: permit, effect: contextual, required_context: [permit_assignment]}
+  - {source_value: agricultural, effect: contextual, required_context: [agricultural_context]}
+  - {source_value: forestry, effect: contextual, required_context: [forestry_context]}
+  - {source_value: unknown, effect: unsupported, stop_code: ACCESS_VALUE_UNSUPPORTED}
+  - {source_value: variable, effect: unsupported, stop_code: ACCESS_VALUE_UNSUPPORTED}
+conditional_grammar:
+  grammar_id: OSM_CONDITIONAL_V17_CORE
+  clause_separator: semicolon
+  operators: [AND, OR]
+  categories: [weekday, clock_time, calendar_date, public_holiday, vehicle_class, mass, dimension, trip_purpose, permit, authorization]
+  prohibited_unless_registered: [school_holiday, sunrise_sunset, weather, event, free_text]
+  intra_tag_multiple_match: last_matching_clause
+  independent_rule_order_resolution: prohibited
+assumptions:
+  - assumption_id: BIDIRECTIONAL_EVEN_LANE_EQUAL_SPLIT_V1
+    affected_attribute: directional_lanes
+    allowed_profiles: [structural]
+    generated_value_rule: divide_explicit_even_total_equally
+    prohibited_source_conditions: [odd_total, single_lane_bidirectional, directional_lane_tag, lanes_both_ways, lane_conditional, contradictory_lane_evidence]
+  - assumption_id: STRUCTURAL_TYPEMAP_SPEED_DEFAULT_V1
+    affected_attribute: speed
+    allowed_profiles: [structural]
+    generated_value_rule: registered_typemap_candidate
+    prohibited_source_conditions: [unsupported_explicit_value, invalid_value, conflict, conditional_value]
+  - assumption_id: STRUCTURAL_TYPEMAP_PERMISSION_CANDIDATE_V1
+    affected_attribute: permission
+    allowed_profiles: [structural]
+    generated_value_rule: registered_typemap_candidate
+    prohibited_source_conditions: [unsupported_explicit_value, invalid_value, conflict, conditional_value]
+japan_speed_rules:
+  registry_id: JAPAN_SPEED_RULES_V17
+  rules: []
+  unresolved_policy: SPEED_RULE_NOT_REGISTERED
+evidence_methods:
+  methods: []
+  emit_evidence_derived_without_approved_method: false
+  emit_derived_validated_model_without_approved_method: false
+exclusion_rules:
+  rules: []
+  unregistered_policy: EXCLUSION_RULE_UNREGISTERED

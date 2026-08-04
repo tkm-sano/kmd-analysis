@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "legacy_state_migration_v17.schema.json",
+  "type": "object",
+  "required": ["schema_version", "migration_registry_id", "policy_id", "read_compatibility_only", "v17_writer_emits_value_state", "successful_mappings", "nonresolved_mappings", "excluded_mapping", "unknown_mapping"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "migration_registry_id": {"const": "ota_ward_legacy_resolution_state_migration_v17"},
+    "policy_id": {"const": "ota_ward_attribute_resolution_policy_v17"},
+    "read_compatibility_only": {"const": true},
+    "v17_writer_emits_value_state": {"const": false},
+    "successful_mappings": {
+      "type": "object",
+      "required": ["explicit_osm", "derived_osm_rule", "authoritative_external", "derived_validated_model", "structural_placeholder"],
+      "additionalProperties": {"type": "object", "required": ["required_action", "resolution_status", "value_origin"]}
+    },
+    "nonresolved_mappings": {"type": "object", "required": ["source_states", "resolution_status", "stop_code", "preserve_fields_in_audit"]},
+    "excluded_mapping": {"type": "object", "required": ["source_state", "action", "resolution_record_emitted"]},
+    "unknown_mapping": {"type": "object", "required": ["resolution_status", "stop_code"]}
+  },
+  "additionalProperties": false
+}

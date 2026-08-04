@@ -1,0 +1,88 @@
+schema_version: 1
+completion_id: ota_ward_attribute_resolution_v17_phase3_20260803
+policy_id: ota_ward_attribute_resolution_policy_v17
+configuration_id: ota_ward_sumo_network_v17
+completed_at: '2026-08-03'
+completed_by: repository_implementation_agent
+requested_by: repository_owner_directive
+result: passed
+production_state_contract_status: integrated
+legacy_reader_status: implemented
+v17_writer_status: implemented
+cross_field_validator_status: implemented
+runtime_full_population: not_run
+attribute_resolution_acceptance: not_run
+formal_build_ready: false
+prerequisites:
+  phase1:
+    path: reproducibility/config/traffic_simulation/v17_phase1_completion.yml
+    result: passed
+  phase2:
+    path: reproducibility/config/traffic_simulation/v17_phase2_completion.yml
+    result: passed
+artifacts:
+  migration_registry:
+    path: reproducibility/config/traffic_simulation/legacy_state_migration_v17.yml
+    sha256: aa8a2e53f7a65901e58502d08e3c45d1c79d49e5d979977a1f58256a86a95357
+  production_state_boundary:
+    path: 05_src/traffic_simulation/network/attribute_resolution_state_v17.py
+    sha256: 579fd4b3cb576f4cbdb6f030a01ec8773b05d3e9b41d0b2d468577d61574abee
+  phase3_validator:
+    path: 05_src/traffic_simulation/network/validate_v17_phase3_state_migration.py
+    sha256: 073f1ace6d54409d283cbc4f9a65d69aecb9cc15c96caa29c394a4a0a7b6120f
+  phase3_tests:
+    path: 05_src/traffic_simulation/validation/test_attribute_resolution_state_v17.py
+    sha256: c094eddfa9e5e9a241a5c411d61491528c048df0447b2ab31d2a523f2c5925e5
+schemas:
+  migration_registry:
+    path: reproducibility/config/traffic_simulation/schemas/legacy_state_migration_v17.schema.json
+    sha256: ddde03828a1f036b8f79dc3f9e57e295015ae11bb709766d9f801baf598f6c49
+  resolution_record:
+    path: reproducibility/config/traffic_simulation/schemas/attribute_resolution_record_v17.schema.json
+    sha256: 8a7c78c7aa6349da0eb7251f753a96f4d74c2a6f9150c2f03a3be61b1fa31275
+state_contract:
+  canonical_status_field: resolution_status
+  canonical_origin_field: value_origin
+  legacy_read_field: value_state
+  legacy_write_allowed: false
+  successful_legacy_mapping_count: 5
+  unsupported_legacy_behavior: fail_closed
+  unsupported_legacy_stop_code: LEGACY_STATE_MAPPING_UNSUPPORTED
+  excluded_legacy_route: exclusion_manifest
+  formal_model_assumed_allowed: false
+identity:
+  record_id_algorithm: sha256_of_rfc8785_compatible_fixed_identity_domain
+  mutable_results_in_record_id: false
+  classification_record_id_preserved: true
+  identity_invariance_result: passed
+oracle_comparison:
+  fixed_collection: ota_ward_attribute_resolution_v17_oracles_v1
+  compared_fixture_ids:
+    - V17-POS-020
+    - V17-NEG-023
+  production_code_used_to_modify_oracle: false
+  result: passed
+verification:
+  phase3_validator:
+    command: PYTHONPATH=05_src python -m traffic_simulation.network.validate_v17_phase3_state_migration
+    result: passed
+  phase3_tests:
+    command: PYTHONPATH=05_src python -m pytest -q 05_src/traffic_simulation/validation/test_attribute_resolution_state_v17.py
+    result: passed
+    count: 17
+  traffic_simulation_regression:
+    command: PYTHONPATH=<temporary_dependencies>:05_src python -m pytest -q 05_src/traffic_simulation/validation
+    result: passed
+    count: 400
+    warnings: 24
+exit_conditions:
+  v17_writer_emits_no_value_state: true
+  legacy_read_compatibility: true
+  resolved_cross_field_invariants: true
+  nonresolved_cross_field_invariants: true
+  formal_model_assumed_rejected: true
+  formal_assumption_ids_rejected: true
+  record_identity_stable: true
+  classification_identity_preserved: true
+  fixed_state_oracles_match: true
+next_phase: 4

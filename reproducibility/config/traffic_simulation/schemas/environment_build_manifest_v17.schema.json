@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "environment_build_manifest_v17.schema.json",
+  "type": "object",
+  "required": ["source_commit", "dirty_tree", "container_image", "container_digest", "platform", "sumo_version", "python_version", "library_versions", "command", "arguments", "configuration_hash", "schema_hashes", "registry_hashes", "input_hashes", "started_at", "ended_at", "exit_code", "stdout_hash", "stderr_hash", "output_hashes", "random_seeds"],
+  "properties": {
+    "source_commit": {"type": "string"}, "dirty_tree": {"type": "boolean"}, "container_image": {"type": "string"}, "container_digest": {"type": "string"}, "platform": {"type": "string"}, "sumo_version": {"const": "1.24.0"}, "python_version": {"type": "string"}, "library_versions": {"type": "object"}, "command": {"type": "string"}, "arguments": {"type": "array"}, "configuration_hash": {"$ref": "#/$defs/hash"}, "schema_hashes": {"type": "object"}, "registry_hashes": {"type": "object"}, "input_hashes": {"type": "object"}, "started_at": {"type": "string", "format": "date-time"}, "ended_at": {"type": "string", "format": "date-time"}, "exit_code": {"type": "integer"}, "stdout_hash": {"$ref": "#/$defs/hash"}, "stderr_hash": {"$ref": "#/$defs/hash"}, "output_hashes": {"type": "object"}, "random_seeds": {"type": "object"}
+  },
+  "$defs": {"hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+  "additionalProperties": false
+}

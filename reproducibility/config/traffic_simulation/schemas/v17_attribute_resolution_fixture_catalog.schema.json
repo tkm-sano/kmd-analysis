@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "v17_attribute_resolution_fixture_catalog.schema.json",
+  "type": "object",
+  "required": ["artifact_type", "schema_version", "fixture_collection_id", "policy_id", "authorship", "cases"],
+  "properties": {
+    "artifact_type": {"const": "v17_attribute_resolution_fixture_catalog"},
+    "schema_version": {"const": 1},
+    "fixture_collection_id": {"const": "ota_ward_attribute_resolution_v17_fixtures_v1"},
+    "policy_id": {"const": "ota_ward_attribute_resolution_policy_v17"},
+    "authorship": {
+      "type": "object",
+      "required": ["author_role", "derived_from_specification", "production_code_used", "authored_before_v17_production_integration"],
+      "properties": {
+        "author_role": {"const": "specification_fixture_author"},
+        "derived_from_specification": {"const": true},
+        "production_code_used": {"const": false},
+        "authored_before_v17_production_integration": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 55,
+      "items": {
+        "type": "object",
+        "required": ["fixture_id", "case_type", "family", "requirement_ids", "input", "oracle_id", "covered_stop_codes"],
+        "properties": {
+          "fixture_id": {"type": "string", "pattern": "^V17-(POS|NEG|META)-[0-9]{3}$"},
+          "case_type": {"enum": ["positive", "negative", "metamorphic"]},
+          "family": {"type": "string", "minLength": 1},
+          "requirement_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^AR-[A-Z]+-[0-9]{3}$"}},
+          "input": {"type": "object"},
+          "oracle_id": {"type": "string", "pattern": "^OR-V17-[0-9]{3}$"},
+          "covered_stop_codes": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

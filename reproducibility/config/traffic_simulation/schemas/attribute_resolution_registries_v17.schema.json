@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "attribute_resolution_registries_v17.schema.json",
+  "type": "object",
+  "required": ["schema_version", "registry_bundle_id", "registry_version", "policy_id", "status", "approved_by", "approved_at", "state_origin", "stop_codes", "oneway_rules", "vehicle_ontology", "access_values", "conditional_grammar", "assumptions", "japan_speed_rules", "evidence_methods", "exclusion_rules"],
+  "properties": {
+    "schema_version": {"const": 17},
+    "registry_bundle_id": {"const": "ota_ward_attribute_resolution_registries_v17"},
+    "registry_version": {"type": "string", "minLength": 1},
+    "policy_id": {"const": "ota_ward_attribute_resolution_policy_v17"},
+    "status": {"const": "approved"},
+    "approved_by": {"type": "string", "minLength": 1},
+    "approved_at": {"type": "string", "format": "date"},
+    "state_origin": {"type": "object"},
+    "stop_codes": {"type": "array", "minItems": 30, "uniqueItems": true, "items": {"type": "object", "required": ["stop_code", "resolution_status", "review_required"]}},
+    "oneway_rules": {"type": "object"},
+    "vehicle_ontology": {"type": "object"},
+    "access_values": {"type": "array", "minItems": 13},
+    "conditional_grammar": {"type": "object"},
+    "assumptions": {"type": "array", "minItems": 3},
+    "japan_speed_rules": {"type": "object"},
+    "evidence_methods": {"type": "object"},
+    "exclusion_rules": {"type": "object"}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,96 @@
+schema_version: 1
+completion_id: ota_ward_attribute_resolution_v17_phase4_20260804
+policy_id: ota_ward_attribute_resolution_policy_v17
+configuration_id: ota_ward_sumo_network_v17
+completed_at: '2026-08-04'
+completed_by: repository_implementation_agent
+requested_by: repository_owner_directive
+result: passed
+production_directed_segment_status: integrated
+canonical_interval_status: implemented
+oneway_normalization_status: implemented
+relation_mapping_status: implemented
+runtime_full_population: executed_with_fail_closed_blockers
+attribute_resolution_acceptance: not_run
+formal_build_ready: false
+prerequisites:
+  phase1:
+    path: reproducibility/config/traffic_simulation/v17_phase1_completion.yml
+    result: passed
+  phase2:
+    path: reproducibility/config/traffic_simulation/v17_phase2_completion.yml
+    result: passed
+  phase3:
+    path: reproducibility/config/traffic_simulation/v17_phase3_completion.yml
+    result: passed
+artifacts:
+  production_directed_segment_stage:
+    path: 05_src/traffic_simulation/network/directed_segments_v17.py
+    sha256: 9c5a4ad60d2f3d9bc390b01e2bc6a88e092ec097eaedd89de1b3f5e3c187ba5a
+  policy_compatibility_boundary:
+    path: 05_src/traffic_simulation/network/approved_attribute_resolution_policy.py
+    sha256: 8e3940acd61aa65091324bb96498ada1fcbb1dfff66efdc1250ba71af777ba43
+  phase4_validator:
+    path: 05_src/traffic_simulation/network/validate_v17_phase4_directed_segments.py
+    sha256: 3cb0ceafb1fffe0b11aecb5e0e67f17b402537f614bfbb264d06981b639e365a
+  phase4_tests:
+    path: 05_src/traffic_simulation/validation/test_directed_segments_v17.py
+    sha256: 3cc559d6dd12de91e176d8d6197727a87fd64468ab8034177d0fc3542a586f5f
+fixed_fixture:
+  production_osm:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/directed_segments_phase4.osm.xml
+    sha256: 926946fdd904a39b9ef24538eb777b5762f4116e1ec633b7422366e046df02f1
+direction_contract:
+  id_template: 'ds:{source_way_id}:{source_start_index}:{source_end_index}:{source_direction}'
+  formal_direction_evidence: exact_source_node_lineage
+  source_way_mutation_allowed: false
+  source_directions: [forward, backward]
+  oneway_generation:
+    'yes': [forward]
+    'no': [forward, backward]
+    '-1': [backward]
+relation_mapping:
+  supported_via_members: [node, way, ordered_multiple_ways]
+  unique_candidate: adopt
+  zero_candidates: RELATION_DIRECTED_MAPPING_MISSING
+  multiple_candidates: RELATION_DIRECTED_MAPPING_AMBIGUOUS
+  sumo_edge_id_sign_used_as_evidence: false
+  coordinate_nearest_used_as_evidence: false
+runtime_population:
+  input_path: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+  source_way_count: 26220
+  directed_segment_count: 94745
+  restriction_relation_count: 584
+  uniquely_mapped_relation_count: 536
+  fail_closed_relation_count: 48
+  blocker_stop_codes:
+    RELATION_DIRECTED_MAPPING_MISSING: 48
+  semantic_sha256: e9c3a812f488e2c77a91ccbea806dd91828dae1c5f390499180e71ab6f4f47a4
+  source_way_blocker_count: 0
+  source_way_mutated: false
+  formal_build_gate: blocked_until_relation_mappings_are_resolved
+verification:
+  phase4_validator:
+    command: PYTHONPATH=05_src python -m traffic_simulation.network.validate_v17_phase4_directed_segments
+    result: passed
+  phase4_tests:
+    command: PYTHONPATH=05_src python -m pytest -q 05_src/traffic_simulation/validation/test_directed_segments_v17.py
+    result: passed
+    count: 18
+  traffic_simulation_regression:
+    command: PYTHONPATH=<temporary_dependencies>:05_src python -m pytest -q 05_src/traffic_simulation/validation
+    result: passed
+    count: 418
+    warnings: 24
+exit_conditions:
+  canonical_interval_ids: true
+  exact_source_node_lineage: true
+  source_way_immutable: true
+  reverse_oneway_backward_only: true
+  split_interval_ids_stable: true
+  relation_unique_missing_ambiguous: true
+  relation_node_and_way_via_supported: true
+  prohibited_direction_evidence_unused: true
+  fixed_oracles_match: true
+  two_run_determinism: true
+next_phase: 5

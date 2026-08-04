@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "v17_fixture_oracle_manifest.schema.json",
+  "type": "object",
+  "required": ["schema_version", "manifest_id", "policy_id", "configuration_id", "state", "specification", "fixtures", "oracles", "coverage", "independence_review", "validation"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "manifest_id": {"const": "ota_ward_attribute_resolution_v17_phase2_manifest_v1"},
+    "policy_id": {"const": "ota_ward_attribute_resolution_policy_v17"},
+    "configuration_id": {"const": "ota_ward_sumo_network_v17"},
+    "state": {"enum": ["draft", "fixed"]},
+    "specification": {"$ref": "#/$defs/artifact"},
+    "fixtures": {"$ref": "#/$defs/artifact"},
+    "oracles": {"$ref": "#/$defs/artifact"},
+    "coverage": {
+      "type": "object",
+      "required": ["required_case_families", "stop_code_registry_count", "covered_stop_code_count", "metamorphic_case_count", "missing_stop_codes"],
+      "properties": {
+        "required_case_families": {"type": "array", "minItems": 25, "uniqueItems": true, "items": {"type": "string"}},
+        "stop_code_registry_count": {"const": 30},
+        "covered_stop_code_count": {"const": 30},
+        "metamorphic_case_count": {"type": "integer", "minimum": 5},
+        "missing_stop_codes": {"type": "array", "maxItems": 0}
+      },
+      "additionalProperties": false
+    },
+    "independence_review": {
+      "type": "object",
+      "required": ["fixture_author_role", "oracle_author_role", "reviewer_role", "production_code_used", "production_output_used", "reviewed_at", "result"],
+      "properties": {
+        "fixture_author_role": {"type": "string"},
+        "oracle_author_role": {"type": "string"},
+        "reviewer_role": {"type": "string"},
+        "production_code_used": {"const": false},
+        "production_output_used": {"const": false},
+        "reviewed_at": {"type": "string", "format": "date"},
+        "result": {"const": "passed"}
+      },
+      "additionalProperties": false
+    },
+    "validation": {"type": "object"}
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "required": ["path", "sha256"],
+      "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

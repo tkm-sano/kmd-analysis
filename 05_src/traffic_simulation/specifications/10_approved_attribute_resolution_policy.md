@@ -1,4 +1,10 @@
-# Approved Road-Attribute Resolution Policy
+# Approved Road-Attribute Resolution Policy — Compatibility Notice
+
+> This former summary is retained only for existing links. The normative v17
+> repository baseline is
+> [`10_approved_attribute_resolution_policy_v17_complete.md`](10_approved_attribute_resolution_policy_v17_complete.md).
+> If this summary differs from that specification, the complete v17
+> specification and its machine-readable authority take precedence.
 
 ## Status
 

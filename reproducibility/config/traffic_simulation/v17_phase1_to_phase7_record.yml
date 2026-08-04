@@ -1,0 +1,167 @@
+schema_version: 1
+record_id: ota_ward_attribute_resolution_v17_phase1_to_phase7_20260804
+record_type: cumulative_phase_completion_record
+policy_id: ota_ward_attribute_resolution_policy_v17
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+recorded_at: '2026-08-04'
+recorded_by: repository_implementation_agent
+requested_by: repository_owner_directive
+covered_phases: [1, 2, 3, 4, 5, 6, 7]
+overall_status: phase7_complete
+next_phase: 8
+formal_build_ready: false
+attribute_resolution_acceptance: not_run
+
+phase_records:
+  - phase: 1
+    title: authority_and_contract_freeze
+    result: passed
+    completed_at: '2026-08-03'
+    completion_record:
+      path: reproducibility/config/traffic_simulation/v17_phase1_completion.yml
+      sha256: 665332bb4b94032b577c17dccf555570df9817199ac42aec4ece27c46826b805
+    outcome:
+      specification_registry_schema_alignment: passed
+      state_and_origin_contract: fixed
+      formal_build_ready: false
+    verification:
+      focused_tests: 68
+      traffic_simulation_regression: 376
+
+  - phase: 2
+    title: independent_fixture_and_production_independent_oracle_freeze
+    result: passed
+    completed_at: '2026-08-03'
+    completion_record:
+      path: reproducibility/config/traffic_simulation/v17_phase2_completion.yml
+      sha256: 19f5105b991a6102a8a282c922d0d23d32b3ccb4dd1e8f8d1e97a7448c45443c
+    outcome:
+      fixture_catalog: fixed
+      oracle_catalog: fixed
+      oracle_independence: verified
+      formal_build_ready: false
+    verification:
+      phase_tests: 7
+      traffic_simulation_regression: 383
+
+  - phase: 3
+    title: production_state_contract_migration
+    result: passed
+    completed_at: '2026-08-03'
+    completion_record:
+      path: reproducibility/config/traffic_simulation/v17_phase3_completion.yml
+      sha256: f3fb43a98f73009734b9815d1e8f183d899b70c9d50d2c1bb25cb613a25a795e
+    outcome:
+      canonical_resolution_status: integrated
+      canonical_value_origin: integrated
+      legacy_value_state_write: prohibited
+      formal_build_ready: false
+    verification:
+      phase_tests: 17
+      traffic_simulation_regression: 400
+
+  - phase: 4
+    title: directed_segment_production_integration
+    result: passed
+    completed_at: '2026-08-04'
+    completion_record:
+      path: reproducibility/config/traffic_simulation/v17_phase4_completion.yml
+      sha256: 08851fab4dfe929140c2d21a80fe10e70dcb000483168398648a8f65aa931204
+    outcome:
+      directed_segment_generation: integrated
+      source_way_immutability: enforced
+      relation_mapping: fail_closed
+      runtime_full_population: executed_with_fail_closed_blockers
+      formal_build_ready: false
+    verification:
+      phase_tests: 18
+      traffic_simulation_regression: 418
+
+  - phase: 5
+    title: directional_lane_production_integration
+    result: passed
+    completed_at: '2026-08-04'
+    completion_record:
+      path: reproducibility/config/traffic_simulation/v17_phase5_completion.yml
+      sha256: 1180b53ea874a2019fc04743d8617fac9446ee672d145eb829b1763b1a001b12
+    outcome:
+      directional_lane_resolution: integrated
+      lane_vector_and_sumo_index_contract: integrated
+      formal_structural_boundary: enforced
+      runtime_full_population: executed_with_fail_closed_blockers
+      formal_build_ready: false
+    verification:
+      phase_tests: 23
+      traffic_simulation_regression: 441
+
+  - phase: 6
+    title: static_access_production_integration
+    result: passed
+    completed_at: '2026-08-04'
+    completion_record:
+      path: reproducibility/config/traffic_simulation/v17_phase6_completion.yml
+      sha256: 2a0bdeef001cf6755794d9f93a78b2947b42c35299cb3c00945769d22ab84d45
+    outcome:
+      access_rule_normalization: integrated
+      static_maximal_rule_selection: integrated
+      conditional_access: deferred_to_phase7
+      final_permission_resolution: pending
+      runtime_full_population: executed_with_fail_closed_blockers
+      formal_build_ready: false
+    verification:
+      phase_tests: 20
+      traffic_simulation_regression: 461
+
+  - phase: 7
+    title: conditional_access_production_integration
+    result: passed
+    completed_at: '2026-08-04'
+    completion_record:
+      path: reproducibility/config/traffic_simulation/v17_phase7_completion.yml
+      sha256: 8da43084a8d3541f03bc65011f1cf6c2c127895a1bd73564aeecda6422425f96
+    outcome:
+      conditional_grammar: integrated
+      scenario_context_evaluation: integrated
+      within_interval_change: fail_closed
+      static_fallback_after_conditional_failure: prohibited
+      final_permission_resolution: pending_phase8
+      runtime_full_population: executed_with_fail_closed_blockers
+      formal_build_ready: false
+    verification:
+      fixed_oracle_comparisons: 3
+      phase_tests: 15
+      traffic_simulation_regression: 476
+      traffic_simulation_regression_warnings: 24
+
+current_runtime_snapshot:
+  source_way_count: 26220
+  governed_runtime_interval_context: not_fixed
+  formal:
+    conditional_access_blockers: 9
+    static_access_blockers: 562
+    lane_blockers: 24138
+    relation_blockers: 48
+    conditional_stop_codes:
+      ACCESS_CONDITIONAL_SYNTAX_UNSUPPORTED: 4
+      ACCESS_CONTEXT_MISSING: 5
+  structural:
+    conditional_access_blockers: 10
+    static_access_blockers: 772
+    lane_blockers: 22861
+    relation_blockers: 48
+    conditional_stop_codes:
+      ACCESS_CONDITIONAL_SYNTAX_UNSUPPORTED: 5
+      ACCESS_CONTEXT_MISSING: 5
+
+phase8_handoff:
+  objective: integrate_scope_axis_dominance_and_final_permission_resolution
+  inherit_fail_closed_blockers: true
+  preserve_independent_rule_order_invariance: true
+  preserve_lane_local_provenance: true
+  prohibit_typemap_as_formal_permission_authority: true
+
+interpretation:
+  phase_completion_means: required_implementation_and_verification_for_that_phase_passed
+  phase_completion_does_not_mean: formal_build_or_attribute_resolution_acceptance_passed
+  final_v17_acceptance_phase: 14

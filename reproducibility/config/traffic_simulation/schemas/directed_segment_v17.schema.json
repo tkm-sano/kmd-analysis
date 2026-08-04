@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "directed_segment_v17.schema.json",
+  "type": "object",
+  "required": ["directed_segment_id", "source_way_id", "source_start_index", "source_end_index", "source_direction", "source_node_ids", "travel_node_ids", "derivation_rule_id"],
+  "properties": {
+    "directed_segment_id": {"type": "string", "pattern": "^ds:[0-9]+:[0-9]+:[0-9]+:(forward|backward)$"},
+    "source_way_id": {"type": "integer", "minimum": 1},
+    "source_start_index": {"type": "integer", "minimum": 0},
+    "source_end_index": {"type": "integer", "minimum": 1},
+    "source_direction": {"enum": ["forward", "backward"]},
+    "source_node_ids": {"type": "array", "minItems": 2, "items": {"type": "integer"}},
+    "travel_node_ids": {"type": "array", "minItems": 2, "items": {"type": "integer"}},
+    "derivation_rule_id": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

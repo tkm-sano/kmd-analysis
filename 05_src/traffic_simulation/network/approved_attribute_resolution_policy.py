@@ -52,6 +52,16 @@ def validate_approved_policy(
     jsonschema.Draft202012Validator.check_schema(policy_schema)
     jsonschema.Draft202012Validator(policy_schema).validate(policy)
 
+    # The v17 policy file is now an authority index. Phase 1 synchronization
+    # is validated centrally so enum, Schema, Registry, invariant, hash, and
+    # traceability checks cannot drift across independent validators.
+    from traffic_simulation.network.validate_v17_phase1_authority import (
+        validate_phase1_authority,
+    )
+
+    validate_phase1_authority(policy_path=policy_path)
+    return policy
+
     axes = policy["access_specificity"]["axes"]
     if axes != {name: list(values) for name, values in AXIS_VALUES.items()}:
         raise ApprovedPolicyError("access specificity axes or order differ")
@@ -209,65 +219,55 @@ def resolve_access_rules(rules: Iterable[AccessRule]) -> dict[str, Any]:
 
 def directed_segment_id(
     source_way_id: int,
-    source_segment_index: int,
+    source_start_index: int,
+    source_end_index: int,
     direction: str,
 ) -> str:
-    if source_way_id <= 0:
-        raise ApprovedPolicyError("source_way_id must be positive")
-    if not 0 <= source_segment_index <= 9999:
-        raise ApprovedPolicyError("source_segment_index must be 0..9999")
-    codes = {"forward": "F", "backward": "B"}
     try:
-        code = codes[direction]
-    except KeyError as error:
-        raise ApprovedPolicyError(f"unknown direction: {direction}") from error
-    return (
-        f"way/{source_way_id}/segment/{source_segment_index:04d}/"
-        f"direction/{code}"
-    )
+        from traffic_simulation.network.directed_segments_v17 import (
+            canonical_segment_id,
+        )
+
+        return canonical_segment_id(
+            source_way_id, source_start_index, source_end_index, direction
+        )
+    except ValueError as error:
+        raise ApprovedPolicyError(str(error)) from error
 
 
 def build_directed_segment(
     *,
     source_way_id: int,
-    source_segment_index: int,
-    source_node_ids: Sequence[int],
+    source_start_index: int,
+    source_end_index: int,
+    source_way_node_ids: Sequence[int],
     direction: str,
     derivation_rule_id: str,
 ) -> dict[str, Any]:
-    nodes = list(source_node_ids)
-    if len(nodes) < 2:
-        raise ApprovedPolicyError("directed segment requires at least two nodes")
-    if len(set(nodes)) != len(nodes):
-        raise ApprovedPolicyError("directed segment node sequence must be unique")
-    travel_nodes = nodes if direction == "forward" else list(reversed(nodes))
-    segment = {
-        "directed_segment_id": directed_segment_id(
-            source_way_id, source_segment_index, direction
-        ),
-        "source_way_id": source_way_id,
-        "source_segment_index": source_segment_index,
-        "direction_relative_to_way": direction,
-        "source_node_ids": nodes,
-        "travel_node_ids": travel_nodes,
-        "travel_from_node": travel_nodes[0],
-        "travel_to_node": travel_nodes[-1],
-        "derivation_rule_id": derivation_rule_id,
-    }
-    schema = _load_schema(
-        "reproducibility/config/traffic_simulation/schemas/"
-        "directed_segment.schema.json"
-    )
-    jsonschema.Draft202012Validator(schema).validate(segment)
-    return segment
+    try:
+        from traffic_simulation.network.directed_segments_v17 import (
+            build_directed_segment as build_v17_directed_segment,
+        )
+
+        return build_v17_directed_segment(
+            source_way_id=source_way_id,
+            source_start_index=source_start_index,
+            source_end_index=source_end_index,
+            source_way_node_ids=source_way_node_ids,
+            source_direction=direction,
+            derivation_rule_id=derivation_rule_id,
+        )
+    except ValueError as error:
+        raise ApprovedPolicyError(str(error)) from error
 
 
 def build_way_directions(
     *,
     source_way_id: int,
-    source_segment_index: int,
     source_node_ids: Sequence[int],
     oneway: str,
+    source_start_index: int = 0,
+    source_end_index: int | None = None,
 ) -> tuple[dict[str, Any], ...]:
     directions = {
         "yes": ("forward",),
@@ -278,13 +278,15 @@ def build_way_directions(
         selected = directions[oneway]
     except KeyError as error:
         raise ApprovedPolicyError(f"unsupported oneway value: {oneway}") from error
+    end_index = len(source_node_ids) - 1 if source_end_index is None else source_end_index
     return tuple(
         build_directed_segment(
             source_way_id=source_way_id,
-            source_segment_index=source_segment_index,
-            source_node_ids=source_node_ids,
+            source_start_index=source_start_index,
+            source_end_index=end_index,
+            source_way_node_ids=source_node_ids,
             direction=direction,
-            derivation_rule_id=f"DIRECTED-ONEWAY-{oneway}",
+            derivation_rule_id=f"OSM_ONEWAY_EXPLICIT_{oneway}",
         )
         for direction in selected
     )
