@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "phase12_population_accounting_v17.schema.json",
+  "type": "object",
+  "required": ["schema_version", "artifact_type", "configuration_id", "population_version", "population_units", "blocker_relationships", "profile_population_difference", "exclusion_audit", "exclusion_network_impact", "semantic_sha256"],
+  "properties": {
+    "schema_version": {"const": 17},
+    "artifact_type": {"const": "phase12_population_accounting"},
+    "configuration_id": {"const": "ota_ward_sumo_network_v17"},
+    "population_version": {"const": "ota_ward_relation_closure_v16"},
+    "population_units": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/unit"}},
+    "blocker_relationships": {
+      "type": "object",
+      "required": ["upstream_record_count", "permission_blocker_count", "deduplicated_blocker_count", "simple_sum_allowed", "causal_edges", "suppressed_candidates"],
+      "properties": {
+        "upstream_record_count": {"type": "integer", "minimum": 0},
+        "permission_blocker_count": {"type": "integer", "minimum": 0},
+        "deduplicated_blocker_count": {"type": "integer", "minimum": 0},
+        "simple_sum_allowed": {"const": false},
+        "causal_edges": {"type": "array", "items": {"$ref": "#/$defs/edge"}},
+        "suppressed_candidates": {"type": "array", "items": {"$ref": "#/$defs/suppressed"}}
+      },
+      "additionalProperties": false
+    },
+    "profile_population_difference": {
+      "type": "object",
+      "required": ["formal_record_count", "structural_record_count", "difference", "by_assumption_id", "missing_formal_record_detected", "duplicate_structural_record_detected", "unregistered_assumption_detected"],
+      "properties": {
+        "formal_record_count": {"type": "integer", "minimum": 0},
+        "structural_record_count": {"type": "integer", "minimum": 0},
+        "difference": {"type": "integer", "minimum": 0},
+        "by_assumption_id": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "missing_formal_record_detected": {"type": "boolean"},
+        "duplicate_structural_record_detected": {"type": "boolean"},
+        "unregistered_assumption_detected": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "exclusion_audit": {"$ref": "#/$defs/exclusionAudit"},
+    "exclusion_network_impact": {"$ref": "#/$defs/networkImpact"},
+    "semantic_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "unit": {
+      "type": "object",
+      "required": ["population_unit_id", "attribute_name", "identity_axes", "input", "governed", "excluded", "resolved", "unresolved", "conflict", "invalid", "valid_but_unsupported", "equations_valid"],
+      "properties": {
+        "population_unit_id": {"type": "string", "minLength": 1},
+        "attribute_name": {"type": "string", "minLength": 1},
+        "identity_axes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "input": {"type": "integer", "minimum": 0},
+        "governed": {"type": "integer", "minimum": 0},
+        "excluded": {"type": "integer", "minimum": 0},
+        "resolved": {"type": "integer", "minimum": 0},
+        "unresolved": {"type": "integer", "minimum": 0},
+        "conflict": {"type": "integer", "minimum": 0},
+        "invalid": {"type": "integer", "minimum": 0},
+        "valid_but_unsupported": {"type": "integer", "minimum": 0},
+        "equations_valid": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "edge": {
+      "type": "object",
+      "required": ["root_cause_record_id", "downstream_record_id", "relationship"],
+      "properties": {
+        "root_cause_record_id": {"type": "string", "minLength": 1},
+        "downstream_record_id": {"type": "string", "minLength": 1},
+        "relationship": {"const": "causes_permission_blocker"}
+      },
+      "additionalProperties": false
+    },
+    "suppressed": {
+      "type": "object",
+      "required": ["root_cause_record_id", "source_way_id", "suppressed_directed_segment_count", "suppressed_lane_tuple_count", "relationship"],
+      "properties": {
+        "root_cause_record_id": {"type": "string", "minLength": 1},
+        "source_way_id": {"type": ["integer", "null"]},
+        "suppressed_directed_segment_count": {"type": "integer", "minimum": 0},
+        "suppressed_lane_tuple_count": {"type": "integer", "minimum": 0},
+        "relationship": {"const": "candidate_suppressed"}
+      },
+      "additionalProperties": false
+    },
+    "exclusionAudit": {
+      "type": "object",
+      "required": ["excluded_way_count", "excluded_way_ratio", "excluded_length_m", "excluded_length_ratio", "by_highway_class", "by_original_stop_code", "exclusions_added_after_phase12", "population_version_changed"],
+      "properties": {
+        "excluded_way_count": {"type": "integer", "minimum": 0},
+        "excluded_way_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "excluded_length_m": {"type": "number", "minimum": 0},
+        "excluded_length_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "by_highway_class": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "by_original_stop_code": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "exclusions_added_after_phase12": {"const": 0},
+        "population_version_changed": {"const": false}
+      },
+      "additionalProperties": false
+    },
+    "networkImpact": {
+      "type": "object",
+      "required": ["weakly_connected_components_before", "weakly_connected_components_after", "unreachable_customer_count_before", "unreachable_customer_count_after", "removed_edge_count", "removed_total_length_m", "critical_connector_removed", "result"],
+      "properties": {
+        "weakly_connected_components_before": {"type": "integer", "minimum": 0},
+        "weakly_connected_components_after": {"type": "integer", "minimum": 0},
+        "unreachable_customer_count_before": {"type": "integer", "minimum": 0},
+        "unreachable_customer_count_after": {"type": "integer", "minimum": 0},
+        "removed_edge_count": {"type": "integer", "minimum": 0},
+        "removed_total_length_m": {"type": "number", "minimum": 0},
+        "critical_connector_removed": {"type": "boolean"},
+        "result": {"enum": ["passed", "failed"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

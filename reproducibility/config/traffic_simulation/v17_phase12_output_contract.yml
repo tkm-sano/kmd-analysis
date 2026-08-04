@@ -1,0 +1,154 @@
+schema_version: 17
+schema: reproducibility/config/traffic_simulation/schemas/phase12_output_contract_v17.schema.json
+contract_id: OTA_WARD_V17_PHASE12_OUTPUT_CONTRACT
+contract_version: 1.0.0
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+policy_id: ota_ward_attribute_resolution_policy_v17
+blocker_policy_id: FORMAL_BLOCKER_POLICY_V17
+status: fixed
+approved_by: repository_owner_directive
+approved_at: '2026-08-04'
+normative_specification: 05_src/traffic_simulation/specifications/12_phase12_full_population_output_contract_v17.md
+
+execution:
+  required_run_ids: [run_1, run_2]
+  fresh_output_directory_per_run: true
+  cross_run_output_reads_allowed: false
+  identical_environment_required: true
+  clean_git_worktree_required: true
+  successful_exit_code: 0
+  output_root: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12
+  run_path_template: runs/{run_id}
+  published_path: published
+  overwrite_existing: false
+  atomic_write_required: true
+  publish_source_run: run_1
+  publish_only_after_determinism_passed: true
+
+fixed_inputs:
+  source_osm: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+  configuration: reproducibility/config/traffic_simulation/sumo_network_v17.yml
+  registry_bundle: reproducibility/config/traffic_simulation/attribute_resolution_registries_v17.yml
+  semantic_invariants: reproducibility/config/traffic_simulation/v17_semantic_invariants.yml
+  scenario_context: reproducibility/config/traffic_simulation/v17_governed_runtime_interval_context.yml
+  blocker_policy: reproducibility/config/traffic_simulation/formal_blocker_policy_v17.yml
+  hash_binding_required: true
+
+profiles:
+  structural:
+    allow_model_assumed: true
+    acceptance_eligible: false
+    output_path: structural/full_population.json
+  formal:
+    allow_model_assumed: false
+    acceptance_eligible: true
+    output_path: formal/full_population.json
+
+required_stages:
+  - directed_segments
+  - directional_lanes
+  - static_access
+  - conditional_access
+  - final_permission
+  - speed
+
+artifact_catalog:
+  - artifact_id: structural_full_population
+    path_template: runs/{run_id}/structural/full_population.json
+    schema: reproducibility/config/traffic_simulation/schemas/phase12_profile_artifact_v17.schema.json
+    determinism_required: true
+  - artifact_id: formal_full_population
+    path_template: runs/{run_id}/formal/full_population.json
+    schema: reproducibility/config/traffic_simulation/schemas/phase12_profile_artifact_v17.schema.json
+    determinism_required: true
+  - artifact_id: complete_blocker_inventory
+    path_template: runs/{run_id}/formal/blocker_inventory.json
+    schema: reproducibility/config/traffic_simulation/schemas/formal_blocker_inventory_v17.schema.json
+    determinism_required: true
+  - artifact_id: exclusion_manifest
+    path_template: runs/{run_id}/formal/exclusion_manifest.json
+    schema: reproducibility/config/traffic_simulation/schemas/exclusion_manifest_v17.schema.json
+    determinism_required: true
+  - artifact_id: population_accounting
+    path_template: runs/{run_id}/population_accounting.json
+    schema: reproducibility/config/traffic_simulation/schemas/phase12_population_accounting_v17.schema.json
+    determinism_required: true
+  - artifact_id: environment_build_manifest
+    path_template: runs/{run_id}/environment_build_manifest.json
+    schema: reproducibility/config/traffic_simulation/schemas/environment_build_manifest_v17.schema.json
+    determinism_required: false
+  - artifact_id: run_manifest
+    path_template: runs/{run_id}/run_manifest.json
+    schema: reproducibility/config/traffic_simulation/schemas/phase12_run_manifest_v17.schema.json
+    determinism_required: false
+  - artifact_id: determinism_report
+    path_template: determinism_report.json
+    schema: reproducibility/config/traffic_simulation/schemas/phase12_determinism_report_v17.schema.json
+    determinism_required: false
+
+serialization:
+  format: canonical_json
+  encoding: utf-8
+  sort_object_keys: true
+  separators: [',', ':']
+  ensure_ascii: false
+  trailing_newline_count: 1
+  semantic_hash_algorithm: sha256
+  semantic_hash_excluded_fields: [semantic_sha256]
+  byte_hash_algorithm: sha256
+  set_like_arrays_sorted_by_canonical_id: true
+  forbidden_semantic_fields: [generated_at, run_id, temporary_path, host_path]
+
+population_accounting:
+  equations:
+    input: governed + excluded
+    governed: resolved + unresolved + conflict + invalid + valid_but_unsupported
+  per_population_unit_required: true
+  declared_identity_axes_required: true
+  cross_unit_simple_sum_allowed: false
+  upstream_and_permission_blockers_simple_sum_allowed: false
+  deduplicated_blocker_identity_count_required: true
+  permission_root_cause_record_ids_required: true
+  suppressed_candidate_impact_required: true
+  profile_difference_by_assumption_id_required: true
+  exclusion_audit_required_even_when_empty: true
+  exclusion_network_impact_required_even_when_empty: true
+
+determinism:
+  comparison: semantic_sha256_exact_equality
+  compare_artifact_ids:
+    - structural_full_population
+    - formal_full_population
+    - complete_blocker_inventory
+    - exclusion_manifest
+    - population_accounting
+  environment_manifest_compared_by_fields:
+    - source_commit
+    - container_digest
+    - python_version
+    - library_versions
+    - command
+    - arguments
+    - configuration_hash
+    - schema_hashes
+    - registry_hashes
+    - input_hashes
+    - random_seeds
+  all_comparisons_must_match: true
+
+completion_gate:
+  all_required_artifacts_exist: true
+  all_schema_validations_pass: true
+  all_semantic_validations_pass: true
+  all_reference_hashes_match: true
+  all_population_equations_pass: true
+  duplicate_record_ids: 0
+  duplicate_blocker_ids: 0
+  unregistered_assumption_ids: 0
+  unregistered_exclusion_rule_ids: 0
+  permission_blockers_without_root_cause_ids: 0
+  two_run_determinism_passed: true
+  phase12_result_when_satisfied: passed
+  formal_build_ready_when_governed_blockers_remain: false
+  attribute_resolution_acceptance: not_run
