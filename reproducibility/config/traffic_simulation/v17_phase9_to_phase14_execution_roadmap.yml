@@ -33,7 +33,8 @@ steps:
   - order: 3
     phase_scope: phase12
     action: execute_full_population_structural_and_formal_runs
-    status: pending
+    status: completed
+    completion_record: reproducibility/config/traffic_simulation/v17_phase12_completion.yml
     required_outputs:
       - structural_full_population_artifact
       - formal_full_population_artifact
@@ -97,8 +98,9 @@ steps:
       - two_run_determinism
 
 current_state:
-  completed_through_phase: 11
-  next_phase: 12
+  completed_through_phase: 12
+  next_phase: 13
+  next_step: post_phase12_analysis
   production_registered_exclusion_rule_count: 0
   formal_build_ready: false
   attribute_resolution_acceptance: not_run

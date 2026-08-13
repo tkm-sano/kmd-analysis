@@ -53,10 +53,31 @@ result:
   run_1_completion: passed
   run_2_completion: passed
   requested_two_independent_runs: passed
-  determinism_finalize_executed: false
-  phase12_formal_completion_claimed: false
+  determinism_finalize_executed: true
+  determinism: passed
+  publication: passed
+  phase12_result: passed
+  phase12_formal_completion_claimed: true
+finalization:
+  finalized_at: '2026-08-14'
+  implementation_commit: c44f40686df14005463d75586dc1bb73cd6a5135
+  determinism_report: determinism_report.json
+  determinism_report_sha256: 9491879aca3d109c918ded3c37ce448364c0bf2bd0fa348ca4d6977e9821433a
+  compared_artifact_count: 5
+  environment_comparison: passed
+  argument_normalization:
+    option: --run-id
+    recorded_values_preserved: true
+    normalized_value: <run_id>
+    other_arguments_ignored: false
+  published_path: published
+  published_from: run_1
+  published_file_count: 7
+  all_published_bytes_match_run_1: true
+completion_record: reproducibility/config/traffic_simulation/v17_phase12_completion.yml
 notes:
   - Both runs were generated independently from the same fixed input and did not read each other's outputs.
   - Each run passed all eight per-run completion validators in its manifest and a separate post-run CLI recheck.
   - The remaining governed blockers mean formal_build_ready remains false.
-  - Finalize was not requested or executed; its environment argument comparison requires separate resolution because run_id necessarily differs.
+  - The exact CLI arguments remain recorded; only the value bound to --run-id is normalized for cross-run comparison.
+  - Phase 12 passed its inventory, accounting, determinism, and publication gates; blocker resolution remains Phase 13 work.

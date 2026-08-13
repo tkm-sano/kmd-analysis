@@ -1,0 +1,102 @@
+schema_version: 1
+completion_id: ota_ward_attribute_resolution_v17_phase12_20260814
+policy_id: ota_ward_attribute_resolution_policy_v17
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+contract_id: OTA_WARD_V17_PHASE12_OUTPUT_CONTRACT
+completed_at: '2026-08-14'
+completed_by: repository_implementation_agent
+requested_by: repository_owner_directive
+result: passed
+phase12_scope: full_population_run_and_accounting
+formal_build_ready: false
+attribute_resolution_acceptance: not_run
+
+prerequisite:
+  phase11:
+    path: reproducibility/config/traffic_simulation/v17_phase11_completion.yml
+    sha256: f22dc4596a199451120215b520f70e731c249592e6561a8c9435660d0a875bf9
+    result: passed
+
+execution:
+  output_root: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_20260813_independent_rerun
+  source_commit: c86c7548bcd39b2f6fcdccd0b1e6c813fe10636c
+  finalization_implementation_commit: c44f40686df14005463d75586dc1bb73cd6a5135
+  container_image: tokyo-traffic-research-analysis
+  container_digest: sha256:fbc7489e297359ccbd70a0030613d95d2f3dade061b6501b281d834e24bd3002
+  run_1_manifest:
+    path: runs/run_1/run_manifest.json
+    sha256: 93fe3401410c75c84bb22e37fca0744313cf1406e7c9911d875571a3ba9ab558
+    result: passed
+    validator_count: 8
+    failed_validator_count: 0
+  run_2_manifest:
+    path: runs/run_2/run_manifest.json
+    sha256: 5f87e04f0f930a636c6caec0c5a8d62d9580c0319d165fe71b0578f6a99b670d
+    result: passed
+    validator_count: 8
+    failed_validator_count: 0
+
+determinism:
+  report_path: determinism_report.json
+  report_sha256: 9491879aca3d109c918ded3c37ce448364c0bf2bd0fa348ca4d6977e9821433a
+  schema_validation: passed
+  result: passed
+  artifact_comparison_count: 5
+  all_artifact_semantic_hashes_match: true
+  all_environment_fields_match: true
+  recorded_argument_vectors_preserved: true
+  normalized_option: --run-id
+  normalized_option_value_bound_to_each_run_id: true
+  other_argument_normalization_allowed: false
+
+publication:
+  result: passed
+  source_run: run_1
+  path: published
+  file_count: 7
+  all_published_bytes_match_source_run: true
+  atomic_publication: true
+  overwrite_existing: false
+
+major_artifact_semantic_sha256:
+  structural_full_population: 326fe41a0fbcb55f05f6688cc4e1cf9c2f6d239e79b320b227e7dec7b9cca37f
+  formal_full_population: 953eb744494bc2e3261d206acc4695be734659187241d2e3659c7dc08a93c740
+  complete_blocker_inventory: d635ec3187f02f9add39a1f30969cd5c463b5a27f4be5f3bee9b74c65afba993
+  exclusion_manifest: ac4627666e5ccd1970745bfe53e8ac41057454b5b9267cd6990213cccfeafe87
+  population_accounting: f76d9c7085849bccf754116784e9c3013ad79d452c82778e20cd74e5b141e7fa
+
+verification:
+  focused_tests:
+    command: PYTHONPATH=05_src pytest -q 05_src/traffic_simulation/validation/test_phase12_output_contract_v17.py 05_src/traffic_simulation/validation/test_phase12_run_completion_v17.py
+    result: passed
+    count: 35
+  contract_validator:
+    command: PYTHONPATH=05_src python -m traffic_simulation.network.validate_v17_phase12_output_contract
+    result: passed
+  finalize:
+    command: PYTHONPATH=05_src python -m traffic_simulation.network.execute_v17_phase12_full_population --finalize
+    result: passed
+
+exit_conditions:
+  both_run_completion_gates_passed: true
+  all_required_artifacts_exist: true
+  all_schema_and_semantic_validations_passed: true
+  all_reference_hashes_match: true
+  all_population_equations_passed: true
+  identity_uniqueness_passed: true
+  registered_value_validation_passed: true
+  blocker_exclusion_validation_passed: true
+  two_run_determinism_passed: true
+  environment_comparison_passed: true
+  determinism_report_generated: true
+  publication_generated: true
+  phase12_result: passed
+
+interpretation:
+  governed_blocker_count: 108189
+  phase12_pass_means: full_population_inventory_accounting_and_two_run_determinism_gates_passed
+  phase12_pass_does_not_mean: formal_attributes_or_sumo_network_accepted
+  blockers_are_resolved_in_phase: 13
+  final_attribute_resolution_acceptance_phase: 14
+  next_action: aggregate_phase12_blockers_by_attribute_stop_code_and_root_cause

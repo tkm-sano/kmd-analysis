@@ -2,7 +2,7 @@
 
 > **文書状態**: 現状確認用の統合資料
 >
-> **基準日**: 2026-08-13（日本標準時）
+> **基準日**: 2026-08-14（日本標準時）
 >
 > **対象**: 東京・大田区 SUMO 道路網の v17 属性解決ライフサイクル
 >
@@ -12,7 +12,7 @@
 >
 > **母集団版**: `ota_ward_relation_closure_v16`
 >
-> **現在地**: Phase 1〜11 は正式記録上合格。Phase 12 は新しい独立出力先で2回実行し、両runの単体completion gateと主要5成果物のsemantic hash一致まで確認済み。ただし、2run全体の`finalize()`と正式完了記録は未実施。Phase 13 は未着手、Phase 14 はゲート待ち。
+> **現在地**: Phase 1〜12は正式記録上合格。Phase 12は両runの単体completion gate、主要5成果物のsemantic hash一致、実行条件比較、`finalize()`、原子的公開まで完了。Phase 13は未着手、Phase 14はゲート待ち。
 
 ## 1. この文書の目的
 
@@ -20,7 +20,7 @@
 v17 属性解決 Phase 1〜14について、次を一か所で確認できるようにする。
 
 1. 各Phaseの定義と完了条件
-2. 2026-08-13時点の状態
+2. 2026-08-14時点の状態
 3. 状態判断の根拠となる実装、試験、記録、成果物
 4. 未完了事項と次に進むための条件
 5. `v17`、`v16`、`V&V`、Phase番号の区別
@@ -125,7 +125,7 @@ Phase単体の「合格」は、属性解決全体、正式SUMO道路網、ま�
 | 9 | **Speed Resolution**。方向別・条件付き速度、法定速度、助言速度、simulation速度を分離して解決する | 日本速度規則が承認・hash固定され、未根拠値をformalへ混入しない | **合格**（2026-08-04） | `v17_phase9_completion.yml`、`speed_resolution_v17.py`、`japan_speed_rules_v17.yml` | formal速度未解決はPhase 13対象 |
 | 10 | **Formal Evidence Method**。外部・派生証拠をformal値へ使用する方法と境界を統制する | 未承認method、model-assumed donor、直接編集をfail-closedにし、origin auditが合格する | **合格**（2026-08-04） | `v17_phase10_completion.yml`、`evidence_resolution_v17.py`、origin audit | 承認済みformal evidence methodは現在0件。証拠なしの停止を解消済みとはしない |
 | 11 | **Resolver Integration Test**。Phase 3〜10を統合し、Schema、意味、独立oracle、metamorphic relationを検査する | 4ゲートすべて合格し、cross-stage lineageが保たれる | **合格**（2026-08-04） | `v17_phase11_completion.yml`、`resolver_integration_v17.py`、統合fixture/oracle | Phase 11合格はfull-population acceptanceを意味しない |
-| 12 | **Full-population Run and Accounting**。固定v16母集団をv17 structural/formal両profileで2回独立実行し、全停止・除外・母集団差を保存する | 必須8成果物、全Schema・意味検証、hash、母集団式、ID一意性、環境一致、2回決定論的一致、原子的公開がすべて合格する | **2回実行・run単体合格、正式完了未認定** | 固定契約、runner、各runのmanifest、`v17_phase12_independent_rerun_20260813.yml` | `run_id`だけが異なる実CLI引数の環境比較規則を修正し、全体`finalize()`、原子的公開、正式完了記録を実施する |
+| 12 | **Full-population Run and Accounting**。固定v16母集団をv17 structural/formal両profileで2回独立実行し、全停止・除外・母集団差を保存する | 必須8成果物、全Schema・意味検証、hash、母集団式、ID一意性、環境一致、2回決定論的一致、原子的公開がすべて合格する | **合格**（2026-08-14） | `v17_phase12_completion.yml`、`determinism_report.json`、各run manifest、`v17_phase12_independent_rerun_20260813.yml` | Phase 13でblockerを属性・停止コード・根本原因別に解消する |
 | 13 | **Stop Record Resolution and Rerun**。Phase 12の停止を根本原因別に解消し、全件成果物を再生成する | decision→Registry/表→Schema→Invariant→fixture→独立oracle→code→試験→全件runの順を守り、未証明recordを残さない | **未着手** | `v17_phase9_to_phase14_execution_roadmap.yml`、formal blocker policy | Phase 12の正式確定後、blockerを属性・停止コード・根本原因別に集計して解消する |
 | 14 | **Attribute Resolution Acceptance**。formal属性成果物の最終受入判定を行う | blocker、review-required、stop-unresolved、model-assumedが各0件。全record解決、母集団式・permission被覆・Schema・意味・oracle・projection不変・2回一致が合格する | **ゲート待ち** | 実行ロードマップ、formal blocker policy | Phase 13再実行後に受入を実行する。合格しても正式SUMO道路網の承認とは別 |
 
@@ -133,7 +133,7 @@ Phase単体の「合格」は、属性解決全体、正式SUMO道路網、ま�
 
 ### 6.1 正式に確定している状態
 
-- Git管理された累積完了記録は、Phase 1〜11を `passed` としている。
+- Git管理された累積完了記録は、Phase 1〜12を `passed` としている。
 - Phase 11時点で、Schema、Semantic Invariant、production-independent oracle、
   metamorphic validationが合格している。
 - `formal_build_ready` は `false` である。
@@ -154,8 +154,9 @@ Phase 12の出力先は `.gitignore` 対象だが、ローカルには2026-08-13
 同一固定入力を使用した。両runは終了コード0で、8個のrun単体validatorと実行後の独立CLI再検査に
 合格し、主要5成果物のsemantic SHA-256がすべて一致した。各run manifestには、実際のCLI引数、
 各validatorのcommand、終了コード、stdout/stderrログ、そのSHA-256、検査件数、検査結果が記録される。
-Phase 12全体の`finalize()`は未実行なので、`published/`と`determinism_report.json`はこの新出力先では
-まだ正式成果物として生成していない。
+Phase 12全体の`finalize()`は2026-08-14に合格し、`published/`と`determinism_report.json`を
+生成した。実CLI引数は保持し、比較時だけ各run自身と一致する`--run-id`値を`<run_id>`へ正規化した。
+それ以外の引数と実行条件は完全一致した。
 
 Phase 12成果物が示す主な数値は次のとおりである。異なる母集団単位の件数を単純合算して
 モデル全体の欠損率などと解釈してはならない。
@@ -182,25 +183,16 @@ Phase 12成果物が示す主な数値は次のとおりである。異なる母
 | run_1 単体completion | passed（8 validator、失敗0） |
 | run_2 単体completion | passed（8 validator、失敗0） |
 | 主要5成果物の2run semantic hash一致 | passed |
-| Phase 12全体`finalize()` | 未実行 |
+| Phase 12全体`finalize()` | passed |
 
-### 6.3 Phase 12を正式完了としない理由
+### 6.3 Phase 12の正式判定と解釈
 
-両runが単体検査に合格していても、次の全体ゲートが未完了であるため、本書ではPhase 12を
-「2回実行・run単体合格、正式完了未認定」とする。
+Phase 12全体は`passed`である。両runの8単体validator、run manifest再検証、主要5成果物の
+semantic hash一致、実行条件一致、determinism report Schema、原子的公開がすべて合格した。
 
-1. 実CLI引数を正しく記録すると、`run_1`と`run_2`では`--run-id`の値が必ず異なる。一方、
-   現行契約は環境比較対象に`arguments`全体を含めるため、そのままでは正しい2runを同一環境と
-   判定できない。実記録を改変せず、比較時だけrun固有値を正規化する規則が必要である。
-2. 上記規則を実装・試験した後の全体`finalize()`、2run決定論report、原子的公開が未実行である。
-3. Git管理されたPhase 12正式完了記録とロードマップ更新が未作成である。
-4. runnerとvalidatorの正常系・成果物欠落・値改変・ID重複・母集団不整合・上書き拒否・
-   公開禁止の試験は合格しているが、小型fixtureによる2runから`finalize()`までの全経路試験が残る。
-5. 108,189件のgoverned blockerが残り、`formal_build_ready`は`false`である。これはPhase 13で
-   根本原因別に解消すべき内容であり、run単体validator合格によって解消されたとは扱わない。
-
-したがって新しい2run成果物は、Phase 12全体最終化、blocker分析、Phase 13設計には使用できるが、
-現状のままPhase 12の正式完了証拠またはPhase 14の受入証拠にはしない。
+108,189件のgoverned blockerが残るため、`formal_build_ready`は`false`である。ただしPhase 12は
+blockerを漏れなく棚卸しし、母集団と因果関係を保存する工程であるため、blocker残存はPhase 12の
+不合格条件ではない。blocker解消はPhase 13、0件確認と属性解決受入はPhase 14の責務である。
 
 ## 7. Phase 12からPhase 14までの次の実行順序
 
@@ -221,8 +213,8 @@ Phase 12成果物が示す主な数値は次のとおりである。異なる母
    `run_1`と`run_2`を独立実行し、双方が8個のrun単体gateおよび実行後の独立CLI再検査に合格した。
    主要5成果物のsemantic SHA-256も2runで一致した。実行証拠は
    `v17_phase12_independent_rerun_20260813.yml`に記録した。
-5. `run_id`を除く実CLI引数の環境比較規則を実装・試験し、全体`finalize()`を実行する。
-6. 全完了ゲート合格後、Phase 12完了記録とロードマップを更新する。
+5. **2026-08-14実行済み:** `run_id`だけを検証付きで正規化し、全体`finalize()`を実行した。
+6. **2026-08-14実行済み:** Phase 12完了記録とロードマップを更新した。
 7. blockerを `attribute_name`、`stop_code`、`root_cause_category` で集計する。
 8. Phase 13の順序に従って根本原因を解消し、全件runを再実行する。
 9. governed blocker等がすべて0件になった後、Phase 14 Acceptanceを実行する。
@@ -279,6 +271,7 @@ Phase 14は属性解決の受入であり、道路網全体や交通モデル全
 - `05_src/traffic_simulation/validation/test_phase12_output_contract_v17.py`
 - `05_src/traffic_simulation/validation/test_phase12_run_completion_v17.py`
 - `reproducibility/config/traffic_simulation/v17_phase12_independent_rerun_20260813.yml`
+- `reproducibility/config/traffic_simulation/v17_phase12_completion.yml`
 - `reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_20260813_independent_rerun/`
 
 ### 9.4 V&V全体と後続工程

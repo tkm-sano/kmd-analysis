@@ -2,9 +2,9 @@
 
 > **文書状態**: 現行方針  
 > **作成日**: 2026-07-30  
-> **現状更新日**: 2026-08-13
+> **現状更新日**: 2026-08-14
 > **対象**: 東京・大田区を起点とするSUMO交通シミュレーション、EV配送評価、古典手法と回路シミュレーション手法の比較  
-> **現在地**: v17属性解決 Phase 1〜11は合格。Phase 12は全件成果物と2回一致結果が存在するが、完了ゲート実装と正式完了記録の補強が必要。Phase 13は未着手、Phase 14はゲート待ち。交通モデルの較正、独立Validation、正式配送比較、Experienced Driver感度分析は未実施。
+> **現在地**: v17属性解決 Phase 1〜12は合格。Phase 12は2run単体検査、主要5成果物一致、実行条件比較、`finalize()`、原子的公開まで完了。108,189件のgoverned blockerが残るため`formal_build_ready`は`false`。Phase 13は未着手、Phase 14はゲート待ち。交通モデルの較正、独立Validation、正式配送比較、Experienced Driver感度分析は未実施。
 
 ## 目次
 
@@ -40,15 +40,13 @@
 
 ### 0.1 結論
 
-2026年8月13日現在、研究は**道路網のVerification途中**にある。現在の作業単位は
-**v17属性解決 Phase 12**であり、交通モデル全体のValidationや配送手法の正式比較には
-まだ進んでいない。
+2026年8月14日現在、研究は**道路網のVerification途中**にある。v17属性解決 Phase 12は
+正式に合格し、次の作業単位はPhase 13のblocker根本原因解消である。交通モデル全体の
+Validationや配送手法の正式比較にはまだ進んでいない。
 
-Phase 12の`run_1`、`run_2`、公開用成果物、2回決定論的一致レポートはローカルに存在する。
-runnerの実行引数記録は修正済みだが、既存成果物には修正前の誤った引数が残る。また、
-全完了条件の再検査、固定文字列による合格表示、正式な完了記録とロードマップの更新に
-不足がある。このためPhase 12は
-**「実行済み・正式完了未認定」**とする。
+Phase 12の`run_1`と`run_2`は各8 validatorに合格し、主要5成果物のsemantic hashと実行条件が
+一致した。実引数は保持し、比較時だけ各run自身に一致する`--run-id`値を正規化した。
+`determinism_report.json`と`published/`を生成し、正式完了記録を作成した。
 
 ### 0.2 v17属性解決 Phase 1〜14の現在地
 
@@ -58,7 +56,7 @@ runnerの実行引数記録は修正済みだが、既存成果物には修正�
 | Phase | 内容 | 現在の状態 | 次に必要なこと |
 |---:|---|---|---|
 | 1〜11 | Authority同期、独立fixture/oracle、状態契約、方向付き区間、車線、access、permission、速度、formal evidence、統合試験 | **合格** | Phase単体の再作業は不要。上流変更時のみ影響範囲を再検証する |
-| 12 | 固定v16母集団をv17 structural/formalで2回全件実行し、blocker・除外・母集団差を記録する | **実行済み・正式完了未認定** | runnerと完了validatorを修正し、新しい出力先で2回再実行して正式完了記録を作る |
+| 12 | 固定v16母集団をv17 structural/formalで2回全件実行し、blocker・除外・母集団差を記録する | **合格** | 完了記録、決定論report、公開成果物を生成済み。blockerをPhase 13へ引き渡す |
 | 13 | Phase 12で得た停止recordを根本原因別に解消し、全件再実行する | **未着手** | Phase 12正式確定後、decision→規則→Schema→fixture→oracle→code→試験→全件runの順で解消する |
 | 14 | Attribute Resolution Acceptance | **ゲート待ち** | blocker、review-required、stop-unresolved、model-assumedを各0件にして受入検査を行う |
 
@@ -70,7 +68,7 @@ Phase 1〜14の定義、完了条件、証拠、Phase 12の実数は
 | 研究工程 | 状態 | 現在の意味 |
 |---|---|---|
 | 大田区研究範囲・基礎入力・来歴 | 完了 | N03、OSM、JARTIC 1時間snapshot、人口・需要代理データを登録済み |
-| v17道路属性解決 | 進行中 | Phase 12の正式完了認定前 |
+| v17道路属性解決 | 進行中 | Phase 12合格。Phase 13のblocker解消前 |
 | 正式SUMO道路網 | 未承認 | Phase 14後にもPermission Materializer、connection、TLS、Network Integration Acceptanceが必要 |
 | 交通需要・信号・車両・運転行動 | 未着手 | 正式道路網と追加観測・設定が必要 |
 | 交通モデルCalibration | 未着手 | 較正用の複数日時・複数地点観測が必要 |
@@ -87,10 +85,10 @@ Phase 1〜14の定義、完了条件、証拠、Phase 12の実数は
 
 | 順序 | 行うこと | なぜ行うか | 完了・次へ進む条件 |
 |---:|---|---|---|
-| 1 | Phase 12の完了validatorを修正する | 実CLI引数の記録は修正済みだが、全byte hash、全ID一意性、全母集団式等を最終化時に再検査していない。合格表示を実検査に一致させるため | 契約の全completion gateをvalidatorが検査できる |
-| 2 | Phase 12 runner、失敗経路、`finalize`、公開処理の試験を追加する | 現在の16試験は契約検査9件、CLI引数伝達1件、container identity検証6件で、全件runnerの成功・失敗・部分成果物・上書き拒否・公開禁止を直接保証していないため | 正常系、異常系、2回不一致、部分失敗、既存出力、原子的公開について独立した試験が合格する |
-| 3 | 既存成果物を直接編集せず、Phase 12を新規runとして2回再実行する | runner修正前の成果物を修正後実装の証拠として流用できず、直接編集すると入力から出力までの来歴と決定論を失うため | 同一commit、入力、設定、環境、引数、seedによる独立2回runが完了する |
-| 4 | Phase 12の全ゲートを検査し、合格後に完了記録とロードマップを更新する | 成果物の存在や2回一致だけではPhase 12完了を意味せず、現在は実成果物と`pending`記録が矛盾しているため | 必須8成果物、Schema、意味、hash、母集団式、ID一意性、除外・仮定、環境一致、2回決定論が合格し、正式完了記録が作成される |
+| 1 | **完了:** Phase 12の完了validatorを実装・実行する | 合格表示を実検査に一致させるため | 8単体validatorと全体completion gateが合格済み |
+| 2 | **完了:** Phase 12 runner、失敗経路、`finalize`、公開処理を試験する | 部分失敗、上書き、誤公開を防止するため | 関連35試験が合格済み |
+| 3 | **完了:** 既存成果物を直接編集せず、Phase 12を2回独立実行する | 入力から出力までの来歴と決定論を保持するため | 固定commit、入力、container digest、seedによる2runが合格済み |
+| 4 | **完了:** Phase 12の全ゲートを検査し、完了記録とロードマップを更新する | Phase全体の正式判定を証拠化するため | `v17_phase12_completion.yml`、determinism report、公開成果物を生成済み |
 | 5 | Phase 13で停止recordを根本原因別に解消し、全件再実行する | Phase 12は停止の完全な棚卸しであり、formal属性を承認可能にする工程ではない。欠損を既定値で埋めたり件数の多さだけで除外したりせず、原因ごとに証拠と規則を直す必要があるため | decision、Registry、Schema、Invariant、fixture、独立oracle、code、試験、全件runの順を守り、未証明recordを残さない |
 | 6 | Phase 14 Attribute Resolution Acceptanceを行う | 個別Phaseや全件runの成功と、formal属性全体を正式入力として受け入れる判断は別だからである | blocker、review-required、stop-unresolved、model-assumedが各0件で、全record、permission被覆、母集団式、Schema、意味、oracle、2回一致が合格する |
 | 7 | SUMO Network Integration Acceptanceを行う | Phase 14が確認するのは属性解決であり、SUMOのedge、lane、connection、turn restriction、TLS、左側通行、到達可能性を保証しないため | Permission Materializer、final connection set、TLS review、SUMO 1.24.0読込み、構造・到達可能性・来歴監査が合格する |
@@ -100,16 +98,16 @@ Phase 1〜14の定義、完了条件、証拠、Phase 12の実数は
 
 ### 0.5 現状の課題・解決策
 
-課題は、直近のPhase 12を止める問題と、その後の正式道路網・交通Validation・配送評価を
-止める問題に分けて管理する。件数が多いことだけを理由に属性を補完または除外せず、
+Phase 12の実行・検査・最終化に関する課題は解消済みである。現在の課題はPhase 13以降の
+正式道路網・交通Validation・配送評価を止める問題として管理する。件数が多いことだけを理由に属性を補完または除外せず、
 各課題について原因、証拠、修正、再試験、受入の順を保持する。
 
 | 優先度 | 現状の課題 | 影響 | 解決策 | 解消したと判断する条件 |
 |---:|---|---|---|---|
-| 1 | **Phase 12の実成果物と正式進捗記録が矛盾している**。`run_1`、`run_2`、`published`、決定論レポートは存在するが、導入記録は`phase12_outputs_generated: false`、ロードマップは`pending`のままである | 現在地を誤認し、既実行作業の重複または未承認成果物の誤使用が起きる | 先にrunnerと完了validatorを修正し、新規runを実施する。全ゲート合格後にPhase 12完了記録、ロードマップ、研究現在地を同一変更セットで更新する | Git管理された完了記録、ロードマップ、実行manifest、現存成果物が同じrun ID、commit、状態、件数を示す |
-| 2 | **CLI引数とcontainer digest検証はコード修正済み、正式runへの反映待ちである**。既存Phase 12成果物には修正前の架空引数が残る | 既存成果物だけでは実行CLIを正確に再現できない | 実際の引数列を順序どおりmanifestへ渡し、正式runで`sha256:<64桁>`のcontainer digestを必須とし、`local-unpinned`等を開始前に拒否する実装・Schema・試験を追加済み | 新規`run_1`・`run_2`のmanifestに実CLI、同一container image・digest、他の比較対象環境が記録され一致する |
-| 3 | **Phase 12の完了検査が契約の全条件を実行していない**。主要5成果物のSchema・semantic hash・2回一致は確認するが、run manifest、全byte hash、ID一意性、母集団意味条件等の最終再検査が不足する | 検査していない項目を`passed`と表示し、欠損または破損した成果物を公開する可能性がある | completion gate専用validatorを実装し、必須8成果物、参照hash、母集団式、重複ID、未登録状態・仮定・除外、permission原因link、環境一致を検査結果から判定する | 合格表示が固定文字列ではなく検査結果から生成され、各gateの証拠をmanifestから追跡できる |
-| 4 | **Phase 12 runnerの実行経路試験が不足している**。現行16試験は契約、CLI引数、container identityまでで、stage実行・公開経路を網羅しない | 部分失敗後の残留成果物、誤った公開、上書き、2回不一致を検出できない可能性がある | 小型fixtureを用いてrun成功、stage失敗、Schema不合格、hash不一致、2回不一致、既存出力拒否、原子的公開、再実行禁止を試験する | 正常系・異常系の独立試験が合格し、不合格runから`published`が生成されない |
+| 1 | **解消済み:** Phase 12成果物、進捗記録、完了記録を同期した | Phase 12の重複実行や誤使用を防ぐ | 完了記録、ロードマップ、実行manifest、determinism reportが同じ判定を示す |
+| 2 | **解消済み:** 実CLI引数と固定container digestを正式runへ記録した | 実行条件を再現可能にする | `--run-id`以外が一致し、run IDの正規化規則がreportに記録される |
+| 3 | **解消済み:** Phase 12の全completion gateを実行した | 未検査項目を合格表示しない | 8 validator、全byte/semantic hash、母集団式、ID、登録値が合格する |
+| 4 | **解消済み:** `finalize`と公開の失敗経路を試験した | 部分公開、上書き、2run不一致を防ぐ | 35試験、最終化、原子的公開が合格する |
 | 5 | **formal blockerが大量に残る**。既存Phase 12成果物ではblocker inventoryが108,189件である | formal属性が未完成で、Phase 14 Attribute Resolution Acceptanceへ進めない | 件数を異なる母集団間で単純合算して判断せず、`attribute_name`、`stop_code`、`root_cause_category`、source Way、影響permissionで集計する。高頻度原因ごとにdecision、外部証拠、Registry、fixture、oracle、codeを改訂する | governed blocker、review-required、stop-unresolved、model-assumedが各0件になり、再実行の母集団式と2回一致が合格する |
 | 6 | **directional laneの根拠不足・競合が残る**。既存成果物では26,220 governedに対し24,114 unresolved、24 conflictである | 方向別車線とその下流のlane permission候補がformalに確定しない | `lanes`、`lanes:forward`、`lanes:backward`、`lanes:both_ways`、方向、relation、道路管理資料をWay単位で照合する。formalで根拠のない均等分割を使わず、必要なら証拠取得または登録規則を追加する | 各方向付き区間の車線vectorが根拠・規則ID・来歴を持ち、競合と未解決が0件になる |
 | 7 | **final permissionが未解決である**。既存成果物では6,984 governedに対し4,864 unresolvedである | 管理対象車種がどのlane・connectionを通行できるか確定せず、Permission Materializerへ渡せない | permission blockerを上流のaccess rule不足へlinkし、車種ontology、静的・条件付きaccess、scope、axis dominanceを根本原因別に修正する。typemap既定値をformal権威にしない | 全permission tupleがresolvedとなり、各値に適用規則と上流原因の来歴がある |
@@ -120,8 +118,8 @@ Phase 1〜14の定義、完了条件、証拠、Phase 12の実数は
 | 12 | **Experienced Driverデータが未取得・未登録である** | source群差、個人間分散、東京への移転可能性を検証できず、感度分析を再現できない | Expert Driving Datasetのrelease・利用条件・modalityを決め、原本、SHA-256、出典台帳、取得記録、canonical加工表、20運転者を単位とする階層推定、多出力逆較正を整備する | 受理済みsourceと前処理から群効果・個人差・不確実性を再生成でき、`M`・`V`・`C`系列と対照を事前固定できる |
 | 13 | **Phase番号と研究実装「段階」番号が併存している** | `v17 Phase 14`をExperienced Driverの研究実装「段階14」と誤解する可能性がある | 文書では必ず`v17属性解決 Phase`または`研究実装 段階`と体系名を併記し、旧工程番号は対応表なしに現在地判断へ使わない | 主要日本語資料、ロードマップ、完了記録で番号体系とversionが一意に識別できる |
 
-直近の最優先課題は1〜4である。これらを解消してPhase 12を正式確定しない限り、
-既存のblocker件数をPhase 13の正式な開始基準またはPhase 14の受入証拠として固定しない。
+直近の最優先課題は5〜8のformal blockerである。Phase 12で固定したblocker inventoryを
+Phase 13の開始証拠として使用し、Phase 14の受入証拠にはblocker解消後の再実行結果を使用する。
 
 ### 0.6 解決策の詳細
 
@@ -132,8 +130,7 @@ Phase 1〜14の定義、完了条件、証拠、Phase 12の実数は
 
 **対象課題:** 0.5の1〜4
 
-最初に、`execute_v17_phase12_full_population.py`とPhase 12成果物検証を修正する。
-既存の`run_1`、`run_2`、`published`は直接編集せず、修正前実装の履歴として保持する。
+この解決策は2026-08-14に完了した。`run_1`、`run_2`と生成成果物は直接編集していない。
 
 実施内容は次のとおりである。
 
@@ -147,9 +144,9 @@ Phase 1〜14の定義、完了条件、証拠、Phase 12の実数は
    Scenario Context、blocker policyの存在とSHA-256を検査する。
 4. 1回のrunについて、全stage出力を一時ディレクトリに生成する。途中stageが失敗した場合、
    final pathまたは`published`へ部分成果物を残さない。
-5. **主要5成果物は実装済み:** 各run単体のcompletion validatorがstructural・formal profile、
+5. **実装・実行済み:** 各run単体のcompletion validatorがstructural・formal profile、
    blocker inventory、exclusion manifest、population accountingの存在とSchemaを検証する。
-   environment manifestとrun manifestを含む全run成果物の完了検査は引き続き実装する。
+   environment manifestとrun manifestを含む全run成果物を最終化時に再検査する。
 6. semantic hashは格納値を除いたcanonical JSONから再計算する。run manifestに記録した
    byte hashは保存後の実ファイルから再計算する。
 7. `run_manifest.json`は自身を参照せず、他の6 run成果物を一度ずつ参照することを検査する。
@@ -159,9 +156,10 @@ Phase 1〜14の定義、完了条件、証拠、Phase 12の実数は
    logのSHA-256を`run_manifest.json`の`validator_executions`へ記録する。各CLIが返す
    `required`、`completed`、`failed`から項目別合否とrun全体合否を集約し、固定文字列の
    `passed`はmanifest生成に使用しない。
-9. `finalize`時に両runのrun manifestとenvironment manifestをSchema検証し、source commit、
+9. **実行済み:** `finalize`時に両runのrun manifestとenvironment manifestをSchema検証し、source commit、
    input hash、configuration hash、Schema hash、Registry hash、library version、command、
-   arguments、seed、container digestの一致を確認する。
+   arguments、seed、container digestの一致を確認する。実引数は保持し、各run自身に一致する
+   `--run-id`値だけを`<run_id>`へ正規化して比較する。
 10. 決定論対象5成果物のsemantic SHA-256が完全一致した場合だけ、`run_1`から
     `published`を原子的に作成する。**実装済み:** 公開前に両run manifest、8 validatorの
     command・終了コード・検査件数・結果・ログhash、参照成果物のbyte/semantic hashを再検証し、
@@ -172,8 +170,8 @@ completion validatorでは、少なくとも次を個別gateとして出力す�
 2026-08-13時点で、各runの主要5成果物について`required_artifacts`、`schema`、
 `semantic_hash`、`semantic`、`identity_uniqueness`、`population_accounting`、
 `registered_values`、`blocker_exclusion`の8 gateを実装済みである。既存`run_1`と`run_2`は
-双方とも8 gateに合格した。全8成果物、byte hash、run manifest、environment、2回一致、公開は
-後段の全体completion/finalize gateとして残る。
+双方とも8 gateに合格した。全成果物、byte hash、run manifest、environment、2回一致、公開も
+2026-08-14の全体completion/finalize gateで合格した。
 
 | Gate | 検査内容 | 不合格時の扱い |
 |---|---|---|
@@ -215,9 +213,9 @@ completion validatorでは、少なくとも次を個別gateとして出力す�
 Phase 12属性解決はSUMO binaryを呼び出さないため、environment manifestには虚偽の版番号ではなく
 `sumo_version: not_invoked_phase12`を記録する。SUMO版固定・実測は後続Network Integrationで行う。
 この出力rootへの`run_1`、`run_2`は2026-08-13に実行済みで、双方とも8個のrun単体gateと
-実行後の独立CLI再検査に合格した。主要5成果物のsemantic SHA-256も一致した。ただし
-formal blocker 108,189件が残り、two-run finalizeは未実行なので、Phase 12正式完了および
-formal build readyはまだ主張しない。
+実行後の独立CLI再検査に合格した。主要5成果物のsemantic SHA-256も一致し、2026-08-14に
+two-run finalize、determinism report生成、原子的公開が合格した。Phase 12は正式完了とする。
+ただしformal blocker 108,189件が残るため、formal build readyは主張しない。
 
 - Phase 12 completion record
 - completion validatorのgate別結果
@@ -821,7 +819,7 @@ V&Vの合格は、文章で「確認した」と記載するだけでは成立�
 | 大田区研究範囲 | 完了 | 行政界と取得範囲を区別して固定済み |
 | 入力可視化 | 完了 | 道路と観測点の確認用地図を生成可能 |
 | v17属性解決 Phase 1〜11 | 合格 | Authority、fixture/oracle、状態契約、方向・車線・access・permission・速度・evidence・統合試験が各完了記録上passed |
-| v17属性解決 Phase 12 | 実行済み・正式完了未認定 | `run_1`、`run_2`、公開成果物、2回一致結果は存在するが、完了validatorと正式記録の補強が必要 |
+| v17属性解決 Phase 12 | 合格 | `run_1`、`run_2`、8 validator、主要5成果物一致、実行条件比較、determinism report、原子的公開、正式完了記録が合格 |
 | v17属性解決 Phase 13 | 未着手 | Phase 12の正式確定後、停止recordを根本原因別に解消する |
 | v17属性解決 Phase 14 | ゲート待ち | Attribute Resolution Acceptanceは`not_run`、`formal_build_ready=false` |
 | 正式SUMO道路網 | 未承認 | Phase 14後にPermission Materializer、connection、TLS、SUMO Network Integration Acceptanceが必要 |

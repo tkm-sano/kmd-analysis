@@ -154,13 +154,13 @@ def validate_output_contract(contract: Mapping[str, Any]) -> dict[str, Any]:
         "required_artifact_count": len(artifacts),
         "determinism_artifact_count": len(deterministic),
         "required_run_count": len(contract["execution"]["required_run_ids"]),
-        "next_action": "execute_phase12_full_population_runs",
+        "next_action": "follow_execution_roadmap",
     }
 
 
 def validate_adoption_record() -> dict[str, Any]:
     adoption = _load_yaml(ADOPTION_PATH)
-    if adoption.get("result") != "passed" or adoption.get("phase12_executed"):
+    if adoption.get("result") != "passed":
         raise Phase12OutputContractError("output-contract adoption state differs")
     for section in ("artifacts", "schemas"):
         for reference in adoption[section].values():
