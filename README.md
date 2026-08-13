@@ -1,4 +1,4 @@
-# Tokyo Traffic × Quantum
+# Tokyo Traffic × Quantum Future Society
 
 東京都大田区を対象に、交通シミュレーションと配送経路最適化を組み合わせ、古典的な最適化手法と量子アルゴリズムを公平に比較する研究
 
