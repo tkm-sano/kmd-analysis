@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="v17-phase4-production-fixture">
+  <node id="1" lat="35.0" lon="139.0"/>
+  <node id="2" lat="35.0" lon="139.1"/>
+  <node id="3" lat="35.0" lon="139.2"/>
+  <node id="4" lat="34.9" lon="139.1"/>
+  <node id="5" lat="35.1" lon="139.1"/>
+  <node id="6" lat="35.2" lon="139.0"/>
+  <node id="7" lat="35.2" lon="139.1"/>
+  <node id="8" lat="35.2" lon="139.2"/>
+  <node id="9" lat="35.1" lon="139.2"/>
+  <way id="1001">
+    <nd ref="1"/><nd ref="2"/><nd ref="3"/>
+    <tag k="highway" v="residential"/>
+    <tag k="oneway" v="no"/>
+    <tag k="lanes" v="4"/>
+    <tag k="lanes:forward" v="2"/>
+    <tag k="lanes:backward" v="2"/>
+    <tag k="turn:lanes:forward" v="through|right"/>
+    <tag k="turn:lanes:backward" v="left|through"/>
+    <tag k="access" v="no"/>
+    <tag k="goods" v="yes"/>
+  </way>
+  <way id="1002">
+    <nd ref="4"/><nd ref="2"/>
+    <tag k="highway" v="residential"/>
+    <tag k="oneway" v="yes"/>
+    <tag k="lanes" v="1"/>
+    <tag k="access" v="yes"/>
+    <tag k="access:conditional" v="no @ (Mo-Fr 07:00-09:00)"/>
+  </way>
+  <way id="1003">
+    <nd ref="2"/><nd ref="5"/>
+    <tag k="highway" v="residential"/>
+    <tag k="oneway" v="yes"/>
+    <tag k="lanes" v="2"/>
+    <tag k="maxspeed:lanes" v="50|"/>
+    <tag k="access:lanes" v="yes|no"/>
+  </way>
+  <way id="1004">
+    <nd ref="6"/><nd ref="7"/><nd ref="8"/>
+    <tag k="highway" v="residential"/>
+    <tag k="oneway" v="-1"/>
+    <tag k="lanes" v="2"/>
+    <tag k="access:lanes:backward" v="yes|no"/>
+  </way>
+  <way id="1005">
+    <nd ref="3"/><nd ref="9"/>
+    <tag k="highway" v="residential"/>
+    <tag k="oneway" v="yes"/>
+    <tag k="lanes" v="1"/>
+    <tag k="access" v="destination"/>
+  </way>
+  <relation id="2001">
+    <member type="way" ref="1002" role="from"/>
+    <member type="node" ref="2" role="via"/>
+    <member type="way" ref="1003" role="to"/>
+    <tag k="type" v="restriction"/>
+    <tag k="restriction" v="no_left_turn"/>
+  </relation>
+  <relation id="2002">
+    <member type="way" ref="1002" role="from"/>
+    <member type="way" ref="1001" role="via"/>
+    <member type="way" ref="1005" role="to"/>
+    <tag k="type" v="restriction:bus"/>
+    <tag k="restriction" v="only_straight_on"/>
+  </relation>
+</osm>

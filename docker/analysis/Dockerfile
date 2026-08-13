@@ -7,7 +7,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /workspace
 
 RUN apt-get update \
-    && apt-get install --no-install-recommends --yes osmium-tool \
+    && apt-get install --no-install-recommends --yes git osmium-tool \
     && rm -rf /var/lib/apt/lists/*
 
 COPY docker/analysis/requirements.txt /tmp/traffic-analysis-requirements.txt

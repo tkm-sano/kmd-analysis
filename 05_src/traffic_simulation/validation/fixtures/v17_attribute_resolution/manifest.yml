@@ -1,0 +1,77 @@
+schema_version: 1
+manifest_id: ota_ward_attribute_resolution_v17_phase2_manifest_v1
+policy_id: ota_ward_attribute_resolution_policy_v17
+configuration_id: ota_ward_sumo_network_v17
+state: fixed
+specification:
+  path: 05_src/traffic_simulation/specifications/10_approved_attribute_resolution_policy_v17_complete.md
+  sha256: 673bd2d1035f610f066f2850dfa9672eda9f857af4775db9d3021505dc345717
+fixtures:
+  path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/inputs.json
+  sha256: 176722a33dc408745094d90871aa841908d85cfad593bdec2e8ae06c88065ca4
+oracles:
+  path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/oracle.json
+  sha256: fadd537e8cb4d43a62658fbd36c76de9c9b2ad0c4053cdf7b83130cb5a179bb4
+coverage:
+  required_case_families:
+    - ordinary_bidirectional_missing_oneway
+    - oneway_yes
+    - oneway_no
+    - oneway_reverse
+    - implicit_oneway
+    - explicit_directional_lanes
+    - lane_total_directional_consistency
+    - structural_even_lane_split
+    - formal_directional_allocation_missing
+    - lane_vector_empty_entry
+    - lane_vector_length_mismatch
+    - directionally_asymmetric_speed
+    - registered_symbolic_speed
+    - speed_rule_missing
+    - general_access
+    - vehicle_specific_access
+    - directional_access
+    - lane_specific_access
+    - conditional_access
+    - same_result_maximal_rules
+    - conflicting_maximal_rules
+    - access_context_missing
+    - conditional_syntax_unsupported
+    - access_within_interval_change
+    - relation_mapping_unique
+    - relation_mapping_missing
+    - relation_mapping_ambiguous
+    - empty_resolved_permission_set
+    - exclusion_accounting
+    - legacy_state_migration
+    - state_unregistered
+    - rule_unregistered
+    - stop_code_unregistered
+    - independent_record_order_invariance
+    - two_run_determinism
+    - source_way_immutability
+    - forward_backward_symmetry
+    - json_canonicalization_invariance
+  stop_code_registry_count: 30
+  covered_stop_code_count: 30
+  metamorphic_case_count: 5
+  missing_stop_codes: []
+independence_review:
+  fixture_author_role: specification_fixture_author
+  oracle_author_role: production_independent_oracle_author
+  reviewer_role: specification_conformance_reviewer
+  production_code_used: false
+  production_output_used: false
+  reviewed_at: '2026-08-03'
+  result: passed
+validation:
+  fixture_case_count: 57
+  oracle_case_count: 57
+  one_to_one_binding: true
+  stop_code_coverage_complete: true
+  required_family_coverage_complete: true
+  oracle_schema_validation: passed
+  fixture_schema_validation: passed
+  manifest_schema_validation: passed
+  production_independence_check: passed
+  acceptance_note: fixed_for_phase3_implementation_comparison_not_runtime_acceptance

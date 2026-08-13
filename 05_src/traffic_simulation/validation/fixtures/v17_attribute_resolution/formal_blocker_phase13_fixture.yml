@@ -1,0 +1,119 @@
+fixture_set_id: FORMAL_BLOCKER_PHASE13_FIXTURE_V1
+fixture_version: 1.0.0
+authorship: specification_derived_before_production_implementation
+cases:
+  - fixture_id: FB-POS-001
+    input:
+      record_id: lane:100:forward
+      source_way_id: 100
+      directed_segment_id: ds:100:0:2:forward
+      lane_position: null
+      vehicle_class: null
+      attribute_name: directional_lanes
+      stop_code: LANE_DIRECTIONAL_ALLOCATION_MISSING
+      root_cause_category: missing_registered_rule
+      secondary_causes: [final_permission_unresolved]
+      root_cause_record_ids: []
+      research_scope_status:
+        value: governed
+        reason: The source Way is a governed general road in the configured population.
+        evidence_ids: [FIXTURE-SCOPE-GOVERNED-001]
+      remediation:
+        decision_id: null
+        rule_id: null
+        fixture_ids: [FB-POS-001]
+        owner: resolver_team
+        target_phase: 13
+        status: planned
+  - fixture_id: FB-POS-002
+    input:
+      record_id: speed:101:forward
+      source_way_id: 101
+      directed_segment_id: ds:101:0:1:forward
+      lane_position: null
+      vehicle_class: null
+      attribute_name: speed
+      stop_code: SPEED_RULE_NOT_REGISTERED
+      root_cause_category: missing_evidence
+      secondary_causes: []
+      root_cause_record_ids: []
+      research_scope_status:
+        value: governed
+        reason: The source Way is governed, but no formal speed evidence is registered.
+        evidence_ids: [FIXTURE-SCOPE-GOVERNED-002]
+      remediation:
+        decision_id: null
+        rule_id: null
+        fixture_ids: [FB-POS-002]
+        owner: evidence_review_team
+        target_phase: 13
+        status: blocked
+  - fixture_id: FB-POS-003
+    input:
+      record_id: permission:102:forward:0:delivery
+      source_way_id: 102
+      directed_segment_id: ds:102:0:1:forward
+      lane_position: 0
+      vehicle_class: delivery
+      attribute_name: final_permission
+      stop_code: ACCESS_PERMISSION_UNRESOLVED
+      root_cause_category: missing_registered_rule
+      secondary_causes: [final_permission_unresolved]
+      root_cause_record_ids: [access-rule:102]
+      research_scope_status:
+        value: governed
+        reason: The delivery tuple is governed and awaits an upstream access rule.
+        evidence_ids: [FIXTURE-SCOPE-GOVERNED-003]
+      remediation:
+        decision_id: null
+        rule_id: null
+        fixture_ids: [FB-POS-003]
+        owner: resolver_team
+        target_phase: 13
+        status: planned
+  - fixture_id: FB-NEG-001
+    input:
+      record_id: outside:103
+      source_way_id: 103
+      directed_segment_id: null
+      lane_position: null
+      vehicle_class: null
+      attribute_name: governed_population
+      stop_code: EXCLUSION_RULE_UNREGISTERED
+      root_cause_category: outside_research_scope
+      secondary_causes: []
+      root_cause_record_ids: []
+      research_scope_status:
+        value: outside_scope
+        reason: Fixture evidence declares the record outside the configured area.
+        evidence_ids: [FIXTURE-OUTSIDE-EVIDENCE-001]
+      remediation:
+        decision_id: FIXTURE-DECISION-001
+        rule_id: FIXTURE-UNREGISTERED-EXCLUSION
+        fixture_ids: [FB-NEG-001]
+        owner: scope_authority
+        target_phase: 13
+        status: blocked
+  - fixture_id: FB-POS-004
+    input:
+      record_id: outside:104
+      source_way_id: 104
+      directed_segment_id: null
+      lane_position: null
+      vehicle_class: null
+      attribute_name: governed_population
+      stop_code: EXCLUSION_RULE_UNREGISTERED
+      root_cause_category: outside_research_scope
+      secondary_causes: []
+      root_cause_record_ids: []
+      research_scope_status:
+        value: outside_scope
+        reason: Fixture authority proves this record is outside the configured area.
+        evidence_ids: [FIXTURE-OUTSIDE-EVIDENCE-002]
+      remediation:
+        decision_id: FIXTURE-DECISION-002
+        rule_id: FIXTURE-OUTSIDE-AREA-V1
+        fixture_ids: [FB-POS-004]
+        owner: scope_authority
+        target_phase: 13
+        status: complete

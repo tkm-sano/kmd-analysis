@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "formal_blocker_policy_v17.schema.json",
+  "type": "object",
+  "required": ["schema_version", "schema", "policy_id", "policy_version", "configuration_id", "population_version", "status", "approved_by", "approved_at", "normative_decision", "default_strategy", "root_cause_categories", "strategies", "preserve_and_resolve_causes", "remain_blocked_causes", "forbidden_exclusion_reasons", "formal_exclusion_requirements", "registered_exclusion_rules", "unregistered_exclusion_stop_code", "resolution_change_order", "phase13_priority", "population_equations", "output_contract"],
+  "properties": {
+    "schema_version": {"const": 17},
+    "schema": {"const": "reproducibility/config/traffic_simulation/schemas/formal_blocker_policy_v17.schema.json"},
+    "policy_id": {"const": "FORMAL_BLOCKER_POLICY_V17"},
+    "policy_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "configuration_id": {"const": "ota_ward_sumo_network_v17"},
+    "population_version": {"const": "ota_ward_relation_closure_v16"},
+    "status": {"const": "approved"},
+    "approved_by": {"type": "string", "minLength": 1},
+    "approved_at": {"type": "string", "format": "date"},
+    "normative_decision": {"type": "string", "minLength": 1},
+    "default_strategy": {"const": "preserve_and_resolve"},
+    "root_cause_categories": {"type": "array", "minItems": 9, "uniqueItems": true, "items": {"enum": ["implementation_defect", "missing_registered_rule", "unsupported_source_syntax", "missing_scenario_context", "missing_vehicle_ontology", "missing_evidence", "genuine_rule_conflict", "outside_research_scope", "undetermined"]}},
+    "strategies": {"type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true, "items": {"enum": ["preserve_and_resolve", "formal_exclusion", "remain_blocked"]}},
+    "preserve_and_resolve_causes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+    "remain_blocked_causes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+    "forbidden_exclusion_reasons": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+    "formal_exclusion_requirements": {"type": "array", "minItems": 5, "maxItems": 5, "uniqueItems": true, "items": {"type": "string"}},
+    "registered_exclusion_rules": {"type": "array", "items": {"$ref": "#/$defs/exclusionRule"}},
+    "unregistered_exclusion_stop_code": {"const": "EXCLUSION_RULE_UNREGISTERED"},
+    "resolution_change_order": {"type": "array", "minItems": 10, "maxItems": 10, "uniqueItems": true, "items": {"type": "string"}},
+    "phase13_priority": {"type": "array", "minItems": 10, "maxItems": 10, "uniqueItems": true, "items": {"type": "string"}},
+    "population_equations": {"type": "object", "required": ["input", "governed"], "properties": {"input": {"const": "governed + excluded"}, "governed": {"const": "resolved + unresolved + conflict + invalid + valid_but_unsupported"}}, "additionalProperties": false},
+    "output_contract": {"type": "object", "required": ["exclusion_is_resolution_status", "excluded_counted_as_resolved", "governed_and_excluded_overlap_allowed", "source_or_generated_output_direct_edit_allowed"], "properties": {"exclusion_is_resolution_status": {"const": false}, "excluded_counted_as_resolved": {"const": false}, "governed_and_excluded_overlap_allowed": {"const": false}, "source_or_generated_output_direct_edit_allowed": {"const": false}}, "additionalProperties": false}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "exclusionRule": {
+      "type": "object",
+      "required": ["exclusion_rule_id", "rule_version", "decision_id", "scope_predicate", "evidence_sha256", "approver", "approval_date"],
+      "properties": {
+        "exclusion_rule_id": {"type": "string", "minLength": 1},
+        "rule_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "decision_id": {"type": "string", "minLength": 1},
+        "scope_predicate": {"type": "object", "minProperties": 1},
+        "evidence_sha256": {"$ref": "#/$defs/hash"},
+        "approver": {"type": "string", "minLength": 1},
+        "approval_date": {"type": "string", "format": "date"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

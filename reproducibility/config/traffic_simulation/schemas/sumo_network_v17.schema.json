@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sumo_network_v17.schema.json",
+  "type": "object",
+  "required": ["schema_version", "schema", "configuration_id", "policy_id", "population_version", "status", "formal_build_ready", "normative_specification", "history", "profiles", "resolution_contract", "schemas", "registries", "semantic_invariants", "scenario_context", "direction_model", "lane_resolution", "access_resolution", "permissions", "attribute_resolution_acceptance", "outputs"],
+  "properties": {
+    "schema_version": {"const": 17},
+    "schema": {"const": "reproducibility/config/traffic_simulation/schemas/sumo_network_v17.schema.json"},
+    "configuration_id": {"const": "ota_ward_sumo_network_v17"},
+    "policy_id": {"const": "ota_ward_attribute_resolution_policy_v17"},
+    "population_version": {"type": "string", "minLength": 1},
+    "status": {"enum": ["draft", "phase1_complete"]},
+    "formal_build_ready": {"const": false},
+    "normative_specification": {"type": "string", "minLength": 1},
+    "phase1_description": {"type": "string", "minLength": 1},
+    "history": {
+      "type": "object",
+      "required": ["predecessor_configuration", "preserve_predecessor_artifacts", "relabel_predecessor_results"],
+      "properties": {
+        "predecessor_configuration": {"const": "ota_ward_sumo_network_v16"},
+        "preserve_predecessor_artifacts": {"const": true},
+        "relabel_predecessor_results": {"const": false}
+      },
+      "additionalProperties": false
+    },
+    "profiles": {
+      "type": "object",
+      "required": ["structural", "formal"],
+      "properties": {
+        "structural": {"$ref": "#/$defs/profile"},
+        "formal": {"$ref": "#/$defs/profile"}
+      },
+      "additionalProperties": false
+    },
+    "resolution_contract": {
+      "type": "object",
+      "required": ["status_field", "origin_field", "legacy_read_field", "legacy_write_allowed", "resolution_status", "value_origin", "formal_eligible_origins"],
+      "properties": {
+        "status_field": {"const": "resolution_status"},
+        "origin_field": {"const": "value_origin"},
+        "legacy_read_field": {"const": "value_state"},
+        "legacy_write_allowed": {"const": false},
+        "resolution_status": {"const": ["resolved", "unresolved", "conflict", "invalid", "valid_but_unsupported"]},
+        "value_origin": {"const": ["source_explicit", "source_normalized", "rule_derived", "evidence_derived", "derived_validated_model", "model_assumed"]},
+        "formal_eligible_origins": {"const": ["source_explicit", "source_normalized", "rule_derived", "evidence_derived", "derived_validated_model"]}
+      },
+      "additionalProperties": false
+    },
+    "schemas": {"type": "object", "minProperties": 7, "additionalProperties": {"type": "string", "pattern": "^reproducibility/config/traffic_simulation/schemas/.+\\.json$"}},
+    "registries": {"$ref": "#/$defs/versionedArtifact"},
+    "semantic_invariants": {"$ref": "#/$defs/versionedArtifact"},
+    "scenario_context": {
+      "type": "object",
+      "required": ["timezone", "managed_vehicle_profile", "require_interval", "require_holiday_calendar_version_when_referenced", "governed_runtime_interval_context"],
+      "properties": {
+        "timezone": {"const": "Asia/Tokyo"},
+        "managed_vehicle_profile": {"const": "reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml"},
+        "require_interval": {"const": true},
+        "require_holiday_calendar_version_when_referenced": {"const": true},
+        "governed_runtime_interval_context": {"$ref": "#/$defs/versionedArtifact"}
+      },
+      "additionalProperties": false
+    },
+    "direction_model": {"type": "object"},
+    "lane_resolution": {"type": "object"},
+    "access_resolution": {
+      "type": "object",
+      "required": ["target_scope_dimensions", "specificity_axes", "comparison", "independent_source_order_tiebreak", "conflicting_maximal_rules"],
+      "properties": {
+        "target_scope_dimensions": {"const": ["direction", "lane"]},
+        "specificity_axes": {"const": ["spatial", "vehicle", "temporal", "purpose"]},
+        "comparison": {"const": "set_inclusion_pareto"},
+        "independent_source_order_tiebreak": {"const": false},
+        "conflicting_maximal_rules": {"const": "ACCESS_SPECIFICITY_CONFLICT"}
+      },
+      "additionalProperties": false
+    },
+    "permissions": {"type": "object"},
+    "attribute_resolution_acceptance": {"type": "object"},
+    "outputs": {"type": "object"}
+  },
+  "$defs": {
+    "profile": {
+      "type": "object",
+      "required": ["allow_model_assumed", "attribute_resolution_acceptance_eligible"],
+      "properties": {
+        "allow_model_assumed": {"type": "boolean"},
+        "attribute_resolution_acceptance_eligible": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "versionedArtifact": {
+      "type": "object",
+      "required": ["path", "version", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^(TO_BE_FINALIZED|[a-f0-9]{64})$"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

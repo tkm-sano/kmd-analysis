@@ -1,0 +1,113 @@
+schema_version: 1
+roadmap_id: ota_ward_attribute_resolution_v17_phase9_to_phase14_20260804
+policy_id: ota_ward_attribute_resolution_policy_v17
+blocker_policy_id: FORMAL_BLOCKER_POLICY_V17
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+recorded_at: '2026-08-04'
+recorded_by: repository_implementation_agent
+approved_by: repository_owner_directive
+status: fixed
+execution_order_change_allowed: false
+
+steps:
+  - order: 1
+    phase_scope: phase9_to_phase10
+    action: implement_speed_and_formal_evidence_resolution
+    status: completed
+    completion_records:
+      - reproducibility/config/traffic_simulation/v17_phase9_completion.yml
+      - reproducibility/config/traffic_simulation/v17_phase10_completion.yml
+
+  - order: 2
+    phase_scope: phase11
+    action: execute_resolver_integration_tests
+    status: completed
+    completion_record: reproducibility/config/traffic_simulation/v17_phase11_completion.yml
+    required_gates:
+      - schema_validation
+      - semantic_invariant_validation
+      - production_independent_oracle_validation
+      - metamorphic_validation
+
+  - order: 3
+    phase_scope: phase12
+    action: execute_full_population_structural_and_formal_runs
+    status: pending
+    required_outputs:
+      - structural_full_population_artifact
+      - formal_full_population_artifact
+      - complete_blocker_inventory
+      - exclusion_manifest
+      - population_accounting
+
+  - order: 4
+    phase_scope: post_phase12_analysis
+    action: aggregate_formal_blockers
+    status: pending
+    aggregation_dimensions:
+      - attribute_name
+      - stop_code
+      - root_cause_category
+    preserve_individual_inventory_records: true
+    upstream_and_permission_blockers_simple_sum_allowed: false
+
+  - order: 5
+    phase_scope: phase13
+    action: resolve_frequent_root_causes_with_decision_tables_and_fixtures
+    status: pending
+    required_change_order:
+      - decision_record
+      - registry_or_decision_table
+      - json_schema
+      - semantic_invariant
+      - small_fixture
+      - production_independent_oracle
+      - production_code
+      - phase_test
+      - regression_test
+      - full_population_run
+    frequency_alone_authorizes_exclusion: false
+    unproven_records_remain_blocked: true
+
+  - order: 6
+    phase_scope: phase13_rerun
+    action: regenerate_complete_full_population_artifacts
+    status: pending
+    direct_generated_output_edit_allowed: false
+    require_two_run_determinism: true
+
+  - order: 7
+    phase_scope: phase14
+    action: execute_attribute_resolution_acceptance
+    status: blocked_by_gate
+    entry_conditions:
+      governed_blocker_count: 0
+      review_required_count: 0
+      stop_unresolved_count: 0
+      model_assumed_count: 0
+      all_governed_records_resolved: true
+      population_equation_valid: true
+      permission_coverage_complete: true
+    acceptance_gates:
+      - schema_validation
+      - semantic_validation
+      - oracle_validation
+      - classification_projection_invariance
+      - two_run_determinism
+
+current_state:
+  completed_through_phase: 11
+  next_phase: 12
+  production_registered_exclusion_rule_count: 0
+  formal_build_ready: false
+  attribute_resolution_acceptance: not_run
+
+non_negotiable_constraints:
+  - preserve_and_resolve_is_default
+  - formal_exclusion_requires_proven_outside_scope_and_registered_rule
+  - missing_attributes_are_not_exclusion_evidence
+  - unsupported_implementation_is_not_exclusion_evidence
+  - blocker_volume_is_not_exclusion_evidence
+  - source_and_generated_outputs_are_not_manually_patched
+  - v16_population_is_not_retroactively_changed

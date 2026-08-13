@@ -1,0 +1,106 @@
+schema_version: 17
+schema: reproducibility/config/traffic_simulation/schemas/sumo_network_v17.schema.json
+configuration_id: ota_ward_sumo_network_v17
+policy_id: ota_ward_attribute_resolution_policy_v17
+population_version: ota_ward_relation_closure_v16
+status: phase1_complete
+formal_build_ready: false
+normative_specification: 05_src/traffic_simulation/specifications/10_approved_attribute_resolution_policy_v17_complete.md
+phase1_description: 05_src/traffic_simulation/specifications/v17_phase1_artifact_description.md
+history:
+  predecessor_configuration: ota_ward_sumo_network_v16
+  preserve_predecessor_artifacts: true
+  relabel_predecessor_results: false
+profiles:
+  structural:
+    allow_model_assumed: true
+    attribute_resolution_acceptance_eligible: false
+  formal:
+    allow_model_assumed: false
+    attribute_resolution_acceptance_eligible: true
+resolution_contract:
+  status_field: resolution_status
+  origin_field: value_origin
+  legacy_read_field: value_state
+  legacy_write_allowed: false
+  resolution_status: [resolved, unresolved, conflict, invalid, valid_but_unsupported]
+  value_origin: [source_explicit, source_normalized, rule_derived, evidence_derived, derived_validated_model, model_assumed]
+  formal_eligible_origins: [source_explicit, source_normalized, rule_derived, evidence_derived, derived_validated_model]
+schemas:
+  resolution_record: reproducibility/config/traffic_simulation/schemas/attribute_resolution_record_v17.schema.json
+  directed_segment: reproducibility/config/traffic_simulation/schemas/directed_segment_v17.schema.json
+  access_rule: reproducibility/config/traffic_simulation/schemas/access_rule_v17.schema.json
+  exclusion_manifest: reproducibility/config/traffic_simulation/schemas/exclusion_manifest_v17.schema.json
+  materialization_omission: reproducibility/config/traffic_simulation/schemas/materialization_omission_v17.schema.json
+  environment_build_manifest: reproducibility/config/traffic_simulation/schemas/environment_build_manifest_v17.schema.json
+  acceptance: reproducibility/config/traffic_simulation/schemas/attribute_resolution_acceptance_v17.schema.json
+  governed_runtime_interval_context: reproducibility/config/traffic_simulation/schemas/governed_runtime_interval_context_v17.schema.json
+  holiday_calendar: reproducibility/config/traffic_simulation/schemas/holiday_calendar_v17.schema.json
+  warning_audit: reproducibility/config/traffic_simulation/schemas/warning_audit_v17.schema.json
+  final_permission_expectation: reproducibility/config/traffic_simulation/schemas/final_permission_expectation_v17.schema.json
+  japan_speed_rules: reproducibility/config/traffic_simulation/schemas/japan_speed_rules_v17.schema.json
+  speed_resolution_record: reproducibility/config/traffic_simulation/schemas/speed_resolution_record_v17.schema.json
+  formal_evidence_methods: reproducibility/config/traffic_simulation/schemas/formal_evidence_methods_v17.schema.json
+  manual_evidence_record: reproducibility/config/traffic_simulation/schemas/manual_evidence_record_v17.schema.json
+  formal_blocker_policy: reproducibility/config/traffic_simulation/schemas/formal_blocker_policy_v17.schema.json
+  formal_blocker_inventory: reproducibility/config/traffic_simulation/schemas/formal_blocker_inventory_v17.schema.json
+  resolver_integration: reproducibility/config/traffic_simulation/schemas/resolver_integration_v17.schema.json
+registries:
+  path: reproducibility/config/traffic_simulation/attribute_resolution_registries_v17.yml
+  version: 1.3.0
+  sha256: df599bddec6586d5eec270bbc9ffc50799f80d311c253f2275f96421e990d25e
+semantic_invariants:
+  path: reproducibility/config/traffic_simulation/v17_semantic_invariants.yml
+  version: 1.1.0
+  sha256: f0cf14f16ef2bd2d9ebac2d43b0c225c6869398390f4ce7c12802dcb97090595
+scenario_context:
+  timezone: Asia/Tokyo
+  managed_vehicle_profile: reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml
+  require_interval: true
+  require_holiday_calendar_version_when_referenced: true
+  governed_runtime_interval_context:
+    path: reproducibility/config/traffic_simulation/v17_governed_runtime_interval_context.yml
+    version: 1.0.0
+    sha256: e7a808f46d028db1242e117757619aecae54b6a7ffcc6a1d8ba3114afcb13edf
+direction_model:
+  representation: directed_segment
+  id_template: 'ds:{source_way_id}:{source_start_index}:{source_end_index}:{source_direction}'
+  source_directions: [forward, backward]
+  preserve_source_way: true
+  allow_source_way_reversal: false
+  formal_direction_evidence: exact_source_node_lineage
+  oneway_generation:
+    'yes': [forward]
+    'no': [forward, backward]
+    '-1': [backward]
+lane_resolution:
+  resolver_lane_order: left_to_right_in_travel_direction
+  sumo_lane_index_formula: n - 1 - p
+  formal_even_split_allowed: false
+  structural_assumption_ids: [BIDIRECTIONAL_EVEN_LANE_EQUAL_SPLIT_V1]
+access_resolution:
+  target_scope_dimensions: [direction, lane]
+  specificity_axes: [spatial, vehicle, temporal, purpose]
+  comparison: set_inclusion_pareto
+  independent_source_order_tiebreak: false
+  conflicting_maximal_rules: ACCESS_SPECIFICITY_CONFLICT
+permissions:
+  formal_authority: resolver_expected_permissions
+  typemap_role: provisional_topology_candidate
+  governed_vclasses: [passenger, taxi, bus, coach, delivery, truck, motorcycle]
+  patch_generated_net_xml: false
+attribute_resolution_acceptance:
+  require_complete: true
+  maximum_blockers: 0
+  maximum_review_required: 0
+  maximum_stop_unresolved: 0
+  maximum_model_assumed: 0
+  require_schema_validation: true
+  require_semantic_validation: true
+  require_oracle_validation: true
+  require_classification_projection_invariance: true
+  require_two_run_determinism: true
+outputs:
+  structural: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/structural
+  formal: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/formal
+  overwrite_existing: false

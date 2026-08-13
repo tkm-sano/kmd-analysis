@@ -1,0 +1,108 @@
+schema_version: 1
+completion_id: ota_ward_attribute_resolution_v17_phase1_20260803
+policy_id: ota_ward_attribute_resolution_policy_v17
+configuration_id: ota_ward_sumo_network_v17
+completed_at: '2026-08-03'
+completed_by: repository_implementation_agent
+approved_by: repository_owner_directive
+result: passed
+phase1_authority_status: complete
+runtime_validation_status: not_run
+attribute_resolution_acceptance: not_run
+formal_build_ready: false
+v16_boundary:
+  configuration_path: reproducibility/config/traffic_simulation/sumo_network.yml
+  sha256: 6e59478d271dae699437efc933fb4b14f4aec1a705056a88c9cd61a0029097a6
+  modified_by_phase1: false
+artifacts:
+  normative_specification:
+    path: 05_src/traffic_simulation/specifications/10_approved_attribute_resolution_policy_v17_complete.md
+    sha256: 673bd2d1035f610f066f2850dfa9672eda9f857af4775db9d3021505dc345717
+  phase1_description:
+    path: 05_src/traffic_simulation/specifications/v17_phase1_artifact_description.md
+    sha256: 7d9c9340cbb2fa88b76622620204f7ef65d17bb255c96d5697786420689b21ba
+  traceability_matrix:
+    path: 05_src/traffic_simulation/specifications/v17_attribute_resolution_traceability_matrix.md
+    sha256: 965f9ac20bde6d513ff8ec40176ab996a281415ebe714755eb4f5cd49540195d
+  configuration:
+    path: reproducibility/config/traffic_simulation/sumo_network_v17.yml
+    sha256: ba8e6fbad3a5fe3adf080572311239014f2bbda0b6b8eff85cb9cc7967f572e9
+  policy_index:
+    path: reproducibility/config/traffic_simulation/approved_attribute_resolution_policy_v17.yml
+    sha256: cf24f6ee618d1584ca48a766163ad456f8399b357c80c54a84987c9d44d478bb
+  registry_bundle:
+    path: reproducibility/config/traffic_simulation/attribute_resolution_registries_v17.yml
+    sha256: df599bddec6586d5eec270bbc9ffc50799f80d311c253f2275f96421e990d25e
+  semantic_invariants_machine:
+    path: reproducibility/config/traffic_simulation/v17_semantic_invariants.yml
+    sha256: f0cf14f16ef2bd2d9ebac2d43b0c225c6869398390f4ce7c12802dcb97090595
+  semantic_invariants_document:
+    path: 05_src/traffic_simulation/specifications/v17_semantic_invariants.md
+    sha256: 461333079356feb148cdb9db45dc3d0556b68504ee988638e5211e07bfdf05a2
+  synchronization_review:
+    path: 05_src/traffic_simulation/v17_authority_synchronization_review.md
+    sha256: bf925ab1c5faf68ebb3e28ce89a6b3b67598fbfa6c417e971684772906671a1a
+  authority_validator:
+    path: 05_src/traffic_simulation/network/validate_v17_phase1_authority.py
+    sha256: 9769c85a232caf0adc9a57adf6f0bf9a22e9940ba141f7cf7591ac737d31558a
+  authority_tests:
+    path: 05_src/traffic_simulation/validation/test_v17_phase1_authority.py
+    sha256: 11f2a821c51325db99fe01fa1fb9fee6189b7ead78e63dd2c845e601d182d1fd
+schemas:
+  access_rule_v17: 750d8338a174d2415ce55468cb155ecf6609fd5ae1f28f095c7106f966151f3a
+  attribute_resolution_acceptance_v17: 89b4e16d2f644614b247a366e8d33ddb4edbdf6b6d6b9bf2c1e85aa5701b25b9
+  attribute_resolution_record_v17: 8a7c78c7aa6349da0eb7251f753a96f4d74c2a6f9150c2f03a3be61b1fa31275
+  attribute_resolution_registries_v17: 8ce82500ed1cdec77a13105c3b2282063c3016a0bc66876e3d7f9148ee7cf7fa
+  directed_segment_v17: 52cfb235c2bb47da09471c55783f0e6b187198c917ecb6bf80e807a538dc9993
+  environment_build_manifest_v17: 7942c49102c3440f9a7a4fc72e439285ad69451f6de3573334b7613b5b7ff1be
+  exclusion_manifest_v17: a3f30e522404e6e8687f6b03f1782b8e3d60829afbecc8e6c343fa04cc1e9322
+  materialization_omission_v17: db6038a72da0695ed522b1f61068b942da775992f95ef1a8fe21ae667afe3f9a
+  semantic_invariants_v17: 5088b462f51b0387bc7e10be1db9b3eae9c82b6da62b677fbf8d818cf2344b34
+  sumo_network_v17: 1e8d32d38dd61dfcbcf1228f0df43f0674c2eb38b122ffe9fb8ef816db651a23
+  governed_runtime_interval_context_v17: ad4cdf63577b2f51be6545c2b50c4aabca33fa263a34e15d3e077f4e04666004
+  holiday_calendar_v17: e424c499a91561a9fac97f22c0db45df4efa12f42b2d3c4dace2d398eb4bc2c3
+  warning_audit_v17: d1c57021c1862afd842aa9f3ca33679557bf6b2bfb2ee21e483749951a5808ff
+  final_permission_expectation_v17: 20b64ae9182de8e8ab16a146e14673975e0382dfd4f0b978f7be91289d3185ab
+  japan_speed_rules_v17: a3650fde7af2d0bcd83d5afa494d91ff19ed82cf77d50a01176735b63a88cbd1
+  speed_resolution_record_v17: 9ef040d75cf5e834748f6114a2f62fc9c9cae95667ef6183ae7dad9c5fd2587e
+  formal_evidence_methods_v17: 1596bd43b2fad10f322733a046f2a314d0729779355edc8f36355c42dde0d39e
+  manual_evidence_record_v17: b015ade0770595fe44f6098c47435954ee99a95065c274551e560d2364598ddc
+  formal_blocker_policy_v17: dc85f973bd04a8778ec21fa927d201c391195462fc969908d9f95d91d374980d
+  formal_blocker_inventory_v17: 2c3434b76c3d56c201b1c6896f428f99c428f7e8f3cb1ff4a5a5fbb04c6fc842
+  resolver_integration_v17: 47ad260a5523c2ab1740770968d4cc63259cca55d17dd2adaf327e5f3f080a52
+  approved_policy_index: 8d0241d7c0efee16eb4a7b1fd74b34ceb1ee9a7a36f71cf9821b0a00a04cc1ee
+verification:
+  phase1_validator:
+    command: PYTHONPATH=05_src python -m traffic_simulation.network.validate_v17_phase1_authority
+    result: passed
+    schema_count: 22
+    stop_code_count: 30
+    invariant_count: 46
+  focused_tests:
+    result: passed
+    count: 68
+  traffic_simulation_regression:
+    command: PYTHONPATH=<temporary_dependencies>:05_src python -m pytest -q 05_src/traffic_simulation/validation
+    result: passed
+    count: 376
+    warnings: 24
+  docker_compose_config:
+    result: passed
+  docker_runtime:
+    result: not_run
+    reason: Docker daemon was not running; local regression suite passed instead
+exit_conditions:
+  mandatory_requirements_traced: true
+  configuration_schema_valid: true
+  required_schemas_present: true
+  registries_present_and_hash_bound: true
+  semantic_invariants_present: true
+  phase1_critical_findings: 0
+  phase1_major_findings: 0
+  v16_artifacts_modified: false
+  structural_formal_outputs_separate: true
+  enums_synchronized: true
+  unresolved_normative_decisions: 0
+  phase2_fixture_oracle_scope_fixed: true
+  versions_and_hashes_recorded: true
+next_phase: 2

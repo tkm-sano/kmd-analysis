@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "warning_audit_v17.schema.json",
+  "type": "object",
+  "required": ["schema_version", "schema", "audit_id", "configuration_id", "recorded_at", "scope", "warning_filter_applied", "tests_skipped_to_reduce_warnings", "assertions_weakened", "governed_run", "prior_host_diagnostic_run", "warning_classification", "classification_summary"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "schema": {"const": "reproducibility/config/traffic_simulation/schemas/warning_audit_v17.schema.json"},
+    "audit_id": {"const": "ota_ward_attribute_resolution_v17_phase7_warning_audit_20260804"},
+    "configuration_id": {"const": "ota_ward_sumo_network_v17"},
+    "recorded_at": {"type": "string", "format": "date"},
+    "scope": {"const": "phase7_traffic_simulation_validation"},
+    "warning_filter_applied": {"const": false},
+    "tests_skipped_to_reduce_warnings": {"const": false},
+    "assertions_weakened": {"const": false},
+    "governed_run": {
+      "type": "object",
+      "required": ["command", "test_suite", "result", "test_count", "warning_event_count", "unique_warning_signature_count", "blocking_warning_count", "non_blocking_warning_count", "environment", "conclusion"],
+      "properties": {
+        "command": {"type": "string", "minLength": 1},
+        "test_suite": {"const": "05_src/traffic_simulation/validation"},
+        "result": {"const": "passed"},
+        "test_count": {"type": "integer", "minimum": 1},
+        "warning_event_count": {"const": 0},
+        "unique_warning_signature_count": {"const": 0},
+        "blocking_warning_count": {"const": 0},
+        "non_blocking_warning_count": {"const": 0},
+        "environment": {"type": "object"},
+        "conclusion": {"const": "blocking_warning_count_is_zero"}
+      },
+      "additionalProperties": false
+    },
+    "prior_host_diagnostic_run": {"type": "object"},
+    "warning_classification": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["warning_id", "category", "message", "warning_category", "origin", "affected_test_ids", "occurrence_count", "blocking", "blocking_reason", "recommended_action", "target_phase", "status"],
+        "properties": {
+          "warning_id": {"type": "string", "pattern": "^V17-WARN-[0-9]{3}$"},
+          "category": {"enum": ["deprecated_api", "dependency", "configuration", "schema", "registry", "data_quality", "semantic_validation", "runtime_environment", "test_only", "unknown"]},
+          "message": {"type": "string", "minLength": 1},
+          "warning_category": {"type": "string", "minLength": 1},
+          "origin": {"type": "object"},
+          "affected_test_ids": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+          "occurrences_by_test": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 1}},
+          "occurrence_count": {"type": "integer", "minimum": 1},
+          "blocking": {"type": "boolean"},
+          "blocking_reason": {"type": "string", "minLength": 1},
+          "recommended_action": {"type": "string", "minLength": 1},
+          "target_phase": {"type": "integer", "minimum": 1},
+          "status": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "classification_summary": {"type": "object"}
+  },
+  "additionalProperties": false
+}

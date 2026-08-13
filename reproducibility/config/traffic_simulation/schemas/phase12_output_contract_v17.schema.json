@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "phase12_output_contract_v17.schema.json",
+  "type": "object",
+  "required": ["schema_version", "schema", "contract_id", "contract_version", "configuration_id", "population_version", "policy_id", "blocker_policy_id", "status", "approved_by", "approved_at", "normative_specification", "execution", "fixed_inputs", "profiles", "required_stages", "artifact_catalog", "serialization", "population_accounting", "determinism", "completion_gate"],
+  "properties": {
+    "schema_version": {"const": 17},
+    "schema": {"const": "reproducibility/config/traffic_simulation/schemas/phase12_output_contract_v17.schema.json"},
+    "contract_id": {"const": "OTA_WARD_V17_PHASE12_OUTPUT_CONTRACT"},
+    "contract_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "configuration_id": {"const": "ota_ward_sumo_network_v17"},
+    "population_version": {"const": "ota_ward_relation_closure_v16"},
+    "policy_id": {"const": "ota_ward_attribute_resolution_policy_v17"},
+    "blocker_policy_id": {"const": "FORMAL_BLOCKER_POLICY_V17"},
+    "status": {"const": "fixed"},
+    "approved_by": {"type": "string", "minLength": 1},
+    "approved_at": {"type": "string", "format": "date"},
+    "normative_specification": {"type": "string", "minLength": 1},
+    "execution": {"$ref": "#/$defs/execution"},
+    "fixed_inputs": {"$ref": "#/$defs/fixedInputs"},
+    "profiles": {
+      "type": "object",
+      "required": ["structural", "formal"],
+      "properties": {
+        "structural": {"$ref": "#/$defs/profile"},
+        "formal": {"$ref": "#/$defs/profile"}
+      },
+      "additionalProperties": false
+    },
+    "required_stages": {"const": ["directed_segments", "directional_lanes", "static_access", "conditional_access", "final_permission", "speed"]},
+    "artifact_catalog": {"type": "array", "minItems": 8, "uniqueItems": true, "items": {"$ref": "#/$defs/artifact"}},
+    "serialization": {"type": "object"},
+    "population_accounting": {"type": "object"},
+    "determinism": {"type": "object"},
+    "completion_gate": {"type": "object"}
+  },
+  "$defs": {
+    "execution": {
+      "type": "object",
+      "required": ["required_run_ids", "fresh_output_directory_per_run", "cross_run_output_reads_allowed", "identical_environment_required", "clean_git_worktree_required", "successful_exit_code", "output_root", "run_path_template", "published_path", "overwrite_existing", "atomic_write_required", "publish_source_run", "publish_only_after_determinism_passed"],
+      "properties": {
+        "required_run_ids": {"const": ["run_1", "run_2"]},
+        "fresh_output_directory_per_run": {"const": true},
+        "cross_run_output_reads_allowed": {"const": false},
+        "identical_environment_required": {"const": true},
+        "clean_git_worktree_required": {"const": true},
+        "successful_exit_code": {"const": 0},
+        "output_root": {"type": "string", "minLength": 1},
+        "run_path_template": {"type": "string", "pattern": "\\{run_id\\}"},
+        "published_path": {"type": "string", "minLength": 1},
+        "overwrite_existing": {"const": false},
+        "atomic_write_required": {"const": true},
+        "publish_source_run": {"const": "run_1"},
+        "publish_only_after_determinism_passed": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "fixedInputs": {
+      "type": "object",
+      "required": ["source_osm", "configuration", "registry_bundle", "semantic_invariants", "scenario_context", "blocker_policy", "hash_binding_required"],
+      "properties": {
+        "source_osm": {"type": "string", "minLength": 1},
+        "configuration": {"type": "string", "minLength": 1},
+        "registry_bundle": {"type": "string", "minLength": 1},
+        "semantic_invariants": {"type": "string", "minLength": 1},
+        "scenario_context": {"type": "string", "minLength": 1},
+        "blocker_policy": {"type": "string", "minLength": 1},
+        "hash_binding_required": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "profile": {
+      "type": "object",
+      "required": ["allow_model_assumed", "acceptance_eligible", "output_path"],
+      "properties": {
+        "allow_model_assumed": {"type": "boolean"},
+        "acceptance_eligible": {"type": "boolean"},
+        "output_path": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "artifact": {
+      "type": "object",
+      "required": ["artifact_id", "path_template", "schema", "determinism_required"],
+      "properties": {
+        "artifact_id": {"type": "string", "minLength": 1},
+        "path_template": {"type": "string", "minLength": 1},
+        "schema": {"type": "string", "pattern": "^reproducibility/config/traffic_simulation/schemas/.+\\.json$"},
+        "determinism_required": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

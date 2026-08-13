@@ -1,0 +1,114 @@
+schema_version: 1
+completion_id: ota_ward_attribute_resolution_v17_phase11_20260804
+policy_id: ota_ward_attribute_resolution_policy_v17
+configuration_id: ota_ward_sumo_network_v17
+completed_at: '2026-08-04'
+completed_by: repository_implementation_agent
+requested_by: repository_owner_directive
+result: passed
+schema_validation: passed
+semantic_validation: passed
+production_independent_oracle_validation: passed
+metamorphic_validation: passed
+attribute_resolution_acceptance: not_run
+formal_build_ready: false
+prerequisites:
+  phase1: {path: reproducibility/config/traffic_simulation/v17_phase1_completion.yml, result: passed}
+  phase2: {path: reproducibility/config/traffic_simulation/v17_phase2_completion.yml, result: passed}
+  phase3: {path: reproducibility/config/traffic_simulation/v17_phase3_completion.yml, result: passed}
+  phase4: {path: reproducibility/config/traffic_simulation/v17_phase4_completion.yml, result: passed}
+  phase5: {path: reproducibility/config/traffic_simulation/v17_phase5_completion.yml, result: passed}
+  phase6: {path: reproducibility/config/traffic_simulation/v17_phase6_completion.yml, result: passed}
+  phase7: {path: reproducibility/config/traffic_simulation/v17_phase7_completion.yml, result: passed}
+  phase8: {path: reproducibility/config/traffic_simulation/v17_phase8_completion.yml, result: passed}
+  phase9: {path: reproducibility/config/traffic_simulation/v17_phase9_completion.yml, result: passed}
+  phase10: {path: reproducibility/config/traffic_simulation/v17_phase10_completion.yml, result: passed}
+artifacts:
+  resolver_integration_stage:
+    path: 05_src/traffic_simulation/network/resolver_integration_v17.py
+    sha256: 1e5c50eba1b6542b3ec9f0f69170ad6a1cda645b403fc0664b45164b25de4d53
+  conditional_access_attribute_boundary_fix:
+    path: 05_src/traffic_simulation/network/conditional_access_v17.py
+    sha256: ff098a86d010577e6e19055f664cbc6b46ab6c179017d7e83b57058a9bb9b05e
+  phase11_validator:
+    path: 05_src/traffic_simulation/network/validate_v17_phase11_resolver_integration.py
+    sha256: 192cf0a88e5f752bca474a8b039c7ae23fd4b8869d80f374099945b0bab0f372
+  phase11_tests:
+    path: 05_src/traffic_simulation/validation/test_resolver_integration_v17.py
+    sha256: 640373e5643c37029cc4b39ce483bb21d15c31f7cb61668e2953ff36692b581d
+schemas:
+  resolver_integration:
+    path: reproducibility/config/traffic_simulation/schemas/resolver_integration_v17.schema.json
+    sha256: 47ad260a5523c2ab1740770968d4cc63259cca55d17dd2adaf327e5f3f080a52
+fixed_fixture:
+  integration_osm:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/resolver_integration_phase11.osm.xml
+    sha256: 685d06de5a4524260d30c48908cad1d4220b9ef9850fbc0560ee16eb80dd0e5d
+  production_independent_oracle:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/resolver_integration_phase11_oracle.yml
+    sha256: 93c7d38d83e4f16f926e6be303fb2a6be2a98d2192064df96e926afdee54aa21
+integration_contract:
+  stage_order:
+    - directed_segments
+    - directional_lanes
+    - static_access
+    - conditional_access
+    - final_permission
+    - speed
+    - evidence_origin_audit
+  exact_lineage_across_stages: true
+  one_permission_per_governed_lane_tuple: true
+  one_speed_per_directed_segment: true
+  stage_semantic_hash_chain_required: true
+  formal_model_assumed_allowed: false
+  unapproved_evidence_origin_allowed: false
+  access_and_speed_conditional_namespaces_separate: true
+integration_fixture:
+  source_ways: 5
+  directed_segments: 8
+  directional_lane_records: 5
+  directional_lanes: 14
+  static_rule_groups: 5
+  conditional_rule_groups: 1
+  permission_records: 14
+  speed_records: 8
+  blockers: 0
+  semantic_sha256: 4cc0630d9df0dce503d0b86ccc28a00f7881b0d93366c83f931049d7e490b681
+defect_resolution:
+  detected_by: cross_attribute_integration_fixture
+  defect: maxspeed_conditional_entered_conditional_access_evaluation
+  resolution: conditional_access_filters_deferred_tags_to_registered_access_base_keys
+  source_or_generated_output_directly_edited: false
+  full_population_formal_conditional_hash_unchanged: true
+  full_population_structural_conditional_hash_unchanged: true
+  full_population_formal_permission_hash_unchanged: true
+  full_population_structural_permission_hash_unchanged: true
+verification:
+  phase11_validator:
+    command: PYTHONPATH=05_src python -m traffic_simulation.network.validate_v17_phase11_resolver_integration
+    result: passed
+    semantic_invariants: 46
+    cross_stage_lineage_invariants: 6
+    oracle_assertions: 27
+    metamorphic_relations: 3
+  phase11_tests:
+    command: PYTHONPATH=05_src python -m pytest -q 05_src/traffic_simulation/validation/test_resolver_integration_v17.py
+    result: passed
+    count: 11
+  traffic_simulation_regression:
+    command: docker compose run --rm -T analysis python -m pytest -q -W always 05_src/traffic_simulation/validation
+    result: passed
+    count: 559
+    warning_events: 0
+    blocking_warnings: 0
+exit_conditions:
+  schema_gate_passed: true
+  semantic_gate_passed: true
+  production_independent_oracle_gate_passed: true
+  metamorphic_gate_passed: true
+  cross_stage_lineage_complete: true
+  attribute_family_boundary_validated: true
+  integration_fixture_blocker_count_zero: true
+  full_population_phase12_not_claimed: true
+  formal_build_ready_not_claimed: true
+next_phase: 12

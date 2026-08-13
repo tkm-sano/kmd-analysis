@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "attribute_resolution_acceptance_v17.schema.json",
+  "type": "object",
+  "required": ["gate_name", "policy_id", "configuration_id", "population_version", "configuration_hash", "schema_hashes", "registry_hashes", "input_hashes", "formal_artifact_hash", "oracle_hash", "exclusion_manifest_hash", "classification_projection_hash", "population_counts", "validation_results", "blocker_counts", "review_required_count", "model_assumed_count", "determinism_check", "result", "accepted_by", "accepted_at"],
+  "properties": {
+    "gate_name": {"const": "attribute_resolution_acceptance"},
+    "policy_id": {"const": "ota_ward_attribute_resolution_policy_v17"},
+    "configuration_id": {"const": "ota_ward_sumo_network_v17"},
+    "population_version": {"type": "string"},
+    "configuration_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "schema_hashes": {"type": "object"}, "registry_hashes": {"type": "object"}, "input_hashes": {"type": "object"},
+    "formal_artifact_hash": {"type": ["string", "null"]}, "oracle_hash": {"type": ["string", "null"]}, "exclusion_manifest_hash": {"type": ["string", "null"]}, "classification_projection_hash": {"type": ["string", "null"]},
+    "population_counts": {"type": "object"}, "validation_results": {"type": "object"}, "blocker_counts": {"type": "object"}, "review_required_count": {"type": "integer", "minimum": 0}, "model_assumed_count": {"type": "integer", "minimum": 0}, "determinism_check": {"type": "object"},
+    "result": {"enum": ["passed", "failed", "not_run"]}, "accepted_by": {"type": ["string", "null"]}, "accepted_at": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

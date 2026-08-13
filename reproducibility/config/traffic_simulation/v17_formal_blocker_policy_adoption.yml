@@ -1,0 +1,84 @@
+schema_version: 1
+record_id: ota_ward_v17_formal_blocker_policy_adoption_20260804
+policy_id: FORMAL_BLOCKER_POLICY_V17
+policy_version: 1.0.0
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+adopted_at: '2026-08-04'
+adopted_by: repository_owner_directive
+implemented_by: repository_implementation_agent
+result: passed
+scope:
+  contract_adopted: true
+  phase11_completed: false
+  phase12_completed: false
+  phase13_completed: false
+  phase14_acceptance_run: false
+  formal_build_ready: false
+artifacts:
+  normative_decision:
+    path: 05_src/traffic_simulation/specifications/11_formal_blocker_resolution_exclusion_policy_v17.md
+    sha256: a60255df3c6f36c77858e497bc99696abbaf15a463af43ba6196df4eebdb5880
+  machine_policy:
+    path: reproducibility/config/traffic_simulation/formal_blocker_policy_v17.yml
+    sha256: b8803b2f5cd67ac5b29847178827d42df5ad5aa0a26ea907b89f3c2a3dbf99c1
+  production_governance:
+    path: 05_src/traffic_simulation/network/formal_blocker_governance_v17.py
+    sha256: 15bc1a06819891eae6b67e9280975a2b4b9a82d26ded66eb5c89d9ec84390651
+  validator:
+    path: 05_src/traffic_simulation/network/validate_v17_formal_blocker_policy.py
+    sha256: 84ba2a4bd8b47f907768988c71b39e4016e7f17e06b4faca26201f3fccd9dc87
+  tests:
+    path: 05_src/traffic_simulation/validation/test_formal_blocker_governance_v17.py
+    sha256: f08d7793df29b292fe7f8e90e59a3486435122243b166cc81aa59ee79f255f4f
+schemas:
+  formal_blocker_policy:
+    path: reproducibility/config/traffic_simulation/schemas/formal_blocker_policy_v17.schema.json
+    sha256: dc85f973bd04a8778ec21fa927d201c391195462fc969908d9f95d91d374980d
+  formal_blocker_inventory:
+    path: reproducibility/config/traffic_simulation/schemas/formal_blocker_inventory_v17.schema.json
+    sha256: 2c3434b76c3d56c201b1c6896f428f99c428f7e8f3cb1ff4a5a5fbb04c6fc842
+  exclusion_manifest:
+    path: reproducibility/config/traffic_simulation/schemas/exclusion_manifest_v17.schema.json
+    sha256: a3f30e522404e6e8687f6b03f1782b8e3d60829afbecc8e6c343fa04cc1e9322
+fixed_fixture:
+  inputs:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/formal_blocker_phase13_fixture.yml
+    sha256: 93eeffcc5b18e8a59323c0131b7a6ae8a86c08e89e05b867531641714dcd265c
+  production_independent_oracle:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/formal_blocker_phase13_oracle.yml
+    sha256: f007116405130e66726abf2965696539838c669c00cc4b4cdd016ffb01ead383
+contract:
+  default_strategy: preserve_and_resolve
+  strategies: [preserve_and_resolve, formal_exclusion, remain_blocked]
+  exactly_one_strategy_per_record: true
+  explicit_null_for_inapplicable_identity_fields: true
+  permission_blocker_root_cause_record_ids_required: true
+  exclusion_is_resolution_status: false
+  source_or_generated_output_direct_edit_allowed: false
+  production_registered_exclusion_rule_count: 0
+  production_formal_exclusion_count: 0
+  blocker_count_reduction_used_as_exclusion_reason: false
+  v16_population_retroactively_changed: false
+verification:
+  policy_validator:
+    command: PYTHONPATH=05_src python -m traffic_simulation.network.validate_v17_formal_blocker_policy
+    result: passed
+    fixed_oracle_comparisons: 5
+  focused_tests:
+    command: PYTHONPATH=05_src python -m pytest -q 05_src/traffic_simulation/validation/test_formal_blocker_governance_v17.py
+    result: passed
+    count: 14
+  traffic_simulation_regression:
+    command: docker compose run --rm -T analysis python -m pytest -q -W always 05_src/traffic_simulation/validation
+    result: passed
+    count: 548
+    warning_events: 0
+population_accounting:
+  fixture_input: 3
+  fixture_governed: 3
+  fixture_excluded: 0
+  equation_valid: true
+  full_population_inventory_status: deferred_to_phase12_run
+  full_population_resolution_status: deferred_to_phase13
+next_required_phase: 11

@@ -1,0 +1,175 @@
+schema_version: 1
+completion_id: ota_ward_attribute_resolution_v17_phase7_20260804
+policy_id: ota_ward_attribute_resolution_policy_v17
+configuration_id: ota_ward_sumo_network_v17
+completed_at: '2026-08-04'
+completed_by: repository_implementation_agent
+requested_by: repository_owner_directive
+result: passed
+production_conditional_access_status: integrated
+conditional_grammar_status: hash_bound_registry_implemented
+scenario_context_evaluation_status: integrated
+within_interval_change_status: fail_closed
+final_permission_resolution_status: pending_phase8
+runtime_full_population: executed_with_fail_closed_blockers
+governed_runtime_interval_context: fixed
+attribute_resolution_acceptance: not_run
+formal_build_ready: false
+prerequisites:
+  phase1:
+    path: reproducibility/config/traffic_simulation/v17_phase1_completion.yml
+    result: passed
+  phase2:
+    path: reproducibility/config/traffic_simulation/v17_phase2_completion.yml
+    result: passed
+  phase3:
+    path: reproducibility/config/traffic_simulation/v17_phase3_completion.yml
+    result: passed
+  phase4:
+    path: reproducibility/config/traffic_simulation/v17_phase4_completion.yml
+    result: passed
+  phase5:
+    path: reproducibility/config/traffic_simulation/v17_phase5_completion.yml
+    result: passed
+  phase6:
+    path: reproducibility/config/traffic_simulation/v17_phase6_completion.yml
+    result: passed
+artifacts:
+  production_conditional_access_stage:
+    path: 05_src/traffic_simulation/network/conditional_access_v17.py
+    sha256: ff098a86d010577e6e19055f664cbc6b46ab6c179017d7e83b57058a9bb9b05e
+  governed_context_loader:
+    path: 05_src/traffic_simulation/network/scenario_context_v17.py
+    sha256: c1631acd87ccb28c87aa1264f171346686451d18df34ab0992e4b2a10b9c601b
+  phase7_validator:
+    path: 05_src/traffic_simulation/network/validate_v17_phase7_conditional_access.py
+    sha256: 93753ca7add2eb646be72a14c7dd1e2acd5f4e19556c2de7c48222f376c9e834
+  phase7_tests:
+    path: 05_src/traffic_simulation/validation/test_conditional_access_v17.py
+    sha256: 7f8eae20819a2fb4d38667a06b5446d7925925ec29ce269f6b2b5ff29a3f4126
+  governed_context_tests:
+    path: 05_src/traffic_simulation/validation/test_scenario_context_v17.py
+    sha256: 60bf56edf46e46949c670940612e12e57f8ed3e3a31e4aaff748e4266c39c20b
+  governed_runtime_interval_context:
+    path: reproducibility/config/traffic_simulation/v17_governed_runtime_interval_context.yml
+    sha256: e7a808f46d028db1242e117757619aecae54b6a7ffcc6a1d8ba3114afcb13edf
+  holiday_calendar:
+    path: reproducibility/config/traffic_simulation/holiday_calendars/japan_national_holidays_2026_v1.yml
+    sha256: 05507ffd7fc6adaa00fe74c206b69a62603185290a93906917dd33ff2a901708
+  context_resolution_audit:
+    path: reproducibility/config/traffic_simulation/v17_phase7_context_resolution_audit.yml
+    sha256: 30e5f2db024cb2aabd0c9815dc71b70017469a85583a6abf5ee7ec869d14955f
+  warning_audit:
+    path: reproducibility/config/traffic_simulation/v17_phase7_warning_audit.yml
+    sha256: 10aaf1beadcdcae33f61aea131dc95f676b0b8324d47be950c58acc13803ef5b
+fixed_fixture:
+  production_osm:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/directed_segments_phase4.osm.xml
+    sha256: 926946fdd904a39b9ef24538eb777b5762f4116e1ec633b7422366e046df02f1
+  governed_context_fixture_oracle:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/governed_runtime_context_phase7.json
+    sha256: cdb6503251c516e68b6dda0cbf6b6558753bf6e5db3a7ec7725da55067e981df
+conditional_contract:
+  grammar_id: OSM_CONDITIONAL_V17_CORE
+  clauses: value_at_parenthesized_condition
+  clause_separator: semicolon_at_top_level
+  boolean_operators: [AND, OR, implicit_AND]
+  supported_categories:
+    - weekday
+    - clock_time
+    - calendar_date
+    - public_holiday
+    - vehicle_class
+    - mass
+    - dimension
+    - trip_purpose
+    - permit
+    - authorization
+  intra_tag_multiple_match: last_matching_clause
+  independent_tag_source_order_tiebreak: prohibited
+  missing_context: ACCESS_CONTEXT_MISSING
+  unsupported_syntax: ACCESS_CONDITIONAL_SYNTAX_UNSUPPORTED
+  within_interval_permission_change: ACCESS_WITHIN_INTERVAL_CHANGE
+  static_fallback_after_conditional_failure: prohibited
+  final_scope_axis_dominance: deferred_to_phase8
+runtime_population:
+  input_path: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+  source_way_count: 26220
+  scenario_context:
+    scenario_context_id: ota_ward_delivery_20260716_0900_1700_jst_v1
+    managed_vehicle_profile: managed_urban_ev_delivery_v1
+    interval_start: '2026-07-16T09:00:00+09:00'
+    interval_end: '2026-07-16T17:00:00+09:00'
+    timezone: Asia/Tokyo
+    holiday_calendar_id: japan_national_holidays_2026_v1
+    public_holiday: false
+    permit_ids: []
+    authorization_ids: []
+  formal:
+    source_ways_with_conditional_tags: 55
+    normalized_conditional_source_way_count: 51
+    normalized_conditional_rule_count: 0
+    conditional_access_lane_tuple_count: 6984
+    lane_tuples_with_applicable_conditional_rules: 0
+    conditional_access_blocker_count: 4
+    upstream_static_access_blocker_count: 519
+    upstream_lane_blocker_count: 24138
+    upstream_relation_blocker_count: 48
+    blocker_stop_codes:
+      ACCESS_CONDITIONAL_SYNTAX_UNSUPPORTED: 4
+    access_context_missing_count: 0
+    semantic_sha256: e950f882fd2f9c42f683e7da1f67a7b0a6f0d4814abd3a656cfe01a9baa72afb
+  structural:
+    source_ways_with_conditional_tags: 67
+    normalized_conditional_source_way_count: 62
+    normalized_conditional_rule_count: 0
+    conditional_access_lane_tuple_count: 16330
+    lane_tuples_with_applicable_conditional_rules: 0
+    conditional_access_blocker_count: 5
+    upstream_static_access_blocker_count: 594
+    upstream_lane_blocker_count: 22861
+    upstream_relation_blocker_count: 48
+    blocker_stop_codes:
+      ACCESS_CONDITIONAL_SYNTAX_UNSUPPORTED: 5
+    access_context_missing_count: 0
+    semantic_sha256: 83c811d939080dd58f3f98fdb2eb3e285b4baf0bb14f8ee71e6355e6a09d70a2
+  formal_build_gate: blocked_until_conditional_static_and_upstream_blockers_are_resolved
+verification:
+  phase7_validator:
+    command: PYTHONPATH=05_src python -m traffic_simulation.network.validate_v17_phase7_conditional_access
+    result: passed
+    fixed_oracle_comparisons: 5
+  phase7_tests:
+    command: PYTHONPATH=05_src python -m pytest -q 05_src/traffic_simulation/validation/test_conditional_access_v17.py
+    result: passed
+    count: 15
+  governed_context_tests:
+    command: PYTHONPATH=05_src python -m pytest -q 05_src/traffic_simulation/validation/test_scenario_context_v17.py
+    result: passed
+    count: 8
+  traffic_simulation_regression:
+    command: docker compose run --rm -T analysis python -m pytest -q -W always 05_src/traffic_simulation/validation
+    result: passed
+    count: 484
+    warning_events: 0
+    unique_warning_signatures: 0
+    blocking_warnings: 0
+exit_conditions:
+  conditional_grammar_registry_bound: true
+  unsupported_syntax_stops: true
+  missing_context_not_false: true
+  intra_tag_last_match_enforced: true
+  independent_source_order_not_used: true
+  within_interval_change_stops: true
+  vehicle_irrelevant_context_not_required: true
+  lane_local_provenance_preserved: true
+  static_fallback_after_failure_prohibited: true
+  final_permission_resolution_not_claimed: true
+  governed_runtime_interval_context_fixed: true
+  governed_context_schema_and_semantics_valid: true
+  access_context_missing_full_population: 0
+  warning_events_in_governed_regression: 0
+  blocking_warnings: 0
+  fixed_oracles_match: true
+  two_run_determinism: true
+next_phase: 8

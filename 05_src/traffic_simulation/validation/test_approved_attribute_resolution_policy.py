@@ -44,13 +44,12 @@ def test_machine_readable_policy_and_vehicle_profile_validate() -> None:
     policy = validate_approved_policy()
     assert policy["policy_id"] == "ota_ward_attribute_resolution_policy_v17"
     assert policy["formal_build_ready"] is False
-    assert (
-        policy["managed_vehicle_profile"]["profile_id"]
-        == "managed_urban_ev_delivery_v1"
-    )
+    assert policy["phase1_authority_status"] == "complete"
+    assert policy["implementation_status"] == "partial"
+    assert policy["runtime_validation_status"] == "incomplete"
 
 
-def test_policy_schema_rejects_a_changed_directed_road_contract() -> None:
+def test_policy_schema_rejects_a_changed_authority_reference() -> None:
     policy_path = (
         REPOSITORY_ROOT
         / "reproducibility/config/traffic_simulation/"
@@ -58,7 +57,7 @@ def test_policy_schema_rejects_a_changed_directed_road_contract() -> None:
     )
     policy = yaml.safe_load(policy_path.read_text(encoding="utf-8"))
     changed = deepcopy(policy)
-    changed["directed_road_model"]["reverse_oneway_generation"] = "forward_only"
+    changed["phase1_configuration"] = "reproducibility/config/traffic_simulation/sumo_network.yml"
     schema = json.loads(
         (
             REPOSITORY_ROOT
@@ -137,47 +136,40 @@ def test_reverse_oneway_builds_only_backward_directed_segment() -> None:
     """RS-TST-017: map reverse one-way input to one backward segment."""
     segments = build_way_directions(
         source_way_id=123,
-        source_segment_index=7,
         source_node_ids=[10, 20, 30],
         oneway="-1",
     )
     assert len(segments) == 1
     segment = segments[0]
-    assert segment["directed_segment_id"] == (
-        "way/123/segment/0007/direction/B"
-    )
+    assert segment["directed_segment_id"] == "ds:123:0:2:backward"
     assert segment["source_node_ids"] == [10, 20, 30]
     assert segment["travel_node_ids"] == [30, 20, 10]
-    assert segment["travel_from_node"] == 30
-    assert segment["travel_to_node"] == 10
+    assert segment["source_direction"] == "backward"
 
 
 def test_bidirectional_way_uses_stable_forward_and_backward_ids() -> None:
     """ARC-TST-007: derive stable direction IDs from source lineage."""
     first = build_way_directions(
         source_way_id=456,
-        source_segment_index=0,
         source_node_ids=[1, 2],
         oneway="no",
     )
     second = build_way_directions(
         source_way_id=456,
-        source_segment_index=0,
         source_node_ids=[1, 2],
         oneway="no",
     )
     assert first == second
-    assert [item["direction_relative_to_way"] for item in first] == [
+    assert [item["source_direction"] for item in first] == [
         "forward",
         "backward",
     ]
 
 
 def test_invalid_directed_segment_input_fails_closed() -> None:
-    with pytest.raises(ApprovedPolicyError, match="at least two nodes"):
+    with pytest.raises(ApprovedPolicyError, match="source_start_index"):
         build_way_directions(
             source_way_id=1,
-            source_segment_index=0,
             source_node_ids=[10],
             oneway="yes",
         )

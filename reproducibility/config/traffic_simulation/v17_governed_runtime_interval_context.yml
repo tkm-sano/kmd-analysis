@@ -1,0 +1,32 @@
+schema_version: 17
+schema: reproducibility/config/traffic_simulation/schemas/governed_runtime_interval_context_v17.schema.json
+scenario_context_id: ota_ward_delivery_20260716_0900_1700_jst_v1
+context_version: 1.0.0
+status: fixed
+authority:
+  interval_and_timezone: repository_owner_directive_20260804
+  authorization_assignment: repository_owner_directive_20260804
+  holiday_calendar: cabinet_office_japan_2026
+interval:
+  start_timestamp: '2026-07-16T09:00:00+09:00'
+  end_timestamp: '2026-07-16T17:00:00+09:00'
+  timezone: Asia/Tokyo
+  duration_seconds: 28800
+holiday_calendar:
+  calendar_id: japan_national_holidays_2026_v1
+  calendar_version: 1.0.0
+  path: reproducibility/config/traffic_simulation/holiday_calendars/japan_national_holidays_2026_v1.yml
+  sha256: 05507ffd7fc6adaa00fe74c206b69a62603185290a93906917dd33ff2a901708
+  public_holiday: false
+vehicle_context:
+  vehicle_profile_id: managed_urban_ev_delivery_v1
+  profile_path: reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml
+  profile_sha256: 8f837f7a1b4fa7274e86e5d8ac09260738d2c0dac9cbeb7143300e82b92bc2b5
+  vehicle_class: delivery
+  maximum_permissible_mass_kg: 3500
+  length_m: 4.70
+  width_m: 1.70
+  height_m: 2.00
+  trip_purpose: delivery
+  permit_ids: []
+  authorization_ids: []

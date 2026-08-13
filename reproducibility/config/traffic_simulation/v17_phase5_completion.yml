@@ -1,0 +1,114 @@
+schema_version: 1
+completion_id: ota_ward_attribute_resolution_v17_phase5_20260804
+policy_id: ota_ward_attribute_resolution_policy_v17
+configuration_id: ota_ward_sumo_network_v17
+completed_at: '2026-08-04'
+completed_by: repository_implementation_agent
+requested_by: repository_owner_directive
+result: passed
+production_directional_lane_status: integrated
+formal_structural_boundary_status: enforced
+lane_vector_status: integrated
+sumo_lane_index_status: integrated
+runtime_full_population: executed_with_fail_closed_blockers
+attribute_resolution_acceptance: not_run
+formal_build_ready: false
+prerequisites:
+  phase1:
+    path: reproducibility/config/traffic_simulation/v17_phase1_completion.yml
+    result: passed
+  phase2:
+    path: reproducibility/config/traffic_simulation/v17_phase2_completion.yml
+    result: passed
+  phase3:
+    path: reproducibility/config/traffic_simulation/v17_phase3_completion.yml
+    result: passed
+  phase4:
+    path: reproducibility/config/traffic_simulation/v17_phase4_completion.yml
+    result: passed
+artifacts:
+  production_directional_lane_stage:
+    path: 05_src/traffic_simulation/network/directional_lanes_v17.py
+    sha256: 8ba20405f13d17d29823326257d70a8ba099ce19ac1b3fca24010a13389f09c9
+  phase5_validator:
+    path: 05_src/traffic_simulation/network/validate_v17_phase5_directional_lanes.py
+    sha256: 1c8be9c590049e84b097128b1bf27f03c5b5d6345dbbde4a5792fc38df4eed65
+  phase5_tests:
+    path: 05_src/traffic_simulation/validation/test_directional_lanes_v17.py
+    sha256: 3643f73074eb6e0de9bcd50d29d9ffb956fe3a7ec696b81e8c43d8ff0ee0f2dc
+fixed_fixture:
+  production_osm:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/directed_segments_phase4.osm.xml
+    sha256: 926946fdd904a39b9ef24538eb777b5762f4116e1ec633b7422366e046df02f1
+lane_contract:
+  moving_lane_dimensions: [total, forward, backward, both_ways]
+  formal_arithmetic_complement_allowed: false
+  formal_even_split_allowed: false
+  structural_even_split_assumption_id: BIDIRECTIONAL_EVEN_LANE_EQUAL_SPLIT_V1
+  structural_assumption_origin: model_assumed
+  structural_assumption_formal_eligible: false
+  lane_order: left_to_right_in_travel_direction
+  sumo_lane_index_formula: n - 1 - p
+  backward_vector_reversal: prohibited
+  empty_vector_entries_preserved: true
+stop_contract:
+  invalid_count: LANE_COUNT_INVALID
+  inconsistent_total: LANE_COUNT_CONFLICT
+  missing_directional_allocation: LANE_DIRECTIONAL_ALLOCATION_MISSING
+  vector_length_mismatch: LANE_VECTOR_LENGTH_MISMATCH
+runtime_population:
+  input_path: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+  source_way_count: 26220
+  upstream_phase4_blocker_count: 48
+  formal:
+    resolved_source_way_count: 2082
+    directed_segment_count_with_lanes: 4189
+    directional_lane_count: 8658
+    lane_blocker_count: 24138
+    model_assumed_way_count: 0
+    value_origins: {source_explicit: 96, rule_derived: 1986}
+    blocker_stop_codes:
+      LANE_COUNT_CONFLICT: 6
+      LANE_DIRECTIONAL_ALLOCATION_MISSING: 24114
+      LANE_VECTOR_LENGTH_MISMATCH: 18
+    semantic_sha256: 764eb80325620008552066a64ddbc47becd4666f3fd7d2759bbcf92d1c3007d5
+  structural:
+    resolved_source_way_count: 3359
+    directed_segment_count_with_lanes: 13821
+    directional_lane_count: 18776
+    lane_blocker_count: 22861
+    model_assumed_way_count: 1277
+    value_origins: {source_explicit: 96, rule_derived: 1986, model_assumed: 1277}
+    blocker_stop_codes:
+      LANE_COUNT_CONFLICT: 6
+      LANE_DIRECTIONAL_ALLOCATION_MISSING: 22836
+      LANE_VECTOR_LENGTH_MISMATCH: 19
+    semantic_sha256: 321ecacb30f7aff00b9eefbfcc62ddafeaece89a022804d9e6e7f2551b612ee0
+  formal_build_gate: blocked_until_lane_and_upstream_relation_blockers_are_resolved
+verification:
+  phase5_validator:
+    command: PYTHONPATH=05_src python -m traffic_simulation.network.validate_v17_phase5_directional_lanes
+    result: passed
+  phase5_tests:
+    command: PYTHONPATH=05_src python -m pytest -q 05_src/traffic_simulation/validation/test_directional_lanes_v17.py
+    result: passed
+    count: 23
+  traffic_simulation_regression:
+    command: PYTHONPATH=<temporary_dependencies>:05_src python -m pytest -q 05_src/traffic_simulation/validation
+    result: passed
+    count: 441
+    warnings: 24
+exit_conditions:
+  one_way_total_attached_to_active_direction: true
+  reverse_oneway_lanes_attached_to_backward: true
+  formal_directional_allocation_requires_evidence: true
+  formal_arithmetic_complement_prohibited: true
+  structural_even_split_predicate_bound: true
+  lane_total_equation_validated: true
+  lane_vector_length_validated: true
+  lane_vector_empty_entries_preserved: true
+  backward_vector_not_reversed_twice: true
+  resolver_to_sumo_index_fixed: true
+  fixed_oracles_match: true
+  two_run_determinism: true
+next_phase: 6

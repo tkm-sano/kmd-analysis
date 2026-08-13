@@ -1,0 +1,89 @@
+schema_version: 17
+schema: reproducibility/config/traffic_simulation/schemas/japan_speed_rules_v17.schema.json
+registry_id: JAPAN_SPEED_RULES_V17
+registry_version: 1.0.0
+policy_id: ota_ward_attribute_resolution_policy_v17
+status: approved
+approved_by: repository_owner_directive
+approved_at: '2026-08-04'
+timezone: Asia/Tokyo
+canonical_unit: km/h
+sumo_conversion: speed_mps = speed_kmh / 3.6
+source_authorities:
+  - source_id: NPA_SPEED_AMENDMENT_NOTIFICATION_20240726
+    authority: National Police Agency of Japan
+    title: Notification concerning Cabinet Order No. 248 of 2024 and the September 2026 speed amendment
+    url: https://www.npa.go.jp/laws/notification/koutuu/kisei/kisei20240726_2.pdf
+    retrieved_at: '2026-08-04'
+    sha256: aed99c287b8dde05808659a8b79042c7b4625862ae55ff82cc1fbc23de21ae3b
+    usage_terms: source_site_terms_apply
+  - source_id: NPA_LIVING_ROAD_SPEED_2026
+    authority: National Police Agency of Japan
+    title: Statutory speed reduction on living roads from 2026-09-01
+    url: https://www.npa.go.jp/bureau/traffic/seikatsudouro/seikatsudoro.html
+    retrieved_at: '2026-08-04'
+    sha256: 03ebdca89540b20df8477c6794211aa57712f7a3f19d209673e0c5e644218025
+    usage_terms: source_site_terms_apply
+  - source_id: TMPD_SPEED_REVIEW_20260417
+    authority: Tokyo Metropolitan Police Department
+    title: Review of maximum-speed restrictions
+    url: https://www.keishicho.metro.tokyo.lg.jp/kotsu/doro/kisei_minaoshi.html
+    retrieved_at: '2026-08-04'
+    sha256: fb9278f8a96d20ec3165b66a0b93d8df6e74f7c4d79d0efa533f2fcbc489c756
+    usage_terms: source_site_terms_apply
+symbolic_values:
+  JP:urban:
+    numeric_value_directly_encoded: false
+    evaluator: dated_japan_road_state_rule_table
+    required_evidence:
+      - reference_date
+      - road_category
+      - vehicle_category
+      - designated_speed_present
+    missing_evidence_stop_code: SPEED_RULE_NOT_REGISTERED
+rules:
+  - rule_id: JP_GENERAL_AUTOMOBILE_PRE_20260901_STATUTORY_60
+    effective_start: '1960-07-01'
+    effective_end: '2026-08-31'
+    road_category: general_road
+    vehicle_category: automobile
+    designated_speed_present: false
+    road_state: {}
+    speed_kmh: 60
+    speed_kind: statutory
+    source_ids: [NPA_SPEED_AMENDMENT_NOTIFICATION_20240726, NPA_LIVING_ROAD_SPEED_2026]
+  - rule_id: JP_GENERAL_AUTOMOBILE_POST_20260901_RETAINED_60
+    effective_start: '2026-09-01'
+    effective_end: null
+    road_category: general_road
+    vehicle_category: automobile
+    designated_speed_present: false
+    road_state:
+      centerline_or_vehicle_lane_present: true
+    speed_kmh: 60
+    speed_kind: statutory
+    source_ids: [NPA_SPEED_AMENDMENT_NOTIFICATION_20240726, NPA_LIVING_ROAD_SPEED_2026]
+  - rule_id: JP_GENERAL_AUTOMOBILE_POST_20260901_SEPARATED_60
+    effective_start: '2026-09-01'
+    effective_end: null
+    road_category: general_road
+    vehicle_category: automobile
+    designated_speed_present: false
+    road_state:
+      directions_structurally_separated: true
+    speed_kmh: 60
+    speed_kind: statutory
+    source_ids: [NPA_SPEED_AMENDMENT_NOTIFICATION_20240726, NPA_LIVING_ROAD_SPEED_2026]
+  - rule_id: JP_GENERAL_AUTOMOBILE_POST_20260901_LIVING_ROAD_30
+    effective_start: '2026-09-01'
+    effective_end: null
+    road_category: general_road
+    vehicle_category: automobile
+    designated_speed_present: false
+    road_state:
+      centerline_or_vehicle_lane_present: false
+      directions_structurally_separated: false
+    speed_kmh: 30
+    speed_kind: statutory
+    source_ids: [NPA_SPEED_AMENDMENT_NOTIFICATION_20240726, NPA_LIVING_ROAD_SPEED_2026]
+unresolved_policy: SPEED_RULE_NOT_REGISTERED

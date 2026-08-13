@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "phase12_profile_artifact_v17.schema.json",
+  "type": "object",
+  "required": ["schema_version", "artifact_type", "configuration_id", "population_version", "profile", "scenario_context_id", "source_sha256", "stage_outputs", "counts", "blockers", "semantic_sha256"],
+  "properties": {
+    "schema_version": {"const": 17},
+    "artifact_type": {"const": "phase12_full_population_profile"},
+    "configuration_id": {"const": "ota_ward_sumo_network_v17"},
+    "population_version": {"const": "ota_ward_relation_closure_v16"},
+    "profile": {"enum": ["structural", "formal"]},
+    "scenario_context_id": {"type": "string", "minLength": 1},
+    "source_sha256": {"$ref": "#/$defs/hash"},
+    "stage_outputs": {
+      "type": "object",
+      "required": ["directed_segments", "directional_lanes", "static_access", "conditional_access", "final_permission", "speed"],
+      "properties": {
+        "directed_segments": {"type": "object"},
+        "directional_lanes": {"type": "object"},
+        "static_access": {"type": "object"},
+        "conditional_access": {"type": "object"},
+        "final_permission": {"type": "object"},
+        "speed": {"type": "object"}
+      },
+      "additionalProperties": false
+    },
+    "counts": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "integer", "minimum": 0}},
+    "blockers": {"type": "array", "items": {"type": "object"}},
+    "semantic_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {"hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+  "additionalProperties": false
+}

@@ -1,0 +1,124 @@
+schema_version: 1
+completion_id: ota_ward_attribute_resolution_v17_phase6_20260804
+policy_id: ota_ward_attribute_resolution_policy_v17
+configuration_id: ota_ward_sumo_network_v17
+completed_at: '2026-08-04'
+completed_by: repository_implementation_agent
+requested_by: repository_owner_directive
+result: passed
+production_static_access_status: integrated
+static_maximal_rule_selection_status: integrated
+conditional_access_status: deferred_to_phase7
+final_permission_resolution_status: pending
+runtime_full_population: executed_with_fail_closed_blockers
+attribute_resolution_acceptance: not_run
+formal_build_ready: false
+prerequisites:
+  phase1:
+    path: reproducibility/config/traffic_simulation/v17_phase1_completion.yml
+    result: passed
+  phase2:
+    path: reproducibility/config/traffic_simulation/v17_phase2_completion.yml
+    result: passed
+  phase3:
+    path: reproducibility/config/traffic_simulation/v17_phase3_completion.yml
+    result: passed
+  phase4:
+    path: reproducibility/config/traffic_simulation/v17_phase4_completion.yml
+    result: passed
+  phase5:
+    path: reproducibility/config/traffic_simulation/v17_phase5_completion.yml
+    result: passed
+artifacts:
+  production_static_access_stage:
+    path: 05_src/traffic_simulation/network/static_access_v17.py
+    sha256: 0855853c232c2b239ba5b6828bd17d420cfeb44de982beeefaaf6c5cd52f0e64
+  phase6_validator:
+    path: 05_src/traffic_simulation/network/validate_v17_phase6_static_access.py
+    sha256: 91c4765d42a9e79731114226bd86b2e5e19b52103e56c4bc1914eb3fc5258dd4
+  phase6_tests:
+    path: 05_src/traffic_simulation/validation/test_static_access_v17.py
+    sha256: 786cd14cd4a673a7b1b846b91b9fb7030662aebc98a0764075e02775f8446827
+fixed_fixture:
+  production_osm:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/directed_segments_phase4.osm.xml
+    sha256: 926946fdd904a39b9ef24538eb777b5762f4116e1ec633b7422366e046df02f1
+static_access_contract:
+  normalized_representation: AccessRule
+  target_scope_axes: [direction_scope, lane_scope]
+  specificity_axes: [spatial_domain, vehicle_domain, temporal_domain, purpose_domain]
+  dominance: set_inclusion_with_at_least_one_strict_subset
+  independent_source_order_tiebreak: prohibited
+  same_effect_maxima: preserve_all_provenance_and_adopt_effect_once
+  different_effect_maxima: ACCESS_SPECIFICITY_CONFLICT
+  known_negative_authorization_context: denied
+  missing_authorization_context: ACCESS_CONTEXT_MISSING
+  conditional_tags: deferred_without_final_static_claim
+  final_permission_resolution: prohibited_in_phase6
+stop_contract:
+  invalid_access_value: ACCESS_VALUE_INVALID
+  unsupported_access_value: ACCESS_VALUE_UNSUPPORTED
+  missing_vehicle_hierarchy: ACCESS_VEHICLE_HIERARCHY_MISSING
+  missing_access_context: ACCESS_CONTEXT_MISSING
+  conflicting_maximal_rules: ACCESS_SPECIFICITY_CONFLICT
+runtime_population:
+  input_path: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+  source_way_count: 26220
+  upstream_phase4_blocker_count: 48
+  formal:
+    source_ways_with_lane_tuples: 2082
+    normalized_source_way_count: 1563
+    normalized_rule_count: 449
+    static_lane_tuple_count: 6865
+    empty_static_maxima_count: 4869
+    deferred_conditional_tag_count: 56
+    static_access_blocker_count: 562
+    upstream_lane_blocker_count: 24138
+    static_conflict_candidate_count: 0
+    blocker_stop_codes:
+      ACCESS_CONTEXT_MISSING: 43
+      ACCESS_VALUE_UNSUPPORTED: 27
+      ACCESS_VEHICLE_HIERARCHY_MISSING: 492
+    semantic_sha256: 02d45fc35a5857a5b8d645b58346dc635af7290807cc4e76fc93c703a8e28fe2
+  structural:
+    source_ways_with_lane_tuples: 3359
+    normalized_source_way_count: 2765
+    normalized_rule_count: 742
+    static_lane_tuple_count: 15667
+    empty_static_maxima_count: 13355
+    deferred_conditional_tag_count: 68
+    static_access_blocker_count: 772
+    upstream_lane_blocker_count: 22861
+    static_conflict_candidate_count: 0
+    blocker_stop_codes:
+      ACCESS_CONTEXT_MISSING: 178
+      ACCESS_VALUE_UNSUPPORTED: 28
+      ACCESS_VEHICLE_HIERARCHY_MISSING: 566
+    semantic_sha256: f841730bc155a73c514522d74bc8df8cca5ced2814447b9fffc601c3a411da6b
+  formal_build_gate: blocked_until_static_access_and_upstream_blockers_are_resolved
+verification:
+  phase6_validator:
+    command: PYTHONPATH=05_src python -m traffic_simulation.network.validate_v17_phase6_static_access
+    result: passed
+  phase6_tests:
+    command: PYTHONPATH=05_src python -m pytest -q 05_src/traffic_simulation/validation/test_static_access_v17.py
+    result: passed
+    count: 20
+  traffic_simulation_regression:
+    command: PYTHONPATH=<temporary_dependencies>:05_src python -m pytest -q 05_src/traffic_simulation/validation
+    result: passed
+    count: 461
+    warnings: 24
+exit_conditions:
+  access_rules_schema_validated: true
+  direction_and_lane_scope_separated: true
+  vehicle_hierarchy_registry_bound: true
+  static_context_tri_state_enforced: true
+  maximal_rule_selection_order_invariant: true
+  same_effect_maximal_provenance_preserved: true
+  conflicting_maximal_effects_fail_closed: true
+  conditional_evaluation_deferred: true
+  final_permission_resolution_not_claimed: true
+  fixed_oracles_match: true
+  two_run_determinism: true
+next_phase: 7

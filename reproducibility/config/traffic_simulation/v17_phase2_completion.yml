@@ -1,0 +1,89 @@
+schema_version: 1
+completion_id: ota_ward_attribute_resolution_v17_phase2_20260803
+policy_id: ota_ward_attribute_resolution_policy_v17
+configuration_id: ota_ward_sumo_network_v17
+completed_at: '2026-08-03'
+completed_by: repository_implementation_agent
+requested_by: repository_owner_directive
+result: passed
+phase2_fixture_oracle_status: fixed
+production_integration_status: not_started
+runtime_oracle_comparison: not_run
+attribute_resolution_acceptance: not_run
+formal_build_ready: false
+phase1_prerequisite:
+  path: reproducibility/config/traffic_simulation/v17_phase1_completion.yml
+  result: passed
+fixed_artifacts:
+  fixture_catalog:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/inputs.json
+    sha256: 176722a33dc408745094d90871aa841908d85cfad593bdec2e8ae06c88065ca4
+  oracle_catalog:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/oracle.json
+    sha256: fadd537e8cb4d43a62658fbd36c76de9c9b2ad0c4053cdf7b83130cb5a179bb4
+  manifest:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/manifest.yml
+    sha256: 170cd956e74e2c8f38aa147db728f2440459ca9e6c015913cea4e56882bceb46
+  readme:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/README.md
+    sha256: 44880faa3a48020b4939e0c028a2da6b00ca8479381311537b0063fe5600a5d3
+  validator:
+    path: 05_src/traffic_simulation/network/validate_v17_fixture_oracle.py
+    sha256: d0242222bed720931d1d165b3f33c932d6b53bf03177e76ba9bb4b51f8ff1a67
+  tests:
+    path: 05_src/traffic_simulation/validation/test_v17_fixture_oracle.py
+    sha256: 3617947a5af83cb6bd8c65482be0cd9e539e486ae162e616ad7ffcdd30da3177
+schemas:
+  fixture_catalog:
+    path: reproducibility/config/traffic_simulation/schemas/v17_attribute_resolution_fixture_catalog.schema.json
+    sha256: e6828bb423e674bbb1a36f327455416f9eef53a1e098a631b18f6f6facaefc2e
+  oracle_catalog:
+    path: reproducibility/config/traffic_simulation/schemas/v17_attribute_resolution_oracle_catalog.schema.json
+    sha256: 32cae4dd42bc0685397cef7f6ed6a0ea2cffce837cdac23de090c17a750be98a
+  manifest:
+    path: reproducibility/config/traffic_simulation/schemas/v17_fixture_oracle_manifest.schema.json
+    sha256: d4c5343c7b27319421d89f688fee0c5ea6c9e22b8e76eec0da46313b9d137da1
+coverage:
+  fixture_count: 57
+  oracle_count: 57
+  one_to_one_fixture_oracle_bindings: 57
+  required_case_family_count: 38
+  registered_stop_code_count: 30
+  covered_stop_code_count: 30
+  duplicate_stop_code_coverage: 0
+  missing_stop_codes: []
+  metamorphic_case_count: 5
+independence:
+  fixture_derived_from_specification: true
+  oracle_derived_from_specification: true
+  production_code_used_to_generate_oracle: false
+  production_output_used_to_adjust_oracle: false
+  validator_imports_production_resolver: false
+  fixture_author_role: specification_fixture_author
+  oracle_author_role: production_independent_oracle_author
+  reviewer_role: specification_conformance_reviewer
+  review_basis: direct_comparison_with_normative_specification
+verification:
+  phase2_validator:
+    command: PYTHONPATH=05_src python -m traffic_simulation.network.validate_v17_fixture_oracle
+    result: passed
+  phase2_tests:
+    command: PYTHONPATH=05_src python -m pytest -q 05_src/traffic_simulation/validation/test_v17_fixture_oracle.py
+    result: passed
+    count: 7
+  traffic_simulation_regression:
+    command: PYTHONPATH=<temporary_dependencies>:05_src python -m pytest -q 05_src/traffic_simulation/validation
+    result: passed
+    count: 383
+    warnings: 24
+exit_conditions:
+  phase1_passed: true
+  required_case_families_covered: true
+  every_registered_stop_code_covered: true
+  independent_oracle_fixed_by_sha256: true
+  fixture_fixed_by_sha256: true
+  production_output_not_used: true
+  metamorphic_tests_defined: true
+  author_and_reviewer_roles_recorded: true
+  production_comparison_deferred_to_phase3: true
+next_phase: 3

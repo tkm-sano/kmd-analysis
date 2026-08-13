@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "resolver_integration_v17.schema.json",
+  "type": "object",
+  "required": ["schema_version", "artifact_type", "configuration_id", "population_version", "profile", "scenario_context", "stage_semantic_sha256", "counts", "lineage_invariants", "formal_invariants", "lane_projection", "permission_projection", "speed_projection", "evidence_origin_audit", "blockers", "semantic_sha256"],
+  "properties": {
+    "schema_version": {"const": 17},
+    "artifact_type": {"const": "resolver_integration_collection"},
+    "configuration_id": {"const": "ota_ward_sumo_network_v17"},
+    "population_version": {"const": "ota_ward_relation_closure_v16"},
+    "profile": {"enum": ["structural", "formal"]},
+    "scenario_context": {"type": "object"},
+    "stage_semantic_sha256": {"type": "object", "required": ["directed_segments", "directional_lanes", "static_access", "conditional_access", "final_permission", "speed"], "additionalProperties": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+    "counts": {"type": "object", "required": ["source_ways", "directed_segments", "directional_lane_records", "directional_lanes", "static_rule_groups", "conditional_rule_groups", "permission_records", "speed_records", "blockers"], "additionalProperties": {"type": "integer", "minimum": 0}},
+    "lineage_invariants": {"type": "object", "required": ["lane_segments_equal_directed_segments", "permission_segments_equal_lane_segments", "speed_segments_equal_directed_segments", "one_permission_per_governed_lane_tuple", "one_speed_per_directed_segment", "stage_hash_chain_valid"], "additionalProperties": {"const": true}},
+    "formal_invariants": {"type": "object", "required": ["model_assumed_count", "assumption_id_count", "unapproved_evidence_origin_count"], "additionalProperties": {"const": 0}},
+    "lane_projection": {"type": "array", "items": {"type": "object"}},
+    "permission_projection": {"type": "array", "items": {"type": "object"}},
+    "speed_projection": {"type": "array", "items": {"type": "object"}},
+    "evidence_origin_audit": {"type": "object"},
+    "blockers": {"type": "array", "maxItems": 0},
+    "semantic_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "access_rule_v17.schema.json",
+  "type": "object",
+  "required": ["rule_id", "source_key", "source_value", "source_element", "target_scope", "spatial_domain", "vehicle_domain", "temporal_domain", "purpose_domain", "effect", "authorization_requirement", "source_order", "provenance"],
+  "properties": {
+    "rule_id": {"type": "string", "minLength": 1},
+    "source_key": {"type": "string", "minLength": 1},
+    "source_value": {"type": "string"},
+    "source_element": {"type": "object"},
+    "target_scope": {
+      "type": "object",
+      "required": ["direction_scope", "lane_scope"],
+      "properties": {
+        "direction_scope": {"enum": ["forward", "backward", "both"]},
+        "lane_scope": {
+          "type": "object",
+          "required": ["type", "positions"],
+          "properties": {"type": {"enum": ["all", "explicit_positions"]}, "positions": {"type": "array", "uniqueItems": true, "items": {"type": "integer", "minimum": 0}}},
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "spatial_domain": {"type": "array", "uniqueItems": true},
+    "vehicle_domain": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "temporal_domain": {"type": "array", "uniqueItems": true},
+    "purpose_domain": {"type": "array", "uniqueItems": true},
+    "effect": {"enum": ["allowed", "denied"]},
+    "authorization_requirement": {"type": ["string", "null"]},
+    "source_order": {"type": ["integer", "null"], "minimum": 0},
+    "provenance": {"type": "object"}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "japan_speed_rules_v17.schema.json",
+  "type": "object",
+  "required": ["schema_version", "schema", "registry_id", "registry_version", "policy_id", "status", "approved_by", "approved_at", "timezone", "canonical_unit", "sumo_conversion", "source_authorities", "symbolic_values", "rules", "unresolved_policy"],
+  "properties": {
+    "schema_version": {"const": 17},
+    "schema": {"const": "reproducibility/config/traffic_simulation/schemas/japan_speed_rules_v17.schema.json"},
+    "registry_id": {"const": "JAPAN_SPEED_RULES_V17"},
+    "registry_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "policy_id": {"const": "ota_ward_attribute_resolution_policy_v17"},
+    "status": {"const": "approved"},
+    "approved_by": {"type": "string", "minLength": 1},
+    "approved_at": {"type": "string", "format": "date"},
+    "timezone": {"const": "Asia/Tokyo"},
+    "canonical_unit": {"const": "km/h"},
+    "sumo_conversion": {"const": "speed_mps = speed_kmh / 3.6"},
+    "source_authorities": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["source_id", "authority", "title", "url", "retrieved_at", "sha256", "usage_terms"],
+        "properties": {
+          "source_id": {"type": "string", "minLength": 1},
+          "authority": {"type": "string", "minLength": 1},
+          "title": {"type": "string", "minLength": 1},
+          "url": {"type": "string", "format": "uri"},
+          "retrieved_at": {"type": "string", "format": "date"},
+          "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "usage_terms": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "symbolic_values": {
+      "type": "object",
+      "required": ["JP:urban"],
+      "properties": {
+        "JP:urban": {
+          "type": "object",
+          "required": ["numeric_value_directly_encoded", "evaluator", "required_evidence", "missing_evidence_stop_code"],
+          "properties": {
+            "numeric_value_directly_encoded": {"const": false},
+            "evaluator": {"const": "dated_japan_road_state_rule_table"},
+            "required_evidence": {"type": "array", "minItems": 4, "uniqueItems": true, "items": {"type": "string"}},
+            "missing_evidence_stop_code": {"const": "SPEED_RULE_NOT_REGISTERED"}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["rule_id", "effective_start", "effective_end", "road_category", "vehicle_category", "designated_speed_present", "road_state", "speed_kmh", "speed_kind", "source_ids"],
+        "properties": {
+          "rule_id": {"type": "string", "minLength": 1},
+          "effective_start": {"type": "string", "format": "date"},
+          "effective_end": {"type": ["string", "null"], "format": "date"},
+          "road_category": {"const": "general_road"},
+          "vehicle_category": {"const": "automobile"},
+          "designated_speed_present": {"const": false},
+          "road_state": {
+            "type": "object",
+            "properties": {
+              "centerline_or_vehicle_lane_present": {"type": "boolean"},
+              "directions_structurally_separated": {"type": "boolean"}
+            },
+            "additionalProperties": false
+          },
+          "speed_kmh": {"enum": [30, 60]},
+          "speed_kind": {"const": "statutory"},
+          "source_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "unresolved_policy": {"const": "SPEED_RULE_NOT_REGISTERED"}
+  },
+  "additionalProperties": false
+}

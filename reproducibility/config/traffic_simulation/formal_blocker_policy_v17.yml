@@ -1,0 +1,79 @@
+schema_version: 17
+schema: reproducibility/config/traffic_simulation/schemas/formal_blocker_policy_v17.schema.json
+policy_id: FORMAL_BLOCKER_POLICY_V17
+policy_version: 1.0.0
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+status: approved
+approved_by: repository_owner_directive
+approved_at: '2026-08-04'
+normative_decision: 05_src/traffic_simulation/specifications/11_formal_blocker_resolution_exclusion_policy_v17.md
+default_strategy: preserve_and_resolve
+root_cause_categories:
+  - implementation_defect
+  - missing_registered_rule
+  - unsupported_source_syntax
+  - missing_scenario_context
+  - missing_vehicle_ontology
+  - missing_evidence
+  - genuine_rule_conflict
+  - outside_research_scope
+  - undetermined
+strategies: [preserve_and_resolve, formal_exclusion, remain_blocked]
+preserve_and_resolve_causes:
+  - implementation_defect
+  - missing_registered_rule
+  - unsupported_source_syntax
+  - missing_scenario_context
+  - missing_vehicle_ontology
+remain_blocked_causes:
+  - missing_evidence
+  - genuine_rule_conflict
+  - undetermined
+forbidden_exclusion_reasons:
+  - missing_osm_attribute
+  - unsupported_implementation
+  - investigation_cost
+  - blocker_volume
+  - build_schedule
+  - acceptance_gate_pressure
+  - missing_value_evidence
+  - private_without_scope_proof
+formal_exclusion_requirements:
+  - outside_current_research_purpose
+  - outside_scope_proven_by_authority
+  - versioned_exclusion_rule_registered
+  - reason_evidence_approver_and_date_recorded
+  - population_equation_valid
+registered_exclusion_rules: []
+unregistered_exclusion_stop_code: EXCLUSION_RULE_UNREGISTERED
+resolution_change_order:
+  - decision_record
+  - registry_or_decision_table
+  - json_schema
+  - semantic_invariant
+  - small_fixture
+  - production_independent_oracle
+  - production_code
+  - phase_test
+  - regression_test
+  - full_population_run
+phase13_priority:
+  - implementation_defect
+  - directed_segment_and_relation_mapping
+  - directional_lanes
+  - scenario_context
+  - vehicle_ontology
+  - static_access
+  - conditional_access
+  - speed
+  - evidence_resolution
+  - formal_exclusion
+population_equations:
+  input: governed + excluded
+  governed: resolved + unresolved + conflict + invalid + valid_but_unsupported
+output_contract:
+  exclusion_is_resolution_status: false
+  excluded_counted_as_resolved: false
+  governed_and_excluded_overlap_allowed: false
+  source_or_generated_output_direct_edit_allowed: false

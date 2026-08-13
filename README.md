@@ -4,6 +4,61 @@ This repository builds a public-data-based traffic approximation for Ota Ward, T
 
 **References:** [Reference list with direct links](02_literature/references/reference_inventory.md) · [Detailed paper registry](02_literature/references/papers.csv) · [BibTeX bibliography](02_literature/references/references.bib)
 
+## はじめに：現在地と次のステップ
+
+このリポジトリは、東京都大田区を対象に、公開データから統制されたSUMO交通環境と
+合成EV配送問題を構築し、非最適化ベースライン、古典最適化、Qiskit Aer上のQAOAを
+同一条件で比較する研究基盤である。現時点では最適化手法の比較段階ではなく、その前提となる
+**v17道路属性解決のVerification**を進めている。
+
+> **2026-08-13現在の結論**
+>
+> v17 Phase 1〜11は合格済み。Phase 12は、固定した実行契約に基づく新しい独立出力先で
+> 2回の全母集団runを完了し、各runが8個の単体completion validatorに合格した。
+> 主要5成果物のsemantic SHA-256も2回で一致している。ただし、2run全体の`finalize()`と
+> Phase 12正式完了記録は未実施であり、108,189件のgoverned blockerが残るため、
+> `formal_build_ready`は`false`である。Phase 13は未着手、Phase 14はゲート待ちである。
+
+ここで `v17` の `v` は **version**、`V&V` は **Verification and Validation** を表す。
+`v17 Phase 12`は「version 17のPhase 12」であり、version 12ではない。また、Phase 12の
+run単体合格や2回一致は、Phase 12全体の正式完了、Phase 14の受入、SUMO道路網のValidation、
+または量子優位性を意味しない。
+
+### Phase 1〜14の現在地
+
+| Phase | 内容 | 状態 | 現在の証拠・次の条件 |
+|---:|---|---|---|
+| 1〜11 | 権威資料同期、独立oracle、状態契約、方向・車線・通行権限・速度・証拠法、resolver統合 | **合格** | 各Phase完了記録と累積記録が存在する |
+| 12 | 固定v16母集団をv17 structural/formal両profileで2回全件実行し、停止・除外・母集団差を保存 | **2回実行・run単体合格、正式完了未認定** | 2runとも8 validator合格、主要5成果物のsemantic hash一致。次は全体`finalize()`の比較規則修正・検証と正式完了記録 |
+| 13 | Phase 12のstop recordを根本原因別に解消して再実行 | **未着手** | Phase 12正式確定後、blockerを属性・停止コード・根本原因別に処理する |
+| 14 | formal属性成果物の最終受入 | **ゲート待ち** | blocker、review-required、stop-unresolved、model-assumedを各0件にして受入を実行する |
+
+Phaseごとの定義、完了条件、現在地、証拠、残作業は、最重要の日本語資料
+[`v17_phase1_to_phase14_integrated_status.md`](05_src/traffic_simulation/v17_phase1_to_phase14_integrated_status.md)
+に統合している。Phase 12の最新実行事実は
+[`v17_phase12_independent_rerun_20260813.yml`](reproducibility/config/traffic_simulation/v17_phase12_independent_rerun_20260813.yml)、
+実行契約は
+[`v17_phase12_output_contract.yml`](reproducibility/config/traffic_simulation/v17_phase12_output_contract.yml)
+を参照する。
+
+### 直近の実行順序と理由
+
+1. **Phase 12の`finalize()`比較規則を修正する。** 2runでは`--run-id`が必ず異なるため、
+   実CLI引数を正しく保存したまま、環境同一性の比較からrun固有値だけを正規化する必要がある。
+2. **小型fixtureで2run→全体completion gate→原子的公開を試験する。** 大規模再実行の前に、
+   決定論判定、失敗時の公開禁止、既存成果物の上書き拒否を全経路で確認するためである。
+3. **既存の独立2runに対して`finalize()`を実行し、Phase 12完了記録を作る。** run単体合格を
+   Phase全体の正式な完了証拠へ昇格させ、実成果物とロードマップの状態を一致させるためである。
+4. **108,189件のblockerを属性・stop code・root cause別に集計し、Phase 13で解消する。**
+   件数だけを減らすのではなく、同じ根本原因を一つの統制された決定として解消するためである。
+5. **blockerが0件になった再runだけをPhase 14で受け入れる。** 未証明の値をformal SUMO道路網へ
+   混入させず、その後のNetwork Integration、Calibration、独立Validationを有効にするためである。
+
+現在の主要課題は、Phase 12全体最終化におけるrun固有CLI引数の扱い、正式完了記録の未作成、
+および多数のformal blockerである。解決策の詳細、合格条件、失敗時の扱いは上記統合資料と
+[`12_phase12_full_population_output_contract_v17.md`](05_src/traffic_simulation/specifications/12_phase12_full_population_output_contract_v17.md)
+に記載している。
+
 > **Primary research question**
 >
 > Under identical vehicles, capacity, battery, departure time, demand, traffic, weather, and evaluation conditions, how much does route-order optimization change population-equivalent demand fulfillment, and how do classical optimization and Aer-based QAOA differ in outcome and computational resources?
@@ -180,39 +235,40 @@ Solution quality and computational resources remain a separate method-comparison
 
 ## Current status
 
-The current stage, blockers, next actions, and research-use decisions are shown in the generated [`RESEARCH_STATUS.md`](RESEARCH_STATUS.md) dashboard. Its sole machine-readable source of truth is [`research_stage.yml`](reproducibility/config/traffic_simulation/research_stage.yml); the dashboard must not be edited directly.
+The active work is v17 road-attribute Verification. Phase 1–11 are formally recorded as passed.
+On 2026-08-13, Phase 12 was independently executed twice from the same fixed source commit, pinned
+container digest, and governed input. Both runs exited with code 0, passed all eight per-run completion
+validators and a separate CLI recheck, and produced identical semantic SHA-256 values for the five major
+artifacts. The manifests record the actual CLI command and arguments, validator command, exit code,
+combined log, and log hash.
 
-The relationship among current operations, governed definitions, fixed numeric
-settings, derived counts and still-undecided values is summarized in
-[`network_workflow_decisions_and_parameters.md`](05_src/traffic_simulation/network_workflow_decisions_and_parameters.md).
+Phase 12 is not yet formally complete. Whole-run finalization was not executed because environment
+comparison must preserve the actual arguments while accounting for the necessarily different `run_id`.
+In addition, 108,189 governed blockers remain, so `formal_build_ready` is false. Phase 13 has not started,
+Phase 14 acceptance has not run, and the formal SUMO network, traffic calibration, independent validation,
+and baseline/classical/QAOA comparison remain later work.
 
-| Status | Stage |
-|---|---|
-| Complete | Docker and repository environments |
-| Complete | Data acquisition, SHA-256, and provenance rules |
-| Complete | N03 Ota Ward study boundary |
-| Complete | Baseline JARTIC and date-pinned OSM inputs |
-| Complete | Review maps for roads, observations, population, and synthetic demand |
-| **In progress** | **SUMO network generation and structural validation** |
-| Planned | Observation expansion, general traffic demand, calibration, and independent validation |
-| Planned | Formal delivery problem, classical optimization, and Qiskit Aer QAOA |
-| Planned | Common-SUMO driving comparison, EV evaluation, and driver-experience sensitivity |
+The status sources have distinct scopes:
 
-The formal QAOA comparison has not yet been implemented or executed. The current phase governs and validates the road-network inputs required before optimization results can be interpreted.
+- [`v17_phase1_to_phase14_integrated_status.md`](05_src/traffic_simulation/v17_phase1_to_phase14_integrated_status.md): human-readable Japanese integration of every Phase definition, current state, evidence, issue, solution, and next action.
+- [`v17_phase12_independent_rerun_20260813.yml`](reproducibility/config/traffic_simulation/v17_phase12_independent_rerun_20260813.yml): machine-readable evidence for the latest two independent Phase 12 runs.
+- [`v17_phase12_output_contract.yml`](reproducibility/config/traffic_simulation/v17_phase12_output_contract.yml): fixed Phase 12 execution, artifact, determinism, and completion contract.
+- [`research_stage.yml`](reproducibility/config/traffic_simulation/research_stage.yml) and generated [`RESEARCH_STATUS.md`](RESEARCH_STATUS.md): broader research-stage dashboard; it does not replace the more detailed v17 Phase records above.
+- [`network_workflow_decisions_and_parameters.md`](05_src/traffic_simulation/network_workflow_decisions_and_parameters.md): governed definitions, fixed numeric settings, derived counts, and undecided values.
 
 ## Open-data inputs
 
 The study uses public sources for different, explicitly separated roles. A source used for geometry is not automatically treated as evidence for speed, demand, or legal traffic restrictions.
 
-| Open-data snapshot | Provider | Research role | Current treatment |
+| Open-data snapshot | Provider and download source | Research role | Current treatment |
 |---|---|---|---|
-| N03 administrative boundaries, 2026 | MLIT National Land Numerical Information | Define the Ota Ward study boundary | Select Ota Ward by municipality code and names, dissolve the six source features, and preserve the resulting geometry without smoothing, simplification, or buffering |
-| Kanto OpenStreetMap PBF, dated 2026-07-16 | Geofabrik / OpenStreetMap contributors | Base road geometry, connectivity, and candidate road attributes | Pin the regional PBF by date and SHA-256, then extract the acquisition BBOX mechanically derived from the N03 boundary |
-| One-hour road-type-3 traffic observations, 2026-07-04 22:00 JST | JARTIC / MLIT xROAD | Initial traffic observation and processing validation | Preserve source directions and anomaly flags; use observed traffic and speed for calibration or validation, never as an unqualified legal speed limit |
-| 2020 census 500 m population mesh, JGD2011 mesh 5339 | Statistics Bureau of Japan / e-Stat | Spatial distribution for synthetic demand | Read the exact official ZIP member, decode the documented fields, intersect it with the N03 boundary, and area-weight boundary meshes |
-| Ota Ward population, 2024-04-01 | Ota City open data | Target total for the 2024 population distribution | Rescale the area-weighted 2020 mesh distribution to the published ward total of 736,652 |
-| Japan total population, 2024-10-01 | Statistics Bureau of Japan | Denominator for the national parcel-equivalent rate | Read the published total of 123,802,000 using the source unit conversion recorded in configuration |
-| FY2024 national parcel-delivery total | MLIT | Numerator for the national parcel-equivalent rate | Use 5,031,470,000 parcels as a national aggregate; do not reinterpret it as observed Ota Ward orders or stops |
+| N03 administrative boundaries, 2026 | [MLIT National Land Numerical Information](https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-2026.html) | Define the Ota Ward study boundary | Select Ota Ward by municipality code and names, dissolve the six source features, and preserve the resulting geometry without smoothing, simplification, or buffering |
+| Kanto OpenStreetMap PBF, dated 2026-07-16 | [Geofabrik / OpenStreetMap contributors](https://download.geofabrik.de/asia/japan/kanto-260716.osm.pbf) | Base road geometry, connectivity, and candidate road attributes | Pin the regional PBF by date and SHA-256, then extract the acquisition BBOX mechanically derived from the N03 boundary |
+| One-hour road-type-3 traffic observations, 2026-07-04 22:00 JST | [JARTIC / MLIT xROAD](https://www.jartic-open-traffic.org/) | Initial traffic observation and processing validation | Preserve source directions and anomaly flags; use observed traffic and speed for calibration or validation, never as an unqualified legal speed limit |
+| 2020 census 500 m population mesh, JGD2011 mesh 5339 | [Statistics Bureau of Japan / e-Stat](https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001141&code=5339&downloadType=2) | Spatial distribution for synthetic demand | Read the exact official ZIP member, decode the documented fields, intersect it with the N03 boundary, and area-weight boundary meshes |
+| Ota Ward population, 2024-04-01 | [Ota City / Tokyo open data](https://www.opendata.metro.tokyo.lg.jp/ota/R6/131113_R6_01_ootakunomenseki_jinkou_setaisuu.xlsx) | Target total for the 2024 population distribution | Rescale the area-weighted 2020 mesh distribution to the published ward total of 736,652 |
+| Japan total population, 2024-10-01 | [Statistics Bureau of Japan](https://www.stat.go.jp/data/jinsui/2024np/zuhyou/05k2024-1.xlsx) | Denominator for the national parcel-equivalent rate | Read the published total of 123,802,000 using the source unit conversion recorded in configuration |
+| FY2024 national parcel-delivery total | [MLIT](https://www.mlit.go.jp/report/press/content/001906814.pdf) | Numerator for the national parcel-equivalent rate | Use 5,031,470,000 parcels as a national aggregate; do not reinterpret it as observed Ota Ward orders or stops |
 
 The machine-readable registry is [`traffic_simulation_sources.csv`](03_data/metadata/traffic_simulation_sources.csv). It records provider URLs, acquisition dates, source periods and areas, licenses, original filenames, SHA-256 values, processing scripts, derived outputs, and known limitations. Human-readable acquisition records document the actual download and verification operations:
 
@@ -434,6 +490,10 @@ For a one-screen view of the intended final layout, artifact flow, Git boundarie
 
 ## Key documents
 
+- [Phase 1–14 integrated definition, current status, evidence, and next steps (Japanese)](05_src/traffic_simulation/v17_phase1_to_phase14_integrated_status.md)
+- [Phase 12 independent rerun evidence, 2026-08-13](reproducibility/config/traffic_simulation/v17_phase12_independent_rerun_20260813.yml)
+- [Phase 12 full-population output contract](05_src/traffic_simulation/specifications/12_phase12_full_population_output_contract_v17.md)
+- [Simulation-model development and V&V status (Japanese)](05_src/traffic_simulation/simulation_model_development_and_vv.md)
 - [Traffic-simulation research study guide](00_project_management/traffic_simulation_study_guide.md)
 - [Traffic-simulation implementation plan](05_src/traffic_simulation/implementation_plan.md)
 - [Road-attribute and external-data matching governance](05_src/traffic_simulation/network_attribute_governance.md)

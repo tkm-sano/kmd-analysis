@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "semantic_invariants_v17.schema.json",
+  "type": "object",
+  "required": ["schema_version", "invariant_set_id", "version", "policy_id", "invariants"],
+  "properties": {
+    "schema_version": {"const": 17},
+    "invariant_set_id": {"const": "ota_ward_attribute_resolution_semantic_invariants_v17"},
+    "version": {"type": "string", "minLength": 1},
+    "policy_id": {"const": "ota_ward_attribute_resolution_policy_v17"},
+    "invariants": {
+      "type": "array",
+      "minItems": 35,
+      "items": {
+        "type": "object",
+        "required": ["invariant_id", "scope", "assertion", "failure_status", "severity", "target_phase"],
+        "properties": {
+        "invariant_id": {"type": "string", "pattern": "^AR-(STATE|ID|DIR|LANE|SPEED|ACCESS|COND|EVID|EXCL|BLOCK|PROV|ACC)-[0-9]{3}$"},
+          "scope": {"type": "string"},
+          "assertion": {"type": "string"},
+          "failure_status": {"enum": ["unresolved", "conflict", "invalid", "valid_but_unsupported", "gate_failed"]},
+          "stop_code": {"type": ["string", "null"]},
+          "severity": {"enum": ["critical", "major", "minor"]},
+          "target_phase": {"type": "integer", "minimum": 1, "maximum": 14}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,83 @@
+schema_version: 1
+record_id: ota_ward_attribute_resolution_v17_phase1_to_phase11_20260804
+record_type: cumulative_phase_completion_record
+policy_id: ota_ward_attribute_resolution_policy_v17
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+recorded_at: '2026-08-04'
+recorded_by: repository_implementation_agent
+requested_by: repository_owner_directive
+covered_phases: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+overall_status: phase11_complete
+next_phase: 12
+formal_build_ready: false
+attribute_resolution_acceptance: not_run
+
+predecessor_record:
+  path: reproducibility/config/traffic_simulation/v17_phase1_to_phase10_record.yml
+  sha256: 4c72e329c92a841ec05ad05fae357b22ae20dd29248b3e75f741d749d6718f14
+
+phase_records:
+  phase1: {path: reproducibility/config/traffic_simulation/v17_phase1_completion.yml, sha256: 6094d148ea5661d568ec80ac0aa81cc4d90bce135ae20156e1f3dee40043391a, result: passed}
+  phase2: {path: reproducibility/config/traffic_simulation/v17_phase2_completion.yml, sha256: 19f5105b991a6102a8a282c922d0d23d32b3ccb4dd1e8f8d1e97a7448c45443c, result: passed}
+  phase3: {path: reproducibility/config/traffic_simulation/v17_phase3_completion.yml, sha256: f3fb43a98f73009734b9815d1e8f183d899b70c9d50d2c1bb25cb613a25a795e, result: passed}
+  phase4: {path: reproducibility/config/traffic_simulation/v17_phase4_completion.yml, sha256: 08851fab4dfe929140c2d21a80fe10e70dcb000483168398648a8f65aa931204, result: passed}
+  phase5: {path: reproducibility/config/traffic_simulation/v17_phase5_completion.yml, sha256: 1180b53ea874a2019fc04743d8617fac9446ee672d145eb829b1763b1a001b12, result: passed}
+  phase6: {path: reproducibility/config/traffic_simulation/v17_phase6_completion.yml, sha256: 2a0bdeef001cf6755794d9f93a78b2947b42c35299cb3c00945769d22ab84d45, result: passed}
+  phase7: {path: reproducibility/config/traffic_simulation/v17_phase7_completion.yml, sha256: 1a15a35d3331861bd0984c64c11f1ff0e87af5767f2c4217f4d3a34752a30c53, result: passed}
+  phase8: {path: reproducibility/config/traffic_simulation/v17_phase8_completion.yml, sha256: 0acc3d89b9a823c983e9fae9c7e62980bae4cf156c7c040c59fbf029a1e02c19, result: passed}
+  phase9: {path: reproducibility/config/traffic_simulation/v17_phase9_completion.yml, sha256: cfdd91a98d7722888c3bf58acd246257a46deb2107705435d9bf060c84e34719, result: passed}
+  phase10: {path: reproducibility/config/traffic_simulation/v17_phase10_completion.yml, sha256: 50930bc4a84bfd3ce10e2b15193ed43510b7d52c7e99b30c46ef22584c112021, result: passed}
+  phase11: {path: reproducibility/config/traffic_simulation/v17_phase11_completion.yml, sha256: f22dc4596a199451120215b520f70e731c249592e6561a8c9435660d0a875bf9, result: passed}
+
+phase11_outcome:
+  resolver_integration: passed
+  schema_validation: passed
+  semantic_validation: passed
+  production_independent_oracle_validation: passed
+  metamorphic_validation: passed
+  cross_stage_lineage_invariants: 6
+  oracle_assertions: 27
+  metamorphic_relations: 3
+  integration_fixture_blockers: 0
+  integration_semantic_sha256: 4cc0630d9df0dce503d0b86ccc28a00f7881b0d93366c83f931049d7e490b681
+
+detected_and_resolved_defect:
+  attribute_boundary: conditional_access_vs_speed
+  before: maxspeed_conditional_could_enter_conditional_access_evaluation
+  after: conditional_access_accepts_only_registered_access_base_keys
+  source_or_generated_output_directly_edited: false
+  full_population_semantic_results_changed: false
+
+verification:
+  phase11_validator: passed
+  phase11_tests: 11
+  traffic_simulation_regression: 559
+  warning_events: 0
+  two_run_determinism: passed
+
+formal_blocker_policy_adoption:
+  path: reproducibility/config/traffic_simulation/v17_formal_blocker_policy_adoption.yml
+  sha256: 8ca67c6d6d60080400a4e4e86dcdbbb721ede89a0721ccf7ecb049874ae767cf
+  production_exclusion_rule_count: 0
+
+execution_roadmap:
+  path: reproducibility/config/traffic_simulation/v17_phase9_to_phase14_execution_roadmap.yml
+  sha256: b7bfd849085585d6d5744168d3f4b5e34f2d22a943aaaf9af513b6404f5cf55f
+  current_step: phase12_full_population_runs
+
+phase12_handoff:
+  objective: execute_full_population_structural_and_formal_runs
+  required_outputs:
+    - structural_full_population_artifact
+    - formal_full_population_artifact
+    - complete_blocker_inventory
+    - exclusion_manifest
+    - population_accounting
+  aggregate_blockers_by: [attribute_name, stop_code, root_cause_category]
+  preserve_zero_unregistered_exclusions: true
+
+interpretation:
+  phase_completion_means: schema_semantic_oracle_and_metamorphic_integration_gates_passed
+  phase_completion_does_not_mean: full_population_or_attribute_resolution_acceptance_passed
+  final_v17_acceptance_phase: 14

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "attribute_resolution_record_v17.schema.json",
+  "type": "object",
+  "required": ["schema_version", "configuration_id", "population_version", "profile", "record_id", "classification_record_id", "source_way_id", "directed_segment_id", "source_direction", "lane_position", "vehicle_class", "attribute_name", "scenario_context_id", "source_observations", "resolution_status", "value_origin", "effective_value", "rule_ids", "evidence_ids", "assumption_ids", "stop_code", "review_required", "provenance"],
+  "properties": {
+    "schema_version": {"const": 17},
+    "configuration_id": {"const": "ota_ward_sumo_network_v17"},
+    "population_version": {"type": "string", "minLength": 1},
+    "profile": {"enum": ["structural", "formal"]},
+    "record_id": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "classification_record_id": {"type": "string", "minLength": 1},
+    "source_way_id": {"type": ["integer", "null"], "minimum": 1},
+    "directed_segment_id": {"type": ["string", "null"], "pattern": "^ds:[0-9]+:[0-9]+:[0-9]+:(forward|backward)$"},
+    "source_direction": {"enum": ["forward", "backward", null]},
+    "lane_position": {"type": ["integer", "null"], "minimum": 0},
+    "vehicle_class": {"type": ["string", "null"]},
+    "attribute_name": {"type": "string", "minLength": 1},
+    "scenario_context_id": {"type": ["string", "null"]},
+    "source_observations": {"type": "array"},
+    "resolution_status": {"enum": ["resolved", "unresolved", "conflict", "invalid", "valid_but_unsupported"]},
+    "value_origin": {"enum": ["source_explicit", "source_normalized", "rule_derived", "evidence_derived", "derived_validated_model", "model_assumed", null]},
+    "effective_value": {},
+    "rule_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "evidence_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "assumption_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "stop_code": {"type": ["string", "null"]},
+    "review_required": {"type": "boolean"},
+    "conflicting_candidates": {"type": "array", "minItems": 2},
+    "provenance": {"type": "object"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"resolution_status": {"const": "resolved"}}, "required": ["resolution_status"]},
+      "then": {
+        "properties": {"effective_value": {"not": {"type": "null"}}, "value_origin": {"not": {"type": "null"}}, "stop_code": {"type": "null"}},
+        "anyOf": [{"properties": {"source_observations": {"minItems": 1}}}, {"properties": {"rule_ids": {"minItems": 1}}}, {"properties": {"evidence_ids": {"minItems": 1}}}, {"properties": {"assumption_ids": {"minItems": 1}}}]
+      },
+      "else": {"properties": {"effective_value": {"type": "null"}, "value_origin": {"type": "null"}, "stop_code": {"type": "string", "minLength": 1}}}
+    },
+    {
+      "if": {"properties": {"profile": {"const": "formal"}}, "required": ["profile"]},
+      "then": {"properties": {"value_origin": {"not": {"const": "model_assumed"}}, "assumption_ids": {"maxItems": 0}}}
+    },
+    {
+      "if": {"properties": {"resolution_status": {"const": "conflict"}}, "required": ["resolution_status"]},
+      "then": {"required": ["conflicting_candidates"]}
+    }
+  ],
+  "not": {"required": ["value_state"]},
+  "additionalProperties": false
+}

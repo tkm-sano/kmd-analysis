@@ -1,0 +1,39 @@
+schema_version: 17
+schema: reproducibility/config/traffic_simulation/schemas/formal_evidence_methods_v17.schema.json
+registry_id: FORMAL_EVIDENCE_METHODS_V17
+registry_version: 1.0.0
+policy_id: ota_ward_attribute_resolution_policy_v17
+status: approved
+approved_by: repository_owner_directive
+approved_at: '2026-08-04'
+approved_method_count: 0
+no_method_approval_reason: validation_dataset_metrics_thresholds_and_independent_positive_oracles_not_registered
+methods: []
+default_policy:
+  unregistered_method: EVIDENCE_METHOD_NOT_APPROVED
+  ineligible_donor: EVIDENCE_DONOR_INELIGIBLE
+minimum_donor_eligibility:
+  - eligible_population_match
+  - formal_direction_resolved
+  - formal_directional_lanes_resolved_when_relevant
+  - formal_speed_resolved_when_relevant
+  - no_relevant_unsupported_conditional
+  - formal_permissions_resolved_when_relevant
+  - no_structural_assumption
+  - not_model_assumed
+  - traceable_source_hash
+  - traceable_configuration_hash
+validation_contract:
+  dataset_required: true
+  metrics_required: true
+  acceptance_thresholds_required: true
+  uncertainty_output_required: true
+  fixture_and_oracle_hashes_required: true
+manual_evidence_contract:
+  separate_versioned_artifact: true
+  direct_output_edit: false
+  regenerate_complete_artifact: true
+  schema: reproducibility/config/traffic_simulation/schemas/manual_evidence_record_v17.schema.json
+output_policy:
+  emit_evidence_derived_without_approved_method: false
+  emit_derived_validated_model_without_approved_method: false

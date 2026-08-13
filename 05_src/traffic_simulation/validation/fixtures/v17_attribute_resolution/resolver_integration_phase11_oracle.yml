@@ -1,0 +1,43 @@
+oracle_id: RESOLVER_INTEGRATION_PHASE11_ORACLE_V1
+oracle_version: 1.0.0
+independence:
+  derived_from_production_output: false
+  authored_from_normative_policy_and_fixture: true
+scenario_context:
+  weekday: Mo
+  time: '08:00'
+expected_counts:
+  source_ways: 5
+  directed_segments: 8
+  directional_lane_records: 5
+  directional_lanes: 14
+  static_rule_groups: 5
+  conditional_rule_groups: 1
+  permission_records: 14
+  speed_records: 8
+  blockers: 0
+expected_directional_speed_kmh:
+  'ds:1001:0:1:forward': 50.0
+  'ds:1001:0:1:backward': 40.0
+  'ds:1001:1:2:forward': 50.0
+  'ds:1001:1:2:backward': 40.0
+  'ds:1002:0:1:forward': 30.0
+  'ds:1003:0:1:forward': 50.0
+  'ds:1004:0:2:backward': 40.0
+  'ds:1005:0:1:forward': 20.0
+expected_permission_by_way:
+  1001: allowed
+  1002: denied
+  1003: mixed_by_lane
+  1004: mixed_by_lane
+  1005: denied
+expected_invariants:
+  exact_directed_segment_lineage_across_stages: true
+  one_permission_per_governed_lane_tuple: true
+  one_speed_per_directed_segment: true
+  formal_model_assumed_count: 0
+  unapproved_evidence_origin_count: 0
+metamorphic_relations:
+  - repeated_run_same_semantic_hash
+  - source_way_order_reversal_same_semantic_hash
+  - source_tag_order_reversal_same_semantic_hash

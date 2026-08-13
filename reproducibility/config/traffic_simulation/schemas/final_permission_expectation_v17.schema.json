@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "final_permission_expectation_v17.schema.json",
+  "type": "object",
+  "required": ["permission_record_id", "configuration_id", "population_version", "profile", "source_way_id", "directed_segment_id", "source_direction", "lane_position", "vehicle_class", "scenario_context_id", "resolution_status", "value_origin", "effective_permission", "maximal_rule_ids", "stop_code", "review_required", "provenance"],
+  "properties": {
+    "permission_record_id": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "configuration_id": {"const": "ota_ward_sumo_network_v17"},
+    "population_version": {"type": "string", "minLength": 1},
+    "profile": {"enum": ["structural", "formal"]},
+    "source_way_id": {"type": "integer", "minimum": 1},
+    "directed_segment_id": {"type": "string", "pattern": "^ds:[0-9]+:[0-9]+:[0-9]+:(forward|backward)$"},
+    "source_direction": {"enum": ["forward", "backward"]},
+    "lane_position": {"type": "integer", "minimum": 0},
+    "vehicle_class": {"enum": ["passenger", "taxi", "bus", "coach", "delivery", "truck", "motorcycle"]},
+    "scenario_context_id": {"type": "string", "minLength": 1},
+    "resolution_status": {"enum": ["resolved", "unresolved", "conflict"]},
+    "value_origin": {"enum": ["rule_derived", null]},
+    "effective_permission": {"enum": ["allowed", "denied", null]},
+    "maximal_rule_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "stop_code": {"enum": ["ACCESS_SPECIFICITY_CONFLICT", "ACCESS_PERMISSION_UNRESOLVED", null]},
+    "review_required": {"type": "boolean"},
+    "conflicting_candidates": {"type": "array", "minItems": 2, "items": {"type": "object", "required": ["rule_id", "effect"], "properties": {"rule_id": {"type": "string"}, "effect": {"enum": ["allowed", "denied"]}}, "additionalProperties": false}},
+    "provenance": {
+      "type": "object",
+      "required": ["resolution", "maximal_rules", "typemap_permission_used"],
+      "properties": {
+        "resolution": {"const": "scope_and_axis_dominance_v17"},
+        "maximal_rules": {"type": "array"},
+        "typemap_permission_used": {"const": false}
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"resolution_status": {"const": "resolved"}}, "required": ["resolution_status"]},
+      "then": {"properties": {"value_origin": {"const": "rule_derived"}, "effective_permission": {"enum": ["allowed", "denied"]}, "maximal_rule_ids": {"minItems": 1}, "stop_code": {"type": "null"}, "review_required": {"const": false}}},
+      "else": {"properties": {"value_origin": {"type": "null"}, "effective_permission": {"type": "null"}, "stop_code": {"type": "string"}, "review_required": {"const": true}}}
+    },
+    {
+      "if": {"properties": {"resolution_status": {"const": "conflict"}}, "required": ["resolution_status"]},
+      "then": {"required": ["conflicting_candidates"], "properties": {"stop_code": {"const": "ACCESS_SPECIFICITY_CONFLICT"}}}
+    },
+    {
+      "if": {"properties": {"resolution_status": {"const": "unresolved"}}, "required": ["resolution_status"]},
+      "then": {"properties": {"maximal_rule_ids": {"maxItems": 0}, "stop_code": {"const": "ACCESS_PERMISSION_UNRESOLVED"}}}
+    }
+  ],
+  "additionalProperties": false
+}
