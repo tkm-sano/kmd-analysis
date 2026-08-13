@@ -26,6 +26,11 @@ random seeds. Neither execution may read files produced by the other. A `publish
 directory may be created from `run_1` only after every determinism-required semantic hash
 matches `run_2`.
 
+Phase 12 attribute resolution does not invoke a SUMO executable. Its environment manifest
+SHALL record `sumo_version: not_invoked_phase12` rather than claiming an unexecuted runtime
+version. The later SUMO Network Integration gate SHALL independently pin and execute its
+required SUMO runtime.
+
 ## 4. Required artifacts
 
 Each run SHALL contain:
@@ -88,6 +93,15 @@ Timestamps, temporary directory names, host paths, and run IDs SHALL NOT enter s
 artifacts. They may appear only in environment or run manifests, which are excluded from
 semantic determinism comparison.
 
+Each independently executed run validator SHALL be invoked through its recorded argument
+vector. The run manifest SHALL retain the validator ID, exact command vector, exit code,
+captured stdout and stderr as one canonical log object, and the SHA-256 of the exact stored
+log bytes. A successful run manifest requires exit code zero for every required validator;
+an unrecorded, malformed, or non-zero validator execution SHALL fail the run.
+Each validator SHALL report required, completed, and failed check counts. Per-category
+validation results and the whole-run result SHALL be derived from those reported results;
+they SHALL NOT be populated with unconditional success literals.
+
 ## 8. Atomic publication and immutability
 
 Every artifact SHALL first be written to a file in the destination directory, flushed and
@@ -102,3 +116,9 @@ semantic invariants pass, all hashes and accounting equations match, no record i
 duplicated, run manifests bind a clean identical source revision, and the determinism report
 passes. `formal_build_ready` SHALL remain false while any governed blocker remains, and
 `attribute_resolution_acceptance` SHALL remain `not_run` until Phase 14.
+
+Before writing the determinism report or creating `published`, finalization SHALL revalidate
+both run manifests, every validator execution and log hash, every referenced artifact byte
+hash and semantic hash, and the derived whole-run result. Any missing artifact, changed value,
+duplicate identity, invalid population equation, failed run, existing determinism report, or
+existing publication target SHALL prohibit publication and SHALL NOT be overwritten.

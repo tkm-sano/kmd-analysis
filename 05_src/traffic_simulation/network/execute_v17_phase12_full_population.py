@@ -9,8 +9,10 @@ import importlib.metadata
 import json
 import os
 import platform
+import re
 import shutil
 import subprocess
+import sys
 import tempfile
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
@@ -49,11 +51,19 @@ from traffic_simulation.network.validate_v17_phase12_output_contract import (
     CONTRACT_PATH,
     validate_adoption_record,
 )
+from traffic_simulation.network.validate_v17_phase12_run_completion import (
+    MAJOR_ARTIFACT_IDS,
+    VALIDATOR_IDS,
+    aggregate_gate_results,
+)
 from traffic_simulation.paths import REPOSITORY_ROOT
 
 
 class Phase12ExecutionError(ValueError):
     pass
+
+
+CONTAINER_DIGEST_PATTERN = re.compile(r"^sha256:[0-9a-f]{64}$")
 
 
 def _load_yaml(path: Path) -> dict[str, Any]:
@@ -144,6 +154,21 @@ def _require_clean_worktree() -> str:
     if len(commit) != 40:
         raise Phase12ExecutionError("source commit is not a full Git SHA")
     return commit
+
+
+def _validate_container_identity(
+    container_image: str | None, container_digest: str | None
+) -> tuple[str, str]:
+    image = container_image.strip() if container_image is not None else ""
+    digest = container_digest.strip() if container_digest is not None else ""
+    if not image:
+        raise Phase12ExecutionError("formal Phase 12 run requires a container image name")
+    if not CONTAINER_DIGEST_PATTERN.fullmatch(digest):
+        raise Phase12ExecutionError(
+            "formal Phase 12 run requires --container-digest sha256:<64 lowercase hex>; "
+            "unpinned or malformed digests are prohibited"
+        )
+    return image, digest
 
 
 def _build_stages(input_path: Path, profile: str, context: Mapping[str, Any]) -> dict[str, Any]:
@@ -635,9 +660,105 @@ def _artifact_reference(
     }
 
 
+def _run_completion_validators(run_id: str) -> dict[str, Any]:
+    """Run each validator as a real CLI process and retain its exact evidence."""
+    executions = []
+    gate_results = []
+    child_environment = os.environ.copy()
+    source_root = str(REPOSITORY_ROOT / "05_src")
+    inherited_pythonpath = child_environment.get("PYTHONPATH")
+    child_environment["PYTHONPATH"] = (
+        source_root
+        if not inherited_pythonpath
+        else source_root + os.pathsep + inherited_pythonpath
+    )
+    for validator_id in VALIDATOR_IDS:
+        command = [
+            sys.executable,
+            "-m",
+            "traffic_simulation.network.validate_v17_phase12_run_completion",
+            "--run-id",
+            run_id,
+            "--validator",
+            validator_id,
+        ]
+        completed = subprocess.run(
+            command,
+            cwd=REPOSITORY_ROOT,
+            env=child_environment,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+        log = json.dumps(
+            {"stdout": completed.stdout, "stderr": completed.stderr},
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ) + "\n"
+        try:
+            reported = json.loads(completed.stdout)
+        except json.JSONDecodeError as error:
+            if completed.returncode == 0:
+                raise Phase12ExecutionError(
+                    f"run completion validator emitted invalid JSON: {validator_id}"
+                ) from error
+            reported = {
+                "run_id": run_id,
+                "validator_id": validator_id,
+                "checks": {"required": 1, "completed": 0, "failed": 1},
+                "result": "failed",
+            }
+        reported_result = str(reported.get("result", "failed"))
+        reported_checks = reported.get("checks", {})
+        evidence = {
+            "validator_id": validator_id,
+            "command": command,
+            "exit_code": completed.returncode,
+            "log": log,
+            "log_sha256": _sha256_bytes(log.encode("utf-8")),
+            "checks": reported_checks,
+            "result": reported_result,
+        }
+        executions.append(evidence)
+        if completed.returncode != 0:
+            raise Phase12ExecutionError(
+                f"run completion validator failed: {validator_id}; log={log.rstrip()}"
+            )
+        valid_report = (
+            reported.get("run_id") == run_id
+            and reported.get("validator_id") == validator_id
+            and reported_result == "passed"
+            and isinstance(reported_checks, dict)
+            and reported_checks.get("failed") == 0
+            and reported_checks.get("completed") == reported_checks.get("required")
+        )
+        if not valid_report:
+            raise Phase12ExecutionError(
+                f"run completion validator result differs: {validator_id}: {reported}"
+            )
+        gate_results.append(reported)
+    aggregate = aggregate_gate_results(run_id, gate_results)
+    if aggregate["result"] != "passed":
+        raise Phase12ExecutionError(f"run completion failed: {aggregate}")
+    return {
+        "validator_executions": executions,
+        "validation_results": aggregate["validation_results"],
+        "result": aggregate["result"],
+    }
+
+
 def execute_run(
-    run_id: str, *, container_image: str, container_digest: str
+    run_id: str,
+    *,
+    container_image: str | None,
+    container_digest: str | None,
+    arguments: Sequence[str],
 ) -> dict[str, Any]:
+    container_image, container_digest = _validate_container_identity(
+        container_image, container_digest
+    )
     started = datetime.now(timezone.utc).isoformat()
     source_commit = _require_clean_worktree()
     validate_adoption_record()
@@ -699,11 +820,11 @@ def execute_run(
         "container_image": container_image,
         "container_digest": container_digest,
         "platform": platform.platform(),
-        "sumo_version": "1.24.0",
+        "sumo_version": "not_invoked_phase12",
         "python_version": platform.python_version(),
         "library_versions": _library_versions(),
         "command": "python -m traffic_simulation.network.execute_v17_phase12_full_population",
-        "arguments": ["--profile", "structural", "--profile", "formal"],
+        "arguments": list(arguments),
         "configuration_hash": input_hashes["configuration"],
         "schema_hashes": schema_hashes,
         "registry_hashes": {
@@ -723,6 +844,7 @@ def execute_run(
     env_path = root / env_item["path_template"].format(run_id=run_id)
     _validate_schema(environment, _repo_path(env_item["schema"]))
     _atomic_json(env_path, environment)
+    completion = _run_completion_validators(run_id)
     references = [
         _artifact_reference(
             artifact_id, path, catalog[artifact_id]["schema"], payloads[artifact_id]["semantic_sha256"]
@@ -744,12 +866,9 @@ def execute_run(
         "population_version": contract["population_version"],
         "input_hashes": input_hashes,
         "artifacts": references,
-        "validation_results": {
-            "schema": "passed",
-            "semantic": "passed",
-            "population_accounting": "passed",
-            "identity_uniqueness": "passed",
-        },
+        "validation_results": completion["validation_results"],
+        "validator_executions": completion["validator_executions"],
+        "result": completion["result"],
         "exit_code": 0,
     }
     manifest_item = catalog["run_manifest"]
@@ -769,11 +888,107 @@ def execute_run(
     }
 
 
+def _validate_completed_run_manifest(
+    run_id: str,
+    *,
+    root: Path,
+    contract: Mapping[str, Any],
+    catalog: Mapping[str, Mapping[str, Any]],
+) -> dict[str, Any]:
+    """Revalidate a completed run and all manifest evidence before publication."""
+    manifest_item = catalog["run_manifest"]
+    manifest_path = root / manifest_item["path_template"].format(run_id=run_id)
+    manifest = _load_json(manifest_path)
+    _validate_schema(manifest, _repo_path(manifest_item["schema"]))
+    if manifest["run_id"] != run_id:
+        raise Phase12ExecutionError(f"run manifest ID differs: {manifest_path}")
+
+    executions = manifest["validator_executions"]
+    execution_ids = [item["validator_id"] for item in executions]
+    if len(execution_ids) != len(set(execution_ids)) or set(execution_ids) != set(VALIDATOR_IDS):
+        raise Phase12ExecutionError(f"validator execution set differs: {run_id}")
+    gate_results = []
+    for execution in executions:
+        validator_id = execution["validator_id"]
+        expected_command_tail = [
+            "-m",
+            "traffic_simulation.network.validate_v17_phase12_run_completion",
+            "--run-id",
+            run_id,
+            "--validator",
+            validator_id,
+        ]
+        if execution["command"][1:] != expected_command_tail:
+            raise Phase12ExecutionError(f"validator command differs: {run_id}/{validator_id}")
+        if execution["log_sha256"] != _sha256_bytes(execution["log"].encode("utf-8")):
+            raise Phase12ExecutionError(f"validator log hash differs: {run_id}/{validator_id}")
+        checks = execution["checks"]
+        valid = (
+            execution["exit_code"] == 0
+            and execution["result"] == "passed"
+            and checks["failed"] == 0
+            and checks["completed"] == checks["required"]
+        )
+        if not valid:
+            raise Phase12ExecutionError(f"validator did not pass: {run_id}/{validator_id}")
+        gate_results.append({
+            "run_id": run_id,
+            "validator_id": validator_id,
+            "checks": checks,
+            "result": execution["result"],
+        })
+    aggregate = aggregate_gate_results(run_id, gate_results)
+    if (
+        aggregate["result"] != "passed"
+        or manifest["result"] != aggregate["result"]
+        or manifest["validation_results"] != aggregate["validation_results"]
+    ):
+        raise Phase12ExecutionError(f"run manifest aggregate differs: {run_id}")
+
+    expected_artifact_ids = set(MAJOR_ARTIFACT_IDS) | {"environment_build_manifest"}
+    references = manifest["artifacts"]
+    reference_ids = [item["artifact_id"] for item in references]
+    if len(reference_ids) != len(set(reference_ids)) or set(reference_ids) != expected_artifact_ids:
+        raise Phase12ExecutionError(f"run manifest artifact set differs: {run_id}")
+    for reference in references:
+        artifact_id = reference["artifact_id"]
+        item = catalog[artifact_id]
+        expected_path = root / item["path_template"].format(run_id=run_id)
+        if reference["path"] != str(expected_path.relative_to(REPOSITORY_ROOT)):
+            raise Phase12ExecutionError(f"artifact reference path differs: {run_id}/{artifact_id}")
+        if reference["schema"] != item["schema"] or reference["byte_sha256"] != _sha256_file(expected_path):
+            raise Phase12ExecutionError(f"artifact reference hash/schema differs: {run_id}/{artifact_id}")
+        value = _load_json(expected_path)
+        _validate_schema(value, _repo_path(item["schema"]))
+        if artifact_id in MAJOR_ARTIFACT_IDS:
+            if value["semantic_sha256"] != _semantic_hash(value):
+                raise Phase12ExecutionError(f"artifact semantic hash differs: {run_id}/{artifact_id}")
+            if reference["semantic_sha256"] != value["semantic_sha256"]:
+                raise Phase12ExecutionError(f"artifact reference semantic hash differs: {run_id}/{artifact_id}")
+        elif reference["semantic_sha256"] is not None:
+            raise Phase12ExecutionError(f"environment semantic hash must be null: {run_id}")
+    return manifest
+
+
 def finalize() -> dict[str, Any]:
     _require_clean_worktree()
     contract = _load_yaml(CONTRACT_PATH)
     root = _repo_path(contract["execution"]["output_root"])
     catalog = {item["artifact_id"]: item for item in contract["artifact_catalog"]}
+    report_path = root / catalog["determinism_report"]["path_template"]
+    published = root / contract["execution"]["published_path"]
+    temporary = root / ".published.tmp"
+    for path, label in (
+        (report_path, "determinism report"),
+        (published, "published output"),
+        (temporary, "temporary publication path"),
+    ):
+        if path.exists():
+            raise Phase12ExecutionError(f"{label} already exists: {path}")
+    for run_id in contract["execution"]["required_run_ids"]:
+        _validate_completed_run_manifest(
+            run_id, root=root, contract=contract, catalog=catalog
+        )
     comparisons = []
     for artifact_id in contract["determinism"]["compare_artifact_ids"]:
         item = catalog[artifact_id]
@@ -817,16 +1032,9 @@ def finalize() -> dict[str, Any]:
         "published_from_run": "run_1",
         "result": "passed",
     }
-    report_path = root / "determinism_report.json"
     _validate_schema(report, _repo_path(catalog["determinism_report"]["schema"]))
     _atomic_json(report_path, report)
-    published = root / contract["execution"]["published_path"]
-    if published.exists():
-        raise Phase12ExecutionError(f"published output already exists: {published}")
     source = root / "runs" / contract["execution"]["publish_source_run"]
-    temporary = root / ".published.tmp"
-    if temporary.exists():
-        raise Phase12ExecutionError(f"temporary publication path exists: {temporary}")
     shutil.copytree(source, temporary)
     os.replace(temporary, published)
     return {
@@ -843,17 +1051,22 @@ def build_parser() -> argparse.ArgumentParser:
     group.add_argument("--run-id", choices=("run_1", "run_2"))
     group.add_argument("--finalize", action="store_true")
     parser.add_argument("--container-image", default="research-analysis")
-    parser.add_argument("--container-digest", default="local-unpinned")
+    parser.add_argument(
+        "--container-digest",
+        help="required for a formal run; sha256:<64 lowercase hexadecimal characters>",
+    )
     return parser
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    args = build_parser().parse_args(argv)
+    actual_arguments = list(sys.argv[1:] if argv is None else argv)
+    args = build_parser().parse_args(actual_arguments)
     try:
         result = finalize() if args.finalize else execute_run(
             args.run_id,
             container_image=args.container_image,
             container_digest=args.container_digest,
+            arguments=actual_arguments,
         )
     except Exception as error:
         print(json.dumps({"phase12_execution": "failed", "error": str(error)}, ensure_ascii=False))

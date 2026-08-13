@@ -15,24 +15,33 @@ attribute_resolution_acceptance: not_run
 artifacts:
   normative_specification:
     path: 05_src/traffic_simulation/specifications/12_phase12_full_population_output_contract_v17.md
-    sha256: 89f8b6787ae46b71f6de6b7b1ee0c937d7e0559df984a4202ff32beca983470c
+    sha256: 7d8997058a62449db30f5436ca36d087f151d6ec84673f3aef07d3a7ae31d3c5
   machine_contract:
     path: reproducibility/config/traffic_simulation/v17_phase12_output_contract.yml
-    sha256: 3e610901ad0ec234509a706d1dc954b9ea5bdb5344683362ee69d70d3ed68dc0
+    sha256: 3446a9d51610205b8c13107d07ff6622673f2e9450885a1c671714e84ee20fa8
   validator:
     path: 05_src/traffic_simulation/network/validate_v17_phase12_output_contract.py
     sha256: 2793c7d87983e6a3d47e2a4d8cca51e2c314a5293d14c30a6c155a9a26a441b1
   executor:
     path: 05_src/traffic_simulation/network/execute_v17_phase12_full_population.py
-    sha256: 3d0aa62911b74f6a2050c26b3449ba5a70f55a654648ad9a1b642df83ecc6fa6
+    sha256: 3ccde9298cb752ea4c2a818b5445c967846b513ed8743d8b46b3cd88ed3a7775
+  run_completion_validator:
+    path: 05_src/traffic_simulation/network/validate_v17_phase12_run_completion.py
+    sha256: eb3a71ee42a942c5ea3dcd899775afa7b8b53a2906830d87e84491133a130dec
   tests:
     path: 05_src/traffic_simulation/validation/test_phase12_output_contract_v17.py
-    sha256: 40436eef83fbb812d417b81a72a1d688b3d998b83edebb8ffd75e962c4609b4a
+    sha256: 6b9e77d9aae94078a0d39b203b3364e46fb2d3b6203717690f350c6745afc7fd
+  run_completion_tests:
+    path: 05_src/traffic_simulation/validation/test_phase12_run_completion_v17.py
+    sha256: 39b2c5d02d998f06eaa8a4237c29a508296770bdf8c9df7dbb4fecbc87184424
   execution_roadmap:
     path: reproducibility/config/traffic_simulation/v17_phase9_to_phase14_execution_roadmap.yml
     sha256: b7bfd849085585d6d5744168d3f4b5e34f2d22a943aaaf9af513b6404f5cf55f
 
 schemas:
+  environment_build_manifest:
+    path: reproducibility/config/traffic_simulation/schemas/environment_build_manifest_v17.schema.json
+    sha256: 54cf036557417e86cc2bcdbec76738f3dbf7f92d20281d71dae461da6d1ad379
   output_contract:
     path: reproducibility/config/traffic_simulation/schemas/phase12_output_contract_v17.schema.json
     sha256: 00f1f77c9e21986cf9945648d481e5894e9172edf4deb5d61c98ee5521eb5dbe
@@ -44,7 +53,7 @@ schemas:
     sha256: 51cfeb2b839ee081b7ade0eb6b4eeebc20b875ad20bd409399865742f2ed98ae
   run_manifest:
     path: reproducibility/config/traffic_simulation/schemas/phase12_run_manifest_v17.schema.json
-    sha256: 27731f3280feda856908a0df93a31bb42afc054149547922cf0b020c0397f4b1
+    sha256: 6e95ddca5f72745b2435e7d3bcd754740de213efcc53011b0cac330a966fa709
   determinism_report:
     path: reproducibility/config/traffic_simulation/schemas/phase12_determinism_report_v17.schema.json
     sha256: d1df2bd34c009fe5bac4bad74d73ce54c1c4d1da914f754211b43af26651cdaa
@@ -78,9 +87,9 @@ verification:
     command: PYTHONPATH=05_src python -m traffic_simulation.network.validate_v17_phase12_output_contract
     result: passed
   focused_tests:
-    command: PYTHONPATH=05_src python -m pytest -q 05_src/traffic_simulation/validation/test_phase12_output_contract_v17.py
+    command: PYTHONPATH=05_src python -m pytest -q 05_src/traffic_simulation/validation/test_phase12_output_contract_v17.py 05_src/traffic_simulation/validation/test_phase12_run_completion_v17.py
     result: passed
-    count: 9
+    count: 30
 
 interpretation:
   contract_fixed: true

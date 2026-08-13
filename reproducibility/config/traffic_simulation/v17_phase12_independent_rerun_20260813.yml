@@ -1,0 +1,62 @@
+schema_version: 1
+record_id: ota_ward_v17_phase12_independent_rerun_20260813
+recorded_at: '2026-08-13'
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+contract_id: OTA_WARD_V17_PHASE12_OUTPUT_CONTRACT
+output_root: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_20260813_independent_rerun
+source_commit: c86c7548bcd39b2f6fcdccd0b1e6c813fe10636c
+container:
+  image: tokyo-traffic-research-analysis
+  digest: sha256:fbc7489e297359ccbd70a0030613d95d2f3dade061b6501b281d834e24bd3002
+  platform: Linux-6.12.54-linuxkit-x86_64-with-glibc2.36
+  python_version: 3.11.15
+  libraries: {PyYAML: 6.0.2, jsonschema: 4.24.0}
+  sumo_version: not_invoked_phase12
+fixed_input:
+  source_osm_sha256: 8b5157e48c3c87c2b4430f56d6abe292ce1ea5449b374ae4cb395fc19475b67d
+runs:
+  run_1:
+    started_at: '2026-08-13T06:20:49.468118+00:00'
+    ended_at: '2026-08-13T07:26:37.497851+00:00'
+    exit_code: 0
+    result: passed
+    run_manifest: runs/run_1/run_manifest.json
+    run_manifest_sha256: 93fe3401410c75c84bb22e37fca0744313cf1406e7c9911d875571a3ba9ab558
+    validator_count: 8
+    failed_validator_count: 0
+    independent_completion_recheck: passed
+  run_2:
+    started_at: '2026-08-13T07:31:32.618321+00:00'
+    ended_at: '2026-08-13T11:27:27.813117+00:00'
+    exit_code: 0
+    result: passed
+    run_manifest: runs/run_2/run_manifest.json
+    run_manifest_sha256: 5f87e04f0f930a636c6caec0c5a8d62d9580c0319d165fe71b0578f6a99b670d
+    validator_count: 8
+    failed_validator_count: 0
+    independent_completion_recheck: passed
+major_artifact_semantic_sha256:
+  structural_full_population: 326fe41a0fbcb55f05f6688cc4e1cf9c2f6d239e79b320b227e7dec7b9cca37f
+  formal_full_population: 953eb744494bc2e3261d206acc4695be734659187241d2e3659c7dc08a93c740
+  complete_blocker_inventory: d635ec3187f02f9add39a1f30969cd5c463b5a27f4be5f3bee9b74c65afba993
+  exclusion_manifest: ac4627666e5ccd1970745bfe53e8ac41057454b5b9267cd6990213cccfeafe87
+  population_accounting: f76d9c7085849bccf754116784e9c3013ad79d452c82778e20cd74e5b141e7fa
+semantic_hashes_equal_across_runs: true
+population_summary:
+  structural_permission_records: 16330
+  formal_permission_records: 6984
+  formal_blockers: 108189
+  permission_causal_links: 4864
+  permission_root_cause_records: 1130
+result:
+  run_1_completion: passed
+  run_2_completion: passed
+  requested_two_independent_runs: passed
+  determinism_finalize_executed: false
+  phase12_formal_completion_claimed: false
+notes:
+  - Both runs were generated independently from the same fixed input and did not read each other's outputs.
+  - Each run passed all eight per-run completion validators in its manifest and a separate post-run CLI recheck.
+  - The remaining governed blockers mean formal_build_ready remains false.
+  - Finalize was not requested or executed; its environment argument comparison requires separate resolution because run_id necessarily differs.

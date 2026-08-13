@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "phase12_run_manifest_v17.schema.json",
   "type": "object",
-  "required": ["schema_version", "manifest_id", "contract_id", "contract_version", "run_id", "source_commit", "dirty_tree", "configuration_id", "population_version", "input_hashes", "artifacts", "validation_results", "exit_code"],
+  "required": ["schema_version", "manifest_id", "contract_id", "contract_version", "run_id", "source_commit", "dirty_tree", "configuration_id", "population_version", "input_hashes", "artifacts", "validation_results", "validator_executions", "result", "exit_code"],
   "properties": {
     "schema_version": {"const": 17},
     "manifest_id": {"type": "string", "minLength": 1},
@@ -15,11 +15,41 @@
     "population_version": {"const": "ota_ward_relation_closure_v16"},
     "input_hashes": {"type": "object", "minProperties": 6, "additionalProperties": {"$ref": "#/$defs/hash"}},
     "artifacts": {"type": "array", "minItems": 6, "maxItems": 6, "uniqueItems": true, "items": {"$ref": "#/$defs/artifact"}},
-    "validation_results": {"type": "object", "required": ["schema", "semantic", "population_accounting", "identity_uniqueness"], "additionalProperties": {"const": "passed"}},
+    "validation_results": {"type": "object", "required": ["schema", "semantic", "population_accounting", "identity_uniqueness"], "additionalProperties": {"enum": ["passed", "failed"]}},
+    "validator_executions": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "items": {"$ref": "#/$defs/validatorExecution"}
+    },
+    "result": {"enum": ["passed", "failed"]},
     "exit_code": {"const": 0}
   },
   "$defs": {
     "hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "validatorExecution": {
+      "type": "object",
+      "required": ["validator_id", "command", "exit_code", "log", "log_sha256", "checks", "result"],
+      "properties": {
+        "validator_id": {"enum": ["required_artifacts", "schema", "semantic_hash", "semantic", "identity_uniqueness", "population_accounting", "registered_values", "blocker_exclusion"]},
+        "command": {"type": "array", "minItems": 7, "items": {"type": "string", "minLength": 1}},
+        "exit_code": {"const": 0},
+        "log": {"type": "string", "minLength": 1},
+        "log_sha256": {"$ref": "#/$defs/hash"},
+        "checks": {
+          "type": "object",
+          "required": ["required", "completed", "failed"],
+          "properties": {
+            "required": {"type": "integer", "minimum": 1},
+            "completed": {"type": "integer", "minimum": 0},
+            "failed": {"type": "integer", "minimum": 0}
+          },
+          "additionalProperties": false
+        },
+        "result": {"enum": ["passed", "failed"]}
+      },
+      "additionalProperties": false
+    },
     "artifact": {
       "type": "object",
       "required": ["artifact_id", "path", "schema", "byte_sha256", "semantic_sha256"],
