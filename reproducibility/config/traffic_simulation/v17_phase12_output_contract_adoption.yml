@@ -15,25 +15,25 @@ attribute_resolution_acceptance: not_run
 artifacts:
   normative_specification:
     path: 05_src/traffic_simulation/specifications/12_phase12_full_population_output_contract_v17.md
-    sha256: 7d8997058a62449db30f5436ca36d087f151d6ec84673f3aef07d3a7ae31d3c5
+    sha256: 7fe46ccc1e7c7581a81cdcfcccf4e793cb012e7786c27be64b4795b9da4cc37a
   machine_contract:
     path: reproducibility/config/traffic_simulation/v17_phase12_output_contract.yml
-    sha256: 3446a9d51610205b8c13107d07ff6622673f2e9450885a1c671714e84ee20fa8
+    sha256: e48b7e6f8829a860b018ff404a95ee78886c8dd030377cc32fc3aa47b82833e2
   validator:
     path: 05_src/traffic_simulation/network/validate_v17_phase12_output_contract.py
-    sha256: 2793c7d87983e6a3d47e2a4d8cca51e2c314a5293d14c30a6c155a9a26a441b1
+    sha256: 6a7926337e97341cf85bdfcd2bc14115cf62539e179772581be22a12f2516659
   executor:
     path: 05_src/traffic_simulation/network/execute_v17_phase12_full_population.py
-    sha256: 3ccde9298cb752ea4c2a818b5445c967846b513ed8743d8b46b3cd88ed3a7775
+    sha256: 2f9625a1be8185c47ac38394175d232ab542b5f5b9e4a5f565110beefaaa082a
   run_completion_validator:
     path: 05_src/traffic_simulation/network/validate_v17_phase12_run_completion.py
     sha256: eb3a71ee42a942c5ea3dcd899775afa7b8b53a2906830d87e84491133a130dec
   tests:
     path: 05_src/traffic_simulation/validation/test_phase12_output_contract_v17.py
-    sha256: 6b9e77d9aae94078a0d39b203b3364e46fb2d3b6203717690f350c6745afc7fd
+    sha256: 9a557e4c94b0f2e408577abbbbef5c56dcdf1969b37b006b254b608faaa8efe6
   run_completion_tests:
     path: 05_src/traffic_simulation/validation/test_phase12_run_completion_v17.py
-    sha256: 39b2c5d02d998f06eaa8a4237c29a508296770bdf8c9df7dbb4fecbc87184424
+    sha256: 1a86b215ff8a706c635cb795ce0fc98f7cf9ed50d92e1320326c4a4bd6811cad
   execution_roadmap:
     path: reproducibility/config/traffic_simulation/v17_phase9_to_phase14_execution_roadmap.yml
     sha256: b7bfd849085585d6d5744168d3f4b5e34f2d22a943aaaf9af513b6404f5cf55f
@@ -56,7 +56,7 @@ schemas:
     sha256: 6e95ddca5f72745b2435e7d3bcd754740de213efcc53011b0cac330a966fa709
   determinism_report:
     path: reproducibility/config/traffic_simulation/schemas/phase12_determinism_report_v17.schema.json
-    sha256: d1df2bd34c009fe5bac4bad74d73ce54c1c4d1da914f754211b43af26651cdaa
+    sha256: 78f4168357fff26a726d7cea2db49d53a235c50cb232e16f9f506ec47549fc82
 
 fixed_contract_summary:
   independent_run_count: 2
@@ -89,7 +89,7 @@ verification:
   focused_tests:
     command: PYTHONPATH=05_src python -m pytest -q 05_src/traffic_simulation/validation/test_phase12_output_contract_v17.py 05_src/traffic_simulation/validation/test_phase12_run_completion_v17.py
     result: passed
-    count: 30
+    count: 35
 
 interpretation:
   contract_fixed: true

@@ -970,6 +970,37 @@ def _validate_completed_run_manifest(
     return manifest
 
 
+def _normalize_environment_value(
+    field: str,
+    value: Any,
+    *,
+    run_id: str,
+    normalization: Mapping[str, Any],
+) -> Any:
+    rule = normalization.get(field)
+    if rule is None:
+        return copy.deepcopy(value)
+    if rule != {
+        "method": "replace_cli_option_value",
+        "option": "--run-id",
+        "replacement": "<run_id>",
+        "require_value_equals_run_id": True,
+    }:
+        raise Phase12ExecutionError(f"unsupported environment normalization: {field}")
+    if not isinstance(value, list) or not all(isinstance(item, str) for item in value):
+        raise Phase12ExecutionError(f"environment field is not a string argument vector: {field}")
+    option = rule["option"]
+    positions = [index for index, item in enumerate(value) if item == option]
+    if len(positions) != 1 or positions[0] + 1 >= len(value):
+        raise Phase12ExecutionError(f"run-specific option occurrence differs: {run_id}/{option}")
+    position = positions[0]
+    if value[position + 1] != run_id:
+        raise Phase12ExecutionError(f"run-specific option value differs: {run_id}/{option}")
+    normalized = list(value)
+    normalized[position + 1] = rule["replacement"]
+    return normalized
+
+
 def finalize() -> dict[str, Any]:
     _require_clean_worktree()
     contract = _load_yaml(CONTRACT_PATH)
@@ -1013,8 +1044,21 @@ def finalize() -> dict[str, Any]:
     for run_id in ("run_1", "run_2"):
         path = root / catalog["environment_build_manifest"]["path_template"].format(run_id=run_id)
         environments.append(_load_json(path))
+    normalization = contract["determinism"].get("environment_field_normalization", {})
+    normalized_environments = [
+        {
+            field: _normalize_environment_value(
+                field,
+                environment[field],
+                run_id=run_id,
+                normalization=normalization,
+            )
+            for field in environment_fields
+        }
+        for run_id, environment in zip(("run_1", "run_2"), environments, strict=True)
+    ]
     environment_comparison = {
-        field: environments[0][field] == environments[1][field]
+        field: normalized_environments[0][field] == normalized_environments[1][field]
         for field in environment_fields
     }
     if not all(environment_comparison.values()):
@@ -1028,6 +1072,14 @@ def finalize() -> dict[str, Any]:
         "run_ids": ["run_1", "run_2"],
         "artifact_comparisons": comparisons,
         "environment_comparison": environment_comparison,
+        "environment_argument_comparison": {
+            "run_1_recorded": environments[0]["arguments"],
+            "run_2_recorded": environments[1]["arguments"],
+            "normalization": normalization["arguments"],
+            "run_1_normalized": normalized_environments[0]["arguments"],
+            "run_2_normalized": normalized_environments[1]["arguments"],
+            "match": environment_comparison["arguments"],
+        },
         "all_comparisons_match": True,
         "published_from_run": "run_1",
         "result": "passed",

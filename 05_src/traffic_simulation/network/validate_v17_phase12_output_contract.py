@@ -126,6 +126,16 @@ def validate_output_contract(contract: Mapping[str, Any]) -> dict[str, Any]:
         raise Phase12OutputContractError("determinism-required artifact set differs")
     if set(contract["determinism"]["compare_artifact_ids"]) != deterministic:
         raise Phase12OutputContractError("determinism comparison set differs")
+    expected_normalization = {
+        "arguments": {
+            "method": "replace_cli_option_value",
+            "option": "--run-id",
+            "replacement": "<run_id>",
+            "require_value_equals_run_id": True,
+        }
+    }
+    if contract["determinism"].get("environment_field_normalization") != expected_normalization:
+        raise Phase12OutputContractError("environment normalization rule differs")
     if contract["profiles"]["formal"]["allow_model_assumed"]:
         raise Phase12OutputContractError("formal profile permits model assumptions")
     if contract["profiles"]["structural"]["acceptance_eligible"]:

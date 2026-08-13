@@ -258,6 +258,51 @@ def test_existing_artifact_is_not_overwritten(tmp_path: Path) -> None:
     assert phase12_runner._load_json(target) == original
 
 
+def test_environment_argument_comparison_normalizes_only_matching_run_id() -> None:
+    rule = {
+        "arguments": {
+            "method": "replace_cli_option_value",
+            "option": "--run-id",
+            "replacement": "<run_id>",
+            "require_value_equals_run_id": True,
+        }
+    }
+    run_1 = ["--run-id", "run_1", "--container-digest", "sha256:" + "a" * 64]
+    run_2 = ["--run-id", "run_2", "--container-digest", "sha256:" + "a" * 64]
+
+    assert phase12_runner._normalize_environment_value(
+        "arguments", run_1, run_id="run_1", normalization=rule
+    ) == ["--run-id", "<run_id>", "--container-digest", "sha256:" + "a" * 64]
+    assert phase12_runner._normalize_environment_value(
+        "arguments", run_2, run_id="run_2", normalization=rule
+    ) == ["--run-id", "<run_id>", "--container-digest", "sha256:" + "a" * 64]
+
+
+@pytest.mark.parametrize(
+    "arguments",
+    [
+        ["--run-id", "run_2"],
+        ["--container-digest", "sha256:" + "a" * 64],
+        ["--run-id", "run_1", "--run-id", "run_1"],
+    ],
+)
+def test_environment_argument_comparison_rejects_invalid_run_id_binding(
+    arguments: list[str],
+) -> None:
+    rule = {
+        "arguments": {
+            "method": "replace_cli_option_value",
+            "option": "--run-id",
+            "replacement": "<run_id>",
+            "require_value_equals_run_id": True,
+        }
+    }
+    with pytest.raises(phase12_runner.Phase12ExecutionError):
+        phase12_runner._normalize_environment_value(
+            "arguments", arguments, run_id="run_1", normalization=rule
+        )
+
+
 def _finalize_contract() -> dict:
     return {
         "contract_id": "OTA_WARD_V17_PHASE12_OUTPUT_CONTRACT",

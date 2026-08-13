@@ -21,8 +21,11 @@ prohibited.
 ## 3. Required executions
 
 Two independent executions, `run_1` and `run_2`, SHALL be performed in fresh output
-directories with identical inputs, container digest, library versions, arguments, and
-random seeds. Neither execution may read files produced by the other. A `published`
+directories with identical inputs, container digest, library versions, effective arguments,
+and random seeds. Each environment manifest SHALL retain its exact argument vector. For the
+cross-run environment comparison only, the value following the single required `--run-id`
+option SHALL equal that run's ID and SHALL be normalized to the literal `<run_id>`. No other
+option or value may be ignored or normalized. Neither execution may read files produced by the other. A `published`
 directory may be created from `run_1` only after every determinism-required semantic hash
 matches `run_2`.
 

@@ -84,6 +84,15 @@ def test_determinism_set_must_match_catalog() -> None:
         validate_output_contract(value)
 
 
+def test_only_run_id_value_may_be_normalized_for_environment_comparison() -> None:
+    value = contract()
+    value["determinism"]["environment_field_normalization"]["arguments"]["option"] = (
+        "--container-digest"
+    )
+    with pytest.raises(Phase12OutputContractError, match="normalization rule differs"):
+        validate_output_contract(value)
+
+
 def test_contract_validation_does_not_mutate_input() -> None:
     value = contract()
     before = copy.deepcopy(value)

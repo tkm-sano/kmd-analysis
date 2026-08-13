@@ -135,6 +135,12 @@ determinism:
     - registry_hashes
     - input_hashes
     - random_seeds
+  environment_field_normalization:
+    arguments:
+      method: replace_cli_option_value
+      option: --run-id
+      replacement: <run_id>
+      require_value_equals_run_id: true
   all_comparisons_must_match: true
 
 completion_gate:

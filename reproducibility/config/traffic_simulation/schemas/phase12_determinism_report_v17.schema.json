@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "phase12_determinism_report_v17.schema.json",
   "type": "object",
-  "required": ["schema_version", "report_id", "contract_id", "run_ids", "artifact_comparisons", "environment_comparison", "all_comparisons_match", "published_from_run", "result"],
+  "required": ["schema_version", "report_id", "contract_id", "run_ids", "artifact_comparisons", "environment_comparison", "environment_argument_comparison", "all_comparisons_match", "published_from_run", "result"],
   "properties": {
     "schema_version": {"const": 17},
     "report_id": {"type": "string", "minLength": 1},
@@ -10,6 +10,7 @@
     "run_ids": {"const": ["run_1", "run_2"]},
     "artifact_comparisons": {"type": "array", "minItems": 5, "items": {"$ref": "#/$defs/comparison"}},
     "environment_comparison": {"type": "object", "minProperties": 1, "additionalProperties": {"const": true}},
+    "environment_argument_comparison": {"$ref": "#/$defs/argumentComparison"},
     "all_comparisons_match": {"const": true},
     "published_from_run": {"const": "run_1"},
     "result": {"const": "passed"}
@@ -23,6 +24,29 @@
         "artifact_id": {"type": "string", "minLength": 1},
         "run_1_semantic_sha256": {"$ref": "#/$defs/hash"},
         "run_2_semantic_sha256": {"$ref": "#/$defs/hash"},
+        "match": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "argumentComparison": {
+      "type": "object",
+      "required": ["run_1_recorded", "run_2_recorded", "normalization", "run_1_normalized", "run_2_normalized", "match"],
+      "properties": {
+        "run_1_recorded": {"type": "array", "items": {"type": "string"}},
+        "run_2_recorded": {"type": "array", "items": {"type": "string"}},
+        "normalization": {
+          "type": "object",
+          "required": ["method", "option", "replacement", "require_value_equals_run_id"],
+          "properties": {
+            "method": {"const": "replace_cli_option_value"},
+            "option": {"const": "--run-id"},
+            "replacement": {"const": "<run_id>"},
+            "require_value_equals_run_id": {"const": true}
+          },
+          "additionalProperties": false
+        },
+        "run_1_normalized": {"type": "array", "items": {"type": "string"}},
+        "run_2_normalized": {"type": "array", "items": {"type": "string"}},
         "match": {"const": true}
       },
       "additionalProperties": false
