@@ -1,445 +1,195 @@
-# Tokyo Traffic × Quantum Routing Research
+# Tokyo Traffic × Quantum
 
-This repository builds a public-data-based traffic approximation for Ota Ward, Tokyo, and compares a non-optimizing baseline, classical optimization, and QAOA on Qiskit Aer using the same synthetic electric-vehicle delivery problem.
+東京都大田区を対象に、交通シミュレーションと配送経路最適化を組み合わせ、古典的な最適化手法と量子アルゴリズムを公平に比較する研究
 
-**References:** [Reference list with direct links](02_literature/references/reference_inventory.md) · [Detailed paper registry](02_literature/references/papers.csv) · [BibTeX bibliography](02_literature/references/references.bib)
+現在は、実験の土台となる道路データを検証している段階です。古典最適化と量子アルゴリズムの比較は行なっていません。
 
-## はじめに：現在地と次のステップ
+## この研究で明らかにしたいこと
 
-このリポジトリは、東京都大田区を対象に、公開データから統制されたSUMO交通環境と
-合成EV配送問題を構築し、非最適化ベースライン、古典最適化、Qiskit Aer上のQAOAを
-同一条件で比較する研究基盤である。現時点では最適化手法の比較段階ではなく、その前提となる
-**v17道路属性解決のVerification**を進めている。
+本研究の中心的な問いは、次のとおりです。
 
-> **2026-08-13現在の結論**
->
-> v17 Phase 1〜11は合格済み。Phase 12は、固定した実行契約に基づく新しい独立出力先で
-> 2回の全母集団runを完了し、各runが8個の単体completion validatorに合格した。
-> 主要5成果物のsemantic SHA-256も2回で一致している。ただし、2run全体の`finalize()`と
-> Phase 12正式完了記録は未実施であり、108,189件のgoverned blockerが残るため、
-> `formal_build_ready`は`false`である。Phase 13は未着手、Phase 14はゲート待ちである。
+> 車両、積載量、バッテリー、出発時刻、配送需要分布、交通状況、天候、運転者の運転特性などを同一条件にそろえたとき、配送順序の最適化によって配送需要の充足率はどの程度変化するか。また、量子計算環境と交通・配送環境の発展を想定した将来シナリオに応じて、これらの条件を変化させたとき、需要の充足はどのように変化するか。
 
-ここで `v17` の `v` は **version**、`V&V` は **Verification and Validation** を表す。
-`v17 Phase 12`は「version 17のPhase 12」であり、version 12ではない。また、Phase 12の
-run単体合格や2回一致は、Phase 12全体の正式完了、Phase 14の受入、SUMO道路網のValidation、
-または量子優位性を意味しない。
+ここでいう将来シナリオは、量子計算性能、車両・電池性能、積載条件、充電環境、出発時刻、配送需要の量や空間分布、交通情報・交通状況、気象条件、運転者の運転特性などの、根拠ある段階的な変化です。
 
-### Phase 1〜14の現在地
+### ここでいう「配送需要充足率」の定義
 
-| Phase | 内容 | 状態 | 現在の証拠・次の条件 |
-|---:|---|---|---|
-| 1〜11 | 権威資料同期、独立oracle、状態契約、方向・車線・通行権限・速度・証拠法、resolver統合 | **合格** | 各Phase完了記録と累積記録が存在する |
-| 12 | 固定v16母集団をv17 structural/formal両profileで2回全件実行し、停止・除外・母集団差を保存 | **2回実行・run単体合格、正式完了未認定** | 2runとも8 validator合格、主要5成果物のsemantic hash一致。次は全体`finalize()`の比較規則修正・検証と正式完了記録 |
-| 13 | Phase 12のstop recordを根本原因別に解消して再実行 | **未着手** | Phase 12正式確定後、blockerを属性・停止コード・根本原因別に処理する |
-| 14 | formal属性成果物の最終受入 | **ゲート待ち** | blocker、review-required、stop-unresolved、model-assumedを各0件にして受入を実行する |
+充足率の定義は以下を検討しています。
 
-Phaseごとの定義、完了条件、現在地、証拠、残作業は、最重要の日本語資料
-[`v17_phase1_to_phase14_integrated_status.md`](05_src/traffic_simulation/v17_phase1_to_phase14_integrated_status.md)
-に統合している。Phase 12の最新実行事実は
-[`v17_phase12_independent_rerun_20260813.yml`](reproducibility/config/traffic_simulation/v17_phase12_independent_rerun_20260813.yml)、
-実行契約は
-[`v17_phase12_output_contract.yml`](reproducibility/config/traffic_simulation/v17_phase12_output_contract.yml)
-を参照する。
+配送需要充足率は「比較対象として割り当てた合成配送需要のうち、所定の完了条件をすべて満たして配送できた需要の割合」です。
 
-### 直近の実行順序と理由
+#### `parcel-equivalent`とは
 
-1. **Phase 12の`finalize()`比較規則を修正する。** 2runでは`--run-id`が必ず異なるため、
-   実CLI引数を正しく保存したまま、環境同一性の比較からrun固有値だけを正規化する必要がある。
-2. **小型fixtureで2run→全体completion gate→原子的公開を試験する。** 大規模再実行の前に、
-   決定論判定、失敗時の公開禁止、既存成果物の上書き拒否を全経路で確認するためである。
-3. **既存の独立2runに対して`finalize()`を実行し、Phase 12完了記録を作る。** run単体合格を
-   Phase全体の正式な完了証拠へ昇格させ、実成果物とロードマップの状態を一致させるためである。
-4. **108,189件のblockerを属性・stop code・root cause別に集計し、Phase 13で解消する。**
-   件数だけを減らすのではなく、同じ根本原因を一つの統制された決定として解消するためである。
-5. **blockerが0件になった再runだけをPhase 14で受け入れる。** 未証明の値をformal SUMO道路網へ
-   混入させず、その後のNetwork Integration、Calibration、独立Validationを有効にするためである。
+`parcel-equivalent`（宅配便個数相当）は、国土交通省などが公表する全国の年間宅配便取扱個数を、人口と日数で正規化し、合成配送需要として配分するための数量単位です。
 
-現在の主要課題は、Phase 12全体最終化におけるrun固有CLI引数の扱い、正式完了記録の未作成、
-および多数のformal blockerである。解決策の詳細、合格条件、失敗時の扱いは上記統合資料と
-[`12_phase12_full_population_output_contract_v17.md`](05_src/traffic_simulation/specifications/12_phase12_full_population_output_contract_v17.md)
-に記載している。
+一人一日当たりの値は、次の式で求めます。
 
-> **Primary research question**
->
-> Under identical vehicles, capacity, battery, departure time, demand, traffic, weather, and evaluation conditions, how much does route-order optimization change population-equivalent demand fulfillment, and how do classical optimization and Aer-based QAOA differ in outcome and computational resources?
-
-## Research objective
-
-This research builds a reproducible traffic-simulation and route-optimization framework for Ota Ward that:
-
-- constructs a governed road environment from date-pinned OSM data and the official N03 administrative boundary;
-- calibrates and independently validates traffic conditions with public observations;
-- generates traceable population-based delivery demand and EV delivery scenarios;
-- compares a non-optimizing baseline, classical optimization, and Qiskit Aer QAOA under identical conditions; and
-- quantifies how route optimization changes population-equivalent demand fulfillment, operational outcomes, solution quality, and computational-resource requirements.
-
-## Study design
-
-1. Fix the Docker environments and data-provenance rules.
-2. Derive the Ota Ward boundary from Japan's National Land Numerical Information N03 dataset.
-3. Acquire road geometry and connectivity candidates from a date-pinned OpenStreetMap PBF snapshot.
-4. Convert the governed OSM input into a SUMO network and validate its structure.
-5. Calibrate general traffic with multiple observations, including JARTIC data, and validate it on separate observations.
-6. Build synthetic delivery demand from population meshes and public aggregate statistics.
-7. Give the same frozen delivery problem to the non-optimizing baseline, a classical solver, and Aer-based QAOA.
-8. Convert each visit order into road paths using the same rules and run them in the same SUMO environment.
-9. Compare population-equivalent demand fulfillment, driving outcomes, solution quality, runtime, and QAOA resources.
-10. Add EV constraints, driver-experience effects, weather, and incidents incrementally so that their effects remain separable.
-
-The classical and QAOA branches must share the same frozen problem instance, road network, vehicle constraints, traffic conditions, route-conversion rules, and simulation seeds. Raw solver output, decoded solutions, repaired solutions, and SUMO outcomes are stored separately.
-
-### Pros and cons of the frozen-instance design
-
-Here, *frozen instance* means that the experimental inputs remain unchanged across the solver branches. It is distinct from a *static delivery formulation*, in which no new information arrives after optimization begins. Freezing an instance is an experimental control; using an offline static formulation defines the initial operational scope.
-
-**Advantages**
-
-- Giving the non-optimizing baseline, classical solver, and QAOA the same instance enables a controlled comparison under common input conditions. It does not by itself guarantee complete fairness because computational budgets, stopping criteria, and hyperparameters may differ.
-- Fixing demand, vehicles, constraints, traffic conditions, cost matrices, and seeds makes the experiments easier to reproduce and audit.
-- Common inputs allow differences in solution quality and constraint satisfaction to be analyzed primarily in relation to the solution method and formulation.
-- A static formulation can still represent time windows, arrival times, known time-dependent travel costs, vehicle loads, and route-level SOC transitions.
-- Fixed instances make it easier to validate QUBO conversion, constraint penalties, decoding, and feasibility checks in controlled stages.
-- Changing one governed condition at a time helps separate its effect on solution quality, feasibility, and computational scale.
-- Different demand distributions and traffic conditions can be represented as separate frozen instances, allowing comparison across multiple scenarios without requiring online simulation updates.
-
-**Scope and limitations**
-
-- The initial formal comparison will not update a plan in response to orders or cancellations received after optimization begins.
-- It will not reoptimize in response to subsequently observed congestion, incidents, vehicle failures, or charger-status changes.
-- Traffic conditions will be supplied as exogenous costs, so the initial comparison will not model feedback in which delivery-route choices change congestion and the changed congestion then alters the delivery plan.
-- Any state represented by an aggregate or precomputed value will not reproduce the corresponding detailed within-route evolution. The implemented formulation must report which states, if any, receive this treatment.
-- The evaluation will not include the online cost of regenerating a QUBO, converting it to an Ising model, rebuilding or transpiling a circuit, or retuning QAOA parameters after an information update.
-- It will not establish end-to-end real-time performance including repeated measurements, classical-quantum data transfer, decoding, and decision latency.
-- Solution quality for an offline frozen instance cannot by itself establish performance in an online delivery operation with sequential information updates.
-
-**External validity**
-
-- Results may depend on the selected demand distribution, study area, traffic conditions, vehicle assumptions, model parameters, and seeds.
-- External validity therefore requires evaluation on multiple governed instances that vary demand distributions, customer and vehicle counts, time-window tightness, charging conditions, and traffic scenarios, including held-out instances where applicable.
-
-## Methodology overview
-
-```mermaid
-%%{init: {"theme": "dark", "themeVariables": {"background": "#0d1117", "lineColor": "#8b949e", "textColor": "#ffffff"}}}%%
-flowchart TD
-    D1["1. Open data<br/>N03 · OSM · JARTIC · census · public statistics"]
-    D2["2. Provenance control<br/>date · license · version · SHA-256"]
-    D3["3. Common research inputs<br/>Ota boundary · governed roads · synthetic demand"]
-    D4["4. Validated traffic environment<br/>SUMO network · calibration · independent validation"]
-    D5["5. Frozen delivery problem<br/>same demand · vehicles · constraints · seeds"]
-
-    M1["6A. Non-optimizing baseline"]
-    M2["6B. Classical optimization"]
-    M3["6C. Qiskit Aer QAOA"]
-
-    D6["7. Visit order → common road-path conversion"]
-    D7["8. Same SUMO environment"]
-    E1["9A. Operational and social-proxy measures<br/>distance · time · energy · completed demand · population-equivalent demand fulfillment"]
-    E2["9B. Computational resources<br/>runtime · solution quality · QUBO and circuit indicators"]
-    D8["10. Final comparison<br/>population-equivalent demand fulfillment ↔ computational resources"]
-
-    D1 --> D2 --> D3 --> D4 --> D5
-    D5 --> M1
-    D5 --> M2
-    D5 --> M3
-    M1 --> D6
-    M2 --> D6
-    M3 --> D6
-    D6 --> D7 --> E1 --> D8
-    M1 --> E2
-    M2 --> E2
-    M3 --> E2
-    E2 --> D8
-
-    classDef textOnly fill:none,stroke:none,color:#ffffff;
-    class D1,D2,D3,D4,D5,M1,M2,M3,D6,D7,E1,E2,D8 textOnly;
-    linkStyle default stroke:#8b949e,stroke-width:2px;
+```text
+一人一日当たりparcel-equivalent
+  = 全国の年間宅配便取扱個数
+    ÷ 日本の総人口
+    ÷ 365日
 ```
 
-The diagram separates the two final lines of evidence. The common SUMO runs measure operational and social effects, while the solver records measure computational effort. Their final relationship is evaluated without treating a simulated QAOA resource indicator as a confirmed physical-hardware requirement or quantum advantage. Delivery constraints and EV constraints are added in controlled stages only after the preceding problem formulation passes feasibility, decoding, and small-instance validation.
+現在の基準値は、`5,031,470,000 ÷ 123,802,000 ÷ 365 = 0.111345934 parcel-equivalent/人・日`です。この値を大田区の人口分布へ適用し、比較手法へ共通に与える合成需要量を作ります。
 
-### Conceptual correspondence among technical, human-factor, operational, and population-proxy measures
+1 parcel-equivalentは、全国集計における宅配便1個分に数値上対応する「荷物量の換算単位」ですが、大田区で実際に観測された荷物1個を表すものではありません。また、1 parcel-equivalentを、1注文、1顧客、1配送先、1回の訪問・停止、特定の重量・容積へ直接変換しません。全国集計には複数の宅配便流動が含まれるため、個人宅向け需要だけを表す単位でもありません。
 
-The following diagram relates technical and human-factor aspects of the modeled delivery system and operational evaluation concepts to one final population proxy: population-equivalent demand fulfillment. It is not a causal model, a temporal sequence, a software or data-processing flow, a research workflow, or evidence of policy effects or social benefits. Undirected lines identify measurement, association, decision, and aggregation correspondences; the left-to-right layout only organizes concepts at different analytical levels around a single aggregate proxy.
+この単位を使う目的は、実注文データが存在しない状況でも、出典と計算過程を追跡できる共通尺度で、各比較手法に同じ需要量を与えることです。実際の注文や配送停止を再現するための単位ではありません。
 
-Operational measurements are not monetized. Population-equivalent demand fulfillment is a model-based conversion of completed synthetic demand into population units under a prespecified demand-conversion rule; it is not the number of people who received a delivery. An increase in this proxy must not be interpreted as an increase in social welfare or economic benefit. Emissions, customer satisfaction, social welfare, regional equity, delivery costs, and revenue are outside the current evaluation scope. Solution quality and computational resources are assessed through a separate evaluation stream. Driver physiology and driving behavior are a later, separately governed Human Factors analysis and are not current formal inputs.
+配送需要充足率は、parcel-equivalentで表した完了需要量を、同じ単位の割当需要量で割って計算し、0から1の比率または0%から100%の百分率で示します。例えば、割当需要が1,000 parcel-equivalentで、完了需要が800 parcel-equivalentなら、配送需要充足率は0.8、すなわち80%です。
 
-[Detailed Japanese conceptual framework, terminology review, and interpretation limits](05_src/traffic_simulation/impact_propagation/operational_impact_propagation_ja.md)
+各需要は、到着、期限、積載量、バッテリー、充電、重複配送、未配送など、事前に定めた必須条件をすべて満たした場合だけ完了と判定します。一部の条件だけを満たした需要、経路生成に失敗した需要、シミュレーションに失敗した需要は分子へ含めません。各需要IDは一度だけ数え、完了需要が割当需要を上回る場合は集計エラーとします。
+
+この指標は、公開統計から作った合成配送需要に対する充足率であり、実際の注文充足率、顧客満足度、配送を受けた人数、社会的便益を表すものではありません。また、「人口換算需要充足量」は完了需要を人口単位へ換算する別の指標であり、配送需要充足率そのものではありません。詳しい算出規則と解釈上の制限は、[合成需要仕様](05_src/traffic_simulation/demand/baseline_demand_and_comparator.md)にて記載を進めます。
+
+#### 充足率の分母となる合成配送需要
+
+主な処理は次のとおりです。
+
+1. 2020年国勢調査500 m人口メッシュを大田区境界で切り出す。
+2. 境界上のメッシュは、大田区内に含まれる面積の割合で人口を配分する。
+3. 空間分布を、2024-04-01の大田区公表人口736,652人へ調整する。
+4. 全国宅配便取扱個数と日本総人口から、一人一日当たりのparcel-equivalent率を計算する。
+5. 同じ規則でメッシュごとの整数需要を決定する。
+
+## 研究の全体像
+
+研究は、次の順序で進めます。
+
+1. 公開データから大田区の境界、道路、交通観測、人口分布を準備する。
+2. データの取得元、取得日、バージョン、SHA-256を記録し、再現可能な入力として固定する。
+3. 道路の向き、車線数、通行可否、速度などを検証し、SUMO用の道路網を作る。
+4. 公開交通観測を使って交通モデルを調整し、調整に使っていない観測で妥当性を確認する。
+5. 人口と宅配便統計から、個人情報を含まない合成配送需要を作る。
+6. 同じ配送問題を、非最適化、古典最適化、QAOAへ入力する。
+7. 各手法の配送順序を同じSUMO環境で走行させる。
+
 
 ```mermaid
 flowchart LR
-    subgraph premises["Evaluation and interpretation premises for the entire diagram"]
-        conditions["Demand · roads and traffic · time · vehicles<br/>Battery · charging · driving profile · measurement conditions · conversion rule"]
-    end
-
-    subgraph technical["Technical and human-factor concepts"]
-        planning["Delivery-plan feasibility"]
-        physiology["Driver physiological and<br/>attentional state<br/>Later-stage analysis"]
-        behavior["Driving-behavior<br/>characteristics<br/>Later-stage sensitivity"]
-        driving["Delivery-driving characteristics under<br/>road and traffic conditions"]
-        ev["EV-delivery<br/>energy feasibility"]
-    end
-
-    subgraph operational["Operational concepts<br/>Not monetized"]
-        movement["Delivery travel quantities"]
-        energy["EV energy-use quantities"]
-        completion["Delivery-demand<br/>completion status"]
-        amount["Completed delivery-demand volume"]
-    end
-
-    subgraph social["Regional and population-unit concepts"]
-        regional_amount["Regional completed<br/>delivery-demand volume"]
-        regional_rate["Regional delivery-demand<br/>fulfillment"]
-        regional_population["Regional population-equivalent<br/>demand fulfillment"]
-        population["Population-equivalent<br/>demand fulfillment<br/>Not actual recipients"]
-    end
-
-    driving ---|Distance, time, and delay components are aggregated| movement
-    ev ---|Electricity and charging components are aggregated| energy
-    physiology ---|Analyzed for association with| behavior
-    behavior ---|Control and response measures correspond to| driving
-    behavior ---|Acceleration and braking measures correspond to| energy
-    planning ---|Plan-stage constraint status is referenced| completion
-    driving ---|Arrival, deadline, and return values are referenced| completion
-    ev ---|Battery and charging conditions are referenced| completion
-    completion ---|Demand volume in the completed state is summed| amount
-    amount ---|Separated by each demand's regional assignment| regional_amount
-    regional_amount ---|Compared with assigned regional demand| regional_rate
-    regional_amount ---|Converted with per-person demand| regional_population
-    regional_population ---|Summed across nonoverlapping regions| population
-
-    conditions ~~~ planning
+    A["公開データ"] --> B["道路・交通モデルの検証"]
+    B --> C["共通の合成配送問題"]
+    C --> D1["非最適化"]
+    C --> D2["古典最適化"]
+    C --> D3["QAOA"]
+    D1 --> E["同じSUMO環境で評価"]
+    D2 --> E
+    D3 --> E
+    E --> F["配送結果と計算資源を比較"]
 ```
 
-The invisible link between the premise box and the technical and human-factor layer is used only for diagram layout. The premises apply to the entire framework and are not depicted as causes. Physiological state and driving behavior are analyzed as associated measurements; the diagram does not assert that a physiological measurement causes a driving action. Regional fulfillment is used for regional comparison, but the final population proxy is calculated from regional completed demand, not from the regional fulfillment ratio. Spatial mapping remains supplementary.
+## 検証と妥当性確認
 
-| Concept | One-sentence definition | Study operationalization | Observation unit | Measurement unit | Aggregation unit | Decision or calculation rule | Difference from adjacent concepts | Interpretation caution |
-|---|---|---|---|---|---|---|---|---|
-| Delivery-plan feasibility | The delivery plan satisfies every mandatory planning constraint. | Inspect decoded assignments, visit orders, routes, capacities, continuity, endpoints, returns, and planning-time constraints. | Plan | Binary | Plan, method | Assign one only if every mandatory constraint passes; retain violation counts and per-constraint rates as supplementary values. | It concerns the plan before traffic simulation and differs from objective quality and demand-completion status. | It is not solver termination, simulated drivability, or real-world feasibility. |
-| Driver physiological and attentional state | These are physiological and attention-related measurements recorded for a driver during a governed run. | In the later Human Factors stage, retain only available governed measures such as EEG, heart-rate, and eye-tracking variables with synchronized run and driver identifiers. | Driver, time window, run | Source-defined physiological and gaze units | Driver, condition, run, source group | Analyze prespecified summaries and associations without converting them into a single ability score. | It describes measured human state; driving-behavior characteristics describe vehicle-control actions. | It is not expertise, driving quality, mental diagnosis, or evidence that a quantum-generated plan caused a physiological response. |
-| Driving-behavior characteristics | These are vehicle-control and response characteristics observed under a governed driving condition. | In the later sensitivity stage, retain acceleration, braking, steering, response, and stability measures supported by the accepted source data and simulation mapping. | Driver, vehicle, time window, run | Source-defined control and response units | Driver, condition, run, source group | Keep source-labelled groups and individual variation separate; do not infer Tokyo population shares. | It concerns human vehicle-control behavior; delivery-driving characteristics concern realized distance, time, and delay. | The labels `source_expert` and `source_novice` do not establish Tokyo delivery-driver classes or causal physiological mechanisms. |
-| Delivery-driving characteristics under road and traffic conditions | These are the distance, time, and delay characteristics of delivery vehicles under specified network and traffic conditions. | Use SUMO to measure distance, travel time, traffic and signal delay, departure, completion, and return time. | Vehicle, run | km, minutes, timestamp | Vehicle, run, method | Record route-generation, insertion, or simulation failure rather than zero distance or time. | Delivery travel quantities aggregate components of these characteristics; EV energy conditions are separate. | They are not observed real-world records or a general measure of Tokyo traffic. |
-| EV-delivery energy feasibility | The delivery run satisfies every mandatory battery-state and charging condition. | Inspect charge state at key events, depletion, permitted charging, and completion within the evaluation time. | Vehicle, run | Binary | Vehicle, run, method | Assign zero if charge falls below the minimum, depletion occurs, charging violates the rules, or the run does not finish in time. | EV energy-use quantities explain use; this concept expresses whether mandatory conditions were satisfied. | It does not validate real-vehicle efficiency, battery degradation, charger availability, or cost. |
-| Delivery travel quantities | These are the vehicle movement and vehicle-time quantities associated with delivery operation. | Retain distance, travel time, traffic delay, and signal delay separately. | Vehicle, run | km, minutes | Vehicle, run, method | Sum only like components across vehicles and do not combine distance and time into one value. | It excludes electricity and charging quantities and does not express completion status. | It is not delivery efficiency, monetary cost, or economic value. |
-| EV energy-use quantities | These are the electricity and charging-use quantities associated with EV delivery operation. | Retain electricity use, charging events, charging time, and charging waits separately. | Vehicle, charging event, run | kWh, events, minutes | Vehicle, run, method | Count actual charging starts and sum each like component without combining different units. | It expresses use rather than EV energy feasibility. | It is not battery degradation, charging cost, or economic value. |
-| Delivery-demand completion status | Each delivery demand satisfies every mandatory completion condition. | Inspect each frozen demand identifier for arrival, deadline, capacity, battery, charging, duplicate, and undelivered status. | Delivery demand | Binary | Demand, vehicle, run, method | Assign one only when every mandatory condition passes; fix whether return is a demand-level or run-level condition before formal experiments. | Completed delivery-demand volume sums demand in the completed state. | Partial compliance and single-run completion are not overall system validity or cross-run stability. |
-| Completed delivery-demand volume | This is the parcel-equivalent quantity of demand in the completed state within one run. | Sum each completed frozen demand identifier's assigned parcel-equivalent amount. | Delivery demand | Parcel-equivalent units | Run, method | Count each demand identifier once and exclude incomplete, duplicated, route-failed, and simulation-failed demand. | It is a study-area total before regional disaggregation. | It is not actual parcels, orders, customers, stops, weight, population, or maximum capacity. |
-| Regional completed delivery-demand volume | This is completed parcel-equivalent demand assigned to each region. | Assign each demand identifier to one population mesh and sum completed demand within that mesh. | Region, delivery demand | Parcel-equivalent units | Region, run, method | Treat assignment to multiple regions as an error and count each demand identifier once. | It is a quantity, not a ratio or population conversion. | Population mesh is an operationalization of region, not the concept itself. |
-| Regional delivery-demand fulfillment | This is the share of assigned regional demand that is completed. | Divide regional completed demand by regional assigned demand. | Region | Ratio | Region, run, method | Use a zero-to-one range, label zero-demand regions as no demand, and treat completed demand above assigned demand as an error. | It is used for regional comparison and is not used to calculate the final population proxy. | It is not observed-order fulfillment, administrative performance, or regional equity. |
-| Regional population-equivalent demand fulfillment | This is regional completed demand expressed in population-equivalent units. | Convert regional completed demand with per-person demand over the evaluation period and public regional population. | Region, run | Person-equivalent | Region, run, method | Cap the unrounded converted value at regional population. | It is a population-unit value, unlike regional completed demand and the regional fulfillment ratio. | It is not recipients, beneficiaries, future deliverable population, or service availability. |
-| Population-equivalent demand fulfillment | This is the study-area aggregate of regional population-equivalent demand fulfillment. | Sum values across nonoverlapping regions for each run and method. | Run | Person-equivalent | Run, method, study area | Sum unrounded regional values, round only the displayed result under a prespecified rule, and require a value between zero and total public population. | It is the sole final population proxy in this concept system. | It is not recipients, road accessibility, maximum capacity, welfare, or economic benefit. |
+本研究では、VerificationとValidationを区別します。
 
-Completed demand appears at several levels but has a different analytical unit in each: study-area parcel-equivalent demand, regional parcel-equivalent demand, the regional fulfillment ratio, regional person-equivalent values, and the final study-area person-equivalent aggregate. Population mesh is the study's spatial operationalization, not the general concept. Spatial maps remain supplementary.
+- **Verification（検証）:** 仕様、Schema、プログラム、データ変換、道路構造が、定めた規則どおりに作られているかを確認します。
+- **Validation（妥当性確認）:** 作ったモデルが、研究目的に対して現実の交通を十分に表しているかを、観測データと比較して確認します。
 
-Solution quality and computational resources remain a separate method-comparison stream. Delivery-plan feasibility asks whether all mandatory planning constraints were met; solution quality asks how good that feasible plan is under the objective; computational resources describe what was required to obtain it. A better objective value does not necessarily imply shorter realized travel time, more completed demand, or greater population-equivalent demand fulfillment. Circuit-simulation resource indicators are not evidence of physical-hardware requirements or quantum advantage. The current Expert Driving Dataset was not collected using classical- or quantum-generated delivery plans, so it cannot establish a solver-to-interface-to-physiology relationship. Such an HCI claim would require a separate controlled plan-presentation and driver-response experiment.
+現在行っているPhase 1〜14は、主に道路属性のVerificationです。Phase 14に合格しても、交通モデル全体のValidationが完了したことにはなりません。
 
-## Current status
+詳細は、[シミュレーションモデル開発・V&V資料](05_src/traffic_simulation/simulation_model_development_and_vv.md)を参照してください。
 
-The active work is v17 road-attribute Verification. Phase 1–11 are formally recorded as passed.
-On 2026-08-13, Phase 12 was independently executed twice from the same fixed source commit, pinned
-container digest, and governed input. Both runs exited with code 0, passed all eight per-run completion
-validators and a separate CLI recheck, and produced identical semantic SHA-256 values for the five major
-artifacts. The manifests record the actual CLI command and arguments, validator command, exit code,
-combined log, and log hash.
+## 現在の進捗
 
-Phase 12 is not yet formally complete. Whole-run finalization was not executed because environment
-comparison must preserve the actual arguments while accounting for the necessarily different `run_id`.
-In addition, 108,189 governed blockers remain, so `formal_build_ready` is false. Phase 13 has not started,
-Phase 14 acceptance has not run, and the formal SUMO network, traffic calibration, independent validation,
-and baseline/classical/QAOA comparison remain later work.
+更新日は2026年8月13日です。
 
-The status sources have distinct scopes:
+道路属性を検証する作業を14段階（Phase 1〜14）に分けています。現在の状況は次のとおりです。
 
-- [`v17_phase1_to_phase14_integrated_status.md`](05_src/traffic_simulation/v17_phase1_to_phase14_integrated_status.md): human-readable Japanese integration of every Phase definition, current state, evidence, issue, solution, and next action.
-- [`v17_phase12_independent_rerun_20260813.yml`](reproducibility/config/traffic_simulation/v17_phase12_independent_rerun_20260813.yml): machine-readable evidence for the latest two independent Phase 12 runs.
-- [`v17_phase12_output_contract.yml`](reproducibility/config/traffic_simulation/v17_phase12_output_contract.yml): fixed Phase 12 execution, artifact, determinism, and completion contract.
-- [`research_stage.yml`](reproducibility/config/traffic_simulation/research_stage.yml) and generated [`RESEARCH_STATUS.md`](RESEARCH_STATUS.md): broader research-stage dashboard; it does not replace the more detailed v17 Phase records above.
-- [`network_workflow_decisions_and_parameters.md`](05_src/traffic_simulation/network_workflow_decisions_and_parameters.md): governed definitions, fixed numeric settings, derived counts, and undecided values.
-
-## Open-data inputs
-
-The study uses public sources for different, explicitly separated roles. A source used for geometry is not automatically treated as evidence for speed, demand, or legal traffic restrictions.
-
-| Open-data snapshot | Provider and download source | Research role | Current treatment |
-|---|---|---|---|
-| N03 administrative boundaries, 2026 | [MLIT National Land Numerical Information](https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-2026.html) | Define the Ota Ward study boundary | Select Ota Ward by municipality code and names, dissolve the six source features, and preserve the resulting geometry without smoothing, simplification, or buffering |
-| Kanto OpenStreetMap PBF, dated 2026-07-16 | [Geofabrik / OpenStreetMap contributors](https://download.geofabrik.de/asia/japan/kanto-260716.osm.pbf) | Base road geometry, connectivity, and candidate road attributes | Pin the regional PBF by date and SHA-256, then extract the acquisition BBOX mechanically derived from the N03 boundary |
-| One-hour road-type-3 traffic observations, 2026-07-04 22:00 JST | [JARTIC / MLIT xROAD](https://www.jartic-open-traffic.org/) | Initial traffic observation and processing validation | Preserve source directions and anomaly flags; use observed traffic and speed for calibration or validation, never as an unqualified legal speed limit |
-| 2020 census 500 m population mesh, JGD2011 mesh 5339 | [Statistics Bureau of Japan / e-Stat](https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001141&code=5339&downloadType=2) | Spatial distribution for synthetic demand | Read the exact official ZIP member, decode the documented fields, intersect it with the N03 boundary, and area-weight boundary meshes |
-| Ota Ward population, 2024-04-01 | [Ota City / Tokyo open data](https://www.opendata.metro.tokyo.lg.jp/ota/R6/131113_R6_01_ootakunomenseki_jinkou_setaisuu.xlsx) | Target total for the 2024 population distribution | Rescale the area-weighted 2020 mesh distribution to the published ward total of 736,652 |
-| Japan total population, 2024-10-01 | [Statistics Bureau of Japan](https://www.stat.go.jp/data/jinsui/2024np/zuhyou/05k2024-1.xlsx) | Denominator for the national parcel-equivalent rate | Read the published total of 123,802,000 using the source unit conversion recorded in configuration |
-| FY2024 national parcel-delivery total | [MLIT](https://www.mlit.go.jp/report/press/content/001906814.pdf) | Numerator for the national parcel-equivalent rate | Use 5,031,470,000 parcels as a national aggregate; do not reinterpret it as observed Ota Ward orders or stops |
-
-The machine-readable registry is [`traffic_simulation_sources.csv`](03_data/metadata/traffic_simulation_sources.csv). It records provider URLs, acquisition dates, source periods and areas, licenses, original filenames, SHA-256 values, processing scripts, derived outputs, and known limitations. Human-readable acquisition records document the actual download and verification operations:
-
-- [JARTIC traffic observation](03_data/metadata/acquisition/20260717_jartic_traffic_volume_acquisition.md)
-- [N03 Tokyo administrative boundary](03_data/metadata/acquisition/20260717_mlit_n03_2026_tokyo_acquisition.md)
-- [OSM PBF and Ota Ward extraction](03_data/metadata/acquisition/20260717_osm_ota_ward_acquisition.md)
-- [Population and parcel statistics](03_data/metadata/acquisition/20260718_ota_baseline_open_statistics_acquisition.md)
-
-Raw source files are stored under `03_data/raw/traffic_simulation/` and excluded from Git. Their recorded hashes, not filenames alone, identify the governed snapshots used by the study.
-
-### Planned and conditional data inputs
-
-The following sources are planned or under consideration but are not part of the current completed input set. Each source must pass license, coverage, reference-date, schema, and SHA-256 checks before it can enter a formal experiment.
-
-| Planned source | Intended use | Admission rule and limitation |
+| 範囲 | 何を行う段階か | 現在の状態 |
 |---|---|---|
-| Additional JARTIC 5-minute and one-hour observations | Represent weekdays, weekends, and morning, daytime, evening, and night periods; split calibration and validation observations | Acquire multiple dates before the retention window expires; preserve missing and anomaly states and do not treat partial road coverage as ward-wide observation |
-| 2021 Road Traffic Census, Tokyo section and hourly tables | Supplement traffic counts, travel speed, road width, lanes, road class, and candidate legal-speed or direction evidence | Match survey sections to OSM using geometry and road identity, check changes between survey and OSM dates, and never overwrite OSM automatically |
-| Metropolitan Police Department traffic-count statistics | Add major-intersection, screenline, prefectural-border, and other static traffic observations | Register the original ZIP and attribution terms; use as an independent public observation rather than as individual vehicle OD |
-| JARTIC traffic-regulation information | Candidate evidence for designated speed, one-way rules, closures, vehicle restrictions, direction, and conditional regulations | Confirm content and reuse terms first; distinguish regulation data from live traffic and do not interpret an absent record as proof that no regulation exists |
-| N13 road data, road ledgers, and the National Road Facility Inspection Database | Review road class, width category, vertical relationships, bridges, tunnels, and other critical structures | Use as supporting evidence on important roads; do not replace the OSM topology or infer an exact lane count from a width category |
-| Scoped aerial imagery | Review ambiguous carriageways, side roads, medians, elevated and surface roads, bridge approaches, and complex junction geometry | Restrict review to critical or ambiguous roads; record capture date and review lineage and never infer legal restrictions, signal timing, or exact lane connections from imagery alone |
-| National Freight Flow Survey, P31 logistics hubs, and N12 important logistics roads | Constrain aggregate freight generation, depot candidates, and freight-corridor scenarios | Treat published aggregates and candidate facilities as scenario evidence, not customer-level destinations, operator routes, or observed delivery OD; P31's age must be recorded |
-| Population, household, land-use, and public-transport-supply data | Constrain the spatial and temporal distribution of synthetic background traffic | Preserve the distinction between aggregate constraints and generated vehicle trips; do not label the resulting OD as observed OD |
-| Open Charge Map and manufacturer EV specifications | Define candidate chargers, vehicle, battery, payload, range, energy, and charging scenarios | Verify API terms and model-specific specification dates; charger existence, power, status, availability, and waiting time are not guaranteed by the candidate record |
-| Toei Bus GTFS or GTFS-JP | Optional representation of scheduled bus supply in background traffic | Reacquire and register the original feed before use; schedules do not directly observe road traffic volume or delivery demand |
-| Japan Meteorological Agency weather observations | Join rainfall, temperature, wind, snow, or visibility to matching traffic-observation dates | Add only after the normal-weather traffic model passes calibration and independent validation; estimate effects from evidence and keep hypothetical coefficients separate |
-| Public incident, construction, lane-restriction, and closure records | Build time-dependent observed disruption scenarios | Record location and start/end time; implement events through SUMO additional files, rerouters, or TraCI rather than rewriting static road geometry |
-| Heterogeneous driving-behavior evidence | Test later how a mixed population of driving profiles changes traffic friction, energy use, and delivery outcomes | Overseas evidence may define relative source-group and individual differences only; pedestrian-related fields are contextual covariates for motorized driving and do not introduce pedestrian agents or a pedestrian mode |
+| Phase 1〜11 | 仕様の固定、小規模な正解データによる試験、道路方向・車線・通行可否・速度の解決処理、統合試験 | **実行済み・要確認** |
+| Phase 12 | 大田区の対象道路全体を2回独立に処理し、成果物と再現性を検査 | **2回実行済み・要確認** |
+| Phase 13 | Phase 12で停止した道路属性を、原因ごとに解消して再実行 | **未着手** |
+| Phase 14 | 道路属性成果物を最終的に受け入れられるか判定 | **未着手** |
 
-Actual carrier customer OD, delivery-vehicle GPS trajectories, depot fleet schedules, charger occupancy, complete curbside loading activity, full-network real-time speed, and intersection-level signal phases are not assumed to be publicly available. If they remain unavailable, the study uses documented synthetic inputs or explicit scenarios and keeps `observed`, `estimated`, and `assumed` values separate. Planned data do not become formal inputs merely by being listed here; accepted snapshots must also be added to the source registry and an acquisition record.
+Phase 12で確認できた内容と、まだ正式完了ではない理由は、README後半の[「Phase 12の実行・検査詳細」](#phase-12の実行検査詳細)に記載します。
 
-### Planned heterogeneous driving-behavior evidence
+## 次に行うこと
 
-No overseas dataset below is currently an accepted formal input or part of the core comparison. It is retained for a separately governed later stage. The primary reference is the [Expert Driving Dataset](https://www.nature.com/articles/s41597-026-07223-1), with its [Figshare release](https://springernature.figshare.com/articles/dataset/29664056) and [processing repository](https://github.com/AIR-DISCOVER/ExpertDrivingDataset). It contains instrumented runs by 10 source-labelled expert and 10 source-labelled novice drivers in the same Lincoln MKZ on a fixed 5.7 km urban route under 13 reported conditions. The effective independent sample is 20 drivers, not 260 condition rows. The study will preserve the labels `source_expert` and `source_novice`; they describe groups in the source experiment and do not establish Tokyo driver classes, delivery-driver experience, population shares, gender-general behavior, or vehicle-type effects. Eye-tracking analyses are further limited by the smaller available eye-tracking subset.
+1. **Phase 12の最終比較規則を修正する。** 実際のCLI引数はそのまま保存し、比較時だけ`run_id`の違いを正規化します。
+2. **小さなテストデータで最終化処理全体を試験する。** 2回実行、決定論判定、失敗時の公開禁止、既存成果物の上書き拒否まで確認します。
+3. **Phase 12の`finalize()`を実行する。** 合格した場合だけ決定論レポートと公開用成果物を生成し、正式完了記録を作ります。
+4. **未解決項目を原因別に整理する。** 属性、停止コード、根本原因ごとにまとめ、Phase 13で規則・Schema・試験を更新して解消します。
+5. **未解決項目が0件になった成果物をPhase 14で審査する。** 合格後に初めて正式なSUMO道路網の統合へ進みます。
 
-The evidence roles are deliberately separated:
+## 使用する公開データ
 
-| Evidence | Admitted role | Prohibited interpretation |
+現在採用している主なデータは次のとおりです。データごとに用途を限定しており、例えば観測された走行速度を法定速度として使用することはありません。
+
+| データ | 提供元・ダウンロード元 | 本研究での用途 |
 |---|---|---|
-| Expert Driving Dataset CAN, GNSS, condition, and visual-scene records | Primary reference for relative operational differences and within-group heterogeneity; estimate context-adjusted speed, acceleration, braking, stop, harsh-event, and variability outcomes | The Traffic Recorder output is visual traffic exposure, not measured traffic volume; the passenger comfort score is a trip-level pre/post evaluation and is not duplicated across conditions |
-| [inD](https://www.ind-dataset.com/) and [INTERACTION](https://interaction-dataset.com/) | Soft plausibility reference for urban intersections, yielding, following, and lane changes | No experience label and no direct transfer of foreign absolute values to Tokyo |
-| [highD](https://www.highd-dataset.com/) | Soft distribution-distance reference for highway following and lane-changing behavior | Not a binary acceptance gate and not the primary urban reference |
-| [Honda HRI Driving Dataset](https://usa.honda-ri.com/hdd) | Semantic maneuver and event-extraction support | No source experience grouping for estimating an expertise effect |
-| [PSAD](https://github.com/Shun-Gan/PSAD-dataset) | Bound incident-perception and response-delay sensitivity scenarios | Responses to accident-video stimuli are not actual on-road braking, steering, or collision-avoidance trajectories |
+| 2026年N03行政区域 | [国土交通省 国土数値情報](https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-2026.html) | 大田区の研究対象境界 |
+| 2026-07-16関東OpenStreetMap PBF | [Geofabrik / OpenStreetMap contributors](https://download.geofabrik.de/asia/japan/kanto-260716.osm.pbf) | 道路形状、接続、道路属性の候補 |
+| 2026-07-04 22時のJARTIC 1時間交通観測 | [JARTIC / 国土交通省 xROAD](https://www.jartic-open-traffic.org/) | 初期の交通観測処理の検証 |
+| 2020年国勢調査500 m人口メッシュ | [総務省統計局 / e-Stat](https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001141&code=5339&downloadType=2) | 合成配送需要の空間分布 |
+| 2024-04-01大田区人口 | [大田区 / 東京都オープンデータ](https://www.opendata.metro.tokyo.lg.jp/ota/R6/131113_R6_01_ootakunomenseki_jinkou_setaisuu.xlsx) | 人口分布の合計を736,652人へ調整 |
+| 2024-10-01日本総人口 | [総務省統計局](https://www.stat.go.jp/data/jinsui/2024np/zuhyou/05k2024-1.xlsx) | 一人当たり宅配便換算率の分母 |
+| 令和6年度宅配便等取扱個数 | [国土交通省](https://www.mlit.go.jp/report/press/content/001906814.pdf) | 一人当たり宅配便換算率の分子 |
 
-The integration is governed as follows:
+提供元URL、取得日、対象期間、ライセンス、元ファイル名、SHA-256、処理プログラム、生成先、既知の制限は、[データ台帳](03_data/metadata/traffic_simulation_sources.csv)に記録しています。
 
-1. Register the exact release, access terms, acquisition date, source files, and SHA-256 before analysis. Raw or restricted records remain outside Git.
-2. Keep the canonical condition-level table separate from trip-level evaluations. Store visual traffic exposure under that name, never as traffic volume.
-3. Estimate source-group effects with driver random effects and condition covariates. Use driver-cluster bootstrap or hierarchical Bayesian intervals and partial pooling; do not create fixed profiles from accidental differences among 20 people.
-4. Separate free-flow-like segments from signal, lead-vehicle, pedestrian, curve, and stop-control effects where the data permit. Express harsh events as normalized rates per time or distance rather than raw counts.
-5. Validate timestamps before calculating jerk, resample to a declared regular grid, document missing-data and smoothing rules, and test sensitivity to preprocessing choices.
-6. Transfer relative deviations by variable type: log ratios for positive variables, additive or standardized deviations for signed variables, logits for proportions, normalized-rate ratios for counts, and log standard-deviation ratios for variability. A preregistered `lambda` is a transfer-sensitivity parameter, not a data-estimated Tokyo coefficient.
-7. Do not assign observed outputs one-to-one to SUMO parameters. Select the car-following model first, generate candidate parameter sets, simulate the source contexts, and estimate parameters by joint multi-output distribution distance. In particular, `sigma` is not a general jerk control, `actionStepLength` is not an observed response frequency, `tau` is not itself reaction time, and ordinary `accel`/`decel` choices must remain distinct from `emergencyDecel`.
-8. Avoid double-counting delayed response through both `actionStepLength` and the SUMO Driver State device. Initially represent PSAD-derived incident response through one explicit TraCI delayed-action mechanism and evaluate it only as a bounded sensitivity scenario.
-9. Compare a parameter-mean-matched homogeneous control and a low-density output-matched homogeneous control with three experiment families: `M` changes profile composition for total effects, `V` changes variance while holding the mean approximately fixed, and `C` changes mean capability while holding variance approximately fixed.
-10. Fix profile-generation, vehicle-assignment, departure, route, incident, and simulation seeds. Use common random numbers across paired scenarios.
+第三者データの元ファイルはGitへ登録しません。再現時は各自で取得し、台帳に記録されたSHA-256と一致することを確認する必要があります。
 
-For the initial classical-versus-QAOA comparison, the frozen point-to-point cost matrix is exogenous to each optimizer and SUMO supplies the common post-optimization evaluation environment. This phase therefore does not claim congestion-aware optimization. An optimize–simulate–update-cost–reoptimize feedback loop is a separate later experiment.
+### 今後利用を検討するデータ
 
-## Transformation rules
+次のデータは候補です。
 
-### Boundary and coordinate systems
+- 曜日・時間帯を増やしたJARTIC観測
+- 道路交通センサス、警視庁交通量統計、交通規制情報
+- 道路台帳、道路施設データ、必要箇所に限定した航空写真
+- 貨物流動、物流拠点、重要物流道路の公開集計
+- 充電器情報とEVメーカー仕様
+- 気象、事故、工事、車線規制、通行止めの公開記録
+- 運転経験や個人差を分析するための運転行動データ
 
-- Ota Ward is selected from N03 using municipality code `13111` together with the recorded prefecture, municipality, and ward names.
-- The six N03 source features are dissolved into one study boundary without manually adjusting the shape to improve later results.
-- Source coordinates use JGD2011 (`EPSG:6668`), web/API exchange uses WGS 84 (`EPSG:4326`), and area and distance calculations use Japan Plane Rectangular CS IX (`EPSG:6677`).
-- The OSM acquisition BBOX is the minimum rectangle derived from the boundary. It controls data acquisition only; the N03 polygon remains the analysis boundary.
-- N03 supplies only the administrative study boundary; it supplies no road geometry, connectivity, lane count, direction, or speed attribute. Those road-network roles begin with OSM and the governed supplementary evidence below.
 
-### Road geometry, attributes, and SUMO conversion
+## Experienced Driverデータの扱い
 
-- Date-pinned OSM supplies the base geometry and connectivity. The governed workflow uses a regional PBF, not Overpass.
-- The PBF is clipped to the recorded acquisition BBOX, converted to OSM XML with a fixed tool version, and then passed to the digest-pinned SUMO `netconvert` service. Python validation and preprocessing remain in the separate `analysis` service.
-- SUMO uses left-hand traffic. Internal junction links are retained, U-turns are limited to dead ends, and isolated edges are reported rather than silently deleted.
-- Missing, supplemented, unresolved, and conflicting OSM attributes are reported with their source, derivation, date, and confidence. They are not silently delegated to SUMO or typemap defaults.
-- `oneway` is checked in this order: explicit OSM value, OSM implicit rule, public regulation data, and road-census evidence. A general road with no applicable evidence is interpreted as bidirectional under OSM data-consumption rules and labelled as a derived value, not a field-confirmed fact.
-- `lanes` is checked using explicit and directional OSM tags, road-census data, road ledgers, limited aerial-image review, and finally a versioned structural placeholder only where permitted.
-- `maxspeed` is checked using explicit, directional, and conditional OSM tags followed by public regulation information, road-census evidence, official documents, and dated legal derivation rules. Observed travel speed is not substituted for a legal speed limit.
-- External road attributes are not joined by nearest distance alone. Matching considers distance, direction, overlap, road name or number, road class, and vertical layer. Ambiguous elevated roads, surface roads, carriageways, side roads, and complex junctions receive lower confidence and require review when they are critical.
-- Structural-review networks may use documented placeholders on noncritical roads for connectivity and visualization checks. Formal experimental networks stop when critical route, calibration, or validation roads contain unresolved attributes, conflicts, low-confidence matches, or unrecorded manual values.
-- SUMO heuristics are used only to extract candidates for merging multiple nearby OSM nodes into one SUMO junction. This is not a test of whether road geometries cross or whether vehicles can move between them. Formal conversion uses a reviewed merge table, with automatic junction merging disabled.
+運転経験差の主要な候補は、[Expert Driving Dataset論文](https://www.nature.com/articles/s41597-026-07223-1)、[Figshare公開データ](https://springernature.figshare.com/articles/dataset/29664056)、[処理コード](https://github.com/AIR-DISCOVER/ExpertDrivingDataset)です。
 
-The authoritative policy and the current SUMO configuration are [`network_attribute_governance.md`](05_src/traffic_simulation/network_attribute_governance.md) and [`sumo_network.yml`](reproducibility/config/traffic_simulation/sumo_network.yml). The formal SUMO network has not yet been generated, so the rules above distinguish implemented input governance from the next conversion stage.
+このデータセットでは、同じLincoln MKZと固定5.7 kmの都市ルートを使い、提供元がexpertと分類した10名、noviceと分類した10名を13条件で計測しています。独立した参加者数は20名であり、13条件を掛けた260件を独立標本として扱うことはできません。
 
-### Traffic observations
+本研究では、元データの分類を`source_expert`と`source_novice`として保持を考えています。この分類から、東京の配送ドライバーの構成比、性別一般の運転傾向、配送車両での挙動を直接推定しません。
 
-- A JARTIC observation site is expanded into source-defined directional rows only when the source contains those directions; the procedure does not invent an up/down split.
-- Loop, ultrasonic, power-outage, and missing-data flags are preserved. Invalid observations remain invalid or missing rather than being imputed silently.
-- Calibration observations and independent-validation observations must be separated by location or period before model fitting.
+現段階では正式入力ではなく、後続のHuman Factors分析において、運転速度、加減速、停止、急操作、個人差などの相対的な違いを検討する候補です。
 
-## Governed synthetic demand
 
-The implemented baseline converts public population and parcel statistics into a reproducible one-day, population-proportional demand surface. The operation is fixed by [`baseline_demand.yml`](reproducibility/config/traffic_simulation/baseline_demand.yml) and performed by [`prepare_baseline_demand.py`](05_src/traffic_simulation/demand/prepare_baseline_demand.py).
 
-The processing sequence is:
+## 比較する手法
 
-1. Verify the configured source filenames and SHA-256 values before reading any data.
-2. Read only the recorded census ZIP member using its documented CP932 encoding and population field.
-3. Reconstruct the official nine-digit JGD2011 500 m mesh geometries for mesh 5339.
-4. Intersect the meshes with the unmodified N03 Ota Ward boundary. Fully contained meshes retain their population; boundary meshes receive an area ratio calculated in `EPSG:6677`.
-5. Rescale the area-weighted 2020 spatial distribution to the official Ota Ward population on April 1, 2024.
-6. Allocate whole people with the largest-remainder method. Equal remainders are resolved by ascending mesh code, making the result deterministic.
-7. Derive the national daily parcel-equivalent rate as `5,031,470,000 / 123,802,000 / 365`.
-8. Multiply each mesh's allocated population by that rate, then allocate the one-day integer demand with the same largest-remainder and tie-breaking rules.
-9. Write a GeoParquet demand surface and a JSON quality summary only after total, geometry, boundary, and lineage checks pass.
+QAOA（Quantum Approximate Optimization Algorithm）は、組合せ最適化問題を扱う量子アルゴリズムの一つです。本研究では、実物の量子コンピュータではなく、IBMの量子回路シミュレーターであるQiskit Aerを使用する予定です。そのため、得られる結果も、実機性能や「量子優位性」を直接証明するものではありません。
 
-The resulting rate is `0.111345933951539499` parcel-equivalents per person per day. The unrounded ward expectation is approximately `82,023.205`; deterministic integer allocation produces 82,023 parcel-equivalents.
-
-| Item | Current generated result |
-|---|---:|
-| 500 m meshes intersecting Ota Ward | 191 |
-| Fully contained meshes | 122 |
-| Boundary-intersecting meshes | 69 |
-| Area-weighted 2020 population before rescaling | 747,271.088683 |
-| Allocated 2024 population | 736,652 |
-| Population-normalized parcel rate | 0.111345934 parcel-equivalents/person/day |
-| One-day synthetic demand | 82,023 parcel-equivalents |
-
-The operation was validated and run in Docker as follows:
-
-```bash
-docker compose build analysis
-
-docker compose run --rm analysis \
-  pytest -q \
-  05_src/traffic_simulation/validation/test_prepare_baseline_demand.py
-
-docker compose run --rm analysis \
-  python -m traffic_simulation.demand.prepare_baseline_demand
-
-docker compose run --rm analysis \
-  pytest -q 05_src/traffic_simulation/validation
-```
-
-The processor writes:
-
-- `03_data/processed/traffic_simulation/demand/ota_ward_baseline_demand_2024_500m.parquet`
-- `03_data/processed/traffic_simulation/validation/ota_ward_baseline_demand_2024_500m_quality_summary.json`
-
-Outputs are write-once by design: the processor refuses to overwrite an existing governed result. Reproduction should use a fresh workspace, or deliberately archive and remove the old generated outputs after confirming their lineage; an overwrite flag is not provided. Generated data remain excluded from Git.
-
-These values are not observed orders, customers, destinations, delivery stops, or household order probabilities. The national total includes multiple parcel-flow types and is used only as a population-normalized aggregate. The mesh result is therefore a governed synthetic baseline for controlled comparison, not a reconstruction of actual Ota Ward deliveries. The equations, boundary treatment, allocation rules, quality checks, and prohibited interpretations are documented in [`baseline_demand_and_comparator.md`](05_src/traffic_simulation/demand/baseline_demand_and_comparator.md).
-
-## Compared methods
-
-| Method | Role | Status |
+| 手法 | 内容 | 現在の状態 |
 |---|---|---|
-| Non-optimizing baseline | Fixed-order comparator that does not reorder requests by distance or time | Specified; implementation planned |
-| Classical optimization | Classical solver applied to the common delivery problem | Planned |
-| Qiskit Aer QAOA | Incrementally constrained QUBO evaluated on Aer | Planned |
+| 非最適化ベースライン | 入力された配送順序を距離や時間で並べ替えない比較対象 | 仕様作成済み、実装予定 |
+| 古典最適化 | 一般的な古典計算機上のソルバーで配送順序を最適化 | 計画中 |
+| Qiskit Aer QAOA | 配送問題をQUBOへ変換し、QAOAをシミュレーター上で評価 | 計画中 |
 
-Delivery and EV constraints will not be introduced all at once. Each constraint stage must pass decoding, feasibility, and small-instance checks before expansion. Qiskit Aer is a simulator; its results will not be presented as evidence of physical quantum-hardware performance.
+三つの手法には、同じ需要、車両、制約、交通条件、道路網、乱数seedを与えます。各手法の生出力、制約を満たす形へdecode・repairした結果、SUMO走行結果は分けて保存します。
 
-## Main evaluation
+## 評価指標
 
-Population-equivalent demand fulfillment is calculated separately for every method and run. For each population mesh, the study first fixes the completed parcel-equivalent demand and the applicable per-person demand over the evaluation period. It divides completed demand by that per-person value to express the result in person-equivalent units, caps the result at the mesh's public population, and sums the unrounded mesh values without duplication. Only the displayed total is rounded under a rule fixed before results are inspected.
+主な評価値は「人口換算需要充足量」です。完了した合成需要を、一人当たり需要で人口単位へ換算する指標です。
 
-The principal conversion divides completed demand by per-person demand; it does not multiply regional population by an integer-demand fulfillment ratio. Those approaches are equivalent only when assigned regional demand equals regional population multiplied by the per-person rate and evaluation period without rounding. The study's integer allocation can break that equality, so the two approaches must not be mixed.
+これは比較のためのモデル上のproxyであり、実際に荷物を受け取った人数、受益者数、社会福祉、経済効果ではありません。
 
-In addition to differences among the baseline, classical, and QAOA results, the study will store driving distance, travel time, delay, completion rate, constraint violations, energy use, charging, solution quality, runtime, QUBO size, and circuit-evaluation counts separately. Population-equivalent demand fulfillment is based on public population and synthetic demand; it is not the number of real people who received a delivery.
+あわせて次を個別に記録します。
 
-## Reproducible environments
+- 配送距離、走行時間、交通・信号遅延
+- 完了需要と制約違反
+- EVの電力使用、充電回数、充電・待ち時間
+- 最適化問題の目的関数値と解の実行可能性
+- 実行時間、QUBO規模、回路評価回数
 
-Docker Compose separates responsibilities:
+## 再現方法
 
-- `analysis`: Python 3.11 for input validation, geospatial processing, demand generation, tests, and classical methods.
-- `sumo`: digest-pinned Eclipse SUMO 1.24.0 for `netconvert`, `sumo`, and `duarouter`.
+Docker Composeで実行環境を分けています。
 
-Both services use `linux/amd64` as the canonical platform. Apple Silicon systems run it through Docker Desktop's architecture emulation, while AMD64 Linux systems can run it natively.
+- `analysis`: Python 3.11を使うデータ検証、地理空間処理、需要生成、試験、古典手法
+- `sumo`: digestを固定したEclipse SUMO 1.24.0を使う道路網変換と交通シミュレーション
+
+基準platformは`linux/amd64`です。
 
 ```bash
 git clone <repository-url>
@@ -452,11 +202,11 @@ docker compose run --rm sumo sumo --version
 docker compose run --rm analysis pytest -q 05_src/traffic_simulation/validation
 ```
 
-Raw third-party data and generated derivatives are intentionally excluded from Git. Full regeneration therefore requires acquiring the governed source snapshots described in the acquisition records and verifying their hashes. Source URLs, acquisition dates, licenses, SHA-256 values, processing scripts, and output relationships are recorded in [`traffic_simulation_sources.csv`](03_data/metadata/traffic_simulation_sources.csv).
+元データはGit管理外であるため、完全に再現するには、[取得記録](03_data/metadata/acquisition/README.md)に従って各データを取得し、SHA-256を確認してください。
 
-## Visualization
+## 可視化
 
-The interactive Ota Ward population and synthetic-demand map can be generated with:
+大田区の人口と合成需要を確認する地図は、次のコマンドで生成できます。
 
 ```bash
 docker compose run --rm analysis \
@@ -468,66 +218,102 @@ docker compose run --rm analysis \
   --overwrite
 ```
 
-See [`visualization/README.md`](05_src/traffic_simulation/visualization/README.md) for the road, signal, and JARTIC review map, layer interpretation, display choices, and operating instructions. Generated HTML files are runtime artifacts and are not committed to Git.
+道路、信号、JARTIC観測を確認する地図については、[可視化ガイド](05_src/traffic_simulation/visualization/README.md)を参照してください。生成HTMLはGitへ登録しません。
 
-## Repository guide
+## リポジトリ構成
 
-For a one-screen view of the intended final layout, artifact flow, Git boundaries, and not-yet-implemented locations, see the [final target repository structure](00_project_management/folder_structure.md#final-target-structure).
-
-| Path | Contents |
+| ディレクトリ | 内容 |
 |---|---|
-| [`00_project_management/`](00_project_management/) | Environment, folder policy, and research management |
-| [`01_research_design/`](01_research_design/) | Research design and logical structure |
-| [`02_literature/`](02_literature/) | Quantum routing, benchmarking, and literature records |
-| [`03_data/metadata/`](03_data/metadata/) | Data provenance, acquisition records, and source registry |
-| [`05_src/traffic_simulation/`](05_src/traffic_simulation/) | Traffic environment, demand, calibration, validation, and visualization |
-| [`legacy/non_sumo_route_proxy_analysis/`](legacy/non_sumo_route_proxy_analysis/) | Archived non-SUMO synthetic EVRP route-proxy data, code, figures, and reproduction package |
-| [`06_outputs/`](06_outputs/) | Reviewed figures, tables, maps, and reports |
-| [`07_presentations/current/`](07_presentations/current/) | Current presentation artifacts |
-| [`reproducibility/config/`](reproducibility/config/) | Versioned experiment and traffic settings |
-| [`reproducibility/outputs/`](reproducibility/outputs/) | Git-ignored, regenerable runtime outputs |
-| [`docker/`](docker/) | Isolated Docker environments and operating notes |
+| [`00_project_management/`](00_project_management/) | 研究管理、環境、フォルダ方針 |
+| [`01_research_design/`](01_research_design/) | 研究設計 |
+| [`02_literature/`](02_literature/) | 量子経路最適化、評価方法、参考文献 |
+| [`03_data/metadata/`](03_data/metadata/) | データ台帳と取得記録 |
+| [`05_src/traffic_simulation/`](05_src/traffic_simulation/) | 交通モデル、需要、検証、可視化のコードと仕様 |
+| [`06_outputs/`](06_outputs/) | レビュー済みの図、表、地図、報告書 |
+| [`reproducibility/config/`](reproducibility/config/) | バージョン管理された設定とSchema |
+| [`reproducibility/outputs/`](reproducibility/outputs/) | Git管理外の再生成可能な実行結果 |
+| [`docker/`](docker/) | Docker環境と運用方法 |
+| [`legacy/non_sumo_route_proxy_analysis/`](legacy/non_sumo_route_proxy_analysis/) | SUMO導入前の旧研究。正式SUMO結果とは区別する |
 
-## Key documents
+## 主要資料
 
-- [Phase 1–14 integrated definition, current status, evidence, and next steps (Japanese)](05_src/traffic_simulation/v17_phase1_to_phase14_integrated_status.md)
-- [Phase 12 independent rerun evidence, 2026-08-13](reproducibility/config/traffic_simulation/v17_phase12_independent_rerun_20260813.yml)
-- [Phase 12 full-population output contract](05_src/traffic_simulation/specifications/12_phase12_full_population_output_contract_v17.md)
-- [Simulation-model development and V&V status (Japanese)](05_src/traffic_simulation/simulation_model_development_and_vv.md)
-- [Traffic-simulation research study guide](00_project_management/traffic_simulation_study_guide.md)
-- [Traffic-simulation implementation plan](05_src/traffic_simulation/implementation_plan.md)
-- [Road-attribute and external-data matching governance](05_src/traffic_simulation/network_attribute_governance.md)
-- [Synthetic-demand and non-optimizing-baseline specification](05_src/traffic_simulation/demand/baseline_demand_and_comparator.md)
-- [Traffic-simulation visualization guide](05_src/traffic_simulation/visualization/README.md)
-- [Data-acquisition record policy](03_data/metadata/acquisition/README.md)
-- [Docker environments and SUMO execution boundary](docker/README.md)
-- [Folder structure and retention policy](00_project_management/folder_structure.md)
-- [Prior reproducibility-audit notebook](legacy/non_sumo_route_proxy_analysis/reproducibility/quantum_transport_reproducibility_audit_revised.ipynb)
+- [Phase 1〜14の定義・現在地・証拠・次の作業](05_src/traffic_simulation/v17_phase1_to_phase14_integrated_status.md)
+- [Phase 12独立再実行の証拠](reproducibility/config/traffic_simulation/v17_phase12_independent_rerun_20260813.yml)
+- [Phase 12全母集団出力契約](05_src/traffic_simulation/specifications/12_phase12_full_population_output_contract_v17.md)
+- [シミュレーションモデル開発とV&V](05_src/traffic_simulation/simulation_model_development_and_vv.md)
+- [研究実施ガイド](00_project_management/traffic_simulation_study_guide.md)
+- [実装計画](05_src/traffic_simulation/implementation_plan.md)
+- [道路属性と外部データの管理方針](05_src/traffic_simulation/network_attribute_governance.md)
+- [合成需要と非最適化ベースライン仕様](05_src/traffic_simulation/demand/baseline_demand_and_comparator.md)
+- [データ取得記録](03_data/metadata/acquisition/README.md)
+- [Docker環境とSUMO実行境界](docker/README.md)
 
-## Data and model governance
+## データとモデルの管理原則
 
-- Record acquisition date, version, and SHA-256 for source data, settings, and generated artifacts.
-- Distinguish observations, source attributes, estimates, assumptions, and sensitivity-analysis values.
-- Do not silently pass missing road attributes to SUMO defaults.
-- Separate structural-review networks from formal experimental networks.
-- Separate calibration observations from independent-validation observations.
-- Use common roads, demand, constraints, traffic conditions, and seed sets for classical and QAOA comparisons.
-- Do not commit raw data, generated networks, or runtime results.
-- Do not modify boundaries, source inputs, or matching rules to improve downstream results.
+- データ、設定、成果物の取得日、version、SHA-256を記録する。
+- 観測値、提供元属性、推定値、仮定、感度分析用の値を区別する。
+- 欠損した道路属性をSUMOのdefaultへ黙って委ねない。
+- 構造確認用道路網と正式実験用道路網を区別する。
+- Calibrationに使用する観測と独立Validationに使用する観測を分ける。
+- 比較手法間で道路、需要、制約、交通条件、seedを共通化する。
+- 結果を良くする目的で、境界、元データ、照合規則を変更しない。
+- 元データ、生成道路網、実行結果をGitへ登録しない。
 
-The governing principle is traceability: every adopted value should identify its source or derivation, date, version, confidence, and relationship to the generated output. Low-confidence road matching and unresolved critical attributes are not silently accepted into formal experiments.
+## 主な制限・限界
 
-## Prior research line
+- 公開データだけでは、全車両の出発地・目的地、実際の配送軌跡、顧客需要、全信号現示を再構成できない。
+- OpenStreetMapの道路属性には欠損や競合があり、重要道路では外部データとの照合や人による確認が必要である。
+- 人口比例の合成需要は、企業向け配送、昼間人口、地域別EC利用、再配達は表さない。
+- 大田区で得た結果を、東京都全域や他地域へそのまま一般化できない。
+- Qiskit Aerの結果を、物理量子コンピュータの性能や量子優位性の証拠として提示できない。
 
-The non-SUMO Tokyo synthetic EVRP route-proxy analysis that preceded the traffic-simulation extension is consolidated under [`legacy/non_sumo_route_proxy_analysis/`](legacy/non_sumo_route_proxy_analysis/). It is retained for provenance and historical reproduction and is not a source of formal SUMO results. The current traffic layer does not overwrite it or read its proxy outcomes as traffic observations.
+## Phase 12の実行・検査詳細
 
-## Limitations
+### Phase 12で確認できたこと
 
-- Public data cannot reconstruct all vehicle OD flows, real delivery trajectories, customer demand, or every signal phase.
-- OSM road attributes contain missing and conflicting values that require external matching and manual review on critical roads.
-- Population-proportional synthetic demand does not directly represent business deliveries, daytime population, regional e-commerce use, or redelivery.
-- Results from Ota Ward must not be generalized directly to all of Tokyo or other regions.
-- Qiskit Aer results must not be presented as physical quantum-hardware performance or proof of quantum advantage.
-- Driver-experience effects remain a hypothetical sensitivity analysis until sufficient Tokyo-specific evidence is available.
+新しい独立した出力先で、同じ固定入力と固定実行環境から`run_1`と`run_2`を実行しました。確認内容を、成果物、run単体検査、2run比較の順に示します。
 
-See [`LICENSE`](LICENSE) for repository licensing. Third-party datasets remain subject to their own licenses and terms recorded in the source registry.
+#### 1. 各runで生成した主要5成果物
+
+`{run_id}`には`run_1`または`run_2`が入ります。
+
+- **Structural全母集団成果物（`structural_full_population`）:** `runs/{run_id}/structural/full_population.json`。構造確認を目的とし、登録済みのmodel assumptionを許可したprofileについて、道路区間、方向別車線、通行規則、最終通行権限、速度、停止recordを保存する。
+- **Formal全母集団成果物（`formal_full_population`）:** `runs/{run_id}/formal/full_population.json`。model assumptionを正式値として許可しないprofileについて、同じ処理段階の解決値と停止recordを保存する。将来の正式道路網候補の基礎となるが、blockerが残る現状ではbuild-readyではない。
+- **完全blocker inventory（`complete_blocker_inventory`）:** `runs/{run_id}/formal/blocker_inventory.json`。formal処理で停止したrecordを、属性、stop code、選択strategy、根本原因、関連IDとともに一意に収録する。
+- **除外manifest（`exclusion_manifest`）:** `runs/{run_id}/formal/exclusion_manifest.json`。承認済み規則に基づいてformal母集団から除外するrecordと、その理由・根拠を保存する。除外が0件の場合も空の監査証拠として生成する。
+- **母集団accounting（`population_accounting`）:** `runs/{run_id}/population_accounting.json`。処理段階ごとの入力、統制対象、除外、解決状態の件数、structural/formal差、blockerの根本原因関係、除外の監査・network影響を保存する。
+
+#### 2. 各runで実行した8種類の検査
+
+括弧内はmanifestへ記録するvalidator IDです。
+
+- **必須成果物検査（`required_artifacts`）:** 主要5成果物が、契約で定めた場所にすべて存在することを確認する。
+- **Schema検査（`schema`）:** 各成果物が、対応するJSON Schemaの必須項目、型、列挙値、形式を満たすことを確認する。
+- **Semantic hash検査（`semantic_hash`）:** 各成果物の内容からsemantic SHA-256を再計算し、成果物内に記録された値と一致することを確認する。
+- **意味的整合性検査（`semantic`）:** structuralとformalで構成ID、母集団version、scenario、入力hashが一致し、各処理段階のprofile、件数、上流成果物への参照関係が整合することを確認する。
+- **ID一意性検査（`identity_uniqueness`）:** 道路区間、車線位置、通行権限、速度、blocker、除外、母集団単位、根本原因などのIDが、それぞれの定義域で重複していないことを確認する。
+- **母集団保存則検査（`population_accounting`）:** `input = governed + excluded`および`governed = resolved + unresolved + conflict + invalid + valid_but_unsupported`が成立し、structuralとformalのrecord差が登録済み仮定で説明されることを確認する。
+- **登録値検査（`registered_values`）:** resolution status、stop code、assumption ID、exclusion rule IDがRegistryまたは承認済みpolicyに登録され、使用profileの条件を満たすことを確認する。
+- **Blocker・除外整合性検査（`blocker_exclusion`）:** formal成果物内の停止recordとblocker inventoryが一致し、permission blockerに根本原因があり、因果edge、抑制候補、除外record、除外によるnetwork影響の記録が相互に整合することを確認する。
+
+#### 3. 検査と2run比較の結果
+
+- `run_1`と`run_2`は、いずれも終了コード0で完了した。
+- 両runとも8種類の検査をすべて完了し、失敗件数は0だった。
+- 主要5成果物の内容を表すsemantic SHA-256は、2runで一致した。
+- 実行コマンド、実際のCLI引数、各validatorのコマンド、終了コード、ログ、ログのSHA-256を各runのmanifestへ記録した。
+- 正式runでは、未固定または形式不正のcontainer digestを実行前に拒否し、使用したcontainer digestと実行環境をmanifestへ記録した。
+
+この結果が示すのは、各runが単体で合格し、主要5成果物の意味内容が2runで一致したことです。2run全体の`finalize()`とPhase 12の正式完了を意味するものではありません。
+
+### Phase 12がまだ正式完了ではない理由
+
+2回の実行では識別子`run_1`と`run_2`が異なるため、実際に記録されたCLI引数も一部異なります。一方、現在の最終的な処理はCLI引数全体の完全一致を目指しています。
+
+実行記録を改変せず、比較時だけrun識別子を除外する規則を実装・試験したうえで、2回の実行をまとめて判定する`finalize()`を行う必要があります。
+
+また、形式的な道路網へ採用できない未解決項目が108,189件残っています。この件数には車線、通行可否、速度など異なる単位の停止記録が含まれるため、「道路の108,189か所が誤っている」という意味ではありません。
+
+Phase 1〜14の詳しい定義、証拠、未完了事項は、[Phase 1〜14統合資料](05_src/traffic_simulation/v17_phase1_to_phase14_integrated_status.md)にまとめています。最新の2回実行の結果は、[Phase 12独立再実行記録](reproducibility/config/traffic_simulation/v17_phase12_independent_rerun_20260813.yml)にあります。
+
+本リポジトリのライセンスは[`LICENSE`](LICENSE)を参照してください。第三者データには、それぞれの提供元が定めるライセンスと利用条件が適用されます。
