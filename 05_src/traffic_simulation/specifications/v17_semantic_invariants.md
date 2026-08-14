@@ -22,7 +22,7 @@ stop code, severity, and implementation phase.
 | Directed Segment | `AR-DIR-001`–`005` | canonical interval, lineage, `oneway=-1`, relation mapping, prohibited direction evidence |
 | Directional lanes | `AR-LANE-001`–`004` | count equation, vector length, profile boundary, SUMO index mapping |
 | Speed | `AR-SPEED-001`–`003` | unit conversion, priority/asymmetry, interval changes |
-| Access | `AR-ACCESS-001`–`005` | scope separation, ontology sets, dominance, order invariance, permission authority |
+| Access | `AR-ACCESS-001`–`009` | scope separation, ontology sets, dominance, order invariance, permission authority, non-governed domain intersection |
 | Conditional | `AR-COND-001`–`004` | context, syntax boundary, last-match boundary, interval changes |
 | Evidence | `AR-EVID-001`–`003` | method approval, donor eligibility, immutable manual evidence |
 | Population | `AR-EXCL-001`–`003` | population equation, registered exclusions, omission accounting |

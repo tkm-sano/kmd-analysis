@@ -1,0 +1,45 @@
+schema_version: 1
+decision_id: DEC-P13-VEHICLE-ONTOLOGY-001
+decision_version: 1.0.0
+status: approved
+approved_at: '2026-08-14'
+approved_by: repository_owner_directive
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+input_lock: reproducibility/config/traffic_simulation/v17_phase13_input_lock.yml
+target_group: static_access__ACCESS_VEHICLE_HIERARCHY_MISSING
+observed_blockers:
+  total: 492
+  source_key_counts: {bicycle: 396, foot: 71, psv: 16, motorcar: 7, mofa: 2}
+normative_basis:
+  - 05_src/traffic_simulation/specifications/10_approved_attribute_resolution_policy_v17_complete.md
+decision:
+  rule_id: NON_GOVERNED_VEHICLE_DOMAIN_EMPTY_INTERSECTION_V1
+  source_keys: [bicycle, foot, mofa, moped]
+  registered_vehicle_domain: []
+  meaning: these class-specific tags have an empty intersection with the governed motorized vehicle universe
+  governed_permission_effect: none
+  formal_exclusion: false
+  source_record_preserved: true
+deferred_keys:
+  psv:
+    blocker_count: 16
+    reason: requires an approved mapping to governed public-service vehicle classes
+  motorcar:
+    blocker_count: 7
+    reason: requires an approved mapping distinct from the managed delivery class
+change_order:
+  decision_record: complete
+  registry_or_decision_table: complete
+  json_schema: no_change_required_existing_schema_allows_empty_explicit_domain
+  semantic_invariant: complete
+  small_fixture: complete
+  production_independent_oracle: complete
+  production_code: no_change_required_registry_driven_behavior
+  phase_test: complete
+  regression_test: complete
+  full_population_run: pending_after_all_selected_remediations
+acceptance:
+  non_governed_rule_never_applies_to_delivery: true
+  general_governed_rule_remains_effective: true
+  unknown_vehicle_key_still_fails_closed: true

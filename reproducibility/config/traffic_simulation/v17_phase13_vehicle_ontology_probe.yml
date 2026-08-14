@@ -1,0 +1,30 @@
+schema_version: 1
+probe_id: ota_ward_phase13_vehicle_ontology_full_population_20260814
+decision_id: DEC-P13-VEHICLE-ONTOLOGY-001
+status: passed_with_remaining_blockers
+source_input:
+  path: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+  sha256: 8b5157e48c3c87c2b4430f56d6abe292ce1ea5449b374ae4cb395fc19475b67d
+command: PYTHONPATH=05_src python -m traffic_simulation.network.static_access_v17 --input 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml --output <new-temporary-output>/static_access_formal.json --profile formal
+output:
+  byte_sha256: 97ee8270279c3d65fb4ea20e6a85f85015c26e1d2dc26e95c1653660c061fbf6
+  semantic_sha256: 4676c71ac278bf897d61ac2a5b428841acc8f57794a8f274d14a8b1e86355e69
+  static_access_blocker_count: 374
+  blocker_stop_codes:
+    ACCESS_CONTEXT_MISSING: 43
+    ACCESS_VALUE_UNSUPPORTED: 31
+    ACCESS_VEHICLE_HIERARCHY_MISSING: 300
+decision_rule_observation:
+  bicycle_hierarchy_blockers_after: 0
+  foot_hierarchy_blockers_after: 0
+  mofa_hierarchy_blockers_after: 0
+  source_records_preserved_as_empty_governed_domain_rules: true
+remaining_vehicle_hierarchy_messages:
+  horse: 130
+  motorcar: 154
+  psv: 16
+interpretation:
+  selected_non_governed_domain_rule: effective
+  phase13_complete: false
+  further_rules_must_be_independently_decided: true
+  phase12_published_artifacts_modified: false

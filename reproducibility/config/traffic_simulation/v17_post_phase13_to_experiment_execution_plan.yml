@@ -1,0 +1,388 @@
+schema_version: 1
+plan_id: ota_ward_v17_post_phase13_to_delivery_experiment_20260814
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+recorded_at: '2026-08-14'
+status: fixed
+execution_order_change_allowed: false
+current_stage: phase13_root_cause_resolution
+governing_principle: phase13_repairs_phase14_authorizes_use_network_acceptance_authorizes_the_network
+
+stages:
+  - order: 1
+    stage_id: phase13_root_cause_resolution
+    title: Phase 13 blocker root-cause remediation
+    status: in_progress
+    purpose: repair governed attribute records without hiding uncertainty or editing generated outputs
+    inputs:
+      - reproducibility/config/traffic_simulation/v17_phase13_input_lock.yml
+      - reproducibility/config/traffic_simulation/v17_phase13_blocker_aggregation.yml
+    required_actions:
+      - resolve each actionable group through decision registry schema invariant fixture oracle implementation and regression
+      - keep missing-evidence and genuine-conflict records blocked until sufficient evidence exists
+      - register exclusions only when outside-scope authority and all exclusion requirements are proven
+    required_outputs:
+      - versioned_decision_records
+      - updated_authority_registry_and_invariants
+      - phase_fixtures_and_independent_oracles
+      - regression_results
+    exit_gate:
+      all_selected_root_causes_processed: true
+      no_unregistered_exclusion: true
+      source_and_phase12_publication_unchanged: true
+    failure_return: remain_in_phase13_and_record_the_unresolved_evidence_need
+
+  - order: 2
+    stage_id: phase13_full_population_rerun
+    title: Apply Phase 13 changes to every governed road record
+    status: pending
+    purpose: prove that remedies change the full population as intended rather than only fixtures
+    entry_gate:
+      phase13_decisions_and_regression_passed: true
+    required_actions:
+      - create_a_new_versioned_output_root
+      - execute_two_independent_runs_in_the_same_digest_fixed_environment
+      - execute_each_run_completion_validator
+      - compare_major_semantic_hashes_and_execution_conditions
+      - generate_a_new_determinism_report
+    required_outputs:
+      - structural_full_population_artifact
+      - formal_full_population_artifact
+      - complete_blocker_inventory
+      - exclusion_manifest
+      - population_accounting
+      - run_manifests
+      - environment_build_manifests
+      - determinism_report
+    checks:
+      - blocker_identity_transition
+      - blocker_count_by_attribute_stop_code_and_root_cause
+      - no_new_unexplained_blocker
+      - schema_and_semantic_consistency
+      - identity_uniqueness
+      - population_equations
+      - blocker_exclusion_consistency
+      - two_run_determinism
+    exit_gate:
+      both_runs_passed: true
+      determinism_passed: true
+      blocker_reduction_or_resolution_explained_by_registered_decisions: true
+    failure_return: phase13_root_cause_resolution
+
+  - order: 3
+    stage_id: final_attribute_state_accounting
+    title: Reaggregate resolved excluded and unresolved final states
+    status: pending
+    purpose: establish the final denominator and disposition of every governed input record
+    required_actions:
+      - classify_every_input_record_as_governed_or_excluded
+      - classify_every_governed_record_as_resolved_unresolved_conflict_invalid_or_valid_but_unsupported
+      - aggregate_by_road_direction_lane_vehicle_attribute_and_stop_code
+      - retain_stable_record_and_source_road_identifiers
+    required_outputs:
+      - final_population_accounting
+      - final_state_inventory
+      - transition_report_from_phase12
+    equations:
+      - input_population_equals_governed_plus_excluded
+      - governed_equals_resolved_plus_unresolved_plus_conflict_plus_invalid_plus_valid_but_unsupported
+      - governed_and_excluded_identifiers_do_not_overlap
+    exit_gate:
+      every_input_identity_accounted_exactly_once: true
+      all_equations_valid: true
+    failure_return: phase13_full_population_rerun
+
+  - order: 4
+    stage_id: exclusion_traceability_audit
+    title: Audit every excluded road record
+    status: pending
+    purpose: make road ID reason rule evidence approver and network effect traceable
+    required_fields:
+      - source_road_id
+      - directed_segment_id_when_applicable
+      - exclusion_reason
+      - registered_exclusion_rule_id
+      - authority_evidence_ids
+      - approver
+      - approval_date
+      - population_version
+      - affected_network_length_and_connectivity
+    exit_gate:
+      exclusions_without_registered_rule: 0
+      exclusions_without_authority_evidence: 0
+      excluded_and_governed_overlap: 0
+    failure_return: phase13_root_cause_resolution
+
+  - order: 5
+    stage_id: residual_unresolved_impact_audit
+    title: Audit remaining unresolved roads and formal-network impact
+    status: pending
+    required_actions:
+      - count_remaining_records_by_reason_and_identity_unit
+      - identify_affected_roads_segments_lanes_vehicle_classes_and_attributes
+      - calculate_affected_length_connectivity_and_delivery_reachability
+      - distinguish_direct_blockers_from_downstream_permission_blockers
+    required_outputs:
+      - unresolved_reason_summary
+      - formal_network_impact_report
+    exit_gate:
+      unexplained_unresolved_records: 0
+      phase14_entry_values_are_machine_readable: true
+    failure_return: phase13_root_cause_resolution
+
+  - order: 6
+    stage_id: phase14_attribute_resolution_acceptance
+    title: Phase 14 formal attribute-resolution acceptance
+    status: blocked_by_phase13
+    purpose: formally decide whether the attribute artifacts may be supplied to SUMO network generation
+    entry_gate:
+      governed_blocker_count: 0
+      review_required_count: 0
+      stop_unresolved_count: 0
+      model_assumed_count: 0
+      all_governed_records_resolved: true
+      population_equations_valid: true
+      permission_coverage_complete: true
+    acceptance_checks:
+      - schema_validation
+      - semantic_validation
+      - production_independent_oracle_validation
+      - classification_projection_invariance
+      - exclusion_traceability
+      - population_conservation
+      - two_run_determinism
+    decision_values: [passed, failed]
+    pass_means: formal_attribute_artifacts_are_authorized_as_input_to_sumo_network_generation
+    pass_does_not_mean: sumo_network_is_accepted_or_traffic_model_is_validated
+    required_outputs:
+      - phase14_acceptance_report
+      - phase14_completion_record
+    failure_return: phase13_root_cause_resolution
+
+  - order: 7
+    stage_id: accepted_attribute_input_freeze
+    title: Freeze Phase 14-passed artifacts as the formal SUMO build input
+    status: pending
+    required_actions:
+      - publish_from_the_accepted_run_only
+      - record_all_byte_and_semantic_hashes
+      - record_configuration_schema_registry_source_and_environment_hashes
+      - prohibit_overwrite_and_require_a_new_version_for_replacement
+    required_outputs:
+      - formal_attribute_input_manifest
+      - immutable_published_attribute_artifacts
+    exit_gate:
+      phase14_result: passed
+      all_input_hashes_fixed: true
+    failure_return: phase14_attribute_resolution_acceptance
+
+  - order: 8
+    stage_id: osm_to_sumo_transformation
+    title: Transform accepted OSM attributes into SUMO entities
+    status: pending
+    required_actions:
+      - transform_direction_lane_speed_and_access_to_nodes_edges_lanes_and_connections
+      - apply_delivery_and_other_governed_vehicle_permissions_at_lane_and_connection_level
+      - preserve_osm_way_to_sumo_edge_and_lane_lineage
+      - generate_machine_readable_omission_and_transformation_records
+    required_outputs:
+      - nodes
+      - edges
+      - lane_and_connection_permissions
+      - restrictions_and_signals
+      - osm_sumo_lineage_manifest
+    checks:
+      - exact_permission_projection
+      - direction_and_lane_index_mapping
+      - no_unexplained_omission
+    failure_return: osm_to_sumo_transformation
+
+  - order: 9
+    stage_id: junction_connection_signal_review
+    title: Review junction merging connections turns and signal structure
+    status: pending
+    required_actions:
+      - audit_junction_merge_results
+      - audit_lane_to_lane_connections
+      - audit_turn_restrictions
+      - audit_signalized_junctions_links_phases_and_programs
+      - record_and_rebuild_every_approved_correction
+    exit_gate:
+      unexplained_connection_errors: 0
+      restriction_projection_errors: 0
+      signal_structure_errors: 0
+    failure_return: osm_to_sumo_transformation
+
+  - order: 10
+    stage_id: formal_sumo_network_build
+    title: Generate the formal SUMO road network
+    status: pending
+    required_outputs:
+      - net_xml
+      - build_manifest
+      - netconvert_command_and_logs
+      - warning_audit
+      - build_environment_manifest
+    exit_gate:
+      build_exit_code: 0
+      xsd_and_sumo_load_validation: passed
+      unexplained_warnings: 0
+    failure_return: junction_connection_signal_review
+
+  - order: 11
+    stage_id: network_statistics_and_osm_sumo_coverage
+    title: Calculate network statistics and exact OSM-to-SUMO coverage
+    status: pending
+    metrics:
+      - node_count
+      - edge_count
+      - lane_count
+      - total_road_length
+      - signalized_junction_count
+      - source_road_generated_count
+      - source_road_not_generated_count
+    required_actions:
+      - link_every_sumo_edge_to_source_osm_road_ids
+      - explain_every_non_generated_source_road
+      - prohibit_simple_count_comparison_without_identity_mapping
+    required_outputs:
+      - network_statistics
+      - osm_sumo_coverage_report
+      - non_generated_road_inventory
+    exit_gate:
+      unexplained_source_roads: 0
+    failure_return: formal_sumo_network_build
+
+  - order: 12
+    stage_id: delivery_reachability_and_connectivity_validation
+    title: Validate delivery permissions reachability and connectivity
+    status: pending
+    required_metrics:
+      - delivery_allowed_edge_count
+      - delivery_allowed_road_length
+      - delivery_reachable_area
+      - weak_and_strong_component_counts
+      - isolated_edge_count
+      - unreachable_area_count
+      - invalid_connection_count
+    exit_gate:
+      permission_projection: passed
+      no_unexplained_isolated_or_unreachable_governed_region: true
+      invalid_connections: 0
+    failure_return: osm_to_sumo_transformation
+
+  - order: 13
+    stage_id: sumo_runtime_network_verification
+    title: Drive test vehicles through the generated network
+    status: pending
+    scenarios:
+      - direction_and_oneway
+      - delivery_permission_allow_and_deny
+      - lane_change_and_turn_connection
+      - turn_restriction
+      - traffic_signal_link_and_phase
+      - representative_end_to_end_routes
+    required_outputs:
+      - runtime_test_manifest
+      - routes_and_expected_oracle
+      - tripinfo_and_logs
+      - failure_inventory
+    exit_gate:
+      all_required_runtime_scenarios_passed: true
+    failure_return: junction_connection_signal_review
+
+  - order: 14
+    stage_id: sumo_network_integration_acceptance
+    title: Formal SUMO network integration acceptance
+    status: pending
+    purpose: decide whether the road network itself may be used downstream
+    acceptance_checks:
+      - reproducible_build
+      - schema_xsd_and_load
+      - warning_audit
+      - exact_osm_sumo_lineage
+      - exact_permission_projection
+      - coverage_and_omission_explanation
+      - connectivity_and_reachability
+      - runtime_network_verification
+    required_outputs:
+      - formal_network_acceptance_report
+      - immutable_network_publication
+    failure_return: relevant_network_build_or_review_stage
+
+  - order: 15
+    stage_id: traffic_calibration
+    title: Calibrate general traffic on the accepted network
+    status: pending
+    entry_gate:
+      formal_network_acceptance: passed
+      calibration_observations_registered: true
+      calibration_and_validation_data_split_fixed_before_fitting: true
+    calibration_targets:
+      - traffic_volume
+      - speed
+      - travel_time
+    required_outputs:
+      - calibration_protocol
+      - parameter_search_manifest
+      - calibrated_parameters
+      - fit_metrics_and_uncertainty
+    failure_return: traffic_calibration
+
+  - order: 16
+    stage_id: independent_traffic_validation
+    title: Validate the calibrated traffic model with unused observations
+    status: pending
+    entry_gate:
+      calibration_complete: true
+      validation_data_not_used_for_parameter_adjustment: true
+    required_outputs:
+      - validation_protocol_and_predeclared_thresholds
+      - independent_validation_metrics
+      - validation_decision
+    failure_return: traffic_calibration_and_invalidate_previous_validation_claim
+
+  - order: 17
+    stage_id: common_experiment_input_freeze
+    title: Freeze common inputs for delivery-method comparison
+    status: pending
+    required_inputs:
+      - accepted_sumo_network
+      - validated_traffic_conditions
+      - fixed_delivery_demand
+      - fixed_vehicle_energy_and_capacity_parameters
+      - fixed_seed_and_scenario_matrix
+    compared_methods:
+      - non_optimized
+      - classical_optimization
+      - qaoa
+    exit_gate:
+      identical_non_method_conditions_across_methods: true
+      all_input_hashes_fixed: true
+    failure_return: relevant_network_traffic_or_demand_stage
+
+  - order: 18
+    stage_id: delivery_method_comparison
+    title: Compare delivery methods under identical conditions
+    status: pending
+    metrics:
+      - distance
+      - travel_time
+      - delay
+      - electricity_consumption
+      - delivery_demand_fulfillment
+    required_outputs:
+      - per_run_results
+      - aggregate_comparison
+      - uncertainty_and_seed_analysis
+      - reproducibility_manifest
+    exit_gate:
+      all_methods_completed_under_identical_fixed_conditions: true
+
+critical_gate_statement:
+  phase13: repair_the_problems
+  phase14: authorize_the_attribute_data_for_sumo_input
+  osm_to_sumo: transform_the_accepted_attributes
+  network_acceptance: authorize_the_generated_network
+  calibration_and_validation: establish_traffic_model_fitness_for_purpose
+  experiment: compare_delivery_methods_under_identical_validated_conditions

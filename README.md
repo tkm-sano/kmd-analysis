@@ -100,16 +100,36 @@ flowchart LR
 |---|---|---|
 | Phase 1〜11 | 仕様の固定、小規模な正解データによる試験、道路方向・車線・通行可否・速度の解決処理、統合試験 | **合格** |
 | Phase 12 | 大田区の対象道路全体を2回独立に処理し、成果物と再現性を検査 | **合格**（2run単体検査、5成果物一致、実行条件比較、最終化、公開が完了） |
-| Phase 13 | Phase 12で停止した道路属性を、原因ごとに解消して再実行 | **未着手** |
-| Phase 14 | 道路属性成果物を最終的に受け入れられるか判定 | **未着手** |
+| Phase 13 | Phase 12で停止した道路属性を、原因ごとに解消して再実行 | **進行中**（入力固定、10群集計、最初のvehicle ontology規則、全母集団stage probe、固定container全回帰まで完了） |
+| Phase 14 | 道路属性成果物を最終的に受け入れられるか判定 | **ゲート待ち**（Phase 13正式2-runと最終母集団再集計の完了待ち） |
 
 Phase 12で確認した内容と正式合格の根拠は、README後半の[「Phase 12の実行・検査詳細」](#phase-12の実行検査詳細)に記載します。
 
+### Phase 13で実行済みの内容
+
+- Phase 12で公開した`run_1`の7成果物を、byte SHA-256と主要semantic SHA-256でPhase 13入力として固定した。
+- `complete_blocker_inventory`の108,189件を、属性・stop code・根本原因の組合せによる10群へ集計した。
+- 最初のvehicle ontology判断として、`bicycle`、`foot`、`mofa`、`moped`をgoverned motorized車種との明示的な空交差としてRegistryへ登録した。
+- fixtureとproduction-independent oracleを追加し、対象規則が`delivery`のpermissionを変更しないことを確認した。
+- Phase 12公開物を変更せず、新しい一時出力でfull-population static access stage probeを実行した。
+- 固定analysis containerでtraffic simulation validationを全実行し、`597 passed`を確認した。
+- Phase 13入力固定、実行履歴、root cause集計、次の18段階の実行計画、実務TODOを記録した。
+
+stage probeでは、今回対象とした`bicycle`、`foot`、`mofa`のvehicle hierarchy blockerが0件になったことを確認しました。一方、`horse`、`motorcar`、`psv`には独立した意味判断が必要です。このprobeはPhase 13の正式全道路2-runではないため、Phase 13後の正式blocker総数としては使用しません。正式な新基準値は、残る根本原因を処理し、新しい出力先で2回独立実行した後に確定します。
+
+現在も`formal_build_ready=false`、`attribute_resolution_acceptance=not_run`です。Phase 13は完了しておらず、Phase 14やSUMO道路網生成にはまだ進みません。
+
 ## 次に行うこと
 
-1. **未解決項目を原因別に整理する。** 属性、停止コード、根本原因ごとに集計し、重複する下流影響を根本原因単位で把握します。
-2. **Phase 13で根本原因を解消する。** 判断記録、Registry、Schema、意味規則、小型fixture、独立oracle、実装、試験の順で更新し、全母集団を再実行します。
-3. **未解決項目が0件になった成果物をPhase 14で審査する。** 合格後に初めて正式なSUMO道路網の統合へ進みます。
+1. **`psv`、`motorcar`、`horse`を個別判断する。** 実際のOSMタグ組合せとauthority evidenceを確認し、governed車種との対応を独立したdecisionとして記録します。
+2. **残るPhase 13の根本原因を解消する。** 速度、方向別車線、final permission、relation、少数のunsupported・conflictを、判断記録、Registry、Schema、意味規則、小型fixture、独立oracle、実装、試験の順で処理します。
+3. **修正後の全道路を新しい出力先で2回独立再実行する。** blocker IDの遷移、成果物、実行条件、決定論的一致を検査します。
+4. **解決済み・除外・未解決を再集計する。** 除外の道路ID・規則・根拠と、未解決道路の理由・道路網影響を追跡し、母集団保存則を確認します。
+5. **Phase 14で属性解決受入判定を行う。** 「この属性成果物をSUMOへ渡してよい」と正式判断し、合格成果物を固定します。
+6. **その後にSUMO道路網を生成・検証し、別の道路網統合受入判定を行う。** 道路網承認後に交通較正、独立Validation、共通入力固定、配送手法比較へ進みます。
+
+実行済み過程と現在地は[Phase 13実行履歴](reproducibility/config/traffic_simulation/v17_phase13_execution_log_20260814.yml)、入口条件・成果物・検査・不合格時の戻り先を含む詳細計画は[Phase 13後から配送比較までの実行計画](reproducibility/config/traffic_simulation/v17_post_phase13_to_experiment_execution_plan.yml)に記録しています。
+実際に確認するファイル、判断、更新、command、成果物、完了条件は[Phase 13からSUMO道路網受入までの実行TODO](05_src/traffic_simulation/phase13_to_sumo_network_todo.md)でチェック管理します。
 
 ## 使用する公開データ
 
@@ -297,7 +317,7 @@ docker compose run --rm analysis \
 
 合格根拠は[Phase 12完了記録](reproducibility/config/traffic_simulation/v17_phase12_completion.yml)と[Phase 12独立再実行記録](reproducibility/config/traffic_simulation/v17_phase12_independent_rerun_20260813.yml)に記録しています。
 
-ただし、形式的な道路網へ採用できない未解決項目が108,189件残っているため、`formal_build_ready`は`false`です。この件数には車線、通行可否、速度など異なる単位の停止記録が含まれ、「道路の108,189か所が誤っている」という意味ではありません。Phase 12は停止項目を完全に保存・集計する工程であり、その解消はPhase 13、最終受入はPhase 14で行います。
+Phase 12で固定した正式baselineには、形式的な道路網へ採用できないblockerが108,189件あります。この件数には車線、通行可否、速度など異なる単位の停止recordが含まれ、「道路の108,189か所が誤っている」という意味ではありません。Phase 13のstage probeで一部規則の効果は確認しましたが、正式な全道路2-runは未実行です。そのため、108,189件をPhase 13後の最新確定件数へ置き換えず、現在も`formal_build_ready=false`とします。正式な新件数はPhase 13再実行と母集団再集計後に確定し、最終受入はPhase 14で行います。
 
 Phase 1〜14の詳しい定義、証拠、未完了事項は、[Phase 1〜14統合資料](05_src/traffic_simulation/v17_phase1_to_phase14_integrated_status.md)にまとめています。
 

@@ -1,6 +1,6 @@
 schema_version: 17
 registry_bundle_id: ota_ward_attribute_resolution_registries_v17
-registry_version: 1.3.0
+registry_version: 1.4.0
 policy_id: ota_ward_attribute_resolution_policy_v17
 status: approved
 approved_by: repository_owner_directive
@@ -101,6 +101,10 @@ vehicle_ontology:
     motor_vehicle: [passenger, taxi, bus, coach, delivery, truck, motorcycle]
     hgv: [truck]
     goods: [delivery, truck]
+    bicycle: []
+    foot: []
+    mofa: []
+    moped: []
 access_values:
   - {source_value: 'yes', effect: allowed, required_context: []}
   - {source_value: designated, effect: allowed, required_context: []}

@@ -5,6 +5,7 @@ from copy import deepcopy
 from pathlib import Path
 
 import pytest
+import yaml
 
 from traffic_simulation.network.static_access_v17 import (
     StaticAccessError,
@@ -25,6 +26,16 @@ FIXTURE = (
     "directed_segments_phase4.osm.xml"
 )
 BASE = {"highway": "residential", "oneway": "yes", "lanes": "2"}
+PHASE13_NON_GOVERNED_FIXTURE = (
+    REPOSITORY_ROOT
+    / "05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/"
+    "phase13_non_governed_vehicle_domain_fixture.yml"
+)
+PHASE13_NON_GOVERNED_ORACLE = (
+    REPOSITORY_ROOT
+    / "05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/"
+    "phase13_non_governed_vehicle_domain_oracle.yml"
+)
 
 
 def _rules(tags: dict[str, str], *, lane_counts=None, candidate_keys=None):
@@ -134,6 +145,41 @@ def test_unregistered_vehicle_hierarchy_stops() -> None:
             candidate_keys={"hovercraft"},
         )
     assert caught.value.stop_code == "ACCESS_VEHICLE_HIERARCHY_MISSING"
+
+
+def test_phase13_non_governed_vehicle_domains_do_not_change_delivery_permission() -> None:
+    fixture = yaml.safe_load(PHASE13_NON_GOVERNED_FIXTURE.read_text(encoding="utf-8"))
+    oracle = yaml.safe_load(PHASE13_NON_GOVERNED_ORACLE.read_text(encoding="utf-8"))
+    for case in fixture["cases"]:
+        tags = {
+            **fixture["base_tags"],
+            case["source_key"]: case["source_value"],
+        }
+        rules = normalize_static_access_rules(
+            source_way_id=fixture["source_way_id"],
+            tags=tags,
+            lane_counts=fixture["lane_counts"],
+        )["rules"]
+        non_governed_rule = next(
+            item for item in rules if item["source_key"] == case["source_key"]
+        )
+        assert non_governed_rule["vehicle_domain"] == oracle[
+            "expected_non_governed_vehicle_domain"
+        ]
+        maxima = maximal_static_rules_for_tuple(
+            rules,
+            direction="forward",
+            lane_position=0,
+            lane_count=2,
+            vehicle_class=oracle["governed_vehicle_class"],
+            context=default_scenario_context(),
+        )
+        assert [item["source_key"] for item in maxima] == oracle[
+            "expected_maximal_source_keys"
+        ]
+        assert resolve_maximal_static_effect(maxima)["effect"] == oracle[
+            "expected_effect"
+        ]
 
 
 def test_conditional_tags_are_deferred_without_static_fallback_claim() -> None:

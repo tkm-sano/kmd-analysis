@@ -35,6 +35,15 @@ steps:
     action: execute_full_population_structural_and_formal_runs
     status: completed
     completion_record: reproducibility/config/traffic_simulation/v17_phase12_completion.yml
+    completion_result: passed
+    determinism_report: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_20260813_independent_rerun/determinism_report.json
+    publication:
+      status: fixed
+      source_run: run_1
+      path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_20260813_independent_rerun/published
+      artifact_count: 7
+      artifact_inventory_and_hashes: reproducibility/config/traffic_simulation/v17_phase12_completion.yml
+      replacement_allowed_in_current_completion_record: false
     required_outputs:
       - structural_full_population_artifact
       - formal_full_population_artifact
@@ -45,7 +54,9 @@ steps:
   - order: 4
     phase_scope: post_phase12_analysis
     action: aggregate_formal_blockers
-    status: pending
+    status: completed
+    input_lock: reproducibility/config/traffic_simulation/v17_phase13_input_lock.yml
+    aggregation_record: reproducibility/config/traffic_simulation/v17_phase13_blocker_aggregation.yml
     aggregation_dimensions:
       - attribute_name
       - stop_code
@@ -56,7 +67,14 @@ steps:
   - order: 5
     phase_scope: phase13
     action: resolve_frequent_root_causes_with_decision_tables_and_fixtures
-    status: pending
+    status: in_progress
+    active_decision: reproducibility/config/traffic_simulation/v17_phase13_vehicle_ontology_decision.yml
+    execution_log:
+      path: reproducibility/config/traffic_simulation/v17_phase13_execution_log_20260814.yml
+      sha256: 52d3b0e53551736c5b71f26b1330543d7b3e459d3857c89f012c7bccbd796284
+    downstream_execution_plan:
+      path: reproducibility/config/traffic_simulation/v17_post_phase13_to_experiment_execution_plan.yml
+      sha256: d09c4823595bc6296008618195c6d21d5106816d29840e139be43528286964f8
     required_change_order:
       - decision_record
       - registry_or_decision_table
@@ -77,6 +95,12 @@ steps:
     status: pending
     direct_generated_output_edit_allowed: false
     require_two_run_determinism: true
+    required_post_run_actions:
+      - compare_blocker_identity_transitions_against_phase12
+      - reaggregate_resolved_excluded_and_unresolved_states
+      - audit_every_exclusion_with_road_rule_and_evidence
+      - assess_remaining_unresolved_network_impact
+      - validate_population_conservation
 
   - order: 7
     phase_scope: phase14
@@ -96,11 +120,26 @@ steps:
       - oracle_validation
       - classification_projection_invariance
       - two_run_determinism
+    pass_mean: accepted_attribute_artifacts_may_be_used_as_formal_sumo_build_input
+    pass_does_not_mean: sumo_network_integration_acceptance_passed
+    post_acceptance_plan: reproducibility/config/traffic_simulation/v17_post_phase13_to_experiment_execution_plan.yml
 
 current_state:
   completed_through_phase: 12
+  phase12_result: passed
+  phase12_publication_fixed: true
+  phase12_published_run: run_1
+  phase12_completion_record: reproducibility/config/traffic_simulation/v17_phase12_completion.yml
   next_phase: 13
-  next_step: post_phase12_analysis
+  next_step: phase13_vehicle_ontology_remediation
+  execution_process_recorded: true
+  detailed_next_execution_plan_recorded: true
+  phase13_execution_log:
+    path: reproducibility/config/traffic_simulation/v17_phase13_execution_log_20260814.yml
+    sha256: 52d3b0e53551736c5b71f26b1330543d7b3e459d3857c89f012c7bccbd796284
+  post_phase13_plan:
+    path: reproducibility/config/traffic_simulation/v17_post_phase13_to_experiment_execution_plan.yml
+    sha256: d09c4823595bc6296008618195c6d21d5106816d29840e139be43528286964f8
   production_registered_exclusion_rule_count: 0
   formal_build_ready: false
   attribute_resolution_acceptance: not_run

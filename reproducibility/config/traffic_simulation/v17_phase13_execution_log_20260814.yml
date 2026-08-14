@@ -1,0 +1,150 @@
+schema_version: 1
+execution_log_id: ota_ward_attribute_resolution_v17_phase13_20260814
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+recorded_at: '2026-08-14'
+recorded_by: repository_implementation_agent
+status: in_progress
+phase13_complete: false
+formal_build_ready: false
+attribute_resolution_acceptance: not_run
+
+objective:
+  statement: resolve each governed Phase 12 blocker from its root cause and regenerate all full-population artifacts
+  completion_requires:
+    - every remediation follows the approved change order
+    - full_population_outputs_are_regenerated_in_new_versioned_paths
+    - two_independent_runs_pass_their_completion_validators
+    - semantic_hashes_and_execution_conditions_are_compared
+    - final_population_state_is_reaccounted
+  blocker_count_reduction_alone_is_completion: false
+
+fixed_inputs:
+  input_lock: reproducibility/config/traffic_simulation/v17_phase13_input_lock.yml
+  publication_source_run: run_1
+  complete_blocker_inventory:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_20260813_independent_rerun/published/formal/blocker_inventory.json
+    byte_sha256: 1d0554c43820f18a9eaf2b39a683b7b07048be0e1b2b084ab19f7fda51a9c63e
+    semantic_sha256: d635ec3187f02f9add39a1f30969cd5c463b5a27f4be5f3bee9b74c65afba993
+    blocker_count: 108189
+  supporting_artifacts:
+    - formal/full_population.json
+    - formal/exclusion_manifest.json
+    - population_accounting.json
+    - environment_build_manifest.json
+    - run_manifest.json
+  source_mutation_allowed: false
+
+execution_history:
+  - order: 1
+    action: lock_phase12_publication_as_phase13_input
+    status: completed
+    evidence: reproducibility/config/traffic_simulation/v17_phase13_input_lock.yml
+    validation_command: PYTHONPATH=05_src python -m traffic_simulation.network.validate_v17_phase13_input_lock
+    result: passed
+    observations:
+      artifact_count: 7
+      source_run: run_1
+      byte_hashes_verified: true
+      major_semantic_hashes_verified: true
+  - order: 2
+    action: aggregate_blockers_without_discarding_individual_records
+    status: completed
+    evidence: reproducibility/config/traffic_simulation/v17_phase13_blocker_aggregation.yml
+    result: passed
+    observations:
+      blocker_count: 108189
+      group_count: 10
+      aggregation_axes: [attribute_name, stop_code, root_cause_category]
+      individual_inventory_preserved: true
+  - order: 3
+    action: select_first_evidence_supported_root_cause
+    status: completed
+    evidence: reproducibility/config/traffic_simulation/v17_phase13_vehicle_ontology_decision.yml
+    result: passed
+    decision: DEC-P13-VEHICLE-ONTOLOGY-001
+    reason: existing approved scope proves bicycle foot mofa and moped do not belong to the governed motorized permission universe
+    deferred_keys: [psv, motorcar]
+  - order: 4
+    action: update_registry_invariant_traceability_fixture_and_oracle
+    status: completed
+    result: passed
+    changed_authority_versions:
+      registry_bundle: 1.4.0
+      semantic_invariants: 1.2.0
+    production_code_change_required: false
+    reason: static access evaluation is registry driven and already supports an explicit empty vehicle-domain intersection
+  - order: 5
+    action: execute_focused_tests
+    status: completed
+    command: PYTHONPATH=05_src pytest -q 05_src/traffic_simulation/validation/test_phase13_input_lock_v17.py 05_src/traffic_simulation/validation/test_static_access_v17.py 05_src/traffic_simulation/validation/test_final_permission_v17.py 05_src/traffic_simulation/validation/test_resolver_integration_v17.py
+    result: passed
+    test_count: 45
+  - order: 6
+    action: execute_full_population_static_access_probe_in_new_temporary_output
+    status: completed
+    evidence: reproducibility/config/traffic_simulation/v17_phase13_vehicle_ontology_probe.yml
+    result: passed_with_remaining_blockers
+    phase12_publication_modified: false
+    observations:
+      bicycle_hierarchy_blockers_after: 0
+      foot_hierarchy_blockers_after: 0
+      mofa_hierarchy_blockers_after: 0
+      remaining_hierarchy_causes: {horse: 130, motorcar: 154, psv: 16}
+      probe_is_not_phase13_full_rerun: true
+  - order: 7
+    action: execute_complete_regression_in_fixed_analysis_container
+    status: completed
+    command: docker compose run --rm -T analysis python -m pytest -q 05_src/traffic_simulation/validation
+    result: passed
+    test_count: 597
+    elapsed_seconds: 71.46
+  - order: 8
+    action: record_host_environment_test_limitation
+    status: completed
+    attempted_command: PYTHONPATH=05_src pytest -q 05_src/traffic_simulation/validation
+    result: collection_failed_environment_not_code
+    missing_host_dependencies: [rfc8785, folium]
+    resolution: rerun_the_complete_suite_in_the_digest_fixed_analysis_container
+
+current_blocker_summary:
+  total_at_fixed_phase12_baseline: 108189
+  groups:
+    speed_missing_registered_evidence: 78601
+    directional_lane_missing_evidence: 24114
+    final_permission_missing_registered_rule: 4864
+    static_access_missing_vehicle_ontology: 492
+    relation_direction_missing_evidence: 48
+    static_access_unsupported_value: 27
+    directional_lane_vector_conflict: 18
+    speed_unsupported_value: 15
+    directional_lane_count_conflict: 6
+    conditional_access_unsupported_syntax: 4
+  no_formal_exclusion_authorized: true
+
+current_position:
+  completed_through_phase: 12
+  active_phase: 13
+  active_workstream: blocker_root_cause_resolution
+  completed_phase13_work:
+    - fixed_input_lock
+    - complete_inventory_aggregation
+    - first_vehicle_ontology_decision
+    - first_full_population_stage_probe
+    - fixed_container_regression
+  not_yet_completed:
+    - all_remaining_root_cause_decisions
+    - complete_phase13_full_population_rerun
+    - final_state_reaggregation
+    - two_run_determinism_after_remediation
+    - phase13_completion_record
+    - phase14_attribute_resolution_acceptance
+  immediate_next_action: decide_psv_motorcar_and_horse_vehicle_domain_semantics_independently
+
+recording_rules_for_next_actions:
+  - every decision records authority evidence affected records rule and version
+  - every generated result uses a new output path and never overwrites Phase 12 publication
+  - every command exit code log and log hash is recorded in its run manifest
+  - every failed attempt and its resolution remains in the execution history
+  - blocker counts are compared by stable identity and root cause not only by total
+  - a blocker may disappear only through resolution or a registered evidence-backed exclusion

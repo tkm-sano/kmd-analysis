@@ -15,11 +15,11 @@ attribute_resolution_acceptance: not_run
 
 predecessor_record:
   path: reproducibility/config/traffic_simulation/v17_phase1_to_phase11_record.yml
-  sha256: 248133d4dab4c09ccc9762feeed52c40911d56b16d00264b292ef72bd4f17da5
+  sha256: cb0904bfb35e1db68b232205c569551217e460a55ba8c5d28560d0408bd9fefe
 
 phase12_record:
   path: reproducibility/config/traffic_simulation/v17_phase12_completion.yml
-  sha256: 6897352a99b633d7f4f2855663adc8f3966c03e67feda0d33437309cb9e9faa8
+  sha256: c230e5728989df87c1c2508bcd95d8d572e40d501a2521778d6e8275143dcd1b
   result: passed
 
 phase12_outcome:
@@ -31,6 +31,9 @@ phase12_outcome:
   environment_comparison: passed
   determinism_report: passed
   publication: passed
+  publication_source_run: run_1
+  publication_artifact_count: 7
+  publication_fixed: true
   governed_blocker_count: 108189
 
 interpretation:

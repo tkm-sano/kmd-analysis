@@ -1,0 +1,63 @@
+schema_version: 1
+input_lock_id: ota_ward_attribute_resolution_v17_phase13_input_20260814
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+source_phase: 12
+target_phase: 13
+status: fixed
+recorded_at: '2026-08-14'
+phase12_completion:
+  path: reproducibility/config/traffic_simulation/v17_phase12_completion.yml
+  sha256: c230e5728989df87c1c2508bcd95d8d572e40d501a2521778d6e8275143dcd1b
+  result: passed
+determinism_report:
+  path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_20260813_independent_rerun/determinism_report.json
+  sha256: 9491879aca3d109c918ded3c37ce448364c0bf2bd0fa348ca4d6977e9821433a
+  result: passed
+publication:
+  source_run: run_1
+  root: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_20260813_independent_rerun/published
+  locked: true
+  replacement_allowed: false
+  artifacts:
+    - artifact_id: environment_build_manifest
+      path: environment_build_manifest.json
+      byte_sha256: 1f2c398bf38e5d1424e15dd2e41601dca34ece5954dda3189a4439efd4cffb1b
+    - artifact_id: complete_blocker_inventory
+      path: formal/blocker_inventory.json
+      byte_sha256: 1d0554c43820f18a9eaf2b39a683b7b07048be0e1b2b084ab19f7fda51a9c63e
+      semantic_sha256: d635ec3187f02f9add39a1f30969cd5c463b5a27f4be5f3bee9b74c65afba993
+    - artifact_id: exclusion_manifest
+      path: formal/exclusion_manifest.json
+      byte_sha256: 529b058b08a05b145d6451d5051ed3214c17d7527fe75c493ec9f7a5b0311e81
+      semantic_sha256: ac4627666e5ccd1970745bfe53e8ac41057454b5b9267cd6990213cccfeafe87
+    - artifact_id: formal_full_population
+      path: formal/full_population.json
+      byte_sha256: 7599af7b6b960bae2be2499b5a0b666d015f5255028b91f4fad3ee40f7db3733
+      semantic_sha256: 953eb744494bc2e3261d206acc4695be734659187241d2e3659c7dc08a93c740
+    - artifact_id: population_accounting
+      path: population_accounting.json
+      byte_sha256: c834f97009439421e2e73ef95923cc08109fd2380453b7c6ef3ea46368a540ea
+      semantic_sha256: f76d9c7085849bccf754116784e9c3013ad79d452c82778e20cd74e5b141e7fa
+    - artifact_id: run_manifest
+      path: run_manifest.json
+      byte_sha256: 93fe3401410c75c84bb22e37fca0744313cf1406e7c9911d875571a3ba9ab558
+    - artifact_id: structural_full_population
+      path: structural/full_population.json
+      byte_sha256: 27aa07515f4294575e16d242ab671c98179ac20352a3f3699b033c5b89e03254
+      semantic_sha256: 326fe41a0fbcb55f05f6688cc4e1cf9c2f6d239e79b320b227e7dec7b9cca37f
+input_gate:
+  artifact_count: 7
+  byte_hashes_verified: true
+  major_semantic_hashes_verified: true
+  published_bytes_match_run_1: true
+  source_mutation_allowed: false
+consumption_policy:
+  preserve_every_blocker_record: true
+  aggregate_without_simple_summing_of_overlapping_causes: true
+  frequency_alone_authorizes_exclusion: false
+  remediation_outputs_require_new_versioned_paths: true
+  full_population_rerun_required_after_remediation: true
+execution_records:
+  process_log: reproducibility/config/traffic_simulation/v17_phase13_execution_log_20260814.yml
+  downstream_plan: reproducibility/config/traffic_simulation/v17_post_phase13_to_experiment_execution_plan.yml

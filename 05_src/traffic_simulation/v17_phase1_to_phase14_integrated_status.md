@@ -12,7 +12,7 @@
 >
 > **母集団版**: `ota_ward_relation_closure_v16`
 >
-> **現在地**: Phase 1〜12は正式記録上合格。Phase 12は両runの単体completion gate、主要5成果物のsemantic hash一致、実行条件比較、`finalize()`、原子的公開まで完了。Phase 13は未着手、Phase 14はゲート待ち。
+> **現在地**: Phase 1〜12は正式記録上合格。Phase 12公開物をPhase 13入力としてhash固定し、108,189 blockerを10群へ集計済み。Phase 13はvehicle ontologyの最初の根本原因規則を検証して進行中、Phase 14はゲート待ち。
 
 ## 1. この文書の目的
 
@@ -126,7 +126,7 @@ Phase単体の「合格」は、属性解決全体、正式SUMO道路網、ま�
 | 10 | **Formal Evidence Method**。外部・派生証拠をformal値へ使用する方法と境界を統制する | 未承認method、model-assumed donor、直接編集をfail-closedにし、origin auditが合格する | **合格**（2026-08-04） | `v17_phase10_completion.yml`、`evidence_resolution_v17.py`、origin audit | 承認済みformal evidence methodは現在0件。証拠なしの停止を解消済みとはしない |
 | 11 | **Resolver Integration Test**。Phase 3〜10を統合し、Schema、意味、独立oracle、metamorphic relationを検査する | 4ゲートすべて合格し、cross-stage lineageが保たれる | **合格**（2026-08-04） | `v17_phase11_completion.yml`、`resolver_integration_v17.py`、統合fixture/oracle | Phase 11合格はfull-population acceptanceを意味しない |
 | 12 | **Full-population Run and Accounting**。固定v16母集団をv17 structural/formal両profileで2回独立実行し、全停止・除外・母集団差を保存する | 必須8成果物、全Schema・意味検証、hash、母集団式、ID一意性、環境一致、2回決定論的一致、原子的公開がすべて合格する | **合格**（2026-08-14） | `v17_phase12_completion.yml`、`determinism_report.json`、各run manifest、`v17_phase12_independent_rerun_20260813.yml` | Phase 13でblockerを属性・停止コード・根本原因別に解消する |
-| 13 | **Stop Record Resolution and Rerun**。Phase 12の停止を根本原因別に解消し、全件成果物を再生成する | decision→Registry/表→Schema→Invariant→fixture→独立oracle→code→試験→全件runの順を守り、未証明recordを残さない | **未着手** | `v17_phase9_to_phase14_execution_roadmap.yml`、formal blocker policy | Phase 12の正式確定後、blockerを属性・停止コード・根本原因別に集計して解消する |
+| 13 | **Stop Record Resolution and Rerun**。Phase 12の停止を根本原因別に解消し、全件成果物を再生成する | decision→Registry/表→Schema→Invariant→fixture→独立oracle→code→試験→全件runの順を守り、未証明recordを残さない | **進行中**（2026-08-14開始） | Phase 13 input lock、blocker aggregation、vehicle ontology decision、全回帰597件合格 | `psv`・`motorcar`等を別decisionで解消し、全件runを新規出力へ再実行する |
 | 14 | **Attribute Resolution Acceptance**。formal属性成果物の最終受入判定を行う | blocker、review-required、stop-unresolved、model-assumedが各0件。全record解決、母集団式・permission被覆・Schema・意味・oracle・projection不変・2回一致が合格する | **ゲート待ち** | 実行ロードマップ、formal blocker policy | Phase 13再実行後に受入を実行する。合格しても正式SUMO道路網の承認とは別 |
 
 ## 6. 現在地の詳細
@@ -196,6 +196,13 @@ blockerを漏れなく棚卸しし、母集団と因果関係を保存する工�
 
 ## 7. Phase 12からPhase 14までの次の実行順序
 
+詳細な実行履歴は
+`reproducibility/config/traffic_simulation/v17_phase13_execution_log_20260814.yml`、
+Phase 13再実行後から配送比較までの入口条件・成果物・検査・不合格時の戻り先は
+`reproducibility/config/traffic_simulation/v17_post_phase13_to_experiment_execution_plan.yml`
+を正本とする。
+日々の実行チェックは`05_src/traffic_simulation/phase13_to_sumo_network_todo.md`で管理する。
+
 1. **実装済み:** Phase 12 runnerが実際に受け取ったCLI引数列をmanifest生成へ渡し、
    正式runでは`sha256:<64桁>`のcontainer digestを必須として未固定値を開始前に拒否する。
 2. **実装・検証済み:** 各run単体で存在、Schema、semantic hash、意味整合、ID一意性、
@@ -215,25 +222,55 @@ blockerを漏れなく棚卸しし、母集団と因果関係を保存する工�
    `v17_phase12_independent_rerun_20260813.yml`に記録した。
 5. **2026-08-14実行済み:** `run_id`だけを検証付きで正規化し、全体`finalize()`を実行した。
 6. **2026-08-14実行済み:** Phase 12完了記録とロードマップを更新した。
-7. blockerを `attribute_name`、`stop_code`、`root_cause_category` で集計する。
-8. Phase 13の順序に従って根本原因を解消し、全件runを再実行する。
-9. governed blocker等がすべて0件になった後、Phase 14 Acceptanceを実行する。
-10. Phase 14合格後にのみ、formal属性をSUMO Network Integrationへ渡す。
+7. **2026-08-14実行済み:** Phase 12公開7成果物をPhase 13入力としてbyte hashとsemantic hashで固定し、
+   blocker 108,189件を `attribute_name`、`stop_code`、`root_cause_category` の10群へ集計した。
+8. **進行中:** Phase 13の順序に従って根本原因を解消する。最初のvehicle ontology decisionでは、
+   `bicycle`、`foot`、`mofa`、`moped`をgoverned車種との明示的な空交差としてRegistryへ登録し、
+   fixture、独立oracle、全母集団stage probe、固定container全回帰597件で検証した。
+9. 残る`psv`、`motorcar`、`horse`等を独立decisionで処理し、証拠不足・真正競合は推測で解消しない。
+10. Phase 13修正を反映し、新しいversion付き出力先で全道路を2回独立再実行する。
+11. Phase 12からのblocker ID遷移を比較し、減少・解消・新規発生の各理由を登録decisionへ結び付ける。
+12. 全入力recordを「governed / excluded」、governed内を「resolved / unresolved / conflict /
+    invalid / valid-but-unsupported」へ再集計し、母集団保存則を確認する。
+13. 除外recordは道路ID、規則、理由、根拠、承認者、日付、道路網影響を追跡し、残存未解決recordは
+    理由別件数、影響道路・延長・接続性・配送到達性を評価する。
+14. governed blocker、review-required、stop-unresolved、model-assumedがすべて0件になった後、
+    Phase 14 Attribute Resolution Acceptanceを実行する。
+15. Phase 14合格成果物だけをhash固定してformal SUMO build inputとする。
 
 ## 8. Phase 14後に残る工程
 
 Phase 14は属性解決の受入であり、道路網全体や交通モデル全体のV&V完了ではない。
 少なくとも次が後続する。
 
-1. provisional structural buildとexact provenance生成
-2. Permission Materializerによるlane・connection permission反映
-3. final connection setの確定
-4. signal junction・TLS review
-5. SUMO 1.24.0によるNetwork Integration Acceptance
-6. 一般交通需要、信号、車両、運転行動設定
-7. 交通モデルのCalibration
-8. 未使用データによる独立Validation
-9. EV配送、古典最適化、Qiskit Aer QAOAの正式比較
+1. accepted OSM属性からSUMOのnode、edge、lane、connectionを生成し、方向、車線、速度、
+   配送車両を含む車種別通行権限を正式反映する。
+2. OSM道路IDとSUMO edge/laneの対応を保持し、生成・非生成とその理由をrecord単位で追跡する。
+3. junction統合、lane connection、右左折規制、信号link・phase・programを検査し、承認した修正から再生成する。
+4. 正式候補networkを生成し、node数、edge数、lane数、道路延長、信号交差点数、警告を集計する。
+5. 配送車両が通行できるedge数、道路延長、到達範囲、孤立道路、到達不能領域、不正接続を検査する。
+6. SUMO上で方向、permission、turn、connection、signalのruntime走行試験を行う。
+7. build再現性、load、lineage、permission、coverage、connectivity、runtime試験をまとめて
+   **SUMO道路網統合受入判定**を行い、合格networkを固定する。
+8. 正式道路網へ一般交通需要を投入し、較正用観測の交通量、速度、旅行時間で交通モデルを較正する。
+9. 較正に使用していない日時または地点の観測で独立Validationを行う。
+10. 検証済み道路網・交通条件・配送需要・車両条件・seedを共通実験入力として固定する。
+11. 同一条件で非最適化、古典最適化、QAOAを実行し、距離、時間、遅延、電力消費、
+    配送需要充足率を比較する。
+
+最重要ゲートは、Phase 13でblocker件数を減らした事実だけではない。Phase 14で
+**「この道路属性成果物をSUMO変換へ渡してよい」**と正式判定し、その後に別の
+**SUMO道路網統合受入判定**で生成networkそのものを承認する。両判定を一つにまとめない。
+
+```text
+Phase 13: 問題を直す
+  → Phase 14: 道路属性を承認する
+  → accepted OSM属性をSUMOへ変換する
+  → SUMO道路網を生成・検証する
+  → SUMO道路網を承認する
+  → 一般交通を較正し、未使用データで検証する
+  → 共通入力を固定して配送手法を比較する
+```
 
 ## 9. 正本・証拠索引
 
@@ -242,6 +279,8 @@ Phase 14は属性解決の受入であり、道路網全体や交通モデル全
 - `05_src/traffic_simulation/specifications/10_approved_attribute_resolution_policy_v17_complete.md`
 - `05_src/traffic_simulation/learning/v17_phase1_beginner_guide_full_intent_hierarchy_ja.md`
 - `reproducibility/config/traffic_simulation/v17_phase9_to_phase14_execution_roadmap.yml`
+- `reproducibility/config/traffic_simulation/v17_phase13_execution_log_20260814.yml`
+- `reproducibility/config/traffic_simulation/v17_post_phase13_to_experiment_execution_plan.yml`
 - `05_src/traffic_simulation/specifications/11_formal_blocker_resolution_exclusion_policy_v17.md`
 - `reproducibility/config/traffic_simulation/formal_blocker_policy_v17.yml`
 

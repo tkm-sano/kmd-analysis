@@ -1,0 +1,104 @@
+schema_version: 1
+aggregation_id: ota_ward_attribute_resolution_v17_phase13_blockers_20260814
+input_lock: reproducibility/config/traffic_simulation/v17_phase13_input_lock.yml
+source_artifact_id: complete_blocker_inventory
+status: completed
+recorded_at: '2026-08-14'
+total_blocker_count: 108189
+distinct_group_count: 10
+counts_by_root_cause:
+  missing_evidence: 102763
+  missing_registered_rule: 4864
+  missing_vehicle_ontology: 492
+  unsupported_source_syntax: 46
+  genuine_rule_conflict: 24
+groups:
+  - group_id: speed__SPEED_RULE_NOT_REGISTERED
+    attribute_name: speed
+    stop_code: SPEED_RULE_NOT_REGISTERED
+    root_cause_category: missing_evidence
+    blocker_count: 78601
+    distinct_source_way_count: 23126
+    selected_strategy: remain_blocked
+    next_action: acquire_and_register_formal_speed_evidence
+  - group_id: directional_lanes__LANE_DIRECTIONAL_ALLOCATION_MISSING
+    attribute_name: directional_lanes
+    stop_code: LANE_DIRECTIONAL_ALLOCATION_MISSING
+    root_cause_category: missing_evidence
+    blocker_count: 24114
+    distinct_source_way_count: 24114
+    selected_strategy: remain_blocked
+    next_action: acquire_directional_lane_evidence
+  - group_id: final_permission__ACCESS_PERMISSION_UNRESOLVED
+    attribute_name: final_permission
+    stop_code: ACCESS_PERMISSION_UNRESOLVED
+    root_cause_category: missing_registered_rule
+    blocker_count: 4864
+    distinct_source_way_count: 1130
+    distinct_root_cause_record_count: 1130
+    selected_strategy: preserve_and_resolve
+    next_action: register_access_coverage_decision_rules
+  - group_id: static_access__ACCESS_VEHICLE_HIERARCHY_MISSING
+    attribute_name: static_access
+    stop_code: ACCESS_VEHICLE_HIERARCHY_MISSING
+    root_cause_category: missing_vehicle_ontology
+    blocker_count: 492
+    distinct_source_way_count: 492
+    selected_strategy: preserve_and_resolve
+    next_action: register_vehicle_domain_intersections
+    source_key_counts: {bicycle: 396, foot: 71, psv: 16, motorcar: 7, mofa: 2}
+  - group_id: directed_segments__RELATION_DIRECTED_MAPPING_MISSING
+    attribute_name: directed_segments
+    stop_code: RELATION_DIRECTED_MAPPING_MISSING
+    root_cause_category: missing_evidence
+    blocker_count: 48
+    selected_strategy: remain_blocked
+    next_action: acquire_relation_member_direction_evidence
+  - group_id: static_access__ACCESS_VALUE_UNSUPPORTED
+    attribute_name: static_access
+    stop_code: ACCESS_VALUE_UNSUPPORTED
+    root_cause_category: unsupported_source_syntax
+    blocker_count: 27
+    distinct_source_way_count: 27
+    selected_strategy: preserve_and_resolve
+    next_action: decide_use_sidepath_semantics
+  - group_id: directional_lanes__LANE_VECTOR_LENGTH_MISMATCH
+    attribute_name: directional_lanes
+    stop_code: LANE_VECTOR_LENGTH_MISMATCH
+    root_cause_category: genuine_rule_conflict
+    blocker_count: 18
+    distinct_source_way_count: 18
+    selected_strategy: remain_blocked
+    next_action: obtain_conflict_resolving_lane_evidence
+  - group_id: speed__SPEED_VALUE_UNSUPPORTED
+    attribute_name: speed
+    stop_code: SPEED_VALUE_UNSUPPORTED
+    root_cause_category: unsupported_source_syntax
+    blocker_count: 15
+    distinct_source_way_count: 9
+    selected_strategy: preserve_and_resolve
+    next_action: classify_and_register_supported_speed_syntax
+  - group_id: directional_lanes__LANE_COUNT_CONFLICT
+    attribute_name: directional_lanes
+    stop_code: LANE_COUNT_CONFLICT
+    root_cause_category: genuine_rule_conflict
+    blocker_count: 6
+    distinct_source_way_count: 6
+    selected_strategy: remain_blocked
+    next_action: obtain_conflict_resolving_lane_count_evidence
+  - group_id: conditional_access__ACCESS_CONDITIONAL_SYNTAX_UNSUPPORTED
+    attribute_name: conditional_access
+    stop_code: ACCESS_CONDITIONAL_SYNTAX_UNSUPPORTED
+    root_cause_category: unsupported_source_syntax
+    blocker_count: 4
+    distinct_source_way_count: 4
+    selected_strategy: preserve_and_resolve
+    next_action: classify_and_register_conditional_access_syntax
+resolution_queue:
+  evidence_gated_groups:
+    - directed_segments__RELATION_DIRECTED_MAPPING_MISSING
+    - directional_lanes__LANE_DIRECTIONAL_ALLOCATION_MISSING
+    - speed__SPEED_RULE_NOT_REGISTERED
+  first_actionable_group: static_access__ACCESS_VEHICLE_HIERARCHY_MISSING
+  first_actionable_reason: approved_scope_already_defines_non_governed_vehicle_classes_and_registry_supports_explicit_domain_intersections
+  no_exclusion_authorized: true

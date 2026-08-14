@@ -23,22 +23,22 @@ artifacts:
     sha256: 7d9c9340cbb2fa88b76622620204f7ef65d17bb255c96d5697786420689b21ba
   traceability_matrix:
     path: 05_src/traffic_simulation/specifications/v17_attribute_resolution_traceability_matrix.md
-    sha256: 965f9ac20bde6d513ff8ec40176ab996a281415ebe714755eb4f5cd49540195d
+    sha256: a8ddbea1b0604a0d5fd98fc3f58d28b3e591d2929d92c00156287eeabb6fe864
   configuration:
     path: reproducibility/config/traffic_simulation/sumo_network_v17.yml
-    sha256: ba8e6fbad3a5fe3adf080572311239014f2bbda0b6b8eff85cb9cc7967f572e9
+    sha256: 61ee4866bca7de99871770ef4b433846b53a74225ffe8ab70ee5828bdf7006d8
   policy_index:
     path: reproducibility/config/traffic_simulation/approved_attribute_resolution_policy_v17.yml
     sha256: cf24f6ee618d1584ca48a766163ad456f8399b357c80c54a84987c9d44d478bb
   registry_bundle:
     path: reproducibility/config/traffic_simulation/attribute_resolution_registries_v17.yml
-    sha256: df599bddec6586d5eec270bbc9ffc50799f80d311c253f2275f96421e990d25e
+    sha256: a4d9a5b196172ae90476f0db6ee3d17ae39f64d6c142f6696d4ef59123454907
   semantic_invariants_machine:
     path: reproducibility/config/traffic_simulation/v17_semantic_invariants.yml
-    sha256: f0cf14f16ef2bd2d9ebac2d43b0c225c6869398390f4ce7c12802dcb97090595
+    sha256: b5972d84f539c9be9091eeca19f0e1d77424791f231180310b31786bf44153fa
   semantic_invariants_document:
     path: 05_src/traffic_simulation/specifications/v17_semantic_invariants.md
-    sha256: 461333079356feb148cdb9db45dc3d0556b68504ee988638e5211e07bfdf05a2
+    sha256: 59ae9b898e6ff29ebecd360b6754c4e7da29793bc0484b1b0e0b8420bf92a232
   synchronization_review:
     path: 05_src/traffic_simulation/v17_authority_synchronization_review.md
     sha256: bf925ab1c5faf68ebb3e28ce89a6b3b67598fbfa6c417e971684772906671a1a
@@ -54,7 +54,7 @@ schemas:
   attribute_resolution_record_v17: 8a7c78c7aa6349da0eb7251f753a96f4d74c2a6f9150c2f03a3be61b1fa31275
   attribute_resolution_registries_v17: 8ce82500ed1cdec77a13105c3b2282063c3016a0bc66876e3d7f9148ee7cf7fa
   directed_segment_v17: 52cfb235c2bb47da09471c55783f0e6b187198c917ecb6bf80e807a538dc9993
-  environment_build_manifest_v17: 7942c49102c3440f9a7a4fc72e439285ad69451f6de3573334b7613b5b7ff1be
+  environment_build_manifest_v17: 54cf036557417e86cc2bcdbec76738f3dbf7f92d20281d71dae461da6d1ad379
   exclusion_manifest_v17: a3f30e522404e6e8687f6b03f1782b8e3d60829afbecc8e6c343fa04cc1e9322
   materialization_omission_v17: db6038a72da0695ed522b1f61068b942da775992f95ef1a8fe21ae667afe3f9a
   semantic_invariants_v17: 5088b462f51b0387bc7e10be1db9b3eae9c82b6da62b677fbf8d818cf2344b34
@@ -77,7 +77,7 @@ verification:
     result: passed
     schema_count: 22
     stop_code_count: 30
-    invariant_count: 46
+    invariant_count: 47
   focused_tests:
     result: passed
     count: 68
