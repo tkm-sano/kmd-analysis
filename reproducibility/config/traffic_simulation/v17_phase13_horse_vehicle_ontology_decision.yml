@@ -1,0 +1,147 @@
+schema_version: 1
+decision_id: DEC-P13-HORSE-ONTOLOGY-001
+decision_version: 1.0.0
+status: approved
+approved_at: '2026-08-14'
+approved_by: repository_owner_directive
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+input_lock: reproducibility/config/traffic_simulation/v17_phase13_input_lock.yml
+parent_decision: DEC-P13-VEHICLE-ONTOLOGY-001
+
+question:
+  statement: >-
+    Whether OSM horse=no and horse=yes may be represented as constraints on a
+    vehicle domain disjoint from the research motorized managed vehicle universe,
+    without changing delivery permission.
+
+fixed_record_evidence:
+  extraction_record: reproducibility/config/traffic_simulation/v17_phase13_vehicle_ontology_record_extraction.yml
+  extraction_output: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260814_vehicle_ontology_extraction/psv_motorcar_horse_records.json
+  extraction_output_byte_sha256: 66a9aedf275ca7dee635eab0e48bfb406a5e62e383ceeaf16861e0a80e90b822
+  source_way_count: 130
+  scalar_source_key_count: 130
+  source_value_counts:
+    'no': 125
+    'yes': 5
+  direction_or_lane_scoped_record_count: 0
+
+osm_authority_evidence:
+  - evidence_id: OSM-HORSE-KEY-REV-3060819
+    title: OpenStreetMap Wiki Key:horse
+    url: https://wiki.openstreetmap.org/w/index.php?title=Key:horse&oldid=3060819
+    accessed_at: '2026-08-14'
+    relevant_claims:
+      - horse is the access-permission key for equestrians riding on horseback
+      - horse is not a member of the OSM vehicle branch
+      - horse and carriage are non-overlapping access categories
+      - horse is a legal access restriction and not a suitability rating
+  - evidence_id: OSM-ACCESS-HIERARCHY-REV-3054035
+    title: OpenStreetMap Wiki Key:access transport-mode hierarchy
+    url: https://wiki.openstreetmap.org/w/index.php?title=Key:access&oldid=3054035
+    accessed_at: '2026-08-14'
+    relevant_claims:
+      - horse is listed in the without-a-vehicle branch
+      - vehicle is a separate branch and motor_vehicle is below the vehicle branch
+      - a specific transport-mode key overrides its parent only for that mode
+      - access remains the common parent applying to all land-based modes
+
+research_vehicle_authority:
+  managed_vehicle_profile:
+    path: reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml
+    byte_sha256: 8f837f7a1b4fa7274e86e5d8ac09260738d2c0dac9cbeb7143300e82b92bc2b5
+    profile_id: managed_urban_ev_delivery_v1
+    sumo_vclass: delivery
+    powertrain: battery_electric
+    osm_access_membership:
+      vehicle: true
+      motor_vehicle: true
+      goods: true
+      hgv: false
+  governed_universe:
+    authority_path: reproducibility/config/traffic_simulation/sumo_network_v17.yml
+    authority_byte_sha256: 61ee4866bca7de99871770ef4b433846b53a74225ffe8ab70ee5828bdf7006d8
+    model: motorized_v1
+    vclasses: [passenger, taxi, bus, coach, delivery, truck, motorcycle]
+    contains_horse: false
+
+formal_reasoning:
+  symbols:
+    governed_motorized_universe: G
+    horse_rider_domain: H
+    managed_delivery_domain: D
+  sets:
+    G: [passenger, taxi, bus, coach, delivery, truck, motorcycle]
+    H: []
+    D: [delivery]
+  propositions:
+    - H_intersection_G_is_empty
+    - H_intersection_D_is_empty
+    - horse_specific_rule_is_not_applicable_to_delivery_tuple
+    - non_applicability_does_not_imply_road_permission
+    - delivery_permission_remains_determined_by_applicable_parent_and_motorized_specific_rules
+
+decision:
+  result: approved_empty_intersection
+  rule_id: NON_GOVERNED_HORSE_RIDER_DOMAIN_EMPTY_INTERSECTION_V1
+  source_key: horse
+  approved_source_values: ['no', 'yes']
+  registered_vehicle_domain: []
+  permission_effect_on_governed_vclasses: none
+  permission_effect_on_managed_delivery: none
+  source_record_preserved: true
+  formal_exclusion: false
+  blocker_resolution_mechanism: registered_non_applicable_vehicle_domain
+  rationale: >-
+    OSM horse=* governs equestrians, while the research universe contains only
+    motorized SUMO vClasses and the managed vehicle is a battery-electric delivery
+    vehicle. Therefore horse=no and horse=yes constrain a disjoint mode and cannot
+    allow or deny the managed delivery tuple.
+
+mandatory_boundaries:
+  - access, vehicle, motor_vehicle, motorcar, goods, hgv, delivery and other applicable rules remain effective
+  - horse=yes cannot override access=no or a motorized denial for a delivery vehicle
+  - horse=no cannot deny a delivery vehicle that is otherwise allowed
+  - the horse source tag and provenance must remain in the resolved record
+  - the record remains governed and must not be moved to the exclusion population
+  - carriage is not horse and is outside this decision
+  - horse-drawn vehicles are not classified by this decision
+  - values other than no and yes require a separate registered decision before formal use
+  - conditional, directional or lane-scoped horse syntax requires separate syntax validation
+  - an unregistered vehicle key continues to stop fail-closed with ACCESS_VEHICLE_HIERARCHY_MISSING
+
+implementation_state:
+  decision_record: fixed
+  decision_record_validation: passed
+  registry_update: pending
+  semantic_invariant_update: pending
+  fixture_and_oracle_update: pending
+  focused_tests: pending
+  full_population_probe: pending
+  phase13_complete: false
+
+decision_record_validation:
+  command: >-
+    PYTHONPATH=05_src pytest -q
+    05_src/traffic_simulation/validation/test_phase13_horse_vehicle_ontology_decision_v17.py
+  exit_code: 0
+  test_count: 2
+  result: passed
+  log_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260814_horse_decision/decision_validation.log
+  log_byte_sha256: 19e95f03931508bcb63d5f1f276741db94fd3f8f0399d2690ed306a73c3ba6c7
+  verified_invariants:
+    - managed vehicle profile identity and byte hash
+    - governed vClass authority and byte hash
+    - empty horse intersection and no formal exclusion
+    - fixed-record count and yes/no value counts
+    - parent-rule, carriage, provenance and fail-closed boundaries
+
+acceptance_requirements_for_implementation:
+  - horse=no and horse=yes both normalize with an empty governed vehicle domain
+  - adding or removing horse=no or horse=yes does not change the managed delivery permission result
+  - applicable access and motorized-specific rules produce identical delivery results before and after horse normalization
+  - all 130 fixed horse records retain Way ID, source key, source value and blocker lineage
+  - the two motorcar-and-horse co-occurrence Ways retain both source constraints
+  - unknown vehicle keys and out-of-scope horse syntax remain fail-closed
+  - focused tests and the fixed-container full regression pass
+  - a new full-population probe reproduces zero remaining horse hierarchy blockers without modifying Phase 12 publication

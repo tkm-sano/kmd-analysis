@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urban_lastmile_vehicle_record_v1.schema.json",
+  "type": "object",
+  "required": ["schema_version", "dataset_id", "value_policy", "records"],
+  "properties": {
+    "schema_version": {"const": 1}, "dataset_id": {"const": "urban_lastmile_vehicle_records_v1"},
+    "value_policy": {
+      "type": "object",
+      "required": ["canonical_unit_system", "unknown_value", "estimated_value_allowed", "empirical_value_origin", "completed_variant_mixing", "oem_rebadge_sampling"],
+      "properties": {
+        "canonical_unit_system": {"const": "SI"},
+        "unknown_value": {"const": null},
+        "estimated_value_allowed": {"const": false},
+        "empirical_value_origin": {"const": "source_explicit"},
+        "completed_variant_mixing": {"const": "prohibited"},
+        "oem_rebadge_sampling": {"const": "one_platform_family"}
+      },
+      "additionalProperties": false
+    },
+    "records": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/record"}}
+  },
+  "$defs": {
+    "nullablePositive": {"type": ["number", "null"], "exclusiveMinimum": 0},
+    "constraint": {"type": ["object", "null"], "properties": {"operator": {"enum": ["<", "<=", ">", ">="]}, "value_kg": {"type": "number", "exclusiveMinimum": 0}}, "required": ["operator", "value_kg"], "additionalProperties": false},
+    "record": {
+      "type": "object",
+      "required": ["record_id", "record_type", "platform_family_id", "manufacturer", "model", "variant", "model_year", "vehicle_stratum_id", "legal_vehicle_class_jp", "body_type", "upfit_type", "powertrain", "deployment_evidence_ids", "physical", "energy", "charging", "field_provenance", "evidence_status", "notes"],
+      "properties": {
+        "record_id": {"type": "string"}, "record_type": {"enum": ["completed_vehicle_variant", "chassis_or_platform_capability"]},
+        "platform_family_id": {"type": "string"}, "manufacturer": {"type": "string"}, "model": {"type": "string"}, "variant": {"type": "string"},
+        "model_year": {"type": ["integer", "null"]}, "vehicle_stratum_id": {"pattern": "^F[1-7]$"},
+        "legal_vehicle_class_jp": {"type": ["string", "null"]}, "body_type": {"type": "string"}, "upfit_type": {"type": ["string", "null"]},
+        "powertrain": {"enum": ["battery_electric", "fuel_cell", "plug_in_hybrid", "hybrid", "internal_combustion"]},
+        "deployment_evidence_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "physical": {"type": "object", "required": ["length_m", "width_m", "height_m", "wheelbase_m", "curb_mass_kg", "gross_vehicle_mass_kg", "gross_vehicle_mass_constraint", "maximum_payload_kg", "maximum_payload_options_kg", "maximum_axle_load_kg"], "properties": {"length_m": {"$ref": "#/$defs/nullablePositive"}, "width_m": {"$ref": "#/$defs/nullablePositive"}, "height_m": {"$ref": "#/$defs/nullablePositive"}, "wheelbase_m": {"$ref": "#/$defs/nullablePositive"}, "curb_mass_kg": {"$ref": "#/$defs/nullablePositive"}, "gross_vehicle_mass_kg": {"$ref": "#/$defs/nullablePositive"}, "gross_vehicle_mass_constraint": {"$ref": "#/$defs/constraint"}, "maximum_payload_kg": {"$ref": "#/$defs/nullablePositive"}, "maximum_payload_options_kg": {"type": "array", "items": {"type": "number", "exclusiveMinimum": 0}}, "maximum_axle_load_kg": {"$ref": "#/$defs/nullablePositive"}}, "additionalProperties": false},
+        "energy": {"type": "object", "required": ["battery_capacity_kwh", "range_km", "range_test_cycle", "energy_consumption_wh_km"], "properties": {"battery_capacity_kwh": {"$ref": "#/$defs/nullablePositive"}, "range_km": {"$ref": "#/$defs/nullablePositive"}, "range_test_cycle": {"type": ["string", "null"]}, "energy_consumption_wh_km": {"$ref": "#/$defs/nullablePositive"}}, "additionalProperties": false},
+        "charging": {"type": "object", "required": ["ac_max_kw", "dc_max_kw"], "properties": {"ac_max_kw": {"$ref": "#/$defs/nullablePositive"}, "dc_max_kw": {"$ref": "#/$defs/nullablePositive"}}, "additionalProperties": false},
+        "field_provenance": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^SOURCE-[A-Z0-9-]+$"}},
+        "evidence_status": {"enum": ["complete", "partial", "incomplete"]}, "notes": {"type": "string"}
+      }, "additionalProperties": false
+    }
+  }, "additionalProperties": false
+}

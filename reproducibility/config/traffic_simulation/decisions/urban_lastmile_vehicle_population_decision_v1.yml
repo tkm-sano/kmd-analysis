@@ -1,0 +1,53 @@
+schema_version: 1
+decision_id: URBAN-LASTMILE-VEHICLE-POPULATION-DECISION-V1
+decision_version: 1.0.0
+status: approved
+approved_at: '2026-08-14'
+research_scope:
+  operation: urban_last_mile_delivery
+  final_delivery_area: ota_ward_centered
+  depot_area: ota_ward_and_surrounding_area
+  definition_source_id: SOURCE-MLIT-LAST-MILE
+decision:
+  representation: stratified_vehicle_population
+  single_representative_vehicle: prohibited
+  universe_id: urban_lastmile_delivery_universe_v1
+  sumo_fourwheel_population_id: ota_area_urban_lastmile_fourwheel_population_v1
+  runtime_profile_derivation: population_to_stratum_to_source_record_or_experimental_design_to_concrete_scalar_profile
+  representative_value_policy:
+    baseline_statistic: median
+    required_distribution_statistics: [sample_count, minimum, first_quartile, median, third_quartile, maximum]
+    optional_conditions: [small, standard, large]
+    independent_marginal_combination: prohibited
+  sampling_policy: source_record_only
+population_separation:
+  physical_vehicle_population_powertrains: all_relevant
+  bev_energy_population_powertrains: [battery_electric]
+  population_equals_runtime_profile: false
+non_destructive_constraints:
+  managed_urban_ev_delivery_v1_overwrite: prohibited
+  managed_vehicle_profile_schema_v1_const_change: prohibited
+  governed_runtime_interval_context_replacement: prohibited
+  phase12_publication_mutation: prohibited
+  registry_version_1_4_0_change_in_population_work: prohibited
+  blocker_resolution_from_population_addition_alone: prohibited
+evidence_rules:
+  unknown_empirical_values: null
+  inference_to_fill_unknowns: prohibited
+  oem_rebadge_independent_sample_inflation: prohibited
+  empirical_numeric_source_provenance: required
+  deployment_evidence_separate_from_vehicle_specification: true
+phase13_connection:
+  horse_decision: independent
+  psv_decision: independent
+  motorcar_decision: independent_after_population_evidence
+  motorcar_delivery_automatic_mapping: prohibited
+  goods_hgv_japan_semantics_decision: required_separately
+  insufficient_evidence_behavior: fail_closed
+  registry_change_order: decision_to_registry_to_schema_to_invariant_to_traceability_to_fixture_to_oracle_to_test
+deferred_decisions:
+  - psv coach membership
+  - motorcar intersection with managed delivery profiles
+  - Japan-specific goods and hgv boundaries
+  - SUMO delivery versus truck vClass assignment for F5 and F6
+  - concrete v2 runtime vehicle profiles

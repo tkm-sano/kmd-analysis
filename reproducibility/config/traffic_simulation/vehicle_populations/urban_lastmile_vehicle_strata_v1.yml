@@ -1,0 +1,399 @@
+schema_version: 1
+strata_registry_id: urban_lastmile_vehicle_strata_v1
+sampling_policy: source_record_only
+range_interpretation: observed_empirical_envelope
+strata:
+  F1:
+    stratum: light_commercial_vehicle
+    meaning: 軽貨物バン・軽貨物車
+    research_treatment: core
+    included: true
+    evidence_status: complete
+    bev_energy_parameter_status: available
+    exclusion_reason: null
+    independent_platform_family_count: 3
+    contributing_record_count: 3
+    source_record_ids:
+    - F1-MITSUBISHI-MINICAB-EV-2S-2025
+    - F1-HONDA-NVAN-E-COMMON-2025
+    - F1-SUZUKI-E-EVERY-2S-2026
+    empirical_envelope:
+      length_m:
+        observed_min: 3.395
+        observed_max: 3.395
+        contributing_record_count: 3
+        source_record_ids:
+        - F1-MITSUBISHI-MINICAB-EV-2S-2025
+        - F1-HONDA-NVAN-E-COMMON-2025
+        - F1-SUZUKI-E-EVERY-2S-2026
+      width_m:
+        observed_min: 1.475
+        observed_max: 1.475
+        contributing_record_count: 3
+        source_record_ids:
+        - F1-MITSUBISHI-MINICAB-EV-2S-2025
+        - F1-HONDA-NVAN-E-COMMON-2025
+        - F1-SUZUKI-E-EVERY-2S-2026
+      height_m:
+        observed_min: 1.89
+        observed_max: 1.96
+        contributing_record_count: 3
+        source_record_ids:
+        - F1-MITSUBISHI-MINICAB-EV-2S-2025
+        - F1-HONDA-NVAN-E-COMMON-2025
+        - F1-SUZUKI-E-EVERY-2S-2026
+      gross_vehicle_mass_kg:
+        observed_min: 1560
+        observed_max: 1560
+        contributing_record_count: 1
+        source_record_ids:
+        - F1-MITSUBISHI-MINICAB-EV-2S-2025
+      maximum_payload_kg:
+        observed_min: 350
+        observed_max: 350
+        contributing_record_count: 2
+        source_record_ids:
+        - F1-MITSUBISHI-MINICAB-EV-2S-2025
+        - F1-SUZUKI-E-EVERY-2S-2026
+      battery_capacity_kwh:
+        observed_min: 20.0
+        observed_max: 36.6
+        contributing_record_count: 3
+        source_record_ids:
+        - F1-MITSUBISHI-MINICAB-EV-2S-2025
+        - F1-HONDA-NVAN-E-COMMON-2025
+        - F1-SUZUKI-E-EVERY-2S-2026
+      range_km:
+        observed_min: 180
+        observed_max: 257
+        contributing_record_count: 3
+        source_record_ids:
+        - F1-MITSUBISHI-MINICAB-EV-2S-2025
+        - F1-HONDA-NVAN-E-COMMON-2025
+        - F1-SUZUKI-E-EVERY-2S-2026
+    range_interpretation: observed_empirical_envelope
+    sampling_policy: source_record_only
+  F2:
+    stratum: compact_commercial_van
+    meaning: コンパクト商用バン
+    research_treatment: core_evidence_gap
+    included: true
+    evidence_status: incomplete
+    bev_energy_parameter_status: unresolved
+    exclusion_reason: null
+    independent_platform_family_count: 0
+    contributing_record_count: 0
+    source_record_ids: []
+    empirical_envelope:
+      length_m:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      width_m:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      height_m:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      gross_vehicle_mass_kg:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      maximum_payload_kg:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      battery_capacity_kwh:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      range_km:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+    range_interpretation: observed_empirical_envelope
+    sampling_policy: source_record_only
+  F3:
+    stratum: full_size_commercial_van
+    meaning: 大型商用バン
+    research_treatment: core_evidence_gap
+    included: true
+    evidence_status: incomplete
+    bev_energy_parameter_status: unresolved
+    exclusion_reason: null
+    independent_platform_family_count: 0
+    contributing_record_count: 0
+    source_record_ids: []
+    empirical_envelope:
+      length_m:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      width_m:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      height_m:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      gross_vehicle_mass_kg:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      maximum_payload_kg:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      battery_capacity_kwh:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      range_km:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+    range_interpretation: observed_empirical_envelope
+    sampling_policy: source_record_only
+  F4:
+    stratum: small_truck_sub_3_5t_class
+    meaning: 小型配送トラック
+    research_treatment: core
+    included: true
+    evidence_status: partial
+    bev_energy_parameter_status: available
+    exclusion_reason: null
+    independent_platform_family_count: 2
+    contributing_record_count: 2
+    source_record_ids:
+    - F4-HINO-DUTRO-Z-EV-2026
+    - F4-ISUZU-ELFMIO-EV-CAPABILITY
+    empirical_envelope:
+      length_m:
+        observed_min: 4.69
+        observed_max: 4.69
+        contributing_record_count: 1
+        source_record_ids:
+        - F4-HINO-DUTRO-Z-EV-2026
+      width_m:
+        observed_min: 1.695
+        observed_max: 1.695
+        contributing_record_count: 2
+        source_record_ids:
+        - F4-HINO-DUTRO-Z-EV-2026
+        - F4-ISUZU-ELFMIO-EV-CAPABILITY
+      height_m:
+        observed_min: 2.285
+        observed_max: 2.285
+        contributing_record_count: 1
+        source_record_ids:
+        - F4-HINO-DUTRO-Z-EV-2026
+      gross_vehicle_mass_kg:
+        observed_min: 3440
+        observed_max: 3440
+        contributing_record_count: 1
+        source_record_ids:
+        - F4-HINO-DUTRO-Z-EV-2026
+      maximum_payload_kg:
+        observed_min: 950
+        observed_max: 1050
+        contributing_record_count: 2
+        source_record_ids:
+        - F4-HINO-DUTRO-Z-EV-2026
+        - F4-ISUZU-ELFMIO-EV-CAPABILITY
+      battery_capacity_kwh:
+        observed_min: 44
+        observed_max: 46.7
+        contributing_record_count: 2
+        source_record_ids:
+        - F4-HINO-DUTRO-Z-EV-2026
+        - F4-ISUZU-ELFMIO-EV-CAPABILITY
+      range_km:
+        observed_min: 115
+        observed_max: 184
+        contributing_record_count: 2
+        source_record_ids:
+        - F4-HINO-DUTRO-Z-EV-2026
+        - F4-ISUZU-ELFMIO-EV-CAPABILITY
+    range_interpretation: observed_empirical_envelope
+    sampling_policy: source_record_only
+  F5:
+    stratum: two_ton_payload_truck
+    meaning: 2t積載級
+    research_treatment: core_sensitivity
+    included: true
+    evidence_status: partial
+    bev_energy_parameter_status: available
+    exclusion_reason: null
+    independent_platform_family_count: 2
+    contributing_record_count: 2
+    source_record_ids:
+    - F5-YAMATO-ECANTER-2023
+    - F5-ISUZU-ELF-EV-NJR-CAPABILITY
+    empirical_envelope:
+      length_m:
+        observed_min: 5.39
+        observed_max: 5.39
+        contributing_record_count: 1
+        source_record_ids:
+        - F5-YAMATO-ECANTER-2023
+      width_m:
+        observed_min: 1.695
+        observed_max: 1.91
+        contributing_record_count: 2
+        source_record_ids:
+        - F5-YAMATO-ECANTER-2023
+        - F5-ISUZU-ELF-EV-NJR-CAPABILITY
+      height_m:
+        observed_min: 3.12
+        observed_max: 3.12
+        contributing_record_count: 1
+        source_record_ids:
+        - F5-YAMATO-ECANTER-2023
+      gross_vehicle_mass_kg:
+        observed_min: 5870
+        observed_max: 5870
+        contributing_record_count: 1
+        source_record_ids:
+        - F5-YAMATO-ECANTER-2023
+      maximum_payload_kg:
+        observed_min: 2000
+        observed_max: 2000
+        contributing_record_count: 2
+        source_record_ids:
+        - F5-YAMATO-ECANTER-2023
+        - F5-ISUZU-ELF-EV-NJR-CAPABILITY
+      battery_capacity_kwh:
+        observed_min: 41
+        observed_max: 44
+        contributing_record_count: 2
+        source_record_ids:
+        - F5-YAMATO-ECANTER-2023
+        - F5-ISUZU-ELF-EV-NJR-CAPABILITY
+      range_km:
+        observed_min: 116
+        observed_max: 120
+        contributing_record_count: 2
+        source_record_ids:
+        - F5-YAMATO-ECANTER-2023
+        - F5-ISUZU-ELF-EV-NJR-CAPABILITY
+    range_interpretation: observed_empirical_envelope
+    sampling_policy: source_record_only
+  F6:
+    stratum: three_ton_payload_class
+    meaning: 約3t積載級
+    research_treatment: sensitivity
+    included: true
+    evidence_status: partial
+    bev_energy_parameter_status: available
+    exclusion_reason: null
+    independent_platform_family_count: 1
+    contributing_record_count: 1
+    source_record_ids:
+    - F6-ISUZU-ELF-EV-NPR-CAPABILITY
+    empirical_envelope:
+      length_m:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      width_m:
+        observed_min: 1.995
+        observed_max: 1.995
+        contributing_record_count: 1
+        source_record_ids:
+        - F6-ISUZU-ELF-EV-NPR-CAPABILITY
+      height_m:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      gross_vehicle_mass_kg:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      maximum_payload_kg:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      battery_capacity_kwh:
+        observed_min: 110
+        observed_max: 110
+        contributing_record_count: 1
+        source_record_ids:
+        - F6-ISUZU-ELF-EV-NPR-CAPABILITY
+      range_km:
+        observed_min: 250
+        observed_max: 250
+        contributing_record_count: 1
+        source_record_ids:
+        - F6-ISUZU-ELF-EV-NPR-CAPABILITY
+    range_interpretation: observed_empirical_envelope
+    sampling_policy: source_record_only
+  F7:
+    stratum: medium_large_truck_boundary
+    meaning: 中大型・幹線寄り
+    research_treatment: boundary
+    included: false
+    evidence_status: incomplete
+    bev_energy_parameter_status: unresolved
+    exclusion_reason: 原則として都市内ラストマイル四輪母集団から除外
+    independent_platform_family_count: 0
+    contributing_record_count: 0
+    source_record_ids: []
+    empirical_envelope:
+      length_m:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      width_m:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      height_m:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      gross_vehicle_mass_kg:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      maximum_payload_kg:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      battery_capacity_kwh:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+      range_km:
+        observed_min: null
+        observed_max: null
+        contributing_record_count: 0
+        source_record_ids: []
+    range_interpretation: observed_empirical_envelope
+    sampling_policy: source_record_only

@@ -1,0 +1,131 @@
+schema_version: 1
+source_registry_id: lastmile_delivery_sources_v1
+accessed_at: '2026-08-14'
+sources:
+  - source_id: SOURCE-MLIT-LAST-MILE
+    publisher: 国土交通省四国運輸局
+    title: 自家用車による有償貨物運送
+    url: https://wwwtb.mlit.go.jp/shikoku/00001_02677.html
+    published_at: '2026-04-17'
+    accessed_at: '2026-08-14'
+    source_type: government_definition
+    authority_level: primary_government
+    supported_claims:
+      - last-mile transport means delivery from a business office to residences or similar destinations in a nearby limited area
+  - source_id: SOURCE-JAPAN-POST-EV
+    publisher: 日本郵便株式会社
+    title: 環境
+    url: https://www.post.japanpost.jp/about/csr/nature/
+    published_at: null
+    accessed_at: '2026-08-14'
+    source_type: operator_environment
+    authority_level: primary_operator
+    supported_claims:
+      - the operator identifies reduction of emissions from business vehicles as an environmental measure
+      - no vehicle-count claim is extracted because the cited page body does not expose a verifiable count
+  - source_id: SOURCE-MITSUBISHI-MINICAB-EV
+    publisher: 三菱自動車工業株式会社
+    title: ミニキャブ EV 主要諸元（スペック）
+    url: https://www.mitsubishi-motors.co.jp/lineup/minicab_ev/spec/spe_02.html
+    published_at: null
+    accessed_at: '2026-08-14'
+    source_type: manufacturer_specification
+    authority_level: primary_manufacturer
+    supported_claims:
+      - two-seat 20 kWh variant dimensions, masses, payload, battery, WLTC range and WLTC energy consumption
+  - source_id: SOURCE-HONDA-NVAN-E-TYPE
+    publisher: 本田技研工業株式会社
+    title: 'N-VAN e: タイプ比較'
+    url: https://www.honda.co.jp/N-VAN-e/webcatalog/type/compare/
+    published_at: null
+    accessed_at: '2026-08-14'
+    source_type: manufacturer_specification
+    authority_level: primary_manufacturer
+    supported_claims:
+      - common platform dimensions, battery capacity and WLTC range
+  - source_id: SOURCE-HONDA-NVAN-E-PAYLOAD
+    publisher: 本田技研工業株式会社
+    title: 'N-VAN e: 2025 仕様'
+    url: https://www.honda.co.jp/ownersmanual/webom/jpn/n-van-e/2025/details/136249090-15246.html
+    published_at: null
+    accessed_at: '2026-08-14'
+    source_type: manufacturer_specification
+    authority_level: primary_manufacturer
+    supported_claims:
+      - maximum payload differs between passenger-seat configurations
+  - source_id: SOURCE-SUZUKI-E-EVERY
+    publisher: スズキ株式会社
+    title: 軽商用バッテリーEV 新型「e エブリイ」を発売
+    url: https://www.suzuki.co.jp/release/a/2026/0309/index.html
+    published_at: '2026-03-09'
+    accessed_at: '2026-08-14'
+    source_type: manufacturer_release
+    authority_level: primary_manufacturer
+    supported_claims:
+      - two-seat vehicle dimensions, curb mass and payload
+      - Suzuki Daihatsu Toyota joint-development platform lineage
+  - source_id: SOURCE-SUZUKI-E-EVERY-EV
+    publisher: スズキ株式会社
+    title: e エブリイ 走行・EV性能
+    url: https://www.suzuki.co.jp/car/eevery/performance_ev/
+    published_at: null
+    accessed_at: '2026-08-14'
+    source_type: manufacturer_specification
+    authority_level: primary_manufacturer
+    supported_claims:
+      - battery capacity, WLTC range and WLTC energy consumption
+  - source_id: SOURCE-HINO-DUTRO-Z-EV
+    publisher: 日野自動車株式会社
+    title: 小型BEVトラック「日野デュトロ Z EV」を改良して新発売
+    url: https://www.hino.co.jp/corp/news/2026/20260602-004699.shtml
+    published_at: '2026-06-02'
+    accessed_at: '2026-08-14'
+    source_type: manufacturer_release
+    authority_level: primary_manufacturer
+    supported_claims:
+      - completed-vehicle dimensions, GVW, payload, battery and WLTC range
+      - manufacturer identifies last-one-mile logistics use
+  - source_id: SOURCE-ISUZU-ELF-EV
+    publisher: いすゞ自動車株式会社
+    title: ELF EV
+    url: https://www.isuzu.co.jp/product/elf/ev/
+    published_at: null
+    accessed_at: '2026-08-14'
+    source_type: manufacturer_specification
+    authority_level: primary_manufacturer
+    supported_claims:
+      - ELFmio EV, ELF EV NJR and ELF EV NPR platform capabilities
+      - battery, range, cab-width, wheelbase and payload capability values by platform
+  - source_id: SOURCE-YAMATO-ECANTER
+    publisher: ヤマト運輸株式会社
+    title: 電気小型トラック「eCanter」新型モデル約900台を全国に導入
+    url: https://www.yamato-hd.co.jp/news/2023/newsrelease_20230912_1.html
+    published_at: '2023-09-12'
+    accessed_at: '2026-08-14'
+    source_type: operator_deployment
+    authority_level: primary_operator
+    supported_claims:
+      - operator-specific completed-vehicle dimensions, masses, payload, battery, range and charging power
+      - approximately 900 vehicles introduced for collection and delivery
+  - source_id: SOURCE-SAGAWA-LIGHT-EV-LAST-MILE
+    publisher: 佐川急便株式会社
+    title: スズキ・ダイハツ・トヨタが共同開発した軽EVで実現する、持続可能なラストワンマイル
+    url: https://www.sagawa-exp.co.jp/about-csr/column/article_65.html
+    published_at: '2026-07-10'
+    accessed_at: '2026-08-14'
+    source_type: operator_deployment
+    authority_level: primary_operator
+    supported_claims:
+      - jointly developed light EV is used for last-one-mile delivery
+      - deployment count is not stated
+  - source_id: SOURCE-YAMATO-NVAN-TEST
+    publisher: ヤマト運輸株式会社・本田技研工業株式会社
+    title: Hondaとヤマト運輸 新型軽商用EVの集配業務における実用性の検証を2023年6月から開始
+    url: https://www.yamato-hd.co.jp/news/2023/newsrelease_20230414_1.html
+    published_at: '2023-04-14'
+    accessed_at: '2026-08-14'
+    source_type: operator_deployment
+    authority_level: primary_operator
+    supported_claims:
+      - three N-VAN-based light commercial EVs were tested in collection and delivery
+      - one test area represents Tokyo 23-ward operations

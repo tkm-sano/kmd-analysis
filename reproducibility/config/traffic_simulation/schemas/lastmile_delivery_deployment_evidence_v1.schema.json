@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "lastmile_delivery_deployment_evidence_v1.schema.json",
+  "type": "object",
+  "required": ["schema_version", "deployment_registry_id", "evidence"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "deployment_registry_id": {"const": "lastmile_delivery_deployment_evidence_v1"},
+    "evidence": {"type": "array", "items": {"$ref": "#/$defs/item"}}
+  },
+  "$defs": {
+    "item": {
+      "type": "object",
+      "required": ["evidence_id", "operator", "vehicle_or_platform", "platform_family_id", "stratum_id", "deployment_status", "operation_type", "deployment_area", "geographic_relevance", "last_mile_explicit", "vehicle_count", "as_of", "source_id", "notes"],
+      "properties": {
+        "evidence_id": {"type": "string", "minLength": 1},
+        "operator": {"type": "string", "minLength": 1},
+        "vehicle_or_platform": {"type": "string", "minLength": 1},
+        "platform_family_id": {"type": "string", "minLength": 1},
+        "stratum_id": {"type": "string", "pattern": "^F[1-7]$"},
+        "deployment_status": {"enum": ["production", "pilot", "demonstration"]},
+        "operation_type": {"type": "string", "minLength": 1},
+        "deployment_area": {"type": "string", "minLength": 1},
+        "geographic_relevance": {"enum": ["ota_direct", "ota_adjacent", "tokyo_23", "tokyo_metropolitan", "japan_urban", "japan_general"]},
+        "last_mile_explicit": {"type": "boolean"},
+        "vehicle_count": {"type": ["integer", "null"], "minimum": 1},
+        "as_of": {"type": ["string", "null"], "minLength": 1},
+        "source_id": {"type": "string", "pattern": "^SOURCE-[A-Z0-9-]+$"},
+        "notes": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

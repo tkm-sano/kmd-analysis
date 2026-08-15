@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urban_lastmile_vehicle_strata_v1.schema.json",
+  "type": "object",
+  "required": ["schema_version", "strata_registry_id", "sampling_policy", "range_interpretation", "strata"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "strata_registry_id": {"const": "urban_lastmile_vehicle_strata_v1"},
+    "sampling_policy": {"const": "source_record_only"},
+    "range_interpretation": {"const": "observed_empirical_envelope"},
+    "strata": {
+      "type": "object",
+      "required": ["F1", "F2", "F3", "F4", "F5", "F6", "F7"],
+      "properties": {
+        "F1": {"$ref": "#/$defs/stratum"},
+        "F2": {"$ref": "#/$defs/stratum"},
+        "F3": {"$ref": "#/$defs/stratum"},
+        "F4": {"$ref": "#/$defs/stratum"},
+        "F5": {"$ref": "#/$defs/stratum"},
+        "F6": {"$ref": "#/$defs/stratum"},
+        "F7": {"$ref": "#/$defs/stratum"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "nullablePositive": {"type": ["number", "null"], "exclusiveMinimum": 0},
+    "envelopeField": {
+      "type": "object",
+      "required": ["observed_min", "observed_max", "contributing_record_count", "source_record_ids"],
+      "properties": {
+        "observed_min": {"$ref": "#/$defs/nullablePositive"},
+        "observed_max": {"$ref": "#/$defs/nullablePositive"},
+        "contributing_record_count": {"type": "integer", "minimum": 0},
+        "source_record_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      },
+      "additionalProperties": false
+    },
+    "stratum": {
+      "type": "object",
+      "required": ["stratum", "meaning", "research_treatment", "included", "evidence_status", "bev_energy_parameter_status", "exclusion_reason", "independent_platform_family_count", "contributing_record_count", "source_record_ids", "empirical_envelope", "range_interpretation", "sampling_policy"],
+      "properties": {
+        "stratum": {"type": "string", "minLength": 1},
+        "meaning": {"type": "string", "minLength": 1},
+        "research_treatment": {"type": "string", "minLength": 1},
+        "included": {"type": "boolean"},
+        "evidence_status": {"enum": ["complete", "partial", "incomplete"]},
+        "bev_energy_parameter_status": {"enum": ["available", "unresolved"]},
+        "exclusion_reason": {"type": ["string", "null"]},
+        "independent_platform_family_count": {"type": "integer", "minimum": 0},
+        "contributing_record_count": {"type": "integer", "minimum": 0},
+        "source_record_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "empirical_envelope": {
+          "type": "object",
+          "required": ["length_m", "width_m", "height_m", "gross_vehicle_mass_kg", "maximum_payload_kg", "battery_capacity_kwh", "range_km"],
+          "properties": {
+            "length_m": {"$ref": "#/$defs/envelopeField"},
+            "width_m": {"$ref": "#/$defs/envelopeField"},
+            "height_m": {"$ref": "#/$defs/envelopeField"},
+            "gross_vehicle_mass_kg": {"$ref": "#/$defs/envelopeField"},
+            "maximum_payload_kg": {"$ref": "#/$defs/envelopeField"},
+            "battery_capacity_kwh": {"$ref": "#/$defs/envelopeField"},
+            "range_km": {"$ref": "#/$defs/envelopeField"}
+          },
+          "additionalProperties": false
+        },
+        "range_interpretation": {"const": "observed_empirical_envelope"},
+        "sampling_policy": {"const": "source_record_only"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

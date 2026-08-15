@@ -1,0 +1,14 @@
+schema_version: 1
+vehicle_population_id: ota_area_urban_lastmile_fourwheel_population_v1
+population_universe_id: urban_lastmile_delivery_universe_v1
+included_strata: [F1, F2, F3, F4, F5, F6]
+excluded_strata: {F7: boundary_or_linehaul_vehicle_not_representative_of_core_urban_last_mile}
+sampling_policy: source_record_only
+independent_min_max_sampling: prohibited
+physical_vehicle_population: {powertrain_scope: all_relevant}
+bev_energy_population: {powertrain_scope: [battery_electric]}
+runtime_profile_policy:
+  population_is_runtime_profile: false
+  active_profile_unchanged: managed_urban_ev_delivery_v1
+  scalar_profile_required_by_sumo: true
+  future_profile_derivation: population_to_stratum_to_source_record_or_experimental_design_to_concrete_profile

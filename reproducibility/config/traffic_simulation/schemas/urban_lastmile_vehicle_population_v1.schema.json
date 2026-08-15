@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "urban_lastmile_vehicle_population_v1.schema.json",
+  "type": "object", "required": ["schema_version"],
+  "oneOf": [
+    {"required": ["population_universe_id", "research_scope", "modalities"]},
+    {"required": ["vehicle_population_id", "population_universe_id", "included_strata", "sampling_policy", "physical_vehicle_population", "bev_energy_population", "runtime_profile_policy"]}
+  ]
+}

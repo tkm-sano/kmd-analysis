@@ -1,0 +1,42 @@
+schema_version: 1
+completion_id: urban_lastmile_vehicle_population_evidence_v1_20260814
+status: passed
+recorded_at: '2026-08-14'
+decision: reproducibility/config/traffic_simulation/decisions/urban_lastmile_vehicle_population_decision_v1.yml
+counts:
+  source_records: 12
+  deployment_evidence_records: 3
+  canonical_vehicle_records: 8
+  modalities: 7
+  fourwheel_strata: 7
+  f1_independent_platform_families: 3
+  generated_markdown_tables: 4
+artifacts:
+  population_decision: {path: reproducibility/config/traffic_simulation/decisions/urban_lastmile_vehicle_population_decision_v1.yml, byte_sha256: badaecbd386068d29456237abdaff5701b5da1e11bb2edfc30f63a4dca3e1ece}
+  sources: {path: reproducibility/config/traffic_simulation/evidence/lastmile_delivery_sources_v1.yml, byte_sha256: 94986eba000991ee246b4a82e04279cd31415be774da1aa6e701ad1e8fd50ef7}
+  deployment: {path: reproducibility/config/traffic_simulation/evidence/lastmile_delivery_deployment_evidence_v1.yml, byte_sha256: 7a22e2a03b0c232177def41e82607d42daddb49c88b8f3431c1fcd5b842f10a2}
+  canonical_records: {path: reproducibility/config/traffic_simulation/datasets/urban_lastmile_vehicle_records_v1.yml, byte_sha256: f49610dfc0e44a57729a97b4a4cc41677d2502fc4d0f7c34254c073311354cd2}
+  generated_csv: {path: reproducibility/config/traffic_simulation/datasets/urban_lastmile_vehicle_records_v1.csv, byte_sha256: 1d31779b1714254cecc7788236d67b37e589ed69e96179bd34bd55fe2341ae70}
+  universe: {path: reproducibility/config/traffic_simulation/vehicle_populations/urban_lastmile_vehicle_universe_v1.yml, byte_sha256: 369e6fcef63ad201deaf15a5094c266dc49ba1e7f6331efb1ab94a7bbcc6dffe}
+  population: {path: reproducibility/config/traffic_simulation/vehicle_populations/ota_area_urban_lastmile_fourwheel_population_v1.yml, byte_sha256: ca407a7baca12eb53c66ed18ff901d9c9862c7bbb7e9efc3eb8269e81cb0fffa}
+  generated_strata: {path: reproducibility/config/traffic_simulation/vehicle_populations/urban_lastmile_vehicle_strata_v1.yml, byte_sha256: 158c3c4d83476918dcd1f20147374a9d5f31d6e031b20002150d77e4375ecaf1}
+  review_markdown: {path: 05_src/traffic_simulation/specifications/urban_lastmile_vehicle_population_evidence_v1.md, byte_sha256: ebf21fbf848932978a41b8c3e296131e8fc7536866891da68a1e328c212f4c1a}
+validation:
+  generator_check: {command: PYTHONPATH=05_src python -m traffic_simulation.network.build_urban_lastmile_vehicle_tables_v1 --check, exit_code: 0, result: passed}
+  validator: {command: PYTHONPATH=05_src python -m traffic_simulation.network.validate_urban_lastmile_vehicle_population_v1, exit_code: 0, result: passed, log: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260814_vehicle_population_source_revision/validator_final.log, log_byte_sha256: e6cfde381c6a8b3ba87d059beb430ead07b7b24d6177b521084d757e2fe2fa84}
+  new_tests: {command: PYTHONPATH=05_src pytest -q 05_src/traffic_simulation/validation/test_urban_lastmile_vehicle_population_v1.py 05_src/traffic_simulation/validation/test_urban_lastmile_vehicle_tables_v1.py, exit_code: 0, test_count: 7, result: passed, log: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260814_vehicle_population_source_revision/new_tests_final.log, log_byte_sha256: 6a117e5b46fbfde4c9131b01476ccf75d42f2fd7f985c223f6b7ae9cf2ac8152}
+  existing_vehicle_access_tests: {exit_code: 0, test_count: 51, result: passed, log: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260814_vehicle_population_source_revision/existing_vehicle_access_tests.log, log_byte_sha256: b9c56534799250429add0bc359427d998dc310d1792abd802a18de08e51c9f29}
+  fixed_container_regression: {command: docker compose run --rm -T analysis python -m pytest -q 05_src/traffic_simulation/validation, exit_code: 0, test_count: 606, result: passed, log: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260814_vehicle_population_source_revision/full_regression.log, log_byte_sha256: d80927042b81aac3ddb024b79c534a0b4793f02c9854856bb4eafb249ae17e97}
+non_destructive_verification:
+  managed_urban_ev_delivery_v1: {changed: false, byte_sha256: 8f837f7a1b4fa7274e86e5d8ac09260738d2c0dac9cbeb7143300e82b92bc2b5}
+  managed_vehicle_profile_schema_v1: {changed: false, byte_sha256: 0e8f7b2a4a828bf37054178f0d11ac604a01024b142bca5c907184e5ddcbf63c}
+  governed_runtime_interval_context_v17: {changed: false, byte_sha256: e7a808f46d028db1242e117757619aecae54b6a7ffcc6a1d8ba3114afcb13edf}
+  attribute_resolution_registry_1_4_0: {changed: false, byte_sha256: a4d9a5b196172ae90476f0db6ee3d17ae39f64d6c142f6696d4ef59123454907}
+  phase12_publication_changed: false
+phase13_effect:
+  authoritative_source_set_exact: true
+  empirical_envelope_records_source_ids: true
+  japan_post_vehicle_count_extracted: false
+  blocker_count_changed_by_population_addition: false
+  ontology_decisions_automatically_authorized: false
+  next_action: implement_horse_decision_then_decide_psv_then_motorcar_and_japan_goods_hgv

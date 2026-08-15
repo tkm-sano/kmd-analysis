@@ -106,6 +106,56 @@ execution_history:
     result: collection_failed_environment_not_code
     missing_host_dependencies: [rfc8785, folium]
     resolution: rerun_the_complete_suite_in_the_digest_fixed_analysis_container
+  - order: 9
+    action: extract_psv_motorcar_horse_records_from_fixed_blocker_inventory
+    status: completed
+    evidence: reproducibility/config/traffic_simulation/v17_phase13_vehicle_ontology_record_extraction.yml
+    result: passed
+    observations:
+      unique_source_ways: 300
+      remaining_hierarchy_causes: {horse: 130, motorcar: 154, psv: 16}
+      overlapping_motorcar_and_horse_ways: 2
+      fixed_phase12_publication_modified: false
+  - order: 10
+    action: fix_horse_vehicle_ontology_decision
+    status: completed
+    evidence: reproducibility/config/traffic_simulation/v17_phase13_horse_vehicle_ontology_decision.yml
+    result: approved_empty_intersection
+    decision: DEC-P13-HORSE-ONTOLOGY-001
+    decision_record_byte_sha256: bc73b8bceee837d72c51151e97ba822a2b2336024718e9258145ba1b512d1874
+    validation_command: PYTHONPATH=05_src pytest -q 05_src/traffic_simulation/validation/test_phase13_horse_vehicle_ontology_decision_v17.py
+    validation_exit_code: 0
+    validation_test_count: 2
+    validation_log: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260814_horse_decision/decision_validation.log
+    validation_log_byte_sha256: 19e95f03931508bcb63d5f1f276741db94fd3f8f0399d2690ed306a73c3ba6c7
+    observations:
+      horse_source_ways: 130
+      source_value_counts: {'no': 125, 'yes': 5}
+      managed_delivery_permission_effect: none
+      formal_exclusion: false
+      registry_implementation_pending: true
+  - order: 11
+    action: add_urban_lastmile_vehicle_population_evidence_layer
+    status: completed
+    evidence: reproducibility/config/traffic_simulation/v17_phase13_vehicle_population_evidence_completion.yml
+    result: passed
+    observations:
+      canonical_vehicle_records: 8
+      source_records: 12
+      deployment_evidence_records: 3
+      modalities: 7
+      strata: 7
+      f1_independent_platform_families: 3
+      f2_f3_evidence_status: incomplete
+      sampling_policy: source_record_only
+      generated_markdown_tables: 4
+      fixed_container_regression: 606_passed
+      authoritative_source_set_exact: true
+      envelope_contributing_record_traceability: true
+      registry_version_1_4_0_changed: false
+      managed_runtime_profile_v1_changed: false
+      phase12_publication_changed: false
+      blocker_count_changed_by_population_addition: false
 
 current_blocker_summary:
   total_at_fixed_phase12_baseline: 108189
@@ -132,6 +182,9 @@ current_position:
     - first_vehicle_ontology_decision
     - first_full_population_stage_probe
     - fixed_container_regression
+    - psv_motorcar_horse_record_extraction
+    - horse_vehicle_ontology_decision
+    - urban_lastmile_vehicle_population_evidence_v1
   not_yet_completed:
     - all_remaining_root_cause_decisions
     - complete_phase13_full_population_rerun
@@ -139,7 +192,12 @@ current_position:
     - two_run_determinism_after_remediation
     - phase13_completion_record
     - phase14_attribute_resolution_acceptance
-  immediate_next_action: decide_psv_motorcar_and_horse_vehicle_domain_semantics_independently
+  immediate_next_action: implement_and_test_horse_empty_intersection_decision
+  planned_sequence_after_horse:
+    - implement_horse_decision_in_registry_invariant_fixture_oracle
+    - run_horse_focused_probe_stable_id_diff_and_fixed_container_regression
+    - decide_psv_intersection_independently
+    - decide_motorcar_intersection_and_japan_goods_hgv_semantics_independently_using_population_as_reference_evidence
 
 recording_rules_for_next_actions:
   - every decision records authority evidence affected records rule and version

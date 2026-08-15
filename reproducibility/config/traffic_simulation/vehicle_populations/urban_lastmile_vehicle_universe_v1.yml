@@ -1,0 +1,11 @@
+schema_version: 1
+population_universe_id: urban_lastmile_delivery_universe_v1
+research_scope: {operation: urban_last_mile_delivery, final_delivery_area: ota_ward_centered, depot_area: ota_ward_and_surrounding_area, country: JP, authority_source_id: SOURCE-MLIT-LAST-MILE}
+modalities:
+  M0: {name: walking_and_hand_cart, included_in_universe: true, included_in_sumo_fourwheel_population: false}
+  M1: {name: bicycle_and_e_assist_cargo_bike, included_in_universe: true, included_in_sumo_fourwheel_population: false}
+  M2: {name: motorcycle_and_e_motorcycle, included_in_universe: true, included_in_sumo_fourwheel_population: false}
+  M3: {name: micro_delivery_mobility, included_in_universe: true, included_in_sumo_fourwheel_population: false}
+  M4: {name: four_wheel_goods_vehicle, included_in_universe: true, included_in_sumo_fourwheel_population: true}
+  M5: {name: autonomous_delivery_robot, included_in_universe: true, included_in_sumo_fourwheel_population: false}
+  M6: {name: drone, included_in_universe: true, included_in_sumo_fourwheel_population: false}

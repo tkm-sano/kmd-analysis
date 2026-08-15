@@ -1,0 +1,45 @@
+schema_version: 1
+deployment_registry_id: lastmile_delivery_deployment_evidence_v1
+evidence:
+  - evidence_id: DEP-YAMATO-NVAN-E-PILOT
+    operator: ヤマト運輸株式会社
+    vehicle_or_platform: N-VAN-based light commercial EV prototype
+    platform_family_id: honda_nvan_e
+    stratum_id: F1
+    deployment_status: pilot
+    operation_type: parcel_collection_and_delivery
+    deployment_area: Tokyo Suginami, Utsunomiya and Kobe
+    geographic_relevance: tokyo_23
+    last_mile_explicit: false
+    vehicle_count: 3
+    as_of: '2023-06-01'
+    source_id: SOURCE-YAMATO-NVAN-TEST
+    notes: Tokyo test was based at the Nakano depot; this is Tokyo-23 operational evidence, not Ota-direct evidence.
+  - evidence_id: DEP-SAGAWA-LIGHT-EV-LASTMILE
+    operator: 佐川急便株式会社
+    vehicle_or_platform: jointly developed Suzuki Daihatsu Toyota light EV
+    platform_family_id: suzuki_daihatsu_toyota_light_bev_2026
+    stratum_id: F1
+    deployment_status: production
+    operation_type: last_mile_parcel_delivery
+    deployment_area: Japan urban delivery operations
+    geographic_relevance: japan_urban
+    last_mile_explicit: true
+    vehicle_count: null
+    as_of: '2026-07-10'
+    source_id: SOURCE-SAGAWA-LIGHT-EV-LAST-MILE
+    notes: The official operator page states rollout but not a count; the joint platform is counted as one independent family.
+  - evidence_id: DEP-YAMATO-ECANTER-900
+    operator: ヤマト運輸株式会社
+    vehicle_or_platform: Yamato-spec Mitsubishi Fuso eCanter
+    platform_family_id: fuso_ecanter_s_battery_2023
+    stratum_id: F5
+    deployment_status: production
+    operation_type: urban_parcel_collection_and_delivery
+    deployment_area: nationwide collection and delivery operations
+    geographic_relevance: japan_general
+    last_mile_explicit: false
+    vehicle_count: 900
+    as_of: '2023-09'
+    source_id: SOURCE-YAMATO-ECANTER
+    notes: The source says approximately 900 vehicles; vehicle_count records that approximate published scale.

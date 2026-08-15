@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "lastmile_delivery_sources_v1.schema.json",
+  "type": "object",
+  "required": ["schema_version", "source_registry_id", "accessed_at", "sources"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "source_registry_id": {"const": "lastmile_delivery_sources_v1"},
+    "accessed_at": {"const": "2026-08-14"},
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["source_id", "publisher", "title", "url", "published_at", "accessed_at", "source_type", "authority_level", "supported_claims"],
+        "properties": {
+          "source_id": {"type": "string", "pattern": "^SOURCE-[A-Z0-9-]+$"},
+          "publisher": {"type": "string", "minLength": 1},
+          "title": {"type": "string", "minLength": 1},
+          "url": {"type": "string", "format": "uri", "pattern": "^https://"},
+          "published_at": {"type": ["string", "null"], "format": "date"},
+          "accessed_at": {"const": "2026-08-14"},
+          "source_type": {"enum": ["government_definition", "manufacturer_specification", "manufacturer_release", "operator_deployment", "operator_environment"]},
+          "authority_level": {"enum": ["primary_government", "primary_manufacturer", "primary_operator"]},
+          "supported_claims": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

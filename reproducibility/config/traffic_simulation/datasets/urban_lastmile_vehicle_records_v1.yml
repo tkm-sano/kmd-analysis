@@ -1,0 +1,162 @@
+schema_version: 1
+dataset_id: urban_lastmile_vehicle_records_v1
+value_policy:
+  canonical_unit_system: SI
+  unknown_value: null
+  estimated_value_allowed: false
+  empirical_value_origin: source_explicit
+  completed_variant_mixing: prohibited
+  oem_rebadge_sampling: one_platform_family
+records:
+  - record_id: F1-MITSUBISHI-MINICAB-EV-2S-2025
+    record_type: completed_vehicle_variant
+    platform_family_id: mitsubishi_minicab_ev_20kwh
+    manufacturer: Mitsubishi Motors
+    model: Minicab EV
+    variant: 2-seat 20kWh
+    model_year: 2025
+    vehicle_stratum_id: F1
+    legal_vehicle_class_jp: kei_cargo_vehicle
+    body_type: van
+    upfit_type: standard_cargo
+    powertrain: battery_electric
+    deployment_evidence_ids: []
+    physical: {length_m: 3.395, width_m: 1.475, height_m: 1.915, wheelbase_m: 2.390, curb_mass_kg: 1100, gross_vehicle_mass_kg: 1560, gross_vehicle_mass_constraint: null, maximum_payload_kg: 350, maximum_payload_options_kg: [], maximum_axle_load_kg: null}
+    energy: {battery_capacity_kwh: 20.0, range_km: 180, range_test_cycle: WLTC, energy_consumption_wh_km: 127}
+    charging: {ac_max_kw: null, dc_max_kw: null}
+    field_provenance: {physical.length_m: SOURCE-MITSUBISHI-MINICAB-EV, physical.width_m: SOURCE-MITSUBISHI-MINICAB-EV, physical.height_m: SOURCE-MITSUBISHI-MINICAB-EV, physical.wheelbase_m: SOURCE-MITSUBISHI-MINICAB-EV, physical.curb_mass_kg: SOURCE-MITSUBISHI-MINICAB-EV, physical.gross_vehicle_mass_kg: SOURCE-MITSUBISHI-MINICAB-EV, physical.maximum_payload_kg: SOURCE-MITSUBISHI-MINICAB-EV, energy.battery_capacity_kwh: SOURCE-MITSUBISHI-MINICAB-EV, energy.range_km: SOURCE-MITSUBISHI-MINICAB-EV, energy.energy_consumption_wh_km: SOURCE-MITSUBISHI-MINICAB-EV}
+    evidence_status: complete
+    notes: Values are the same official two-seat variant; optional-equipment mass is not added.
+  - record_id: F1-HONDA-NVAN-E-COMMON-2025
+    record_type: chassis_or_platform_capability
+    platform_family_id: honda_nvan_e
+    manufacturer: Honda
+    model: 'N-VAN e:'
+    variant: common confirmed specification only
+    model_year: 2025
+    vehicle_stratum_id: F1
+    legal_vehicle_class_jp: kei_cargo_vehicle
+    body_type: van
+    upfit_type: null
+    powertrain: battery_electric
+    deployment_evidence_ids: [DEP-YAMATO-NVAN-E-PILOT]
+    physical: {length_m: 3.395, width_m: 1.475, height_m: 1.960, wheelbase_m: null, curb_mass_kg: null, gross_vehicle_mass_kg: null, gross_vehicle_mass_constraint: null, maximum_payload_kg: null, maximum_payload_options_kg: [300, 350], maximum_axle_load_kg: null}
+    energy: {battery_capacity_kwh: 29.6, range_km: 245, range_test_cycle: WLTC, energy_consumption_wh_km: null}
+    charging: {ac_max_kw: null, dc_max_kw: null}
+    field_provenance: {physical.length_m: SOURCE-HONDA-NVAN-E-TYPE, physical.width_m: SOURCE-HONDA-NVAN-E-TYPE, physical.height_m: SOURCE-HONDA-NVAN-E-TYPE, physical.maximum_payload_options_kg: SOURCE-HONDA-NVAN-E-PAYLOAD, energy.battery_capacity_kwh: SOURCE-HONDA-NVAN-E-TYPE, energy.range_km: SOURCE-HONDA-NVAN-E-TYPE}
+    evidence_status: partial
+    notes: Common confirmed values only; curb mass and payload are not combined across mismatched seating variants.
+  - record_id: F1-SUZUKI-E-EVERY-2S-2026
+    record_type: completed_vehicle_variant
+    platform_family_id: suzuki_daihatsu_toyota_light_bev_2026
+    manufacturer: Suzuki
+    model: e Every
+    variant: 2-seat 2WD
+    model_year: 2026
+    vehicle_stratum_id: F1
+    legal_vehicle_class_jp: kei_cargo_vehicle
+    body_type: van
+    upfit_type: standard_cargo
+    powertrain: battery_electric
+    deployment_evidence_ids: [DEP-SAGAWA-LIGHT-EV-LASTMILE]
+    physical: {length_m: 3.395, width_m: 1.475, height_m: 1.890, wheelbase_m: null, curb_mass_kg: 1240, gross_vehicle_mass_kg: null, gross_vehicle_mass_constraint: null, maximum_payload_kg: 350, maximum_payload_options_kg: [], maximum_axle_load_kg: null}
+    energy: {battery_capacity_kwh: 36.6, range_km: 257, range_test_cycle: WLTC, energy_consumption_wh_km: 161}
+    charging: {ac_max_kw: null, dc_max_kw: null}
+    field_provenance: {physical.length_m: SOURCE-SUZUKI-E-EVERY, physical.width_m: SOURCE-SUZUKI-E-EVERY, physical.height_m: SOURCE-SUZUKI-E-EVERY, physical.curb_mass_kg: SOURCE-SUZUKI-E-EVERY, physical.maximum_payload_kg: SOURCE-SUZUKI-E-EVERY, energy.battery_capacity_kwh: SOURCE-SUZUKI-E-EVERY-EV, energy.range_km: SOURCE-SUZUKI-E-EVERY-EV, energy.energy_consumption_wh_km: SOURCE-SUZUKI-E-EVERY-EV}
+    evidence_status: complete
+    notes: Joint Suzuki-Daihatsu-Toyota platform is one independent platform family.
+  - record_id: F4-HINO-DUTRO-Z-EV-2026
+    record_type: completed_vehicle_variant
+    platform_family_id: hino_dutro_z_ev_2026
+    manufacturer: Hino
+    model: Dutro Z EV
+    variant: ZAB-XED100V-AAAAA
+    model_year: 2026
+    vehicle_stratum_id: F4
+    legal_vehicle_class_jp: ordinary_license_sub_3_5t_gvw
+    body_type: walk_through_truck
+    upfit_type: standard_cargo
+    powertrain: battery_electric
+    deployment_evidence_ids: []
+    physical: {length_m: 4.690, width_m: 1.695, height_m: 2.285, wheelbase_m: null, curb_mass_kg: null, gross_vehicle_mass_kg: 3440, gross_vehicle_mass_constraint: null, maximum_payload_kg: 950, maximum_payload_options_kg: [], maximum_axle_load_kg: null}
+    energy: {battery_capacity_kwh: 46.7, range_km: 184, range_test_cycle: WLTC, energy_consumption_wh_km: null}
+    charging: {ac_max_kw: null, dc_max_kw: null}
+    field_provenance: {physical.length_m: SOURCE-HINO-DUTRO-Z-EV, physical.width_m: SOURCE-HINO-DUTRO-Z-EV, physical.height_m: SOURCE-HINO-DUTRO-Z-EV, physical.gross_vehicle_mass_kg: SOURCE-HINO-DUTRO-Z-EV, physical.maximum_payload_kg: SOURCE-HINO-DUTRO-Z-EV, energy.battery_capacity_kwh: SOURCE-HINO-DUTRO-Z-EV, energy.range_km: SOURCE-HINO-DUTRO-Z-EV}
+    evidence_status: complete
+    notes: Manufacturer explicitly identifies last-one-mile logistics use and more than 2,000 cumulative sales.
+  - record_id: F4-ISUZU-ELFMIO-EV-CAPABILITY
+    record_type: chassis_or_platform_capability
+    platform_family_id: isuzu_elfmio_ev
+    manufacturer: Isuzu
+    model: ELFmio EV
+    variant: sub-3.5t GVW capability
+    model_year: null
+    vehicle_stratum_id: F4
+    legal_vehicle_class_jp: gross_vehicle_mass_below_3500kg_constraint
+    body_type: cab_over_truck
+    upfit_type: null
+    powertrain: battery_electric
+    deployment_evidence_ids: []
+    physical: {length_m: null, width_m: 1.695, height_m: null, wheelbase_m: null, curb_mass_kg: null, gross_vehicle_mass_kg: null, gross_vehicle_mass_constraint: {operator: '<', value_kg: 3500}, maximum_payload_kg: 1050, maximum_payload_options_kg: [], maximum_axle_load_kg: null}
+    energy: {battery_capacity_kwh: 44, range_km: 115, range_test_cycle: mlit_review_value, energy_consumption_wh_km: null}
+    charging: {ac_max_kw: null, dc_max_kw: null}
+    field_provenance: {physical.width_m: SOURCE-ISUZU-ELF-EV, physical.gross_vehicle_mass_constraint: SOURCE-ISUZU-ELF-EV, physical.maximum_payload_kg: SOURCE-ISUZU-ELF-EV, energy.battery_capacity_kwh: SOURCE-ISUZU-ELF-EV, energy.range_km: SOURCE-ISUZU-ELF-EV}
+    evidence_status: partial
+    notes: Length and height remain null because a matching completed-vehicle official table was not fixed.
+  - record_id: F5-YAMATO-ECANTER-2023
+    record_type: completed_vehicle_variant
+    platform_family_id: fuso_ecanter_s_battery_2023
+    manufacturer: Mitsubishi Fuso
+    model: eCanter
+    variant: ZAB-FEAVKB2CS00B Yamato three-temperature-body
+    model_year: 2023
+    vehicle_stratum_id: F5
+    legal_vehicle_class_jp: null
+    body_type: cab_over_truck
+    upfit_type: three_temperature_refrigerated_body
+    powertrain: battery_electric
+    deployment_evidence_ids: [DEP-YAMATO-ECANTER-900]
+    physical: {length_m: 5.390, width_m: 1.910, height_m: 3.120, wheelbase_m: null, curb_mass_kg: 3760, gross_vehicle_mass_kg: 5870, gross_vehicle_mass_constraint: null, maximum_payload_kg: 2000, maximum_payload_options_kg: [], maximum_axle_load_kg: null}
+    energy: {battery_capacity_kwh: 41, range_km: 116, range_test_cycle: mlit_review_value, energy_consumption_wh_km: null}
+    charging: {ac_max_kw: 6, dc_max_kw: 70}
+    field_provenance: {physical.length_m: SOURCE-YAMATO-ECANTER, physical.width_m: SOURCE-YAMATO-ECANTER, physical.height_m: SOURCE-YAMATO-ECANTER, physical.curb_mass_kg: SOURCE-YAMATO-ECANTER, physical.gross_vehicle_mass_kg: SOURCE-YAMATO-ECANTER, physical.maximum_payload_kg: SOURCE-YAMATO-ECANTER, energy.battery_capacity_kwh: SOURCE-YAMATO-ECANTER, energy.range_km: SOURCE-YAMATO-ECANTER, charging.ac_max_kw: SOURCE-YAMATO-ECANTER, charging.dc_max_kw: SOURCE-YAMATO-ECANTER}
+    evidence_status: complete
+    notes: Operator-specific completed vehicle; do not generalize its height to all eCanter variants.
+  - record_id: F5-ISUZU-ELF-EV-NJR-CAPABILITY
+    record_type: chassis_or_platform_capability
+    platform_family_id: isuzu_elf_ev_njr
+    manufacturer: Isuzu
+    model: ELF EV
+    variant: NJR capability
+    model_year: null
+    vehicle_stratum_id: F5
+    legal_vehicle_class_jp: gross_vehicle_mass_below_5000kg_constraint
+    body_type: cab_over_truck
+    upfit_type: null
+    powertrain: battery_electric
+    deployment_evidence_ids: []
+    physical: {length_m: null, width_m: 1.695, height_m: null, wheelbase_m: null, curb_mass_kg: null, gross_vehicle_mass_kg: null, gross_vehicle_mass_constraint: {operator: '<', value_kg: 5000}, maximum_payload_kg: 2000, maximum_payload_options_kg: [], maximum_axle_load_kg: null}
+    energy: {battery_capacity_kwh: 44, range_km: 120, range_test_cycle: mlit_review_value, energy_consumption_wh_km: null}
+    charging: {ac_max_kw: null, dc_max_kw: null}
+    field_provenance: {physical.width_m: SOURCE-ISUZU-ELF-EV, physical.gross_vehicle_mass_constraint: SOURCE-ISUZU-ELF-EV, physical.maximum_payload_kg: SOURCE-ISUZU-ELF-EV, energy.battery_capacity_kwh: SOURCE-ISUZU-ELF-EV, energy.range_km: SOURCE-ISUZU-ELF-EV}
+    evidence_status: partial
+    notes: Capability record; no completed-body dimensions are asserted.
+  - record_id: F6-ISUZU-ELF-EV-NPR-CAPABILITY
+    record_type: chassis_or_platform_capability
+    platform_family_id: isuzu_elf_ev_npr
+    manufacturer: Isuzu
+    model: ELF EV
+    variant: NPR chassis capability
+    model_year: null
+    vehicle_stratum_id: F6
+    legal_vehicle_class_jp: null
+    body_type: cab_chassis
+    upfit_type: body_not_fixed
+    powertrain: battery_electric
+    deployment_evidence_ids: []
+    physical: {length_m: null, width_m: 1.995, height_m: null, wheelbase_m: 3.395, curb_mass_kg: null, gross_vehicle_mass_kg: null, gross_vehicle_mass_constraint: null, maximum_payload_kg: null, maximum_payload_options_kg: [2950, 3000], maximum_axle_load_kg: null}
+    energy: {battery_capacity_kwh: 110, range_km: 250, range_test_cycle: mlit_review_value, energy_consumption_wh_km: null}
+    charging: {ac_max_kw: null, dc_max_kw: null}
+    field_provenance: {physical.width_m: SOURCE-ISUZU-ELF-EV, physical.wheelbase_m: SOURCE-ISUZU-ELF-EV, physical.maximum_payload_options_kg: SOURCE-ISUZU-ELF-EV, energy.battery_capacity_kwh: SOURCE-ISUZU-ELF-EV, energy.range_km: SOURCE-ISUZU-ELF-EV}
+    evidence_status: partial
+    notes: Chassis/platform capability only; it must not be treated as a completed vehicle.

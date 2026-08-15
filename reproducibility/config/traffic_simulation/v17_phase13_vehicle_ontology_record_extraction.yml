@@ -1,0 +1,60 @@
+schema_version: 1
+extraction_id: phase13_psv_motorcar_horse_fixed_blocker_records_20260814
+status: passed
+recorded_at: '2026-08-14'
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+input_lock:
+  path: reproducibility/config/traffic_simulation/v17_phase13_input_lock.yml
+  input_lock_id: ota_ward_attribute_resolution_v17_phase13_input_20260814
+  status: fixed
+selection:
+  inventory_stop_code: ACCESS_VEHICLE_HIERARCHY_MISSING
+  fixed_inventory_candidate_count: 492
+  target_base_keys: [psv, motorcar, horse]
+  source_key_matching_rule: "source_key.split(':', 1)[0] in target_base_keys"
+  record_unit: one_fixed_blocker_inventory_source_way
+command: >-
+  python 05_src/traffic_simulation/network/extract_phase13_vehicle_ontology_records.py
+  --input-lock reproducibility/config/traffic_simulation/v17_phase13_input_lock.yml
+  --inventory reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_20260813_independent_rerun/published/formal/blocker_inventory.json
+  --formal-full-population reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_20260813_independent_rerun/published/formal/full_population.json
+  --osm 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+  --output-json reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260814_vehicle_ontology_extraction/psv_motorcar_horse_records.json
+  --output-csv reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260814_vehicle_ontology_extraction/psv_motorcar_horse_records.csv
+exit_code: 0
+input_verification:
+  complete_blocker_inventory_byte_sha256: 1d0554c43820f18a9eaf2b39a683b7b07048be0e1b2b084ab19f7fda51a9c63e
+  complete_blocker_inventory_semantic_sha256: d635ec3187f02f9add39a1f30969cd5c463b5a27f4be5f3bee9b74c65afba993
+  formal_full_population_byte_sha256: 7599af7b6b960bae2be2499b5a0b666d015f5255028b91f4fad3ee40f7db3733
+  formal_full_population_semantic_sha256: 953eb744494bc2e3261d206acc4695be734659187241d2e3659c7dc08a93c740
+  osm_population_byte_sha256: 8b5157e48c3c87c2b4430f56d6abe292ce1ea5449b374ae4cb395fc19475b67d
+results:
+  unique_source_ways: 300
+  selected_blocker_after_decision_001:
+    horse: 130
+    motorcar: 154
+    psv: 16
+  source_way_memberships:
+    horse: 130
+    motorcar: 156
+    psv: 16
+  horse_source_value_counts:
+    'no': 125
+    'yes': 5
+  multi_target_source_ways: 2
+  phase13_probe_counts_reproduced: true
+outputs:
+  json:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260814_vehicle_ontology_extraction/psv_motorcar_horse_records.json
+    byte_sha256: 66a9aedf275ca7dee635eab0e48bfb406a5e62e383ceeaf16861e0a80e90b822
+    contains_full_source_tags: true
+  csv:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260814_vehicle_ontology_extraction/psv_motorcar_horse_records.csv
+    byte_sha256: afbf361552f2d088cd280304c853aa87cb0c0d18282e4a04edb1716a25be3954
+    data_row_count: 300
+interpretation:
+  - Two source Ways contain both motorcar and horse, so membership counts are not additive.
+  - The resolver selects source keys lexically; horse is the next blocker on those two Ways.
+  - Extraction completion does not approve an ontology mapping for psv, motorcar, or horse.
+  - The fixed Phase 12 published artifacts were read only and were not modified.
