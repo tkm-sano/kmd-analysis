@@ -243,10 +243,16 @@ def _build_rule(
 
 def _parse_access_key(key: str) -> tuple[str, str, bool] | None:
     parts = key.split(":")
-    if "conditional" in parts:
-        return None
     base = parts[0]
     if base not in ACCESS_BASE_KEYS:
+        return None
+    if "conditional" in parts:
+        if base == "psv":
+            raise StaticAccessError(
+                f"unsupported psv conditional syntax: {key}",
+                stop_code="ACCESS_VEHICLE_HIERARCHY_MISSING",
+                status="unresolved",
+            )
         return None
     direction = "both"
     if parts[-1] in {"forward", "backward"}:
@@ -255,7 +261,19 @@ def _parse_access_key(key: str) -> tuple[str, str, bool] | None:
     lane_scoped = len(parts) == 2 and parts[1] == "lanes"
     scalar = len(parts) == 1
     if not scalar and not lane_scoped:
+        if base == "psv":
+            raise StaticAccessError(
+                f"unsupported psv syntax: {key}",
+                stop_code="ACCESS_VEHICLE_HIERARCHY_MISSING",
+                status="unresolved",
+            )
         return None
+    if base == "psv" and direction != "both" and not lane_scoped:
+        raise StaticAccessError(
+            f"unsupported psv directional syntax: {key}",
+            stop_code="ACCESS_VEHICLE_HIERARCHY_MISSING",
+            status="unresolved",
+        )
     return base, direction, lane_scoped
 
 
@@ -269,6 +287,14 @@ def normalize_static_access_rules(
     """Normalize static OSM tags while deferring all conditional tags."""
 
     selected_keys = set(candidate_keys) if candidate_keys is not None else set(tags)
+    for key in sorted(selected_keys):
+        if key in tags:
+            if key.split(":", 1)[0] == "psv" and "conditional" in key.split(":"):
+                raise StaticAccessError(
+                    f"unsupported psv conditional syntax: {key}",
+                    stop_code="ACCESS_VEHICLE_HIERARCHY_MISSING",
+                    status="unresolved",
+                )
     conditional = {
         key: tags[key]
         for key in sorted(selected_keys)

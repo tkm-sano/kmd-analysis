@@ -53,6 +53,7 @@ behavior must be integrated. Therefore `aligned` does not claim that a Phase
 | AR-ACCESS-007 | 13.2 | Access values use registered context semantics. | scenario context | access rule | access values | `AR-ACCESS-002` | 6 | aligned |
 | AR-ACCESS-008 | 13.3 | Resolver expectation, not typemap, is formal authority. | permissions | acceptance | — | `AR-ACCESS-005` | 8 | aligned |
 | AR-ACCESS-009 | 13.4 | A registered non-governed vehicle-class tag has an empty intersection with governed vehicle permissions. | access resolution | access rule | vehicle ontology | `AR-ACCESS-002` | 13 | aligned |
+| AR-ACCESS-010 | 13.5 / `DEC-P13-PSV-ONTOLOGY-001` | The approved psv domain is exactly `bus` and `taxi`; coach and managed delivery remain excluded; explicit child rules override psv without changing tourist_bus or coach constraints; unknown and unsupported syntax remain fail-closed. | access resolution | access rule | `vehicle_ontology.domains.psv` | `AR-ACCESS-010` | 13 | implemented |
 | AR-COND-001 | 14.1 | Last-match is limited to clauses in one conditional tag. | access resolution | access rule | conditional grammar | `AR-COND-003` | 7 | aligned |
 | AR-COND-002 | 14.2 | Only versioned registered grammar categories are supported. | scenario context | access rule | conditional grammar | `AR-COND-002` | 7 | aligned |
 | AR-COND-003 | 14.3 | Required scenario context is explicit; missing is not false. | scenario context | resolution record | conditional grammar | `AR-COND-001` | 7 | aligned |
@@ -90,3 +91,16 @@ behavior must be integrated. Therefore `aligned` does not claim that a Phase
 Every normative family has a configuration, Schema, Registry, or semantic
 invariant destination. Runtime implementation remains explicitly assigned to
 Phases 2–14 and is not represented as completed by this matrix.
+
+## Phase 13 PSV ontology decision trace
+
+- Decision: `reproducibility/config/traffic_simulation/v17_phase13_psv_vehicle_ontology_decision.yml`
+- Decision rule: `OSM_PSV_TO_GOVERNED_BUS_TAXI_V1`
+- Fixed OSM authority: `Key:psv` revision 2960634 and `Key:access` revision 3054035
+- Fixed SUMO authority: official source tag `v1_24_0`, commit `b72eb3fabc806681f8c9048999a33dd8d64092b1`
+- Governed intersection: `bus=true`, `taxi=true`, `coach=false`
+- Managed delivery effect: none
+- Registry domain: `psv: [bus, taxi]`
+- Invariant: `AR-ACCESS-010`
+- Validation: `05_src/traffic_simulation/validation/test_phase13_psv_vehicle_ontology_decision_v17.py` and static access regression fixtures
+- Implementation status: Registry, invariant, fixture/oracle, traceability, and static-access fail-closed syntax handling are synchronized; governed vehicle-domain resolution remains Registry-driven.

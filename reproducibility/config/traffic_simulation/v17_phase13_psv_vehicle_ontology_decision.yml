@@ -1,0 +1,247 @@
+schema_version: 1
+decision_id: DEC-P13-PSV-ONTOLOGY-001
+decision_version: 1.0.0
+status: approved
+approved_at: '2026-08-15'
+approved_by: repository_owner_directive
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+input_lock: reproducibility/config/traffic_simulation/v17_phase13_input_lock.yml
+
+question:
+  statement: >-
+    Which governed SUMO vehicle classes intersect the OSM psv access domain,
+    specifically whether psv applies to bus, coach and taxi.
+
+fixed_record_evidence:
+  extraction_record: reproducibility/config/traffic_simulation/v17_phase13_vehicle_ontology_record_extraction.yml
+  extraction_output: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260814_vehicle_ontology_extraction/psv_motorcar_horse_records.json
+  extraction_output_byte_sha256: 66a9aedf275ca7dee635eab0e48bfb406a5e62e383ceeaf16861e0a80e90b822
+  extraction_output_semantic_sha256: 4c976d26d2a94446d4233b0063e3b739bf90aceb14fbcd7fb181799405ad20ae
+  selected_source_way_count: 16
+  source_key_counts:
+    psv: 9
+    psv:lanes: 6
+    psv:lanes:forward: 1
+  scalar_value_counts: {'yes': 9}
+  lane_vector_value_counts:
+    'designated|yes|yes': 2
+    'designated||||': 1
+    'designated|': 1
+    designated: 1
+    'designated|yes|yes|yes|yes': 1
+    'designated|yes|yes|yes': 1
+  tourist_bus_yes_cooccurrence_way_count: 9
+
+primary_authority_evidence:
+  - evidence_id: OSM-PSV-KEY-REV-2960634
+    authority: OpenStreetMap Wiki
+    title: Key:psv
+    revision_id: 2960634
+    revision_timestamp: '2026-03-04T15:05:47Z'
+    url: https://wiki.openstreetmap.org/w/index.php?title=Key:psv&oldid=2960634
+    accessed_at: '2026-08-15'
+    snapshot_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_psv_decision/osm_key_psv_oldid_2960634.wikitext
+    snapshot_byte_sha256: be858a87898d553de0090b09d5c99d62a5d1eeb532a065f2e01cce17808368aa
+    relevant_claims:
+      - psv is an access key for public service vehicles
+      - psv applies to its child tags unless a child is explicitly overridden
+      - bus and taxi are direct psv child tags
+      - psv lane access is represented by psv:lanes
+      - tourist_bus and coach are separate related keys rather than listed psv children
+      - coach denotes long-distance buses usually between towns or cities
+  - evidence_id: OSM-ACCESS-HIERARCHY-REV-3054035
+    authority: OpenStreetMap Wiki
+    title: Key:access transport-mode hierarchy
+    revision_id: 3054035
+    revision_timestamp: '2026-06-25T12:21:00Z'
+    url: https://wiki.openstreetmap.org/w/index.php?title=Key:access&oldid=3054035
+    accessed_at: '2026-08-15'
+    snapshot_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_psv_decision/osm_key_access_oldid_3054035.wikitext
+    snapshot_byte_sha256: 26446702e390913b25a094d335bbb4e08bed6d1e4a5603e0d489ca81c3958183
+    relevant_claims:
+      - psv is in the motor-vehicle by-use branch
+      - bus and taxi are children of psv
+      - tourist_bus is in the motorcar vehicle-type branch
+      - coach is a child of tourist_bus and is not part of a public-transport bus service
+      - a specific child access key overrides its parent for that child only
+  - evidence_id: SUMO-VCLASS-V1-24-0
+    authority: Eclipse SUMO official repository
+    title: Definition of Vehicles Vehicle Types and Routes - Abstract Vehicle Class
+    version_tag: v1_24_0
+    source_commit: b72eb3fabc806681f8c9048999a33dd8d64092b1
+    url: https://github.com/eclipse-sumo/sumo/blob/b72eb3fabc806681f8c9048999a33dd8d64092b1/docs/web/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.md#abstract-vehicle-class
+    accessed_at: '2026-08-15'
+    snapshot_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_psv_decision/sumo_v1_24_0_vehicle_classes.md
+    snapshot_byte_sha256: 60e5fb3c3fb3951eda2e1124bc3a6437773e9bf983baf773baf687d0b4370a8c
+    relevant_claims:
+      - SUMO uses abstract vClasses for lane and edge access permissions
+      - taxi bus and coach are distinct vClasses
+      - SUMO bus denotes urban line traffic
+      - SUMO coach denotes overland transport
+
+research_vehicle_authority:
+  governed_universe:
+    authority_path: reproducibility/config/traffic_simulation/sumo_network_v17.yml
+    authority_byte_sha256: a1696e0c6517136320c31f09874800d62087f96a97d342c55644933e54cc4a22
+    model: motorized_v1
+    vclasses: [passenger, taxi, bus, coach, delivery, truck, motorcycle]
+  existing_implementation_consistency_only:
+    path: 05_src/traffic_simulation/network/resolve_osm_attributes.py
+    byte_sha256: 5bfa64fbc0c2a8d84401f503bfc5ea70946ebfdd8d3dc6644e196ae0dd164c4d
+    existing_psv_mapping: [bus, taxi]
+    authority_status: non_normative_consistency_check
+
+formal_reasoning:
+  symbols:
+    governed_vehicle_universe: G
+    osm_psv_domain: P
+    osm_coach_domain: C
+  sets:
+    G: [passenger, taxi, bus, coach, delivery, truck, motorcycle]
+    P_osm_named_children: [bus, taxi, minibus, share_taxi]
+    C_osm_branch: [tourist_bus, coach]
+    P_intersection_G: [bus, taxi]
+    C_intersection_P: []
+  propositions:
+    - bus_is_a_direct_psv_child
+    - taxi_is_a_direct_psv_child
+    - coach_is_not_a_psv_child
+    - coach_belongs_to_the_separate_tourist_bus_branch
+    - SUMO_bus_coach_and_taxi_are_distinct_permission_classes
+    - the_governed_psv_intersection_is_exactly_bus_and_taxi
+
+decision:
+  result: approved_governed_intersection
+  rule_id: OSM_PSV_TO_GOVERNED_BUS_TAXI_V1
+  source_base_key: psv
+  registered_vehicle_domain: [bus, taxi]
+  class_intersections:
+    bus: true
+    coach: false
+    taxi: true
+  permission_effect_on_managed_delivery: none
+  source_record_preserved: true
+  formal_exclusion: false
+  rationale: >-
+    In the fixed OSM access hierarchy, bus and taxi are direct children of psv.
+    Coach is instead a separate key under tourist_bus, and SUMO represents coach
+    separately from urban-line bus and taxi. Therefore psv intersects the governed
+    universe at bus and taxi only; it must not grant or deny SUMO coach or delivery.
+
+mandatory_boundaries:
+  - an explicit bus or taxi child tag overrides psv only for that child class
+  - psv does not grant or deny the SUMO coach vClass
+  - coach and tourist_bus require their own registered ontology decisions
+  - the nine tourist_bus=yes co-occurrences remain separate source constraints
+  - psv does not grant or deny the managed delivery vClass
+  - psv is an OSM ontology term here and is not treated as a claim that UK statutory PSV law applies in Japan
+  - scalar, lane, directional and conditional syntax must each pass their registered syntax validators
+  - empty lane-vector positions remain no statement and must not be converted to yes or no
+  - source Way ID, source key, source value, lane position and provenance must be preserved
+  - the record remains governed and must not be moved to the exclusion population
+  - unregistered public-service subtypes and unsupported syntax remain fail-closed
+
+implementation_state:
+  decision_record: fixed
+  decision_record_validation: passed
+  schema_update: no_change_required
+  registry_update: implemented
+  semantic_invariant_update: implemented
+  traceability_update: implemented
+  fixture_and_oracle_update: implemented
+  resolver_update: no_change_required
+  full_population_probe: completed
+  phase13_complete: false
+
+full_population_probe_result:
+  static_access_probe:
+    command: >-
+      PYTHONPATH=05_src python -m traffic_simulation.network.static_access_v17
+      --input 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+      --output reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_psv_full_population_probe/static_access_formal.json
+      --profile formal
+    exit_code: 1
+    result: passed_expected_nonzero_due_to_unresolved_non_psv_blockers
+    output:
+      path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_psv_full_population_probe/static_access_formal.json
+      byte_sha256: b36684dcdc92dda9c9bbc801f5a38d36062938a80e0a7dd231818f853adfdd23
+      semantic_sha256: 9f3e2ac3094e7b9df071d48f2b8a3d497aaa4fe44fecf276710352e978251464
+    log:
+      path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_psv_full_population_probe/probe.log
+      byte_sha256: a2b052cce8e8b7f6cce13b8e5b7ea666be9a259577dc8d99340af1849a2c5936
+  stable_id_diff:
+    command: >-
+      PYTHONPATH=05_src python -m traffic_simulation.network.compare_phase13_psv_probe
+      --fixed-inventory reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_20260813_independent_rerun/published/formal/blocker_inventory.json
+      --psv-extraction reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260814_vehicle_ontology_extraction/psv_motorcar_horse_records.json
+      --probe reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_psv_full_population_probe/static_access_formal.json
+      --output reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_psv_full_population_probe/psv_stable_id_permission_diff.json
+    exit_code: 0
+    result: passed
+    output:
+      path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_psv_full_population_probe/psv_stable_id_permission_diff.json
+      byte_sha256: c32aa4de19683da1be5fb907bdd87847ccb954d66c3c5f7971aa76c53fb27471
+      semantic_sha256: 5519a062945e97a631cd2f139906fbcc2bd3169a63dd215adf207ab265a9855c
+    log:
+      path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_psv_full_population_probe/comparison.log
+      byte_sha256: 3a666c8bbec70892a63c4be9edcb7774f3e33d4aab84359e196eb96c67b6fe8e
+  summary:
+    fixed_psv_blocker_count: 16
+    resolved_blocker_count: 16
+    remaining_psv_blocker_count: 0
+    new_blocker_count: 0
+    unexpected_change_count: 0
+    managed_delivery_permission_change_count: 0
+    coach_permission_change_count: 0
+    motorcar_blocker_change_count: 0
+    lane_scoped_record_count: 7
+    tourist_bus_yes_cooccurrence_way_count: 9
+    lineage_preservation: true
+    phase12_publication_unchanged: true
+    acceptance_passed: true
+
+decision_record_validation:
+  command: PYTHONPATH=05_src pytest -q 05_src/traffic_simulation/validation/test_phase13_psv_vehicle_ontology_decision_v17.py
+  exit_code: 0
+  test_count: 3
+  result: passed
+  log_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_psv_decision/decision_validation.log
+  log_byte_sha256: c2d64d41edcb4d9a0b7a81fcc964ceb8d2b7d73d7d92491bb17f24d0bbaea6d3
+  verified_invariants:
+    - exact fixed-record count and source-key distribution
+    - OSM primary-source revision IDs and snapshot hashes
+    - SUMO v1.24.0 source commit and snapshot hash
+    - governed intersection is exactly bus and taxi
+    - coach and managed delivery are outside the psv intersection
+    - tourist_bus co-occurrences and Japan-law boundary remain separate
+
+fixed_container_regression:
+  command: docker compose run --rm -T analysis python -m pytest -q 05_src/traffic_simulation/validation
+  exit_code: 0
+  test_count: 614
+  result: passed
+  elapsed_seconds: 115.77
+  log_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_psv_full_population_probe/final_fixed_container_regression.log
+  log_byte_sha256: 2746ca2a0be72d392a7dcad80edb8ac2872c4b53b4bbdd219446250bb226f692
+
+focused_validation:
+  command: >-
+    PYTHONPATH=05_src pytest -q
+    05_src/traffic_simulation/validation/test_phase13_psv_vehicle_ontology_decision_v17.py
+    05_src/traffic_simulation/validation/test_static_access_v17.py
+  exit_code: 0
+  test_count: 27
+  result: passed
+  log_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_psv_full_population_probe/psv_final_focused_validation.log
+  log_byte_sha256: 4bbbea14cfc50d2894261d3da37a303fa8652c601770771fd7835b04e50b9f86
+
+acceptance_requirements_for_implementation:
+  - psv scalar and lane rules target governed bus and taxi only
+  - psv rules never target coach or managed delivery
+  - explicit bus and taxi child rules retain child-over-parent specificity
+  - the seven fixed lane-scoped records preserve lane positions and empty positions
+  - all sixteen fixed records preserve source and blocker lineage
+  - tourist_bus and coach constraints remain independently traceable
+  - unknown values and unsupported syntax remain fail-closed
+  - a new full-population probe and stable-ID diff are executed in a new output path

@@ -36,6 +36,16 @@ PHASE13_NON_GOVERNED_ORACLE = (
     / "05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/"
     "phase13_non_governed_vehicle_domain_oracle.yml"
 )
+PHASE13_PSV_FIXTURE = (
+    REPOSITORY_ROOT
+    / "05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/"
+    "phase13_psv_vehicle_domain_fixture.yml"
+)
+PHASE13_PSV_ORACLE = (
+    REPOSITORY_ROOT
+    / "05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/"
+    "phase13_psv_vehicle_domain_oracle.yml"
+)
 
 
 def _rules(tags: dict[str, str], *, lane_counts=None, candidate_keys=None):
@@ -180,6 +190,65 @@ def test_phase13_non_governed_vehicle_domains_do_not_change_delivery_permission(
         assert resolve_maximal_static_effect(maxima)["effect"] == oracle[
             "expected_effect"
         ]
+
+
+def test_phase13_psv_registry_and_runtime_semantics_match_approved_decision() -> None:
+    decision = yaml.safe_load(
+        (REPOSITORY_ROOT / "reproducibility/config/traffic_simulation/"
+         "v17_phase13_psv_vehicle_ontology_decision.yml").read_text(encoding="utf-8")
+    )
+    registry = yaml.safe_load(
+        (REPOSITORY_ROOT / "reproducibility/config/traffic_simulation/"
+         "attribute_resolution_registries_v17.yml").read_text(encoding="utf-8")
+    )
+    invariants = yaml.safe_load(
+        (REPOSITORY_ROOT / "reproducibility/config/traffic_simulation/"
+         "v17_semantic_invariants.yml").read_text(encoding="utf-8")
+    )
+    assert registry["registry_version"] == "1.5.0"
+    assert registry["vehicle_ontology"]["domains"]["psv"] == ["bus", "taxi"]
+    assert "coach" not in registry["vehicle_ontology"]["domains"]["psv"]
+    assert registry["vehicle_ontology"]["domains"]["goods"] == ["delivery", "truck"]
+    psv_invariant = next(
+        item for item in invariants["invariants"] if item["invariant_id"] == "AR-ACCESS-010"
+    )
+    assertion = psv_invariant["assertion"]
+    assert "psv domain" in assertion.lower()
+    assert "bus" in assertion and "taxi" in assertion
+    assert "coach" in assertion and "delivery" in assertion
+
+    fixture = yaml.safe_load(PHASE13_PSV_FIXTURE.read_text(encoding="utf-8"))
+    oracle = yaml.safe_load(PHASE13_PSV_ORACLE.read_text(encoding="utf-8"))
+    assert fixture["decision_id"] == decision["decision_id"] == oracle["decision_id"]
+    assert fixture["rule_id"] == decision["decision"]["rule_id"] == oracle["rule_id"]
+
+    for case in fixture["cases"]:
+        tags = {**fixture["base_tags"], **case["tags"]}
+        rules = normalize_static_access_rules(
+            source_way_id=fixture["source_way_id"],
+            tags=tags,
+            lane_counts=fixture["lane_counts"],
+        )["rules"]
+        maxima = maximal_static_rules_for_tuple(
+            rules,
+            direction="forward",
+            lane_position=0,
+            lane_count=2,
+            vehicle_class=case["vehicle_class"],
+            context=default_scenario_context(),
+        )
+        assert [item["source_key"] for item in maxima] == case["expected_maximal_source_keys"]
+        assert resolve_maximal_static_effect(maxima)["effect"] == case["expected_effect"]
+
+    for case in fixture["fail_closed_cases"]:
+        with pytest.raises(StaticAccessError) as caught:
+            normalize_static_access_rules(
+                source_way_id=fixture["source_way_id"],
+                tags={**fixture["base_tags"], case["source_key"]: case["source_value"]},
+                lane_counts=fixture["lane_counts"],
+                candidate_keys={case["source_key"]},
+            )
+        assert caught.value.stop_code == case["expected_stop_code"]
 
 
 def test_conditional_tags_are_deferred_without_static_fallback_claim() -> None:
