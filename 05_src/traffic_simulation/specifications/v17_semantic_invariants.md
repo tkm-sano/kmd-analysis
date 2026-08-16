@@ -3,7 +3,7 @@
 ## Document control
 
 - Invariant set: `ota_ward_attribute_resolution_semantic_invariants_v17`
-- Version: `1.0.0`
+- Version: `1.4.0`
 - Policy: `ota_ward_attribute_resolution_policy_v17`
 - Machine-readable authority: `reproducibility/config/traffic_simulation/v17_semantic_invariants.yml`
 - Schema: `reproducibility/config/traffic_simulation/schemas/semantic_invariants_v17.schema.json`
