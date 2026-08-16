@@ -1,0 +1,135 @@
+schema_version: 1
+probe_id: ota_ward_phase13_horse_full_population_probe_20260815
+decision_id: DEC-P13-HORSE-ONTOLOGY-001
+status: failed_strict_new_stable_blocker_id_acceptance
+executed_at: '2026-08-15'
+phase13_complete: false
+
+fixed_sources:
+  osm_population:
+    path: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+    byte_sha256: 8b5157e48c3c87c2b4430f56d6abe292ce1ea5449b374ae4cb395fc19475b67d
+  complete_blocker_inventory:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_20260813_independent_rerun/published/formal/blocker_inventory.json
+    byte_sha256: 1d0554c43820f18a9eaf2b39a683b7b07048be0e1b2b084ab19f7fda51a9c63e
+    semantic_sha256: d635ec3187f02f9add39a1f30969cd5c463b5a27f4be5f3bee9b74c65afba993
+  horse_extraction:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260814_vehicle_ontology_extraction/psv_motorcar_horse_records.json
+    byte_sha256: 66a9aedf275ca7dee635eab0e48bfb406a5e62e383ceeaf16861e0a80e90b822
+
+full_population_probe:
+  command: >-
+    PYTHONPATH=05_src python -m traffic_simulation.network.static_access_v17
+    --input 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+    --output reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_horse_full_population_probe/static_access_formal.json
+    --profile formal
+  exit_code: 1
+  exit_interpretation: expected_nonzero_because_non_horse_phase13_blockers_remain
+  output:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_horse_full_population_probe/static_access_formal.json
+    byte_sha256: bee954163a4e8e97690cd15382d441b910610e72ff7d87cb2dc90bea23a533fd
+    semantic_sha256: 13eb70a25b97695c359188d9a89665f69f70e90157dbf6fb522f582258d4f545
+  log:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_horse_full_population_probe/probe.log
+    byte_sha256: 2e5a790e44bf234629241e2c4ab23943dbcfc9f4d4c01871eb1b787b1dfd3209
+  counts:
+    normalized_source_ways: 1879
+    normalized_rules: 1231
+    static_lane_tuples: 8047
+    static_access_blockers: 248
+    blocker_stop_codes:
+      ACCESS_CONTEXT_MISSING: 45
+      ACCESS_VALUE_UNSUPPORTED: 31
+      ACCESS_VEHICLE_HIERARCHY_MISSING: 172
+
+stable_id_and_permission_comparison:
+  implementation:
+    path: 05_src/traffic_simulation/network/compare_phase13_horse_probe.py
+    byte_sha256: 56be666662143b8df08598aa56777819c30c2ae8160e8298497cb736ca98ae0d
+  command: >-
+    PYTHONPATH=05_src python -m traffic_simulation.network.compare_phase13_horse_probe
+    --fixed-inventory reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_20260813_independent_rerun/published/formal/blocker_inventory.json
+    --horse-extraction reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260814_vehicle_ontology_extraction/psv_motorcar_horse_records.json
+    --probe reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_horse_full_population_probe/static_access_formal.json
+    --output reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_horse_full_population_probe/horse_stable_id_permission_diff_v2.json
+  exit_code: 1
+  result: failed_strict_new_stable_blocker_id_acceptance
+  output:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_horse_full_population_probe/horse_stable_id_permission_diff_v2.json
+    byte_sha256: 8ca4f9146068f9f712a952490455e37b4abda244acae5792de94eb3c912795cb
+    semantic_sha256: 4dda60054db1ecf54a88b1903c98a079bf371eb799b2f41753435223dfafbff1
+  log:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_horse_full_population_probe/comparison_v2.log
+    byte_sha256: 958fb265fd4bb9e007e1565240557a3df6cb5f07ac9382d237312aa5480110e8
+  initial_fail_closed_attempt:
+    result: failed_unclassified_successor_blockers
+    output_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_horse_full_population_probe/horse_stable_id_permission_diff.json
+    output_byte_sha256: 3ebe9f6ec1cf82f8060828f3a41558157c1bd521818bfbb65b513664f4330852
+    log_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_horse_full_population_probe/comparison.log
+    log_byte_sha256: 90c367f0c95ec0eb11ce68a11f477298d87b49bfb5f43048d9e81d46f0e56574
+    resolution: classify the two private-authorization successors explicitly and retain strict new-ID failure
+
+horse_130_result:
+  fixed_horse_blocker_count: 130
+  remaining_horse_hierarchy_blocker_count: 0
+  resolved_fixed_blocker_id_count: 128
+  remaining_same_stable_id_count: 2
+  remaining_same_stable_id_cause: motorcar_ontology_pending
+  new_stable_blocker_id_count: 2
+  new_blocked_source_way_count: 0
+  revealed_successor_blockers:
+    - source_way_id: 992482251
+      stop_code: ACCESS_CONTEXT_MISSING
+      missing_context: private_authorization
+    - source_way_id: 992488487
+      stop_code: ACCESS_CONTEXT_MISSING
+      missing_context: private_authorization
+  unexpected_blocker_transition_count: 0
+
+managed_delivery_permission_result:
+  evaluable_way_count: 126
+  compared_lane_tuple_count: 336
+  changed_way_count: 0
+  changed_lane_tuple_count: 0
+  blocked_counterfactual_same_count: 4
+  blocked_counterfactual_changed_count: 0
+  unexpected_permission_change_count: 0
+  interpretation: horse presence or absence did not change any evaluable permission or any blocked counterfactual outcome
+
+acceptance:
+  horse_hierarchy_blockers_are_zero: true
+  new_blocked_source_ways_are_zero: true
+  unexpected_blocker_transitions_are_zero: true
+  unexpected_permission_changes_are_zero: true
+  new_stable_blocker_ids_are_zero: false
+  overall_pass: false
+
+post_probe_validation:
+  focused:
+    command: PYTHONPATH=05_src pytest -q 05_src/traffic_simulation/validation/test_phase13_horse_vehicle_ontology_decision_v17.py 05_src/traffic_simulation/validation/test_static_access_v17.py 05_src/traffic_simulation/validation/test_final_permission_v17.py 05_src/traffic_simulation/validation/test_resolver_integration_v17.py
+    exit_code: 0
+    test_count: 49
+    result: passed
+    log_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_horse_full_population_probe/post_probe_focused_validation.log
+    log_byte_sha256: 1ed3b98c0886fa171a6e81fa704750f61e4a0f128fe02dcdc2fca96b47cab441
+  fixed_container_regression:
+    command: docker compose run --rm -T analysis python -m pytest -q 05_src/traffic_simulation/validation
+    exit_code: 0
+    test_count: 610
+    result: passed
+    elapsed_seconds: 69.40
+    log_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_horse_full_population_probe/fixed_container_regression.log
+    log_byte_sha256: 774d54b66e6bfd85a7d08f89f1b7c6fd66563e7abd9443bf150f20e3798e2209
+  final_fixed_container_regression_after_all_horse_changes:
+    command: docker compose run --rm -T analysis python -m pytest -q 05_src/traffic_simulation/validation
+    exit_code: 0
+    test_count: 610
+    result: passed
+    elapsed_seconds: 85.47
+    log_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_horse_full_population_probe/final_fixed_container_regression.log
+    log_byte_sha256: 913a0b879a1b1686f9a69087edf4a642cc3b4f182e403efebc49d6530fc8fbf6
+
+next_action:
+  - decide and register the private_authorization scenario context for Ways 992482251 and 992488487 without attributing it to horse
+  - rerun the horse stable-ID comparison in a new output path
+  - keep motorcar co-occurrence Ways 783347228 and 1051964008 blocked until the independent motorcar decision

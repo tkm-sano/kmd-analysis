@@ -41,3 +41,14 @@ runtime checks have executed.
 
 An invariant failure is fail-closed. A missing implementation or missing
 runtime artifact is not evidence that an invariant passed.
+
+### `AR-ACCESS-009`: non-governed vehicle domain
+
+A vehicle-specific access key may have an empty intersection with the governed
+motorized vehicle universe only when a versioned decision is registered. For
+`DEC-P13-HORSE-ONTOLOGY-001`, scalar `horse=yes` and `horse=no` normalize to an
+empty vehicle domain. They preserve the source key, source value, Way identity,
+and provenance, but neither allow nor deny the managed `delivery` vehicle and
+never authorize exclusion. Parent and motorized-specific rules remain effective.
+Other `horse` values and conditional, directional, or lane-scoped syntax remain
+fail-closed until separately approved.

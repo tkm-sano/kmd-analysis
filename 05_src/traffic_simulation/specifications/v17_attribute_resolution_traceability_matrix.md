@@ -52,7 +52,7 @@ behavior must be integrated. Therefore `aligned` does not claim that a Phase
 | AR-ACCESS-006 | 13.1 | Formal permissions cover every governed tuple. | permissions/acceptance | acceptance | vehicle ontology | `AR-ACCESS-005` | 8 | aligned |
 | AR-ACCESS-007 | 13.2 | Access values use registered context semantics. | scenario context | access rule | access values | `AR-ACCESS-002` | 6 | aligned |
 | AR-ACCESS-008 | 13.3 | Resolver expectation, not typemap, is formal authority. | permissions | acceptance | — | `AR-ACCESS-005` | 8 | aligned |
-| AR-ACCESS-009 | 13.4 | A registered non-governed vehicle-class tag has an empty intersection with governed vehicle permissions. | access resolution | access rule | vehicle ontology | `AR-ACCESS-002` | 13 | aligned |
+| AR-ACCESS-009 | 13.4 / `DEC-P13-HORSE-ONTOLOGY-001` | A registered non-governed vehicle-class tag has an empty intersection with governed permissions; approved scalar `horse=yes/no` preserves provenance and cannot change delivery permission or authorize exclusion. | access resolution | access rule | `vehicle_ontology.domains.horse`, `vehicle_ontology.non_governed_domain_decisions.horse` | `AR-ACCESS-009` | 13 | implemented |
 | AR-ACCESS-010 | 13.5 / `DEC-P13-PSV-ONTOLOGY-001` | The approved psv domain is exactly `bus` and `taxi`; coach and managed delivery remain excluded; explicit child rules override psv without changing tourist_bus or coach constraints; unknown and unsupported syntax remain fail-closed. | access resolution | access rule | `vehicle_ontology.domains.psv` | `AR-ACCESS-010` | 13 | implemented |
 | AR-COND-001 | 14.1 | Last-match is limited to clauses in one conditional tag. | access resolution | access rule | conditional grammar | `AR-COND-003` | 7 | aligned |
 | AR-COND-002 | 14.2 | Only versioned registered grammar categories are supported. | scenario context | access rule | conditional grammar | `AR-COND-002` | 7 | aligned |
@@ -91,6 +91,19 @@ behavior must be integrated. Therefore `aligned` does not claim that a Phase
 Every normative family has a configuration, Schema, Registry, or semantic
 invariant destination. Runtime implementation remains explicitly assigned to
 Phases 2–14 and is not represented as completed by this matrix.
+
+## Phase 13 horse ontology implementation trace
+
+- Decision: `reproducibility/config/traffic_simulation/v17_phase13_horse_vehicle_ontology_decision.yml`
+- Registry rule: `NON_GOVERNED_HORSE_RIDER_DOMAIN_EMPTY_INTERSECTION_V1`
+- Invariant: `AR-ACCESS-009`
+- Fixture: `05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/phase13_horse_vehicle_domain_fixture.yml`
+- Oracle: `05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/phase13_horse_vehicle_domain_oracle.yml`
+- Runtime enforcement: `05_src/traffic_simulation/network/static_access_v17.py`
+- Tests: `05_src/traffic_simulation/validation/test_static_access_v17.py` and `test_phase13_horse_vehicle_ontology_decision_v17.py`
+- Full-population probe record: `reproducibility/config/traffic_simulation/v17_phase13_horse_full_population_probe.yml`
+- Stable-ID and permission comparator: `05_src/traffic_simulation/network/compare_phase13_horse_probe.py`
+- Probe result: horse hierarchy blocker 0 and permission change 0, but strict acceptance failed because two `private_authorization` successor blocker IDs were newly exposed.
 
 ## Phase 13 PSV ontology decision trace
 

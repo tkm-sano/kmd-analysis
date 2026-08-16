@@ -1,0 +1,33 @@
+fixture_id: phase13_horse_vehicle_domain_v1
+decision_id: DEC-P13-HORSE-ONTOLOGY-001
+rule_id: NON_GOVERNED_HORSE_RIDER_DOMAIN_EMPTY_INTERSECTION_V1
+source_way_id: 1001
+base_tags: {highway: residential, oneway: 'yes', lanes: '2'}
+lane_counts: {forward: 2}
+cases:
+  - case_id: horse_only_does_not_create_delivery_permission
+    tags: {horse: 'yes'}
+    expected_maximal_source_keys: []
+    expected_effect: null
+  - case_id: horse_yes_cannot_override_access_no
+    tags: {access: 'no', horse: 'yes'}
+    expected_maximal_source_keys: [access]
+    expected_effect: denied
+  - case_id: horse_no_cannot_override_access_yes
+    tags: {access: 'yes', horse: 'no'}
+    expected_maximal_source_keys: [access]
+    expected_effect: allowed
+  - case_id: horse_yes_preserves_goods_allowance
+    tags: {access: 'no', goods: 'yes', horse: 'yes'}
+    expected_maximal_source_keys: [goods]
+    expected_effect: allowed
+  - case_id: horse_no_preserves_goods_denial
+    tags: {access: 'yes', goods: 'no', horse: 'no'}
+    expected_maximal_source_keys: [goods]
+    expected_effect: denied
+fail_closed_cases:
+  - {case_id: unapproved_value, source_key: horse, source_value: destination, expected_stop_code: ACCESS_VALUE_UNSUPPORTED}
+  - {case_id: directional_syntax, source_key: 'horse:forward', source_value: 'yes', expected_stop_code: ACCESS_VEHICLE_HIERARCHY_MISSING}
+  - {case_id: lane_syntax, source_key: 'horse:lanes', source_value: 'yes|no', expected_stop_code: ACCESS_VEHICLE_HIERARCHY_MISSING}
+  - {case_id: conditional_syntax, source_key: 'horse:conditional', source_value: 'no @ (Mo-Fr)', expected_stop_code: ACCESS_VEHICLE_HIERARCHY_MISSING}
+  - {case_id: carriage_out_of_scope, source_key: carriage, source_value: 'no', expected_stop_code: ACCESS_VEHICLE_HIERARCHY_MISSING}

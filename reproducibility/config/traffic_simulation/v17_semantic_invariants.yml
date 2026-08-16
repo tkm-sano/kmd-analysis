@@ -1,6 +1,6 @@
 schema_version: 17
 invariant_set_id: ota_ward_attribute_resolution_semantic_invariants_v17
-version: 1.3.0
+version: 1.4.0
 policy_id: ota_ward_attribute_resolution_policy_v17
 invariants:
   - {invariant_id: AR-STATE-001, scope: resolution_record, assertion: resolved records have a non-null effective value and origin and a null stop code, failure_status: invalid, stop_code: UNREGISTERED_STATE, severity: critical, target_phase: 3}
@@ -28,7 +28,7 @@ invariants:
   - {invariant_id: AR-ACCESS-003, scope: access_resolution, assertion: dominated rules are removed and different-effect maximal rules stop, failure_status: conflict, stop_code: ACCESS_SPECIFICITY_CONFLICT, severity: critical, target_phase: 8}
   - {invariant_id: AR-ACCESS-004, scope: access_resolution, assertion: independent record order does not alter results and equal maximal provenance is retained, failure_status: conflict, stop_code: ACCESS_SPECIFICITY_CONFLICT, severity: critical, target_phase: 8}
   - {invariant_id: AR-ACCESS-005, scope: formal_permissions, assertion: typemap permissions are not formal authority and all governed tuples are covered, failure_status: unresolved, stop_code: ACCESS_PERMISSION_UNRESOLVED, severity: critical, target_phase: 8}
-  - {invariant_id: AR-ACCESS-009, scope: vehicle_domain_intersection, assertion: tags specific to registered non-governed vehicle classes have an explicit empty domain and never change governed vehicle permissions, failure_status: invalid, stop_code: ACCESS_VEHICLE_HIERARCHY_MISSING, severity: critical, target_phase: 13}
+  - {invariant_id: AR-ACCESS-009, scope: vehicle_domain_intersection, assertion: "registered non-governed vehicle-class tags have an explicit empty domain and never change governed vehicle permissions; horse accepts only approved scalar yes/no values, preserves source provenance, and never creates a formal exclusion", failure_status: invalid, stop_code: ACCESS_VEHICLE_HIERARCHY_MISSING, severity: critical, target_phase: 13}
   - {invariant_id: AR-ACCESS-010, scope: vehicle_domain_intersection, assertion: "approved psv domain is exactly {bus, taxi}; coach and delivery are excluded; explicit bus and taxi child tags override psv for their child class only; tourist_bus/coach remain separate and unknown unsupported values and syntax remain fail-closed", failure_status: invalid, stop_code: ACCESS_VEHICLE_HIERARCHY_MISSING, severity: critical, target_phase: 13}
   - {invariant_id: AR-COND-001, scope: conditional_evaluation, assertion: missing required context is not treated as false, failure_status: unresolved, stop_code: ACCESS_CONTEXT_MISSING, severity: critical, target_phase: 7}
   - {invariant_id: AR-COND-002, scope: conditional_evaluation, assertion: unsupported syntax is retained and stopped rather than ignored, failure_status: valid_but_unsupported, stop_code: ACCESS_CONDITIONAL_SYNTAX_UNSUPPORTED, severity: critical, target_phase: 7}
