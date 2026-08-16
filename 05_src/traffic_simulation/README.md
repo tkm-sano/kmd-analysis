@@ -24,6 +24,10 @@ The model-development lifecycle, Verification, calibration, independent
 Validation, evidence requirements, and formal-use gates are organized in
 [`simulation_model_development_and_vv.md`](simulation_model_development_and_vv.md).
 
+For a quick repository-side command reference when you want to inspect status,
+compare diffs, or validate a task from the terminal, see
+[`terminal_command_guide.md`](terminal_command_guide.md).
+
 The current blockers, their evidence, downstream effects, resolution work, and
 acceptance criteria are documented in
 [`current_issues_and_blockers.md`](current_issues_and_blockers.md).
