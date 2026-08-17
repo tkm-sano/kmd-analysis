@@ -812,3 +812,32 @@ remaining_scope:
   motorcar_ontology: pending_independent_decision
   known_motorcar_transition_count: 2
   phase13_complete: false
+
+fixed_container_regression:
+  initial_attempt:
+    status: failed
+    passed_test_count: 620
+    failed_test_count: 5
+    cause: phase1_completion_traceability_matrix_hash_mismatch_after_traceability_update
+    log: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260817_private_authorization_context_probe/fixed_container_regression.log
+    log_byte_sha256: e64ca77fddb6a09e7979b682a1f23ab6ab31069ccf272ee28dc9760d1a3c7979
+    code_regression_detected: false
+  remediation:
+    phase1_completion_record: reproducibility/config/traffic_simulation/v17_phase1_completion.yml
+    synchronized_artifact: traceability_matrix
+    synchronized_traceability_matrix_sha256: 666b380f97b7be52e886eea14ed8f8e38df6dce66a55fc65563acbfe5155afb3
+    failed_test_family_revalidation:
+      result: passed
+      test_count: 68
+    phase13_focused_revalidation:
+      result: passed
+      test_count: 63
+  final_attempt:
+    status: passed
+    passed_test_count: 625
+    failed_test_count: 0
+    log: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260817_private_authorization_context_probe/fixed_container_regression_v2.log
+    log_byte_sha256: 002efd2ef9f7c8e41853603ed4602c3c1cb88832a277cb5b11dbf1693447a19b
+  acceptance:
+    fixed_container_regression_passed: true
+    overall_pass: true

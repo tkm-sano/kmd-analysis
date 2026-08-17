@@ -328,7 +328,7 @@ execution_history:
     action: resolve_private_authorization_context_successors_and_rerun_horse_acceptance
     status: completed
     evidence: reproducibility/config/traffic_simulation/v17_phase13_private_authorization_context_resolution.yml
-    evidence_byte_sha256: 6aec1b8dea7957db776ceb28747cef6f1d28d008d3c8ce699206db182592c8df
+    evidence_byte_sha256: 34818448f4f2baf4c4e4fd03cf9d628772a39407d45d84c25b7357954fdf110a
     result: passed
     observations:
       governed_authorization_ids: []
@@ -361,7 +361,25 @@ execution_history:
       focused_result: passed
       focused_log: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260817_private_authorization_context_probe/focused_validation.log
       focused_log_byte_sha256: 60201825a75c4103d66bfeb3e6bccb09c623fb3690627a63b8d59681343513b6
-
+      fixed_container_regression:
+        initial_attempt:
+          result: failed
+          passed_test_count: 620
+          failed_test_count: 5
+          cause: phase1_completion_traceability_matrix_hash_mismatch_after_traceability_update
+          log: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260817_private_authorization_context_probe/fixed_container_regression.log
+          log_byte_sha256: e64ca77fddb6a09e7979b682a1f23ab6ab31069ccf272ee28dc9760d1a3c7979
+        remediation:
+          phase1_completion_traceability_hash_synchronized: true
+          synchronized_traceability_matrix_sha256: 666b380f97b7be52e886eea14ed8f8e38df6dce66a55fc65563acbfe5155afb3
+          failed_test_family_revalidation_count: 68
+          phase13_focused_revalidation_count: 63
+        final_attempt:
+          result: passed
+          passed_test_count: 625
+          failed_test_count: 0
+          log: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260817_private_authorization_context_probe/fixed_container_regression_v2.log
+          log_byte_sha256: 002efd2ef9f7c8e41853603ed4602c3c1cb88832a277cb5b11dbf1693447a19b
 current_blocker_summary:
   total_at_fixed_phase12_baseline: 108189
   groups:
