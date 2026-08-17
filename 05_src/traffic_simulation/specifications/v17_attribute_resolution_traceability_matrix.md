@@ -117,3 +117,23 @@ Phases 2–14 and is not represented as completed by this matrix.
 - Invariant: `AR-ACCESS-010`
 - Validation: `05_src/traffic_simulation/validation/test_phase13_psv_vehicle_ontology_decision_v17.py` and static access regression fixtures
 - Implementation status: Registry, invariant, fixture/oracle, traceability, and static-access fail-closed syntax handling are synchronized; governed vehicle-domain resolution remains Registry-driven.
+
+## Phase 13 private authorization context resolution trace
+
+- Resolution: `RES-P13-PRIVATE-AUTH-CONTEXT-001`
+- Resolution record: `reproducibility/config/traffic_simulation/v17_phase13_private_authorization_context_resolution.yml`
+- Root cause: the fixed governed runtime context already established `authorization_ids: []` and therefore `private_authorization=false`, but the static-access default context did not expose that governed authorization fact.
+- Runtime remediation: `05_src/traffic_simulation/network/static_access_v17.py`
+- Regression test: `05_src/traffic_simulation/validation/test_phase13_private_authorization_context_resolution_v17.py`
+- Revealed successor Ways: `992482251`, `992488487`
+- Result: both successor Ways resolve as `denied`; neither remains an `ACCESS_CONTEXT_MISSING` blocker.
+- Full-population `ACCESS_CONTEXT_MISSING`: `45 -> 0`
+- Full-population static-access blockers: `248 -> 187`
+- Horse stable-ID reacceptance: `passed`
+- New horse stable blocker IDs after remediation: `0`
+- Revealed private-context successor blockers after remediation: `0`
+- Unexpected managed-delivery permission changes: `0`
+- Known unresolved motorcar transitions preserved: `2`
+- Final focused validation: `63 passed`
+- Focused validation log SHA-256: `60201825a75c4103d66bfeb3e6bccb09c623fb3690627a63b8d59681343513b6`
+- Historical boundary: `v17_phase13_horse_full_population_probe.yml` remains the immutable record of the earlier strict failure; this resolution is a later successor-remediation record.

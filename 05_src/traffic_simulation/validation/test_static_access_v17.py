@@ -145,6 +145,21 @@ def test_empty_permit_assignment_is_known_negative() -> None:
     assert maxima[0]["effect"] == "denied"
 
 
+def test_private_access_uses_governed_negative_authorization_context() -> None:
+    context = default_scenario_context()
+    assert context["private_authorization"] is False
+
+    maxima = _maxima(
+        _rules({"motor_vehicle": "private"}),
+        context=context,
+    )
+
+    assert len(maxima) == 1
+    assert maxima[0]["effect"] == "denied"
+    assert maxima[0]["authorization_requirement"] == "private_authorization"
+    assert maxima[0]["provenance"]["context_evaluation"]["matched"] is False
+
+
 @pytest.mark.parametrize(
     ("value", "stop_code"),
     [("yes;no", "ACCESS_VALUE_INVALID"), ("variable", "ACCESS_VALUE_UNSUPPORTED")],

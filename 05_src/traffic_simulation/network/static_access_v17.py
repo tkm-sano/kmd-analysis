@@ -22,6 +22,7 @@ from traffic_simulation.network.directional_lanes_v17 import (
     build_lane_production_artifact,
 )
 from traffic_simulation.network.directed_segments_v17 import normalize_oneway
+from traffic_simulation.network.scenario_context_v17 import load_governed_runtime_context
 from traffic_simulation.paths import REPOSITORY_ROOT
 
 
@@ -118,12 +119,14 @@ def _rule_validator() -> jsonschema.Draft202012Validator:
 def default_scenario_context() -> dict[str, Any]:
     profile = _load_yaml(VEHICLE_PROFILE_PATH)
     purpose = profile["trip_purpose"]
+    governed = load_governed_runtime_context()
     return {
         "vehicle_class": profile["sumo_vclass"],
         "trip_purpose_destination": purpose == "destination",
         "trip_purpose_delivery": purpose == "delivery",
         "trip_purpose_customer": purpose == "customers",
         "permit_assignment": bool(profile["permit_ids"]),
+        "private_authorization": governed["private_authorization"],
     }
 
 
