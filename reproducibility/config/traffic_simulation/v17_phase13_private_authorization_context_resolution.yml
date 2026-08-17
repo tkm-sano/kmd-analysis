@@ -1,0 +1,814 @@
+schema_version: 1
+resolution_id: RES-P13-PRIVATE-AUTH-CONTEXT-001
+status: passed
+resolved_at: '2026-08-17'
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+problem:
+  origin: horse_full_population_probe_successor_blockers
+  source_way_ids:
+  - 992482251
+  - 992488487
+  prior_stop_code: ACCESS_CONTEXT_MISSING
+  required_context: private_authorization
+  horse_root_cause: false
+root_cause:
+  governed_context_already_fixed: true
+  authorization_ids: []
+  derived_private_authorization: false
+  static_access_default_context_omitted_private_authorization: true
+  interpretation: The authorization decision already existed in the governed runtime
+    context. The Phase 13 successor blockers were caused by static-access default-context
+    plumbing not exposing private_authorization.
+authority:
+  governed_runtime_context:
+    path: reproducibility/config/traffic_simulation/v17_governed_runtime_interval_context.yml
+    byte_sha256: e7a808f46d028db1242e117757619aecae54b6a7ffcc6a1d8ba3114afcb13edf
+    authorization_ids: []
+    private_authorization: false
+  semantic_rule: known negative authorization context evaluates to denied; missing
+    context remains fail-closed
+implementation:
+  runtime:
+    path: 05_src/traffic_simulation/network/static_access_v17.py
+    byte_sha256: 4f1aee89eda5f72f8adfec211d6986528d3b18ad2359389aae9da3da4e05bd1e
+  regression_test:
+    path: 05_src/traffic_simulation/validation/test_static_access_v17.py
+    byte_sha256: 088f1dc0fa855586c5f2d28dd01c38671d2c46671346a2d94f34406484f3eb2b
+    test_name: test_private_access_uses_governed_negative_authorization_context
+  mechanism: default_scenario_context imports only private_authorization from the
+    fixed governed runtime context while retaining existing profile-derived static
+    defaults
+  way_specific_exception_added: false
+  private_authorization_hardcoded: false
+  registry_semantics_changed: false
+  governed_context_authority_changed: false
+focused_validation:
+  command: PYTHONPATH=05_src pytest -q 05_src/traffic_simulation/validation/test_v17_phase1_authority.py
+    05_src/traffic_simulation/validation/test_phase13_psv_vehicle_ontology_decision_v17.py
+    05_src/traffic_simulation/validation/test_phase13_horse_vehicle_ontology_decision_v17.py
+    05_src/traffic_simulation/validation/test_static_access_v17.py 05_src/traffic_simulation/validation/test_final_permission_v17.py
+    05_src/traffic_simulation/validation/test_resolver_integration_v17.py
+  exit_code: 0
+  test_count: 60
+  result: passed
+full_population_probe:
+  static_access_output:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260817_private_authorization_context_probe/static_access_formal.json
+    byte_sha256: 77088572cac04e3148f2e84025fc7424325f1b0f76a6e32034011883cca8e7cf
+    static_access_blocker_count: 187
+    blocker_stop_codes:
+      ACCESS_VALUE_UNSUPPORTED: 31
+      ACCESS_VEHICLE_HIERARCHY_MISSING: 156
+    access_context_missing_count: 0
+    managed_private_authorization: false
+  target_way_results:
+  - source_way_id: 992482251
+    remaining_blocker_count: 0
+    maxima_count: 1
+    effects:
+    - denied
+  - source_way_id: 992488487
+    remaining_blocker_count: 0
+    maxima_count: 1
+    effects:
+    - denied
+horse_stable_id_recheck:
+  path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260817_private_authorization_context_probe/horse_stable_id_permission_diff.json
+  byte_sha256: 7ee21d2ea66d50920cbda899858a2c2f0a10e2e4f7609ddf5e34693ca9da2143
+  status: passed
+  stable_id_diff:
+    fixed_horse_blocker_count: 130
+    known_motorcar_transition_count: 2
+    new_blocked_source_way_count: 0
+    new_blocker_id_count: 0
+    new_blocker_ids: []
+    remaining_fixed_blocker_ids:
+    - blocker:static_access:static_access:source_way:1051964008:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:783347228:ACCESS_VEHICLE_HIERARCHY_MISSING
+    remaining_horse_hierarchy_blocker_count: 0
+    remaining_same_stable_id_count: 2
+    resolved_fixed_blocker_count: 128
+    resolved_fixed_blocker_ids:
+    - blocker:static_access:static_access:source_way:1000820083:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1000820084:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1000820085:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1000820086:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1009203146:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1039260955:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1039260956:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1039260957:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1039260958:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:107049211:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1107078019:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1134175359:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1134175360:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1135868382:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1302654458:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1302796786:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1302796787:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1302796791:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1303502475:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1303502476:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1307070514:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1307070515:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1307070516:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1308127764:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1317064252:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1317064253:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1317064257:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1317064258:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1317064259:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1317064260:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:1317064261:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:174323968:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:174323975:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:184075298:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:184075299:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:208693600:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:208693755:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:23334837:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:23604841:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:24059955:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:250504121:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:250506422:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:250506423:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:250506437:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:262946987:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:262947136:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:267627415:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:301016680:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:31706455:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:31706459:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:31706460:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:322744967:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:322744971:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:340606259:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:340606265:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:340606267:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:340606270:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:390342657:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:405795840:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:405795847:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42747538:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42747698:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42747877:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42747878:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42748098:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42748309:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42748334:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42748335:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42750919:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42750920:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42750921:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42750922:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42751312:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42751315:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42751317:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42751318:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42751320:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42751502:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42751505:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42751506:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42752384:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42752385:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:42752388:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:44832005:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:44832006:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:44832008:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:45681065:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:45681073:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:46148382:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:5170832:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:5203880:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:5213471:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:5213472:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:5213479:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:5213483:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:5213485:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:5213486:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:5213499:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:556616222:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:556616223:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:556616225:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:669738788:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:678697942:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:678697944:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:678697945:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:678761498:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:679059342:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:828700337:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:878613225:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:878613227:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:878613228:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:881581728:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:881624921:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:882785082:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:887526440:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:887526441:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:891250742:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:891250743:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:908533349:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:908533351:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:976185609:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:982247263:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:988869941:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:991592109:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:991592110:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:991592632:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:992482251:ACCESS_VEHICLE_HIERARCHY_MISSING
+    - blocker:static_access:static_access:source_way:992488487:ACCESS_VEHICLE_HIERARCHY_MISSING
+    revealed_private_context_successor_count: 0
+    transitions:
+    - current_blocker_id: blocker:static_access:static_access:source_way:783347228:ACCESS_VEHICLE_HIERARCHY_MISSING
+      current_message: 'no registered vehicle domain for access key: motorcar'
+      current_stop_code: ACCESS_VEHICLE_HIERARCHY_MISSING
+      fixed_blocker_id: blocker:static_access:static_access:source_way:783347228:ACCESS_VEHICLE_HIERARCHY_MISSING
+      source_key: horse
+      source_value: 'no'
+      source_way_id: 783347228
+      status: known_transition_to_motorcar
+    - current_blocker_id: blocker:static_access:static_access:source_way:1051964008:ACCESS_VEHICLE_HIERARCHY_MISSING
+      current_message: 'no registered vehicle domain for access key: motorcar'
+      current_stop_code: ACCESS_VEHICLE_HIERARCHY_MISSING
+      fixed_blocker_id: blocker:static_access:static_access:source_way:1051964008:ACCESS_VEHICLE_HIERARCHY_MISSING
+      source_key: horse
+      source_value: 'no'
+      source_way_id: 1051964008
+      status: known_transition_to_motorcar
+    unexpected_transition_count: 0
+  permission_diff:
+    blocked_counterfactual_changed_count: 0
+    blocked_counterfactual_same_count: 2
+    blocked_outcome_changes: []
+    changed_tuple_count: 0
+    changed_tuples: []
+    changed_way_count: 0
+    compared_tuple_count: 338
+    evaluable_way_count: 128
+    known_unevaluable_motorcar_way_count: 2
+    known_unevaluable_private_context_way_count: 0
+    managed_vehicle_class: delivery
+    preserved_empty_domain_horse_rule_count: 128
+    records:
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 5170832
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 5203880
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 5213471
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 5213472
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 5213479
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 5213483
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 5213485
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 5213486
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 5213499
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 23334837
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 4
+      source_way_id: 23604841
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 24059955
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 4
+      source_way_id: 31706455
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 31706459
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 31706460
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 42747538
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 42747698
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 42747877
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 42747878
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 6
+      source_way_id: 42748098
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 42748309
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 42748334
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 42748335
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 42750919
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 42750920
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 42750921
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 42750922
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 42751312
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 42751315
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 4
+      source_way_id: 42751317
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 42751318
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 42751320
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 42751502
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 4
+      source_way_id: 42751505
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 42751506
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 42752384
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 42752385
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 42752388
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 4
+      source_way_id: 44832005
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 44832006
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 4
+      source_way_id: 44832008
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 45681065
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 45681073
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 46148382
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 107049211
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 174323968
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 174323975
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 4
+      source_way_id: 184075298
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 4
+      source_way_id: 184075299
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 208693600
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 208693755
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 250504121
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 3
+      source_way_id: 250506422
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 6
+      source_way_id: 250506423
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 250506437
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 262946987
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 262947136
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 16
+      source_way_id: 267627415
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 4
+      source_way_id: 301016680
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 5
+      source_way_id: 322744967
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 322744971
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 10
+      source_way_id: 340606259
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 340606265
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 340606267
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 5
+      source_way_id: 340606270
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 390342657
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 405795840
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 405795847
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 556616222
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 556616223
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 556616225
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 669738788
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 4
+      source_way_id: 678697942
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 3
+      source_way_id: 678697944
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 16
+      source_way_id: 678697945
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 678761498
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 679059342
+      status: unchanged
+    - changed_tuple_count: 0
+      counterfactual_outcome_unchanged: true
+      source_way_id: 783347228
+      status: not_evaluable_known_motorcar_blocker
+      with_horse_outcome:
+        message: 'no registered vehicle domain for access key: motorcar'
+        status: unresolved
+        stop_code: ACCESS_VEHICLE_HIERARCHY_MISSING
+        type: blocker
+      without_horse_outcome:
+        message: 'no registered vehicle domain for access key: motorcar'
+        status: unresolved
+        stop_code: ACCESS_VEHICLE_HIERARCHY_MISSING
+        type: blocker
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 828700337
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 878613225
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 878613227
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 878613228
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 6
+      source_way_id: 881581728
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 881624921
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 882785082
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 4
+      source_way_id: 887526440
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 887526441
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 891250742
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 891250743
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 908533349
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 908533351
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 3
+      source_way_id: 976185609
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 12
+      source_way_id: 982247263
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 988869941
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 14
+      source_way_id: 991592109
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 991592110
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 991592632
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 992482251
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 992488487
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 1000820083
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 1000820084
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 1000820085
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 1000820086
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 4
+      source_way_id: 1009203146
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 1039260955
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 1039260956
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 1039260957
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 1039260958
+      status: unchanged
+    - changed_tuple_count: 0
+      counterfactual_outcome_unchanged: true
+      source_way_id: 1051964008
+      status: not_evaluable_known_motorcar_blocker
+      with_horse_outcome:
+        message: 'no registered vehicle domain for access key: motorcar'
+        status: unresolved
+        stop_code: ACCESS_VEHICLE_HIERARCHY_MISSING
+        type: blocker
+      without_horse_outcome:
+        message: 'no registered vehicle domain for access key: motorcar'
+        status: unresolved
+        stop_code: ACCESS_VEHICLE_HIERARCHY_MISSING
+        type: blocker
+    - changed_tuple_count: 0
+      compared_tuple_count: 6
+      source_way_id: 1107078019
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 1134175359
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 1134175360
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 1135868382
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 1302654458
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 1302796786
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 1302796787
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 1302796791
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 1303502475
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 1303502476
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 1307070514
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 4
+      source_way_id: 1307070515
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 4
+      source_way_id: 1307070516
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 1308127764
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 1
+      source_way_id: 1317064252
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 2
+      source_way_id: 1317064253
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 4
+      source_way_id: 1317064257
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 4
+      source_way_id: 1317064258
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 5
+      source_way_id: 1317064259
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 4
+      source_way_id: 1317064260
+      status: unchanged
+    - changed_tuple_count: 0
+      compared_tuple_count: 4
+      source_way_id: 1317064261
+      status: unchanged
+    unexpected_permission_change_count: 0
+  acceptance:
+    fixed_horse_record_count_is_130: true
+    horse_hierarchy_blockers_are_zero: true
+    known_motorcar_cooccurrences_are_preserved: true
+    new_blocked_source_ways_are_zero: true
+    new_stable_blocker_ids_are_zero: true
+    unexpected_blocker_transitions_are_zero: true
+    unexpected_permission_changes_are_zero: true
+acceptance:
+  target_private_context_blockers_are_zero: true
+  target_private_ways_resolve_denied: true
+  access_context_missing_full_population_is_zero: true
+  new_horse_stable_blocker_ids_are_zero: true
+  unexpected_permission_changes_are_zero: true
+  horse_acceptance_status: passed
+  overall_pass: true
+remaining_scope:
+  motorcar_ontology: pending_independent_decision
+  known_motorcar_transition_count: 2
+  phase13_complete: false

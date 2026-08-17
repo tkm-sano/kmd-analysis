@@ -324,6 +324,44 @@ execution_history:
       fixed_container_log: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_psv_full_population_probe/final_fixed_container_regression.log
       fixed_container_log_byte_sha256: 2746ca2a0be72d392a7dcad80edb8ac2872c4b53b4bbdd219446250bb226f692
 
+  - order: 17
+    action: resolve_private_authorization_context_successors_and_rerun_horse_acceptance
+    status: completed
+    evidence: reproducibility/config/traffic_simulation/v17_phase13_private_authorization_context_resolution.yml
+    evidence_byte_sha256: 6aec1b8dea7957db776ceb28747cef6f1d28d008d3c8ce699206db182592c8df
+    result: passed
+    observations:
+      governed_authorization_ids: []
+      private_authorization: false
+      successor_source_ways: [992482251, 992488487]
+      successor_effect: denied
+      remaining_private_context_successor_blockers: 0
+      access_context_missing_before: 45
+      access_context_missing_after: 0
+      static_access_blockers_before: 248
+      static_access_blockers_after: 187
+      horse_hierarchy_blockers_after: 0
+      new_horse_stable_blocker_ids_after: 0
+      revealed_private_context_successors_after: 0
+      remaining_same_stable_ids_due_to_motorcar: 2
+      unexpected_permission_changes: 0
+      phase12_publication_modified: false
+    validation:
+      focused_command: >-
+        PYTHONPATH=05_src pytest -q
+        05_src/traffic_simulation/validation/test_v17_phase1_authority.py
+        05_src/traffic_simulation/validation/test_phase13_psv_vehicle_ontology_decision_v17.py
+        05_src/traffic_simulation/validation/test_phase13_horse_vehicle_ontology_decision_v17.py
+        05_src/traffic_simulation/validation/test_phase13_private_authorization_context_resolution_v17.py
+        05_src/traffic_simulation/validation/test_static_access_v17.py
+        05_src/traffic_simulation/validation/test_final_permission_v17.py
+        05_src/traffic_simulation/validation/test_resolver_integration_v17.py
+      focused_exit_code: 0
+      focused_test_count: 63
+      focused_result: passed
+      focused_log: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260817_private_authorization_context_probe/focused_validation.log
+      focused_log_byte_sha256: 60201825a75c4103d66bfeb3e6bccb09c623fb3690627a63b8d59681343513b6
+
 current_blocker_summary:
   total_at_fixed_phase12_baseline: 108189
   groups:
@@ -354,6 +392,7 @@ current_position:
     - horse_vehicle_ontology_registry_implementation
     - horse_full_population_probe_and_stable_id_diff_executed
     - psv_vehicle_ontology_decision
+    - private_authorization_context_resolution_and_horse_reacceptance
     - urban_lastmile_vehicle_population_evidence_v1
   not_yet_completed:
     - all_remaining_root_cause_decisions
@@ -362,7 +401,7 @@ current_position:
     - two_run_determinism_after_remediation
     - phase13_completion_record
     - phase14_attribute_resolution_acceptance
-  immediate_next_action: resolve_private_authorization_context_successors_before_repeating_horse_stable_id_acceptance
+  immediate_next_action: decide_motorcar_intersection_and_japan_goods_hgv_semantics_independently_using_population_as_reference_evidence
   planned_sequence_after_horse:
     - decide_private_authorization_context_for_ways_992482251_and_992488487
     - rerun_horse_stable_id_acceptance_in_a_new_output_path
