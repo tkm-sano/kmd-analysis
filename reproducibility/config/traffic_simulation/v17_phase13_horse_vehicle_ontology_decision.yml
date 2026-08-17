@@ -1,8 +1,9 @@
 schema_version: 1
 decision_id: DEC-P13-HORSE-ONTOLOGY-001
-decision_version: 1.0.0
+decision_version: 1.2.0
 status: approved
 approved_at: '2026-08-14'
+implemented_at: '2026-08-15'
 approved_by: repository_owner_directive
 configuration_id: ota_ward_sumo_network_v17
 population_version: ota_ward_relation_closure_v16
@@ -60,7 +61,7 @@ research_vehicle_authority:
       hgv: false
   governed_universe:
     authority_path: reproducibility/config/traffic_simulation/sumo_network_v17.yml
-    authority_byte_sha256: 61ee4866bca7de99871770ef4b433846b53a74225ffe8ab70ee5828bdf7006d8
+    authority_byte_sha256: 6cf1b81d07ce7c947063101f0b8beed7d0befe99c11c62a3af313feb47438d78
     model: motorized_v1
     vclasses: [passenger, taxi, bus, coach, delivery, truck, motorcycle]
     contains_horse: false
@@ -113,12 +114,102 @@ mandatory_boundaries:
 implementation_state:
   decision_record: fixed
   decision_record_validation: passed
-  registry_update: pending
-  semantic_invariant_update: pending
-  fixture_and_oracle_update: pending
-  focused_tests: pending
-  full_population_probe: pending
+  registry_update: implemented
+  semantic_invariant_update: implemented
+  traceability_update: implemented
+  fixture_and_oracle_update: implemented
+  runtime_boundary_enforcement: implemented
+  focused_tests: passed
+  full_population_probe: failed_strict_new_stable_blocker_id_acceptance
   phase13_complete: false
+
+implementation_artifacts:
+  registry:
+    path: reproducibility/config/traffic_simulation/attribute_resolution_registries_v17.yml
+    version: 1.6.0
+    byte_sha256: 57c1cd4b1adf32358f17a5d0279745ce0b5f76cdb42e4faf65352bdc4e2ad15d
+  semantic_invariants:
+    path: reproducibility/config/traffic_simulation/v17_semantic_invariants.yml
+    version: 1.4.0
+    byte_sha256: 8614c6c6f513bffbe20c4cb186c6b4f684256b5eb2388d2e9d000fbbc8168d69
+  fixture:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/phase13_horse_vehicle_domain_fixture.yml
+    byte_sha256: 81d821c510923868b187eac2a1d27adb999cba330713a8f42011cbcebb8a254a
+  oracle:
+    path: 05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/phase13_horse_vehicle_domain_oracle.yml
+    byte_sha256: 87ecc91d60ad177682252909370dd6cdec2b814da2b0260a7e045b80cb783c23
+  runtime_enforcement:
+    path: 05_src/traffic_simulation/network/static_access_v17.py
+    byte_sha256: b09a7e28a02444a78621d7b711a364843bf29065da02be786f8fbdaa6ca73368
+
+focused_implementation_validation:
+  command: >-
+    PYTHONPATH=05_src pytest -q
+    05_src/traffic_simulation/validation/test_v17_phase1_authority.py
+    05_src/traffic_simulation/validation/test_phase13_horse_vehicle_ontology_decision_v17.py
+    05_src/traffic_simulation/validation/test_static_access_v17.py
+    05_src/traffic_simulation/validation/test_final_permission_v17.py
+    05_src/traffic_simulation/validation/test_resolver_integration_v17.py
+  exit_code: 0
+  test_count: 54
+  result: passed
+  log_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_horse_registry_implementation/focused_validation_v3.log
+  log_byte_sha256: f0e53e1c9e9528826ebaf0463e64e8cedb2dfe78815403fcf37bdcea0a276dfc
+  prior_failed_attempt:
+    exit_code: 1
+    result: failed_test_assertion_representation_mismatch
+    failure: empty maxima are returned as a tuple but the test compared them to a list
+    resolution: assert emptiness independent of sequence representation
+    log_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_horse_registry_implementation/focused_validation_v2.log
+    log_byte_sha256: 8a3f6b57c58d82feddd8478570dad731ce1fe10d194104b0f0bbd48aaa2db845
+
+managed_delivery_permission_impact_validation:
+  command: >-
+    PYTHONPATH=05_src pytest -q
+    05_src/traffic_simulation/validation/test_phase13_horse_vehicle_ontology_decision_v17.py
+    05_src/traffic_simulation/validation/test_static_access_v17.py
+    05_src/traffic_simulation/validation/test_final_permission_v17.py
+    05_src/traffic_simulation/validation/test_resolver_integration_v17.py
+  exit_code: 0
+  test_count: 48
+  result: passed
+  managed_delivery_permission_impact: none_detected
+  verified_cases:
+    - horse_only_creates_no_managed_delivery_permission
+    - horse_yes_does_not_override_access_no
+    - horse_no_does_not_override_access_yes
+    - horse_yes_preserves_goods_allowance
+    - horse_no_preserves_goods_denial
+    - unapproved_value_and_scoped_syntax_fail_closed
+  log_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_horse_registry_implementation/managed_delivery_permission_focused_validation.log
+  log_byte_sha256: ed8c0a319638e099121302a5b2e334baa73aceada8c15c3acb338ced5c99d5e0
+
+fixed_container_regression:
+  command: docker compose run --rm -T analysis python -m pytest -q 05_src/traffic_simulation/validation
+  exit_code: 0
+  test_count: 609
+  result: passed
+  elapsed_seconds: 69.24
+  log_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_horse_registry_implementation/fixed_container_regression_v2.log
+  log_byte_sha256: d5c2a82e2e3ca3f84df2a572d386e4eb3a5385e10d60345f78ca011c64d1f443
+
+full_population_probe_result:
+  record: reproducibility/config/traffic_simulation/v17_phase13_horse_full_population_probe.yml
+  record_byte_sha256: 6bd6a85f6f4d966cdd8f2da388ec7d2e5840922309f45d1677aff3365f8890f9
+  result: failed_strict_new_stable_blocker_id_acceptance
+  fixed_horse_record_count: 130
+  remaining_horse_hierarchy_blocker_count: 0
+  new_blocked_source_way_count: 0
+  new_stable_blocker_id_count: 2
+  successor_causes:
+    known_motorcar_ontology_pending: 2
+    revealed_private_authorization_context_missing: 2
+  unexpected_blocker_transition_count: 0
+  managed_delivery_permission:
+    compared_lane_tuple_count: 336
+    blocked_counterfactual_same_count: 4
+    unexpected_permission_change_count: 0
+  acceptance_passed: false
 
 decision_record_validation:
   command: >-

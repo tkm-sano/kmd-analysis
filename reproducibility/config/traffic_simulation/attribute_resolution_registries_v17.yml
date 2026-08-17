@@ -1,6 +1,6 @@
 schema_version: 17
 registry_bundle_id: ota_ward_attribute_resolution_registries_v17
-registry_version: 1.5.0
+registry_version: 1.6.0
 policy_id: ota_ward_attribute_resolution_policy_v17
 status: approved
 approved_by: repository_owner_directive
@@ -106,6 +106,17 @@ vehicle_ontology:
     foot: []
     mofa: []
     moped: []
+    horse: []
+  non_governed_domain_decisions:
+    horse:
+      decision_id: DEC-P13-HORSE-ONTOLOGY-001
+      rule_id: NON_GOVERNED_HORSE_RIDER_DOMAIN_EMPTY_INTERSECTION_V1
+      approved_source_values: ['no', 'yes']
+      approved_syntax: scalar
+      registered_vehicle_domain: []
+      permission_effect_on_governed_vclasses: none
+      source_record_preserved: true
+      formal_exclusion: false
 access_values:
   - {source_value: 'yes', effect: allowed, required_context: []}
   - {source_value: designated, effect: allowed, required_context: []}

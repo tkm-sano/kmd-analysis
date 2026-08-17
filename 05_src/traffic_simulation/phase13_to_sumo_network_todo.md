@@ -305,7 +305,10 @@ OSMの`psv`、`motorcar`、`horse`表現が、本研究のどの車種へ影響�
 
 ### 4.2 判断
 
-- [ ] `psv`が本研究の`bus`、`taxi`等へどう交差するか決定する。
+- [x] `psv`が本研究の`bus`、`coach`、`taxi`へどう交差するか決定する。
+  - Decision: `DEC-P13-PSV-ONTOLOGY-001`
+  - 結論: `bus=true`、`taxi=true`、`coach=false`。managed `delivery`への効果はない。
+  - 根拠: OSM `Key:psv` revision 2960634、`Key:access` revision 3054035、SUMO `v1_24_0` commit `b72eb3fabc806681f8c9048999a33dd8d64092b1`。
 - [ ] `motorcar`が`passenger`、`taxi`、`delivery`等へどう交差するか決定する。
 - [x] `horse`がgoverned motorized universeと空交差でよいか根拠を確認する。
   - 判断: `horse=no/yes`は騎乗者に対する別車種制約であり、managed `delivery` permissionを変化させない。
@@ -329,7 +332,8 @@ OSMの`psv`、`motorcar`、`horse`表現が、本研究のどの車種へ影響�
 - [ ] 上記成果物を`motorcar` ontology decisionの参考証拠として参照する。
 
 この前提作業は`motorcar`判断に先立つmanaged delivery EV profileの再検証である。populationを登録しただけでは
-Phase 13 blockerは解消済みにならず、Registry 1.4.0も変更しない。
+Phase 13 blockerは解消済みにならず、その作業時点のRegistry 1.4.0も変更しなかった。その後、承認済み
+`psv` decisionを1.5.0、`horse` decisionを1.6.0として順にRegistryへ反映した。
 
 #### この工程の目的
 
@@ -405,24 +409,24 @@ Phase 13 blockerは解消済みにならず、Registry 1.4.0も変更しない�
 - [ ] keyごとに独立したdecision recordを作る。
   - [x] `horse`: `DEC-P13-HORSE-ONTOLOGY-001`
   - [ ] `motorcar`
-  - [ ] `psv`
-- [ ] vehicle ontology Registryをversion更新する。
-- [ ] semantic invariantとtraceabilityを同期する。
-- [ ] fixture/oracleを追加する。
-- [ ] 必要に応じてstatic/final permission resolverを更新する。
+  - [x] `psv`: `DEC-P13-PSV-ONTOLOGY-001`
+- [x] `psv`を`{bus, taxi}`としてRegistry 1.5.0へ登録し、続いて`horse`を空domainとしてRegistry 1.6.0へ登録する（`motorcar`は未決定）。
+- [x] `psv` decisionをsemantic invariant `AR-ACCESS-010`、`horse` decisionを`AR-ACCESS-009`としてtraceabilityへ同期する。
+- [x] `psv`・`horse`それぞれの専用fixture/oracleを追加する。
+- [x] static access resolverへ`psv`の承認済みdomain・fail-closed境界と、`horse`の承認済みscalar `yes/no`・fail-closed境界を反映する。
 
 ### 4.4 実行
 
-- [ ] `test_static_access_v17.py`を実行する。
-- [ ] `test_final_permission_v17.py`を実行する。
-- [ ] `test_resolver_integration_v17.py`を実行する。
-- [ ] full-population static access probeを新しい出力へ実行する。
-- [ ] 固定container全回帰を実行する。
+- [x] `test_static_access_v17.py`を実行する。
+- [x] `test_final_permission_v17.py`を実行する。
+- [x] `test_resolver_integration_v17.py`を実行する。
+- [x] full-population static access probeを新しい出力へ実行する（horse hierarchy残存0件・新規stable blocker ID 2件、PSV固定blocker 16件解消・新規blocker 0件）。
+- [x] 固定container全回帰を実行する（609 passed）。
 
 ### 4.5 成果物・完了条件
 
 - [ ] OSM keyからgoverned車種集合への対応表を残す。
-- [ ] decision、Registry、fixture、oracle、test log、probe、before/after reportを残す。
+- [x] `horse`・`psv`についてdecision、Registry、fixture、oracle、test、probe、stable-ID/permission差分を残す。
 - [ ] `OSMタグ → 登録規則 → 対象車種への効果`を第三者が説明できる。
 - [ ] blockerが残る場合、その理由と必要な追加証拠を記録する。
 
@@ -1345,14 +1349,15 @@ runtime試験をまとめて検査し、acceptance reportでpass/failを決定�
 7. [x] population validatorと自動生成物testを実装し、固定container全回帰まで実行する。
 8. [x] TODO、decision record、completion record、Phase 13実行履歴へtraceabilityを追記する。
 9. [x] `horse`をmanaged motorized vehicle universeと空交差にする独立decisionを固定する。
-   - [ ] 固定decisionをRegistry・Invariant・fixture・oracleへ実装する。
-   - [ ] focused test、full-population probe、blocker stable-ID差分、固定container全回帰を実行する。
-10. [ ] `psv`とgoverned `bus`・`coach`・`taxi`の交差を独立decisionで決定する。
+   - [x] 固定decisionをRegistry・Invariant・traceability・fixture・oracle・resolverへ実装する。
+   - [x] focused testと固定container全回帰を実行する。
+   - [x] full-population probeとblocker stable-ID差分を実行する（新規stable blocker ID 2件のため受入不合格）。
+10. [x] `psv`とgoverned `bus`・`coach`・`taxi`の交差を独立decisionで決定する（`bus`・`taxi`のみ交差）。
 11. [ ] 固定済みの実recordとvehicle populationを参考証拠とし、`motorcar`とmanaged `delivery`の交差、および日本向け`goods`/`hgv`意味論を別decisionで決定する。
 12. [ ] 承認されたontology decisionのみをRegistry・Schema・Invariant・traceability・fixture・oracleへ順に反映し、full-population probe、blocker stable-ID差分、固定container全回帰を実行する。
 13. [ ] 実行command、結果、ログhash、成果物hashを実行履歴へ追記し、次のroot causeへ反復する。主要root cause処理後はPhase 13正式全道路runを2回独立実行する。
 
-この順序では、vehicle populationは根拠層として固定するが、既存`managed_urban_ev_delivery_v1`やRegistry 1.4.0は自動更新しない。
+この順序では、vehicle populationは根拠層として固定する。`managed_urban_ev_delivery_v1`は変更せず、Registry 1.6.0には承認済み`psv`・`horse` decisionのみを反映し、`motorcar`は未決定のままとする。
 Population追加だけでblocker解消とは判定せず、各ontology decisionの実装とstable-ID差分で効果を確認する。
 
 ## 25. 全体の判定境界

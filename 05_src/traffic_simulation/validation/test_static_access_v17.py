@@ -36,6 +36,16 @@ PHASE13_NON_GOVERNED_ORACLE = (
     / "05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/"
     "phase13_non_governed_vehicle_domain_oracle.yml"
 )
+PHASE13_HORSE_FIXTURE = (
+    REPOSITORY_ROOT
+    / "05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/"
+    "phase13_horse_vehicle_domain_fixture.yml"
+)
+PHASE13_HORSE_ORACLE = (
+    REPOSITORY_ROOT
+    / "05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/"
+    "phase13_horse_vehicle_domain_oracle.yml"
+)
 PHASE13_PSV_FIXTURE = (
     REPOSITORY_ROOT
     / "05_src/traffic_simulation/validation/fixtures/v17_attribute_resolution/"
@@ -192,6 +202,54 @@ def test_phase13_non_governed_vehicle_domains_do_not_change_delivery_permission(
         ]
 
 
+def test_phase13_horse_decision_preserves_permission_and_traceability() -> None:
+    fixture = yaml.safe_load(PHASE13_HORSE_FIXTURE.read_text(encoding="utf-8"))
+    oracle = yaml.safe_load(PHASE13_HORSE_ORACLE.read_text(encoding="utf-8"))
+    for case in fixture["cases"]:
+        tags = {**fixture["base_tags"], **case["tags"]}
+        with_horse = normalize_static_access_rules(
+            source_way_id=fixture["source_way_id"],
+            tags=tags,
+            lane_counts=fixture["lane_counts"],
+        )["rules"]
+        without_horse = normalize_static_access_rules(
+            source_way_id=fixture["source_way_id"],
+            tags={key: value for key, value in tags.items() if key != "horse"},
+            lane_counts=fixture["lane_counts"],
+        )["rules"]
+        horse_rule = next(item for item in with_horse if item["source_key"] == "horse")
+        assert horse_rule["vehicle_domain"] == oracle["expected_horse_vehicle_domain"]
+        assert horse_rule["source_value"] == case["tags"]["horse"]
+        assert horse_rule["source_element"] == {
+            "type": "way",
+            "id": fixture["source_way_id"],
+        }
+        assert horse_rule["provenance"]["vehicle_ontology_decision_id"] == oracle[
+            "decision_id"
+        ]
+        assert horse_rule["provenance"]["vehicle_ontology_rule_id"] == oracle[
+            "rule_id"
+        ]
+        maxima_with = _maxima(with_horse)
+        maxima_without = _maxima(without_horse)
+        assert [item["source_key"] for item in maxima_with] == case[
+            "expected_maximal_source_keys"
+        ]
+        assert [item["source_key"] for item in maxima_without] == case[
+            "expected_maximal_source_keys"
+        ]
+        if case["expected_effect"] is None:
+            assert not maxima_with
+            assert not maxima_without
+            continue
+        assert resolve_maximal_static_effect(maxima_with)["effect"] == case[
+            "expected_effect"
+        ]
+        assert resolve_maximal_static_effect(maxima_without)["effect"] == case[
+            "expected_effect"
+        ]
+
+
 def test_phase13_psv_registry_and_runtime_semantics_match_approved_decision() -> None:
     decision = yaml.safe_load(
         (REPOSITORY_ROOT / "reproducibility/config/traffic_simulation/"
@@ -205,7 +263,7 @@ def test_phase13_psv_registry_and_runtime_semantics_match_approved_decision() ->
         (REPOSITORY_ROOT / "reproducibility/config/traffic_simulation/"
          "v17_semantic_invariants.yml").read_text(encoding="utf-8")
     )
-    assert registry["registry_version"] == "1.5.0"
+    assert registry["registry_version"] == "1.6.0"
     assert registry["vehicle_ontology"]["domains"]["psv"] == ["bus", "taxi"]
     assert "coach" not in registry["vehicle_ontology"]["domains"]["psv"]
     assert registry["vehicle_ontology"]["domains"]["goods"] == ["delivery", "truck"]
@@ -245,6 +303,22 @@ def test_phase13_psv_registry_and_runtime_semantics_match_approved_decision() ->
             normalize_static_access_rules(
                 source_way_id=fixture["source_way_id"],
                 tags={**fixture["base_tags"], case["source_key"]: case["source_value"]},
+                lane_counts=fixture["lane_counts"],
+                candidate_keys={case["source_key"]},
+            )
+        assert caught.value.stop_code == case["expected_stop_code"]
+
+
+def test_phase13_horse_unapproved_values_and_syntax_fail_closed() -> None:
+    fixture = yaml.safe_load(PHASE13_HORSE_FIXTURE.read_text(encoding="utf-8"))
+    for case in fixture["fail_closed_cases"]:
+        with pytest.raises(StaticAccessError) as caught:
+            normalize_static_access_rules(
+                source_way_id=fixture["source_way_id"],
+                tags={
+                    **fixture["base_tags"],
+                    case["source_key"]: case["source_value"],
+                },
                 lane_counts=fixture["lane_counts"],
                 candidate_keys={case["source_key"]},
             )

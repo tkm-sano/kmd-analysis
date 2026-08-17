@@ -177,6 +177,36 @@ def _vehicle_domain(base_key: str) -> list[str]:
     )
 
 
+def _non_governed_domain_decision(base_key: str) -> dict[str, Any] | None:
+    decisions = _registry()["vehicle_ontology"].get(
+        "non_governed_domain_decisions", {}
+    )
+    decision = decisions.get(base_key)
+    return decision if isinstance(decision, dict) else None
+
+
+def _validate_non_governed_domain_decision(key: str, value: str) -> None:
+    """Enforce the exact syntax/value boundary approved by an ontology decision."""
+
+    base_key = key.split(":", 1)[0]
+    decision = _non_governed_domain_decision(base_key)
+    if decision is None:
+        return
+    if decision["approved_syntax"] == "scalar" and key != base_key:
+        raise StaticAccessError(
+            f"unregistered scoped syntax for non-governed access key: {key}",
+            stop_code="ACCESS_VEHICLE_HIERARCHY_MISSING",
+            status="unresolved",
+        )
+    normalized = value.strip().lower()
+    if normalized not in decision["approved_source_values"]:
+        raise StaticAccessError(
+            f"unapproved value for non-governed access key {base_key}: {value!r}",
+            stop_code="ACCESS_VALUE_UNSUPPORTED",
+            status="valid_but_unsupported",
+        )
+
+
 def _rule_id(
     source_way_id: int, source_key: str, lane_position: int | None, source_value: str
 ) -> str:
@@ -203,6 +233,7 @@ def _build_rule(
     lane_position: int | None,
 ) -> dict[str, Any]:
     semantics = _access_value(source_value)
+    decision = _non_governed_domain_decision(base_key)
     rule = {
         "rule_id": _rule_id(
             source_way_id, source_key, lane_position, semantics["source_value"]
@@ -228,6 +259,14 @@ def _build_rule(
             "policy_id": "ota_ward_attribute_resolution_policy_v17",
             "registry_bundle_id": _registry()["registry_bundle_id"],
             "normalization": "static_access_v17",
+            **(
+                {
+                    "vehicle_ontology_decision_id": decision["decision_id"],
+                    "vehicle_ontology_rule_id": decision["rule_id"],
+                }
+                if decision is not None
+                else {}
+            ),
         },
     }
     try:
@@ -295,6 +334,7 @@ def normalize_static_access_rules(
                     stop_code="ACCESS_VEHICLE_HIERARCHY_MISSING",
                     status="unresolved",
                 )
+            _validate_non_governed_domain_decision(key, tags[key])
     conditional = {
         key: tags[key]
         for key in sorted(selected_keys)

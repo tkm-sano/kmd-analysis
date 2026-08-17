@@ -92,7 +92,7 @@ flowchart LR
 
 ## 現在の進捗
 
-更新日は2026年8月14日です。
+更新日は2026年8月16日です。
 
 道路属性を検証する作業を14段階（Phase 1〜14）に分けています。現在の状況は次のとおりです。
 
@@ -100,7 +100,7 @@ flowchart LR
 |---|---|---|
 | Phase 1〜11 | 仕様の固定、小規模な正解データによる試験、道路方向・車線・通行可否・速度の解決処理、統合試験 | **合格** |
 | Phase 12 | 大田区の対象道路全体を2回独立に処理し、成果物と再現性を検査 | **合格**（2run単体検査、5成果物一致、実行条件比較、最終化、公開が完了） |
-| Phase 13 | Phase 12で停止した道路属性を、原因ごとに解消して再実行 | **進行中**（入力固定、10群集計、最初のvehicle ontology規則、全母集団stage probe、固定container全回帰まで完了） |
+| Phase 13 | Phase 12で停止した道路属性を、原因ごとに解消して再実行 | **進行中**（`horse`・`psv` ontology実装と全母集団probeまで実行。`horse`では`private_authorization`の新規stable blocker ID 2件が顕在化） |
 | Phase 14 | 道路属性成果物を最終的に受け入れられるか判定 | **ゲート待ち**（Phase 13正式2-runと最終母集団再集計の完了待ち） |
 
 Phase 12で確認した内容と正式合格の根拠は、README後半の[「Phase 12の実行・検査詳細」](#phase-12の実行検査詳細)に記載します。
@@ -112,16 +112,20 @@ Phase 12で確認した内容と正式合格の根拠は、README後半の[「Ph
 - 最初のvehicle ontology判断として、`bicycle`、`foot`、`mofa`、`moped`をgoverned motorized車種との明示的な空交差としてRegistryへ登録した。
 - fixtureとproduction-independent oracleを追加し、対象規則が`delivery`のpermissionを変更しないことを確認した。
 - Phase 12公開物を変更せず、新しい一時出力でfull-population static access stage probeを実行した。
-- 固定analysis containerでtraffic simulation validationを全実行し、`597 passed`を確認した。
+- `horse=yes/no`を騎乗者だけに適用される空domainとしてRegistry 1.6.0へ登録し、配送車両permissionとformal exclusionを変えない境界をInvariant、traceability、fixture、oracle、resolverへ同期した。
+- 未承認の`horse`値とconditional・direction・lane scopeがfail-closedになることを確認した。
+- `horse`由来130件を全母集団probeで追跡し、horse hierarchy残存0件、managed delivery permission変化0件を確認した。一方、`motor_vehicle=private`の2 Wayで`ACCESS_CONTEXT_MISSING`という新しいstable blocker IDが2件顕在化したため、厳格受入は不合格とした。
+- OSM一次資料とSUMO公式`v1_24_0`を照合し、`psv`はgoverned `bus`・`taxi`に交差するが、別key・別vClassの`coach`には交差しない独立decisionを固定した。Registry 1.5.0への登録、Invariant・traceability・fixture・oracle・resolverへの同期、full-population probeとstable-ID/permission comparatorまで実施し、固定PSV blocker 16件は全件解消、新規blockerとpermission driftは0件だった。
+- `horse`実装時の固定analysis container全回帰で`609 passed`を確認し、`psv`実装の独立staged-tree検証ではfocused test `47 passed`、comparator test `7 passed`を確認した。
 - Phase 13入力固定、実行履歴、root cause集計、次の18段階の実行計画、実務TODOを記録した。
 
-stage probeでは、今回対象とした`bicycle`、`foot`、`mofa`のvehicle hierarchy blockerが0件になったことを確認しました。一方、`horse`、`motorcar`、`psv`には独立した意味判断が必要です。このprobeはPhase 13の正式全道路2-runではないため、Phase 13後の正式blocker総数としては使用しません。正式な新基準値は、残る根本原因を処理し、新しい出力先で2回独立実行した後に確定します。
+`horse` probeでは、固定130件のうちhorse hierarchy blockerは0件になり、126 Way・336 lane tupleのpermissionと、後段blockerを持つ4 Wayの反実仮想結果に変化はありませんでした。ただし、2 Wayで後段の`private_authorization` context不足が新しいstable blocker IDとして顕在化しました。新しくblockされたWayは0件ですが、「新規stable blocker ID 0件」という条件は満たしません。`motorcar`のontology判断と、顕在化した`private_authorization` 2件の処理が未完了です。このprobeはPhase 13の正式全道路2-runではないため、Phase 13後の正式blocker総数としては使用しません。
 
 現在も`formal_build_ready=false`、`attribute_resolution_acceptance=not_run`です。Phase 13は完了しておらず、Phase 14やSUMO道路網生成にはまだ進みません。
 
 ## 次に行うこと
 
-1. **`psv`、`motorcar`、`horse`を個別判断する。** 実際のOSMタグ組合せとauthority evidenceを確認し、governed車種との対応を独立したdecisionとして記録します。
+1. **顕在化したprivate context blockerと`motorcar` ontologyを個別に処理する。** Way `992482251`と`992488487`の`private_authorization` contextを根拠付きで決定し、新しい出力先でhorse stable-ID受入を再実行します。その後、`motorcar`とmanaged `delivery`の交差を独立decisionとして決定します。
 2. **残るPhase 13の根本原因を解消する。** 速度、方向別車線、final permission、relation、少数のunsupported・conflictを、判断記録、Registry、Schema、意味規則、小型fixture、独立oracle、実装、試験の順で処理します。
 3. **修正後の全道路を新しい出力先で2回独立再実行する。** blocker IDの遷移、成果物、実行条件、決定論的一致を検査します。
 4. **解決済み・除外・未解決を再集計する。** 除外の道路ID・規則・根拠と、未解決道路の理由・道路網影響を追跡し、母集団保存則を確認します。
