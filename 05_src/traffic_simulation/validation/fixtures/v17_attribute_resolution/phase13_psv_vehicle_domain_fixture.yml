@@ -1,0 +1,52 @@
+fixture_id: phase13_psv_vehicle_domain_v1
+decision_id: DEC-P13-PSV-ONTOLOGY-001
+rule_id: OSM_PSV_TO_GOVERNED_BUS_TAXI_V1
+source_way_id: 1001
+base_tags: {highway: residential, oneway: 'yes', lanes: '2'}
+lane_counts: {forward: 2}
+cases:
+  - case_id: psv_yes_applies_to_bus
+    tags: {psv: 'yes'}
+    vehicle_class: bus
+    expected_maximal_source_keys: [psv]
+    expected_effect: allowed
+  - case_id: psv_yes_applies_to_taxi
+    tags: {psv: 'yes'}
+    vehicle_class: taxi
+    expected_maximal_source_keys: [psv]
+    expected_effect: allowed
+  - case_id: psv_yes_does_not_apply_to_coach
+    tags: {psv: 'yes'}
+    vehicle_class: coach
+    expected_maximal_source_keys: []
+    expected_effect: null
+  - case_id: psv_yes_does_not_apply_to_delivery
+    tags: {psv: 'yes'}
+    vehicle_class: delivery
+    expected_maximal_source_keys: []
+    expected_effect: null
+  - case_id: psv_designated_is_allowed_for_bus
+    tags: {psv: designated}
+    vehicle_class: bus
+    expected_maximal_source_keys: [psv]
+    expected_effect: allowed
+  - case_id: explicit_bus_rule_overrides_psv_for_bus
+    tags: {psv: 'yes', bus: 'no'}
+    vehicle_class: bus
+    expected_maximal_source_keys: [bus]
+    expected_effect: denied
+  - case_id: explicit_taxi_rule_overrides_psv_for_taxi
+    tags: {psv: 'yes', taxi: 'no'}
+    vehicle_class: taxi
+    expected_maximal_source_keys: [taxi]
+    expected_effect: denied
+  - case_id: psv_lane_rule_keeps_empty_positions_uninterpreted
+    tags: {'psv:lanes': 'yes|'}
+    vehicle_class: bus
+    expected_maximal_source_keys: ['psv:lanes']
+    expected_effect: allowed
+fail_closed_cases:
+  - {case_id: unknown_scalar_value, source_key: psv, source_value: unknown, expected_stop_code: ACCESS_VALUE_UNSUPPORTED}
+  - {case_id: unsupported_syntax, source_key: 'psv:conditional', source_value: 'yes @ (Mo-Fr)', expected_stop_code: ACCESS_VEHICLE_HIERARCHY_MISSING}
+  - {case_id: lane_vector_length_mismatch, source_key: 'psv:lanes', source_value: 'yes', expected_stop_code: LANE_VECTOR_LENGTH_MISMATCH}
+  - {case_id: unsupported_directional_syntax, source_key: 'psv:forward', source_value: 'yes', expected_stop_code: ACCESS_VEHICLE_HIERARCHY_MISSING}

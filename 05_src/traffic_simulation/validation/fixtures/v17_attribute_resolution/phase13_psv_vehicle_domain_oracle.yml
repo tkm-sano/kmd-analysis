@@ -1,0 +1,16 @@
+oracle_id: phase13_psv_vehicle_domain_v1
+decision_id: DEC-P13-PSV-ONTOLOGY-001
+rule_id: OSM_PSV_TO_GOVERNED_BUS_TAXI_V1
+approved_source_values: ['yes', designated]
+approved_syntax: [scalar, lane_scoped]
+expected_psv_vehicle_domain: [bus, taxi]
+permission_effect_on_governed_vclasses: bus_and_taxi_only
+formal_exclusion: false
+source_record_requirements:
+  preserve_source_key: true
+  preserve_source_value: true
+  preserve_source_way_id: true
+  preserve_decision_id: true
+  preserve_rule_id: true
+  preserve_lane_position_and_empty_positions: true
+  keep_tourist_bus_cooccurrence_separate: true
