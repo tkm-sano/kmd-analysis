@@ -1,0 +1,153 @@
+schema_version: 1
+decision_id: DEC-P13-MOTORCAR-ONTOLOGY-001
+decision_version: 1.0.0
+status: approved
+approved_at: '2026-08-18'
+approved_by: repository_owner_directive
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+question:
+  statement: Which governed SUMO vehicle classes intersect the OSM motorcar access
+    domain for the fixed Phase 13 population.
+fixed_record_evidence:
+  extraction_output: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260814_vehicle_ontology_extraction/psv_motorcar_horse_records.json
+  selected_motorcar_record_count: 154
+  source_value_counts:
+    designated: 154
+  highway_counts:
+    motorway: 50
+    motorway_link: 104
+  motorcycle_cooccurrence:
+    designated: 148
+    false: 6
+successor_way_evidence:
+  source_way_ids:
+  - 783347228
+  - 1051964008
+  common_tags:
+    highway: motorway
+    motor_vehicle: 'no'
+    motorcar: designated
+    motorcycle: designated
+    horse: 'no'
+  prior_stop_code: ACCESS_VEHICLE_HIERARCHY_MISSING
+japan_tagging_divergence:
+  reference_motorway_tags:
+    access: 'no'
+    motor_vehicle: 'yes'
+    motorcar: designated
+    motorcycle: designated
+  observed_successor_way_tags:
+    motor_vehicle: 'no'
+    motorcar: designated
+    motorcycle: designated
+  treatment: preserve_source_divergence_without_rewriting
+  note: The motorcar ontology decision does not rewrite the source motor_vehicle=no
+    value to motor_vehicle=yes.
+primary_authority_evidence:
+  osm_motorcar:
+    title: Key:motorcar
+    revision_id: 2974950
+    revision_timestamp: '2026-04-05T12:58:20Z'
+    snapshot_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260818_motorcar_decision/osm_key_motorcar.wikitext
+    snapshot_byte_sha256: 97b909232a4db2fb2149d159479789b5290a1adcc97265a722f7aba27279fc14
+  osm_japan_tagging:
+    title: Japan tagging
+    revision_id: 2903665
+    revision_timestamp: '2025-09-30T04:20:20Z'
+    snapshot_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260818_motorcar_decision/osm_japan_tagging.wikitext
+    snapshot_byte_sha256: 56896b211e45c7b3dcc5e11eb62e941fee0e1acf3d47d21c3f753b55ba89d091
+formal_reasoning:
+  governed_vehicle_universe:
+  - passenger
+  - taxi
+  - bus
+  - coach
+  - delivery
+  - truck
+  - motorcycle
+  osm_motorcar_interpretation: double_tracked_motorized_vehicle_domain
+  governed_intersection:
+  - passenger
+  - taxi
+  - bus
+  - coach
+  - delivery
+  - truck
+  excluded_governed_classes:
+  - motorcycle
+  propositions:
+  - motorcar_is_in_the_double_tracked_motorized_branch
+  - motorcycle_is_in_the_single_tracked_motorized_branch
+  - governed_delivery_is_not_excluded_from_the_motorcar_intersection
+  - governed_truck_is_not_excluded_from_the_motorcar_intersection
+  - key_scope_is_not_changed_by_access_value
+decision:
+  result: approved_governed_intersection
+  rule_id: OSM_MOTORCAR_TO_GOVERNED_DOUBLE_TRACKED_V1
+  source_base_key: motorcar
+  registered_vehicle_domain:
+  - passenger
+  - taxi
+  - bus
+  - coach
+  - delivery
+  - truck
+  permission_effect_on_managed_delivery: applies
+  source_record_preserved: true
+  formal_exclusion: false
+mandatory_boundaries:
+- motorcycle is outside the motorcar domain
+- explicit more-specific access keys retain child-over-parent specificity
+- goods and hgv constraints remain independently traceable
+- the source motor_vehicle=no value is preserved and is not rewritten from the Japan
+  motorway guideline
+- the motorcar key scope is not changed according to yes, no, or designated
+- unsupported motorcar values and syntax remain fail-closed
+- source Way ID, source key, source value and provenance are preserved
+- Phase 12 publication remains immutable
+implementation_state:
+  decision_record: fixed
+  registry_update: implemented
+  semantic_invariant_update: implemented_by_registry_and_runtime_semantics
+  fixture_and_oracle_update: covered_by_decision_and_full_population_comparator
+  full_population_probe: passed
+  phase13_complete: true
+  fixed_container_regression: passed
+full_population_validation:
+  probe:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260818_motorcar_full_population_probe/static_access_formal.json
+    byte_sha256: 060cfa14b4975728af48541a133552e1f087c7341bb1c77fbeb8b29041e0045c
+    remaining_total_blocker_count: 31
+    remaining_motorcar_hierarchy_blocker_count: 0
+    remaining_blocker_stop_codes:
+      ACCESS_VALUE_UNSUPPORTED: 31
+  comparator_v1:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260818_motorcar_full_population_probe/motorcar_stable_id_permission_diff.json
+    byte_sha256: afe998a113eba12e8f9f47f60764ba814b7bcdf7dd7af507f6598c2cca28aeda
+    status: failed
+    failure_reason: vehicle-domain list ordering was compared as semantic ordering
+  comparator_v2:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260818_motorcar_full_population_probe/motorcar_stable_id_permission_diff_v2.json
+    byte_sha256: c5b0fa7a4db83731c571630b9e511a2b5ffbaa716a7a89b3b50b9f6020f07aa3
+    semantic_sha256: 7de3d485ba90788524739d77fe7b9c085896d0d3a7815b194efe4103f6d2b5c5
+    status: passed
+    fixed_motorcar_record_count: 154
+    successor_way_count: 2
+    affected_way_count: 156
+    resolved_motorcar_hierarchy_blocker_count: 156
+    remaining_motorcar_hierarchy_blocker_count: 0
+    remaining_affected_blocked_way_count: 0
+    new_blocker_id_count: 0
+    unaffected_normalized_rules_unchanged: true
+    unaffected_static_maxima_unchanged: true
+  fixed_container_regression:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260818_motorcar_full_population_probe/fixed_container_regression_v4.log
+    byte_sha256: 9499598730914ee8d71fa42f696ac8c2088a5ee03442aadd595af7f4e850b6ba
+    status: passed
+    passed_test_count: 630
+    pytest_summary: 630 passed in 785.48s (0:13:05)
+    historical_failed_regressions_preserved:
+    - reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260818_motorcar_full_population_probe/fixed_container_regression_v1.log
+    - reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260818_motorcar_full_population_probe/fixed_container_regression_v2.log
+    - reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260818_motorcar_full_population_probe/fixed_container_regression_v3.log

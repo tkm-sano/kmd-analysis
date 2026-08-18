@@ -278,7 +278,7 @@ def test_phase13_psv_registry_and_runtime_semantics_match_approved_decision() ->
         (REPOSITORY_ROOT / "reproducibility/config/traffic_simulation/"
          "v17_semantic_invariants.yml").read_text(encoding="utf-8")
     )
-    assert registry["registry_version"] == "1.6.0"
+    assert registry["registry_version"] == "1.7.0"
     assert registry["vehicle_ontology"]["domains"]["psv"] == ["bus", "taxi"]
     assert "coach" not in registry["vehicle_ontology"]["domains"]["psv"]
     assert registry["vehicle_ontology"]["domains"]["goods"] == ["delivery", "truck"]
