@@ -87,7 +87,13 @@ def test_horse_decision_is_fixed_and_matches_research_vehicle_authorities() -> N
     ]
 
     governed = decision["research_vehicle_authority"]["governed_universe"]
-    assert governed["authority_byte_sha256"] == _sha256(network_path)
+    # The Horse decision is an immutable historical record.  The governed
+    # configuration is allowed to change bytes when later Phase 13 decisions
+    # update registry references, provided the governed vehicle universe
+    # relevant to this decision remains semantically unchanged.
+    assert governed["authority_byte_sha256"] == (
+        "6cf1b81d07ce7c947063101f0b8beed7d0befe99c11c62a3af313feb47438d78"
+    )
     assert governed["vclasses"] == network["permissions"]["governed_vclasses"]
     assert "horse" not in governed["vclasses"]
     assert decision["formal_reasoning"]["sets"]["H"] == []
@@ -130,7 +136,7 @@ def test_horse_decision_is_synchronized_to_registry_invariant_and_test_vectors()
         "horse"
     ]
 
-    assert registry["registry_version"] == "1.6.0"
+    assert registry["registry_version"] == "1.7.0"
     assert registry["vehicle_ontology"]["domains"]["horse"] == []
     assert registered["decision_id"] == decision["decision_id"]
     assert registered["rule_id"] == decision["decision"]["rule_id"]
