@@ -22,8 +22,8 @@ SHA-256で再検証し、指定relationの`from`・`via`・`to`と約350 mの周
 表示する。relationの可視化は採用判断やSUMO connectionの生成を意味しない。
 
 ```bash
-docker compose run --rm analysis \
-  python -m traffic_simulation.visualization.render_osm_relation_sample \
+PYTHONPATH="05_src:${PYTHONPATH:-}" \
+python -m traffic_simulation.visualization.render_osm_relation_sample \
   --relation-id 16016504
 ```
 
@@ -243,34 +243,36 @@ reproducibility/config/traffic_simulation/research_stage.yml
 
 ## 5. 生成手順
 
-### 5.1 Dockerイメージ
+### 5.1 Hayate native Conda環境
 
-Folium依存関係を追加・変更した場合は解析イメージを再構築する。
+正本環境を有効化し、固定依存に破損がないことを確認する。
 
 ```bash
 cd "$(git rev-parse --show-toplevel)"
-docker compose build analysis
+source /opt/miniconda/etc/profile.d/conda.sh
+conda activate /home/takuma/kmd-analysis/.conda
+python -m pip check
 ```
 
 Foliumの固定バージョンは次へ記録する。
 
 ```text
-docker/analysis/requirements.txt
+reproducibility/environment/requirements-analysis.txt
 ```
 
 ### 5.2 行政界だけを生成する
 
 ```bash
-docker compose run --rm analysis \
-  python -m traffic_simulation.visualization.render_study_area \
+PYTHONPATH="05_src:${PYTHONPATH:-}" \
+python -m traffic_simulation.visualization.render_study_area \
   --region ota_ward
 ```
 
 ### 5.3 JARTICを重ねて生成する
 
 ```bash
-docker compose run --rm analysis \
-  python -m traffic_simulation.visualization.render_study_area \
+PYTHONPATH="05_src:${PYTHONPATH:-}" \
+python -m traffic_simulation.visualization.render_study_area \
   --region ota_ward \
   --jartic \
   03_data/processed/traffic_simulation/calibration/jartic_1h_road3_tokyo_202607042200_observations.parquet
@@ -283,8 +285,8 @@ docker compose run --rm analysis \
 現在の正式な生成コマンドは次である。
 
 ```bash
-docker compose run --rm analysis \
-  python -m traffic_simulation.visualization.render_study_area \
+PYTHONPATH="05_src:${PYTHONPATH:-}" \
+python -m traffic_simulation.visualization.render_study_area \
   --region ota_ward \
   --osm-source-id osm_geofabrik_kanto_20260716 \
   --jartic \
@@ -299,8 +301,8 @@ docker compose run --rm analysis \
 出力先はリポジトリ相対パスだけを受け付ける。
 
 ```bash
-docker compose run --rm analysis \
-  python -m traffic_simulation.visualization.render_study_area \
+PYTHONPATH="05_src:${PYTHONPATH:-}" \
+python -m traffic_simulation.visualization.render_study_area \
   --region ota_ward \
   --output \
   reproducibility/outputs/traffic_simulation/visualization/ota_ward_boundary_only.html
@@ -311,8 +313,8 @@ docker compose run --rm analysis \
 ### 5.6 背景タイルを使わない
 
 ```bash
-docker compose run --rm analysis \
-  python -m traffic_simulation.visualization.render_study_area \
+PYTHONPATH="05_src:${PYTHONPATH:-}" \
+python -m traffic_simulation.visualization.render_study_area \
   --region ota_ward \
   --no-basemap
 ```
@@ -324,8 +326,8 @@ docker compose run --rm analysis \
 既存HTMLは暗黙に上書きしない。レビュー用の同名出力を明示的に更新する場合だけ`--overwrite`を指定する。
 
 ```bash
-docker compose run --rm analysis \
-  python -m traffic_simulation.visualization.render_study_area \
+PYTHONPATH="05_src:${PYTHONPATH:-}" \
+python -m traffic_simulation.visualization.render_study_area \
   --region ota_ward \
   --jartic \
   03_data/processed/traffic_simulation/calibration/jartic_1h_road3_tokyo_202607042200_observations.parquet \
@@ -386,8 +388,7 @@ HTMLについて次を検査する。
 既存の交通シミュレーションテストも実行する。
 
 ```bash
-docker compose run --rm analysis \
-  python -m pytest 05_src/traffic_simulation/validation -q
+python -m pytest -q 05_src/traffic_simulation/validation
 
 git check-ignore -v \
   reproducibility/outputs/traffic_simulation/visualization/ota_ward_study_area.html
@@ -401,7 +402,7 @@ Git管理する。
 05_src/traffic_simulation/visualization/__init__.py
 05_src/traffic_simulation/visualization/render_study_area.py
 05_src/traffic_simulation/visualization/README.md
-docker/analysis/requirements.txt
+reproducibility/environment/requirements-analysis.txt
 ```
 
 Git管理しない。

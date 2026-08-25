@@ -42,11 +42,18 @@
 
 ## 事前環境確認
 
-リポジトリのルートで実行する。
+正本実行環境であるHayateのリポジトリルートで実行する。
+
+```bash
+source /opt/miniconda/etc/profile.d/conda.sh
+conda activate /home/takuma/kmd-analysis/.conda
+bash reproducibility/scripts/hayate/verify_hayate_native_environment.sh
+```
+
+Dockerは利用可能な環境での任意の追加クロスチェックであり、取得処理の必須条件ではない。
 
 ```bash
 docker compose config --quiet
-docker compose run --rm analysis python --version
 ```
 
 追加ツールがある場合は、確認したバージョンを記録する。

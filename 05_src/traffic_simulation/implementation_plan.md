@@ -1,5 +1,7 @@
 # Tokyo traffic simulation implementation plan
 
+> 実行環境更新（2026-08-25）: 現在の正本はHayate native CondaとSUMO 1.24.0である。標準全回帰は`python -m pytest -q 05_src/traffic_simulation/validation`とし、本文中のDocker設計・実行例は策定当時の履歴または任意クロスチェックとして保持する。現行手順は`reproducibility/environment/README.md`を参照する。
+
 ## 0. 研究の現在地
 
 状態更新日：2026年7月18日
@@ -771,8 +773,7 @@ JARTIC MultiPoint（EPSG:4326）
 確定前に次を実行する。
 
 ```bash
-docker compose run --rm analysis \
-  python -m pytest 05_src/traffic_simulation/validation -q
+python -m pytest -q 05_src/traffic_simulation/validation
 
 git diff --check
 git status --short

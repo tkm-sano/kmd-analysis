@@ -221,23 +221,55 @@ QAOA（Quantum Approximate Optimization Algorithm）は、組合せ最適化問�
 
 ## 再現方法
 
-Docker Composeで実行環境を分けています。
+Hayate上のnative Conda環境を正本実行環境とする。Dockerは必須ではなく、追加のクロスチェックに使う任意の副次環境として残す。
 
-- `analysis`: Python 3.11を使うデータ検証、地理空間処理、需要生成、試験、古典手法
-- `sumo`: digestを固定したEclipse SUMO 1.24.0を使う道路網変換と交通シミュレーション
+正本の版と配置は次のとおりである。
 
-基準platformは`linux/amd64`です。
+- repository: `/home/takuma/kmd-analysis`
+- Python: `/home/takuma/kmd-analysis/.conda/bin/python`（3.11.15）
+- SUMO: `/home/takuma/kmd-analysis/.local/sumo-1.24.0/bin/sumo`（1.24.0）
+- Python依存正本: `reproducibility/environment/requirements-analysis.txt`
+
+新しいbashセッションでは`.bashrc`により環境が有効になる。明示的に有効化する場合は次を実行する。
 
 ```bash
-git clone <repository-url>
-cd research
+cd /home/takuma/kmd-analysis
+source /opt/miniconda/etc/profile.d/conda.sh
+conda activate /home/takuma/kmd-analysis/.conda
 
-docker compose config
+export SUMO_HOME=/home/takuma/kmd-analysis/.local/sumo-1.24.0/share/sumo
+export PATH=/home/takuma/kmd-analysis/.local/sumo-1.24.0/bin:$PATH
+export PYTHONPATH=/home/takuma/kmd-analysis/.local/sumo-1.24.0/share/sumo/tools:${PYTHONPATH:-}
+export LD_LIBRARY_PATH=/home/takuma/kmd-analysis/.conda/lib:${LD_LIBRARY_PATH:-}
+```
+
+新規環境を再構築する場合だけ、Python 3.11.15のprefix環境を作成し、固定requirementsを導入する。
+
+```bash
+conda create --prefix /home/takuma/kmd-analysis/.conda python=3.11.15 pip
+conda activate /home/takuma/kmd-analysis/.conda
+python -m pip install -r reproducibility/environment/requirements-analysis.txt
+python -m pip check
+```
+
+標準の環境確認と全回帰はHayate上で実行する。
+
+```bash
+bash reproducibility/scripts/hayate/verify_hayate_native_environment.sh
+python -m pytest -q 05_src/traffic_simulation/validation
+```
+
+Dockerを利用できる環境では、任意の追加クロスチェックとして次を実行できる。Docker結果をHayate native結果の代わりにはしない。
+
+```bash
+docker compose config --quiet
 docker compose build analysis
 docker compose run --rm analysis python --version
 docker compose run --rm sumo sumo --version
-docker compose run --rm analysis pytest -q 05_src/traffic_simulation/validation
+docker compose run --rm analysis python -m pytest -q 05_src/traffic_simulation/validation
 ```
+
+詳細は[Hayate native環境の正本手順](reproducibility/environment/README.md)を参照する。
 
 元データはGit管理外であるため、完全に再現するには、[取得記録](03_data/metadata/acquisition/README.md)に従って各データを取得し、SHA-256を確認してください。
 
@@ -246,8 +278,8 @@ docker compose run --rm analysis pytest -q 05_src/traffic_simulation/validation
 大田区の人口と合成需要を確認する地図は、次のコマンドで生成できます。
 
 ```bash
-docker compose run --rm analysis \
-  python -m traffic_simulation.visualization.render_study_area \
+PYTHONPATH="05_src:${PYTHONPATH:-}" \
+python -m traffic_simulation.visualization.render_study_area \
   --region ota_ward \
   --baseline-demand \
   --output \
@@ -268,8 +300,9 @@ docker compose run --rm analysis \
 | [`05_src/traffic_simulation/`](05_src/traffic_simulation/) | 交通モデル、需要、検証、可視化のコードと仕様 |
 | [`06_outputs/`](06_outputs/) | レビュー済みの図、表、地図、報告書 |
 | [`reproducibility/config/`](reproducibility/config/) | バージョン管理された設定とSchema |
+| [`reproducibility/environment/`](reproducibility/environment/) | Hayate native環境の依存正本と再構築手順 |
 | [`reproducibility/outputs/`](reproducibility/outputs/) | Git管理外の再生成可能な実行結果 |
-| [`docker/`](docker/) | Docker環境と運用方法 |
+| [`docker/`](docker/) | 任意の副次的なDocker再現環境 |
 | [`legacy/non_sumo_route_proxy_analysis/`](legacy/non_sumo_route_proxy_analysis/) | SUMO導入前の旧研究。正式SUMO結果とは区別する |
 
 ## 主要資料

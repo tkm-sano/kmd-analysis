@@ -1,4 +1,4 @@
-# 0-2-B Hayate正本環境移行準備
+# 0-2-B Hayate正本環境移行準備と移行後更新
 
 ```text
 0-1 社会科学としての問い                    [PARTIAL]
@@ -30,7 +30,24 @@
 - Exit condition: 全資産の転送・hash一致、SUMO 1.24.0とPython環境の固定、主要pipelineのsmoke/full validationがHayateで成功する。
 - Next destination: `2-3-D`の経路生成検証をHayateで再開し、その後`2-3`数値較正へ戻る。
 
-## 今回の結論
+## 2026-08-25移行後更新
+
+正本repositoryは`/home/takuma/kmd-analysis`へ配置された。現在の標準実行環境は、同repository直下のConda prefixとユーザー領域SUMOである。
+
+| 対象 | 現在の正本 |
+|---|---|
+| repository | `/home/takuma/kmd-analysis` |
+| Python | `/home/takuma/kmd-analysis/.conda/bin/python`、3.11.15 |
+| Python依存 | `reproducibility/environment/requirements-analysis.txt` |
+| SUMO | `/home/takuma/kmd-analysis/.local/sumo-1.24.0`、1.24.0 |
+| 全回帰 | Hayate nativeで`python -m pytest -q 05_src/traffic_simulation/validation` |
+| Docker | 任意の副次クロスチェック。正本実行の必須条件ではない |
+
+`.conda/`、`.local/`、`.bashrc`はGit管理しない。依存定義、再構築手順、検証scriptだけをGit管理する。詳細は`reproducibility/environment/README.md`を正本とする。
+
+以下の移行前監査は、当時の判断と未確定事項を残す履歴である。現在の環境状態として読み替えない。
+
+## 移行前監査時点の結論（履歴）
 
 HayateへのRSA公開鍵認証は成功した。Hayateは384 CPU、1.5 TiBメモリを持つx86_64 Ubuntu 24.04サーバーであり、`/home`は14 TB NFS（確認時11 TB空き）である。研究正本の永続保存先として十分な候補だが、ユーザーquotaは確認できていない。
 
@@ -202,10 +219,10 @@ Docker groupは実質的に管理者権限へつながるため、こちらか�
 
 ## 終了時記録
 
-- What was learned: Hayateは計算資源と永続NFS容量を持つが、利用可能なのは`/home/takuma`配下だけで、独立scratchは使えない。SUMO・container権限・scheduler・quota運用は未確定。
-- What was decided: Hayateを将来の正本候補とし、Macは編集・確認用とする。`/home/takuma`内で正本領域と作業用領域を論理分離し、研究価値のある中間物は正本側へ戻す。
-- What remains unresolved: 管理者運用確認、実転送、環境構築、主要pipeline validation。
+- What was learned: Docker daemon権限がなくても、repository直下のConda環境とユーザー領域SUMOで正本処理を構成できる。
+- What was decided: Hayate native CondaとSUMO 1.24.0を正本とし、Dockerは任意の副次環境とする。
+- What remains unresolved: native全回帰、主要pipeline、191配送先、27測定群・160検出位置の再確認。quota、backup、長時間処理運用も管理者確認が残る。
 - Whether this branch is closed: いいえ。`CURRENT`。
-- Where we return to in the main route: 移行合格後、`2-3-D`から`2-3 交通量較正`へ戻る。
+- Where we return to in the main route: native検証合格後、`2-3-D`から`2-3 交通量較正`へ戻る。
 
-要するに、Hayateでは`/home/takuma`だけを使用し、その内部で正本と一時作業を分ける。SUMO実行方式を管理者に確認するまで、正本としての稼働は開始しない。
+要するに、正本実行方式はHayate native CondaとSUMO 1.24.0へ確定した。残るのは、この環境での全回帰と主要pipelineの実測確認である。
