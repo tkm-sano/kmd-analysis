@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/missing_lane_simulation_manifest_v17.schema.json",
+  "title": "v17 missing-source lane simulation assumption manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "artifact_type", "decision_id", "decision_version",
+    "policy_id", "policy_version", "scenario", "source_osm_hash",
+    "calibration_population_hash", "assumed_way_count", "assumed_lane_totals",
+    "by_cluster", "by_highway", "by_fallback_level",
+    "formal_source_usage_count", "conflicts_excluded",
+    "shared_unsupported_excluded", "out_of_scope_excluded",
+    "formal_blockers_preserved", "source_rewrite"
+  ],
+  "properties": {
+    "schema_version": {"const": 17},
+    "artifact_type": {"const": "missing_source_lane_simulation_assumption_manifest"},
+    "decision_id": {"const": "DEC-P13-LANE-MISSING-SOURCE-SIMULATION-FALLBACK-001"},
+    "decision_version": {"const": "1.0.0"},
+    "policy_id": {"const": "MISSING_SOURCE_LANE_SIMULATION_FALLBACK_V1"},
+    "policy_version": {"const": "1.0.0"},
+    "scenario": {"enum": ["conservative", "baseline", "high_capacity"]},
+    "source_osm_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "calibration_population_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "assumed_way_count": {"type": "integer", "minimum": 0},
+    "assumed_lane_totals": {"$ref": "#/$defs/laneTotals"},
+    "by_cluster": {"type": "object", "additionalProperties": {"$ref": "#/$defs/account"}},
+    "by_highway": {"type": "object", "additionalProperties": {"$ref": "#/$defs/account"}},
+    "by_fallback_level": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "formal_source_usage_count": {"type": "integer", "minimum": 0},
+    "conflicts_excluded": {"type": "integer", "minimum": 0},
+    "shared_unsupported_excluded": {"type": "integer", "minimum": 0},
+    "out_of_scope_excluded": {"type": "integer", "minimum": 0},
+    "formal_blockers_preserved": {"type": "integer", "minimum": 0},
+    "source_rewrite": {"const": false}
+  },
+  "$defs": {
+    "laneTotals": {
+      "type": "object", "additionalProperties": false,
+      "required": ["total", "forward", "backward", "both_ways"],
+      "properties": {
+        "total": {"type": "integer", "minimum": 0},
+        "forward": {"type": "integer", "minimum": 0},
+        "backward": {"type": "integer", "minimum": 0},
+        "both_ways": {"type": "integer", "minimum": 0}
+      }
+    },
+    "account": {
+      "type": "object", "additionalProperties": false,
+      "required": ["way_count", "lane_totals"],
+      "properties": {
+        "way_count": {"type": "integer", "minimum": 0},
+        "lane_totals": {"$ref": "#/$defs/laneTotals"}
+      }
+    }
+  }
+}

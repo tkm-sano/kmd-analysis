@@ -136,7 +136,7 @@ def test_horse_decision_is_synchronized_to_registry_invariant_and_test_vectors()
         "horse"
     ]
 
-    assert registry["registry_version"] == "1.7.0"
+    assert registry["registry_version"] == "1.10.0"
     assert registry["vehicle_ontology"]["domains"]["horse"] == []
     assert registered["decision_id"] == decision["decision_id"]
     assert registered["rule_id"] == decision["decision"]["rule_id"]
@@ -149,7 +149,7 @@ def test_horse_decision_is_synchronized_to_registry_invariant_and_test_vectors()
     invariant = next(
         item for item in invariants["invariants"] if item["invariant_id"] == "AR-ACCESS-009"
     )
-    assert invariants["version"] == "1.4.0"
+    assert invariants["version"] == "1.8.0"
     assert "scalar yes/no" in invariant["assertion"]
     assert "never creates a formal exclusion" in invariant["assertion"]
 

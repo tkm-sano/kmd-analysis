@@ -1,0 +1,144 @@
+schema_version: 1
+decision_id: DEC-P13-LANE-BIDIRECTIONAL-TOTAL-2-FORMAL-001
+decision_version: 1.0.0
+status: approved
+approved_at: '2026-08-20'
+approved_by: repository_owner_directive
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+input_lock: reproducibility/config/traffic_simulation/v17_phase13_input_lock.yml
+
+decision_method:
+  general_principle: >-
+    If an approved formal semantic already exists and runtime is merely missing
+    a connection, treat the change as a conformance fix. If a structural,
+    heuristic, or model-assumed interpretation is promoted to formal
+    rule-derived behavior, create a separate semantic decision.
+  usual_method_for_this_case: new_independent_decision
+  selected_method: new_independent_decision
+  rejected_method: conformance_fix_or_structural_rule_copy
+  rationale: >-
+    Existing v17 policy permits BIDIRECTIONAL_EVEN_LANE_EQUAL_SPLIT_V1 only as
+    structural model_assumed behavior and explicitly prohibits formal equal
+    split from total lanes alone. Approving a narrow lanes=2 interpretation as
+    rule_derived therefore adds a new formal value semantics boundary rather
+    than wiring already-approved runtime behavior.
+
+responsibility_boundary:
+  existing_structural_rule:
+    rule_id: BIDIRECTIONAL_EVEN_LANE_EQUAL_SPLIT_V1
+    owns:
+      - structural_profile_even_total_split_for_shape_and_connectivity_review
+      - value_origin_model_assumed
+      - formal_eligible_false
+  this_decision_owns:
+    - project_level_formal_interpretation_for_bidirectional_total_lanes_2_only
+    - forward_moving_lanes_1_and_backward_moving_lanes_1
+    - value_origin_rule_derived
+    - source_lane_tag_preservation
+  explicitly_out_of_scope:
+    - lanes_4_or_higher_even_totals
+    - odd_or_single_lane_totals
+    - absent_lane_counts
+    - one_way_lane_count_missing
+    - lanes_both_ways_materialization
+    - reversible_or_alternating_lanes
+    - arithmetic_complement_generalization
+    - SUMO_default_numLanes_as_formal_evidence
+    - Way_specific_exceptions
+
+fixed_population:
+  path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_lanes2_formal_rule_probe/lanes2_fixed_population_v2.json
+  population_count: 1196
+  semantic_sha256: c31994cb9d57fd05489a90bb145f7d058645770c44757107c5be041cd33d5ed3
+  byte_sha256: cd0a71516599770fe35ece55709a1ed4cbc0158e83158b39951efa8b1c5342b8
+  source_population_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_lane_blocker_investigation/lane_blocker_fixed_population.json
+  source_population_semantic_sha256: 614c39b0f5894c331c8dcaee91db7447e203df3b3b575631169ab0dfd93f7fe86f5
+  selection:
+    canonical_oneway: 'no'
+    lanes: '2'
+    stop_code: LANE_DIRECTIONAL_ALLOCATION_MISSING
+    cluster_id: L2_BIDIRECTIONAL_EVEN_TOTAL_ONLY
+    lanes_forward: absent
+    lanes_backward: absent
+    lanes_both_ways: absent
+    reversible_or_alternating: absent
+    lane_conditional_evidence: absent
+  successor_candidate_way_ids: [1034365453]
+
+comparison_baseline:
+  path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_foot_use_sidepath_full_population_probe_v2/static_access_formal.json
+  byte_sha256: f46afdbafa2c0a16c6488f599ba4bce2f1ae46d8473f83bc7be1bff8ee7f2d4a
+
+source_osm:
+  path: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+  byte_sha256: 8b5157e48c3c87c2b4430f56d6abe292ce1ea5449b374ae4cb395fc19475b67d
+
+primary_authority_evidence:
+  osm_key_lanes:
+    authority: OpenStreetMap Wiki
+    url: https://wiki.openstreetmap.org/wiki/Key:lanes
+    relevant_claims:
+      - lanes is a total moving-lane count for motorized traffic
+      - lanes:forward and lanes:backward express uneven two-way distribution
+      - lanes:both_ways covers lanes usable in both directions
+      - lanes can be incomplete or misused by mappers, so OSM-general certainty is not claimed
+      - examples include two-way lanes=2 as one lane in each direction
+  osm_japanese_lanes_guidance:
+    authority: OpenStreetMap Wiki
+    url: https://wiki.openstreetmap.org/wiki/JA:Key:lanes
+    relevant_claims:
+      - Japanese page mirrors the total-lane tagging concept for roads
+  osm_lanes_suffix:
+    authority: OpenStreetMap Wiki
+    url: https://wiki.openstreetmap.org/wiki/Key:*:lanes
+    relevant_claims:
+      - lane vectors use pipe-separated lane entries
+      - forward and backward suffixes are needed on non-oneway roads when lane properties differ by direction
+  sumo_plainxml:
+    authority: SUMO documentation
+    url: https://sumo.dlr.de/docs/Networks/PlainXML.html
+    relevant_claims:
+      - plain SUMO edges are unidirectional and carry numLanes
+      - omitted numLanes has a default, but this decision does not use that default as evidence
+  sumo_network_lanes:
+    authority: SUMO documentation
+    url: https://sumo.dlr.de/docs/Networks/SUMO_Road_Networks.html
+    relevant_claims:
+      - lanes belong to a directed edge and lane index zero is the rightmost lane
+
+decision:
+  result: approved_limited_formal_rule_derived_lane_allocation
+  rule_id: OSM_BIDIRECTIONAL_TOTAL_2_TO_ONE_ONE_V1
+  applicability:
+    canonical_oneway: 'no'
+    lanes: 2
+    lanes_forward: absent
+    lanes_backward: absent
+    lanes_both_ways: absent
+    lane_conditional: absent
+    reversible_or_alternating: absent
+  project_level_semantics:
+    value_origin: rule_derived
+    source_preservation: true
+    forward_moving_lanes: 1
+    backward_moving_lanes: 1
+    both_ways_moving_lanes: 0
+    total_moving_lanes: 2
+  osm_general_semantics_boundary: >-
+    This decision does not assert that every OSM lanes=2 is universally and
+    physically guaranteed to be exactly 1+1. It adopts a project-level formal
+    interpretation only for the fixed v17 population and guard conditions.
+  arithmetic_complement:
+    general_unlock: false
+    lanes_4_or_higher: excluded
+    partial_directional_counts: excluded
+
+implementation_state:
+  decision_record: fixed
+  runtime_update: implemented
+  focused_validation: passed
+  full_population_probe: generated
+  stable_id_comparator: passed
+  fixed_container_regression: passed
+  execution_record: reproducibility/config/traffic_simulation/v17_phase13_lane_bidirectional_lanes2_formal_execution.yml

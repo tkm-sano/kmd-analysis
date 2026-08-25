@@ -17,42 +17,42 @@ v16_boundary:
 artifacts:
   normative_specification:
     path: 05_src/traffic_simulation/specifications/10_approved_attribute_resolution_policy_v17_complete.md
-    sha256: 673bd2d1035f610f066f2850dfa9672eda9f857af4775db9d3021505dc345717
+    sha256: 23d4208d2504ec11888d54e34aae96f65c400bd7f66752e12109ac90ab6b2ff7
   phase1_description:
     path: 05_src/traffic_simulation/specifications/v17_phase1_artifact_description.md
     sha256: 7d9c9340cbb2fa88b76622620204f7ef65d17bb255c96d5697786420689b21ba
   traceability_matrix:
     path: 05_src/traffic_simulation/specifications/v17_attribute_resolution_traceability_matrix.md
-    sha256: 666b380f97b7be52e886eea14ed8f8e38df6dce66a55fc65563acbfe5155afb3
+    sha256: 9435e962c11527d197d2153345207b2c83f14dbec5d1503d4d74ba45d02e6c1c
   configuration:
     path: reproducibility/config/traffic_simulation/sumo_network_v17.yml
-    sha256: 888cab48584cfb3e400308f55de869cd32d3c08f8e4c2c82e6c0c710de64edd9
+    sha256: 8244d343d80f1cd038649249e49c18980bbfc965e6ef9906a0e04113a5a50893
   policy_index:
     path: reproducibility/config/traffic_simulation/approved_attribute_resolution_policy_v17.yml
     sha256: cf24f6ee618d1584ca48a766163ad456f8399b357c80c54a84987c9d44d478bb
   registry_bundle:
     path: reproducibility/config/traffic_simulation/attribute_resolution_registries_v17.yml
-    sha256: 3232b116e0fbc8bb0514d60a3ba01f09027d8bfa664a3f9ed2f7b22fdfa501c6
+    sha256: f797c5cba314ea733658bd189b9a75bf6fae1e1e89ef2169910b09bfb899ba85
   semantic_invariants_machine:
     path: reproducibility/config/traffic_simulation/v17_semantic_invariants.yml
-    sha256: 8614c6c6f513bffbe20c4cb186c6b4f684256b5eb2388d2e9d000fbbc8168d69
+    sha256: 2d443706398e9f5815ba1b432a3b2a11f3f818f06e6762708bd7ecbaa0562a77
   semantic_invariants_document:
     path: 05_src/traffic_simulation/specifications/v17_semantic_invariants.md
-    sha256: 055341d7dd776e0d5809bfaf3682611ba8eb2a4bac1761189e2f21ee48341d9c
+    sha256: b62ecaa224d526d3d4c869e86b5ff23a841b7e073ec30a7360838355e7b1a251
   synchronization_review:
     path: 05_src/traffic_simulation/v17_authority_synchronization_review.md
     sha256: bf925ab1c5faf68ebb3e28ce89a6b3b67598fbfa6c417e971684772906671a1a
   authority_validator:
     path: 05_src/traffic_simulation/network/validate_v17_phase1_authority.py
-    sha256: 9769c85a232caf0adc9a57adf6f0bf9a22e9940ba141f7cf7591ac737d31558a
+    sha256: 5e8558767b562ec35ec0da91922daef47f82ec40f7bd784058ecd57d2f67bbcd
   authority_tests:
     path: 05_src/traffic_simulation/validation/test_v17_phase1_authority.py
-    sha256: 11f2a821c51325db99fe01fa1fb9fee6189b7ead78e63dd2c845e601d182d1fd
+    sha256: 5eb951dfa34b3d779bd2025b74c4be96c2522b51d494b974b3e028f76b1aa363
 schemas:
   access_rule_v17: 750d8338a174d2415ce55468cb155ecf6609fd5ae1f28f095c7106f966151f3a
   attribute_resolution_acceptance_v17: 89b4e16d2f644614b247a366e8d33ddb4edbdf6b6d6b9bf2c1e85aa5701b25b9
   attribute_resolution_record_v17: 8a7c78c7aa6349da0eb7251f753a96f4d74c2a6f9150c2f03a3be61b1fa31275
-  attribute_resolution_registries_v17: 8ce82500ed1cdec77a13105c3b2282063c3016a0bc66876e3d7f9148ee7cf7fa
+  attribute_resolution_registries_v17: 05317123f935a9fd03b491301040b53fe4fde2e8069532f1ef3c38bac0313fe3
   directed_segment_v17: 52cfb235c2bb47da09471c55783f0e6b187198c917ecb6bf80e807a538dc9993
   environment_build_manifest_v17: 54cf036557417e86cc2bcdbec76738f3dbf7f92d20281d71dae461da6d1ad379
   exclusion_manifest_v17: a3f30e522404e6e8687f6b03f1782b8e3d60829afbecc8e6c343fa04cc1e9322
@@ -70,14 +70,16 @@ schemas:
   formal_blocker_policy_v17: dc85f973bd04a8778ec21fa927d201c391195462fc969908d9f95d91d374980d
   formal_blocker_inventory_v17: 2c3434b76c3d56c201b1c6896f428f99c428f7e8f3cb1ff4a5a5fbb04c6fc842
   resolver_integration_v17: 47ad260a5523c2ab1740770968d4cc63259cca55d17dd2adaf327e5f3f080a52
+  shared_lane_source_semantic_v17: be5c75d6fa25a8d43495b39c7d4492188459c7d4c679adf97d144a0499a89f55
+  shared_lane_materialization_attempt_v17: 2c98aba7a2ff7837cb93b933d805e12d2bedc75daf4233603b38ae3b8be4b00a
   approved_policy_index: 8d0241d7c0efee16eb4a7b1fd74b34ceb1ee9a7a36f71cf9821b0a00a04cc1ee
 verification:
   phase1_validator:
     command: PYTHONPATH=05_src python -m traffic_simulation.network.validate_v17_phase1_authority
     result: passed
     schema_count: 22
-    stop_code_count: 30
-    invariant_count: 47
+    stop_code_count: 31
+    invariant_count: 48
   focused_tests:
     result: passed
     count: 68

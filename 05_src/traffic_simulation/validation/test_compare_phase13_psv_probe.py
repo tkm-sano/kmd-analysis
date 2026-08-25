@@ -110,7 +110,9 @@ def test_compare_phase13_psv_probe_fails_on_missing_key_value_lineage(tmp_path: 
     assert result["acceptance"]["source_key_value_pairs_preserved"] is False
 
 
-def test_compare_phase13_psv_probe_fails_when_hash_contract_is_invalid() -> None:
+def test_compare_phase13_psv_probe_fails_when_hash_contract_is_invalid(
+    tmp_path: Path,
+) -> None:
     base = _json(
         Path(
             "reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_psv_full_population_probe/static_access_formal.json"
@@ -123,7 +125,7 @@ def test_compare_phase13_psv_probe_fails_when_hash_contract_is_invalid() -> None
     extraction = Path(
         "reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260814_vehicle_ontology_extraction/psv_motorcar_horse_records.json"
     )
-    probe_path = FIXTURE_DIR / "mutated_psv_probe_bad_hash.json"
+    probe_path = tmp_path / "mutated_psv_probe_bad_hash.json"
     probe_path.write_text(json.dumps(base, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
     with pytest.raises(PsvProbeComparisonError):
         compare_psv_probe(

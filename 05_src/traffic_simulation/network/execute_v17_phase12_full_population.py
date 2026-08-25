@@ -540,10 +540,30 @@ def _population_accounting(
             "relationship": "candidate_suppressed",
         })
 
+    shared_materialization_stop = "LANE_SHARED_PHYSICAL_MATERIALIZATION_UNSUPPORTED"
+    lane_source_blockers = [
+        item for item in lanes["blockers"]
+        if item["stop_code"] != shared_materialization_stop
+    ]
+    lane_materialization_blockers = [
+        item for item in lanes["blockers"]
+        if item["stop_code"] == shared_materialization_stop
+    ]
+    materialized_lane_way_count = len(
+        {int(item["source_way_id"]) for item in lanes["segment_lanes"]}
+    )
     units = [
         _unit(
             "formal_directional_lane_source_way", "directional_lanes", ["source_way_id"],
-            _blocker_status_records(len(lanes["resolutions"]), lanes["blockers"], "lane"),
+            _blocker_status_records(len(lanes["resolutions"]), lane_source_blockers, "lane_source"),
+        ),
+        _unit(
+            "formal_lane_canonical_representation", "lane_canonical_representation", ["source_way_id"],
+            _blocker_status_records(len(lanes["resolutions"]), lane_source_blockers, "lane_canonical"),
+        ),
+        _unit(
+            "formal_lane_simulation_materialization", "lane_simulation_materialization", ["source_way_id"],
+            _blocker_status_records(materialized_lane_way_count, lane_materialization_blockers, "lane_materialization"),
         ),
         _unit(
             "formal_static_access_source_way", "static_access", ["source_way_id"],

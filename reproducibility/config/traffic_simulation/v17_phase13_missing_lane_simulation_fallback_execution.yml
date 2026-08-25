@@ -1,0 +1,81 @@
+schema_version: 1
+execution_id: phase13_20260822_missing_lane_simulation_fallback_tdd
+decision_id: DEC-P13-LANE-MISSING-SOURCE-SIMULATION-FALLBACK-001
+decision_version: 1.0.0
+policy_id: MISSING_SOURCE_LANE_SIMULATION_FALLBACK_V1
+policy_version: 1.0.0
+status: passed
+decision:
+  path: reproducibility/config/traffic_simulation/v17_phase13_missing_lane_simulation_fallback_decision.yml
+  sha256: 45e19ac963439740a8cb7e1f785bbbc2ba43c557a702cea911a6a0752f036fd0
+policy:
+  path: reproducibility/config/traffic_simulation/v17_phase13_missing_lane_simulation_fallback_policy.yml
+  sha256: 8aa1df266d9c5adda0ed05d198165af1ce4c363365e6fb7b59a266c3b1faf628
+output_directory: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260822_missing_lane_simulation_fallback_tdd
+
+fixed_binding:
+  source_osm_sha256: 8b5157e48c3c87c2b4430f56d6abe292ce1ea5449b374ae4cb395fc19475b67d
+  calibration_population_count: 3286
+  calibration_population_sha256: 9b7f3016e9f3e2d747bfb2e49ccfddc15dd4b1e90e88f1d8db5d5a0814e336ca
+
+population:
+  governed_source_ways: 26220
+  L1_eligible: 19007
+  L4_eligible: 3620
+  assumed_total: 22627
+  class_directionality_calibrated: 22410
+  global_directionality_fallback: 217
+  formal_source_usage: 3286
+  conflict_excluded: 25
+  shared_physical_unsupported: 180
+  other_out_of_scope: 102
+
+scenario_accounting:
+  conservative:
+    assumed_total_physical_lanes: 41634
+    semantic_sha256: 768ee940d82b9f823ae29cdc3ac2cec7e4a93ac82bb674817cfdd8152c5ee822
+  baseline:
+    assumed_total_physical_lanes: 42172
+    semantic_sha256: 336d3f378d4f4fc0f06cfdb985d0753b87b65a542e74d98b0379f7898be1296c
+  high_capacity:
+    assumed_total_physical_lanes: 43990
+    semantic_sha256: d4904a3ff9ab73a96431a8499d9f3ea222f76898b2923109475c369786722b6d
+
+formal_state:
+  unchanged: true
+  formal_lane_blockers: 22934
+  source_semantic_blockers: 22754
+  canonical_representation_blockers: 22754
+  shared_materialization_blockers: 180
+  static_access_blockers: 0
+  directional_lane_semantic_sha256: 147c2aa284ee448796fc667df1871fea7780fed16971f069d72c4d31752fef60
+  static_access_semantic_sha256: 2abd0336eebb02dea0da7901068d338327bca4a44ea6417c23a55eb087da0693
+
+validation:
+  red:
+    result: expected_failure_observed
+    reason: simulation_fallback_module_absent
+    collection_errors: 1
+  green_minimum: {result: passed, count: 19}
+  focused_unit_and_persisted: {result: passed, count: 24}
+  focused_related_regression: {result: passed, count: 116}
+  stable_id_comparator: passed
+  formal_state_comparator: passed
+  fixed_container_regression:
+    result: passed
+    count: 744
+    failures: 0
+    warnings: 0
+    duration_seconds: 1449.35
+    known_authority_count: 716
+    observed_delta: 28
+
+guards:
+  formal_resolver_logic_changed: false
+  source_osm_changed: false
+  source_rewrite: false
+  formal_blockers_removed: false
+  conflicts_received_fallback: false
+  shared_physical_lanes_received_fallback: false
+  delivery_simulation_executed: false
+  commit_push_or_PR: false

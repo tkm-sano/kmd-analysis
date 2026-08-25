@@ -202,6 +202,7 @@ def validate_phase1_authority(
         "LANE_COUNT_INVALID",
         "LANE_COUNT_CONFLICT",
         "LANE_DIRECTIONAL_ALLOCATION_MISSING",
+        "LANE_SHARED_PHYSICAL_MATERIALIZATION_UNSUPPORTED",
         "LANE_VECTOR_LENGTH_MISMATCH",
         "SPEED_VALUE_INVALID",
         "SPEED_VALUE_UNSUPPORTED",
@@ -313,6 +314,12 @@ def validate_phase1_authority(
         "formal_blocker_policy_v17": schema_files["formal_blocker_policy"],
         "formal_blocker_inventory_v17": schema_files["formal_blocker_inventory"],
         "resolver_integration_v17": schema_files["resolver_integration"],
+        "shared_lane_source_semantic_v17": schema_files[
+            "shared_lane_source_semantic"
+        ],
+        "shared_lane_materialization_attempt_v17": schema_files[
+            "shared_lane_materialization_attempt"
+        ],
         "approved_policy_index": _repo_path(policy["schema"]),
     }
     for name, schema_path in completion_schema_paths.items():

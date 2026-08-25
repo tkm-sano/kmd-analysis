@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "attribute_resolution_registries_v17.schema.json",
   "type": "object",
-  "required": ["schema_version", "registry_bundle_id", "registry_version", "policy_id", "status", "approved_by", "approved_at", "state_origin", "stop_codes", "oneway_rules", "vehicle_ontology", "access_values", "conditional_grammar", "assumptions", "japan_speed_rules", "evidence_methods", "formal_blocker_policy", "exclusion_rules"],
+  "required": ["schema_version", "registry_bundle_id", "registry_version", "policy_id", "status", "approved_by", "approved_at", "state_origin", "stop_codes", "oneway_rules", "vehicle_ontology", "access_values", "conditional_grammar", "lane_rules", "assumptions", "japan_speed_rules", "evidence_methods", "formal_blocker_policy", "exclusion_rules"],
   "properties": {
     "schema_version": {"const": 17},
     "registry_bundle_id": {"const": "ota_ward_attribute_resolution_registries_v17"},
@@ -17,6 +17,14 @@
     "vehicle_ontology": {"type": "object"},
     "access_values": {"type": "array", "minItems": 13},
     "conditional_grammar": {"type": "object"},
+    "lane_rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["rule_id", "decision_id", "decision_version", "allowed_profiles", "priority", "applicability", "effective_kind", "target_materialization", "successor_stop_code"]
+      }
+    },
     "assumptions": {"type": "array", "minItems": 3},
     "japan_speed_rules": {"type": "object"},
     "evidence_methods": {"type": "object"},

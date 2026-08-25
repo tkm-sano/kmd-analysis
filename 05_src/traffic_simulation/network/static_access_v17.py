@@ -130,7 +130,9 @@ def default_scenario_context() -> dict[str, Any]:
     }
 
 
-def _access_value(value: str) -> dict[str, Any]:
+def _access_value(
+    base_key: str, value: str, *, vehicle_domain: Sequence[str]
+) -> dict[str, Any]:
     normalized = value.strip().lower()
     if VALUE_PATTERN.fullmatch(normalized) is None:
         raise StaticAccessError(
@@ -154,6 +156,34 @@ def _access_value(value: str) -> dict[str, Any]:
             stop_code=item["stop_code"],
             status="valid_but_unsupported",
         )
+    if item["effect"] == "key_scoped":
+        if (
+            base_key not in item["applicable_base_keys"]
+            or list(vehicle_domain) != item["required_vehicle_domain"]
+        ):
+            raise StaticAccessError(
+                f"unregistered access value for key {base_key}: {value!r}",
+                stop_code="ACCESS_VALUE_UNSUPPORTED",
+                status="valid_but_unsupported",
+            )
+        return {
+            "source_value": normalized,
+            # AccessRule v17 requires a Boolean permission carrier. The exact
+            # empty vehicle domain makes it inapplicable to every governed
+            # tuple; the non-Boolean OSM meaning is retained in provenance.
+            "effect": item["empty_domain_rule_effect"],
+            "authorization_requirement": None,
+            "purpose_domain": list(PURPOSE_UNIVERSE),
+            "provenance": {
+                "access_value_decision_id": item["decision_id"],
+                "access_value_rule_id": item["rule_id"],
+                "access_value_semantics": item["normalized_semantics"],
+                "permission_effect_on_governed_vclasses": item[
+                    "permission_effect_on_governed_vclasses"
+                ],
+                "source_value_rewritten": item["source_value_rewritten"],
+            },
+        }
     requirement = next(iter(item["required_context"]), None)
     return {
         "source_value": normalized,
@@ -162,6 +192,7 @@ def _access_value(value: str) -> dict[str, Any]:
         "purpose_domain": (
             [requirement] if requirement is not None else list(PURPOSE_UNIVERSE)
         ),
+        "provenance": {},
     }
 
 
@@ -235,7 +266,10 @@ def _build_rule(
     direction_scope: str,
     lane_position: int | None,
 ) -> dict[str, Any]:
-    semantics = _access_value(source_value)
+    vehicle_domain = _vehicle_domain(base_key)
+    semantics = _access_value(
+        base_key, source_value, vehicle_domain=vehicle_domain
+    )
     decision = _non_governed_domain_decision(base_key)
     rule = {
         "rule_id": _rule_id(
@@ -252,7 +286,7 @@ def _build_rule(
             },
         },
         "spatial_domain": [f"way:{source_way_id}"],
-        "vehicle_domain": _vehicle_domain(base_key),
+        "vehicle_domain": vehicle_domain,
         "temporal_domain": ["unconditional"],
         "purpose_domain": semantics["purpose_domain"],
         "effect": semantics["effect"],
@@ -262,6 +296,7 @@ def _build_rule(
             "policy_id": "ota_ward_attribute_resolution_policy_v17",
             "registry_bundle_id": _registry()["registry_bundle_id"],
             "normalization": "static_access_v17",
+            **semantics["provenance"],
             **(
                 {
                     "vehicle_ontology_decision_id": decision["decision_id"],
@@ -412,6 +447,34 @@ def _scope_sets(rule: Mapping[str, Any], lane_count: int) -> tuple[set[str], set
     return directions, lanes
 
 
+def _source_base_key(rule: Mapping[str, Any]) -> str:
+    return str(rule["source_key"]).split(":", 1)[0]
+
+
+def _source_key_is_descendant(child_key: str, parent_key: str) -> bool:
+    """Return registered OSM ancestry without inferring it from projected sets."""
+
+    if child_key == parent_key:
+        return False
+    direct_parents = _registry()["vehicle_ontology"]["source_hierarchy"][
+        "direct_parents"
+    ]
+    current = child_key
+    visited: set[str] = set()
+    while current in direct_parents:
+        if current in visited:
+            raise StaticAccessError(
+                "cycle in registered source access hierarchy",
+                stop_code="UNREGISTERED_RULE",
+                status="invalid",
+            )
+        visited.add(current)
+        current = direct_parents[current]
+        if current == parent_key:
+            return True
+    return False
+
+
 def static_rule_dominates(
     left: Mapping[str, Any], right: Mapping[str, Any], *, lane_count: int
 ) -> bool:
@@ -433,8 +496,18 @@ def static_rule_dominates(
         set(right["temporal_domain"]),
         set(right["purpose_domain"]),
     )
-    return all(left_set <= right_set for left_set, right_set in zip(left_domains, right_domains)) and any(
+    domains_are_narrower_or_equal = all(
+        left_set <= right_set
+        for left_set, right_set in zip(left_domains, right_domains)
+    )
+    projected_domain_is_strict = any(
         left_set < right_set for left_set, right_set in zip(left_domains, right_domains)
+    )
+    source_vehicle_key_is_strict = _source_key_is_descendant(
+        _source_base_key(left), _source_base_key(right)
+    )
+    return domains_are_narrower_or_equal and (
+        projected_domain_is_strict or source_vehicle_key_is_strict
     )
 
 
@@ -628,6 +701,12 @@ def build_static_access_production_artifact(
         "managed_scenario_context": context,
         "normalized_rules": normalized,
         "static_maxima": maxima,
+        "upstream_lane_source_semantic_records": lanes[
+            "source_semantic_records"
+        ],
+        "upstream_lane_materialization_attempts": lanes[
+            "materialization_attempts"
+        ],
         "blockers": blockers,
         "upstream_lane_blockers": lanes["blockers"],
         "upstream_relation_blockers": lanes["upstream_blockers"],
@@ -641,6 +720,18 @@ def build_static_access_production_artifact(
             "deferred_conditional_tags": deferred_count,
             "static_access_blockers": len(blockers),
             "upstream_lane_blockers": len(lanes["blockers"]),
+            "upstream_lane_source_semantic_blockers": lanes["counts"][
+                "source_semantic_blockers"
+            ],
+            "upstream_lane_canonical_representation_blockers": lanes["counts"][
+                "canonical_representation_blockers"
+            ],
+            "upstream_lane_simulation_materialization_blockers": lanes["counts"][
+                "simulation_materialization_blockers"
+            ],
+            "upstream_lane_overall_acceptance_blockers": lanes["counts"][
+                "overall_acceptance_blockers"
+            ],
             "upstream_relation_blockers": len(lanes["upstream_blockers"]),
         },
         "blocker_stop_codes": dict(

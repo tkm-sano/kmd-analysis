@@ -52,6 +52,14 @@ class FixtureOracleError(ValueError):
     pass
 
 
+# Phase 13 successor blockers are governed by their immutable decision-specific
+# TDD artifacts.  They postdate the fixed Phase 2 source-resolution oracle and
+# must not require rewriting that historical fixture set.
+DECISION_SPECIFIC_STOP_CODES = {
+    "LANE_SHARED_PHYSICAL_MATERIALIZATION_UNSUPPORTED",
+}
+
+
 class _UniqueKeyLoader(yaml.SafeLoader):
     pass
 
@@ -230,9 +238,10 @@ def validate_fixture_oracle(
                     f"metamorphic oracle mismatch: {fixture['fixture_id']}"
                 )
 
-    if set(covered_stop_codes) != set(registered_stop_status):
-        missing = sorted(set(registered_stop_status) - set(covered_stop_codes))
-        extra = sorted(set(covered_stop_codes) - set(registered_stop_status))
+    fixed_oracle_stop_codes = set(registered_stop_status) - DECISION_SPECIFIC_STOP_CODES
+    if set(covered_stop_codes) != fixed_oracle_stop_codes:
+        missing = sorted(fixed_oracle_stop_codes - set(covered_stop_codes))
+        extra = sorted(set(covered_stop_codes) - fixed_oracle_stop_codes)
         raise FixtureOracleError(
             f"stop-code coverage mismatch; missing={missing}, extra={extra}"
         )

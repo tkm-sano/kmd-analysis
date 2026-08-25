@@ -1,0 +1,78 @@
+schema_version: 1
+decision_id: DEC-P13-LANE-MISSING-SOURCE-SIMULATION-FALLBACK-001
+decision_version: 1.0.0
+status: approved
+approved_at: '2026-08-22T23:02:04+09:00'
+approved_by: repository_owner_directive
+decision_type: SIMULATION_MODEL_ASSUMPTION_POLICY
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+
+approved_candidate:
+  path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260822_missing_lane_fallback_calibration_and_decision/decision_candidate.json
+  byte_sha256: cfc212ab58d11058fcedcfd10c769d03a79abdace990012def6fca841cbe4abe
+  candidate_status: READY_FOR_APPROVAL
+
+approved_policy:
+  path: reproducibility/config/traffic_simulation/v17_phase13_missing_lane_simulation_fallback_policy.yml
+  byte_sha256: 8aa1df266d9c5adda0ed05d198165af1ce4c363365e6fb7b59a266c3b1faf628
+  policy_id: MISSING_SOURCE_LANE_SIMULATION_FALLBACK_V1
+  policy_version: 1.0.0
+
+responsibility_boundary:
+  formal_source_resolution:
+    changed: false
+    model_assumed_allowed: false
+    L1_L4_blockers_preserved: true
+    source_conflicts: fail_closed
+  simulation_model:
+    owns:
+      - L1_and_L4_missing_evidence_eligibility
+      - versioned_class_and_global_lane_defaults
+      - conservative_baseline_high_capacity_scenarios
+      - deterministic_bidirectional_allocation
+      - assumption_provenance_and_manifest
+  explicitly_out_of_scope:
+    - source_or_canonical_semantics_rewrite
+    - L5_partial_or_both_ways
+    - L6_vector_conflict
+    - L7_count_conflict
+    - shared_single_lane_SUMO_materialization
+    - lanes_4_total_only
+    - remaining_odd_total
+    - invalid_or_contradictory_source
+    - width_or_external_evidence_inference
+    - delivery_simulation
+
+fixed_binding:
+  source_osm:
+    snapshot_date: '2026-07-16'
+    sha256: 8b5157e48c3c87c2b4430f56d6abe292ce1ea5449b374ae4cb395fc19475b67d
+  calibration:
+    population_count: 3286
+    semantic_sha256: 9b7f3016e9f3e2d747bfb2e49ccfddc15dd4b1e90e88f1d8db5d5a0814e336ca
+    minimum_class_sample_count: 30
+    recalibration_requires_new_policy_version: true
+  fallback_population:
+    L1_bidirectional_missing: 19007
+    L4_oneway_missing: 3620
+    total: 22627
+
+approved_scenarios:
+  conservative: fixed_low_capacity
+  baseline: calibrated_mode_with_lower_tie_break
+  high_capacity: calibrated_nearest_rank_p75
+
+approved_semantics:
+  value_origin: model_assumed
+  formal_blocker_preserved: true
+  source_rewrite: false
+  oneway_reverse_active_direction: backward
+  bidirectional_even: equal_split
+  bidirectional_odd: geometry_forward_gets_remainder_without_traffic_priority_claim
+
+approval_gate:
+  calibration_and_dry_run: passed
+  decision_candidate: READY_FOR_APPROVAL
+  repository_owner_approval: approved
+  next_stage: red_green_TDD_and_full_population_validation

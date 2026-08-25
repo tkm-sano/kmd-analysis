@@ -1,0 +1,163 @@
+schema_version: 1
+execution_id: EXEC-P13-BICYCLE-USE-SIDEPATH-001
+executed_at: '2026-08-20'
+status: passed
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+decision:
+  path: reproducibility/config/traffic_simulation/v17_phase13_use_sidepath_semantics_decision.yml
+  decision_id: DEC-P13-USE-SIDEPATH-SEMANTICS-001
+  decision_version: 1.0.0
+  byte_sha256: 622bfb7099b3453cfaae7f3b1e5bb888195ad1ac8e28298b72bf8587987ba496
+  method: new_independent_decision
+  amendment_selected: false
+  general_principle_and_case_result_differ: false
+
+tdd:
+  red:
+    command: >-
+      PYTHONPATH=05_src python -m pytest -q
+      05_src/traffic_simulation/validation/test_phase13_use_sidepath_semantics_v17.py
+    result: failed_as_expected
+    passed_test_count: 6
+    failed_test_count: 3
+    failures:
+      - bicycle_use_sidepath_preserves_semantics_with_empty_domain
+      - bicycle_use_sidepath_does_not_change_motorized_permission
+      - bicycle_use_sidepath_is_record_order_invariant
+    common_cause: unregistered access value use_sidepath
+  comparator_red:
+    result: failed_as_expected
+    exit_code: 2
+    cause: compare_phase13_use_sidepath_probe_module_not_yet_implemented
+  green:
+    command: >-
+      PYTHONPATH=05_src python -m pytest -q
+      05_src/traffic_simulation/validation/test_phase13_use_sidepath_semantics_v17.py
+    result: passed
+    passed_test_count: 12
+
+implementation:
+  registry:
+    path: reproducibility/config/traffic_simulation/attribute_resolution_registries_v17.yml
+    version: 1.8.0
+    byte_sha256: fe0340ad84428d2291632999c092ca126e3fe367a08ed9e6d32aaec888c78e5c
+  runtime:
+    path: 05_src/traffic_simulation/network/static_access_v17.py
+    byte_sha256: 7c5b0e88ed595be846bd4235d7998d77bdef4c67ec09864dcaaee9b51dc39a0e
+  comparator:
+    path: 05_src/traffic_simulation/network/compare_phase13_use_sidepath_probe.py
+    byte_sha256: 930c48de55a559f8b8ac35e3bc744e7e351d8274b9d58df0ac4a028b404a141d
+  semantics_test:
+    path: 05_src/traffic_simulation/validation/test_phase13_use_sidepath_semantics_v17.py
+    byte_sha256: 1b5967b3c9977c48d755aaa7562992611cbc233408b90077c8171d75911bc902
+  comparator_test:
+    path: 05_src/traffic_simulation/validation/test_compare_phase13_use_sidepath_probe.py
+    byte_sha256: 13a4f56f16e3c652a740fbbfef99d47f4f367a4478ef988e75c5f787f0f92111
+  way_specific_exception_added: false
+  source_osm_modified: false
+  vehicle_ontology_changed: false
+  governed_vclasses_changed: false
+
+full_population_probe:
+  command: >-
+    PYTHONPATH=05_src python -m traffic_simulation.network.static_access_v17
+    --input 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+    --output reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_bicycle_use_sidepath_full_population_probe/static_access_formal.json
+    --profile formal
+  expected_nonzero_exit_due_to_remaining_blockers: true
+  output:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_bicycle_use_sidepath_full_population_probe/static_access_formal.json
+    byte_sha256: aeb17bfd5bc1e8ee969458bcc90ad50ff89b1f4db2a7936cde269525b1c50d4d
+    semantic_sha256: d7a2a0538625782dff641bba4d912fc057e7657f9cd4e1f5b13506db30427183
+  observed_static_access_blocker_count: 4
+  observed_stop_code_counts: {ACCESS_VALUE_UNSUPPORTED: 4}
+  c1_baseline_blocker_count: 27
+  c1_remaining_blocker_count: 0
+
+successor_blockers:
+  count: 4
+  assumed_before_probe: false
+  c2_access_specificity_conflict_exposed: false
+  records:
+    - {source_way_id: 150870020, stop_code: ACCESS_VALUE_UNSUPPORTED, source_key: foot, source_value: use_sidepath, related_tags: {vehicle: 'no', motor_vehicle: 'yes', bicycle: 'no', mofa: 'no'}}
+    - {source_way_id: 150870021, stop_code: ACCESS_VALUE_UNSUPPORTED, source_key: foot, source_value: use_sidepath, related_tags: {vehicle: 'no', motor_vehicle: 'yes', bicycle: 'no', mofa: 'no'}}
+    - {source_way_id: 150870022, stop_code: ACCESS_VALUE_UNSUPPORTED, source_key: foot, source_value: use_sidepath, related_tags: {vehicle: 'no', motor_vehicle: 'yes', bicycle: 'no', mofa: 'no'}}
+    - {source_way_id: 150870023, stop_code: ACCESS_VALUE_UNSUPPORTED, source_key: foot, source_value: use_sidepath, related_tags: {vehicle: 'no', motor_vehicle: 'yes', bicycle: 'no', mofa: 'no'}}
+
+stable_id_comparator:
+  output:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_bicycle_use_sidepath_full_population_probe/bicycle_use_sidepath_stable_id_diff.json
+    byte_sha256: a9bb96c42240784ef9d675d91858d77212cd60efcc7aa8d8d692e4616389a3d6
+    semantic_sha256: de209c8b25ea5b2e51db4cd6de812ccdcda483dbdd947fa2692b6020256d4c7e
+  status: passed
+  expected_affected_way_count: 27
+  removed_blocker_id_count: 27
+  removed_blocker_ids_exact: true
+  new_blocker_id_count: 0
+  unaffected_blocker_ids_unchanged: true
+  unaffected_normalized_rules_unchanged: true
+  unaffected_static_maxima_unchanged: true
+  bicycle_rules_cited_by_governed_static_maxima: 0
+  motorcar_hierarchy_blocker_count: 0
+  all_acceptance_guards_passed: true
+
+focused_validation:
+  initial_attempt:
+    status: failed
+    test_count: 61
+    passed_test_count: 60
+    failed_test_count: 1
+    cause: historical_private_authorization_record_hash_was_treated_as_a_rolling_current_file_hash
+    semantic_regression_detected: false
+    artifact:
+      path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_bicycle_use_sidepath_full_population_probe/focused_validation_failed_v1.junit.xml
+      byte_sha256: 35ae206fc24a6b2f9d900bc44c5095b5f4c1acc7466e6d02be652c823fc65d06
+  remediation:
+    historical_record_modified: false
+    treatment: historical_hash_is_immutable_evidence_not_a_rolling_pointer
+    current_private_authorization_behavior_test_preserved: true
+  final_attempt:
+    status: passed
+    test_count: 61
+    artifact:
+      path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_bicycle_use_sidepath_full_population_probe/focused_validation_final.junit.xml
+      byte_sha256: 257caa795cf690ff48d088a3898b732dec5e12bc53e1a8a79bf70a11c05266d5
+
+fixed_container_regression:
+  prerequisite_focused_validation_passed: true
+  command: >-
+    docker compose run --rm -T analysis python -m pytest -q
+    --junitxml=reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_bicycle_use_sidepath_full_population_probe/fixed_container_regression.junit.xml
+    05_src/traffic_simulation/validation
+  status: passed
+  baseline_passed_test_count: 630
+  passed_test_count: 645
+  duration_seconds: 967.91
+  artifact:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_bicycle_use_sidepath_full_population_probe/fixed_container_regression.junit.xml
+    byte_sha256: 3e988b8b401121b091204e2f48fe7d4a1cdb5c6c4ae5e8418e6796a4227e474c
+  historical_logs_deleted_or_overwritten: false
+
+acceptance:
+  c1_access_value_unsupported_27_to_0: true
+  expected_affected_ways_exactly_27: true
+  removed_blocker_ids_exactly_expected: true
+  new_blocker_ids_zero: true
+  unaffected_normalized_rules_unchanged: true
+  unaffected_static_maxima_unchanged: true
+  unaffected_blocker_ids_unchanged: true
+  source_osm_unchanged: true
+  bicycle_vehicle_domain_remains_empty: true
+  governed_vclasses_unchanged: true
+  motorcar_hierarchy_blocker_remains_zero: true
+  prior_phase13_semantics_unchanged: true
+  no_way_specific_exception: true
+  overall: passed
+
+next_required_decision:
+  target: C2_foot_use_sidepath_4_Ways
+  prerequisite: >-
+    Decide or confirm conformance for OSM child-over-parent specificity when
+    vehicle=no and motor_vehicle=yes project to equal governed vClass sets.
+  do_not_assume: foot_use_sidepath_can_be_enabled_by_only_adding_foot_to_registry

@@ -133,6 +133,12 @@ def validate_phase5_directional_lanes() -> dict[str, Any]:
 
     missing_fixture = fixtures["V17-NEG-032"]
     for variant in missing_fixture["input"]["variants"]:
+        # The approved Phase 13 shared-single-lane decision supersedes only the
+        # lanes=1 branch of this immutable historical Phase 2 fixture.  The
+        # lanes=3 and lanes=4 negative contracts remain authoritative here;
+        # the exact lanes=1 predicate is covered by its decision-specific test.
+        if variant.get("lanes") == 1:
+            continue
         try:
             resolve_directional_lanes(
                 _lane_tags(variant, default_oneway=missing_fixture["input"]["oneway"]),

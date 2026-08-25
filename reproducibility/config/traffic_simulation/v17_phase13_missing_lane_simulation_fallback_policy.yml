@@ -1,0 +1,114 @@
+schema_version: 1
+policy_id: MISSING_SOURCE_LANE_SIMULATION_FALLBACK_V1
+policy_version: 1.0.0
+decision_id: DEC-P13-LANE-MISSING-SOURCE-SIMULATION-FALLBACK-001
+decision_version: 1.0.0
+status: approved
+policy_type: simulation_model_assumption
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+
+fixed_binding:
+  source_osm:
+    path: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+    snapshot_date: '2026-07-16'
+    sha256: 8b5157e48c3c87c2b4430f56d6abe292ce1ea5449b374ae4cb395fc19475b67d
+  calibration:
+    population_count: 3286
+    semantic_sha256: 9b7f3016e9f3e2d747bfb2e49ccfddc15dd4b1e90e88f1d8db5d5a0814e336ca
+    minimum_class_sample_count: 30
+    recalibration_requires_policy_version_update: true
+
+scope:
+  included_missing_evidence_clusters:
+    L1_BIDIRECTIONAL_NO_LANE_COUNT: 19007
+    L4_ONEWAY_COUNT_MISSING: 3620
+  total_way_count: 22627
+  excluded:
+    - L5_PARTIAL_DIRECTIONAL_OR_BOTH_WAYS
+    - L6_LANE_VECTOR_LENGTH_CONFLICT
+    - L7_LANE_COUNT_CONFLICT
+    - shared_single_lane_materialization
+    - lanes_4_total_only
+    - remaining_odd_total
+    - invalid_or_contradictory_source
+
+scenarios:
+  conservative:
+    oneway: 1
+    bidirectional_total: 2
+  baseline:
+    statistic: mode
+    mode_tie_break: smaller_lane_count
+  high_capacity:
+    statistic: nearest_rank_p75
+
+global_defaults:
+  oneway:
+    conservative: 1
+    baseline: 2
+    high_capacity: 2
+  bidirectional:
+    conservative: 2
+    baseline: 2
+    high_capacity: 2
+
+class_defaults:
+  motorway:
+    oneway: {sample_count: 52, conservative: 1, baseline: 2, high_capacity: 3}
+    bidirectional: {sample_count: 0, use_global: true}
+  trunk:
+    oneway: {sample_count: 506, conservative: 1, baseline: 2, high_capacity: 3}
+    bidirectional: {sample_count: 60, conservative: 2, baseline: 2, high_capacity: 5}
+  primary:
+    oneway: {sample_count: 415, conservative: 1, baseline: 2, high_capacity: 3}
+    bidirectional: {sample_count: 99, conservative: 2, baseline: 2, high_capacity: 2}
+  secondary:
+    oneway: {sample_count: 35, conservative: 1, baseline: 2, high_capacity: 2}
+    bidirectional: {sample_count: 96, conservative: 2, baseline: 2, high_capacity: 2}
+  tertiary:
+    oneway: {sample_count: 397, conservative: 1, baseline: 2, high_capacity: 2}
+    bidirectional: {sample_count: 756, conservative: 2, baseline: 2, high_capacity: 2}
+  unclassified:
+    oneway: {sample_count: 108, conservative: 1, baseline: 1, high_capacity: 1}
+    bidirectional: {sample_count: 80, conservative: 2, baseline: 2, high_capacity: 2}
+  residential:
+    oneway: {sample_count: 47, conservative: 1, baseline: 1, high_capacity: 1}
+    bidirectional: {sample_count: 41, conservative: 2, baseline: 2, high_capacity: 2}
+  service:
+    oneway: {sample_count: 116, conservative: 1, baseline: 1, high_capacity: 3}
+    bidirectional: {sample_count: 159, conservative: 2, baseline: 2, high_capacity: 2}
+
+allocation:
+  oneway_yes: {forward: total, backward: 0}
+  oneway_reverse: {forward: 0, backward: total}
+  bidirectional_even: equal_split
+  bidirectional_odd:
+    forward: ceil_total_div_2
+    backward: floor_total_div_2
+    meaning: deterministic_geometry_order_tie_break_not_traffic_priority
+
+fallback_levels:
+  formal_source_resolved: formal_source_resolved
+  class_default: class_directionality_calibrated_default
+  global_default: global_directionality_fallback
+  conflict: not_applicable_conflict_fail_closed
+  shared: not_applicable_shared_physical_unsupported
+
+mode_contract:
+  formal:
+    model_assumed_allowed: false
+    missing_blocker_preserved: true
+  simulation:
+    formal_semantics_first: true
+    missing_evidence_fallback_allowed: true
+    conflict_fail_closed: true
+    assumption_manifest_required: true
+
+provenance:
+  value_origin: model_assumed
+  assumption_id: MISSING_SOURCE_LANE_SIMULATION_FALLBACK_V1
+  assumption_version: 1.0.0
+  source_lane_status: unresolved
+  formal_blocker_preserved: true
+  source_rewrite: false

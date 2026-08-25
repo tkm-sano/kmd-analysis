@@ -539,13 +539,30 @@ For a one-way road:
 - a directional count for the inactive direction greater than zero is a conflict unless a governed class-specific exception requires that direction;
 - `oneway=-1` assigns the active directional lane structure to backward.
 
+`DEC-P13-LANE-COUNT-FROM-ROAD-LANE-VECTOR-001` approves one additional formal
+deterministic rule for a missing one-way moving-lane count. When canonical
+`oneway` is `yes` or `-1`, explicit total and active-direction lane counts are
+absent, lane-conditional semantics are absent, and at least one exact
+`turn:lanes`, `destination:lanes`, or `destination:ref:lanes` tag exists, the
+Resolver may adopt their common positive pipe-field count as the active and
+total moving-lane count. The result uses `value_origin=rule_derived`, is formal
+eligible, preserves every source vector, and records rule ID
+`OSM_ONEWAY_ROAD_LANE_VECTOR_TO_ACTIVE_COUNT_V1`.
+
+This authority does not extend to general `*:lanes`, bicycle, cycleway, bus,
+access, conditional, or unknown vector families. Approved vectors with
+different field counts remain fail-closed. An explicit lane count remains
+authoritative and every source vector is subsequently validated against it;
+mismatch stops with `LANE_VECTOR_LENGTH_MISMATCH`.
+
 ### 10.3 Bidirectional roads
 
 For a formal bidirectional road, directional allocation shall be established by one of:
 
 1. explicit `lanes:forward`, `lanes:backward` and, where applicable, `lanes:both_ways`;
-2. an approved `evidence_derived` method;
-3. an approved `derived_validated_model`.
+2. an approved deterministic `rule_derived` interpretation;
+3. an approved `evidence_derived` method;
+4. an approved `derived_validated_model`.
 
 If a total lane count is present, the following consistency equation shall hold:
 
@@ -554,6 +571,37 @@ lanes = lanes:forward + lanes:backward + lanes:both_ways
 ```
 
 A mismatch shall stop with `LANE_COUNT_CONFLICT`.
+
+`DEC-P13-LANE-BIDIRECTIONAL-TOTAL-2-FORMAL-001` approves exactly one
+deterministic bidirectional total-lane interpretation for the v17 formal
+profile: when canonical `oneway=no`, `lanes=2`, `lanes:forward`,
+`lanes:backward`, `lanes:both_ways`, lane-conditional, reversible and
+alternating evidence are absent, the Resolver may derive
+`forward=1`, `backward=1`, and `both_ways=0` with
+`value_origin=rule_derived` and rule ID
+`OSM_BIDIRECTIONAL_TOTAL_2_TO_ONE_ONE_V1`. This decision does not generalize
+arithmetic complement or structural even split to `lanes=4`, higher even
+totals, odd totals, single-lane bidirectional roads, missing lane counts, or
+one-way lane-count missing cases.
+
+`DEC-P13-LANE-BIDIRECTIONAL-SHARED-SINGLE-LANE-001` approves a separate
+deterministic source-semantic rule. When canonical `oneway=no`, `lanes=1`, and
+the registered strict guards exclude directional counts, `lanes:both_ways`,
+motorized oneway conditional, reversible/alternating, lane-conditional,
+lane-vector, and non-current lifecycle evidence, the Resolver emits
+`kind=shared_bidirectional_single_moving_lane`, physical moving-lane count one,
+pre-access source directions `forward` and `backward`, and zero dedicated
+directional lanes with `value_origin=rule_derived` and rule ID
+`OSM_BIDIRECTIONAL_TOTAL_1_TO_SHARED_SINGLE_V1`.
+
+This rule does not create `forward=1` plus `backward=1`, does not rewrite the
+source as `lanes:both_ways=1`, and grants no access, priority, passing,
+alternating, capacity, or SUMO behavior. Target materialization is a separate
+record. While no approved shared-physical-lane materializer exists, no segment
+lane tuple is emitted and the target attempt is acceptance-blocked by
+`LANE_SHARED_PHYSICAL_MATERIALIZATION_UNSUPPORTED` while the source semantic
+record remains resolved. Every other odd or single-lane case retains the
+existing fail-closed behavior.
 
 If directional allocation is missing, the formal profile shall stop with:
 
@@ -740,6 +788,11 @@ Containment shall be calculated through the registered vehicle ontology, not str
 
 A more specific transport mode may override a less specific parent mode because its vehicle set is a proper subset.
 
+Governed-domain projection shall not erase a registered source transport-mode
+ancestry relation. When a child and parent project to the same governed vehicle
+set, the registered child remains strictly more vehicle-specific for that set.
+No ancestry may be inferred from equal projected sets or key-name similarity.
+
 #### Temporal domain
 
 Temporal domains shall denote sets of instants over the registered scenario horizon.
@@ -770,7 +823,9 @@ Rule A dominates Rule B for a given tuple when all of the following hold:
 3. A's vehicle domain is a subset of B's vehicle domain;
 4. A's temporal domain is a subset of B's temporal domain;
 5. A's purpose domain is a subset of B's purpose domain;
-6. at least one of conditions 1–5 is strict.
+6. at least one of conditions 1–5 is strict, or A's registered source vehicle
+   key is a descendant of B's source vehicle key while their projected vehicle
+   domains are equal.
 
 This is a partial order. It is not a source-order rule.
 

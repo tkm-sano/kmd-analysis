@@ -1,0 +1,155 @@
+schema_version: 1
+decision_id: DEC-P13-LANE-COUNT-FROM-ROAD-LANE-VECTOR-001
+decision_version: 1.0.0
+status: approved
+approved_at: '2026-08-20'
+approved_by: repository_owner_directive
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+input_lock: reproducibility/config/traffic_simulation/v17_phase13_input_lock.yml
+
+decision_method:
+  general_principle: >-
+    Reuse an existing decision only when it already owns the same semantics.
+    Create an independent decision when a new source-evidence-to-derived-value
+    interpretation is introduced, while reusing existing fail-closed conflict
+    semantics.
+  usual_method_for_this_case: new_independent_decision
+  selected_method: new_independent_decision
+  rejected_method: amend_DEC-P13-LANE-BIDIRECTIONAL-TOTAL-2-FORMAL-001
+  rationale: >-
+    The L2 decision owns allocation of explicit bidirectional lanes=2 as 1+1.
+    This decision derives a missing one-way lane count from approved road-lane
+    vector field counts. The evidence source and semantic responsibility are
+    different, and the L2 decision explicitly excludes absent lane counts and
+    one-way lane-count-missing cases.
+
+responsibility_boundary:
+  existing_L2_decision:
+    decision_id: DEC-P13-LANE-BIDIRECTIONAL-TOTAL-2-FORMAL-001
+    owns:
+      - explicit_bidirectional_total_lanes_2
+      - forward_1_backward_1_allocation
+    does_not_own:
+      - absent_lane_count_derivation
+      - one_way_road_lane_vector_count_semantics
+  existing_conflict_policy:
+    owns:
+      - explicit_lane_count_vs_vector_length_mismatch
+      - LANE_VECTOR_LENGTH_MISMATCH
+      - fail_closed_without_majority_or_precedence
+  this_decision_owns:
+    - approved_one_way_road_lane_vector_key_scope
+    - consistent_pipe_field_count_to_active_direction_lane_count
+    - value_origin_rule_derived
+    - source_vector_preservation
+  explicitly_out_of_scope:
+    - general_star_lanes_inference
+    - cycleway_lanes
+    - bicycle_specific_lanes
+    - bus_specific_lanes
+    - access_specific_lanes
+    - unknown_lane_vector_families
+    - bidirectional_lane_count_derivation
+    - width_or_est_width_inference
+    - SUMO_numLanes_default
+    - conditional_reversible_or_alternating_lanes
+    - Way_specific_exceptions
+
+fixed_population:
+  path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_oneway_road_lane_vector_probe/e1a_fixed_population.json
+  population_count: 9
+  byte_sha256: 3a2424b486193dd1efd4697a874fa7cd5a44a3754fa4348844229bb0bd6a741b
+  semantic_sha256: 3d6df2b93bf57f4ba363f1bafc9afab0a6ef3566b2343d1d37515f199610c507
+  inferred_lane_count_distribution: {'1': 4, '2': 4, '3': 1}
+  source_investigation:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_l4_oneway_count_missing_investigation/l4_oneway_count_missing_fixed_population_v2.json
+    byte_sha256: d58ac6e0b49d0ee6a269df1c73fbc537e06ba6e1ed19e78c236eb1c0c891a3ce
+    semantic_sha256: 4aeceebd15544781cc3e46497076c4c14259db8e975ab0296b87d43d94a2afd9
+
+comparison_baseline:
+  path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_lanes2_formal_rule_probe/static_access_formal.json
+  byte_sha256: 097ec76455849095eff9db930cd97e691ca7ffbf66de4753b2910b533e28e122
+  semantic_sha256: 6179f686e852945bba2a877fc40a8cb7f071d537eb1260857b8939bc4dc4f6fe
+  upstream_lane_blocker_count: 22943
+
+source_osm:
+  path: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+  byte_sha256: 8b5157e48c3c87c2b4430f56d6abe292ce1ea5449b374ae4cb395fc19475b67d
+
+primary_authority_evidence:
+  osm_lanes_suffix:
+    authority: OpenStreetMap Wiki
+    url: https://wiki.openstreetmap.org/wiki/Lanes
+    relevant_claims:
+      - pipe_separated_fields_describe_individual_lanes
+      - the_general_star_lanes_family_is_not_restricted_to_motorized_traffic
+  osm_turn_lanes:
+    authority: OpenStreetMap Wiki
+    url: https://wiki.openstreetmap.org/wiki/Key:turn:lanes
+    relevant_claims:
+      - unsuffixed_turn_lanes_targets_the_travel_direction_on_a_one_way_road
+      - pipe_field_count_must_match_the_directional_lane_count
+  osm_destination_lanes:
+    authority: OpenStreetMap Wiki
+    url: https://wiki.openstreetmap.org/wiki/Key:destination:lanes
+    relevant_claims:
+      - on_one_way_roads_pipe_fields_describe_destinations_per_lane
+  sumo_defaults:
+    authority: SUMO 1.24.0 documentation
+    url: https://sumo.dlr.de/docs/netconvert.html
+    relevant_claims:
+      - default_lanenumber_is_a_simulation_build_default
+      - the_default_is_not_used_as_formal_source_evidence_by_this_decision
+
+decision:
+  result: approved_limited_one_way_road_lane_vector_count_rule
+  rule_id: OSM_ONEWAY_ROAD_LANE_VECTOR_TO_ACTIVE_COUNT_V1
+  approved_vector_keys:
+    - turn:lanes
+    - destination:lanes
+    - destination:ref:lanes
+  applicability:
+    profile: formal
+    canonical_oneway: ['yes', '-1']
+    explicit_total_lanes: absent
+    active_direction_lane_count: absent
+    approved_vector_count: at_least_one
+    approved_vector_field_count: integer_at_least_one
+    multiple_approved_vectors: all_field_counts_equal
+    lane_conditional: absent
+    reversible_or_alternating: absent
+    contradictory_explicit_count: absent
+  project_level_semantics:
+    active_direction_lane_count: consistent_approved_vector_field_count
+    total_moving_lane_count: consistent_approved_vector_field_count
+    inactive_direction_lane_count: 0
+    both_ways_moving_lane_count: 0
+    value_origin: rule_derived
+    formal_eligible: true
+    source_preservation: true
+  explicit_count_precedence:
+    explicit_count_remains_authoritative: true
+    vector_is_still_validated_against_explicit_count: true
+    mismatch_stop_code: LANE_VECTOR_LENGTH_MISMATCH
+  vector_conflict:
+    automatic_resolution: false
+    majority_vote: false
+    source_precedence: false
+    outcome: remain_fail_closed
+
+known_exclusions:
+  mode_specific_vector:
+    source_way_ids: [221603369]
+    expected_outcome: LANE_DIRECTIONAL_ALLOCATION_MISSING
+  conflicting_approved_vectors:
+    source_way_ids: [45681076, 46148379]
+    expected_outcome: remain_unresolved_or_conflict_but_never_resolved
+
+implementation_state:
+  decision_record: fixed
+  runtime_update: pending_TDD
+  focused_validation: pending
+  full_population_probe: pending
+  stable_id_comparator: pending
+  fixed_container_regression: pending

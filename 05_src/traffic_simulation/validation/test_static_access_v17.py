@@ -278,7 +278,7 @@ def test_phase13_psv_registry_and_runtime_semantics_match_approved_decision() ->
         (REPOSITORY_ROOT / "reproducibility/config/traffic_simulation/"
          "v17_semantic_invariants.yml").read_text(encoding="utf-8")
     )
-    assert registry["registry_version"] == "1.7.0"
+    assert registry["registry_version"] == "1.10.0"
     assert registry["vehicle_ontology"]["domains"]["psv"] == ["bus", "taxi"]
     assert "coach" not in registry["vehicle_ontology"]["domains"]["psv"]
     assert registry["vehicle_ontology"]["domains"]["goods"] == ["delivery", "truck"]
@@ -396,6 +396,10 @@ def test_production_fixture_normalizes_static_rules_without_finalizing_permissio
         "deferred_conditional_tags": 1,
         "static_access_blockers": 0,
         "upstream_lane_blockers": 0,
+        "upstream_lane_source_semantic_blockers": 0,
+        "upstream_lane_canonical_representation_blockers": 0,
+        "upstream_lane_simulation_materialization_blockers": 0,
+        "upstream_lane_overall_acceptance_blockers": 0,
         "upstream_relation_blockers": 0,
     }
     assert all(

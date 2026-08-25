@@ -1,0 +1,81 @@
+schema_version: 1
+execution_id: phase13_lane_l2_bidirectional_lanes2_formal_20260820
+decision_id: DEC-P13-LANE-BIDIRECTIONAL-TOTAL-2-FORMAL-001
+decision_version: 1.0.0
+status: passed
+executed_at: '2026-08-20'
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+
+fixed_population:
+  path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_lanes2_formal_rule_probe/lanes2_fixed_population_v2.json
+  count: 1196
+  byte_sha256: cd0a71516599770fe35ece55709a1ed4cbc0158e83158b39951efa8b1c5342b8
+  superseded_non_destructively:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_lanes2_formal_rule_probe/lanes2_fixed_population.json
+    note: initial overly strict extraction excluded the known vector-successor candidate and is retained as historical evidence
+
+full_population_probe:
+  command: >-
+    PYTHONPATH=05_src python 05_src/traffic_simulation/network/static_access_v17.py
+    --input 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+    --output reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_lanes2_formal_rule_probe/static_access_formal.json
+    --profile formal
+  artifact_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_lanes2_formal_rule_probe/static_access_formal.json
+  byte_sha256: 097ec76455849095eff9db930cd97e691ca7ffbf66de4753b2910b533e28e122
+  exit_code: 1
+  exit_code_reason: governed upstream lane blockers remain after the target cluster is resolved
+  counts:
+    upstream_lane_blockers_before: 24138
+    upstream_lane_blockers_after: 22943
+    static_access_blockers_after: 0
+    static_conflict_candidates_after: 0
+
+stable_id_comparator:
+  artifact_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_lanes2_formal_rule_probe/lanes2_formal_stable_id_diff_v2.json
+  byte_sha256: 8e08f44949256cbc7cadad184eb9c7d59cb20690e35eb982cf623e65ac4896ab
+  status: passed
+  affected_way_count: 1196
+  removed_blocker_id_count: 1196
+  direct_resolution_count: 1195
+  new_blocker_id_count: 1
+  successor_blockers:
+    - source_way_id: 1034365453
+      stop_code: LANE_VECTOR_LENGTH_MISMATCH
+      message: lane vector length 2 differs from 1
+
+focused_validation:
+  command: >-
+    PYTHONPATH=05_src pytest -q
+    05_src/traffic_simulation/validation/test_directional_lanes_v17.py
+    05_src/traffic_simulation/validation/test_compare_phase13_lanes2_formal_probe.py
+    05_src/traffic_simulation/validation/test_static_access_v17.py
+    05_src/traffic_simulation/validation/test_final_permission_v17.py
+    05_src/traffic_simulation/validation/test_phase13_motorcar_vehicle_ontology_decision_v17.py
+    05_src/traffic_simulation/validation/test_phase13_psv_vehicle_ontology_decision_v17.py
+    05_src/traffic_simulation/validation/test_phase13_horse_vehicle_ontology_decision_v17.py
+    05_src/traffic_simulation/validation/test_phase13_private_authorization_context_resolution_v17.py
+    05_src/traffic_simulation/validation/test_phase13_use_sidepath_semantics_v17.py
+    05_src/traffic_simulation/validation/test_phase13_foot_use_sidepath_v17.py
+    05_src/traffic_simulation/validation/test_phase13_access_hierarchy_specificity_v17.py
+    05_src/traffic_simulation/validation/test_v17_phase1_authority.py
+    05_src/traffic_simulation/validation/test_approved_attribute_resolution_policy.py
+  final_result: 128 passed in 172.53s
+  additional_fixture_oracle_check: 42 passed in 1.27s
+
+fixed_container_regression:
+  initial_failed_run:
+    log_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_lanes2_formal_rule_probe/fixed_container_regression.log
+    junit_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_lanes2_formal_rule_probe/fixed_container_regression.junit.xml
+    result: 669 passed, 2 failed in 1412.07s
+    cause: fixture oracle manifest specification SHA required synchronization after the normative specification update
+  final_run:
+    command: >-
+      docker compose run --rm -T analysis python -m pytest -q
+      --junitxml=reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_lanes2_formal_rule_probe/fixed_container_regression_v3.junit.xml
+      05_src/traffic_simulation/validation
+    log_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_lanes2_formal_rule_probe/fixed_container_regression_v3.log
+    log_byte_sha256: b9f2a224a2b4d341438cc055049a971dcee40d5fd6b806939da9d6ed620c65a2
+    junit_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_lanes2_formal_rule_probe/fixed_container_regression_v3.junit.xml
+    junit_byte_sha256: ad48beaa47b7154397f8221faadbb2271aed1c1ee85a11aa610040f747583c83
+    result: 671 passed in 1420.42s
