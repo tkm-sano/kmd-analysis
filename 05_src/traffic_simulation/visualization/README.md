@@ -248,7 +248,7 @@ reproducibility/config/traffic_simulation/research_stage.yml
 Folium依存関係を追加・変更した場合は解析イメージを再構築する。
 
 ```bash
-cd /Users/tstakuma/github/research
+cd "$(git rev-parse --show-toplevel)"
 docker compose build analysis
 ```
 
@@ -340,7 +340,7 @@ docker compose run --rm analysis \
 
 ```bash
 open \
-  /Users/tstakuma/github/research/reproducibility/outputs/traffic_simulation/visualization/ota_ward_study_area.html
+  "$(git rev-parse --show-toplevel)/reproducibility/outputs/traffic_simulation/visualization/ota_ward_study_area.html"
 ```
 
 表示後、最低限次を確認する。
@@ -577,7 +577,7 @@ docker compose run --rm analysis \
 
 ```bash
 open \
-  /Users/tstakuma/github/research/reproducibility/outputs/traffic_simulation/visualization/ota_ward_baseline_demand.html
+  "$(git rev-parse --show-toplevel)/reproducibility/outputs/traffic_simulation/visualization/ota_ward_baseline_demand.html"
 ```
 
 ### 15.2 レイヤーと見方

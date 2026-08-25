@@ -1,8 +1,36 @@
 # Tokyo Traffic × Quantum Future Society
 
+```text
+0-1 社会科学としての問い                    [PARTIAL]
+0-2 研究設計                                [CURRENT]
+0-3 方法論                                  [CURRENT]
+  ├─ 0-2-B 正本実行環境のHayate移行         [CURRENT]  ← 現在地
+  │   └─ 0-2-B-1 Mac側Git整理               [COMPLETE]
+  ├─ 1. 道路・交通条件                      [PARTIAL]
+  ├─ 2. 交通状態                            [CURRENT]
+  │   ├─ 2-1 公式観測の取得・道路対応       [COMPLETE]
+  │   ├─ 2-2 測定断面・検出位置固定         [COMPLETE]
+  │   ├─ 2-3 交通量較正                     [CURRENT]  ← 復帰先
+  │   │   ├─ 2-3-A 初期需要の空間不足診断   [COMPLETE]
+  │   │   └─ 2-3-B 初期OD・経路配分再設計   [COMPLETE]
+  │   │       ├─ 2-3-C 区外通過OD範囲診断   [COMPLETE]
+  │   │       └─ 2-3-D 本人運転OD統合       [PARTIAL]  ← Hayate移行後の復帰先
+  │   └─ 2-4 未使用観測による独立確認       [BLOCKED]
+  ├─ 3. 配送条件                            [PARTIAL]
+  ├─ 4. 配送simulation                      [PARTIAL]
+  ├─ 5. 配送最適化問題                      [NOT STARTED]
+  └─ 6. 計算手法比較                        [NOT STARTED]
+```
+
+現在は、公式PT調査を用いた交通量較正を安定して継続できるよう、正本実行環境と大容量成果物の保存先をMacからHayateへ移す基盤整備を行っています。Macは編集・確認用に限定し、移行後はHayateで生成・検証した成果を正本とします。交通需要側は区外通過交通の本人運転OD統合まで進んでおり、移行完了後に同処理の経路生成検証へ戻ります。
+
+> 研究全体の工程、現在地、作業番号、本線・派生ルートの管理正本は
+> [研究全体の構造・現在地・作業管理規則](00_project_management/0-2-A_20260823_COMPLETE_研究全体構造と作業管理規則.md)です。
+> 新しい作業は必ず同文書上の番号と入口・終了条件を確認してから開始します。
+
 東京都大田区を対象に、交通シミュレーションと配送経路最適化を組み合わせ、古典的な最適化手法と量子アルゴリズムを公平に比較する研究
 
-現在は、実験の土台となる道路データを検証している段階です。古典最適化と量子アルゴリズムの比較は行なっていません。
+現在は、実験の土台となる道路・交通状態を検証している段階です。古典最適化と量子アルゴリズムの比較は行なっていません。
 
 ## この研究で明らかにしたいこと
 
@@ -246,6 +274,8 @@ docker compose run --rm analysis \
 
 ## 主要資料
 
+- [研究全体の構造・現在地・作業管理規則](00_project_management/0-2-A_20260823_COMPLETE_研究全体構造と作業管理規則.md)
+- [研究の現状と今後の設計案件](0-2_20260823_CURRENT_研究現状と設計案件.md)
 - [Phase 1〜14の定義・現在地・証拠・次の作業](05_src/traffic_simulation/v17_phase1_to_phase14_integrated_status.md)
 - [Phase 12独立再実行の証拠](reproducibility/config/traffic_simulation/v17_phase12_independent_rerun_20260813.yml)
 - [Phase 12全母集団出力契約](05_src/traffic_simulation/specifications/12_phase12_full_population_output_contract_v17.md)

@@ -245,6 +245,11 @@ legacy/non_sumo_route_proxy_analysis/reproducibility/outputs/
 # Current traffic-simulation runtime products
 reproducibility/outputs/traffic_simulation/**
 
+# Environment-migration byte inventories and transferred evidence are kept in
+# the canonical Hayate data store, not in Git history.  The scripts, configs,
+# and progress documents that define and interpret them remain tracked.
+reproducibility/outputs/environment_migration/**
+
 # Local-only Docker Compose overrides. Canonical services remain in the
 # tracked compose.yaml file.
 compose.override.yaml
