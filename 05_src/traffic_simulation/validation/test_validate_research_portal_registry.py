@@ -44,9 +44,9 @@ def test_repository_registry_is_valid_and_reports_governed_gaps() -> None:
     assert report.valid
     assert report.errors == ()
     assert {key: value for key, value in report.counts.items() if key != "warnings"} == {
-        "nodes": 29,
-        "relations": 28,
-        "evidence": 36,
+        "nodes": 34,
+        "relations": 33,
+        "evidence": 37,
         "issues": 5,
         "stages": 2,
         "metrics": 3,
@@ -168,7 +168,7 @@ def test_untracked_evidence_is_warning_not_error(
     report = validate_registry()
 
     assert report.valid
-    assert sum("untracked evidence" in warning for warning in report.warnings) == 36
+    assert sum("untracked evidence" in warning for warning in report.warnings) == 37
 
 
 def test_status_and_readiness_are_independent(tmp_path: Path, registry: dict) -> None:
@@ -188,6 +188,147 @@ def test_current_stage_ref_must_reference_stage(tmp_path: Path, registry: dict) 
     report = validate_registry(write_registry(tmp_path, changed), SCHEMA_PATH)
 
     assert any("current_stage_ref must reference exactly one stage node" in error for error in report.errors)
+
+
+def test_simulation_map_separates_information_categories(registry: dict) -> None:
+    simulation_map = registry["simulation_map"]
+
+    assert {item["information_category"] for item in simulation_map["open_data"]} == {
+        "open_data"
+    }
+    assert {
+        item["information_category"] for item in simulation_map["model_parameters"]
+    } == {"model_parameter"}
+    assert {
+        item["information_category"] for item in simulation_map["derived_values"]
+    } == {"derived_value"}
+    assert {
+        item["information_category"] for item in simulation_map["problem_sizes"]
+    } == {"problem_size"}
+
+
+def test_required_qubits_cannot_derive_directly_from_open_data(
+    tmp_path: Path, registry: dict
+) -> None:
+    changed = copy.deepcopy(registry)
+    required_qubits = next(
+        item
+        for item in changed["simulation_map"]["problem_sizes"]
+        if item["id"] == "map.size.required_qubits"
+    )
+    required_qubits["determined_by"] = ["map.data.population_mesh"]
+
+    report = validate_registry(write_registry(tmp_path, changed), SCHEMA_PATH)
+
+    assert "required_qubits must not derive directly from open data" in report.errors
+
+
+def test_delivery_fulfillment_rate_uses_canonical_inputs(
+    tmp_path: Path, registry: dict
+) -> None:
+    changed = copy.deepcopy(registry)
+    changed["simulation_map"]["final_evaluation"]["numerator_ref"] = (
+        "map.derived.synthetic_delivery_demand"
+    )
+
+    report = validate_registry(write_registry(tmp_path, changed), SCHEMA_PATH)
+
+    assert (
+        "delivery_fulfillment_rate numerator must be delivered_parcel_equivalent"
+        in report.errors
+    )
+
+
+def test_null_problem_size_requires_reason(tmp_path: Path, registry: dict) -> None:
+    changed = copy.deepcopy(registry)
+    stop_count = next(
+        item
+        for item in changed["simulation_map"]["problem_sizes"]
+        if item["id"] == "map.size.stop_count"
+    )
+    del stop_count["unknown_reason"]
+
+    report = validate_registry(write_registry(tmp_path, changed), SCHEMA_PATH)
+
+    assert any("null problem size requires reason: map.size.stop_count" in error for error in report.errors)
+
+
+def test_propagation_relations_have_explicit_semantics(registry: dict) -> None:
+    relations = registry["simulation_map"]["propagation_relations"]
+
+    assert {relation["propagation_type"] for relation in relations} == {
+        "condition_propagation",
+        "demand_propagation",
+        "problem_size_propagation",
+        "simulation_outcome_propagation",
+    }
+    assert all(relation["effect_label_ja"] for relation in relations)
+    assert all(
+        relation.get("unresolved_reason")
+        for relation in relations
+        if relation["effect_semantics"] == "unresolved"
+    )
+
+
+def test_unresolved_propagation_requires_reason(tmp_path: Path, registry: dict) -> None:
+    changed = copy.deepcopy(registry)
+    relation = next(
+        item
+        for item in changed["simulation_map"]["propagation_relations"]
+        if item["id"] == "propagation.demand_to_requests"
+    )
+    del relation["unresolved_reason"]
+
+    report = validate_registry(write_registry(tmp_path, changed), SCHEMA_PATH)
+
+    assert any("unresolved propagation requires reason" in error for error in report.errors)
+
+
+def test_open_data_cannot_propagate_directly_to_required_qubits(
+    tmp_path: Path, registry: dict
+) -> None:
+    changed = copy.deepcopy(registry)
+    relation = next(
+        item
+        for item in changed["simulation_map"]["propagation_relations"]
+        if item["id"] == "propagation.qubo_to_qubits"
+    )
+    relation["source"] = "map.data.population_mesh"
+
+    report = validate_registry(write_registry(tmp_path, changed), SCHEMA_PATH)
+
+    assert "open data must not propagate directly to required_qubits" in report.errors
+
+
+def test_problem_size_propagation_must_pass_formulation_and_mapping(
+    tmp_path: Path, registry: dict
+) -> None:
+    changed = copy.deepcopy(registry)
+    relation = next(
+        item
+        for item in changed["simulation_map"]["propagation_relations"]
+        if item["id"] == "propagation.binary_to_qubo"
+    )
+    relation["target"] = "map.size.required_qubits"
+
+    report = validate_registry(write_registry(tmp_path, changed), SCHEMA_PATH)
+
+    assert any("must pass QUBO / Ising mapping" in error for error in report.errors)
+
+
+def test_main_change_origins_reach_final_evaluation(
+    tmp_path: Path, registry: dict
+) -> None:
+    changed = copy.deepcopy(registry)
+    changed["simulation_map"]["propagation_relations"] = [
+        relation
+        for relation in changed["simulation_map"]["propagation_relations"]
+        if relation["id"] != "propagation.delivered_to_fulfillment"
+    ]
+
+    report = validate_registry(write_registry(tmp_path, changed), SCHEMA_PATH)
+
+    assert any("cannot reach final evaluation" in error for error in report.errors)
 
 
 def test_evidence_refs_and_supports_are_bidirectional(tmp_path: Path, registry: dict) -> None:
@@ -445,3 +586,19 @@ def test_intentional_isolated_issue_does_not_warn(registry: dict) -> None:
     assert issue["intentionally_isolated"] is True
     assert issue["scope_refs"]
     assert "isolated node: issue.future_external_models_missing" not in validate_registry().warnings
+
+
+def test_scenario_lanes_preserve_unknown_reasons(registry: dict, schema: dict) -> None:
+    battery = next(lane for lane in registry["scenario_lanes"] if lane["id"] == "battery")
+    energy = next(step for step in battery["steps"] if step["id"] == "lane.battery.input")
+    assert energy["role"] == "scenario_variable"
+    assert energy["value_status"] == "unresolved"
+    assert energy["unknown_reason"]
+
+
+def test_quantum_scale_does_not_invent_qubits(registry: dict) -> None:
+    logistics = next(scale for scale in registry["quantum_scales"] if scale["id"] == "logistics_evrp")
+    qubits = next(stage for stage in logistics["stages"] if stage["id"].endswith(".qubits"))
+    assert qubits["value"] is None
+    assert qubits["value_status"] == "unresolved"
+    assert qubits["unknown_reason"]

@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import json
 import subprocess
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Final, Iterable
@@ -159,6 +160,8 @@ def validate_registry(
     view_by_id = {item["id"]: item for item in views}
     conflict_by_id = {item["id"]: item for item in conflicts}
     group_by_id = {item["id"]: item for item in groups}
+    implementation_links = registry.get("implementation_links", [])
+    external_sources = registry.get("external_sources", [])
 
     for label, items in (
         ("node", nodes),
@@ -170,6 +173,22 @@ def validate_registry(
     ):
         for duplicate in sorted(_duplicates(item["id"] for item in items)):
             errors.append(f"duplicate {label} id: {duplicate}")
+
+    for link in implementation_links:
+        if link["node_ref"] not in node_by_id:
+            errors.append(f"implementation link has missing node: {link['id']}")
+        evidence_ref = link.get("evidence_ref")
+        if evidence_ref is not None and evidence_ref not in evidence_by_id:
+            errors.append(f"implementation link has missing evidence: {link['id']}")
+        elif evidence_ref is not None and evidence_by_id[evidence_ref]["path"] != link["path"]:
+            errors.append(f"implementation link path differs from evidence: {link['id']}")
+        path = Path(link["path"])
+        if path.is_absolute() or ".." in path.parts or not (repository_root / path).is_file():
+            errors.append(f"missing implementation link path: {link['id']}: {link['path']}")
+    for source in external_sources:
+        for node_ref in source["node_refs"]:
+            if node_ref not in node_by_id:
+                errors.append(f"external source has missing node: {source['id']}: {node_ref}")
 
     if registry["default_view_id"] not in view_by_id:
         errors.append(f"missing default view: {registry['default_view_id']}")
@@ -459,6 +478,243 @@ def validate_registry(
     ]
     if _has_cycle(supersedes_edges):
         errors.append("supersedes graph contains a cycle")
+
+    # Portal-specific semantic checks keep fixed/scenario roles and unknown values explicit.
+    lane_ids = {lane["id"] for lane in registry.get("scenario_lanes", [])}
+    required_lanes = {"current", "battery", "social"}
+    missing_lanes = required_lanes - lane_ids
+    if missing_lanes:
+        errors.append(f"missing scenario lanes: {sorted(missing_lanes)}")
+    for lane in registry.get("scenario_lanes", []):
+        lane_nodes = set(lane["node_refs"])
+        lane_relations = set(lane["relation_refs"])
+        for step in lane["steps"]:
+            if step["node_ref"] not in node_by_id:
+                errors.append(f"scenario lane {lane['id']} has missing step node: {step['node_ref']}")
+            if step["node_ref"] not in lane_nodes:
+                errors.append(f"scenario lane {lane['id']} step node is not in node_refs: {step['node_ref']}")
+            if step["value_status"] == "known" and step.get("unknown_reason"):
+                errors.append(f"known scenario value must not have unknown_reason: {step['id']}")
+            if step["value_status"] != "known" and not step.get("unknown_reason"):
+                errors.append(f"unresolved scenario value requires unknown_reason: {step['id']}")
+        for relation_ref in lane_relations:
+            if relation_ref not in relation_by_id:
+                errors.append(f"scenario lane {lane['id']} has missing relation: {relation_ref}")
+    for scale in registry.get("quantum_scales", []):
+        for stage in scale["stages"]:
+            if stage["value_status"] == "known" and stage.get("unknown_reason"):
+                errors.append(f"known quantum scale value must not have unknown_reason: {stage['id']}")
+            if stage["value_status"] != "known" and not stage.get("unknown_reason"):
+                errors.append(f"unknown quantum scale value requires unknown_reason: {stage['id']}")
+    for node in nodes:
+        if node.get("urgency", "none") not in {"critical", "high", "medium", "low", "none"}:
+            errors.append(f"invalid urgency: {node['id']}")
+        if node.get("unknown_reason_type") not in {None, "data_missing", "parameter_not_set", "assumption_not_adopted", "model_not_formalized", "not_calculated", "evidence_not_accepted", "external_model_not_selected"}:
+            errors.append(f"invalid unknown_reason_type: {node['id']}")
+        for scenario, roles in node.get("role_by_scenario", {}).items():
+            if scenario not in {"current", "battery", "social", "quantum_scale"}:
+                errors.append(f"unknown scenario role key: {node['id']}: {scenario}")
+            if "fixed_condition" in roles and scenario == "battery" and node["id"] == "variable.usable_battery_energy":
+                errors.append("usable_battery_energy cannot be fixed_condition in battery scenario")
+            if node["id"] == "data.synthetic_delivery_demand":
+                if scenario == "battery" and "fixed_condition" not in roles:
+                    errors.append("delivery_demand must be fixed_condition in battery scenario")
+                if scenario == "social" and "derived" not in roles:
+                    errors.append("delivery_demand must be derived in social scenario")
+        for field in node.get("variables", []) + node.get("parameters", []):
+            if field["value"] is None and not field.get("unknown_reason"):
+                errors.append(f"unknown variable requires unknown_reason: {field['id']}")
+            if field.get("unknown_reason_type") not in {None, "data_missing", "parameter_not_set", "assumption_not_adopted", "model_not_formalized", "not_calculated", "evidence_not_accepted", "external_model_not_selected"}:
+                errors.append(f"invalid unknown_reason_type: {field['id']}")
+
+    # The simulation map is the browser-facing contract for provenance, research
+    # settings, derived values, problem scale, and the single terminal metric.
+    simulation_map = registry.get("simulation_map", {})
+    map_collections = {
+        "open_data": simulation_map.get("open_data", []),
+        "model_parameter": simulation_map.get("model_parameters", []),
+        "derived_value": simulation_map.get("derived_values", []),
+        "problem_size": simulation_map.get("problem_sizes", []),
+    }
+    map_processes = simulation_map.get("process_nodes", [])
+    propagation_relations = simulation_map.get("propagation_relations", [])
+    final_evaluation = simulation_map.get("final_evaluation", {})
+    all_map_items = [item for items in map_collections.values() for item in items]
+    map_id_items = all_map_items + map_processes
+    if final_evaluation:
+        map_id_items.append(final_evaluation)
+    map_ids = [item["id"] for item in map_id_items]
+    duplicate_map_ids = sorted(item_id for item_id, count in Counter(map_ids).items() if count > 1)
+    if duplicate_map_ids:
+        errors.append(f"duplicate simulation map ids: {duplicate_map_ids}")
+    map_id_set = set(map_ids)
+
+    propagation_ids = [relation["id"] for relation in propagation_relations]
+    duplicate_propagation_ids = sorted(
+        relation_id for relation_id, count in Counter(propagation_ids).items() if count > 1
+    )
+    if duplicate_propagation_ids:
+        errors.append(f"duplicate propagation relation ids: {duplicate_propagation_ids}")
+    for relation in propagation_relations:
+        for endpoint in ("source", "target"):
+            if relation[endpoint] not in map_id_set:
+                errors.append(
+                    f"propagation relation has missing {endpoint}: "
+                    f"{relation['id']}: {relation[endpoint]}"
+                )
+        if relation["effect_semantics"] == "unresolved" and not relation.get("unresolved_reason"):
+            errors.append(f"unresolved propagation requires reason: {relation['id']}")
+        if relation["effect_semantics"] != "unresolved" and relation.get("unresolved_reason"):
+            errors.append(f"resolved propagation must not carry unresolved reason: {relation['id']}")
+        if (
+            relation["target"] == "map.size.required_qubits"
+            and relation["source"].startswith("map.data.")
+        ):
+            errors.append("open data must not propagate directly to required_qubits")
+
+    propagation_by_source = {}
+    for relation in propagation_relations:
+        propagation_by_source.setdefault(relation["source"], []).append(relation)
+
+    def propagation_path(source, target):
+        queue = [(source, [source])]
+        visited = {source}
+        while queue:
+            current, path = queue.pop(0)
+            if current == target:
+                return path
+            for relation in propagation_by_source.get(current, []):
+                next_id = relation["target"]
+                if next_id not in visited:
+                    visited.add(next_id)
+                    queue.append((next_id, path + [next_id]))
+        return None
+
+    final_id = final_evaluation.get("id")
+    for origin in (
+        "map.parameter.usable_battery_energy",
+        "map.data.population_mesh",
+        "map.derived.synthetic_delivery_demand",
+    ):
+        if final_id and not propagation_path(origin, final_id):
+            errors.append(f"propagation origin cannot reach final evaluation: {origin}")
+
+    stop_to_qubits = propagation_path("map.size.stop_count", "map.size.required_qubits")
+    if not stop_to_qubits:
+        errors.append("stop_count cannot reach required_qubits through propagation relations")
+    elif not {"map.process.evrp_formulation", "map.process.qubo_ising"}.issubset(stop_to_qubits):
+        errors.append("stop_count to required_qubits must pass formulation and QUBO / Ising mapping")
+    binary_to_qubits = propagation_path("map.size.binary_variable_count", "map.size.required_qubits")
+    if not binary_to_qubits:
+        errors.append("binary_variable_count cannot reach required_qubits")
+    elif "map.process.qubo_ising" not in binary_to_qubits:
+        errors.append("binary_variable_count to required_qubits must pass QUBO / Ising mapping")
+
+    for relation in propagation_relations:
+        source_parameter = next(
+            (item for item in map_collections["model_parameter"] if item["id"] == relation["source"]),
+            None,
+        )
+        if not source_parameter:
+            continue
+        scenario_roles = source_parameter.get("role_by_scenario", {})
+        for scenario in relation["applicable_scenarios"]:
+            role = scenario_roles.get(scenario)
+            if relation["propagation_scope"] == "scenario_variable" and role != "scenario_variable":
+                errors.append(
+                    f"scenario propagation contradicts parameter role: {relation['id']}: {scenario}"
+                )
+            if relation["propagation_scope"] == "fixed_input" and role != "fixed_condition":
+                errors.append(
+                    f"fixed input propagation contradicts parameter role: {relation['id']}: {scenario}"
+                )
+
+    for expected_category, items in map_collections.items():
+        for item in items:
+            if item["information_category"] != expected_category:
+                errors.append(
+                    f"simulation map category mismatch: {item['id']}: "
+                    f"{item['information_category']} != {expected_category}"
+                )
+            for evidence_ref in ([item.get("evidence_ref")] if item.get("evidence_ref") else []):
+                if evidence_ref not in evidence_by_id:
+                    errors.append(f"simulation map item has missing evidence: {item['id']}: {evidence_ref}")
+            for ref_field in ("used_by", "determined_by"):
+                for item_ref in item.get(ref_field, []):
+                    if item_ref not in map_id_set:
+                        errors.append(
+                            f"simulation map item has missing {ref_field} ref: {item['id']}: {item_ref}"
+                        )
+            if item.get("value_status") == "unresolved" and not item.get("unknown_reason"):
+                errors.append(f"unresolved simulation map value requires reason: {item['id']}")
+
+    for item in map_collections["open_data"]:
+        if not item.get("source_registry_ids") or not item.get("provider"):
+            errors.append(f"open data requires source and provider: {item['id']}")
+        if not item.get("used_by"):
+            errors.append(f"open data requires usage target: {item['id']}")
+        if item.get("value_origin") != "open_data":
+            errors.append(f"open data must declare open_data origin: {item['id']}")
+
+    for item in map_collections["model_parameter"]:
+        if item.get("value_origin") != "research_setting":
+            errors.append(f"model parameter must declare research_setting origin: {item['id']}")
+        if "value_status" not in item or "role_by_scenario" not in item:
+            errors.append(f"model parameter requires value status and scenario roles: {item['id']}")
+        roles = item.get("role_by_scenario", {})
+        if set(roles) != {"current", "battery", "social"}:
+            errors.append(f"model parameter requires all scenario roles: {item['id']}")
+
+    for item in map_collections["derived_value"]:
+        if not item.get("determined_by"):
+            errors.append(f"derived value requires upstream dependency: {item['id']}")
+        if item.get("value_origin") not in {"model_derived", "simulation_output"}:
+            errors.append(f"invalid derived value origin: {item['id']}")
+
+    for item in map_collections["problem_size"]:
+        if not item.get("determined_by"):
+            errors.append(f"problem size requires determined_by: {item['id']}")
+        if item.get("value") is None and not item.get("unknown_reason"):
+            errors.append(f"null problem size requires reason: {item['id']}")
+
+    required_qubits = next(
+        (item for item in map_collections["problem_size"] if item["id"] == "map.size.required_qubits"),
+        None,
+    )
+    if required_qubits is None:
+        errors.append("simulation map requires required_qubits problem size")
+    elif any(ref.startswith("map.data.") for ref in required_qubits.get("determined_by", [])):
+        errors.append("required_qubits must not derive directly from open data")
+
+    parameter_by_id = {item["id"]: item for item in map_collections["model_parameter"]}
+    battery_energy = parameter_by_id.get("map.parameter.usable_battery_energy")
+    if battery_energy and battery_energy.get("role_by_scenario", {}).get("battery") != "scenario_variable":
+        errors.append("simulation map usable_battery_energy must vary in battery scenario")
+    if battery_energy and battery_energy.get("role_by_scenario", {}).get("social") != "fixed_condition":
+        errors.append("simulation map usable_battery_energy must be fixed in social scenario")
+
+    if final_evaluation:
+        if final_evaluation.get("formula") != (
+            "delivery_fulfillment_rate = delivered_parcel_equivalent / total_parcel_equivalent"
+        ):
+            errors.append("delivery_fulfillment_rate formula is not canonical")
+        for ref_field in ("numerator_ref", "denominator_ref"):
+            if final_evaluation.get(ref_field) not in map_id_set:
+                errors.append(f"final evaluation has missing {ref_field}")
+        if final_evaluation.get("numerator_ref") != "map.derived.delivered_parcel_equivalent":
+            errors.append("delivery_fulfillment_rate numerator must be delivered_parcel_equivalent")
+        if final_evaluation.get("denominator_ref") != "map.derived.total_parcel_equivalent":
+            errors.append("delivery_fulfillment_rate denominator must be total_parcel_equivalent")
+        if final_evaluation.get("registry_node_ref") not in node_by_id:
+            errors.append("final evaluation has missing Registry node ref")
+
+    for relation in relations:
+        if relation["type"] == "blocked_by" and relation["source"] not in node_by_id:
+            errors.append(f"blocked_by relation has missing blocker: {relation['id']}")
+    for scale in registry.get("quantum_scales", []):
+        for stage in scale["stages"]:
+            if stage.get("node_ref") and stage["node_ref"] not in node_by_id:
+                errors.append(f"quantum scale stage has missing node ref: {stage['id']}")
 
     connected = {
         endpoint

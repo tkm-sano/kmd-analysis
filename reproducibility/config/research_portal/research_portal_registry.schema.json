@@ -14,12 +14,18 @@
     "default_view_id",
     "current_stage_ref",
     "metadata",
+    "simulation_map",
     "evidence",
     "nodes",
     "relations",
     "views",
     "groups",
-    "known_conflicts"
+    "known_conflicts",
+    "scenario_lanes",
+    "quantum_scales",
+    "model_layers",
+    "implementation_links",
+    "external_sources"
   ],
   "properties": {
     "schema_version": { "const": 1 },
@@ -38,9 +44,11 @@
         "title_ja": { "$ref": "#/$defs/nonEmptyString" },
         "title_en": { "$ref": "#/$defs/nonEmptyString" },
         "scope_note_ja": { "$ref": "#/$defs/nonEmptyString" },
-        "scope_note_en": { "$ref": "#/$defs/nonEmptyString" }
+        "scope_note_en": { "$ref": "#/$defs/nonEmptyString" },
+        "research_overview_ja": { "$ref": "#/$defs/nonEmptyString" }
       }
     },
+    "simulation_map": { "$ref": "#/$defs/simulationMap" },
     "evidence": {
       "type": "array",
       "items": { "$ref": "#/$defs/evidence" }
@@ -65,6 +73,29 @@
     "known_conflicts": {
       "type": "array",
       "items": { "$ref": "#/$defs/conflict" }
+    },
+    "scenario_lanes": {
+      "type": "array",
+      "minItems": 2,
+      "items": { "$ref": "#/$defs/scenarioLane" }
+    },
+    "quantum_scales": {
+      "type": "array",
+      "minItems": 2,
+      "items": { "$ref": "#/$defs/quantumScale" }
+    },
+    "model_layers": {
+      "type": "array",
+      "minItems": 8,
+      "items": { "$ref": "#/$defs/modelLayer" }
+    },
+    "implementation_links": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/implementationLink" }
+    },
+    "external_sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/externalSource" }
     }
   },
   "$defs": {
@@ -86,6 +117,188 @@
         "hypothesis",
         "external_model"
       ]
+    },
+    "unknownReasonType": {
+      "enum": ["data_missing", "parameter_not_set", "assumption_not_adopted", "model_not_formalized", "not_calculated", "evidence_not_accepted", "external_model_not_selected"]
+    },
+    "urgency": { "enum": ["critical", "high", "medium", "low", "none"] },
+    "informationCategory": {
+      "enum": ["open_data", "model_parameter", "derived_value", "problem_size"]
+    },
+    "valueOrigin": {
+      "enum": ["open_data", "research_setting", "model_derived", "simulation_output", "unknown"]
+    },
+    "mapCategory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label_ja", "icon"],
+      "properties": {
+        "id": { "enum": ["open_data", "model_parameter", "derived_value", "problem_size"] },
+        "label_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "icon": { "enum": ["source", "control", "calculation", "dimension"] }
+      }
+    },
+    "mapItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label_ja", "information_category", "value_origin"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "label_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "information_category": { "$ref": "#/$defs/informationCategory" },
+        "value_origin": { "$ref": "#/$defs/valueOrigin" },
+        "adoption_status": { "enum": ["adopted", "candidate", "reference", "future"] },
+        "source_registry_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/nonEmptyString" },
+          "uniqueItems": true
+        },
+        "provider": { "$ref": "#/$defs/nonEmptyString" },
+        "description_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "definition_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "geographic_scope": { "type": ["string", "null"] },
+        "time_basis": { "type": ["string", "null"] },
+        "unit": { "type": ["string", "null"] },
+        "value": {
+          "anyOf": [
+            { "type": "number" },
+            { "type": "integer" },
+            { "type": "string" },
+            { "type": "array", "items": { "type": ["number", "string"] } },
+            { "type": "null" }
+          ]
+        },
+        "value_status": { "enum": ["known", "known_proxy", "unresolved"] },
+        "role_by_scenario": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "current": { "enum": ["fixed_condition", "scenario_variable", "derived", "output"] },
+            "battery": { "enum": ["fixed_condition", "scenario_variable", "derived", "output"] },
+            "social": { "enum": ["fixed_condition", "scenario_variable", "derived", "output"] }
+          }
+        },
+        "unknown_reason_type": { "$ref": "#/$defs/unknownReasonType" },
+        "unknown_reason": { "$ref": "#/$defs/nonEmptyString" },
+        "urgency": { "$ref": "#/$defs/urgency" },
+        "used_by": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/id" },
+          "uniqueItems": true
+        },
+        "determined_by": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/id" },
+          "uniqueItems": true
+        },
+        "repo_input_paths": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/nonEmptyString" },
+          "uniqueItems": true
+        },
+        "external_urls": {
+          "type": "array",
+          "items": { "type": "string", "format": "uri" },
+          "uniqueItems": true
+        },
+        "evidence_ref": { "$ref": "#/$defs/id" }
+      }
+    },
+    "mapProcess": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label_ja", "stage", "registry_node_ref"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "label_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "stage": { "enum": ["delivery_generation", "optimization_representation", "solver", "simulation"] },
+        "registry_node_ref": { "$ref": "#/$defs/id" }
+      }
+    },
+    "mapEvaluationScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["geography", "geography_unknown_reason", "time", "time_unknown_reason", "scenario", "scenario_unknown_reason"],
+      "properties": {
+        "geography": { "type": ["string", "null"] },
+        "geography_unknown_reason": { "$ref": "#/$defs/nonEmptyString" },
+        "time": { "type": ["string", "null"] },
+        "time_unknown_reason": { "$ref": "#/$defs/nonEmptyString" },
+        "scenario": { "type": ["string", "null"] },
+        "scenario_unknown_reason": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "mapEvaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label_ja", "information_category", "value_origin", "value", "value_status", "unit", "definition_ja", "formula", "numerator_ref", "denominator_ref", "registry_node_ref", "evaluation_scope", "unknown_reason_type", "unknown_reason"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "label_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "information_category": { "const": "derived_value" },
+        "value_origin": { "$ref": "#/$defs/valueOrigin" },
+        "value": { "type": ["number", "null"] },
+        "value_status": { "enum": ["known", "unresolved"] },
+        "unit": { "$ref": "#/$defs/nonEmptyString" },
+        "definition_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "formula": { "$ref": "#/$defs/nonEmptyString" },
+        "numerator_ref": { "$ref": "#/$defs/id" },
+        "denominator_ref": { "$ref": "#/$defs/id" },
+        "registry_node_ref": { "$ref": "#/$defs/id" },
+        "evaluation_scope": { "$ref": "#/$defs/mapEvaluationScope" },
+        "unknown_reason_type": { "$ref": "#/$defs/unknownReasonType" },
+        "unknown_reason": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "mapAuxiliaryMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label_ja", "role_ja"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "label_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "role_ja": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "mapPropagationRelation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "source", "target", "propagation_type", "effect_label_ja", "effect_semantics", "propagation_scope", "applicable_scenarios"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "source": { "$ref": "#/$defs/id" },
+        "target": { "$ref": "#/$defs/id" },
+        "propagation_type": {
+          "enum": ["condition_propagation", "demand_propagation", "problem_size_propagation", "simulation_outcome_propagation"]
+        },
+        "effect_label_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "effect_semantics": { "enum": ["direct", "derived", "conditional", "unresolved"] },
+        "propagation_scope": { "enum": ["scenario_variable", "fixed_input", "model_derived", "simulation_output"] },
+        "applicable_scenarios": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "enum": ["current", "battery", "social"] },
+          "uniqueItems": true
+        },
+        "unresolved_reason": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "simulationMap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["information_categories", "open_data", "model_parameters", "derived_values", "problem_sizes", "process_nodes", "final_evaluation", "auxiliary_metrics", "propagation_relations"],
+      "properties": {
+        "information_categories": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "$ref": "#/$defs/mapCategory" } },
+        "open_data": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/mapItem" } },
+        "model_parameters": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/mapItem" } },
+        "derived_values": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/mapItem" } },
+        "problem_sizes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/mapItem" } },
+        "process_nodes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/mapProcess" } },
+        "final_evaluation": { "$ref": "#/$defs/mapEvaluation" },
+        "auxiliary_metrics": { "type": "array", "items": { "$ref": "#/$defs/mapAuxiliaryMetric" } },
+        "propagation_relations": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/mapPropagationRelation" } }
+      }
     },
     "review": {
       "type": "object",
@@ -280,6 +493,9 @@
           "items": { "$ref": "#/$defs/nonEmptyString" }
         },
         "unknown_reason": { "$ref": "#/$defs/nonEmptyString" },
+        "unknown_reason_type": { "$ref": "#/$defs/unknownReasonType" },
+        "urgency": { "$ref": "#/$defs/urgency" },
+        "blockers": { "type": "array", "items": { "$ref": "#/$defs/id" }, "uniqueItems": true },
         "confirmation_method": { "$ref": "#/$defs/nonEmptyString" },
         "unknowns": {
           "type": "array",
@@ -289,7 +505,20 @@
         "status_history": {
           "type": "array",
           "items": { "$ref": "#/$defs/statusHistory" }
-        }
+        },
+        "role_by_scenario": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "current": { "$ref": "#/$defs/roleList" },
+            "battery": { "$ref": "#/$defs/roleList" },
+            "social": { "$ref": "#/$defs/roleList" },
+            "quantum_scale": { "$ref": "#/$defs/roleList" }
+          }
+        },
+        "reference_models": { "type": "array", "items": { "$ref": "#/$defs/nonEmptyString" }, "uniqueItems": true },
+        "possible_upstream_models": { "type": "array", "items": { "$ref": "#/$defs/nonEmptyString" }, "uniqueItems": true },
+        "red_reasons": { "type": "array", "items": { "enum": ["value_unresolved", "not_calculated", "model_not_adopted", "hypothesis_only", "design_only", "external_reference_only"] }, "uniqueItems": true }
       },
       "allOf": [
         {
@@ -310,6 +539,51 @@
         }
       ]
     },
+    "modelLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label_ja", "summary_ja", "node_refs", "order"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "label_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "label_en": { "$ref": "#/$defs/nonEmptyString" },
+        "summary_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "node_refs": { "type": "array", "items": { "$ref": "#/$defs/id" }, "uniqueItems": true },
+        "order": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "implementationLink": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "node_ref", "role", "path", "summary_ja", "status", "readiness"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "node_ref": { "$ref": "#/$defs/id" },
+        "role": { "enum": ["input_data", "specification", "configuration", "process", "artifact", "validation", "acceptance", "unconfirmed"] },
+        "path": { "type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$" },
+        "summary_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "evidence_ref": { "$ref": "#/$defs/id" },
+        "status": { "$ref": "#/$defs/status" },
+        "readiness": { "$ref": "#/$defs/readiness" },
+        "warning_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "portability": { "enum": ["tracked", "untracked_local", "ignored_local", "external_required"] }
+      }
+    },
+    "externalSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label_ja", "kind", "locator", "purpose_ja", "adoption_status", "node_refs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "label_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "kind": { "enum": ["open_data", "paper", "external_model", "documentation"] },
+        "locator": { "$ref": "#/$defs/nonEmptyString" },
+        "purpose_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "adoption_status": { "enum": ["adopted", "candidate", "reference_only"] },
+        "node_refs": { "type": "array", "items": { "$ref": "#/$defs/id" }, "uniqueItems": true },
+        "warning_ja": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
     "namedField": {
       "type": "object",
       "additionalProperties": false,
@@ -321,7 +595,85 @@
         "value": { "type": ["number", "integer", "string", "boolean", "null"] },
         "unit": { "type": ["string", "null"] },
         "definition_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "unknown_reason": { "$ref": "#/$defs/nonEmptyString" },
+        "unknown_reason_type": { "$ref": "#/$defs/unknownReasonType" }
+      }
+    },
+    "roleList": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "scenario_variable",
+          "fixed_condition",
+          "derived",
+          "endogenous",
+          "outcome",
+          "core_research_object",
+          "comparison_method",
+          "external_evidence",
+          "reference_model"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "scenarioLane": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label_ja", "summary_ja", "node_refs", "relation_refs", "focus_node_refs", "steps"],
+      "properties": {
+        "id": { "enum": ["current", "battery", "social"] },
+        "label_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "summary_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "node_refs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" }, "uniqueItems": true },
+        "relation_refs": { "type": "array", "items": { "$ref": "#/$defs/id" }, "uniqueItems": true },
+        "focus_node_refs": { "type": "array", "items": { "$ref": "#/$defs/id" }, "uniqueItems": true },
+        "steps": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/laneStep" } }
+      }
+    },
+    "laneStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label_ja", "node_ref", "role", "value_status"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "label_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "node_ref": { "$ref": "#/$defs/id" },
+        "role": { "enum": ["scenario_variable", "fixed_condition", "derived", "endogenous", "outcome", "core_research_object", "comparison_method", "external_evidence", "reference_model"] },
+        "value_status": { "enum": ["known", "unresolved", "not_calculated", "not_applicable"] },
+        "unknown_reason": { "$ref": "#/$defs/nonEmptyString" },
+        "unknown_reason_type": { "$ref": "#/$defs/unknownReasonType" }
+      }
+    },
+    "quantumScale": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label_ja", "status", "readiness", "nature", "stages", "evidence_refs"],
+      "properties": {
+        "id": { "enum": ["logistics_evrp", "battery_cell_chemistry"] },
+        "label_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "status": { "$ref": "#/$defs/status" },
+        "readiness": { "$ref": "#/$defs/readiness" },
+        "nature": { "$ref": "#/$defs/nature" },
+        "stages": {
+          "type": "array",
+          "minItems": 5,
+          "items": { "$ref": "#/$defs/quantumScaleStage" }
+        },
+        "evidence_refs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" }, "uniqueItems": true },
         "unknown_reason": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "quantumScaleStage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label_ja", "value", "value_status", "unknown_reason"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "label_ja": { "$ref": "#/$defs/nonEmptyString" },
+        "value": { "type": ["string", "number", "array", "null"] },
+        "value_status": { "enum": ["known", "unresolved", "not_applicable"] },
+        "unknown_reason": { "type": ["string", "null"] },
+        "node_ref": { "$ref": "#/$defs/id" }
       }
     },
     "problemScale": {
@@ -454,6 +806,8 @@
         "unknown_reason": { "$ref": "#/$defs/nonEmptyString" },
         "confirmation_method": { "$ref": "#/$defs/nonEmptyString" },
         "review": { "$ref": "#/$defs/review" },
+        "scenario_ids": { "type": "array", "items": { "enum": ["current", "battery", "social", "quantum_scale"] }, "uniqueItems": true },
+        "relation_class": { "enum": ["transformation", "scenario_input", "fixed_condition_input", "derives", "constrains", "evaluated_by", "compared_by", "produces", "reference_only"] },
         "status_history": {
           "type": "array",
           "items": { "$ref": "#/$defs/statusHistory" }

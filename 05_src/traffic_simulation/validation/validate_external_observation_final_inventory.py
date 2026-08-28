@@ -21,6 +21,10 @@ def sha256_file(path: Path) -> str:
 
 def validate() -> dict[str, object]:
     errors: list[str] = []
+    if not subject.SPECIFICATION.is_file():
+        errors.append(f"missing normative specification: {subject.SPECIFICATION}")
+    if subject.SPECIFICATION == subject.REPORT:
+        errors.append("normative specification and generated report paths are not separated")
     inventory = read_csv(subject.INVENTORY_CSV)
     observations = read_csv(subject.OBSERVATIONS_CSV)
     summary = json.loads(subject.SUMMARY_JSON.read_text(encoding="utf-8"))
@@ -51,6 +55,14 @@ def validate() -> dict[str, object]:
     schema_errors = subject.validate_schema(observations)
     errors.extend(f"schema: {error}" for error in schema_errors)
     manifest = json.loads(subject.MANIFEST_JSON.read_text(encoding="utf-8"))
+    specification_key = subject.relative(subject.SPECIFICATION)
+    report_key = subject.relative(subject.REPORT)
+    if specification_key not in manifest["input_hashes"]:
+        errors.append("normative specification is not tracked as an input")
+    if report_key not in manifest["output_hashes"]:
+        errors.append("generated report is not tracked as an output")
+    if report_key in manifest["input_hashes"]:
+        errors.append("generated report is incorrectly tracked as an input")
     for group in ("input_hashes", "output_hashes"):
         for relative, expected in manifest[group].items():
             path = subject.REPOSITORY_ROOT / relative

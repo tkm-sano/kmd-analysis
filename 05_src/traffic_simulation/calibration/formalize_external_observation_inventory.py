@@ -45,7 +45,8 @@ SCHEMA_JSON = REPOSITORY_ROOT / "reproducibility/config/traffic_simulation/final
 OBSERVATIONS_CSV = FINAL_DIR / "final_traffic_observations.csv"
 MANIFEST_JSON = FINAL_DIR / "external_observation_final_inventory_manifest.json"
 VALIDATION_JSON = FINAL_DIR / "external_observation_final_inventory_validation.json"
-REPORT = REPOSITORY_ROOT / "05_src/traffic_simulation/external_observation_final_inventory_specification.md"
+SPECIFICATION = REPOSITORY_ROOT / "05_src/traffic_simulation/external_observation_final_inventory_specification.md"
+REPORT = FINAL_DIR / "external_observation_final_inventory_report.md"
 VALIDATOR = REPOSITORY_ROOT / "05_src/traffic_simulation/validation/validate_external_observation_final_inventory.py"
 
 UP = "UP_TERMINUS_TO_ORIGIN"
@@ -486,7 +487,7 @@ def write_all() -> None:
         ROUTE316_DIRECTION_EVIDENCE, ADOPTION_REVIEW, ROUTE316_ADOPTION,
         ROUTE316_TARGETS, PARTIAL_SEGMENTS, PARTIAL_REVIEW, POST_PARTIAL_INVENTORY,
         PARTIAL_SCHEMA, PARTIAL_SPEC, CONFIG, NETWORK, RAW_SECTIONS, RAW_HOURLY,
-        SCHEMA_JSON, VALIDATOR,
+        SCHEMA_JSON, SPECIFICATION, VALIDATOR,
     ]
     outputs = [INVENTORY_CSV, SUMMARY_JSON, SCHEMA_JSON, OBSERVATIONS_CSV,
                VALIDATION_JSON, REPORT]

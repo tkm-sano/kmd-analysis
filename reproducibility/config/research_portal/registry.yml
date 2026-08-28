@@ -7,12 +7,277 @@ review:
   reviewed_at: null
   unknown_reason: Initial Registry content has not yet received named research-owner review.
 review_policy: record_review_overrides_root_otherwise_inherit_root
-default_view_id: view.research_overview
+default_view_id: view.current
 current_stage_ref: stage.current_review_required
 metadata:
   title_ja: 東京都市配送×量子未来社会
   title_en: Tokyo Urban Delivery × Quantum Future Society
   scope_note_ja: 大田区を起点とする合成都市配送研究。観測された実配送運用を表さない。
+  research_overview_ja: >-
+    本研究では、量子技術の発展が都市社会・都市経済にどのような影響をもたらしうるかを、移動技術を媒介として検討する。都市における人や物の移動は、生活圏、市場、事業活動、都市空間の形成に関わっており、交通・物流技術の変化は都市の社会・経済構造にも波及しうる。人口、世帯、道路、交通量などのオープンデータを用いて都市条件を構成し、配送需要や道路交通を再現する合成的な都市配送環境を構築する。現在はEVを用いた都市配送の経路計画を対象とし、同一配送問題に対して基準手法、古典最適化、Qiskit Aer上のQAOAを比較する。さらに、車両技術と社会側の需要構造の変化を技術変化シナリオ・社会変化シナリオとして扱い、最終的に技術発展と社会変化が相互作用する都市物流・都市経済の検討枠組みを提案する。
+
+simulation_map:
+  information_categories:
+    - {id: open_data, label_ja: オープンデータ, icon: source}
+    - {id: model_parameter, label_ja: モデル引数, icon: control}
+    - {id: derived_value, label_ja: 導出値, icon: calculation}
+    - {id: problem_size, label_ja: 問題サイズ, icon: dimension}
+  open_data:
+    - id: map.data.population_mesh
+      label_ja: 500mメッシュ人口
+      information_category: open_data
+      value_origin: open_data
+      adoption_status: adopted
+      source_registry_ids: [estat_census_2020_500m_jgd2011_mesh5339]
+      provider: 総務省統計局 / e-Stat
+      description_ja: 2020年国勢調査の500mメッシュ人口分布。2024年大田区人口総数へ比例調整して合成需要の空間配賦に使用する。
+      used_by: [map.derived.synthetic_delivery_demand]
+      geographic_scope: 第1次地域区画5339から大田区を抽出
+      time_basis: "2020-10-01（2024年大田区人口総数へ比例調整）"
+      unit: person / 500m mesh
+      repo_input_paths: [03_data/raw/traffic_simulation/population/estat_2020_500m_jgd2011/tblT001141H5339.zip]
+      external_urls: ["https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001141&code=5339&downloadType=2"]
+      evidence_ref: ev.data_registry
+    - id: map.data.ota_population
+      label_ja: 大田区人口総数
+      information_category: open_data
+      value_origin: open_data
+      adoption_status: adopted
+      source_registry_ids: [ota_population_20240401]
+      provider: 大田区 / 東京都オープンデータ
+      description_ja: 合成メッシュ人口の合計制約に用いる2024年4月1日時点の大田区人口総数。
+      used_by: [map.derived.synthetic_delivery_demand]
+      geographic_scope: 東京都大田区
+      time_basis: "2024-04-01"
+      unit: person
+      repo_input_paths: [03_data/raw/traffic_simulation/population/ota_2024/131113_R6_01_ootakunomenseki_jinkou_setaisuu.xlsx]
+      external_urls: ["https://www.opendata.metro.tokyo.lg.jp/ota/R6/131113_R6_01_ootakunomenseki_jinkou_setaisuu.xlsx"]
+      evidence_ref: ev.data_registry
+    - id: map.data.parcel_statistics
+      label_ja: 宅配便取扱個数統計
+      information_category: open_data
+      value_origin: open_data
+      adoption_status: adopted
+      source_registry_ids: [mlit_parcel_2024, statistics_bureau_population_20241001]
+      provider: 国土交通省 / 総務省統計局
+      description_ja: 全国宅配便個数を全国人口で除して1人1日当たりparcel-equivalent需要proxyを構成する。
+      used_by: [map.derived.synthetic_delivery_demand]
+      geographic_scope: 日本全国集計を大田区proxyへ換算
+      time_basis: "2024年度宅配便個数 / 2024-10-01人口"
+      unit: parcel-equivalent / person / day
+      repo_input_paths: [03_data/raw/traffic_simulation/demand_proxy/mlit_parcel_2024/mlit_parcel_2024_details.pdf, 03_data/raw/traffic_simulation/population/japan_2024/05k2024-1.xlsx]
+      external_urls: ["https://www.mlit.go.jp/report/press/content/001906814.pdf"]
+      evidence_ref: ev.data_registry
+    - id: map.data.administrative_boundary
+      label_ja: 行政区域
+      information_category: open_data
+      value_origin: open_data
+      adoption_status: adopted
+      source_registry_ids: [mlit_n03_2026_tokyo]
+      provider: 国土交通省
+      description_ja: 大田区の研究対象範囲と道路・人口データの抽出境界を定める。
+      used_by: [map.derived.road_network, map.derived.synthetic_delivery_demand]
+      geographic_scope: 東京都大田区
+      time_basis: "2026-01-01"
+      unit: polygon
+      repo_input_paths: [03_data/raw/traffic_simulation/boundaries/N03-20260101_13_GML.zip]
+      external_urls: ["https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-2026.html"]
+      evidence_ref: ev.data_registry
+    - id: map.data.road_source
+      label_ja: 道路データ
+      information_category: open_data
+      value_origin: open_data
+      adoption_status: adopted
+      source_registry_ids: [osm_geofabrik_kanto_20260716]
+      provider: Geofabrik GmbH / OpenStreetMap contributors
+      description_ja: 大田区候補道路ネットワークを構成するOSM地域extract。正式研究利用の道路網受理とは区別する。
+      used_by: [map.derived.road_network, map.derived.distance_matrix]
+      geographic_scope: 関東sourceから大田区bboxを抽出
+      time_basis: "2026-07-16"
+      unit: road network features
+      repo_input_paths: [03_data/raw/traffic_simulation/osm/kanto-260716.osm.pbf]
+      external_urls: ["https://download.geofabrik.de/asia/japan/kanto-260716.osm.pbf"]
+      evidence_ref: ev.data_registry
+    - id: map.data.traffic_observations
+      label_ja: 交通量観測
+      information_category: open_data
+      value_origin: open_data
+      adoption_status: adopted
+      source_registry_ids: [mlit_r3_road_census_tokyo_locations, mlit_r3_road_census_tokyo_hourly, keishicho_traffic_counts_2023_ota]
+      provider: 国土交通省 / 警視庁
+      description_ja: 道路交通センサスと警視庁交通量を交通条件の較正に使用する。2024年警視庁データは独立確認用で、較正入力には含めない。
+      used_by: [map.derived.traffic_conditions, map.derived.travel_time_matrix]
+      geographic_scope: 東京都大田区の採用観測地点
+      time_basis: "2021年道路交通センサス / 2023年警視庁較正観測"
+      unit: vehicle count / time interval
+      repo_input_paths: [03_data/raw/traffic_simulation/road_census/mlit_r3_tokyo_20260823/kasyo13.csv, 03_data/raw/traffic_simulation/road_census/mlit_r3_tokyo_20260823/zkntrf13.csv, 03_data/raw/traffic_simulation/tokyo_police/keishicho_traffic_counts_2023_2024_20260823]
+      external_urls: ["https://www.mlit.go.jp/road/census/r3/data/csv/kasyo13.csv", "https://catalog.data.metro.tokyo.lg.jp/dataset/t000022d0000000035"]
+      evidence_ref: ev.data_registry
+  model_parameters:
+    - {id: map.parameter.depot, label_ja: 配送拠点, information_category: model_parameter, value_origin: research_setting, unit: null, value: null, value_status: unresolved, role_by_scenario: {current: fixed_condition, battery: fixed_condition, social: fixed_condition}, unknown_reason_type: parameter_not_set, unknown_reason: 正式Common Delivery Instanceの拠点が未固定である。, urgency: high, used_by: [map.process.common_delivery_instance], evidence_ref: ev.baseline_demand_spec}
+    - {id: map.parameter.vehicle_count, label_ja: 車両数, information_category: model_parameter, value_origin: research_setting, unit: vehicle, value: null, value_status: unresolved, role_by_scenario: {current: fixed_condition, battery: fixed_condition, social: fixed_condition}, unknown_reason_type: parameter_not_set, unknown_reason: proxy感度水準はあるが正式instanceの車両数は未固定である。, urgency: high, used_by: [map.process.common_delivery_instance, map.size.vehicle_count], evidence_ref: ev.proxy_scale_design}
+    - {id: map.parameter.vehicle_capacity, label_ja: 車両容量, information_category: model_parameter, value_origin: research_setting, unit: parcel-equivalent, value: null, value_status: unresolved, role_by_scenario: {current: fixed_condition, battery: fixed_condition, social: fixed_condition}, unknown_reason_type: parameter_not_set, unknown_reason: 正式比較で共通使用する車両容量が未固定である。, urgency: high, used_by: [map.process.common_delivery_instance, map.process.evrp_formulation], evidence_ref: ev.optimization_protocol}
+    - {id: map.parameter.usable_battery_energy, label_ja: 使用可能バッテリーエネルギー, information_category: model_parameter, value_origin: research_setting, unit: null, value: null, value_status: unresolved, role_by_scenario: {current: fixed_condition, battery: scenario_variable, social: fixed_condition}, unknown_reason_type: external_model_not_selected, unknown_reason: 将来battery modelと採用vehicle条件が未確定である。, urgency: low, used_by: [map.derived.energy_matrix, map.process.evrp_formulation], evidence_ref: ev.portal_scenario_design}
+    - {id: map.parameter.operating_time, label_ja: 稼働時間・期限条件, information_category: model_parameter, value_origin: research_setting, unit: null, value: null, value_status: unresolved, role_by_scenario: {current: fixed_condition, battery: fixed_condition, social: fixed_condition}, unknown_reason_type: parameter_not_set, unknown_reason: 稼働時間と配送完了期限の正式契約が未固定である。, urgency: high, used_by: [map.process.common_delivery_instance, map.process.evrp_formulation], evidence_ref: ev.baseline_demand_spec}
+    - {id: map.parameter.solver_budget, label_ja: 解法計算予算, information_category: model_parameter, value_origin: research_setting, unit: null, value: null, value_status: unresolved, role_by_scenario: {current: fixed_condition, battery: fixed_condition, social: fixed_condition}, unknown_reason_type: parameter_not_set, unknown_reason: equal-budget比較の正式な予算と計測境界が未固定である。, urgency: high, used_by: [map.process.optimizers], evidence_ref: ev.optimization_protocol}
+    - {id: map.parameter.seed_contract, label_ja: 乱数seed契約, information_category: model_parameter, value_origin: research_setting, unit: null, value: null, value_status: unresolved, role_by_scenario: {current: fixed_condition, battery: fixed_condition, social: fixed_condition}, unknown_reason_type: parameter_not_set, unknown_reason: 共通条件用seed群とsolver固有seed群の値が事前登録されていない。, urgency: high, used_by: [map.process.common_delivery_instance, map.process.optimizers, map.process.sumo], evidence_ref: ev.optimization_protocol}
+  derived_values:
+    - {id: map.derived.synthetic_delivery_demand, label_ja: 合成配送需要, information_category: derived_value, value_origin: model_derived, unit: parcel-equivalent/day, value: 82023, value_status: known_proxy, role_by_scenario: {current: derived, battery: fixed_condition, social: derived}, determined_by: [map.data.population_mesh, map.data.ota_population, map.data.parcel_statistics, map.data.administrative_boundary], used_by: [map.derived.delivery_requests, map.derived.total_parcel_equivalent], definition_ja: 大田区191 meshへ配賦した1日需要proxy。顧客数・注文数・停止数ではない。, evidence_ref: ev.baseline_demand_quality}
+    - {id: map.derived.road_network, label_ja: 道路ネットワーク, information_category: derived_value, value_origin: model_derived, unit: network, value: null, value_status: unresolved, determined_by: [map.data.road_source, map.data.administrative_boundary], used_by: [map.derived.distance_matrix, map.derived.travel_time_matrix, map.process.sumo], definition_ja: 大田区候補SUMO道路網。正式研究利用は未受理。, unknown_reason_type: evidence_not_accepted, unknown_reason: Network Integration Acceptanceで正式道路網が未受理である。, evidence_ref: ev.road_current}
+    - {id: map.derived.traffic_conditions, label_ja: 交通条件, information_category: derived_value, value_origin: model_derived, unit: null, value: null, value_status: unresolved, determined_by: [map.data.traffic_observations, map.derived.road_network], used_by: [map.derived.travel_time_matrix, map.process.sumo], definition_ja: 観測交通量を用いて較正する一般交通条件。, unknown_reason_type: evidence_not_accepted, unknown_reason: 正式較正と独立Validationが未完了である。, evidence_ref: ev.road_current}
+    - {id: map.derived.delivery_requests, label_ja: 配送要求, information_category: derived_value, value_origin: model_derived, unit: request, value: null, value_status: unresolved, determined_by: [map.derived.synthetic_delivery_demand], used_by: [map.derived.stops, map.process.common_delivery_instance, map.size.request_count], definition_ja: 合成需要を配送問題の要求へ変換した集合。, unknown_reason_type: model_not_formalized, unknown_reason: parcel-equivalentから配送要求へ変換する正式規則が未定式化である。, evidence_ref: ev.baseline_demand_spec}
+    - {id: map.derived.stops, label_ja: 配送停止, information_category: derived_value, value_origin: model_derived, unit: stop, value: null, value_status: unresolved, determined_by: [map.derived.delivery_requests], used_by: [map.process.common_delivery_instance, map.size.stop_count], definition_ja: 配送要求を停止地点へ集約した集合。, unknown_reason_type: model_not_formalized, unknown_reason: Stop生成・集約規則が未定式化である。, evidence_ref: ev.baseline_demand_spec}
+    - {id: map.derived.distance_matrix, label_ja: 距離行列, information_category: derived_value, value_origin: model_derived, unit: null, value: null, value_status: unresolved, determined_by: [map.derived.road_network, map.derived.stops], used_by: [map.process.common_delivery_instance, map.size.matrix_shape, map.process.evrp_formulation], definition_ja: 拠点・停止間の道路距離行列。, unknown_reason_type: not_calculated, unknown_reason: 正式な拠点・停止・道路網が未固定で未計算である。, evidence_ref: ev.optimization_protocol}
+    - {id: map.derived.travel_time_matrix, label_ja: 旅行時間行列, information_category: derived_value, value_origin: model_derived, unit: null, value: null, value_status: unresolved, determined_by: [map.derived.road_network, map.derived.traffic_conditions, map.derived.stops], used_by: [map.process.common_delivery_instance, map.size.matrix_shape, map.process.evrp_formulation], definition_ja: 共通交通条件下の拠点・停止間旅行時間行列。, unknown_reason_type: not_calculated, unknown_reason: 正式な交通条件と停止集合が未固定で未計算である。, evidence_ref: ev.optimization_protocol}
+    - {id: map.derived.energy_matrix, label_ja: エネルギー行列, information_category: derived_value, value_origin: model_derived, unit: null, value: null, value_status: unresolved, determined_by: [map.derived.road_network, map.derived.traffic_conditions, map.parameter.usable_battery_energy, map.derived.stops], used_by: [map.process.common_delivery_instance, map.process.evrp_formulation], definition_ja: EV配送計画のエネルギー実行可能性判定に用いる行列。, unknown_reason_type: model_not_formalized, unknown_reason: 車両・道路・交通条件からenergyを導出する正式モデルが未定式化である。, evidence_ref: ev.portal_scenario_design}
+    - {id: map.derived.total_parcel_equivalent, label_ja: 総配送需要, information_category: derived_value, value_origin: model_derived, unit: parcel-equivalent, value: null, value_status: unresolved, determined_by: [map.derived.synthetic_delivery_demand, map.process.common_delivery_instance], used_by: [map.evaluation.delivery_fulfillment_rate], definition_ja: "正式runの対象範囲に割り当てた配送需要の総量。82,023/day proxyをそのまま正式分母とはしない。", unknown_reason_type: parameter_not_set, unknown_reason: 正式Common Delivery Instanceの地域・時間・要求scopeが未固定である。, evidence_ref: ev.baseline_demand_spec}
+    - {id: map.derived.feasible_delivery_plans, label_ja: 実行可能配送計画集合, information_category: derived_value, value_origin: model_derived, unit: plan, value: null, value_status: unresolved, determined_by: [map.process.evrp_formulation, map.process.optimizers], used_by: [map.derived.selected_delivery_plan], definition_ja: EVRP制約を満たす候補配送計画の集合。, unknown_reason_type: not_calculated, unknown_reason: 正式instance・制約・solver結果が存在せず未計算である。, evidence_ref: ev.portal_scenario_design}
+    - {id: map.derived.selected_delivery_plan, label_ja: 選択された配送計画, information_category: derived_value, value_origin: model_derived, unit: plan, value: null, value_status: unresolved, determined_by: [map.derived.feasible_delivery_plans], used_by: [map.process.sumo], definition_ja: 比較手法から選択されSUMOへ渡す配送計画。, unknown_reason_type: not_calculated, unknown_reason: 正式比較runと選択規則が未確定である。, evidence_ref: ev.portal_scenario_design}
+    - {id: map.derived.delivered_parcel_equivalent, label_ja: 配送済需要, information_category: derived_value, value_origin: simulation_output, unit: parcel-equivalent, value: null, value_status: unresolved, determined_by: [map.process.sumo, map.derived.selected_delivery_plan], used_by: [map.evaluation.delivery_fulfillment_rate], definition_ja: 正式完了条件を満たしたシミュレーション上の配送需要量。, unknown_reason_type: not_calculated, unknown_reason: 正式配送simulationと完了条件が未確定で未算出である。, evidence_ref: ev.baseline_demand_spec}
+  problem_sizes:
+    - {id: map.size.request_count, label_ja: 配送要求数, information_category: problem_size, value_origin: model_derived, unit: request, value: null, value_status: unresolved, determined_by: [map.derived.delivery_requests], used_by: [map.size.stop_count, map.process.evrp_formulation], unknown_reason_type: model_not_formalized, unknown_reason: 配送要求生成規則が未定式化である。}
+    - {id: map.size.stop_count, label_ja: Stop数, information_category: problem_size, value_origin: model_derived, unit: stop, value: null, value_status: unresolved, determined_by: [map.derived.delivery_requests, map.derived.stops], used_by: [map.size.customer_count, map.size.matrix_shape, map.process.evrp_formulation], unknown_reason_type: model_not_formalized, unknown_reason: Stop生成・集約規則が未定式化である。}
+    - {id: map.size.customer_count, label_ja: 顧客数, information_category: problem_size, value_origin: model_derived, unit: customer, value: null, value_status: unresolved, determined_by: [map.derived.delivery_requests, map.derived.stops], used_by: [map.process.evrp_formulation], unknown_reason_type: model_not_formalized, unknown_reason: 顧客と配送要求・Stopの対応規則が未定式化である。}
+    - {id: map.size.vehicle_count, label_ja: 正式車両数, information_category: problem_size, value_origin: research_setting, unit: vehicle, value: null, value_status: unresolved, determined_by: [map.parameter.vehicle_count], used_by: [map.process.evrp_formulation, map.size.binary_variable_count], unknown_reason_type: parameter_not_set, unknown_reason: proxy感度水準は正式Common Delivery Instanceの車両数ではない。}
+    - {id: map.size.matrix_shape, label_ja: 行列shape, information_category: problem_size, value_origin: model_derived, unit: dimension, value: null, value_status: unresolved, determined_by: [map.size.stop_count, map.parameter.depot, map.derived.distance_matrix, map.derived.travel_time_matrix], used_by: [map.process.evrp_formulation], unknown_reason_type: not_calculated, unknown_reason: 拠点・Stop集合と各行列が未固定で未算出である。}
+    - {id: map.size.binary_variable_count, label_ja: Binary Variable数, information_category: problem_size, value_origin: model_derived, unit: variable, value: null, value_status: unresolved, determined_by: [map.size.stop_count, map.size.customer_count, map.size.vehicle_count, map.process.evrp_formulation], used_by: [map.process.qubo_ising, map.size.required_qubits], unknown_reason_type: model_not_formalized, unknown_reason: EVRP formulation・制約・encodingが未固定で導出式が存在しない。}
+    - {id: map.size.required_qubits, label_ja: Required Qubits, information_category: problem_size, value_origin: model_derived, unit: logical-qubit, value: null, value_status: unresolved, determined_by: [map.size.binary_variable_count, map.process.qubo_ising], used_by: [map.process.optimizers], unknown_reason_type: model_not_formalized, unknown_reason: 正式QUBO / Ising mappingが未確定でlogical qubit数を導出できない。}
+  process_nodes:
+    - {id: map.process.common_delivery_instance, label_ja: Common Delivery Instance, stage: delivery_generation, registry_node_ref: instance.common_delivery}
+    - {id: map.process.energy_constraint, label_ja: エネルギー制約, stage: delivery_generation, registry_node_ref: variable.energy_constraint}
+    - {id: map.process.evrp_formulation, label_ja: EVRP定式化, stage: optimization_representation, registry_node_ref: instance.common_delivery}
+    - {id: map.process.qubo_ising, label_ja: QUBO / Ising表現, stage: optimization_representation, registry_node_ref: method.qaoa_aer}
+    - {id: map.process.optimizers, label_ja: Baseline / Classical / Qiskit Aer QAOA, stage: solver, registry_node_ref: method.baseline}
+    - {id: map.process.sumo, label_ja: SUMO, stage: simulation, registry_node_ref: simulation.sumo}
+  propagation_relations:
+    - {id: propagation.population_to_demand, source: map.data.population_mesh, target: map.derived.synthetic_delivery_demand, propagation_type: demand_propagation, effect_label_ja: 需要分布の生成入力, effect_semantics: derived, propagation_scope: model_derived, applicable_scenarios: [current, social]}
+    - {id: propagation.ota_population_to_demand, source: map.data.ota_population, target: map.derived.synthetic_delivery_demand, propagation_type: demand_propagation, effect_label_ja: 人口総数制約を更新, effect_semantics: derived, propagation_scope: model_derived, applicable_scenarios: [current, social]}
+    - {id: propagation.parcel_statistics_to_demand, source: map.data.parcel_statistics, target: map.derived.synthetic_delivery_demand, propagation_type: demand_propagation, effect_label_ja: 需要率proxyを更新, effect_semantics: derived, propagation_scope: model_derived, applicable_scenarios: [current, social]}
+    - {id: propagation.demand_to_requests, source: map.derived.synthetic_delivery_demand, target: map.derived.delivery_requests, propagation_type: demand_propagation, effect_label_ja: 配送要求を再生成, effect_semantics: unresolved, propagation_scope: model_derived, applicable_scenarios: [current, battery, social], unresolved_reason: parcel-equivalentから配送要求への正式変換規則が未定式化である。}
+    - {id: propagation.requests_to_stops, source: map.derived.delivery_requests, target: map.derived.stops, propagation_type: demand_propagation, effect_label_ja: Stop集合を再生成, effect_semantics: unresolved, propagation_scope: model_derived, applicable_scenarios: [current, battery, social], unresolved_reason: 配送要求のStop生成・集約規則が未定式化である。}
+    - {id: propagation.stops_to_instance, source: map.derived.stops, target: map.process.common_delivery_instance, propagation_type: demand_propagation, effect_label_ja: 配送問題の停止条件を更新, effect_semantics: unresolved, propagation_scope: model_derived, applicable_scenarios: [current, battery, social], unresolved_reason: 正式Common Delivery InstanceのStop契約が未固定である。}
+    - {id: propagation.demand_to_total, source: map.derived.synthetic_delivery_demand, target: map.derived.total_parcel_equivalent, propagation_type: demand_propagation, effect_label_ja: 評価分母候補を更新, effect_semantics: unresolved, propagation_scope: model_derived, applicable_scenarios: [current, battery, social], unresolved_reason: 正式runの地域・期間・要求scopeが未固定である。}
+    - {id: propagation.requests_to_request_count, source: map.derived.delivery_requests, target: map.size.request_count, propagation_type: problem_size_propagation, effect_label_ja: 配送要求数を規定, effect_semantics: derived, propagation_scope: model_derived, applicable_scenarios: [current, battery, social]}
+    - {id: propagation.stops_to_stop_count, source: map.derived.stops, target: map.size.stop_count, propagation_type: problem_size_propagation, effect_label_ja: Stop数を規定, effect_semantics: derived, propagation_scope: model_derived, applicable_scenarios: [current, battery, social]}
+    - {id: propagation.stops_to_customer_count, source: map.derived.stops, target: map.size.customer_count, propagation_type: problem_size_propagation, effect_label_ja: 顧客数候補を規定, effect_semantics: unresolved, propagation_scope: model_derived, applicable_scenarios: [current, battery, social], unresolved_reason: 顧客とStopの対応規則が未定式化である。}
+    - {id: propagation.stop_count_to_matrix_shape, source: map.size.stop_count, target: map.size.matrix_shape, propagation_type: problem_size_propagation, effect_label_ja: 行列次元を規定, effect_semantics: unresolved, propagation_scope: model_derived, applicable_scenarios: [current, battery, social], unresolved_reason: depotを含む正式行列shapeの算出規則が未確定である。}
+    - {id: propagation.stop_count_to_formulation, source: map.size.stop_count, target: map.process.evrp_formulation, propagation_type: problem_size_propagation, effect_label_ja: EVRP問題規模を規定, effect_semantics: unresolved, propagation_scope: model_derived, applicable_scenarios: [current, battery, social], unresolved_reason: EVRP定式化が未固定である。}
+    - {id: propagation.customer_count_to_formulation, source: map.size.customer_count, target: map.process.evrp_formulation, propagation_type: problem_size_propagation, effect_label_ja: 顧客次元を入力, effect_semantics: unresolved, propagation_scope: model_derived, applicable_scenarios: [current, battery, social], unresolved_reason: 顧客indexと定式化の対応が未確定である。}
+    - {id: propagation.vehicle_count_to_formulation, source: map.size.vehicle_count, target: map.process.evrp_formulation, propagation_type: problem_size_propagation, effect_label_ja: 車両次元を入力, effect_semantics: unresolved, propagation_scope: fixed_input, applicable_scenarios: [current, battery, social], unresolved_reason: 正式車両数とEVRP定式化が未固定である。}
+    - {id: propagation.formulation_to_binary, source: map.process.evrp_formulation, target: map.size.binary_variable_count, propagation_type: problem_size_propagation, effect_label_ja: Binary Variable数を導出, effect_semantics: unresolved, propagation_scope: model_derived, applicable_scenarios: [current, battery, social], unresolved_reason: 正式formulationと変数定義が未確定で導出式がない。}
+    - {id: propagation.binary_to_qubo, source: map.size.binary_variable_count, target: map.process.qubo_ising, propagation_type: problem_size_propagation, effect_label_ja: 量子表現規模を規定, effect_semantics: unresolved, propagation_scope: model_derived, applicable_scenarios: [current, battery, social], unresolved_reason: QUBO / Ising mappingが未確定である。}
+    - {id: propagation.qubo_to_qubits, source: map.process.qubo_ising, target: map.size.required_qubits, propagation_type: problem_size_propagation, effect_label_ja: Logical Qubit数を導出, effect_semantics: unresolved, propagation_scope: model_derived, applicable_scenarios: [current, battery, social], unresolved_reason: 正式mappingが未確定でrequired qubitsを導出できない。}
+    - {id: propagation.battery_to_energy_constraint, source: map.parameter.usable_battery_energy, target: map.process.energy_constraint, propagation_type: condition_propagation, effect_label_ja: エネルギー実行可能性を変更, effect_semantics: direct, propagation_scope: scenario_variable, applicable_scenarios: [battery]}
+    - {id: propagation.energy_constraint_to_feasible, source: map.process.energy_constraint, target: map.derived.feasible_delivery_plans, propagation_type: condition_propagation, effect_label_ja: 実行可能な計画集合を変更しうる, effect_semantics: conditional, propagation_scope: scenario_variable, applicable_scenarios: [battery]}
+    - {id: propagation.vehicle_capacity_to_formulation, source: map.parameter.vehicle_capacity, target: map.process.evrp_formulation, propagation_type: condition_propagation, effect_label_ja: 容量制約を変更しうる, effect_semantics: unresolved, propagation_scope: fixed_input, applicable_scenarios: [current, battery, social], unresolved_reason: 正式容量制約と定式化が未固定である。}
+    - {id: propagation.instance_to_optimizers, source: map.process.common_delivery_instance, target: map.process.optimizers, propagation_type: condition_propagation, effect_label_ja: 同一配送問題を解法へ入力, effect_semantics: direct, propagation_scope: fixed_input, applicable_scenarios: [current, battery, social]}
+    - {id: propagation.formulation_to_feasible, source: map.process.evrp_formulation, target: map.derived.feasible_delivery_plans, propagation_type: condition_propagation, effect_label_ja: 実行可能性判定を規定, effect_semantics: unresolved, propagation_scope: model_derived, applicable_scenarios: [current, battery, social], unresolved_reason: 正式制約・checker・solverが未固定である。}
+    - {id: propagation.optimizers_to_feasible, source: map.process.optimizers, target: map.derived.feasible_delivery_plans, propagation_type: condition_propagation, effect_label_ja: 候補配送計画を生成, effect_semantics: unresolved, propagation_scope: model_derived, applicable_scenarios: [current, battery, social], unresolved_reason: 正式比較runが未実施である。}
+    - {id: propagation.feasible_to_selected, source: map.derived.feasible_delivery_plans, target: map.derived.selected_delivery_plan, propagation_type: condition_propagation, effect_label_ja: 選択対象を変更しうる, effect_semantics: conditional, propagation_scope: model_derived, applicable_scenarios: [current, battery, social]}
+    - {id: propagation.selected_to_sumo, source: map.derived.selected_delivery_plan, target: map.process.sumo, propagation_type: simulation_outcome_propagation, effect_label_ja: SUMOへの走行入力, effect_semantics: direct, propagation_scope: simulation_output, applicable_scenarios: [current, battery, social]}
+    - {id: propagation.sumo_to_delivered, source: map.process.sumo, target: map.derived.delivered_parcel_equivalent, propagation_type: simulation_outcome_propagation, effect_label_ja: 配送済需要を算出, effect_semantics: unresolved, propagation_scope: simulation_output, applicable_scenarios: [current, battery, social], unresolved_reason: 正式simulationと配送完了条件が未確定である。}
+    - {id: propagation.delivered_to_fulfillment, source: map.derived.delivered_parcel_equivalent, target: map.evaluation.delivery_fulfillment_rate, propagation_type: simulation_outcome_propagation, effect_label_ja: 評価分子として反映, effect_semantics: derived, propagation_scope: simulation_output, applicable_scenarios: [current, battery, social]}
+    - {id: propagation.total_to_fulfillment, source: map.derived.total_parcel_equivalent, target: map.evaluation.delivery_fulfillment_rate, propagation_type: simulation_outcome_propagation, effect_label_ja: 評価分母として反映, effect_semantics: unresolved, propagation_scope: model_derived, applicable_scenarios: [current, battery, social], unresolved_reason: 正式評価scopeの総配送需要が未固定である。}
+  final_evaluation:
+    id: map.evaluation.delivery_fulfillment_rate
+    label_ja: 配送需要充足率
+    information_category: derived_value
+    value_origin: model_derived
+    value: null
+    value_status: unresolved
+    unit: ratio
+    definition_ja: 対象範囲に存在する総配送需要のうち、シミュレーション上で実際に配送できた需要の割合。
+    formula: delivery_fulfillment_rate = delivered_parcel_equivalent / total_parcel_equivalent
+    numerator_ref: map.derived.delivered_parcel_equivalent
+    denominator_ref: map.derived.total_parcel_equivalent
+    registry_node_ref: metric.delivery_fulfillment_rate
+    evaluation_scope:
+      geography: null
+      geography_unknown_reason: 正式Common Delivery Instanceの対象地域scopeが未承認である。
+      time: null
+      time_unknown_reason: 正式評価期間が未承認である。
+      scenario: null
+      scenario_unknown_reason: 正式比較runのscenarioが未確定である。
+    unknown_reason_type: model_not_formalized
+    unknown_reason: 正式完了条件・分母scope・run結果が未確定で未算出である。
+  auxiliary_metrics:
+    - {id: metric.computation_time, label_ja: 計算時間, role_ja: 解法比較指標}
+    - {id: output.distance, label_ja: 距離, role_ja: SUMO / route simulation出力}
+    - {id: output.travel_time, label_ja: 旅行時間, role_ja: SUMO / route simulation出力}
+    - {id: output.energy_consumption, label_ja: エネルギー消費, role_ja: SUMO / route simulation出力}
+
+model_layers:
+  - id: layer.input_data
+    label_ja: 入力データ
+    label_en: Input Data
+    summary_ja: 人口・世帯・道路・交通量・車両条件・配送条件を、Registryで確認された入力として扱う。
+    node_refs: [data.open_data]
+    order: 1
+  - id: layer.social_demand
+    label_ja: 社会・需要モデル
+    label_en: Social and Demand Models
+    summary_ja: 合成人口・世帯・行動条件から配送需要を構成するモデル層。未採用の将来モデルは別表示する。
+    node_refs: [variable.population, data.synthetic_delivery_demand]
+    order: 2
+  - id: layer.road_traffic
+    label_ja: 道路・交通モデル
+    label_en: Road and Traffic Models
+    summary_ja: 道路網、交通条件、route generation、較正・独立検証を扱う。
+    node_refs: [model.road_network, model.general_traffic_routing, data.calibration_observations, data.independent_validation_observations, stage.independent_validation]
+    order: 3
+  - id: layer.vehicle_energy
+    label_ja: 車両・エネルギーモデル
+    label_en: Vehicle and Energy Models
+    summary_ja: 車両条件と、将来scenarioで変化する使用可能バッテリーエネルギー・エネルギー制約を扱う。
+    node_refs: [model.ev_vehicle_conditions, variable.usable_battery_energy, variable.energy_constraint]
+    order: 4
+  - id: layer.delivery_generation
+    label_ja: 配送問題生成
+    label_en: Delivery Problem Generation
+    summary_ja: 複数のモデル・条件を統合してCommon Delivery InstanceとEVRP Instanceを生成する層。
+    node_refs: [instance.common_delivery, analysis.feasible_delivery_plans]
+    order: 5
+  - id: layer.optimization
+    label_ja: 最適化モデル
+    label_en: Optimization Models
+    summary_ja: 同一配送問題に対するBaseline・Classical Optimizer・Qiskit Aer QAOAの比較層。
+    node_refs: [method.baseline, method.classical, method.qaoa_aer]
+    order: 6
+  - id: layer.traffic_simulation
+    label_ja: 交通シミュレーション
+    label_en: Traffic Simulation
+    summary_ja: 選択された配送計画をSUMOへ入力するシミュレーション層。
+    node_refs: [outcome.selected_delivery_plan, simulation.sumo]
+    order: 7
+  - id: layer.evaluation
+    label_ja: 評価
+    label_en: Evaluation
+    summary_ja: 計算時間、配送充足、距離、旅行時間、エネルギー消費を評価する層。未登録値は推測しない。
+    node_refs: [metric.computation_time, metric.delivery_fulfillment, metric.delivery_fulfillment_rate, metric.delivery_population_equivalent]
+    order: 8
+
+implementation_links:
+  - {id: impl.open_data.registry, node_ref: data.open_data, role: input_data, path: 03_data/metadata/traffic_simulation_sources.csv, evidence_ref: ev.data_registry, summary_ja: 交通シミュレーションで使用するデータ源の台帳。各データの利用可否と来歴を管理する。, status: implemented, readiness: provisional, portability: tracked}
+  - {id: impl.demand.spec, node_ref: data.synthetic_delivery_demand, role: specification, path: 05_src/traffic_simulation/demand/baseline_demand_and_comparator.md, evidence_ref: ev.baseline_demand_spec, summary_ja: 合成需要と未最適化基準の仕様・比較契約を定義する。, status: in_progress, readiness: not_accepted, portability: tracked}
+  - {id: impl.demand.config, node_ref: data.synthetic_delivery_demand, role: configuration, path: reproducibility/config/traffic_simulation/baseline_demand.yml, evidence_ref: ev.baseline_demand_config, summary_ja: 合成需要生成の入力条件と実行条件を機械可読に設定する。, status: implemented, readiness: provisional, portability: tracked}
+  - {id: impl.demand.process, node_ref: data.synthetic_delivery_demand, role: process, path: 05_src/traffic_simulation/demand/prepare_baseline_demand.py, evidence_ref: ev.baseline_demand_impl, summary_ja: 人口・統計データを入力として合成配送需要を生成する処理。, status: implemented, readiness: provisional, portability: tracked}
+  - {id: impl.demand.validation, node_ref: data.synthetic_delivery_demand, role: validation, path: 05_src/traffic_simulation/validation/test_prepare_baseline_demand.py, evidence_ref: ev.baseline_demand_test, summary_ja: 合成需要変換の境界条件と合計保持を検証するテスト。, status: implemented, readiness: provisional, portability: tracked}
+  - {id: impl.demand.artifact, node_ref: data.synthetic_delivery_demand, role: artifact, path: 03_data/processed/traffic_simulation/demand/ota_ward_baseline_demand_2024_500m.parquet, evidence_ref: ev.baseline_demand_artifact, summary_ja: 合成需要生成処理の生成物として記録された配送需要データ。, status: implemented, readiness: not_accepted, portability: ignored_local}
+  - {id: impl.road.spec, node_ref: model.road_network, role: specification, path: 05_src/traffic_simulation/road_census_sumo_current_baseline.md, evidence_ref: ev.road_current, summary_ja: 道路ネットワークの現状仕様と、正式利用前の未完了ゲートを記録する。, status: in_progress, readiness: not_accepted, portability: tracked}
+  - {id: impl.road.acceptance, node_ref: model.road_network, role: acceptance, path: 03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/external_observation_finalization_20260827/final_traffic_observation_status_summary.json, evidence_ref: ev.observation_final_status, summary_ja: 観測finalizationの状態を記録する。正式な研究受理とは区別する。, status: in_progress, readiness: not_accepted, portability: ignored_local}
+  - {id: impl.routing.spec, node_ref: model.general_traffic_routing, role: specification, path: 05_src/traffic_simulation/marouter_route_generation_specification.md, evidence_ref: ev.route_spec, summary_ja: route generationの仕様とquality gateを定義する。, status: in_progress, readiness: not_accepted, portability: tracked}
+  - {id: impl.routing.process, node_ref: model.general_traffic_routing, role: process, path: 05_src/traffic_simulation/calibration/diagnose_marouter_route_generation.py, evidence_ref: ev.route_impl, summary_ja: 道路・交通入力からroute generationを診断するコード。, status: in_progress, readiness: not_accepted, portability: tracked}
+  - {id: impl.vehicle.design, node_ref: model.ev_vehicle_conditions, role: specification, path: reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml, evidence_ref: ev.vehicle_profile, summary_ja: 都市ラストマイル車両条件のprofileとシナリオ設定を記録する。, status: planned, readiness: not_accepted, portability: tracked}
+  - {id: impl.instance.spec, node_ref: instance.common_delivery, role: specification, path: 05_src/traffic_simulation/demand/baseline_demand_and_comparator.md, evidence_ref: ev.baseline_demand_spec, summary_ja: 共通配送問題の需要・停止・評価契約を定義する。正式instanceの固定済みを意味しない。, status: in_progress, readiness: not_accepted, portability: tracked}
+  - {id: impl.baseline.process, node_ref: method.baseline, role: process, path: 05_src/traffic_simulation/demand/prepare_baseline_demand.py, evidence_ref: ev.baseline_demand_impl, summary_ja: 未最適化基準の需要生成処理を実装する。solver比較runではない。, status: implemented, readiness: provisional, portability: tracked}
+  - {id: impl.baseline.validation, node_ref: method.baseline, role: validation, path: 05_src/traffic_simulation/validation/test_prepare_baseline_demand.py, evidence_ref: ev.baseline_demand_test, summary_ja: 基準需要生成の変換処理を検証する。配送比較結果の受理試験ではない。, status: implemented, readiness: provisional, portability: tracked}
+  - {id: impl.classical.unconfirmed, node_ref: method.classical, role: unconfirmed, path: 05_src/traffic_simulation/optimization_comparison_protocol.md, evidence_ref: ev.optimization_protocol, summary_ja: Classical Optimizerの比較条件を設計する資料。正式solver実装・run対応は未確認。, status: planned, readiness: not_accepted, warning_ja: repository上の正式solver実装と比較runは未確認。 , portability: tracked}
+  - {id: impl.qaoa.spec, node_ref: method.qaoa_aer, role: specification, path: 05_src/traffic_simulation/optimization_comparison_protocol.md, evidence_ref: ev.optimization_protocol, summary_ja: Qiskit Aer QAOAを比較する条件と、同一instanceを使う設計を記録する。, status: planned, readiness: not_accepted, portability: tracked}
+  - {id: impl.qaoa.process, node_ref: method.qaoa_aer, role: process, path: 05_src/literature_analysis/make_scale_gap_analysis.py, evidence_ref: ev.scale_gap_impl, summary_ja: 量子問題スケールのgap分析を生成する処理。QAOA実行器そのものとは未確認。, status: implemented, readiness: provisional, warning_ja: QAOAの正式実行実装との対応は未確認。, portability: tracked}
+  - {id: impl.sumo.spec, node_ref: simulation.sumo, role: specification, path: 05_src/traffic_simulation/simulation_model_development_and_vv.md, evidence_ref: ev.vv, summary_ja: SUMOを含むシミュレーションの検証・妥当性確認方針を定義する。, status: in_progress, readiness: not_accepted, portability: tracked}
+  - {id: impl.metrics.design, node_ref: metric.delivery_fulfillment, role: specification, path: 05_src/traffic_simulation/implementation_plan.md, evidence_ref: ev.metric_implementation_plan, summary_ja: 配送充足・P_eq・計算時間の指標候補と実装計画を定義する。, status: planned, readiness: not_accepted, portability: tracked}
+
+external_sources: []
 
 evidence:
   - id: ev.research_overview
@@ -630,7 +895,7 @@ evidence:
         target_id: data.calibration_observations
     locator:
       json_pointer: /counts
-    sha256: 8677ed3da8b6e232da9d46ac52c648255b3cf3b13cb55dba75fe37724a634463
+    sha256: ac4568d4b6438908c986a3721c4ba7b1f6e418805305c0aa8df97f8f1bde521b
     record_state: current
     regeneration_ja: 記録されたgenerator、schema、input hashから再生成する。
     portability: ignored_local
@@ -767,7 +1032,152 @@ evidence:
     does_not_support: [独立Validation実施済み, validation acceptance]
     limitations_ja: validation分離の設計Evidenceでありrun/resultではない。
 
+  - id: ev.portal_scenario_design
+    path: docs/research_portal_research_spec.md
+    label_ja: Portal scenario・scale構造仕様
+    role: design_intent
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: variable.usable_battery_energy
+      - target_type: node
+        target_id: variable.energy_constraint
+      - target_type: node
+        target_id: analysis.feasible_delivery_plans
+      - target_type: node
+        target_id: variable.population
+      - target_type: node
+        target_id: outcome.selected_delivery_plan
+      - target_type: relation
+        target_id: rel.battery_energy_to_constraint
+      - target_type: relation
+        target_id: rel.energy_constraint_to_feasible_plans
+      - target_type: relation
+        target_id: rel.social_inputs_to_demand
+      - target_type: relation
+        target_id: rel.feasible_plans_to_selected
+      - target_type: relation
+        target_id: rel.selected_plan_to_sumo
+    locator:
+      heading: 将来シナリオと量子問題scale
+    limitations_ja: UI構造と研究設計のEvidenceであり、将来値・採用モデル・実験結果を支持しない。
+
 nodes:
+  - id: variable.usable_battery_energy
+    label_ja: 使用可能バッテリーエネルギー
+    label_en: Usable Battery Energy
+    summary_ja: Battery Technology Scenarioで変化させる主要scenario variable。
+    kind: variable
+    status: planned
+    readiness: not_evaluated
+    nature: repository_grounded_design
+    current_state_ja: 概念上のscenario入力として識別されているが、将来battery modelと値は未構築である。
+    not_claimed_ja: [将来値, battery性能改善率, 同一routeのenergy consumption低下]
+    evidence_refs: [ev.portal_scenario_design]
+    limitations_ja: [usable energyの変化はfeasibilityを変え得るが、route変更なしにenergy consumptionを直接下げるとは主張しない。]
+    tags: [battery, scenario, future, variable]
+    role_by_scenario:
+      battery: [scenario_variable]
+      social: [fixed_condition]
+    variables:
+      - id: variable.usable_battery_energy.value
+        label_ja: 使用可能エネルギー値
+        value: null
+        unit: null
+        definition_ja: 車両が配送計画で利用可能なbattery energy。
+        unknown_reason: 将来battery modelと採用vehicle条件が未確定である。
+    red_reasons: [value_unresolved, model_not_adopted]
+    entry_conditions_ja: [battery modelと採用vehicle条件を定義する。]
+    expected_outputs_ja: [不確実性付きusable battery energyのscenario入力。]
+
+  - id: variable.energy_constraint
+    label_ja: エネルギー制約
+    label_en: Energy Constraint
+    summary_ja: usable_battery_energyにより配送計画の実行可能性を制約する条件。
+    kind: variable
+    status: planned
+    readiness: not_evaluated
+    nature: repository_grounded_design
+    current_state_ja: 制約の役割は設計されているが、正式instance・energy matrix・battery条件は未固定である。
+    not_claimed_ja: [正式制約式, 算出済みfeasible plan]
+    evidence_refs: [ev.portal_scenario_design]
+    limitations_ja: [vehicle mass、road、traffic等の条件をbattery scenarioで勝手に変更しない。]
+    tags: [battery, constraint, future]
+    role_by_scenario:
+      battery: [derived, endogenous]
+      social: [fixed_condition]
+    red_reasons: [not_calculated, design_only]
+    entry_conditions_ja: [Common Delivery Instanceとenergy matrixを凍結する。]
+    expected_outputs_ja: [feasibility判定可能なenergy constraint。]
+
+  - id: analysis.feasible_delivery_plans
+    label_ja: 実行可能配送計画集合
+    label_en: Feasible Delivery Plans
+    summary_ja: EVRPの制約を満たす候補配送計画の集合。
+    kind: analysis
+    status: planned
+    readiness: not_evaluated
+    nature: repository_grounded_design
+    current_state_ja: scenarioの波及先として設計されているが、formal instanceとsolver結果はない。
+    not_claimed_ja: [算出済み可行解集合, scenarioの実験結果]
+    evidence_refs: [ev.portal_scenario_design]
+    limitations_ja: [usable energyが増えても同一routeのenergy consumptionを下げるnodeではない。]
+    tags: [evrp, feasible, future]
+    role_by_scenario:
+      battery: [endogenous]
+      social: [endogenous]
+    red_reasons: [not_calculated, design_only]
+    entry_conditions_ja: [正式instance、制約、solverを受理する。]
+    expected_outputs_ja: [可行配送計画集合と判定記録。]
+
+  - id: variable.population
+    label_ja: Population / Households / Parcel Behavior
+    label_en: Population / Households / Parcel Behavior
+    summary_ja: Social Change Scenarioの上流候補群。
+    kind: variable
+    status: planned
+    readiness: not_evaluated
+    nature: repository_grounded_design
+    current_state_ja: 社会変化を表す候補変数として識別されているが、日本向け採用モデルとscenario値は未確定である。
+    not_claimed_ja: [将来人口値, 世帯値, parcel generation rate, delivery demandへの確定変換]
+    evidence_refs: [ev.portal_scenario_design]
+    limitations_ja: [社会変化を一律のdelivery demand増加率へ置換しない。]
+    tags: [social, scenario, future, population, household, parcel]
+    role_by_scenario:
+      social: [scenario_variable]
+      battery: [fixed_condition]
+    variables:
+      - id: variable.population.households_spatial_behavior
+        label_ja: 人口・世帯・空間分布・parcel behavior
+        value: null
+        unit: null
+        definition_ja: Social Scenarioで需要モデルへ入力する候補変数群。
+        unknown_reason: 日本向け正式モデル、係数、validationが未確定である。
+    red_reasons: [value_unresolved, model_not_adopted]
+    entry_conditions_ja: [採用する人口・世帯・空間・行動データと推定方法を定義する。]
+    expected_outputs_ja: [不確実性付きsynthetic populationとparcel demand入力。]
+
+  - id: outcome.selected_delivery_plan
+    label_ja: Selected Delivery Plan
+    label_en: Selected Delivery Plan
+    summary_ja: 比較手法から選択され、SUMOへ渡される配送計画。
+    kind: outcome
+    status: planned
+    readiness: not_evaluated
+    nature: repository_grounded_design
+    current_state_ja: 概念上の出力であり、正式Common Delivery Instanceとsolver runはない。
+    not_claimed_ja: [選択済み正式配送計画, 実行済みroute]
+    evidence_refs: [ev.portal_scenario_design]
+    limitations_ja: [selection rule、feasibility checker、SUMO連携条件が未固定である。]
+    tags: [delivery, plan, future]
+    role_by_scenario:
+      current: [outcome]
+      battery: [outcome]
+      social: [outcome]
+    red_reasons: [not_calculated, design_only]
+    entry_conditions_ja: [正式instance、solver、selection ruleを受理する。]
+    expected_outputs_ja: [SUMOへ入力可能な選択配送計画。]
+
   - id: data.open_data
     label_ja: Open Data
     label_en: Open Data
@@ -1000,6 +1410,10 @@ nodes:
     evidence_refs: [ev.data_registry, ev.baseline_demand_acquisition, ev.baseline_demand_config, ev.baseline_demand_impl, ev.baseline_demand_test, ev.baseline_demand_artifact, ev.baseline_demand_quality]
     limitations_ja: ["82,023はparcel-equivalent/dayであり顧客数や注文数ではない。"]
     tags: [baseline, demand, synthetic, proxy]
+    role_by_scenario:
+      current: [derived]
+      battery: [fixed_condition]
+      social: [derived]
     parent_node_ref: model.baseline
     group_refs: [group.baseline]
     problem_scale:
@@ -1456,6 +1870,8 @@ nodes:
     kind: issue
     status: in_progress
     resolution_status: actively_resolving
+    urgency: high
+    unknown_reason_type: evidence_not_accepted
     readiness: not_accepted
     nature: repository_grounded
     current_state_ja: 2026-08-28のv1候補は全件gate不合格である。
@@ -1473,6 +1889,8 @@ nodes:
     kind: issue
     status: planned
     resolution_status: open
+    urgency: high
+    unknown_reason_type: parameter_not_set
     readiness: not_evaluated
     nature: repository_grounded_design
     current_state_ja: 需要proxyと比較契約はあるが、配送停止・車両・運用・行列が未固定である。
@@ -1492,6 +1910,8 @@ nodes:
     kind: issue
     status: in_progress
     resolution_status: open
+    urgency: high
+    unknown_reason_type: model_not_formalized
     readiness: not_evaluated
     nature: repository_grounded_design
     current_state_ja: P_eq式案と解釈上の制限はあるが、主metric契約がない。
@@ -1509,6 +1929,8 @@ nodes:
     kind: issue
     status: in_progress
     resolution_status: open
+    urgency: high
+    unknown_reason_type: evidence_not_accepted
     readiness: not_accepted
     nature: repository_grounded
     current_state_ja: mapping・属性・診断の部分成果はあるが、正式利用gateが未完了である。
@@ -1526,6 +1948,8 @@ nodes:
     kind: issue
     status: planned
     resolution_status: deferred
+    urgency: low
+    unknown_reason_type: external_model_not_selected
     readiness: not_evaluated
     nature: repository_grounded_design
     current_state_ja: 構想とcandidate methodのみがあり、係数・因果・Validationはない。
@@ -1543,6 +1967,86 @@ nodes:
     isolation_reason_ja: 定量モデルが存在しないため因果relationを追加せず、非因果scope_refsだけで対象を示す。
 
 relations:
+  - id: rel.feasible_plans_to_selected
+    label_ja: 可行計画から選択配送計画へ
+    label_en: Feasible plans produce selected plan
+    summary_ja: 可行配送計画集合から比較条件に従い選択配送計画を得る設計relation。
+    source: analysis.feasible_delivery_plans
+    target: outcome.selected_delivery_plan
+    type: produces
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.portal_scenario_design]
+    limitations_ja: [selection ruleとsolver結果は未確定である。]
+    scenario_ids: [battery, social]
+    relation_class: produces
+    entry_conditions_ja: [可行計画、比較規則、checkerを受理する。]
+    expected_outputs_ja: [選択された配送計画。]
+
+  - id: rel.selected_plan_to_sumo
+    label_ja: 選択配送計画をSUMOへ
+    label_en: Selected plan evaluated by SUMO
+    summary_ja: 選択配送計画をSUMOへ入力し、距離・時間・energy・fulfillmentを評価する設計relation。
+    source: outcome.selected_delivery_plan
+    target: simulation.sumo
+    type: evaluated_by
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.portal_scenario_design]
+    limitations_ja: [正式配送simulationとoutcome値は未実施である。]
+    scenario_ids: [current, battery, social]
+    relation_class: evaluated_by
+    entry_conditions_ja: [正式道路、traffic、配送instance、SUMO contractを受理する。]
+    expected_outputs_ja: [distance、travel time、route energy consumption、delivery fulfillment。]
+  - id: rel.battery_energy_to_constraint
+    label_ja: usable battery energyがenergy constraintへ
+    label_en: Usable battery energy constrains feasibility
+    summary_ja: Battery scenarioの主要入力をenergy feasibility条件へ伝播する設計relation。
+    source: variable.usable_battery_energy
+    target: variable.energy_constraint
+    type: parameterizes
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.portal_scenario_design]
+    limitations_ja: [正式制約式とfuture valueは未確定である。]
+    scenario_ids: [battery]
+    relation_class: scenario_input
+    entry_conditions_ja: [battery modelとCommon Delivery Instanceを受理する。]
+    expected_outputs_ja: [scenario別energy feasibility条件。]
+
+  - id: rel.energy_constraint_to_feasible_plans
+    label_ja: energy constraintが可行計画を制約
+    label_en: Energy constraint constrains feasible plans
+    summary_ja: energy constraintがEVRPの可行配送計画集合を制約する設計relation。
+    source: variable.energy_constraint
+    target: analysis.feasible_delivery_plans
+    type: parameterizes
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.portal_scenario_design]
+    limitations_ja: [可行計画は未算出であり、route outcomeを意味しない。]
+    scenario_ids: [battery, social]
+    relation_class: constrains
+    entry_conditions_ja: [正式instanceとfeasibility checkerを受理する。]
+    expected_outputs_ja: [可行計画集合と制約違反記録。]
+
+  - id: rel.social_inputs_to_demand
+    label_ja: 社会上流候補からdelivery demandへ
+    label_en: Social inputs derive delivery demand
+    summary_ja: 人口・世帯・空間分布・parcel behaviorから需要を導出する未採用モデルの設計relation。
+    source: variable.population
+    target: data.synthetic_delivery_demand
+    type: transforms_to
+    status: planned
+    nature: hypothesis
+    evidence_refs: [ev.portal_scenario_design]
+    limitations_ja: [IRTX等のreference modelは採用済みではなく、需要増加率も未確定である。]
+    scenario_ids: [social]
+    relation_class: derives
+    uncertainty_ja: モデル、係数、空間外挿、parcel behavior、validationが未確定である。
+    entry_conditions_ja: [日本向け正式モデルとvalidation Evidenceを登録する。]
+    expected_outputs_ja: [scenario別delivery demandと不確実性。]
+
   - id: rel.open_data_to_baseline
     label_ja: Open DataをBaselineへ入力
     summary_ja: 台帳化された公開入力をBaseline Modelの各処理で使用する。
@@ -2074,6 +2578,47 @@ views:
     preset: true
     filters: {evidence_gaps: true}
 
+  - id: view.current
+    label_ja: Current
+    summary_ja: 現在研究の中心線と受理前の状態を表示する。
+    node_refs: [data.open_data, data.synthetic_delivery_demand, model.baseline, instance.common_delivery, method.baseline, method.classical, method.qaoa_aer, outcome.selected_delivery_plan, simulation.sumo, metric.computation_time, metric.delivery_fulfillment_rate]
+    relation_refs: [rel.open_data_to_synthetic_demand, rel.baseline_to_common_instance, rel.common_to_baseline_method, rel.common_to_classical, rel.common_to_qaoa]
+    fixed_ranks: []
+    group_refs: [group.baseline, group.metrics]
+    layout_hint: left_to_right
+    preset: true
+    filters: {scenario: current}
+  - id: view.battery
+    label_ja: Battery Scenario
+    summary_ja: usable_battery_energyの伝播とfixed conditionを表示する。
+    node_refs: [variable.usable_battery_energy, variable.energy_constraint, analysis.feasible_delivery_plans, instance.common_delivery, simulation.sumo]
+    relation_refs: [rel.battery_energy_to_constraint, rel.energy_constraint_to_feasible_plans]
+    fixed_ranks: []
+    group_refs: [group.baseline]
+    layout_hint: left_to_right
+    preset: true
+    filters: {scenario: battery}
+  - id: view.social
+    label_ja: Social Scenario
+    summary_ja: 社会上流候補からdelivery demand、EVRPへ至る構造を表示する。
+    node_refs: [variable.population, data.synthetic_delivery_demand, instance.common_delivery, method.baseline, simulation.sumo]
+    relation_refs: [rel.social_inputs_to_demand, rel.baseline_to_common_instance]
+    fixed_ranks: []
+    group_refs: [group.baseline]
+    layout_hint: left_to_right
+    preset: true
+    filters: {scenario: social}
+  - id: view.quantum_scale
+    label_ja: Quantum Scale
+    summary_ja: EVRPとCell Chemistryのproblem scaleからqubit導出までを比較する。
+    node_refs: [instance.common_delivery, method.qaoa_aer, future.battery_external_model, future.qubit_scale]
+    relation_refs: [rel.common_to_qaoa, rel.time_to_qubit_scale]
+    fixed_ranks: []
+    group_refs: [group.future]
+    layout_hint: top_to_bottom
+    preset: true
+    filters: {scenario: quantum_scale}
+
 groups:
   - id: group.baseline
     label_ja: Baseline Model
@@ -2126,3 +2671,75 @@ known_conflicts:
     classification: [semantic_conflict]
     evidence_refs: [ev.research_overview, ev.metric_implementation_plan]
     resolution_condition_ja: 研究責任者が両metricの主指標・補助指標・派生metricとしての位置付けを承認する。
+
+
+scenario_lanes:
+  - id: current
+    label_ja: Current
+    summary_ja: 現在研究の中心線。実装・設計・未受理を混同せず表示する。
+    node_refs: [data.open_data, data.synthetic_delivery_demand, model.baseline, instance.common_delivery, method.baseline, method.classical, method.qaoa_aer, outcome.selected_delivery_plan, simulation.sumo, metric.computation_time, metric.delivery_fulfillment_rate]
+    relation_refs: [rel.open_data_to_synthetic_demand, rel.baseline_to_common_instance, rel.common_to_baseline_method, rel.common_to_classical, rel.common_to_qaoa]
+    focus_node_refs: [model.baseline, instance.common_delivery]
+    steps:
+      - {id: lane.current.open_data, label_ja: Open Data, node_ref: data.open_data, role: core_research_object, value_status: known}
+      - {id: lane.current.demand, label_ja: Synthetic Delivery Demand, node_ref: data.synthetic_delivery_demand, role: derived, value_status: known}
+      - {id: lane.current.instance, label_ja: Common Delivery Instance, node_ref: instance.common_delivery, role: core_research_object, value_status: unresolved, unknown_reason: 正式instanceと運用条件が未固定である。}
+      - {id: lane.current.solvers, label_ja: Baseline / Classical / Aer QAOA, node_ref: method.baseline, role: comparison_method, value_status: unresolved, unknown_reason: 正式比較runが未実施である。}
+      - {id: lane.current.sumo, label_ja: SUMO, node_ref: simulation.sumo, role: outcome, value_status: unresolved, unknown_reason: 正式配送simulationは未実施である。}
+      - {id: lane.current.outcome, label_ja: Computation Time / Delivery Fulfillment, node_ref: metric.delivery_fulfillment_rate, role: outcome, value_status: unresolved, unknown_reason: 正式metricと値が未確定である。}
+
+  - id: battery
+    label_ja: Battery Technology Scenario
+    summary_ja: usable_battery_energyからenergy feasibility、可行計画、SUMO評価へ伝播する将来scenario。
+    node_refs: [variable.usable_battery_energy, variable.energy_constraint, analysis.feasible_delivery_plans, outcome.selected_delivery_plan, instance.common_delivery, method.baseline, method.classical, method.qaoa_aer, simulation.sumo, metric.delivery_fulfillment_rate]
+    relation_refs: [rel.battery_energy_to_constraint, rel.energy_constraint_to_feasible_plans, rel.feasible_plans_to_selected, rel.selected_plan_to_sumo, rel.baseline_to_common_instance]
+    focus_node_refs: [variable.usable_battery_energy, variable.energy_constraint, instance.common_delivery]
+    steps:
+      - {id: lane.battery.input, label_ja: usable_battery_energy, node_ref: variable.usable_battery_energy, role: scenario_variable, value_status: unresolved, unknown_reason: 将来battery modelと採用vehicle条件が未確定である。}
+      - {id: lane.battery.constraint, label_ja: energy_constraint, node_ref: variable.energy_constraint, role: derived, value_status: unresolved, unknown_reason: 正式制約式とenergy matrixが未固定である。}
+      - {id: lane.battery.plans, label_ja: feasible_delivery_plans, node_ref: analysis.feasible_delivery_plans, role: endogenous, value_status: not_calculated, unknown_reason: 正式instanceとsolver結果がない。}
+      - {id: lane.battery.selected, label_ja: selected_delivery_plan, node_ref: outcome.selected_delivery_plan, role: outcome, value_status: not_calculated, unknown_reason: 比較手法からの選択結果がない。}
+      - {id: lane.battery.sumo, label_ja: SUMO outcome, node_ref: simulation.sumo, role: outcome, value_status: unresolved, unknown_reason: 正式配送simulationがない。}
+
+  - id: social
+    label_ja: Social Change Scenario
+    summary_ja: population・households・spatial distribution・parcel behaviorから需要、EVRP、評価へ接続する将来scenario。
+    node_refs: [variable.population, data.synthetic_delivery_demand, instance.common_delivery, method.baseline, method.classical, method.qaoa_aer, simulation.sumo, metric.delivery_fulfillment_rate]
+    relation_refs: [rel.social_inputs_to_demand, rel.baseline_to_common_instance]
+    focus_node_refs: [variable.population, data.synthetic_delivery_demand, instance.common_delivery]
+    steps:
+      - {id: lane.social.inputs, label_ja: Population / Households / Spatial Distribution / Parcel Behavior, node_ref: variable.population, role: scenario_variable, value_status: unresolved, unknown_reason: 日本向け正式モデルとscenario値が未確定である。}
+      - {id: lane.social.demand, label_ja: delivery_demand, node_ref: data.synthetic_delivery_demand, role: derived, value_status: unresolved, unknown_reason: Social Scenarioの導出モデルが未採用である。}
+      - {id: lane.social.instance, label_ja: EVRP / Common Delivery Instance, node_ref: instance.common_delivery, role: core_research_object, value_status: unresolved, unknown_reason: 正式instanceが未固定である。}
+      - {id: lane.social.solver, label_ja: Baseline / Classical / Aer QAOA, node_ref: method.baseline, role: comparison_method, value_status: unresolved, unknown_reason: 正式比較runが未実施である。}
+      - {id: lane.social.outcome, label_ja: SUMO / Delivery Outcome, node_ref: simulation.sumo, role: outcome, value_status: unresolved, unknown_reason: 正式配送simulationがない。}
+
+quantum_scales:
+  - id: logistics_evrp
+    label_ja: Logistics / EVRP
+    status: planned
+    readiness: not_evaluated
+    nature: repository_grounded_design
+    evidence_refs: [ev.portal_scenario_design, ev.optimization_protocol]
+    stages:
+      - {id: scale.logistics.target, label_ja: 対象問題, value: EV配送経路最適化, value_status: known, unknown_reason: null}
+      - {id: scale.logistics.instance, label_ja: Problem Instance, value: Common Delivery Instance, value_status: unresolved, unknown_reason: 正式instanceが未固定である。, node_ref: instance.common_delivery}
+      - {id: scale.logistics.size, label_ja: Problem Size, value: null, value_status: unresolved, unknown_reason: customer/stop/vehicle等の正式寸法が未確定である。, node_ref: instance.common_delivery}
+      - {id: scale.logistics.representation, label_ja: Quantum Representation, value: Binary Variables / QUBO, value_status: unresolved, unknown_reason: 定式化とencodingが未固定である。, node_ref: method.qaoa_aer}
+      - {id: scale.logistics.qubits, label_ja: Required Qubits, value: null, value_status: unresolved, unknown_reason: binary variable countとencodingから正式導出されていない。, node_ref: method.qaoa_aer}
+      - {id: scale.logistics.algorithm, label_ja: Quantum Algorithm, value: QAOA on Qiskit Aer simulator, value_status: known, unknown_reason: null, node_ref: method.qaoa_aer}
+
+  - id: battery_cell_chemistry
+    label_ja: Battery / Cell Chemistry
+    status: planned
+    readiness: not_evaluated
+    nature: external_model
+    evidence_refs: [ev.portal_scenario_design, ev.analysis_method]
+    unknown_reason: Cell chemistry instanceと採用定式化が研究本線で未採用である。
+    stages:
+      - {id: scale.chemistry.target, label_ja: 対象問題, value: 電池材料の電子状態計算, value_status: known, unknown_reason: null}
+      - {id: scale.chemistry.instance, label_ja: Problem Instance, value: null, value_status: unresolved, unknown_reason: specific material instanceを採用していない。}
+      - {id: scale.chemistry.size, label_ja: Problem Size, value: null, value_status: unresolved, unknown_reason: active orbitals/electrons等を決めていない。}
+      - {id: scale.chemistry.representation, label_ja: Quantum Representation, value: Qubit Hamiltonian, value_status: unresolved, unknown_reason: electronic structure formulationとmappingが未採用である。}
+      - {id: scale.chemistry.qubits, label_ja: Required Qubits, value: null, value_status: unresolved, unknown_reason: active orbitalsとmappingから正式導出されていない。}
+      - {id: scale.chemistry.algorithm, label_ja: Quantum Algorithm, value: null, value_status: unresolved, unknown_reason: quantum chemistry algorithmを採用していない。}

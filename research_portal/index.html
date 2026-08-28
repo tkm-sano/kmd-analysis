@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Research Visualization Portal</title><link rel="stylesheet" href="styles.css"></head>
+<body><header class="topbar"><div class="topbar-inner"><p class="eyebrow">RESEARCH VISUALIZATION PORTAL</p><h1 id="title">読み込み中…</h1><p id="scope" class="subtitle"></p></div></header>
+<main><section id="overview" class="overview"></section><section class="summary-grid"><article id="stage-card"></article><article id="method-card"></article><article id="metric-card"></article></section>
+<section class="model-intro"><p class="eyebrow">研究マップの縮尺</p><h2>問いから現在の分析対象へ</h2><p>研究全体の射程と、現在構築中のシミュレーションを同じ地図上で切り替えて確認できます。</p></section><nav id="views" class="view-tabs" aria-label="研究ビュー"></nav><section class="context"><div><span class="eyebrow">研究段階</span><strong id="stage">—</strong></div><div id="counts" class="counts"></div><div class="legend"><span>状態: 実装済み / 進行中 / 計画 / 阻害 / 不明</span><span>色は緊急度、badgeは状態を示します</span></div></section>
+<section class="toolbar"><label>マップ内検索 <input id="search" type="search" placeholder="名称、ID、用途を検索"></label><div><span class="filter-label">情報カテゴリ</span><nav id="category-filter" class="category-filter" aria-label="情報カテゴリfilter"></nav></div></section>
+<section id="graph" class="graph" aria-live="polite"></section><section id="blockers" class="blockers"></section><section id="references" class="references"></section><section id="admin" class="admin"></section></main>
+<aside id="drawer" class="drawer" aria-label="研究詳細" aria-hidden="true"><button id="close" class="close" aria-label="閉じる">×</button><div id="detail"></div></aside><script src="app.js" defer></script></body></html>
