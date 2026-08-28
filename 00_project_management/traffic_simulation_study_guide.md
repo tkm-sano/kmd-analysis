@@ -18,8 +18,8 @@
 
 ### 基礎資料
 
-- Robert G. Sargent, [An Introduction to Verification and Validation of Simulation Models](https://informs-sim.org/wsc13papers/includes/files/027.pdf), Winter Simulation Conference 2013, [DOI](https://doi.org/10.1109/WSC.2013.6721430)
-- NIST IR 8298, [A Summary of Industrial Verification, Validation, and Uncertainty Quantification Procedures](https://doi.org/10.6028/NIST.IR.8298)
+- Robert G. Sargent, An Introduction to Verification and Validation of Simulation Models, Winter Simulation Conference 2013
+- NIST IR 8298, A Summary of Industrial Verification, Validation, and Uncertainty Quantification Procedures
 
 NIST IR 8298の主対象は数値流体シミュレーションである。V&Vと不確実性評価の構成を学び、交通シミュレーションへ読み替える。
 
@@ -222,7 +222,7 @@ track除外 / 明示的な自動車通行根拠があるtrackだけ保持
 
 時間が限られる場合は、次の六件を優先する。
 
-1. [Sargent: An Introduction to Verification and Validation of Simulation Models](https://informs-sim.org/wsc13papers/includes/files/027.pdf)
+1. Sargent: An Introduction to Verification and Validation of Simulation Models
 2. [SUMO edge type file](https://sumo.dlr.de/docs/SUMO_edge_type_file.html)
 3. [SUMO OpenStreetMap import](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html)
 4. [OSM `access`](https://wiki.openstreetmap.org/wiki/Key:access)

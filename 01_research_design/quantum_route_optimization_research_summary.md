@@ -47,7 +47,7 @@ Circuit width、depthの順に見ることが検討しうるが、量子ビッ�
 
 本研究はアプリケーションを対象とするため、アプリケーションに対する評価方法を調べた。
 
-[Lubinskiらの「Application-Oriented Performance Benchmarks for Quantum Computing」](https://arxiv.org/abs/2110.03137)では、問題規模を解釈するmetricの一つとして、circuit widthを見た上でdepthを見ていた。
+Lubinskiらの「Application-Oriented Performance Benchmarks for Quantum Computing」では、問題規模を解釈するmetricの一つとして、circuit widthを見た上でdepthを見ていた。
 
 Circuit widthは、定式化やアルゴリズムに基づいて変数を表現した、量子回路上で必要な量子ビット数の見積もりである。
 
@@ -73,17 +73,17 @@ Depthはゲートの段数を指し、これはコンパイルの仕方などに
 - 電気状態
 - 充電スポット
 
-[Azadらの研究](https://arxiv.org/abs/2002.01351)では、訪問地点数と車両数を設定したVRPをIsing形式に変換し、QAOAによる計算を行っている。
+Azadらの研究では、訪問地点数と車両数を設定したVRPをIsing形式に変換し、QAOAによる計算を行っている。
 
-[Leonidasらの研究](https://arxiv.org/abs/2306.08507)では、時間窓を含むVRPTWを扱い、11から3964の候補ルートを対象として、量子ビット数を削減するエンコーディングを評価している。
+Leonidasらの研究では、時間窓を含むVRPTWを扱い、11から3964の候補ルートを対象として、量子ビット数を削減するエンコーディングを評価している。
 
-[Xieらの研究](https://arxiv.org/abs/2308.08785)では、車両の積載容量に制約があるCVRPを対象として、実行可能な解を生成しやすくするQuantum Alternating Operator Ansatzを提案している。
+Xieらの研究では、車両の積載容量に制約があるCVRPを対象として、実行可能な解を生成しやすくするQuantum Alternating Operator Ansatzを提案している。
 
-[Fitzekらの研究](https://www.nature.com/articles/s41598-024-76967-w)では、積載容量が異なる車両を含むHVRPを扱い、3顧客・2車両までの小規模問題をQAOAで検証している。
+Fitzekらの研究では、積載容量が異なる車両を含むHVRPを扱い、3顧客・2車両までの小規模問題をQAOAで検証している。
 
-[Garcia de Andoinらの研究](https://arxiv.org/abs/2306.04414)では、EVの経路と充電を組み合わせたEVCRPを対象として、制約を満たす探索空間を量子・古典ハイブリッド手法で扱っている。
+Garcia de Andoinらの研究では、EVの経路と充電を組み合わせたEVCRPを対象として、制約を満たす探索空間を量子・古典ハイブリッド手法で扱っている。
 
-[Okadaらの研究](https://arxiv.org/abs/2506.04687)では、EVの経路と充電施設の配置を同時に扱い、バッテリー容量制約、充電施設数、充電施設の位置を含む20地点の問題をQUBOソルバーで検証している。
+Okadaらの研究では、EVの経路と充電施設の配置を同時に扱い、バッテリー容量制約、充電施設数、充電施設の位置を含む20地点の問題をQUBOソルバーで検証している。
 
 もちろん、これらの変数がすべての論文で同時に扱われているわけではなく、アプリケーションによって異なる。最初に、量子計算で利用可能な変数について知っておく必要があった。
 
@@ -307,9 +307,9 @@ Depthはゲートの段数を指し、これはコンパイルの仕方などに
 
 ### 古典ベンチマークとの比較
 
-生成した経路の品質を外部基準でも確認するため、[CVRPLIBの標準CVRPインスタンス](https://galgos.inf.puc-rio.br/cvrplib/index.php/en/instances)を古典ベンチマークとして使用する。CVRPLIBには、顧客座標、配送需要、車両容量などを定めた標準問題と、その問題に対する既知最良値または最適値が掲載されている。
+生成した経路の品質を外部基準でも確認するため、CVRPLIBの標準CVRPインスタンスを古典ベンチマークとして使用する。CVRPLIBには、顧客座標、配送需要、車両容量などを定めた標準問題と、その問題に対する既知最良値または最適値が掲載されている。
 
-本研究で参照してきたGolden_5は、CVRPLIBのGoldenセットに含まれる、顧客数200、車両数5、車載容量900のCVRPインスタンスである。Goldenセットの出典は、Goldenほかによる[1998年のベンチマーク研究](https://doi.org/10.1007/978-1-4615-5755-5_2)である。また、量子回路リソースの調査対象とした[Onah and Michielsenの研究](https://arxiv.org/abs/2509.11469)でも、Golden_5を対象に必要な量子ビット数が見積もられている。
+本研究で参照してきたGolden_5は、CVRPLIBのGoldenセットに含まれる、顧客数200、車両数5、車載容量900のCVRPインスタンスである。Goldenセットの出典は、Goldenほかによる1998年のベンチマーク研究である。また、量子回路リソースの調査対象としたOnah and Michielsenの研究でも、Golden_5を対象に必要な量子ビット数が見積もられている。
 
 ただし、東京圏で生成した問題とGolden_5では、顧客位置、配送需要、車両容量および距離尺度が異なる。そのため、東京圏の経路の総距離とGolden_5の既知最良値を直接比較しても、手法の優劣は判断できない。比較は次の三つに分けて行う。
 

@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "route2_down_fixed_endpoint_probe_v1",
+  "network": "reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260823_v17_oneway_materialization_tdd/ota_ward_explicit_v17_oneway.net.xml",
+  "sumo": {
+    "required_version": "1.24.0",
+    "marouter": ".local/sumo-1.24.0/bin/marouter",
+    "duarouter": ".local/sumo-1.24.0/bin/duarouter",
+    "seed": 230823
+  },
+  "probe": {
+    "id": "route2_down_fixed_endpoint",
+    "source_taz": "PT_SZ_02432",
+    "destination_taz": "PT_SZ_01320",
+    "origin_edge": "1138319664#9",
+    "destination_edge": "828705048#5",
+    "target_edge": "309829214#19"
+  },
+  "marouter": {
+    "assignment_method": "SUE",
+    "max_iterations": 20,
+    "max_inner_iterations": 1000,
+    "routing_threads": 1
+  },
+  "grid": [
+    {"paths": 20, "paths_penalty": 1.0, "max_alternatives": 20},
+    {"paths": 50, "paths_penalty": 1.0, "max_alternatives": 50},
+    {"paths": 100, "paths_penalty": 1.0, "max_alternatives": 100},
+    {"paths": 200, "paths_penalty": 1.0, "max_alternatives": 200},
+    {"paths": 50, "paths_penalty": 0.25, "max_alternatives": 50},
+    {"paths": 50, "paths_penalty": 0.5, "max_alternatives": 50},
+    {"paths": 50, "paths_penalty": 2.0, "max_alternatives": 50},
+    {"paths": 50, "paths_penalty": 4.0, "max_alternatives": 50},
+    {"paths": 100, "paths_penalty": 0.5, "max_alternatives": 100}
+  ]
+}

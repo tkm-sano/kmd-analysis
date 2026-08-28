@@ -1,0 +1,2128 @@
+schema_version: 1
+registry_id: kmd.research_portal
+registry_version: 1
+updated_at: "2026-08-28"
+review:
+  reviewed_by: null
+  reviewed_at: null
+  unknown_reason: Initial Registry content has not yet received named research-owner review.
+review_policy: record_review_overrides_root_otherwise_inherit_root
+default_view_id: view.research_overview
+current_stage_ref: stage.current_review_required
+metadata:
+  title_ja: 東京都市配送×量子未来社会
+  title_en: Tokyo Urban Delivery × Quantum Future Society
+  scope_note_ja: 大田区を起点とする合成都市配送研究。観測された実配送運用を表さない。
+
+evidence:
+  - id: ev.research_overview
+    path: README.md
+    label_ja: 研究目的・全体像・現在地
+    role: design_intent
+    strength: indirect_repository_evidence
+    supports:
+      - target_type: node
+        target_id: model.baseline
+      - target_type: node
+        target_id: future.final_fulfillment
+      - target_type: node
+        target_id: metric.delivery_fulfillment_rate
+      - target_type: relation
+        target_id: rel.open_data_to_baseline
+      - target_type: relation
+        target_id: rel.baseline_produces_fulfillment
+    locator:
+      heading: 研究の全体構造
+    limitations_ja: 現在地の詳細は後発の個別記録を優先し、READMEのstatusを直接移植しない。
+
+  - id: ev.project_structure
+    path: 00_project_management/0-2-A_20260823_COMPLETE_研究全体構造と作業管理規則.md
+    label_ja: 研究全体構造と作業管理規則
+    role: design_intent
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: model.baseline
+      - target_type: node
+        target_id: issue.common_delivery_unfrozen
+    locator:
+      heading: 研究全体の構造・現在地・作業管理規則
+    limitations_ja: COMPLETEは管理規則自体の状態を含み、個別技術成果のreadinessを意味しない。
+
+  - id: ev.current_issues
+    path: 00_project_management/0-2-C_20260825_CURRENT_研究上の問題点とモデル課題.md
+    label_ja: 研究上の問題点とモデル課題
+    role: limitation
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: model.baseline
+      - target_type: node
+        target_id: stage.current_review_required
+      - target_type: node
+        target_id: issue.route_generation_not_frozen
+      - target_type: node
+        target_id: issue.common_delivery_unfrozen
+      - target_type: node
+        target_id: issue.delivery_metric_definition
+      - target_type: node
+        target_id: issue.formal_traffic_not_accepted
+      - target_type: node
+        target_id: instance.common_delivery
+      - target_type: node
+        target_id: metric.delivery_fulfillment
+      - target_type: relation
+        target_id: rel.baseline_to_common_instance
+      - target_type: relation
+        target_id: rel.route_issue_blocks_fulfillment
+      - target_type: relation
+        target_id: rel.instance_issue_blocks_fulfillment
+      - target_type: relation
+        target_id: rel.metric_issue_blocks_fulfillment
+      - target_type: relation
+        target_id: rel.traffic_issue_blocks_fulfillment
+    locator:
+      heading: 全体の現在地
+    limitations_ja: 2026-08-25時点の横断診断であり、8月27日以降の個別Evidenceより古い。
+
+  - id: ev.research_stage_legacy
+    path: reproducibility/config/traffic_simulation/research_stage.yml
+    label_ja: 旧機械可読研究進捗
+    role: limitation
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: model.baseline
+      - target_type: node
+        target_id: stage.current_review_required
+    locator:
+      yaml_pointer: /current_stage_id
+    limitations_ja: 2026-07-31更新でstatus集合もPortal v1と異なるため、現行statusの正本にはしない。
+
+  - id: ev.data_registry
+    path: 03_data/metadata/traffic_simulation_sources.csv
+    label_ja: 交通シミュレーションデータ台帳
+    role: input_registry
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: data.open_data
+      - target_type: node
+        target_id: data.synthetic_delivery_demand
+      - target_type: relation
+        target_id: rel.open_data_to_baseline
+      - target_type: relation
+        target_id: rel.open_data_to_synthetic_demand
+    locator:
+      csv_key: source_id
+    limitations_ja: datasetごとの利用可否と制限を個別に確認する必要がある。
+
+  - id: ev.data_provenance
+    path: 03_data/metadata/data_provenance.md
+    label_ja: データ来歴と再配布制限
+    role: input_registry
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: data.open_data
+    locator:
+      heading: Data Provenance
+    limitations_ja: raw原本の一部は再配布されず、取得元からの再取得が必要である。
+
+  - id: ev.baseline_demand_spec
+    path: 05_src/traffic_simulation/demand/baseline_demand_and_comparator.md
+    label_ja: 合成需要と未最適化基準の仕様
+    role: specification
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: instance.common_delivery
+      - target_type: node
+        target_id: method.baseline
+      - target_type: node
+        target_id: metric.delivery_fulfillment
+      - target_type: node
+        target_id: metric.delivery_fulfillment_rate
+      - target_type: node
+        target_id: metric.delivery_population_equivalent
+      - target_type: node
+        target_id: issue.common_delivery_unfrozen
+      - target_type: node
+        target_id: issue.delivery_metric_definition
+      - target_type: relation
+        target_id: rel.common_to_baseline_method
+      - target_type: relation
+        target_id: rel.baseline_produces_fulfillment
+      - target_type: relation
+        target_id: rel.classical_produces_fulfillment
+      - target_type: relation
+        target_id: rel.qaoa_produces_fulfillment
+      - target_type: relation
+        target_id: rel.baseline_produces_p_eq
+      - target_type: relation
+        target_id: rel.classical_produces_p_eq
+      - target_type: relation
+        target_id: rel.qaoa_produces_p_eq
+      - target_type: relation
+        target_id: rel.current_to_final_fulfillment
+      - target_type: relation
+        target_id: rel.instance_issue_blocks_fulfillment
+      - target_type: relation
+        target_id: rel.metric_issue_blocks_fulfillment
+    locator:
+      heading: 現時点で計算できる範囲
+    limitations_ja: 合成需要は実注文・実停止ではなく、P_eqの正式値は未算出である。
+
+  - id: ev.baseline_demand_config
+    path: reproducibility/config/traffic_simulation/baseline_demand.yml
+    label_ja: 合成需要の機械可読設定
+    role: specification
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: method.baseline
+      - target_type: node
+        target_id: data.synthetic_delivery_demand
+      - target_type: relation
+        target_id: rel.open_data_to_synthetic_demand
+    locator:
+      yaml_pointer: /baseline_demand
+    limitations_ja: status activeはPortalのimplementedを意味せず、正式配送比較条件も含まない。
+
+  - id: ev.baseline_demand_impl
+    path: 05_src/traffic_simulation/demand/prepare_baseline_demand.py
+    label_ja: 合成需要生成実装
+    role: implementation
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: method.baseline
+      - target_type: node
+        target_id: data.synthetic_delivery_demand
+      - target_type: relation
+        target_id: rel.open_data_to_synthetic_demand
+    locator:
+      symbol: build_population_and_demand
+    limitations_ja: 共通配送instance、走行、配送完了判定を実装するものではない。
+
+  - id: ev.baseline_demand_test
+    path: 05_src/traffic_simulation/validation/test_prepare_baseline_demand.py
+    label_ja: 合成需要生成unit test
+    role: test
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: method.baseline
+      - target_type: node
+        target_id: data.synthetic_delivery_demand
+    locator:
+      symbol: test_boundary_weighting_rescaling_and_demand_preserve_totals
+    limitations_ja: 合成需要変換のtestであり、配送比較結果のacceptance testではない。
+
+  - id: ev.road_current
+    path: 05_src/traffic_simulation/road_census_sumo_current_baseline.md
+    label_ja: Road CensusからSUMOへの現状baseline
+    role: limitation
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: model.baseline
+      - target_type: node
+        target_id: model.road_network
+      - target_type: node
+        target_id: issue.formal_traffic_not_accepted
+      - target_type: relation
+        target_id: rel.traffic_issue_blocks_fulfillment
+    locator:
+      heading: 未完了ゲート
+    limitations_ja: 部分工程の成果を記録するが、正式道路・交通環境の受理を示さない。
+
+  - id: ev.route_spec
+    path: 05_src/traffic_simulation/marouter_route_generation_specification.md
+    label_ja: marouter route-generation仕様と診断
+    role: specification
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: model.baseline
+      - target_type: node
+        target_id: model.general_traffic_routing
+      - target_type: node
+        target_id: issue.route_generation_not_frozen
+      - target_type: node
+        target_id: stage.current_review_required
+      - target_type: relation
+        target_id: rel.route_issue_blocks_fulfillment
+    locator:
+      heading: Canonical six-direction quality gate
+    limitations_ja: v1候補はすべてgate不合格であり、route-generation設定は未凍結である。
+
+  - id: ev.route_impl
+    path: 05_src/traffic_simulation/calibration/diagnose_marouter_route_generation.py
+    label_ja: route-generation診断実装
+    role: implementation
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: model.baseline
+      - target_type: node
+        target_id: model.general_traffic_routing
+    locator:
+      symbol: audit_route_support
+    limitations_ja: 診断実装の存在は、一般交通routingの受理を意味しない。
+
+  - id: ev.route_test
+    path: 05_src/traffic_simulation/validation/test_diagnose_marouter_route_generation.py
+    label_ja: route-generation診断unit test
+    role: test
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: model.baseline
+      - target_type: node
+        target_id: model.general_traffic_routing
+    locator:
+      symbol: test_audit_route_support_reports_all_six_and_opposite_cooccurrence
+    limitations_ja: 診断関数のtestであり、route候補の品質gate合格を示さない。
+
+  - id: ev.vehicle_profile
+    path: reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml
+    label_ja: 配送EV車両profile
+    role: design_intent
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: instance.common_delivery
+      - target_type: node
+        target_id: model.ev_vehicle_conditions
+    locator:
+      yaml_pointer: /vehicle_profile_id
+    limitations_ja: fixed_model_assumptionであり、実測実車または充電運用条件ではない。
+
+  - id: ev.optimization_protocol
+    path: 05_src/traffic_simulation/optimization_comparison_protocol.md
+    label_ja: 古典・QAOA比較規約
+    role: design_intent
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: instance.common_delivery
+      - target_type: node
+        target_id: method.baseline
+      - target_type: node
+        target_id: method.classical
+      - target_type: node
+        target_id: method.qaoa_aer
+      - target_type: node
+        target_id: metric.computation_time
+      - target_type: node
+        target_id: model.ev_vehicle_conditions
+      - target_type: node
+        target_id: issue.common_delivery_unfrozen
+      - target_type: relation
+        target_id: rel.baseline_to_common_instance
+      - target_type: relation
+        target_id: rel.common_to_baseline_method
+      - target_type: relation
+        target_id: rel.common_to_classical
+      - target_type: relation
+        target_id: rel.common_to_qaoa
+      - target_type: relation
+        target_id: rel.baseline_produces_time
+      - target_type: relation
+        target_id: rel.classical_produces_time
+      - target_type: relation
+        target_id: rel.qaoa_produces_time
+      - target_type: relation
+        target_id: rel.classical_produces_fulfillment
+      - target_type: relation
+        target_id: rel.qaoa_produces_fulfillment
+      - target_type: relation
+        target_id: rel.baseline_compares_classical
+      - target_type: relation
+        target_id: rel.baseline_compares_qaoa
+      - target_type: relation
+        target_id: rel.classical_compares_qaoa
+      - target_type: relation
+        target_id: rel.instance_issue_blocks_fulfillment
+    locator:
+      heading: Common Instance
+    limitations_ja: 比較条件の設計Evidenceであり、solver実装・比較run・結果ではない。
+
+  - id: ev.vv
+    path: 05_src/traffic_simulation/simulation_model_development_and_vv.md
+    label_ja: シミュレーションV&V規約
+    role: specification
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: model.baseline
+      - target_type: node
+        target_id: method.qaoa_aer
+      - target_type: node
+        target_id: issue.formal_traffic_not_accepted
+      - target_type: node
+        target_id: stage.independent_validation
+      - target_type: node
+        target_id: simulation.sumo
+      - target_type: relation
+        target_id: rel.common_to_qaoa
+      - target_type: relation
+        target_id: rel.traffic_issue_blocks_fulfillment
+    locator:
+      heading: 利用可否判断
+    limitations_ja: 方法論は有効だが、文書内の一部状態表は後発Evidenceより古い。
+
+  - id: ev.research_structure
+    path: 01_research_design/research_structure.md
+    label_ja: 研究構造と将来工程
+    role: design_intent
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: future.qubit_scale
+      - target_type: node
+        target_id: future.battery_external_model
+      - target_type: node
+        target_id: future.demand_statistical_model
+      - target_type: node
+        target_id: future.final_fulfillment
+      - target_type: node
+        target_id: future.urban_society_economy
+      - target_type: node
+        target_id: issue.future_external_models_missing
+      - target_type: relation
+        target_id: rel.time_to_qubit_scale
+      - target_type: relation
+        target_id: rel.battery_to_final_fulfillment
+      - target_type: relation
+        target_id: rel.demand_to_final_fulfillment
+      - target_type: relation
+        target_id: rel.current_to_final_fulfillment
+      - target_type: relation
+        target_id: rel.final_to_urban_society
+    locator:
+      heading: Discussion and next stage
+    limitations_ja: next stageの設計であり、定量モデルまたは現在の配送結果ではない。
+
+  - id: ev.analysis_method
+    path: 01_research_design/analysis_method.md
+    label_ja: 分析方法と解釈境界
+    role: limitation
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: future.qubit_scale
+      - target_type: node
+        target_id: future.battery_external_model
+      - target_type: node
+        target_id: future.demand_statistical_model
+      - target_type: node
+        target_id: future.final_fulfillment
+      - target_type: node
+        target_id: future.urban_society_economy
+      - target_type: node
+        target_id: issue.future_external_models_missing
+      - target_type: relation
+        target_id: rel.time_to_qubit_scale
+      - target_type: relation
+        target_id: rel.battery_to_final_fulfillment
+      - target_type: relation
+        target_id: rel.demand_to_final_fulfillment
+      - target_type: relation
+        target_id: rel.current_to_final_fulfillment
+      - target_type: relation
+        target_id: rel.final_to_urban_society
+    locator:
+      heading: Analysis Method
+    limitations_ja: candidate methodsを列挙するが、現行定量結果とは明示的に区別される。
+
+  - id: ev.scale_gap_impl
+    path: 05_src/literature_analysis/make_scale_gap_analysis.py
+    label_ja: scale-gap分析生成実装
+    role: implementation
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: future.qubit_scale
+    locator:
+      symbol: extract_quantum_scale
+    limitations_ja: 文献・社会scale分析であり、配送solver比較結果との正式接続ではない。
+
+  - id: ev.future_wheels_impl
+    path: 05_src/literature_analysis/make_updated_future_wheels.py
+    label_ja: Future Wheels生成実装
+    role: implementation
+    strength: indirect_repository_evidence
+    supports:
+      - target_type: node
+        target_id: future.urban_society_economy
+      - target_type: relation
+        target_id: rel.final_to_urban_society
+    locator:
+      symbol: nodes
+    limitations_ja: conditional plausibility scoreは観測確率ではなく、社会経済効果の定量モデルでもない。
+
+  - id: ev.baseline_demand_acquisition
+    path: 03_data/metadata/acquisition/20260718_ota_baseline_open_statistics_acquisition.md
+    label_ja: 合成需要Open Data取得記録
+    role: acquisition
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: data.synthetic_delivery_demand
+      - target_type: relation
+        target_id: rel.open_data_to_synthetic_demand
+    locator:
+      heading: Acquisition Record
+    version: "20260718"
+    sha256: 2322cdce3bb9f57a1b969a8896c4094396c2a5ffb05bedbe994f56e876ee339b
+    record_state: current
+    regeneration_ja: 記録された取得元、raw path、SHA-256を使って再取得後に照合する。
+    portability: tracked
+    does_not_support: [実注文または実配送停止の存在]
+    limitations_ja: 取得事実とhashを支えるが、合成需要の研究利用受理を意味しない。
+
+  - id: ev.baseline_demand_artifact
+    path: 03_data/processed/traffic_simulation/demand/ota_ward_baseline_demand_2024_500m.parquet
+    label_ja: 大田区500m mesh合成需要artifact
+    role: data_artifact
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: data.synthetic_delivery_demand
+      - target_type: relation
+        target_id: rel.open_data_to_synthetic_demand
+    locator:
+      artifact_id: ota_ward_baseline_demand_2024_500m
+    version: 1
+    sha256: e7caeb262665ba3396834bb54e2dff296b3cbbd02af6922e906eb683829f5048
+    record_state: current
+    regeneration_ja: baseline_demand.ymlを入力にprepare_baseline_demand.pyで生成する。
+    portability: ignored_local
+    generated_from_evidence_refs: [ev.baseline_demand_acquisition, ev.baseline_demand_config, ev.baseline_demand_impl]
+    does_not_support: [実顧客数, 実注文数, 配送完了数]
+    limitations_ja: 191 meshの人口配賦とparcel-equivalent proxyであり、顧客・注文単位ではない。
+
+  - id: ev.baseline_demand_quality
+    path: 03_data/processed/traffic_simulation/validation/ota_ward_baseline_demand_2024_500m_quality_summary.json
+    label_ja: 合成需要品質要約
+    role: validation_result
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: data.synthetic_delivery_demand
+      - target_type: relation
+        target_id: rel.open_data_to_synthetic_demand
+    locator:
+      json_pointer: /allocated_demand_parcel_equivalent
+    version: 1
+    sha256: bf4dab933b26eb59f99107f2f6aa8f4276f333464687f1d85ba1ad5607e46a6b
+    record_state: current
+    regeneration_ja: 合成需要生成時にsource/config/output hashと集計値を再計算する。
+    portability: ignored_local
+    generated_from_evidence_refs: [ev.baseline_demand_artifact, ev.baseline_demand_config, ev.baseline_demand_impl]
+    does_not_support: [実配送需要, 正式Common Delivery Instance]
+    limitations_ja: 82,023はparcel-equivalent/dayでありcustomer_countやdelivery_request_countではない。
+
+  - id: ev.road_network_candidate
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260823_v17_oneway_materialization_tdd/ota_ward_explicit_v17_oneway.net.xml
+    label_ja: v17 SUMO道路網candidate artifact
+    role: run_artifact
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: model.road_network
+    locator:
+      artifact_id: ota_ward_explicit_v17_oneway
+    sha256: a78a020eda81c3ceda9310d23420c5f4836a6cef0a9a99c9b9f5c42c0383fd91
+    record_state: current
+    regeneration_ja: v17 materialization pipelineの入力と設定から再生成する。
+    portability: ignored_local
+    generated_from_evidence_refs: [ev.data_registry, ev.road_current]
+    does_not_support: [正式道路網acceptance]
+    limitations_ja: candidate artifactであり、正式研究利用はacceptance v2でrejectされている。
+
+  - id: ev.network_acceptance_v2
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260824_sumo_network_integration_audit/network_integration_acceptance_v2.json
+    label_ja: SUMO道路網integration acceptance v2
+    role: acceptance_decision
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: model.road_network
+      - target_type: node
+        target_id: issue.formal_traffic_not_accepted
+    locator:
+      json_pointer: /formal_network_accepted
+    version: 2
+    sha256: 1e46709339fbf40ea39b03342eedc804568d4d397c3168d3572a74aff85de4a6
+    record_state: current
+    regeneration_ja: 同一candidate hashでNetwork Integration Acceptanceを再実行する。
+    portability: ignored_local
+    generated_from_evidence_refs: [ev.road_network_candidate, ev.road_current]
+    does_not_support: [正式道路網acceptance, 正式交通較正]
+    limitations_ja: 当該candidateをprovisional analytical networkに限定しformal acceptanceをfalseとしている。
+
+  - id: ev.route_candidate_config
+    path: reproducibility/config/traffic_simulation/route_generation/marouter_candidate_experiments_v1.json
+    label_ja: marouter候補実験設定v1
+    role: specification
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: model.general_traffic_routing
+    locator:
+      json_pointer: /experiments
+    version: 1
+    sha256: 33dd2b8db36f4c4b510f000d1fd184ca89a8dd776d34cafd1f364c05e0159634
+    record_state: current
+    regeneration_ja: 設定内の各候補をroute診断runnerで実行する。
+    portability: untracked_local
+    does_not_support: [凍結済みroute-generation設定]
+    limitations_ja: 候補集合の設定でありacceptance結果ではない。
+
+  - id: ev.route_candidate_run
+    path: reproducibility/outputs/traffic_simulation/routing/20260828_marouter_sue_paths20_maxalt40_v1/route_generation_run_manifest.json
+    label_ja: marouter SUE候補run manifest
+    role: run_artifact
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: model.general_traffic_routing
+      - target_type: node
+        target_id: issue.route_generation_not_frozen
+    locator:
+      json_pointer: /accepted
+    sha256: c15c483709081feb468b61dad0b04d7bf8cc027c55d0c102295192b0546b061c
+    record_state: current
+    regeneration_ja: manifest記録のinput hashと候補設定から再実行する。
+    portability: ignored_local
+    generated_from_evidence_refs: [ev.route_candidate_config, ev.route_impl]
+    does_not_support: [受理済みroute-generation設定]
+    limitations_ja: OD需要は保存したがcanonical direction quality gateは不合格でaccepted=falseである。
+
+  - id: ev.final_traffic_observations
+    path: 03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/external_observation_finalization_20260827/final_traffic_observations.csv
+    label_ja: 最終化された交通観測入力
+    role: data_artifact
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: data.calibration_observations
+    locator:
+      csv_key: observation_id
+    sha256: 560426bab8222b97967687e9a6ee8044205316410b9cdef7912d4a6a1ee84736
+    record_state: current
+    regeneration_ja: final inventory generatorとschemaから再生成する。
+    portability: ignored_local
+    generated_from_evidence_refs: [ev.data_registry, ev.road_current]
+    does_not_support: [交通較正acceptance, 独立Validation完了]
+    limitations_ja: 240行の生成を支えるが、全行がcalibration usableではない。
+
+  - id: ev.observation_inventory_manifest
+    path: 03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/external_observation_finalization_20260827/external_observation_final_inventory_manifest.json
+    label_ja: 交通観測final inventory manifest
+    role: run_artifact
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: data.calibration_observations
+    locator:
+      json_pointer: /counts
+    sha256: 8677ed3da8b6e232da9d46ac52c648255b3cf3b13cb55dba75fe37724a634463
+    record_state: current
+    regeneration_ja: 記録されたgenerator、schema、input hashから再生成する。
+    portability: ignored_local
+    generated_from_evidence_refs: [ev.data_registry, ev.road_current]
+    does_not_support: [研究利用acceptance]
+    limitations_ja: inventory生成QAはPASSEDだが、別validation suiteの実行を代用しない。
+
+  - id: ev.observation_final_status
+    path: 03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/external_observation_finalization_20260827/final_traffic_observation_status_summary.json
+    label_ja: 交通観測finalization status
+    role: validation_result
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: data.calibration_observations
+    locator:
+      json_pointer: /validation/status
+    sha256: 89fd603379368732dc0e08a3b69b86800ea0c4de43982ac4a695264d962bd57e
+    record_state: current
+    regeneration_ja: final inventory validationを実行して更新する。
+    portability: ignored_local
+    generated_from_evidence_refs: [ev.final_traffic_observations, ev.observation_inventory_manifest]
+    does_not_support: [validation実施済み, 全観測のcalibration利用可]
+    limitations_ja: 生成・schema statusはPASSEDだがvalidation.statusはNOT_RUNである。
+
+  - id: ev.calibration_manifest_v5
+    path: reproducibility/outputs/traffic_simulation/calibration/20260823_ota_general_traffic_calibration_v5/calibration_manifest.json
+    label_ja: 一般交通較正candidate v5 manifest
+    role: validation_result
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: simulation.sumo
+      - target_type: node
+        target_id: stage.independent_validation
+      - target_type: node
+        target_id: data.independent_validation_observations
+      - target_type: node
+        target_id: issue.formal_traffic_not_accepted
+      - target_type: relation
+        target_id: rel.independent_data_to_validation_stage
+    locator:
+      json_pointer: /status
+    sha256: fccd2e4b61543a03df001d9a0f90cb6db8586f31779d2d21559a94f0a1bd9abd
+    record_state: current
+    regeneration_ja: 凍結したcandidate inputで較正runnerを再実行する。
+    portability: ignored_local
+    generated_from_evidence_refs: [ev.final_traffic_observations, ev.route_candidate_run]
+    does_not_support: [正式交通較正acceptance, 独立Validation実施済み]
+    limitations_ja: statusはnot acceptedで、2024観測はstage 2-4用に未使用で隔離されている。
+
+  - id: ev.proxy_scale_design
+    path: 01_research_design/quantum_route_optimization_research_summary.md
+    label_ja: 配送proxy感度条件
+    role: design_intent
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: instance.common_delivery
+      - target_type: node
+        target_id: method.baseline
+      - target_type: node
+        target_id: method.classical
+      - target_type: node
+        target_id: method.qaoa_aer
+    locator:
+      heading: 5. 研究条件とパラメータ
+    sha256: f5015cd4893121450afc9b58889801cb90d4d7ddd30bfec04f6aac27b0a6dd2b
+    record_state: current
+    regeneration_ja: null
+    portability: tracked
+    does_not_support: [正式Common Delivery Instance, 正式customer_count, 正式vehicle_count]
+    limitations_ja: 顧客25/50/100・車両1/3/5はproxy感度条件でありformal current instanceではない。
+
+  - id: ev.independent_validation_dataset
+    path: reproducibility/outputs/traffic_simulation/calibration/20260823_ota_sumo_measurement_locations_replay_v1/observation_to_measurement_group.csv
+    label_ja: 較正・独立Validation観測の役割mapping
+    role: data_artifact
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: data.independent_validation_observations
+      - target_type: relation
+        target_id: rel.independent_data_to_validation_stage
+    locator:
+      csv_key: validation_role
+    sha256: fe5b7f30f1e843f674850bc00147bf196446299d9bd9b221b7339f83cb293b9e
+    record_state: current
+    regeneration_ja: measurement-location replay pipelineから再生成する。
+    portability: ignored_local
+    generated_from_evidence_refs: [ev.data_registry, ev.road_current]
+    does_not_support: [独立Validation実施済み, validation acceptance]
+    limitations_ja: 2024観測をindependent_validationへ割り当てるが、検証run/resultではない。
+
+  - id: ev.metric_implementation_plan
+    path: 05_src/traffic_simulation/implementation_plan.md
+    label_ja: 配送metric実装計画
+    role: design_intent
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: metric.delivery_population_equivalent
+      - target_type: relation
+        target_id: rel.baseline_produces_p_eq
+      - target_type: relation
+        target_id: rel.classical_produces_p_eq
+      - target_type: relation
+        target_id: rel.qaoa_produces_p_eq
+    locator:
+      heading: 11.4 配送需要充足人口相当
+    sha256: 1b7a990f9fe85fb6be3f4e6717aa853f7c56099bc7b7c07304379daa0e23d2ab
+    record_state: conflicted
+    regeneration_ja: null
+    portability: tracked
+    does_not_support: [正式metric選択の承認, 算出済みP_eq]
+    limitations_ja: P_eqを主指標とする設計だがREADMEの主指標表現と未解決conflictがある。
+
+  - id: ev.independent_validation_design
+    path: 05_src/traffic_simulation/simulation_model_development_and_vv.md
+    label_ja: 独立Validation工程設計
+    role: design_intent
+    strength: direct_repository_evidence
+    supports:
+      - target_type: node
+        target_id: stage.independent_validation
+      - target_type: relation
+        target_id: rel.independent_data_to_validation_stage
+    locator:
+      heading: 2.4 CalibrationとValidationの分離
+    sha256: eb502496605801c0017e268b3aece01504240d191e3a2104a6cbb252462da21b
+    record_state: current
+    regeneration_ja: null
+    portability: tracked
+    does_not_support: [独立Validation実施済み, validation acceptance]
+    limitations_ja: validation分離の設計Evidenceでありrun/resultではない。
+
+nodes:
+  - id: data.open_data
+    label_ja: Open Data
+    label_en: Open Data
+    summary_ja: 研究入力として台帳化された公開データ群。
+    kind: dataset_group
+    status: implemented
+    readiness: provisional
+    nature: repository_grounded
+    current_state_ja: データ台帳、取得記録、来歴と制限がrepositoryに存在する。
+    not_claimed_ja:
+      - 全datasetが正式研究入力として受理済みであること
+      - raw原本がすべて再配布可能であること
+    evidence_refs: [ev.data_registry, ev.data_provenance]
+    limitations_ja:
+      - datasetごとに観測期間、地域、用途、再配布制限、readinessが異なる。
+    tags: [data, provenance, current]
+    unknowns:
+      - field: dataset_group_readiness_rule
+        value: null
+        unknown_reason: dataset別readinessをgroupへ集約する規則が未確定である。
+        confirmation_method: dataset subnodeとgroup集約規則を研究責任者が承認する。
+
+  - id: model.baseline
+    label_ja: Baseline Model
+    label_en: Baseline Model
+    summary_ja: 道路、一般交通、合成配送需要を共通配送比較へ接続する基盤モデル。
+    kind: model
+    status: in_progress
+    readiness: not_accepted
+    nature: repository_grounded
+    current_state_ja: 入力、道路・観測mapping、需要変換、route診断の一部は存在するが、正式交通環境は未受理である。
+    not_claimed_ja:
+      - 正式較正済み交通モデル
+      - 独立Validation済み交通環境
+      - 東京全域への一般化
+    evidence_refs: [ev.research_overview, ev.project_structure, ev.current_issues, ev.research_stage_legacy, ev.road_current, ev.route_spec, ev.route_impl, ev.route_test, ev.vv]
+    limitations_ja:
+      - route-generation設定は未凍結である。
+      - 正式較正と独立Validationは未完了である。
+    tags: [baseline, traffic, current]
+    completed_scope_ja:
+      - 公開入力の台帳化と複数の道路・需要処理を実装した。
+      - route-generation品質を判定する診断とunit testが存在する。
+    remaining_scope_ja:
+      - route-generation設定、正式較正、独立Validationを完了する。
+    next_actions_ja:
+      - quality gateを満たすroute-generation候補を評価し、設定を凍結する。
+    unknowns:
+      - field: route_generation_configuration
+        value: null
+        unknown_reason: 2026-08-28の候補はquality gateを満たしていない。
+        confirmation_method: 全gateに合格した設定とacceptance Evidenceを登録する。
+      - field: formal_calibration_result
+        value: null
+        unknown_reason: 正式交通較正結果が未完成である。
+        confirmation_method: 凍結入力で較正を実行し、受入判断を記録する。
+      - field: independent_validation_result
+        value: null
+        unknown_reason: 未使用観測による独立Validationが未実施である。
+        confirmation_method: 較正から隔離した観測でValidationを実施する。
+
+  - id: stage.current_review_required
+    label_ja: Current Stage（review required）
+    label_en: Current Stage (review required)
+    summary_ja: 管理Evidenceの時系列差により、研究責任者のreviewまで現在工程を確定しないstage正本。
+    kind: stage
+    status: unknown
+    readiness: not_evaluated
+    nature: repository_grounded
+    current_state_ja: 旧stage記録、2026-08-25管理記録、2026-08-28 route記録が異なる工程粒度を示す。
+    not_claimed_ja: [一般交通較正またはroute generationのいずれかが承認済みcurrent stageであること]
+    evidence_refs: [ev.research_stage_legacy, ev.current_issues, ev.route_spec]
+    limitations_ja: [UIはこのnodeを正本としてreview-requiredを表示し、他nodeのstatusから工程を推定しない。]
+    tags: [stage, current, review_required]
+    unknown_reason: 研究管理Evidence間の時系列差とstage粒度差が未reviewである。
+    confirmation_method: 研究責任者がcurrent stageを承認しcurrent_stage_refを承認済みstage nodeへ更新する。
+
+  - id: model.road_network
+    label_ja: Road Network
+    label_en: Road Network
+    summary_ja: 大田区v17 SUMO道路網candidateと、そのformal acceptanceを分離して管理する。
+    kind: model
+    status: in_progress
+    readiness: not_accepted
+    nature: repository_grounded
+    current_state_ja: SUMO net artifactは存在するが、Network Integration Acceptance v2はformal_network_accepted=falseである。
+    not_claimed_ja: [正式研究利用可能な道路網]
+    evidence_refs: [ev.road_current, ev.road_network_candidate, ev.network_acceptance_v2]
+    limitations_ja: [candidateはprovisional analytical networkに限定される。]
+    tags: [baseline, road_network, current_candidate]
+    parent_node_ref: model.baseline
+    group_refs: [group.baseline]
+    completed_scope_ja: [candidate SUMO netを生成しintegration auditを実施した。]
+    remaining_scope_ja: [acceptance v2のblocking findingsを解消しformal networkを再審査する。]
+    next_actions_ja: [正式input gate、permission audit、connection/TLS reviewを完了する。]
+    problem_scale:
+      - id: scale.road_candidate_junction_count
+        label_ja: candidate道路junction数
+        symbol: N_junction
+        value: 74901
+        unit: junction
+        definition_ja: candidate SUMO net.xml内のjunction要素数。
+        role: current_candidate
+        owner_node_ref: model.road_network
+        evidence_ref: ev.road_network_candidate
+        derivation_method: net.xmlのjunction要素をcountする。
+        scope: rejected v17 candidate network
+        time_basis: null
+        geographic_scope: 大田区中心candidate network
+      - id: scale.road_candidate_edge_count
+        label_ja: candidate道路edge数
+        symbol: N_edge
+        value: 339420
+        unit: directed_edge
+        definition_ja: candidate SUMO net.xml内のinternal edgeを含むedge要素数。
+        role: current_candidate
+        owner_node_ref: model.road_network
+        evidence_ref: ev.road_network_candidate
+        derivation_method: net.xmlのedge要素をcountする。
+        scope: rejected v17 candidate network; internal edge included
+        time_basis: null
+        geographic_scope: 大田区中心candidate network
+
+  - id: model.general_traffic_routing
+    label_ja: General Traffic Routing
+    label_en: General Traffic Routing
+    summary_ja: 一般交通ODをmarouter候補でroute化する処理と候補acceptanceを管理する。
+    kind: model
+    status: in_progress
+    readiness: not_accepted
+    nature: repository_grounded
+    current_state_ja: 候補config・実装・test・run manifestはあるが、確認した候補はaccepted=falseである。
+    not_claimed_ja: [凍結済みroute-generation設定]
+    evidence_refs: [ev.route_spec, ev.route_impl, ev.route_test, ev.route_candidate_config, ev.route_candidate_run]
+    limitations_ja: [OD demand保存とcanonical direction quality acceptanceは別gateである。]
+    tags: [baseline, routing, current_candidate]
+    parent_node_ref: model.baseline
+    group_refs: [group.baseline]
+    completed_scope_ja: [801 OD pairの候補route runと品質診断を記録した。]
+    remaining_scope_ja: [canonical direction gateを満たす設定を凍結する。]
+    next_actions_ja: [同じquality gateで次候補を評価する。]
+    problem_scale:
+      - id: scale.routing_od_pair_count
+        label_ja: 候補routing OD pair数
+        symbol: N_OD
+        value: 801
+        unit: od_pair
+        definition_ja: 候補run manifestのinput OD relation数。
+        role: current_candidate
+        owner_node_ref: model.general_traffic_routing
+        evidence_ref: ev.route_candidate_run
+        derivation_method: /quality/demand_coverage/input_od_relation_countを読む。
+        scope: marouter_sue_paths20_maxalt40_v1 candidate
+        time_basis: 07:00-19:00 hourly relations aggregated by OD pair
+        geographic_scope: 大田区中心一般交通network
+      - id: scale.routing_route_count
+        label_ja: 候補route数
+        symbol: N_route
+        value: 18129
+        unit: route
+        definition_ja: 候補routes.rou.xmlのroute要素数。
+        role: current_candidate
+        owner_node_ref: model.general_traffic_routing
+        evidence_ref: ev.route_candidate_run
+        derivation_method: manifestがhash参照するroutes.rou.xmlのroute要素をcountする。
+        scope: marouter_sue_paths20_maxalt40_v1 candidate
+        time_basis: 07:00-19:00 assignment
+        geographic_scope: 大田区中心一般交通network
+
+  - id: data.calibration_observations
+    label_ja: Calibration Observations
+    label_en: Calibration Observations
+    summary_ja: 道路交通センサ・統計をSUMO較正用形式へ最終化したprocessed dataset。
+    kind: dataset
+    status: implemented
+    readiness: provisional
+    nature: repository_grounded
+    current_state_ja: 240行artifactとinventory QAは存在するが、validation suiteはNOT_RUNで5 targetのみcalibration usableである。
+    not_claimed_ja: [全観測の正式較正利用可能性, 交通較正acceptance]
+    evidence_refs: [ev.final_traffic_observations, ev.observation_inventory_manifest, ev.observation_final_status]
+    limitations_ja: [artifact生成PASSEDを研究利用acceptanceとして扱わない。]
+    tags: [baseline, observations, calibration]
+    parent_node_ref: model.baseline
+    group_refs: [group.baseline]
+
+  - id: data.independent_validation_observations
+    label_ja: Independent Validation Observations
+    label_en: Independent Validation Observations
+    summary_ja: 較正から隔離された2024観測入力をvalidation datasetとして管理する。
+    kind: dataset
+    status: implemented
+    readiness: provisional
+    nature: repository_grounded
+    current_state_ja: 2024観測はmapping artifactに存在し、較正manifestでstage 2-4用に未読・未使用と記録される。
+    not_claimed_ja: [独立Validation実施済み, validation acceptance]
+    evidence_refs: [ev.independent_validation_dataset, ev.calibration_manifest_v5]
+    limitations_ja: [dataset存在はvalidation実施済みを意味しない。]
+    tags: [baseline, observations, independent_validation]
+    parent_node_ref: model.baseline
+    group_refs: [group.baseline]
+
+  - id: stage.independent_validation
+    label_ja: Independent Validation Stage
+    label_en: Independent Validation Stage
+    summary_ja: 較正から隔離した観測で交通modelを検証する未実施stage。
+    kind: stage
+    status: planned
+    readiness: not_evaluated
+    nature: repository_grounded_design
+    current_state_ja: 2024観測はreservedだが、独立Validation run/resultは存在しない。
+    not_claimed_ja: [独立Validation完了]
+    evidence_refs: [ev.calibration_manifest_v5, ev.vv, ev.independent_validation_design]
+    limitations_ja: [validation datasetの存在とvalidation実施を混同しない。]
+    tags: [baseline, stage, independent_validation, planned]
+    parent_node_ref: model.baseline
+    group_refs: [group.baseline]
+    entry_conditions_ja: [較正modelとvalidation protocolを凍結する。]
+    expected_outputs_ja: [隔離観測によるrun artifact、metric、acceptance decision。]
+
+  - id: data.synthetic_delivery_demand
+    label_ja: Synthetic Delivery Demand
+    label_en: Synthetic Delivery Demand
+    summary_ja: Open Dataから生成した500m mesh別parcel-equivalent/day需要proxy。
+    kind: dataset
+    status: implemented
+    readiness: provisional
+    nature: repository_grounded
+    current_state_ja: source registry・取得記録・config・変換code/test・Parquet・quality summaryが揃っている。
+    not_claimed_ja: [customer_count, delivery_request_count, 実注文, 実配送停止]
+    evidence_refs: [ev.data_registry, ev.baseline_demand_acquisition, ev.baseline_demand_config, ev.baseline_demand_impl, ev.baseline_demand_test, ev.baseline_demand_artifact, ev.baseline_demand_quality]
+    limitations_ja: ["82,023はparcel-equivalent/dayであり顧客数や注文数ではない。"]
+    tags: [baseline, demand, synthetic, proxy]
+    parent_node_ref: model.baseline
+    group_refs: [group.baseline]
+    problem_scale:
+      - id: scale.synthetic_demand_vector_dimension
+        label_ja: 合成需要vector次元
+        symbol: dim_D
+        value: 191
+        unit: mesh_cell
+        definition_ja: area-weighted処理後に人口を持つ500m mesh数。
+        role: current_candidate
+        owner_node_ref: data.synthetic_delivery_demand
+        evidence_ref: ev.baseline_demand_quality
+        derivation_method: quality summaryのpopulation_positive_mesh_countを読む。
+        scope: baseline demand v1
+        time_basis: 2024人口target・1日需要proxy
+        geographic_scope: 東京都大田区
+      - id: scale.synthetic_parcel_equivalent_per_day
+        label_ja: 合成parcel-equivalent量
+        symbol: D_total
+        value: 82023
+        unit: parcel_equivalent/day
+        definition_ja: 191 meshへlargest remainderで配賦した1日需要proxy合計。
+        role: proxy
+        owner_node_ref: data.synthetic_delivery_demand
+        evidence_ref: ev.baseline_demand_quality
+        derivation_method: source統計からq_baseを計算し人口へ乗算後、largest remainderで整数配賦する。
+        scope: baseline demand v1; not customer or request count
+        time_basis: 1 day
+        geographic_scope: 東京都大田区
+
+  - id: model.ev_vehicle_conditions
+    label_ja: EV / Vehicle Conditions
+    label_en: EV / Vehicle Conditions
+    summary_ja: 配送simulationへ与えるvehicle class・EV・運用条件の管理単位。
+    kind: model
+    status: in_progress
+    readiness: not_accepted
+    nature: repository_grounded_design
+    current_state_ja: managed vehicle profileと比較上の車種固定方針はあるが、正式台数・容量・電池・充電条件は未固定である。
+    not_claimed_ja: [正式vehicle_count, 正式EV battery model, 実運用条件]
+    evidence_refs: [ev.vehicle_profile, ev.optimization_protocol]
+    limitations_ja: [車種profileの存在を配送運用条件のacceptanceとして扱わない。]
+    tags: [baseline, vehicle, ev]
+    parent_node_ref: model.baseline
+    group_refs: [group.baseline]
+    completed_scope_ja: [比較時に固定すべきvehicle classを仕様化した。]
+    remaining_scope_ja: [正式台数、容量、稼働時間、電池・充電条件を決定する。]
+    next_actions_ja: [Common Delivery Instanceのvehicle条件をreviewする。]
+
+  - id: simulation.sumo
+    label_ja: SUMO Simulation
+    label_en: SUMO Simulation
+    summary_ja: candidate道路・一般交通・配送車両をSUMOで評価するsimulation工程。
+    kind: simulation
+    status: in_progress
+    readiness: not_accepted
+    nature: repository_grounded
+    current_state_ja: 一般交通較正candidate runは存在するがnot acceptedで、正式配送simulation runはない。
+    not_claimed_ja: [正式配送simulation結果, 受理済み交通simulation]
+    evidence_refs: [ev.calibration_manifest_v5, ev.vv]
+    limitations_ja: ["304,305は未受理較正candidateのvehicle departuresで、配送車両数ではない。"]
+    tags: [baseline, sumo, simulation]
+    parent_node_ref: model.baseline
+    group_refs: [group.baseline]
+    completed_scope_ja: [較正candidate runと評価metricをartifact化した。]
+    remaining_scope_ja: [正式道路・routing・較正・配送instanceでsimulationを実施する。]
+    next_actions_ja: [上流acceptance後に正式run contractを凍結する。]
+    problem_scale:
+      - id: scale.sumo_candidate_vehicle_departures
+        label_ja: 未受理較正runのvehicle departures
+        symbol: N_departure
+        value: 304305
+        unit: vehicle_departure
+        definition_ja: 一般交通較正candidate v5が記録したcalibrated_vehicle_departures。
+        role: current_candidate
+        owner_node_ref: simulation.sumo
+        evidence_ref: ev.calibration_manifest_v5
+        derivation_method: calibration manifestの/calibrated_vehicle_departuresを読む。
+        scope: rejected general-traffic calibration candidate v5; not delivery fleet size
+        time_basis: calibration run period defined by candidate input
+        geographic_scope: 大田区中心SUMO network
+
+  - id: instance.common_delivery
+    label_ja: Common Delivery Instance
+    label_en: Common Delivery Instance
+    summary_ja: Baseline、古典最適化、Aer QAOAへ共通に与える凍結配送問題。
+    kind: experiment_instance
+    status: planned
+    readiness: not_evaluated
+    nature: repository_grounded_design
+    current_state_ja: 公平比較の契約と一部需要・車両仮定は文書化されるが、正式instanceは未固定である。
+    not_claimed_ja:
+      - 正式な顧客、配送停止、車両、cost matrixが存在すること
+    evidence_refs: [ev.baseline_demand_spec, ev.vehicle_profile, ev.optimization_protocol, ev.current_issues, ev.proxy_scale_design]
+    limitations_ja:
+      - 配送停止、depot、車両数、容量、時間、EV・充電、行列が未固定である。
+    tags: [delivery, instance, planned]
+    entry_conditions_ja:
+      - 正式利用可能な道路・交通環境と配送条件を固定する。
+    expected_outputs_ja:
+      - versionとSHA-256を持つ共通instance、checker、evaluator、seed契約。
+    unknowns:
+      - field: frozen_instance
+        value: null
+        unknown_reason: 正式instanceを構成する運用条件と行列が未固定である。
+        confirmation_method: 共通instance artifactとacceptance記録を作成する。
+    problem_scale:
+      - id: scale.common_proxy_customer_count
+        label_ja: proxy顧客数感度水準
+        symbol: N_customer
+        value: [25, 50, 100]
+        unit: customer
+        definition_ja: synthetic/proxy実験で用いる顧客集合サイズの感度水準。
+        role: sensitivity
+        owner_node_ref: instance.common_delivery
+        evidence_ref: ev.proxy_scale_design
+        derivation_method: 研究条件表に明記された水準を転記する。
+        scope: proxy sensitivity; not formal current instance
+        time_basis: null
+        geographic_scope: 大田区起点proxy experiment
+      - id: scale.common_proxy_vehicle_count
+        label_ja: proxy車両数感度水準
+        symbol: N_vehicle
+        value: [1, 3, 5]
+        unit: vehicle
+        definition_ja: synthetic/proxy実験で用いる配送車両数の感度水準。
+        role: sensitivity
+        owner_node_ref: instance.common_delivery
+        evidence_ref: ev.proxy_scale_design
+        derivation_method: 研究条件表に明記された水準を転記する。
+        scope: proxy sensitivity; not formal current instance
+        time_basis: null
+        geographic_scope: 大田区起点proxy experiment
+
+  - id: method.baseline
+    label_ja: Baseline / fixed_hash_no_reordering
+    label_en: Baseline / fixed_hash_no_reordering
+    summary_ja: 要求順序を最適化しない明示的な帰無比較器。
+    kind: method
+    status: in_progress
+    readiness: not_evaluated
+    nature: repository_grounded_design
+    current_state_ja: 合成需要生成と固定順序の仕様・一部実装はあるが、正式instanceでの比較実行はない。
+    not_claimed_ja:
+      - 実在事業者の現行運用
+      - 正式な配送性能結果
+    evidence_refs: [ev.baseline_demand_spec, ev.baseline_demand_config, ev.baseline_demand_impl, ev.baseline_demand_test, ev.optimization_protocol, ev.proxy_scale_design]
+    limitations_ja:
+      - 配送要求割当、道路走行、完了判定を含む正式比較は未実施である。
+    tags: [baseline, method, current]
+    completed_scope_ja:
+      - 合成需要計算コードとunit test、固定順序仕様が存在する。
+    remaining_scope_ja:
+      - 正式共通instanceで比較器全体を実装・検証・実行する。
+    next_actions_ja:
+      - Common Delivery Instance凍結後にend-to-end比較器を完成する。
+    unknowns:
+      - field: formal_baseline_run
+        value: null
+        unknown_reason: 正式共通instanceが存在せず比較runを実施できない。
+        confirmation_method: 凍結instanceでrun artifactとacceptanceを作成する。
+
+  - id: method.classical
+    label_ja: Classical Optimization
+    label_en: Classical Optimization
+    summary_ja: 共通配送問題に対する古典最適化手法の計画。
+    kind: method
+    status: planned
+    readiness: not_evaluated
+    nature: repository_grounded_design
+    current_state_ja: 公平比較規約はあるが、正式solver実装・結果は確認できない。
+    not_claimed_ja: [正式solver実装, 正式比較結果]
+    evidence_refs: [ev.optimization_protocol, ev.proxy_scale_design]
+    limitations_ja: [solver、予算、停止条件、acceptanceが未固定である。]
+    tags: [classical, optimization, planned]
+    entry_conditions_ja: [Common Delivery Instanceを凍結する。]
+    expected_outputs_ja: [再現可能な古典solver実装、raw/repaired解、計測結果。]
+    unknowns:
+      - field: formal_classical_solver
+        value: null
+        unknown_reason: 正式solverとversionが未選定・未実装である。
+        confirmation_method: solver、version、予算、acceptance条件を事前登録する。
+    problem_scale:
+      - id: scale.classical_binary_variable_count
+        label_ja: 古典最適化binary variable数
+        symbol: N_binary
+        value: null
+        unit: variable
+        definition_ja: 正式formulationで使用するbinary decision variableの総数。
+        role: planned
+        owner_node_ref: method.classical
+        evidence_ref: ev.optimization_protocol
+        derivation_method: null
+        scope: formal Common Delivery Instance
+        time_basis: null
+        geographic_scope: null
+        unknown_reason: 正式solver、instance、formulationが未固定で導出式もrepositoryにない。
+
+  - id: method.qaoa_aer
+    label_ja: Qiskit Aer QAOA
+    label_en: Qiskit Aer QAOA
+    summary_ja: 共通配送問題をQUBO化し、古典計算機上のAerで回路を模擬する計画。
+    kind: method
+    status: planned
+    readiness: not_evaluated
+    nature: repository_grounded_design
+    current_state_ja: QUBO、QAOA、Aerの比較方針はあるが、正式実装・結果は確認できない。
+    not_claimed_ja: [量子実機性能, 量子優位性]
+    evidence_refs: [ev.optimization_protocol, ev.vv, ev.proxy_scale_design]
+    limitations_ja: [Aerは古典計算機上の量子回路simulatorである。]
+    tags: [qaoa, aer, simulator, planned]
+    execution_modality: classical_quantum_circuit_simulator
+    hardware_execution: false
+    quantum_advantage_claimed: false
+    entry_conditions_ja: [Common Delivery Instanceと比較予算を凍結する。]
+    expected_outputs_ja: [QUBO、回路条件、shots、復号・修復を含む再現可能なrun artifact。]
+    unknowns:
+      - field: qaoa_execution_contract
+        value: null
+        unknown_reason: QUBO、penalty、reps、shots、optimizer、seedが未固定である。
+        confirmation_method: QAOA実行契約を事前登録し、実装・testを追加する。
+    problem_scale:
+      - id: scale.qaoa_qubit_count
+        label_ja: Aer QAOA logical qubit数
+        symbol: N_qubit
+        value: null
+        unit: logical_qubit
+        definition_ja: 正式QUBO encodingに必要なlogical qubit数。
+        role: planned
+        owner_node_ref: method.qaoa_aer
+        evidence_ref: ev.optimization_protocol
+        derivation_method: null
+        scope: formal Common Delivery Instance and encoding
+        time_basis: null
+        geographic_scope: null
+        unknown_reason: QUBO formulationとencodingが未固定で、任意のqubit数を設定できない。
+
+  - id: metric.computation_time
+    label_ja: Computation Time
+    label_en: Computation Time
+    summary_ja: 手法間の計算時間を公平な境界で比較する予定metric。
+    kind: metric
+    status: planned
+    readiness: not_evaluated
+    nature: repository_grounded_design
+    current_state_ja: 計測対象候補は規約化されるが、正式境界と値は未確定である。
+    not_claimed_ja: [正式計測値, 量子実機実行時間]
+    evidence_refs: [ev.optimization_protocol]
+    limitations_ja: [equal-budgetとbest-referenceを分離する必要がある。]
+    tags: [metric, time, planned]
+    entry_conditions_ja: [比較手法、予算、計測環境、計測境界を凍結する。]
+    expected_outputs_ja: [単位と包含処理を明示した手法別計測値。]
+    unknowns:
+      - field: measurement_boundary
+        value: null
+        unknown_reason: 前処理からSUMO評価までの包含範囲が未確定である。
+        confirmation_method: equal-budgetとbest-reference別に計測契約を承認する。
+
+  - id: metric.delivery_fulfillment
+    label_ja: Delivery Fulfillment（metric group・仮称）
+    label_en: Delivery Fulfillment (working metric group)
+    summary_ja: 配送需要充足率とP_eqを同一metricに確定せず束ねる仮称group。
+    kind: metric_group
+    status: blocked
+    readiness: not_evaluated
+    nature: repository_grounded_design
+    current_state_ja: 異なる単位と変換を持つ2 metricを分離したが、主指標の選択は未解決である。
+    not_claimed_ja: [正式な配送需要充足率, 実際に配送を受けた人数, 正式P_eq値]
+    evidence_refs: [ev.baseline_demand_spec, ev.current_issues]
+    limitations_ja:
+      - 82,023宅配便個数相当／日は停止数・注文数・受取人数ではない。
+    tags: [metric, fulfillment, blocked]
+    unblock_conditions_ja:
+      - 正式名称、分母、P_eqとの関係を承認する。
+      - Common Delivery Instanceと正式道路・交通環境を凍結する。
+    unknowns:
+      - field: canonical_metric_name
+        value: null
+        unknown_reason: Delivery Fulfillment、配送需要充足率、P_eqの関係が未整理である。
+        confirmation_method: 主指標と補助指標の名称を研究責任者が承認する。
+      - field: denominator
+        value: null
+        unknown_reason: 配送停止、要求、parcel-equivalent、人口相当のどれを分母とするか未確定である。
+        confirmation_method: 単位、scope、期間、分母をmetric契約へ記録する。
+      - field: p_eq_relationship
+        value: null
+        unknown_reason: P_eqを主指標、補助指標、変換値のどれにするか未確定である。
+        confirmation_method: P_eqの解釈と受入条件を承認する。
+
+  - id: metric.delivery_fulfillment_rate
+    label_ja: 配送需要充足率
+    label_en: Delivery Demand Fulfillment Rate
+    summary_ja: 割り当てた合成配送需要のうち完了条件を満たした割合として設計されたmetric。
+    kind: metric
+    status: planned
+    readiness: not_evaluated
+    nature: repository_grounded_design
+    current_state_ja: READMEに式案はあるが、正式完了条件・scope・値は未承認・未算出である。
+    not_claimed_ja: [正式metric acceptance, 実配送需要の充足率, 算出済み値]
+    evidence_refs: [ev.research_overview, ev.baseline_demand_spec]
+    limitations_ja: [合成配送需要を対象とし、P_eqとは単位・変換が異なる。]
+    tags: [metric, fulfillment_rate, planned]
+    group_refs: [group.metrics]
+    entry_conditions_ja: [完了条件、分母scope、期間、Common Delivery Instanceを承認する。]
+    expected_outputs_ja: [dimensionless ratioと分子・分母・scope付きrun artifact。]
+    metric_definition:
+      definition_ja: 完了条件を満たした合成配送需要を割り当てた合成配送需要で除した比率。
+      symbol: null
+      unit: ratio
+      numerator: 完了条件を満たした合成配送需要
+      denominator: 割り当てた合成配送需要
+      transformation: numerator / denominator
+      scope: synthetic delivery demand; formal completion boundary unresolved
+      time_basis: null
+      geographic_scope: null
+      unknown_reason: 記号、正式完了条件、期間、地域scopeが未承認である。
+
+  - id: metric.delivery_population_equivalent
+    label_ja: 配送需要充足人口相当（P_eq）
+    label_en: Delivery Demand Fulfillment Population Equivalent
+    summary_ja: mesh別完了配送量を1人当たり需要率と期間で人口相当に変換し人口上限でcapする派生metric案。
+    kind: metric
+    status: planned
+    readiness: not_evaluated
+    nature: repository_grounded_design
+    current_state_ja: 数式案と入力需要proxyはあるが、Y_msを生成する処理・正式値・metric acceptanceはない。
+    not_claimed_ja: [実際に配送を受けた人数, 算出済みP_eq, 正式主指標]
+    evidence_refs: [ev.baseline_demand_spec, ev.metric_implementation_plan]
+    limitations_ja: [人口相当の指標であり配送需要充足率と同一値ではない。]
+    tags: [metric, p_eq, derived, planned]
+    group_refs: [group.metrics]
+    entry_conditions_ja: [Y_ms、q_m、T、mesh scopeとmetric位置付けを承認する。]
+    expected_outputs_ja: [person-equivalent単位のP_eqと変換入力を保持するartifact。]
+    metric_definition:
+      definition_ja: meshごとにmin(N_m, Y_ms/(q_m*T))を計算して合計する人口相当値。
+      symbol: P_eq
+      unit: person_equivalent
+      numerator: Y_ms（mesh m・scenario sの完了配送量）
+      denominator: q_m * T
+      transformation: P_eq(s) = sum_m min(N_m, Y_ms / (q_m * T))
+      scope: mesh-level synthetic demand; formal scenario unresolved
+      time_basis: T days; formal T unresolved
+      geographic_scope: null
+      unknown_reason: Y_ms生成、正式T、地域scope、主指標/補助指標の承認がない。
+
+  - id: future.qubit_scale
+    label_ja: Quantum Bit Scale Analysis
+    label_en: Quantum Bit Scale Analysis
+    summary_ja: 文献の回路幅・問題scaleと配送問題scaleの差を扱う将来分析。
+    kind: analysis
+    status: planned
+    readiness: not_evaluated
+    nature: repository_grounded_design
+    current_state_ja: 文献scale抽出資産はあるが、正式配送比較結果との接続は未実施である。
+    not_claimed_ja: [量子優位性, 配送問題に必要な確定qubit数]
+    evidence_refs: [ev.research_structure, ev.analysis_method, ev.scale_gap_impl]
+    limitations_ja: [encodingと評価modalityが異なる文献値を同一尺度とみなさない。]
+    tags: [future, qubit, scale, planned]
+    entry_conditions_ja: [配送問題instanceとencoding条件を固定する。]
+    expected_outputs_ja: [定義と不確実性を保持したscale-gap分析。]
+    unknowns:
+      - field: delivery_comparison_link
+        value: null
+        unknown_reason: 正式配送instanceと比較結果が未完成である。
+        confirmation_method: instance規模とencoding別resource定義を接続する。
+
+  - id: future.battery_external_model
+    label_ja: Quantum-to-Battery External Model
+    label_en: Quantum-to-Battery External Model
+    summary_ja: 量子材料・化学知見をbattery性能範囲へ接続する将来外部モデル仮説。
+    kind: external_model
+    status: planned
+    readiness: not_evaluated
+    nature: hypothesis
+    current_state_ja: 構想のみで、量子計算からbattery性能への直接因果モデルはない。
+    not_claimed_ja: [量子計算によるbattery性能改善の実証, 定量的な性能予測]
+    evidence_refs: [ev.research_structure, ev.analysis_method]
+    limitations_ja: [係数、外部source、Validation、因果mechanismが未確定である。]
+    tags: [future, battery, external_model, hypothesis]
+    entry_conditions_ja: [外部source、変数、変換規則、Validation方法を定義する。]
+    expected_outputs_ja: [不確実性付きbattery性能rangeを返す外部モデル。]
+    unknowns:
+      - field: quantitative_battery_model
+        value: null
+        unknown_reason: repository内に定量的な接続モデルがない。
+        confirmation_method: 外部Evidenceと変換・Validation契約を追加する。
+
+  - id: future.demand_statistical_model
+    label_ja: Population / Household Demand Model
+    label_en: Population / Household Demand Model
+    summary_ja: 人口、世帯、EC利用等から配送需要変化を推定する将来外部モデル仮説。
+    kind: external_model
+    status: planned
+    readiness: not_evaluated
+    nature: hypothesis
+    current_state_ja: 式の構想はあるが、係数、推定、Validationは未確定である。
+    not_claimed_ja: [観測済み将来需要, 確定需要予測]
+    evidence_refs: [ev.research_structure, ev.analysis_method]
+    limitations_ja: [人口や世帯から配送停止へ直接変換できない。]
+    tags: [future, demand, external_model, hypothesis]
+    entry_conditions_ja: [変数、係数source、推定方法、Validationを定義する。]
+    expected_outputs_ja: [scenario別需要rangeと不確実性。]
+    unknowns:
+      - field: demand_model_coefficients
+        value: null
+        unknown_reason: 係数と推定・Validation方法がrepositoryにない。
+        confirmation_method: 統計モデル仕様と推定Evidenceを追加する。
+
+  - id: future.final_fulfillment
+    label_ja: Final Delivery Demand Fulfillment
+    label_en: Final Delivery Demand Fulfillment
+    summary_ja: 将来需要、車両技術、solverを統合する予定の最終配送評価。
+    kind: outcome
+    status: planned
+    readiness: not_evaluated
+    nature: hypothesis
+    current_state_ja: 統合評価は未実装で、定量結果はない。
+    not_claimed_ja: [最終配送需要充足の正式値, 将来予測結果]
+    evidence_refs: [ev.research_overview, ev.research_structure, ev.analysis_method]
+    limitations_ja: [上流metricと外部モデルが未確定である。]
+    tags: [future, fulfillment, outcome, planned]
+    entry_conditions_ja: [現行metric、需要外部モデル、車両外部モデル、solver結果を受理する。]
+    expected_outputs_ja: [scenarioと不確実性を明示した最終配送評価。]
+    unknowns:
+      - field: integration_model
+        value: null
+        unknown_reason: 上流モデルとmetricの統合規則が未定義である。
+        confirmation_method: 変数、relation、計算規則、Validationを事前登録する。
+
+  - id: future.urban_society_economy
+    label_ja: Urban Society / Economy
+    label_en: Urban Society / Economy
+    summary_ja: 配送成果を都市社会・経済へ接続する将来outcome仮説。
+    kind: outcome
+    status: planned
+    readiness: not_evaluated
+    nature: hypothesis
+    current_state_ja: application-stageの構想はあるが、repository内に定量接続モデルはない。
+    not_claimed_ja: [社会経済効果の実証, 観測確率としてのFuture Wheels score]
+    evidence_refs: [ev.research_structure, ev.analysis_method, ev.future_wheels_impl]
+    limitations_ja: [Future Wheelsは構造化された構想であり因果推定ではない。]
+    tags: [future, society, economy, hypothesis]
+    entry_conditions_ja: [社会・経済outcome、外部source、因果またはscenario関係を定義する。]
+    expected_outputs_ja: [不確実性と非因果境界を明示した社会接続分析。]
+    unknowns:
+      - field: quantitative_social_economic_model
+        value: null
+        unknown_reason: 配送成果から社会・経済outcomeへの定量モデルがない。
+        confirmation_method: 外部モデル、変数、反証条件、Validationを定義する。
+
+  - id: issue.route_generation_not_frozen
+    label_ja: Route-generation設定未凍結
+    summary_ja: 一般交通route候補が品質gateを満たさず、設定を凍結できない。
+    kind: issue
+    status: in_progress
+    resolution_status: actively_resolving
+    readiness: not_accepted
+    nature: repository_grounded
+    current_state_ja: 2026-08-28のv1候補は全件gate不合格である。
+    not_claimed_ja: [受理済みroute-generation設定]
+    evidence_refs: [ev.current_issues, ev.route_spec, ev.route_candidate_run]
+    limitations_ja: [固定endpointでの合法route存在はfull-OD候補の品質を保証しない。]
+    tags: [issue, traffic, routing]
+    completed_scope_ja: [診断、quality gate、複数候補の評価を実施した。]
+    remaining_scope_ja: [全gateを満たす候補を確定する。]
+    next_actions_ja: [v2候補を同じgateで評価し、結果を記録する。]
+
+  - id: issue.common_delivery_unfrozen
+    label_ja: Common Delivery Instance未固定
+    summary_ja: 公平比較に必要な配送運用条件と正式instanceが不足している。
+    kind: issue
+    status: planned
+    resolution_status: open
+    readiness: not_evaluated
+    nature: repository_grounded_design
+    current_state_ja: 需要proxyと比較契約はあるが、配送停止・車両・運用・行列が未固定である。
+    not_claimed_ja: [正式配送問題の存在]
+    evidence_refs: [ev.current_issues, ev.baseline_demand_spec, ev.optimization_protocol, ev.project_structure]
+    limitations_ja: [不足条件を観測値として補完してはならない。]
+    tags: [issue, delivery, instance]
+    completed_scope_ja: [共通化すべき項目と公平比較原則を文書化した。]
+    remaining_scope_ja: [全入力、制約、checker、evaluator、seedを凍結する。]
+    next_actions_ja: [配送運用条件を決定し、version付きinstanceを生成する。]
+    entry_conditions_ja: [配送運用条件のreview責任者と凍結手順を決める。]
+    expected_outputs_ja: [受理済みCommon Delivery Instanceとchecker。]
+
+  - id: issue.delivery_metric_definition
+    label_ja: 配送metric定義未解決
+    summary_ja: Delivery Fulfillmentの正式名称、分母、P_eqとの関係が未解決である。
+    kind: issue
+    status: in_progress
+    resolution_status: open
+    readiness: not_evaluated
+    nature: repository_grounded_design
+    current_state_ja: P_eq式案と解釈上の制限はあるが、主metric契約がない。
+    not_claimed_ja: [正式な配送需要充足率定義]
+    evidence_refs: [ev.current_issues, ev.baseline_demand_spec]
+    limitations_ja: [資源過剰・不足による飽和とsolver差を分離する必要がある。]
+    tags: [issue, metric, fulfillment]
+    completed_scope_ja: [P_eq式案と誤解してはならない範囲を文書化した。]
+    remaining_scope_ja: [名称、単位、分母、期間、scope、P_eqの役割を決める。]
+    next_actions_ja: [研究責任者が主指標と補助指標を承認する。]
+
+  - id: issue.formal_traffic_not_accepted
+    label_ja: 正式道路・交通環境未受理
+    summary_ja: 配送比較へ使用できる正式道路・交通状態がまだ受理されていない。
+    kind: issue
+    status: in_progress
+    resolution_status: open
+    readiness: not_accepted
+    nature: repository_grounded
+    current_state_ja: mapping・属性・診断の部分成果はあるが、正式利用gateが未完了である。
+    not_claimed_ja: [独立Validation済み交通環境]
+    evidence_refs: [ev.current_issues, ev.road_current, ev.vv, ev.network_acceptance_v2, ev.calibration_manifest_v5]
+    limitations_ja: [実装test合格と科学的readinessを分離する必要がある。]
+    tags: [issue, road, traffic, readiness]
+    completed_scope_ja: [複数のmapping、属性処理、V&V規約を整備した。]
+    remaining_scope_ja: [正式道路受入、交通較正、独立Validationを完了する。]
+    next_actions_ja: [未完了gateを順に解消し、acceptance decisionを記録する。]
+
+  - id: issue.future_external_models_missing
+    label_ja: Future外部モデル未構築
+    summary_ja: battery、将来需要、社会経済接続の定量外部モデルが未構築である。
+    kind: issue
+    status: planned
+    resolution_status: deferred
+    readiness: not_evaluated
+    nature: repository_grounded_design
+    current_state_ja: 構想とcandidate methodのみがあり、係数・因果・Validationはない。
+    not_claimed_ja: [将来効果の定量予測]
+    evidence_refs: [ev.research_structure, ev.analysis_method]
+    limitations_ja: [外部事実や係数をRegistry作成時に推測してはならない。]
+    tags: [issue, future, external_model]
+    completed_scope_ja: [必要な将来接続領域を設計として識別した。]
+    remaining_scope_ja: [各外部モデルのsource、変数、係数、Validationを定義する。]
+    next_actions_ja: [外部モデルごとに独立した研究仕様とEvidenceを作成する。]
+    entry_conditions_ja: [現行配送比較とfuture分析の接続scopeをreviewする。]
+    expected_outputs_ja: [各外部モデルのsource・変数・係数・Validation契約。]
+    scope_refs: [future.battery_external_model, future.demand_statistical_model, future.final_fulfillment, future.urban_society_economy]
+    intentionally_isolated: true
+    isolation_reason_ja: 定量モデルが存在しないため因果relationを追加せず、非因果scope_refsだけで対象を示す。
+
+relations:
+  - id: rel.open_data_to_baseline
+    label_ja: Open DataをBaselineへ入力
+    summary_ja: 台帳化された公開入力をBaseline Modelの各処理で使用する。
+    source: data.open_data
+    target: model.baseline
+    type: inputs_to
+    status: in_progress
+    nature: repository_grounded
+    evidence_refs: [ev.data_registry, ev.research_overview]
+    limitations_ja: [datasetごとのreadinessは異なる。]
+
+  - id: rel.baseline_to_common_instance
+    label_ja: Baseline基盤から共通instanceへ
+    summary_ja: 正式な道路・交通・需要条件が共通配送instanceの成立に必要である。
+    source: model.baseline
+    target: instance.common_delivery
+    type: depends_on
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.current_issues, ev.optimization_protocol]
+    limitations_ja: [現時点で共通instanceは生成されていない。]
+    entry_conditions_ja: [Baseline Modelの必要入力が受理される。]
+    expected_outputs_ja: [凍結された共通配送instance。]
+
+  - id: rel.common_to_baseline_method
+    label_ja: 共通instanceをBaselineへ適用
+    summary_ja: fixed_hash_no_reordering比較器は凍結された共通instanceを使用する。
+    source: instance.common_delivery
+    target: method.baseline
+    type: depends_on
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.baseline_demand_spec, ev.optimization_protocol]
+    limitations_ja: [正式instanceでのrunはない。]
+    entry_conditions_ja: [Common Delivery Instanceを凍結する。]
+    expected_outputs_ja: [Baselineのraw/repaired解と評価入力。]
+
+  - id: rel.common_to_classical
+    label_ja: 共通instanceを古典最適化へ適用
+    summary_ja: 古典solverは凍結された共通instanceを使用する計画である。
+    source: instance.common_delivery
+    target: method.classical
+    type: depends_on
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.optimization_protocol]
+    limitations_ja: [solverは未実装である。]
+    entry_conditions_ja: [Common Delivery Instanceを凍結する。]
+    expected_outputs_ja: [古典solverのraw/repaired解。]
+
+  - id: rel.common_to_qaoa
+    label_ja: 共通instanceをAer QAOAへ適用
+    summary_ja: Aer QAOAは凍結された共通instanceの縮約・QUBOを使用する計画である。
+    source: instance.common_delivery
+    target: method.qaoa_aer
+    type: depends_on
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.optimization_protocol, ev.vv]
+    limitations_ja: [QUBOとrun条件は未固定である。]
+    entry_conditions_ja: [Common Delivery Instanceと縮約規則を凍結する。]
+    expected_outputs_ja: [Aer QAOAのraw/repaired解。]
+
+  - id: rel.baseline_produces_time
+    label_ja: Baseline計算時間
+    summary_ja: Baseline比較器の計算時間を共通境界で計測する計画。
+    source: method.baseline
+    target: metric.computation_time
+    type: produces
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.optimization_protocol]
+    limitations_ja: [値は未算出である。]
+    entry_conditions_ja: [計測境界と正式runを固定する。]
+    expected_outputs_ja: [単位とscope付き計算時間。]
+
+  - id: rel.classical_produces_time
+    label_ja: 古典最適化計算時間
+    summary_ja: 古典solverの計算時間を共通境界で計測する計画。
+    source: method.classical
+    target: metric.computation_time
+    type: produces
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.optimization_protocol]
+    limitations_ja: [値は未算出である。]
+    entry_conditions_ja: [solverと計測境界を固定する。]
+    expected_outputs_ja: [単位とscope付き計算時間。]
+
+  - id: rel.qaoa_produces_time
+    label_ja: Aer QAOA計算時間
+    summary_ja: Aer QAOAの計算時間を共通境界で計測する計画。
+    source: method.qaoa_aer
+    target: metric.computation_time
+    type: produces
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.optimization_protocol]
+    limitations_ja: [量子実機時間ではなく値も未算出である。]
+    entry_conditions_ja: [QAOA条件と計測境界を固定する。]
+    expected_outputs_ja: [単位とscope付きAer実行時間。]
+
+  - id: rel.baseline_produces_fulfillment
+    label_ja: Baseline配送充足評価
+    summary_ja: Baselineの完了配送量から仮称Delivery Fulfillmentを評価する計画。
+    source: method.baseline
+    target: metric.delivery_fulfillment_rate
+    type: produces
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.baseline_demand_spec, ev.research_overview]
+    limitations_ja: [metric定義と値は未確定である。]
+    entry_conditions_ja: [正式instanceとmetric契約を凍結する。]
+    expected_outputs_ja: [単位・分母・scope付き評価値。]
+
+  - id: rel.classical_produces_fulfillment
+    label_ja: 古典最適化配送充足評価
+    summary_ja: 古典解の完了配送量から仮称Delivery Fulfillmentを評価する計画。
+    source: method.classical
+    target: metric.delivery_fulfillment_rate
+    type: produces
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.baseline_demand_spec, ev.optimization_protocol]
+    limitations_ja: [metric定義と値は未確定である。]
+    entry_conditions_ja: [正式instance、solver、metric契約を凍結する。]
+    expected_outputs_ja: [単位・分母・scope付き評価値。]
+
+  - id: rel.qaoa_produces_fulfillment
+    label_ja: Aer QAOA配送充足評価
+    summary_ja: Aer QAOA解の完了配送量から仮称Delivery Fulfillmentを評価する計画。
+    source: method.qaoa_aer
+    target: metric.delivery_fulfillment_rate
+    type: produces
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.baseline_demand_spec, ev.optimization_protocol]
+    limitations_ja: [metric定義と値は未確定である。]
+    entry_conditions_ja: [正式instance、QAOA、metric契約を凍結する。]
+    expected_outputs_ja: [単位・分母・scope付き評価値。]
+
+  - id: rel.baseline_produces_p_eq
+    label_ja: Baseline P_eq評価
+    summary_ja: Baselineのmesh別完了配送量からP_eqを導出する計画。
+    source: method.baseline
+    target: metric.delivery_population_equivalent
+    type: produces
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.baseline_demand_spec, ev.metric_implementation_plan]
+    limitations_ja: [Y_msと正式P_eq値は存在しない。]
+    entry_conditions_ja: [正式instanceとP_eq変換契約を凍結する。]
+    expected_outputs_ja: [入力と変換を追跡できるperson-equivalent値。]
+
+  - id: rel.classical_produces_p_eq
+    label_ja: 古典最適化P_eq評価
+    summary_ja: 古典解のmesh別完了配送量からP_eqを導出する計画。
+    source: method.classical
+    target: metric.delivery_population_equivalent
+    type: produces
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.baseline_demand_spec, ev.metric_implementation_plan]
+    limitations_ja: [solver、Y_ms、正式P_eq値は存在しない。]
+    entry_conditions_ja: [正式instance、solver、P_eq変換契約を凍結する。]
+    expected_outputs_ja: [入力と変換を追跡できるperson-equivalent値。]
+
+  - id: rel.qaoa_produces_p_eq
+    label_ja: Aer QAOA P_eq評価
+    summary_ja: Aer QAOA解のmesh別完了配送量からP_eqを導出する計画。
+    source: method.qaoa_aer
+    target: metric.delivery_population_equivalent
+    type: produces
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.baseline_demand_spec, ev.metric_implementation_plan]
+    limitations_ja: [QAOA実装、Y_ms、正式P_eq値は存在しない。]
+    entry_conditions_ja: [正式instance、QAOA、P_eq変換契約を凍結する。]
+    expected_outputs_ja: [入力と変換を追跡できるperson-equivalent値。]
+
+  - id: rel.open_data_to_synthetic_demand
+    label_ja: Open Dataから合成配送需要へ
+    summary_ja: 登録Open Dataをconfigと変換codeで500m mesh需要proxyへ変換する。
+    source: data.open_data
+    target: data.synthetic_delivery_demand
+    type: transforms_to
+    status: implemented
+    nature: repository_grounded
+    evidence_refs: [ev.data_registry, ev.baseline_demand_acquisition, ev.baseline_demand_config, ev.baseline_demand_impl, ev.baseline_demand_artifact, ev.baseline_demand_quality]
+    limitations_ja: [派生需要は実顧客・実注文ではない。]
+
+  - id: rel.independent_data_to_validation_stage
+    label_ja: 隔離観測を独立Validationへ入力
+    summary_ja: 較正で未使用の2024観測をplanned independent validation stageへ入力する。
+    source: data.independent_validation_observations
+    target: stage.independent_validation
+    type: inputs_to
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.independent_validation_dataset, ev.calibration_manifest_v5, ev.independent_validation_design]
+    limitations_ja: [validation runは未実施である。]
+    entry_conditions_ja: [較正modelとvalidation protocolを凍結する。]
+    expected_outputs_ja: [独立validation resultとacceptance decision。]
+
+  - id: rel.baseline_compares_classical
+    label_ja: Baselineと古典最適化の比較
+    summary_ja: 同一instance・評価条件でBaselineと古典solverを比較する計画。
+    source: method.baseline
+    target: method.classical
+    type: compares_with
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.optimization_protocol]
+    limitations_ja: [正式比較runはない。]
+    common_instance_ref: instance.common_delivery
+    comparison_conditions_ja: [同一需要、車両、制約、checker、evaluator、traffic seedを使用する。]
+    entry_conditions_ja: [共通instanceと両手法を実装する。]
+    expected_outputs_ja: [equal-budgetとbest-referenceを分けた比較結果。]
+
+  - id: rel.baseline_compares_qaoa
+    label_ja: BaselineとAer QAOAの比較
+    summary_ja: 同一instance・評価条件でBaselineとAer QAOAを比較する計画。
+    source: method.baseline
+    target: method.qaoa_aer
+    type: compares_with
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.optimization_protocol]
+    limitations_ja: [正式比較runはなく量子優位性を意味しない。]
+    common_instance_ref: instance.common_delivery
+    comparison_conditions_ja: [同一需要、車両、制約、checker、evaluator、traffic seedを使用する。]
+    entry_conditions_ja: [共通instanceと両手法を実装する。]
+    expected_outputs_ja: [raw/repairedを分けた比較結果。]
+
+  - id: rel.classical_compares_qaoa
+    label_ja: 古典最適化とAer QAOAの比較
+    summary_ja: 同一instance・評価・予算で古典solverとAer QAOAを比較する計画。
+    source: method.classical
+    target: method.qaoa_aer
+    type: compares_with
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.optimization_protocol]
+    limitations_ja: [正式比較runはなく量子優位性を意味しない。]
+    common_instance_ref: instance.common_delivery
+    comparison_conditions_ja: [equal-budgetとbest-referenceを分離し、同じfeasibility/evaluatorを使用する。]
+    entry_conditions_ja: [共通instance、両solver、予算を凍結する。]
+    expected_outputs_ja: [静的解品質とSUMO実現性能を分けた比較結果。]
+
+  - id: rel.time_to_qubit_scale
+    label_ja: 計算時間からqubit scale分析へ
+    summary_ja: 手法の正式計測結果は将来のscale-gap解釈に必要となる。
+    source: metric.computation_time
+    target: future.qubit_scale
+    type: depends_on
+    status: planned
+    nature: repository_grounded_design
+    evidence_refs: [ev.research_structure, ev.analysis_method]
+    limitations_ja: [現時点で正式計測値との接続はない。]
+    entry_conditions_ja: [計算時間metricとproblem scaleを固定する。]
+    expected_outputs_ja: [modalityを区別したscale-gap比較。]
+
+  - id: rel.battery_to_final_fulfillment
+    label_ja: Battery外部モデルの影響仮説
+    summary_ja: 将来battery性能rangeが最終配送評価へ影響し得るという未検証仮説。
+    source: future.battery_external_model
+    target: future.final_fulfillment
+    type: hypothesizes_influence_on
+    status: planned
+    nature: hypothesis
+    evidence_refs: [ev.research_structure, ev.analysis_method]
+    limitations_ja: [直接因果モデルと定量Evidenceはない。]
+    uncertainty_ja: mechanism、係数、効果方向・大きさは未確定である。
+    entry_conditions_ja: [battery外部モデルを構築・Validationする。]
+    expected_outputs_ja: [不確実性付きscenario入力。]
+
+  - id: rel.demand_to_final_fulfillment
+    label_ja: 将来需要のprojection
+    summary_ja: 人口・世帯等の外部モデルから将来配送需要scenarioへ投影する計画。
+    source: future.demand_statistical_model
+    target: future.final_fulfillment
+    type: projects_to
+    status: planned
+    nature: external_model
+    evidence_refs: [ev.research_structure, ev.analysis_method]
+    limitations_ja: [係数とValidationは未確定である。]
+    uncertainty_ja: 入力、係数、地域・期間外挿の不確実性が未定義である。
+    entry_conditions_ja: [需要外部モデルを構築・Validationする。]
+    expected_outputs_ja: [scenario別配送需要range。]
+
+  - id: rel.current_to_final_fulfillment
+    label_ja: 現行metricから最終評価へ
+    summary_ja: 正式な現行配送metricを将来統合評価の基準へ接続する計画。
+    source: metric.delivery_fulfillment
+    target: future.final_fulfillment
+    type: projects_to
+    status: planned
+    nature: hypothesis
+    evidence_refs: [ev.research_structure, ev.analysis_method, ev.baseline_demand_spec]
+    limitations_ja: [現行metric自体が未確定・blockedである。]
+    uncertainty_ja: 現行metricと将来metricの比較可能性は未定義である。
+    entry_conditions_ja: [現行metricを定義し正式値を算出する。]
+    expected_outputs_ja: [将来scenarioと比較可能な基準値。]
+
+  - id: rel.final_to_urban_society
+    label_ja: 最終配送評価から都市社会・経済への影響仮説
+    summary_ja: 最終配送評価が都市社会・経済outcomeへ影響し得るという未検証仮説。
+    source: future.final_fulfillment
+    target: future.urban_society_economy
+    type: hypothesizes_influence_on
+    status: planned
+    nature: hypothesis
+    evidence_refs: [ev.research_structure, ev.analysis_method, ev.future_wheels_impl]
+    limitations_ja: [因果推定・定量接続モデルはない。]
+    uncertainty_ja: outcome、mechanism、交絡、効果量が未定義である。
+    entry_conditions_ja: [社会・経済outcomeと外部モデルを定義する。]
+    expected_outputs_ja: [非因果境界を明示したscenario分析。]
+
+  - id: rel.route_issue_blocks_fulfillment
+    label_ja: Route設定が配送metricをblock
+    summary_ja: 未凍結の一般交通route設定は正式配送metricの算出を停止する。
+    source: issue.route_generation_not_frozen
+    target: metric.delivery_fulfillment
+    type: blocked_by
+    status: blocked
+    nature: repository_grounded
+    evidence_refs: [ev.route_spec, ev.current_issues]
+    limitations_ja: [route設定だけを解消しても他blockerは残る。]
+    unblock_conditions_ja: [route-generation quality gateに合格し設定を凍結する。]
+
+  - id: rel.instance_issue_blocks_fulfillment
+    label_ja: Common Instance不足が配送metricをblock
+    summary_ja: 正式共通配送instanceの不足は配送metric算出を停止する。
+    source: issue.common_delivery_unfrozen
+    target: metric.delivery_fulfillment
+    type: blocked_by
+    status: blocked
+    nature: repository_grounded_design
+    evidence_refs: [ev.current_issues, ev.baseline_demand_spec, ev.optimization_protocol]
+    limitations_ja: [instance凍結だけを解消しても正式交通環境とmetric定義が必要である。]
+    unblock_conditions_ja: [version付きCommon Delivery Instanceを凍結・受理する。]
+
+  - id: rel.metric_issue_blocks_fulfillment
+    label_ja: Metric定義不足が配送metricをblock
+    summary_ja: 名称、分母、P_eq関係の未解決は正式配送metric算出を停止する。
+    source: issue.delivery_metric_definition
+    target: metric.delivery_fulfillment
+    type: blocked_by
+    status: blocked
+    nature: repository_grounded_design
+    evidence_refs: [ev.current_issues, ev.baseline_demand_spec]
+    limitations_ja: [定義確定後も入力とrunが必要である。]
+    unblock_conditions_ja: [主指標、補助指標、単位、分母、scopeを承認する。]
+
+  - id: rel.traffic_issue_blocks_fulfillment
+    label_ja: 正式交通環境不足が配送metricをblock
+    summary_ja: 未受理の道路・交通環境は正式配送metric算出を停止する。
+    source: issue.formal_traffic_not_accepted
+    target: metric.delivery_fulfillment
+    type: blocked_by
+    status: blocked
+    nature: repository_grounded
+    evidence_refs: [ev.current_issues, ev.road_current, ev.vv]
+    limitations_ja: [道路・交通受理後も配送instanceとmetric定義が必要である。]
+    unblock_conditions_ja: [正式道路、交通較正、独立Validationの受入を記録する。]
+
+views:
+  - id: view.research_overview
+    label_ja: Research Overview
+    label_en: Research Overview
+    summary_ja: 中心線、将来領域、blockerを表示する初期view。
+    node_refs:
+      - stage.current_review_required
+      - data.open_data
+      - model.baseline
+      - model.road_network
+      - model.general_traffic_routing
+      - data.calibration_observations
+      - data.independent_validation_observations
+      - stage.independent_validation
+      - data.synthetic_delivery_demand
+      - model.ev_vehicle_conditions
+      - simulation.sumo
+      - instance.common_delivery
+      - method.baseline
+      - method.classical
+      - method.qaoa_aer
+      - metric.computation_time
+      - metric.delivery_fulfillment
+      - metric.delivery_fulfillment_rate
+      - metric.delivery_population_equivalent
+      - future.qubit_scale
+      - future.battery_external_model
+      - future.demand_statistical_model
+      - future.final_fulfillment
+      - future.urban_society_economy
+      - issue.route_generation_not_frozen
+      - issue.common_delivery_unfrozen
+      - issue.delivery_metric_definition
+      - issue.formal_traffic_not_accepted
+      - issue.future_external_models_missing
+    relation_refs:
+      - rel.open_data_to_baseline
+      - rel.baseline_to_common_instance
+      - rel.common_to_baseline_method
+      - rel.common_to_classical
+      - rel.common_to_qaoa
+      - rel.baseline_produces_time
+      - rel.classical_produces_time
+      - rel.qaoa_produces_time
+      - rel.baseline_produces_fulfillment
+      - rel.classical_produces_fulfillment
+      - rel.qaoa_produces_fulfillment
+      - rel.baseline_compares_classical
+      - rel.baseline_compares_qaoa
+      - rel.classical_compares_qaoa
+      - rel.time_to_qubit_scale
+      - rel.battery_to_final_fulfillment
+      - rel.demand_to_final_fulfillment
+      - rel.current_to_final_fulfillment
+      - rel.final_to_urban_society
+      - rel.route_issue_blocks_fulfillment
+      - rel.instance_issue_blocks_fulfillment
+      - rel.metric_issue_blocks_fulfillment
+      - rel.traffic_issue_blocks_fulfillment
+      - rel.baseline_produces_p_eq
+      - rel.classical_produces_p_eq
+      - rel.qaoa_produces_p_eq
+      - rel.open_data_to_synthetic_demand
+      - rel.independent_data_to_validation_stage
+    fixed_ranks:
+      - rank: 0
+        node_refs: [data.open_data]
+      - rank: 1
+        node_refs: [model.baseline]
+      - rank: 2
+        node_refs: [instance.common_delivery]
+      - rank: 3
+        node_refs: [method.baseline, method.classical, method.qaoa_aer]
+      - rank: 4
+        node_refs: [metric.computation_time, metric.delivery_fulfillment]
+    group_refs: [group.baseline, group.metrics, group.future]
+    layout_hint: left_to_right
+    preset: true
+    filters: {include_all_statuses: true}
+
+  - id: view.current_stage
+    label_ja: Current Stage
+    label_en: Current Stage
+    summary_ja: 進行中・blocked対象と直接依存を表示する。
+    node_refs: [stage.current_review_required, model.baseline, model.road_network, model.general_traffic_routing, data.calibration_observations, data.independent_validation_observations, stage.independent_validation, data.synthetic_delivery_demand, model.ev_vehicle_conditions, simulation.sumo, instance.common_delivery, method.baseline, metric.delivery_fulfillment, metric.delivery_fulfillment_rate, metric.delivery_population_equivalent, issue.route_generation_not_frozen, issue.common_delivery_unfrozen, issue.delivery_metric_definition, issue.formal_traffic_not_accepted]
+    relation_refs: [rel.baseline_to_common_instance, rel.common_to_baseline_method, rel.baseline_produces_fulfillment, rel.baseline_produces_p_eq, rel.independent_data_to_validation_stage, rel.route_issue_blocks_fulfillment, rel.instance_issue_blocks_fulfillment, rel.metric_issue_blocks_fulfillment, rel.traffic_issue_blocks_fulfillment]
+    fixed_ranks:
+      - rank: 0
+        node_refs: [stage.current_review_required]
+      - rank: 1
+        node_refs: [model.baseline]
+      - rank: 2
+        node_refs: [model.road_network, model.general_traffic_routing, data.calibration_observations, stage.independent_validation, data.synthetic_delivery_demand, model.ev_vehicle_conditions, simulation.sumo]
+    group_refs: [group.baseline, group.metrics]
+    layout_hint: top_to_bottom
+    preset: true
+    filters: {current_stage_projection: true}
+
+  - id: view.data_lineage
+    label_ja: Data Lineage
+    label_en: Data Lineage
+    summary_ja: 公開入力からBaseline、共通instance、metricまでを表示する。
+    node_refs: [data.open_data, model.baseline, model.road_network, model.general_traffic_routing, data.calibration_observations, data.independent_validation_observations, stage.independent_validation, data.synthetic_delivery_demand, model.ev_vehicle_conditions, simulation.sumo, instance.common_delivery, method.baseline, method.classical, method.qaoa_aer, metric.computation_time, metric.delivery_fulfillment, metric.delivery_fulfillment_rate, metric.delivery_population_equivalent]
+    relation_refs: [rel.open_data_to_baseline, rel.open_data_to_synthetic_demand, rel.independent_data_to_validation_stage, rel.baseline_to_common_instance, rel.common_to_baseline_method, rel.common_to_classical, rel.common_to_qaoa, rel.baseline_produces_time, rel.classical_produces_time, rel.qaoa_produces_time, rel.baseline_produces_fulfillment, rel.classical_produces_fulfillment, rel.qaoa_produces_fulfillment, rel.baseline_produces_p_eq, rel.classical_produces_p_eq, rel.qaoa_produces_p_eq]
+    fixed_ranks:
+      - rank: 0
+        node_refs: [data.open_data]
+      - rank: 1
+        node_refs: [data.synthetic_delivery_demand, data.calibration_observations, data.independent_validation_observations]
+      - rank: 2
+        node_refs: [model.baseline, simulation.sumo]
+    group_refs: [group.baseline, group.metrics]
+    layout_hint: left_to_right
+    preset: true
+    filters: {lineage_only: true}
+
+  - id: view.future_analysis
+    label_ja: Future Analysis
+    label_en: Future Analysis
+    summary_ja: planned、hypothesis、external modelとEvidence gapを表示する。
+    node_refs: [metric.computation_time, metric.delivery_fulfillment, metric.delivery_fulfillment_rate, metric.delivery_population_equivalent, future.qubit_scale, future.battery_external_model, future.demand_statistical_model, future.final_fulfillment, future.urban_society_economy, issue.future_external_models_missing]
+    relation_refs: [rel.time_to_qubit_scale, rel.battery_to_final_fulfillment, rel.demand_to_final_fulfillment, rel.current_to_final_fulfillment, rel.final_to_urban_society]
+    fixed_ranks:
+      - rank: 0
+        node_refs: [metric.computation_time, metric.delivery_fulfillment]
+      - rank: 1
+        node_refs: [future.qubit_scale, future.battery_external_model, future.demand_statistical_model]
+      - rank: 2
+        node_refs: [future.final_fulfillment, future.urban_society_economy]
+    group_refs: [group.metrics, group.future]
+    layout_hint: left_to_right
+    preset: true
+    filters: {future_only: true}
+
+  - id: view.model_comparison
+    label_ja: Model Comparison
+    label_en: Model Comparison
+    summary_ja: 共通instance、3手法、分離metricと比較relationを表示する。
+    node_refs: [instance.common_delivery, method.baseline, method.classical, method.qaoa_aer, metric.computation_time, metric.delivery_fulfillment, metric.delivery_fulfillment_rate, metric.delivery_population_equivalent]
+    relation_refs: [rel.common_to_baseline_method, rel.common_to_classical, rel.common_to_qaoa, rel.baseline_compares_classical, rel.baseline_compares_qaoa, rel.classical_compares_qaoa, rel.baseline_produces_time, rel.classical_produces_time, rel.qaoa_produces_time, rel.baseline_produces_fulfillment, rel.classical_produces_fulfillment, rel.qaoa_produces_fulfillment, rel.baseline_produces_p_eq, rel.classical_produces_p_eq, rel.qaoa_produces_p_eq]
+    fixed_ranks:
+      - rank: 0
+        node_refs: [instance.common_delivery]
+      - rank: 1
+        node_refs: [method.baseline, method.classical, method.qaoa_aer]
+      - rank: 2
+        node_refs: [metric.computation_time, metric.delivery_fulfillment_rate, metric.delivery_population_equivalent]
+    group_refs: [group.metrics]
+    layout_hint: left_to_right
+    preset: true
+    filters: {comparison_only: true}
+
+  - id: view.evidence_gaps
+    label_ja: Evidence Gaps
+    label_en: Evidence Gaps
+    summary_ja: unknown、blocked、not accepted、conflict、open issueを一覧する。
+    node_refs: [stage.current_review_required, model.baseline, model.road_network, model.general_traffic_routing, data.calibration_observations, stage.independent_validation, model.ev_vehicle_conditions, simulation.sumo, instance.common_delivery, method.baseline, method.classical, method.qaoa_aer, metric.computation_time, metric.delivery_fulfillment, metric.delivery_fulfillment_rate, metric.delivery_population_equivalent, issue.route_generation_not_frozen, issue.common_delivery_unfrozen, issue.delivery_metric_definition, issue.formal_traffic_not_accepted, issue.future_external_models_missing]
+    relation_refs: [rel.route_issue_blocks_fulfillment, rel.instance_issue_blocks_fulfillment, rel.metric_issue_blocks_fulfillment, rel.traffic_issue_blocks_fulfillment]
+    conflict_refs: [conflict.current_stage_timeline, conflict.observation_mapping_completion, conflict.baseline_demand_documentation_lag, conflict.metric_priority]
+    fixed_ranks: []
+    group_refs: [group.baseline, group.metrics, group.future]
+    layout_hint: list
+    preset: true
+    filters: {evidence_gaps: true}
+
+groups:
+  - id: group.baseline
+    label_ja: Baseline Model
+    label_en: Baseline Model
+    summary_ja: Baseline配下の道路、routing、観測、validation、需要、車両、SUMOを束ねる。
+    node_refs: [model.road_network, model.general_traffic_routing, data.calibration_observations, data.independent_validation_observations, stage.independent_validation, data.synthetic_delivery_demand, model.ev_vehicle_conditions, simulation.sumo]
+    default_collapsed: false
+  - id: group.metrics
+    label_ja: Delivery Metrics
+    label_en: Delivery Metrics
+    summary_ja: 仮称Delivery Fulfillmentと分離したmetricを束ねる。
+    node_refs: [metric.delivery_fulfillment, metric.delivery_fulfillment_rate, metric.delivery_population_equivalent, metric.computation_time]
+    default_collapsed: false
+  - id: group.future
+    label_ja: Future Analyses
+    label_en: Future Analyses
+    summary_ja: 将来分析・外部モデル・hypothesis outcomeを束ねる。
+    node_refs: [future.qubit_scale, future.battery_external_model, future.demand_statistical_model, future.final_fulfillment, future.urban_society_economy, issue.future_external_models_missing]
+    default_collapsed: true
+
+known_conflicts:
+  - id: conflict.current_stage_timeline
+    label_ja: 現在工程の時間差
+    summary_ja: 旧YAMLはSUMO道路網、後発文書は交通較正・route generationを現在工程としている。
+    resolution_status: unresolved
+    classification: [stale_documentation, temporal_update_difference]
+    evidence_refs: [ev.research_stage_legacy, ev.current_issues, ev.route_spec]
+    resolution_condition_ja: 研究責任者がPortalのstage粒度と現在工程をreviewし、旧YAMLの扱いを承認する。
+
+  - id: conflict.observation_mapping_completion
+    label_ja: 観測mapping完了範囲の粒度差
+    summary_ja: 管理文書・旧snapshotと、後発の観測artifact生成PASSED・validation NOT_RUN・研究未受理が異なる粒度で併存する。
+    resolution_status: unresolved
+    classification: [stale_documentation, temporal_update_difference, granularity_difference, acceptance_readiness_difference]
+    evidence_refs: [ev.project_structure, ev.current_issues, ev.road_current, ev.final_traffic_observations, ev.observation_final_status]
+    resolution_condition_ja: mapping処理完了と正式利用可能な観測入力を別node・gateとして承認する。
+
+  - id: conflict.baseline_demand_documentation_lag
+    label_ja: 合成需要文書と実装の時間差
+    summary_ja: 仕様文書の生成前記述に対し、現在は生成コードとunit testが存在する。
+    resolution_status: unresolved
+    classification: [stale_documentation, temporal_update_difference]
+    evidence_refs: [ev.baseline_demand_spec, ev.baseline_demand_config, ev.baseline_demand_impl, ev.baseline_demand_test, ev.baseline_demand_artifact, ev.baseline_demand_quality]
+    resolution_condition_ja: 現行成果物をreviewし、文書の現在範囲とmethod statusを同期する。
+
+  - id: conflict.metric_priority
+    label_ja: 配送metricの主指標位置付け差
+    summary_ja: READMEは配送需要充足率を主評価として示す一方、implementation_planはP_eqを主指標、完了率を補助指標としている。
+    resolution_status: unresolved
+    classification: [semantic_conflict]
+    evidence_refs: [ev.research_overview, ev.metric_implementation_plan]
+    resolution_condition_ja: 研究責任者が両metricの主指標・補助指標・派生metricとしての位置付けを承認する。

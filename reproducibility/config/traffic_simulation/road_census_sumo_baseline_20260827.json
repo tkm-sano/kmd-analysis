@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "baseline_id": "road_census_sumo_ota_20260827",
+  "as_of_date": "2026-08-27",
+  "scope": {
+    "road_census_sections": 66,
+    "municipality_code": "13111",
+    "unique_final_mapping_edges": 1482
+  },
+  "mapping": {
+    "unique_final_mapping_sections": 66,
+    "usable_sections": 65,
+    "not_usable_sections": [
+      "13200510020"
+    ],
+    "confidence_counts": {
+      "high": 49,
+      "medium": 16,
+      "low": 1
+    },
+    "connection_violation_count": 0
+  },
+  "road_census_normalization": {
+    "status_counts": {
+      "RESOLVED": 65,
+      "UNRESOLVED": 1
+    },
+    "unresolved_section_count": 1,
+    "qa_issue_count": 2
+  },
+  "edge_provenance": {
+    "edge_count": 1482,
+    "lane_count": {
+      "MODEL_ASSUMPTION_MATERIALIZED": 83,
+      "OSM_EXPLICIT_TRANSFORMED": 1397,
+      "SUMO_TYPE_DEFAULT": 2
+    },
+    "speed": {
+      "OSM_EXPLICIT_TRANSFORMED": 1166,
+      "SUMO_TYPE_DEFAULT": 316
+    },
+    "reverse_edge_resolution": {
+      "NOT_AVAILABLE_ONEWAY": 1026,
+      "RESOLVED_EXACT_SAME_WAY": 456
+    }
+  },
+  "section_statuses": {
+    "lane": {
+      "section_count": 66,
+      "counts": {
+        "DATA_CONFLICT": 2,
+        "MODEL_ASSUMPTION_REQUIRED": 19,
+        "NO_ASSUMPTION_NEEDED": 40,
+        "UNRESOLVED": 5
+      },
+      "stage_note": "Initial 66-section inventory overlaid by 59-section refinement and 21-section final review."
+    },
+    "speed": {
+      "section_count": 66,
+      "counts": {
+        "DATA_CONFLICT": 10,
+        "NO_ASSUMPTION_NEEDED": 55,
+        "UNRESOLVED": 1
+      },
+      "stage_note": "Initial 66-section inventory overlaid by 41-section refinement; SOURCE_CONFLICT is reported as DATA_CONFLICT."
+    },
+    "traffic": {
+      "section_count": 66,
+      "counts": {
+        "DATA_NOT_AVAILABLE": 11,
+        "MODEL_ASSUMPTION_REQUIRED": 1,
+        "NO_ASSUMPTION_NEEDED": 34,
+        "UNRESOLVED": 20
+      },
+      "stage_note": "Initial 66-section inventory overlaid by 32-section final review and 26-section availability audit."
+    }
+  },
+  "external_observation_mapping": {
+    "processing_omission_sections": 10,
+    "municipality_counts": {
+      "13109_shinagawa": 7,
+      "13112_setagaya": 3
+    },
+    "mapping_status": "FORMALIZED_10_OF_10",
+    "classification_counts": {
+      "AUTO_ACCEPT": 8,
+      "REVIEW_REQUIRED": 1,
+      "NETWORK_EXTENSION_REQUIRED": 1,
+      "UNRESOLVED": 0
+    },
+    "formal_mapping_status_counts": {
+      "RESOLVED": 10
+    },
+    "direction_status_counts": {
+      "RESOLVED": 1,
+      "MODEL_ASSUMPTION_REQUIRED": 9
+    },
+    "traffic_assignment_status_counts": {
+      "USABLE": 1,
+      "PENDING_DIRECTION_ASSIGNMENT": 9
+    },
+    "final_acceptance_status_counts": {
+      "ACCEPTED_FOR_TRAFFIC_ASSIGNMENT": 1,
+      "ACCEPTED_MAPPING_ONLY": 9
+    },
+    "limited_network_extension": {
+      "section_id": "13300010260",
+      "mapping_status": "RESOLVED",
+      "coverage_ratio": 0.835796,
+      "uncovered_length_m": 169.045,
+      "connection_violation_count": 0,
+      "bbox_auto_expanded": false
+    },
+    "requested_haneda_direction_finalized": true,
+    "all_external_directions_finalized": false
+  },
+  "formalization_gaps": {
+    "canonical_route_identity": "NOT_COMPLETE",
+    "census_to_sumo_direction": "EXTERNAL_1_RESOLVED_9_MODEL_ASSUMPTION_REQUIRED_OTA66_NOT_COMPLETE",
+    "external_observation_mapping": "COMPLETE_10_OF_10_LAYERED_FINAL_STATUS",
+    "traffic_66_final_taxonomy": "NOT_COMPLETE",
+    "final_inventory_330_cells": "NOT_GENERATED",
+    "formal_export_runner": "NOT_IMPLEMENTED"
+  },
+  "formal_artifacts": {
+    "census_section_final_mapping.csv": {
+      "exists": true,
+      "formal_contract_complete": false,
+      "note": "Existing 9-column intermediate mapping; formal provenance schema is not complete."
+    },
+    "final_sumo_road_attributes.csv": {
+      "exists": false,
+      "formal_contract_complete": false
+    },
+    "final_traffic_observations.csv": {
+      "exists": false,
+      "formal_contract_complete": false
+    },
+    "external_observation_final_mapping.csv": {
+      "exists": true,
+      "formal_contract_complete": true,
+      "record_count": 10
+    },
+    "external_observation_final_inventory.csv": {
+      "exists": true,
+      "formal_contract_complete": true,
+      "record_count": 10
+    }
+  },
+  "source_manifest": [
+    {
+      "path": "03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/assumption_inventory.csv",
+      "sha256": "826b137339121d0ba795c227f2d63794205d126bdedb8200aa060ebcf56fcb9d"
+    },
+    {
+      "path": "03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/census_final_mapping_summary.json",
+      "sha256": "2ef8ef7ee21a4eb3baa3dc5bdea5573717dc6226464e241b485c7b85af42dd98"
+    },
+    {
+      "path": "03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/road_census_section_attributes_normalized_qa_summary.json",
+      "sha256": "9a22693214906daaa56dfa2379fbbb2e14943ecd3cd1e785c3ce59dd9c80d327"
+    },
+    {
+      "path": "03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/osm_sumo_edge_attributes_normalized_qa_summary.json",
+      "sha256": "f154f79ce2802b3256156e90dcf007dcfcc03d111687a58ed70eeddb1fd84dd6"
+    },
+    {
+      "path": "03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/lane_direction_assumption_refinement.csv",
+      "sha256": "8610629972957d0b37f51573a89f14ef15b045670e58b45c6c33c8d7fc3220a7"
+    },
+    {
+      "path": "03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/lane_direction_assumption_final_review.csv",
+      "sha256": "2d73a30c2fa504f3fb45a6926b5c2a69927d286dbfc26931d3ec5bf12b6c0d8a"
+    },
+    {
+      "path": "03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/speed_assumption_refinement.csv",
+      "sha256": "b7ece342727e64b09239d19cacfd8f6d2582dc4efe9a378c7a2b1f523d08b445"
+    },
+    {
+      "path": "03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/traffic_comparison_cross_section_final_review.csv",
+      "sha256": "efa4a82ffd6759dd91f4a5a9f9e70a3582e40943c444168c418367f3d16f4750"
+    },
+    {
+      "path": "03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/traffic_comparison_data_availability_review.csv",
+      "sha256": "3dfa04083c6f127f0061d8b405cb1d82f8d7878c00014313593ccdc4b7e179e8"
+    },
+    {
+      "path": "03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/external_observation_mapping_candidate_summary.json",
+      "sha256": "35fb793bf326bb068a314af24010020bbf1a87b1aedbf6349a6031de8b3953c6"
+    },
+    {
+      "path": "03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/external_observation_final_mapping.csv",
+      "sha256": "0e81382a5cef5a566643742de0db407d53431c78533ec57ba662614e5c3a20c6"
+    },
+    {
+      "path": "03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/external_observation_mapping_final_edge_evidence.csv",
+      "sha256": "d45df421a8b318f133c1cdd34e9411ab550ecb9197a276f7aa125d61e1fa2a0f"
+    },
+    {
+      "path": "03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/external_observation_final_inventory.csv",
+      "sha256": "bcc5ce7e12914500ea853c1d477dad7e917c9647655ab1d7b5f0c64c0d94e2e0"
+    },
+    {
+      "path": "03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/external_observation_network_extension_before_after.csv",
+      "sha256": "eac4ce4e855a8cc28658a051415b5da0e4d050d67ab6d07050abec6087749baf"
+    },
+    {
+      "path": "03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/ota66_network_extension_regression.csv",
+      "sha256": "14bf7bb807550851519d4c09522d4debc179d51af11a2d43b748ab60889d2b10"
+    },
+    {
+      "path": "03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/external_observation_final_mapping_qa_summary.json",
+      "sha256": "6271abfd9a6e9d4b163caff470237e59694b85a1a1f4a7f3a0b31108dcfe3f4a"
+    },
+    {
+      "path": "03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/external_observation_final_mapping_manifest.json",
+      "sha256": "f37bcbad59b462d000ff2d1a8d26f1899b4237109c41a092e202c1dbb10f900b"
+    }
+  ],
+  "guardrails": {
+    "source_values_modified": false,
+    "mapping_thresholds_modified": false,
+    "missing_values_imputed": false,
+    "partial_stage_counts_reported_as_66_section_counts": false
+  }
+}

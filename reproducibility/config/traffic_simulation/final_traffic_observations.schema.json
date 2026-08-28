@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "final_traffic_observations.schema.json",
+  "title": "Final traffic observation calibration record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "official_observation_section_id",
+    "target_id",
+    "direction",
+    "observation_year",
+    "observation_type",
+    "hour",
+    "begin_time",
+    "end_time",
+    "raw_observed_value",
+    "normalized_observed_value",
+    "unit",
+    "source_year",
+    "source_system",
+    "source_field",
+    "selected_edge_sequence",
+    "opposite_edge_sequence",
+    "edge_segment_specification_reference",
+    "mapping_status",
+    "direction_status",
+    "calibration_usability_status",
+    "calibration_weight",
+    "exclusion_or_review_reason",
+    "source_object",
+    "derivation_rule",
+    "provenance_class",
+    "mapping_evidence_artifact"
+  ],
+  "properties": {
+    "official_observation_section_id": {"type": "string", "pattern": "^[0-9]{11}$"},
+    "target_id": {"type": "string", "pattern": "^[0-9]{11}$"},
+    "direction": {"enum": ["UP", "DOWN"]},
+    "observation_year": {"type": "integer", "minimum": 1900, "maximum": 2100},
+    "observation_type": {
+      "enum": ["CURRENT_OFFICIAL_OBSERVATION", "HISTORICAL_EXTERNAL_VALIDATION", "DATA_NOT_AVAILABLE"]
+    },
+    "hour": {"type": "integer", "minimum": 0, "maximum": 23},
+    "begin_time": {"type": "string", "pattern": "^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]$"},
+    "end_time": {"type": "string", "pattern": "^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]$"},
+    "raw_observed_value": {"type": ["integer", "null"], "minimum": 0},
+    "normalized_observed_value": {"type": ["number", "null"], "minimum": 0},
+    "unit": {"enum": ["vehicles_per_hour"]},
+    "source_year": {"type": "integer", "minimum": 1900, "maximum": 2100},
+    "source_system": {"enum": ["MLIT_ROAD_CENSUS_R3"]},
+    "source_field": {"type": "string", "minLength": 1},
+    "selected_edge_sequence": {"type": "string"},
+    "opposite_edge_sequence": {"type": "string"},
+    "edge_segment_specification_reference": {"type": "string"},
+    "mapping_status": {
+      "enum": [
+        "DIRECT_REVERSE_AVAILABLE",
+        "ACCEPTED_AS_OPPOSITE_CARRIAGEWAY",
+        "ACCEPTED_AS_PARTIAL_EDGE_MAPPING",
+        "REVIEW_REQUIRED",
+        "NOT_AVAILABLE",
+        "DATA_NOT_AVAILABLE"
+      ]
+    },
+    "direction_status": {
+      "enum": ["RESOLVED_UP", "RESOLVED_DOWN", "UNRESOLVED_INSUFFICIENT_EVIDENCE", "UNRESOLVED_CONFLICT"]
+    },
+    "calibration_usability_status": {
+      "enum": ["CALIBRATION_USABLE", "CALIBRATION_USABLE_SINGLE_DIRECTION", "REVIEW_REQUIRED", "VALIDATION_ONLY", "DATA_NOT_AVAILABLE", "EXCLUDED"]
+    },
+    "calibration_weight": {"type": "number", "minimum": 0, "maximum": 1},
+    "exclusion_or_review_reason": {"type": "string"},
+    "source_object": {"type": "string", "minLength": 1},
+    "derivation_rule": {"type": "string", "minLength": 1},
+    "provenance_class": {"enum": ["OFFICIAL_CURRENT", "OFFICIAL_HISTORICAL_VALIDATION", "OFFICIAL_UNAVAILABLE"]},
+    "mapping_evidence_artifact": {"type": "string", "minLength": 1}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"observation_type": {"const": "HISTORICAL_EXTERNAL_VALIDATION"}}},
+      "then": {"properties": {"calibration_weight": {"const": 0}, "calibration_usability_status": {"const": "VALIDATION_ONLY"}}}
+    },
+    {
+      "if": {"properties": {"observation_type": {"const": "DATA_NOT_AVAILABLE"}}},
+      "then": {"properties": {"raw_observed_value": {"type": "null"}, "normalized_observed_value": {"type": "null"}, "calibration_weight": {"const": 0}}}
+    }
+  ]
+}

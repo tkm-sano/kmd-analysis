@@ -141,7 +141,7 @@
 
 ### 参考文献
 
-- [Lubinski et al., Application-Oriented Performance Benchmarks for Quantum Computing](https://arxiv.org/abs/2110.03137)
+- Lubinski et al., Application-Oriented Performance Benchmarks for Quantum Computing
 
 ---
 
@@ -400,9 +400,9 @@ Qiskit Aerの実行時間は古典計算機上のシミュレーション時間�
 
 - 顧客数200、車両数5、車載容量900
 - 現段階のQAOAシミュレーションへ直接入力する対象ではない
-- [CVRPLIB Goldenセット](https://galgos.inf.puc-rio.br/cvrplib/index.php/en/instances)
-- [Goldenほかのベンチマーク研究](https://doi.org/10.1007/978-1-4615-5755-5_2)
-- [Golden_5の量子回路資源を扱う研究](https://arxiv.org/abs/2509.11469)
+- CVRPLIB Goldenセット
+- Goldenほかのベンチマーク研究
+- Golden_5の量子回路資源を扱う研究
 
 ### 説明上の注意
 
