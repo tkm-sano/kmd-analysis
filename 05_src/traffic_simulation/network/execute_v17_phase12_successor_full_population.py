@@ -370,7 +370,7 @@ def finalize() -> dict[str, Any]:
 
     manifests: dict[str, dict[str, Any]] = {}
     artifact_maps: dict[str, dict[str, Mapping[str, Any]]] = {}
-    for run_id in ("run_1", "run_2"):
+    for run_id in ("run_3", "run_4"):
         manifest_path = root / "runs" / run_id / "successor_run_manifest.json"
         manifest = _load_json(manifest_path)
         _validate_json(manifest, _repo_path(MANIFEST_SCHEMA))
@@ -401,18 +401,18 @@ def finalize() -> dict[str, Any]:
         "implementation_hashes", "schema_hashes", "validation",
         "formal_state_mutated",
     )
-    if any(manifests["run_1"][field] != manifests["run_2"][field] for field in stable_fields):
+    if any(manifests["run_3"][field] != manifests["run_4"][field] for field in stable_fields):
         raise SuccessorRunError("run environment or authority binding differs")
-    if set(artifact_maps["run_1"]) != set(artifact_maps["run_2"]):
+    if set(artifact_maps["run_3"]) != set(artifact_maps["run_4"]):
         raise SuccessorRunError("run artifact sets differ")
     comparisons = []
-    for artifact_id in sorted(artifact_maps["run_1"]):
-        left = artifact_maps["run_1"][artifact_id]["semantic_sha256"]
-        right = artifact_maps["run_2"][artifact_id]["semantic_sha256"]
+    for artifact_id in sorted(artifact_maps["run_3"]):
+        left = artifact_maps["run_3"][artifact_id]["semantic_sha256"]
+        right = artifact_maps["run_4"][artifact_id]["semantic_sha256"]
         comparisons.append({
             "artifact_id": artifact_id,
-            "run_1_semantic_sha256": left,
-            "run_2_semantic_sha256": right,
+            "run_3_semantic_sha256": left,
+            "run_4_semantic_sha256": right,
             "match": left == right,
         })
     if not all(item["match"] for item in comparisons):
@@ -428,7 +428,7 @@ def finalize() -> dict[str, Any]:
         "result": "passed",
     })
     _validate_json(report, _repo_path(DETERMINISM_SCHEMA))
-    shutil.copytree(root / "runs" / "run_1", temporary)
+    shutil.copytree(root / "runs" / "run_3", temporary)
     _write_json(report_path, report)
     temporary.rename(published)
     return {
@@ -443,7 +443,7 @@ def finalize() -> dict[str, Any]:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group(required=True)
-    mode.add_argument("--run-id", choices=("run_1", "run_2"))
+    mode.add_argument("--run-id", choices=("run_3", "run_4"))
     mode.add_argument("--finalize", action="store_true")
     return parser
 
