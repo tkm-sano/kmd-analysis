@@ -142,6 +142,90 @@ def test_structural_only_identity_without_registered_assumption_fails_gate() -> 
     assert result["gate_result"] == "failed"
 
 
+def test_large_structural_common_population_is_outside_structural_invalid_gate() -> None:
+    structural = _stage(rule_id="", formal=False)
+    structural_lane = structural["directional_lanes"]["segment_lanes"][0]
+    structural_lane["assumption_ids"] = []
+    for way_id in range(2, 102):
+        extra = copy.deepcopy(structural_lane)
+        extra["source_way_id"] = way_id
+        extra["directed_segment_id"] = f"ds:{way_id}:10:11:forward"
+        structural["directional_lanes"]["segment_lanes"].append(extra)
+
+    formal = copy.deepcopy(structural)
+    result = build_profile_population_difference(
+        structural, formal, registry=REGISTRY, decision=DECISION
+    )
+
+    assert result["lane_identities"]["common_count"] == 101
+    assert result["lane_identities"]["structural_only_count"] == 0
+    assert result["gate_result"] == "passed"
+
+
+def test_valid_structural_only_difference_is_accounted_without_failure() -> None:
+    result = build_profile_population_difference(
+        _stage(rule_id="", formal=False),
+        _empty_stage(),
+        registry=REGISTRY,
+        decision=DECISION,
+    )
+
+    assert result["lane_identities"]["structural_only_count"] == 1
+    assert result["permission_identities"]["structural_only_count"] == 1
+    assert result["gate_result"] == "passed"
+
+
+def test_common_plus_structural_only_plus_authorized_formal_only_passes() -> None:
+    common = _stage(rule_id="", formal=False)
+    structural = copy.deepcopy(common)
+    formal = copy.deepcopy(common)
+    formal["directional_lanes"]["segment_lanes"][0].update({
+        "value_origin": "rule_derived",
+        "rule_ids": ["OSM_BIDIRECTIONAL_TOTAL_2_TO_ONE_ONE_V1"],
+        "assumption_ids": [],
+        "formal_eligible": True,
+    })
+    structural["directional_lanes"]["segment_lanes"].append({
+        **copy.deepcopy(common["directional_lanes"]["segment_lanes"][0]),
+        "source_way_id": 2,
+        "directed_segment_id": "ds:2:10:11:forward",
+    })
+    formal_lane = copy.deepcopy(formal["directional_lanes"]["segment_lanes"][0])
+    formal_lane.update({
+        "source_way_id": 3,
+        "directed_segment_id": "ds:3:10:11:forward",
+    })
+    formal["directional_lanes"]["segment_lanes"].append(formal_lane)
+    formal["final_permission"]["permission_records"].append({
+        **copy.deepcopy(formal["final_permission"]["permission_records"][0]),
+        "source_way_id": 3,
+        "directed_segment_id": "ds:3:10:11:forward",
+        "permission_record_id": "b" * 64,
+    })
+    result = build_profile_population_difference(
+        structural, formal, registry=REGISTRY, decision=DECISION
+    )
+
+    assert result["lane_identities"]["common_count"] == 1
+    assert result["lane_identities"]["structural_only_count"] == 1
+    assert result["lane_identities"]["authorized_formal_only_count"] == 1
+    assert result["gate_result"] == "passed"
+
+
+def test_same_identity_inconsistent_is_a_failure() -> None:
+    structural = _stage(rule_id="", formal=False)
+    formal = copy.deepcopy(structural)
+    formal["directional_lanes"]["segment_lanes"][0]["source_way_id"] = 2
+
+    result = build_profile_population_difference(
+        structural, formal, registry=REGISTRY, decision=DECISION
+    )
+
+    assert result["lane_identities"]["same_identity_inconsistent_count"] == 1
+    assert result["same_identity_inconsistent_count"] == 1
+    assert result["gate_result"] == "failed"
+
+
 def test_missing_decision_is_rejected() -> None:
     decision = copy.deepcopy(DECISION)
     decision["decision_id"] = "UNKNOWN"

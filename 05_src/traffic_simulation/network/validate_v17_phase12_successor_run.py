@@ -282,8 +282,17 @@ def build_profile_population_difference(
         all_keys = sorted(set(sm) | set(fm))
         for key in all_keys:
             lane_key = (key[0], key[1])
-            lane = fl.get(lane_key) if permission else fl.get(key)
             slane = sl.get(lane_key) if permission else sl.get(key)
+            # Difference records must carry provenance from the profile that
+            # owns the identity.  In particular, a structural_only record has
+            # no Formal lane counterpart, so taking `fl` here would erase its
+            # Structural assumption_ids and make every valid difference look
+            # invalid.
+            lane = (
+                slane
+                if key in sm and key not in fm
+                else fl.get(lane_key) if permission else fl.get(key)
+            )
             item = fp.get(key) if permission else lane
             sitem = sp.get(key) if permission else slane
             if key in sm and key in fm:
@@ -324,9 +333,20 @@ def build_profile_population_difference(
     permissions = classify(sp, fp, permission=True)
     inconsistent = lanes["same_identity_inconsistent_count"] + permissions["same_identity_inconsistent_count"]
     unauthorized = lanes["unauthorized_formal_only_count"] + permissions["unauthorized_formal_only_count"]
+    # Structural validity is a profile-difference gate.  It applies only to
+    # records which the comparison actually classified as structural_only;
+    # normal Structural records in the common population are not evidence of a
+    # profile difference and must not be revalidated by this gate.
+    structural_only_records = [
+        item
+        for section in (lanes, permissions)
+        for item in section["records"]
+        if item["classification"] == "structural_only"
+    ]
     structural_invalid = any(
-        not lane.get("assumption_ids") or not set(lane.get("assumption_ids", [])).issubset(registered_assumptions)
-        for lane in sl.values()
+        not item["assumption_ids"]
+        or not set(item["assumption_ids"]).issubset(registered_assumptions)
+        for item in structural_only_records
     )
     return {"policy_decision_id": PROFILE_DIFFERENCE_DECISION_ID, "lane_identities": lanes, "permission_identities": permissions, "unauthorized_formal_only_count": unauthorized, "same_identity_inconsistent_count": inconsistent, "gate_result": "passed" if not unauthorized and not inconsistent and not structural_invalid and not sd and not fd and not spd and not fpd else "failed", "duplicate_structural_record_detected": sd or spd, "duplicate_formal_record_detected": fd or fpd}
 

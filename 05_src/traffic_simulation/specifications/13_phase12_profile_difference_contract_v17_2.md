@@ -34,3 +34,9 @@ All difference records and aggregates are retained. No authorized difference is
 copied into Structural or removed from accounting. This contract revision is a
 mechanical implementation of the adopted decision; it does not add a research
 assumption and does not reduce blocker populations.
+
+The `structural_invalid` profile-difference gate evaluates only records
+classified as `structural_only` by the Structural/Formal comparison. A
+Structural record classified as `common` is outside this gate. The existence of
+a valid `structural_only` record is not itself a failure; only a difference
+record with missing or unregistered Structural provenance is invalid.
