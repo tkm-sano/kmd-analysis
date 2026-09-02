@@ -1,0 +1,25 @@
+schema_version: 1
+amendment_id: OTA_WARD_V17_PHASE12_OUTPUT_CONTRACT_PROFILE_DIFFERENCE_V1_2
+amendment_version: 1.2.0
+status: fixed
+approved_at: '2026-09-01'
+approved_by: repository_owner_directive
+base_contract: reproducibility/config/traffic_simulation/v17_phase12_output_contract.yml
+base_contract_version: 1.0.0
+decision: reproducibility/config/traffic_simulation/decisions/phase12_decision_a_formal_only_profile_difference_v1_1.yml
+normative_specification: 05_src/traffic_simulation/specifications/13_phase12_profile_difference_contract_v17_2.md
+effective_contract_version: 1.2.0
+
+overrides:
+  execution_output_root: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_20260902_profile_difference_v1_2
+  population_accounting_schema: reproducibility/config/traffic_simulation/schemas/phase12_population_accounting_v17_2.schema.json
+  determinism_report_schema: reproducibility/config/traffic_simulation/schemas/phase12_successor_determinism_report_v1.schema.json
+  profile_difference_gate:
+    structural_only_requires_registered_assumption: true
+    formal_only_requires_adopted_rule_explanation: true
+    unauthorized_formal_only_count_must_equal: 0
+    same_identity_inconsistent_count_must_equal: 0
+    permission_unresolved_or_conflict_remains_blocking: true
+  immutable_history:
+    overwrite_base_phase12_outputs: false
+    overwrite_completion_records: false

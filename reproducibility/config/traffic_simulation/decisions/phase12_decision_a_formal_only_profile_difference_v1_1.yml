@@ -1,0 +1,84 @@
+schema_version: 1
+decision_id: DEC-P12-FORMAL-ONLY-PROFILE-DIFFERENCE-002
+decision_version: 1.1.0
+status: adopted
+adopted_at: '2026-09-02'
+adopted_by: repository_owner_directive
+scope: phase12_structural_formal_profile_difference_accounting
+supersedes:
+  - DEC-P12-FORMAL-ONLY-PROFILE-DIFFERENCE-001
+normative_specification: 05_src/traffic_simulation/specifications/13_phase12_profile_difference_contract_v17_2.md
+
+motivation: >-
+  A Formal profile may contain identities absent from Structural when an
+  adopted, traceable Formal rule deterministically derives a governed value.
+  The failed 2026-09-01 successor run exposed 15 Formal-only permission tuples
+  downstream of 15 Formal-only lane tuples on 9 source Ways. This is evidence
+  for the contract change, not a population-specific exception.
+
+profile_semantics:
+  structural: simulation_only_candidate_population; may contain registered structural assumptions
+  formal: fail_closed_formal_population; may contain only adopted evidence or bounded rules
+  formal_network_acceptance_effect: none
+
+authorized_formal_only:
+  definition: >-
+    A Formal identity absent from Structural is authorized only when its
+    profile-specific adopted rule and decision are registered, the source
+    evidence and complete provenance are present, formal_eligible is true,
+    value_origin is authorized, assumption_ids comply with Formal policy, and
+    the immutable population identity and lineage are valid.
+  required_conditions:
+    - registered_adopted_rule
+    - decision_traceability
+    - complete_provenance
+    - source_evidence_present
+    - formal_eligible_true
+    - authorized_value_origin
+    - assumption_policy_compliant
+    - valid_population_identity
+  unauthorized_definition: any_formal_only_identity_not_meeting_all_required_conditions
+  authorized_value_origins: [source_explicit, source_normalized, rule_derived, evidence_derived, derived_validated_model]
+  prohibited_justifications: [model_assumed, structural_placeholder, SUMO_default, typemap_default, unregistered_rule, missing_provenance]
+
+authorized_rules:
+  OSM_ONEWAY_ROAD_LANE_VECTOR_TO_ACTIVE_COUNT_V1:
+    decision_id: DEC-P13-LANE-COUNT-FROM-ROAD-LANE-VECTOR-001
+    formal_applicable: true
+    value_origin: rule_derived
+    required_evidence_fields: [source_vector_values]
+  OSM_BIDIRECTIONAL_TOTAL_2_TO_ONE_ONE_V1:
+    decision_id: DEC-P13-LANE-BIDIRECTIONAL-TOTAL-2-FORMAL-001
+    formal_applicable: true
+    value_origin: rule_derived
+    required_evidence_fields: [source_way_id, source_direction]
+
+lineage:
+  permission_formal_only_requires_authorized_formal_only_lane: true
+  permission_must_match_lane_source_way_and_directed_segment: true
+  permission_only_divergence_is_unauthorized: true
+
+accounting:
+  classifications: [common, structural_only, formal_only, authorized_formal_only, unauthorized_formal_only, same_identity_inconsistent]
+  required_zero_gates: [unauthorized_formal_only, same_identity_inconsistent]
+  retain_difference_records: true
+  retain_aggregates: [rule_id, decision_id, value_origin, assumption_id]
+
+evidence_reference:
+  failed_successor_run: /tmp/kmd-phase12-successor.3aaIfP/reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_successor_20260901_current_adopted_v17/runs/run_1
+  diagnostic_artifact: formal_only_permission_tuples_diagnostic.json
+  source_way_ids: [815706174, 990655363, 1073479844, 1073479845, 1073479847, 1089862560, 1107307949, 1134174349, 1302654456]
+  formal_only_lane_tuple_count: 15
+  formal_only_permission_tuple_count: 15
+  evidence_status: diagnostic_only_failed_run_not_validated_baseline
+
+phase12_effect:
+  contract_version: 1.2.0
+  population_accounting_schema_version: 17.2.0
+  successor_validator_version: 1.2.0
+  full_population_rerun_required: true
+  full_population_rerun_performed: false
+  historical_artifacts_mutated: false
+  formal_network_accepted: false
+  formal_build_ready: false
+  attribute_resolution_acceptance: not_run

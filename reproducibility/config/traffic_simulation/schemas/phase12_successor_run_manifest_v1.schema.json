@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "phase12_successor_run_manifest_v1.schema.json",
+  "title": "Phase 12 successor run manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact_type",
+    "successor_run_id",
+    "run_id",
+    "configuration_id",
+    "configuration_version",
+    "population_version",
+    "profile_set",
+    "governed_vclasses",
+    "scenario_context_id",
+    "source_commit",
+    "base_repository_head",
+    "dirty_tree",
+    "started_at",
+    "ended_at",
+    "runtime_environment",
+    "input_hashes",
+    "adopted_authority_hashes",
+    "implementation_hashes",
+    "schema_hashes",
+    "artifacts",
+    "validation",
+    "formal_state_mutated"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "artifact_type": {"const": "phase12_successor_run_manifest"},
+    "successor_run_id": {"type": "string", "minLength": 1},
+    "run_id": {"enum": ["run_1", "run_2"]},
+    "configuration_id": {"const": "ota_ward_sumo_network_v17"},
+    "configuration_version": {"type": ["string", "integer", "number"]},
+    "population_version": {"const": "ota_ward_relation_closure_v16"},
+    "profile_set": {
+      "type": "array",
+      "prefixItems": [{"const": "structural"}, {"const": "formal"}],
+      "items": false
+    },
+    "governed_vclasses": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 7,
+      "uniqueItems": true
+    },
+    "scenario_context_id": {"type": "string", "minLength": 1},
+    "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "base_repository_head": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "dirty_tree": {"const": false},
+    "started_at": {"type": "string", "format": "date-time"},
+    "ended_at": {"type": "string", "format": "date-time"},
+    "runtime_environment": {"type": "object", "minProperties": 1},
+    "input_hashes": {"$ref": "#/$defs/hashMap"},
+    "adopted_authority_hashes": {"$ref": "#/$defs/hashMap"},
+    "implementation_hashes": {"$ref": "#/$defs/hashMap"},
+    "schema_hashes": {"$ref": "#/$defs/hashMap"},
+    "artifacts": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["artifact_id", "path", "schema", "byte_sha256", "semantic_sha256"],
+        "properties": {
+          "artifact_id": {"type": "string"},
+          "path": {"type": "string"},
+          "schema": {"type": "string"},
+          "byte_sha256": {"$ref": "#/$defs/sha256"},
+          "semantic_sha256": {"$ref": "#/$defs/sha256"}
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "semantic", "identity_uniqueness", "population_accounting", "registered_values", "blocker_exclusion", "result"],
+      "properties": {
+        "schema": {"const": "passed"},
+        "semantic": {"const": "passed"},
+        "identity_uniqueness": {"const": "passed"},
+        "population_accounting": {"const": "passed"},
+        "registered_values": {"const": "passed"},
+        "blocker_exclusion": {"const": "passed"},
+        "result": {"const": "passed"}
+      }
+    },
+    "formal_state_mutated": {"const": false}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "hashMap": {
+      "type": "object",
+      "additionalProperties": {"$ref": "#/$defs/sha256"},
+      "minProperties": 1
+    }
+  }
+}

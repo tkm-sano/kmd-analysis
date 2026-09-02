@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "phase12_successor_determinism_report_v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "artifact_type", "successor_run_id", "source_commit", "comparisons", "environment_match", "result", "semantic_sha256"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "artifact_type": {"const": "phase12_successor_determinism_report"},
+    "successor_run_id": {"const": "phase12_20260901_profile_difference_v1_1"},
+    "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "comparisons": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["artifact_id", "run_1_semantic_sha256", "run_2_semantic_sha256", "match"],
+        "properties": {
+          "artifact_id": {"type": "string", "minLength": 1},
+          "run_1_semantic_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "run_2_semantic_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "match": {"const": true}
+        }
+      }
+    },
+    "environment_match": {"const": true},
+    "result": {"const": "passed"},
+    "semantic_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
