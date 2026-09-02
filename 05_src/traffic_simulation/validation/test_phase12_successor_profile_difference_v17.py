@@ -2,7 +2,9 @@ from __future__ import annotations
 
 from pathlib import Path
 import copy
+import json
 
+from jsonschema import Draft202012Validator
 import pytest
 
 import yaml
@@ -174,3 +176,31 @@ def test_accounting_counts_are_recomputable_not_tamperable() -> None:
         _empty_stage(), _stage(rule_id="OSM_BIDIRECTIONAL_TOTAL_2_TO_ONE_ONE_V1", formal=True), registry=REGISTRY, decision=DECISION
     )
     assert result["lane_identities"]["formal_count"] == result["lane_identities"]["common_count"] + result["lane_identities"]["formal_only_count"]
+
+
+def test_v17_2_identity_schema_and_lineage_include_source_way_id() -> None:
+    result = build_profile_population_difference(
+        _empty_stage(), _stage(rule_id="OSM_BIDIRECTIONAL_TOTAL_2_TO_ONE_ONE_V1", formal=True), registry=REGISTRY, decision=DECISION
+    )
+    schema = json.loads((ROOT / "reproducibility/config/traffic_simulation/schemas/phase12_population_accounting_v17_2.schema.json").read_text())
+    identity_schema = schema["$defs"]["identity"]
+    for section in ("lane_identities", "permission_identities"):
+        identity = result[section]["records"][0]["identity"]
+        Draft202012Validator(identity_schema).validate(identity)
+        assert identity["source_way_id"] == 1
+    assert result["lane_identities"]["records"][0]["identity"]["source_way_id"] == result["permission_identities"]["records"][0]["identity"]["source_way_id"]
+
+
+def test_missing_source_way_provenance_fails_instead_of_null_fallback() -> None:
+    formal = _stage(rule_id="OSM_BIDIRECTIONAL_TOTAL_2_TO_ONE_ONE_V1", formal=True)
+    del formal["directional_lanes"]["segment_lanes"][0]["source_way_id"]
+    with pytest.raises((KeyError, ValueError)):
+        build_profile_population_difference(_empty_stage(), formal, registry=REGISTRY, decision=DECISION)
+
+
+def test_fabricated_permission_source_way_id_is_rejected_by_lineage() -> None:
+    formal = _stage(rule_id="OSM_BIDIRECTIONAL_TOTAL_2_TO_ONE_ONE_V1", formal=True)
+    formal["final_permission"]["permission_records"][0]["source_way_id"] = 999
+    result = build_profile_population_difference(_empty_stage(), formal, registry=REGISTRY, decision=DECISION)
+    assert result["permission_identities"]["unauthorized_formal_only_count"] == 1
+    assert result["permission_identities"]["records"][0]["identity"]["source_way_id"] == 999
