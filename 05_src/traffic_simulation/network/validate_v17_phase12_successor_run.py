@@ -52,6 +52,24 @@ def _permission_map(
     return result, duplicate
 
 
+def _profile_difference_identity(
+    key: tuple[Any, ...], source_way_id: Any
+) -> dict[str, Any]:
+    """Build the v1.2 identity from the upstream source-Way provenance."""
+    if not isinstance(source_way_id, int) or isinstance(source_way_id, bool) or source_way_id < 1:
+        raise base.Phase12RunCompletionError(
+            "population_accounting", "profile-difference identity lacks valid source_way_id provenance"
+        )
+    identity = {
+        "source_way_id": source_way_id,
+        "directed_segment_id": key[0],
+        "lane_position": key[1],
+    }
+    if len(key) == 3:
+        identity["vehicle_class"] = key[2]
+    return identity
+
+
 def _difference_record(
     key: tuple[Any, ...],
     *,
@@ -297,7 +315,8 @@ def build_profile_population_difference(
                 else:
                     classification = "unauthorized_formal_only"
                 counts[classification] += 1
-            records.append({"identity": {"directed_segment_id": key[0], "lane_position": key[1], **({"vehicle_class": key[2]} if len(key) == 3 else {})}, "classification": classification, "source_way_id": item.get("source_way_id") if item else (sitem.get("source_way_id") if sitem else None), "rule_ids": sorted(str(x) for x in (lane or {}).get("rule_ids", [])), "decision_ids": sorted({rule_specs[x]["decision_id"] for x in (lane or {}).get("rule_ids", []) if x in rule_specs}), "value_origin": (lane or {}).get("value_origin"), "assumption_ids": sorted(str(x) for x in (lane or {}).get("assumption_ids", [])), "formal_eligible": (lane or {}).get("formal_eligible"), "permission_record_id": item.get("permission_record_id") if permission and item else None})
+            source_way_id = item.get("source_way_id") if item else (sitem.get("source_way_id") if sitem else None)
+            records.append({"identity": _profile_difference_identity(key, source_way_id), "classification": classification, "source_way_id": source_way_id, "rule_ids": sorted(str(x) for x in (lane or {}).get("rule_ids", [])), "decision_ids": sorted({rule_specs[x]["decision_id"] for x in (lane or {}).get("rule_ids", []) if x in rule_specs}), "value_origin": (lane or {}).get("value_origin"), "assumption_ids": sorted(str(x) for x in (lane or {}).get("assumption_ids", [])), "formal_eligible": (lane or {}).get("formal_eligible"), "permission_record_id": item.get("permission_record_id") if permission and item else None})
         counts["formal_only"] = counts["authorized_formal_only"] + counts["unauthorized_formal_only"]
         return {"identity_axes": ["directed_segment_id", "lane_position"] + (["vehicle_class"] if permission else []), "structural_count": len(sm), "formal_count": len(fm), **{f"{k}_count": v for k, v in counts.items()}, "by_rule_id": dict(sorted(by_rule.items())), "by_decision_id": dict(sorted(by_decision.items())), "by_value_origin": dict(sorted(by_origin.items())), "by_assumption_id": dict(sorted(by_assumption.items())), "records": records}
 
