@@ -7,7 +7,7 @@
   "properties": {
     "schema_version": {"const": 1},
     "artifact_type": {"const": "phase12_successor_determinism_report"},
-    "successor_run_id": {"const": "phase12_20260901_profile_difference_v1_1"},
+    "successor_run_id": {"const": "phase12_20260902_profile_difference_v1_2"},
     "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
     "comparisons": {
       "type": "array",
@@ -15,11 +15,11 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["artifact_id", "run_1_semantic_sha256", "run_2_semantic_sha256", "match"],
+        "required": ["artifact_id", "run_3_semantic_sha256", "run_4_semantic_sha256", "match"],
         "properties": {
           "artifact_id": {"type": "string", "minLength": 1},
-          "run_1_semantic_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
-          "run_2_semantic_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "run_3_semantic_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "run_4_semantic_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
           "match": {"const": true}
         }
       }
