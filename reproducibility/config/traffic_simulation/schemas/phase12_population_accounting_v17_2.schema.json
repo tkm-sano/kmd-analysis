@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "phase12_population_accounting_v17_2.schema.json",
+  "title": "Phase 12 population accounting with authorized profile differences",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "artifact_type", "configuration_id", "population_version", "population_units", "root_cause_records", "blocker_relationships", "profile_population_difference", "exclusion_audit", "exclusion_network_impact", "semantic_sha256"],
+  "properties": {
+    "schema_version": {"const": "17.2.0"},
+    "artifact_type": {"const": "phase12_population_accounting"},
+    "configuration_id": {"const": "ota_ward_sumo_network_v17"},
+    "population_version": {"const": "ota_ward_relation_closure_v16"},
+    "population_units": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/unit"}},
+    "root_cause_records": {"type": "array", "items": {"$ref": "phase12_population_accounting_v17.schema.json#/$defs/rootCause"}},
+    "blocker_relationships": {"$ref": "phase12_population_accounting_v17.schema.json#/properties/blocker_relationships"},
+    "profile_population_difference": {"$ref": "#/$defs/profileDifference"},
+    "exclusion_audit": {"$ref": "phase12_population_accounting_v17.schema.json#/$defs/exclusionAudit"},
+    "exclusion_network_impact": {"$ref": "phase12_population_accounting_v17.schema.json#/$defs/networkImpact"},
+    "semantic_sha256": {"$ref": "phase12_population_accounting_v17.schema.json#/$defs/hash"}
+  },
+  "$defs": {
+    "unit": {
+      "type": "object", "additionalProperties": false,
+      "required": ["population_unit_id", "attribute_name", "identity_axes", "input", "governed", "excluded", "resolved", "unresolved", "conflict", "invalid", "valid_but_unsupported", "equations_valid", "structural_count", "formal_count", "common_count", "structural_only_count", "formal_only_count", "authorized_formal_only_count", "unauthorized_formal_only_count", "same_identity_inconsistent_count"],
+      "properties": {
+        "population_unit_id": {"type":"string", "minLength":1}, "attribute_name":{"type":"string","minLength":1}, "identity_axes":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string"}},
+        "input":{"type":"integer","minimum":0}, "governed":{"type":"integer","minimum":0}, "excluded":{"type":"integer","minimum":0}, "resolved":{"type":"integer","minimum":0}, "unresolved":{"type":"integer","minimum":0}, "conflict":{"type":"integer","minimum":0}, "invalid":{"type":"integer","minimum":0}, "valid_but_unsupported":{"type":"integer","minimum":0}, "equations_valid":{"const":true},
+        "structural_count":{"type":"integer","minimum":0}, "formal_count":{"type":"integer","minimum":0}, "common_count":{"type":"integer","minimum":0}, "structural_only_count":{"type":"integer","minimum":0}, "formal_only_count":{"type":"integer","minimum":0}, "authorized_formal_only_count":{"type":"integer","minimum":0}, "unauthorized_formal_only_count":{"type":"integer","minimum":0}, "same_identity_inconsistent_count":{"type":"integer","minimum":0}
+      }
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_way_id", "directed_segment_id", "lane_position"],
+      "properties": {
+        "source_way_id": {"type": "integer", "minimum": 1},
+        "directed_segment_id": {"type": "string", "minLength": 1},
+        "lane_position": {"type": "integer", "minimum": 0},
+        "vehicle_class": {"type": "string", "minLength": 1}
+      }
+    },
+    "differenceRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["identity", "classification", "source_way_id", "rule_ids", "decision_ids", "value_origin", "assumption_ids", "formal_eligible", "permission_record_id"],
+      "properties": {
+        "identity": {"$ref": "#/$defs/identity"},
+        "classification": {"enum": ["common", "structural_only", "formal_only", "authorized_formal_only", "unauthorized_formal_only", "same_identity_inconsistent"]},
+        "source_way_id": {"type": ["integer", "null"], "minimum": 1},
+        "rule_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "decision_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "value_origin": {"type": ["string", "null"]},
+        "assumption_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "formal_eligible": {"type": ["boolean", "null"]},
+        "permission_record_id": {"type": ["string", "null"]}
+      }
+    },
+    "differenceSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["identity_axes", "structural_count", "formal_count", "common_count", "structural_only_count", "formal_only_count", "authorized_formal_only_count", "unauthorized_formal_only_count", "same_identity_inconsistent_count", "by_rule_id", "by_decision_id", "by_value_origin", "by_assumption_id", "records"],
+      "properties": {
+        "identity_axes": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "string"}},
+        "structural_count": {"type": "integer", "minimum": 0},
+        "formal_count": {"type": "integer", "minimum": 0},
+        "common_count": {"type": "integer", "minimum": 0},
+        "structural_only_count": {"type": "integer", "minimum": 0},
+        "formal_only_count": {"type": "integer", "minimum": 0},
+        "authorized_formal_only_count": {"type": "integer", "minimum": 0},
+        "unauthorized_formal_only_count": {"type": "integer", "minimum": 0},
+        "same_identity_inconsistent_count": {"type": "integer", "minimum": 0},
+        "by_rule_id": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "by_decision_id": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "by_value_origin": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "by_assumption_id": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "records": {"type": "array", "items": {"$ref": "#/$defs/differenceRecord"}}
+      }
+    },
+    "profileDifference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy_decision_id", "lane_identities", "permission_identities", "unauthorized_formal_only_count", "same_identity_inconsistent_count", "duplicate_structural_record_detected", "duplicate_formal_record_detected", "gate_result"],
+      "properties": {
+        "policy_decision_id": {"const": "DEC-P12-FORMAL-ONLY-PROFILE-DIFFERENCE-002"},
+        "lane_identities": {"$ref": "#/$defs/differenceSet"},
+        "permission_identities": {"$ref": "#/$defs/differenceSet"},
+        "unauthorized_formal_only_count": {"type": "integer", "minimum": 0},
+        "same_identity_inconsistent_count": {"type": "integer", "minimum": 0},
+        "duplicate_structural_record_detected": {"type": "boolean"},
+        "duplicate_formal_record_detected": {"type": "boolean"},
+        "gate_result": {"enum": ["passed", "failed"]}
+      }
+    }
+  }
+}
