@@ -1,0 +1,89 @@
+schema_version: 1
+artifact_type: phase12_validated_successor_baseline
+baseline_id: phase12_validated_successor_baseline_20260902_v1_2
+status: validated_successor_baseline
+established_at: '2026-09-02'
+formal_network_acceptance: not_run
+blockers_resolved: false
+
+canonical_run:
+  run_id: run_4
+  successor_run_id: phase12_20260902_profile_difference_v1_2
+  artifact_root: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_20260902_profile_difference_v1_2/runs/run_4
+  git_commit: 0cbdb1ec392115468f14e9665e46af67e74ef43d
+  source_commit: 0cbdb1ec392115468f14e9665e46af67e74ef43d
+  source_osm_sha256: 8b5157e48c3c87c2b4430f56d6abe292ce1ea5449b374ae4cb395fc19475b67d
+  configuration_id: ota_ward_sumo_network_v17
+  configuration_version: 17
+  population_version: ota_ward_relation_closure_v16
+  decision_id: DEC-P12-FORMAL-ONLY-PROFILE-DIFFERENCE-002
+  decision_version: 1.1.0
+  contract_version: 1.2.0
+  accounting_schema_version: 17.2.0
+  blocker_inventory_semantic_sha256: 21cc19bc837af2a97b98b881166bd340aff913822860a9db42b904fdb3c298a8
+  semantic_sha256:
+    structural_full_population: 004233a44bcc918953a169873e7d3ed0495bba6421c7ef6928cb321931733435
+    formal_full_population: a8601762d30b95a9283ea466f702b1c75f13f9cecf01efd5e67f7bc9f90c4276
+    complete_blocker_inventory: 21cc19bc837af2a97b98b881166bd340aff913822860a9db42b904fdb3c298a8
+    exclusion_manifest: 75f72da39e8bf8ce13f607986612337e5cc6e41d12f98a42aa9e9b3b0b878c07
+    population_accounting: dd51509fcd2699b50f04e69768fa99f55c330425953dcf91fe48f351bc0a3569
+  validation:
+    schema: passed
+    semantic: passed
+    identity_uniqueness: passed
+    population_accounting: passed
+    registered_values: passed
+    blocker_exclusion: passed
+    profile_difference_gate: passed
+
+population_accounting:
+  lane:
+    structural: 18776
+    formal: 17819
+    common: 17804
+    structural_only: 972
+    formal_only: 15
+    authorized_formal_only: 15
+    unauthorized_formal_only: 0
+    same_identity_inconsistent: 0
+    structural_invalid: 0
+  permission:
+    structural: 18696
+    formal: 17739
+    common: 17724
+    structural_only: 972
+    formal_only: 15
+    authorized_formal_only: 15
+    unauthorized_formal_only: 0
+    same_identity_inconsistent: 0
+    structural_invalid: 0
+  formal_only_lane_to_permission_lineage_mismatch: 0
+
+determinism:
+  witness_run_id: run_5
+  witness_artifact_root: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_20260902_profile_difference_v1_2/runs/run_5
+  result: passed
+  compared_semantic_artifacts_match: true
+  manifest_stable_fields_match: true
+  manifest_run_id_enum_note: >-
+    The checked-in successor manifest schema enumerated run_3/run_4 only;
+    run_5 was executed with that enum temporarily bypassed in the direct
+    executor call. No repository schema or contract was changed. Treat run_5
+    as determinism evidence and run_4 as the canonical baseline.
+
+formal_blocker_baseline:
+  total: 115935
+  population_version: ota_ward_relation_closure_v16
+  source_artifact: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_20260902_profile_difference_v1_2/runs/run_4/formal/blocker_inventory.json
+  semantic_sha256: 21cc19bc837af2a97b98b881166bd340aff913822860a9db42b904fdb3c298a8
+  by_root_cause:
+    genuine_rule_conflict: 25
+    missing_evidence: 101379
+    missing_registered_rule: 14302
+    unsupported_source_syntax: 229
+  historical_counts:
+    - {total: 108189, status: historical, source: prior_phase12_baseline}
+    - {total: 108190, status: historical, source: prior_phase12_baseline}
+  failed_successor_diagnostic_same_count_note: >-
+    A failed-successor diagnostic also reported 115935, but it is not the
+    validated baseline artifact and remains provenance-distinct from run_4.
