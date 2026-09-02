@@ -28,7 +28,7 @@ manifestations, not summed as independent root causes.
 | final_permission | 14,302 | 0 | 0 | 14,302 | 0 | 2,473 |
 | conditional_access | 35 | 0 | 1 | 0 | 34 | 35 |
 | directed_segments | 48 | 0 | 48 | 0 | 0 | 1 |
-| **Total** | **115,935** | **25** | **101,379** | **14,302** | **229** | **25,789 unique across inventory** |
+| **Total** | **115,935** | **25** | **101,379** | **14,302** | **229** | **25,788 source Ways; 48 relation identities** |
 
 The inventory has no separate evidence-class field; the four evidence classes
 above are the inventory `root_cause_category` values. Attribute totals and
