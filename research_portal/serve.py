@@ -5,26 +5,14 @@ from pathlib import Path
 import yaml
 
 ROOT=Path(__file__).resolve().parents[1]
-REG=ROOT/'reproducibility/config/research_portal/registry.yml'
-STAGE=ROOT/'reproducibility/config/traffic_simulation/research_stage.yml'
-OUT=ROOT/'reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_20260902_profile_difference_v1_2/runs'
+AUTH=ROOT/'reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml'
+PIPE=ROOT/'reproducibility/config/traffic_simulation/network_completion_pipeline_v17.yml'
 
 def load(path): return yaml.safe_load(path.read_text(encoding='utf-8'))
-def latest_run():
-    runs=sorted((p for p in OUT.glob('run_*/successor_run_manifest.json')), key=lambda p:p.stat().st_mtime, reverse=True)
-    return runs[0] if runs else None
 def summary():
-    manifest_path=latest_run(); manifest=json.loads(manifest_path.read_text()) if manifest_path else {}
-    root=manifest_path.parent if manifest_path else OUT/'run_5'
-    inventory=json.loads((root/'formal/blocker_inventory.json').read_text())
-    entries=inventory.get('entries',[])
-    def group(key):
-        result={}
-        for item in entries: result[item.get(key) or 'unclassified']=result.get(item.get(key) or 'unclassified',0)+1
-        return dict(sorted(result.items(), key=lambda x:(-x[1],x[0])))
-    lanes=[x for x in entries if x.get('attribute_name')=='directional_lanes']
-    lane_stops=group('stop_code')
-    return {'registry':load(REG),'research_stage':load(STAGE),'run':manifest,'blockers':{'total':inventory.get('counts',{}).get('total',len(entries)),'attribute':group('attribute_name'),'evidence':group('root_cause_category'),'root':group('root_cause_category'),'directional_lanes':len(lanes),'lane_stop_codes':{k:v for k,v in lane_stops.items() if k.startswith('LANE_')},'speed':sum(x.get('attribute_name')=='speed' for x in entries),'permission':sum(x.get('attribute_name')=='final_permission' for x in entries),'relation':sum(x.get('attribute_name')=='relation' for x in entries)},'sources':{'manifest':str(manifest_path.relative_to(ROOT)) if manifest_path else None,'blocker_inventory':str((root/'formal/blocker_inventory.json').relative_to(ROOT)),'baseline':'run_4','lane_review':'reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase12_20260902_profile_difference_v1_2/runs/run_4/directional_lane_review/directional_lane_review.md'}}
+    authority=load(AUTH); pipeline=load(PIPE); a=authority['accepted_run']; acceptance=json.loads((ROOT/a['acceptance_artifact']).read_text()); q=json.loads((ROOT/authority['accepted_run']['provenance_accounting']).read_text())
+    stages=[{'id':'source','label':'Source Data','status':'completed'},{'id':'structural','label':'Structural Network','status':'completed'},{'id':'formal','label':'Three-tier Formal Completion','status':'completed'},{'id':'sumo','label':'SUMO Materialization','status':'completed'},{'id':'validation','label':'Network Validation','status':'completed'},{'id':'mapping','label':'Stop Mapping','status':'completed'},{'id':'routeability','label':'Routeability Validation','status':'completed'},{'id':'acceptance','label':'Formal Network Acceptance','status':'completed'},{'id':'routing','label':'Routing Baseline','status':'planned'},{'id':'optimization','label':'Optimization','status':'planned'}]
+    return {'authority':authority,'accepted_network':{'network_id':a['network_id'],'run_id':a['run_id'],'network_sha256':a['network_sha256'],'sumo_version':acceptance['sumo_version'],'decision_id':authority['decision']['id']},'formal':{'status':'COMPLETE','blocker':acceptance['three_tier_population']['unresolved'],'accepted':acceptance['FORMAL_NETWORK_ACCEPTED']},'validation':acceptance['validation'],'mapping':acceptance['mapping'],'tiers':acceptance['three_tier_population'],'confidence':q.get('confidence',{}),'pipeline':stages,'historical':{'strict_v17_blockers':115935,'run_ids':['run_4','run_5','run_6'],'status':'HISTORICAL'},'superseded':authority['superseded_decision'],'limitations':acceptance['known_limitations'],'next_stage':'Routing Baseline','sources':authority}
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path=='/api/state': self.send_json(summary()); return
