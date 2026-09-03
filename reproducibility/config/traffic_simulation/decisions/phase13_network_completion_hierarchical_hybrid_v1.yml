@@ -1,0 +1,106 @@
+schema_version: 1
+decision_id: DEC-P13-NETWORK-COMPLETION-HIERARCHICAL-HYBRID-001
+decision_version: 1.0.0
+status: adopted
+adopted_at: '2026-09-03'
+adopted_by: repository_owner_directive
+title: Formal network completion uses an attribute-specific hierarchical hybrid with abstention
+normative_specification: 05_src/traffic_simulation/specifications/14_formal_network_completion_policy_v17.md
+method_registry: reproducibility/config/traffic_simulation/network_completion_method_registry_v17.yml
+
+context: >-
+  The model-selection study found no defensible universal imputer. Formal must
+  admit validated model-ready values beyond explicit source facts while keeping
+  arbitrary simulation defaults outside Formal and preserving source truth.
+evidence:
+  benchmark_population: {explicit_or_deterministic_ground_truth: 3286, missing_no_lane_evidence: 22624}
+  missingness_shift:
+    highway_total_variation: 0.784803
+    highway_jensen_shannon_bits: 0.543248
+    directionality_total_variation: 0.447202
+    endpoint_degree_standardized_mean_difference: 0.856159
+  rejected_candidate_hybrid:
+    type_fallback_stage_accuracy: 0.496719
+    type_fallback_stage_bias_pred_minus_actual: -0.599738
+    conclusion: not_formal_admissible
+  authority_directory: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_network_completion_model_selection
+
+benchmark_results:
+  SUMO_type_default: {spatial_accuracy: 0.657638, spatial_mae: 0.482958, spatial_bias: -0.313755, formal_disposition: SIMULATION_ONLY}
+  MATSim_type_default: {spatial_accuracy: 0.694454, spatial_mae: 0.401196, spatial_bias: -0.374626, formal_disposition: SIMULATION_ONLY}
+  highway_class_mode: {spatial_accuracy: 0.639185, spatial_mae: 0.443887, spatial_bias: -0.141693, formal_disposition: SIMULATION_ONLY}
+  local_corridor_propagation: {spatial_accuracy: 0.839286, spatial_mae: 0.203125, spatial_bias: -0.029018, spatial_coverage: 0.136336, formal_disposition: FORMAL_ALLOWED_AFTER_VALIDATION}
+  softmax_regression: {spatial_accuracy: 0.686853, spatial_mae: 0.400487, spatial_bias: -0.150335, formal_disposition: FORMAL_ALLOWED_AFTER_VALIDATION}
+  ExtraTrees: {spatial_accuracy: 0.734632, spatial_mae: 0.349970, spatial_bias: -0.227632, formal_disposition: FORMAL_ALLOWED_AFTER_VALIDATION}
+  full_candidate_hybrid: {spatial_accuracy: 0.687158, spatial_mae: 0.423007, spatial_bias: -0.367012, formal_disposition: rejected_as_formal_model}
+
+alternatives:
+  rejected_as_universal_formal_model: [SUMO_type_default, MATSim_type_default, highway_class_mode, unconditional_local_propagation, single_statistical_or_ML_predictor]
+  retained_for_validation: [external_official_data, guarded_local_corridor_propagation, empirical_group_model, statistical_or_ML_prediction]
+  selected: attribute_specific_hierarchical_hybrid_with_mandatory_abstention_and_separate_simulation_fallback
+
+decision:
+  formal_definition: research-admissible model-ready value with pre-use method validation and complete provenance
+  architecture: attribute_specific_hierarchical_hybrid
+  mandatory_abstention: true
+  source_truth_and_model_ready_value_separate: true
+  formal_and_simulation_value_origin_separate: true
+  lower_stage_override: prohibited
+  conflict_default: abstain
+
+layer_separation:
+  STRUCTURAL: source_representation_topology_lineage_and_raw_normalized_state
+  FORMAL: validated_research_use_values_and_complete_unresolved_inventory
+  SIMULATION_READY: Formal_values_plus_separately_labelled_simulation_only_overlays
+  data_flow: source_to_STRUCTURAL_to_FORMAL_to_SIMULATION_READY
+  provenance_flow: append_only_with_simulation_overlay_pointing_to_formal_record
+
+provenance_requirements:
+  common: [record_id, source_id, source_snapshot_sha256, attribute_semantic_kind, method_or_rule_id, method_or_rule_version, decision_id, evidence_ids, temporal_extent, directional_extent, output_value, unit, epistemic_status, regeneration_inputs]
+  model_derived: [training_population_id, training_snapshot_sha256, code_sha256, feature_schema, feature_values_or_hash, prediction_distribution, calibrated_confidence, applicability_or_OOD_result, validation_split, validation_metrics, sensitivity_scenario]
+  simulation_overlay: [formal_record_id, fallback_rule_id, fallback_version, scenario_id, simulation_epistemic_status]
+  source_writeback: prohibited
+
+formal_allowed_methods: [EXPLICIT_SOURCE_EVIDENCE, SOURCE_VALUE_NORMALIZATION, ADOPTED_DETERMINISTIC_DERIVED_RULE, VEHICLE_SPECIFIC_ACCESS_EVIDENCE, DETERMINISTIC_OSM_ACCESS_SEMANTICS, FAIL_CLOSED_CONFLICT_RESOLUTION]
+validation_gated_methods: [VALIDATED_EXTERNAL_OFFICIAL_DATA, VALIDATED_LOCAL_CORRIDOR_PROPAGATION, VALIDATED_EMPIRICAL_GROUP_MODEL, VALIDATED_STATISTICAL_ML_PREDICTION, VALIDATED_POLICY_DERIVED_ACCESS]
+simulation_only_methods: [ROAD_TYPE_DEFAULT, SUMO_TYPEMAP_DEFAULT, MATSIM_DEFAULT, CONSERVATIVE_SIMULATION_FALLBACK]
+prohibited_methods: [ML_LEGAL_ACCESS_GRANT, SILENT_OR_UNREGISTERED_INFERENCE]
+unresolved_research_decision_required: [GOVERNANCE_FALLBACK]
+
+attribute_hierarchies:
+  lanes:
+    formal: [EXPLICIT_SOURCE_EVIDENCE, ADOPTED_DETERMINISTIC_DERIVED_RULE, VALIDATED_EXTERNAL_OFFICIAL_DATA, VALIDATED_LOCAL_CORRIDOR_PROPAGATION, VALIDATED_EMPIRICAL_GROUP_MODEL, VALIDATED_STATISTICAL_ML_PREDICTION, UNRESOLVED_FORMAL]
+    simulation_only: [ROAD_TYPE_DEFAULT, SUMO_TYPEMAP_DEFAULT, MATSIM_DEFAULT, CONSERVATIVE_SIMULATION_FALLBACK]
+  speed:
+    formal: [EXPLICIT_SOURCE_EVIDENCE, SOURCE_VALUE_NORMALIZATION, ADOPTED_DETERMINISTIC_DERIVED_RULE, VALIDATED_EXTERNAL_OFFICIAL_DATA, VALIDATED_EMPIRICAL_GROUP_MODEL, VALIDATED_STATISTICAL_ML_PREDICTION, UNRESOLVED_FORMAL]
+    simulation_only: [ROAD_TYPE_DEFAULT, SUMO_TYPEMAP_DEFAULT, MATSIM_DEFAULT, CONSERVATIVE_SIMULATION_FALLBACK]
+  permission_access:
+    formal: [EXPLICIT_SOURCE_EVIDENCE, VEHICLE_SPECIFIC_ACCESS_EVIDENCE, DETERMINISTIC_OSM_ACCESS_SEMANTICS, VALIDATED_POLICY_DERIVED_ACCESS, UNRESOLVED_FORMAL]
+    simulation_only: [ROAD_TYPE_DEFAULT, SUMO_TYPEMAP_DEFAULT, MATSIM_DEFAULT, CONSERVATIVE_SIMULATION_FALLBACK]
+
+validation_requirements:
+  both_domains_required: [explicit_domain_validation, missing_domain_validation]
+  required_gates: [train_test_way_separation, spatial_corridor_holdout, missingness_domain_validation, external_validation, accuracy, mae, bias, calibration_confidence, abstention_support, provenance_completeness, deterministic_regeneration, sensitivity_analysis]
+  missing_truth_insufficient_effect: retain_FORMAL_ALLOWED_AFTER_VALIDATION
+  promotion_requires_separate_decision: true
+
+blocker_semantics:
+  formal_blocker: no research-use value can be established under Formal policy
+  simulation_readiness_blocker: no executable value remains after Formal and registered simulation-only fallback evaluation
+  formal_positive_simulation_zero_allowed: true
+
+completion_semantics:
+  FORMAL_RESEARCH_READY: [formal_provenance_complete, formal_unresolved_inventory_complete, no_silent_inference, accepted_validation_gates_satisfied]
+  SIMULATION_NETWORK_READY: [all_required_attributes_executable, all_provenance_complete, SUMO_materialization_PASS, connectivity_PASS, delivery_routeability_PASS]
+
+abstention_conditions: [conflicting_evidence, unsupported_syntax, semantic_mismatch, temporal_or_lineage_mismatch, out_of_domain, insufficient_support, low_or_uncalibrated_confidence, failed_explicit_domain_validation, failed_or_absent_missing_domain_validation, failed_sensitivity_gate]
+rollback_criteria: [validation_metric_exits_approved_envelope, calibration_drift, class_specific_error_drift, directional_bias_drift, source_or_model_lineage_failure, nondeterministic_regeneration, sensitivity_conclusion_changes, provenance_incomplete]
+rollback_action: deactivate_method_and_restore_affected_formal_records_to_UNRESOLVED_FORMAL_without_deleting_simulation_scenarios
+
+phase_effect:
+  production_resolver_changed: false
+  blocker_reduction_performed: false
+  full_population_rerun_performed: false
+  sumo_build_performed: false
+  gated_method_promoted: false
+  historical_v17_artifacts_mutated: false

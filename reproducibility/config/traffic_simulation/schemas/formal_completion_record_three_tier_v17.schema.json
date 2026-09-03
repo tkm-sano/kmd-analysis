@@ -1,0 +1,26 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"formal_completion_record_three_tier_v17.schema.json",
+  "type":"object",
+  "required":["record_id","attribute","final_value","resolution_tier","method_id","method_version","confidence","source_evidence","source_identity","assumption_id","provenance","original_missing_or_blocker_state"],
+  "properties":{
+    "record_id":{"type":"string","minLength":1},
+    "source_way_id":{"type":["integer","null"]},
+    "attribute":{"enum":["directed_segments","directional_lanes","speed","static_access","conditional_access","final_permission"]},
+    "final_value":{},
+    "resolution_tier":{"enum":["DIRECT","INFERRED","FALLBACK"]},
+    "method_id":{"type":"string","minLength":1},
+    "method_version":{"type":"string","pattern":"^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "confidence":{"enum":["HIGH","MEDIUM","LOW","FALLBACK"]},
+    "source_evidence":{"type":"array","items":{"type":"string"}},
+    "source_identity":{"type":"object","required":["source_snapshot_sha256"],"properties":{"source_way_id":{"type":["integer","null"]},"source_snapshot_sha256":{"type":"string","pattern":"^[a-f0-9]{64}$"}},"additionalProperties":true},
+    "assumption_id":{"type":["string","null"]},
+    "provenance":{"type":"object","required":["decision_id","original_blocker_id","original_stop_code","input_feature_hash","regeneration_command"],"properties":{"decision_id":{"const":"DEC-P13-FORMAL-COMPLETION-THREE-TIER-001"},"original_blocker_id":{"type":"string"},"original_stop_code":{"type":"string"},"input_feature_hash":{"type":"string","pattern":"^[a-f0-9]{64}$"},"regeneration_command":{"type":"string","minLength":1}},"additionalProperties":true},
+    "original_missing_or_blocker_state":{"type":"object","required":["stop_code","historical_resolution_status"],"properties":{"stop_code":{"type":"string"},"historical_resolution_status":{"const":"unresolved"}},"additionalProperties":true}
+  },
+  "allOf":[
+    {"if":{"properties":{"resolution_tier":{"const":"DIRECT"}}},"then":{"properties":{"confidence":{"enum":["HIGH","MEDIUM"]}}}},
+    {"if":{"properties":{"resolution_tier":{"const":"FALLBACK"}}},"then":{"properties":{"confidence":{"const":"FALLBACK"}}}}
+  ],
+  "additionalProperties":true
+}

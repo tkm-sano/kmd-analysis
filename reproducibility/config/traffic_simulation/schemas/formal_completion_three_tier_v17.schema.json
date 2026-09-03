@@ -1,0 +1,21 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"formal_completion_three_tier_v17.schema.json",
+  "type":"object",
+  "required":["schema_version","decision_id","status","tiers","confidence_levels","record_required_fields","blocker_definition","historical_baseline_policy"],
+  "properties":{
+    "schema_version":{"const":17},
+    "decision_id":{"const":"DEC-P13-FORMAL-COMPLETION-THREE-TIER-001"},
+    "status":{"const":"adopted"},
+    "tiers":{"type":"object","required":["DIRECT","INFERRED","FALLBACK"],"properties":{
+      "DIRECT":{"const":"source_or_unique_adopted_rule"},
+      "INFERRED":{"const":"reproducible_completion_mechanism_with_confidence"},
+      "FALLBACK":{"const":"deterministic_completion_default_or_conservative_rule"}
+    }},
+    "confidence_levels":{"const":["HIGH","MEDIUM","LOW","FALLBACK"]},
+    "record_required_fields":{"type":"array","minItems":10,"uniqueItems":true,"items":{"type":"string"}},
+    "blocker_definition":{"type":"string","minLength":1},
+    "historical_baseline_policy":{"const":"strict_v17_and_prior_runs_are_read_only_evidence"}
+  },
+  "additionalProperties":true
+}

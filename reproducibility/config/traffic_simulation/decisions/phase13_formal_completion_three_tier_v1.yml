@@ -1,0 +1,37 @@
+schema_version: 1
+decision_id: DEC-P13-FORMAL-COMPLETION-THREE-TIER-001
+decision_version: 1.0.0
+status: adopted
+adopted_at: '2026-09-03'
+adopted_by: repository_owner_directive
+supersedes: DEC-P13-NETWORK-COMPLETION-HIERARCHICAL-HYBRID-001
+normative_specification: 05_src/traffic_simulation/specifications/15_formal_completion_three_tier_policy_v17.md
+registry: reproducibility/config/traffic_simulation/formal_completion_three_tier_registry_v17.yml
+context: >-
+  Missing-domain sample size is 1,200 but independent labels are not acquired;
+  all validation-gated methods remain INSUFFICIENT_EVIDENCE and Formal reduction is zero.
+  Research requires a complete model-ready network while preserving source truth and
+  historical strict v17 evidence.
+decision: >-
+  Formal is the complete model-ready network representation used by research and
+  simulation. Every governed attribute receives DIRECT, INFERRED, or FALLBACK value;
+  each record retains confidence and complete provenance. A blocker exists only when
+  all three tiers fail technically.
+tiers:
+  DIRECT: [source_explicit, lossless_normalized, adopted_deterministic_derived, explicit_access_evidence, deterministic_access_semantics]
+  INFERRED: [external_data, local_propagation, empirical_group_model, statistical_ml_prediction]
+  FALLBACK: [road_type_default, sumo_typemap_default, matsim_style_default, deterministic_conservative_fallback, relation_or_conditional_fallback]
+confidence: [HIGH, MEDIUM, LOW, FALLBACK]
+confidence_policy: DIRECT defaults HIGH; INFERRED derives from model confidence, donor agreement and benchmark performance, downgraded when missing-domain labels are absent; FALLBACK is FALLBACK
+no_pretend_evidence: INFERRED and FALLBACK MUST NOT be labelled OBSERVED or DIRECT
+attribute_policy:
+  lanes: DIRECT_then_INFERRED_then_FALLBACK; all lane blocker patterns receive final_value
+  speed: materialize operational_speed_kph; posted_or_legal_maxspeed remains separate
+  permission_access: DIRECT first; deterministic policy fallback resolves delivery allow/deny; ML legal grant prohibited
+  relations_conditionals: configured-time evaluation, deterministic fallback, or explicit ignore with source issue provenance
+blocker_policy: missing_evidence_low_confidence_and_default_usage_are_not_blockers; only technical failure after all tiers is blocker
+acceptance:
+  required: [all_required_attributes_have_final_values, provenance_complete, sumo_build_pass, lane_validity_pass, speed_validity_pass, permission_validity_pass, connectivity_pass, delivery_routeability_pass, request_stop_mapping_pass]
+  formal_network_accepted: true_only_when_all_required_pass
+historical_protection: strict_v17_baseline_run_4_run_5_run_6_blocker_inventory_missing_domain_artifacts_and_model_selection_artifacts_read_only
+scope: new_research_run_only; no_historical_overwrite

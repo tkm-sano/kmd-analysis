@@ -1,0 +1,14 @@
+schema_version: 1
+artifact_status: generated_non_normative_portal_handoff
+comparison_id: STRICT-V17-VS-THREE-TIER-RUN-1
+strict_v17:
+  runs: [run_4, run_5, run_6]
+  historical_blockers: 115935
+  accepted_network: false
+three_tier:
+  run_id: three_tier_run_1
+  artifact: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_1/research_portal_three_tier_comparison.json
+  accepted_network: false
+  display_fields: [historical_blockers, DIRECT_percent, INFERRED_percent, FALLBACK_percent, confidence_distribution, accepted_network, stop_mapping]
+  source_truth_note: Structural remains source truth; three-tier Formal values are model-ready representations with explicit provenance
+portal_integration_status: handoff_ready_not_production_accepted
