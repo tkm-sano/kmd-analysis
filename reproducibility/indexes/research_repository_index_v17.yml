@@ -1,0 +1,44 @@
+schema_version: 1
+index_id: RESEARCH-REPOSITORY-INDEX-V17
+status: CURRENT
+purpose: single_entrypoint_for_research_pipeline_traceability
+current_authority: reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml
+current_pipeline: reproducibility/config/traffic_simulation/network_completion_pipeline_v17.yml
+index_sections:
+  decision: current_authority.decision
+  specification: current_authority.specification
+  pipeline: current_authority.pipeline_specification
+  machine_readable: [current_authority.registry, current_authority.schema]
+  baseline_acceptance: current_authority.accepted_run
+  generated: current_authority.accepted_run.path
+  historical: current_authority.superseded_decision
+current_authority_roles:
+  decision: DEC-P13-FORMAL-COMPLETION-THREE-TIER-001
+  specification: 05_src/traffic_simulation/specifications/15_formal_completion_three_tier_policy_v17.md
+  pipeline_specification: 05_src/traffic_simulation/specifications/16_network_completion_pipeline_v17.md
+  registry: reproducibility/config/traffic_simulation/formal_completion_three_tier_registry_v17.yml
+  schemas:
+    policy: reproducibility/config/traffic_simulation/schemas/formal_completion_three_tier_v17.schema.json
+    record: reproducibility/config/traffic_simulation/schemas/formal_completion_record_three_tier_v17.schema.json
+  accepted_run: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2
+  accepted_network: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/three_tier.net.xml
+  acceptance: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/network_acceptance.json
+  portal: reproducibility/config/research_portal/three_tier_network_run2_status.yml
+logical_tree:
+  - Source
+  - Structural
+  - Formal Completion
+  - SUMO Materialization
+  - Validation
+  - Stop Mapping
+  - Routeability
+  - Acceptance
+  - Routing
+  - Optimization
+lifecycle_rules:
+  normative: [DECISION, NORMATIVE_SPECIFICATION, PIPELINE_SPECIFICATION, REGISTRY, SCHEMA]
+  reference: [BASELINE, ACCEPTANCE, VALIDATION_REPORT]
+  non_authoritative: [RESEARCH_NOTE, DIAGNOSTIC, GENERATED, PORTAL_HANDOFF]
+  historical: [SUPERSEDED, HISTORICAL, DEPRECATED]
+safe_move_policy: hash_bound_or_manifest_referenced_artifacts_are_not_moved
+next_research_stage: Routing baseline
