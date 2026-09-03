@@ -39,6 +39,7 @@ def artifacts() -> int:
     rows = (
         ("Research overview", OVERVIEW_PATH),
         ("Repository index", ROOT / "reproducibility/indexes/research_repository_index_v17.yml"),
+        ("Current pipeline reference", ROOT / "RESEARCH_PIPELINE_REFERENCE.md"),
         ("Current network authority", AUTHORITY_PATH),
         ("Accepted network", network),
         ("Network acceptance", acceptance),

@@ -137,6 +137,7 @@ def summary() -> dict:
     artifacts = [
         artifact(repository_index["stable_research_overview"], "Research Overview", "Overview"),
         artifact(repository_index["research_overview"], "Canonical Research Roadmap", "Overview"),
+        artifact(repository_index["pipeline_reference"], "Current Research Pipeline Reference", "Overview"),
         artifact(repository_index["human_repository_map"], "Repository Map", "Overview"),
         artifact(repository_index["current_authority"], "Current Authority Pointer", "Configs"),
         artifact(authority["decision"]["path"], authority["decision"]["id"], "Decisions"),
@@ -232,6 +233,7 @@ def summary() -> dict:
             "repository_index": str(INDEX.relative_to(ROOT)), "authority": str(authority_path.relative_to(ROOT)),
             "acceptance": accepted["acceptance_artifact"], "map_config": str(MAP.relative_to(ROOT)),
             "interpretation_evidence": str(EVIDENCE.relative_to(ROOT)),
+            "pipeline_reference": repository_index["pipeline_reference"],
         },
     }
 

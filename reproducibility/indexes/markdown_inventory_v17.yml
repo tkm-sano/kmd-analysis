@@ -2,7 +2,7 @@ schema_version: 1
 inventory_id: MARKDOWN-INVENTORY-V17
 date_authority: git_log_follow
 unknown_policy: UNKNOWN means no Git history was available; no filesystem mtime was used.
-markdown_count: 128
+markdown_count: 129
 broken_internal_markdown_links_at_generation: []
 documents:
 - path: 0-2-B-1_20260825_COMPLETE_Mac側Git整理.md
@@ -559,6 +559,7 @@ documents:
   - 05_src/traffic_simulation/20260730_20260903_simulation_model_development_and_vv.md
   - README.md
   - README_v2.md
+  - RESEARCH_PIPELINE_REFERENCE.md
   - RESEARCH_STATUS.md
   - reproducibility/config/traffic_simulation/research_stage.yml
   references_to:
@@ -609,6 +610,7 @@ documents:
   first_git_commit: 4d818997ee7c79a3301b71eea068a581ef93e2b0
   latest_git_commit: a7c954dbef768d3142f26498c988075ecb54968f
   referenced_by:
+  - RESEARCH_PIPELINE_REFERENCE.md
   - docs/research_portal_research_spec.md
   - reproducibility/config/research_portal/registry.yml
   - reproducibility/config/research_portal/research_map_v1.yml
@@ -700,6 +702,7 @@ documents:
   - 05_src/traffic_simulation/v17_phase1_to_phase14_integrated_status.md
   - README.md
   - README_v2.md
+  - RESEARCH_PIPELINE_REFERENCE.md
   - docs/research_portal_research_spec.md
   - reproducibility/config/research_portal/registry.yml
   - reproducibility/indexes/research_repository_index_v17.yml
@@ -723,6 +726,7 @@ documents:
   first_git_commit: 02bfde13726be49921ed58c65a020c76f2d05047
   latest_git_commit: 981994fe48cbb0b09cb2cb86439313fe405e7e9b
   referenced_by:
+  - RESEARCH_PIPELINE_REFERENCE.md
   - docker/README.md
   references_to:
   - 03_data/metadata/acquisition/20260730_ota_ward_v15_exception_rule_validation.md
@@ -876,6 +880,7 @@ documents:
   - 05_src/traffic_simulation/README.md
   - README.md
   - README_v2.md
+  - RESEARCH_PIPELINE_REFERENCE.md
   - docs/research_portal_research_spec.md
   - reproducibility/config/research_portal/registry.yml
   - reproducibility/config/research_portal/research_map_v1.yml
@@ -1309,6 +1314,7 @@ documents:
   - 00_project_management/0-2-C_20260825_CURRENT_研究上の問題点とモデル課題.md
   - 05_src/traffic_simulation/learning/permission_materializer_reproducible_implementation_guide.md
   - 20260903_20260903_RESEARCH_OVERVIEW.md
+  - RESEARCH_PIPELINE_REFERENCE.md
   - docs/research_portal_research_spec.md
   - reproducibility/config/research_portal/registry.yml
   - reproducibility/config/traffic_simulation/sumo_network.yml
@@ -1844,6 +1850,7 @@ documents:
   first_git_commit: 23aed5a6a54e8322f0c7fe70ce126452ef205931
   latest_git_commit: dafef2b21782ae442c7a8891817bc76b85dbc755
   referenced_by:
+  - RESEARCH_PIPELINE_REFERENCE.md
   - reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml
   - reproducibility/config/traffic_simulation/decisions/phase13_formal_completion_three_tier_v1.yml
   - reproducibility/indexes/20260903_20260903_research_repository_map_v17.md
@@ -1867,6 +1874,7 @@ documents:
   first_git_commit: c9dc28102d78f10b3ae82dca3db566ba8ab5d750
   latest_git_commit: dafef2b21782ae442c7a8891817bc76b85dbc755
   referenced_by:
+  - RESEARCH_PIPELINE_REFERENCE.md
   - reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml
   - reproducibility/indexes/20260903_20260903_research_repository_map_v17.md
   - reproducibility/indexes/research_repository_index_v17.yml
@@ -2519,6 +2527,7 @@ documents:
   - reproducibility/indexes/research_repository_index_v17.yml
   references_to:
   - 05_src/traffic_simulation/optimization_comparison_protocol.md
+  - RESEARCH_PIPELINE_REFERENCE.md
   - docs/20260903_20260903_research_cli.md
   - reproducibility/indexes/20260903_20260903_research_repository_map_v17.md
   - reproducibility/indexes/research_repository_inventory_v17.md
@@ -2557,6 +2566,7 @@ documents:
   - 05_src/traffic_simulation/phase13_to_sumo_network_todo.md
   - 05_src/traffic_simulation/visualization/README.md
   - README_v2.md
+  - RESEARCH_PIPELINE_REFERENCE.md
   - RESEARCH_STATUS.md
   - docker/README.md
   - docs/research_portal_research_spec.md
@@ -2575,6 +2585,7 @@ documents:
   - 2-3_20260823_CURRENT_交通量較正.md
   - 2-3_20260823_PARTIAL_交通量較正.md
   - RESEARCH_OVERVIEW.md
+  - RESEARCH_PIPELINE_REFERENCE.md
   - docs/20260903_20260903_research_cli.md
   - reproducibility/environment/README.md
   safe_to_rename: false
@@ -2627,12 +2638,51 @@ documents:
   - 05_src/traffic_simulation/network/validate_current_markdown_index.py
   - 20260903_20260903_RESEARCH_OVERVIEW.md
   - README.md
+  - RESEARCH_PIPELINE_REFERENCE.md
   - reproducibility/config/research_portal/research_map_v1.yml
+  - reproducibility/evidence/fleet_capacity_interpretation_v1.yml
   - reproducibility/indexes/20260903_20260903_research_repository_map_v17.md
   - reproducibility/indexes/research_repository_index_v17.yml
   - research_portal/README.md
   references_to:
   - 20260903_20260903_RESEARCH_OVERVIEW.md
+  - RESEARCH_PIPELINE_REFERENCE.md
+  safe_to_rename: false
+  hash_bound: false
+  hash_references: []
+  portal_dependency: true
+  validator_dependency: true
+- path: RESEARCH_PIPELINE_REFERENCE.md
+  filename: RESEARCH_PIPELINE_REFERENCE.md
+  title: Current Research Pipeline Execution / Authority / Validation Reference
+  role: CURRENT_REFERENCE
+  lifecycle: CURRENT
+  current: true
+  authoritative: false
+  generated: false
+  created: UNKNOWN
+  updated: UNKNOWN
+  first_git_commit: UNKNOWN
+  latest_git_commit: UNKNOWN
+  referenced_by:
+  - 05_src/research_cli/inspection.py
+  - 05_src/traffic_simulation/network/validate_research_pipeline_reference.py
+  - 20260903_20260903_RESEARCH_OVERVIEW.md
+  - README.md
+  - RESEARCH_OVERVIEW.md
+  - reproducibility/indexes/20260903_20260903_research_repository_map_v17.md
+  - reproducibility/indexes/research_repository_index_v17.yml
+  - research_portal/README.md
+  references_to:
+  - 03_data/metadata/acquisition/README.md
+  - 03_data/metadata/data_provenance.md
+  - 05_src/traffic_simulation/20260730_20260903_simulation_model_development_and_vv.md
+  - 05_src/traffic_simulation/README.md
+  - 05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md
+  - 05_src/traffic_simulation/optimization_comparison_protocol.md
+  - 05_src/traffic_simulation/specifications/20260903_20260903_formal_completion_three_tier_policy_v17.md
+  - 05_src/traffic_simulation/specifications/20260903_20260903_network_completion_pipeline_v17.md
+  - RESEARCH_OVERVIEW.md
   safe_to_rename: false
   hash_bound: false
   hash_references: []
@@ -2878,6 +2928,7 @@ documents:
   - reproducibility/indexes/research_repository_index_v17.yml
   references_to:
   - 20260903_20260903_RESEARCH_OVERVIEW.md
+  - RESEARCH_PIPELINE_REFERENCE.md
   - docs/20260903_20260903_research_cli.md
   safe_to_rename: true
   hash_bound: false
@@ -2915,12 +2966,13 @@ documents:
   created: '2026-09-03'
   updated: '2026-09-03'
   first_git_commit: 6ab87f3ef1a358e33c69330599966a58d58f05a7
-  latest_git_commit: dafef2b21782ae442c7a8891817bc76b85dbc755
+  latest_git_commit: ebf01bedef6ffbad848bea6cfdad753577688fb3
   referenced_by:
   - reproducibility/indexes/research_repository_index_v17.yml
   - research_portal/serve.py
   references_to:
   - RESEARCH_OVERVIEW.md
+  - RESEARCH_PIPELINE_REFERENCE.md
   safe_to_rename: false
   hash_bound: false
   hash_references: []

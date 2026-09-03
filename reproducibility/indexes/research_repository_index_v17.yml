@@ -6,6 +6,7 @@ stable_research_overview: RESEARCH_OVERVIEW.md
 research_overview: 20260903_20260903_RESEARCH_OVERVIEW.md
 research_cli: research
 research_cli_reference: docs/20260903_20260903_research_cli.md
+pipeline_reference: RESEARCH_PIPELINE_REFERENCE.md
 human_repository_map: reproducibility/indexes/20260903_20260903_research_repository_map_v17.md
 markdown_inventory: reproducibility/indexes/markdown_inventory_v17.yml
 current_authority: reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml
@@ -18,6 +19,7 @@ interpretation_evidence:
 index_sections:
   research_plan: research_overview
   execution_entrypoint: research_cli
+  execution_reference: pipeline_reference
   decision: current_authority.decision
   specification: current_authority.specification
   pipeline: current_authority.pipeline_specification
@@ -66,6 +68,7 @@ filename_date_convention:
       reason: GitHub_Portal_CLI_and_external_link_compatibility
   fixed_name_exceptions:
     - README.md
+    - RESEARCH_PIPELINE_REFERENCE.md
     - research_portal/README.md
     - reproducibility/environment/README.md
 important_markdown:
@@ -149,4 +152,13 @@ important_markdown:
     created: '2026-08-25'
     updated: '2026-09-03'
     purpose: Canonical native environment reconstruction and validation instructions.
+    naming_policy: fixed_name_exception
+  - priority: 10
+    document_id: DOC-RESEARCH-PIPELINE-REFERENCE
+    role: CURRENT_REFERENCE
+    lifecycle: CURRENT
+    path: RESEARCH_PIPELINE_REFERENCE.md
+    created: '2026-09-03'
+    updated: '2026-09-03'
+    purpose: Current execution, input, output, authority, validation, acceptance, provenance, and handoff reference for every research pipeline.
     naming_policy: fixed_name_exception

@@ -10,6 +10,7 @@
 現行の研究概要・roadmapは次の文書である。
 
 - [研究概要・ロードマップ v17](20260903_20260903_RESEARCH_OVERVIEW.md)
+- [現行Research Pipeline実行・正本・検証リファレンス](RESEARCH_PIPELINE_REFERENCE.md)
 
 本stable entryはGitHub、Portal、CLI、外部linkとの互換性のために維持する。日付入り文書が正本であり、本文はここに複製しない。
 
