@@ -3,6 +3,8 @@ from __future__ import annotations
 import os
 import subprocess
 import sys
+from urllib.error import URLError
+from urllib.request import urlopen
 
 from research_cli.core import OK, ROOT, Step, portal_summary, print_execution_context, python_script, run_steps, unavailable
 
@@ -37,12 +39,21 @@ def build(*, dry_run: bool = False) -> int:
 
 
 def start(*, port: int | None = None, dry_run: bool = False) -> int:
+    selected_port = port or int(os.getenv("PORT", "8876"))
+    if not dry_run:
+        try:
+            with urlopen(f"http://127.0.0.1:{selected_port}/api/state", timeout=0.5) as response:
+                if response.status == 200:
+                    print(f"Portal already running at http://127.0.0.1:{selected_port}/")
+                    return OK
+        except (OSError, URLError):
+            pass
     command = (sys.executable, str(ROOT / "research_portal/serve.py"))
     step = Step("Research Portal server", command, inputs=(ROOT / "research_portal/serve.py",), outputs=())
     if dry_run:
         return run_steps((step,), dry_run=True)
     print_execution_context(step, dry_run=False)
-    print(f"Starting Research Portal at http://127.0.0.1:{port or int(os.getenv('PORT', '8876'))}/")
+    print(f"Starting Research Portal at http://127.0.0.1:{selected_port}/")
     env = os.environ.copy()
     if port is not None:
         env["PORT"] = str(port)
