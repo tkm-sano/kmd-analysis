@@ -1,0 +1,25 @@
+schema_version: 1
+pipeline_id: NETWORK-COMPLETION-PIPELINE-V17
+version: 1.0.0
+status: CURRENT
+decision_id: DEC-P13-FORMAL-COMPLETION-THREE-TIER-001
+stages:
+  - {order: 1, id: SOURCE, input: source_osm, output: source_truth}
+  - {order: 2, id: STRUCTURAL, input: source_truth, output: structural_representation}
+  - {order: 3, id: THREE_TIER_FORMAL, input: structural_representation, output: formal_model_ready_network}
+  - {order: 4, id: SUMO, input: formal_model_ready_network, output: sumo_net_xml}
+  - {order: 5, id: MAPPING, input: sumo_net_xml, output: mapped_requests_stops}
+  - {order: 6, id: ROUTEABILITY, input: mapped_requests_stops, output: routeability_validation}
+  - {order: 7, id: ACCEPTANCE, input: routeability_validation, output: formal_network_acceptance}
+gates:
+  SOURCE: source_identity_and_hash
+  STRUCTURAL: topology_and_raw_normalized_state
+  THREE_TIER_FORMAL: direct_inferred_fallback_provenance_complete
+  SUMO: build_and_attribute_validity
+  MAPPING: request_stop_mapping_acceptance
+  ROUTEABILITY: deterministic_primary_sample_100_of_100
+  ACCEPTANCE: all_prior_gates_pass
+superseded_pipelines:
+  - {id: HIERARCHICAL-HYBRID-PIPELINE-V17, decision_id: DEC-P13-NETWORK-COMPLETION-HIERARCHICAL-HYBRID-001, status: SUPERSEDED, superseded_by: NETWORK-COMPLETION-PIPELINE-V17}
+  - {id: PRE-THREE-TIER-BLOCKER-PIPELINE-V17, status: SUPERSEDED, superseded_by: NETWORK-COMPLETION-PIPELINE-V17}
+prohibited: [stage_reordering, silent_fallback, historical_run_overwrite]
