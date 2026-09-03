@@ -40,10 +40,20 @@ def main() -> None:
     for node_id in ("classical_optimization", "qubo", "qaoa", "delivery_simulation", "fulfillment_evaluation", "planning_interpretation", "business_interpretation", "future_society"):
         assert by_id[node_id]["status"] == "FUTURE"
 
+    public_view = research_map["public_view"]
+    assert public_view["role"] == "Research communication layer"
+    assert [item["status"] for item in public_view["pipeline"]] == [
+        "DONE", "DONE", "DONE", "NEXT", "PLANNED", "FUTURE", "FUTURE", "FUTURE",
+    ]
+    assert all(stage_ref in ids for item in public_view["pipeline"] for stage_ref in item["stage_refs"])
+
     spec = importlib.util.spec_from_file_location("portal", ROOT / "research_portal/serve.py")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     state = module.summary()
+    assert state["public_view"]["role"] == "Research communication layer"
+    assert state["public_view"]["interpretation_assessment"] == "SUPPORTED_WITH_CONDITIONS"
+    assert state["public_view"]["mapped_delivery_stops"] == 39956
     network = state["accepted_network"]
     assert network["accepted"] is True
     assert network["sha_matches"] is True
@@ -111,6 +121,14 @@ def main() -> None:
         assert stale not in current_view
     assert "Hierarchical Hybrid" not in current_view
     assert "strict v17" not in current_view
+
+    portal_html = (ROOT / "research_portal/index.html").read_text(encoding="utf-8")
+    public_markup = portal_html[:portal_html.index('<details id="technical-details"')]
+    assert "./research " not in public_markup
+    assert "SHA256" not in public_markup
+    assert "Current Research Stage" in public_markup
+    assert "Explore Network / Instances" in public_markup
+    assert '<details id="technical-details" class="technical-details">' in portal_html
 
     print(json.dumps({
         "research_map": "passed", "nodes": len(ids),

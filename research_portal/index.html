@@ -3,105 +3,107 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Research Map / Research OS</title>
+  <title>Research Portal</title>
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/evidence.css">
   <link rel="stylesheet" href="/network-scale.css">
+  <link rel="stylesheet" href="/public-view.css">
 </head>
 <body>
   <main>
-    <header class="hero">
+    <header class="hero public-hero">
       <div class="hero-copy">
-        <p class="eyebrow">RESEARCH MAP / RESEARCH OS</p>
+        <p class="eyebrow">RESEARCH PORTAL · PUBLIC / RESEARCH VIEW</p>
         <h1 id="question">研究の問いを読み込み中</h1>
         <p id="philosophy" class="lede"></p>
-        <div class="mode"><span>ANALYSIS MODE</span><strong id="interpretation-mode"></strong></div>
+        <div class="mode"><span>RESEARCH DESIGN</span><strong id="interpretation-mode"></strong></div>
       </div>
       <aside class="stage-now" aria-label="Current research position">
-        <div><small>Current Milestone</small><strong id="current-milestone"></strong></div>
+        <div><small>Validated Milestone</small><strong id="current-milestone"></strong></div>
         <div class="focus"><small>Current Research Stage</small><strong id="current-stage"></strong></div>
-        <div><small>Immediate Next Task</small><strong id="next-task"></strong></div>
+        <div><small>What comes next</small><strong id="next-task"></strong></div>
       </aside>
     </header>
 
-    <section id="conceptual">
-      <div class="section-heading"><div><p class="section-number">01 · CONCEPTUAL MODEL</p><h2>Conceptual Research Map</h2></div><p>研究question全体ではなく、今回の直接分析とEvidenceで接続できる具体的interpretation pathwayです。</p></div>
+    <nav class="view-nav" aria-label="Portal views"><a href="#research-question">Public / Research View</a><a href="#technical-details">Technical Details</a></nav>
+
+    <section id="research-question" class="public-section">
+      <div class="section-heading"><div><p class="section-number">01 · RESEARCH QUESTION</p><h2>何を研究しているのか</h2></div></div>
+      <blockquote id="public-question" class="research-question"></blockquote>
+    </section>
+
+    <section id="why-it-matters" class="public-section">
+      <div class="section-heading"><div><p class="section-number">02 · WHY IT MATTERS</p><h2>なぜ重要なのか</h2></div></div>
+      <p id="public-why" class="public-copy"></p>
+    </section>
+
+    <section id="research-approach" class="public-section">
+      <div class="section-heading"><div><p class="section-number">03 · RESEARCH APPROACH</p><h2>どのように調べるのか</h2></div><p id="approach-intro"></p></div>
+      <div id="approach-flow" class="public-flow"></div>
+    </section>
+
+    <section id="conceptual" class="public-section">
+      <div class="section-heading"><div><p class="section-number">04 · CONCEPTUAL MODEL</p><h2>Conceptual Research Map</h2></div><p>配送充足までの直接分析と、その外側にある条件付き解釈を分けて表示します。nodeを選ぶとEvidenceの範囲を確認できます。</p></div>
       <div id="conceptual-map" class="map-shell compact"></div>
     </section>
 
-    <section id="evidence-interpretation">
-      <div class="section-heading"><div><p class="section-number">01A · EVIDENCE LAYER</p><h2>Evidence-Supported Interpretation</h2></div><span class="badge status-supported_with_conditions">SUPPORTED WITH CONDITIONS</span></div>
-      <div id="evidence-overview"></div>
-      <div id="evidence-pathway" class="evidence-pathway"></div>
-      <div id="evidence-link-table" class="table-shell"></div>
-      <div id="evidence-boundary" class="evidence-boundary"></div>
-      <details class="browser evidence-trace"><summary>Evidence Traceability <span>Research Question → Direct Metric → Interpretation Claim → Evidence Artifact → External Source → Portal Node</span></summary><div id="evidence-trace-chain" class="trace-chain"></div></details>
+    <section id="public-pipeline-section" class="public-section">
+      <div class="section-heading"><div><p class="section-number">05 · RESEARCH PIPELINE</p><h2>研究の進め方と現在地</h2></div><p>トップでは研究工程を示し、実装工程はTechnical Detailsで確認できます。</p></div>
+      <div id="public-pipeline" class="public-pipeline"></div>
     </section>
 
-    <section id="implementation">
-      <div class="section-heading"><div><p class="section-number">02 · ANALYSIS PIPELINE</p><h2>Implementation / Analysis Map</h2></div><p>nodeを選択するとauthority・artifact・validator・次工程を確認できます。</p></div>
-      <div class="map-toolbar"><div id="status-legend" class="legend"></div><div id="edge-legend" class="legend edge-legend"></div></div>
-      <div id="implementation-map" class="map-shell implementation"></div>
+    <section id="public-current-stage" class="public-section public-two-column">
+      <div><p class="section-number">06 · CURRENT STAGE</p><h2 id="public-stage-name"></h2><p id="public-stage-explanation"></p></div>
+      <div class="next-callout"><small>WHAT COMES NEXT</small><strong id="public-next-task"></strong></div>
     </section>
 
-    <section id="data-flow">
-      <div class="section-heading"><div><p class="section-number">03 · DATA FLOW</p><h2>Data Flow & Edge Semantics</h2></div><p>因果主張ではなく、artifactとanalysisの関係種別を表示します。</p></div>
-      <div id="data-flow-map" class="map-shell compact"></div>
+    <section id="research-scale" class="public-section">
+      <div class="section-heading"><div><p class="section-number">07 · DATA / NETWORK SCALE</p><h2>研究で扱う交通ネットワーク</h2></div><a id="explore-network" class="text-link" href="#technical-network">Explore Network / Instances</a></div>
+      <div id="public-network-scale" class="metric-grid network-scale-grid"></div>
+      <p class="public-note">NodesとDirected edgesは経路探索グラフの規模です。LanesはSUMO固有の補助指標で、Routing workloadやDelivery Instanceの規模とは分けて扱います。</p>
     </section>
 
-    <section id="milestones">
-      <div class="section-heading"><div><p class="section-number">04 · CURRENT MILESTONES</p><h2>Current Milestones</h2></div></div>
-      <div id="milestone-grid" class="metric-grid"></div>
+    <section id="validated-so-far" class="public-section public-two-column">
+      <div><p class="section-number">08 · VALIDATED SO FAR</p><h2>これまでに確認できたこと</h2><ul id="public-validation" class="check-list"></ul></div>
+      <div><p class="section-number">09 · CURRENT LIMITATIONS</p><h2>現在の限界</h2><ul id="public-limitations" class="limit-list"></ul></div>
     </section>
 
-    <section id="accepted-network">
-      <div class="section-heading"><div><p class="section-number">05 · CURRENT AUTHORITY</p><h2>Accepted Network / Instance Viewer</h2></div><span class="badge status-done">ACCEPTED NETWORK</span></div>
-      <div id="network-summary" class="network-layout"></div>
+    <section id="public-interpretation" class="public-section interpretation-summary">
+      <div class="section-heading"><div><p class="section-number">10 · INTERPRETATION / EXPECTED CONTRIBUTION</p><h2>Evidence-Supported Downstream Interpretation</h2></div><span id="public-evidence-status" class="badge status-supported_with_conditions"></span></div>
+      <p id="public-evidence-wording" class="evidence-wording"></p>
+      <div class="public-boundary"><strong>Direct Research Boundary</strong><span>Delivery Fulfillment</span><i>↓ Evidence-supported interpretation</i><span>Potential Need for Fleet Expansion / Replacement</span></div>
+      <p class="public-note"><strong>これは企業の実際のFleet投資行動を予測するものではありません。</strong> Evidence strength、条件、source verificationはTechnical Detailsで確認できます。</p>
     </section>
 
-    <section id="validation">
-      <div class="section-heading"><div><p class="section-number">06 · QUALITY GATES</p><h2>Validation / Quality</h2></div><p>未実装stageはPASSではなくNOT AVAILABLE / FUTUREです。</p></div>
-      <div id="validation-table" class="table-shell"></div>
-    </section>
+    <details id="technical-details" class="technical-details">
+      <summary><span>Technical Details</span><small>authority、validation、artifacts、commands、実装工程、履歴を確認する</small></summary>
+      <div class="technical-body">
+        <div class="technical-intro"><div><p class="section-number">TECHNICAL REFERENCE</p><h2>実行・検証・追跡の詳細</h2></div><p>この領域はcurrent / historical / supersededを分離したまま、研究実装を追跡するための情報を保持します。日常的な実行手順は<a id="pipeline-reference-link" href="#">Research Pipeline Reference</a>を参照してください。</p></div>
 
-    <section id="unresolved">
-      <div class="section-heading"><div><p class="section-number">07 · OPEN DECISIONS</p><h2>Unresolved Decisions</h2></div><p>各判断が止めているstageを明示します。</p></div>
-      <div id="unresolved-grid" class="decision-grid"></div>
-    </section>
+        <section id="evidence-interpretation">
+          <div class="section-heading"><div><p class="section-number">T01 · EVIDENCE DETAIL</p><h2>Evidence Status / Sources</h2></div><span class="badge status-supported_with_conditions">SUPPORTED WITH CONDITIONS</span></div>
+          <div id="evidence-overview"></div><div id="evidence-pathway" class="evidence-pathway"></div><div id="evidence-link-table" class="table-shell"></div><div id="evidence-boundary" class="evidence-boundary"></div>
+          <details class="browser evidence-trace"><summary>Evidence Traceability <span>Research Question → Direct Metric → Interpretation Claim → Evidence Artifact → External Source → Portal Node</span></summary><div id="evidence-trace-chain" class="trace-chain"></div></details>
+        </section>
 
-    <section id="traceability">
-      <div class="section-heading"><div><p class="section-number">08 · PROVENANCE CHAIN</p><h2>Artifact Traceability</h2></div><p>repository indexとcurrent authorityから構成される追跡経路です。</p></div>
-      <div id="trace-chain" class="trace-chain"></div>
-      <details class="browser">
-        <summary>Artifact Browser <span>Overview / Evidence / Decisions / Specifications / Configs / Registries / Schemas / Runs / Validation / Acceptance / Portal / Historical</span></summary>
-        <div id="artifact-browser"></div>
-      </details>
-    </section>
+        <section id="implementation"><div class="section-heading"><div><p class="section-number">T02 · IMPLEMENTATION PIPELINE</p><h2>Implementation / Analysis Map</h2></div><p>nodeを選択するとauthority・artifact・validator・次工程を確認できます。</p></div><div class="map-toolbar"><div id="status-legend" class="legend"></div><div id="edge-legend" class="legend edge-legend"></div></div><div id="implementation-map" class="map-shell implementation"></div></section>
+        <section id="data-flow"><div class="section-heading"><div><p class="section-number">T03 · DATA FLOW</p><h2>Data Flow & Edge Semantics</h2></div><p>因果主張ではなく、artifactとanalysisの関係種別を表示します。</p></div><div id="data-flow-map" class="map-shell compact"></div></section>
+        <section id="milestones"><div class="section-heading"><div><p class="section-number">T04 · MILESTONES</p><h2>Implementation Milestones</h2></div></div><div id="milestone-grid" class="metric-grid"></div></section>
 
-    <section id="provenance-history">
-      <div class="section-heading"><div><p class="section-number">09 · EVIDENCE BOUNDARY</p><h2>Historical / Provenance</h2></div><p>INFERRED / FALLBACKをdirect observationとして扱いません。</p></div>
-      <div id="provenance-grid" class="provenance-layout"></div>
-      <div id="lifecycle-grid" class="lifecycle-grid"></div>
-      <details class="timeline"><summary>Confirmed Research Timeline</summary><div id="timeline-list"></div></details>
-    </section>
+        <section id="technical-network"><div class="section-heading"><div><p class="section-number">T05 · CURRENT AUTHORITY</p><h2>Network / Instance Technical Viewer</h2></div><span class="badge status-done">ACCEPTED NETWORK</span></div><div id="network-summary" class="network-layout"></div></section>
+        <section id="validation"><div class="section-heading"><div><p class="section-number">T06 · QUALITY GATES</p><h2>Validation / Quality</h2></div><p>未実装stageはPASSではなくNOT AVAILABLE / FUTUREです。</p></div><div id="validation-table" class="table-shell"></div></section>
+        <section id="unresolved"><div class="section-heading"><div><p class="section-number">T07 · OPEN DECISIONS</p><h2>Unresolved Implementation Decisions</h2></div><p>各判断が止めているstageを明示します。</p></div><div id="unresolved-grid" class="decision-grid"></div></section>
 
-    <section id="commands">
-      <div class="section-heading"><div><p class="section-number">10 · REPRODUCIBILITY</p><h2>Research Commands</h2></div><p>PortalとCLIは同じcanonical artifactsを参照します。ここから処理は実行しません。</p></div>
-      <div id="command-list" class="command-list"></div>
-    </section>
-
-    <section id="next-stage" class="next-stage">
-      <div><p class="section-number">11 · NEXT RESEARCH STAGE</p><h2>Routing Baseline</h2><span class="badge status-next">NEXT</span></div>
-      <div id="routing-placeholder"></div>
-    </section>
-
-    <footer><p>Canonical source chain</p><div id="source-chain"></div></footer>
+        <section id="traceability"><div class="section-heading"><div><p class="section-number">T08 · PROVENANCE CHAIN</p><h2>Artifact Traceability</h2></div><p>repository indexとcurrent authorityから構成される追跡経路です。</p></div><div id="trace-chain" class="trace-chain"></div><details class="browser"><summary>Artifact Browser <span>Overview / Evidence / Decisions / Specifications / Configs / Registries / Schemas / Runs / Validation / Acceptance / Portal / Historical</span></summary><div id="artifact-browser"></div></details></section>
+        <section id="provenance-history"><div class="section-heading"><div><p class="section-number">T09 · HISTORICAL / PROVENANCE</p><h2>Historical / Provenance</h2></div><p>INFERRED / FALLBACKをdirect observationとして扱いません。</p></div><div id="provenance-grid" class="provenance-layout"></div><div id="lifecycle-grid" class="lifecycle-grid"></div><details class="timeline"><summary>Confirmed Research Timeline</summary><div id="timeline-list"></div></details></section>
+        <section id="commands"><div class="section-heading"><div><p class="section-number">T10 · REPRODUCIBILITY</p><h2>Research Commands</h2></div><p>ここから処理は実行しません。完全な手順はPipeline Referenceを参照してください。</p></div><div id="command-list" class="command-list"></div></section>
+        <section id="next-stage" class="next-stage"><div><p class="section-number">T11 · NEXT IMPLEMENTATION STAGE</p><h2>Routing Baseline</h2><span class="badge status-next">NEXT</span></div><div id="routing-placeholder"></div></section>
+        <footer><p>Canonical source chain</p><div id="source-chain"></div></footer>
+      </div>
+    </details>
   </main>
 
-  <dialog id="stage-dialog">
-    <form method="dialog"><button class="close" aria-label="Close">×</button></form>
-    <div id="stage-detail"></div>
-  </dialog>
+  <dialog id="stage-dialog"><form method="dialog"><button class="close" aria-label="Close">×</button></form><div id="stage-detail"></div></dialog>
   <div id="error" class="error" hidden></div>
   <script src="/app.js"></script>
 </body>

@@ -223,10 +223,33 @@ def summary() -> dict:
         {"label": "External Source", "value": f"{source_counts['total']} registered sources"},
         {"label": "Portal Node", "value": " → ".join(interpretation_evidence["traceability"]["portal_node_refs"])},
     ]
+    public_config = map_config["public_view"]
+    validated_so_far = []
+    if validation["sumo_build"] == "PASS":
+        validated_so_far.append("Traffic network constructed and loaded successfully")
+    if all(validation[key] == "PASS" for key in ("lane_validity", "speed_validity", "permission_validity", "connectivity")):
+        validated_so_far.append("Core network validation passed")
+    if acceptance["mapping"]["status"] == "PASS" and acceptance["mapping"]["mapped"] == acceptance["mapping"]["total_stops"]:
+        validated_so_far.append(f"All {acceptance['mapping']['mapped']:,} delivery stops mapped to the accepted network")
+    if acceptance["FORMAL_NETWORK_ACCEPTED"]:
+        validated_so_far.append("Network accepted for the next routing-analysis stage")
+
     return {
         "portal_philosophy": map_config["portal_philosophy"],
         "research_question": map_config["research_question"], "interpretation_mode": map_config["interpretation_mode"],
         "current_position": map_config["current_position"],
+        "public_view": {
+            **public_config,
+            "validated_so_far": validated_so_far,
+            "network_validation": "Passed" if acceptance["FORMAL_NETWORK_ACCEPTED"] else "Not accepted",
+            "mapped_delivery_stops": acceptance["mapping"]["mapped"],
+            "interpretation_assessment": interpretation_evidence["overall_assessment"],
+            "interpretation_wording": interpretation_evidence["wording"]["ja"],
+            "technical_links": {
+                "pipeline_reference": repository_index["pipeline_reference"],
+                "overview": repository_index["stable_research_overview"],
+            },
+        },
         "interpretation_evidence": {
             "evidence_id": interpretation_evidence["evidence_id"],
             "overall_assessment": interpretation_evidence["overall_assessment"],

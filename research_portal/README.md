@@ -4,14 +4,22 @@
 役割: `CURRENT_REFERENCE`
 ライフサイクル: `CURRENT`
 作成日: `2026-09-03`
-最終更新日: `2026-09-03`
+最終更新日: `2026-09-04`
 現行正本: `reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml`
 
-repository rootで`./research portal start`を実行し、`http://127.0.0.1:8876/`を開く。全研究commandは`./research commands`から確認する。
+repository rootで`./research portal start`を実行し、`http://127.0.0.1:8876/`を開く。Portalの主要な役割は、第三者が研究の問い、重要性、方法、現在地、検証済み事項、限界、次工程、条件付き解釈を理解するための`Research communication layer`である。
+
+初期表示の`Public / Research View`は研究コミュニケーションを優先する。SHA、artifact path、run ID、validator、command、registry / schema、詳細provenance、historical / superseded情報は削除せず、閉じた`Technical Details`へ分離する。Technical Detailsは認証境界ではなく、情報階層上の詳細表示である。
 
 各pipelineのinput/output、command、authority、validation、acceptance、handoffは[`RESEARCH_PIPELINE_REFERENCE.md`](../RESEARCH_PIPELINE_REFERENCE.md)を参照する。
 
-Portalは「概念研究マップ」と「実装／分析マップ」を主画面とし、研究の問いから現行Stage、成果物traceability、Stage 1～11までを有向graphで示す。Stage構成の人間向け入口は[`RESEARCH_OVERVIEW.md`](../RESEARCH_OVERVIEW.md)であり、graph taxonomyは`reproducibility/config/research_portal/research_map_v1.yml`で同じ構成を表す。
+役割分担は次のとおりである。
+
+- [`RESEARCH_OVERVIEW.md`](../RESEARCH_OVERVIEW.md): research overview / roadmap / conceptual framing
+- [`RESEARCH_PIPELINE_REFERENCE.md`](../RESEARCH_PIPELINE_REFERENCE.md): commands / inputs / outputs / authority / validation / detailed execution
+- Research Portal: third-party-facing research map / progress / explanation
+
+Public Viewは概念研究マップと8段階の研究工程を表示する。詳細な実装／分析map、data flow、成果物traceability、validation gateはTechnical Detailsで維持する。graph taxonomyと公開説明modelは`reproducibility/config/research_portal/research_map_v1.yml`で管理する。
 
 Accepted Network / Instance ViewerのNetwork Scaleは、current authorityが指すaccepted `network_acceptance.json`の`validation.counts`をsourceとする。`network_node_count`と有向`network_edge_count`がrouting graph size、`network_lane_count`がSUMO固有の補助指標である。Routing workloadとDelivery Instance scaleは別modelで、production artifactが無い間は`NOT YET AVAILABLE`を返す。
 

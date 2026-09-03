@@ -149,6 +149,33 @@ function unavailableScale(value) {
   return value == null ? "NOT YET AVAILABLE" : Number(value).toLocaleString();
 }
 
+function renderPublicView(state) {
+  const view=state.public_view;
+  $("public-question").textContent=state.research_question;
+  $("public-why").textContent=view.why_it_matters;
+  $("approach-intro").textContent=view.approach_intro;
+  $("approach-flow").innerHTML=view.approach.map((item,index)=>`<article><span>${String(index+1).padStart(2,"0")}</span><strong>${esc(item.label)}</strong><small>${esc(item.description)}</small></article>`).join("");
+  $("public-pipeline").innerHTML=view.pipeline.map((item,index)=>`<article class="public-pipeline-stage status-${String(item.status).toLowerCase()}"><span>${String(index+1).padStart(2,"0")}</span><div><strong>${esc(item.label)}</strong><small>${esc(item.description)}</small></div><b>${esc(item.status)}</b></article>`).join("");
+  $("public-stage-name").textContent=state.current_position.current_stage;
+  $("public-stage-explanation").textContent=view.current_stage_explanation;
+  $("public-next-task").textContent=state.current_position.immediate_next_task;
+  $("public-network-scale").innerHTML=[
+    metric("Nodes |V|",state.network_scale.network_node_count.toLocaleString(),"経路探索グラフのノード数"),
+    metric("Directed Edges |E|",state.network_scale.network_edge_count.toLocaleString(),"方向別に定義されたエッジ数"),
+    metric("Lanes",state.network_scale.network_lane_count.toLocaleString(),"SUMO固有の補助指標"),
+    metric("Delivery stops mapped",view.mapped_delivery_stops.toLocaleString(),"accepted networkへの対応付け"),
+    metric("Validation",view.network_validation,"current accepted network")
+  ].join("");
+  $("public-validation").innerHTML=view.validated_so_far.map(item=>`<li>${esc(item)}</li>`).join("");
+  $("public-limitations").innerHTML=view.limitations.map(item=>`<li>${esc(item)}</li>`).join("");
+  $("public-evidence-status").textContent=readableStatus(view.interpretation_assessment);
+  $("public-evidence-wording").textContent=view.interpretation_wording;
+  $("pipeline-reference-link").href=`/artifact/${encodeURI(view.technical_links.pipeline_reference)}`;
+  $("pipeline-reference-link").target="_blank";
+  $("pipeline-reference-link").rel="noopener";
+  $("explore-network").addEventListener("click",()=>{$("technical-details").open=true;});
+}
+
 function renderNetwork(network, networkScale, routingWorkload, instanceScale) {
   const validation=network.validation,mapping=network.mapping;
   const facts=[
@@ -199,10 +226,12 @@ function render(state) {
   $("current-milestone").textContent=`${state.current_position.current_milestone} — ${state.current_position.milestone_status}`;
   $("current-stage").textContent=state.current_position.current_stage;
   $("next-task").textContent=state.current_position.immediate_next_task;
+  renderPublicView(state);
 
   $("status-legend").innerHTML=STATUSES.map(status=>`<span class="badge status-${status.toLowerCase()}">${status}</span>`).join("");
   $("edge-legend").innerHTML=Object.entries(EDGE_COLORS).map(([label,color])=>`<span><i style="background:${color}"></i>${esc(label)}</span>`).join("");
-  renderGraph("conceptual-map",state.maps.conceptual,{width:1170,height:210,label:"Conceptual Research Map"});
+  const publicConceptual={...state.maps.conceptual,nodes:state.maps.conceptual.nodes.map(node=>({...node,status:["technology_optimization","delivery_fulfillment"].includes(node.id)?"DIRECT_ANALYSIS":"INTERPRETATION"}))};
+  renderGraph("conceptual-map",publicConceptual,{width:1170,height:210,label:"Conceptual Research Map: direct analysis and evidence-supported interpretation"});
   renderEvidence(state.interpretation_evidence);
   renderGraph("implementation-map",state.maps.implementation,{width:1500,height:710,label:"Implementation and Analysis Map"});
   renderGraph("data-flow-map",state.maps.data_flow,{width:1160,height:290,label:"Research data flow"});

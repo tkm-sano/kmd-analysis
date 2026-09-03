@@ -6,9 +6,38 @@ repository_index_pointer: reproducibility/indexes/research_repository_index_v17.
 overview_pointer: RESEARCH_OVERVIEW.md
 interpretation_evidence_pointer: reproducibility/evidence/fleet_capacity_interpretation_v1.yml
 interpretation_evidence_schema_pointer: reproducibility/evidence/fleet_capacity_interpretation_v1.schema.json
-portal_philosophy: 研究全体の構造、現在地、依存関係、成果物、検証状態、未決定事項、次工程を確認する場所
+portal_philosophy: 第三者が研究の問い、方法、現在地、検証済み事項、限界、次工程を理解するための研究コミュニケーション層
 research_question: 量子技術の発展が、移動技術を通じて都市社会・都市経済にどのような変化をもたらしうるか
 interpretation_mode: Future scenario analysis — 直接因果の証明ではなく、明示した仮定と検証可能な分析pipelineによる条件付き将来分析
+
+public_view:
+  role: Research communication layer
+  why_it_matters: 都市配送の将来を考えるには、計画手法や技術条件の違いが、限られた時間と配送能力のもとで需要充足へどう現れるかを、同じ分析枠組みで比較する必要があります。
+  approach_intro: 公開データから配送需要と交通ネットワークを構成し、経路、配送計画、交通上の実行、需要充足の順に検証します。未完了の工程は結果があるように見せず、現在地と次工程を分けて示します。
+  approach:
+    - {label: Open data, description: 道路・需要などの入力と出所を管理する}
+    - {label: Traffic network, description: 配送地点を扱える道路ネットワークを構築・検証する}
+    - {label: Delivery demand, description: 配送要求と配送地点を共通の需要表現にする}
+    - {label: Routing, description: 配送地点間の移動時間・距離・到達可能性を求める}
+    - {label: Optimization, description: 共通の配送問題に対して配送計画を作成・比較する}
+    - {label: Simulation, description: 配送計画を交通ネットワーク上で評価する}
+    - {label: Delivery fulfillment, description: どの程度の配送需要を満たせたかを評価する}
+    - {label: Interpretation, description: 結果を明示した条件とEvidenceの範囲内で解釈する}
+  pipeline:
+    - {label: Data, description: 入力データと出所の整備, status: DONE, stage_refs: [external_data]}
+    - {label: Demand, description: 配送需要・Requests・Stopsの構成, status: DONE, stage_refs: [demand_scenario, requests_stops]}
+    - {label: Network, description: 道路網の構築、Stop対応付け、研究利用への受入, status: DONE, stage_refs: [structural_network, formal_network, sumo_network, stop_mapping, network_acceptance]}
+    - {label: Routing, description: 配送地点間の移動コストと到達可能性の確定, status: NEXT, stage_refs: [routing_baseline]}
+    - {label: Optimization, description: 共通配送問題による古典・量子最適化の比較, status: PLANNED, stage_refs: [common_instance, classical_optimization, qubo, qaoa]}
+    - {label: Simulation, description: 配送計画を交通条件下で実行・評価, status: FUTURE, stage_refs: [delivery_simulation]}
+    - {label: Evaluation, description: 配送需要の充足と補助指標の評価, status: FUTURE, stage_refs: [fulfillment_evaluation]}
+    - {label: Interpretation, description: 直接分析結果をEvidenceの範囲内で条件付き解釈, status: FUTURE, stage_refs: [planning_interpretation, business_interpretation, future_society]}
+  current_stage_explanation: 配送地点間の移動時間・距離・到達可能性を計算する前に、配送問題で必要な出発地と到着地の範囲を定める工程です。
+  limitations:
+    - Routing scopeは現在定義中です。
+    - OptimizationとDelivery Simulationはまだ完了しておらず、結果は提示していません。
+    - Network routeabilityの受入確認はsample-basedです。
+    - 下流のFleet解釈は、企業の実際の投資行動を予測しません。
 
 current_position:
   current_milestone: M1 Network Ready
