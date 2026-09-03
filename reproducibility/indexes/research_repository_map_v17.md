@@ -1,6 +1,8 @@
 # Research Repository Map v17
 
-This map is a navigation document, not a second authority. The canonical pointer is [current_network_completion_authority_v17.yml](../config/traffic_simulation/current_network_completion_authority_v17.yml); the canonical pipeline is [network_completion_pipeline_v17.yml](../config/traffic_simulation/network_completion_pipeline_v17.yml).
+Start with the [Research Overview and Roadmap v17](../../RESEARCH_OVERVIEW.md) for the research question, full Stage 1–11 plan, milestones, gates, and current position.
+
+This map is a navigation document, not a second authority. The canonical network pointer is [current_network_completion_authority_v17.yml](../config/traffic_simulation/current_network_completion_authority_v17.yml); the canonical network-completion pipeline is [network_completion_pipeline_v17.yml](../config/traffic_simulation/network_completion_pipeline_v17.yml).
 
 ```text
 Conceptual Model
@@ -14,14 +16,16 @@ Conceptual Model
                               └─ Mapping
                                   └─ Acceptance
                                       └─ Portal
-                                          └─ Routing (next)
-                                              └─ Optimization (future)
+                                          └─ Research Overview
+                                              └─ Routing Baseline (next)
+                                                  └─ Common Instance / Optimization / Evaluation / Interpretation (future)
 ```
 
 Current traceability:
 
 | Role | Current pointer |
 |---|---|
+| Research overview / roadmap | `RESEARCH_OVERVIEW.md` |
 | Decision | `DEC-P13-FORMAL-COMPLETION-THREE-TIER-001` |
 | Normative specification | `05_src/traffic_simulation/specifications/15_formal_completion_three_tier_policy_v17.md` |
 | Pipeline specification | `05_src/traffic_simulation/specifications/16_network_completion_pipeline_v17.md` |

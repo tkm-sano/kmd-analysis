@@ -16,7 +16,7 @@ def summary():
     a = authority['accepted_run']
     acceptance = json.loads((ROOT / a['acceptance_artifact']).read_text())
     quality = json.loads((ROOT / a['provenance_accounting']).read_text())
-    complete = {'road_network','formal_completion','sumo_materialization','network_validation','delivery_demand','requests','stops','stop_mapping','routeability','formal_network_acceptance'}
+    complete = {'external_data','baseline_demand','requests','stops','structural_network','formal_completion','sumo_materialization','network_validation','stop_mapping','routeability','formal_network_acceptance'}
     network_trace = {
         'decision': authority['decision']['path'],
         'specification': authority['specification']['path'],
@@ -39,7 +39,7 @@ def summary():
         item=dict(node); item['status']='CURRENT' if item['id'] in {'quantum','mobility'} else 'FUTURE'; conceptual.append(item)
     return {
         'research_question': research_map['research_question'],
-        'current_position': {'current_stage':'Routing Baseline','previous_milestone':'Formal Network Acceptance','next_major_milestone':'Classical Optimization'},
+        'current_position': {'current_stage':'Routing Baseline','previous_milestone':'M1 Network Ready — DONE','next_major_milestone':'M2 Routing Ready'},
         'maps': {'conceptual':{'nodes':conceptual,'edges':research_map['conceptual_edges']},'implementation':{'nodes':nodes,'edges':research_map['implementation_edges']}},
         'accepted_network': {'network_id':a['network_id'],'run_id':a['run_id'],'network_sha256':a['network_sha256'],'sumo_version':acceptance['sumo_version'],'decision_id':authority['decision']['id']},
         'formal': {'status':'COMPLETE','blocker':acceptance['three_tier_population']['unresolved'],'accepted':acceptance['FORMAL_NETWORK_ACCEPTED']},
