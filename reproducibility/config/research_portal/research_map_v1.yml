@@ -1,0 +1,71 @@
+schema_version: 1
+map_id: RESEARCH-MAP-V1
+status: CURRENT
+authority_pointer: reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml
+research_question: 量子技術の発展が、移動技術を通じて都市社会・都市経済にどのような変化をもたらしうるか
+current_position:
+  current_stage: routing_baseline
+  previous_milestone: formal_network_acceptance
+  next_major_milestone: classical_optimization
+conceptual_nodes:
+  - {id: quantum, name: Quantum Technology, purpose: 計算技術の能力と制約を定義する, input: quantum capability assumptions, output: optimization capability envelope, x: 80, y: 90}
+  - {id: mobility, name: Mobility Technology, purpose: 配送・移動システムへの技術影響を表現する, input: optimization capability envelope, output: mobility operating alternatives, x: 320, y: 90}
+  - {id: planning, name: Planning / Policy, purpose: 都市計画・政策上の含意を評価する, input: evaluated mobility outcomes, output: planning and policy implications, x: 560, y: 90}
+  - {id: business, name: Business / Economic Activity, purpose: 事業・都市経済への影響を解釈する, input: fulfillment and cost outcomes, output: business implications, x: 800, y: 90}
+  - {id: society, name: Future Society, purpose: 技術・政策・経済の統合的な将来像を解釈する, input: planning and business implications, output: future society interpretation, x: 1040, y: 90}
+conceptual_edges:
+  - {from: quantum, to: mobility, relation: parameterizes}
+  - {from: mobility, to: planning, relation: feeds into}
+  - {from: mobility, to: business, relation: feeds into}
+  - {from: planning, to: society, relation: interprets}
+  - {from: business, to: society, relation: interprets}
+implementation_nodes:
+  - {id: research_question, name: Research Question, purpose: 研究全体の問いを固定する, input: research motivation, output: analysis requirements, x: 510, y: 20}
+  - {id: future_scenario, name: Future Scenario / Demand, purpose: 将来条件と配送需要を定義する, input: analysis requirements, output: scenario assumptions, x: 510, y: 120}
+  - {id: mobility_system, name: Mobility System, purpose: 対象となる移動システムを定義する, input: scenario assumptions, output: network and demand requirements, x: 510, y: 220}
+  - {id: road_network, name: Road Network, purpose: source道路表現を構築する, input: source data, output: structural road network, x: 180, y: 340}
+  - {id: formal_completion, name: Formal Completion, purpose: Three-tier model-ready属性を完成する, input: structural road network, output: completed Formal network, x: 180, y: 440}
+  - {id: sumo_materialization, name: SUMO Materialization, purpose: Formal networkをSUMOへ変換する, input: completed Formal network, output: SUMO net.xml, x: 180, y: 540}
+  - {id: network_validation, name: Network Validation, purpose: lane・speed・permission・connectivityを検証する, input: SUMO net.xml, output: validated SUMO network, x: 180, y: 640}
+  - {id: delivery_demand, name: Delivery Demand, purpose: 配送需要母集団を構築する, input: scenario assumptions, output: delivery requests, x: 840, y: 340}
+  - {id: requests, name: Requests, purpose: 配送要求を表現する, input: delivery demand, output: 73547 requests, x: 840, y: 440}
+  - {id: stops, name: Stops, purpose: 要求を配送地点へ集約する, input: requests, output: 39956 stops, x: 840, y: 540}
+  - {id: stop_mapping, name: Stop Mapping, purpose: stopsをdelivery-permitted edgeへ対応付ける, input: validated network and stops, output: mapped stops, x: 510, y: 740}
+  - {id: routeability, name: Routeability Validation, purpose: delivery経路成立性を検証する, input: accepted candidates and mapped stops, output: routeability gate, x: 510, y: 840}
+  - {id: formal_network_acceptance, name: Formal Network Acceptance, purpose: networkを研究利用へ承認する, input: validation and routeability evidence, output: accepted network, x: 510, y: 940}
+  - {id: routing_baseline, name: Routing Baseline, purpose: 古典的routing基準を構築する, input: accepted network and mapped stops, output: baseline routes, x: 510, y: 1040}
+  - {id: common_instance, name: Common Delivery Instance, purpose: 手法比較用の共通問題を固定する, input: baseline routes and demand, output: comparison instance, x: 510, y: 1140}
+  - {id: classical_optimization, name: Classical Optimization, purpose: 古典最適化baselineを確立する, input: comparison instance, output: classical solutions, x: 510, y: 1240}
+  - {id: qubo, name: QUBO, purpose: 配送最適化問題をQUBO化する, input: comparison instance, output: QUBO formulation, x: 360, y: 1340}
+  - {id: qaoa, name: QAOA, purpose: 量子近似最適化を評価する, input: QUBO formulation, output: quantum candidate solutions, x: 660, y: 1340}
+  - {id: simulation, name: Delivery Simulation, purpose: solutionを交通・配送系で実行する, input: classical and quantum solutions, output: simulation outcomes, x: 510, y: 1440}
+  - {id: fulfillment, name: Fulfillment Evaluation, purpose: 配送達成・時間・費用を評価する, input: simulation outcomes, output: fulfillment evidence, x: 510, y: 1540}
+  - {id: policy_interpretation, name: Planning / Policy Interpretation, purpose: 政策含意を解釈する, input: fulfillment evidence, output: policy implications, x: 260, y: 1640}
+  - {id: business_interpretation, name: Business Interpretation, purpose: 事業・経済含意を解釈する, input: fulfillment evidence, output: business implications, x: 510, y: 1640}
+  - {id: society_interpretation, name: Future Society Interpretation, purpose: 将来社会への含意を統合する, input: policy and business implications, output: research conclusion, x: 760, y: 1640}
+implementation_edges:
+  - {from: research_question, to: future_scenario, relation: parameterizes}
+  - {from: future_scenario, to: mobility_system, relation: parameterizes}
+  - {from: mobility_system, to: road_network, relation: depends on}
+  - {from: mobility_system, to: delivery_demand, relation: depends on}
+  - {from: road_network, to: formal_completion, relation: feeds into}
+  - {from: formal_completion, to: sumo_materialization, relation: produces}
+  - {from: sumo_materialization, to: network_validation, relation: validates}
+  - {from: delivery_demand, to: requests, relation: produces}
+  - {from: requests, to: stops, relation: produces}
+  - {from: network_validation, to: stop_mapping, relation: feeds into}
+  - {from: stops, to: stop_mapping, relation: feeds into}
+  - {from: stop_mapping, to: routeability, relation: validates}
+  - {from: routeability, to: formal_network_acceptance, relation: validates}
+  - {from: formal_network_acceptance, to: routing_baseline, relation: feeds into}
+  - {from: routing_baseline, to: common_instance, relation: produces}
+  - {from: common_instance, to: classical_optimization, relation: feeds into}
+  - {from: common_instance, to: qubo, relation: parameterizes}
+  - {from: qubo, to: qaoa, relation: feeds into}
+  - {from: classical_optimization, to: simulation, relation: compares with}
+  - {from: qaoa, to: simulation, relation: feeds into}
+  - {from: simulation, to: fulfillment, relation: produces}
+  - {from: fulfillment, to: policy_interpretation, relation: interprets}
+  - {from: fulfillment, to: business_interpretation, relation: interprets}
+  - {from: policy_interpretation, to: society_interpretation, relation: feeds into}
+  - {from: business_interpretation, to: society_interpretation, relation: feeds into}
