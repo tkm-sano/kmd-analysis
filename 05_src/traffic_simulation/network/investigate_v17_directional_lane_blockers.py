@@ -13,6 +13,7 @@ BASELINE_SHA = "21cc19bc837af2a97b98b881166bd340aff913822860a9db42b904fdb3c298a8
 STOP_CODES = {"LANE_DIRECTIONAL_ALLOCATION_MISSING", "LANE_SHARED_PHYSICAL_MATERIALIZATION_UNSUPPORTED", "LANE_VECTOR_LENGTH_MISMATCH", "LANE_COUNT_CONFLICT"}
 COUNT_KEYS = {"lanes", "lanes:forward", "lanes:backward", "lanes:both_ways"}
 VECTOR_KEYS = {"turn:lanes", "destination:lanes", "destination:ref:lanes"}
+EVIDENCE_KEYS = ("lanes", "lanes:forward", "lanes:backward", "turn:lanes", "destination:lanes", "destination:ref:lanes", "oneway")
 
 def _read(path: Path) -> dict[str, Any]:
     value = json.loads(path.read_text(encoding="utf-8"))
@@ -50,6 +51,18 @@ def _cohort(blocker: dict[str, Any], tags: dict[str, str]) -> tuple[str, str, st
         return "A_NO_LANE_EVIDENCE", "DATA_GAP", "SOURCE_DATA_REQUIRED", "no lane count or directional lane allocation tag"
     return "B_INSUFFICIENT_ALLOCATION", "RESEARCH_DECISION_REQUIRED", "RESEARCH_DECISION_REQUIRED", "lane evidence exists but does not uniquely determine Formal directional allocation"
 
+def _coverage(blocker: dict[str, Any], tags: dict[str, str], resolution: dict[str, Any]) -> str:
+    """Classify only against registered policy; never promote a candidate."""
+    if blocker["stop_code"] == "LANE_SHARED_PHYSICAL_MATERIALIZATION_UNSUPPORTED":
+        return "ALREADY_ADOPTED_BUT_NOT_MATERIALIZED"
+    if resolution.get("status") == "resolved":
+        return "FIXABLE_PIPELINE_GAP"
+    if blocker["stop_code"] in {"LANE_VECTOR_LENGTH_MISMATCH", "LANE_COUNT_CONFLICT"}:
+        return "RESEARCH_DECISION_REQUIRED"
+    if not (set(tags) & set(EVIDENCE_KEYS)):
+        return "SOURCE_DATA_REQUIRED"
+    return "RESEARCH_DECISION_REQUIRED"
+
 def investigate(*, baseline_path: Path, inventory_path: Path, output_dir: Path, source_path: Path | None = None) -> dict[str, Any]:
     baseline = yaml.safe_load(baseline_path.read_text(encoding="utf-8")); inventory = _read(inventory_path)
     if baseline["canonical_run"]["run_id"] != "run_4" or inventory["semantic_sha256"] != BASELINE_SHA or baseline["formal_blocker_baseline"]["semantic_sha256"] != BASELINE_SHA: raise ValueError("canonical baseline binding failed")
@@ -75,9 +88,9 @@ def investigate(*, baseline_path: Path, inventory_path: Path, output_dir: Path, 
         if direction.get("canonical_oneway") in {"yes", "-1"} and set(tags) & VECTOR_KEYS: candidates.append({"rule_id": "OSM_ONEWAY_ROAD_LANE_VECTOR_TO_ACTIVE_COUNT_V1", "status": "blocked_if_vector_lengths_conflict"})
         if tags.get("oneway") in {"no", None} and tags.get("lanes") == "1" and not (set(tags) & (VECTOR_KEYS | {"lanes:forward", "lanes:backward", "lanes:both_ways"})): candidates.append({"rule_id": "OSM_BIDIRECTIONAL_TOTAL_1_TO_SHARED_SINGLE_V1", "status": "source_semantics_resolved_materialization_blocked"})
         groups[(cohort, root, reason)].append(row["blocker_id"])
-        records.append({"blocker_id": row["blocker_id"], "record_id": row["record_id"], "source_way_id": way_id, "directed_segment_id": row.get("directed_segment_id"), "source_tags": tags, "source_evidence": row["research_scope_status"].get("evidence_ids", []), "stop_code": row["stop_code"], "existing_rule_candidates": candidates, "current_resolution_path": {"resolver": "resolve_directional_lanes", "result": resolution, "stage_blocker": {"scope": "source_way", "source_way_id": way_id, "stop_code": row["stop_code"]}}, "formal_eligibility": False, "provenance": {"baseline_id": baseline["baseline_id"], "canonical_run_id": "run_4", "inventory_sha256": BASELINE_SHA, "source_osm": str(source), "source_osm_sha256": _sha(source)}, "assumptions": [], "evidence_class": row["root_cause_category"], "action_class": root, "cohort": cohort, "downstream_affected_attributes": {"known": [], "possible": ["speed", "conditional_access", "final_permission"]}})
+        records.append({"blocker_id": row["blocker_id"], "record_id": row["record_id"], "source_way_id": way_id, "directed_segment_id": row.get("directed_segment_id"), "source_tags": tags, "source_evidence": row["research_scope_status"].get("evidence_ids", []), "source_pattern": sorted(set(tags) & set(EVIDENCE_KEYS)), "stop_code": row["stop_code"], "existing_rule_candidates": candidates, "coverage_class": _coverage(row, tags, resolution), "current_resolution_path": {"resolver": "resolve_directional_lanes", "result": resolution, "stage_blocker": {"scope": "source_way", "source_way_id": way_id, "stop_code": row["stop_code"]}}, "formal_eligibility": False, "provenance": {"baseline_id": baseline["baseline_id"], "canonical_run_id": "run_4", "inventory_sha256": BASELINE_SHA, "source_osm": str(source), "source_osm_sha256": _sha(source)}, "assumptions": [], "evidence_class": row["root_cause_category"], "action_class": root, "cohort": cohort, "downstream_affected_attributes": {"known": [], "possible": ["speed", "conditional_access", "final_permission"]}})
     if len({r["blocker_id"] for r in records}) != 22934: raise ValueError("duplicate blocker identity")
-    summary = {"baseline": {"run_id": "run_4", "inventory_sha256": BASELINE_SHA, "attribute": "directional_lanes"}, "counts": {"raw_blockers": len(records), "unique_source_ways": len({r["source_way_id"] for r in records}), "by_stop_code": dict(Counter(r["stop_code"] for r in records)), "by_cohort": dict(Counter(r["cohort"] for r in records)), "by_root_cause": dict(Counter(r["action_class"] for r in records)), "by_eligibility": dict(Counter("FIXABLE_WITH_EXISTING_POLICY" if r["formal_eligibility"] else ("GOVERNANCE_FIX_REQUIRED" if r["action_class"] == "RECORD_GOVERNANCE" else ("SOURCE_DATA_REQUIRED" if r["action_class"] == "DATA_GAP" else "RESEARCH_DECISION_REQUIRED")) for r in records))}, "groups": [{"cohort": k[0], "root_cause": k[1], "reason": k[2], "blocker_count": len(v)} for k, v in sorted(groups.items())], "downstream": {"known_explicit_edges": 0, "possible_attributes": ["speed", "conditional_access", "final_permission"]}}
+    summary = {"baseline": {"run_id": "run_4", "inventory_sha256": BASELINE_SHA, "attribute": "directional_lanes"}, "counts": {"raw_blockers": len(records), "unique_source_ways": len({r["source_way_id"] for r in records}), "by_stop_code": dict(Counter(r["stop_code"] for r in records)), "by_cohort": dict(Counter(r["cohort"] for r in records)), "by_root_cause": dict(Counter(r["action_class"] for r in records)), "by_coverage_class": dict(Counter(r["coverage_class"] for r in records)), "by_source_pattern": dict(Counter("+".join(r["source_pattern"]) or "none" for r in records)), "by_eligibility": dict(Counter("FIXABLE_WITH_EXISTING_POLICY" if r["formal_eligibility"] else ("GOVERNANCE_FIX_REQUIRED" if r["action_class"] == "RECORD_GOVERNANCE" else ("SOURCE_DATA_REQUIRED" if r["action_class"] == "DATA_GAP" else "RESEARCH_DECISION_REQUIRED")) for r in records))}, "groups": [{"cohort": k[0], "root_cause": k[1], "reason": k[2], "blocker_count": len(v)} for k, v in sorted(groups.items())], "downstream": {"known_explicit_edges": 0, "possible_attributes": ["speed", "conditional_access", "final_permission"]}}
     output_dir.mkdir(parents=True, exist_ok=True)
     (output_dir / "directional_lane_blocker_inventory.json").write_text(json.dumps({"baseline": summary["baseline"], "records": records}, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
     (output_dir / "directional_lane_root_cause_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True) + "\n")

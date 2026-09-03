@@ -443,7 +443,11 @@ def finalize() -> dict[str, Any]:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group(required=True)
-    mode.add_argument("--run-id", choices=("run_3", "run_4"))
+    mode.add_argument(
+        "--run-id",
+        help="new run directory name (run_3/run_4 are historical; use a new ID for reruns)",
+        type=lambda value: value if value and "/" not in value and value not in {".", ".."} else (_ for _ in ()).throw(argparse.ArgumentTypeError("invalid run ID")),
+    )
     mode.add_argument("--finalize", action="store_true")
     return parser
 
