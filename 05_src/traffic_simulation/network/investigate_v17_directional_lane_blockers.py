@@ -13,6 +13,7 @@ BASELINE_SHA = "21cc19bc837af2a97b98b881166bd340aff913822860a9db42b904fdb3c298a8
 STOP_CODES = {"LANE_DIRECTIONAL_ALLOCATION_MISSING", "LANE_SHARED_PHYSICAL_MATERIALIZATION_UNSUPPORTED", "LANE_VECTOR_LENGTH_MISMATCH", "LANE_COUNT_CONFLICT"}
 COUNT_KEYS = {"lanes", "lanes:forward", "lanes:backward", "lanes:both_ways"}
 VECTOR_KEYS = {"turn:lanes", "destination:lanes", "destination:ref:lanes"}
+SHARED_SINGLE_RULE_ID = "OSM_BIDIRECTIONAL_TOTAL_1_TO_SHARED_SINGLE_V1"
 EVIDENCE_KEYS = ("lanes", "lanes:forward", "lanes:backward", "turn:lanes", "destination:lanes", "destination:ref:lanes", "oneway")
 
 def _read(path: Path) -> dict[str, Any]:
@@ -53,7 +54,7 @@ def _cohort(blocker: dict[str, Any], tags: dict[str, str]) -> tuple[str, str, st
 
 def _coverage(blocker: dict[str, Any], tags: dict[str, str], resolution: dict[str, Any]) -> str:
     """Classify only against registered policy; never promote a candidate."""
-    if blocker["stop_code"] == "LANE_SHARED_PHYSICAL_MATERIALIZATION_UNSUPPORTED":
+    if SHARED_SINGLE_RULE_ID in resolution.get("rule_ids", []):
         return "ALREADY_ADOPTED_BUT_NOT_MATERIALIZED"
     if resolution.get("status") == "resolved":
         return "FIXABLE_PIPELINE_GAP"
