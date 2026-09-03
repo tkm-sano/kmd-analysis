@@ -1,0 +1,38 @@
+# Unified Research CLI
+
+`./research` is the repository-root execution entry point for existing research pipelines, validators, current authority, and the Research Portal.
+
+It is a thin orchestration layer. Research logic remains in the original modules, scripts, configs, schemas, validators, and accepted artifacts. The CLI does not choose unresolved research parameters or rewrite acceptance state.
+
+## Daily use
+
+```bash
+./research commands
+./research status
+./research artifacts
+./research network validate
+./research routing inputs
+./research pipeline full --dry-run
+```
+
+Use `./research commands` as the single command index. It reports each command's purpose, implementation availability, main input, and main output. Use `./research <domain> --help` for domain-specific syntax.
+
+## Safety behavior
+
+- Read-only status and validation commands consume the current authority and its referenced artifacts.
+- A build/run command executes only when a production runner and its upstream gates exist.
+- Missing implementations or unresolved research decisions return `NOT IMPLEMENTED` without creating artifacts.
+- Dry-run prints the underlying command, inputs, configs, outputs, Git state, timestamp, and runtime without executing it.
+- The accepted network and historical runs are never overwrite targets.
+- `pipeline network` reuses and validates the accepted network. A fresh network build remains unavailable until the underlying pipeline supports a caller-supplied unique run ID and isolated output path.
+- `pipeline full` stops at Routing Baseline while that production stage is unavailable; downstream stages are reported as `SKIPPED`.
+
+## Exit behavior
+
+`0` indicates successful execution or inspection. `1` indicates failure. `3` indicates a closed dependency gate or unavailable production implementation. A dry-run of an unavailable future stage returns `0` because it is a successful inspection and does not claim execution.
+
+On underlying-command failure, the CLI reports the failed stage, command, available log information, partial-artifact guidance, and the next diagnostic command. It does not convert a failure into success.
+
+## Current implementation boundary
+
+The current checkout supports read-only accepted-network validation, demand implementation/accepted-mapping validation, Portal start/check, status, artifact inspection, and dry-run orchestration. Production Routing Baseline, Common Delivery Instance, Classical Optimization, QUBO/QAOA, delivery simulation, and fulfillment evaluation remain unavailable. The command interfaces expose these boundaries explicitly so that later canonical runners can be connected without changing the daily entry point.

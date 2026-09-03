@@ -343,6 +343,7 @@ The following must not be inferred or silently filled:
 - Human navigation map: [research_repository_map_v17.md](reproducibility/indexes/research_repository_map_v17.md)
 - Repository inventory: [research_repository_inventory_v17.md](reproducibility/indexes/research_repository_inventory_v17.md)
 - Portal stage graph: [research_map_v1.yml](reproducibility/config/research_portal/research_map_v1.yml)
+- Unified research CLI: [research_cli.md](docs/research_cli.md) (`./research commands` is the canonical command index)
 - Classical/quantum fairness notes: [optimization_comparison_protocol.md](05_src/traffic_simulation/optimization_comparison_protocol.md)
 
 The Repository Index points to this file as the main human-readable overview. The Portal uses the same Stage 1–11 labels and order; it does not define a separate stage taxonomy. The Portal and this Markdown are navigation/interpretation layers, while acceptance truth remains in machine-readable authority and accepted artifacts.
