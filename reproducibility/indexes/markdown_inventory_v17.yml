@@ -611,6 +611,7 @@ documents:
   referenced_by:
   - docs/research_portal_research_spec.md
   - reproducibility/config/research_portal/registry.yml
+  - reproducibility/config/research_portal/research_map_v1.yml
   references_to: []
   safe_to_rename: false
   hash_bound: false
@@ -877,6 +878,7 @@ documents:
   - README_v2.md
   - docs/research_portal_research_spec.md
   - reproducibility/config/research_portal/registry.yml
+  - reproducibility/config/research_portal/research_map_v1.yml
   - reproducibility/indexes/research_repository_index_v17.yml
   references_to: []
   safe_to_rename: false
@@ -1831,7 +1833,7 @@ documents:
   validator_dependency: true
 - path: 05_src/traffic_simulation/specifications/20260903_20260903_formal_completion_three_tier_policy_v17.md
   filename: 20260903_20260903_formal_completion_three_tier_policy_v17.md
-  title: Formal completion three-tier policy v17
+  title: Formal道路網完成の三層方針 v17
   role: CURRENT_NORMATIVE
   lifecycle: CURRENT
   current: true
@@ -1854,7 +1856,7 @@ documents:
   validator_dependency: false
 - path: 05_src/traffic_simulation/specifications/20260903_20260903_network_completion_pipeline_v17.md
   filename: 20260903_20260903_network_completion_pipeline_v17.md
-  title: Network Completion Pipeline v17
+  title: 道路網完成パイプライン v17
   role: CURRENT_NORMATIVE
   lifecycle: CURRENT
   current: true
@@ -2500,7 +2502,7 @@ documents:
   validator_dependency: false
 - path: 20260903_20260903_RESEARCH_OVERVIEW.md
   filename: 20260903_20260903_RESEARCH_OVERVIEW.md
-  title: Research Overview and Roadmap v17
+  title: 研究概要・ロードマップ v17
   role: PRIMARY_ENTRY
   lifecycle: CURRENT
   current: true
@@ -2512,6 +2514,7 @@ documents:
   latest_git_commit: 981994fe48cbb0b09cb2cb86439313fe405e7e9b
   referenced_by:
   - RESEARCH_OVERVIEW.md
+  - reproducibility/config/research_portal/research_map_v1.yml
   - reproducibility/indexes/20260903_20260903_research_repository_map_v17.md
   - reproducibility/indexes/research_repository_index_v17.yml
   references_to:
@@ -2519,10 +2522,10 @@ documents:
   - docs/20260903_20260903_research_cli.md
   - reproducibility/indexes/20260903_20260903_research_repository_map_v17.md
   - reproducibility/indexes/research_repository_inventory_v17.md
-  safe_to_rename: true
+  safe_to_rename: false
   hash_bound: false
   hash_references: []
-  portal_dependency: false
+  portal_dependency: true
   validator_dependency: false
 - path: README.md
   filename: README.md
@@ -2561,6 +2564,7 @@ documents:
   - reproducibility/config/traffic_simulation/research_stage.yml
   - reproducibility/config/traffic_simulation/v17_phase2_completion.yml
   - reproducibility/indexes/research_repository_index_v17.yml
+  - research_portal/serve.py
   references_to:
   - 0-2-B-2_20260825_COMPLETE_HayateConda正本化.md
   - 0-2_20260823_CURRENT_研究現状と設計案件.md
@@ -2607,7 +2611,7 @@ documents:
   validator_dependency: true
 - path: RESEARCH_OVERVIEW.md
   filename: RESEARCH_OVERVIEW.md
-  title: Research Overview (stable entry)
+  title: 研究概要（stable entry）
   role: PRIMARY_ENTRY
   lifecycle: CURRENT
   current: true
@@ -2690,7 +2694,7 @@ documents:
   validator_dependency: false
 - path: docs/20260903_20260903_research_cli.md
   filename: 20260903_20260903_research_cli.md
-  title: Unified Research CLI
+  title: 統合研究CLI
   role: CURRENT_REFERENCE
   lifecycle: CURRENT
   current: true
@@ -2831,7 +2835,7 @@ documents:
   validator_dependency: false
 - path: reproducibility/environment/README.md
   filename: README.md
-  title: Hayate native Conda正本環境
+  title: HayateネイティブConda正本実行環境
   role: CURRENT_REFERENCE
   lifecycle: CURRENT
   current: true
@@ -2859,7 +2863,7 @@ documents:
   validator_dependency: false
 - path: reproducibility/indexes/20260903_20260903_research_repository_map_v17.md
   filename: 20260903_20260903_research_repository_map_v17.md
-  title: Research Repository Map v17
+  title: 研究リポジトリマップ v17
   role: CURRENT_REFERENCE
   lifecycle: CURRENT
   current: true
@@ -2902,7 +2906,7 @@ documents:
   validator_dependency: false
 - path: research_portal/README.md
   filename: README.md
-  title: Research Map Portal
+  title: 研究マップPortal
   role: CURRENT_REFERENCE
   lifecycle: CURRENT
   current: true
@@ -2914,10 +2918,11 @@ documents:
   latest_git_commit: 981994fe48cbb0b09cb2cb86439313fe405e7e9b
   referenced_by:
   - reproducibility/indexes/research_repository_index_v17.yml
+  - research_portal/serve.py
   references_to:
   - RESEARCH_OVERVIEW.md
   safe_to_rename: false
   hash_bound: false
   hash_references: []
-  portal_dependency: false
+  portal_dependency: true
   validator_dependency: false

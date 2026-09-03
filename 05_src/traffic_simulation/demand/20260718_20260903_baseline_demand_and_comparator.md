@@ -1,11 +1,11 @@
 # 大田区の共通需要計算と未最適化基準
 
-Document ID: `SPEC-BASELINE-DEMAND-COMPARATOR`
-Role: `CURRENT_NORMATIVE`
-Lifecycle: `CURRENT`
-Created: `2026-07-18`
-Last Updated: `2026-09-03`
-Current Authority: `reproducibility/config/traffic_simulation/baseline_demand.yml`
+文書ID: `SPEC-BASELINE-DEMAND-COMPARATOR`
+役割: `CURRENT_NORMATIVE`
+ライフサイクル: `CURRENT`
+作成日: `2026-07-18`
+最終更新日: `2026-09-03`
+現行正本: `reproducibility/config/traffic_simulation/baseline_demand.yml`
 
 ## 1. 目的と位置付け
 

@@ -1,43 +1,43 @@
-# Formal completion three-tier policy v17
+# Formal道路網完成の三層方針 v17
 
-Document ID: `SPEC-P13-FORMAL-COMPLETION-THREE-TIER-V17`
-Role: `CURRENT_NORMATIVE`
-Lifecycle: `CURRENT`
-Created: `2026-09-03`
-Last Updated: `2026-09-03`
-Current Authority: `DEC-P13-FORMAL-COMPLETION-THREE-TIER-001`
+文書ID: `SPEC-P13-FORMAL-COMPLETION-THREE-TIER-V17`
+役割: `CURRENT_NORMATIVE`
+ライフサイクル: `CURRENT`
+作成日: `2026-09-03`
+最終更新日: `2026-09-03`
+現行正本: `DEC-P13-FORMAL-COMPLETION-THREE-TIER-001`
 
-Decision: `DEC-P13-FORMAL-COMPLETION-THREE-TIER-001`  
+Decision: `DEC-P13-FORMAL-COMPLETION-THREE-TIER-001`
 Registry: `reproducibility/config/traffic_simulation/formal_completion_three_tier_registry_v17.yml`
 
-The prior hierarchical-hybrid Decision remains preserved as historical policy and is superseded by this Decision. Strict v17 baselines, blocker inventories, model-selection benchmarks, and missing-domain artifacts remain read-only evidence.
+以前のhierarchical-hybrid Decisionは履歴policyとして保持し、本Decisionがsupersedeする。strict v17基準、blocker inventory、model選択benchmark、missing-domain成果物はread-only証拠として維持する。
 
-## Semantics
+## 意味論
 
-Structural is source truth: raw source representation, topology, lineage, and normalized source state. Formal is the complete model-ready network used by research and simulation. Formal values need not be source observations, but every value must retain its resolution tier, method, confidence, assumptions, original missing/blocker state, and provenance.
+Structuralはsource truthであり、raw source表現、topology、lineage、正規化したsource状態を表す。Formalは研究・simulationで使用する完全なmodel-ready道路網である。Formal値はsource観測値である必要はないが、各値はresolution tier、method、confidence、仮定、元のmissing／blocker状態、provenanceを保持しなければならない。
 
-The only resolution tiers are `DIRECT`, `INFERRED`, and `FALLBACK`. `DIRECT` is source evidence or a unique adopted rule. `INFERRED` is a reproducible completion mechanism (external data, local propagation, empirical grouping, or statistical/ML). `FALLBACK` is a deterministic default or conservative rule. INFERRED and FALLBACK MUST NOT be represented as OBSERVED or DIRECT.
+resolution tierは`DIRECT`、`INFERRED`、`FALLBACK`だけとする。`DIRECT`はsource証拠または一意に採択した規則、`INFERRED`は再現可能な完成機構（外部data、局所伝播、経験的group化、統計／ML）、`FALLBACK`は決定論的既定値または保守的規則である。`INFERRED`と`FALLBACK`を`OBSERVED`または`DIRECT`として表現してはならない。
 
-Confidence is `HIGH`, `MEDIUM`, `LOW`, or `FALLBACK`. DIRECT defaults HIGH. INFERRED confidence combines model probability, donor agreement, benchmark performance and feature applicability; absent missing-domain labels downgrade confidence but do not stop completion. FALLBACK is always FALLBACK.
+confidenceは`HIGH`、`MEDIUM`、`LOW`、`FALLBACK`のいずれかとする。`DIRECT`の既定値は`HIGH`である。`INFERRED`のconfidenceはmodel確率、donor一致、benchmark性能、feature適用可能性を組み合わせる。missing-domain labelがなければconfidenceを下げるが、完成処理は停止しない。`FALLBACK`のconfidenceは常に`FALLBACK`である。
 
-## Resolution
+## 解決規則
 
-Every governed lane, speed, permission/access, relation and conditional record follows `DIRECT → INFERRED → FALLBACK`. A failed inference must be recorded with its abstention reason before fallback is selected. A blocker is only a technical failure after all three tiers cannot produce an executable final value.
+統制対象となる車線、速度、permission／access、relation、conditional recordはすべて`DIRECT → INFERRED → FALLBACK`に従う。推論に失敗した場合はfallback選択前にabstention理由を記録する。三層すべてで実行可能な最終値を生成できなかった技術的失敗だけをblockerとする。
 
-For lanes, external evidence is preferred when exact linkage is available; otherwise local propagation is selected where continuity, distance and transition guards hold, then empirical grouping or the deterministic ML mechanism, then a road-type/SUMO/MATSim-style/conservative fallback. Existing benchmark coverage, bias, MAE, determinism, available features, confidence and cost are recorded as selection metadata; explicit-domain performance is not presented as missing-domain evidence.
+車線は、正確にlinkできる場合は外部証拠を優先する。それ以外は連続性、距離、遷移guardを満たす局所伝播、経験的groupまたは決定論的ML機構、道路種別／SUMO／MATSim形式／保守的fallbackの順に選ぶ。既存benchmarkのcoverage、bias、MAE、決定性、利用可能feature、confidence、costを選択metadataとして記録する。明示値domainでの性能をmissing-domainの証拠として提示しない。
 
-For speed, the materialized network attribute is `operational_speed_kph`. Legal/posted `maxspeed` remains separate and cannot be overwritten by an operational prediction. External, empirical or model mechanisms precede a deterministic road-type fallback.
+速度について、具現化する道路網属性は`operational_speed_kph`とする。法定・標識上の`maxspeed`は分離し、運用速度予測で上書きしない。外部・経験・model機構を決定論的道路種別fallbackより先に適用する。
 
-For permission/access, explicit vehicle-specific evidence and deterministic OSM semantics take precedence. If unavailable, a deterministic policy fallback must resolve the governed delivery vehicle to allow or deny. ML or empirical prediction may identify review candidates but may not grant legal access.
+permission／accessは、車種別の明示証拠と決定論的OSM意味論を優先する。利用できない場合は、決定論的policy fallbackにより統制対象の配送車両をallowまたはdenyへ解決する。MLまたは経験的予測はreview候補を抽出できるが、法的accessを付与してはならない。
 
-Unsupported relations or conditional syntax use configured-time evaluation where available, otherwise a deterministic restriction fallback or an explicit ignore-with-provenance rule. Source syntax and the original blocker remain attached.
+未対応relationまたはconditional構文は、可能な場合は設定時刻で評価し、それ以外は決定論的restriction fallbackまたはprovenance付き明示ignore規則を使う。source構文と元blockerを保持する。
 
-## Record contract
+## 記録契約
 
-Each Formal record MUST include: `final_value`, `resolution_tier`, `method_id`, `method_version`, `confidence`, `source_evidence`, `source_identity`, `assumption_id`, `provenance`, and `original_missing_or_blocker_state`. Provenance includes source snapshot hash, source Way/record identity, Decision ID, method/version, feature/input hash, regeneration command, blocker ID and stop code. No silent fallback is allowed.
+各Formal recordは、`final_value`、`resolution_tier`、`method_id`、`method_version`、`confidence`、`source_evidence`、`source_identity`、`assumption_id`、`provenance`、`original_missing_or_blocker_state`を必ず含む。provenanceにはsource snapshot hash、source Way／record identity、Decision ID、method／version、feature／input hash、再生成command、blocker ID、stop codeを含める。暗黙のfallbackを禁止する。
 
-## Quality and acceptance
+## 品質と受入
 
-Primary quality accounting is tier percentage, confidence distribution, method distribution, attribute distribution, and unresolved technical failures—not historical blocker volume. `FORMAL_NETWORK_ACCEPTED=true` requires all governed attributes to have final values, complete provenance, SUMO build and validity checks, connectivity, delivery routeability, and Request/Stop mapping acceptance.
+主要な品質accountingは、履歴blocker数ではなく、tier比率、confidence分布、method分布、属性分布、未解決の技術的失敗である。`FORMAL_NETWORK_ACCEPTED=true`には、全統制属性の最終値、完全なprovenance、SUMO build・妥当性検査、connectivity、配送routeability、Request／Stop mapping受入が必要である。
 
-The new run is isolated from all prior runs and does not mutate any strict artifact or registry.
+新規runは過去の全runから分離し、strict成果物またはregistryを変更しない。

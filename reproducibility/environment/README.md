@@ -1,11 +1,11 @@
-# Hayate native Conda正本環境
+# HayateネイティブConda正本実行環境
 
-Document ID: `DOC-HAYATE-NATIVE-CONDA-ENVIRONMENT`
-Role: `CURRENT_REFERENCE`
-Lifecycle: `CURRENT`
-Created: `2026-08-25`
-Last Updated: `2026-09-03`
-Current Authority: `reproducibility/environment/requirements-analysis.txt`
+文書ID: `DOC-HAYATE-NATIVE-CONDA-ENVIRONMENT`
+役割: `CURRENT_REFERENCE`
+ライフサイクル: `CURRENT`
+作成日: `2026-08-25`
+最終更新日: `2026-09-03`
+現行正本: `reproducibility/environment/requirements-analysis.txt`
 
 ```text
 0-1 社会科学としての問い                    [PARTIAL]
@@ -23,14 +23,14 @@ Current Authority: `reproducibility/environment/requirements-analysis.txt`
   └─ 6. 計算手法比較                        [NOT STARTED]
 ```
 
-- Current location: `0-2-B-2 Hayate実行環境のConda正本化`
-- Parent research stage: `0-2-B 正本実行環境のHayate移行`
-- Research question addressed: Docker daemonを使わず、同じPython依存とSUMO版から研究処理を再実行できるか。
-- Why this task is necessary: Hayateでは一般ユーザーがDocker daemonを利用できず、Dockerを必須条件にすると正本環境で実行できないため。
-- Main route / Branch route: 研究の正本実行基盤を固定する派生ルート。
-- Entry condition: HayateにPython 3.11.15のConda prefixとSUMO 1.24.0が存在する。
-- Exit condition: native環境検証、`pip check`、全交通simulation回帰が合格し、Dockerなしで再実行できる。
-- Next destination: Hayate上の主要pipeline確認後、`2-3-D`から交通量較正へ戻る。
+- 現在位置: `0-2-B-2 Hayate実行環境のConda正本化`
+- 上位研究段階: `0-2-B 正本実行環境のHayate移行`
+- 対応する研究上の問い: Docker daemonを使わず、同じPython依存とSUMO版から研究処理を再実行できるか。
+- 必要性: Hayateでは一般ユーザーがDocker daemonを利用できず、Dockerを必須条件にすると正本環境で実行できないため。
+- 本線／派生ルート: 研究の正本実行基盤を固定する派生ルート。
+- 開始条件: HayateにPython 3.11.15のConda prefixとSUMO 1.24.0が存在する。
+- 完了条件: native環境検証、`pip check`、全交通simulation回帰が合格し、Dockerなしで再実行できる。
+- 次の作業: Hayate上の主要pipeline確認後、`2-3-D`から交通量較正へ戻る。
 
 ## 正本と副次環境
 
@@ -65,7 +65,7 @@ export LD_LIBRARY_PATH=/home/takuma/kmd-analysis/.conda/lib:${LD_LIBRARY_PATH:-}
 
 `.bashrc`自体はユーザーローカル設定でありGit管理しない。Gitで管理するのはこの手順、環境変数例、依存正本、検証scriptだけである。
 
-## 新規Conda環境の再構築
+## Conda環境の新規再構築
 
 次は`.conda`が存在しない新規構築時だけ実行する。既存環境を同名で上書きしない。
 
@@ -111,7 +111,7 @@ python -m pytest -q 05_src/traffic_simulation/validation
 PYTHONPATH="05_src:${PYTHONPATH:-}" python -m traffic_simulation.<module>
 ```
 
-## 任意のDockerクロスチェック
+## 任意のDocker交差確認
 
 Docker daemonを利用できる別環境では、次を追加確認として実行できる。
 

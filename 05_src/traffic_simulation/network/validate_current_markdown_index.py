@@ -17,7 +17,14 @@ INDEX_PATH = ROOT / "reproducibility/indexes/research_repository_index_v17.yml"
 INVENTORY_PATH = ROOT / "reproducibility/indexes/markdown_inventory_v17.yml"
 AUTHORITY_PATH = ROOT / "reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml"
 DATE_PREFIX = re.compile(r"^(\d{8})_(\d{8})_.+\.md$")
-METADATA_KEYS = ("Document ID", "Role", "Lifecycle", "Created", "Last Updated", "Current Authority")
+METADATA_LABELS = {
+    "Document ID": ("文書ID", "Document ID"),
+    "Role": ("役割", "Role"),
+    "Lifecycle": ("ライフサイクル", "Lifecycle"),
+    "Created": ("作成日", "Created"),
+    "Last Updated": ("最終更新日", "Last Updated"),
+    "Current Authority": ("現行正本", "Current Authority"),
+}
 LINK_PATTERN = re.compile(r"!?(?:\[[^\]]*\])\(([^)]+)\)")
 EXTERNAL_PREFIXES = ("http://", "https://", "mailto:", "data:")
 
@@ -70,10 +77,12 @@ def read_text(path: Path) -> str:
 
 def metadata(text: str) -> dict[str, str]:
     values: dict[str, str] = {}
-    for key in METADATA_KEYS:
-        match = re.search(rf"(?m)^{re.escape(key)}:\s*`?([^`\n]+?)`?\s{{0,2}}$", text)
-        if match:
-            values[key] = match.group(1).strip()
+    for key, labels in METADATA_LABELS.items():
+        for label in labels:
+            match = re.search(rf"(?m)^{re.escape(label)}:\s*`?([^`\n]+?)`?\s{{0,2}}$", text)
+            if match:
+                values[key] = match.group(1).strip()
+                break
     return values
 
 
