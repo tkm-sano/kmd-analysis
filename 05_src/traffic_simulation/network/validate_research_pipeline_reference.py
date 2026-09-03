@@ -19,39 +19,39 @@ AUTHORITY = ROOT / "reproducibility/config/traffic_simulation/current_network_co
 CATALOG = ROOT / "05_src/research_cli/catalog.py"
 
 PIPELINES = (
-    "A. External / Open Data",
-    "B. Demand",
-    "C. Requests / Stops",
-    "D. Network Construction",
-    "E. Stop Mapping",
-    "F. Network Acceptance",
-    "G. Routing Baseline",
-    "H. Common Delivery Instance",
-    "I. Classical Optimization",
+    "A. 外部・オープンデータ",
+    "B. 需要",
+    "C. リクエスト・配送先",
+    "D. ネットワーク構築",
+    "E. 配送先マッピング",
+    "F. ネットワーク受入",
+    "G. 経路計算ベースライン",
+    "H. 共通配送インスタンス",
+    "I. 古典最適化",
     "J. QUBO",
     "K. QAOA",
-    "L. Scenario Construction",
-    "M. Delivery Simulation",
-    "N. Evaluation",
-    "O. Evidence-Supported Interpretation",
-    "P. Sensitivity / Robustness",
-    "Q. Publication / Reproducibility Freeze",
+    "L. シナリオ構築",
+    "M. 配送シミュレーション",
+    "N. 評価",
+    "O. エビデンスに基づく解釈",
+    "P. 感度・頑健性",
+    "Q. 公開・再現性凍結",
 )
 TEMPLATE_HEADINGS = (
-    "Purpose",
-    "Current status",
-    "Entry conditions",
-    "Canonical inputs",
-    "Commands",
-    "Implementation",
-    "Outputs",
-    "Authority / Source of truth",
-    "Validation",
-    "Acceptance / DONE criteria",
-    "Provenance",
-    "Known limitations",
-    "Unresolved decisions",
-    "Next handoff",
+    "目的",
+    "現在の状態",
+    "開始条件",
+    "正本入力",
+    "コマンド",
+    "実装",
+    "出力",
+    "正本・信頼源",
+    "検証",
+    "受入・DONE条件",
+    "来歴",
+    "既知の制約",
+    "未解決の判断",
+    "次工程への引渡し",
 )
 LINK_PATTERN = re.compile(r"!?(?:\[[^\]]*\])\(([^)]+)\)")
 
@@ -71,15 +71,15 @@ def validate() -> dict:
     acceptance = json.loads((ROOT / accepted["acceptance_artifact"]).read_text(encoding="utf-8"))
 
     required_top = (
-        "## Update policy",
-        "## Current Research Position — 今何をすべきか",
-        "## Pipeline Map",
-        "## Research Command Index",
-        "## Artifact / Authority Matrix",
-        "## Validation Matrix",
-        "## Dependency Matrix",
-        "## Current lifecycle boundary",
-        "## Role separation",
+        "## 更新方針",
+        "## 現在の研究位置 — 今何をすべきか",
+        "## パイプライン全体図",
+        "## 研究コマンド索引",
+        "## 成果物・正本対応表",
+        "## 検証対応表",
+        "## 依存関係表",
+        "## 現行ライフサイクル境界",
+        "## 文書の役割分担",
     )
     for heading in required_top:
         assert heading in text, f"missing required heading: {heading}"
@@ -92,7 +92,7 @@ def validate() -> dict:
         section_offsets.append((pipeline, offset))
     assert section_offsets == sorted(section_offsets, key=lambda item: item[1])
     for index_position, (pipeline, start) in enumerate(section_offsets):
-        end = section_offsets[index_position + 1][1] if index_position + 1 < len(section_offsets) else text.find("## Research Command Index", start)
+        end = section_offsets[index_position + 1][1] if index_position + 1 < len(section_offsets) else text.find("## 研究コマンド索引", start)
         section = text[start:end]
         for heading in TEMPLATE_HEADINGS:
             assert f"### {heading}" in section, f"{pipeline}: missing template heading: {heading}"
@@ -124,11 +124,11 @@ def validate() -> dict:
     assert important["lifecycle"] == "CURRENT"
     assert research_map["current_position"]["current_stage"] == "Routing Baseline"
     assert research_map["current_position"]["immediate_next_task"] == "Define routing scope for delivery instances"
-    assert "Current research stage | `Routing Baseline — NEXT`" in text
-    assert "Immediate next task | Define routing scope for delivery instances." in text
+    assert "現在の研究工程 | `Routing Baseline — NEXT`" in text
+    assert "直ちに行う作業 | 配送インスタンス用の経路計算範囲を定義する。" in text
     assert accepted["network_file"] in text
     assert accepted["network_sha256"] in text
-    assert "Network graph size（`|V|` nodes / `|E|` directed edges / lanes）" in text
+    assert "ネットワークグラフ規模（`|V|`ノード・`|E|`有向edge・lane数）" in text
     assert "`required_od_pair_count`は`NOT YET AVAILABLE`" in text
     assert sha256(ROOT / accepted["network_file"]) == accepted["network_sha256"]
     assert acceptance["FORMAL_NETWORK_ACCEPTED"] is True
