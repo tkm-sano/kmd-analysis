@@ -1,25 +1,78 @@
+from __future__ import annotations
+
+import importlib.util
+import json
 from pathlib import Path
-import importlib.util, json, yaml
 
-ROOT=Path(__file__).resolve().parents[3]
-MAP=ROOT/'reproducibility/config/research_portal/research_map_v1.yml'
+import yaml
 
-def main():
-    m=yaml.safe_load(MAP.read_text()); ids={n['id'] for n in m['implementation_nodes']}
-    assert m['current_position']['current_stage']=='routing_baseline'
-    assert m['current_position']['current_milestone']=='M1 Network Ready'
-    assert m['current_position']['milestone_status']=='DONE'
-    assert m['current_position']['immediate_next_task']=='Define routing scope for delivery instances'
-    assert all(e['from'] in ids and e['to'] in ids for e in m['implementation_edges'])
-    assert {'produces','depends on','parameterizes','validates','feeds into','compares with','interprets'} <= {e['relation'] for e in m['implementation_edges']+m['conceptual_edges']}
-    spec=importlib.util.spec_from_file_location('portal',ROOT/'research_portal/serve.py'); mod=importlib.util.module_from_spec(spec); spec.loader.exec_module(mod); s=mod.summary()
-    by_id={n['id']:n for n in s['maps']['implementation']['nodes']}
-    assert s['formal']['accepted'] is True and s['formal']['blocker']==0
-    assert s['accepted_network']['network_sha256']=='4625dbbc150cbcf72964bed0e90a8b33fe03f190ff4264aecaaf89e3aab0e40f'
-    assert all(by_id[x]['status']=='COMPLETE' for x in ['baseline_demand','requests','stops','structural_network','formal_completion','sumo_materialization','network_validation','stop_mapping','routeability','formal_network_acceptance'])
-    assert by_id['routing_baseline']['status']=='NEXT' and by_id['classical_optimization']['status']=='FUTURE'
-    assert all(by_id[x]['status']=='FUTURE' for x in ['future_demand_parameterization','common_instance','qubo_formulation','qubo_validation','qaoa','quantum_comparison','delivery_simulation','fulfillment_evaluation','planning_business_interpretation','future_society_interpretation','sensitivity_robustness','reproducibility_freeze'])
-    assert s['validation']['routeability_gate']['routeable']==100 and s['mapping']['mapping_rate']==1.0
-    print(json.dumps({'research_map':'passed','nodes':len(ids),'current_stage':'Routing Baseline','formal_network_accepted':True},sort_keys=True))
 
-if __name__=='__main__': main()
+ROOT = Path(__file__).resolve().parents[3]
+MAP = ROOT / "reproducibility/config/research_portal/research_map_v1.yml"
+ALLOWED_STATUSES = {"DONE", "CURRENT", "NEXT", "PLANNED", "FUTURE", "UNRESOLVED", "SUPERSEDED", "HISTORICAL"}
+REQUIRED_RELATIONS = {"produces", "depends on", "parameterizes", "validates", "feeds into", "compares with", "interprets"}
+
+
+def main() -> None:
+    research_map = yaml.safe_load(MAP.read_text(encoding="utf-8"))
+    nodes = research_map["implementation_nodes"]
+    ids = {node["id"] for node in nodes}
+    by_id = {node["id"]: node for node in nodes}
+
+    assert research_map["current_position"] == {
+        "current_milestone": "M1 Network Ready",
+        "milestone_status": "DONE",
+        "current_stage": "Routing Baseline",
+        "current_stage_id": "routing_baseline",
+        "immediate_next_task": "Define routing scope for delivery instances",
+        "next_research_stage": "Routing Baseline",
+    }
+    assert len(ids) == len(nodes)
+    assert all(node["status"] in ALLOWED_STATUSES for node in nodes)
+    assert all(edge["from"] in ids and edge["to"] in ids for edge in research_map["implementation_edges"])
+    relations = {edge["relation"] for edge in research_map["implementation_edges"] + research_map["conceptual_edges"]}
+    assert REQUIRED_RELATIONS <= relations
+
+    for node_id in ("demand_scenario", "requests_stops", "structural_network", "formal_network", "sumo_network", "stop_mapping", "network_acceptance"):
+        assert by_id[node_id]["status"] == "DONE"
+    assert by_id["routing_baseline"]["status"] == "NEXT"
+    assert by_id["common_instance"]["status"] == "PLANNED"
+    for node_id in ("classical_optimization", "qubo", "qaoa", "delivery_simulation", "fulfillment_evaluation", "planning_interpretation", "business_interpretation", "future_society"):
+        assert by_id[node_id]["status"] == "FUTURE"
+
+    spec = importlib.util.spec_from_file_location("portal", ROOT / "research_portal/serve.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    state = module.summary()
+    network = state["accepted_network"]
+    assert network["accepted"] is True
+    assert network["sha_matches"] is True
+    assert network["declared_sha256"] == network["actual_sha256"]
+    assert network["mapping"]["mapped"] == network["mapping"]["total_stops"] == 39956
+    assert network["mapping"]["mapping_rate"] == 1.0
+    assert network["validation"]["routeability_gate"]["routeable"] == 100
+    assert network["validation"]["delivery_routeability"] == "PASS"
+    assert not [item for item in state["artifacts"] if not item["exists"]]
+    assert not [item for item in state["traceability"] if not item["available"]]
+
+    current_view = json.dumps({
+        "position": state["current_position"],
+        "nodes": state["maps"]["implementation"]["nodes"],
+        "network": state["accepted_network"],
+        "validation": state["validation_gates"],
+    }, ensure_ascii=False)
+    for stale in ("FORMAL_NETWORK_ACCEPTED=false", "83/100", "17 failed OD", "Network Acceptance = pending"):
+        assert stale not in current_view
+    assert "Hierarchical Hybrid" not in current_view
+    assert "strict v17" not in current_view
+
+    print(json.dumps({
+        "research_map": "passed", "nodes": len(ids),
+        "current_stage": state["current_position"]["current_stage"],
+        "formal_network_accepted": network["accepted"],
+        "artifact_links": sum(bool(item["url"]) for item in state["artifacts"]),
+    }, sort_keys=True))
+
+
+if __name__ == "__main__":
+    main()

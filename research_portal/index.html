@@ -1,1 +1,97 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Research Map</title><link rel="stylesheet" href="/styles.css"></head><body><main><header><p class="eyebrow">RESEARCH MAP</p><h1 id="question">研究の問いを読み込み中</h1><div id="position" class="grid position"></div></header><section><h2>Conceptual Research Map</h2><p>技術から社会的解釈までの概念的な関係。矢印ラベルは関係の種類を示します。</p><div id="conceptual-map" class="map-shell"></div></section><section><h2>Implementation / Analysis Map</h2><p>データ依存と分析工程。nodeをクリックするとDecisionからcanonical artifactまでを確認できます。</p><div id="implementation-map" class="map-shell implementation"></div></section><section><h2>Current Stage Detail</h2><div id="stage-detail" class="detail card"></div></section><section><h2>Accepted / Current Milestones</h2><div id="milestones" class="grid"></div></section><section><h2>Provenance / Three-tier Completion</h2><div id="provenance" class="grid"></div></section><section class="secondary"><h2>Historical / Provenance</h2><div id="history" class="grid"></div></section><section class="secondary"><h2>Known limitations</h2><ul id="limitations"></ul></section><section><h2>Next Research Stage</h2><p class="next">Routing Baseline</p></section></main><script src="/app.js"></script></body></html>
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Research Map / Research OS</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main>
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">RESEARCH MAP / RESEARCH OS</p>
+        <h1 id="question">研究の問いを読み込み中</h1>
+        <p id="philosophy" class="lede"></p>
+        <div class="mode"><span>ANALYSIS MODE</span><strong id="interpretation-mode"></strong></div>
+      </div>
+      <aside class="stage-now" aria-label="Current research position">
+        <div><small>Current Milestone</small><strong id="current-milestone"></strong></div>
+        <div class="focus"><small>Current Research Stage</small><strong id="current-stage"></strong></div>
+        <div><small>Immediate Next Task</small><strong id="next-task"></strong></div>
+      </aside>
+    </header>
+
+    <section id="conceptual">
+      <div class="section-heading"><div><p class="section-number">01 · CONCEPTUAL MODEL</p><h2>Conceptual Research Map</h2></div><p>社会的な問いの接続。実装上の依存関係とは区別されます。</p></div>
+      <div id="conceptual-map" class="map-shell compact"></div>
+    </section>
+
+    <section id="implementation">
+      <div class="section-heading"><div><p class="section-number">02 · ANALYSIS PIPELINE</p><h2>Implementation / Analysis Map</h2></div><p>nodeを選択するとauthority・artifact・validator・次工程を確認できます。</p></div>
+      <div class="map-toolbar"><div id="status-legend" class="legend"></div><div id="edge-legend" class="legend edge-legend"></div></div>
+      <div id="implementation-map" class="map-shell implementation"></div>
+    </section>
+
+    <section id="data-flow">
+      <div class="section-heading"><div><p class="section-number">03 · DATA FLOW</p><h2>Data Flow & Edge Semantics</h2></div><p>因果主張ではなく、artifactとanalysisの関係種別を表示します。</p></div>
+      <div id="data-flow-map" class="map-shell compact"></div>
+    </section>
+
+    <section id="milestones">
+      <div class="section-heading"><div><p class="section-number">04 · CURRENT MILESTONES</p><h2>Current Milestones</h2></div></div>
+      <div id="milestone-grid" class="metric-grid"></div>
+    </section>
+
+    <section id="accepted-network">
+      <div class="section-heading"><div><p class="section-number">05 · CURRENT AUTHORITY</p><h2>Accepted Network Summary</h2></div><span class="badge status-done">ACCEPTED</span></div>
+      <div id="network-summary" class="network-layout"></div>
+    </section>
+
+    <section id="validation">
+      <div class="section-heading"><div><p class="section-number">06 · QUALITY GATES</p><h2>Validation / Quality</h2></div><p>未実装stageはPASSではなくNOT AVAILABLE / FUTUREです。</p></div>
+      <div id="validation-table" class="table-shell"></div>
+    </section>
+
+    <section id="unresolved">
+      <div class="section-heading"><div><p class="section-number">07 · OPEN DECISIONS</p><h2>Unresolved Decisions</h2></div><p>各判断が止めているstageを明示します。</p></div>
+      <div id="unresolved-grid" class="decision-grid"></div>
+    </section>
+
+    <section id="traceability">
+      <div class="section-heading"><div><p class="section-number">08 · PROVENANCE CHAIN</p><h2>Artifact Traceability</h2></div><p>repository indexとcurrent authorityから構成される追跡経路です。</p></div>
+      <div id="trace-chain" class="trace-chain"></div>
+      <details class="browser">
+        <summary>Artifact Browser <span>Overview / Decisions / Specifications / Configs / Registries / Schemas / Runs / Validation / Acceptance / Portal / Historical</span></summary>
+        <div id="artifact-browser"></div>
+      </details>
+    </section>
+
+    <section id="provenance-history">
+      <div class="section-heading"><div><p class="section-number">09 · EVIDENCE BOUNDARY</p><h2>Historical / Provenance</h2></div><p>INFERRED / FALLBACKをdirect observationとして扱いません。</p></div>
+      <div id="provenance-grid" class="provenance-layout"></div>
+      <div id="lifecycle-grid" class="lifecycle-grid"></div>
+      <details class="timeline"><summary>Confirmed Research Timeline</summary><div id="timeline-list"></div></details>
+    </section>
+
+    <section id="commands">
+      <div class="section-heading"><div><p class="section-number">10 · REPRODUCIBILITY</p><h2>Research Commands</h2></div><p>PortalとCLIは同じcanonical artifactsを参照します。ここから処理は実行しません。</p></div>
+      <div id="command-list" class="command-list"></div>
+    </section>
+
+    <section id="next-stage" class="next-stage">
+      <div><p class="section-number">11 · NEXT RESEARCH STAGE</p><h2>Routing Baseline</h2><span class="badge status-next">NEXT</span></div>
+      <div id="routing-placeholder"></div>
+    </section>
+
+    <footer><p>Canonical source chain</p><div id="source-chain"></div></footer>
+  </main>
+
+  <dialog id="stage-dialog">
+    <form method="dialog"><button class="close" aria-label="Close">×</button></form>
+    <div id="stage-detail"></div>
+  </dialog>
+  <div id="error" class="error" hidden></div>
+  <script src="/app.js"></script>
+</body>
+</html>
