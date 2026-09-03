@@ -10,6 +10,11 @@ human_repository_map: reproducibility/indexes/20260903_20260903_research_reposit
 markdown_inventory: reproducibility/indexes/markdown_inventory_v17.yml
 current_authority: reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml
 current_pipeline: reproducibility/config/traffic_simulation/network_completion_pipeline_v17.yml
+interpretation_evidence:
+  artifact: reproducibility/evidence/fleet_capacity_interpretation_v1.yml
+  schema: reproducibility/evidence/fleet_capacity_interpretation_v1.schema.json
+  role: NON_AUTHORITATIVE_EVIDENCE_SUPPORTED_INTERPRETATION
+  authority_separation: Does not modify or extend current network acceptance authority.
 index_sections:
   research_plan: research_overview
   execution_entrypoint: research_cli
@@ -20,6 +25,7 @@ index_sections:
   baseline_acceptance: current_authority.accepted_run
   generated: current_authority.accepted_run.path
   historical: current_authority.superseded_decision
+  interpretation_evidence: interpretation_evidence
 current_authority_roles:
   decision: DEC-P13-FORMAL-COMPLETION-THREE-TIER-001
   specification: 05_src/traffic_simulation/specifications/20260903_20260903_formal_completion_three_tier_policy_v17.md

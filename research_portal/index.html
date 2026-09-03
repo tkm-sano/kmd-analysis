@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Research Map / Research OS</title>
   <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/evidence.css">
 </head>
 <body>
   <main>
@@ -23,8 +24,17 @@
     </header>
 
     <section id="conceptual">
-      <div class="section-heading"><div><p class="section-number">01 · CONCEPTUAL MODEL</p><h2>Conceptual Research Map</h2></div><p>社会的な問いの接続。実装上の依存関係とは区別されます。</p></div>
+      <div class="section-heading"><div><p class="section-number">01 · CONCEPTUAL MODEL</p><h2>Conceptual Research Map</h2></div><p>研究question全体ではなく、今回の直接分析とEvidenceで接続できる具体的interpretation pathwayです。</p></div>
       <div id="conceptual-map" class="map-shell compact"></div>
+    </section>
+
+    <section id="evidence-interpretation">
+      <div class="section-heading"><div><p class="section-number">01A · EVIDENCE LAYER</p><h2>Evidence-Supported Interpretation</h2></div><span class="badge status-supported_with_conditions">SUPPORTED WITH CONDITIONS</span></div>
+      <div id="evidence-overview"></div>
+      <div id="evidence-pathway" class="evidence-pathway"></div>
+      <div id="evidence-link-table" class="table-shell"></div>
+      <div id="evidence-boundary" class="evidence-boundary"></div>
+      <details class="browser evidence-trace"><summary>Evidence Traceability <span>Research Question → Direct Metric → Interpretation Claim → Evidence Artifact → External Source → Portal Node</span></summary><div id="evidence-trace-chain" class="trace-chain"></div></details>
     </section>
 
     <section id="implementation">
@@ -62,7 +72,7 @@
       <div class="section-heading"><div><p class="section-number">08 · PROVENANCE CHAIN</p><h2>Artifact Traceability</h2></div><p>repository indexとcurrent authorityから構成される追跡経路です。</p></div>
       <div id="trace-chain" class="trace-chain"></div>
       <details class="browser">
-        <summary>Artifact Browser <span>Overview / Decisions / Specifications / Configs / Registries / Schemas / Runs / Validation / Acceptance / Portal / Historical</span></summary>
+        <summary>Artifact Browser <span>Overview / Evidence / Decisions / Specifications / Configs / Registries / Schemas / Runs / Validation / Acceptance / Portal / Historical</span></summary>
         <div id="artifact-browser"></div>
       </details>
     </section>

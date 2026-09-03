@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PORTAL = ROOT / "research_portal"
 INDEX = ROOT / "reproducibility/indexes/research_repository_index_v17.yml"
 MAP = ROOT / "reproducibility/config/research_portal/research_map_v1.yml"
+EVIDENCE = ROOT / "reproducibility/evidence/fleet_capacity_interpretation_v1.yml"
 
 
 def load_yaml(path: Path) -> dict:
@@ -76,9 +77,33 @@ def stage_detail(node: dict, map_config: dict, authority: dict, acceptance: dict
     return detail
 
 
+def interpretation_detail(node: dict, evidence: dict) -> dict:
+    configured = next(item for item in evidence["pathway_nodes"] if item["id"] == node["id"])
+    sources = {item["id"]: item for item in evidence["external_sources"]}
+    key_sources = []
+    for source_ref in configured["source_refs"]:
+        source = sources[source_ref]
+        title = source["title"] or "title not recorded"
+        year = source["year"] if source["year"] is not None else "year not recorded"
+        key_sources.append(
+            f"{source['author_or_organization']} — {title} ({year}) [{source['citation_status']}]"
+        )
+    return {
+        "detail_type": "evidence",
+        "meaning": configured["meaning"],
+        "evidence_status": configured["evidence_status"],
+        "evidence_type": configured["evidence_type"],
+        "key_sources": key_sources,
+        "conditions": configured["conditions"],
+        "out_of_scope_claims": configured["out_of_scope_claims"],
+        "evidence_artifact": str(EVIDENCE.relative_to(ROOT)),
+    }
+
+
 def summary() -> dict:
     repository_index = load_yaml(INDEX)
     map_config = load_yaml(MAP)
+    interpretation_evidence = load_yaml(EVIDENCE)
     authority_path = ROOT / repository_index["current_authority"]
     authority = load_yaml(authority_path)
     accepted = authority["accepted_run"]
@@ -91,7 +116,10 @@ def summary() -> dict:
         node = dict(configured)
         node["detail"] = stage_detail(node, map_config, authority, acceptance)
         nodes.append(node)
-    conceptual = [dict(node, detail=stage_detail(node, map_config, authority, acceptance)) for node in map_config["conceptual_nodes"]]
+    conceptual = [
+        dict(node, detail=interpretation_detail(node, interpretation_evidence))
+        for node in map_config["conceptual_nodes"]
+    ]
 
     validation = acceptance["validation"]
     validation_rows = [
@@ -124,6 +152,9 @@ def summary() -> dict:
         artifact(accepted["provenance_accounting"], "Three-tier Quality Accounting", "Validation", "GENERATED", "diagnostic"),
         artifact("reproducibility/config/research_portal/research_map_v1.yml", "Research Map Config", "Portal"),
         artifact("research_portal/README.md", "Portal Handoff", "Portal"),
+        artifact(str(EVIDENCE.relative_to(ROOT)), "Fleet Capacity Interpretation Evidence", "Evidence", "CURRENT", "interpretation_evidence"),
+        artifact(map_config["interpretation_evidence_schema_pointer"], "Fleet Capacity Interpretation Evidence Schema", "Evidence", "CURRENT", "schema"),
+        artifact("05_src/traffic_simulation/validation/validate_fleet_interpretation_evidence.py", "Fleet Interpretation Evidence Validator", "Evidence", "CURRENT", "validator"),
         artifact(authority["superseded_decision"]["lifecycle_path"], "Decision Lifecycle", "Historical", "SUPERSEDED"),
     ]
     for item in map_config["historical_artifacts"]:
@@ -144,10 +175,39 @@ def summary() -> dict:
         "Validation": accepted["acceptance_artifact"], "Run": accepted["path"],
         "Artifact": accepted["network_file"], "Acceptance": accepted["acceptance_artifact"],
     }
+    external_sources = interpretation_evidence["external_sources"]
+    source_counts = {
+        "total": len(external_sources),
+        "verified_research_input": sum(item["citation_status"] == "VERIFIED_RESEARCH_INPUT" for item in external_sources),
+        "needs_source_verification": sum(item["citation_status"] == "NEEDS_SOURCE_VERIFICATION" for item in external_sources),
+    }
+    evidence_traceability = [
+        {"label": "Research Question", "value": interpretation_evidence["traceability"]["research_question"]["label"], "path": interpretation_evidence["traceability"]["research_question"]["ref"]},
+        {"label": "Direct Metric", "value": interpretation_evidence["traceability"]["direct_metric"]["label"]},
+        {"label": "Interpretation Claim", "value": " → ".join(interpretation_evidence["traceability"]["interpretation_claims"])},
+        {"label": "Evidence Artifact", "value": interpretation_evidence["evidence_id"], "path": str(EVIDENCE.relative_to(ROOT))},
+        {"label": "External Source", "value": f"{source_counts['total']} registered sources"},
+        {"label": "Portal Node", "value": " → ".join(interpretation_evidence["traceability"]["portal_node_refs"])},
+    ]
     return {
         "portal_philosophy": map_config["portal_philosophy"],
         "research_question": map_config["research_question"], "interpretation_mode": map_config["interpretation_mode"],
         "current_position": map_config["current_position"],
+        "interpretation_evidence": {
+            "evidence_id": interpretation_evidence["evidence_id"],
+            "overall_assessment": interpretation_evidence["overall_assessment"],
+            "direct_research_boundary": interpretation_evidence["direct_research_boundary"],
+            "wording": interpretation_evidence["wording"],
+            "pathway_nodes": interpretation_evidence["pathway_nodes"],
+            "pathway_links": interpretation_evidence["pathway_links"],
+            "categories": interpretation_evidence["evidence_categories"],
+            "external_sources": external_sources,
+            "source_counts": source_counts,
+            "supports": interpretation_evidence["supports"],
+            "does_not_support": interpretation_evidence["does_not_support"],
+            "effective_capacity_conditions": interpretation_evidence["effective_capacity_conditions"],
+            "traceability": evidence_traceability,
+        },
         "maps": {
             "conceptual": {"nodes": conceptual, "edges": map_config["conceptual_edges"]},
             "implementation": {"nodes": nodes, "edges": map_config["implementation_edges"], "groups": map_config["stage_groups"]},
@@ -171,6 +231,7 @@ def summary() -> dict:
         "source_of_truth": {
             "repository_index": str(INDEX.relative_to(ROOT)), "authority": str(authority_path.relative_to(ROOT)),
             "acceptance": accepted["acceptance_artifact"], "map_config": str(MAP.relative_to(ROOT)),
+            "interpretation_evidence": str(EVIDENCE.relative_to(ROOT)),
         },
     }
 

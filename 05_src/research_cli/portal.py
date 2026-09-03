@@ -15,6 +15,8 @@ def status() -> int:
     print(f"Current accepted network: {summary['accepted_network']['network_id']}")
     print(f"Current research stage: {summary['current_position']['current_stage']}")
     print(f"FORMAL_NETWORK_ACCEPTED = {str(summary['accepted_network']['accepted']).lower()}")
+    print(f"Downstream interpretation: {summary['interpretation_evidence']['overall_assessment']}")
+    print(f"Direct research boundary: {summary['interpretation_evidence']['direct_research_boundary']}")
     print("Start command: ./research portal start")
     return OK
 
@@ -24,6 +26,7 @@ def check(*, dry_run: bool = False) -> int:
         Step("Current network authority", python_script("05_src/traffic_simulation/network/validate_current_network_completion_authority.py"), next_diagnostic="./research network acceptance"),
         Step("Repository index", python_script("05_src/traffic_simulation/network/validate_research_repository_index.py"), next_diagnostic="./research artifacts"),
         Step("Current Markdown index", python_script("05_src/traffic_simulation/network/validate_current_markdown_index.py"), next_diagnostic="./research artifacts"),
+        Step("Fleet interpretation Evidence artifact", python_script("05_src/traffic_simulation/validation/validate_fleet_interpretation_evidence.py"), next_diagnostic="./research portal status"),
         Step("Portal research map and current artifacts", python_script("05_src/traffic_simulation/network/validate_research_map_portal.py"), next_diagnostic="./research portal status"),
     )
     return run_steps(steps, dry_run=dry_run)

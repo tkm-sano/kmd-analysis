@@ -48,6 +48,8 @@ def artifacts() -> int:
         ("Requests", REQUESTS_PATH),
         ("Stops", STOPS_PATH),
         ("Portal research map", ROOT / "reproducibility/config/research_portal/research_map_v1.yml"),
+        ("Fleet interpretation Evidence", ROOT / "reproducibility/evidence/fleet_capacity_interpretation_v1.yml"),
+        ("Fleet interpretation Evidence schema", ROOT / "reproducibility/evidence/fleet_capacity_interpretation_v1.schema.json"),
     )
     for label, path in rows:
         print(f"{label}: {relative(path)} [{'EXISTS' if path.exists() else 'MISSING'}]")

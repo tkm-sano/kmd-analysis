@@ -55,9 +55,27 @@ def main() -> None:
     assert not [item for item in state["artifacts"] if not item["exists"]]
     assert not [item for item in state["traceability"] if not item["available"]]
 
+    evidence = state["interpretation_evidence"]
+    assert evidence["overall_assessment"] == "SUPPORTED_WITH_CONDITIONS"
+    assert evidence["direct_research_boundary"] == "Delivery Fulfillment"
+    evidence_nodes = {item["id"]: item for item in evidence["pathway_nodes"]}
+    evidence_links = {item["id"]: item for item in evidence["pathway_links"]}
+    assert evidence_nodes["fleet_expansion_replacement"]["label"] == "Potential Need for Fleet Expansion / Replacement"
+    assert evidence_links["link_fulfillment_to_unserved"]["evidence_status"] == "DEFINITION_DERIVED"
+    assert evidence_links["link_unserved_to_capacity"]["evidence_status"] == "EVIDENCE_SUPPORTED"
+    assert evidence_links["link_capacity_to_fleet"]["evidence_status"] == "SUPPORTED_WITH_CONDITIONS"
+    assert evidence_links["link_fulfillment_to_actual_investment"]["claim_status"] == "OUT_OF_SCOPE"
+    assert [item["label"] for item in evidence["traceability"]] == [
+        "Research Question", "Direct Metric", "Interpretation Claim",
+        "Evidence Artifact", "External Source", "Portal Node",
+    ]
+    assert any(item["category"] == "Evidence" and item["exists"] for item in state["artifacts"])
+
     current_view = json.dumps({
         "position": state["current_position"],
         "nodes": state["maps"]["implementation"]["nodes"],
+        "conceptual": state["maps"]["conceptual"],
+        "interpretation_evidence": state["interpretation_evidence"],
         "network": state["accepted_network"],
         "validation": state["validation_gates"],
     }, ensure_ascii=False)
@@ -71,6 +89,8 @@ def main() -> None:
         "current_stage": state["current_position"]["current_stage"],
         "formal_network_accepted": network["accepted"],
         "artifact_links": sum(bool(item["url"]) for item in state["artifacts"]),
+        "interpretation_assessment": evidence["overall_assessment"],
+        "evidence_sources": evidence["source_counts"]["total"],
     }, sort_keys=True))
 
 

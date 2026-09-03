@@ -3,6 +3,7 @@ const esc = value => String(value ?? "—").replace(/[&<>"']/g, char => ({"&":"&
 const NS = "http://www.w3.org/2000/svg";
 const EDGE_COLORS = {"produces":"#217a63","depends on":"#b45309","parameterizes":"#6d5bd0","validates":"#087aa3","compares with":"#b13f75","feeds into":"#536782","interprets":"#7b4b2a"};
 const STATUSES = ["DONE","CURRENT","NEXT","PLANNED","FUTURE","UNRESOLVED","SUPERSEDED","HISTORICAL"];
+const readableStatus = value => String(value ?? "—").replaceAll("_", " ");
 
 function pathLink(path, label = path) {
   if (!path) return '<span class="muted">NOT AVAILABLE</span>';
@@ -58,7 +59,7 @@ function renderGraph(target, graph, options = {}) {
     const name = svgElement("text", {x:85,y:24,"text-anchor":"middle",class:"node-name"});
     name.textContent=node.name; g.append(name);
     if (node.status) {
-      const status=svgElement("text",{x:85,y:44,"text-anchor":"middle",class:"node-status"});status.textContent=node.status;g.append(status);
+      const status=svgElement("text",{x:85,y:44,"text-anchor":"middle",class:"node-status"});status.textContent=node.detail?.detail_type === "evidence" ? readableStatus(node.status) : node.status;g.append(status);
     }
     if (node.detail) {
       const open=()=>showStage(node);
@@ -79,6 +80,22 @@ function renderField(label, value, kind = "text") {
 
 function showStage(node) {
   const detail=node.detail || {};
+  if (detail.detail_type === "evidence") {
+    $("stage-detail").innerHTML=`
+      <p class="section-number">EVIDENCE NODE DETAIL</p>
+      <div class="dialog-title"><h2>${esc(node.name)}</h2><span class="badge status-${String(detail.evidence_status).toLowerCase()}">${esc(readableStatus(detail.evidence_status))}</span></div>
+      <dl class="detail-grid">
+        ${renderField("Meaning",detail.meaning)}
+        ${renderField("Evidence status",readableStatus(detail.evidence_status))}
+        ${renderField("Evidence type",detail.evidence_type)}
+        ${renderField("Key supporting sources",detail.key_sources)}
+        ${renderField("Conditions",detail.conditions)}
+        ${renderField("Out-of-scope claims",detail.out_of_scope_claims)}
+        ${renderField("Evidence artifact",detail.evidence_artifact,"path")}
+      </dl>`;
+    $("stage-dialog").showModal();
+    return;
+  }
   $("stage-detail").innerHTML=`
     <p class="section-number">STAGE DETAIL</p>
     <div class="dialog-title"><h2>${esc(node.name)}</h2><span class="badge status-${String(node.status).toLowerCase()}">${esc(node.status)}</span></div>
@@ -100,6 +117,28 @@ function showStage(node) {
       ${renderField("Reproduce / inspect",detail.commands)}
     </dl>`;
   $("stage-dialog").showModal();
+}
+
+let stateCache;
+
+function renderEvidence(interpretation) {
+  const nodeById=Object.fromEntries(interpretation.pathway_nodes.map(node=>[node.id,node]));
+  $("evidence-overview").innerHTML=`<div class="metric-grid">
+    ${metric("Overall judgment",readableStatus(interpretation.overall_assessment),"Interpretation layer; not an adopted investment outcome")}
+    ${metric("Direct analysis boundary",interpretation.direct_research_boundary,"Everything downstream is interpretation")}
+    ${metric("Evidence sources",interpretation.source_counts.total,`${interpretation.source_counts.verified_research_input} verified research input · ${interpretation.source_counts.needs_source_verification} need source verification`)}
+  </div><p class="evidence-wording">${esc(interpretation.wording.ja)}</p><p class="evidence-wording en">${esc(interpretation.wording.en)}</p>`;
+
+  const downstream=interpretation.pathway_nodes.filter(node=>node.layer==="EVIDENCE_SUPPORTED_INTERPRETATION");
+  $("evidence-pathway").innerHTML=`<div class="direct-zone"><strong>DIRECT ANALYSIS</strong><span>Technology / Optimization → Delivery Fulfillment</span></div><div class="boundary-line"><span>DIRECT ANALYSIS BOUNDARY</span></div><div class="interpretation-zone"><strong>EVIDENCE-SUPPORTED INTERPRETATION</strong><div>${downstream.map((node,index)=>`<button data-evidence-node="${esc(node.id)}"><span>${esc(node.label)}</span><small>${esc(readableStatus(node.evidence_status))}</small></button>${index<downstream.length-1?'<i>↓</i>':''}`).join("")}</div></div>`;
+  document.querySelectorAll("[data-evidence-node]").forEach(button=>button.addEventListener("click",()=>{
+    const graphNode=stateCache.maps.conceptual.nodes.find(node=>node.id===button.dataset.evidenceNode);
+    if (graphNode) showStage(graphNode);
+  }));
+
+  $("evidence-link-table").innerHTML=`<table><thead><tr><th>Link</th><th>Evidence status</th><th>Strength</th><th>Type</th></tr></thead><tbody>${interpretation.pathway_links.map(link=>`<tr><td>${esc(nodeById[link.from]?.label||link.from)} → ${esc(nodeById[link.to]?.label||"Actual Corporate Investment Decision")}</td><td><span class="gate">${esc(readableStatus(link.evidence_status))}${link.claim_status?` / ${esc(readableStatus(link.claim_status))}`:""}</span></td><td>${esc(link.strength_label)}</td><td>${esc(link.evidence_type)}</td></tr>`).join("")}</tbody></table>`;
+  $("evidence-boundary").innerHTML=`<div><h3>What evidence supports</h3><ul>${interpretation.supports.map(item=>`<li>${esc(item)}</li>`).join("")}</ul></div><div class="does-not"><h3>What this does not mean</h3><ul>${interpretation.does_not_support.map(item=>`<li>${esc(item)}</li>`).join("")}</ul><p><strong>Actual Investment Decision:</strong> NOT ESTABLISHED / OUT OF SCOPE</p></div>`;
+  $("evidence-trace-chain").innerHTML=interpretation.traceability.map((item,index)=>`<div><span>${String(index+1).padStart(2,"0")}</span><strong>${esc(item.label)}</strong>${item.path?pathLink(item.path,"open"):`<small>${esc(item.value)}</small>`}</div>`).join("");
 }
 
 function metric(label,value,note="") {
@@ -125,6 +164,7 @@ function renderNetwork(network) {
 }
 
 function render(state) {
+  stateCache=state;
   $("question").textContent=state.research_question;
   $("philosophy").textContent=state.portal_philosophy;
   $("interpretation-mode").textContent=state.interpretation_mode;
@@ -135,6 +175,7 @@ function render(state) {
   $("status-legend").innerHTML=STATUSES.map(status=>`<span class="badge status-${status.toLowerCase()}">${status}</span>`).join("");
   $("edge-legend").innerHTML=Object.entries(EDGE_COLORS).map(([label,color])=>`<span><i style="background:${color}"></i>${esc(label)}</span>`).join("");
   renderGraph("conceptual-map",state.maps.conceptual,{width:1170,height:210,label:"Conceptual Research Map"});
+  renderEvidence(state.interpretation_evidence);
   renderGraph("implementation-map",state.maps.implementation,{width:1500,height:710,label:"Implementation and Analysis Map"});
   renderGraph("data-flow-map",state.maps.data_flow,{width:1160,height:290,label:"Research data flow"});
 

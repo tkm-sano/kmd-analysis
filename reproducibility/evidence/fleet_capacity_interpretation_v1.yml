@@ -1,0 +1,194 @@
+schema_version: 1
+evidence_id: EVIDENCE-FLEET-CAPACITY-INTERPRETATION-V1
+lifecycle: CURRENT
+artifact_role: EVIDENCE_SUPPORTED_INTERPRETATION
+authority_scope: INTERPRETATION_ONLY
+updated_at: '2026-09-03'
+overall_assessment: SUPPORTED_WITH_CONDITIONS
+direct_research_boundary: Delivery Fulfillment
+
+scope:
+  main_interpretation:
+    - Delivery Fulfillment
+    - Unserved Delivery Demand
+    - Potential Effective Delivery-Capacity Requirement
+    - Potential Need for Fleet Expansion / Replacement
+  exclusions:
+    - required additional vehicle count estimation
+    - fleet sizing optimization
+    - vehicle-price-based investment estimation
+    - fleet CAPEX estimation
+    - ROI / NPV / IRR
+    - prediction of actual corporate investment decisions
+    - universal fulfillment-to-purchase rules
+
+wording:
+  ja: 本研究ではdelivery fulfillmentの変化から企業の実際のFleet投資行動を予測しない。未充足配送需要を、必要な実効配送能力と利用可能な配送能力の潜在的ギャップを示すシグナルとして解釈する。その能力要件が既存Fleetの運用のみでは満たせない場合、Fleet増強または更新は取り得る対応の一つとなり得る。
+  en: This study does not predict firms’ actual fleet-investment decisions from changes in delivery fulfillment. Instead, unserved delivery demand is interpreted as a potential signal of a gap between required and available effective delivery capacity. Where such capacity requirements cannot be accommodated by the existing fleet and its operation, fleet expansion or replacement may represent one possible downstream response.
+
+status_vocabulary:
+  - DIRECT_ANALYSIS
+  - DEFINITION_DERIVED
+  - EVIDENCE_SUPPORTED
+  - SUPPORTED_WITH_CONDITIONS
+  - NOT_ESTABLISHED
+  - OUT_OF_SCOPE
+  - NEEDS_SOURCE_VERIFICATION
+
+pathway_nodes:
+  - id: technology_optimization
+    label: Technology / Optimization
+    layer: DIRECT_ANALYSIS
+    meaning: Technology and optimization methods evaluated by the governed research pipeline.
+    evidence_status: DIRECT_ANALYSIS
+    evidence_type: RESEARCH_DESIGN
+    source_refs: []
+    conditions: [Any result requires the future governed optimization and simulation stages.]
+    out_of_scope_claims: [No optimization result exists or is asserted by this artifact.]
+  - id: delivery_fulfillment
+    label: Delivery Fulfillment
+    layer: DIRECT_ANALYSIS
+    meaning: The direct downstream evaluation metric at which this research's analytical boundary ends.
+    evidence_status: DIRECT_ANALYSIS
+    evidence_type: DIRECT_METRIC
+    source_refs: []
+    conditions: [A production value requires a validated delivery simulation; no value is supplied here.]
+    out_of_scope_claims: [This artifact does not report a fulfillment result.]
+  - id: unserved_delivery_demand
+    label: Unserved Delivery Demand
+    layer: EVIDENCE_SUPPORTED_INTERPRETATION
+    meaning: The portion of in-scope delivery demand not fulfilled under the same governed metric scope and time basis.
+    evidence_status: DEFINITION_DERIVED
+    evidence_type: METRIC_DERIVATION
+    source_refs: [src_academic_banerjee_2022]
+    conditions: [Demand, fulfillment, scope, and time basis must be defined consistently.]
+    out_of_scope_claims: [Unserved demand is not itself proof of a vehicle shortage.]
+  - id: effective_delivery_capacity_requirement
+    label: Potential Effective Delivery-Capacity Requirement
+    layer: EVIDENCE_SUPPORTED_INTERPRETATION
+    meaning: A potential requirement for usable delivery capacity sufficient for the unserved workload under service and operating constraints.
+    evidence_status: EVIDENCE_SUPPORTED
+    evidence_type: ACADEMIC_AND_OPERATIONAL
+    source_refs: [src_academic_golden_1984, src_academic_hoff_2010, src_academic_banerjee_2022, src_academic_hiermann_2016, src_academic_schiffer_2021, src_yamato_ev_operations, src_japan_post_ev_operations, src_fedex_japan_ev_matching]
+    conditions: [Vehicle availability, payload, route feasibility, usable battery range, charging time and availability, downtime, and working time determine effective capacity.]
+    out_of_scope_claims: [Vehicle count is not treated as identical to effective delivery capacity., EVs are not assumed always to require more vehicles.]
+  - id: fleet_expansion_replacement
+    label: Potential Need for Fleet Expansion / Replacement
+    layer: EVIDENCE_SUPPORTED_INTERPRETATION
+    meaning: One possible capacity response when the required effective delivery capacity cannot be accommodated by the existing fleet and its operation.
+    evidence_status: SUPPORTED_WITH_CONDITIONS
+    evidence_type: ACADEMIC_AND_REAL_WORLD
+    source_refs: [src_academic_golden_1984, src_academic_hoff_2010, src_academic_banerjee_2022, src_academic_hiermann_2016, src_academic_schiffer_2021, src_academic_kleindorfer_2012, src_usps_oig_2020, src_ups_annual_report]
+    conditions: [Existing operational changes cannot accommodate the capacity requirement., Fleet expansion or replacement is only one possible response., Firm-specific constraints and decision processes remain unmodeled.]
+    out_of_scope_claims: [No vehicle count, CAPEX, return metric, purchase rule, or actual investment decision is inferred.]
+
+pathway_links:
+  - id: link_technology_to_fulfillment
+    from: technology_optimization
+    to: delivery_fulfillment
+    evidence_status: DIRECT_ANALYSIS
+    strength_label: DIRECT ANALYSIS
+    evidence_type: RESEARCH_PIPELINE
+    source_refs: []
+    conditions: [Future research results require completion of the governed analysis pipeline.]
+  - id: link_fulfillment_to_unserved
+    from: delivery_fulfillment
+    to: unserved_delivery_demand
+    evidence_status: DEFINITION_DERIVED
+    strength_label: STRONG / DEFINITION-DERIVED
+    evidence_type: DEFINITION_AND_METRIC_LOGIC
+    source_refs: [src_academic_banerjee_2022]
+    conditions: [Use identical demand scope and time basis.]
+  - id: link_unserved_to_capacity
+    from: unserved_delivery_demand
+    to: effective_delivery_capacity_requirement
+    evidence_status: EVIDENCE_SUPPORTED
+    strength_label: STRONGLY DEFENSIBLE INTERPRETATION
+    evidence_type: ACADEMIC_AND_OPERATIONAL
+    source_refs: [src_academic_golden_1984, src_academic_hoff_2010, src_academic_banerjee_2022, src_academic_hiermann_2016, src_academic_schiffer_2021, src_yamato_ev_operations, src_japan_post_ev_operations, src_fedex_japan_ev_matching]
+    conditions: [Alternative causes of non-fulfillment must be considered., Capacity is effective operational capacity rather than vehicle count.]
+  - id: link_capacity_to_fleet
+    from: effective_delivery_capacity_requirement
+    to: fleet_expansion_replacement
+    evidence_status: SUPPORTED_WITH_CONDITIONS
+    strength_label: SUPPORTED WITH CONDITIONS
+    evidence_type: ACADEMIC_AND_REAL_WORLD
+    source_refs: [src_academic_golden_1984, src_academic_hoff_2010, src_academic_banerjee_2022, src_academic_hiermann_2016, src_academic_schiffer_2021, src_academic_kleindorfer_2012, src_usps_oig_2020, src_ups_annual_report]
+    conditions: [The requirement cannot be met through existing-fleet operation or other capacity responses., Expansion or replacement remains a possible response, not a predicted action.]
+  - id: link_fulfillment_to_actual_investment
+    from: delivery_fulfillment
+    to: actual_corporate_investment_decision
+    evidence_status: NOT_ESTABLISHED
+    claim_status: OUT_OF_SCOPE
+    strength_label: NOT ESTABLISHED / OUT OF SCOPE
+    evidence_type: BOUNDARY_STATEMENT
+    source_refs: []
+    conditions: [No causal investment rule or capital-budget model is part of this research.]
+
+evidence_categories:
+  - id: academic_fleet_planning
+    label: Academic fleet-planning evidence
+    assessment: EVIDENCE_SUPPORTED
+    supports: [demand and service requirements inform required fleet capacity, fleet size and mix planning uses demand capacity and service constraints, EV planning also depends on range charging downtime payload and route feasibility]
+  - id: real_world_fleet_planning
+    label: Real-world fleet-planning evidence
+    assessment: EVIDENCE_SUPPORTED
+    supports: [operational demand and projected requirements can inform vehicle acquisition planning, parcel growth and peak demand can motivate added delivery capacity]
+  - id: japanese_operational
+    label: Japanese operational evidence
+    assessment: SUPPORTED_WITH_CONDITIONS
+    supports: [effective EV delivery capacity depends on operational feasibility]
+    negative_finding: No public internal rule of the form delivery volume X implies purchase of Y vehicles was identified in the provided research evidence.
+  - id: ev_specific
+    label: EV-specific evidence
+    assessment: SUPPORTED_WITH_CONDITIONS
+    supports: [vehicle count is not identical to effective delivery capacity, one ICE vehicle cannot ex ante be assumed equivalent to one EV, EVs are not asserted always to require more vehicles]
+
+external_sources:
+  - {id: src_academic_golden_1984, category: academic_fleet_planning, author_or_organization: Golden et al., title: Fleet Size and Mix Vehicle Routing Problem, year: 1984, source_type: ACADEMIC, evidence_relevance: STRONGLY_RELATED, evidence_strength: STRONG, citation_status: NEEDS_SOURCE_VERIFICATION, supports_claims: [fleet size and mix respond to demand capacity and routing constraints]}
+  - {id: src_academic_hoff_2010, category: academic_fleet_planning, author_or_organization: Hoff et al., title: fleet composition and routing review, year: 2010, source_type: ACADEMIC, evidence_relevance: STRONGLY_RELATED, evidence_strength: STRONG, citation_status: NEEDS_SOURCE_VERIFICATION, supports_claims: [fleet composition and routing are jointly planned under operational requirements]}
+  - {id: src_academic_banerjee_2022, category: academic_fleet_planning, author_or_organization: 'Banerjee, Erera & Toriello', title: same-day delivery fleet sizing, year: 2022, source_type: ACADEMIC, evidence_relevance: DIRECTLY_RELATED, evidence_strength: STRONG, citation_status: NEEDS_SOURCE_VERIFICATION, supports_claims: [delivery demand and service requirements relate to fleet sizing]}
+  - {id: src_academic_hiermann_2016, category: academic_fleet_planning, author_or_organization: Hiermann et al., title: electric fleet size and mix with time windows / charging, year: 2016, source_type: ACADEMIC, evidence_relevance: DIRECTLY_RELATED, evidence_strength: STRONG, citation_status: NEEDS_SOURCE_VERIFICATION, supports_claims: [EV fleet capacity depends on time windows and charging feasibility]}
+  - {id: src_academic_schiffer_2021, category: academic_fleet_planning, author_or_organization: Schiffer et al., title: EV fleet/network planning, year: 2021, source_type: ACADEMIC, evidence_relevance: STRONGLY_RELATED, evidence_strength: STRONG, citation_status: NEEDS_SOURCE_VERIFICATION, supports_claims: [EV fleet and network planning jointly condition effective capacity]}
+  - {id: src_academic_kleindorfer_2012, category: academic_fleet_planning, author_or_organization: Kleindorfer et al., title: La Poste fleet renewal, year: 2012, source_type: ACADEMIC, evidence_relevance: STRONGLY_RELATED, evidence_strength: STRONG, citation_status: NEEDS_SOURCE_VERIFICATION, supports_claims: [fleet renewal can be a response within constrained fleet planning]}
+  - {id: src_usps_oig_2020, category: real_world_fleet_planning, author_or_organization: USPS Office of Inspector General, title: Delivery Vehicle Acquisition Strategy, year: 2020, source_type: INSTITUTIONAL_REPORT, evidence_relevance: STRONGLY_RELATED, evidence_strength: STRONG, citation_status: VERIFIED_RESEARCH_INPUT, supports_claims: [aging vehicles additional delivery points changing mail mix and current and projected operational data relate to vehicle acquisition planning]}
+  - {id: src_ups_annual_report, category: real_world_fleet_planning, author_or_organization: UPS, title: Annual Report, year: null, source_type: CORPORATE_REPORT, evidence_relevance: DIRECTLY_RELATED, evidence_strength: STRONG, citation_status: NEEDS_SOURCE_VERIFICATION, supports_claims: [delivery vehicles and trailers were added to provide capacity for parcel growth and holiday peak demand]}
+  - {id: src_yamato_ev_operations, category: japanese_operational, author_or_organization: Yamato Transport, title: null, year: null, source_type: CORPORATE_OPERATIONAL_EVIDENCE, evidence_relevance: CONDITIONALLY_RELATED, evidence_strength: SUPPORTING, citation_status: NEEDS_SOURCE_VERIFICATION, supports_claims: [EV route suitability charging downtime and vehicle non-operating time condition operational feasibility]}
+  - {id: src_japan_post_ev_operations, category: japanese_operational, author_or_organization: Japan Post, title: null, year: null, source_type: CORPORATE_OPERATIONAL_EVIDENCE, evidence_relevance: CONDITIONALLY_RELATED, evidence_strength: SUPPORTING, citation_status: NEEDS_SOURCE_VERIFICATION, supports_claims: [operational practicality and efficiency are evaluated before EV replacement]}
+  - {id: src_fedex_japan_ev_matching, category: japanese_operational, author_or_organization: FedEx Japan, title: null, year: null, source_type: CORPORATE_OPERATIONAL_EVIDENCE, evidence_relevance: CONDITIONALLY_RELATED, evidence_strength: SUPPORTING, citation_status: NEEDS_SOURCE_VERIFICATION, supports_claims: [payload and planned route distance condition operational matching of EV deployment]}
+
+effective_capacity_conditions:
+  - vehicle availability
+  - payload
+  - route feasibility
+  - usable battery range
+  - charging time
+  - charging availability
+  - vehicle downtime
+  - working time
+
+supports:
+  - Delivery workload, demand, and operational requirements relate to fleet-capacity planning.
+  - Unmet or unserved demand can be derived from delivery fulfillment under a consistent metric definition.
+  - Insufficient effective delivery capacity may relate to a need for capacity responses including fleet expansion or replacement.
+  - EV range, charging, payload, and availability constrain effective delivery capacity.
+
+does_not_support:
+  - Low fulfillment automatically causes investment.
+  - Unserved demand equals vehicle shortage.
+  - An exact required additional vehicle count.
+  - An exact investment amount.
+  - An actual corporate capital-budget decision.
+  - A universal ICE-to-EV replacement ratio.
+
+traceability:
+  research_question:
+    label: Research Question
+    ref: RESEARCH_OVERVIEW.md
+  direct_metric:
+    label: Delivery Fulfillment
+    portal_stage_ref: fulfillment_evaluation
+  interpretation_claims: [unserved_delivery_demand, effective_delivery_capacity_requirement, fleet_expansion_replacement]
+  evidence_artifact: reproducibility/evidence/fleet_capacity_interpretation_v1.yml
+  external_source_refs: [src_academic_golden_1984, src_academic_hoff_2010, src_academic_banerjee_2022, src_academic_hiermann_2016, src_academic_schiffer_2021, src_academic_kleindorfer_2012, src_usps_oig_2020, src_ups_annual_report, src_yamato_ev_operations, src_japan_post_ev_operations, src_fedex_japan_ev_matching]
+  portal_node_refs: [delivery_fulfillment, unserved_delivery_demand, effective_delivery_capacity_requirement, fleet_expansion_replacement]
