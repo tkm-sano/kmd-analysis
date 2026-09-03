@@ -145,7 +145,11 @@ function metric(label,value,note="") {
   return `<article class="metric"><span>${esc(label)}</span><strong>${esc(value)}</strong>${note?`<small>${esc(note)}</small>`:""}</article>`;
 }
 
-function renderNetwork(network) {
+function unavailableScale(value) {
+  return value == null ? "NOT YET AVAILABLE" : Number(value).toLocaleString();
+}
+
+function renderNetwork(network, networkScale, routingWorkload, instanceScale) {
   const validation=network.validation,mapping=network.mapping;
   const facts=[
     ["Decision ID",network.decision_id],["Accepted run",network.accepted_run],
@@ -158,7 +162,31 @@ function renderNetwork(network) {
     ["FORMAL_NETWORK_ACCEPTED",String(network.accepted)]
   ];
   $("network-summary").innerHTML=`
-    <div class="facts">${facts.map(([label,value])=>`<div><dt>${esc(label)}</dt><dd>${String(value).startsWith("<a")?value:esc(value)}</dd></div>`).join("")}</div>
+    <div class="network-primary">
+      <div class="network-scale-card">
+        <h3>Network Scale</h3>
+        <div class="metric-grid network-scale-grid">
+          ${metric("Nodes |V|",networkScale.network_node_count.toLocaleString(),"network_node_count")}
+          ${metric("Directed Edges |E|",networkScale.network_edge_count.toLocaleString(),"network_edge_count")}
+          ${metric("Lanes",networkScale.network_lane_count.toLocaleString(),"network_lane_count · SUMO supplementary metric")}
+        </div>
+        <p>Graph size used for routing. Nodes and directed edges characterize the routing graph size; lane count is a SUMO-specific supplementary metric.</p>
+        <small>Canonical source: ${pathLink(networkScale.source_artifact,"network acceptance / validation / counts")} · ${esc(networkScale.accepted_run)} · SHA ${esc(networkScale.network_sha256)}</small>
+      </div>
+      <div class="scale-dimensions">
+        <article><h3>Routing Workload</h3><dl>
+          <div><dt>Origins</dt><dd>${esc(unavailableScale(routingWorkload.routing_origin_count))}</dd></div>
+          <div><dt>Destinations</dt><dd>${esc(unavailableScale(routingWorkload.routing_destination_count))}</dd></div>
+          <div><dt>Required OD pairs</dt><dd>${esc(unavailableScale(routingWorkload.required_od_pair_count))}</dd></div>
+        </dl><p>${esc(routingWorkload.reason)}</p></article>
+        <article><h3>Instance Scale</h3><dl>
+          <div><dt>Requests</dt><dd>${esc(unavailableScale(instanceScale.request_count))}</dd></div>
+          <div><dt>Stops</dt><dd>${esc(unavailableScale(instanceScale.stop_count))}</dd></div>
+          <div><dt>Required route pairs</dt><dd>${esc(unavailableScale(instanceScale.instance_route_pair_count))}</dd></div>
+        </dl><p>${esc(instanceScale.reason)}</p></article>
+      </div>
+      <div class="facts">${facts.map(([label,value])=>`<div><dt>${esc(label)}</dt><dd>${String(value).startsWith("<a")?value:esc(value)}</dd></div>`).join("")}</div>
+    </div>
     <aside class="limitations"><h3>Known limitations</h3><ul>${network.known_limitations.map(item=>`<li>${esc(item)}</li>`).join("")}</ul>
     <p class="integrity ${network.sha_matches?"pass":"fail"}">SHA integrity: ${network.sha_matches?"MATCH":"MISMATCH"}</p></aside>`;
 }
@@ -186,7 +214,7 @@ function render(state) {
     metric("Common Delivery Instance","PLANNED","Depends on Routing"),
     metric("Optimization / Quantum","FUTURE","No results claimed")
   ].join("");
-  renderNetwork(state.accepted_network);
+  renderNetwork(state.accepted_network,state.network_scale,state.routing_workload,state.instance_scale);
 
   $("validation-table").innerHTML=`<table><thead><tr><th>Stage</th><th>Validation gate</th><th>Status</th></tr></thead><tbody>${state.validation_gates.map(row=>`<tr><td>${esc(row.stage)}</td><td>${esc(row.gate)}</td><td><span class="gate gate-${row.status.toLowerCase().replaceAll(" ","-")}">${esc(row.status)}</span></td></tr>`).join("")}</tbody></table>`;
   $("unresolved-grid").innerHTML=state.unresolved_decisions.map(item=>`<article><span class="badge status-unresolved">UNRESOLVED</span><h3>${esc(item.label)}</h3><p>blocks</p><div>${item.blocks.map(stage=>`<button data-stage="${esc(stage)}">${esc(stage)}</button>`).join("")}</div><small>Evidence: ${esc(item.evidence)}</small></article>`).join("");

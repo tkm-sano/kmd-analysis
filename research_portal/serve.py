@@ -122,6 +122,39 @@ def summary() -> dict:
     ]
 
     validation = acceptance["validation"]
+    network_counts = validation["counts"]
+    network_scale = {
+        "network_node_count": network_counts["nodes"],
+        "network_edge_count": network_counts["edges"],
+        "network_lane_count": network_counts["lanes"],
+        "edge_semantics": "directed",
+        "metric_role": {
+            "nodes_edges": "routing_graph_size",
+            "lanes": "sumo_specific_supplementary_metric",
+        },
+        "source_artifact": accepted["acceptance_artifact"],
+        "source_json_pointer": "/validation/counts",
+        "accepted_run": accepted["run_id"],
+        "network_artifact": accepted["network_file"],
+        "network_sha256": accepted["network_sha256"],
+        "extraction_source": "current accepted network acceptance artifact",
+    }
+    routing_workload = {
+        "routing_origin_count": None,
+        "routing_destination_count": None,
+        "required_od_pair_count": None,
+        "status": "NOT YET AVAILABLE",
+        "reason": "Routing Baseline scope is unresolved and no production routing artifact exists.",
+    }
+    instance_scale = {
+        "request_count": None,
+        "stop_count": None,
+        "parcel_equivalent": None,
+        "vehicle_count": None,
+        "instance_route_pair_count": None,
+        "status": "NOT YET AVAILABLE",
+        "reason": "No accepted Common Delivery Instance exists.",
+    }
     validation_rows = [
         {"stage": "Network", "gate": "SUMO build", "status": validation["sumo_build"]},
         {"stage": "Network", "gate": "Lane validity", "status": validation["lane_validity"]},
@@ -223,6 +256,9 @@ def summary() -> dict:
             "validation": validation, "mapping": acceptance["mapping"],
             "accepted": acceptance["FORMAL_NETWORK_ACCEPTED"], "known_limitations": acceptance["known_limitations"],
         },
+        "network_scale": network_scale,
+        "routing_workload": routing_workload,
+        "instance_scale": instance_scale,
         "provenance": {"tiers": tier_rows, "confidence": provenance.get("confidence", {})},
         "validation_gates": validation_rows, "unresolved_decisions": map_config["unresolved_decisions"],
         "traceability": [trace_entry(label, path) for label, path in trace_paths.items()],

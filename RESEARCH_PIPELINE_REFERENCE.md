@@ -377,6 +377,7 @@ current Decision、policy、pipeline、registry/schema、source/structural input
 |---|---|---|---|
 | Accepted run | current run directory | `reproducibility/outputs/.../phase13_20260903_three_tier_completion/run_2` | `ACCEPTED` |
 | Accepted network | SUMO network | [three_tier.net.xml](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/three_tier.net.xml) | `ACCEPTED` |
+| Network graph size | routing graphのnode / directed edge数とSUMO lane数 | [network_acceptance.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/network_acceptance.json) `/validation/counts` | `ACCEPTED` |
 | Provenance accounting | DIRECT/INFERRED/FALLBACK counts | [quality_accounting.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_1/quality_accounting.json) | `CURRENT REFERENCE FROM AUTHORITY` |
 
 ### Authority / Source of truth
@@ -399,6 +400,8 @@ all network gates PASS、accepted `net.xml`存在、SHA一致、Stop Mapping/rou
 ### Provenance
 
 accepted run ID `three_tier_run_2`、network ID `P13-THREE-TIER-RUN-2`、source commit、input/output SHA、quality accountingをauthority/acceptanceに記録。
+
+Network graph sizeはacceptance artifactの`validation.counts`を正本とする。`network_node_count = 70,050`、`network_edge_count = 147,168`（direction別SUMO edgeを数える有向edge）、`network_lane_count = 154,728`。論文表記は`Traffic network size: |V| nodes, |E| directed edges`とし、lane数はSUMO固有の補助指標とする。
 
 ### Known limitations
 
@@ -580,6 +583,7 @@ accepted network、accepted Stop mapping、Requests / Stops、および採択済
 | Input | Role | Canonical path | Status | Notes |
 |---|---|---|---|---|
 | Accepted network | routing graph | [three_tier.net.xml](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/three_tier.net.xml) | `READY` | SHA-bound。 |
+| Network graph size | graph traversal substrate scale | [network_acceptance.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/network_acceptance.json) `/validation/counts` | `READY` | Nodes 70,050 / directed edges 147,168 / lanes 154,728。 |
 | Accepted mapping | route endpoints | [request_stop_mapping.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/request_stop_mapping.json) | `READY` | full Stops mapping。 |
 | Requests | demand records | `03_data/processed/traffic_simulation/demand/household_parcel_v1/pipelines_v1/daily_requests.csv` | `READY LOCALLY` | instance scope未選択。 |
 | Stops | candidate delivery endpoints | `03_data/processed/traffic_simulation/demand/household_parcel_v1/pipelines_v1/building_delivery_stops_scoped.csv` | `READY LOCALLY` | 39,956 all-pairsを前提にしない。 |
@@ -632,7 +636,7 @@ routing method/scope fixed、必要OD集合のみを完全生成、validator PAS
 
 ### Known limitations
 
-39,956 Stops full all-pairsは採択していない。sample routeability acceptanceはproduction routing cost artifactではない。
+Network graph size（`|V|` nodes / `|E|` directed edges / lanes）とRouting workload（origins / destinations / required OD pairs）、さらにDelivery Instance size（requests / stops / vehicles / instance route pairs）は別のproblem-size dimensionである。39,956 Stops full all-pairsは採択しておらず、`routing_origin_count`、`routing_destination_count`、`required_od_pair_count`は`NOT YET AVAILABLE`。sample routeability acceptanceはproduction routing cost artifactではない。
 
 ### Unresolved decisions
 

@@ -52,6 +52,34 @@ def main() -> None:
     assert network["mapping"]["mapping_rate"] == 1.0
     assert network["validation"]["routeability_gate"]["routeable"] == 100
     assert network["validation"]["delivery_routeability"] == "PASS"
+    acceptance_path = ROOT / state["source_of_truth"]["acceptance"]
+    acceptance = json.loads(acceptance_path.read_text(encoding="utf-8"))
+    network_scale = state["network_scale"]
+    canonical_counts = acceptance["validation"]["counts"]
+    assert network_scale["network_node_count"] == canonical_counts["nodes"] > 0
+    assert network_scale["network_edge_count"] == canonical_counts["edges"] > 0
+    assert network_scale["network_lane_count"] == canonical_counts["lanes"] > 0
+    assert network_scale["edge_semantics"] == "directed"
+    assert network_scale["source_artifact"] == state["source_of_truth"]["acceptance"]
+    assert network_scale["source_json_pointer"] == "/validation/counts"
+    assert network_scale["accepted_run"] == network["accepted_run"]
+    assert network_scale["network_artifact"] == network["network_path"]
+    assert network_scale["network_sha256"] == network["actual_sha256"]
+    assert state["routing_workload"] == {
+        "routing_origin_count": None,
+        "routing_destination_count": None,
+        "required_od_pair_count": None,
+        "status": "NOT YET AVAILABLE",
+        "reason": "Routing Baseline scope is unresolved and no production routing artifact exists.",
+    }
+    assert state["instance_scale"]["status"] == "NOT YET AVAILABLE"
+    assert all(
+        state["instance_scale"][key] is None
+        for key in ("request_count", "stop_count", "parcel_equivalent", "vehicle_count", "instance_route_pair_count")
+    )
+    portal_js = (ROOT / "research_portal/app.js").read_text(encoding="utf-8")
+    for ui_term in ("Network Scale", "Nodes |V|", "Directed Edges |E|", "Routing Workload", "Instance Scale"):
+        assert ui_term in portal_js
     assert not [item for item in state["artifacts"] if not item["exists"]]
     assert not [item for item in state["traceability"] if not item["available"]]
 
@@ -89,6 +117,11 @@ def main() -> None:
         "current_stage": state["current_position"]["current_stage"],
         "formal_network_accepted": network["accepted"],
         "artifact_links": sum(bool(item["url"]) for item in state["artifacts"]),
+        "network_scale": {
+            "nodes": network_scale["network_node_count"],
+            "directed_edges": network_scale["network_edge_count"],
+            "lanes": network_scale["network_lane_count"],
+        },
         "interpretation_assessment": evidence["overall_assessment"],
         "evidence_sources": evidence["source_counts"]["total"],
     }, sort_keys=True))

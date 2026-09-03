@@ -128,6 +128,8 @@ def validate() -> dict:
     assert "Immediate next task | Define routing scope for delivery instances." in text
     assert accepted["network_file"] in text
     assert accepted["network_sha256"] in text
+    assert "Network graph size（`|V|` nodes / `|E|` directed edges / lanes）" in text
+    assert "`required_od_pair_count`は`NOT YET AVAILABLE`" in text
     assert sha256(ROOT / accepted["network_file"]) == accepted["network_sha256"]
     assert acceptance["FORMAL_NETWORK_ACCEPTED"] is True
     assert "`HISTORICAL`: strict v17" in text
