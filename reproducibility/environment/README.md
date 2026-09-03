@@ -1,5 +1,12 @@
 # Hayate native Conda正本環境
 
+Document ID: `DOC-HAYATE-NATIVE-CONDA-ENVIRONMENT`
+Role: `CURRENT_REFERENCE`
+Lifecycle: `CURRENT`
+Created: `2026-08-25`
+Last Updated: `2026-09-03`
+Current Authority: `reproducibility/environment/requirements-analysis.txt`
+
 ```text
 0-1 社会科学としての問い                    [PARTIAL]
 0-2 研究設計                                [CURRENT]

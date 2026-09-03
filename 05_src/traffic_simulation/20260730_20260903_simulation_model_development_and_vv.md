@@ -1,5 +1,12 @@
 # シミュレーションモデルの作成・検証・妥当性確認
 
+Document ID: `DOC-SIMULATION-MODEL-DEVELOPMENT-VV`
+Role: `CURRENT_REFERENCE`
+Lifecycle: `CURRENT`
+Created: `2026-07-30`
+Last Updated: `2026-09-03`
+Current Authority: `reproducibility/indexes/research_repository_index_v17.yml`
+
 > **文書状態**: 現行方針  
 > **作成日**: 2026-07-30  
 > **現状更新日**: 2026-08-14

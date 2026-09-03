@@ -130,7 +130,7 @@ evidence:
     limitations_ja: raw原本の一部は再配布されず、取得元からの再取得が必要である。
 
   - id: ev.baseline_demand_spec
-    path: 05_src/traffic_simulation/demand/baseline_demand_and_comparator.md
+    path: 05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md
     label_ja: 合成需要と未最適化基準の仕様
     role: specification
     strength: direct_repository_evidence
@@ -350,7 +350,7 @@ evidence:
     limitations_ja: 比較条件の設計Evidenceであり、solver実装・比較run・結果ではない。
 
   - id: ev.vv
-    path: 05_src/traffic_simulation/simulation_model_development_and_vv.md
+    path: 05_src/traffic_simulation/20260730_20260903_simulation_model_development_and_vv.md
     label_ja: シミュレーションV&V規約
     role: specification
     strength: direct_repository_evidence
@@ -476,7 +476,7 @@ evidence:
     locator:
       heading: Acquisition Record
     version: "20260718"
-    sha256: 2322cdce3bb9f57a1b969a8896c4094396c2a5ffb05bedbe994f56e876ee339b
+    sha256: 4ab984f29d03a3d0f8593d2a82a44d81aa61f50426757f2f0586e7264e665011
     record_state: current
     regeneration_ja: 記録された取得元、raw path、SHA-256を使って再取得後に照合する。
     portability: tracked
@@ -630,7 +630,7 @@ evidence:
         target_id: data.calibration_observations
     locator:
       json_pointer: /counts
-    sha256: 8677ed3da8b6e232da9d46ac52c648255b3cf3b13cb55dba75fe37724a634463
+    sha256: ac4568d4b6438908c986a3721c4ba7b1f6e418805305c0aa8df97f8f1bde521b
     record_state: current
     regeneration_ja: 記録されたgenerator、schema、input hashから再生成する。
     portability: ignored_local
@@ -749,7 +749,7 @@ evidence:
     limitations_ja: P_eqを主指標とする設計だがREADMEの主指標表現と未解決conflictがある。
 
   - id: ev.independent_validation_design
-    path: 05_src/traffic_simulation/simulation_model_development_and_vv.md
+    path: 05_src/traffic_simulation/20260730_20260903_simulation_model_development_and_vv.md
     label_ja: 独立Validation工程設計
     role: design_intent
     strength: direct_repository_evidence
@@ -760,7 +760,7 @@ evidence:
         target_id: rel.independent_data_to_validation_stage
     locator:
       heading: 2.4 CalibrationとValidationの分離
-    sha256: eb502496605801c0017e268b3aece01504240d191e3a2104a6cbb252462da21b
+    sha256: 2c7527c7e62f4d0e403c096c4c3f11a28b041a34a6feba164f18d0e4ee4c80d1
     record_state: current
     regeneration_ja: null
     portability: tracked

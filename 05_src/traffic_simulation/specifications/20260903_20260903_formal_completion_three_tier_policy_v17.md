@@ -1,5 +1,12 @@
 # Formal completion three-tier policy v17
 
+Document ID: `SPEC-P13-FORMAL-COMPLETION-THREE-TIER-V17`
+Role: `CURRENT_NORMATIVE`
+Lifecycle: `CURRENT`
+Created: `2026-09-03`
+Last Updated: `2026-09-03`
+Current Authority: `DEC-P13-FORMAL-COMPLETION-THREE-TIER-001`
+
 Decision: `DEC-P13-FORMAL-COMPLETION-THREE-TIER-001`  
 Registry: `reproducibility/config/traffic_simulation/formal_completion_three_tier_registry_v17.yml`
 

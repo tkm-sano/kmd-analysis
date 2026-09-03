@@ -1,5 +1,12 @@
 # 大田区の共通需要計算と未最適化基準
 
+Document ID: `SPEC-BASELINE-DEMAND-COMPARATOR`
+Role: `CURRENT_NORMATIVE`
+Lifecycle: `CURRENT`
+Created: `2026-07-18`
+Last Updated: `2026-09-03`
+Current Authority: `reproducibility/config/traffic_simulation/baseline_demand.yml`
+
 ## 1. 目的と位置付け
 
 この文書は、大田区について未最適化基準、古典最適化、Qiskit Aer QAOAへ共通に与える合成需要と、未最適化基準の比較器を固定する正本である。公開統計から実顧客、実注文、実配送先、実配送停止回数または実配送順序を復元したとは扱わない。

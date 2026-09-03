@@ -1,5 +1,12 @@
 # Network Completion Pipeline v17
 
+Document ID: `NETWORK-COMPLETION-PIPELINE-V17`
+Role: `CURRENT_NORMATIVE`
+Lifecycle: `CURRENT`
+Created: `2026-09-03`
+Last Updated: `2026-09-03`
+Current Authority: `reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml`
+
 This is the single current pipeline specification for the accepted three-tier Formal network.
 
 ```text

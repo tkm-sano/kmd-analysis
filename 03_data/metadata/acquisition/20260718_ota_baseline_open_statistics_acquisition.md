@@ -6,7 +6,7 @@
 - 実施者：`Codex`
 - 状態：`processed`
 - 出典台帳ID：`estat_census_2020_500m_jgd2011_mesh5339`、`estat_t001141_definition`、`ota_population_20240401`、`statistics_bureau_population_20241001`、`mlit_parcel_2024`
-- 関連仕様：`05_src/traffic_simulation/demand/baseline_demand_and_comparator.md`
+- 関連仕様：`05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md`
 
 ## 配布元と選択条件
 

@@ -21,6 +21,7 @@ def check(*, dry_run: bool = False) -> int:
     steps = (
         Step("Current network authority", python_script("05_src/traffic_simulation/network/validate_current_network_completion_authority.py"), next_diagnostic="./research network acceptance"),
         Step("Repository index", python_script("05_src/traffic_simulation/network/validate_research_repository_index.py"), next_diagnostic="./research artifacts"),
+        Step("Current Markdown index", python_script("05_src/traffic_simulation/network/validate_current_markdown_index.py"), next_diagnostic="./research artifacts"),
         Step("Portal research map and current artifacts", python_script("05_src/traffic_simulation/network/validate_research_map_portal.py"), next_diagnostic="./research portal status"),
     )
     return run_steps(steps, dry_run=dry_run)

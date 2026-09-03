@@ -22,7 +22,7 @@ authoritative.
 
 The model-development lifecycle, Verification, calibration, independent
 Validation, evidence requirements, and formal-use gates are organized in
-[`simulation_model_development_and_vv.md`](simulation_model_development_and_vv.md).
+[`20260730_20260903_simulation_model_development_and_vv.md`](20260730_20260903_simulation_model_development_and_vv.md).
 
 For a quick repository-side command reference when you want to inspect status,
 compare diffs, or validate a task from the terminal, see
@@ -62,7 +62,7 @@ recorded in
 
 The open-statistics calculation and the non-optimizing baseline comparator are
 specified in
-[`demand/baseline_demand_and_comparator.md`](demand/baseline_demand_and_comparator.md).
+[`demand/20260718_20260903_baseline_demand_and_comparator.md`](demand/20260718_20260903_baseline_demand_and_comparator.md).
 The implemented population and parcel-equivalent demand preparation uses
 [`../../reproducibility/config/traffic_simulation/baseline_demand.yml`](../../reproducibility/config/traffic_simulation/baseline_demand.yml)
 and [`demand/prepare_baseline_demand.py`](demand/prepare_baseline_demand.py).

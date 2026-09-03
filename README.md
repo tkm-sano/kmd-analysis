@@ -2,7 +2,7 @@
 
 東京都大田区を対象に、実データに基づく都市配送モデルを構築し、配送計画の作成方法と将来の配送条件が都市配送需要の充足へ与える影響を評価する修士研究です。
 
-日常的な研究実行・検証はrepo rootの `./research` に集約しています。最初に `./research commands` で利用可能なcommandと未実装stageを確認してください。詳細は[Unified Research CLI](docs/research_cli.md)を参照してください。
+日常的な研究実行・検証はrepo rootの `./research` に集約しています。最初に `./research commands` で利用可能なcommandと未実装stageを確認してください。詳細は[Unified Research CLI](docs/20260903_20260903_research_cli.md)を参照してください。
 
 ## 研究目的
 
@@ -27,8 +27,8 @@
 | 4 | [交通量較正](2-3_20260823_CURRENT_交通量較正.md) | 一般交通需要、較正結果、受入判定、残課題 |
 | 5 | [最初の交通量較正記録](2-3_20260823_PARTIAL_交通量較正.md) | 最初の候補を不受理とした根拠と、後続診断の履歴 |
 | 6 | [Hayate Conda正本化の完了記録](0-2-B-2_20260825_COMPLETE_HayateConda正本化.md) | 正本環境の完了判定と全回帰の実行証拠 |
-| 7 | [シミュレーションモデル開発とV&V](05_src/traffic_simulation/simulation_model_development_and_vv.md) | 実装検証と現実に対する妥当性確認の境界 |
-| 8 | [合成需要と非最適化ベースライン仕様](05_src/traffic_simulation/demand/baseline_demand_and_comparator.md) | 配送需要、比較器、評価指標の現行仕様 |
+| 7 | [シミュレーションモデル開発とV&V](05_src/traffic_simulation/20260730_20260903_simulation_model_development_and_vv.md) | 実装検証と現実に対する妥当性確認の境界 |
+| 8 | [合成需要と非最適化ベースライン仕様](05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md) | 配送需要、比較器、評価指標の現行仕様 |
 | 9 | [配送EVプロファイル](reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml) | 観測車両ではない固定モデル仮定の現行設定 |
 | 10 | [データ台帳](03_data/metadata/traffic_simulation_sources.csv) | 入力データ、取得日、SHA-256、用途、制限 |
 | 11 | [Hayate native環境](reproducibility/environment/README.md) | 正本実行環境、再構築、検証手順 |

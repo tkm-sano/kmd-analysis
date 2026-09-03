@@ -379,12 +379,12 @@ repositoryのMarkdownまたはコードだけを変更してRegistryを更新し
 | 進捗loader | `05_src/traffic_simulation/research_stage.py` | Registry-only生成の先行実装パターン。Portal用には5 status対応が必要 |
 | データ台帳 | `03_data/metadata/traffic_simulation_sources.csv` | dataset Evidenceと第三者データprovenance |
 | データ来歴 | `03_data/metadata/data_provenance.md`, `03_data/metadata/acquisition/` | 取得・処理・制限 |
-| Baseline demand | `05_src/traffic_simulation/demand/baseline_demand_and_comparator.md`, `prepare_baseline_demand.py`, `baseline_demand.yml` | 合成需要、指標境界、比較器の仕様・実装Evidence |
+| Baseline demand | `05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md`, `prepare_baseline_demand.py`, `baseline_demand.yml` | 合成需要、指標境界、比較器の仕様・実装Evidence |
 | Baseline traffic current | `05_src/traffic_simulation/road_census_sumo_current_baseline.md` | 2026-08-27時点のmapping・属性未完了状態 |
 | Route generation | `05_src/traffic_simulation/marouter_route_generation_specification.md`, `calibration/diagnose_marouter_route_generation.py` | 2026-08-28時点のcurrent stageと不合格gate Evidence |
 | 車両条件 | `reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml` | 固定モデル仮定。実測車両と表示しない |
 | 比較規約 | `05_src/traffic_simulation/optimization_comparison_protocol.md` | common instance、公平性、計算時間境界、Aerの解釈 |
-| V&V | `05_src/traffic_simulation/simulation_model_development_and_vv.md` | verification/calibration/validation/readinessの区別 |
+| V&V | `05_src/traffic_simulation/20260730_20260903_simulation_model_development_and_vv.md` | verification/calibration/validation/readinessの区別 |
 | 将来・scale分析 | `05_src/literature_analysis/make_scale_gap_analysis.py`, `make_updated_future_wheels.py`, `05_src/visualization/make_future_wheels_figures.py` | 将来分析の設計・文献Evidence。現在の配送モデル結果とは分離 |
 | 研究構造 | `01_research_design/research_structure.md`, `analysis_method.md` | synthetic/proxyの限界、次段階の設計Evidence |
 

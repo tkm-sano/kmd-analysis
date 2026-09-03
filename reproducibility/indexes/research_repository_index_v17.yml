@@ -1,10 +1,13 @@
-schema_version: 1
+schema_version: 2
 index_id: RESEARCH-REPOSITORY-INDEX-V17
 status: CURRENT
 purpose: single_entrypoint_for_research_pipeline_traceability
-research_overview: RESEARCH_OVERVIEW.md
+stable_research_overview: RESEARCH_OVERVIEW.md
+research_overview: 20260903_20260903_RESEARCH_OVERVIEW.md
 research_cli: research
-research_cli_reference: docs/research_cli.md
+research_cli_reference: docs/20260903_20260903_research_cli.md
+human_repository_map: reproducibility/indexes/20260903_20260903_research_repository_map_v17.md
+markdown_inventory: reproducibility/indexes/markdown_inventory_v17.yml
 current_authority: reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml
 current_pipeline: reproducibility/config/traffic_simulation/network_completion_pipeline_v17.yml
 index_sections:
@@ -19,8 +22,8 @@ index_sections:
   historical: current_authority.superseded_decision
 current_authority_roles:
   decision: DEC-P13-FORMAL-COMPLETION-THREE-TIER-001
-  specification: 05_src/traffic_simulation/specifications/15_formal_completion_three_tier_policy_v17.md
-  pipeline_specification: 05_src/traffic_simulation/specifications/16_network_completion_pipeline_v17.md
+  specification: 05_src/traffic_simulation/specifications/20260903_20260903_formal_completion_three_tier_policy_v17.md
+  pipeline_specification: 05_src/traffic_simulation/specifications/20260903_20260903_network_completion_pipeline_v17.md
   registry: reproducibility/config/traffic_simulation/formal_completion_three_tier_registry_v17.yml
   schemas:
     policy: reproducibility/config/traffic_simulation/schemas/formal_completion_three_tier_v17.schema.json
@@ -47,3 +50,97 @@ lifecycle_rules:
   historical: [SUPERSEDED, HISTORICAL, DEPRECATED]
 safe_move_policy: hash_bound_or_manifest_referenced_artifacts_are_not_moved
 next_research_stage: Routing baseline
+filename_date_convention:
+  canonical_pattern: YYYYMMDD_YYYYMMDD_document_name.md
+  date_meaning: created_updated
+  git_dates_authoritative: true
+  stable_aliases:
+    - path: RESEARCH_OVERVIEW.md
+      canonical: 20260903_20260903_RESEARCH_OVERVIEW.md
+      reason: GitHub_Portal_CLI_and_external_link_compatibility
+  fixed_name_exceptions:
+    - README.md
+    - research_portal/README.md
+    - reproducibility/environment/README.md
+important_markdown:
+  - priority: 1
+    document_id: DOC-RESEARCH-OVERVIEW-V17
+    role: PRIMARY_ENTRY
+    lifecycle: CURRENT
+    path: 20260903_20260903_RESEARCH_OVERVIEW.md
+    created: '2026-09-03'
+    updated: '2026-09-03'
+    purpose: Research question, Stage 1-11 roadmap, gates, milestones, and current position.
+    naming_policy: dated_canonical
+  - priority: 2
+    document_id: DOC-RESEARCH-REPOSITORY-MAP-V17
+    role: CURRENT_REFERENCE
+    lifecycle: CURRENT
+    path: reproducibility/indexes/20260903_20260903_research_repository_map_v17.md
+    created: '2026-09-03'
+    updated: '2026-09-03'
+    purpose: Human-readable map from research intent through authority, artifacts, Portal, and the next stage.
+    naming_policy: dated_canonical
+  - priority: 3
+    document_id: SPEC-P13-FORMAL-COMPLETION-THREE-TIER-V17
+    role: CURRENT_NORMATIVE
+    lifecycle: CURRENT
+    path: 05_src/traffic_simulation/specifications/20260903_20260903_formal_completion_three_tier_policy_v17.md
+    created: '2026-09-03'
+    updated: '2026-09-03'
+    purpose: Current normative Formal-network completion policy governed by Decision DEC-P13-FORMAL-COMPLETION-THREE-TIER-001.
+    naming_policy: dated_canonical
+  - priority: 4
+    document_id: NETWORK-COMPLETION-PIPELINE-V17
+    role: CURRENT_NORMATIVE
+    lifecycle: CURRENT
+    path: 05_src/traffic_simulation/specifications/20260903_20260903_network_completion_pipeline_v17.md
+    created: '2026-09-03'
+    updated: '2026-09-03'
+    purpose: Current sequential network-completion pipeline contract and acceptance gates.
+    naming_policy: dated_canonical
+  - priority: 5
+    document_id: SPEC-BASELINE-DEMAND-COMPARATOR
+    role: CURRENT_NORMATIVE
+    lifecycle: CURRENT
+    path: 05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md
+    created: '2026-07-18'
+    updated: '2026-09-03'
+    purpose: Current baseline-demand, comparator, and evaluation-boundary specification.
+    naming_policy: dated_canonical
+  - priority: 6
+    document_id: DOC-SIMULATION-MODEL-DEVELOPMENT-VV
+    role: CURRENT_REFERENCE
+    lifecycle: CURRENT
+    path: 05_src/traffic_simulation/20260730_20260903_simulation_model_development_and_vv.md
+    created: '2026-07-30'
+    updated: '2026-09-03'
+    purpose: Methodological boundary between implementation verification, calibration, validation, and readiness.
+    naming_policy: dated_canonical
+  - priority: 7
+    document_id: DOC-UNIFIED-RESEARCH-CLI
+    role: CURRENT_REFERENCE
+    lifecycle: CURRENT
+    path: docs/20260903_20260903_research_cli.md
+    created: '2026-09-03'
+    updated: '2026-09-03'
+    purpose: Commands, safety behavior, exit behavior, and current implementation boundary for ./research.
+    naming_policy: dated_canonical
+  - priority: 8
+    document_id: DOC-RESEARCH-PORTAL-README
+    role: CURRENT_REFERENCE
+    lifecycle: CURRENT
+    path: research_portal/README.md
+    created: '2026-09-03'
+    updated: '2026-09-03'
+    purpose: Portal launch and authority-boundary reference.
+    naming_policy: fixed_name_exception
+  - priority: 9
+    document_id: DOC-HAYATE-NATIVE-CONDA-ENVIRONMENT
+    role: CURRENT_REFERENCE
+    lifecycle: CURRENT
+    path: reproducibility/environment/README.md
+    created: '2026-08-25'
+    updated: '2026-09-03'
+    purpose: Canonical native environment reconstruction and validation instructions.
+    naming_policy: fixed_name_exception
