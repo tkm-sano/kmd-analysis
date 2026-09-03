@@ -14,7 +14,7 @@ def status() -> int:
     print("Research Portal: READY")
     print(f"Current accepted network: {summary['accepted_network']['network_id']}")
     print(f"Current research stage: {summary['current_position']['current_stage']}")
-    print(f"FORMAL_NETWORK_ACCEPTED = {str(summary['formal']['accepted']).lower()}")
+    print(f"FORMAL_NETWORK_ACCEPTED = {str(summary['accepted_network']['accepted']).lower()}")
     print("Start command: ./research portal start")
     return OK
 
