@@ -1,0 +1,28 @@
+schema_version: 1
+authority_id: CURRENT-NETWORK-COMPLETION-AUTHORITY-V17
+status: CURRENT
+effective_at: '2026-09-03'
+pipeline_id: NETWORK-COMPLETION-PIPELINE-V17
+decision:
+  id: DEC-P13-FORMAL-COMPLETION-THREE-TIER-001
+  path: reproducibility/config/traffic_simulation/decisions/phase13_formal_completion_three_tier_v1.yml
+specification:
+  path: 05_src/traffic_simulation/specifications/15_formal_completion_three_tier_policy_v17.md
+pipeline_specification:
+  path: 05_src/traffic_simulation/specifications/16_network_completion_pipeline_v17.md
+registry:
+  path: reproducibility/config/traffic_simulation/formal_completion_three_tier_registry_v17.yml
+schema:
+  policy_path: reproducibility/config/traffic_simulation/schemas/formal_completion_three_tier_v17.schema.json
+  record_path: reproducibility/config/traffic_simulation/schemas/formal_completion_record_three_tier_v17.schema.json
+accepted_run:
+  run_id: three_tier_run_2
+  path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2
+  network_id: P13-THREE-TIER-RUN-2
+  network_file: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/three_tier.net.xml
+  network_sha256: 4625dbbc150cbcf72964bed0e90a8b33fe03f190ff4264aecaaf89e3aab0e40f
+  acceptance_artifact: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/network_acceptance.json
+  portal_status: reproducibility/config/research_portal/three_tier_network_run2_status.yml
+superseded_decision:
+  id: DEC-P13-NETWORK-COMPLETION-HIERARCHICAL-HYBRID-001
+  lifecycle_path: reproducibility/config/traffic_simulation/network_completion_policy_lifecycle.yml
