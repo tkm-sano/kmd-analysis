@@ -1953,6 +1953,82 @@ This section does not alter the full-EVRP `R22_ISING_CONVERSION`, whose prerequi
 - **Decision:** NOT_RUN
 - **Next Allowed Stage:** R24_QUANTUM_SOLUTION_DECODE（Gate通過時のみ）
 
+## R23_REDUCED_QAOA_AER_EXECUTION — Initial Reduced Route-Ordering QAOA/Aer Experiment
+
+### Governance decision and scope
+
+The reduced branch is explicitly identified as `R23_REDUCED_QAOA_AER_EXECUTION`. It applies only to the exact Ising Hamiltonians that passed `R22_REDUCED_ISING_CONVERSION` for `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY`. It does not replace or relax the full-EVRP `R23_QAOA_AER_EXECUTION`.
+
+`Aer simulation limit != quantum hardware limit` and `Aer runtime != future QPU runtime`. This stage is a software-simulator experiment and does not establish hardware scalability, quantum advantage, or production optimization performance.
+
+### Purpose and prerequisite
+
+The purpose is to execute a frozen, reproducible baseline QAOA experiment on the validated reduced Ising Hamiltonian and measure solution quality, feasibility, ground-state sampling behavior, and simulator timing. The mandatory prerequisite is reduced R22 PASS with matching artifact/hash, Ising coefficient hash, source lineage, and scope. The exact lambda and Ising coefficients are carried forward unchanged from R22.
+
+### Experiment layers
+
+- **Implementation smoke:** API, circuit, backend, and metric serialization check; non-authoritative.
+- **Pilot:** smallest reduced instances and `p=1` to check termination, runtime, resource guards, and n=4 feasibility; not formal performance evidence.
+- **Formal baseline:** only the pre-frozen configuration below; no post-hoc parameter changes.
+- **Later sensitivity study:** p, shots, optimizer, initialization, and repetition comparisons are separate and not part of this stage definition.
+
+### Authoritative input
+
+Each run must carry the R22 artifact path and hashes, R22 PASS status/commit, instance ID, `n`, `n^2` logical qubits, row-major variable order, binary-spin convention, full Ising constant, `h`, `J`, Ising coefficient hash, QUBO coefficient hash, frozen lambda and bound metadata, normalization metadata, R20/R21 provenance, and exact R21/R22 ground-state states/routes. The Hamiltonian must not be re-normalized, symmetrized, reordered, or otherwise modified in R23.
+
+### Baseline design freeze
+
+The initial reduced formal baseline is defined as follows; it is a study-design specification, not an execution record or QAOA parameter-optimization result.
+
+| Item | Frozen baseline design |
+|---|---|
+| Formal instances | synthetic n=2 unique; synthetic n=3 unique, tie, asymmetric; Routing Baseline-derived n=2 and n=3 |
+| Optional n=4 | pilot/resource-gated only; not required for formal baseline PASS |
+| QAOA depth | `p in {1,2,3}` |
+| Mixer | standard transverse-field X mixer, `H_M = -sum_i X_i` |
+| Initial state | `|+>^Q` |
+| Parameter order | `[gamma_1,...,gamma_p,beta_1,...,beta_p]` |
+| Optimizer | COBYLA, one fixed derivative-free optimizer; comparison with other optimizers is later work |
+| maxiter | 100 optimizer iterations per configuration |
+| Initialization | deterministic fixed point: all gamma and beta parameters `0.1` |
+| Repetitions | 1 per configuration in exact-expectation baseline |
+| Expectation mode | exact/statevector expectation on CPU Aer; finite shots are excluded from this baseline |
+| Simulator seeds | record `seed_simulator=17` and transpiler seed `17` where the selected API accepts them |
+| Formal shots | none; later candidate study may use 256/1024/4096 |
+
+The formal baseline contains 6 instances x 3 depths = **18 optimizer runs**. The n=4 pilot is not included in that count. A technical smoke result is never substituted for a formal baseline result.
+
+### Backend and environment policy
+
+The first candidate backend is `AerSimulator(method="statevector", device="CPU")` in the isolated environment recorded by `20260910_temporary_qiskit_aer_environment_smoke_test_n10`: Qiskit 2.5.2, Qiskit Aer 0.17.2, qiskit-optimization 0.7.0, qiskit-algorithms 0.4.0, Python 3.11.16. The environment smoke passed imports, CPU statevector, and a QAOA-like circuit. GPU execution is deferred and is not part of this baseline. Exact primitive/API selection must be recorded in the frozen config after implementation compatibility testing.
+
+### Resource and execution guards
+
+The following are software-simulation guards only: maximum 16 logical qubits for the initial reduced baseline; maximum `p=3`; maximum 100 optimizer iterations per configuration; maximum 300 objective evaluations per configuration; maximum 600 seconds wall time per run; existing 8 GiB estimated-memory ceiling and available-memory preflight. Guard hits are recorded as `RESOURCE_GUARD_STOP`/`LIMIT_REACHED`; they are not quantum technology or formal problem-size limits. No OOM/crash probing is permitted.
+
+### Required metrics
+
+The exact R21/R22 reference is recorded per run: ground-state energy, optimal binary/spin states, optimal routes, and exact route objective. Sample bitstrings are classified with the existing binary validator without repair. For finite samples, `P_feasible=N_valid/N_total`; for exact distributions, feasible probability mass is recorded separately. `P_opt` sums probability over all exact optimal states, including ties. Best feasible route, objective, absolute/relative optimality gap, expectation energy/gap, minimum observed energy, ground-state probability, and variance are recorded. Technical records include initial/final parameters, objective history, iterations, function evaluations, termination, logical qubits, p, parameter count, circuit/transpiled depth, gate counts, and decomposed timing where measurable.
+
+Relative gap is `gap_abs/max(|f_exact|, epsilon_ref)`, with an explicitly recorded positive `epsilon_ref`. No feasible sample is represented as null with an explicit status, not as a fabricated objective value.
+
+### Run classification and PASS interpretation
+
+Run classes are `OPTIMAL_FOUND`, `FEASIBLE_SUBOPTIMAL`, `NO_FEASIBLE_SOLUTION`, `OPTIMIZER_FAILURE`, `BACKEND_FAILURE`, `NUMERICAL_FAILURE`, `RESOURCE_GUARD_STOP`, and `PROVENANCE_FAILURE`. Low QAOA solution quality is valid scientific data and is not, by itself, an implementation FAIL. Reduced R23 PASS requires the frozen protocol to execute completely, use the exact R22 input, pass provenance/metric/artifact checks, preserve deterministic semantics, and record all required runs. Invalid provenance, missing runs, backend/numerical failure, or non-reproducibility causes FAIL.
+
+### Artifact and design-freeze contract
+
+Before execution, a frozen config must be stored under `reproducibility/outputs/traffic_simulation/r23_qaoa_aer/<run_id>/` with `experiment_config.json`, `run_results.json`, `summary.json`, and `manifest.json`. The manifest records all R20--R22 lineage and hashes, Ising coefficients, exact software/environment versions, backend/method/device, seeds, config/code hashes, resource guards, output hashes, and tracked-worktree cleanliness. Runtime/timestamps are non-semantic; configuration, coefficients, states, routes, metrics, classifications, and invariant results are semantic.
+
+### Status and downstream boundary
+
+- **Status:** `READY_FOR_IMPLEMENTATION` (design defined; no reduced R23 execution authorized)
+- **Execution authorization:** `NONE`
+- **After reduced R23 PASS:** scoped `R24_QUANTUM_SOLUTION_DECODE` eligibility may be considered for the same reduced branch; the existing full-EVRP path is unchanged.
+- **Full-EVRP:** full R20 remains `BLOCKED`, full R21 remains `NOT_STARTED`, and full R23 is not authorized by this reduced definition.
+
+The prior CPU Aer and Qiskit environment reports remain `TEMPORARY_DIAGNOSTIC` evidence only. They are not formal R23 results, performance benchmarks, or hardware projections.
+
 ## R24_QUANTUM_SOLUTION_DECODE — Quantum Solution Decode
 
 - **Stage ID:** R24_QUANTUM_SOLUTION_DECODE
