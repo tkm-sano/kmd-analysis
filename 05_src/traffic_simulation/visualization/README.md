@@ -1,5 +1,64 @@
 # 交通シミュレーション可視化：前提・見方・運用手順
 
+## 現行統合マップ（2026-09-09追加）
+
+`render_current_map.py`はcurrent authorityが指す受入済みSUMO道路網、
+research CLIと共通のscoped Stops、Portalの現行研究工程を一つのHTMLへ生成する。
+以下の従来OSMレビュー用地図とは生成処理が異なる。
+
+```bash
+PYTHONPATH=05_src .conda/bin/python -m traffic_simulation.visualization.render_current_map --overwrite
+```
+
+出力: `reproducibility/outputs/traffic_simulation/visualization/ota_ward_current_map.html`。
+Portalの「研究で扱う交通ネットワーク」から開くか、HTMLを直接ブラウザで開く。
+生成時点・authority適用日・入力ハッシュを記録する。自動更新ではないため、正本更新後は再生成する。
+
+道路は外部有向エッジごとの先頭レーン形状で表示し、内部接続は省略する。
+全レーンのいずれかがdelivery通行可能なら青、それ以外は灰色とする。色は交通量を意味しない。
+配送地点は建物代表点を表示し、初期状態では非表示。右上で切り替える。
+クリックで道路ID・レーン数・先頭レーン速度、またはStop ID・Requests・荷物換算・需要評価日を確認できる。
+対応先エッジやmapping overrideの位置を描画するものではない。
+ネットワークSHA-256と受入状態、道路・レーン・ノード数、Stop件数・ID重複を検査する。
+Stop入力は生成時ハッシュを記録するが、受入時のStopハッシュ証明ではない。
+経路最適化・動的交通・需要充足の未生成結果は表示しない。
+
+### 道路詳細と接続の確認
+
+道路クリックで右側の詳細パネルを開く。道路種別、接続元・先、優先度、
+レーンごとの長さ・幅・速度・allow/disallowを受入済みnet.xmlから表示する。
+幅などXMLにない値は「未記載」とし、SUMO既定値やOSM原典値を推測しない。
+「このレーンを強調」「流入・流出をまとめて強調」、接続道路ボタン、
+レーン間接続ボタンで対象を確認できる。紫は選択道路、緑は流入、橙は流出。
+矢印は代表レーン形状の順序に沿う進行方向を示す。
+信号ID、linkIndex、via、接続方向、ジャンクション種別、静的信号プログラムを表示する。
+接続選択では両端レーンを描画する。内部viaレーンの形状と信号の動的現示は表示しない。
+
+詳細データは`current_map_details/`内の128個の内容ハッシュ付きJSファイルに分割し、
+道路選択時に必要なファイルを読み込む。Portal経由とHTML直接閲覧の両方で動作する。
+地図を移動・共有する場合はHTMLとこのフォルダーを一緒に配置する。
+再生成時は詳細ファイルを先に保存し、最後にHTMLを置換する。既存スナップショットが
+参照する詳細ファイルは削除しない。生成物はGit管理対象外。
+
+### OSM原典・属性補完記録の対応調査（2026-09-09）
+
+受入済みrun_2の全147,168外部エッジを調査した結果、道路名`name`、
+エッジ／レーンの`origId` paramは0件だった。複数レーンのエッジは5,621件、
+信号ID付きconnectionは21,573件。道路名や原典way IDは現段階で復元表示しない。
+
+`phase13_20260903_three_tier_completion/run_1/formal_completion_records.json`
+には`source_way_id`、`attribute`、`final_value`、`resolution_tier`、`method_id`、
+`confidence`、`source_identity`、`provenance`、元の欠測／blocker状態が存在する。
+同runの`run_manifest.json`は元OSMのSHA-256を記録する。
+生成処理`execute_three_tier_completion_streaming.py`が参照する元OSMは
+`03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml`。
+補完後の`three_tier_materialized.osm.xml`は原典タグそのものとは区別する必要がある。
+
+次の照合工程では元OSMハッシュ、run_1→run_2の変換来歴、道路の分割・反転・統合を
+含むway→edge対応を検証し、属性単位で補完記録へ結び付ける。
+エッジIDの文字列処理だけで対応を断定しない。wayを持たないrelation記録もある。
+現行詳細パネルでは原典・DIRECT/INFERRED/FALLBACKを「未照合」と明示する。
+
 ## 1. この可視化の目的
 
 `render_study_area.py`は、交通シミュレーションの道路環境を構築する過程で、研究対象の行政界、OSM取得用BBOX、登録済みPBFの道路・信号、交通観測地点の位置と品質状態を確認するためのレビュー用地図を生成する。
@@ -22,8 +81,8 @@ SHA-256で再検証し、指定relationの`from`・`via`・`to`と約350 mの周
 表示する。relationの可視化は採用判断やSUMO connectionの生成を意味しない。
 
 ```bash
-docker compose run --rm analysis \
-  python -m traffic_simulation.visualization.render_osm_relation_sample \
+PYTHONPATH="05_src:${PYTHONPATH:-}" \
+python -m traffic_simulation.visualization.render_osm_relation_sample \
   --relation-id 16016504
 ```
 
@@ -243,34 +302,36 @@ reproducibility/config/traffic_simulation/research_stage.yml
 
 ## 5. 生成手順
 
-### 5.1 Dockerイメージ
+### 5.1 Hayate native Conda環境
 
-Folium依存関係を追加・変更した場合は解析イメージを再構築する。
+正本環境を有効化し、固定依存に破損がないことを確認する。
 
 ```bash
-cd /Users/tstakuma/github/research
-docker compose build analysis
+cd "$(git rev-parse --show-toplevel)"
+source /opt/miniconda/etc/profile.d/conda.sh
+conda activate /home/takuma/kmd-analysis/.conda
+python -m pip check
 ```
 
 Foliumの固定バージョンは次へ記録する。
 
 ```text
-docker/analysis/requirements.txt
+reproducibility/environment/requirements-analysis.txt
 ```
 
 ### 5.2 行政界だけを生成する
 
 ```bash
-docker compose run --rm analysis \
-  python -m traffic_simulation.visualization.render_study_area \
+PYTHONPATH="05_src:${PYTHONPATH:-}" \
+python -m traffic_simulation.visualization.render_study_area \
   --region ota_ward
 ```
 
 ### 5.3 JARTICを重ねて生成する
 
 ```bash
-docker compose run --rm analysis \
-  python -m traffic_simulation.visualization.render_study_area \
+PYTHONPATH="05_src:${PYTHONPATH:-}" \
+python -m traffic_simulation.visualization.render_study_area \
   --region ota_ward \
   --jartic \
   03_data/processed/traffic_simulation/calibration/jartic_1h_road3_tokyo_202607042200_observations.parquet
@@ -283,8 +344,8 @@ docker compose run --rm analysis \
 現在の正式な生成コマンドは次である。
 
 ```bash
-docker compose run --rm analysis \
-  python -m traffic_simulation.visualization.render_study_area \
+PYTHONPATH="05_src:${PYTHONPATH:-}" \
+python -m traffic_simulation.visualization.render_study_area \
   --region ota_ward \
   --osm-source-id osm_geofabrik_kanto_20260716 \
   --jartic \
@@ -299,8 +360,8 @@ docker compose run --rm analysis \
 出力先はリポジトリ相対パスだけを受け付ける。
 
 ```bash
-docker compose run --rm analysis \
-  python -m traffic_simulation.visualization.render_study_area \
+PYTHONPATH="05_src:${PYTHONPATH:-}" \
+python -m traffic_simulation.visualization.render_study_area \
   --region ota_ward \
   --output \
   reproducibility/outputs/traffic_simulation/visualization/ota_ward_boundary_only.html
@@ -311,8 +372,8 @@ docker compose run --rm analysis \
 ### 5.6 背景タイルを使わない
 
 ```bash
-docker compose run --rm analysis \
-  python -m traffic_simulation.visualization.render_study_area \
+PYTHONPATH="05_src:${PYTHONPATH:-}" \
+python -m traffic_simulation.visualization.render_study_area \
   --region ota_ward \
   --no-basemap
 ```
@@ -324,8 +385,8 @@ docker compose run --rm analysis \
 既存HTMLは暗黙に上書きしない。レビュー用の同名出力を明示的に更新する場合だけ`--overwrite`を指定する。
 
 ```bash
-docker compose run --rm analysis \
-  python -m traffic_simulation.visualization.render_study_area \
+PYTHONPATH="05_src:${PYTHONPATH:-}" \
+python -m traffic_simulation.visualization.render_study_area \
   --region ota_ward \
   --jartic \
   03_data/processed/traffic_simulation/calibration/jartic_1h_road3_tokyo_202607042200_observations.parquet \
@@ -340,7 +401,7 @@ docker compose run --rm analysis \
 
 ```bash
 open \
-  /Users/tstakuma/github/research/reproducibility/outputs/traffic_simulation/visualization/ota_ward_study_area.html
+  "$(git rev-parse --show-toplevel)/reproducibility/outputs/traffic_simulation/visualization/ota_ward_study_area.html"
 ```
 
 表示後、最低限次を確認する。
@@ -386,8 +447,7 @@ HTMLについて次を検査する。
 既存の交通シミュレーションテストも実行する。
 
 ```bash
-docker compose run --rm analysis \
-  python -m pytest 05_src/traffic_simulation/validation -q
+python -m pytest -q 05_src/traffic_simulation/validation
 
 git check-ignore -v \
   reproducibility/outputs/traffic_simulation/visualization/ota_ward_study_area.html
@@ -401,7 +461,7 @@ Git管理する。
 05_src/traffic_simulation/visualization/__init__.py
 05_src/traffic_simulation/visualization/render_study_area.py
 05_src/traffic_simulation/visualization/README.md
-docker/analysis/requirements.txt
+reproducibility/environment/requirements-analysis.txt
 ```
 
 Git管理しない。
@@ -577,7 +637,7 @@ docker compose run --rm analysis \
 
 ```bash
 open \
-  /Users/tstakuma/github/research/reproducibility/outputs/traffic_simulation/visualization/ota_ward_baseline_demand.html
+  "$(git rev-parse --show-toplevel)/reproducibility/outputs/traffic_simulation/visualization/ota_ward_baseline_demand.html"
 ```
 
 ### 15.2 レイヤーと見方

@@ -1,0 +1,27 @@
+schema_version: evrp-r04-demand-weight-v1
+run_id: 20260909_r04_demand_weight_v3
+candidate:
+  path: 03_data/processed/traffic_simulation/demand/household_parcel_v1/pipelines_v1/building_delivery_stops_scoped.csv
+  id_column: stop_id
+  coordinate_column: building_representative_point
+  coordinate_crs: EPSG:4326
+statistics:
+  source_path: 03_data/raw/traffic_simulation/population/estat_2020_500m_jgd2011/tblT001141H5339.zip
+  source_sha256: 8a8b47563ffe88ec1afb5a17b8d29ac987b40df65498bec4c2fcf1829777f67d
+  member: tblT001141H5339.txt
+  encoding: cp932
+  mesh_crs: EPSG:6668
+  mesh_code_column: KEY_CODE
+  household_column: T001141034
+  confidentiality_columns: [HTKSYORI, HTKSAKI, GASSAN]
+weight:
+  formula: H_m_divided_by_N_m
+  household_unit: households
+  weight_unit: household_equivalents_per_candidate
+  mesh_role: statistical_input_unit_only
+  sampling_stratification: false
+  quota: false
+  zero_candidate_rule: record_N_m_zero_without_reallocation
+  missing_household_rule: block
+outputs:
+  directory: reproducibility/outputs/traffic_simulation/demand/evrp_r04_demand_weight/20260909_r04_demand_weight_v3

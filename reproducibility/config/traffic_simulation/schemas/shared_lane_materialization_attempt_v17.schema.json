@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shared_lane_materialization_attempt_v17.schema.json",
+  "type": "object",
+  "required": [
+    "schema_version", "record_id", "configuration_id", "population_version",
+    "profile", "source_semantic_record_id", "source_way_id",
+    "child_directed_segment_ids", "target", "materialization_status",
+    "stop_code", "reason", "decision_id", "decision_version", "rule_ids",
+    "missing_contracts", "review_required", "acceptance_blocking",
+    "formal_exclusion"
+  ],
+  "properties": {
+    "schema_version": {"const": 17},
+    "record_id": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "configuration_id": {"const": "ota_ward_sumo_network_v17"},
+    "population_version": {"type": "string", "minLength": 1},
+    "profile": {"const": "formal"},
+    "source_semantic_record_id": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "source_way_id": {"type": "integer", "minimum": 1},
+    "child_directed_segment_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^ds:[0-9]+:[0-9]+:[0-9]+:(forward|backward)$"}
+    },
+    "target": {
+      "type": "object",
+      "required": ["system", "version", "stage"],
+      "properties": {
+        "system": {"const": "SUMO"},
+        "version": {"const": "1.24.0"},
+        "stage": {"const": "phase_5B_target_lane_materialization"}
+      },
+      "additionalProperties": false
+    },
+    "materialization_status": {"const": "valid_but_unsupported"},
+    "stop_code": {"const": "LANE_SHARED_PHYSICAL_MATERIALIZATION_UNSUPPORTED"},
+    "reason": {"type": "string", "minLength": 1},
+    "decision_id": {"const": "DEC-P13-LANE-BIDIRECTIONAL-SHARED-SINGLE-LANE-001"},
+    "decision_version": {"const": "1.0.0"},
+    "rule_ids": {"const": ["OSM_BIDIRECTIONAL_TOTAL_1_TO_SHARED_SINGLE_V1"]},
+    "missing_contracts": {
+      "const": ["entry_arbitration", "deadlock_prevention", "passing_place", "junction_connection"]
+    },
+    "review_required": {"const": true},
+    "acceptance_blocking": {"const": true},
+    "formal_exclusion": {"const": false}
+  },
+  "additionalProperties": false
+}

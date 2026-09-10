@@ -3,20 +3,20 @@
 
 # 研究進捗ダッシュボード
 
-**状態更新日:** 2026-07-31
+**状態更新日:** 2026-09-10
 
 ## 現在地
 
 | 項目 | 状態 |
 |---|---|
-| 現在工程 | 6 / 21: **SUMO道路網生成・構造検証** |
-| 完了工程 | 5工程 |
-| 概要 | v16全件分類・属性解決を履歴として固定し、承認済み版17方針をSchema・Resolver・fixtureへ移行する段階 |
+| 現在工程 | 7 / 21: **観測拡充・交通需要生成** |
+| 完了工程 | 6工程 |
+| 概要 | 正式道路網とRouting Baselineは受入済み。full-EVRP本線では需要・顧客・TW等の定義が未完である一方、独立したreduced route-ordering branchはR21/R22 PASS、R23 READY_FOR_PILOT |
 
 ```mermaid
 flowchart LR
-    completed["工程1-5<br>完了"] --> current["工程6<br>SUMO道路網生成・構造検証"]
-    current --> future["工程7-21<br>未着手"]
+    completed["工程1-6<br>完了"] --> current["工程7<br>観測拡充・交通需要生成"]
+    current --> future["工程8-21<br>未着手"]
     classDef done fill:#daf5e5,stroke:#238636,color:#111827;
     classDef active fill:#fff1c2,stroke:#9a6700,color:#111827;
     classDef future fill:#eef1f4,stroke:#8c959f,color:#111827;
@@ -31,24 +31,23 @@ flowchart LR
 
 | 対象 | 判定 | 説明 |
 |---|---|---|
-| 道路網仕様 | **統制済みドラフト** (`governed_draft`) | v16全件実行は完了したがformalに24,741停止組が残る。版17のpermissions authority、access多軸比較、方向付き区間、車両プロファイル、二軸値状態は方針固定済みで実装移行中 |
-| 正式SUMO道路網 | **未承認** (`not_accepted`) | permission materializerと実ネットワーク検証が未完了 |
-| 下流実験 | **実行不可** (`not_ready`) | 承認済みformalネットワークがないため、較正・配送・QAOA評価へ進まない |
+| 道路網仕様 | **受入済み** (`accepted`) | V18 geometry/length re-acceptanceとR12-R14 Routing Baseline validationがPASS。旧v16停止記録は履歴であり現行network gateではない |
+| 正式SUMO道路網 | **受入済み** (`accepted`) | current V18 authorityでFORMAL_NETWORK_ACCEPTED=true。accepted scopeとhashはEVRP_EXECUTION_PLAN.mdを正本とする |
+| 下流実験 | **scope別** (`scope_split`) | full-EVRP比較は未準備。INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLYはR21/R22 PASS、R23 READY_FOR_PILOTだがformal QAOA未実行 |
 
 ## 現在の阻害事項
 
-- v16 formal属性成果物に24,741停止組が残りcomplete=falseである
-- 版17機械可読方針、基礎Schema、access比較・方向付き区間の独立関数は作成済みだが、production統合が未完了である
-- 方向付き区間生成のproduction接続、oneway=-1、方向依存属性・relation・lane順のruntime fixtureが未完了である
-- permission materializerが未実装で、SUMO 1.24.0固定fixtureも未実行
-- formal属性証拠、ジャンクション・TLSレビュー、prepare/validateパイプライン、事後監査が未完了
+- full-EVRP本線ではR05-R11のcustomer sampling、demand、time window、service time、depot、EV、charging station定義が未完了
+- full-EVRP R20はcapacity、time window、battery/SOC、charging、fleet、一般reachabilityを含むaccepted QUBOがなくBLOCKED
+- reduced R23はrunner/tests/smokeのみで、governed pilotとformal 18-configuration baselineを未実行
+- Aer結果を量子実機性能またはquantum advantageへ一般化できない
 
 ## 次の作業
 
-1. 検証済み版17機械可読方針、車両プロファイル、方向付き区間Schemaをproduction入力境界へ接続する
-2. accessの4軸Pareto比較と二軸値状態をproduction Resolverへ統合する
-3. 方向付き区間生成とoneway=-1のB方向生成をproductionへ接続し、relation・lane順fixtureを実装する
-4. Resolver blocker解消と並行してpermission materializerを実装し、SUMO 1.24.0固定fixtureでlane・connection期待値を検証する
+1. EVRP_EXECUTION_PLAN.mdに従いfull-EVRP本線の未完Definition stageを進める
+2. reduced branchはR23 governed pilotを別taskで実行し、formal baselineとは分離する
+3. R23 formal configを結果確認前にfreezeし、R22 Hamiltonianとlambdaを変更しない
+4. full-EVRP/Hayate評価とreduced method evidenceをscope付きで統合する
 
 ## 全工程
 
@@ -59,8 +58,8 @@ flowchart LR
 | 3 | `study_area` | N03大田区研究範囲 | 完了 | [study_areas.yml](reproducibility/config/traffic_simulation/study_areas.yml)<br>[20260717_mlit_n03_2026_tokyo_acquisition.md](03_data/metadata/acquisition/20260717_mlit_n03_2026_tokyo_acquisition.md) |
 | 4 | `baseline_inputs` | JARTIC・OSM基礎入力 | 完了 | [20260717_jartic_traffic_volume_acquisition.md](03_data/metadata/acquisition/20260717_jartic_traffic_volume_acquisition.md)<br>[20260717_osm_ota_ward_acquisition.md](03_data/metadata/acquisition/20260717_osm_ota_ward_acquisition.md) |
 | 5 | `input_visualization` | 入力道路・観測点レビュー地図 | 完了 | [render_study_area.py](05_src/traffic_simulation/visualization/render_study_area.py)<br>[README.md](05_src/traffic_simulation/visualization/README.md) |
-| 6 | `sumo_network` | **SUMO道路網生成・構造検証** | **進行中** | [relation_closure_v16.yml](reproducibility/config/traffic_simulation/relation_closure_v16.yml)<br>[20260730_ota_ward_relation_closure_v16.md](03_data/metadata/acquisition/20260730_ota_ward_relation_closure_v16.md)<br>[20260730_ota_ward_v15_exception_rule_validation.md](03_data/metadata/acquisition/20260730_ota_ward_v15_exception_rule_validation.md)<br>[build_sumo_network.py](05_src/traffic_simulation/network/build_sumo_network.py)<br>[classify_resolver_exceptions.py](05_src/traffic_simulation/network/classify_resolver_exceptions.py) |
-| 7 | `demand_and_observations` | 観測拡充・交通需要生成 | 未着手 | - |
+| 6 | `sumo_network` | SUMO道路網生成・構造検証 | 完了 | [relation_closure_v16.yml](reproducibility/config/traffic_simulation/relation_closure_v16.yml)<br>[20260730_ota_ward_relation_closure_v16.md](03_data/metadata/acquisition/20260730_ota_ward_relation_closure_v16.md)<br>[20260730_ota_ward_v15_exception_rule_validation.md](03_data/metadata/acquisition/20260730_ota_ward_v15_exception_rule_validation.md)<br>[build_sumo_network.py](05_src/traffic_simulation/network/build_sumo_network.py)<br>[classify_resolver_exceptions.py](05_src/traffic_simulation/network/classify_resolver_exceptions.py) |
+| 7 | `demand_and_observations` | **観測拡充・交通需要生成** | **進行中** | [EVRP_EXECUTION_PLAN.md](EVRP_EXECUTION_PLAN.md) |
 | 8 | `optimization_implementation_validation` | 最適化基盤検証・配送EV制約の段階追加 | 未着手 | - |
 | 9 | `signal_vehicle_driver` | 信号・車両・運転行動設定 | 未着手 | - |
 | 10 | `calibration` | 交通モデル較正 | 未着手 | - |

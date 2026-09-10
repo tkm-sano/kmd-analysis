@@ -1,0 +1,104 @@
+schema_version: 1
+decision_id: DEC-P13-USE-SIDEPATH-SEMANTICS-001
+decision_version: 1.1.0
+status: approved
+approved_at: '2026-08-20'
+approved_by: repository_owner_directive
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+input_lock: reproducibility/config/traffic_simulation/v17_phase13_input_lock.yml
+
+amends:
+  path: reproducibility/config/traffic_simulation/v17_phase13_use_sidepath_semantics_decision.yml
+  decision_id: DEC-P13-USE-SIDEPATH-SEMANTICS-001
+  decision_version: 1.0.0
+  byte_sha256: 622bfb7099b3453cfaae7f3b1e5bb888195ad1ac8e28298b72bf8587987ba496
+  preservation: original_record_is_immutable
+
+amendment_scope:
+  type: approved_key_applicability_extension
+  added_base_key: foot
+  new_access_value_semantics: false
+  vehicle_ontology_change: false
+  specificity_policy_change: false
+  rationale: >-
+    Version 1.0.0 already approves use_sidepath as parallel_way_required and
+    explicitly identifies foot as a future reuse through a versioned amendment.
+    Foot has the same approved empty governed-domain intersection. The separate
+    source child-over-parent specificity gap was resolved as conformance to the
+    existing v17 access policy before this applicability extension was activated.
+
+specificity_prerequisite:
+  disposition: conformance_fix
+  new_decision_required: false
+  approved_policy:
+    path: 05_src/traffic_simulation/specifications/10_approved_attribute_resolution_policy.md
+    assertion: access < vehicle < motor_vehicle < vehicle_class
+  corroborating_decisions:
+    - DEC-P13-PSV-ONTOLOGY-001
+    - DEC-P13-HORSE-ONTOLOGY-001
+    - DEC-P13-MOTORCAR-ONTOLOGY-001
+  implementation_rule: >-
+    When projected governed vehicle domains are equal, a registered descendant
+    source access key remains strictly more vehicle-specific than its ancestor.
+    Unrelated source keys do not acquire precedence from this rule.
+
+fixed_population:
+  baseline_probe: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_bicycle_use_sidepath_full_population_probe/static_access_formal.json
+  baseline_probe_byte_sha256: aeb17bfd5bc1e8ee969458bcc90ad50ff89b1f4db2a7936cde269525b1c50d4d
+  source_osm: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+  source_osm_byte_sha256: 8b5157e48c3c87c2b4430f56d6abe292ce1ea5449b374ae4cb395fc19475b67d
+  source_way_count: 4
+  source_way_ids: [150870020, 150870021, 150870022, 150870023]
+  highway_counts: {tertiary: 4}
+  common_access_tags:
+    vehicle: 'no'
+    motor_vehicle: 'yes'
+    bicycle: 'no'
+    foot: use_sidepath
+    foot:conditional: no @ (roadway); yes @ (sidewalk)
+    mofa: 'no'
+
+comparison_baseline:
+  stage: specificity_conformance_green_before_foot_applicability
+  path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_source_hierarchy_specificity_full_population_probe/static_access_formal.json
+  byte_sha256: 7cf7c71135abc58724c684fd8cd3afab41630adbca87eb85754dde95a3137934
+  expected_c2_blocker_count: 4
+  expected_c2_stop_code: ACCESS_VALUE_UNSUPPORTED
+
+decision:
+  result: approved_key_scoped_access_value_semantics_amendment
+  rule_id: OSM_USE_SIDEPATH_PARALLEL_WAY_REQUIRED_V1
+  applicability_amendment_rule_id: OSM_USE_SIDEPATH_FOOT_APPLICABILITY_V1
+  source_value: use_sidepath
+  normalized_semantics: parallel_way_required
+  approved_base_keys: [bicycle, foot]
+  added_base_keys: [foot]
+  required_vehicle_domain: []
+  permission_effect_on_governed_vclasses: none
+  source_value_rewritten: false
+  source_record_preserved: true
+  formal_exclusion: false
+
+mandatory_boundaries:
+  - version 1.0.0 remains immutable and continues to evidence C1
+  - use_sidepath is not rewritten or normalized to no
+  - only bicycle and foot are approved base keys
+  - access vehicle and motor_vehicle remain unsupported for use_sidepath
+  - bicycle and foot vehicle domains remain exactly empty
+  - governed vClasses are unchanged
+  - no governed static maximum may cite a bicycle or foot use_sidepath rule
+  - foot conditional source provenance is retained but its syntax is not interpreted or extended here
+  - source parent rules are preserved rather than deleted
+  - no Way-specific exception is authorized
+  - source OSM and all prior Phase 13 artifacts remain immutable
+
+implementation_state:
+  decision_record: fixed
+  registry_update: implemented
+  runtime_value_semantics_update: no_change_required
+  specificity_conformance_fix: implemented
+  full_population_probe: pending
+  stable_id_comparator: pending
+  fixed_container_regression: pending
+  phase13_c2_complete: false

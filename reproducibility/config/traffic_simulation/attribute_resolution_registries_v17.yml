@@ -1,14 +1,14 @@
 schema_version: 17
 registry_bundle_id: ota_ward_attribute_resolution_registries_v17
-registry_version: 1.7.0
+registry_version: 1.10.0
 policy_id: ota_ward_attribute_resolution_policy_v17
 status: approved
 approved_by: repository_owner_directive
-approved_at: '2026-08-03'
+approved_at: '2026-08-22'
 state_origin:
   resolution_status:
     - value: resolved
-      definition: one materializable effective value exists under the active profile
+      definition: one canonical effective value exists under the active profile; target materialization is tracked separately where applicable
     - value: unresolved
       definition: required information or an approved rule is missing
     - value: conflict
@@ -43,6 +43,7 @@ stop_codes:
   - {stop_code: LANE_COUNT_INVALID, resolution_status: invalid, review_required: true}
   - {stop_code: LANE_COUNT_CONFLICT, resolution_status: conflict, review_required: true}
   - {stop_code: LANE_DIRECTIONAL_ALLOCATION_MISSING, resolution_status: unresolved, review_required: true}
+  - {stop_code: LANE_SHARED_PHYSICAL_MATERIALIZATION_UNSUPPORTED, resolution_status: valid_but_unsupported, review_required: true}
   - {stop_code: LANE_VECTOR_LENGTH_MISMATCH, resolution_status: conflict, review_required: true}
   - {stop_code: SPEED_VALUE_INVALID, resolution_status: invalid, review_required: true}
   - {stop_code: SPEED_VALUE_UNSUPPORTED, resolution_status: valid_but_unsupported, review_required: true}
@@ -108,6 +109,25 @@ vehicle_ontology:
     mofa: []
     moped: []
     horse: []
+  source_hierarchy:
+    authority: OSM Key:access transport-mode hierarchy and approved v17 access specificity policy
+    direct_parents:
+      vehicle: access
+      foot: access
+      horse: access
+      bicycle: vehicle
+      motor_vehicle: vehicle
+      motorcycle: motor_vehicle
+      moped: motor_vehicle
+      mofa: motor_vehicle
+      motorcar: motor_vehicle
+      goods: motor_vehicle
+      hgv: motor_vehicle
+      psv: motor_vehicle
+      agricultural: motor_vehicle
+      forestry: motor_vehicle
+      bus: psv
+      taxi: psv
   non_governed_domain_decisions:
     horse:
       decision_id: DEC-P13-HORSE-ONTOLOGY-001
@@ -130,6 +150,18 @@ access_values:
   - {source_value: permit, effect: contextual, required_context: [permit_assignment]}
   - {source_value: agricultural, effect: contextual, required_context: [agricultural_context]}
   - {source_value: forestry, effect: contextual, required_context: [forestry_context]}
+  - source_value: use_sidepath
+    effect: key_scoped
+    normalized_semantics: parallel_way_required
+    applicable_base_keys: [bicycle, foot]
+    required_vehicle_domain: []
+    permission_effect_on_governed_vclasses: none
+    empty_domain_rule_effect: allowed
+    source_value_rewritten: false
+    decision_id: DEC-P13-USE-SIDEPATH-SEMANTICS-001
+    decision_version: 1.1.0
+    applicability_amendment_rule_id: OSM_USE_SIDEPATH_FOOT_APPLICABILITY_V1
+    rule_id: OSM_USE_SIDEPATH_PARALLEL_WAY_REQUIRED_V1
   - {source_value: unknown, effect: unsupported, stop_code: ACCESS_VALUE_UNSUPPORTED}
   - {source_value: variable, effect: unsupported, stop_code: ACCESS_VALUE_UNSUPPORTED}
 conditional_grammar:
@@ -140,6 +172,26 @@ conditional_grammar:
   prohibited_unless_registered: [school_holiday, sunrise_sunset, weather, event, free_text]
   intra_tag_multiple_match: last_matching_clause
   independent_rule_order_resolution: prohibited
+lane_rules:
+  - rule_id: OSM_BIDIRECTIONAL_TOTAL_1_TO_SHARED_SINGLE_V1
+    decision_id: DEC-P13-LANE-BIDIRECTIONAL-SHARED-SINGLE-LANE-001
+    decision_version: 1.0.0
+    allowed_profiles: [formal]
+    priority: before_generic_odd_or_single_stop
+    applicability:
+      canonical_oneway: 'no'
+      lanes: 1
+      lanes_forward: absent
+      lanes_backward: absent
+      lanes_both_ways: absent
+      motorized_oneway_conditional: absent
+      reversible_or_alternating: absent
+      lane_conditional: absent
+      lane_vectors: absent
+      lifecycle: current_governed_highway
+    effective_kind: shared_bidirectional_single_moving_lane
+    target_materialization: unsupported
+    successor_stop_code: LANE_SHARED_PHYSICAL_MATERIALIZATION_UNSUPPORTED
 assumptions:
   - assumption_id: BIDIRECTIONAL_EVEN_LANE_EQUAL_SPLIT_V1
     affected_attribute: directional_lanes

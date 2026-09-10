@@ -4,7 +4,7 @@
 
 本構成案は、[研究概要](./quantum_route_optimization_research_summary.md)の記載順に沿って、研究内容を**全16枚**にまとめたものである。
 
-現在実行済みなのは、KMeansと最近傍法によるルートプロキシの生成と、生成後の個別制約評価までである。OR-Toolsによる古典最適化と、Qiskit Aer上のQAOAによる量子最適化は今後の実装であるため、スライド上でも区別する。
+現在、KMeansと最近傍法によるlegacy route proxyに加え、full EVRPとは分離したreduced route-ordering branchでR20 formulation、R21 exact QUBO validation、R22 Ising equivalenceがPASSしている。R23 QAOA/Aer runnerはimplementation smokeまで完了し `READY_FOR_PILOT` だが、formal QAOA pilot/baselineとfull-EVRP optimizationは未実行である。スライド上ではこれらを明確に区別する。
 
 ## スライド一覧
 
@@ -141,7 +141,7 @@
 
 ### 参考文献
 
-- [Lubinski et al., Application-Oriented Performance Benchmarks for Quantum Computing](https://arxiv.org/abs/2110.03137)
+- Lubinski et al., Application-Oriented Performance Benchmarks for Quantum Computing
 
 ---
 
@@ -400,9 +400,9 @@ Qiskit Aerの実行時間は古典計算機上のシミュレーション時間�
 
 - 顧客数200、車両数5、車載容量900
 - 現段階のQAOAシミュレーションへ直接入力する対象ではない
-- [CVRPLIB Goldenセット](https://galgos.inf.puc-rio.br/cvrplib/index.php/en/instances)
-- [Goldenほかのベンチマーク研究](https://doi.org/10.1007/978-1-4615-5755-5_2)
-- [Golden_5の量子回路資源を扱う研究](https://arxiv.org/abs/2509.11469)
+- CVRPLIB Goldenセット
+- Goldenほかのベンチマーク研究
+- Golden_5の量子回路資源を扱う研究
 
 ### 説明上の注意
 
@@ -452,8 +452,8 @@ Qiskit Aerの実行時間は古典計算機上のシミュレーション時間�
 
 1. OR-Toolsによる古典最適化を実装する。
 2. CVRPLIBの小規模問題で、既知最良値との差を確認する。
-3. Qiskit Aer上で小規模QAOAを実装する。
-4. 同一問題上でOR-ToolsとQAOAを比較する。
+3. Governed R23 pilotを実行し、validated reduced IsingからAer exact-expectation QAOAとroute metricsまでを検証する。
+4. Formal reduced baselineの後、同一full-EVRP問題上でOR-ToolsとQAOAを比較できる条件を整える。
 5. 東京圏の同一入力について、ルートプロキシ、OR-Tools、QAOAを比較する。
 6. 制約を段階的に追加し、結果と計算資源の変化を記録する。
 

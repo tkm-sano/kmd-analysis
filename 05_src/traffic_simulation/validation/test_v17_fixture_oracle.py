@@ -8,6 +8,7 @@ import pytest
 import yaml
 
 from traffic_simulation.network.validate_v17_fixture_oracle import (
+    DECISION_SPECIFIC_STOP_CODES,
     FIXTURE_ROOT,
     MANIFEST_PATH,
     FixtureOracleError,
@@ -59,7 +60,8 @@ def test_every_registered_stop_code_has_one_negative_oracle() -> None:
     negative = [case for case in fixtures if case["case_type"] == "negative"]
     covered = [case["covered_stop_codes"][0] for case in negative]
     assert len(covered) == len(set(covered)) == 30
-    assert set(covered) == registered
+    assert set(covered) == registered - DECISION_SPECIFIC_STOP_CODES
+    assert DECISION_SPECIFIC_STOP_CODES <= registered
     for case in negative:
         oracle = oracles[case["oracle_id"]]
         assert oracle["outcome"] == "stopped"

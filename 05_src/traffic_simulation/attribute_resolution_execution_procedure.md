@@ -142,11 +142,10 @@ flowchart TD
 ```bash
 git status --short --branch
 git diff --check
-docker compose config
-docker compose run --rm analysis \
+bash reproducibility/scripts/hayate/verify_hayate_native_environment.sh
+PYTHONPATH="05_src:${PYTHONPATH:-}" \
   python -m traffic_simulation.network.validate_sumo_network_config
-docker compose run --rm analysis \
-  pytest -q 05_src/traffic_simulation/validation
+python -m pytest -q 05_src/traffic_simulation/validation
 ```
 
 不明な差分、版16入力SHA-256不一致、oracle SHA-256変更、試験不合格で停止する。
@@ -251,12 +250,11 @@ simulation speedを分離し、typemap既定速度は`model_assumed`としてfor
 個別試験の後に交通シミュレーション検証一式を実行する。
 
 ```bash
-docker compose run --rm analysis \
-  pytest -q 05_src/traffic_simulation/validation/test_attribute_classification_schemas.py
-docker compose run --rm analysis \
-  pytest -q 05_src/traffic_simulation/validation/test_resolve_attribute_values.py
-docker compose run --rm analysis \
-  pytest -q 05_src/traffic_simulation/validation
+python -m pytest -q \
+  05_src/traffic_simulation/validation/test_attribute_classification_schemas.py
+python -m pytest -q \
+  05_src/traffic_simulation/validation/test_resolve_attribute_values.py
+python -m pytest -q 05_src/traffic_simulation/validation
 ```
 
 classification非変更、正常・異常・境界・再実行・規則改訂、oracle SHA-256不変、

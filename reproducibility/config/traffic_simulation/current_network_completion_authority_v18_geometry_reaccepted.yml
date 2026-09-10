@@ -1,0 +1,21 @@
+authority_id: CURRENT-NETWORK-COMPLETION-AUTHORITY-V18-GEOMETRY-REACCEPTED
+status: FORMAL_NETWORK_ACCEPTED
+network_id: P13-THREE-TIER-RUN-3-GEOMETRY-REACCEPTANCE
+network_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_3_geometry_reacceptance/three_tier.net.xml
+network_sha256: 460554c7716fe5e3e1410bbee790e69745a2c423146bac88e51e3a2b95f051b2
+acceptance_artifact: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_3_geometry_reacceptance/network_acceptance.json
+acceptance_artifact_sha256: 078bc16ccef865ba18e3f6c8010c7929b3b9e77f3740ee992a62de15c716cbc4
+manifest: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_3_geometry_reacceptance/network_reacceptance_manifest.json
+sumo_version: 1.24.0
+source_authority: CURRENT-NETWORK-COMPLETION-AUTHORITY-V17
+acceptance_scope:
+  topology_connectivity_stop_mapping_delivery_access: RETAINED_FROM_V17_AND_VALIDATED
+  routing_geometry_declared_length_consistency: REVALIDATED_AND_REPAIRED
+  formal_routing_rerun: NOT_EXECUTED_IN_THIS_STAGE
+transformation:
+  source: 05_src/traffic_simulation/network/repair_network_geometry_lengths.py
+  rule: connect every edge/lane shape to from/to junction XY and set lane declared length to connected lane-shape polyline length
+  topology_changed: false
+  permissions_changed: false
+  one_way_changed: false
+  stop_mapping_rule_changed: false

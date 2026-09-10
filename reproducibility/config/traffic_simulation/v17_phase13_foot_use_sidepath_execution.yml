@@ -1,0 +1,188 @@
+schema_version: 1
+execution_id: EXEC-P13-FOOT-USE-SIDEPATH-001
+executed_at: '2026-08-20'
+status: passed
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+
+specificity_root_cause:
+  source_hierarchy: vehicle_parent_of_motor_vehicle
+  projected_domains:
+    vehicle: [bus, coach, delivery, motorcycle, passenger, taxi, truck]
+    motor_vehicle: [bus, coach, delivery, motorcycle, passenger, taxi, truck]
+  defective_runtime_behavior: >-
+    static_rule_dominates used only strict projected-set inclusion, so the
+    registered source child relationship disappeared when both keys projected
+    to the same governed domain and different effects remained co-maximal.
+  affected_mechanism: ACCESS_SPECIFICITY_CONFLICT
+
+decision_method:
+  normal_principle: >-
+    Already-approved child-over-parent semantics require an implementation or
+    conformance fix; only a new, unpredictable source-ancestry semantic requires
+    a new decision.
+  selected: conformance_fix
+  new_specificity_decision_created: false
+  reason: >-
+    The approved v17 policy explicitly orders access < vehicle < motor_vehicle
+    < vehicle_class, and PSV, Horse and Motorcar decisions preserve specific
+    child override. The runtime failed to retain that approved relation after
+    governed-domain projection.
+  responsibility_boundary:
+    policy: source child-over-parent specificity
+    registry: fixed direct-parent ancestry and governed domain projection
+    runtime: dominance after projection without record-order or key-name inference
+    use_sidepath_decision: key-scoped parallel_way_required value semantics only
+
+specificity_tdd:
+  red:
+    command: >-
+      PYTHONPATH=05_src python -m pytest -q
+      05_src/traffic_simulation/validation/test_phase13_access_hierarchy_specificity_v17.py
+    result: failed_as_expected
+    passed_test_count: 3
+    failed_test_count: 3
+    failures:
+      - motor_vehicle_yes_did_not_override_vehicle_no_after_equal_projection
+      - motor_vehicle_no_did_not_override_vehicle_yes_after_equal_projection
+      - expected_child_maximum_was_not_record_order_invariant
+  green:
+    command_scope: specificity plus static access Motorcar PSV Horse Private Authorization and C1 tests
+    result: passed
+    passed_test_count: 58
+  implementation:
+    runtime_path: 05_src/traffic_simulation/network/static_access_v17.py
+    runtime_byte_sha256: a46ddc40c003dea7ec5e33105264ca4563f9a7d8ec25d09310f1424638323c03
+    registry_path: reproducibility/config/traffic_simulation/attribute_resolution_registries_v17.yml
+    registry_version: 1.9.0
+    registry_byte_sha256: 26660c90a65e07ff4677ba7e7ab4841d350b35c2532c03cf43c8d79f84df5d9b
+    way_specific_exception_added: false
+    vehicle_or_motor_vehicle_hardcoded_branch_added: false
+
+foot_applicability:
+  red:
+    result: failed_as_expected
+    passed_test_count: 3
+    failed_test_count: 4
+    causes: [foot_key_not_yet_applicable, amendment_record_not_yet_present]
+  green:
+    result: passed
+    passed_test_count: 24
+    scope: foot_and_bicycle_use_sidepath_plus_specificity
+  amendment:
+    path: reproducibility/config/traffic_simulation/v17_phase13_use_sidepath_semantics_decision_v1_1.yml
+    decision_id: DEC-P13-USE-SIDEPATH-SEMANTICS-001
+    decision_version: 1.1.0
+    byte_sha256: e4b52fe5f845ead538bf4812380c54e4ba4fc54661f59c635f5b18426632445d
+    original_v1_path: reproducibility/config/traffic_simulation/v17_phase13_use_sidepath_semantics_decision.yml
+    original_v1_byte_sha256: 622bfb7099b3453cfaae7f3b1e5bb888195ad1ac8e28298b72bf8587987ba496
+    original_v1_modified: false
+    added_base_key: foot
+    semantics_reused: parallel_way_required
+    source_rewritten: false
+    conditional_interpretation_extended: false
+
+probes:
+  specificity_green_before_foot:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_source_hierarchy_specificity_full_population_probe/static_access_formal.json
+    byte_sha256: 7cf7c71135abc58724c684fd8cd3afab41630adbca87eb85754dde95a3137934
+    semantic_sha256: a9ff5fc5dceb6d9d8071262f26e0fb9a26462bea80b5569de54eafd65aab2c6c
+    static_access_blockers: 4
+    blocker_counts: {ACCESS_VALUE_UNSUPPORTED: 4}
+    static_conflict_candidates: 0
+  initial_c2_probe_preserved:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_foot_use_sidepath_full_population_probe/static_access_formal.json
+    byte_sha256: 89ece2b3852ff5b0a6b4220daa711f691d85dbeaaeb95ebf64ef6776787c705b
+    semantic_sha256: 4b7ab6039745d5118ed26352281027502a300da65d29d285733ee7b423d942ef
+    status: superseded_but_preserved
+    reason: amendment initially changed the shared C1 value-semantics provenance rule ID
+  final_c2_probe:
+    path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_foot_use_sidepath_full_population_probe_v2/static_access_formal.json
+    byte_sha256: f46afdbafa2c0a16c6488f599ba4bce2f1ae46d8473f83bc7be1bff8ee7f2d4a
+    semantic_sha256: 3a471fd1894d0bbd31ce150bdf23c6148cc49bddc7b43801a82facf8ad98e79b
+    static_access_blockers: 0
+    static_conflict_candidates: 0
+    normalized_source_ways: 2082
+    normalized_rules: 1960
+    successor_blockers: []
+
+stable_id_comparator:
+  implementation_path: 05_src/traffic_simulation/network/compare_phase13_foot_use_sidepath_probe.py
+  implementation_byte_sha256: 95564f789acd00ce8db9c5d04f104004c87dcef813ca580191a6f148094b16e0
+  output_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_foot_use_sidepath_full_population_probe_v2/foot_use_sidepath_stable_id_diff.json
+  output_byte_sha256: e14034941feaa2b86a1f4e5ef8063eb256bba7d904265edfd08d9da659ed2af1
+  semantic_sha256: 4ae3d93869c045ffa05cd0a680a6593d15c255b561d561f4e5a00475aafc5b2e
+  status: passed
+  acceptance_guard_count: 16
+  affected_way_count: 4
+  removed_expected_blocker_id_count: 4
+  new_blocker_id_count: 0
+  access_specificity_conflict_count: 0
+  unaffected_normalized_rules_unchanged: true
+  unaffected_static_maxima_unchanged: true
+  c1_27_ways_unchanged: true
+  source_osm_unchanged: true
+  child_over_parent_governed_permission: motor_vehicle_yes_overrides_vehicle_no
+
+focused_validation:
+  first_pass:
+    status: passed
+    passed_test_count: 98
+    artifact_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_foot_use_sidepath_full_population_probe_v2/focused_validation.junit.xml
+    artifact_byte_sha256: 654d28afd2a0645cab61062c8731956a08b50fa390158e3ea47522a5bfc91eb4
+  final_after_fixture_manifest_sync:
+    status: passed
+    passed_test_count: 105
+    artifact_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_foot_use_sidepath_full_population_probe_v2/focused_validation_v2.junit.xml
+    artifact_byte_sha256: 5aaf7a6ba32a0527ce0809a71ad440ed7135422c8cc43932ebb77ef4c658889c
+
+fixed_container_regression:
+  baseline_passed_test_count: 645
+  first_attempt:
+    status: failed
+    passed_test_count: 658
+    failed_test_count: 2
+    cause: normative_specification_hash_not_synchronized_to_fixture_manifest
+    semantic_regression_detected: false
+    artifact_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_foot_use_sidepath_full_population_probe_v2/fixed_container_regression.junit.xml
+    artifact_byte_sha256: 3619f5fd27685f18a763f047c99f2fb102008a1af153cc280e36e70932d6ace2
+  final_attempt:
+    prerequisite_focused_validation_passed: true
+    status: passed
+    passed_test_count: 660
+    failed_test_count: 0
+    duration_seconds: 1273.75
+    artifact_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_foot_use_sidepath_full_population_probe_v2/fixed_container_regression_v2.junit.xml
+    artifact_byte_sha256: 9f22e18dc1b3c203c842363a651850ac43491215d6453824ece6d4402c9d435a
+
+acceptance:
+  c2_access_value_unsupported_4_to_0: true
+  access_specificity_conflict_zero: true
+  new_blocker_ids_zero: true
+  source_osm_unchanged: true
+  source_rules_preserved: true
+  foot_conditional_provenance_preserved_without_new_interpretation: true
+  foot_vehicle_domain_empty: true
+  foot_rule_has_no_governed_permission_effect: true
+  motor_vehicle_child_over_vehicle_parent: true
+  governed_vclasses_unchanged: true
+  motorcar_hierarchy_blocker_zero: true
+  c1_27_ways_unchanged: true
+  prior_phase13_semantics_unchanged: true
+  no_way_specific_exception: true
+  historical_evidence_preserved: true
+  overall: passed
+
+phase13_access_resolution:
+  remaining_static_access_blocker_count: 0
+  remaining_static_access_stop_codes: {}
+  complete_for_phase13_static_access_scope: true
+  boundaries:
+    - upstream lane and relation blockers belong to their own components
+    - deferred conditional integration remains explicit and was not expanded by C2
+    - final permission materialization remains governed by its later acceptance gates
+
+git_operations:
+  commit: false
+  push: false
+  pull_request: false

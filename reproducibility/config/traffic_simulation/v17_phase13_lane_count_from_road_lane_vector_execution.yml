@@ -1,0 +1,134 @@
+schema_version: 1
+execution_id: phase13_lane_e1a_oneway_road_lane_vector_20260820
+decision_id: DEC-P13-LANE-COUNT-FROM-ROAD-LANE-VECTOR-001
+decision_version: 1.0.0
+decision_byte_sha256: 640378395dc2dbfe825cc96abcde02f15df0bd9104190f18b3c37c3259f58837
+status: passed
+executed_at: '2026-08-20'
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+
+fixed_population:
+  path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_oneway_road_lane_vector_probe/e1a_fixed_population.json
+  count: 9
+  byte_sha256: 3a2424b486193dd1efd4697a874fa7cd5a44a3754fa4348844229bb0bd6a741b
+  semantic_sha256: 3d6df2b93bf57f4ba363f1bafc9afab0a6ef3566b2343d1d37515f199610c507
+  source_keys:
+    - turn:lanes
+    - destination:lanes
+    - destination:ref:lanes
+
+tdd:
+  red:
+    command: >-
+      PYTHONPATH=05_src pytest -q
+      05_src/traffic_simulation/validation/test_directional_lanes_v17.py
+      05_src/traffic_simulation/validation/test_phase13_lane_count_from_road_lane_vector_decision_v17.py
+    result: 7 failed, 42 passed
+    expected_failure: all seven inference cases stopped at LANE_DIRECTIONAL_ALLOCATION_MISSING
+  green:
+    command: >-
+      PYTHONPATH=05_src pytest -q
+      05_src/traffic_simulation/validation/test_directional_lanes_v17.py
+      05_src/traffic_simulation/validation/test_phase13_lane_count_from_road_lane_vector_decision_v17.py
+    result: 49 passed in 0.27s
+
+implemented_rule:
+  rule_id: OSM_ONEWAY_ROAD_LANE_VECTOR_TO_ACTIVE_COUNT_V1
+  value_origin: rule_derived
+  formal_only: true
+  canonical_oneway_values:
+    - 'yes'
+    - '-1'
+  approved_source_keys:
+    - turn:lanes
+    - destination:lanes
+    - destination:ref:lanes
+  exclusions:
+    - mode_specific_lane_vectors
+    - conditional_lane_vectors
+    - conflicting_approved_vector_lengths
+    - explicit_lane_count_mismatch
+    - structural_profile
+    - way_specific_exceptions
+
+full_population_probe:
+  command: >-
+    PYTHONPATH=05_src python 05_src/traffic_simulation/network/static_access_v17.py
+    --input 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+    --output reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_oneway_road_lane_vector_probe/static_access_formal.json
+    --profile formal
+  artifact_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_oneway_road_lane_vector_probe/static_access_formal.json
+  byte_sha256: 601933bb79b4c7cec5c04a1079979e9e5a76cb14c44a051419be28614901eef7
+  exit_code: 1
+  exit_code_reason: governed upstream lane blockers remain outside E1A
+  counts:
+    upstream_lane_blockers_before: 22943
+    upstream_lane_blockers_after: 22934
+    l4_oneway_count_missing_before: 3629
+    l4_oneway_count_missing_after: 3620
+    static_access_blockers_after: 0
+    static_conflict_candidates_after: 0
+
+stable_id_comparator:
+  artifact_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_oneway_road_lane_vector_probe/oneway_road_lane_vector_stable_id_diff.json
+  byte_sha256: 236aa147f21d2f70decdc60b869a2d99a7bf164b473eba8b05960a5b0ef8cdfb
+  semantic_sha256: 9e96c296542f970fd16c1468952ad2e96b314de074632f729104e802297e6510
+  status: passed
+  affected_way_count: 9
+  removed_blocker_id_count: 9
+  direct_resolution_count: 9
+  successor_blocker_count: 0
+  new_blocker_id_count: 0
+  e1b_mode_specific_vector_unchanged: true
+  e2_conflicting_vector_ways_unchanged: true
+  unaffected_blocker_ids_unchanged: true
+  unaffected_normalized_rules_unchanged: true
+  unaffected_static_maxima_unchanged: true
+  source_osm_unchanged: true
+
+focused_validation:
+  initial_run:
+    result: 161 passed, 2 failed in 326.50s
+    cause: two pre-existing synchronization tests pinned semantic-invariants version 1.6.0
+    disposition: updated both synchronization assertions to authority version 1.7.0; no runtime semantic change
+  final_run:
+    command: >-
+      PYTHONPATH=05_src pytest -q
+      05_src/traffic_simulation/validation/test_directional_lanes_v17.py
+      05_src/traffic_simulation/validation/test_phase13_lane_count_from_road_lane_vector_decision_v17.py
+      05_src/traffic_simulation/validation/test_compare_phase13_oneway_road_lane_vector_probe.py
+      05_src/traffic_simulation/validation/test_compare_phase13_lanes2_formal_probe.py
+      05_src/traffic_simulation/validation/test_compare_phase13_use_sidepath_probe.py
+      05_src/traffic_simulation/validation/test_compare_phase13_foot_use_sidepath_probe.py
+      05_src/traffic_simulation/validation/test_static_access_v17.py
+      05_src/traffic_simulation/validation/test_final_permission_v17.py
+      05_src/traffic_simulation/validation/test_phase13_motorcar_vehicle_ontology_decision_v17.py
+      05_src/traffic_simulation/validation/test_phase13_psv_vehicle_ontology_decision_v17.py
+      05_src/traffic_simulation/validation/test_phase13_horse_vehicle_ontology_decision_v17.py
+      05_src/traffic_simulation/validation/test_phase13_private_authorization_context_resolution_v17.py
+      05_src/traffic_simulation/validation/test_phase13_use_sidepath_semantics_v17.py
+      05_src/traffic_simulation/validation/test_phase13_foot_use_sidepath_v17.py
+      05_src/traffic_simulation/validation/test_phase13_access_hierarchy_specificity_v17.py
+      05_src/traffic_simulation/validation/test_v17_phase1_authority.py
+      05_src/traffic_simulation/validation/test_approved_attribute_resolution_policy.py
+      05_src/traffic_simulation/validation/test_v17_fixture_oracle.py
+    result: 163 passed in 302.79s
+
+fixed_container_regression:
+  command: >-
+    docker compose run --rm -T analysis python -m pytest -q
+    --junitxml=reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_oneway_road_lane_vector_probe/fixed_container_regression.junit.xml
+    05_src/traffic_simulation/validation
+  log_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_oneway_road_lane_vector_probe/fixed_container_regression.log
+  log_byte_sha256: d436542d661133b88b8b735a615d1d48dcaa66987a9e451aedb33a615b4a9686
+  junit_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260820_oneway_road_lane_vector_probe/fixed_container_regression.junit.xml
+  junit_byte_sha256: 1e7447410dc2d422132b42b516428e08899512a06fc1545b851752210fbd622e
+  result: 694 passed in 2219.12s
+
+historical_evidence:
+  prior_probes_overwritten: false
+  prior_failed_comparators_deleted: false
+  prior_regression_logs_deleted: false
+  source_osm_modified: false
+  commit_push_or_pr_performed: false

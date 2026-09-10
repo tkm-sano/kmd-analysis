@@ -1,0 +1,183 @@
+schema_version: 1
+decision_id: DEC-TRAFFIC-OSM-PRIMARY-CENSUS-POLICE-CALIBRATION-001
+decision_version: 1.0.0
+status: approved_policy_pending_data_acquisition_and_calibration
+approved_at: '2026-08-23'
+approved_by: repository_owner_directive
+decision_type: research_model_architecture
+configuration_id: ota_ward_sumo_network_v17
+
+objective:
+  ja: >-
+    OSMを大田区道路網の基盤として維持し、個人で取得可能な公式交通量観測で
+    主要道路の交通状態を較正する。公式観測で埋まらない生活道路のlane欠測は、
+    source factへ昇格させず、既存のmodel_assumed三条件と感度分析で扱う。
+
+network_authority:
+  primary_source: openstreetmap
+  source_osm:
+    path: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+    snapshot_date: '2026-07-16'
+    sha256: 8b5157e48c3c87c2b4430f56d6abe292ce1ea5449b374ae4cb395fc19475b67d
+  governed_by:
+    - v17_canonical_direction
+    - v17_static_and_conditional_access
+    - v17_permission_resolution
+    - v17_lane_resolution
+  invariants:
+    - source_osm_is_immutable
+    - osm_identity_and_geometry_remain_primary
+    - no_way_specific_exception
+    - external_observation_does_not_silently_rewrite_osm
+    - drm_or_other_proprietary_network_is_not_a_required_input
+
+official_calibration_sources:
+  mlit_r3_road_traffic_census:
+    provider: 国土交通省道路局
+    dataset: 令和3年度全国道路・街路交通情勢調査_一般交通量調査
+    source_url: https://www.mlit.go.jp/road/census/r3/index.html
+    acquisition: individually_downloadable
+    intended_roles:
+      - major_road_section_identity_reference
+      - lane_and_width_observation_reference
+      - traffic_volume_calibration_target
+      - vehicle_composition_reference_when_available
+      - travel_speed_reference_when_semantically_aligned
+    prohibited_roles:
+      - automatic_replacement_of_osm_geometry
+      - automatic_replacement_of_osm_direction
+      - automatic_formal_lane_materialization_without_approved_evidence_method
+  tokyo_metropolitan_police_traffic_counts:
+    provider: 警視庁
+    dataset: 交通量統計表
+    source_url: https://catalog.data.metro.tokyo.lg.jp/dataset/t000022d0000000035
+    license: CC-BY-4.0
+    acquisition: individually_downloadable
+    intended_roles:
+      - major_intersection_traffic_volume_calibration_target
+      - major_screenline_traffic_volume_calibration_target
+      - independent_validation_candidate
+    prohibited_roles:
+      - road_geometry_source
+      - lane_count_source_unless_the_specific_field_is_officially_defined
+      - direction_or_access_rewrite
+  jartic_existing_snapshot:
+    role: supplemental_observation_only
+    source_id: jartic_1h_road3_tokyo_202607042200
+    limitation: one_hour_and_road_type_3_only
+    rule: does_not_replace_the_two_approved_primary_calibration_sources
+
+major_road_calibration_eligibility:
+  required:
+    - official_record_is_preserved_with_checksum_and_retrieval_date
+    - observation_period_and_count_semantics_are_known
+    - route_or_location_identity_matches_a_unique_osm_or_sumo_target
+    - direction_mapping_is_confirmed_when_directional_counts_are_used
+    - vehicle_class_and_time_aggregation_are_compatible_with_the_objective
+    - no_unresolved_competing_match_or_source_conflict
+  not_sufficient_alone:
+    - osm_highway_class
+    - nearest_geometry
+    - road_name_similarity
+    - absence_of_a_conflicting_record
+  calibration_targets:
+    - traffic_demand_scale
+    - directional_flow_distribution
+    - vehicle_composition_when_observed
+    - capacity_or_saturation_parameters_with_declared_bounds
+    - route_choice_or_travel_speed_only_when_supported_by_aligned_observations
+  guardrails:
+    - calibration_and_independent_validation_observations_are_disjoint
+    - objective_metrics_and_thresholds_are_fixed_before_fitting
+    - lane_scenarios_share_the_same_observations_objective_and_search_bounds
+    - observed_travel_speed_is_not_rewritten_as_legal_maxspeed
+
+remaining_lane_missing_policy:
+  existing_decision_id: DEC-P13-LANE-MISSING-SOURCE-SIMULATION-FALLBACK-001
+  existing_decision_version: 1.0.0
+  existing_policy_id: MISSING_SOURCE_LANE_SIMULATION_FALLBACK_V1
+  existing_policy_version: 1.0.0
+  change_to_existing_lane_semantics: false
+  permitted_only_when:
+    - formal_lane_value_is_missing_not_conflicting
+    - existing_fallback_eligibility_is_satisfied
+    - value_origin_is_model_assumed
+    - assumption_manifest_is_written
+    - formal_blocker_is_preserved
+    - source_osm_is_not_rewritten
+  scenarios:
+    - conservative
+    - baseline
+    - high_capacity
+  interpretation:
+    - assumed_lane_count_is_not_an_observed_fact
+    - scenario_difference_quantifies_model_sensitivity
+    - non_monotonic_results_are_preserved
+  local_road_reporting_gate:
+    rule: >-
+      The residual population may be described as local or residential roads only after a
+      population audit confirms the road classes and official-calibration coverage.
+    unresolved_major_road_missing: must_be_reported_separately
+
+conflict_policy:
+  missing: eligible_for_existing_model_assumption_under_its_scope
+  conflicting: fail_closed
+  shared_physical_single_lane: existing_unsupported_or_separate_materialization_policy
+  unmatched_major_road_observation: not_used_for_calibration
+  ambiguous_directional_observation: not_used_as_directional_target
+
+required_provenance:
+  raw_observation:
+    - source_url
+    - provider
+    - retrieval_timestamp
+    - observation_period
+    - original_filename
+    - sha256
+    - license_or_terms
+  match:
+    - official_record_id
+    - osm_way_or_sumo_edge_ids
+    - geometry_or_location_predicate
+    - direction_mapping
+    - match_status
+    - competing_candidates
+  calibration_run:
+    - network_hash
+    - demand_hash
+    - observation_split
+    - objective_metrics
+    - parameter_bounds
+    - seeds
+    - fitted_parameters
+    - stopping_rule
+  lane_assumption:
+    - assumption_id
+    - assumption_version
+    - scenario
+    - source_lane_status
+    - assumed_value
+    - applicability
+    - fallback_level
+
+acceptance_before_delivery_research_use:
+  - osm_based_network_identity_is_preserved
+  - all_used_official_observations_have_immutable_raw_artifacts
+  - major_road_matches_are_unique_or_explicitly_excluded
+  - calibration_and_validation_sets_are_disjoint
+  - conflicting_lane_sources_receive_no_automatic_fallback
+  - lane_assumptions_remain_distinguishable_from_observations
+  - conservative_baseline_high_capacity_runs_use_common_fixed_conditions
+  - sensitivity_of_delivery_outputs_is_reported
+  - source_and_derived_artifact_licenses_are_recorded
+
+current_readiness:
+  policy_recorded: true
+  source_osm_available: true
+  existing_lane_sensitivity_policy_available: true
+  mlit_r3_raw_acquisition_complete: false
+  tokyo_police_raw_acquisition_complete: false
+  major_road_match_inventory_complete: false
+  traffic_calibration_complete: false
+  independent_validation_complete: false
+  production_network_changed_by_this_decision: false

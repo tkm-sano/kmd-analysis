@@ -1,0 +1,17 @@
+schema_version: evrp-r05-pps-sampling-v1
+algorithm: successive_pps_without_replacement
+probability_definition: p_i^(k) = w_i / sum_{j in U_k} w_j
+probability_record: draw_probability
+first_order_inclusion_probability: not_calculated
+sampling_stratification: false
+mesh_quota: false
+inputs:
+  candidate_population: 03_data/processed/traffic_simulation/demand/household_parcel_v1/pipelines_v1/building_delivery_stops_scoped.csv
+  weight_artifact: reproducibility/outputs/traffic_simulation/demand/evrp_r04_demand_weight/20260909_r04_demand_weight_v3/candidate_demand_weights.csv
+output_root: reproducibility/outputs/traffic_simulation/demand/evrp_r05_pps_sampling
+rng:
+  implementation: random.Random
+  method: MT19937-compatible Python random.Random
+parameter_policy:
+  n: external_input
+  seed: external_input

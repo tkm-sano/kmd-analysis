@@ -1,0 +1,38 @@
+schema_version: 1
+config_id: mlit_r3_tokyo_road_census_sumo_mapping_v1
+created_at: "2026-08-26"
+
+inputs:
+  road_census_dir: 03_data/raw/traffic_simulation/road_census/mlit_r3_tokyo_20260823
+  sections_csv: kasyo13.csv
+  hourly_csv: zkntrf13.csv
+  section_geometry_dir: webmap_tiles
+  municipality_codes: ["13111"]  # Ota Ward; the SUMO network in this run is Ota-scoped
+  source_osm_xml: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+  sumo_net_xml: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260823_v17_oneway_materialization_tdd/ota_ward_explicit_v17_oneway.net.xml
+
+outputs:
+  directory: 03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826
+
+matching:
+  candidate_buffer_m: 25.0
+  high_overlap_ratio: 0.70
+  medium_overlap_ratio: 0.40
+  high_section_coverage_ratio: 0.60
+  medium_section_coverage_ratio: 0.30
+  max_high_angle_difference_deg: 25.0
+  max_medium_angle_difference_deg: 45.0
+  route_ref_required_for_high: true
+  name_match_can_support_medium: true
+
+lane_completion:
+  minimum_confidence_for_census_fallback: medium
+  allow_symmetric_even_total_split: true
+  odd_total_lanes_require_manual_review: true
+  low_confidence_is_unresolved: true
+  conflict_policy: unresolved
+
+traffic_assignment:
+  one_to_many_policy: repeat_observed_series_on_each_matched_edge
+  no_edge_proportional_splitting: true
+  minimum_confidence: medium

@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/kmd/fleet_capacity_interpretation_v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "evidence_id", "lifecycle", "artifact_role", "authority_scope", "updated_at", "overall_assessment", "direct_research_boundary", "scope", "wording", "status_vocabulary", "pathway_nodes", "pathway_links", "evidence_categories", "external_sources", "effective_capacity_conditions", "supports", "does_not_support", "traceability"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "evidence_id": {"const": "EVIDENCE-FLEET-CAPACITY-INTERPRETATION-V1"},
+    "lifecycle": {"const": "CURRENT"},
+    "artifact_role": {"const": "EVIDENCE_SUPPORTED_INTERPRETATION"},
+    "authority_scope": {"const": "INTERPRETATION_ONLY"},
+    "updated_at": {"type": "string", "format": "date"},
+    "overall_assessment": {"const": "SUPPORTED_WITH_CONDITIONS"},
+    "direct_research_boundary": {"const": "Delivery Fulfillment"},
+    "scope": {
+      "type": "object", "additionalProperties": false, "required": ["main_interpretation", "exclusions"],
+      "properties": {"main_interpretation": {"$ref": "#/$defs/nonEmptyStrings"}, "exclusions": {"$ref": "#/$defs/nonEmptyStrings"}}
+    },
+    "wording": {
+      "type": "object", "additionalProperties": false, "required": ["ja", "en"],
+      "properties": {"ja": {"$ref": "#/$defs/nonEmptyString"}, "en": {"$ref": "#/$defs/nonEmptyString"}}
+    },
+    "status_vocabulary": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/evidenceStatus"}},
+    "pathway_nodes": {"type": "array", "minItems": 5, "items": {"$ref": "#/$defs/pathwayNode"}},
+    "pathway_links": {"type": "array", "minItems": 5, "items": {"$ref": "#/$defs/pathwayLink"}},
+    "evidence_categories": {"type": "array", "minItems": 4, "items": {"$ref": "#/$defs/category"}},
+    "external_sources": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/source"}},
+    "effective_capacity_conditions": {"$ref": "#/$defs/nonEmptyStrings"},
+    "supports": {"$ref": "#/$defs/nonEmptyStrings"},
+    "does_not_support": {"$ref": "#/$defs/nonEmptyStrings"},
+    "traceability": {"$ref": "#/$defs/traceability"}
+  },
+  "$defs": {
+    "nonEmptyString": {"type": "string", "minLength": 1},
+    "nonEmptyStrings": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/nonEmptyString"}},
+    "nullableString": {"type": ["string", "null"], "minLength": 1},
+    "id": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+    "evidenceStatus": {"enum": ["DIRECT_ANALYSIS", "DEFINITION_DERIVED", "EVIDENCE_SUPPORTED", "SUPPORTED_WITH_CONDITIONS", "NOT_ESTABLISHED", "OUT_OF_SCOPE", "NEEDS_SOURCE_VERIFICATION"]},
+    "pathwayNode": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "label", "layer", "meaning", "evidence_status", "evidence_type", "source_refs", "conditions", "out_of_scope_claims"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"}, "label": {"$ref": "#/$defs/nonEmptyString"},
+        "layer": {"enum": ["DIRECT_ANALYSIS", "EVIDENCE_SUPPORTED_INTERPRETATION"]},
+        "meaning": {"$ref": "#/$defs/nonEmptyString"}, "evidence_status": {"$ref": "#/$defs/evidenceStatus"},
+        "evidence_type": {"$ref": "#/$defs/nonEmptyString"},
+        "source_refs": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+        "conditions": {"$ref": "#/$defs/nonEmptyStrings"}, "out_of_scope_claims": {"$ref": "#/$defs/nonEmptyStrings"}
+      }
+    },
+    "pathwayLink": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "from", "to", "evidence_status", "strength_label", "evidence_type", "source_refs", "conditions"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"}, "from": {"$ref": "#/$defs/id"}, "to": {"$ref": "#/$defs/id"},
+        "evidence_status": {"$ref": "#/$defs/evidenceStatus"}, "claim_status": {"$ref": "#/$defs/evidenceStatus"},
+        "strength_label": {"$ref": "#/$defs/nonEmptyString"}, "evidence_type": {"$ref": "#/$defs/nonEmptyString"},
+        "source_refs": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+        "conditions": {"$ref": "#/$defs/nonEmptyStrings"}
+      }
+    },
+    "category": {
+      "type": "object", "additionalProperties": false, "required": ["id", "label", "assessment", "supports"],
+      "properties": {"id": {"$ref": "#/$defs/id"}, "label": {"$ref": "#/$defs/nonEmptyString"}, "assessment": {"$ref": "#/$defs/evidenceStatus"}, "supports": {"$ref": "#/$defs/nonEmptyStrings"}, "negative_finding": {"$ref": "#/$defs/nonEmptyString"}}
+    },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "category", "author_or_organization", "title", "year", "source_type", "evidence_relevance", "evidence_strength", "citation_status", "supports_claims"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"}, "category": {"$ref": "#/$defs/id"}, "author_or_organization": {"$ref": "#/$defs/nonEmptyString"},
+        "title": {"$ref": "#/$defs/nullableString"}, "year": {"type": ["integer", "null"], "minimum": 1900, "maximum": 2100},
+        "source_type": {"$ref": "#/$defs/nonEmptyString"}, "evidence_relevance": {"enum": ["DIRECTLY_RELATED", "STRONGLY_RELATED", "CONDITIONALLY_RELATED"]},
+        "evidence_strength": {"enum": ["STRONG", "SUPPORTING"]}, "citation_status": {"enum": ["VERIFIED_RESEARCH_INPUT", "NEEDS_SOURCE_VERIFICATION"]},
+        "supports_claims": {"$ref": "#/$defs/nonEmptyStrings"}
+      }
+    },
+    "traceability": {
+      "type": "object", "additionalProperties": false,
+      "required": ["research_question", "direct_metric", "interpretation_claims", "evidence_artifact", "external_source_refs", "portal_node_refs"],
+      "properties": {
+        "research_question": {"type": "object", "additionalProperties": false, "required": ["label", "ref"], "properties": {"label": {"$ref": "#/$defs/nonEmptyString"}, "ref": {"$ref": "#/$defs/nonEmptyString"}}},
+        "direct_metric": {"type": "object", "additionalProperties": false, "required": ["label", "portal_stage_ref"], "properties": {"label": {"$ref": "#/$defs/nonEmptyString"}, "portal_stage_ref": {"$ref": "#/$defs/id"}}},
+        "interpretation_claims": {"$ref": "#/$defs/nonEmptyStrings"}, "evidence_artifact": {"$ref": "#/$defs/nonEmptyString"},
+        "external_source_refs": {"$ref": "#/$defs/nonEmptyStrings"}, "portal_node_refs": {"$ref": "#/$defs/nonEmptyStrings"}
+      }
+    }
+  }
+}

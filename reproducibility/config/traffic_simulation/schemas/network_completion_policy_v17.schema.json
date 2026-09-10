@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "network_completion_policy_v17.schema.json",
+  "type": "object",
+  "required": [
+    "schema_version", "schema", "registry_id", "registry_version", "decision_id", "decision_record", "normative_specification",
+    "status", "adopted_at", "definitions", "layers", "epistemic_classes",
+    "method_statuses", "methods", "resolution_hierarchies", "validation_gates",
+    "blocker_semantics", "completion_states", "authority_artifacts", "protected_actions"
+  ],
+  "properties": {
+    "schema_version": {"const": 17},
+    "schema": {"const": "reproducibility/config/traffic_simulation/schemas/network_completion_policy_v17.schema.json"},
+    "registry_id": {"const": "NETWORK_COMPLETION_METHOD_REGISTRY_V17"},
+    "registry_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "decision_id": {"const": "DEC-P13-NETWORK-COMPLETION-HIERARCHICAL-HYBRID-001"},
+    "decision_record": {"const": "reproducibility/config/traffic_simulation/decisions/phase13_network_completion_hierarchical_hybrid_v1.yml"},
+    "normative_specification": {"const": "05_src/traffic_simulation/specifications/14_formal_network_completion_policy_v17.md"},
+    "status": {"const": "adopted"},
+    "adopted_at": {"type": "string", "format": "date"},
+    "definitions": {
+      "type": "object",
+      "required": ["formal", "formal_not_source_explicit_only", "formal_not_arbitrary_simulation_fallback", "source_truth_separated_from_model_ready_value"],
+      "properties": {
+        "formal": {"type": "string", "minLength": 1},
+        "formal_not_source_explicit_only": {"const": true},
+        "formal_not_arbitrary_simulation_fallback": {"const": true},
+        "source_truth_separated_from_model_ready_value": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "layers": {
+      "type": "object",
+      "required": ["STRUCTURAL", "FORMAL", "SIMULATION_READY"],
+      "additionalProperties": {"$ref": "#/$defs/layer"}
+    },
+    "epistemic_classes": {
+      "type": "object",
+      "required": ["formal", "simulation_only", "field_separation"],
+      "properties": {
+        "formal": {"type": "array", "minItems": 6, "uniqueItems": true, "items": {"enum": ["OBSERVED", "NORMALIZED", "DETERMINISTIC_DERIVED", "EXTERNAL_DATA_DERIVED", "VALIDATED_LOCAL_INFERRED", "VALIDATED_MODEL_DERIVED"]}},
+        "simulation_only": {"type": "array", "minItems": 3, "uniqueItems": true, "items": {"enum": ["TYPE_DEFAULTED", "SIMULATION_DEFAULTED", "CONSERVATIVE_FALLBACK"]}},
+        "field_separation": {"const": "formal_epistemic_status_and_simulation_epistemic_status_are_distinct"}
+      },
+      "additionalProperties": false
+    },
+    "method_statuses": {
+      "type": "array", "minItems": 5, "maxItems": 5, "uniqueItems": true,
+      "items": {"enum": ["FORMAL_ALLOWED_NOW", "FORMAL_ALLOWED_AFTER_VALIDATION", "SIMULATION_ONLY", "PROHIBITED", "UNRESOLVED_RESEARCH_DECISION_REQUIRED"]}
+    },
+    "methods": {"type": "array", "minItems": 12, "items": {"$ref": "#/$defs/method"}},
+    "resolution_hierarchies": {
+      "type": "object", "required": ["lanes", "speed", "permission_access"],
+      "additionalProperties": {"$ref": "#/$defs/hierarchy"}
+    },
+    "validation_gates": {
+      "type": "object", "required": ["required_for_promotion", "lane_quantitative_envelope", "attribute_specific_threshold_policy", "missing_domain_policy"],
+      "properties": {
+        "required_for_promotion": {"type": "array", "minItems": 12, "uniqueItems": true, "items": {"type": "string"}},
+        "lane_quantitative_envelope": {"type": "object", "required": ["comparison_population", "accuracy_lower_95ci_gt", "mae_upper_95ci_lt", "absolute_bias_upper_95ci_lt", "coverage_policy", "basis"]},
+        "attribute_specific_threshold_policy": {"type": "string", "minLength": 1},
+        "missing_domain_policy": {"const": "explicit_domain_and_missing_domain_validation_both_required"}
+      },
+      "additionalProperties": true
+    },
+    "blocker_semantics": {"type": "object", "required": ["formal_blocker", "simulation_readiness_blocker", "allowed_joint_state"]},
+    "completion_states": {"type": "object", "required": ["FORMAL_RESEARCH_READY", "SIMULATION_NETWORK_READY"]},
+    "authority_artifacts": {"type": "array", "minItems": 7, "items": {"$ref": "#/$defs/authority"}},
+    "protected_actions": {"type": "array", "minItems": 7, "uniqueItems": true, "items": {"type": "string"}}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "layer": {"type": "object", "required": ["definition", "permitted_inputs", "provenance_required"], "properties": {"definition": {"type": "string"}, "permitted_inputs": {"type": "array", "minItems": 1, "items": {"type": "string"}}, "provenance_required": {"const": true}}, "additionalProperties": true},
+    "method": {
+      "type": "object",
+      "required": ["method_id", "family", "status", "attributes", "epistemic_class", "formal_value_producer", "priority_stage", "required_provenance", "required_validation", "abstention_conditions"],
+      "properties": {
+        "method_id": {"type": "string", "minLength": 1},
+        "family": {"type": "string", "minLength": 1},
+        "status": {"enum": ["FORMAL_ALLOWED_NOW", "FORMAL_ALLOWED_AFTER_VALIDATION", "SIMULATION_ONLY", "PROHIBITED", "UNRESOLVED_RESEARCH_DECISION_REQUIRED"]},
+        "attributes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["lanes", "speed", "permission_access", "all"]}},
+        "epistemic_class": {"enum": ["OBSERVED", "NORMALIZED", "DETERMINISTIC_DERIVED", "EXTERNAL_DATA_DERIVED", "VALIDATED_LOCAL_INFERRED", "VALIDATED_MODEL_DERIVED", "TYPE_DEFAULTED", "SIMULATION_DEFAULTED", "CONSERVATIVE_FALLBACK", "NONE_CONTROL_ONLY"]},
+        "formal_value_producer": {"type": "boolean"},
+        "priority_stage": {"type": ["string", "null"]},
+        "required_provenance": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "required_validation": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "abstention_conditions": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "hierarchy": {
+      "type": "object", "required": ["formal_priority", "simulation_only_priority", "terminal_formal_state", "lower_stage_override_prohibited"],
+      "properties": {
+        "formal_priority": {"type": "array", "minItems": 3, "uniqueItems": true, "items": {"type": "string"}},
+        "simulation_only_priority": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "terminal_formal_state": {"const": "UNRESOLVED_FORMAL"},
+        "lower_stage_override_prohibited": {"const": true}
+      },
+      "additionalProperties": true
+    },
+    "authority": {"type": "object", "required": ["path", "sha256", "read_only"], "properties": {"path": {"type": "string"}, "sha256": {"$ref": "#/$defs/hash"}, "read_only": {"const": true}}, "additionalProperties": false}
+  },
+  "additionalProperties": false
+}

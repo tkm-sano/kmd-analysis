@@ -1,0 +1,254 @@
+diff --git a/src/marouter/ROMAAssignments.cpp b/src/marouter/ROMAAssignments.cpp
+index 014adb301..4c6559d07 100644
+--- a/src/marouter/ROMAAssignments.cpp
++++ b/src/marouter/ROMAAssignments.cpp
+@@ -23,6 +23,10 @@
+ 
+ #include <vector>
+ #include <algorithm>
++#include <cstdlib>
++#include <fstream>
++#include <iomanip>
++#include <sstream>
+ #include <utils/common/SUMOTime.h>
+ #include <utils/distribution/Distribution_Points.h>
+ #include <utils/router/RouteCostCalculator.h>
+@@ -35,6 +39,143 @@
+ #include "ROMAAssignments.h"
+ 
+ 
++// Optional, diagnostics-only JSONL trace for getKPaths / computePath.
++// Enabled with SUMO_MAROUTER_GETKPATHS_TRACE. The routing algorithm and all
++// routing inputs remain unchanged when tracing is enabled.
++namespace {
++std::ofstream* gKPathsTrace = nullptr;
++int gKPathsIteration = -1;
++int gKPathsRequested = -1;
++bool gInKPaths = false;
++
++std::string
++jsonString(const std::string& value) {
++    std::ostringstream out;
++    out << '"';
++    for (const unsigned char c : value) {
++        switch (c) {
++            case '"': out << "\\\""; break;
++            case '\\': out << "\\\\"; break;
++            case '\b': out << "\\b"; break;
++            case '\f': out << "\\f"; break;
++            case '\n': out << "\\n"; break;
++            case '\r': out << "\\r"; break;
++            case '\t': out << "\\t"; break;
++            default:
++                if (c < 0x20) {
++                    out << "\\u" << std::hex << std::setw(4) << std::setfill('0') << (int)c << std::dec;
++                } else {
++                    out << c;
++                }
++        }
++    }
++    out << '"';
++    return out.str();
++}
++
++std::string
++traceEnv(const char* name) {
++    const char* const value = std::getenv(name);
++    return value == nullptr ? "" : value;
++}
++
++std::ofstream*
++getKPathsTrace() {
++    if (gKPathsTrace == nullptr) {
++        const std::string path = traceEnv("SUMO_MAROUTER_GETKPATHS_TRACE");
++        if (!path.empty()) {
++            gKPathsTrace = new std::ofstream(path.c_str(), std::ios::out | std::ios::trunc);
++            if (!gKPathsTrace->good()) {
++                delete gKPathsTrace;
++                gKPathsTrace = nullptr;
++            }
++        }
++    }
++    return gKPathsTrace;
++}
++
++bool
++traceCell(const ODCell* const cell) {
++    if (getKPathsTrace() == nullptr) {
++        return false;
++    }
++    const std::string origin = traceEnv("SUMO_MAROUTER_TRACE_ORIGIN");
++    const std::string destination = traceEnv("SUMO_MAROUTER_TRACE_DESTINATION");
++    return (origin.empty() || origin == cell->origin)
++           && (destination.empty() || destination == cell->destination);
++}
++
++bool
++containsTarget(const ConstROEdgeVector& edges) {
++    const std::string target = traceEnv("SUMO_MAROUTER_TRACE_TARGET_EDGE");
++    if (target.empty()) {
++        return false;
++    }
++    for (const ROEdge* const edge : edges) {
++        if (edge->getID() == target) {
++            return true;
++        }
++    }
++    return false;
++}
++
++void
++writeEdges(std::ostream& out, const ConstROEdgeVector& edges) {
++    out << '[';
++    bool first = true;
++    for (const ROEdge* const edge : edges) {
++        if (!first) {
++            out << ',';
++        }
++        first = false;
++        out << jsonString(edge->getID());
++    }
++    out << ']';
++}
++
++void
++writeComputeTrace(const ODCell* const cell, const ConstROEdgeVector& edges,
++                  const char* const outcome, const bool searchExecuted,
++                  const bool duplicate, const int duplicateIndex,
++                  const double searchCost, const int routesBefore,
++                  const int routesAfter) {
++    if (!gInKPaths || !traceCell(cell)) {
++        return;
++    }
++    std::ofstream& out = *getKPathsTrace();
++    out << std::setprecision(17)
++        << "{\"event\":\"compute_path_result\",\"origin\":" << jsonString(cell->origin)
++        << ",\"destination\":" << jsonString(cell->destination)
++        << ",\"iteration_zero_based\":" << gKPathsIteration
++        << ",\"iteration_one_based\":" << (gKPathsIteration + 1)
++        << ",\"requested_iterations\":" << gKPathsRequested
++        << ",\"outcome\":" << jsonString(outcome)
++        << ",\"search_executed\":" << (searchExecuted ? "true" : "false")
++        << ",\"search_cost\":";
++    if (searchExecuted && !edges.empty()) {
++        out << searchCost;
++    } else {
++        out << "null";
++    }
++    out << ",\"generated_edge_count\":" << edges.size()
++        << ",\"generated_edges\":";
++    writeEdges(out, edges);
++    out << ",\"target_edge\":" << jsonString(traceEnv("SUMO_MAROUTER_TRACE_TARGET_EDGE"))
++        << ",\"target_edge_present\":" << (containsTarget(edges) ? "true" : "false")
++        << ",\"duplicate\":" << (duplicate ? "true" : "false")
++        << ",\"duplicate_route_index\":";
++    if (duplicateIndex >= 0) {
++        out << duplicateIndex;
++    } else {
++        out << "null";
++    }
++    out << ",\"routes_before\":" << routesBefore
++        << ",\"routes_after\":" << routesAfter << "}\n";
++    out.flush();
++}
++}
++
++
+ // ===========================================================================
+ // static member variables
+ // ===========================================================================
+@@ -197,12 +338,20 @@ ROMAAssignments::computePath(ODCell* cell, const SUMOTime time, const double pro
+     if (router == nullptr) {
+         router = &myRouter;
+     }
++    const int routesBefore = (int)cell->pathsVector.size();
+     if (myMaxAlternatives > 0 && (int)cell->pathsVector.size() < myMaxAlternatives) {
+         router->compute(from, to, myDefaultVehicle, time, edges);
+         if (setBulkMode) {
+             router->setBulkMode(true);
+         }
+-        if (addRoute(edges, cell->pathsVector, cell->origin + cell->destination + toString(cell->pathsVector.size()), probability)) {
++        const double searchCost = gInKPaths && traceCell(cell) && !edges.empty()
++                                  ? router->recomputeCosts(edges, myDefaultVehicle, time) : 0.;
++        const bool added = addRoute(edges, cell->pathsVector, cell->origin + cell->destination + toString(cell->pathsVector.size()), probability);
++        writeComputeTrace(cell, edges,
++                          edges.empty() ? "SEARCH_FAILED" : (added ? "NEW_ROUTE" : "DUPLICATE"),
++                          true, !added && !edges.empty(), !added && !edges.empty() ? (int)cell->pathsVector.size() - 1 : -1,
++                          searchCost, routesBefore, (int)cell->pathsVector.size());
++        if (added) {
+             return edges;
+         }
+     } else {
+@@ -216,6 +365,8 @@ ROMAAssignments::computePath(ODCell* cell, const SUMOTime time, const double pro
+             }
+         }
+         minRoute->addProbability(probability);
++        writeComputeTrace(cell, edges, "MAX_ALTERNATIVES_REACHED", false, false, -1, 0.,
++                          routesBefore, (int)cell->pathsVector.size());
+     }
+     return ConstROEdgeVector();
+ }
+@@ -225,11 +376,62 @@ void
+ ROMAAssignments::getKPaths(const int kPaths, const double penalty) {
+     for (ODCell* const c : myMatrix.getCells()) {
+         myPenalties.clear();
++        if (traceCell(c)) {
++            std::ofstream& out = *getKPathsTrace();
++            out << "{\"event\":\"candidate_generation_start\",\"origin\":" << jsonString(c->origin)
++                << ",\"destination\":" << jsonString(c->destination)
++                << ",\"requested_iterations\":" << kPaths
++                << ",\"penalty_per_edge\":" << std::setprecision(17) << penalty
++                << ",\"max_alternatives\":" << myMaxAlternatives
++                << ",\"target_edge\":" << jsonString(traceEnv("SUMO_MAROUTER_TRACE_TARGET_EDGE")) << "}\n";
++            out.flush();
++        }
++        gKPathsRequested = kPaths;
++        gInKPaths = true;
+         for (int k = 0; k < kPaths; k++) {
+-            for (const ROEdge* const e : computePath(c)) {
++            gKPathsIteration = k;
++            const ConstROEdgeVector edges = computePath(c);
++            std::ostringstream updates;
++            updates << '[';
++            bool first = true;
++            for (const ROEdge* const e : edges) {
++                const double before = myPenalties[e];
+                 myPenalties[e] += penalty;
++                if (traceCell(c)) {
++                    if (!first) {
++                        updates << ',';
++                    }
++                    first = false;
++                    updates << std::setprecision(17)
++                            << "{\"edge\":" << jsonString(e->getID())
++                            << ",\"before\":" << before
++                            << ",\"increment\":" << penalty
++                            << ",\"after\":" << myPenalties[e] << '}';
++                }
+             }
++            updates << ']';
++            if (traceCell(c)) {
++                std::ofstream& out = *getKPathsTrace();
++                out << "{\"event\":\"penalty_application\",\"origin\":" << jsonString(c->origin)
++                    << ",\"destination\":" << jsonString(c->destination)
++                    << ",\"iteration_zero_based\":" << k
++                    << ",\"iteration_one_based\":" << (k + 1)
++                    << ",\"penalty_applied\":" << (edges.empty() ? "false" : "true")
++                    << ",\"edge_occurrences_updated\":" << edges.size()
++                    << ",\"updates\":" << updates.str() << "}\n";
++                out.flush();
++            }
++        }
++        if (traceCell(c)) {
++            std::ofstream& out = *getKPathsTrace();
++            out << "{\"event\":\"candidate_generation_end\",\"origin\":" << jsonString(c->origin)
++                << ",\"destination\":" << jsonString(c->destination)
++                << ",\"iterations_executed\":" << kPaths
++                << ",\"unique_route_count\":" << c->pathsVector.size()
++                << ",\"end_reason\":\"REQUESTED_ITERATIONS_COMPLETED\"}\n";
++            out.flush();
+         }
++        gInKPaths = false;
+     }
+     myPenalties.clear();
+ }

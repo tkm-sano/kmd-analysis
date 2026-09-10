@@ -1,5 +1,10 @@
 # 交通シミュレーション研究の現状の問題と阻害事項
 
+> **Scope note (2026-09-10):** 本文の道路属性・較正問題は、基準日 `2026-07-31` における
+> network-workstreamの履歴・未解消事項である。現行のnetwork/Routing Baseline受入と、
+> `EVRP_EXECUTION_PLAN.md` が管理するreduced R20--R23 quantum branchのstatusを上書きしない。
+> reduced branchはR21/R22 PASS、R23 READY_FOR_PILOTだが、full-EVRPの下流比較はなおblockedである。
+
 > **文書状態**: 現状説明・問題追跡文書
 > **状態基準日**: 2026-07-31
 > **現在工程**: 工程6「SUMO道路網生成・構造検証」
@@ -553,7 +558,7 @@ connection、turn restriction、left-hand traffic、warning、reachabilityを監
 | 版17承認済み属性解決方針 | `05_src/traffic_simulation/specifications/10_approved_attribute_resolution_policy.md` |
 | 版17機械可読方針 | `reproducibility/config/traffic_simulation/approved_attribute_resolution_policy_v17.yml` |
 | 道路網生成・検証規則 | `05_src/traffic_simulation/network_build_and_validation_protocol.md` |
-| シミュレーションV&V | `05_src/traffic_simulation/simulation_model_development_and_vv.md` |
+| シミュレーションV&V | `05_src/traffic_simulation/20260730_20260903_simulation_model_development_and_vv.md` |
 | 全工程と通行権限実装手順 | `05_src/traffic_simulation/learning/permission_materializer_reproducible_implementation_guide.md` |
 
 この文書の件数または状態が正本と異なる場合、正式実行を停止し、正本の更新理由を

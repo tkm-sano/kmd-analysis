@@ -1,0 +1,143 @@
+schema_version: 1
+decision_id: DEC-P13-USE-SIDEPATH-SEMANTICS-001
+decision_version: 1.0.0
+status: approved
+approved_at: '2026-08-20'
+approved_by: repository_owner_directive
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+input_lock: reproducibility/config/traffic_simulation/v17_phase13_input_lock.yml
+
+decision_method:
+  general_principle: >-
+    Prefer a versioned amendment when a change is wholly within an existing
+    decision's approved semantics and scope; use a conformance fix when only
+    wiring already-approved semantics; create a separate decision when a new
+    meaning, value semantic, or interpretation boundary would not be
+    predictable from the existing decision.
+  selected_method: new_independent_decision
+  rejected_method: versioned_amendment_to_DEC-P13-VEHICLE-ONTOLOGY-001
+  rationale: >-
+    DEC-P13-VEHICLE-ONTOLOGY-001 decides that bicycle has an empty intersection
+    with the governed motorized universe. It does not decide that use_sidepath
+    means parallel_way_required, nor which access keys may use that value.
+    Adding those meanings to the ontology decision would mix vehicle-domain
+    responsibility with access-value responsibility and weaken traceability.
+  differs_from_general_principle: false
+
+responsibility_boundary:
+  existing_decision:
+    decision_id: DEC-P13-VEHICLE-ONTOLOGY-001
+    owns:
+      - bicycle_governed_vehicle_domain_is_empty
+      - governed_permission_effect_is_none
+      - source_record_is_preserved
+      - formal_exclusion_is_false
+  this_decision_owns:
+    - use_sidepath_normalizes_to_parallel_way_required
+    - use_sidepath_is_not_rewritten_to_no
+    - approved_key_applicability_is_explicit_and_key_scoped
+  runtime_conformance_owns:
+    - registry_applicability_is_enforced_before_rule_construction
+    - empty_domain_prevents_effect_on_governed_static_maxima
+  explicitly_out_of_scope:
+    - vehicle_ontology_changes
+    - foot_use_sidepath
+    - vehicle_and_motor_vehicle_child_parent_specificity
+    - graph_resolution_of_the_parallel_sidepath
+
+fixed_population:
+  baseline_probe: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260818_motorcar_full_population_probe/static_access_formal.json
+  baseline_probe_byte_sha256: 060cfa14b4975728af48541a133552e1f087c7341bb1c77fbeb8b29041e0045c
+  source_osm: 03_data/processed/traffic_simulation/road_network/sumo/common/ota_ward_20260716_relation_closure_v16.osm.xml
+  source_osm_byte_sha256: 8b5157e48c3c87c2b4430f56d6abe292ce1ea5449b374ae4cb395fc19475b67d
+  source_key: bicycle
+  source_value: use_sidepath
+  source_way_count: 27
+  highway_counts: {trunk: 10, primary: 9, trunk_link: 7, tertiary_link: 1}
+  source_way_ids:
+    - 28017223
+    - 28017225
+    - 28017419
+    - 32593172
+    - 32594002
+    - 114032569
+    - 114957787
+    - 254078689
+    - 262946958
+    - 262946966
+    - 262946979
+    - 685242503
+    - 685242504
+    - 1039808256
+    - 1040009077
+    - 1040009078
+    - 1073072898
+    - 1073072900
+    - 1073072903
+    - 1073072907
+    - 1073072910
+    - 1073072911
+    - 1190349699
+    - 1303438915
+    - 1308092138
+    - 1308092144
+    - 1308092145
+
+primary_authority_evidence:
+  osm_access:
+    authority: OpenStreetMap Wiki
+    title: Key:access
+    revision_id: 3054035
+    revision_timestamp: '2026-06-25T12:21:00Z'
+    url: https://wiki.openstreetmap.org/w/index.php?title=Key:access&oldid=3054035
+    snapshot_path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260815_psv_decision/osm_key_access_oldid_3054035.wikitext
+    snapshot_byte_sha256: 26446702e390913b25a094d335bbb4e08bed6d1e4a5603e0d489ca81c3958183
+    relevant_claims:
+      - use_sidepath requires a separately mapped parallel way
+      - use_sidepath mostly acts like no but has exceptions and is not equivalent to no
+      - use_sidepath is limited to specific transport-mode keys
+      - bicycle_use_sidepath_is_an_approved_example
+
+decision:
+  result: approved_key_scoped_access_value_semantics
+  rule_id: OSM_USE_SIDEPATH_PARALLEL_WAY_REQUIRED_V1
+  source_value: use_sidepath
+  normalized_semantics: parallel_way_required
+  approved_base_keys: [bicycle]
+  required_vehicle_domain: []
+  permission_effect_on_governed_vclasses: none
+  source_value_rewritten: false
+  source_record_preserved: true
+  formal_exclusion: false
+
+future_extension:
+  foot_can_reuse_this_decision: true
+  mechanism: versioned_amendment_after_independent_specificity_resolution
+  boundary: >-
+    A future version may add foot to approved_base_keys because the access-value
+    meaning is the same. The vehicle=no versus motor_vehicle=yes specificity
+    issue belongs to a separate decision or conformance fix and must be resolved
+    before foot is activated.
+
+mandatory_boundaries:
+  - use_sidepath is not rewritten or normalized to no
+  - only bicycle is approved in decision version 1.0.0
+  - access vehicle motor_vehicle and foot remain unsupported for use_sidepath
+  - the bicycle vehicle domain remains exactly empty
+  - governed vClasses are unchanged
+  - no governed static maximum may cite the bicycle use_sidepath rule
+  - no Way-specific exception is authorized
+  - source OSM and prior Phase 13 artifacts remain immutable
+  - foot use_sidepath and child-over-parent specificity remain separate work
+
+implementation_state:
+  decision_record: fixed
+  registry_update: implemented
+  runtime_update: implemented
+  semantic_invariant_update: implemented
+  focused_validation: pending
+  full_population_probe: pending
+  stable_id_comparator: pending
+  fixed_container_regression: pending
+  phase13_c1_complete: false

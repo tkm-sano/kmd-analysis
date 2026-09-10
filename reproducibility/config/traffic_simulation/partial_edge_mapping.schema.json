@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "partial-edge-mapping-v1.0.0",
+  "title": "Road Census-SUMO partial-edge mapping row",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "official_observation_section_id", "direction", "sequence_order", "edge_id",
+    "coverage_role", "start_position_m", "end_position_m", "edge_length_m",
+    "used_length_m", "boundary_position_source", "boundary_anchor",
+    "derivation_rule_id", "projection_error_m", "route_identity_status",
+    "topology_status", "contamination_status", "adoption_status"
+  ],
+  "properties": {
+    "official_observation_section_id": {"type": "string", "pattern": "^[0-9]+$"},
+    "direction": {"enum": ["UP", "DOWN"]},
+    "sequence_order": {"type": "integer", "minimum": 1},
+    "edge_id": {"type": "string", "minLength": 1},
+    "coverage_role": {"enum": ["FULL_EDGE", "PARTIAL_START_EDGE", "PARTIAL_END_EDGE", "PARTIAL_SINGLE_EDGE"]},
+    "start_position_m": {"type": "number", "minimum": 0},
+    "end_position_m": {"type": "number", "minimum": 0},
+    "edge_length_m": {"type": "number", "exclusiveMinimum": 0},
+    "used_length_m": {"type": "number", "exclusiveMinimum": 0},
+    "boundary_position_source": {"type": ["string", "null"]},
+    "boundary_anchor": {"type": ["string", "null"]},
+    "derivation_rule_id": {"type": ["string", "null"]},
+    "projection_error_m": {"type": ["number", "null"], "minimum": 0},
+    "route_identity_status": {"enum": ["PASS", "FAIL", "UNRESOLVED"]},
+    "topology_status": {"enum": ["PASS", "FAIL", "UNRESOLVED"]},
+    "contamination_status": {"enum": ["PASS", "FAIL", "UNRESOLVED"]},
+    "adoption_status": {"enum": ["ACCEPTED_AS_PARTIAL_EDGE_MAPPING", "REVIEW_REQUIRED", "REJECTED", "UNRESOLVED"]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"coverage_role": {"const": "FULL_EDGE"}}},
+      "then": {
+        "properties": {
+          "start_position_m": {"const": 0},
+          "boundary_position_source": {"type": "null"},
+          "boundary_anchor": {"type": "null"},
+          "derivation_rule_id": {"type": "null"},
+          "projection_error_m": {"type": "null"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"coverage_role": {"pattern": "^PARTIAL_"}}},
+      "then": {
+        "properties": {
+          "boundary_position_source": {"type": "string", "minLength": 1},
+          "boundary_anchor": {"type": "string", "minLength": 1},
+          "derivation_rule_id": {"type": "string", "minLength": 1},
+          "projection_error_m": {"type": "number", "minimum": 0}
+        }
+      }
+    }
+  ],
+  "$comment": "Cross-field inequalities, used-length equality, sequence position, and role consistency are enforced by formalize_partial_edge_mapping.py."
+}

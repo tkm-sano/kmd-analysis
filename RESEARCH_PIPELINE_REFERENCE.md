@@ -1,0 +1,1727 @@
+# 現行研究パイプライン 実行・正本・検証リファレンス
+
+文書ID: `DOC-RESEARCH-PIPELINE-REFERENCE`
+役割: `CURRENT_REFERENCE`
+ライフサイクル: `CURRENT`
+作成日: `2026-09-03`
+最終更新日: `2026-09-10`
+現行正本: `reproducibility/indexes/research_repository_index_v17.yml`
+
+状態: `CURRENT PIPELINE REFERENCE`
+
+本書は、各研究工程の「実行 → 成果物 → 正本 → 検証 → 受入 → 次工程」を追跡する現行運用リファレンスである。研究の問い、概念枠組み、Stage 1–11のロードマップ、マイルストーンは[研究概要・ロードマップ](RESEARCH_OVERVIEW.md)を参照する。本書は各Decision、仕様、設定、schema、run、受入成果物への索引であり、それらを置き換える第二の正本ではない。記載と正本成果物が矛盾する場合は、各節の「正本・信頼源」に示す成果物を優先する。
+
+説明、見出し、表項目は日本語で記載する。実在するコマンド、ファイル名、field名、ID、`DONE`や`NOT IMPLEMENTED`などの機械可読な状態値は、repository内の正本表記を保持する。
+
+<a id="b2c-pipeline-20260909"></a>
+
+## 最新採択方針 — B2C配送パイプライン（2026-09-09）
+
+採択根拠: 2026-09-09の研究責任者による修正版パイプラインの指示。
+状態: `ADOPTED / CURRENT DESIGN`。以下を今後のパイプラインの設計正本とする。過去の記録と不整合の場合は、本節を優先する。実装・実行・検証・受入の完了は別途証拠で判定する。
+
+主対象は**住宅向け宅配（B2C last-mile delivery）**。古典最適化と量子最適化は、同一のCommon Delivery Instance、Hard Constraints、目的の優先順位、独立Validatorを使用する。
+
+### 1. 公的統計の収集
+
+- 国勢調査の人口／世帯メッシュを住宅需要の空間proxyに使用する。
+- 第6回東京都市圏物資流動調査「個人のモノの受取調査」を宅配需要・日時指定・受取時間帯の根拠に使用する。
+- 必要に応じて全国貨物純流動調査を補助的に使用する。
+- 事業所機能調査・経済センサスをB2B需要の主入力とする案は、今回の主パイプラインには採用しない。
+- 採用する統計表、年次、取得元、取得日、単位、入力hashと変換規則を記録する。調査項目の存在だけでは必要な集計表の取得完了としない。
+
+### 2. Candidate Delivery Locationsの固定
+
+39,956地点を住宅向け配送先候補の母集団 $C_{\mathrm{all}}$ と定義する。各地点の識別子、座標、道路接続情報を保持する。現在の `building_delivery_stops_scoped.csv` と受入済みmappingを候補の来歴として参照し、候補集合のhashを固定する。
+
+この定義は研究上の住宅配送先候補という位置付けであり、各地点が実在住宅として実地確認されたことや、全地点に実験日の注文があることを意味しない。
+
+### 3. 地点別Demand Weightの設定
+
+人口または世帯数を住宅宅配需要の空間proxyとし、各候補地点に非負の相対重み $w_i$ を設定する。これは39,956地点からcustomerを抽出する際の選択確率を定める重みであり、配送量 $q_i$ とは別の変数である。メッシュから地点への配賦規則、欠損・ゼロ重みの扱いは生成configに記録する。
+
+### 4. Customer集合の抽出
+
+地域差を保持する層化を行い、Demand Weightに基づく**重み付き非復元抽出**で $C_s\subset C_{\mathrm{all}}$ を生成する。層の定義、層別割当数、抽出方式を固定・保存する。
+
+Customer数 $n=|C_s|$ は固定scenarioではなく**実験パラメータ**とする。複数random seedで異なるcustomer configurationを生成し、各configurationを古典・量子で共有する。
+
+### 5. 各Customerの配送需要を生成
+
+抽出されたcustomerは、その実験日に配送要求が発生した住宅配送先として扱う。Baselineの基本需要単位は**配送件数**とする。必要に応じて荷物個数・重量 $q_i$ を追加し、単位を明記する。配送要求、荷物、customer、候補地点を区別する。
+
+### 6. Time Windowを生成
+
+「個人のモノの受取調査」の日時指定・受取時間帯分布を使用し、各customerにsyntheticな配送可能時間帯 $[e_i,l_i]$ を割り当てる。観測された受取時刻から許容時間窓への変換規則、窓幅、指定なしの扱いを明記する。生成seedと設定を共通入力に固定する。
+
+### 7. Service Timeを設定
+
+各住宅で配送作業に必要な時間 $s_i$ を設定する。単位、値または分布、生成方法を記録する。
+
+### 8. Depotを設定
+
+Baselineは**単一depot**とする。Customer集合が変わっても原則として同じdepotを使用する。位置・道路接続と、例外的に変更する場合の理由を記録する。
+
+### 9. EV条件を設定
+
+車両台数、積載容量、Battery capacity、Energy consumption rate、usable SOC、出発時SOCを設定する。必要に応じて帰着時最低SOCを設定する。容量・需要・エネルギー・SOCの単位と換算方法を固定する。
+
+### 10. Charging Station条件を設定
+
+位置、充電出力、EVとの互換性、利用可能条件、充電可能量・充電時間の計算方法を設定する。
+
+### 11. Routing Baselineを計算
+
+OSM/SUMO道路ネットワークを使用し、depot・customer・charging station間の**必要OD**について、道路距離 $d_{ij}$、移動時間 $t_{ij}$、到達可能性 $a_{ij}$ を生成する。39,956地点の全組合せ計算は前提にしない。
+
+### 12. Routing Baselineを検証
+
+必要ODの欠落、到達不能pair、一方通行・進入禁止等の通行制約、車種別通行可否、距離・時間の異常値を確認する。入力hash、設定値、software version、再現command、検証結果を保存する。欠落ODと既知の到達不能ODを区別する。
+
+### 13. Common Delivery Instanceを生成
+
+Customer集合、配送需要、Time Window、Service Time、Depot、Vehicle、Charging Station、$d_{ij}$、$t_{ij}$、Reachabilityを統合し、古典・量子の共通入力として固定する。地点順序、単位、seed、生成config、入力hashと制約定義も保存する。
+
+### 14. 共通Hard Constraintsを定義
+
+| 制約 | 両手法に共通する条件 |
+|---|---|
+| Customer訪問 | 配送するcustomerは高々1回だけ訪問する。未充足customerを許容する。 |
+| Depot発着 | 使用車両はdepotから出発し、depotへ帰着する。 |
+| Flow Conservation | ある地点に入った車両は、同じ車両でその地点から出る。 |
+| Subtour禁止 | depotと接続されていない独立巡回路を禁止する。 |
+| Vehicle Assignment | 1つのcustomerを複数車両へ重複割当しない。 |
+| Capacity | 車両積載上限を絶対に超えない。 |
+| Time Window | 指定された時間帯内に配送する。 |
+| 時間伝播 | travel time、service time、waiting time、charging timeを一貫して累積する。 |
+| Operating time | 1台あたりの最大運行時間を超えない。 |
+| Battery / SOC | 走行中にSOCが最低許容値を下回らない。 |
+| 初期・終了SOC | 出発時SOCを定義し、設定した場合は帰着時最低SOCも満たす。 |
+| Charging | 充電可能地点でのみ充電し、Battery capacityを超えず、充電量・charger powerに応じた充電時間を考慮する。 |
+| Reachability | OSM/SUMO上で実際に移動可能なarcのみ使用する。 |
+
+時間窓が配送開始・完了のどちらに適用されるか、数値許容誤差などの詳細は、両手法で同一の定義に固定してから実行する。
+
+### 15. 古典最適化分岐 — OR-Tools
+
+Common Delivery Instanceを入力し、上記Hard Constraintsを満たす配送routeを探索して、配送可能customerと未充足customerを決定する。**第一目的は配送需要充足の最大化**とし、同一需要充足量なら総距離・総時間等を最小化する。Baselineでは配送件数を第一目的の単位に使用する。第二目的の選択・優先順は実験configで固定する。
+
+### 16. 量子最適化分岐 — QUBO / QAOA
+
+OR-Toolsと同じCommon Delivery Instanceと目的の優先順位を使用する。Route、customer訪問、vehicle assignment等をbinary variablesで表現し、共通Hard ConstraintsをQUBO penalty等として定式化する。
+
+QUBOをIsing Hamiltonianへ変換し、必要binary variable数・qubit数を記録する。QAOA circuitを構築して**Qiskit Aer上でsimulation**し、得られたbitstringを配送routeへdecodeする。Penaltyの存在や低いenergyだけではHard Constraintsを満たしたと判定しない。
+
+### 17. 共通Validatorによる独立検証
+
+OR-Tools解とQAOA解の双方について、Customer重複、Depot発着、Flow conservation、Subtour、Vehicle assignment、Capacity、Time Window、時間伝播、Operating time、SOC（初期・終了条件を含む）、Charging feasibility、Reachabilityを最適化処理とは独立して再計算する。
+
+**Hard Constraint違反解はfeasible solutionとして扱わない。** 違反内容を保存し、有効解が得られなかったrunを比較結果から隠さない。
+
+### 18. 需要充足率を計算
+
+配送件数ベースの主指標:
+
+$$
+DFR_{\mathrm{orders}}=\frac{\text{配送完了件数}}{\text{総配送要求件数}}
+$$
+
+荷物量を導入する場合の追加指標:
+
+$$
+DFR_{\mathrm{demand}}=\frac{\sum_i q_i y_i}{\sum_i q_i}
+$$
+
+$y_i$ はcustomer $i$ の配送完了を表す0/1変数とする。分母は同じinstanceの全配送要求であり、未充足customerを除外しない。計画解の独立検証による充足と、追加のSUMO配送simulationで確認する充足は別に報告する。配送完了の判定規則と評価時間範囲を共有する。
+
+### 19. 古典最適化と量子最適化を比較
+
+Demand Fulfillment Rate、配送完了件数、総走行距離、総移動時間、総運行時間、Energy consumption、Charging回数・時間、計算時間を比較する。移動時間と、作業・待機・充電を含む運行時間を区別する。
+
+QAOAではさらにqubit数、circuit depth、QAOA depth $p$、shots、optimizer iterationsを記録する。計算時間の測定範囲と実行環境を保存する。
+
+### 20. Problem Sizeを変化させる
+
+Customer数 $n$ を固定scenarioにせず、実験パラメータとして増加させる。OR-ToolsとQAOA/Aerの両方で実行可能な範囲では、**完全に同一のinstanceを直接比較**する。各 $n$ で複数seedを使用し、片方のみ実行可能な規模の結果は直接比較と区別する。
+
+### 21. 技術Scenarioを設定
+
+Battery capacity、Energy efficiency、Charging power、usable SOC等を変更する。Customer、需要、Time Window、道路条件は原則固定し、技術条件の効果を評価する。単一depotも原則固定する。変更した値と固定した入力hashを保存する。
+
+### 22. 技術Scenario間を比較
+
+EV性能変化によってDemand Fulfillment Rateがどの程度変化するかを評価する。同時に、古典・量子の解品質と計算資源要求の違いを評価する。Problem Sizeの変化、customer configurationの変化、技術条件の変化を区別して集計する。
+
+### 旧記録との整合と実装境界
+
+- 旧82,023 `parcel-equivalent/day`、73,547 request rows、39,956 Stopsは生成済み成果物の来歴として保持する。今後の主需要単位・customer数・DFR分母をこれらの旧集計値で固定しない。
+- 今後の需要抽出、時間窓生成、共通Hard Constraints、OR-Tools、QUBO/QAOA/Aer、独立Validator、評価は本節を優先する。旧比較器やB2B主入力案を必須工程として追加しない。
+- 受入済み道路網・mappingの証拠とhashは維持する。既存基準需要・Stopsの`DONE`は、新しいB2C需要生成の完了を意味しない。
+- 統計表の選択、層化・配賦の詳細、実験する $n$ とseed、時間窓・service time、depot位置、EV・充電の数値、最大運行時間、penalty・encoding・計算予算は別途configに固定する。ここでは値を創作しない。
+- 後続A～Q節は現行の実装・成果物・コマンドの台帳を兼ねる。旧設計に由来する記述は本節の採択内容に従って読み替え、未実装runnerを実装済みと扱わない。
+
+## 更新方針
+
+次の場合に本書を更新する。
+
+- 現在の工程、直ちに行う作業、またはマイルストーンが変わる。
+- 本番パイプライン、成果物、validator、受入、CLIコマンドが追加・変更される。
+- 正本の入力・出力、正本pointer、schema、ゲート、引渡し内容が変わる。
+- 工程が受入済みまたはDONEになる。
+
+履歴上の診断runや一時的な実験出力は、現行・正本として採択されない限り本書の現行経路へ追加しない。更新時は本書専用validatorとrepository・Portal validatorを実行する。
+
+## 状態の定義
+
+| 状態 | 意味 |
+|---|---|
+| `CURRENT / IMPLEMENTED` | 現在のcheckoutに実装または参照が存在する。 |
+| `ACCEPTED` | 受入成果物によって下流利用が許可されている。 |
+| `DONE` | 現行ロードマップ上の完了条件を満たしている。 |
+| `NEXT` | 現在着手すべき工程。 |
+| `PLANNED` | ロードマップにあるが完了していない。 |
+| `FUTURE` | 上流ゲートが閉じている将来工程。 |
+| `NOT IMPLEMENTED` | 本番code、runner、またはvalidatorが存在しない。 |
+| `NOT AVAILABLE` | 必要な成果物または結果が存在しない。 |
+| `UNRESOLVED` | 研究判断またはparameterの固定が必要。 |
+| `HISTORICAL` | 過去の記録でcurrentではない。 |
+| `SUPERSEDED` | 明示的に後継へ置換された。 |
+
+コマンドインターフェースの存在はパイプライン実装を意味しない。`--dry-run`が成功しても成果物の生成・検証・受入を意味しない。
+
+## 現在の研究位置 — 今何をすべきか
+
+| 項目 | 現在の状態 |
+|---|---|
+| ネットワーク構築 | `DONE` |
+| ネットワーク受入 | `ACCEPTED` / `FORMAL_NETWORK_ACCEPTED = true` |
+| 現在のマイルストーン | `M1 Network Ready — DONE` |
+| 現在の研究工程 | `Routing Baseline — NEXT` |
+| 直ちに行う作業 | 配送インスタンス用の経路計算範囲を定義する。 |
+| 受入済みネットワークSHA-256 | `4625dbbc150cbcf72964bed0e90a8b33fe03f190ff4264aecaaf89e3aab0e40f` |
+| 最初に決める事項 | インスタンス選択・配送先範囲、デポ、配送車両クラス、経路コスト定義を固定する。 |
+
+最初に次を使用する。
+
+```bash
+./research status
+./research routing inputs
+./research routing status
+./research pipeline routing --dry-run
+```
+
+`39,956 × 39,956`の全組合せ行列は採択済み前提ではない。対象配送インスタンスと必要OD集合を先に定義する。
+
+## パイプライン全体図
+
+```text
+公的統計 → 39,956候補地点 C_all → Demand Weight w_i
+  → 層化・重み付き非復元抽出 C_s（n・複数seed）
+  → 配送需要・Time Window・Service Time
+  → 単一Depot・EV・Charging Station条件
+  → OSM/SUMO Routing Baseline → Routing検証
+  → Common Delivery Instance ＋ 共通Hard Constraints
+      ├─ OR-Tools ────────────────────────┐
+      └─ QUBO → Ising → QAOA → Qiskit Aer ┤
+                                          ↓
+                                    共通独立Validator
+                                          ↓
+                             需要充足評価・古典／量子比較
+                                          ↓
+                           Problem Size・技術Scenario比較
+```
+
+この図は2026-09-09採択の今後の設計である。道路網・mappingは受入済みだが、新しい需要生成と下流比較は未実装・未受入である。
+
+ロードマップの`PLANNED`とPortal実行mapの`FUTURE`が異なる下流工程では、本書は`PLANNED / FUTURE / NOT IMPLEMENTED`と併記する。`PLANNED`は研究計画上の存在、`FUTURE`は現在の実行位置、`NOT IMPLEMENTED`は本番実装の不在を表す。
+
+## A. 外部・オープンデータ
+
+### 目的
+
+入力sourceのidentity、取得元、取得日、hash、用途、利用制限を固定し、DemandとNetworkの派生処理へ渡す。
+
+### 現在の状態
+
+`DONE`（governed source inputs）。datasetごとのreadinessと再配布可否は同一ではない。
+
+### 開始条件
+
+sourceを台帳登録し、取得記録・local raw path・hash・利用条件を確認する。
+
+### 正本入力
+
+| 入力 | 役割 | 正本パス | 状態 | 注記 |
+|---|---|---|---|---|
+| source台帳 | source identity / hash | [traffic_simulation_sources.csv](03_data/metadata/traffic_simulation_sources.csv) | `CURRENT` | sourceごとの用途・制限を記録。 |
+| 来歴policy | raw/derived provenance | [data_provenance.md](03_data/metadata/data_provenance.md) | `CURRENT` | raw原本の一部は再配布されない。 |
+| 取得記録 | source-specific acquisition evidence | [acquisition README](03_data/metadata/acquisition/README.md) | `CURRENT` | 個別記録から取得条件を追跡する。 |
+
+### コマンド
+
+| コマンド | 目的 | 読取/書込 | 注記 |
+|---|---|---|---|
+| `./research artifacts` | current input/artifact path確認 | Read-only | dataset内容の再取得・検証は行わない。 |
+| `./research demand validate` | Demand consumer側からsource/config整合性を検証 | Read-only validation | source全体のacceptanceではない。 |
+
+### 実装
+
+| 構成要素 | パス | 役割 |
+|---|---|---|
+| 基準値利用処理 | [prepare_baseline_demand.py](05_src/traffic_simulation/demand/prepare_baseline_demand.py) | 登録sourceをbaseline demandへ変換。 |
+| ネットワークsource処理 | [traffic simulation README](05_src/traffic_simulation/README.md) | source道路表現の処理入口説明。 |
+
+### 出力
+
+| 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
+|---|---|---|---|
+| source metadata | identity/hash/license/provenance | `03_data/metadata/` | `AVAILABLE` |
+| raw sourceデータ | acquired originals | `03_data/raw/traffic_simulation/` | dataset-dependent / local |
+| 利用側入力 | normalized or derived input | consumer configが指定 | dataset-dependent |
+
+### 正本・信頼源
+
+Source identityはsource registry、取得事実は個別acquisition record、consumer採択は各pipeline config/acceptanceが正本。本書はsource acceptanceを新設しない。
+
+### 検証
+
+| Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
+|---|---|---|---|
+| Registry・利用側確認 | `./research demand validate` | Demand testと必要current inputが成功 | `AVAILABLE`; source全体gateではない |
+| リポジトリ参照 | `./research portal check` | current path/index/link検証成功 | `PASS` |
+
+### 受入・DONE条件
+
+source identity、hash、取得条件、用途、制限が台帳化され、利用pipelineのvalidatorがsourceを確認できること。Portal roadmap上は`DONE`。
+
+### 来歴
+
+source ID、取得日、URL、SHA-256はsource registryとacquisition recordに記録する。
+
+### 既知の制約
+
+raw原本の一部はgit非追跡で再取得が必要。Open Dataは実配送運用を直接表さない。
+
+### 未解決の判断
+
+future scenarioで採用する追加sourceと変換規則は`UNRESOLVED`。
+
+### 次工程への引渡し
+
+登録済みsource IDとhashをDemandまたはNetwork configへ渡す。
+
+## B. 需要
+
+### 目的
+
+公開統計から大田区500m meshのbaseline populationと`parcel_equivalent/day`需要proxyを生成・検証する。
+
+### 現在の状態
+
+`DONE`（baseline）。safe integrated build runnerは`NOT IMPLEMENTED`。`./research demand status`は現行Portal node ID不一致により現在exit 1。
+
+### 開始条件
+
+source registry上の人口・宅配便統計、大田区境界、baseline configが利用可能であること。
+
+### 正本入力
+
+| 入力 | 役割 | 正本パス | 状態 | 注記 |
+|---|---|---|---|---|
+| 需要仕様 | definition / boundary | [baseline demand and comparator](05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md) | `CURRENT_NORMATIVE` | 実注文・停止ではない。 |
+| 需要config | parameters / output paths | [baseline_demand.yml](reproducibility/config/traffic_simulation/baseline_demand.yml) | `CURRENT` | `target_days: 1`、unitは`parcel_equivalent`。 |
+| source台帳 | governed inputs | [traffic_simulation_sources.csv](03_data/metadata/traffic_simulation_sources.csv) | `CURRENT` | config内source IDを解決。 |
+
+### コマンド
+
+| コマンド | 目的 | 読取/書込 | 注記 |
+|---|---|---|---|
+| `./research demand validate` | baseline implementation test＋accepted mapping consistency | Read-only validation | production demandを再生成しない。 |
+| `./research demand build --dry-run` | 不足runner/dependencyを表示 | Read-only | build本体は`NOT IMPLEMENTED`。 |
+| `./research demand status` | status表示 | Read-only | **現在失敗**: Portal node ID不一致。 |
+| `./research demand future` | future demand利用可否表示 | Read-only refusal | `NOT IMPLEMENTED / UNRESOLVED`。 |
+
+### 実装
+
+| 構成要素 | パス | 役割 |
+|---|---|---|
+| 基準値生成器 | [prepare_baseline_demand.py](05_src/traffic_simulation/demand/prepare_baseline_demand.py) | mesh人口・parcel-equivalent配賦。fixed canonical outputのためCLI buildからは実行しない。 |
+| 単体test | [test_prepare_baseline_demand.py](05_src/traffic_simulation/validation/test_prepare_baseline_demand.py) | source/config/配賦不変条件を検証。 |
+
+### 出力
+
+| 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
+|---|---|---|---|
+| 基準需要 | 191 meshのpopulation/demand proxy | `03_data/processed/traffic_simulation/demand/ota_ward_baseline_demand_2024_500m.parquet` | `AVAILABLE LOCALLY / GIT-IGNORED` |
+| 品質要約 | source/config/output hashesと集計 | `03_data/processed/traffic_simulation/validation/ota_ward_baseline_demand_2024_500m_quality_summary.json` | `AVAILABLE LOCALLY / GIT-IGNORED` |
+
+### 正本・信頼源
+
+定義はDemand specification、parameter/output pathはbaseline config、実行結果のhash・集計はquality summary。独立したDemand acceptance flagはない。
+
+### 検証
+
+| Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
+|---|---|---|---|
+| 基準需要単体検証 | `./research demand validate` | `test_prepare_baseline_demand.py` PASS | `AVAILABLE` |
+| 成果物の利用可否 | `./research artifacts` | Parquet/configが存在 | `AVAILABLE LOCALLY` |
+
+### 受入・DONE条件
+
+config、builder、unit test、Parquet、quality summaryが存在し、population/demand conservationとhashが確認できること。roadmap/Portalはbaselineを`DONE`とする。
+
+### 来歴
+
+quality summaryにsource SHA、config SHA、output SHA、generated timestampを記録する。
+
+### 既知の制約
+
+`82,023 parcel-equivalent/day`は顧客数、request数、stop数ではない。artifactはgit-ignoredでportable publicationではない。仕様文書の「未生成」記述とcurrent artifact存在にはdocumentation lagがある。
+
+### 未解決の判断
+
+future demandのscenario year、growth rate、spatial transformationは`UNRESOLVED`。
+
+### 次工程への引渡し
+
+baseline demand proxyをRequests / Stops生成契約へ渡す。parcel-equivalentを1個1停止へ直接変換しない。
+
+## C. リクエスト・配送先
+
+### 目的
+
+合成需要からrequest recordを作り、building単位のdelivery stopへ集約する。request、parcel-equivalent、stopの単位を分離する。
+
+### 現在の状態
+
+`DONE`（current roadmap/Portal、accepted network mappingの入力）。安全なproduction regeneration runnerと専用validatorは`NOT IMPLEMENTED / NOT AVAILABLE`。
+
+### 開始条件
+
+baseline demand、household/building assignment source、固定seed、scope ruleが必要。
+
+### 正本入力
+
+| 入力 | 役割 | 正本パス | 状態 | 注記 |
+|---|---|---|---|---|
+| 基準需要 | aggregate demand proxy | `03_data/processed/traffic_simulation/demand/ota_ward_baseline_demand_2024_500m.parquet` | `AVAILABLE LOCALLY` | parcel-equivalent単位。 |
+| リクエスト成果物 | synthetic request records | `03_data/processed/traffic_simulation/demand/household_parcel_v1/pipelines_v1/daily_requests.csv` | `AVAILABLE LOCALLY` | 73,547 data rows。 |
+| 配送先生成要約 | generation/accounting | `03_data/processed/traffic_simulation/demand/household_parcel_v1/pipelines_v1/stop_generation_run_summary.json` | `AVAILABLE LOCALLY` | scoped parcel conservationを記録。 |
+
+### コマンド
+
+| コマンド | 目的 | 読取/書込 | 注記 |
+|---|---|---|---|
+| `./research demand validate` | file availability＋accepted mapping consistency | Read-only validation | request/stop generatorの再現を検証しない。 |
+| `./research artifacts` | canonical local paths表示 | Read-only | availability inspection。 |
+| `./research demand build --dry-run` | regeneration gap表示 | Read-only | integrated generator不在。 |
+
+### 実装
+
+| 構成要素 | パス | 役割 |
+|---|---|---|
+| CLI安全制御 | [demand.py](05_src/research_cli/demand.py) | generator不在時にbuildを拒否。 |
+| 現行生成実装 | — | `NOT AVAILABLE` in current checkout |
+
+### 出力
+
+| 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
+|---|---|---|---|
+| リクエスト | 1行1 synthetic request | `.../pipelines_v1/daily_requests.csv` | `AVAILABLE LOCALLY / GIT-IGNORED` |
+| 配送先 | building集約delivery stop | `.../pipelines_v1/building_delivery_stops_scoped.csv` | `AVAILABLE LOCALLY / GIT-IGNORED`; 39,956 stops |
+| 生成要約 | count/conservation/seed/hash | `.../pipelines_v1/*run_summary.json` | `AVAILABLE LOCALLY / GIT-IGNORED` |
+
+### 正本・信頼源
+
+current pathsはCLI coreとPortal map、下流利用状態はaccepted network authority/acceptanceが参照する。Requests / Stops単独のmachine-readable acceptance artifactは`NOT AVAILABLE`。
+
+### 検証
+
+| Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
+|---|---|---|---|
+| 受入済みmapping整合性 | `./research demand validate` | authority validator PASS、required files存在 | `AVAILABLE` |
+| リクエスト・配送先再生成validator | — | deterministic generation＋conservation | `NOT AVAILABLE` |
+
+### 受入・DONE条件
+
+現行roadmapはartifact存在とaccepted stop mappingで`DONE`としている。完全な再現性にはgenerator、schema、専用validator、portable artifact policyが追加で必要。
+
+### 来歴
+
+local run summariesにseed、config hash、input artifact hash、request/stop/parcel accountingを記録。
+
+### 既知の制約
+
+baseline 82,023 parcel-equivalent、generated request 73,547 rows、39,956 stopsは異なる単位。scoped stop parcel-equivalentはfull request scopeより小さく、full conservationはfalse、assigned scope conservationのみtrue。
+
+### 未解決の判断
+
+production regeneration contract、portable publication、future scenario別生成interface。
+
+### 次工程への引渡し
+
+Requests、Stops、scope/accountingをStop MappingとRouting scope definitionへ渡す。
+
+## D. ネットワーク構築
+
+### 目的
+
+source道路表現をThree-tier provenance（DIRECT / INFERRED / FALLBACK）でFormal Networkへ完成し、SUMO `net.xml`へmaterializeする。
+
+### 現在の状態
+
+`DONE / ACCEPTED`。安全な新規isolated end-to-end CLI buildは`NOT IMPLEMENTED`。accepted runを再利用する。
+
+### 開始条件
+
+current Decision、policy、pipeline、registry/schema、source/structural input lockが必要。
+
+### 正本入力
+
+| 入力 | 役割 | 正本パス | 状態 | 注記 |
+|---|---|---|---|---|
+| 現行正本pointer | authority resolver | [current_network_completion_authority_v17.yml](reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml) | `CURRENT` | 唯一のcurrent network入口。 |
+| 判断 | method adoption | [phase13 Formal Completion Decision](reproducibility/config/traffic_simulation/decisions/phase13_formal_completion_three_tier_v1.yml) | `CURRENT` | Decision ID `DEC-P13-FORMAL-COMPLETION-THREE-TIER-001`。 |
+| 規範仕様 | Three-tier policy | [formal completion specification](05_src/traffic_simulation/specifications/20260903_20260903_formal_completion_three_tier_policy_v17.md) | `CURRENT_NORMATIVE` | strict/hybridをcurrentへ混ぜない。 |
+| パイプライン仕様 | ordered stages/gates | [network completion pipeline specification](05_src/traffic_simulation/specifications/20260903_20260903_network_completion_pipeline_v17.md) | `CURRENT_NORMATIVE` | SOURCE→…→ACCEPTANCE。 |
+| Registry・schema | machine-readable contract | [Three-tier registry](reproducibility/config/traffic_simulation/formal_completion_three_tier_registry_v17.yml) | `CURRENT` | policy/record schemasはauthorityから解決。 |
+
+### コマンド
+
+| コマンド | 目的 | 読取/書込 | 注記 |
+|---|---|---|---|
+| `./research network status` | accepted pointer/hash/status表示 | Read-only | 推奨inspection。 |
+| `./research network validate` | current accepted networkを全gate検証 | Read-only validation | buildしない。 |
+| `./research network acceptance` | acceptance JSON表示 | Read-only | flag/gates/mappingを表示。 |
+| `./research network build --dry-run` | unsafe fixed-output limitation表示 | Read-only | build本体は拒否される。 |
+| `./research pipeline network` | accepted networkを再利用してvalidate | Read-only validation | accepted runを上書きしない。 |
+
+### 実装
+
+| 構成要素 | パス | 役割 |
+|---|---|---|
+| Three-tier補完 | [execute_three_tier_completion_streaming.py](05_src/traffic_simulation/network/execute_three_tier_completion_streaming.py) | accepted build provenance上のcompletion implementation。 |
+| Registry validator | [validate_formal_completion_three_tier_registry.py](05_src/traffic_simulation/network/validate_formal_completion_three_tier_registry.py) | policy/registry/schema整合性。 |
+| パイプラインvalidator | [validate_network_completion_pipeline.py](05_src/traffic_simulation/network/validate_network_completion_pipeline.py) | stage ordering/gate contract。 |
+| 正本validator | [validate_current_network_completion_authority.py](05_src/traffic_simulation/network/validate_current_network_completion_authority.py) | pointer/hash/acceptance integrity。 |
+
+### 出力
+
+| 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
+|---|---|---|---|
+| 受入済みrun | current run directory | `reproducibility/outputs/.../phase13_20260903_three_tier_completion/run_2` | `ACCEPTED` |
+| 受入済みnetwork | SUMO network | [three_tier.net.xml](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/three_tier.net.xml) | `ACCEPTED` |
+| ネットワークグラフ規模 | routing graphのnode / directed edge数とSUMO lane数 | [network_acceptance.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/network_acceptance.json) `/validation/counts` | `ACCEPTED` |
+| 来歴集計 | DIRECT/INFERRED/FALLBACK counts | [quality_accounting.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_1/quality_accounting.json) | `CURRENT REFERENCE FROM AUTHORITY` |
+
+### 正本・信頼源
+
+[current network authority](reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml)がDecision、specification、registry/schema、accepted run/network/acceptance、SHAを解決する。Hierarchical Hybridは`SUPERSEDED`、strict v17と旧runは`HISTORICAL`。
+
+### 検証
+
+| Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
+|---|---|---|---|
+| Registry・schema | `./research network validate` | registry/schema validator PASS | `PASS` |
+| パイプライン定義 | same | current Decision/order/gates一致 | `PASS` |
+| SUMO build・属性・接続性 | same | build、lane、speed、permission、connectivity PASS | `PASS` |
+| SHA完全性 | same | actual SHA＝authority SHA | `PASS` |
+
+### 受入・DONE条件
+
+all network gates PASS、accepted `net.xml`存在、SHA一致、Stop Mapping/routeability gate PASS、`FORMAL_NETWORK_ACCEPTED=true`。
+
+### 来歴
+
+accepted run ID `three_tier_run_2`、network ID `P13-THREE-TIER-RUN-2`、source commit、input/output SHA、quality accountingをauthority/acceptanceに記録。
+
+ネットワークグラフ規模は受入成果物の`validation.counts`を正本とする。`network_node_count = 70,050`、`network_edge_count = 147,168`（方向別に定義されたSUMO edgeを数える有向edge）、`network_lane_count = 154,728`。論文表記は`Traffic network size: |V| nodes, |E| directed edges`とし、lane数はSUMO固有の補助指標とする。
+
+### 既知の制約
+
+SUMO import warning保持、185 components、routeabilityはsample gate。current CLIはcaller-supplied unique run IDを持つ安全なrebuildを提供しない。
+
+### 未解決の判断
+
+Network stage自体のcurrent acceptance blockerはない。将来の安全なisolated rebuild runnerは未実装。
+
+### 次工程への引渡し
+
+accepted network pointerとSHAをStop Mapping、Routing Baseline、Simulationへ渡す。
+
+## E. 配送先マッピング
+
+### 目的
+
+39,956 Stopsをaccepted SUMO network上のdelivery-permitted edgeへ決定的に対応付ける。
+
+### 現在の状態
+
+`DONE / ACCEPTED AS PART OF NETWORK ACCEPTANCE`。
+
+### 開始条件
+
+scoped Stops、SUMO network、delivery vehicle permissions、deterministic mapping ruleが必要。
+
+### 正本入力
+
+| 入力 | 役割 | 正本パス | 状態 | 注記 |
+|---|---|---|---|---|
+| 対象範囲内配送先 | mapping targets | `03_data/processed/traffic_simulation/demand/household_parcel_v1/pipelines_v1/building_delivery_stops_scoped.csv` | `AVAILABLE LOCALLY` | 39,956 stops。 |
+| 受入済みnetwork | permitted edges | [three_tier.net.xml](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/three_tier.net.xml) | `ACCEPTED` | authority-bound SHA。 |
+| 到達可能edge override | limited mapping fix | [routeable_edge_overrides.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/routeable_edge_overrides.json) | `CURRENT RUN ARTIFACT` | recorded 17-failed-OD cohort fix。 |
+
+### コマンド
+
+| コマンド | 目的 | 読取/書込 | 注記 |
+|---|---|---|---|
+| `./research network acceptance` | mapping count/status表示 | Read-only | 39,956 / 39,956。 |
+| `./research network validate` | mappingをauthority chain内で再検証 | Read-only validation | accepted artifactを書き換えない。 |
+| `./research routing inputs` | mapped Stopsのhandoff確認 | Read-only | Routing input readiness。 |
+
+### 実装
+
+| 構成要素 | パス | 役割 |
+|---|---|---|
+| mapping受入生成器 | [accept_three_tier_network_run.py](05_src/traffic_simulation/network/accept_three_tier_network_run.py) | mapping artifactとacceptance accountingを生成した固定run script。日常実行しない。 |
+| 到達可能性修正validator | [validate_three_tier_routeability_fix.py](05_src/traffic_simulation/network/validate_three_tier_routeability_fix.py) | mapping fix後のrouteabilityを検証。 |
+
+### 出力
+
+| 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
+|---|---|---|---|
+| 配送先mapping | stop→edge対応 | [request_stop_mapping.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/request_stop_mapping.json) | `ACCEPTED` |
+| mapping集計 | mapped/unmapped/distance | network acceptance JSON `/mapping` | `ACCEPTED` |
+
+### 正本・信頼源
+
+current authorityのaccepted runと[network_acceptance.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/network_acceptance.json)。
+
+### 検証
+
+| Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
+|---|---|---|---|
+| mapping網羅率 | `./research network acceptance` | mapped＝total＝39,956、unmapped＝0 | `PASS` |
+| 許可edge mapping | `./research network validate` | delivery-permitted mappingとrouteability gate PASS | `PASS` |
+
+### 受入・DONE条件
+
+全Stops mapped、mapping rate 1.0、delivery permission、primary routeability sample 100/100、network acceptanceに含まれること。
+
+### 来歴
+
+mapping path、coverage、distance statistics、override名、sample countはacceptance JSONに記録。
+
+### 既知の制約
+
+nearest-edge indexはdeterministic edge midpoint方式。routeabilityはall-pairs proofではない。additional non-gating sanity sampleは91/100。
+
+### 未解決の判断
+
+Routing instanceで使用するStop subsetと到達不能組のpolicy。
+
+### 次工程への引渡し
+
+accepted Stop→edge mappingをRouting Baselineの端点定義へ渡す。
+
+## F. ネットワーク受入
+
+### 目的
+
+Network Construction、SUMO validity、Stop Mapping、routeabilityを研究利用可能な一つのaccepted stateへ束ねる。
+
+### 現在の状態
+
+`ACCEPTED / DONE`。
+
+### 開始条件
+
+SUMO build、lane/speed/permission/connectivity、mapping、routeability validationが完了していること。
+
+### 正本入力
+
+| 入力 | 役割 | 正本パス | 状態 | 注記 |
+|---|---|---|---|---|
+| 正本pointer | accepted run resolution | [current authority](reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml) | `CURRENT` | run/network/SHAを固定。 |
+| 受入成果物 | formal gate state | [network_acceptance.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/network_acceptance.json) | `ACCEPTED` | `FORMAL_NETWORK_ACCEPTED=true`。 |
+
+### コマンド
+
+| コマンド | 目的 | 読取/書込 | 注記 |
+|---|---|---|---|
+| `./research network acceptance` | accepted flags/gates表示 | Read-only | primary inspection。 |
+| `./research network validate` | authorityから全accepted gate再検証 | Read-only validation | current stateを変更しない。 |
+
+### 実装
+
+| 構成要素 | パス | 役割 |
+|---|---|---|
+| 正本validator | [validate_current_network_completion_authority.py](05_src/traffic_simulation/network/validate_current_network_completion_authority.py) | path、SHA、flag整合性。 |
+| Portal・network validator | [validate_research_map_portal.py](05_src/traffic_simulation/network/validate_research_map_portal.py) | accepted metricsとcurrent display整合性。 |
+
+### 出力
+
+| 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
+|---|---|---|---|
+| 受入JSON | formal accepted state | `.../run_2/network_acceptance.json` | `ACCEPTED` |
+| 現行正本 | stable pointer | `reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml` | `CURRENT` |
+
+### 正本・信頼源
+
+acceptance結果はacceptance JSON、current選択はauthority pointer。Portalや本書はacceptance authorityではない。
+
+### 検証
+
+| Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
+|---|---|---|---|
+| 正式flag | `./research network acceptance` | `FORMAL_NETWORK_ACCEPTED=true` | `PASS` |
+| 主要routeability | same | deterministic 100 pairs、100 routeable | `PASS` |
+| SHA紐付け | `./research network validate` | `4625dbbc…e40f`一致 | `PASS` |
+
+### 受入・DONE条件
+
+acceptance artifact存在、all prior gates PASS、formal flag true、authority pointerとSHA一致。
+
+### 来歴
+
+Decision ID、network ID、source commit、source input SHA、network semantic SHA、SUMO versionをacceptance JSONに記録。
+
+### 既知の制約
+
+routeability acceptanceはsample-based。additional sanity sampleは非gatingで91/100。これをcurrent failureへ昇格しないが、all-pairs保証とも表現しない。
+
+### 未解決の判断
+
+なし（current acceptance scope内）。
+
+### 次工程への引渡し
+
+accepted network、mapping、known limitationsをRouting Baselineへ渡す。
+
+## G. 経路計算ベースライン
+
+### 目的
+
+選択したdelivery instanceに必要なtravel-time cost、distance cost、routeability、routing provenanceを固定する。
+
+### 現在の状態
+
+`NEXT / NOT IMPLEMENTED / NOT YET PRODUCTION COMPLETE`。Network prerequisiteは`PASS`。
+
+### 開始条件
+
+accepted network、accepted Stop mapping、Requests / Stops、および採択済みrouting scope/depot/vehicle class/cost definition。
+
+### 正本入力
+
+| 入力 | 役割 | 正本パス | 状態 | 注記 |
+|---|---|---|---|---|
+| 受入済みnetwork | routing graph | [three_tier.net.xml](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/three_tier.net.xml) | `READY` | SHA-bound。 |
+| ネットワークグラフ規模 | graph traversal substrate scale | [network_acceptance.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/network_acceptance.json) `/validation/counts` | `READY` | Nodes 70,050 / directed edges 147,168 / lanes 154,728。 |
+| 受入済みmapping | route endpoints | [request_stop_mapping.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/request_stop_mapping.json) | `READY` | full Stops mapping。 |
+| リクエスト | demand records | `03_data/processed/traffic_simulation/demand/household_parcel_v1/pipelines_v1/daily_requests.csv` | `READY LOCALLY` | instance scope未選択。 |
+| 配送先 | candidate delivery endpoints | `03_data/processed/traffic_simulation/demand/household_parcel_v1/pipelines_v1/building_delivery_stops_scoped.csv` | `READY LOCALLY` | 39,956 all-pairsを前提にしない。 |
+
+### コマンド
+
+| コマンド | 目的 | 読取/書込 | 注記 |
+|---|---|---|---|
+| `./research routing inputs` | available inputsと未決定事項表示 | Read-only | 現在の主inspection。 |
+| `./research routing status` | stage/runner/artifact状態表示 | Read-only | `NEXT`。 |
+| `./research routing build --dry-run` | missing decisions/runner表示 | Read-only | production buildは拒否。 |
+| `./research routing validate --dry-run` | missing artifact/validator表示 | Read-only | validationは未実装。 |
+| `./research pipeline routing --dry-run` | inputs→build→validation gateをinspection | Read-only | artifactを作らない。 |
+
+### 実装
+
+| 構成要素 | パス | 役割 |
+|---|---|---|
+| CLI準備状況制御 | [routing.py](05_src/research_cli/routing.py) | input/gate表示、未実装build拒否。 |
+| 本番routing runner | — | `NOT IMPLEMENTED` |
+| 本番routing validator | — | `NOT IMPLEMENTED` |
+
+### 出力
+
+| 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
+|---|---|---|---|
+| 所要時間cost | required OD travel-time | path `UNRESOLVED` | `EXPECTED / NOT YET AVAILABLE` |
+| 距離cost | required OD distance | path `UNRESOLVED` | `EXPECTED / NOT YET AVAILABLE` |
+| 経路到達可能性 | required OD feasibility | path `UNRESOLVED` | `EXPECTED / NOT YET AVAILABLE` |
+| 経路計算来歴 | method/version/command/input hashes | path `UNRESOLVED` | `EXPECTED / NOT YET AVAILABLE` |
+
+### 正本・信頼源
+
+current stage/decision boundaryは[Research Overview Stage 1](RESEARCH_OVERVIEW.md#stage-1--routing-baseline-next)と[Portal map](reproducibility/config/research_portal/research_map_v1.yml)。production routing authorityは`NOT AVAILABLE`。
+
+### 検証
+
+| Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
+|---|---|---|---|
+| ネットワーク前提条件 | `./research routing inputs` | accepted network/mapping READY | `PASS` |
+| 経路計算成果物validator | `./research routing validate --dry-run` | method fixed、required OD complete、routeability/provenance valid | `NOT AVAILABLE` |
+
+### 受入・DONE条件
+
+routing method/scope fixed、必要OD集合のみを完全生成、validator PASS、input/output hashと再現commandを保存し、downstream利用をacceptすること。
+
+### 来歴
+
+将来artifactにnetwork SHA、mapping/input hashes、method/version、vehicle class、OD scope、command、runtimeを記録する必要がある。現時点では`NOT AVAILABLE`。
+
+### 既知の制約
+
+ネットワークグラフ規模（`|V|`ノード・`|E|`有向edge・lane数）と経路計算負荷（origin・destination・必要OD pair）、さらに配送インスタンス規模（request・stop・vehicle・instance route pair）は、別々の問題規模である。39,956配送先の全組合せは採択しておらず、`routing_origin_count`、`routing_destination_count`、`required_od_pair_count`は`NOT YET AVAILABLE`。sample routeability acceptanceは本番routing cost成果物ではない。
+
+### 未解決の判断
+
+routing scope、depot、delivery vehicle class、routing cost definition、unreachable pair policy、artifact/schema/provenance contract。
+
+### 次工程への引渡し
+
+validated required-OD cost/routeability artifactをCommon Delivery Instanceへ渡す。
+
+## H. 共通配送インスタンス
+
+### 目的
+
+需要、Stops、depot、routing costs、vehicle/battery constraintsをsolver-independentな共通問題へ凍結する。
+
+### 現在の状態
+
+`PLANNED / NOT IMPLEMENTED / NOT AVAILABLE`。Portal execution positionは`PLANNED`。
+
+### 開始条件
+
+validated Routing Baseline、resolved depot/fleet size/vehicle capacity/battery parameters、adopted schemaが必要。
+
+### 正本入力
+
+| 入力 | 役割 | 正本パス | 状態 | 注記 |
+|---|---|---|---|---|
+| リクエスト・配送先 | common demand | current local paths | `AVAILABLE LOCALLY` | 層化・重み付き非復元抽出を採択済み。層と配賦の詳細は未固定。 |
+| 経路計算baseline | matrices/feasibility | path未定 | `NOT AVAILABLE` | blocking input。 |
+| 比較protocol | design constraint | [optimization_comparison_protocol.md](05_src/traffic_simulation/optimization_comparison_protocol.md) | `CURRENT DESIGN` | common inputs/evaluatorを要求。 |
+| EVプロファイル | candidate fixed model assumption | [managed_urban_ev_delivery_v1.yml](reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml) | `CURRENT MODEL ASSUMPTION` | fleet/battery instance acceptanceではない。 |
+
+### コマンド
+
+| コマンド | 目的 | 読取/書込 | 注記 |
+|---|---|---|---|
+| `./research instance status` | missing validator/upstream/artifact表示 | Read-only | current module pathはMISSING。 |
+| `./research instance build --dry-run` | missing inputs/generator表示 | Read-only | no artifact。 |
+| `./research instance validate --dry-run` | missing validator/artifact表示 | Read-only | no acceptance。 |
+
+### 実装
+
+| 構成要素 | パス | 役割 |
+|---|---|---|
+| CLI安全制御 | [instance.py](05_src/research_cli/instance.py) | current absenceを明示。 |
+| `common_delivery_instance.py` | `05_src/optimization/common_delivery_instance.py` | `NOT AVAILABLE` in current checkout |
+
+### 出力
+
+| 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
+|---|---|---|---|
+| インスタンスschema | solver-independent contract | path未定 | `EXPECTED / NOT AVAILABLE` |
+| 本番インスタンス | frozen common problem | path未定 | `EXPECTED / NOT AVAILABLE` |
+| 検証・受入 | completeness/feasibility/hash | path未定 | `EXPECTED / NOT AVAILABLE` |
+
+### 正本・信頼源
+
+Stage 2 roadmapとcomparison protocolが設計参照。production authority、schema、accepted artifactは存在しない。
+
+### 検証
+
+| Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
+|---|---|---|---|
+| インスタンスvalidator | `./research instance validate --dry-run` | schema fixed、placeholderなし、hash/feasibility PASS | `NOT AVAILABLE` |
+
+### 受入・DONE条件
+
+schema、generator、validatorがcurrent checkoutに存在し、validated routingとresolved constraintsからreproducible production instanceを生成・acceptすること。
+
+### 来歴
+
+将来はRequests/Stops/routing/config hashes、node ordering、vehicle/constraint version、generation commandを保存する。
+
+### 既知の制約
+
+過去候補はroadmap上のreview materialでありcurrent implementationではない。fixed EV profileだけでCommon Instance成立とはしない。
+
+### 未解決の判断
+
+contract復元/改訂/置換、depot、fleet size、capacity、battery/energy semantics、instance scope。
+
+### 次工程への引渡し
+
+accepted common instanceをClassical OptimizationとQUBOへ同一入力として渡す。
+
+## I. 古典最適化
+
+### 目的
+
+量子手法と比較するclassical baselineを、共通instance・共通feasibility/evaluator上で確立する。
+
+### 現在の状態
+
+`PLANNED`（roadmap）/ `FUTURE`（Portal）/ `NOT IMPLEMENTED`。production solver/resultなし。
+
+### 開始条件
+
+accepted Common Delivery Instance、fixed formulation/objective/constraints、solver budget、seed、correctness fixtures。
+
+### 正本入力
+
+| 入力 | 役割 | 正本パス | 状態 | 注記 |
+|---|---|---|---|---|
+| 共通配送インスタンス | solver input | path未定 | `NOT AVAILABLE` | blocking。 |
+| 比較protocol | fairness boundary | [optimization_comparison_protocol.md](05_src/traffic_simulation/optimization_comparison_protocol.md) | `CURRENT DESIGN` | solver実装ではない。 |
+
+### コマンド
+
+| コマンド | 目的 | 読取/書込 | 注記 |
+|---|---|---|---|
+| `./research optimization classical status` | upstream/solver状態表示 | Read-only | no result。 |
+| `./research optimization classical run --dry-run` | missing solver/upstream表示 | Read-only | production run拒否。 |
+| `./research optimization classical validate --dry-run` | missing result/validator表示 | Read-only | no acceptance。 |
+| `./research pipeline optimization --dry-run` | instance→classical→validation inspection | Read-only | partial orchestration。 |
+
+### 実装
+
+| 構成要素 | パス | 役割 |
+|---|---|---|
+| CLI安全制御 | [optimization.py](05_src/research_cli/optimization.py) | missing production solverを明示。 |
+| 本番定式化・solver | — | `NOT IMPLEMENTED` |
+
+### 出力
+
+| 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
+|---|---|---|---|
+| 数理定式化 | adopted objective/constraints | path未定 | `EXPECTED / NOT AVAILABLE` |
+| 古典解 | raw/repaired feasible solution | path未定 | `EXPECTED / NOT AVAILABLE` |
+| 検証Evidence | small-instance correctness | path未定 | `EXPECTED / NOT AVAILABLE` |
+
+### 正本・信頼源
+
+Stage 3 roadmapとcomparison protocolのみ。production Decision/config/result/acceptanceは`NOT AVAILABLE`。
+
+### 検証
+
+| Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
+|---|---|---|---|
+| 古典解法の正当性 | `./research optimization classical validate --dry-run` | fixtures、feasibility、objective、result provenance PASS | `NOT AVAILABLE` |
+
+### 受入・DONE条件
+
+formulation固定、solver実装、small-instance correctness PASS、production baseline生成、common evaluatorで検証・accept。
+
+### 来歴
+
+将来はinstance hash、solver/version、budget、seed、raw/repaired output、runtime boundariesを保存する。
+
+### 既知の制約
+
+OR-Toolsと需要充足最大化の優先順位は採択済み。厳密定式化、fleet parameters、budgetと本番実装は未確定。
+
+### 未解決の判断
+
+OR-Tools内の探索設定、mathematical formulation、budget、seed set、correctness threshold。
+
+### 次工程への引渡し
+
+validated classical baselineをQUBO equivalence、Classical-vs-QAOA comparison、Delivery Simulationへ渡す。
+
+## J. QUBO
+
+### 目的
+
+Full-EVRP経路とは分離して、固定depot・単一車両のroute-ordering problemを検証可能なQUBO、encoder、decoder、independent validatorへ写像する。
+
+### 現在の状態
+
+Reduced pathは `FORMULATION_VERIFIED = PASS` および `R21_REDUCED_QUBO_VALIDATION = PASS`。full-EVRP R20は`BLOCKED`であり、full-EVRP QUBOが完成したことを意味しない。
+
+### 開始条件
+
+Reduced pathではaccepted Routing Baselineのcomplete-directed-reachability subset、fixed depot、ordered customers、static directed travel-time matrix、frozen source/hashを用いる。一般のfull Common Delivery Instanceと13 Hard Constraintsは別のfull-EVRP開始条件として残る。
+
+### 正本入力
+
+| 入力 | 役割 | 正本パス | 状態 | 注記 |
+|---|---|---|---|---|
+| Reduced input | variable/data source | Routing Baseline-derived R20 input | `ACCEPTED SCOPED` | depot + ordered customers、complete directed reachability、travel time seconds。 |
+| Classical reference | equivalence reference | `r20_route_ordering/core.py` | `VERIFIED SCOPED` | 全`n!` permutation、fixed depot、同一travel-time matrix。 |
+| 比較protocol | fairness/output accounting | [optimization_comparison_protocol.md](05_src/traffic_simulation/optimization_comparison_protocol.md) | `CURRENT DESIGN` | QUBO仕様ではない。 |
+
+### コマンド
+
+| コマンド | 目的 | 読取/書込 | 注記 |
+|---|---|---|---|
+| Stage runner modules | exact build/validation | Read/write artifact | root CLIへの統合とは別。package runnerがauthority。 |
+
+### 実装
+
+| 構成要素 | パス | 役割 |
+|---|---|---|
+| Reduced formulation/builder | [r20_route_ordering](05_src/traffic_simulation/r20_route_ordering/) | row-major `n x n` position QUBO、exact reference、adapter、penalty analysis。 |
+| Stage-level validator | [r21_qubo_validation](05_src/traffic_simulation/r21_qubo_validation/) | frozen input/provenance、exact QUBO enumeration、V1--V8、artifact/manifest。 |
+| Regression tests | [validation](05_src/traffic_simulation/validation/) | R20/R21 exact, adapter, penalty, artifact tests。 |
+
+### 出力
+
+| 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
+|---|---|---|---|
+| QUBO定式化 | variables/objective/penalties/scaling | [R20 specification](05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md) | `FORMULATION_VERIFIED / SCOPED` |
+| encoder・decoder contract | instance↔binary mapping | [r20_route_ordering](05_src/traffic_simulation/r20_route_ordering/) | `VERIFIED SCOPED` |
+| 等価性report | QUBO vs exact classical | `reproducibility/outputs/traffic_simulation/r21_qubo_validation/20260910_formal_reduced_v4/` | `PASS`; generated outputはGit-ignore policyに従う。 |
+
+### 正本・信頼源
+
+[R20 specification](05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md)、[EVRP execution plan](EVRP_EXECUTION_PLAN.md)、R21 formal artifact v4。R21 validation-results SHA-256は`c4baeead366ea2f750cd4ecdd18acc507746dfecd744d0803ed74b5bbb46049f`、manifest SHA-256は`9a6fc459ef1f5cbf1824b9b0197a2f56f9d67cc88de18bd6bcd8ff7f575691a2`。
+
+### 検証
+
+| Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
+|---|---|---|---|
+| Reduced QUBO等価性 | R21 package/formal artifact | global minima feasibility、route/tie set、direct/expanded、decode、normalization、lambda、provenance V1--V8 | `PASS` |
+
+### 受入・DONE条件
+
+Reduced scopeでは達成済み。full-EVRPでは未達。
+
+### 来歴
+
+R21 artifactはinstance/source/coefficient hashes、lambda/bound/margin、state/permutation counts、optima、decoded routes、deterministic manifestを保存する。
+
+### 既知の制約
+
+Reduced objectiveはstatic directed travel timeでありdistanceではない。encodingはcustomer-only row-major `n x n`、depotはbinary variableではない。customer-once/position-once以外のfull-EVRP制約は未収載。complete reachabilityのみ受理し、non-self zero-timeはfail-closed、invalid bitstringsはrepairせずdiscardする。
+
+### 未解決の判断
+
+数学条件は`lambda>B`。`P_min=2`、universal `B=(n+1)/2`、instance-aware `B=U_feasible/2`はconservative sufficient bound。`lambda=B+max(10 e_noise,1e-6 B)`はimplementation-policy candidateであり定理・formal optimumではない。一般unreachable-transition QUBOとfull-EVRP constraintsは未解決。
+
+### 次工程への引渡し
+
+R21 PASSのfrozen QUBOをR22へ渡し、R22 PASSの同一Ising HamiltonianだけをR23へ渡す。R20からR22へ直接進めない。
+
+## K. QAOA
+
+### 目的
+
+R22でvalidatedされた同一reduced Ising HamiltonianをCPU Aer上のQAOAへ入力し、solution quality、feasibility、ground-state probability、optimizer/circuit/simulator timingを再現可能に測定する。
+
+### 現在の状態
+
+`R23_REDUCED_QAOA_AER_EXECUTION = READY_FOR_PILOT`。runner、Hamiltonian mapping、metrics、artifact writer、tests、implementation smokeは実装済み。governed pilotとformal 18-configuration baselineは未実行。full-EVRP QAOAとquantum hardware executionは未承認。
+
+### 開始条件
+
+R22 reduced PASS artifact/hash、frozen Ising coefficients、exact R21/R22 state/route reference、governed CPU environment、resource guards。HamiltonianまたはlambdaをR23内で変更しない。
+
+### 正本入力
+
+| 入力 | 役割 | 正本パス | 状態 | 注記 |
+|---|---|---|---|---|
+| 検証済みIsing | quantum problem | `reproducibility/outputs/traffic_simulation/r22_ising_conversion/20260910_formal_reduced_v1/` | `PASS / SCOPED` | R22 results/manifest hashを固定。 |
+| Exact reference | performance reference | R21/R22 artifacts | `AVAILABLE SCOPED` | ground energy、all optimal states/routes、ties。 |
+| 比較protocol | fairness | [optimization_comparison_protocol.md](05_src/traffic_simulation/optimization_comparison_protocol.md) | `CURRENT DESIGN` | Aer結果はquantum advantageを示さない。 |
+
+### コマンド
+
+| コマンド | 目的 | 読取/書込 | 注記 |
+|---|---|---|---|
+| Governed pilot | API/runtime/resource/artifact確認 | future write | `NOT RUN`; implementation smokeとは分離。 |
+| Formal baseline | 6 instances x p={1,2,3} | future write | `NOT AUTHORIZED`; 18 optimizations。 |
+
+### 実装
+
+| 構成要素 | パス | 役割 |
+|---|---|---|
+| Reduced QAOA/Aer infrastructure | [r23_qaoa_aer](05_src/traffic_simulation/r23_qaoa_aer/) | R22 loader、SparsePauliOp mapping、QAOAAnsatz、COBYLA、exact Statevector metrics、artifact schema。 |
+| Tests | [test_r23_qaoa_aer.py](05_src/traffic_simulation/validation/test_r23_qaoa_aer.py) | endianness、offset、probability/route metrics、guards、determinism。 |
+
+### 出力
+
+| 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
+|---|---|---|---|
+| Pilot evidence | API/runtime/resource/artifact | `reproducibility/outputs/traffic_simulation/r23_qaoa_aer/<pilot_run_id>/` | `NOT RUN` |
+| Formal baseline | config/run/summary/manifest | same root, distinct formal run ID | `NOT RUN` |
+| Raw metrics | P_opt、P_feasible、energy/gaps、optimizer/circuit/timing | future artifact | no repair; exact referenceを使用。 |
+
+### 正本・信頼源
+
+[EVRP execution plan](EVRP_EXECUTION_PLAN.md)のR23 reduced governance、governance commit `5f88e6ae242357c784b246d7740a006f483e7798`、R22 formal artifact、R23 source/tests。formal performance authorityはまだ存在しない。
+
+### 検証
+
+| Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
+|---|---|---|---|
+| Implementation smoke | R23 tests/temp artifact | operator/endianness/metrics/API semantics | `PASS / NON-AUTHORITATIVE` |
+| Governed pilot | future frozen pilot | n=2/n=3 p=1、runtime/termination/guards/artifact | `NOT RUN` |
+| Formal baseline | future frozen 18-run config | complete protocol/provenance/reproducibility | `NOT RUN` |
+
+### 受入・DONE条件
+
+R23 PASSはfrozen protocolが完全かつ再現可能に実行されたことを意味し、QAOAが常にoptimumを得たことを要求しない。低いP_optやsuboptimal resultは有効な科学データであり、provenance/backend/numerical/incomplete-run failureと区別する。
+
+### 来歴
+
+Pilot/formal artifactはR20--R22 lineage、Qiskit/Aer/Python versions、CPU backend/method/device、p、COBYLA設定、seed、initial/final parameters、objective trace、circuit metrics、timing、P_opt、P_feasible、energy/route gapsを保存する。runtime/timestamp以外のsemantic fieldをcanonical hash対象とする。
+
+### 既知の制約
+
+Qiskit Aerはquantum hardwareではない。`Aer simulation limit != quantum hardware limit`、`Aer runtime != future QPU runtime`。initial baselineはCPU exact/statevector expectationのみで、finite shots、GPU/H100、cloud QPU、optimizer comparisonを含まない。
+
+### 未解決の判断
+
+Formal baseline designは6 instances x `p={1,2,3}`、COBYLA、maxiter 100、evaluation cap 300、initial parameters 0.1、seed 17、repetition 1、CPU exact expectationとして固定済み。次の未完了はgoverned pilot実行とformal design-freeze artifactであり、結果を見た後のdesign変更は別versionにする。
+
+### 次工程への引渡し
+
+R23 formal completion後にのみ、同じreduced scopeのR24 decode eligibilityを検討する。full-EVRP Delivery Simulationやmethod comparisonへ直接一般化しない。
+
+## L. シナリオ構築
+
+### 目的
+
+baselineを上書きせず、future demand、EV technology、optimization/quantum capabilityを分離したversioned scenario inputへする。
+
+### 現在の状態
+
+`PLANNED / NOT IMPLEMENTED`。EV profileは`CURRENT FIXED MODEL ASSUMPTION`だが、accepted future scenario parameterizationではない。
+
+### 開始条件
+
+accepted baseline、evidence-backed parameter sources、scenario scope/year、transformation rules、pre-registered combinations。
+
+### 正本入力
+
+| 入力 | 役割 | 正本パス | 状態 | 注記 |
+|---|---|---|---|---|
+| 基準需要config | baseline comparator | [baseline_demand.yml](reproducibility/config/traffic_simulation/baseline_demand.yml) | `CURRENT` | future valuesで上書きしない。 |
+| EV車両profile | fixed model assumption | [managed_urban_ev_delivery_v1.yml](reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml) | `CURRENT ASSUMPTION` | measured real vehicleではない。 |
+| 将来scenario roadmap | planned dimensions/gates | [Research Overview Stage 5](RESEARCH_OVERVIEW.md) | `PLANNED` | year/rates未固定。 |
+
+### コマンド
+
+| コマンド | 目的 | 読取/書込 | 注記 |
+|---|---|---|---|
+| `./research demand future` | future demand availability表示 | Read-only refusal | returns `NOT IMPLEMENTED`。 |
+| `./research demand build --dry-run` | baseline/future build boundary inspection | Read-only | scenario生成なし。 |
+| `./research quantum status` | quantum capability stage state | Read-only | capability scenarioを生成しない。 |
+
+### 実装
+
+| 構成要素 | パス | 役割 |
+|---|---|---|
+| EV profile schema・config | [managed vehicle profile schema](reproducibility/config/traffic_simulation/schemas/managed_vehicle_profile.schema.json) | current vehicle assumption contract。 |
+| 将来需要・scenario生成器 | — | `NOT IMPLEMENTED` |
+
+### 出力
+
+| 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
+|---|---|---|---|
+| 技術scenario config | EV/optimization capability ranges | path未定 | `EXPECTED / NOT AVAILABLE` |
+| 需要scenario config | year/total/spatial transformation | path未定 | `EXPECTED / NOT AVAILABLE` |
+| 組合せregistry | pre-registered comparisons | path未定 | `EXPECTED / NOT AVAILABLE` |
+
+### 正本・信頼源
+
+Stage 5 roadmapがdesign authority。adopted production scenario authorityは`NOT AVAILABLE`。
+
+### 検証
+
+| Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
+|---|---|---|---|
+| EV profile schema test | no dedicated `./research` command | profile schema semantics valid | component exists; not scenario acceptance |
+| 将来scenario validator | — | source/range/transformation/baseline separation PASS | `NOT AVAILABLE` |
+
+### 受入・DONE条件
+
+scenario parameters、sources、scope/year、transformation、baseline comparison、combinationsをversion化しvalidator PASS。
+
+### 来歴
+
+将来はexternal evidence IDs、parameter range、transformation code/config hash、scenario versionを保存する。
+
+### 既知の制約
+
+vehicle profileのpayload等をactual fleet値とみなさない。future demandやquantum capabilityを現在値として扱わない。
+
+### 未解決の判断
+
+scenario year、demand growth/spatial change、EV battery ranges、optimization/quantum capability assumptions。
+
+### 次工程への引渡し
+
+accepted scenario configをscenario-specific Requests/Stops、Common Instance、Optimization、Simulationへ渡す。
+
+## M. 配送シミュレーション
+
+### 目的
+
+accepted network/scenario上でvalidated delivery plansを実行し、planとrealized model behaviorを分離して記録する。
+
+### 現在の状態
+
+`PLANNED`（roadmap）/ `FUTURE`（Portal）/ `NOT IMPLEMENTED / NOT PRODUCTION COMPLETE`。
+
+### 開始条件
+
+accepted network、Common Instance、validated plans、accepted scenarios/traffic config、seeds、plan-to-SUMO conversion contract。
+
+### 正本入力
+
+| 入力 | 役割 | 正本パス | 状態 | 注記 |
+|---|---|---|---|---|
+| 受入済みnetwork | SUMO environment | current authority resolves | `READY` | network validation simulationとは別。 |
+| 検証済みplan | delivery execution plan | path未定 | `NOT AVAILABLE` | blocking。 |
+| シナリオconfig | technology/demand conditions | path未定 | `NOT AVAILABLE` | blocking。 |
+
+### コマンド
+
+| コマンド | 目的 | 読取/書込 | 注記 |
+|---|---|---|---|
+| `./research simulation status` | production readiness表示 | Read-only | traffic/network validation simulationsを除外。 |
+| `./research simulation run --dry-run` | missing runner/plan表示 | Read-only | no simulation。 |
+| `./research simulation validate --dry-run` | missing result/validator表示 | Read-only | no acceptance。 |
+
+### 実装
+
+| 構成要素 | パス | 役割 |
+|---|---|---|
+| CLI安全制御 | [simulation.py](05_src/research_cli/simulation.py) | delivery simulation不在を明示。 |
+| 本番配送runner・validator | — | `NOT IMPLEMENTED` |
+
+### 出力
+
+| 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
+|---|---|---|---|
+| シミュレーションrun | realized routes/times/SOC/completions/failures | path未定 | `EXPECTED / NOT AVAILABLE` |
+| run manifest | plan/scenario/network/seed hashes | path未定 | `EXPECTED / NOT AVAILABLE` |
+| 検証report | execution/failure accounting | path未定 | `EXPECTED / NOT AVAILABLE` |
+
+### 正本・信頼源
+
+Stage 6 roadmapと[V&V reference](05_src/traffic_simulation/20260730_20260903_simulation_model_development_and_vv.md)。production run authorityなし。
+
+### 検証
+
+| Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
+|---|---|---|---|
+| 配送simulation validator | `./research simulation validate --dry-run` | reproducible plan conversion、run/failure accounting PASS | `NOT AVAILABLE` |
+
+### 受入・DONE条件
+
+accepted inputsからreproducible runを生成し、plan/run provenance、completion/failure accounting、validator、acceptanceを満たす。
+
+### 来歴
+
+将来はnetwork/plan/instance/scenario hashes、SUMO/software versions、seed、command、run manifestを保存する。
+
+### 既知の制約
+
+current repoのnetwork/traffic validation runsは本研究のproduction delivery simulation resultではない。
+
+### 未解決の判断
+
+plan conversion、traffic scenario、seed set、completion/failure event schema、output/acceptance paths。
+
+### 次工程への引渡し
+
+validated simulation outcomesをEvaluationへ渡す。
+
+## N. 評価
+
+### 目的
+
+validated simulation outputからprimary fulfillment metricとauxiliary diagnosticsを共通定義で算出する。
+
+### 現在の状態
+
+`PLANNED`（roadmap）/ `FUTURE`（Portal）/ `NOT IMPLEMENTED`。式はcurrent research designだがcanonical evaluatorとformal metric artifactはない。
+
+### 開始条件
+
+validated Delivery Simulation、fixed denominator population/time horizon/exclusions、metric schema、fixtures。
+
+### 正本入力
+
+| 入力 | 役割 | 正本パス | 状態 | 注記 |
+|---|---|---|---|---|
+| 指標設計 | primary formula | [Research Overview Stage 7](RESEARCH_OVERVIEW.md) | `CURRENT RESEARCH DESIGN / NEEDS FORMALIZATION` | denominator scope unresolved。 |
+| 基準需要仕様 | demand/P_eq semantics | [baseline demand and comparator](05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md) | `CURRENT_NORMATIVE` | 今後の主指標は本書最新採択方針のDFR_orders。旧proxyの来歴を参照。 |
+| シミュレーション結果 | evaluator input | path未定 | `NOT AVAILABLE` | blocking。 |
+
+主要な研究設計：
+
+```text
+DFR_orders = completed_orders / total_requested_orders
+DFR_demand = sum(q_i * y_i) / sum(q_i)  # 荷物量を導入する場合
+```
+
+補助指標には、配送済み・未配送parcel-equivalent、車両稼働率、所要時間、距離、電池使用量、到達不能需要を含む。これらを主要指標と混同しない。
+
+### コマンド
+
+| コマンド | 目的 | 読取/書込 | 注記 |
+|---|---|---|---|
+| `./research evaluate status` | formula/evaluator/denominator状態表示 | Read-only | formalization gapを表示。 |
+| `./research evaluate fulfillment --dry-run` | missing evaluator/input/scope表示 | Read-only | metricを計算しない。 |
+
+### 実装
+
+| 構成要素 | パス | 役割 |
+|---|---|---|
+| CLI安全制御 | [evaluate.py](05_src/research_cli/evaluate.py) | missing evaluatorを明示。 |
+| 正本evaluator | — | `NOT IMPLEMENTED` |
+
+### 出力
+
+| 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
+|---|---|---|---|
+| 主要指標 | delivery fulfillment rate | path未定 | `EXPECTED / NOT AVAILABLE` |
+| 補助指標 | cause/resource diagnostics | path未定 | `EXPECTED / NOT AVAILABLE` |
+| 評価manifest | definitions/input hashes/aggregation | path未定 | `EXPECTED / NOT AVAILABLE` |
+
+### 正本・信頼源
+
+current roadmapがprimary designを示すが、formal metric schema/evaluator/acceptanceは`NOT AVAILABLE`。本書は式をnormative化しない。
+
+### 検証
+
+| Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
+|---|---|---|---|
+| 充足率evaluator | `./research evaluate fulfillment --dry-run` | formula/unit/scope/denominator/exclusions/aggregation fixtures PASS | `NOT AVAILABLE` |
+
+### 受入・DONE条件
+
+metric contract、denominator/time horizon、exclusion policyを固定し、canonical evaluator/fixtures PASS、result再現、uncertainty/failure decomposition保存。
+
+### 来歴
+
+将来はsimulation hash、metric version、scope、denominator、exclusions、aggregation、evaluator versionを保存する。
+
+### 既知の制約
+
+fulfillment resultは未算出。`P_eq`とfulfillment rateのpriority差がlegacy Portal registry上の未解決documentation conflictとして残る。
+
+### 未解決の判断
+
+denominator scope、time horizon、unreachable/excluded demand treatment、primary/auxiliary metric contract。
+
+### 次工程への引渡し
+
+validated metrics、uncertainty、failure decompositionをInterpretationとSensitivityへ渡す。
+
+## O. エビデンスに基づく解釈
+
+### 目的
+
+直接分析境界`Delivery Fulfillment`の外側を、独立Evidenceに基づく条件付きinterpretationとして接続する。計算pipelineではない。
+
+### 現在の状態
+
+Evidence modelは`CURRENT / IMPLEMENTED`、overall assessmentは`SUPPORTED_WITH_CONDITIONS`。研究resultに適用する段階は`FUTURE / NOT AVAILABLE`。
+
+### 開始条件
+
+一般的interpretation設計の閲覧にはEvidence artifactのみ必要。研究結果の解釈にはvalidated fulfillment result、scenario、uncertainty、sensitivityが必要。
+
+### 正本入力
+
+| 入力 | 役割 | 正本パス | 状態 | 注記 |
+|---|---|---|---|---|
+| 解釈Evidence | claims/sources/boundaries | [fleet_capacity_interpretation_v1.yml](reproducibility/evidence/fleet_capacity_interpretation_v1.yml) | `CURRENT` | network authorityとは分離。 |
+| エビデンスschema | status/traceability contract | [fleet_capacity_interpretation_v1.schema.json](reproducibility/evidence/fleet_capacity_interpretation_v1.schema.json) | `CURRENT` | source verification debtを保持。 |
+| 充足率結果 | study-specific direct metric | path未定 | `NOT AVAILABLE` | result interpretationは未実行。 |
+
+解釈経路：
+
+```text
+技術・最適化
+  → 配送充足
+════════ 直接分析の境界 ════════
+  → 未充足配送需要
+  → 潜在的な実効配送能力要件
+  → フリート増強・更新の潜在的必要性
+```
+
+### コマンド
+
+| コマンド | 目的 | 読取/書込 | 注記 |
+|---|---|---|---|
+| `./research portal status` | boundary/assessment表示 | Read-only | resultを生成しない。 |
+| `./research portal check` | Evidence schema/state/traceability検証 | Read-only validation | research calculationなし。 |
+| `./research artifacts` | Evidence artifact/schema path表示 | Read-only | source metadata inspection入口。 |
+
+### 実装
+
+| 構成要素 | パス | 役割 |
+|---|---|---|
+| エビデンスvalidator | [validate_fleet_interpretation_evidence.py](05_src/traffic_simulation/validation/validate_fleet_interpretation_evidence.py) | schema/status/source refs/index separation検証。 |
+| Portal状態・UI | [serve.py](research_portal/serve.py) | artifactからnode/panel/traceability生成。 |
+
+### 出力
+
+| 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
+|---|---|---|---|
+| エビデンスmodel | reusable interpretation design | `reproducibility/evidence/fleet_capacity_interpretation_v1.yml` | `AVAILABLE` |
+| Portal Evidence状態 | node/link/source status | `/api/state` | runtime `AVAILABLE` |
+| 研究固有の解釈 | evaluated resultへのbounded claim | path未定 | `NOT AVAILABLE` |
+
+### 正本・信頼源
+
+Evidence artifactがinterpretation source。roleは`INTERPRETATION_ONLY`でありFormal Network acceptance chainを変更しない。
+
+### 検証
+
+| Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
+|---|---|---|---|
+| Evidence成果物・schema | `./research portal check` | 5 nodes/5 links、status/source refs/index separation valid | `PASS` |
+| 解釈結果trace | — | claim→metric→scenario→Evidence追跡可能 | `NOT AVAILABLE` |
+
+### 受入・DONE条件
+
+Evidence designはvalidator PASS。study-specific interpretationのDONEにはvalidated evaluation/sensitivityと、各claimのresult/Evidence traceが必要。
+
+### 来歴
+
+Evidence ID、source verification status、claim/link status、artifact/schema pathをEvidence artifactとrepository indexに記録。
+
+### 既知の制約
+
+required additional vehicle count、fleet sizing optimization、investment amount、actual corporate investment predictionは`OUT OF SCOPE`。unserved demandはvehicle shortageと同義ではない。
+
+### 未解決の判断
+
+10 sourceの完全bibliographic metadataが`NEEDS_SOURCE_VERIFICATION`。study-specific result interpretationはupstream未完了。
+
+### 次工程への引渡し
+
+bounded claimsとconditionsをSensitivity / Robustnessおよび最終publication claim traceへ渡す。
+
+## P. 感度・頑健性
+
+### 目的
+
+重要仮定を事前登録範囲で変化させ、結論をrobust、conditional、insufficient evidenceへ分類する。
+
+### 現在の状態
+
+`PLANNED / NOT IMPLEMENTED`。過去のnetwork-specific sensitivity/pilotを研究全体Stage 10のcurrent resultとして扱わない。
+
+### 開始条件
+
+accepted baseline results、uncertain parameters/ranges、rerun/comparison protocol、claim interpretation。
+
+### 正本入力
+
+| 入力 | 役割 | 正本パス | 状態 | 注記 |
+|---|---|---|---|---|
+| Stage 10ロードマップ | required domains/gate | [Research Overview Stage 10](RESEARCH_OVERVIEW.md) | `PLANNED` | routing/network/demand/battery/optimization/QUBO/scenarioを横断。 |
+| 受入済みbaseline結果 | comparison anchor | path未定 | `NOT AVAILABLE` | blocking。 |
+| 感度分析registry・protocol | preregistered ranges | path未定 | `NOT AVAILABLE` | blocking。 |
+
+### コマンド
+
+| コマンド | 目的 | 読取/書込 | 注記 |
+|---|---|---|---|
+| `./research status` | upstream stage state確認 | Read-only | sensitivity専用commandなし。 |
+| `./research pipeline full --dry-run` | closed upstream gates確認 | Read-only | sensitivity runは含まない。 |
+
+### 実装
+
+| 構成要素 | パス | 役割 |
+|---|---|---|
+| 汎用感度分析runner・validator | — | `NOT IMPLEMENTED` |
+| 履歴・network固有pilot | `reproducibility/outputs/...` | `HISTORICAL / NOT CURRENT STAGE 10` |
+
+### 出力
+
+| 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
+|---|---|---|---|
+| 感度分析matrix | parameter×outcome comparison | path未定 | `EXPECTED / NOT AVAILABLE` |
+| 頑健性要約 | robust/conditional/insufficient classification | path未定 | `EXPECTED / NOT AVAILABLE` |
+| 失敗境界 | conditions changing conclusions | path未定 | `EXPECTED / NOT AVAILABLE` |
+
+### 正本・信頼源
+
+Stage 10 roadmapのみ。production sensitivity authorityはない。
+
+### 検証
+
+| Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
+|---|---|---|---|
+| 感度分析validator | — | preregistered ranges、complete runs、comparison/accounting valid | `NOT AVAILABLE` |
+
+### 受入・DONE条件
+
+important uncertaintiesをsystematically varyし、missing/failed runsをaccountし、conclusion classificationをtrace可能にする。
+
+### 来歴
+
+将来はbaseline hash、parameter registry、run matrix、seeds、failure accounting、comparison code/versionを保存する。
+
+### 既知の制約
+
+individual network sensitivity evidenceの存在はend-to-end research conclusion robustnessを示さない。
+
+### 未解決の判断
+
+ranges、factorial design、rerun budget、robustness threshold、missing-run policy。
+
+### 次工程への引渡し
+
+robustness classificationとfailure boundariesをPublication / Reproducibility Freezeへ渡す。
+
+## Q. 公開・再現性凍結
+
+### 目的
+
+公開claimに必要なaccepted artifact、config、schema、hash、software version、command、Portal、documentationを一つのfreezeへ束ねる。
+
+### 現在の状態
+
+`FUTURE / NOT IMPLEMENTED`。repository index、current authority、Markdown/link validatorsは現在利用可能な部分機構だが、研究全体freeze/release commandではない。
+
+### 開始条件
+
+公開対象となる全stageのaccepted outputs、validation evidence、claim trace、sensitivity/limitations。
+
+### 正本入力
+
+| 入力 | 役割 | 正本パス | 状態 | 注記 |
+|---|---|---|---|---|
+| リポジトリ索引 | current cross-reference | [research_repository_index_v17.yml](reproducibility/indexes/research_repository_index_v17.yml) | `CURRENT` | final freeze manifestではない。 |
+| 現行正本 | accepted network pointer | [current network authority](reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml) | `CURRENT` | Network scopeのみ。 |
+| ロードマップ | Stage 11 gate | [Research Overview](RESEARCH_OVERVIEW.md) | `CURRENT` | final inputs未完了。 |
+
+### コマンド
+
+| コマンド | 目的 | 読取/書込 | 注記 |
+|---|---|---|---|
+| `./research validate` | current authority/index/Portal横断validation | Read-only | final freezeを作らない。 |
+| `./research portal check` | current Portal/document/artifact consistency | Read-only validation | final publication acceptanceではない。 |
+| `./research artifacts` | current known artifact paths | Read-only | complete publication inventoryではない。 |
+
+### 実装
+
+| 構成要素 | パス | 役割 |
+|---|---|---|
+| リポジトリ索引validator | [validate_research_repository_index.py](05_src/traffic_simulation/network/validate_research_repository_index.py) | current pointers existence。 |
+| Markdown・link validator | [validate_current_markdown_index.py](05_src/traffic_simulation/network/validate_current_markdown_index.py) | current metadata/link/inventory。 |
+| 最終凍結・release runner | — | `NOT IMPLEMENTED` |
+
+### 出力
+
+| 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
+|---|---|---|---|
+| 現行索引 | present-state navigation | `reproducibility/indexes/` | `AVAILABLE` |
+| 最終凍結manifest | all publication claims/artifacts/hashes | path未定 | `EXPECTED / NOT AVAILABLE` |
+| 保管・release | immutable publication package | path未定 | `EXPECTED / NOT AVAILABLE` |
+
+### 正本・信頼源
+
+Stage 11のロードマップが将来ゲートを定義する。現行のnetwork凍結機構はNetwork範囲に限定され、研究全体の公開正本は`NOT AVAILABLE`である。
+
+### 検証
+
+| Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
+|---|---|---|---|
+| 現行相互参照 | `./research validate` | authority/index/Portal PASS | `PASS for current scope` |
+| 最終再現性監査 | — | all claims→accepted evidence、links/hashes/env/commands valid | `NOT AVAILABLE` |
+
+### 受入・DONE条件
+
+全公開claimがfrozen accepted evidenceへ追跡可能、reproduction/link audit PASS、versions/commands/hashes固定、Portal/overview/reference一致。
+
+### 来歴
+
+将来freeze manifestにGit commit、artifact hashes、environment/software versions、commands、acceptance IDsを保存する。
+
+### 既知の制約
+
+current indexesとNetwork accepted stateだけでは研究全体のpublication freezeにならない。
+
+### 未解決の判断
+
+freeze manifest schema、archive location、release procedure、claim inventory、final environment lock。
+
+### 次工程への引渡し
+
+publication、submission、archive release。
+
+## 研究コマンド索引
+
+`./research commands`が機械可読情報に近い正本コマンド一覧である。本節では運用上の読取・書込、前提条件、dry-run対応を補足する。全41インターフェースを収録する。
+
+### 全体・確認・検証
+
+| コマンド | 目的 | 前提条件 | 出力 | 変更 | dry-run |
+|---|---|---|---|---|---|
+| `./research status` | 研究全体の現在位置を表示 | Portal・現行正本を読取可能 | 状態 | なし | no |
+| `./research artifacts` | 現行パスを表示 | 正本・索引を読取可能 | パス一覧 | なし | no |
+| `./research commands` | コマンド一覧を表示 | CLIをimport可能 | 41コマンドの索引 | なし | no |
+| `./research validate` | 正本・索引・Portalを検証 | 現行成果物 | 検証結果 | なし | yes |
+
+### 需要
+
+| コマンド | 目的 | 前提条件 | 出力 | 変更 | dry-run |
+|---|---|---|---|---|---|
+| `./research demand status` | 需要の状態を表示 | 現行Portal node ID | 状態 | なし | no、**現在は終了コード1** |
+| `./research demand validate` | 基準需要testとmapping整合性を検証 | ローカルの需要・リクエスト・配送先 | 検証結果 | なし | yes |
+| `./research demand build` | 基準需要→リクエスト→配送先を生成 | 安全な統合runner | 成果物 | 現在はなし、`NOT IMPLEMENTED` | yes |
+| `./research demand future` | 将来需要の利用可否を表示 | 採択済みparameter | 状態・拒否理由 | なし | no |
+
+### ネットワーク
+
+| コマンド | 目的 | 前提条件 | 出力 | 変更 | dry-run |
+|---|---|---|---|---|---|
+| `./research network status` | 受入済みnetwork状態を表示 | 正本 | 状態・hash | なし | no |
+| `./research network acceptance` | 受入状態を確認 | acceptance JSON | ゲート・flag | なし | no |
+| `./research network validate` | 受入済みnetworkを検証 | 現行の受入済み成果物 | 検証結果 | なし | yes |
+| `./research network build` | 分離されたbuildを実行 | 一意な安全出力runner | run成果物 | 現在はなし、`NOT IMPLEMENTED` | yes |
+
+### 経路計算
+
+| コマンド | 目的 | 前提条件 | 出力 | 変更 | dry-run |
+|---|---|---|---|---|---|
+| `./research routing inputs` | 入力・判断事項を表示 | 正本・現行データ | 準備状況 | なし | no |
+| `./research routing status` | 工程状態を表示 | 正本 | 状態 | なし | no |
+| `./research routing build` | 経路コストを生成 | 採択済み範囲・方式とrunner | 成果物 | 現在はなし、`NOT IMPLEMENTED` | yes |
+| `./research routing validate` | 経路計算を検証 | 本番成果物・validator | 結果 | 現在はなし、`NOT IMPLEMENTED` | yes |
+
+### 共通配送インスタンス
+
+| コマンド | 目的 | 前提条件 | 出力 | 変更 | dry-run |
+|---|---|---|---|---|---|
+| `./research instance status` | インスタンス準備状況を表示 | repository | 状態 | なし | no |
+| `./research instance build` | 本番インスタンスを生成 | 検証済みrouting・制約・generator | 成果物 | 現在はなし、`NOT IMPLEMENTED` | yes |
+| `./research instance validate` | インスタンスを検証 | 成果物・validator | 結果 | 現在はなし、`NOT IMPLEMENTED` | yes |
+
+### 古典最適化
+
+| コマンド | 目的 | 前提条件 | 出力 | 変更 | dry-run |
+|---|---|---|---|---|---|
+| `./research optimization classical status` | 古典最適化の準備状況を表示 | repository | 状態 | なし | no |
+| `./research optimization classical run` | 共通インスタンスを解く | 受入済みinstance・solver | 解 | 現在はなし、`NOT IMPLEMENTED` | yes |
+| `./research optimization classical validate` | 解を検証 | 結果・validator | 結果 | 現在はなし、`NOT IMPLEMENTED` | yes |
+
+### QUBO / QAOA
+
+| コマンド | 目的 | 前提条件 | 出力 | 変更 | dry-run |
+|---|---|---|---|---|---|
+| `./research quantum status` | 量子工程の状態を表示 | 研究map | 状態 | なし | no |
+| `./research quantum qubo build` | QUBOを構築 | 固定済み定式化・instance | QUBO | 現在はなし、`NOT IMPLEMENTED` | yes |
+| `./research quantum qubo validate` | 等価性を検証 | QUBO・厳密最適値 | 結果 | 現在はなし、`NOT IMPLEMENTED` | yes |
+| `./research quantum qaoa run` | QAOAを実行 | 検証済みQUBO・runner | 候補解 | 現在はなし、`NOT IMPLEMENTED` | yes |
+| `./research quantum compare` | 古典・量子結果を比較 | 検証済み共通結果 | evidence | 現在はなし、`NOT IMPLEMENTED` | yes |
+
+### シミュレーション・評価
+
+| コマンド | 目的 | 前提条件 | 出力 | 変更 | dry-run |
+|---|---|---|---|---|---|
+| `./research simulation status` | simulation準備状況を表示 | 研究map | 状態 | なし | no |
+| `./research simulation run` | 計画を実行 | 検証済みplan・runner | 結果 | 現在はなし、`NOT IMPLEMENTED` | yes |
+| `./research simulation validate` | simulation結果を検証 | 成果物・validator | 結果 | 現在はなし、`NOT IMPLEMENTED` | yes |
+| `./research evaluate status` | 評価準備状況を表示 | 研究map | 状態・式 | なし | no |
+| `./research evaluate fulfillment` | 指標を計算 | 検証済みsimulation・evaluator・範囲 | 指標 | 現在はなし、`NOT IMPLEMENTED` | yes |
+
+### ポータル
+
+| コマンド | 目的 | 前提条件 | 出力 | 変更 | dry-run |
+|---|---|---|---|---|---|
+| `./research portal status` | Portal・現行状態を表示 | 正本成果物 | 状態 | なし | no |
+| `./research portal start` | Portalを起動 | Python依存関係・成果物 | ローカルserver | processのみ、repo変更なし | yes |
+| `./research portal check` | 正本・索引・map・Evidenceを検証 | 現行成果物 | 結果 | なし | yes |
+| `./research portal build` | 単独handoffを生成 | generator | handoff | 現在はなし、`NOT IMPLEMENTED` | yes |
+
+### 統合実行
+
+| コマンド | 目的 | 前提条件 | 出力 | 変更 | dry-run |
+|---|---|---|---|---|---|
+| `./research pipeline network` | 受入済みnetworkを再利用・検証 | 受入済みnetwork | 検証 | なし | yes |
+| `./research pipeline routing` | 入力→build→検証 | routing判断・runner | 成果物 | 現在はなし、`PARTIAL` | yes |
+| `./research pipeline optimization` | instance→古典最適化→検証 | 検証済みrouting | baseline | 現在はなし、`PARTIAL` | yes |
+| `./research pipeline portal` | 現行状態を検証 | 正本成果物 | 結果 | なし | yes |
+| `./research pipeline full` | 最初の閉じたgateまで実行 | 統制済み上流工程 | 工程要約 | 現在はRoutingで停止、`PARTIAL` | yes |
+
+## 成果物・正本対応表
+
+| 工程 | 判断 | 仕様 | 設定・Registry | スキーマ | 実行・出力 | 受入 | 現行正本 |
+|---|---|---|---|---|---|---|---|
+| 外部データ | — | 来歴記録 | source registry | source固有 | ローカルraw・派生データ | 利用側工程ごと | source registry＋利用側正本 |
+| 需要 | — | 基準需要仕様 | 基準需要config | 組込み・config検証 | ローカルParquet＋品質JSON | 独立した受入なし | config・仕様＋品質要約 |
+| リクエスト・配送先 | — | roadmap・設計記録 | ローカルrun要約 | `NOT AVAILABLE` | ローカルCSV | mapping受入のみ | Portal map＋network受入 |
+| ネットワーク構築 | Three-tier Decision | Formal Completion＋Pipeline仕様 | Three-tier registry | policy＋record schema | run_2・`three_tier.net.xml` | network acceptance JSON | 現行network正本 |
+| 配送先マッピング | Three-tier Decision | Network Pipeline仕様 | 受入済みrun mapping | acceptance構造 | run_2 mapping JSON | network acceptance `/mapping` | 現行network正本 |
+| ネットワーク受入 | Three-tier Decision | Network Pipeline仕様 | 正本pointer | policy・record | run_2 | `FORMAL_NETWORK_ACCEPTED=true` | 現行network正本 |
+| 経路計算 | `UNRESOLVED` | roadmap Stage 1 | `NOT AVAILABLE` | `NOT AVAILABLE` | `NOT AVAILABLE` | `NOT AVAILABLE` | roadmap・Portal工程のみ |
+| 共通インスタンス | `UNRESOLVED` | roadmap Stage 2＋比較protocol | `NOT AVAILABLE` | `NOT AVAILABLE` | `NOT AVAILABLE` | `NOT AVAILABLE` | 設計のみ |
+| 古典最適化 | `UNRESOLVED` | roadmap Stage 3＋比較protocol | `NOT AVAILABLE` | `NOT AVAILABLE` | `NOT AVAILABLE` | `NOT AVAILABLE` | 設計のみ |
+| QUBO | `UNRESOLVED` | roadmap Stage 4A/4B | `NOT AVAILABLE` | `NOT AVAILABLE` | `NOT AVAILABLE` | `NOT AVAILABLE` | 設計のみ |
+| QAOA | `UNRESOLVED` | roadmap Stage 4C/4D | `NOT AVAILABLE` | `NOT AVAILABLE` | `NOT AVAILABLE` | `NOT AVAILABLE` | 設計のみ |
+| シナリオ | `UNRESOLVED` | roadmap Stage 5 | EV profile＋baseline config | vehicle profile schema | `NOT AVAILABLE` | `NOT AVAILABLE` | 設計・現行仮定のみ |
+| 配送シミュレーション | `UNRESOLVED` | roadmap Stage 6＋V&V参照 | `NOT AVAILABLE` | `NOT AVAILABLE` | `NOT AVAILABLE` | `NOT AVAILABLE` | 設計のみ |
+| 評価 | `UNRESOLVED` | roadmap Stage 7 | `NOT AVAILABLE` | `NOT AVAILABLE` | `NOT AVAILABLE` | `NOT AVAILABLE` | 研究設計のみ |
+| 解釈 | Evidence設計 | Evidence成果物 | Evidence成果物 | Evidence schema | Portal状態 | Evidence validator PASS | 解釈専用成果物 |
+| 感度分析 | `UNRESOLVED` | roadmap Stage 10 | `NOT AVAILABLE` | `NOT AVAILABLE` | `NOT AVAILABLE` | `NOT AVAILABLE` | 設計のみ |
+| 公開・再現性凍結 | `UNRESOLVED` | roadmap Stage 11 | repository index（一部） | `NOT AVAILABLE` | `NOT AVAILABLE` | `NOT AVAILABLE` | 将来gateのみ |
+
+## 検証対応表
+
+| 工程 | Validator | ゲート | 現在の結果 | 次工程を阻害するか |
+|---|---|---|---|---|
+| 外部データ | 利用側固有・Demand test | 登録source・hashを利用可能 | 利用可能、統合受入なし | 現行baselineではno |
+| 需要 | `demand validate`経由の`test_prepare_baseline_demand.py` | config・source・保存則 | 実行時`PASS` | 現行baselineではno |
+| リクエスト・配送先 | `demand validate`経由の正本整合性 | file存在・mapping受入済み | `PASS`、再生成validatorなし | 再現性上の負債 |
+| ネットワーク | `network validate`一式 | registry・pipeline・SUMO・属性・接続性 | `PASS` | no |
+| 配送先マッピング | network acceptance・Portal validator | 39,956/39,956、許可edge | `PASS` | no |
+| ネットワーク受入 | 正本validator | flag true＋SHA一致 | `PASS` | no |
+| 経路計算 | 本番routing validator | 必要OD・方式・来歴 | `NOT AVAILABLE` | **yes** |
+| 共通インスタンス | 本番instance validator | schema・完全性・実行可能性 | `NOT AVAILABLE` | **yes** |
+| 古典最適化 | 正当性・結果validator | 定式化・fixture・結果 | `NOT AVAILABLE` | **yes** |
+| QUBO | 等価性validator | 古典・QUBO等価性 | `NOT AVAILABLE` | **yes** |
+| QAOA | 共通実行可能性・比較 | 再現可能な候補・共通checker | `NOT AVAILABLE` | **yes** |
+| シナリオ | scenario validator | source・範囲・変換 | `NOT AVAILABLE` | **yes** |
+| 配送シミュレーション | 本番simulation validator | run・failure・来歴 | `NOT AVAILABLE` | **yes** |
+| 評価 | 正本evaluator fixture | 範囲・分母・式 | `NOT AVAILABLE` | **yes** |
+| 解釈 | Evidence validator | schema・status・source trace | 設計は`PASS`、結果gateは利用不可 | 結果主張にはyes |
+| 感度分析 | sensitivity validator | 事前登録済みmatrix・集計 | `NOT AVAILABLE` | **yes** |
+| 公開・再現性凍結 | 最終監査 | 主張・link・hash・環境・command | `NOT AVAILABLE` | 最終gate |
+
+## 依存関係表
+
+| 下流工程 | 必要条件 |
+|---|---|
+| 需要 | 統制済みopen-data source＋baseline config・仕様 |
+| リクエスト・配送先 | 検証済みbaseline需要＋生成・範囲contract |
+| 配送先マッピング | 配送先＋Formal・SUMO network＋vehicle permission |
+| ネットワーク受入 | SUMO validity＋mapping＋主要routeability gate |
+| 経路計算 | 受入済みnetwork＋受入済みmapping＋リクエスト・配送先＋解決済みscope・depot・vehicle・cost |
+| 共通インスタンス | 検証済みrouting＋需要・配送先＋depot・fleet・capacity・battery制約 |
+| 古典最適化 | 受入済み共通インスタンス＋固定済み定式化・checker・budget |
+| QUBO | 受入済み共通インスタンス＋固定済み古典定式化＋厳密解fixture |
+| QAOA | 検証済みQUBO＋採択済み実行・decode protocol |
+| シナリオ | 受入済みbaseline＋Evidenceに基づくparameter・年・変換 |
+| シミュレーション | 受入済みnetwork・instance・scenario＋検証済み配送plan |
+| 評価 | 検証済みsimulation＋固定済み指標分母・範囲 |
+| 解釈 | 検証済み評価＋scenario・不確実性＋Evidence成果物 |
+| 感度分析 | 受入済みbaseline結果＋事前登録済み不確実範囲・protocol |
+| 公開・再現性凍結 | 主張対象の全工程を受入済み＋主張・Evidence trace＋再現性監査 |
+
+## 現行ライフサイクル境界
+
+- `CURRENT / ACCEPTED`: Three-tier Formal Completion、run_2 network、mapping、network acceptance。
+- `CURRENT DESIGN`: baseline demand spec/config、comparison protocol、EV profile assumption、interpretation Evidence。
+- `HISTORICAL`: strict v17、old run_4/run_5/run_6、old blockers/failures、temporary diagnostics。
+- `SUPERSEDED`: Hierarchical Hybrid Decisionとpre-Three-tier pipeline policies。
+- historical/superseded artifactsをcurrent command inputまたはcurrent acceptanceとして再利用しない。
+
+## 文書の役割分担
+
+`RESEARCH_OVERVIEW.md` = 研究概要・ロードマップ
+
+`RESEARCH_PIPELINE_REFERENCE.md` = 現行パイプラインの実行・正本・検証リファレンス

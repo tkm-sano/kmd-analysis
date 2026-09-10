@@ -45,14 +45,16 @@ schemas:
   formal_blocker_policy: reproducibility/config/traffic_simulation/schemas/formal_blocker_policy_v17.schema.json
   formal_blocker_inventory: reproducibility/config/traffic_simulation/schemas/formal_blocker_inventory_v17.schema.json
   resolver_integration: reproducibility/config/traffic_simulation/schemas/resolver_integration_v17.schema.json
+  shared_lane_source_semantic: reproducibility/config/traffic_simulation/schemas/shared_lane_source_semantic_v17.schema.json
+  shared_lane_materialization_attempt: reproducibility/config/traffic_simulation/schemas/shared_lane_materialization_attempt_v17.schema.json
 registries:
   path: reproducibility/config/traffic_simulation/attribute_resolution_registries_v17.yml
-  version: "1.7.0"
-  sha256: 3232b116e0fbc8bb0514d60a3ba01f09027d8bfa664a3f9ed2f7b22fdfa501c6
+  version: 1.10.0
+  sha256: f797c5cba314ea733658bd189b9a75bf6fae1e1e89ef2169910b09bfb899ba85
 semantic_invariants:
   path: reproducibility/config/traffic_simulation/v17_semantic_invariants.yml
-  version: 1.4.0
-  sha256: 8614c6c6f513bffbe20c4cb186c6b4f684256b5eb2388d2e9d000fbbc8168d69
+  version: 1.8.0
+  sha256: 2d443706398e9f5815ba1b432a3b2a11f3f818f06e6762708bd7ecbaa0562a77
 scenario_context:
   timezone: Asia/Tokyo
   managed_vehicle_profile: reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml

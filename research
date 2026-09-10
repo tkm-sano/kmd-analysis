@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+research_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [[ -x "${research_root}/.conda/bin/python" ]]; then
+  research_python="${research_root}/.conda/bin/python"
+else
+  research_python="${RESEARCH_PYTHON:-python3}"
+fi
+
+export PYTHONPATH="${research_root}/05_src${PYTHONPATH:+:${PYTHONPATH}}"
+exec "${research_python}" -m research_cli "$@"

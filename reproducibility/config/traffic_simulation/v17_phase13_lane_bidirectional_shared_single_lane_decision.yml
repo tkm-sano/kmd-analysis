@@ -1,0 +1,158 @@
+schema_version: 1
+decision_id: DEC-P13-LANE-BIDIRECTIONAL-SHARED-SINGLE-LANE-001
+decision_version: 1.0.0
+status: approved
+approved_at: '2026-08-22T00:55:16+09:00'
+approved_by: repository_owner_directive
+configuration_id: ota_ward_sumo_network_v17
+population_version: ota_ward_relation_closure_v16
+approval_source: repository_owner_directive_20260822
+approved_candidate:
+  path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260822_shared_single_lane_decision_semantic_review/DEC-P13-LANE-BIDIRECTIONAL-SHARED-SINGLE-LANE-001.ready-for-approval.yml
+  byte_sha256: 6b16c292cb1fd56363bca2ad73993f3a88d4c449bb1c8c6941403eae5d281474
+
+decision_method:
+  selected_method: new_independent_decision
+  rationale: >-
+    The rule introduces a shared physical moving-lane semantic kind and a
+    source-resolution/materialization boundary that are not approved or
+    predictable from the existing lanes=2 decision or pending DEC-LANE-004.
+
+context:
+  predecessor_stop_code: LANE_DIRECTIONAL_ALLOCATION_MISSING
+  reviewed_strict_population: 180
+  source_classification: source_ready_only
+  central_question: >-
+    How to preserve the documented source meaning of a bidirectional road with
+    one total motorized moving lane without creating two independent
+    directional lanes of simulation capacity.
+
+scope:
+  all_of:
+    - governed current-operation highway Way
+    - registered normalize_oneway succeeds and canonical_oneway is 'no'
+    - source lanes parses under the v17 canonical count contract to integer 1
+    - lanes:forward is absent
+    - lanes:backward is absent
+    - lanes:both_ways is absent
+    - registered oneway/directional-operation conditional predicate is false
+    - registered reversible-or-alternating predicate is false
+    - existing lane-conditional predicate is false
+    - existing _vector_tags(source_tags) result is empty
+  population_count_is_not_a_predicate: true
+  way_specific_exceptions: forbidden
+
+source_semantics:
+  kind: shared_bidirectional_single_moving_lane
+  physical_moving_lane_count: 1
+  usable_source_directions: [forward, backward]
+  usable_source_directions_definition: >-
+    Source lane-topology directions before vehicle-specific access,
+    conditional permission, priority, and simulation-control resolution. This
+    field grants no permission and overrides no access rule.
+  dedicated_moving_lane_count: {forward: 0, backward: 0}
+  shared_both_directions: true
+  resolution_status: resolved
+  value_origin: rule_derived
+  rule_id: OSM_BIDIRECTIONAL_TOTAL_1_TO_SHARED_SINGLE_V1
+
+source_authority:
+  osm_key_lanes:
+    url: https://wiki.openstreetmap.org/wiki/Key:lanes
+    finding: lanes is the total number of traffic lanes available for motorised traffic
+  osm_oneway_no:
+    url: https://wiki.openstreetmap.org/wiki/Tag:oneway=no
+    finding: explicitly indicates that the road is not one-way
+  osm_lanes_both_ways:
+    url: https://wiki.openstreetmap.org/wiki/Key:lanes:both_ways
+    finding: >-
+      narrow oneway=no roads with lanes=1 imply one both-ways lane rather than
+      lanes:forward=1 plus lanes:backward=1
+  real_world_width_proof_required: false
+  mapper_misuse_treatment: ordinary_source_quality_limitation_unless_explicit_conflict
+
+non_semantics:
+  not_inferred:
+    - independent forward and backward lane capacity
+    - simultaneous opposing entry
+    - priority or right-of-way
+    - alternating/reversible control
+    - passing behavior or passing-place availability
+    - directional capacity
+    - vehicle access permission
+    - SUMO behavior
+    - physical width
+
+canonical_representation:
+  schema: C_DISCRIMINATED_SOURCE_SEMANTICS_PLUS_SEPARATE_MATERIALIZATION_RECORD
+  source_record_status: resolved
+  source_record_kind: shared_bidirectional_single_moving_lane
+  physical_lane_object_graph_added: false
+  directed_segment_schema_changed: false
+  source_rewrite_to_lanes_both_ways: forbidden
+  fake_forward_backward_lane_duplication: forbidden
+
+materialization_boundary:
+  separate_target_attempt_record: required
+  sumo_direct_materialization_approved: false
+  segment_lane_tuples_emitted: false
+  source_resolution_reverted_when_target_unsupported: false
+  target_status: valid_but_unsupported
+  stop_code: LANE_SHARED_PHYSICAL_MATERIALIZATION_UNSUPPORTED
+  acceptance_blocking: true
+
+successor_blocker:
+  stage: phase_5B_target_lane_materialization
+  primary_cardinality: one_per_source_semantic_record
+  child_directed_segment_ids: payload_only
+  formal_exclusion: false
+  required_missing_contracts:
+    - entry_arbitration
+    - deadlock_prevention
+    - passing_place
+    - junction_connection
+
+provenance:
+  source_osm_unchanged: true
+  required:
+    - original lanes=1 observation
+    - original oneway observation including absence when applicable
+    - canonical oneway=no plus normalization origin/rule
+    - source Way ID, source path and source hash
+    - decision ID/version and rule ID
+    - strict predicate version
+    - resolved canonical semantic fields
+    - source semantic record ID
+  prohibited:
+    - synthesize source lanes:both_ways=1
+    - claim explicit both_ways provenance
+    - use model_assumed
+    - invent access, priority, control, passing, width, or capacity provenance
+
+responsibility_boundary:
+  lanes_2_decision: unchanged_and_non_overlapping
+  DEC_LANE_004: retains_explicit_lanes_both_ways_representation_and_materialization
+  structural_even_split: unchanged_and_not_used
+  generic_odd_single_stop_policy: >-
+    Superseded only when every applicability predicate above is true. Every
+    other odd or single-lane bidirectional record remains fail-closed under the
+    existing policy.
+  reversible_center_turn: excluded
+
+accounting:
+  candidate_source_semantic_blockers: {before: 180, after: 0}
+  candidate_canonical_blockers: {before: 180, after: 0}
+  candidate_materialization_blockers: {before: 0, after: 180}
+  candidate_overall_acceptance_blockers: {before: 180, after: 180}
+  overall_blocker_reduction: 0
+
+approval_gate:
+  semantic_review: B_APPROVABLE_WITH_MINOR_EDITS_INCORPORATED
+  semantic_readiness: passed
+  repository_owner_approval: approved
+  codex_independent_approval_authority: false
+  sumo_materialization: not_approved
+
+future_work:
+  - execute source-resolution-only TDD and stable-ID comparison
+  - keep SUMO materialization NO-GO pending behavioral research and a separate decision

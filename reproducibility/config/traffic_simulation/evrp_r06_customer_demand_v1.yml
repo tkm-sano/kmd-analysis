@@ -1,0 +1,13 @@
+schema_version: evrp-r06-customer-demand-v1
+baseline_model_convention:
+  q_i: 1
+  interpretation: one customer equals one delivery request; not observed parcel count
+inputs:
+  r05_customer_ids: reproducibility/outputs/traffic_simulation/demand/evrp_r05_pps_sampling/20260909_r05_pps_n10_seed20260909_final/customer_ids.csv
+  r05_manifest: reproducibility/outputs/traffic_simulation/demand/evrp_r05_pps_sampling/20260909_r05_pps_n10_seed20260909_final/sampling_manifest.json
+  r04_weight_artifact: reproducibility/outputs/traffic_simulation/demand/evrp_r04_demand_weight/20260909_r04_demand_weight_v3/candidate_demand_weights.csv
+output_root: reproducibility/outputs/traffic_simulation/demand/evrp_r06_customer_demand
+future_separate_concepts:
+  parcel_count: not_defined
+  delivery_count: not_defined
+  payload_quantity: not_defined

@@ -1,0 +1,14 @@
+run_id: 20260909_network_geometry_length_reacceptance_v1
+purpose: reaccept_sumo_network_geometry_length_consistency
+source_network_authority: CURRENT-NETWORK-COMPLETION-AUTHORITY-V17
+source_materialized_osm: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/three_tier_materialized.osm.xml
+generator: 05_src/traffic_simulation/network/rebuild_network_geometry_consistent.py
+sumo_version: 1.24.0
+netconvert_options:
+  - --osm-files
+  - --proj.utm
+  - --plain.extend-edge-shape
+  - --ignore-errors
+geometry_rule: extend imported edge shapes to their declared from/to node positions; preserve topology, edge lengths, lanes, permissions, and one-way semantics
+declared_length_rule: retain netconvert declared lane/edge lengths; validate them against the rebuilt shape and do not overwrite them
+accepted_artifact_policy: write to a new run directory; never overwrite the prior authority

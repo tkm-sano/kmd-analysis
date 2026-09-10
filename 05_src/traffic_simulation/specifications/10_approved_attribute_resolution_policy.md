@@ -53,6 +53,11 @@ specific on at least one axis. Only non-dominated maximal rules remain. Equal
 results from multiple maximal rules are adopted once. Different results stop
 with `ACCESS_SPECIFICITY_CONFLICT`.
 
+Projection into the governed vehicle universe does not erase a registered
+source child-over-parent relation. If child and parent project to the same set,
+the child remains more specific; equal sets for unrelated keys create no
+precedence.
+
 A conditional rule is applicable only when its required date, time, vehicle,
 and purpose context is available and the condition evaluates true. Unsupported
 syntax, missing context, or a result that changes during the simulation
@@ -92,8 +97,28 @@ experiment.
 ## Directional Lanes
 
 An even total lane count on a bidirectional road is not divided equally in the
-formal profile when directional lane tags are absent. Formal processing stops
-with `LANE_DIRECTIONAL_ALLOCATION_MISSING`.
+formal profile when directional lane tags are absent, except for the narrow
+`DEC-P13-LANE-BIDIRECTIONAL-TOTAL-2-FORMAL-001` case. That decision permits
+only canonical `oneway=no` plus `lanes=2`, with no directional counts,
+`lanes:both_ways`, lane conditional, reversible or alternating evidence, to be
+adopted as `forward=1` and `backward=1` with
+`value_origin=rule_derived`. Other even totals still stop with
+`LANE_DIRECTIONAL_ALLOCATION_MISSING`.
+
+`DEC-P13-LANE-BIDIRECTIONAL-SHARED-SINGLE-LANE-001` narrowly supersedes the
+generic single-lane stop only when the approved strict predicate holds:
+canonical `oneway=no`, `lanes=1`, a current governed highway, and no
+directional counts, `lanes:both_ways`, motorized oneway conditional,
+reversible/alternating, lane-conditional, or lane-vector evidence. It resolves
+one `shared_bidirectional_single_moving_lane` with physical count one,
+pre-access source directions `[forward, backward]`, and dedicated directional
+counts zero. It never derives `forward=1` plus `backward=1`.
+
+Source/canonical resolution and target materialization are separate. Until a
+behaviorally valid SUMO materializer is approved, no direction-owned lane tuple
+is emitted and the target attempt stops with
+`LANE_SHARED_PHYSICAL_MATERIALIZATION_UNSUPPORTED`. The source record remains
+resolved and the target blocker remains acceptance-blocking.
 
 The equal split may be used only for structural review, with
 `value_origin=model_assumed`,
@@ -105,6 +130,18 @@ that count may be adopted for the sole Directed Segment with
 `value_origin=rule_derived`. `lanes:both_ways`, reversible lanes, and
 time-dependent lanes remain unsupported until dedicated rules and fixtures
 exist.
+
+`DEC-P13-LANE-COUNT-FROM-ROAD-LANE-VECTOR-001` additionally permits a missing
+one-way moving-lane count to be derived from the common pipe-field count of one
+or more exact `turn:lanes`, `destination:lanes`, or
+`destination:ref:lanes` source tags. The rule is formal-only, requires
+canonical `oneway=yes` or `oneway=-1`, absent explicit total and active
+direction counts, equal positive field counts, and no lane-conditional
+semantics. It emits `value_origin=rule_derived` and rule ID
+`OSM_ONEWAY_ROAD_LANE_VECTOR_TO_ACTIVE_COUNT_V1`. Other `*:lanes` keys,
+including mode- and access-specific vectors, are not lane-count authority;
+conflicting approved vectors remain fail-closed, and explicit counts continue
+to be validated against all lane vectors.
 
 ## Structural Placeholders
 

@@ -1,5 +1,7 @@
 # Tokyo traffic simulation implementation plan
 
+> 実行環境更新（2026-08-25）: 現在の正本はHayate native CondaとSUMO 1.24.0である。標準全回帰は`python -m pytest -q 05_src/traffic_simulation/validation`とし、本文中のDocker設計・実行例は策定当時の履歴または任意クロスチェックとして保持する。現行手順は`reproducibility/environment/README.md`を参照する。
+
 ## 0. 研究の現在地
 
 状態更新日：2026年7月18日
@@ -771,8 +773,7 @@ JARTIC MultiPoint（EPSG:4326）
 確定前に次を実行する。
 
 ```bash
-docker compose run --rm analysis \
-  python -m pytest 05_src/traffic_simulation/validation -q
+python -m pytest -q 05_src/traffic_simulation/validation
 
 git diff --check
 git status --short
@@ -1183,13 +1184,19 @@ OD生成規則、時間帯係数、車種構成、経路選択、乱数シード
 
 ### 9.11 段階8：古典最適化・Qiskit Aer QAOA基盤を実装し極小問題で検証する
 
+> **2026-09-10 current-state note:** full-EVRP基盤は未完了だが、独立したinitial reduced
+> route-ordering branchではR20 formulation、R21 exact QUBO validation、R22 Ising conversionが
+> PASSし、R23 QAOA/Aer runnerはimplementation smoke済みで `READY_FOR_PILOT` である。以下の
+> full-EVRP記述をreduced branchの完了主張として読まない。reduced modelは単一車両、固定depot、
+> static directed travel time、customer-once/position-onceだけを扱う。
+
 #### 9.11.1 この段階の目的と正式比較との境界
 
 配送ルートは、デポ出発から顧客、必要な充電地点、終点またはデポ帰着までの訪問順序として定義する。OSM・SUMO上のエッジ列は「道路経路」と呼び、配送ルートと区別する。
 
 古典側と量子側には、同一の凍結済み配送問題インスタンスを渡す。共通にする項目は、デポ、顧客、需要、車両、容量、時間枠、充電条件、地点間距離・旅行時間・電力コスト、出発時刻、目的関数、制約、乱数シード群である。異なるのは配送ルートを生成する解法だけとする。
 
-この段階では、共通スキーマ、古典ソルバー、QUBO、Aer QAOA、復号、制約検査を実装し、全列挙または厳密解を得られる極小の合成問題で検証する。交通モデル較正と並行して開始できるが、未較正または暫定的な地点間コストを使った結果を研究上の古典・QAOA比較結果として使用しない。
+Full-EVRP段階では、共通スキーマ、古典ソルバー、full QUBO、Aer QAOA、復号、全Hard Constraints検査を実装する。先行reduced branchのexact-small evidenceはmethod validationであり、未較正または暫定的な地点間コストを使った古典・QAOAの運用比較結果ではない。
 
 正式比較は本段階の完了には含めない。段階10の較正、段階11の独立検証、段階12の環境シナリオ定義を完了した後、段階13で正式な地点間コストと問題インスタンスを凍結して実行する。段階8と段階13は`experiment_phase`、出力先、run IDを分離し、結果を混在させない。
 

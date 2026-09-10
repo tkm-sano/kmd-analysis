@@ -1,5 +1,10 @@
 # 交通シミュレーション研究の確定済み実装・検証事項
 
+> **Scope note (2026-09-10):** 本文の道路工程記録は基準日 `2026-07-31` の歴史的な確定範囲である。
+> その後のformal network/Routing Baseline受入とreduced R20--R23 statusは
+> `EVRP_EXECUTION_PLAN.md`を参照する。本文の「正式SUMO道路網未承認」は当時の範囲を示し、
+> 現在のreduced QUBO/Ising/QAOA branchのstatusを否定しない。
+
 > **文書状態**: 実装・検証済み事項の説明
 > **基準日**: 2026-07-31
 > **対象工程**: 工程6「SUMO道路網生成・構造検証」

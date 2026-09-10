@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/missing_lane_simulation_assumption_v17.schema.json",
+  "title": "v17 missing-source lane simulation assumption",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "record_id", "decision_id", "decision_version",
+    "value_origin", "assumption_id", "assumption_version", "scenario",
+    "source_way_id", "source_osm_hash", "source_lane_status",
+    "formal_stop_code", "formal_blocker_preserved", "cluster_id",
+    "canonical_directionality", "canonical_oneway", "highway",
+    "chosen_lane_count", "fallback_level", "calibration_group",
+    "calibration_population_hash", "source_rewrite"
+  ],
+  "properties": {
+    "schema_version": {"const": 17},
+    "record_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "decision_id": {"const": "DEC-P13-LANE-MISSING-SOURCE-SIMULATION-FALLBACK-001"},
+    "decision_version": {"const": "1.0.0"},
+    "value_origin": {"const": "model_assumed"},
+    "assumption_id": {"const": "MISSING_SOURCE_LANE_SIMULATION_FALLBACK_V1"},
+    "assumption_version": {"const": "1.0.0"},
+    "scenario": {"enum": ["conservative", "baseline", "high_capacity"]},
+    "source_way_id": {"type": "integer", "minimum": 1},
+    "source_osm_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source_lane_status": {"const": "unresolved"},
+    "formal_stop_code": {"const": "LANE_DIRECTIONAL_ALLOCATION_MISSING"},
+    "formal_blocker_preserved": {"const": true},
+    "cluster_id": {"enum": ["L1_BIDIRECTIONAL_NO_LANE_COUNT", "L4_ONEWAY_COUNT_MISSING"]},
+    "canonical_directionality": {"enum": ["oneway", "bidirectional"]},
+    "canonical_oneway": {"enum": ["yes", "-1", "no"]},
+    "highway": {"type": "string", "minLength": 1},
+    "chosen_lane_count": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "forward", "backward", "both_ways"],
+      "properties": {
+        "total": {"type": "integer", "minimum": 1},
+        "forward": {"type": "integer", "minimum": 0},
+        "backward": {"type": "integer", "minimum": 0},
+        "both_ways": {"const": 0}
+      }
+    },
+    "fallback_level": {"enum": ["class_directionality_calibrated_default", "global_directionality_fallback"]},
+    "calibration_group": {"type": "string", "pattern": "^[^|]+\\|(oneway|bidirectional)$"},
+    "calibration_population_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source_rewrite": {"const": false}
+  }
+}

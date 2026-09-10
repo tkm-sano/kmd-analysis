@@ -1,5 +1,7 @@
 # Phase 13根本原因解消からSUMO道路網受入までの実行TODO
 
+> 実行環境更新（2026-08-25）: `固定analysis container`は過去の検証条件名として履歴に残す。今後の標準全回帰はHayate native Conda環境で`python -m pytest -q 05_src/traffic_simulation/validation`を実行し、Dockerは任意の追加クロスチェックとする。現行正本は`reproducibility/environment/README.md`である。
+
 > 文書状態: 実行管理用TODO
 >
 > 基準日: 2026-08-14

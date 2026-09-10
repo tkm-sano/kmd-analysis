@@ -1,0 +1,10 @@
+schema_version: evrp-r09-depot-v1
+selected_depot_id: DEP_006
+vehicle_class: delivery
+inputs:
+  depot_candidates: legacy/non_sumo_route_proxy_analysis/data/processed/evrp_constraint_gap_inputs/depot_candidates_public_proxy_snapshot.csv
+  customer_population: reproducibility/outputs/traffic_simulation/demand/evrp_r04_demand_weight/20260909_r04_demand_weight_v3/candidate_demand_weights.csv
+  customer_ids: reproducibility/outputs/traffic_simulation/demand/evrp_r05_pps_sampling/20260909_r05_pps_n10_seed20260909_final/customer_ids.csv
+  network: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/three_tier.net.xml
+  network_acceptance: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/network_acceptance.json
+output_root: reproducibility/outputs/traffic_simulation/demand/evrp_r09_depot

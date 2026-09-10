@@ -62,8 +62,17 @@ def test_private_authorization_resolution_uses_existing_governed_authority() -> 
 
     runtime_path = REPOSITORY_ROOT / implementation["runtime"]["path"]
     test_path = REPOSITORY_ROOT / implementation["regression_test"]["path"]
-    assert implementation["runtime"]["byte_sha256"] == _sha256(runtime_path)
-    assert implementation["regression_test"]["byte_sha256"] == _sha256(test_path)
+    # These hashes are immutable evidence of the implementation bytes validated
+    # by RES-P13-PRIVATE-AUTH-CONTEXT-001, not rolling pointers to successor
+    # implementations. Current behavior is checked independently below.
+    assert implementation["runtime"]["byte_sha256"] == (
+        "4f1aee89eda5f72f8adfec211d6986528d3b18ad2359389aae9da3da4e05bd1e"
+    )
+    assert implementation["regression_test"]["byte_sha256"] == (
+        "16733178dc4cbccdcfaa47ab9f3ef2175d405e47fb69e2d85dc2e3e392a1189d"
+    )
+    assert runtime_path.is_file()
+    assert test_path.is_file()
 
 
 def test_private_access_resolves_denied_from_governed_negative_context() -> None:

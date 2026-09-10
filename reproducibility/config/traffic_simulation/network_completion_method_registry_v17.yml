@@ -1,0 +1,281 @@
+schema_version: 17
+schema: reproducibility/config/traffic_simulation/schemas/network_completion_policy_v17.schema.json
+registry_id: NETWORK_COMPLETION_METHOD_REGISTRY_V17
+registry_version: 1.0.0
+decision_id: DEC-P13-NETWORK-COMPLETION-HIERARCHICAL-HYBRID-001
+decision_record: reproducibility/config/traffic_simulation/decisions/phase13_network_completion_hierarchical_hybrid_v1.yml
+normative_specification: 05_src/traffic_simulation/specifications/14_formal_network_completion_policy_v17.md
+status: adopted
+adopted_at: '2026-09-03'
+
+definitions:
+  formal: research-admissible model-ready value whose method validity was validated before use and whose provenance is complete
+  formal_not_source_explicit_only: true
+  formal_not_arbitrary_simulation_fallback: true
+  source_truth_separated_from_model_ready_value: true
+
+layers:
+  STRUCTURAL:
+    definition: source representation, topology, lineage, and raw or normalized state; it may retain registered structural assumptions but makes no Formal validity claim
+    permitted_inputs: [source_snapshot, topology, raw_attributes, normalized_attributes, registered_structural_assumptions]
+    provenance_required: true
+  FORMAL:
+    definition: validated research-use values plus an explicit inventory of attributes that remain unresolved under Formal policy
+    permitted_inputs: [STRUCTURAL, formal_allowed_now_methods, promoted_validation_gated_methods]
+    provenance_required: true
+  SIMULATION_READY:
+    definition: Formal values overlaid only where necessary by separately labelled simulation-only defaults or fallbacks
+    permitted_inputs: [FORMAL, simulation_only_methods]
+    provenance_required: true
+
+epistemic_classes:
+  formal: [OBSERVED, NORMALIZED, DETERMINISTIC_DERIVED, EXTERNAL_DATA_DERIVED, VALIDATED_LOCAL_INFERRED, VALIDATED_MODEL_DERIVED]
+  simulation_only: [TYPE_DEFAULTED, SIMULATION_DEFAULTED, CONSERVATIVE_FALLBACK]
+  field_separation: formal_epistemic_status_and_simulation_epistemic_status_are_distinct
+
+method_statuses: [FORMAL_ALLOWED_NOW, FORMAL_ALLOWED_AFTER_VALIDATION, SIMULATION_ONLY, PROHIBITED, UNRESOLVED_RESEARCH_DECISION_REQUIRED]
+
+methods:
+  - method_id: EXPLICIT_SOURCE_EVIDENCE
+    family: explicit source evidence
+    status: FORMAL_ALLOWED_NOW
+    attributes: [all]
+    epistemic_class: OBSERVED
+    formal_value_producer: true
+    priority_stage: EXPLICIT
+    required_provenance: [source_id, source_snapshot_sha256, source_field, raw_value, semantic_kind]
+    required_validation: [syntax_and_semantic_validation, conflict_check]
+    abstention_conditions: [invalid_value, unsupported_syntax, conflicting_explicit_evidence]
+  - method_id: SOURCE_VALUE_NORMALIZATION
+    family: deterministic normalization
+    status: FORMAL_ALLOWED_NOW
+    attributes: [all]
+    epistemic_class: NORMALIZED
+    formal_value_producer: true
+    priority_stage: NORMALIZED
+    required_provenance: [source_id, source_snapshot_sha256, source_field, raw_value, normalization_rule_id, normalized_unit]
+    required_validation: [registered_lossless_normalization, deterministic_regeneration]
+    abstention_conditions: [semantic_change, unit_ambiguity, unregistered_normalization]
+  - method_id: ADOPTED_DETERMINISTIC_DERIVED_RULE
+    family: deterministic derived rule
+    status: FORMAL_ALLOWED_NOW
+    attributes: [all]
+    epistemic_class: DETERMINISTIC_DERIVED
+    formal_value_producer: true
+    priority_stage: DETERMINISTIC_DERIVED
+    required_provenance: [source_id, source_snapshot_sha256, rule_id, rule_version, decision_id, input_values]
+    required_validation: [registered_adopted_rule, positive_and_negative_oracles, deterministic_regeneration]
+    abstention_conditions: [rule_not_registered, rule_predicate_not_satisfied, conflict]
+  - method_id: VALIDATED_EXTERNAL_OFFICIAL_DATA
+    family: external official data
+    status: FORMAL_ALLOWED_AFTER_VALIDATION
+    attributes: [all]
+    epistemic_class: EXTERNAL_DATA_DERIVED
+    formal_value_producer: false
+    priority_stage: VALIDATED_EXTERNAL_DATA
+    required_provenance: [external_dataset_id, external_record_id, external_snapshot_sha256, observation_date, source_way_id, identity_match, extent_match, direction_match, semantic_match, linkage_method_version]
+    required_validation: [external_validation, identity_extent_direction_date_semantic_gates, conflict_check, deterministic_regeneration]
+    abstention_conditions: [ambiguous_linkage, extent_mismatch, direction_mismatch, temporal_mismatch, semantic_mismatch, conflict]
+  - method_id: VALIDATED_LOCAL_CORRIDOR_PROPAGATION
+    family: same-corridor / local propagation
+    status: FORMAL_ALLOWED_AFTER_VALIDATION
+    attributes: [lanes, speed]
+    epistemic_class: VALIDATED_LOCAL_INFERRED
+    formal_value_producer: false
+    priority_stage: VALIDATED_LOCAL_PROPAGATION
+    required_provenance: [method_id, method_version, source_way_id, donor_record_ids, donor_snapshot_sha256, corridor_id, transition_guards, prediction, confidence, validation_dataset_sha256]
+    required_validation: [train_test_way_separation, spatial_corridor_holdout, explicit_domain_validation, missing_domain_validation, external_validation, accuracy, mae, bias, calibration_confidence, abstention_support, provenance_completeness, deterministic_regeneration, sensitivity_analysis]
+    abstention_conditions: [missing_domain_gate_failed_or_absent, donor_disagreement, lane_or_speed_transition, out_of_domain, low_confidence, insufficient_support, conflict]
+  - method_id: VALIDATED_EMPIRICAL_GROUP_MODEL
+    family: empirical group model
+    status: FORMAL_ALLOWED_AFTER_VALIDATION
+    attributes: [lanes, speed]
+    epistemic_class: VALIDATED_MODEL_DERIVED
+    formal_value_producer: false
+    priority_stage: VALIDATED_EMPIRICAL_OR_ML
+    required_provenance: [method_id, method_version, training_population_id, training_snapshot_sha256, grouping_features, prediction, confidence, validation_dataset_sha256]
+    required_validation: [train_test_way_separation, spatial_corridor_holdout, explicit_domain_validation, missing_domain_validation, external_validation, accuracy, mae, bias, calibration_confidence, abstention_support, provenance_completeness, deterministic_regeneration, sensitivity_analysis]
+    abstention_conditions: [missing_domain_gate_failed_or_absent, unseen_group, out_of_domain, low_confidence, insufficient_class_support, conflict]
+  - method_id: VALIDATED_STATISTICAL_ML_PREDICTION
+    family: statistical / ML prediction
+    status: FORMAL_ALLOWED_AFTER_VALIDATION
+    attributes: [lanes, speed]
+    epistemic_class: VALIDATED_MODEL_DERIVED
+    formal_value_producer: false
+    priority_stage: VALIDATED_EMPIRICAL_OR_ML
+    required_provenance: [model_id, model_version, code_sha256, training_population_id, training_snapshot_sha256, feature_schema, feature_values_or_hash, prediction_distribution, calibrated_confidence, applicability_result, validation_dataset_sha256]
+    required_validation: [train_test_way_separation, spatial_corridor_holdout, explicit_domain_validation, missing_domain_validation, external_validation, accuracy, mae, bias, calibration_confidence, abstention_support, provenance_completeness, deterministic_regeneration, sensitivity_analysis]
+    abstention_conditions: [missing_domain_gate_failed_or_absent, out_of_domain, low_confidence, uncalibrated_confidence, insufficient_class_support, leakage_detected, conflict]
+  - method_id: VEHICLE_SPECIFIC_ACCESS_EVIDENCE
+    family: vehicle-specific access evidence
+    status: FORMAL_ALLOWED_NOW
+    attributes: [permission_access]
+    epistemic_class: OBSERVED
+    formal_value_producer: true
+    priority_stage: VEHICLE_SPECIFIC_EVIDENCE
+    required_provenance: [source_id, source_snapshot_sha256, source_field, governed_vehicle_class, raw_value, applicable_context]
+    required_validation: [registered_vehicle_ontology, syntax_and_semantic_validation, specificity_conflict_check]
+    abstention_conditions: [vehicle_domain_unregistered, context_missing, unsupported_syntax, specificity_conflict]
+  - method_id: DETERMINISTIC_OSM_ACCESS_SEMANTICS
+    family: deterministic OSM access semantics
+    status: FORMAL_ALLOWED_NOW
+    attributes: [permission_access]
+    epistemic_class: DETERMINISTIC_DERIVED
+    formal_value_producer: true
+    priority_stage: DETERMINISTIC_OSM_SEMANTICS
+    required_provenance: [source_id, source_snapshot_sha256, access_hierarchy_rule_id, rule_version, decision_id, governed_vehicle_class, applicable_context]
+    required_validation: [registered_adopted_rule, vehicle_hierarchy_oracles, deterministic_regeneration]
+    abstention_conditions: [rule_not_registered, context_missing, unsupported_conditional, specificity_conflict]
+  - method_id: VALIDATED_POLICY_DERIVED_ACCESS
+    family: validated policy-derived access
+    status: FORMAL_ALLOWED_AFTER_VALIDATION
+    attributes: [permission_access]
+    epistemic_class: EXTERNAL_DATA_DERIVED
+    formal_value_producer: false
+    priority_stage: VALIDATED_POLICY_DERIVED_ACCESS
+    required_provenance: [jurisdiction, authority_source_id, authority_snapshot_sha256, effective_date, policy_rule_id, policy_rule_version, governed_vehicle_class, applicable_context]
+    required_validation: [external_validation, legal_authority_review, jurisdiction_date_vehicle_scope_match, positive_and_negative_oracles, deterministic_regeneration]
+    abstention_conditions: [authority_ambiguous, jurisdiction_mismatch, date_mismatch, vehicle_scope_mismatch, context_missing, conflict]
+  - method_id: ROAD_TYPE_DEFAULT
+    family: road-type default / highway-class mode / generic type default
+    status: SIMULATION_ONLY
+    attributes: [lanes, speed, permission_access]
+    epistemic_class: TYPE_DEFAULTED
+    formal_value_producer: false
+    priority_stage: TYPE_DEFAULT
+    required_provenance: [default_registry_id, default_registry_version, road_type, selected_default, scenario_id]
+    required_validation: [simulation_sensitivity, executable_value_validation]
+    abstention_conditions: [unrecognized_type, invalid_default, explicit_conflict]
+  - method_id: SUMO_TYPEMAP_DEFAULT
+    family: SUMO typemap default
+    status: SIMULATION_ONLY
+    attributes: [lanes, speed, permission_access]
+    epistemic_class: SIMULATION_DEFAULTED
+    formal_value_producer: false
+    priority_stage: SUMO_DEFAULT
+    required_provenance: [sumo_version, typemap_path, typemap_sha256, selected_type, scenario_id]
+    required_validation: [sumo_materialization, simulation_sensitivity]
+    abstention_conditions: [unrecognized_type, build_failure, explicit_conflict]
+  - method_id: MATSIM_DEFAULT
+    family: MATSim default
+    status: SIMULATION_ONLY
+    attributes: [lanes, speed, permission_access]
+    epistemic_class: SIMULATION_DEFAULTED
+    formal_value_producer: false
+    priority_stage: MATSIM_DEFAULT
+    required_provenance: [matsim_version, default_table_sha256, selected_type, scenario_id]
+    required_validation: [matsim_materialization, simulation_sensitivity]
+    abstention_conditions: [unrecognized_type, build_failure, explicit_conflict]
+  - method_id: CONSERVATIVE_SIMULATION_FALLBACK
+    family: conservative fallback
+    status: SIMULATION_ONLY
+    attributes: [lanes, speed, permission_access]
+    epistemic_class: CONSERVATIVE_FALLBACK
+    formal_value_producer: false
+    priority_stage: CONSERVATIVE_FALLBACK
+    required_provenance: [fallback_rule_id, fallback_rule_version, scenario_id, affected_attribute, sensitivity_scenario]
+    required_validation: [executable_value_validation, simulation_sensitivity]
+    abstention_conditions: [safety_or_legality_not_demonstrated, non_executable_value]
+  - method_id: GOVERNANCE_FALLBACK
+    family: governance fallback
+    status: UNRESOLVED_RESEARCH_DECISION_REQUIRED
+    attributes: [all]
+    epistemic_class: NONE_CONTROL_ONLY
+    formal_value_producer: false
+    priority_stage: null
+    required_provenance: [issue_id, unresolved_reason, requested_decision_scope]
+    required_validation: []
+    abstention_conditions: [always_until_separate_decision]
+    note: Governance fallback may route to UNRESOLVED_FORMAL or request a Decision; it shall never manufacture a value.
+  - method_id: FAIL_CLOSED_CONFLICT_RESOLUTION
+    family: conflict-resolution policy
+    status: FORMAL_ALLOWED_NOW
+    attributes: [all]
+    epistemic_class: NONE_CONTROL_ONLY
+    formal_value_producer: false
+    priority_stage: CONFLICT_GUARD
+    required_provenance: [conflicting_evidence_ids, conflict_rule_id, decision_id, stop_code]
+    required_validation: [registered_precedence_or_specificity_policy, positive_and_negative_oracles, deterministic_regeneration]
+    abstention_conditions: [unresolved_conflict]
+    note: It may select an already-supported value only under an adopted deterministic precedence rule; otherwise it stops. Voting or silent overwrite is prohibited.
+  - method_id: ML_LEGAL_ACCESS_GRANT
+    family: statistical / ML legal access grant
+    status: PROHIBITED
+    attributes: [permission_access]
+    epistemic_class: NONE_CONTROL_ONLY
+    formal_value_producer: false
+    priority_stage: null
+    required_provenance: []
+    required_validation: []
+    abstention_conditions: [always]
+  - method_id: SILENT_OR_UNREGISTERED_INFERENCE
+    family: silent inference / unregistered rule / lower-stage override
+    status: PROHIBITED
+    attributes: [all]
+    epistemic_class: NONE_CONTROL_ONLY
+    formal_value_producer: false
+    priority_stage: null
+    required_provenance: []
+    required_validation: []
+    abstention_conditions: [always]
+
+resolution_hierarchies:
+  lanes:
+    formal_priority: [EXPLICIT_SOURCE_EVIDENCE, ADOPTED_DETERMINISTIC_DERIVED_RULE, VALIDATED_EXTERNAL_OFFICIAL_DATA, VALIDATED_LOCAL_CORRIDOR_PROPAGATION, VALIDATED_EMPIRICAL_GROUP_MODEL, VALIDATED_STATISTICAL_ML_PREDICTION]
+    simulation_only_priority: [ROAD_TYPE_DEFAULT, SUMO_TYPEMAP_DEFAULT, MATSIM_DEFAULT, CONSERVATIVE_SIMULATION_FALLBACK]
+    terminal_formal_state: UNRESOLVED_FORMAL
+    lower_stage_override_prohibited: true
+    semantic_guard: total_physical_shared_and_directional_lane_semantics_must_not_be_conflated
+  speed:
+    formal_priority: [EXPLICIT_SOURCE_EVIDENCE, SOURCE_VALUE_NORMALIZATION, ADOPTED_DETERMINISTIC_DERIVED_RULE, VALIDATED_EXTERNAL_OFFICIAL_DATA, VALIDATED_EMPIRICAL_GROUP_MODEL, VALIDATED_STATISTICAL_ML_PREDICTION]
+    simulation_only_priority: [ROAD_TYPE_DEFAULT, SUMO_TYPEMAP_DEFAULT, MATSIM_DEFAULT, CONSERVATIVE_SIMULATION_FALLBACK]
+    terminal_formal_state: UNRESOLVED_FORMAL
+    lower_stage_override_prohibited: true
+    semantic_guard: legal_or_posted_maxspeed_must_be_separate_from_predicted_free_flow_or_average_speed
+  permission_access:
+    formal_priority: [EXPLICIT_SOURCE_EVIDENCE, VEHICLE_SPECIFIC_ACCESS_EVIDENCE, DETERMINISTIC_OSM_ACCESS_SEMANTICS, VALIDATED_POLICY_DERIVED_ACCESS]
+    simulation_only_priority: [ROAD_TYPE_DEFAULT, SUMO_TYPEMAP_DEFAULT, MATSIM_DEFAULT, CONSERVATIVE_SIMULATION_FALLBACK]
+    terminal_formal_state: UNRESOLVED_FORMAL
+    lower_stage_override_prohibited: true
+    semantic_guard: vehicle_specific_evidence_precedes_general_access_and_prediction_may_not_grant_legal_access
+
+validation_gates:
+  required_for_promotion: [train_test_way_separation, spatial_corridor_holdout, explicit_domain_validation, missing_domain_validation, external_validation, accuracy, mae, bias, calibration_confidence, abstention_support, provenance_completeness, deterministic_regeneration, sensitivity_analysis]
+  lane_quantitative_envelope:
+    comparison_population: independently_labeled_missing_domain_common_eligible_population
+    accuracy_lower_95ci_gt: 0.694454
+    mae_upper_95ci_lt: 0.401196
+    absolute_bias_upper_95ci_lt: 0.141693
+    coverage_policy: no_minimum_coverage; report selective risk and coverage together and preserve abstention
+    basis: accuracy and MAE must beat the best observed type-default comparator; absolute bias must beat the least-biased naive group comparator; all are screening floors, not proof of external validity
+    rare_class_policy: report per-class support and recall; no unsupported class may be silently mapped to the dominant class
+  attribute_specific_threshold_policy: thresholds must be preregistered per semantic target and deployment stratum from benchmark comparators plus downstream sensitivity; no universal 95-percent accuracy rule is authorized
+  missing_domain_policy: explicit_domain_and_missing_domain_validation_both_required
+  confidence_policy: confidence threshold must be calibrated on held-out missing-domain labels; donor-domain probability alone cannot authorize promotion
+  promotion_effect: separate adopted promotion Decision and formal evidence-method registration required; this registry alone activates no gated method
+
+blocker_semantics:
+  formal_blocker: an attribute for which no model-ready research value can be established under Formal policy
+  simulation_readiness_blocker: an attribute that remains without an executable value after applicable Formal values and registered simulation-only fallbacks are evaluated
+  allowed_joint_state: formal_blocker_count_may_be_positive_while_simulation_readiness_blocker_count_is_zero
+
+completion_states:
+  FORMAL_RESEARCH_READY:
+    required: [formal_provenance_complete, formal_unresolved_inventory_complete, no_silent_inference, accepted_validation_gates_satisfied]
+    permits_formal_blockers: true
+  SIMULATION_NETWORK_READY:
+    required: [every_simulation_required_attribute_has_executable_value, formal_or_simulation_only_provenance_complete, sumo_materialization_pass, connectivity_pass, delivery_routeability_pass]
+    requires_formal_research_ready_accounting: true
+    permits_formal_blockers: true
+    requires_simulation_readiness_blockers_zero: true
+
+authority_artifacts:
+  - {path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_network_completion_model_selection/network_completion_benchmarks.json, sha256: 2f4842e4e67583cb1215480f894e077bc2823f5da3d7ffe8ecbce3c7d72d30ef, read_only: true}
+  - {path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_network_completion_model_selection/missingness_bias.json, sha256: c9452003fd1cc4e28ace8fae949871b724620d6259165a452ad3f30226f1ebc8, read_only: true}
+  - {path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_network_completion_model_selection/model_comparison.json, sha256: a23f438db23b2ba1c8ee4dac21eaf6f31a91dee84b11a3105dc119d3b8556c50, read_only: true}
+  - {path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_network_completion_model_selection/model_family_survey.json, sha256: 76fe4be8a5eae15af57e432059d32c0c7d388146b07c3e87520d691fbbad3b2a, read_only: true}
+  - {path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_network_completion_model_selection/recommended_network_completion_model.md, sha256: 90e4ee193b2c425212d06ba8df193957eb25eb8914bb901cd5a3c243ed6b664a, read_only: true}
+  - {path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_network_completion_model_selection/decision_draft.md, sha256: a9a159c0a74e64b52e261faf892c0761cebee951332ef58ef29cfe4cc245e023, read_only: true}
+  - {path: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_network_completion_model_selection/validation_manifest.json, sha256: 1eba034e80fac415d6ab99f07f3a43e27456eb72ffd79657f3509a18c5d76a0e, read_only: true}
+
+protected_actions: [lane_blocker_reduction, speed_blocker_reduction, permission_blocker_reduction, full_population_rerun, sumo_build, type_default_formalization, unvalidated_model_or_local_formalization, historical_v17_artifact_mutation]

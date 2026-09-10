@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shared_lane_source_semantic_v17.schema.json",
+  "type": "object",
+  "required": [
+    "schema_version", "configuration_id", "population_version", "profile",
+    "record_id", "source_way_id", "attribute_name", "resolution_status",
+    "value_origin", "effective_value", "rule_ids", "decision_id",
+    "decision_version", "source_observations", "oneway_provenance", "source",
+    "source_lane_tags", "provenance", "stop_code", "review_required"
+  ],
+  "properties": {
+    "schema_version": {"const": 17},
+    "configuration_id": {"const": "ota_ward_sumo_network_v17"},
+    "population_version": {"type": "string", "minLength": 1},
+    "profile": {"const": "formal"},
+    "record_id": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "source_way_id": {"type": "integer", "minimum": 1},
+    "attribute_name": {"const": "lane_semantics"},
+    "resolution_status": {"const": "resolved"},
+    "value_origin": {"const": "rule_derived"},
+    "effective_value": {
+      "type": "object",
+      "required": ["kind", "physical_moving_lane_count", "usable_source_directions", "dedicated_moving_lane_count"],
+      "properties": {
+        "kind": {"const": "shared_bidirectional_single_moving_lane"},
+        "physical_moving_lane_count": {"const": 1},
+        "usable_source_directions": {"const": ["forward", "backward"]},
+        "dedicated_moving_lane_count": {
+          "type": "object",
+          "required": ["forward", "backward"],
+          "properties": {"forward": {"const": 0}, "backward": {"const": 0}},
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "rule_ids": {"const": ["OSM_BIDIRECTIONAL_TOTAL_1_TO_SHARED_SINGLE_V1"]},
+    "decision_id": {"const": "DEC-P13-LANE-BIDIRECTIONAL-SHARED-SINGLE-LANE-001"},
+    "decision_version": {"const": "1.0.0"},
+    "source_observations": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["source_key", "source_value"],
+        "properties": {
+          "source_key": {"enum": ["lanes", "oneway"]},
+          "source_value": {"type": ["string", "null"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "oneway_provenance": {
+      "type": "object",
+      "required": ["canonical_oneway", "value_origin", "rule_id", "source_value"],
+      "properties": {
+        "canonical_oneway": {"const": "no"},
+        "value_origin": {"enum": ["source_explicit", "source_normalized", "rule_derived"]},
+        "rule_id": {"type": ["string", "null"]},
+        "source_value": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "source_lane_tags": {
+      "type": "object",
+      "required": ["lanes"],
+      "properties": {"lanes": {"const": "1"}},
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["strict_predicate_version", "source_rewrite", "access_permission_effect", "sumo_behavior_approved"],
+      "properties": {
+        "strict_predicate_version": {"const": "1.0.0"},
+        "source_rewrite": {"const": false},
+        "access_permission_effect": {"const": "none"},
+        "sumo_behavior_approved": {"const": false}
+      },
+      "additionalProperties": false
+    },
+    "stop_code": {"type": "null"},
+    "review_required": {"const": false}
+  },
+  "additionalProperties": false
+}

@@ -26,7 +26,7 @@ def _schema(name: str) -> dict:
 def test_v17_phase1_authority_is_synchronized() -> None:
     result = validate_phase1_authority()
     assert result["phase1_authority"] == "passed"
-    assert result["registry_stop_code_count"] == 30
+    assert result["registry_stop_code_count"] == 31
     assert result["semantic_invariant_count"] >= 35
     assert result["runtime_validation"] == "not_run"
     assert result["formal_build_ready"] is False

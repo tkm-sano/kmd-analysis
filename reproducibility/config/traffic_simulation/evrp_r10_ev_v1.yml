@@ -1,0 +1,41 @@
+schema_version: evrp-r10-ev-v1
+vehicle_id: mitsubishi_fuso_ecanter_s_yamato
+vehicle_class: delivery
+fleet_size: 1
+fleet_size_reason: fixture_minimum_one_vehicle; production fleet sizing is deferred to later instance definition
+payload_capacity_kg: 2000.0
+battery_capacity_kwh: 41.0
+catalog_range_km: 116.0
+initial_soc: 1.00
+minimum_soc: 0.20
+final_soc_requirement_enabled: false
+final_soc_requirement: null
+depot_return_minimum_soc_applies: true
+soc_constraint_semantics: route-wide SOC >= minimum_soc, including depot return
+maximum_operating_time_enabled: false
+maximum_operating_time_min: null
+energy_formula: E_ij_kwh = d_ij_km * energy_consumption_kwh_per_km
+source_spec_row: 03_data/processed/ev_truck_specs_scenario.csv
+source_soc_parameters: legacy/non_sumo_route_proxy_analysis/data/processed/evrp_constraint_gap_inputs/analysis_parameters.csv
+source_vehicle_profile: reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml
+source_depot_validation: reproducibility/outputs/traffic_simulation/demand/evrp_r09_depot/20260909_r09_depot_fixture_n10_v2/r09_independent_validation.json
+soc_external_precedents:
+  - title: "Electric Vehicle Routing With Recharging Stations: Trade-Offs in Last-Mile Delivery"
+    url: https://doi.org/10.1049/itr2.70052
+    scope: last-mile CEVRP charging strategies
+    setting: vehicles leave warehouse at full charge; 20-80% strategy prevents SOC below 20%
+    application: supports full-charge departure and 20% operational lower bound as research assumptions
+  - title: Evolving routing policies for electric vehicles by means of genetic programming
+    url: https://doi.org/10.1007/s10489-024-05803-5
+    scope: EVRP formulation and routing policies
+    setting: vehicles depart depot with full battery; arc energy is proportional to distance
+    application: supports initial SOC 1.00 and linear distance-energy formulation
+  - title: Mathematical Model for the Electric Vehicle Routing Problem Considering the State of Charge of the Batteries
+    url: https://doi.org/10.3390/su14031645
+    scope: EVRP SOC model and deep-discharge protection discussion
+    setting: minimum SOC threshold is used to avoid zero/deep discharge
+    application: supports treating minimum SOC as an operational research constraint, not a manufacturer value
+soc_sensitivity_candidates:
+  initial_soc: [0.8, 0.9, 1.0]
+  minimum_soc: [0.1, 0.2, 0.3]
+output_root: reproducibility/outputs/traffic_simulation/demand/evrp_r10_ev

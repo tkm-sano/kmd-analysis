@@ -1,0 +1,21 @@
+comparison_id: STRICT-V17-VS-THREE-TIER-RUN-2
+artifact_status: generated_non_normative_acceptance_candidate
+strict_v17_historical_blockers: 115935
+three_tier:
+  network_id: P13-THREE-TIER-RUN-2
+  DIRECT: 15
+  INFERRED: 101331
+  FALLBACK: 14589
+  unresolved: 0
+  confidence: {HIGH: 15, MEDIUM: 0, LOW: 101331, FALLBACK: 14589}
+  sumo_version: 1.24.0
+  sumo_build: PASS
+  lane_validity: PASS
+  speed_validity: PASS
+  permission_validity: PASS
+  connectivity: PASS
+  delivery_routeability: PASS
+  stops: {total: 39956, mapped: 39956, unmapped: 0, mapping_rate: 1.0}
+  network_semantic_sha256: 4625dbbc150cbcf72964bed0e90a8b33fe03f190ff4264aecaaf89e3aab0e40f
+  accepted: true
+known_limitation: additional deterministic sanity sample is 91/100 and remains non-gating; see run_2/routeability_after_mapping_fix.json

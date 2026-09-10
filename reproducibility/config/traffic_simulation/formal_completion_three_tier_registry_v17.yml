@@ -1,0 +1,34 @@
+schema_version: 17
+schema: reproducibility/config/traffic_simulation/schemas/formal_completion_three_tier_v17.schema.json
+registry_id: FORMAL_COMPLETION_THREE_TIER_V17
+registry_version: 1.0.0
+decision_id: DEC-P13-FORMAL-COMPLETION-THREE-TIER-001
+status: adopted
+adopted_at: '2026-09-03'
+supersedes: DEC-P13-NETWORK-COMPLETION-HIERARCHICAL-HYBRID-001
+formal_definition: complete model-ready network representation used by research and simulation, with tier, method, confidence, assumptions and provenance
+tiers:
+  DIRECT: source_or_unique_adopted_rule
+  INFERRED: reproducible_completion_mechanism_with_confidence
+  FALLBACK: deterministic_completion_default_or_conservative_rule
+confidence_levels: [HIGH, MEDIUM, LOW, FALLBACK]
+method_selection:
+  lanes:
+    priority: [external_data, local_propagation, empirical_group, statistical_ml, deterministic_fallback]
+    selection_objectives: [coverage, bias, mae, determinism, available_features, confidence, computational_cost]
+  speed:
+    materialized_attribute: operational_speed_kph
+    legal_maxspeed_separate: true
+    priority: [external_data, empirical_group, statistical_ml, road_type_deterministic_fallback]
+  permission_access:
+    governed_vehicle: delivery
+    priority: [explicit_access, deterministic_osm_semantics, deterministic_policy_fallback]
+    predictive_legal_grant: prohibited
+  relations_conditionals:
+    priority: [configured_time_evaluation, deterministic_restriction_fallback, ignore_unsupported_restriction_with_provenance]
+record_required_fields: [final_value, resolution_tier, method_id, method_version, confidence, source_evidence, source_identity, assumption_id, provenance, original_missing_or_blocker_state]
+provenance_required: [source_snapshot_sha256, source_way_id_or_record_id, method_id, method_version, decision_id, input_feature_hash, regeneration_command, original_blocker_id, original_stop_code]
+blocker_definition: technical failure after DIRECT, INFERRED and FALLBACK are attempted; missing evidence, low confidence and default usage alone are not blockers
+quality_accounting: [tier_counts_and_percent, confidence_counts, method_counts, attribute_counts, unresolved_technical_count]
+historical_baseline_policy: strict_v17_and_prior_runs_are_read_only_evidence
+production_activation: this registry governs a new research run; it does not mutate strict v17 registries or prior outputs

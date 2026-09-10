@@ -1,5 +1,9 @@
 # 今後の交通シミュレーション工程で決めるべき事項
 
+> **Scope note (2026-09-10):** 本表は2026-08-01時点のnetwork/full-EVRP未決定事項を保持する
+> decision registerである。現在のreduced route-ordering R20/R21/R22 PASSとR23 READY_FOR_PILOTは
+> `EVRP_EXECUTION_PLAN.md`の別branchで管理する。ここに残る未決定事項をreduced PASSへ逆適用しない。
+
 > **文書状態:** 未決定事項の横断管理表
 > **基準日:** 2026-08-01
 > **対象:** 版17属性解決、正式SUMO道路網、較正、独立検証、正式比較
