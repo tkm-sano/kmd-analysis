@@ -1700,6 +1700,16 @@ with at least `validation_results.json` and `manifest.json`. The manifest record
 
 This reduced branch does not alter the full-EVRP `R21_QUBO_VALIDATION`, whose prerequisite remains full-EVRP `R20_QUBO_FORMULATION = PASS`.
 
+### Formal reduced-R21 validation result — 2026-09-10
+
+- **Run:** `reproducibility/outputs/traffic_simulation/r21_qubo_validation/20260910_formal_reduced_v1/`
+- **Classification:** `FORMAL_R21_REDUCED_QUBO_VALIDATION`
+- **Result:** all 7 required instances PASS; V1--V8 PASS for every instance; deterministic semantic rerun PASS.
+- **Instances:** synthetic n=2 unique; synthetic n=3 unique, tie, and asymmetric; synthetic n=4 adversarial/asymmetric; Routing Baseline-derived depot + 2 customers; Routing Baseline-derived depot + 3 customers.
+- **Decision:** `R21_REDUCED_QUBO_VALIDATION = PASS` for `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY`.
+- **R22 boundary:** scoped eligibility is recorded for the same reduced QUBO only. R22 execution remains blocked/not executed; full-EVRP R22 eligibility is not granted.
+- **Status transition:** `READY_FOR_EXECUTION -> PASS` for this reduced branch only. The full-EVRP `R21_QUBO_VALIDATION` remains `NOT_STARTED`.
+
 ## R22_ISING_CONVERSION — Ising Conversion
 
 - **Stage ID:** R22_ISING_CONVERSION
