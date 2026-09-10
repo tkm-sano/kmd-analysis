@@ -1,0 +1,36 @@
+{
+  "classification": "FORMAL_EXPERIMENT_EXECUTION_AUTHORIZED",
+  "execution_performed": false,
+  "formal_design_id": "R23_FORMAL_EXPERIMENT_DESIGN_V1",
+  "formal_design_commit": "2a57d9cce3e69d3cc3fbcc077a2e0f65d402064e",
+  "formal_design_artifact": "reproducibility/config/traffic_simulation/r23_formal_experiment/20260911_r23_formal_v1.json",
+  "formal_design_artifact_sha256": "9259b8c9e5b872f3f59a7a53b7bae07e053c9d1644573cfd1ead30668253805c",
+  "implementation_commit": "417bfe97520f42ae749d876fc26cfd205d6e8607",
+  "lambda_policy_id": "R20_COMMON_GLOBAL_LAMBDA_V1",
+  "lambda": 3.0,
+  "checks": {
+    "implementation_commit_integrity": "PASS",
+    "formal_design_integrity": "PASS",
+    "lambda_authority": "PASS",
+    "frozen_instance_set_15_of_15": "PASS",
+    "exact_references_15_of_15": "PASS",
+    "r20_formal_authority_15_of_15": "PASS",
+    "r21_formal_authority_15_of_15": "PASS",
+    "r22_formal_authority_15_of_15": "PASS",
+    "frozen_runtime_integrity": "PASS",
+    "deterministic_run_matrix_45_unique": "PASS",
+    "cpu_only": "PASS",
+    "qaoa_executed": false,
+    "optimizer_executed": false
+  },
+  "planned_matrix": {
+    "instances": 15,
+    "p_values": [1, 2, 3],
+    "initializations": 1,
+    "repetitions": 1,
+    "planned_runs": 45,
+    "run_manifest": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/planned_run_manifest.json",
+    "run_manifest_sha256": "92ab5f83ebeaf46ff0ba93706921b26e593e3235501f918942df4339d2af4aa2"
+  },
+  "next_action": "Formal Experiment A may be executed only as a separate explicitly authorized task; this task intentionally performed no formal run."
+}
