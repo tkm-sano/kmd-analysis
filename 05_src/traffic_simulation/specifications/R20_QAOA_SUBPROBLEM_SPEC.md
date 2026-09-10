@@ -678,7 +678,7 @@ QAOA/Aer remains a software simulation layer. Aer simulation limits are not quan
 - validation scope: synthetic n=2 and n=3 only; no Routing Baseline matrix was used
 - coefficient builder: explicit constant, linear, and canonical quadratic maps; i=j travel terms excluded
 - direct/expanded validation: exhaustive for all n=2 and n=3 synthetic states and every candidate λ
-- corrected evidence artifact: `reproducibility/outputs/traffic_simulation/r20_exact_validation/20260910_corrected_expanded_qubo_v10/`
+- corrected evidence artifact: `reproducibility/outputs/traffic_simulation/r20_exact_validation/20260910_corrected_expanded_qubo_v12/`
 - implementation result: regression tests PASS; validation evidence is not a gate PASS
 
 ## 16.2 Routing Baseline edge semantics and R20 input contract
@@ -849,13 +849,13 @@ For each subset, validate all IDs, exact directed-pair completeness, statuses/nu
 - QUBO enumeration: 16 and 512 states per lambda candidate; direct-versus-expanded mismatch count is zero for every state and lambda
 - normalization: both raw and normalized optimal-route sets are identical; tau_max is 600.8883871408055 seconds for both selected subsets
 - lambda result interpretation: candidate values 0 through 8 are validation probes only. Some low candidates have infeasible global minima; candidate 1 and above separate these two instances, but no formal numerical lambda is adopted. The general bound is theorem-backed and is recorded separately from these empirical probes.
-- evidence artifact: `reproducibility/outputs/traffic_simulation/r20_real_data_validation/20260910_complete_reachability_v8/`
+- evidence artifact: `reproducibility/outputs/traffic_simulation/r20_real_data_validation/20260910_complete_reachability_v10/`
 - evidence status: `PASS_FORMULATION_EVIDENCE_ONLY`; this is not FORMULATION_VERIFIED PASS and does not authorize QAOA.
 
 ## 16.4 Lambda-bound analysis record
 
 - analysis utility: `05_src/traffic_simulation/r20_route_ordering/analyze_lambda_bound.py`
-- analysis artifact: `reproducibility/outputs/traffic_simulation/r20_lambda_bound_analysis/20260910_adversarial_v6/lambda_bound_analysis.json`
+- analysis artifact: `reproducibility/outputs/traffic_simulation/r20_lambda_bound_analysis/20260910_adversarial_v8/lambda_bound_analysis.json`
 - authoritative result: `THEORETICAL_BOUND_PROVED` for the current complete-reachability, normalized, non-negative formulation
 - minimum positive assignment penalty: `P_min=2`, proved from integer row/column deviations and attained by deleting one 1 from a permutation matrix
 - arbitrary-state travel range: `0 <= H_travel <= n((n-1)^2+2)`; the upper count includes n departure terms, n return terms, and `(n-1)n(n-1)` adjacent i!=j terms
