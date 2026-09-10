@@ -1557,6 +1557,149 @@ Recommended order: `QUBO scope decision → state precision decision → encodin
 - **Decision:** NOT_RUN
 - **Next Allowed Stage:** R22_ISING_CONVERSION（Gate通過時のみ）
 
+## R21_REDUCED_QUBO_VALIDATION — Initial Reduced Route-Ordering QUBO Validation
+
+### Governance decision — 2026-09-10
+
+`R21_QUBO_VALIDATION SHALL BE APPLIED TO INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY`.
+
+This is an explicitly scoped branch of the execution plan. It does not replace, relax, or mark PASS the full-EVRP `R20_QUBO_FORMULATION`; it creates a separate validation path for the already scoped-PASS reduced formulation before any scoped Ising conversion is considered.
+
+The two paths remain separate:
+
+```text
+Full-EVRP path:
+  Full R20 PASS -> R21_QUBO_VALIDATION -> R22_ISING_CONVERSION
+
+Initial reduced path:
+  FORMULATION_VERIFIED = PASS
+  Scope = INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY
+    -> R21_REDUCED_QUBO_VALIDATION
+    -> scoped R22 eligibility for the same reduced QUBO only
+```
+
+- **Stage ID:** `R21_REDUCED_QUBO_VALIDATION`
+- **Scope:** `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY`
+- **Purpose:** frozen reduced route-ordering QUBOが、同じ frozen classical route-ordering problem と同値であり、次の scoped transformation stageへ渡せることを検証する。
+- **Full-EVRP boundary:** full-EVRP R20/R21のPASS、capacity、time window、battery/SOC、charging、fleet、またはfull-EVRP QUBOの検証を意味しない。
+
+### Prerequisites
+
+All of the following are required:
+
+- `FORMULATION_VERIFIED = PASS`;
+- scope exactly `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY`;
+- formulation source freeze and gate commit are identifiable;
+- reduced QUBO implementation, decoder, independent validator, and exact-small fixtures exist;
+- a Routing Baseline-derived complete-reachability input is available;
+- the theoretical penalty bound is available;
+- applied `lambda` is finite and strictly satisfies `lambda > B`.
+
+The following are not prerequisites for this reduced branch:
+
+- full-EVRP R20 PASS;
+- capacity, time-window, battery/SOC, charging, fleet-sizing QUBO;
+- unreachable-transition QUBO extension;
+- QAOA, Ising conversion, or performance benchmarking.
+
+### Input contract
+
+Mandatory fields:
+
+- schema/version;
+- instance ID, depot ID, ordered customer IDs, and `n_customers`;
+- row-major variable ordering and `n^2` logical-variable count;
+- raw directed travel-time representation in seconds;
+- normalized directed travel-time representation and `tau_max`;
+- complete-reachability result;
+- Routing Baseline artifact ID/hash and source metadata;
+- R20 formulation source commit and R20 gate commit;
+- expanded QUBO constant, linear, and canonical quadratic coefficients;
+- QUBO coefficient hash;
+- finite `lambda`, bound type, `B`, and applied margin;
+- numerical tolerance metadata;
+- exact classical-reference configuration.
+
+Optional fields include distance metadata, selected edge records, and diagnostic coefficient-scale summaries. Distance must not enter the formal QUBO objective.
+
+### Mandatory invariants
+
+The following V1--V8 are formal reduced-R21 invariants. One failed invariant fails the reduced R21 gate.
+
+1. **V1 Feasibility:** `argmin H_QUBO subseteq F`.
+2. **V2 Objective equivalence:** the best feasible QUBO route cost equals the classical route-ordering optimum.
+3. **V3 Route-set equivalence:** all optimal route identities, including ties, match the exact reference.
+4. **V4 Energy consistency:** direct squared and expanded QUBO energies agree within the specified energy tolerance.
+5. **V5 Decode/re-encode:** every valid QUBO minimum decodes deterministically and re-encodes to the same assignment.
+6. **V6 Input/provenance integrity:** source hashes and selected-instance metadata match.
+7. **V7 Lambda validity:** `isfinite(lambda)` and strict `lambda > B`; equality is not PASS.
+8. **V8 Normalization consistency:** raw and normalized travel-time route ranking and optimal-route set are preserved.
+
+### Validation ladder and fixtures
+
+Only exact-small validation is permitted:
+
+- synthetic n=2;
+- synthetic n=3, including unique and tie cases;
+- synthetic n=4 when the existing exact-enumeration guard permits it;
+- deterministic real-data-derived depot + 2 customers;
+- deterministic real-data-derived depot + 3 customers.
+
+The binary state count is `2^(n^2)`. Any enumeration guard is an implementation validation limit only, not a QAOA, QPU, quantum-scalability, or formal research problem-size limit.
+
+Fixtures must cover unique optimum, multiple optimum/tie, asymmetric directed travel time, adversarial penalty behavior, and complete-reachability real-data-derived input. Negative input-contract behavior may reference the existing R20 adapter regression tests when provenance is explicit.
+
+### Classical reference and validation procedure
+
+The classical reference enumerates all `n!` customer permutations with fixed depot, depot departure, consecutive customer transitions, depot return, the same directed travel-time matrix, and all ties retained. It is the reduced route-ordering problem only; full-EVRP solver comparison is out of scope.
+
+The formal execution sequence is:
+
+1. load and schema-validate the reduced R21 input;
+2. validate provenance, complete reachability, and normalization metadata;
+3. validate finite `lambda` and strict `lambda > B`;
+4. construct/freeze the expanded QUBO and calculate its coefficient hash;
+5. calculate the exact classical reference;
+6. enumerate QUBO states within the guard;
+7. independently classify feasibility and decode states;
+8. identify all global minima;
+9. compare direct/expanded energy and classical/QUBO route sets;
+10. verify decode/re-encode and raw/normalized consistency;
+11. write the standalone evidence artifact and evaluate V1--V8.
+
+### Numerical comparison policy
+
+- direct/expanded energy uses the repository `ENERGY_ABS_TOLERANCE`;
+- classical route-cost equality uses an explicitly named route-cost tolerance;
+- the lambda condition uses strict finite numeric comparison, not `isclose`;
+- normalization comparison uses an explicit route-ranking/tie tolerance;
+- reproducibility comparison excludes only schema-approved runtime/timestamp fields.
+
+The candidate rule `lambda = B + max(10*e_noise, 1e-6*B)` remains an implementation-policy candidate. Reduced R21 does not require formal adoption of `kappa=10` or `delta_min=1e-6`; it must record the actual applied lambda, bound, and margin metadata.
+
+### PASS and failure criteria
+
+Reduced R21 PASS requires input/provenance, complete reachability, lambda bound, classical reference, QUBO construction, V1--V8, deterministic semantic artifact generation, and no CRITICAL/HIGH issue to pass. Partial PASS is not allowed.
+
+Failure reason codes are:
+
+`INPUT_CONTRACT_FAILURE`, `PROVENANCE_FAILURE`, `LAMBDA_BOUND_FAILURE`, `INFEASIBLE_GLOBAL_MINIMUM`, `QUBO_ROUTE_OBJECTIVE_MISMATCH`, `OPTIMAL_ROUTE_SET_MISMATCH`, `DIRECT_EXPANDED_MISMATCH`, `DECODE_FAILURE`, `NORMALIZATION_MISMATCH`, `EXACT_ENUMERATION_GUARD`, `NUMERICAL_TOLERANCE_FAILURE`, and `NONDETERMINISTIC_RESULT`.
+
+### Evidence artifact and status
+
+The artifact shall use the established output convention:
+
+`reproducibility/outputs/traffic_simulation/r21_qubo_validation/<run_id>/`
+
+with at least `validation_results.json` and `manifest.json`. The manifest records source commit, R20 formulation source commit, R20 gate commit, reduced R21 specification/version, input and coefficient hashes, routing provenance, n, `n^2`, state/permutation counts, lambda/bound/margin metadata, classical and QUBO optima, all global minima, feasibility, direct/expanded diagnostics, decode and normalization results, runtime, reason codes, and final status.
+
+- **Status:** `READY_FOR_IMPLEMENTATION` (validation not executed)
+- **Execution authorization:** `NONE` in this planning record
+- **Decision:** reduced R21 governance defined; no validation result is claimed
+- **Next scoped stage after PASS:** `R22_ISING_CONVERSION` eligibility for the same reduced QUBO only
+
+This reduced branch does not alter the full-EVRP `R21_QUBO_VALIDATION`, whose prerequisite remains full-EVRP `R20_QUBO_FORMULATION = PASS`.
+
 ## R22_ISING_CONVERSION — Ising Conversion
 
 - **Stage ID:** R22_ISING_CONVERSION
@@ -1580,6 +1723,10 @@ Recommended order: `QUBO scope decision → state precision decision → encodin
 - **Issues:** 未実行。Acceptance Criteriaの未固定項目を実行開始時に解消し、解消不能ならBLOCKED
 - **Decision:** NOT_RUN
 - **Next Allowed Stage:** R23_QAOA_AER_EXECUTION（Gate通過時のみ）
+
+### Reduced-scope dependency boundary
+
+`R21_REDUCED_QUBO_VALIDATION = PASS` may establish eligibility only for a correspondingly scoped `R22_ISING_CONVERSION` of the same initial reduced route-ordering QUBO. It does not authorize full-EVRP Ising conversion, QAOA execution, or completion of the full R22 stage.
 
 ## R23_QAOA_AER_EXECUTION — QAOA / Qiskit Aer Execution
 
