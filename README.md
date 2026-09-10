@@ -162,7 +162,7 @@ software simulatorであって量子実機性能やquantum advantageの証拠で
 ### できるようになったこと
 
 - Hayate上のPython 3.11.15、SUMO 1.24.0、固定Python依存を正本実行環境として定義した。
-- Hayate native環境で交通シミュレーション検証の全回帰 `794 passed` を確認した。
+- Hayate native環境で交通シミュレーション検証の全回帰 `794 passed` を確認した（historical environment record）。これは現在のreduced R20--R23 stage PASSやfull-EVRP完成を意味しない。
 - 大田区の道路方向、通行権限、車線欠測を、元データの事実とモデル仮定を分けて処理できる。
 - 低容量・基準・高容量の車線仮定で予備走行し、車線仮定が配送結果へ非単調に影響し得ることを確認した。
 - 国土交通省2021年・警視庁2023年を較正用、警視庁2024年を独立確認用として分離した。

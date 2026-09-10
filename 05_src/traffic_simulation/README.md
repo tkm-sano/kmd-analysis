@@ -78,7 +78,8 @@ in
 The fixed-input execution record, one-to-one row counts and the historical
 331/335-test verification results are recorded in
 [`20260730_ota_ward_v15_exception_rule_validation.md`](../../03_data/metadata/acquisition/20260730_ota_ward_v15_exception_rule_validation.md).
-The current traffic-simulation validation suite passes 355 tests after the
+The historical v16 traffic-simulation validation suite recorded 355 tests
+passing after the
 v16 attribute-resolution execution.
 
 The authoritative rules for road attributes, external-data matching,
