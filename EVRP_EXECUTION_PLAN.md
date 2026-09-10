@@ -2022,7 +2022,7 @@ Before execution, a frozen config must be stored under `reproducibility/outputs/
 
 ### Status and downstream boundary
 
-- **Status:** `READY_FOR_IMPLEMENTATION` (design defined; no reduced R23 execution authorized)
+- **Status:** `READY_FOR_PILOT` (runner/tests/smoke prepared; governed pilot not executed)
 - **Execution authorization:** `NONE`
 - **After reduced R23 PASS:** scoped `R24_QUANTUM_SOLUTION_DECODE` eligibility may be considered for the same reduced branch; the existing full-EVRP path is unchanged.
 - **Full-EVRP:** full R20 remains `BLOCKED`, full R21 remains `NOT_STARTED`, and full R23 is not authorized by this reduced definition.
