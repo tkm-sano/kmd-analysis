@@ -114,7 +114,31 @@ EC利用シナリオ
 
 ## 現在地
 
-更新基準日: **2026-08-25**
+更新基準日: **2026-09-10**
+
+### Reduced quantum pipeline
+
+配送最適化のうち、full EVRPとは分離した初期検証経路として、固定depot・単一車両の
+**Single-Vehicle Route Ordering Problem**を扱っている。現在の正本状態は次のとおりである。
+
+```text
+Routing Baseline
+  -> R20 reduced route-ordering formulation             [FORMULATION_VERIFIED = PASS]
+  -> R21_REDUCED_QUBO_VALIDATION                        [PASS]
+  -> R22_REDUCED_ISING_CONVERSION                       [PASS]
+  -> R23_REDUCED_QAOA_AER_EXECUTION                     [READY_FOR_PILOT]
+  -> R24_QUANTUM_SOLUTION_DECODE                        [NOT AUTHORIZED]
+```
+
+このPASSは `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY` に限定される。現在のQUBOは
+customer-onlyの `n x n` position encodingで、静的な有向travel timeを最小化し、customer-onceと
+position-onceだけをpenalty化する。capacity、time window、battery/SOC、charging、fleet sizing、
+一般のunreachable transitionは含まない。formal QAOA pilot/baselineは未実行であり、AerはCPU上の
+software simulatorであって量子実機性能やquantum advantageの証拠ではない。
+
+数式・scope・stage gateの正本は[EVRP Execution Plan](EVRP_EXECUTION_PLAN.md)と
+[R20 QAOA Subproblem Specification](05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md)、
+実装索引は[traffic simulation README](05_src/traffic_simulation/README.md)を参照する。
 
 ```text
 0-1 社会科学としての問い                    [FIXED / documentation update]
@@ -131,8 +155,8 @@ EC利用シナリオ
   │   └─ 2024年観測による独立確認           [BLOCKED]
   ├─ 3. 配送条件                            [PARTIAL]
   ├─ 4. 配送シミュレーション                [PARTIAL]
-  ├─ 5. 配送最適化問題                      [NOT STARTED]
-  └─ 6. 計算手法比較                        [NOT STARTED]
+  ├─ 5. 配送最適化問題                      [REDUCED PATH VALIDATED / FULL EVRP BLOCKED]
+  └─ 6. 計算手法比較                        [R23 READY_FOR_PILOT / FORMAL RUN NOT STARTED]
 ```
 
 ### できるようになったこと
@@ -219,7 +243,7 @@ EC利用シナリオ
 
 ### 比較設計
 
-古典参照解、手法間で共通の計算予算、QUBO変換、QAOAの復号・修復、修復時間を含む計算時間が未固定です。また、solverが決める顧客訪問順序と、SUMOまたは道路ルータが決める道路上の経路を分けて保存・評価する必要があります。
+Full-EVRPの古典参照解と共通計算予算は未固定である。一方、reduced pathではQUBO定式化、exact reference、QUBO→Ising変換、raw bitstringのdiscard-only検証、およびR23 baseline designまで固定済みである。repairは初期reduced studyでは行わない。今後もsolverが決める顧客訪問順序と、SUMOまたは道路ルータが決める道路上の経路を分けて保存・評価する。
 
 ## 評価対象
 

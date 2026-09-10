@@ -6,6 +6,17 @@
 
 旧記述との不整合は上記の最新方針を優先する。既存成果物の生成・受入事実は保持し、今後の設計採択を実装完了とは扱わない。
 
+## Current reduced quantum-method branch (2026-09-10)
+
+現在の量子側実装はfull EVRPではなく、固定depot・単一車両のroute orderingをcontrolled subproblemとする。
+customer-only `n x n` position QUBOはR20 formulation gate、R21 exact QUBO validation、R22 exact
+QUBO-to-Ising validationを通過した。R23 Aer/QAOA infrastructureはimplementation smokeまで完了し、
+formal pilot前の `READY_FOR_PILOT` である。formal QAOA performance resultはまだ存在しない。
+
+このbranchで得るalgorithm/simulator evidenceは、後にcapacity、time windows、battery/SOC、charging、
+reachability、fleet constraintsを備えたfull EVRP/Hayate評価へ戻して解釈する。Aer simulationはsoftware
+evidenceであり、future QPU runtimeやquantum advantageを直接示さない。
+
 ## Motivation and research question
 
 Transportation applications require more than a small routing formulation: meaningful evaluation must connect problem instances, operational constraints, validation modality, and quantum-resource evidence. The current research asks how transportation-relevant problem scale and constraints are represented in quantum-routing studies, and how that evidence compares with a synthetic Tokyo EVRP scenario.
@@ -26,8 +37,9 @@ Population mesh data supports synthetic customer sampling; public logistics faci
 
 Two directions remain open:
 
-1. Real-world optimization: road-network distances, calibrated or observed demand, time windows, sequential SOC and charging dynamics, classical optimization baselines, and operational validation.
-2. Application-stage framework: link problem instances and constraints with expected quantum-technology stages, staged quantum utility, adjacent battery/material/charging technologies, expert expectations, and evolving social requirements.
+1. Reduced-method validation: governed R23 pilotを実行し、validated Ising HamiltonianからAer exact-expectation QAOA、binary feasibility、route metricsまでの再現性を確認する。
+2. Real-world optimization: road-network travel times, calibrated or observed demand, time windows, sequential SOC and charging dynamics, classical optimization baselines, and operational validationをfull EVRP/Hayateへ統合する。
+3. Application-stage framework: problem instance・constraint・simulator evidenceをexpected quantum-technology stagesと分離して接続する。
 
 ## Current limitations
 

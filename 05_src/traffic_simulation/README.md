@@ -24,6 +24,32 @@ The model-development lifecycle, Verification, calibration, independent
 Validation, evidence requirements, and formal-use gates are organized in
 [`20260730_20260903_simulation_model_development_and_vv.md`](20260730_20260903_simulation_model_development_and_vv.md).
 
+## Reduced route-ordering quantum pipeline
+
+The current controlled quantum-method branch is scoped to
+`INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY`; it is not the full EVRP.
+
+| Stage | Current state | Implementation / authority |
+|---|---|---|
+| R20 reduced formulation | `FORMULATION_VERIFIED = PASS` | [`r20_route_ordering/`](r20_route_ordering/) and [`R20_QAOA_SUBPROBLEM_SPEC.md`](specifications/R20_QAOA_SUBPROBLEM_SPEC.md) |
+| R21 reduced QUBO validation | `PASS` | [`r21_qubo_validation/`](r21_qubo_validation/); authoritative run `20260910_formal_reduced_v4` |
+| R22 reduced Ising conversion | `PASS` | [`r22_ising_conversion/`](r22_ising_conversion/); authoritative run `20260910_formal_reduced_v1` |
+| R23 reduced QAOA/Aer | `READY_FOR_PILOT` | [`r23_qaoa_aer/`](r23_qaoa_aer/); runner/tests/smoke only, no formal pilot or baseline |
+
+The reduced objective is static directed road-network travel time, using a
+customer-only row-major `n x n` position encoding. The model enforces only
+customer-once and position-once in the QUBO and accepts complete-directed-
+reachability subsets; invalid bitstrings are not repaired. Capacity, time
+windows, battery/SOC, charging, fleet sizing, and general unreachable-transition
+constraints remain full-EVRP/future work.
+
+R21 established exact classical/QUBO optimum and tie-set equivalence. R22 uses
+`x_i=(1-s_i)/2`, retains the constant offset, and established full-state energy,
+minimum, tie, and decoded-route equivalence. R23 is designed for CPU Aer exact
+expectation with six formal instances, `p={1,2,3}`, COBYLA, and 18 planned formal
+configurations. Aer is a software simulator; no formal QAOA result, GPU benchmark,
+cloud-QPU result, or quantum-advantage claim exists.
+
 For a quick repository-side command reference when you want to inspect status,
 compare diffs, or validate a task from the terminal, see
 [`terminal_command_guide.md`](terminal_command_guide.md).
@@ -75,6 +101,13 @@ and [`demand/prepare_baseline_demand.py`](demand/prepare_baseline_demand.py).
 - `calibration/`: JARTIC/road-census calibration and validation.
 - `simulation/`: SUMO configurations, runners, and result extraction.
 - `validation/`: structural and empirical checks for the new layer.
+- `r20_route_ordering/`: reduced route-ordering QUBO, exact reference, adapter,
+  and penalty analyses.
+- `r21_qubo_validation/`: standalone reduced-QUBO stage validation artifacts.
+- `r22_ising_conversion/`: custom auditable QUBO-to-Ising conversion and exact
+  equivalence validation.
+- `r23_qaoa_aer/`: reduced QAOA/Aer input, Hamiltonian, runner, metrics, and
+  artifact infrastructure; currently authorized only for the governed pilot.
 
 All new modules must import canonical locations from `traffic_simulation.paths`.
 They must not infer the repository root from a fixed `Path.parents[...]` index

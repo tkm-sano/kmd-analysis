@@ -1,7 +1,7 @@
 # EVRP Execution Plan
 
 文書ID: `EVRP-EXECUTION-PLAN-001`  
-作成・更新日: 2026-09-09  
+作成・更新日: 2026-09-10
 計画版: 1.0  
 役割: 本研究の**唯一の進行管理・実行記録文書**。仕様・原本・code・machine-readable成果物は各既存pathで保持し、工程status・次工程・実行判断は本書だけで管理する。
 
@@ -42,8 +42,9 @@ Residential / B2C last-mile parcel delivery。Baseline problemはE-VRPTWを基�
 | Charging stations | PARTIAL | 現行raw chargingは.gitkeep、legacyのOCM候補あり。public access不明の行があり、利用可能性・互換性・網接続は未受入。 |
 | OR-Tools package | IMPLEMENTED_NOT_VALIDATED | 9.12.4544導入済み。13制約付き本番model/runner/解検証はNOT_IMPLEMENTED。 |
 | Common instance / independent EVRP validator | NOT_IMPLEMENTED | 05_src/optimizationには古い__pycache__のみ。source不在を実装済みとしない。 |
-| QUBO / Ising / QAOA runner | NOT_IMPLEMENTED | 文献・設計・CLIのみ。本番encoding、等価性fixture、decoderなし。 |
-| Qiskit / Aer | NOT_IMPLEMENTED | 今回の.conda Pythonには未導入。導入・version固定・smoke検証は後続R23の開始前作業。 |
+| Reduced QUBO / Ising | ACCEPTED_SCOPED | `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY`についてR20 formulation、R21 exact QUBO validation、R22 full-state Ising equivalenceがPASS。full-EVRP QUBO/Isingは未完。 |
+| Reduced QAOA runner | IMPLEMENTED_NOT_FORMALLY_EXECUTED | R23 input/provenance、Qiskit operator mapping、QAOA runner、metrics、artifact writer、tests、implementation smokeを実装。statusは`READY_FOR_PILOT`で、formal pilot/baselineは未実行。 |
+| Qiskit / Aer | IMPLEMENTED_SCOPED_ENVIRONMENT | isolated `evrp-quantum-temp`でPython 3.11.16、Qiskit 2.5.2、Aer 0.17.2、qiskit-optimization 0.7.0、qiskit-algorithms 0.4.0を確認。CPU statevector smokeのみで、GPU/QPU/formal performance evidenceではない。 |
 | 運用パラメータの実測根拠 | UNKNOWN | 住宅service time、採択EVの消費率、charger利用条件等は未確定。 |
 | Tests / manifests / generated reports | PARTIAL | 既存portal 6検査PASS・旧需要13 tests PASS。下流EVRP実験の受入manifestとreportはない。 |
 
@@ -1702,11 +1703,12 @@ This reduced branch does not alter the full-EVRP `R21_QUBO_VALIDATION`, whose pr
 
 ### Formal reduced-R21 validation result — 2026-09-10
 
-- **Run:** `reproducibility/outputs/traffic_simulation/r21_qubo_validation/20260910_formal_reduced_v1/`
+- **Run:** `reproducibility/outputs/traffic_simulation/r21_qubo_validation/20260910_formal_reduced_v4/`
 - **Classification:** `FORMAL_R21_REDUCED_QUBO_VALIDATION`
 - **Result:** all 7 required instances PASS; V1--V8 PASS for every instance; deterministic semantic rerun PASS.
 - **Instances:** synthetic n=2 unique; synthetic n=3 unique, tie, and asymmetric; synthetic n=4 adversarial/asymmetric; Routing Baseline-derived depot + 2 customers; Routing Baseline-derived depot + 3 customers.
 - **Decision:** `R21_REDUCED_QUBO_VALIDATION = PASS` for `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY`.
+- **Artifact hashes:** `validation_results.json` SHA-256 `c4baeead366ea2f750cd4ecdd18acc507746dfecd744d0803ed74b5bbb46049f`; `manifest.json` SHA-256 `9a6fc459ef1f5cbf1824b9b0197a2f56f9d67cc88de18bd6bcd8ff7f575691a2`.
 - **R22 boundary:** scoped eligibility is recorded for the same reduced QUBO only. R22 execution remains blocked/not executed; full-EVRP R22 eligibility is not granted.
 - **Status transition:** `READY_FOR_EXECUTION -> PASS` for this reduced branch only. The full-EVRP `R21_QUBO_VALIDATION` remains `NOT_STARTED`.
 - **Scoped next-stage state:** eligible for preparation of the same reduced-QUBO `R22_ISING_CONVERSION`; execution authorization remains `NONE` in this record.
@@ -2000,7 +2002,7 @@ The formal baseline contains 6 instances x 3 depths = **18 optimizer runs**. The
 
 ### Backend and environment policy
 
-The first candidate backend is `AerSimulator(method="statevector", device="CPU")` in the isolated environment recorded by `20260910_temporary_qiskit_aer_environment_smoke_test_n10`: Qiskit 2.5.2, Qiskit Aer 0.17.2, qiskit-optimization 0.7.0, qiskit-algorithms 0.4.0, Python 3.11.16. The environment smoke passed imports, CPU statevector, and a QAOA-like circuit. GPU execution is deferred and is not part of this baseline. Exact primitive/API selection must be recorded in the frozen config after implementation compatibility testing.
+The implemented CPU baseline path uses Qiskit 2.5.2 and Qiskit Aer 0.17.2 in the isolated Python 3.11.16 `evrp-quantum-temp` environment (with qiskit-optimization 0.7.0 and qiskit-algorithms 0.4.0 available). It constructs the validated diagonal cost operator as `SparsePauliOp`, the governed ansatz with `QAOAAnsatz`, exact deterministic expectations/distributions with `Statevector`, CPU-Aer transpilation with `AerSimulator(method="statevector", device="CPU")`, and optimization through SciPy COBYLA. The full R22 constant is restored in reported energies. GPU execution is deferred and is not part of this baseline.
 
 ### Resource and execution guards
 
@@ -2026,6 +2028,8 @@ Before execution, a frozen config must be stored under `reproducibility/outputs/
 - **Execution authorization:** `NONE`
 - **After reduced R23 PASS:** scoped `R24_QUANTUM_SOLUTION_DECODE` eligibility may be considered for the same reduced branch; the existing full-EVRP path is unchanged.
 - **Full-EVRP:** full R20 remains `BLOCKED`, full R21 remains `NOT_STARTED`, and full R23 is not authorized by this reduced definition.
+
+Implementation lineage: governance commit `5f88e6ae242357c784b246d7740a006f483e7798`; runner implementation `3a4066b661faaa554bdb646d84716461b56cb`, with metric/ordering corrections `f99f7fc0840fad38985c094efc5e9bf78214263c` and `09c581b5017563ecef6252604705b8c6534f6f11`. The implementation smoke is non-authoritative and does not satisfy the pilot or formal baseline gate.
 
 The prior CPU Aer and Qiskit environment reports remain `TEMPORARY_DIAGNOSTIC` evidence only. They are not formal R23 results, performance benchmarks, or hardware projections.
 

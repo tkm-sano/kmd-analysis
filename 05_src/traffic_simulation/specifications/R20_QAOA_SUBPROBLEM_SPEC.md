@@ -1,29 +1,29 @@
 # R20 QAOA Subproblem Specification
 
 - Document ID: R20-QAOA-SUBPROBLEM-SPEC
-- Status: DESIGN_PROPOSAL_ONLY
-- Scope: quantum subproblem and QUBO formulation design before formal QAOA implementation or simulation
+- Status: ADOPTED_AND_FORMULATION_VERIFIED_SCOPED
+- Scope: frozen initial reduced route-ordering formulation; full-EVRP exclusions remain
 - Current R20 Status: BLOCKED
-- Current Next Allowed Stage: NONE
+- Current reduced downstream state: R21 PASS; R22 PASS; R23 READY_FOR_PILOT
 - Formal adoption: SUBPROBLEM_FORMULATION_ADOPTED; FORMULATION_VERIFIED = PASS for `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY`
 - Authority rule: This document does not supersede the current R20 formal artifacts, R15/R16/R19 authority, or the execution plan.
 
 ## 1. Purpose
 
-本仕様書は、formal QAOA simulationを開始する前段階として、最初の量子サブ問題候補、QUBO formulation候補、exact validation method、bitstring decodeおよびvalidation ruleを設計・固定するための文書である。
+本仕様書は、最初の量子サブ問題、QUBO formulation、exact validation method、bitstring decodeおよびvalidation ruleの数学的正本である。
 
-今回の設計対象は、Single-Vehicle Route Ordering Problemである。ただし、この文書はR20の正式なQUBO採択、reduced problemの正式採択、Ising変換、QAOA実装、QAOA simulation開始を意味しない。
+今回の対象はSingle-Vehicle Route Ordering Problemである。このreduced formulationはscoped gateを通過し、同一係数についてR21 exact validationとR22 Ising equivalence validationもPASSした。R23 infrastructureは実装済みだが、formal QAOA pilot/baselineの実行を意味しない。
 
-本仕様書の作成自体では、R20 BLOCKEDを解除しない。未決定の研究判断はUSER_RESEARCH_DECISIONとして保持する。
+Full-EVRP R20は引き続きBLOCKEDであり、本仕様書のscoped PASSからfull EVRP、QAOA performance、QPU performanceを推論してはならない。
 
 ## 2. Current repository state and authority
 
 ### 2.1 Confirmed current state
 
 - R20 Status: BLOCKED
-- Next Allowed Stage: NONE
+- Reduced path: R21 PASS; R22 PASS; R23 READY_FOR_PILOT (execution authorization remains separate)
 - 既存R20はfull EVRPを対象とするposition-indexed formulation候補、variable registry、HC mapping、penalty framework、Rosenberg auxiliary registry、resource estimateを持つ。
-- full-EVRP R20には、実装済みのcomplete coefficient builder、reproducible sparse QUBO matrix、completed numeric penalty certificate、QUBO decoder、R21 independent validatorがない。本仕様のreduced route-orderingについては、exact reference・exact enumeration・独立validator/decoderを別packageとして実装済みだが、これらはFORMULATION_VERIFIEDを自動的にPASSしない。
+- full-EVRP R20には、全制約を対象とするaccepted coefficient builder、numeric penalty certificate、decoder、independent validatorがない。本仕様のreduced route-orderingにはexact reference・exact enumeration・独立validator/decoderがあり、formal gate reviewによりFORMULATION_VERIFIEDがscoped PASSとなった。
 - 既存R20のn=10 full-EVRP estimateは13,782 logical binary variables、estimated couplersは17,953であり、full exact formulationはAer/QAOAの正式実行対象として未準備である。
 - CPU/Aer q=8〜30 diagnosticはTEMPORARY_IMPLEMENTATION_FEASIBILITY_DIAGNOSTICとしてのみ扱う。量子技術能力、将来QPU能力、formal problem-size limitではない。
 - Hayateはsimulation execution platformであり、量子技術の性能限界ではない。
@@ -48,9 +48,9 @@
 
 ### 2.3 Repository conflict or boundary
 
-既存R20のformal artifactはfull-EVRP全13制約を表現する方向の設計であり、本書のSingle-Vehicle Route Ordering Problemは、その代替として自動採択するものではない。本書は、R20の未解決なreduced quantum subproblem decisionを具体化するための別設計案である。既存R20のauthority、status、execution planは変更しない。
+既存full-EVRP R20は13制約を表現する別経路であり、本書のSingle-Vehicle Route Ordering Problemはその完成を代替しない。本書は明示的なreduced branchのauthorityであり、full-EVRP statusと責任範囲は変更しない。
 
-## 3. Proposed formal subproblem definition
+## 3. Adopted formal subproblem definition
 
 ### 3.1 Names and sets
 
@@ -644,11 +644,11 @@ The restrictions above applied to the preceding implementation/evidence tasks. T
 - Basis: corrected direct/expanded QUBO equality, independent decoder/validator, exact synthetic and real-data-derived validation, Routing Baseline complete-reachability adapter, and proved universal/instance-aware conservative penalty bounds.
 - Numerical policy: `λ > B` remains the mathematical requirement. `κ=10`, `δ_min=1e-6`, and `λ=B+max(10e_noise,1e-6B)` remain implementation-policy candidates and are not formally adopted.
 - Scope limitations: complete-reachability subsets only; static normalized travel time; non-self zero-time inputs rejected; self-loops excluded; no unreachable-transition penalty; invalid samples discarded without repair; reduced route-ordering only.
-- This scoped PASS does not validate full EVRP, does not authorize R21/R22/QAOA, and does not change the overall R20 status.
+- This scoped PASS does not validate full EVRP and did not itself authorize downstream execution. Subsequent separate governance and evidence records established R21 PASS, R22 PASS, and R23 READY_FOR_PILOT for the same reduced scope only.
 
-## 16. Strict execution record
+## 16. Historical gate-task execution record
 
-The following actions were not performed in this task:
+The following actions were not performed during the R20 gate task. Later R21/R22 records supersede only the downstream stage state, not this historical execution statement:
 
 - formal QAOA simulation;
 - formal Ising conversion;
@@ -887,7 +887,7 @@ For each subset, validate all IDs, exact directed-pair completeness, statuses/nu
 - Unresolved labels: ROUTING_BASELINE_SPEC_CONFLICT for non-self zero time; future unreachable-transition hard constraint and formal numerical λ adoption remain
 - FORMULATION_VERIFIED: PASS (scope: INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY)
 - R20 Status: BLOCKED
-- Next Allowed Stage: NONE
+- Reduced downstream state: R21 PASS; R22 PASS; R23 READY_FOR_PILOT
 - Prohibited actions: none performed
 
-本書は、full EVRPを解いたこと、formal QAOA simulationを開始する許可、Ising conversionの許可、またはR21移行を意味しない。採択済みのsubproblem formulationと、未解決のformal numerical λ adoption・future extensionを明確に分離して扱う。
+本書はfull EVRPを解いたことやformal QAOA performanceを示さない。R21/R22の実行可否と結果は`EVRP_EXECUTION_PLAN.md`の別gate recordがauthorityであり、現在は同じreduced scopeについてR21/R22 PASS、R23 READY_FOR_PILOTである。採択済みsubproblem formulationと、未採択のformal numerical λ policy、unreachable-transition extension、full-EVRP constraintsを分離して扱う。

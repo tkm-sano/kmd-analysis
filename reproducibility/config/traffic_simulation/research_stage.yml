@@ -1,34 +1,33 @@
 schema_version: 2
-updated_at: "2026-07-31"
-current_stage_id: sumo_network
-current_summary_ja: v16全件分類・属性解決を履歴として固定し、承認済み版17方針をSchema・Resolver・fixtureへ移行する段階
+updated_at: "2026-09-10"
+current_stage_id: demand_and_observations
+current_summary_ja: 正式道路網とRouting Baselineは受入済み。full-EVRP本線では需要・顧客・TW等の定義が未完である一方、独立したreduced route-ordering branchはR21/R22 PASS、R23 READY_FOR_PILOT
 readiness:
   - id: specification
     label_ja: 道路網仕様
-    status: governed_draft
-    status_label_ja: 統制済みドラフト
-    note_ja: v16全件実行は完了したがformalに24,741停止組が残る。版17のpermissions authority、access多軸比較、方向付き区間、車両プロファイル、二軸値状態は方針固定済みで実装移行中
+    status: accepted
+    status_label_ja: 受入済み
+    note_ja: V18 geometry/length re-acceptanceとR12-R14 Routing Baseline validationがPASS。旧v16停止記録は履歴であり現行network gateではない
   - id: formal_network
     label_ja: 正式SUMO道路網
-    status: not_accepted
-    status_label_ja: 未承認
-    note_ja: permission materializerと実ネットワーク検証が未完了
+    status: accepted
+    status_label_ja: 受入済み
+    note_ja: current V18 authorityでFORMAL_NETWORK_ACCEPTED=true。accepted scopeとhashはEVRP_EXECUTION_PLAN.mdを正本とする
   - id: downstream_experiment
     label_ja: 下流実験
-    status: not_ready
-    status_label_ja: 実行不可
-    note_ja: 承認済みformalネットワークがないため、較正・配送・QAOA評価へ進まない
+    status: scope_split
+    status_label_ja: scope別
+    note_ja: full-EVRP比較は未準備。INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLYはR21/R22 PASS、R23 READY_FOR_PILOTだがformal QAOA未実行
 blockers:
-  - v16 formal属性成果物に24,741停止組が残りcomplete=falseである
-  - 版17機械可読方針、基礎Schema、access比較・方向付き区間の独立関数は作成済みだが、production統合が未完了である
-  - 方向付き区間生成のproduction接続、oneway=-1、方向依存属性・relation・lane順のruntime fixtureが未完了である
-  - permission materializerが未実装で、SUMO 1.24.0固定fixtureも未実行
-  - formal属性証拠、ジャンクション・TLSレビュー、prepare/validateパイプライン、事後監査が未完了
+  - full-EVRP本線ではR05-R11のcustomer sampling、demand、time window、service time、depot、EV、charging station定義が未完了
+  - full-EVRP R20はcapacity、time window、battery/SOC、charging、fleet、一般reachabilityを含むaccepted QUBOがなくBLOCKED
+  - reduced R23はrunner/tests/smokeのみで、governed pilotとformal 18-configuration baselineを未実行
+  - Aer結果を量子実機性能またはquantum advantageへ一般化できない
 next_actions:
-  - 検証済み版17機械可読方針、車両プロファイル、方向付き区間Schemaをproduction入力境界へ接続する
-  - accessの4軸Pareto比較と二軸値状態をproduction Resolverへ統合する
-  - 方向付き区間生成とoneway=-1のB方向生成をproductionへ接続し、relation・lane順fixtureを実装する
-  - Resolver blocker解消と並行してpermission materializerを実装し、SUMO 1.24.0固定fixtureでlane・connection期待値を検証する
+  - EVRP_EXECUTION_PLAN.mdに従いfull-EVRP本線の未完Definition stageを進める
+  - reduced branchはR23 governed pilotを別taskで実行し、formal baselineとは分離する
+  - R23 formal configを結果確認前にfreezeし、R22 Hamiltonianとlambdaを変更しない
+  - full-EVRP/Hayate評価とreduced method evidenceをscope付きで統合する
 stages:
   - id: environment
     label_ja: Docker・リポジトリ環境
@@ -62,7 +61,7 @@ stages:
       - 05_src/traffic_simulation/visualization/README.md
   - id: sumo_network
     label_ja: SUMO道路網生成・構造検証
-    status: in_progress
+    status: completed
     evidence:
       - reproducibility/config/traffic_simulation/relation_closure_v16.yml
       - 03_data/metadata/acquisition/20260730_ota_ward_relation_closure_v16.md
@@ -71,8 +70,9 @@ stages:
       - 05_src/traffic_simulation/network/classify_resolver_exceptions.py
   - id: demand_and_observations
     label_ja: 観測拡充・交通需要生成
-    status: planned
-    evidence: []
+    status: in_progress
+    evidence:
+      - EVRP_EXECUTION_PLAN.md
   - id: optimization_implementation_validation
     label_ja: 最適化基盤検証・配送EV制約の段階追加
     status: planned

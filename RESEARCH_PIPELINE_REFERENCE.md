@@ -4,7 +4,7 @@
 役割: `CURRENT_REFERENCE`
 ライフサイクル: `CURRENT`
 作成日: `2026-09-03`
-最終更新日: `2026-09-09`
+最終更新日: `2026-09-10`
 現行正本: `reproducibility/indexes/research_repository_index_v17.yml`
 
 状態: `CURRENT PIPELINE REFERENCE`
@@ -935,152 +935,151 @@ validated classical baselineをQUBO equivalence、Classical-vs-QAOA comparison�
 
 ### 目的
 
-固定済みclassical problemを検証可能なQUBOとencoder/decoder契約へ写像する。
+Full-EVRP経路とは分離して、固定depot・単一車両のroute-ordering problemを検証可能なQUBO、encoder、decoder、independent validatorへ写像する。
 
 ### 現在の状態
 
-`PLANNED / FUTURE / NOT IMPLEMENTED`。formulation、builder、artifact、validatorなし。
+Reduced pathは `FORMULATION_VERIFIED = PASS` および `R21_REDUCED_QUBO_VALIDATION = PASS`。full-EVRP R20は`BLOCKED`であり、full-EVRP QUBOが完成したことを意味しない。
 
 ### 開始条件
 
-accepted Common Delivery Instance、fixed Classical formulation、small exact instances、adopted penalties/scaling。
+Reduced pathではaccepted Routing Baselineのcomplete-directed-reachability subset、fixed depot、ordered customers、static directed travel-time matrix、frozen source/hashを用いる。一般のfull Common Delivery Instanceと13 Hard Constraintsは別のfull-EVRP開始条件として残る。
 
 ### 正本入力
 
 | 入力 | 役割 | 正本パス | 状態 | 注記 |
 |---|---|---|---|---|
-| 共通インスタンス | variable/data source | path未定 | `NOT AVAILABLE` | blocking。 |
-| 古典定式化・最適値 | equivalence reference | path未定 | `NOT AVAILABLE` | blocking。 |
+| Reduced input | variable/data source | Routing Baseline-derived R20 input | `ACCEPTED SCOPED` | depot + ordered customers、complete directed reachability、travel time seconds。 |
+| Classical reference | equivalence reference | `r20_route_ordering/core.py` | `VERIFIED SCOPED` | 全`n!` permutation、fixed depot、同一travel-time matrix。 |
 | 比較protocol | fairness/output accounting | [optimization_comparison_protocol.md](05_src/traffic_simulation/optimization_comparison_protocol.md) | `CURRENT DESIGN` | QUBO仕様ではない。 |
 
 ### コマンド
 
 | コマンド | 目的 | 読取/書込 | 注記 |
 |---|---|---|---|
-| `./research quantum status` | QUBO/QAOA state表示 | Read-only | QUBO planned。 |
-| `./research quantum qubo build --dry-run` | missing formulation/builder表示 | Read-only | no QUBO。 |
-| `./research quantum qubo validate --dry-run` | missing equivalence inputs表示 | Read-only | no validation。 |
+| Stage runner modules | exact build/validation | Read/write artifact | root CLIへの統合とは別。package runnerがauthority。 |
 
 ### 実装
 
 | 構成要素 | パス | 役割 |
 |---|---|---|
-| CLI安全制御 | [quantum.py](05_src/research_cli/quantum.py) | unimplemented stateを返す。 |
-| QUBO生成器・validator | — | `NOT IMPLEMENTED` |
+| Reduced formulation/builder | [r20_route_ordering](05_src/traffic_simulation/r20_route_ordering/) | row-major `n x n` position QUBO、exact reference、adapter、penalty analysis。 |
+| Stage-level validator | [r21_qubo_validation](05_src/traffic_simulation/r21_qubo_validation/) | frozen input/provenance、exact QUBO enumeration、V1--V8、artifact/manifest。 |
+| Regression tests | [validation](05_src/traffic_simulation/validation/) | R20/R21 exact, adapter, penalty, artifact tests。 |
 
 ### 出力
 
 | 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
 |---|---|---|---|
-| QUBO定式化 | variables/objective/penalties/scaling | path未定 | `EXPECTED / NOT AVAILABLE` |
-| encoder・decoder contract | instance↔binary mapping | path未定 | `EXPECTED / NOT AVAILABLE` |
-| 等価性report | QUBO vs exact classical | path未定 | `EXPECTED / NOT AVAILABLE` |
+| QUBO定式化 | variables/objective/penalties/scaling | [R20 specification](05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md) | `FORMULATION_VERIFIED / SCOPED` |
+| encoder・decoder contract | instance↔binary mapping | [r20_route_ordering](05_src/traffic_simulation/r20_route_ordering/) | `VERIFIED SCOPED` |
+| 等価性report | QUBO vs exact classical | `reproducibility/outputs/traffic_simulation/r21_qubo_validation/20260910_formal_reduced_v4/` | `PASS`; generated outputはGit-ignore policyに従う。 |
 
 ### 正本・信頼源
 
-Stage 4A/4B roadmapのみ。current QUBO authorityは存在しない。
+[R20 specification](05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md)、[EVRP execution plan](EVRP_EXECUTION_PLAN.md)、R21 formal artifact v4。R21 validation-results SHA-256は`c4baeead366ea2f750cd4ecdd18acc507746dfecd744d0803ed74b5bbb46049f`、manifest SHA-256は`9a6fc459ef1f5cbf1824b9b0197a2f56f9d67cc88de18bd6bcd8ff7f575691a2`。
 
 ### 検証
 
 | Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
 |---|---|---|---|
-| QUBO等価性 | `./research quantum qubo validate --dry-run` | small-instance optimum、decode、feasibility一致 | `NOT AVAILABLE` |
+| Reduced QUBO等価性 | R21 package/formal artifact | global minima feasibility、route/tie set、direct/expanded、decode、normalization、lambda、provenance V1--V8 | `PASS` |
 
 ### 受入・DONE条件
 
-versioned formulation/contract、penalty rationale、builder、exact fixtures、equivalence validatorがPASS。
+Reduced scopeでは達成済み。full-EVRPでは未達。
 
 ### 来歴
 
-将来はclassical/instance hashes、coefficient scaling、penalties、builder version、decoded solutionを保存する。
+R21 artifactはinstance/source/coefficient hashes、lambda/bound/margin、state/permutation counts、optima、decoded routes、deterministic manifestを保存する。
 
 ### 既知の制約
 
-low energyだけではequivalenceを示さない。QUBO係数・penaltyを推測しない。
+Reduced objectiveはstatic directed travel timeでありdistanceではない。encodingはcustomer-only row-major `n x n`、depotはbinary variableではない。customer-once/position-once以外のfull-EVRP制約は未収載。complete reachabilityのみ受理し、non-self zero-timeはfail-closed、invalid bitstringsはrepairせずdiscardする。
 
 ### 未解決の判断
 
-encoding、penalty values、scaling、constraint representation、acceptance tolerances。
+数学条件は`lambda>B`。`P_min=2`、universal `B=(n+1)/2`、instance-aware `B=U_feasible/2`はconservative sufficient bound。`lambda=B+max(10 e_noise,1e-6 B)`はimplementation-policy candidateであり定理・formal optimumではない。一般unreachable-transition QUBOとfull-EVRP constraintsは未解決。
 
 ### 次工程への引渡し
 
-validated QUBOとdecoder/feasibility contractをQAOAへ渡す。
+R21 PASSのfrozen QUBOをR22へ渡し、R22 PASSの同一Ising HamiltonianだけをR23へ渡す。R20からR22へ直接進めない。
 
 ## K. QAOA
 
 ### 目的
 
-validated QUBOを明示したbackend・sampling・decode/repair規則で実行し、classical baselineと公平に比較可能な候補解を作る。
+R22でvalidatedされた同一reduced Ising HamiltonianをCPU Aer上のQAOAへ入力し、solution quality、feasibility、ground-state probability、optimizer/circuit/simulator timingを再現可能に測定する。
 
 ### 現在の状態
 
-`PLANNED`（roadmap）/ `FUTURE`（Portal）/ `NOT IMPLEMENTED`。quantum hardware executionも`NOT IMPLEMENTED`。
+`R23_REDUCED_QAOA_AER_EXECUTION = READY_FOR_PILOT`。runner、Hamiltonian mapping、metrics、artifact writer、tests、implementation smokeは実装済み。governed pilotとformal 18-configuration baselineは未実行。full-EVRP QAOAとquantum hardware executionは未承認。
 
 ### 開始条件
 
-validated QUBO、adopted backend/depth/optimizer/shots/seeds、decode/repair、measurement boundary。
+R22 reduced PASS artifact/hash、frozen Ising coefficients、exact R21/R22 state/route reference、governed CPU environment、resource guards。HamiltonianまたはlambdaをR23内で変更しない。
 
 ### 正本入力
 
 | 入力 | 役割 | 正本パス | 状態 | 注記 |
 |---|---|---|---|---|
-| 検証済みQUBO | quantum problem | path未定 | `NOT AVAILABLE` | blocking。 |
-| 古典baseline | comparison reference | path未定 | `NOT AVAILABLE` | blocking。 |
+| 検証済みIsing | quantum problem | `reproducibility/outputs/traffic_simulation/r22_ising_conversion/20260910_formal_reduced_v1/` | `PASS / SCOPED` | R22 results/manifest hashを固定。 |
+| Exact reference | performance reference | R21/R22 artifacts | `AVAILABLE SCOPED` | ground energy、all optimal states/routes、ties。 |
 | 比較protocol | fairness | [optimization_comparison_protocol.md](05_src/traffic_simulation/optimization_comparison_protocol.md) | `CURRENT DESIGN` | Aer結果はquantum advantageを示さない。 |
 
 ### コマンド
 
 | コマンド | 目的 | 読取/書込 | 注記 |
 |---|---|---|---|
-| `./research quantum qaoa run --dry-run` | missing QUBO/runner表示 | Read-only | no circuit/result。 |
-| `./research quantum compare --dry-run` | common validated results不足表示 | Read-only | no comparison。 |
-| `./research quantum status` | quantum stage inspection | Read-only | hardware未実装も表示。 |
+| Governed pilot | API/runtime/resource/artifact確認 | future write | `NOT RUN`; implementation smokeとは分離。 |
+| Formal baseline | 6 instances x p={1,2,3} | future write | `NOT AUTHORIZED`; 18 optimizations。 |
 
 ### 実装
 
 | 構成要素 | パス | 役割 |
 |---|---|---|
-| CLI安全制御 | [quantum.py](05_src/research_cli/quantum.py) | execution refusal/state表示。 |
-| QAOA runner・比較器 | — | `NOT IMPLEMENTED` |
+| Reduced QAOA/Aer infrastructure | [r23_qaoa_aer](05_src/traffic_simulation/r23_qaoa_aer/) | R22 loader、SparsePauliOp mapping、QAOAAnsatz、COBYLA、exact Statevector metrics、artifact schema。 |
+| Tests | [test_r23_qaoa_aer.py](05_src/traffic_simulation/validation/test_r23_qaoa_aer.py) | endianness、offset、probability/route metrics、guards、determinism。 |
 
 ### 出力
 
 | 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
 |---|---|---|---|
-| 量子候補解 | samples/parameters/raw solution | path未定 | `EXPECTED / NOT AVAILABLE` |
-| decode・repair済み解 | common feasibility format | path未定 | `EXPECTED / NOT AVAILABLE` |
-| 比較Evidence | quality/feasibility/runtime/resources | path未定 | `EXPECTED / NOT AVAILABLE` |
+| Pilot evidence | API/runtime/resource/artifact | `reproducibility/outputs/traffic_simulation/r23_qaoa_aer/<pilot_run_id>/` | `NOT RUN` |
+| Formal baseline | config/run/summary/manifest | same root, distinct formal run ID | `NOT RUN` |
+| Raw metrics | P_opt、P_feasible、energy/gaps、optimizer/circuit/timing | future artifact | no repair; exact referenceを使用。 |
 
 ### 正本・信頼源
 
-Stage 4C/4D roadmapとcomparison protocolのみ。backend/result acceptanceはない。
+[EVRP execution plan](EVRP_EXECUTION_PLAN.md)のR23 reduced governance、governance commit `5f88e6ae242357c784b246d7740a006f483e7798`、R22 formal artifact、R23 source/tests。formal performance authorityはまだ存在しない。
 
 ### 検証
 
 | Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
 |---|---|---|---|
-| QAOA結果検証 | — | reproducible config、decode、common checker PASS | `NOT AVAILABLE` |
-| 古典・量子比較 | `./research quantum compare --dry-run` | same instance/budget/evaluator | `NOT AVAILABLE` |
+| Implementation smoke | R23 tests/temp artifact | operator/endianness/metrics/API semantics | `PASS / NON-AUTHORITATIVE` |
+| Governed pilot | future frozen pilot | n=2/n=3 p=1、runtime/termination/guards/artifact | `NOT RUN` |
+| Formal baseline | future frozen 18-run config | complete protocol/provenance/reproducibility | `NOT RUN` |
 
 ### 受入・DONE条件
 
-validated QUBOのみを入力し、backend/config/seedを固定、raw/repaired結果を保存、common checkerとcomparison protocolに合格。
+R23 PASSはfrozen protocolが完全かつ再現可能に実行されたことを意味し、QAOAが常にoptimumを得たことを要求しない。低いP_optやsuboptimal resultは有効な科学データであり、provenance/backend/numerical/incomplete-run failureと区別する。
 
 ### 来歴
 
-将来はbackend type/version、depth、optimizer、shots、seeds、circuit/resource counts、decode/repair timeを保存する。
+Pilot/formal artifactはR20--R22 lineage、Qiskit/Aer/Python versions、CPU backend/method/device、p、COBYLA設定、seed、initial/final parameters、objective trace、circuit metrics、timing、P_opt、P_feasible、energy/route gapsを保存する。runtime/timestamp以外のsemantic fieldをcanonical hash対象とする。
 
 ### 既知の制約
 
-Qiskit Aerはquantum hardwareではない。quantum advantageを前提・主張しない。
+Qiskit Aerはquantum hardwareではない。`Aer simulation limit != quantum hardware limit`、`Aer runtime != future QPU runtime`。initial baselineはCPU exact/statevector expectationのみで、finite shots、GPU/H100、cloud QPU、optimizer comparisonを含まない。
 
 ### 未解決の判断
 
-depth、optimizer、shots、backend、hardware assumption、budget、repair rules。
+Formal baseline designは6 instances x `p={1,2,3}`、COBYLA、maxiter 100、evaluation cap 300、initial parameters 0.1、seed 17、repetition 1、CPU exact expectationとして固定済み。次の未完了はgoverned pilot実行とformal design-freeze artifactであり、結果を見た後のdesign変更は別versionにする。
 
 ### 次工程への引渡し
 
-validated plan candidatesをDelivery Simulationとmethod comparisonへ渡す。
+R23 formal completion後にのみ、同じreduced scopeのR24 decode eligibilityを検討する。full-EVRP Delivery Simulationやmethod comparisonへ直接一般化しない。
 
 ## L. シナリオ構築
 

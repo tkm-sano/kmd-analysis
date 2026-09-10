@@ -1,5 +1,10 @@
 # Tokyo Urban Delivery × Quantum Future Society
 
+> **Lifecycle: SUPERSEDED SNAPSHOT.** この文書は旧READMEの詳細スナップショットとして保持する。
+> 現在状態は [README.md](README.md)、[RESEARCH_OVERVIEW.md](RESEARCH_OVERVIEW.md)、
+> [EVRP_EXECUTION_PLAN.md](EVRP_EXECUTION_PLAN.md) を参照する。以下の `NOT STARTED` 等は作成時点の
+> 歴史記録であり、現在のreduced R20--R23 statusではない。
+
 東京都大田区を対象に、実データに基づく都市配送モデルを構築し、配送計画の作成方法と将来の配送条件が都市配送需要の充足へ与える影響を評価する修士研究です。
 
 ## 研究目的
