@@ -1,0 +1,199 @@
+{
+  "configuration_id": "R23_FORMAL_EXPERIMENT_DESIGN_V1",
+  "configuration_status": "FORMAL_DESIGN_FROZEN_READY_TO_RUN",
+  "gate": "R23_FORMAL_EXPERIMENT_READY",
+  "gate_result": "PASS_WITH_NONBLOCKING_LIMITATIONS",
+  "formal_execution_authorized_by_this_artifact": false,
+  "research_question": "How do problem scale and QAOA circuit depth affect feasibility, optimal-solution probability, decoded route quality, and classical software-simulation burden for the validated reduced Single-Vehicle Route Ordering Problem under a controlled exact-expectation CPU environment?",
+  "scope": {
+    "problem": "Single-Vehicle Route Ordering Problem",
+    "formulation": "INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY",
+    "fixed_depot": true,
+    "customer_only_position_encoding": true,
+    "logical_qubits": "n^2",
+    "objective": "static directed travel-time minimization",
+    "complete_reachability_required": true,
+    "excluded": ["capacity", "time_windows", "battery_SOC", "charging", "fleet_assignment", "multiple_vehicles", "Full-EVRP"]
+  },
+  "authority": {
+    "implementation_commit": "417bfe97520f42ae749d876fc26cfd205d6e8607",
+    "implementation_source_set_id": "R23_FORMAL_IMPLEMENTATION_SOURCE_SET_V1",
+    "implementation_source_authority": "reproducibility/outputs/traffic_simulation/r23_source_validation/20260911_source_authority_v1/source_authority.json",
+    "source_hash_linked_validation": "reproducibility/outputs/traffic_simulation/r23_test_validation/20260911_source_authority_v2/",
+    "execution_level_smoke": "reproducibility/outputs/traffic_simulation/r23_instrumentation_smoke/20260911_v1/",
+    "historical_pilot": "reproducibility/outputs/traffic_simulation/r23_reduced_pilot/20260911_frozen_v1/",
+    "r20_specification": "05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md",
+    "r21_status": "PASS",
+    "r22_status": "PASS",
+    "full_evrp_r20_status": "BLOCKED",
+    "full_evrp_r21_status": "NOT_STARTED"
+  },
+  "decision_register": {
+    "research_question": {"value": "adopted as above", "classification": "ADOPTED_RESEARCH_DECISION"},
+    "experiment_structure": {"value": "Experiment A primary; Experiments B/C separated", "classification": "ADOPTED_RESEARCH_DECISION"},
+    "n_ladder": {"value": [2, 3, 4], "classification": "ADOPTED_RESEARCH_DECISION"},
+    "instances_per_n": {"value": 5, "classification": "ADOPTED_RESEARCH_DECISION"},
+    "instance_source": {"value": "Routing Baseline-derived complete-reachability instances", "classification": "ADOPTED_RESEARCH_DECISION"},
+    "p_range": {"value": [1, 2, 3], "classification": "ADOPTED_RESEARCH_DECISION"},
+    "optimizer": {"value": "COBYLA", "classification": "ADOPTED_RESEARCH_DECISION"},
+    "maxiter": {"value": 300, "classification": "ADOPTED_RESEARCH_DECISION", "rationale": "Pilot reached 100-evaluation boundary in multiple runs; a predefined larger budget reduces boundary truncation risk while retaining fixed-budget comparability."},
+    "objective_evaluation_cap": {"value": 900, "classification": "ADOPTED_RESEARCH_DECISION", "semantics": "objective callback cap; final expectation evaluation is additional"},
+    "initialization": {"value": "all parameters = 0.1", "classification": "ADOPTED_RESEARCH_DECISION"},
+    "repetition": {"value": 1, "classification": "ADOPTED_RESEARCH_DECISION", "scope": "deterministic exact-expectation primary baseline only"},
+    "expectation": {"value": "exact_statevector", "classification": "ADOPTED_RESEARCH_DECISION"},
+    "shots": {"value": "NONE", "classification": "ADOPTED_RESEARCH_DECISION"},
+    "runtime_role": {"value": "secondary software-simulation computational-burden outcome", "classification": "ADOPTED_RESEARCH_DECISION"},
+    "transpiler": {"value": {"optimization_level": 1, "seed_transpiler": 17, "basis_gates": "backend default; record actual metadata"}, "classification": "ADOPTED_RESEARCH_DECISION"}
+  },
+  "experiment_structure": {
+    "experiment_a": {
+      "status": "PRIMARY_FORMAL_EXPERIMENT",
+      "factors": ["n", "instance", "p"],
+      "controlled_settings": ["CPU Aer statevector", "COBYLA", "fixed initialization", "exact expectation", "no shots", "repetition=1"]
+    },
+    "experiment_b": {
+      "status": "DEFERRED_SECONDARY_SENSITIVITY_EXPERIMENT",
+      "purpose": "initialization and optimizer robustness",
+      "not_in_experiment_a": true
+    },
+    "experiment_c": {
+      "status": "DEFERRED",
+      "purpose": "finite-shot sensitivity",
+      "required_before_future_quantum_scenario_modelling": true,
+      "not_in_experiment_a": true,
+      "implementation_status": "not part of current R23 implementation contract"
+    }
+  },
+  "problem_size_policy": {
+    "n_values": [2, 3, 4],
+    "logical_qubits_by_n": {"2": 4, "3": 9, "4": 16},
+    "initial_ladder_only": true,
+    "n_ge_5": "deferred staged extension with separate resource/design gate",
+    "reason": "connects validated n=2/3 evidence to a meaningful 16-qubit scale while remaining exact-reference-manageable"
+  },
+  "instance_sampling_policy": {
+    "instances_per_n": 5,
+    "source": "Routing Baseline-derived",
+    "selection_seed": 2301,
+    "selection_algorithm": "Define eligible depot/customer population; retain only complete-reachability directed subsets; rank candidate subsets deterministically by SHA256(selection_seed || depot_id || sorted_customer_ids || n); select the first five distinct subsets; record the complete ordered candidate list and selected list before QAOA execution.",
+    "performance_blind_selection": true,
+    "duplicate_rejection": true,
+    "required_record_fields": ["instance_id", "n", "depot_id", "customer_ids", "routing_artifact_sha256", "matrix_sha256", "exact_route_optimum", "exact_optimal_route_set", "tie_count"],
+    "synthetic_instances": "retained for validation/edge-case evidence, not primary application sampling"
+  },
+  "qaoa": {
+    "p_values": [1, 2, 3],
+    "parameter_count_by_p": {"1": 2, "2": 4, "3": 6},
+    "parameter_order": "[gamma_1..gamma_p,beta_1..beta_p]",
+    "mixer": "standard transverse-field X mixer H_M=-sum_i X_i",
+    "initial_state": "plus_state_tensor_product",
+    "initial_parameters": {"rule": "all parameters = 0.1", "seed": "NOT_APPLICABLE"}
+  },
+  "optimizer": {
+    "name": "COBYLA",
+    "maxiter": 300,
+    "objective_evaluation_cap": 900,
+    "expectation_evaluation_cap": 901,
+    "budget_hit_policy": "valid completed run with diagnostic flag when execution and artifact provenance otherwise succeed",
+    "termination_required_fields": ["objective_evaluation_count", "configured_maxiter", "configured_objective_cap", "budget_hit", "termination_status", "termination_message", "optimizer_success", "nit", "nfev"]
+  },
+  "environment": {
+    "path": "/home/takuma/.conda/envs/evrp-quantum-temp",
+    "python": "3.11.16",
+    "qiskit": "2.5.2",
+    "qiskit_aer": "0.17.2",
+    "qiskit_algorithms": "0.4.0",
+    "qiskit_optimization": "0.7.0",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "backend": "AerSimulator",
+    "method": "statevector",
+    "device": "CPU",
+    "gpu": false,
+    "cloud_qpu": false
+  },
+  "seeds": {
+    "instance_selection": 2301,
+    "simulator": 17,
+    "transpiler": 17,
+    "python": "NOT_APPLICABLE",
+    "numpy": "NOT_APPLICABLE",
+    "algorithm": "NOT_APPLICABLE",
+    "optimizer": "NOT_APPLICABLE",
+    "initialization": "NOT_APPLICABLE",
+    "finite_shots": "DEFERRED_WITH_EXPERIMENT_C"
+  },
+  "metrics": {
+    "primary": ["P_feasible", "P_optimal", "relative_optimality_gap"],
+    "secondary": ["absolute_optimality_gap", "best_decoded_route_objective", "invalid_probability_mass", "objective_evaluation_count", "budget_hit", "termination_status", "T_total", "T_optimizer_total", "T_objective_eval_total", "T_Aer_total", "T_expectation_total", "T_transpile_total"],
+    "diagnostic": ["final_expectation", "best_energy", "final_parameters", "objective_trace", "energy_variance", "transpiled_depth", "gate_count", "parameter_count", "nfev", "nit", "termination_message"],
+    "probability_denominator": "raw_full_state_probability_mass",
+    "invalid_state_policy": "discard for decoded-route analysis; retain raw invalid mass; no repair or implicit renormalization",
+    "probability_tolerance": {"range": 1e-12, "sum": 1e-12, "isclose": 1e-12},
+    "route_quality": "decoded feasible route travel-time objective versus exact route optimum; never expectation energy"
+  },
+  "runtime_contract": {
+    "T_total": "wall-clock envelope",
+    "T_optimizer_total": "inclusive optimizer.minimize time including objective callbacks",
+    "T_objective_eval_total": "sum of all objective callback times",
+    "T_circuit_build_total": "exclusive objective-evaluation component",
+    "T_transpile_total": "exclusive objective-evaluation component",
+    "T_Aer_total": "exclusive objective-evaluation component; software simulation only",
+    "T_expectation_total": "exclusive objective-evaluation component",
+    "T_decode_total": "post-final-evaluation decode/metric time",
+    "T_final_evaluation": "separate post-optimizer evaluation object",
+    "double_counting_rule": "do not add nested components to T_optimizer_total or T_total; do not add final evaluation to optimizer totals",
+    "quantum_hardware_interpretation": "forbidden"
+  },
+  "reference_and_input_gates": {
+    "exact_reference_required": true,
+    "exact_reference_method": "permutation enumeration for n<=4",
+    "exact_reference_fields": ["exact_route_objective", "complete_optimal_route_set", "tie_count", "reference_algorithm", "reference_hash"],
+    "complete_reachability_required": true,
+    "r22_ising_authority": "load unchanged; no re-normalization, symmetrization, reordering, or coefficient mutation"
+  },
+  "resource_gates": {
+    "max_logical_qubits": 16,
+    "max_p": 3,
+    "memory_guard_gib": 8.0,
+    "max_wall_time_seconds": 600,
+    "cpu_only": true,
+    "software_safety_only": true,
+    "preflight_required_before_aer": ["logical_qubits", "amplitude_count", "estimated_statevector_bytes", "estimated_peak_bytes", "memory_guard", "exact_reference", "evaluation_cap"]
+  },
+  "stop_conditions": {
+    "per_run": ["configuration_hash_mismatch", "implementation_source_hash_mismatch", "environment_version_mismatch", "R22_lineage_or_hamiltonian_mismatch", "memory_guard_failure", "NaN_or_Inf_expectation", "objective_cap_violation", "execution_exception", "artifact_or_provenance_write_failure", "invalid_instance_or_exact_reference"],
+    "experiment_level": ["repeated_implementation_failure", "source_or_environment_drift", "systematic_schema_failure", "authority_lineage_failure", "unresolved_result_provenance"],
+    "budget_hit": "not an implementation failure by itself; retain termination/budget diagnostic"
+  },
+  "artifact_contract": {
+    "manifest_schema": "reproducibility/config/traffic_simulation/schemas/r23_formal_manifest.schema.json",
+    "required_per_run": ["configuration_id", "implementation_commit", "source_hashes", "R20_R21_R22_lineage", "instance_source_hashes", "n", "p", "optimizer", "initialization", "seeds", "budget", "expectation_method", "probability_metrics", "route_metrics", "exact_reference", "runtime_metrics", "termination", "resource_preflight", "artifact_hashes"],
+    "raw_trace_required": true,
+    "artifact_hashes_required": true
+  },
+  "statistics": {
+    "summaries_by_n_p_instance": ["raw_values", "mean", "median", "standard_deviation", "min", "max"],
+    "confidence_intervals": "not automatically applied",
+    "p_values": "not used",
+    "interpretation": "instance-to-instance heterogeneity is reported descriptively; repetition=1 is not treated as repeat-sample uncertainty"
+  },
+  "planned_matrix": {
+    "n_values": [2, 3, 4],
+    "instances_per_n": 5,
+    "p_values": [1, 2, 3],
+    "initializations": 1,
+    "repetitions": 1,
+    "shots_modes": 1,
+    "planned_instance_count": 15,
+    "planned_formal_run_count": 45
+  },
+  "classification_semantics": {
+    "primary_experiment": "Experiment A",
+    "formal_design_frozen": true,
+    "formal_execution_completed": false,
+    "quantum_advantage_claim": false,
+    "future_qpu_runtime_mapping": false,
+    "full_evrp_advanced": false
+  }
+}

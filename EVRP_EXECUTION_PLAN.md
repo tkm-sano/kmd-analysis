@@ -2003,6 +2003,13 @@ The initial reduced formal baseline is defined as follows; it is a study-design 
 
 The formal baseline contains 6 instances x 3 depths = **18 optimizer runs**. The n=4 pilot is not included in that count. A technical smoke result is never substituted for a formal baseline result.
 
+The subsequent research design-freeze record `R23_FORMAL_EXPERIMENT_DESIGN_V1`
+supersedes the preceding historical 18-run baseline proposal for any future
+formal execution. The adopted Experiment A matrix is 5 Routing Baseline-derived
+complete-reachability instances for each of `n={2,3,4}` crossed with
+`p={1,2,3}`, for **45 runs**. This supersession is a design decision only; no
+formal run has been executed.
+
 ### Backend and environment policy
 
 The implemented CPU baseline path uses Qiskit 2.5.2 and Qiskit Aer 0.17.2 in the isolated Python 3.11.16 `evrp-quantum-temp` environment (with qiskit-optimization 0.7.0 and qiskit-algorithms 0.4.0 available). It constructs the validated diagonal cost operator as `SparsePauliOp`, the governed ansatz with `QAOAAnsatz`, exact deterministic expectations/distributions with `Statevector`, CPU-Aer transpilation with `AerSimulator(method="statevector", device="CPU")`, and optimization through SciPy COBYLA. The full R22 constant is restored in reported energies. GPU execution is deferred and is not part of this baseline.
@@ -2027,7 +2034,8 @@ Before execution, a frozen config must be stored under `reproducibility/outputs/
 
 ### Status and downstream boundary
 
-- **Status:** `READY_FOR_PILOT` (runner/tests/smoke prepared; governed pilot not executed)
+- **Status:** `FORMAL_EXPERIMENT_DESIGN_FROZEN_READY_TO_RUN` (design: `reproducibility/config/traffic_simulation/r23_formal_experiment/20260911_r23_formal_v1.json`; formal 45-run Experiment A not executed)
+- **Design authority:** `R23_FORMAL_EXPERIMENT_DESIGN_V1`; historical six-run pilot remains immutable evidence and is not retroactively upgraded.
 - **Execution authorization:** `NONE`
 - **After reduced R23 PASS:** scoped `R24_QUANTUM_SOLUTION_DECODE` eligibility may be considered for the same reduced branch; the existing full-EVRP path is unchanged.
 - **Full-EVRP:** full R20 remains `BLOCKED`, full R21 remains `NOT_STARTED`, and full R23 is not authorized by this reduced definition.

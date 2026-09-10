@@ -1,7 +1,7 @@
 schema_version: 2
 updated_at: "2026-09-10"
 current_stage_id: demand_and_observations
-current_summary_ja: 正式道路網とRouting Baselineは受入済み。full-EVRP本線では需要・顧客・TW等の定義が未完である一方、独立したreduced route-ordering branchはR21/R22 PASS、R23 READY_FOR_PILOT
+current_summary_ja: 正式道路網とRouting Baselineは受入済み。full-EVRP本線では需要・顧客・TW等の定義が未完である一方、独立したreduced route-ordering branchはR21/R22 PASS、R23 FORMAL_EXPERIMENT_DESIGN_FROZEN_READY_TO_RUN
 readiness:
   - id: specification
     label_ja: 道路網仕様
@@ -17,16 +17,16 @@ readiness:
     label_ja: 下流実験
     status: scope_split
     status_label_ja: scope別
-    note_ja: full-EVRP比較は未準備。INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLYはR21/R22 PASS、R23 READY_FOR_PILOTだがformal QAOA未実行
+    note_ja: full-EVRP比較は未準備。INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLYはR21/R22 PASS、R23 six-run pilot completed pending review（formal 18-configuration baseline未実行）
 blockers:
   - full-EVRP本線ではR05-R11のcustomer sampling、demand、time window、service time、depot、EV、charging station定義が未完了
   - full-EVRP R20はcapacity、time window、battery/SOC、charging、fleet、一般reachabilityを含むaccepted QUBOがなくBLOCKED
-  - reduced R23はrunner/tests/smokeのみで、governed pilotとformal 18-configuration baselineを未実行
+  - reduced R23はpilot review・implementation validation・formal design freezeを完了したが、formal 45-run Experiment Aは未実行
   - Aer結果を量子実機性能またはquantum advantageへ一般化できない
 next_actions:
   - EVRP_EXECUTION_PLAN.mdに従いfull-EVRP本線の未完Definition stageを進める
-  - reduced branchはR23 governed pilotを別taskで実行し、formal baselineとは分離する
-  - R23 formal configを結果確認前にfreezeし、R22 Hamiltonianとlambdaを変更しない
+  - reduced branchのR23 formal design `20260911_r23_formal_v1.json`に基づくexecution authorizationを別taskで判断する
+  - R23 pilotとformal baselineを分離し、R22 Hamiltonianとlambdaを変更しない
   - full-EVRP/Hayate評価とreduced method evidenceをscope付きで統合する
 stages:
   - id: environment
