@@ -5,7 +5,7 @@
 - Scope: quantum subproblem and QUBO formulation design before formal QAOA implementation or simulation
 - Current R20 Status: BLOCKED
 - Current Next Allowed Stage: NONE
-- Formal adoption: SUBPROBLEM_FORMULATION_ADOPTED; FORMULATION_VERIFIED remains NOT_PASS
+- Formal adoption: SUBPROBLEM_FORMULATION_ADOPTED; FORMULATION_VERIFIED = PASS for `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY`
 - Authority rule: This document does not supersede the current R20 formal artifacts, R15/R16/R19 authority, or the execution plan.
 
 ## 1. Purpose
@@ -628,18 +628,23 @@ The gate FORMULATION_VERIFIED may be PASS only when all of the following are sat
 11. coefficient generation is reproducible;
 12. independent validation confirms the result.
 
-Current gate status:
+Historical pre-review gate status:
 
 FORMULATION_VERIFIED = NOT_PASS
 
-Reason:
+The restrictions above applied to the preceding implementation/evidence tasks. The separate gate review and transition record below supersede that historical status only for the explicitly scoped initial reduced formulation.
 
-- formal Routing Baseline zero/unreachable-edge integration has not been completed;
-- final decode specification has not been independently verified;
-- the corrected formulation evidence still requires a separate gate review and research decision;
-- no formal QAOA implementation or simulation was authorized in this task.
+### 15.1 FORMULATION_VERIFIED gate transition — 2026-09-10
 
-This task MUST NOT set the gate to PASS.
+- Decision: `PASS_WITH_EXPLICIT_SCOPE_LIMITATIONS`
+- Gate status: `FORMULATION_VERIFIED = PASS`
+- Scope: `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY`
+- Evidence source freeze: `3d770b66eb8a053c22acbc38e3058f7845639929`
+- Margin/tolerance evidence freeze: `fb8933c4b432f3bab9a2ea24142a85ab4355c320`
+- Basis: corrected direct/expanded QUBO equality, independent decoder/validator, exact synthetic and real-data-derived validation, Routing Baseline complete-reachability adapter, and proved universal/instance-aware conservative penalty bounds.
+- Numerical policy: `λ > B` remains the mathematical requirement. `κ=10`, `δ_min=1e-6`, and `λ=B+max(10e_noise,1e-6B)` remain implementation-policy candidates and are not formally adopted.
+- Scope limitations: complete-reachability subsets only; static normalized travel time; non-self zero-time inputs rejected; self-loops excluded; no unreachable-transition penalty; invalid samples discarded without repair; reduced route-ordering only.
+- This scoped PASS does not validate full EVRP, does not authorize R21/R22/QAOA, and does not change the overall R20 status.
 
 ## 16. Strict execution record
 
@@ -874,15 +879,15 @@ For each subset, validate all IDs, exact directed-pair completeness, statuses/nu
 - Adopted formal objective: normalized static road-network-based total travel time
 - Adopted constraints: customer-once and position-once squared penalties with common λ
 - Adopted invalid-bitstring policy: discard; no repair in initial study
-- Exact validation: corrected synthetic evidence generated; no formal QAOA or gate transition performed
+- Exact validation: corrected synthetic evidence generated; no formal QAOA performed; scoped gate transition is recorded in Section 15.1
 - SPECIFICATION_CONFLICT: RESOLVED_FOR_DIRECT_VS_EXPANDED_FORMULATION
 - Routing Baseline input contract and validation adapter: implemented for initial complete-reachability subsets; production integration not performed
 - Real-data-derived exact validation: PASS_FORMULATION_EVIDENCE_ONLY for deterministic n=2 and n=3 subsets
 - Resolved label: THEORETICAL_BOUND_PROVED for the current complete-reachability formulation
-- Unresolved labels: ROUTING_BASELINE_SPEC_CONFLICT for non-self zero time; future unreachable-transition hard constraint and formal gate review remain
-- FORMULATION_VERIFIED: NOT_PASS
+- Unresolved labels: ROUTING_BASELINE_SPEC_CONFLICT for non-self zero time; future unreachable-transition hard constraint and formal numerical λ adoption remain
+- FORMULATION_VERIFIED: PASS (scope: INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY)
 - R20 Status: BLOCKED
 - Next Allowed Stage: NONE
 - Prohibited actions: none performed
 
-本書は、full EVRPを解いたこと、formal QAOA simulationを開始する許可、Ising conversionの許可、またはR21移行を意味しない。採択済みのsubproblem formulationと、未解決のλ理論境界・実装・検証作業を明確に分離して扱う。
+本書は、full EVRPを解いたこと、formal QAOA simulationを開始する許可、Ising conversionの許可、またはR21移行を意味しない。採択済みのsubproblem formulationと、未解決のformal numerical λ adoption・future extensionを明確に分離して扱う。
