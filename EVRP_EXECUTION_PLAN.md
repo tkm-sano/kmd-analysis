@@ -1910,10 +1910,22 @@ Partial PASS is not allowed.
 
 ### Status and next-stage boundary
 
-- **Status:** `READY_FOR_EXECUTION` (converter/tests/smoke prepared; formal conversion not executed)
-- **Execution authorization:** `NONE`
-- **Decision:** reduced R22 governance defined; no conversion result is claimed
+- **Status:** `PASS` (formal conversion completed for the declared reduced scope)
+- **Execution authorization:** `R22_REDUCED_ISING_CONVERSION` formal validation completed; no QAOA authorization
+- **Decision:** reduced R22 formal conversion passed for the exact frozen R21 QUBO only
 - **After scoped R22 PASS:** preparation eligibility for a same-reduced-Ising QAOA design may be considered in a separate decision.
+
+### Formal reduced-R22 conversion result — 2026-09-10
+
+- **Run:** `reproducibility/outputs/traffic_simulation/r22_ising_conversion/20260910_formal_reduced_v1/`
+- **Classification:** `FORMAL_R22_REDUCED_ISING_CONVERSION`
+- **Result:** all 7 required instances PASS; I1--I8 PASS for every instance; deterministic semantic rerun PASS.
+- **State coverage:** n=2: 16 states; n=3: 512 states; n=4: 65,536 states. Full required state comparison was performed within the existing guard.
+- **Energy equivalence:** zero mismatches for all states; maximum absolute mismatch approximately `5.684341886080802e-14`, within the recorded energy tolerance.
+- **Minima/ties/routes:** QUBO and Ising global-minimum sets, tie counts, and decoded route sets agree for all required instances.
+- **Artifact hashes:** `conversion_results.json` SHA-256 `1b6015bcaf38d58fb98a743f47346be9e68601c0b0f7c09567ca77186ea26cea`; `manifest.json` SHA-256 `2bd1bed556b265cc4b6f555497f78e1e432c8d22dabfcccb722fe0faf0da46d9`.
+- **Lineage:** exact R21 artifact `20260910_formal_reduced_v4` and its recorded validation-results/manifest hashes were consumed unchanged; source conversion implementation commit was `8ae79fcf30ada7c1a73cec08d5d70291b7667632`.
+- **Boundary:** this PASS applies only to `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY`; it is not full-EVRP validation and does not authorize QAOA execution.
 
 This section does not alter the full-EVRP `R22_ISING_CONVERSION`, whose prerequisite remains full-EVRP `R21_QUBO_VALIDATION = PASS`.
 
