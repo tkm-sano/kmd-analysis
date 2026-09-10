@@ -321,7 +321,7 @@ The theoretical method should:
 
 ### 6.4 Formal λ policy and proven bound
 
-The proven policy is size-aware and cost-aware: for any accepted complete-reachability instance, use either the universal sufficient bound `λ>(n+1)/2` or the tighter instance-aware sufficient bound `λ>U_feasible/2`, with a recorded strictly positive margin. No single numerical λ is adopted here. λ remains a QUBO formulation parameter and must be fixed before QAOA experiments.
+The proven policy is size-aware and cost-aware: for any accepted complete-reachability instance, use either the universal sufficient bound `λ>(n+1)/2` or the tighter instance-aware sufficient bound `λ>U_feasible/2`, with a recorded strictly positive margin. For the initial R23 Formal Experiment A scope only (`n={2,3,4}`), the common numerical policy `R20_COMMON_GLOBAL_LAMBDA_V1` adopts `λ=3.0`; this is a controlled formulation setting, not a QAOA-tuned value. The policy is not adopted for `n>=5`, future formulations, or full EVRP.
 
 `THEORETICAL_BOUND_PROVED`: the universal conservative sufficient bound above is established for the current formulation and input contract. `INSTANCE_AWARE_BOUND_PROVED`: `λ>U_feasible/2` is established when U_feasible is a verified normalized feasible-route upper bound.
 
@@ -338,7 +338,7 @@ An empirical pilot may be used to explore candidate λ ranges on very small inst
 
 An empirical pilot alone does not prove formal penalty validity. Formal acceptance requires a theoretical certificate or another explicitly approved proof method.
 
-No formal numerical penalty coefficient is selected in this document. Exact/synthetic and real-data enumeration are supporting evidence and cannot replace the theorem. The bound margin, U_feasible, n, normalization rule, tau_max, and matrix identity must be recorded for every future experiment.
+For `R20_COMMON_GLOBAL_LAMBDA_V1`, exact/synthetic and real-data enumeration support the theorem but do not replace it. The bound margin, U_feasible, n, normalization rule, tau_max, and matrix identity must be recorded for every formal instance. The authority record is `reproducibility/config/traffic_simulation/r20_formal_penalty/20260911_r20_formal_lambda_v1.json` and its validation evidence.
 
 ## 7. Depot representation comparison
 
@@ -647,7 +647,7 @@ The restrictions above applied to the preceding implementation/evidence tasks. T
 - Evidence source freeze: `3d770b66eb8a053c22acbc38e3058f7845639929`
 - Margin/tolerance evidence freeze: `fb8933c4b432f3bab9a2ea24142a85ab4355c320`
 - Basis: corrected direct/expanded QUBO equality, independent decoder/validator, exact synthetic and real-data-derived validation, Routing Baseline complete-reachability adapter, and proved universal/instance-aware conservative penalty bounds.
-- Numerical policy: `λ > B` remains the mathematical requirement. `κ=10`, `δ_min=1e-6`, and `λ=B+max(10e_noise,1e-6B)` remain implementation-policy candidates and are not formally adopted.
+- Numerical policy: `λ > B` remains the mathematical requirement. For initial R23 Formal Experiment A only, `R20_COMMON_GLOBAL_LAMBDA_V1` adopts common `λ=3.0`; `κ=10`, `δ_min=1e-6`, and `λ=B+max(10e_noise,1e-6B)` remain non-authoritative implementation-policy candidates.
 - Scope limitations: complete-reachability subsets only; static normalized travel time; non-self zero-time inputs rejected; self-loops excluded; no unreachable-transition penalty; invalid samples discarded without repair; reduced route-ordering only.
 - This scoped PASS does not validate full EVRP and did not itself authorize downstream execution. Subsequent separate governance and evidence records established R21 PASS, R22 PASS, and R23 READY_FOR_PILOT for the same reduced scope only.
 

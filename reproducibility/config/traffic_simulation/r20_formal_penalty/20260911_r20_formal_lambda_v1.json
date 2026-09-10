@@ -1,0 +1,60 @@
+{
+  "policy_id": "R20_COMMON_GLOBAL_LAMBDA_V1",
+  "classification": "FORMAL_LAMBDA_POLICY_ADOPTED",
+  "formulation": "INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY",
+  "scope": {
+    "experiment": "R23 Formal Experiment A",
+    "n_values": [2, 3, 4],
+    "instance_count": 15,
+    "normalized_objective_required": true,
+    "complete_reachability_required": true,
+    "not_validated_for_n_ge_5": true,
+    "not_validated_for_full_evrp": true
+  },
+  "selected_lambda": 3.0,
+  "bound": {
+    "type": "universal_conservative_sufficient",
+    "formula": "lambda > (n+1)/2",
+    "derivation": {
+      "travel_nonnegative": "normalized directed travel coefficients are positive and all binary travel monomials are nonnegative",
+      "feasible_route_upper_bound": "a feasible route has n+1 arcs and each normalized arc cost is <= 1, hence f_route_star <= n+1",
+      "minimum_positive_penalty": "P_customer + P_position >= 2 for every infeasible n x n binary assignment",
+      "dominance": "an infeasible state has H_QUBO >= 2*lambda > n+1 >= f_route_star"
+    }
+  },
+  "theoretical_margins": {
+    "n_2": {"energy_margin": 3.0, "lambda_margin": 1.5},
+    "n_3": {"energy_margin": 2.0, "lambda_margin": 1.0},
+    "n_4": {"energy_margin": 1.0, "lambda_margin": 0.5}
+  },
+  "instance_aware_bound": {
+    "definition": "U_feasible is the exact normalized objective of the independently verified best feasible route; diagnostic only",
+    "assignment_policy": "do not vary lambda by instance",
+    "validation_reference": "reproducibility/outputs/traffic_simulation/r20_formal_penalty_validation/20260911_lambda_v1/instance_validation.json"
+  },
+  "validation": {
+    "evidence_directory": "reproducibility/outputs/traffic_simulation/r20_formal_penalty_validation/20260911_lambda_v1/",
+    "theorem_validation_sha256": "3b421a4c6468d9e0fd4387ed9760ca3ddc043e5f9756039d3e9e266fa08f77c4",
+    "instance_validation_sha256": "06903614b5a4020da71b04018507cf6b955165d51cb9ade4b926e6a75024c244",
+    "coefficient_summary_sha256": "38874388ea9757492c9b5b1d3ac7dc1a991f2545199120011f0edbe4c4bf8d78",
+    "validation_manifest_sha256": "005b70e49ff266426f690fa996269948b17b7227b6e3d30de31759af63306739",
+    "exact_reference_count": 15,
+    "r20_pass_count": 15,
+    "r21_pass_count": 15,
+    "r22_pass_count": 15,
+    "qaoa_executed": false,
+    "optimizer_executed": false
+  },
+  "source_authority": {
+    "r20_specification": "05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md",
+    "r20_specification_sha256": "b80c7bbcefe1337b8e9cb4cfa2c41be530d8427cece66cf85d32cb2a4e9d3baf",
+    "formal_design_artifact": "reproducibility/config/traffic_simulation/r23_formal_experiment/20260911_r23_formal_v1.json",
+    "formal_design_artifact_sha256": "9259b8c9e5b872f3f59a7a53b7bae07e053c9d1644573cfd1ead30668253805c",
+    "routing_artifact": "reproducibility/outputs/traffic_simulation/demand/evrp_r13_routing/20260909_r13_routing_fixture_n10_v18_geometry_reaccepted",
+    "routing_arcs_sha256": "29c1a68a71838bb44629cbf4bf7230a0492e9484c0a97d0c2fb2e370f2ca2ec1",
+    "validation_code": "05_src/traffic_simulation/r20_route_ordering/validate_formal_lambda.py",
+    "validation_code_sha256": "c626aac034be4a84a5f411a6c00242ccca98f88c1e1793c6721ec5ae65ed77e9"
+  },
+  "sensitivity_policy": "PENALTY_SENSITIVITY=DEFERRED_SECONDARY_EXPERIMENT",
+  "research_interpretation": "lambda is a QUBO formulation penalty coefficient and controlled formal setting; it is not a QAOA variational parameter, optimizer hyperparameter, physical quantity, or future quantum-technology parameter"
+}
