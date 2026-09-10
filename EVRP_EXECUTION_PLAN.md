@@ -1693,9 +1693,9 @@ The artifact shall use the established output convention:
 
 with at least `validation_results.json` and `manifest.json`. The manifest records source commit, R20 formulation source commit, R20 gate commit, reduced R21 specification/version, input and coefficient hashes, routing provenance, n, `n^2`, state/permutation counts, lambda/bound/margin metadata, classical and QUBO optima, all global minima, feasibility, direct/expanded diagnostics, decode and normalization results, runtime, reason codes, and final status.
 
-- **Status:** `READY_FOR_EXECUTION` (runner/tests prepared; validation not executed)
+- **Status:** `PASS` (formal validation completed for the declared reduced scope)
 - **Execution authorization:** `NONE` in this planning record
-- **Decision:** reduced R21 governance defined; no validation result is claimed
+- **Decision:** reduced R21 governance defined; formal validation result is recorded below
 - **Next scoped stage after PASS:** `R22_ISING_CONVERSION` eligibility for the same reduced QUBO only
 
 This reduced branch does not alter the full-EVRP `R21_QUBO_VALIDATION`, whose prerequisite remains full-EVRP `R20_QUBO_FORMULATION = PASS`.
@@ -1709,6 +1709,7 @@ This reduced branch does not alter the full-EVRP `R21_QUBO_VALIDATION`, whose pr
 - **Decision:** `R21_REDUCED_QUBO_VALIDATION = PASS` for `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY`.
 - **R22 boundary:** scoped eligibility is recorded for the same reduced QUBO only. R22 execution remains blocked/not executed; full-EVRP R22 eligibility is not granted.
 - **Status transition:** `READY_FOR_EXECUTION -> PASS` for this reduced branch only. The full-EVRP `R21_QUBO_VALIDATION` remains `NOT_STARTED`.
+- **Scoped next-stage state:** eligible for preparation of the same reduced-QUBO `R22_ISING_CONVERSION`; execution authorization remains `NONE` in this record.
 
 ## R22_ISING_CONVERSION — Ising Conversion
 
