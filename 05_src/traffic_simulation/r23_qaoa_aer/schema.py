@@ -13,6 +13,9 @@ R23_SCHEMA_VERSION = "r23-reduced-qaoa-aer-v1"
 R23_SCOPE = "INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY"
 R22_REPORT_SHA256 = "1b6015bcaf38d58fb98a743f47346be9e68601c0b0f7c09567ca77186ea26cea"
 R22_MANIFEST_SHA256 = "2bd1bed556b265cc4b6f555497f78e1e432c8d22dabfcccb722fe0faf0da46d9"
+PROBABILITY_RANGE_TOLERANCE = 1e-12
+PROBABILITY_SUM_TOLERANCE = 1e-12
+PROBABILITY_ISCLOSE_TOLERANCE = 1e-12
 
 
 class R23SchemaError(ValueError):
@@ -29,6 +32,26 @@ def sha256_bytes(value: bytes) -> str:
 
 def sha256_file(path: Path) -> str:
     return sha256_bytes(Path(path).read_bytes())
+
+
+def memory_preflight(n_logical: int, memory_limit_gib: float) -> dict[str, Any]:
+    """Return a conservative software-memory preflight without allocating a statevector."""
+    if n_logical < 0 or not math.isfinite(memory_limit_gib) or memory_limit_gib <= 0:
+        raise R23SchemaError("invalid memory preflight inputs")
+    amplitude_count = 2 ** n_logical
+    statevector_bytes = 16 * amplitude_count  # complex128 bytes
+    estimated_peak_bytes = 4 * statevector_bytes
+    guard_bytes = memory_limit_gib * (1024 ** 3)
+    return {
+        "logical_qubits": n_logical,
+        "statevector_amplitude_count": amplitude_count,
+        "estimated_statevector_bytes": statevector_bytes,
+        "estimated_peak_bytes": estimated_peak_bytes,
+        "configured_memory_guard_gib": memory_limit_gib,
+        "configured_memory_guard_bytes": guard_bytes,
+        "status": "PASS" if estimated_peak_bytes <= guard_bytes else "FAIL",
+        "guard_semantics": "software_execution_safety_only",
+    }
 
 
 @dataclass(frozen=True)
@@ -89,6 +112,8 @@ class R23Config:
             raise R23SchemaError("only the governed CPU statevector backend is supported")
         if self.probability_threshold < 0 or not math.isfinite(self.probability_threshold):
             raise R23SchemaError("probability threshold must be finite and non-negative")
+        if memory_preflight(n_logical, self.memory_limit_gib)["status"] != "PASS":
+            raise R23SchemaError("software memory guard exceeded")
 
 
 def load_r22_instance(artifact_dir: Path, instance_id: str) -> R23Input:

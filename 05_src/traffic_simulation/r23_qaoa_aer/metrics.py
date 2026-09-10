@@ -7,7 +7,12 @@ from typing import Any, Mapping
 
 from traffic_simulation.r20_route_ordering.core import ValidationStatus, route_travel_time, validate_bitstring
 
-from .schema import R23Input
+from .schema import (
+    PROBABILITY_ISCLOSE_TOLERANCE,
+    PROBABILITY_RANGE_TOLERANCE,
+    PROBABILITY_SUM_TOLERANCE,
+    R23Input,
+)
 
 
 def qiskit_label_to_bits(label: str) -> tuple[int, ...]:
@@ -42,6 +47,10 @@ def probability_metrics(probabilities: Mapping[str, float], input_data: R23Input
         validation = validate_bitstring(bits, input_data.n, input_data.customer_ids)
         records.append({"qiskit_label": label, "bitstring": list(bits), "probability": p, "valid": validation.status == ValidationStatus.VALID, "status": validation.status.value, "route": list(validation.route) if validation.route else None})
     total = sum(r["probability"] for r in records)
+    range_valid = all(-PROBABILITY_RANGE_TOLERANCE <= r["probability"] <= 1.0 + PROBABILITY_RANGE_TOLERANCE for r in records)
+    sum_valid = math.isclose(total, 1.0, rel_tol=0.0, abs_tol=PROBABILITY_SUM_TOLERANCE)
+    if not range_valid or not sum_valid:
+        raise ValueError("probability distribution violates the explicit tolerance contract")
     feasible = [r for r in records if r["valid"] and r["probability"] >= threshold]
     p_feasible = sum(r["probability"] for r in records if r["valid"])
     p_opt = sum(r["probability"] for r in records if tuple(r["bitstring"]) in input_data.exact_optimal_bitstrings)
@@ -54,4 +63,4 @@ def probability_metrics(probabilities: Mapping[str, float], input_data: R23Input
         candidate = {"record": record, "normalized_route_objective": cost}
         if best_feasible is None or cost < best_feasible["normalized_route_objective"]:
             best_feasible = candidate
-    return {"probability_total": total, "P_feasible_exact": p_feasible, "P_opt": p_opt, "invalid_probability_mass": total - p_feasible, "most_probable_state": most_probable, "most_probable_feasible_state": most_probable_feasible, "best_feasible_state": best_feasible, "records": records, "probability_threshold": threshold}
+    return {"probability_total": total, "P_feasible_exact": p_feasible, "P_opt": p_opt, "invalid_probability_mass": total - p_feasible, "most_probable_state": most_probable, "most_probable_feasible_state": most_probable_feasible, "best_feasible_state": best_feasible, "records": records, "probability_threshold": threshold, "probability_tolerance_contract": {"range_tolerance": PROBABILITY_RANGE_TOLERANCE, "sum_tolerance": PROBABILITY_SUM_TOLERANCE, "isclose_tolerance": PROBABILITY_ISCLOSE_TOLERANCE, "denominator": "raw_full_state_probability_mass", "renormalization": False}}
