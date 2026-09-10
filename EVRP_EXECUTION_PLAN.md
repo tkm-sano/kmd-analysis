@@ -1693,7 +1693,7 @@ The artifact shall use the established output convention:
 
 with at least `validation_results.json` and `manifest.json`. The manifest records source commit, R20 formulation source commit, R20 gate commit, reduced R21 specification/version, input and coefficient hashes, routing provenance, n, `n^2`, state/permutation counts, lambda/bound/margin metadata, classical and QUBO optima, all global minima, feasibility, direct/expanded diagnostics, decode and normalization results, runtime, reason codes, and final status.
 
-- **Status:** `READY_FOR_IMPLEMENTATION` (validation not executed)
+- **Status:** `READY_FOR_EXECUTION` (runner/tests prepared; validation not executed)
 - **Execution authorization:** `NONE` in this planning record
 - **Decision:** reduced R21 governance defined; no validation result is claimed
 - **Next scoped stage after PASS:** `R22_ISING_CONVERSION` eligibility for the same reduced QUBO only
