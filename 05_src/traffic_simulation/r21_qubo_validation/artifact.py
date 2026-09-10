@@ -36,5 +36,13 @@ def write_validation_artifact(result: Mapping[str, Any], output_dir: Path) -> di
         "files": {"validation_results.json": sha256_bytes(report_path.read_bytes())},
         "output_hash": sha256_bytes(canonical_json(semantic_artifact(result))),
     }
+    for key in (
+        "source_commit", "r20_formulation_source_commit", "r20_gate_commit",
+        "r21_governance_commit", "r21_implementation_commit", "execution_plan_sha256",
+        "spec_sha256", "code_hashes", "fixture_hashes", "input_hashes",
+        "routing_source_hashes", "coefficient_hashes", "run_classification",
+    ):
+        if key in result:
+            manifest[key] = result[key]
     (output_dir / "manifest.json").write_bytes(canonical_json(manifest) + b"\n")
     return manifest
