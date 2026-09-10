@@ -57,7 +57,7 @@ def design_fields(d: dict) -> dict:
         "artifact_contract": d["artifact_contract"],
         "statistics": d["statistics"],
         "planned_matrix": d["planned_matrix"],
-        "decision_register_without_penalty": {k: v for k, v in d["decision_register"].items() if k != "penalty_coefficient"},
+        "decision_register": d["decision_register"],
     }
 
 
