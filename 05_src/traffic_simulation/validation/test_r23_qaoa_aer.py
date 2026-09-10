@@ -7,7 +7,7 @@ from qiskit.quantum_info import Statevector
 
 from traffic_simulation.r23_qaoa_aer.artifact import config_hash, semantic_artifact, write_smoke_artifact
 from traffic_simulation.r23_qaoa_aer.hamiltonian import build_cost_operator, build_qaoa_circuit, repository_parameters
-from traffic_simulation.r23_qaoa_aer.metrics import probability_metrics, qiskit_label_to_bits
+from traffic_simulation.r23_qaoa_aer.metrics import energy_statistics, probability_metrics, qiskit_label_to_bits
 from traffic_simulation.r23_qaoa_aer.qaoa import run_single
 from traffic_simulation.r23_qaoa_aer.schema import R23Config, R23Input, R23SchemaError, R23_SCOPE, load_r22_instance
 
@@ -63,6 +63,14 @@ def test_probability_metrics_preserve_ties_and_invalid_mass():
     assert metrics["invalid_probability_mass"] == pytest.approx(0.25)
 
 
+def test_energy_statistics_uses_repository_qubit_order():
+    data = tiny_input()
+    # Qiskit label "1" maps to repository q0=1, hence spin=-1 and E=1.
+    stats = energy_statistics({"1": 1.0}, data)
+    assert stats["expectation"] == pytest.approx(1.0)
+    assert stats["variance"] == pytest.approx(0.0)
+
+
 def test_config_and_guard_validation():
     data = load_r22_instance(R22, "synthetic_n2_unique")
     R23Config(p=3).validate(data.n_logical)
@@ -90,7 +98,7 @@ def test_implementation_smoke_single_n2_p1(tmp_path):
 
 def test_smoke_semantic_result_is_deterministic():
     data = load_r22_instance(R22, "synthetic_n2_unique")
-    config = R23Config(p=1, maxiter=3, max_evaluations=12, wall_time_seconds=60.0)
+    config = R23Config(p=1, maxiter=5, max_evaluations=12, wall_time_seconds=60.0)
     first = run_single(data, config)
     second = run_single(data, config)
     assert semantic_artifact(first) == semantic_artifact(second)

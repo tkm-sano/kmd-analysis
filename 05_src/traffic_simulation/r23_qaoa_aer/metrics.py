@@ -26,7 +26,8 @@ def ising_energy(spins: tuple[int, ...], input_data: R23Input) -> float:
 def energy_statistics(probabilities: Mapping[str, float], input_data: R23Input) -> dict[str, float]:
     values = []
     for label, probability in probabilities.items():
-        spins = tuple(1 if bit == "0" else -1 for bit in label)
+        bits = qiskit_label_to_bits(label)
+        spins = tuple(1 if bit == 0 else -1 for bit in bits)
         values.append((float(probability), ising_energy(spins, input_data)))
     expectation = sum(probability * energy for probability, energy in values)
     variance = sum(probability * (energy - expectation) ** 2 for probability, energy in values)
