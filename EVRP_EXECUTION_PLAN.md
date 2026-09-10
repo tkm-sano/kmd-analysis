@@ -1,9 +1,12 @@
 # EVRP Execution Plan
 
-文書ID: `EVRP-EXECUTION-PLAN-001`  
-作成・更新日: 2026-09-10
-計画版: 1.0  
-役割: 本研究の**唯一の進行管理・実行記録文書**。仕様・原本・code・machine-readable成果物は各既存pathで保持し、工程status・次工程・実行判断は本書だけで管理する。
+Document ID: `EVRP-EXECUTION-PLAN-001`
+Role: `CURRENT_NORMATIVE`
+Lifecycle: `CURRENT`
+Created: `2026-09-10`
+Last Updated: `2026-09-10`
+Current Authority: `本研究の唯一の進行管理・実行記録文書。工程status・次工程・実行判断を管理する。`
+計画版: 1.0
 
 初回監査・計画作成を完了した後、利用者の継続指示により、計画順に1工程ずつ実行する。各工程の完了記録と停止判定を本書へ先に反映する。
 

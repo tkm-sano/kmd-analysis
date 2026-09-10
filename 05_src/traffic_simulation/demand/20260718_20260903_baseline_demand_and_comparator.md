@@ -4,7 +4,7 @@
 役割: `CURRENT_NORMATIVE`
 ライフサイクル: `CURRENT`
 作成日: `2026-07-18`
-最終更新日: `2026-09-09`
+最終更新日: `2026-09-10`
 現行正本: `reproducibility/config/traffic_simulation/baseline_demand.yml`
 
 ## 2026-09-09の設計更新

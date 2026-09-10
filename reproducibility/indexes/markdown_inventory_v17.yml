@@ -2,7 +2,7 @@ schema_version: 1
 inventory_id: MARKDOWN-INVENTORY-V17
 date_authority: git_log_follow
 unknown_policy: UNKNOWN means no Git history was available; no filesystem mtime was used.
-markdown_count: 129
+markdown_count: 131
 broken_internal_markdown_links_at_generation: []
 documents:
 - path: 0-2-B-1_20260825_COMPLETE_Mac側Git整理.md
@@ -238,18 +238,18 @@ documents:
   authoritative: false
   generated: false
   created: '2026-07-17'
-  updated: '2026-08-28'
+  updated: '2026-09-10'
   first_git_commit: 81c48c89d64010c06da29e7e9fa7218acd7fe541
-  latest_git_commit: c62cbdff9bb6c3becc6d781b8639b1548993cf72
+  latest_git_commit: a6655398b3f55a49701b1086be6b74df1cf31366
   referenced_by:
   - 01_research_design/quantum_route_optimization_slide_structure.md
   - 02_literature/legacy_reference_log.md
+  - 05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md
   - reproducibility/config/research_portal/registry.yml
   references_to: []
   safe_to_rename: false
-  hash_bound: true
-  hash_references:
-  - reproducibility/config/research_portal/registry.yml
+  hash_bound: false
+  hash_references: []
   portal_dependency: true
   validator_dependency: false
 - path: 01_research_design/quantum_route_optimization_slide_structure.md
@@ -261,11 +261,12 @@ documents:
   authoritative: false
   generated: false
   created: '2026-07-17'
-  updated: '2026-08-28'
+  updated: '2026-09-10'
   first_git_commit: 81c48c89d64010c06da29e7e9fa7218acd7fe541
-  latest_git_commit: c62cbdff9bb6c3becc6d781b8639b1548993cf72
+  latest_git_commit: a6655398b3f55a49701b1086be6b74df1cf31366
   referenced_by:
   - 02_literature/legacy_reference_log.md
+  - 05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md
   references_to:
   - 01_research_design/quantum_route_optimization_research_summary.md
   safe_to_rename: true
@@ -282,13 +283,14 @@ documents:
   authoritative: false
   generated: false
   created: '2026-07-13'
-  updated: '2026-07-13'
+  updated: '2026-09-10'
   first_git_commit: 4d818997ee7c79a3301b71eea068a581ef93e2b0
-  latest_git_commit: a7c954dbef768d3142f26498c988075ecb54968f
+  latest_git_commit: a6655398b3f55a49701b1086be6b74df1cf31366
   referenced_by:
   - docs/research_portal_research_spec.md
   - reproducibility/config/research_portal/registry.yml
-  references_to: []
+  references_to:
+  - RESEARCH_PIPELINE_REFERENCE.md
   safe_to_rename: false
   hash_bound: false
   hash_references: []
@@ -536,7 +538,8 @@ documents:
   updated: '2026-08-25'
   first_git_commit: 5eebd3a730ce82890944794180745d1bb0c7e3eb
   latest_git_commit: 5eebd3a730ce82890944794180745d1bb0c7e3eb
-  referenced_by: []
+  referenced_by:
+  - EVRP_EXECUTION_PLAN.md
   references_to: []
   safe_to_rename: true
   hash_bound: false
@@ -722,10 +725,11 @@ documents:
   authoritative: false
   generated: false
   created: '2026-07-17'
-  updated: '2026-09-03'
+  updated: '2026-09-10'
   first_git_commit: 02bfde13726be49921ed58c65a020c76f2d05047
-  latest_git_commit: 981994fe48cbb0b09cb2cb86439313fe405e7e9b
+  latest_git_commit: a6655398b3f55a49701b1086be6b74df1cf31366
   referenced_by:
+  - README.md
   - RESEARCH_PIPELINE_REFERENCE.md
   - docker/README.md
   references_to:
@@ -741,6 +745,7 @@ documents:
   - 05_src/traffic_simulation/learning/permission_materializer_reproducible_implementation_guide.md
   - 05_src/traffic_simulation/network_attribute_governance.md
   - 05_src/traffic_simulation/specifications/10_approved_attribute_resolution_policy.md
+  - 05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md
   - 05_src/traffic_simulation/specifications/japan_tokyo_osm_exception_classification_rules.md
   - 05_src/traffic_simulation/terminal_command_guide.md
   - 05_src/traffic_simulation/visualization/README.md
@@ -782,9 +787,9 @@ documents:
   authoritative: false
   generated: false
   created: '2026-07-30'
-  updated: '2026-07-31'
+  updated: '2026-09-10'
   first_git_commit: 322071ea290e2a29481afcdcddab94ed4d0cebe7
-  latest_git_commit: 363d00e234e118465c283523d6e2b09d252b7e69
+  latest_git_commit: a6655398b3f55a49701b1086be6b74df1cf31366
   referenced_by:
   - 05_src/traffic_simulation/README.md
   - 05_src/traffic_simulation/current_issues_and_blockers.md
@@ -828,9 +833,9 @@ documents:
   authoritative: false
   generated: false
   created: '2026-07-30'
-  updated: '2026-09-03'
+  updated: '2026-09-10'
   first_git_commit: ec425c13ce33e8620ea45e4fa20ea7869ea9ef5c
-  latest_git_commit: 981994fe48cbb0b09cb2cb86439313fe405e7e9b
+  latest_git_commit: a6655398b3f55a49701b1086be6b74df1cf31366
   referenced_by:
   - 03_data/metadata/acquisition/20260718_sumo_tokyo_motorized_typemap_design.md
   - 05_src/traffic_simulation/README.md
@@ -852,9 +857,9 @@ documents:
   authoritative: false
   generated: false
   created: '2026-08-13'
-  updated: '2026-08-13'
+  updated: '2026-09-10'
   first_git_commit: 5f2783a4e51d29cce9973b3650b0a962a529318e
-  latest_git_commit: 5f2783a4e51d29cce9973b3650b0a962a529318e
+  latest_git_commit: a6655398b3f55a49701b1086be6b74df1cf31366
   referenced_by: []
   references_to: []
   safe_to_rename: true
@@ -871,9 +876,9 @@ documents:
   authoritative: true
   generated: false
   created: '2026-07-18'
-  updated: '2026-09-03'
+  updated: '2026-09-10'
   first_git_commit: 4454db1c4cabf5f3ce7746ca5ee1d76ad2b98e63
-  latest_git_commit: dafef2b21782ae442c7a8891817bc76b85dbc755
+  latest_git_commit: 6688515154db06c2a18999b86c1c034c71303129
   referenced_by:
   - 00_project_management/0-2-C_20260825_CURRENT_研究上の問題点とモデル課題.md
   - 03_data/metadata/acquisition/20260718_ota_baseline_open_statistics_acquisition.md
@@ -885,7 +890,8 @@ documents:
   - reproducibility/config/research_portal/registry.yml
   - reproducibility/config/research_portal/research_map_v1.yml
   - reproducibility/indexes/research_repository_index_v17.yml
-  references_to: []
+  references_to:
+  - RESEARCH_PIPELINE_REFERENCE.md
   safe_to_rename: false
   hash_bound: false
   hash_references: []
@@ -1079,9 +1085,9 @@ documents:
   authoritative: false
   generated: false
   created: '2026-07-17'
-  updated: '2026-08-25'
+  updated: '2026-09-10'
   first_git_commit: dd0b2685b0a35b096dbabed141455019e5e203d4
-  latest_git_commit: 7c15373e97041d8f5ff35797912f4fb0b14e22bd
+  latest_git_commit: a6655398b3f55a49701b1086be6b74df1cf31366
   referenced_by:
   - 00_project_management/0-2-C_20260825_CURRENT_研究上の問題点とモデル課題.md
   - 03_data/metadata/acquisition/20260717_mlit_n03_2026_tokyo_acquisition.md
@@ -1094,9 +1100,8 @@ documents:
   - reproducibility/config/research_portal/registry.yml
   references_to: []
   safe_to_rename: false
-  hash_bound: true
-  hash_references:
-  - reproducibility/config/research_portal/registry.yml
+  hash_bound: false
+  hash_references: []
   portal_dependency: true
   validator_dependency: false
 - path: 05_src/traffic_simulation/learning/attribute_criticality_and_evidence_specification_ja.md
@@ -1307,18 +1312,21 @@ documents:
   authoritative: false
   generated: false
   created: '2026-07-19'
-  updated: '2026-07-19'
+  updated: '2026-09-10'
   first_git_commit: b702d7ed3da0b72abb7bfdc1b136216352cf1f16
-  latest_git_commit: b702d7ed3da0b72abb7bfdc1b136216352cf1f16
+  latest_git_commit: a6655398b3f55a49701b1086be6b74df1cf31366
   referenced_by:
   - 00_project_management/0-2-C_20260825_CURRENT_研究上の問題点とモデル課題.md
   - 05_src/traffic_simulation/learning/permission_materializer_reproducible_implementation_guide.md
+  - 05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md
   - 20260903_20260903_RESEARCH_OVERVIEW.md
+  - EVRP_EXECUTION_PLAN.md
   - RESEARCH_PIPELINE_REFERENCE.md
   - docs/research_portal_research_spec.md
   - reproducibility/config/research_portal/registry.yml
   - reproducibility/config/traffic_simulation/sumo_network.yml
-  references_to: []
+  references_to:
+  - RESEARCH_PIPELINE_REFERENCE.md
   safe_to_rename: false
   hash_bound: false
   hash_references: []
@@ -1481,6 +1489,7 @@ documents:
   first_git_commit: 18ab7c372932a09fbe9fd8cc5c9840efd2596fef
   latest_git_commit: 18ab7c372932a09fbe9fd8cc5c9840efd2596fef
   referenced_by:
+  - 05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md
   - reproducibility/config/traffic_simulation/sumo_network.yml
   references_to: []
   safe_to_rename: false
@@ -1884,6 +1893,33 @@ documents:
   hash_references: []
   portal_dependency: false
   validator_dependency: false
+- path: 05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md
+  filename: R20_QAOA_SUBPROBLEM_SPEC.md
+  title: R20 QAOA Subproblem Specification
+  role: CURRENT_NORMATIVE
+  lifecycle: CURRENT
+  current: true
+  authoritative: true
+  generated: false
+  created: '2026-09-10'
+  updated: '2026-09-10'
+  first_git_commit: 6688515154db06c2a18999b86c1c034c71303129
+  latest_git_commit: a6655398b3f55a49701b1086be6b74df1cf31366
+  referenced_by:
+  - 05_src/traffic_simulation/README.md
+  - 05_src/traffic_simulation/r20_route_ordering/analyze_lambda_margin.py
+  - 05_src/traffic_simulation/r20_route_ordering/analyze_lambda_tolerance_rule.py
+  - 05_src/traffic_simulation/r20_route_ordering/run_real_data_validation.py
+  - 05_src/traffic_simulation/r20_route_ordering/run_validation.py
+  - README.md
+  - RESEARCH_PIPELINE_REFERENCE.md
+  - reproducibility/indexes/research_repository_index_v17.yml
+  references_to: []
+  safe_to_rename: false
+  hash_bound: false
+  hash_references: []
+  portal_dependency: false
+  validator_dependency: true
 - path: 05_src/traffic_simulation/specifications/attribute_criticality_and_evidence_specification.md
   filename: attribute_criticality_and_evidence_specification.md
   title: Attribute Criticality and Evidence Specification
@@ -2345,9 +2381,9 @@ documents:
   authoritative: false
   generated: false
   created: '2026-07-17'
-  updated: '2026-08-25'
+  updated: '2026-09-10'
   first_git_commit: b6a9178feb594aaa20f920975042f6da8192dd5a
-  latest_git_commit: 7c15373e97041d8f5ff35797912f4fb0b14e22bd
+  latest_git_commit: 6688515154db06c2a18999b86c1c034c71303129
   referenced_by:
   - 03_data/metadata/acquisition/20260717_osm_ota_ward_acquisition.md
   - 03_data/metadata/acquisition/README.md
@@ -2517,9 +2553,9 @@ documents:
   authoritative: false
   generated: false
   created: '2026-09-03'
-  updated: '2026-09-03'
+  updated: '2026-09-10'
   first_git_commit: f186f5b2eb6724feaa81a34ccc194620e3fbc278
-  latest_git_commit: e02101373c3b8dbe295a74bc37a0e0b615f449f6
+  latest_git_commit: a6655398b3f55a49701b1086be6b74df1cf31366
   referenced_by:
   - RESEARCH_OVERVIEW.md
   - reproducibility/config/research_portal/research_map_v1.yml
@@ -2527,6 +2563,7 @@ documents:
   - reproducibility/indexes/research_repository_index_v17.yml
   references_to:
   - 05_src/traffic_simulation/optimization_comparison_protocol.md
+  - EVRP_EXECUTION_PLAN.md
   - RESEARCH_PIPELINE_REFERENCE.md
   - docs/20260903_20260903_research_cli.md
   - reproducibility/indexes/20260903_20260903_research_repository_map_v17.md
@@ -2536,6 +2573,43 @@ documents:
   hash_references: []
   portal_dependency: true
   validator_dependency: false
+- path: EVRP_EXECUTION_PLAN.md
+  filename: EVRP_EXECUTION_PLAN.md
+  title: EVRP Execution Plan
+  role: CURRENT_NORMATIVE
+  lifecycle: CURRENT
+  current: true
+  authoritative: true
+  generated: false
+  created: '2026-09-10'
+  updated: '2026-09-10'
+  first_git_commit: 6688515154db06c2a18999b86c1c034c71303129
+  latest_git_commit: a6655398b3f55a49701b1086be6b74df1cf31366
+  referenced_by:
+  - 05_src/traffic_simulation/confirmed_implementation_and_verification.md
+  - 05_src/traffic_simulation/current_issues_and_blockers.md
+  - 05_src/traffic_simulation/decisions_required_for_next_steps.md
+  - 05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md
+  - 20260903_20260903_RESEARCH_OVERVIEW.md
+  - README.md
+  - README_v2.md
+  - RESEARCH_OVERVIEW.md
+  - RESEARCH_PIPELINE_REFERENCE.md
+  - RESEARCH_STATUS.md
+  - reproducibility/README.md
+  - reproducibility/config/traffic_simulation/research_stage.yml
+  - reproducibility/indexes/research_repository_index_v17.yml
+  - reproducibility/outputs/research_model_workbook/20260909_175947/reconstruction_validation.json
+  - tools/rebuild_current_research_model.py
+  references_to:
+  - 03_data/metadata/acquisition/20260825_tokyo_metropolitan_goods_movement_delivery_receipt_tables.md
+  - 05_src/traffic_simulation/optimization_comparison_protocol.md
+  - RESEARCH_PIPELINE_REFERENCE.md
+  safe_to_rename: false
+  hash_bound: false
+  hash_references: []
+  portal_dependency: false
+  validator_dependency: true
 - path: README.md
   filename: README.md
   title: Tokyo Urban Delivery × Quantum Future Society
@@ -2545,9 +2619,9 @@ documents:
   authoritative: false
   generated: false
   created: '2026-07-13'
-  updated: '2026-09-03'
+  updated: '2026-09-10'
   first_git_commit: 4d818997ee7c79a3301b71eea068a581ef93e2b0
-  latest_git_commit: e02101373c3b8dbe295a74bc37a0e0b615f449f6
+  latest_git_commit: a6655398b3f55a49701b1086be6b74df1cf31366
   referenced_by:
   - .github/workflows/ci.yml
   - .gitignore
@@ -2581,9 +2655,12 @@ documents:
   - 00_project_management/0-2-A_20260823_COMPLETE_研究全体構造と作業管理規則.md
   - 03_data/metadata/acquisition/README.md
   - 05_src/traffic_simulation/20260730_20260903_simulation_model_development_and_vv.md
+  - 05_src/traffic_simulation/README.md
   - 05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md
+  - 05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md
   - 2-3_20260823_CURRENT_交通量較正.md
   - 2-3_20260823_PARTIAL_交通量較正.md
+  - EVRP_EXECUTION_PLAN.md
   - RESEARCH_OVERVIEW.md
   - RESEARCH_PIPELINE_REFERENCE.md
   - docs/20260903_20260903_research_cli.md
@@ -2602,9 +2679,9 @@ documents:
   authoritative: false
   generated: false
   created: '2026-08-28'
-  updated: '2026-09-03'
+  updated: '2026-09-10'
   first_git_commit: c62cbdff9bb6c3becc6d781b8639b1548993cf72
-  latest_git_commit: 981994fe48cbb0b09cb2cb86439313fe405e7e9b
+  latest_git_commit: a6655398b3f55a49701b1086be6b74df1cf31366
   referenced_by:
   - 05_src/traffic_simulation/network/validate_current_markdown_index.py
   references_to:
@@ -2614,6 +2691,9 @@ documents:
   - 05_src/traffic_simulation/20260730_20260903_simulation_model_development_and_vv.md
   - 05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md
   - 2-3_20260823_CURRENT_交通量較正.md
+  - EVRP_EXECUTION_PLAN.md
+  - README.md
+  - RESEARCH_OVERVIEW.md
   - reproducibility/environment/README.md
   safe_to_rename: false
   hash_bound: false
@@ -2629,15 +2709,16 @@ documents:
   authoritative: false
   generated: false
   created: '2026-09-03'
-  updated: '2026-09-03'
+  updated: '2026-09-10'
   first_git_commit: f186f5b2eb6724feaa81a34ccc194620e3fbc278
-  latest_git_commit: e02101373c3b8dbe295a74bc37a0e0b615f449f6
+  latest_git_commit: a6655398b3f55a49701b1086be6b74df1cf31366
   referenced_by:
   - 05_src/research_cli/core.py
   - 05_src/research_cli/routing.py
   - 05_src/traffic_simulation/network/validate_current_markdown_index.py
   - 20260903_20260903_RESEARCH_OVERVIEW.md
   - README.md
+  - README_v2.md
   - RESEARCH_PIPELINE_REFERENCE.md
   - reproducibility/config/research_portal/research_map_v1.yml
   - reproducibility/evidence/fleet_capacity_interpretation_v1.yml
@@ -2646,6 +2727,7 @@ documents:
   - research_portal/README.md
   references_to:
   - 20260903_20260903_RESEARCH_OVERVIEW.md
+  - EVRP_EXECUTION_PLAN.md
   - RESEARCH_PIPELINE_REFERENCE.md
   safe_to_rename: false
   hash_bound: false
@@ -2661,15 +2743,23 @@ documents:
   authoritative: false
   generated: false
   created: '2026-09-03'
-  updated: '2026-09-03'
+  updated: '2026-09-10'
   first_git_commit: e02101373c3b8dbe295a74bc37a0e0b615f449f6
-  latest_git_commit: 46a68fe905be041f58f41261d27c956e4f60a056
+  latest_git_commit: a6655398b3f55a49701b1086be6b74df1cf31366
   referenced_by:
+  - 01_research_design/research_structure.md
   - 05_src/research_cli/inspection.py
+  - 05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md
   - 05_src/traffic_simulation/network/validate_research_pipeline_reference.py
+  - 05_src/traffic_simulation/optimization_comparison_protocol.md
+  - 05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md
   - 20260903_20260903_RESEARCH_OVERVIEW.md
+  - EVRP_EXECUTION_PLAN.md
   - README.md
   - RESEARCH_OVERVIEW.md
+  - docs/20260903_20260903_research_cli.md
+  - docs/research_portal_research_spec.md
+  - reproducibility/config/research_portal/research_map_v1.yml
   - reproducibility/indexes/20260903_20260903_research_repository_map_v17.md
   - reproducibility/indexes/research_repository_index_v17.yml
   - research_portal/README.md
@@ -2682,6 +2772,8 @@ documents:
   - 05_src/traffic_simulation/optimization_comparison_protocol.md
   - 05_src/traffic_simulation/specifications/20260903_20260903_formal_completion_three_tier_policy_v17.md
   - 05_src/traffic_simulation/specifications/20260903_20260903_network_completion_pipeline_v17.md
+  - 05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md
+  - EVRP_EXECUTION_PLAN.md
   - RESEARCH_OVERVIEW.md
   safe_to_rename: false
   hash_bound: false
@@ -2697,9 +2789,9 @@ documents:
   authoritative: false
   generated: false
   created: '2026-07-22'
-  updated: '2026-07-31'
+  updated: '2026-09-10'
   first_git_commit: bb3675337169faa1e0f37dda3a34fc597a2ad40c
-  latest_git_commit: 363d00e234e118465c283523d6e2b09d252b7e69
+  latest_git_commit: a6655398b3f55a49701b1086be6b74df1cf31366
   referenced_by:
   - 05_src/traffic_simulation/20260730_20260903_simulation_model_development_and_vv.md
   - 05_src/traffic_simulation/current_issues_and_blockers.md
@@ -2718,6 +2810,7 @@ documents:
   - 03_data/metadata/acquisition/20260730_ota_ward_v15_exception_rule_validation.md
   - 03_data/metadata/acquisition/README.md
   - 05_src/traffic_simulation/visualization/README.md
+  - EVRP_EXECUTION_PLAN.md
   safe_to_rename: false
   hash_bound: false
   hash_references: []
@@ -2751,15 +2844,16 @@ documents:
   authoritative: false
   generated: false
   created: '2026-09-03'
-  updated: '2026-09-03'
+  updated: '2026-09-10'
   first_git_commit: 0ae1189ec8ddf69d57cef1af99f5220c8e07aea0
-  latest_git_commit: dafef2b21782ae442c7a8891817bc76b85dbc755
+  latest_git_commit: 6688515154db06c2a18999b86c1c034c71303129
   referenced_by:
   - 20260903_20260903_RESEARCH_OVERVIEW.md
   - README.md
   - reproducibility/indexes/20260903_20260903_research_repository_map_v17.md
   - reproducibility/indexes/research_repository_index_v17.yml
-  references_to: []
+  references_to:
+  - RESEARCH_PIPELINE_REFERENCE.md
   safe_to_rename: true
   hash_bound: false
   hash_references: []
@@ -2774,12 +2868,13 @@ documents:
   authoritative: false
   generated: false
   created: '2026-08-28'
-  updated: '2026-09-03'
+  updated: '2026-09-10'
   first_git_commit: c62cbdff9bb6c3becc6d781b8639b1548993cf72
-  latest_git_commit: 981994fe48cbb0b09cb2cb86439313fe405e7e9b
+  latest_git_commit: 6688515154db06c2a18999b86c1c034c71303129
   referenced_by:
   - docs/research_portal_ui_spec.md
   references_to:
+  - RESEARCH_PIPELINE_REFERENCE.md
   - docs/research_portal_ui_spec.md
   safe_to_rename: true
   hash_bound: false
@@ -2873,11 +2968,12 @@ documents:
   authoritative: false
   generated: false
   created: '2026-07-22'
-  updated: '2026-07-22'
+  updated: '2026-09-10'
   first_git_commit: a632e81f9b218dc650ddb1fa76380b8514c48123
-  latest_git_commit: a632e81f9b218dc650ddb1fa76380b8514c48123
+  latest_git_commit: a6655398b3f55a49701b1086be6b74df1cf31366
   referenced_by: []
-  references_to: []
+  references_to:
+  - EVRP_EXECUTION_PLAN.md
   safe_to_rename: false
   hash_bound: false
   hash_references: []
@@ -2964,9 +3060,9 @@ documents:
   authoritative: false
   generated: false
   created: '2026-09-03'
-  updated: '2026-09-03'
+  updated: '2026-09-04'
   first_git_commit: 6ab87f3ef1a358e33c69330599966a58d58f05a7
-  latest_git_commit: 46a68fe905be041f58f41261d27c956e4f60a056
+  latest_git_commit: ae0c3906a94fce00353d9f61b33462e9d1a50344
   referenced_by:
   - reproducibility/indexes/research_repository_index_v17.yml
   - research_portal/serve.py

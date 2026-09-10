@@ -1,6 +1,11 @@
 # R20 QAOA Subproblem Specification
 
-- Document ID: R20-QAOA-SUBPROBLEM-SPEC
+Document ID: `R20-QAOA-SUBPROBLEM-SPEC`
+Role: `CURRENT_NORMATIVE`
+Lifecycle: `CURRENT`
+Created: `2026-09-10`
+Last Updated: `2026-09-10`
+Current Authority: `Adopted reduced Single-Vehicle Route Ordering formulation and scope boundary.`
 - Status: ADOPTED_AND_FORMULATION_VERIFIED_SCOPED
 - Scope: frozen initial reduced route-ordering formulation; full-EVRP exclusions remain
 - Current R20 Status: BLOCKED
