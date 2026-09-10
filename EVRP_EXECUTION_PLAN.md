@@ -88,7 +88,7 @@ Residential / B2C last-mile parcel delivery。Baseline problemはE-VRPTWを基�
 19. `R19_ORTOOLS_VALIDATION` — OR-Tools Validation
 20. `R20_QUBO_FORMULATION` — QUBO Formulation
 21. `R21_QUBO_VALIDATION` — QUBO Validation
-22. `R22_ISING_CONVERSION` — Ising Conversion
+22. `R22_ISING_CONVERSION` — Ising Conversion (full-EVRP path; reduced branch: `R22_REDUCED_ISING_CONVERSION`)
 23. `R23_QAOA_AER_EXECUTION` — QAOA / Qiskit Aer Execution
 24. `R24_QUANTUM_SOLUTION_DECODE` — Quantum Solution Decode
 25. `R25_COMMON_INDEPENDENT_VALIDATION` — Common Independent Validation
@@ -1738,6 +1738,184 @@ This reduced branch does not alter the full-EVRP `R21_QUBO_VALIDATION`, whose pr
 ### Reduced-scope dependency boundary
 
 `R21_REDUCED_QUBO_VALIDATION = PASS` may establish eligibility only for a correspondingly scoped `R22_ISING_CONVERSION` of the same initial reduced route-ordering QUBO. It does not authorize full-EVRP Ising conversion, QAOA execution, or completion of the full R22 stage.
+
+## R22_REDUCED_ISING_CONVERSION — Initial Reduced Route-Ordering Ising Conversion
+
+### Governance decision — 2026-09-10
+
+The scoped branch after the reduced R21 gate is formally identified as:
+
+`R22_REDUCED_ISING_CONVERSION`
+
+It applies only to the exact frozen QUBO validated by `R21_REDUCED_QUBO_VALIDATION` for `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY`. It is a separate branch of the execution plan and does not replace or relax the full-EVRP `R22_ISING_CONVERSION`.
+
+```text
+Full-EVRP path:
+  Full R20 PASS -> Full R21 PASS -> R22_ISING_CONVERSION
+
+Initial reduced path:
+  R21_REDUCED_QUBO_VALIDATION = PASS
+    -> R22_REDUCED_ISING_CONVERSION
+    -> scoped preparation eligibility for the same reduced Ising Hamiltonian
+```
+
+### Formal purpose and boundary
+
+The purpose is to convert the R21-validated reduced QUBO into an Ising Hamiltonian and establish, with the constant offset retained, that the two energy landscapes are mathematically equivalent.
+
+This stage is not QAOA performance evaluation and does not validate or authorize:
+
+- full-EVRP Ising conversion;
+- QAOA execution or ansatz selection;
+- quantum hardware execution;
+- quantum advantage or scaling claims;
+- any QUBO other than the frozen R21 reduced QUBO.
+
+### Prerequisite and authoritative input
+
+All of the following are mandatory:
+
+- `R21_REDUCED_QUBO_VALIDATION = PASS`;
+- scope exactly `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY`;
+- R21 validation-results hash and manifest hash are available;
+- the R21 QUBO coefficient hash matches the supplied constant, linear, and quadratic coefficients;
+- row-major variable ordering and `n^2` logical-variable count are unchanged;
+- lambda, bound, normalization, and source provenance metadata are carried forward from R21.
+
+R22 must not rebuild or symmetrize the QUBO independently. The authoritative input is the frozen R21 coefficient representation:
+
+`E_Q(x) = C + sum_i a_i x_i + sum_(i<j) b_ij x_i x_j`.
+
+### Binary-to-spin convention
+
+No existing repository Ising converter establishes a conflicting convention. The reduced R22 authority is therefore fixed as:
+
+`x_i = (1 - s_i) / 2`,
+
+where `x_i in {0,1}` and `s_i in {-1,+1}`. The inverse is `s_i = 1 - 2x_i`.
+
+The convention, variable order, and spin index are preserved one-to-one from the R20/R21 row-major order. A later Qiskit utility may be used as an independent check, but it must not redefine this mathematical convention.
+
+### Mathematical conversion
+
+Substitution gives:
+
+`E_Q(x(s)) = C_I + sum_i h_i s_i + sum_(i<j) J_ij s_i s_j`,
+
+where:
+
+`C_I = C + (1/2) sum_i a_i + (1/4) sum_(i<j) b_ij`,
+
+`h_i = -(1/2) a_i - (1/4) sum_(j != i) b_(min(i,j),max(i,j))`,
+
+`J_ij = b_ij / 4` for `i < j`.
+
+The derivation uses:
+
+`x_i x_j = (1 - s_i - s_j + s_i s_j) / 4`.
+
+The full Ising energy includes `C_I`. For representations that omit the constant, the artifact must retain the explicit offset and require:
+
+`E_Q(x) = E_Ising_without_offset(s) + C_I`.
+
+Omitting `C_I` from a later operator representation is permitted only after this equality has been validated and recorded.
+
+### Mandatory invariants
+
+The reduced R22 gate requires all of the following. One mandatory invariant failure is a gate failure.
+
+1. **I1 Conversion algebra:** coefficients follow the documented substitution and formula.
+2. **I2 Variable mapping:** binary-to-spin and spin-to-binary mappings are bijective and roundtrip-safe.
+3. **I3 Energy equivalence:** every required mapped state satisfies `E_Q(x) = E_Ising_full(s)` within tolerance.
+4. **I4 Global optimum equivalence:** mapped QUBO and Ising global-minimum sets are identical.
+5. **I5 Route equivalence:** Ising minima decode to the same route set as the R21 QUBO minima.
+6. **I6 Tie preservation:** all degenerate global minima and optimal route ties are retained.
+7. **I7 Coefficient/provenance integrity:** Ising coefficients derive from the exact frozen R21 coefficient hash and source lineage.
+8. **I8 Deterministic conversion:** identical frozen QUBO input produces identical semantic Ising output.
+
+Feasibility remains defined by the R20 binary validator and decoder. Ising conversion does not introduce a new feasibility definition, repair operation, or unreachable-transition constraint.
+
+### Exact validation ladder and spectrum policy
+
+The R22 validation ladder reuses the R21 formal instances:
+
+- synthetic n=2 unique;
+- synthetic n=3 unique;
+- synthetic n=3 tie;
+- synthetic n=3 asymmetric;
+- synthetic n=4 adversarial/asymmetric when the existing guard permits it;
+- Routing Baseline-derived n=2;
+- Routing Baseline-derived n=3.
+
+For n=2 and n=3, all `2^(n^2)` binary/spin states are mandatory. For n=4, full-state comparison is required when the existing exact-enumeration guard permits it. The state count is a validation-computation quantity only, not a QAOA, QPU, or formal problem-size limit.
+
+For each mapped state, record QUBO energy, full Ising energy, difference, and binary/spin assignment. Exact-small validation must compare global minima, route sets, ties, and state-energy ordering. The required numerical condition is `max_abs_energy_mismatch <= ENERGY_ABS_TOLERANCE` (or a separately approved R22 energy tolerance); a tolerance must not hide sign or factor-of-two errors.
+
+### Numerical and serialization policy
+
+- coefficient transformation uses an explicitly named coefficient tolerance;
+- state-energy equality uses an explicitly named energy tolerance;
+- global-optimum and tie equality uses the same documented energy comparison policy;
+- zero coefficients are not silently rounded or removed before hash/equivalence validation;
+- serialization uses canonical ordering and sufficient precision to reproduce coefficients;
+- constant offset is always serialized, even if an operator consumer later omits it.
+
+### Mutation-resistant checks
+
+The implementation test plan must detect:
+
+- wrong sign in `x=(1 +/- s)/2`;
+- factor-of-two errors in `J_ij`;
+- missing linear contributions from quadratic couplers;
+- missing or incorrect `C_I`;
+- duplicated or reversed couplers;
+- row-major index corruption;
+- accidental coefficient symmetrization;
+- omitted QUBO constant.
+
+Qiskit `to_ising()` or an equivalent utility may be used only as an independent reference check after the custom mathematical converter is tested. It is not the specification authority.
+
+### Artifact contract
+
+Formal reduced R22 output shall use:
+
+`reproducibility/outputs/traffic_simulation/r22_ising_conversion/<run_id>/`
+
+with at least:
+
+- `conversion_results.json`;
+- `manifest.json`.
+
+The artifact records R21 artifact/results hashes, QUBO coefficient hash, binary-to-spin convention, QUBO constant, Ising constant `C_I`, explicit transformation offset, `h`, `J`, Ising coefficient hash, logical-spin count, state count, maximum energy mismatch, optimum/tie/route comparisons, I1--I8, failure reasons, runtime, and source/code hashes.
+
+### Failure reasons and PASS criteria
+
+Failure reason codes:
+
+`R21_INPUT_NOT_PASS`, `QUBO_HASH_MISMATCH`, `SPIN_MAPPING_FAILURE`, `ISING_COEFFICIENT_MISMATCH`, `CONSTANT_OFFSET_MISMATCH`, `ENERGY_EQUIVALENCE_FAILURE`, `GLOBAL_OPTIMUM_MISMATCH`, `TIE_SET_MISMATCH`, `ROUTE_SET_MISMATCH`, `INDEX_MAPPING_FAILURE`, `NUMERICAL_TOLERANCE_FAILURE`, and `NONDETERMINISTIC_RESULT`.
+
+Scoped R22 PASS requires all of the following:
+
+- R21 reduced PASS and provenance confirmation;
+- exact QUBO hash match;
+- algebra and convention validation;
+- mapping roundtrip PASS;
+- coefficient and constant-offset validation PASS;
+- full required state energy equivalence PASS;
+- global optimum, tie, and route-set equivalence PASS;
+- deterministic semantic artifact PASS;
+- no CRITICAL/HIGH issue.
+
+Partial PASS is not allowed.
+
+### Status and next-stage boundary
+
+- **Status:** `READY_FOR_IMPLEMENTATION` (specification defined; conversion not executed)
+- **Execution authorization:** `NONE`
+- **Decision:** reduced R22 governance defined; no conversion result is claimed
+- **After scoped R22 PASS:** preparation eligibility for a same-reduced-Ising QAOA design may be considered in a separate decision.
+
+This section does not alter the full-EVRP `R22_ISING_CONVERSION`, whose prerequisite remains full-EVRP `R21_QUBO_VALIDATION = PASS`.
 
 ## R23_QAOA_AER_EXECUTION — QAOA / Qiskit Aer Execution
 
