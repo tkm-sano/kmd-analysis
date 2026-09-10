@@ -1910,7 +1910,7 @@ Partial PASS is not allowed.
 
 ### Status and next-stage boundary
 
-- **Status:** `READY_FOR_IMPLEMENTATION` (specification defined; conversion not executed)
+- **Status:** `READY_FOR_EXECUTION` (converter/tests/smoke prepared; formal conversion not executed)
 - **Execution authorization:** `NONE`
 - **Decision:** reduced R22 governance defined; no conversion result is claimed
 - **After scoped R22 PASS:** preparation eligibility for a same-reduced-Ising QAOA design may be considered in a separate decision.
