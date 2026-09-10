@@ -1,0 +1,17 @@
+schema_version: evrp-r07-time-window-v1
+inputs:
+  r06_customer_demand: reproducibility/outputs/traffic_simulation/demand/evrp_r06_customer_demand/20260909_r06_customer_demand_final/customer_demand.csv
+  r06_manifest: reproducibility/outputs/traffic_simulation/demand/evrp_r06_customer_demand/20260909_r06_customer_demand_final/r06_demand_manifest.json
+  statistics_manifest: 03_data/raw/traffic_simulation/demand_proxy/mlit_tokyo_metropolitan_goods_movement_survey_2024_20260823/manifest.json
+  statistics_root: 03_data/raw/traffic_simulation/demand_proxy/mlit_tokyo_metropolitan_goods_movement_survey_2024_20260823
+output_root: reproducibility/outputs/traffic_simulation/demand/evrp_r07_time_window
+time_origin: local_day_start_00:00
+time_unit: hours
+service_start_constraint: e_i <= b_i <= l_i
+classification: SYNTHETIC_CALIBRATED
+transformations:
+  unspecified: '[0,24]'
+  date_only: '[0,24]'
+  time_band: '[max(0,h-1),min(24,h+1)]'
+  clock_time_proxy: '[h,min(24,h+1)]'
+  reason: statistics provide calibration distributions, not customer-specific allowable windows

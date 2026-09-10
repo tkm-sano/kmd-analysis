@@ -4,8 +4,16 @@
 役割: `CURRENT_NORMATIVE`
 ライフサイクル: `CURRENT`
 作成日: `2026-07-18`
-最終更新日: `2026-09-03`
+最終更新日: `2026-09-09`
 現行正本: `reproducibility/config/traffic_simulation/baseline_demand.yml`
+
+## 2026-09-09の設計更新
+
+今後の研究パイプラインは[最新B2C配送パイプライン](../../../RESEARCH_PIPELINE_REFERENCE.md#b2c-pipeline-20260909)を設計正本とする。住宅向け宅配を主対象に、39,956候補地点から層化・重み付き非復元抽出し、customer数nと複数seedを実験パラメータにする。主需要単位は配送件数、Baselineは単一depot、主指標はDFR_orders。OR-ToolsとQUBO→QAOA→Qiskit Aerは同一instance・共通Hard Constraintsを使用し、独立Validatorを通して比較する。技術Scenarioではcustomer・需要・Time Window・道路条件を原則固定する。
+
+旧記述との不整合は上記の最新方針を優先する。既存成果物の生成・受入事実は保持し、今後の設計採択を実装完了とは扱わない。
+
+以下のparcel-equivalentとfixed_hash_no_reorderingは既存proxy生成・旧比較器の仕様として保持する。今後のB2C需要単位、主指標、必須比較手法については上記方針へ置換する。
 
 ## 1. 目的と位置付け
 

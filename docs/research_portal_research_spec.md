@@ -5,6 +5,12 @@
 対象: `/home/takuma/kmd-analysis`  
 関連UI仕様: [research_portal_ui_spec.md](research_portal_ui_spec.md)
 
+## 2026-09-09の設計更新
+
+今後の研究パイプラインは[最新B2C配送パイプライン](../RESEARCH_PIPELINE_REFERENCE.md#b2c-pipeline-20260909)を設計正本とする。住宅向け宅配を主対象に、39,956候補地点から層化・重み付き非復元抽出し、customer数nと複数seedを実験パラメータにする。主需要単位は配送件数、Baselineは単一depot、主指標はDFR_orders。OR-ToolsとQUBO→QAOA→Qiskit Aerは同一instance・共通Hard Constraintsを使用し、独立Validatorを通して比較する。技術Scenarioではcustomer・需要・Time Window・道路条件を原則固定する。
+
+旧記述との不整合は上記の最新方針を優先する。既存成果物の生成・受入事実は保持し、今後の設計採択を実装完了とは扱わない。
+
 ## 1. 目的
 
 本ポータルは、プロジェクトメンバーが研究の全体構造、現在地、モデル間関係、利用データ、変数・パラメータ、仮説、未実装部分、Evidenceを、一枚地図を入口として把握するための内部向け研究可視化サイトである。
@@ -83,26 +89,20 @@ Open Data
 
 ```mermaid
 flowchart LR
-  OD[Open Data] --> BM[Baseline Model]
-  BM --> CDI[Common Delivery Instance]
-  CDI --> B[Baseline]
-  CDI --> C[Classical]
-  CDI --> Q[Qiskit Aer QAOA]
-  B --> CT[Computation Time]
-  C --> CT
-  Q --> CT
-  B --> DF[Delivery Fulfillment]
-  C --> DF
-  Q --> DF
-  CT --> FA[Future Analyses]
-  DF --> FA
-
-  QS[Quantum Bit Scale] -. planned .-> FA
-  QB[Quantum-to-Battery External Model] -. hypothesis .-> FA
-  PD[Population / Household Demand Model] -. hypothesis .-> FA
-  FA -. planned .-> FF[Final Delivery Demand Fulfillment]
-  FF -. hypothesis .-> US[Urban Society / Economy]
+  OD[公的統計] --> C[39,956候補地点とDemand Weight]
+  C --> S[層化・重み付き非復元抽出 n・seed]
+  S --> D[配送件数・Time Window・Service Time]
+  D --> R[Depot・EV・充電条件とRouting Baseline検証]
+  R --> CDI[共通配送Instance・Hard Constraints]
+  CDI --> OR[OR-Tools]
+  CDI --> Q[QUBO → Ising → QAOA → Qiskit Aer]
+  OR --> V[共通独立Validator]
+  Q --> V
+  V --> DF[需要充足評価・古典量子比較]
+  DF --> SC[Problem Size・技術Scenario比較]
 ```
+
+この図は2026-09-09採択の設計であり、実装statusはRegistryの証拠に従う。
 
 ### 5.2 展開時のsubgraph
 

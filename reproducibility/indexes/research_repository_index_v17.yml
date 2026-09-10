@@ -67,6 +67,10 @@ filename_date_convention:
       canonical: 20260903_20260903_RESEARCH_OVERVIEW.md
       reason: GitHub_Portal_CLI_and_external_link_compatibility
   fixed_name_exceptions:
+    # 2026-09-09: retain existing canonical paths for IDE, CLI and evidence links; metadata records the update.
+    - 20260903_20260903_RESEARCH_OVERVIEW.md
+    - 05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md
+    - docs/20260903_20260903_research_cli.md
     - README.md
     - RESEARCH_PIPELINE_REFERENCE.md
     - research_portal/README.md
@@ -78,9 +82,9 @@ important_markdown:
     lifecycle: CURRENT
     path: 20260903_20260903_RESEARCH_OVERVIEW.md
     created: '2026-09-03'
-    updated: '2026-09-03'
+    updated: '2026-09-09'
     purpose: Research question, Stage 1-11 roadmap, gates, milestones, and current position.
-    naming_policy: dated_canonical
+    naming_policy: fixed_name_exception
   - priority: 2
     document_id: DOC-RESEARCH-REPOSITORY-MAP-V17
     role: CURRENT_REFERENCE
@@ -114,9 +118,9 @@ important_markdown:
     lifecycle: CURRENT
     path: 05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md
     created: '2026-07-18'
-    updated: '2026-09-03'
+    updated: '2026-09-09'
     purpose: Current baseline-demand, comparator, and evaluation-boundary specification.
-    naming_policy: dated_canonical
+    naming_policy: fixed_name_exception
   - priority: 6
     document_id: DOC-SIMULATION-MODEL-DEVELOPMENT-VV
     role: CURRENT_REFERENCE
@@ -132,9 +136,9 @@ important_markdown:
     lifecycle: CURRENT
     path: docs/20260903_20260903_research_cli.md
     created: '2026-09-03'
-    updated: '2026-09-03'
+    updated: '2026-09-09'
     purpose: Commands, safety behavior, exit behavior, and current implementation boundary for ./research.
-    naming_policy: dated_canonical
+    naming_policy: fixed_name_exception
   - priority: 8
     document_id: DOC-RESEARCH-PORTAL-README
     role: CURRENT_REFERENCE
@@ -159,6 +163,6 @@ important_markdown:
     lifecycle: CURRENT
     path: RESEARCH_PIPELINE_REFERENCE.md
     created: '2026-09-03'
-    updated: '2026-09-03'
+    updated: '2026-09-09'
     purpose: Current execution, input, output, authority, validation, acceptance, provenance, and handoff reference for every research pipeline.
     naming_policy: fixed_name_exception

@@ -13,7 +13,7 @@ interpretation_mode: Future scenario analysis — 直接因果の証明ではな
 public_view:
   role: Research communication layer
   why_it_matters: 都市配送の将来を考えるには、計画手法や技術条件の違いが、限られた時間と配送能力のもとで需要充足へどう現れるかを、同じ分析枠組みで比較する必要があります。
-  approach_intro: 公開データから配送需要と交通ネットワークを構成し、経路、配送計画、交通上の実行、需要充足の順に検証します。未完了の工程は結果があるように見せず、現在地と次工程を分けて示します。
+  approach_intro: 住宅向け宅配を主対象に、39,956候補地点から人口・世帯の重みで層化・非復元抽出します。同一instanceとHard ConstraintsをOR-ToolsとQUBO・QAOA・Qiskit Aerに与え、共通独立Validatorで検証し、配送件数ベースの需要充足、問題規模、EV技術Scenarioを比較する計画です。最新設計はRESEARCH_PIPELINE_REFERENCE.mdの2026-09-09採択方針を参照します。
   approach:
     - {label: Open data, description: 道路・需要などの入力と出所を管理する}
     - {label: Traffic network, description: 配送地点を扱える道路ネットワークを構築・検証する}
@@ -25,7 +25,7 @@ public_view:
     - {label: Interpretation, description: 結果を明示した条件とEvidenceの範囲内で解釈する}
   pipeline:
     - {label: Data, description: 入力データと出所の整備, status: DONE, stage_refs: [external_data]}
-    - {label: Demand, description: 配送需要・Requests・Stopsの構成, status: DONE, stage_refs: [demand_scenario, requests_stops]}
+    - {label: Demand, description: 既存需要proxy・候補Stopsの生成済み成果物（新B2C抽出は未実装）, status: DONE, stage_refs: [demand_scenario, requests_stops]}
     - {label: Network, description: 道路網の構築、Stop対応付け、研究利用への受入, status: DONE, stage_refs: [structural_network, formal_network, sumo_network, stop_mapping, network_acceptance]}
     - {label: Routing, description: 配送地点間の移動コストと到達可能性の確定, status: NEXT, stage_refs: [routing_baseline]}
     - {label: Optimization, description: 共通配送問題による古典・量子最適化の比較, status: PLANNED, stage_refs: [common_instance, classical_optimization, qubo, qaoa]}
@@ -34,6 +34,7 @@ public_view:
     - {label: Interpretation, description: 直接分析結果をEvidenceの範囲内で条件付き解釈, status: FUTURE, stage_refs: [planning_interpretation, business_interpretation, future_society]}
   current_stage_explanation: 配送地点間の移動時間・距離・到達可能性を計算する前に、配送問題で必要な出発地と到着地の範囲を定める工程です。
   limitations:
+    - 2026-09-09のB2C設計採択は実装完了を意味しません。既存DemandのDONEは旧成果物の状態です。
     - Routing scopeは現在定義中です。
     - OptimizationとDelivery Simulationはまだ完了しておらず、結果は提示していません。
     - Network routeabilityの受入確認はsample-basedです。
@@ -79,7 +80,7 @@ implementation_nodes:
   - {id: network_acceptance, group: network, name: Network Acceptance, status: DONE, purpose: network・mapping・sample routeabilityを研究利用へ承認する, input: network and mapping validation, output: accepted network authority, x: 310, y: 515}
   - {id: routing_baseline, group: routing, name: Routing Baseline, status: NEXT, purpose: delivery instanceに必要なrouting costを固定する, input: accepted network, accepted mapping, requests/stops, unresolved routing choices, output: travel-time cost, distance cost, routeability, routing provenance, x: 575, y: 215}
   - {id: common_instance, group: routing, name: Common Delivery Instance, status: PLANNED, purpose: solver共通の配送問題を固定する, input: validated routing and vehicle constraints, output: validated comparison instance, x: 575, y: 415}
-  - {id: classical_optimization, group: optimization, name: Classical Optimization, status: FUTURE, purpose: 古典最適化baselineを確立する, input: accepted common instance, output: feasible classical solutions, x: 800, y: 115}
+  - {id: classical_optimization, group: optimization, name: Classical Optimization, status: FUTURE, purpose: OR-Toolsで共通Hard Constraints下の配送件数充足を最大化する, input: accepted common instance, output: feasible classical solutions, x: 800, y: 115}
   - {id: qubo, group: optimization, name: QUBO, status: FUTURE, purpose: Classical problemを検証可能なQUBOへ写像する, input: fixed formulation and common instance, output: QUBO and mapping contract, x: 800, y: 315}
   - {id: qaoa, group: optimization, name: QAOA, status: FUTURE, purpose: validated QUBOを量子最適化へ接続する, input: validated QUBO and execution assumptions, output: quantum candidate solutions, x: 800, y: 515}
   - {id: delivery_simulation, group: execution, name: Delivery Simulation, status: FUTURE, purpose: 計画とscenarioを交通・配送系で実行する, input: accepted plans, network, instances and scenarios, output: simulation outcomes, x: 1045, y: 315}

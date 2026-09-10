@@ -4,7 +4,7 @@
 役割: `CURRENT_REFERENCE`
 ライフサイクル: `CURRENT`
 作成日: `2026-09-03`
-最終更新日: `2026-09-03`
+最終更新日: `2026-09-09`
 現行正本: `reproducibility/indexes/research_repository_index_v17.yml`
 
 状態: `CURRENT PIPELINE REFERENCE`
@@ -12,6 +12,153 @@
 本書は、各研究工程の「実行 → 成果物 → 正本 → 検証 → 受入 → 次工程」を追跡する現行運用リファレンスである。研究の問い、概念枠組み、Stage 1–11のロードマップ、マイルストーンは[研究概要・ロードマップ](RESEARCH_OVERVIEW.md)を参照する。本書は各Decision、仕様、設定、schema、run、受入成果物への索引であり、それらを置き換える第二の正本ではない。記載と正本成果物が矛盾する場合は、各節の「正本・信頼源」に示す成果物を優先する。
 
 説明、見出し、表項目は日本語で記載する。実在するコマンド、ファイル名、field名、ID、`DONE`や`NOT IMPLEMENTED`などの機械可読な状態値は、repository内の正本表記を保持する。
+
+<a id="b2c-pipeline-20260909"></a>
+
+## 最新採択方針 — B2C配送パイプライン（2026-09-09）
+
+採択根拠: 2026-09-09の研究責任者による修正版パイプラインの指示。
+状態: `ADOPTED / CURRENT DESIGN`。以下を今後のパイプラインの設計正本とする。過去の記録と不整合の場合は、本節を優先する。実装・実行・検証・受入の完了は別途証拠で判定する。
+
+主対象は**住宅向け宅配（B2C last-mile delivery）**。古典最適化と量子最適化は、同一のCommon Delivery Instance、Hard Constraints、目的の優先順位、独立Validatorを使用する。
+
+### 1. 公的統計の収集
+
+- 国勢調査の人口／世帯メッシュを住宅需要の空間proxyに使用する。
+- 第6回東京都市圏物資流動調査「個人のモノの受取調査」を宅配需要・日時指定・受取時間帯の根拠に使用する。
+- 必要に応じて全国貨物純流動調査を補助的に使用する。
+- 事業所機能調査・経済センサスをB2B需要の主入力とする案は、今回の主パイプラインには採用しない。
+- 採用する統計表、年次、取得元、取得日、単位、入力hashと変換規則を記録する。調査項目の存在だけでは必要な集計表の取得完了としない。
+
+### 2. Candidate Delivery Locationsの固定
+
+39,956地点を住宅向け配送先候補の母集団 $C_{\mathrm{all}}$ と定義する。各地点の識別子、座標、道路接続情報を保持する。現在の `building_delivery_stops_scoped.csv` と受入済みmappingを候補の来歴として参照し、候補集合のhashを固定する。
+
+この定義は研究上の住宅配送先候補という位置付けであり、各地点が実在住宅として実地確認されたことや、全地点に実験日の注文があることを意味しない。
+
+### 3. 地点別Demand Weightの設定
+
+人口または世帯数を住宅宅配需要の空間proxyとし、各候補地点に非負の相対重み $w_i$ を設定する。これは39,956地点からcustomerを抽出する際の選択確率を定める重みであり、配送量 $q_i$ とは別の変数である。メッシュから地点への配賦規則、欠損・ゼロ重みの扱いは生成configに記録する。
+
+### 4. Customer集合の抽出
+
+地域差を保持する層化を行い、Demand Weightに基づく**重み付き非復元抽出**で $C_s\subset C_{\mathrm{all}}$ を生成する。層の定義、層別割当数、抽出方式を固定・保存する。
+
+Customer数 $n=|C_s|$ は固定scenarioではなく**実験パラメータ**とする。複数random seedで異なるcustomer configurationを生成し、各configurationを古典・量子で共有する。
+
+### 5. 各Customerの配送需要を生成
+
+抽出されたcustomerは、その実験日に配送要求が発生した住宅配送先として扱う。Baselineの基本需要単位は**配送件数**とする。必要に応じて荷物個数・重量 $q_i$ を追加し、単位を明記する。配送要求、荷物、customer、候補地点を区別する。
+
+### 6. Time Windowを生成
+
+「個人のモノの受取調査」の日時指定・受取時間帯分布を使用し、各customerにsyntheticな配送可能時間帯 $[e_i,l_i]$ を割り当てる。観測された受取時刻から許容時間窓への変換規則、窓幅、指定なしの扱いを明記する。生成seedと設定を共通入力に固定する。
+
+### 7. Service Timeを設定
+
+各住宅で配送作業に必要な時間 $s_i$ を設定する。単位、値または分布、生成方法を記録する。
+
+### 8. Depotを設定
+
+Baselineは**単一depot**とする。Customer集合が変わっても原則として同じdepotを使用する。位置・道路接続と、例外的に変更する場合の理由を記録する。
+
+### 9. EV条件を設定
+
+車両台数、積載容量、Battery capacity、Energy consumption rate、usable SOC、出発時SOCを設定する。必要に応じて帰着時最低SOCを設定する。容量・需要・エネルギー・SOCの単位と換算方法を固定する。
+
+### 10. Charging Station条件を設定
+
+位置、充電出力、EVとの互換性、利用可能条件、充電可能量・充電時間の計算方法を設定する。
+
+### 11. Routing Baselineを計算
+
+OSM/SUMO道路ネットワークを使用し、depot・customer・charging station間の**必要OD**について、道路距離 $d_{ij}$、移動時間 $t_{ij}$、到達可能性 $a_{ij}$ を生成する。39,956地点の全組合せ計算は前提にしない。
+
+### 12. Routing Baselineを検証
+
+必要ODの欠落、到達不能pair、一方通行・進入禁止等の通行制約、車種別通行可否、距離・時間の異常値を確認する。入力hash、設定値、software version、再現command、検証結果を保存する。欠落ODと既知の到達不能ODを区別する。
+
+### 13. Common Delivery Instanceを生成
+
+Customer集合、配送需要、Time Window、Service Time、Depot、Vehicle、Charging Station、$d_{ij}$、$t_{ij}$、Reachabilityを統合し、古典・量子の共通入力として固定する。地点順序、単位、seed、生成config、入力hashと制約定義も保存する。
+
+### 14. 共通Hard Constraintsを定義
+
+| 制約 | 両手法に共通する条件 |
+|---|---|
+| Customer訪問 | 配送するcustomerは高々1回だけ訪問する。未充足customerを許容する。 |
+| Depot発着 | 使用車両はdepotから出発し、depotへ帰着する。 |
+| Flow Conservation | ある地点に入った車両は、同じ車両でその地点から出る。 |
+| Subtour禁止 | depotと接続されていない独立巡回路を禁止する。 |
+| Vehicle Assignment | 1つのcustomerを複数車両へ重複割当しない。 |
+| Capacity | 車両積載上限を絶対に超えない。 |
+| Time Window | 指定された時間帯内に配送する。 |
+| 時間伝播 | travel time、service time、waiting time、charging timeを一貫して累積する。 |
+| Operating time | 1台あたりの最大運行時間を超えない。 |
+| Battery / SOC | 走行中にSOCが最低許容値を下回らない。 |
+| 初期・終了SOC | 出発時SOCを定義し、設定した場合は帰着時最低SOCも満たす。 |
+| Charging | 充電可能地点でのみ充電し、Battery capacityを超えず、充電量・charger powerに応じた充電時間を考慮する。 |
+| Reachability | OSM/SUMO上で実際に移動可能なarcのみ使用する。 |
+
+時間窓が配送開始・完了のどちらに適用されるか、数値許容誤差などの詳細は、両手法で同一の定義に固定してから実行する。
+
+### 15. 古典最適化分岐 — OR-Tools
+
+Common Delivery Instanceを入力し、上記Hard Constraintsを満たす配送routeを探索して、配送可能customerと未充足customerを決定する。**第一目的は配送需要充足の最大化**とし、同一需要充足量なら総距離・総時間等を最小化する。Baselineでは配送件数を第一目的の単位に使用する。第二目的の選択・優先順は実験configで固定する。
+
+### 16. 量子最適化分岐 — QUBO / QAOA
+
+OR-Toolsと同じCommon Delivery Instanceと目的の優先順位を使用する。Route、customer訪問、vehicle assignment等をbinary variablesで表現し、共通Hard ConstraintsをQUBO penalty等として定式化する。
+
+QUBOをIsing Hamiltonianへ変換し、必要binary variable数・qubit数を記録する。QAOA circuitを構築して**Qiskit Aer上でsimulation**し、得られたbitstringを配送routeへdecodeする。Penaltyの存在や低いenergyだけではHard Constraintsを満たしたと判定しない。
+
+### 17. 共通Validatorによる独立検証
+
+OR-Tools解とQAOA解の双方について、Customer重複、Depot発着、Flow conservation、Subtour、Vehicle assignment、Capacity、Time Window、時間伝播、Operating time、SOC（初期・終了条件を含む）、Charging feasibility、Reachabilityを最適化処理とは独立して再計算する。
+
+**Hard Constraint違反解はfeasible solutionとして扱わない。** 違反内容を保存し、有効解が得られなかったrunを比較結果から隠さない。
+
+### 18. 需要充足率を計算
+
+配送件数ベースの主指標:
+
+$$
+DFR_{\mathrm{orders}}=\frac{\text{配送完了件数}}{\text{総配送要求件数}}
+$$
+
+荷物量を導入する場合の追加指標:
+
+$$
+DFR_{\mathrm{demand}}=\frac{\sum_i q_i y_i}{\sum_i q_i}
+$$
+
+$y_i$ はcustomer $i$ の配送完了を表す0/1変数とする。分母は同じinstanceの全配送要求であり、未充足customerを除外しない。計画解の独立検証による充足と、追加のSUMO配送simulationで確認する充足は別に報告する。配送完了の判定規則と評価時間範囲を共有する。
+
+### 19. 古典最適化と量子最適化を比較
+
+Demand Fulfillment Rate、配送完了件数、総走行距離、総移動時間、総運行時間、Energy consumption、Charging回数・時間、計算時間を比較する。移動時間と、作業・待機・充電を含む運行時間を区別する。
+
+QAOAではさらにqubit数、circuit depth、QAOA depth $p$、shots、optimizer iterationsを記録する。計算時間の測定範囲と実行環境を保存する。
+
+### 20. Problem Sizeを変化させる
+
+Customer数 $n$ を固定scenarioにせず、実験パラメータとして増加させる。OR-ToolsとQAOA/Aerの両方で実行可能な範囲では、**完全に同一のinstanceを直接比較**する。各 $n$ で複数seedを使用し、片方のみ実行可能な規模の結果は直接比較と区別する。
+
+### 21. 技術Scenarioを設定
+
+Battery capacity、Energy efficiency、Charging power、usable SOC等を変更する。Customer、需要、Time Window、道路条件は原則固定し、技術条件の効果を評価する。単一depotも原則固定する。変更した値と固定した入力hashを保存する。
+
+### 22. 技術Scenario間を比較
+
+EV性能変化によってDemand Fulfillment Rateがどの程度変化するかを評価する。同時に、古典・量子の解品質と計算資源要求の違いを評価する。Problem Sizeの変化、customer configurationの変化、技術条件の変化を区別して集計する。
+
+### 旧記録との整合と実装境界
+
+- 旧82,023 `parcel-equivalent/day`、73,547 request rows、39,956 Stopsは生成済み成果物の来歴として保持する。今後の主需要単位・customer数・DFR分母をこれらの旧集計値で固定しない。
+- 今後の需要抽出、時間窓生成、共通Hard Constraints、OR-Tools、QUBO/QAOA/Aer、独立Validator、評価は本節を優先する。旧比較器やB2B主入力案を必須工程として追加しない。
+- 受入済み道路網・mappingの証拠とhashは維持する。既存基準需要・Stopsの`DONE`は、新しいB2C需要生成の完了を意味しない。
+- 統計表の選択、層化・配賦の詳細、実験する $n$ とseed、時間窓・service time、depot位置、EV・充電の数値、最大運行時間、penalty・encoding・計算予算は別途configに固定する。ここでは値を創作しない。
+- 後続A～Q節は現行の実装・成果物・コマンドの台帳を兼ねる。旧設計に由来する記述は本節の採択内容に従って読み替え、未実装runnerを実装済みと扱わない。
 
 ## 更新方針
 
@@ -68,38 +215,23 @@
 ## パイプライン全体図
 
 ```text
-外部・オープンデータ                        [DONE]
-  ├─→ 基準需要                              [DONE]
-  │     ↓
-  │   リクエスト・配送先                    [DONE; ローカル生成成果物]
-  └─→ ネットワーク構築                      [DONE]
-          ↓
-        配送先マッピング                    [DONE]
-          ↓
-        ネットワーク受入                    [ACCEPTED]
-          ↓
-        経路計算ベースライン                [NEXT / NOT IMPLEMENTED]
-          ↓
-        共通配送インスタンス                [PLANNED / NOT IMPLEMENTED]
-          ↓
-        古典最適化                          [PLANNED / NOT IMPLEMENTED]
-          ↓
-        QUBO                                [PLANNED / NOT IMPLEMENTED]
-          ↓
-        QAOA                                [FUTURE / NOT IMPLEMENTED]
-          ↓
-        シナリオ構築                        [PLANNED / NOT IMPLEMENTED]
-          ↓
-        配送シミュレーション                [PLANNED / NOT IMPLEMENTED]
-          ↓
-        評価                                [PLANNED / NOT IMPLEMENTED]
-          ↓
-        エビデンスに基づく解釈              [CURRENT EVIDENCE DESIGN / NO RESULT]
-          ↓
-        感度・頑健性                        [PLANNED / NOT IMPLEMENTED]
-          ↓
-        公開・再現性凍結                    [FUTURE / NOT IMPLEMENTED]
+公的統計 → 39,956候補地点 C_all → Demand Weight w_i
+  → 層化・重み付き非復元抽出 C_s（n・複数seed）
+  → 配送需要・Time Window・Service Time
+  → 単一Depot・EV・Charging Station条件
+  → OSM/SUMO Routing Baseline → Routing検証
+  → Common Delivery Instance ＋ 共通Hard Constraints
+      ├─ OR-Tools ────────────────────────┐
+      └─ QUBO → Ising → QAOA → Qiskit Aer ┤
+                                          ↓
+                                    共通独立Validator
+                                          ↓
+                             需要充足評価・古典／量子比較
+                                          ↓
+                           Problem Size・技術Scenario比較
 ```
+
+この図は2026-09-09採択の今後の設計である。道路網・mappingは受入済みだが、新しい需要生成と下流比較は未実装・未受入である。
 
 ロードマップの`PLANNED`とPortal実行mapの`FUTURE`が異なる下流工程では、本書は`PLANNED / FUTURE / NOT IMPLEMENTED`と併記する。`PLANNED`は研究計画上の存在、`FUTURE`は現在の実行位置、`NOT IMPLEMENTED`は本番実装の不在を表す。
 
@@ -666,7 +798,7 @@ validated Routing Baseline、resolved depot/fleet size/vehicle capacity/battery 
 
 | 入力 | 役割 | 正本パス | 状態 | 注記 |
 |---|---|---|---|---|
-| リクエスト・配送先 | common demand | current local paths | `AVAILABLE LOCALLY` | subset rule未確定。 |
+| リクエスト・配送先 | common demand | current local paths | `AVAILABLE LOCALLY` | 層化・重み付き非復元抽出を採択済み。層と配賦の詳細は未固定。 |
 | 経路計算baseline | matrices/feasibility | path未定 | `NOT AVAILABLE` | blocking input。 |
 | 比較protocol | design constraint | [optimization_comparison_protocol.md](05_src/traffic_simulation/optimization_comparison_protocol.md) | `CURRENT DESIGN` | common inputs/evaluatorを要求。 |
 | EVプロファイル | candidate fixed model assumption | [managed_urban_ev_delivery_v1.yml](reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml) | `CURRENT MODEL ASSUMPTION` | fleet/battery instance acceptanceではない。 |
@@ -789,11 +921,11 @@ formulation固定、solver実装、small-instance correctness PASS、production 
 
 ### 既知の制約
 
-exact objective、algorithm、fleet parameters、budgetは未採択。fake solver/objective/resultを置かない。
+OR-Toolsと需要充足最大化の優先順位は採択済み。厳密定式化、fleet parameters、budgetと本番実装は未確定。
 
 ### 未解決の判断
 
-optimizer algorithm、mathematical formulation、budget、seed set、correctness threshold。
+OR-Tools内の探索設定、mathematical formulation、budget、seed set、correctness threshold。
 
 ### 次工程への引渡し
 
@@ -1120,14 +1252,14 @@ validated Delivery Simulation、fixed denominator population/time horizon/exclus
 | 入力 | 役割 | 正本パス | 状態 | 注記 |
 |---|---|---|---|---|
 | 指標設計 | primary formula | [Research Overview Stage 7](RESEARCH_OVERVIEW.md) | `CURRENT RESEARCH DESIGN / NEEDS FORMALIZATION` | denominator scope unresolved。 |
-| 基準需要仕様 | demand/P_eq semantics | [baseline demand and comparator](05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md) | `CURRENT_NORMATIVE` | metric priority documentation conflict remains. |
+| 基準需要仕様 | demand/P_eq semantics | [baseline demand and comparator](05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md) | `CURRENT_NORMATIVE` | 今後の主指標は本書最新採択方針のDFR_orders。旧proxyの来歴を参照。 |
 | シミュレーション結果 | evaluator input | path未定 | `NOT AVAILABLE` | blocking。 |
 
 主要な研究設計：
 
 ```text
-delivery_fulfillment_rate
-  = delivered_parcel_equivalent / total_parcel_equivalent
+DFR_orders = completed_orders / total_requested_orders
+DFR_demand = sum(q_i * y_i) / sum(q_i)  # 荷物量を導入する場合
 ```
 
 補助指標には、配送済み・未配送parcel-equivalent、車両稼働率、所要時間、距離、電池使用量、到達不能需要を含む。これらを主要指標と混同しない。

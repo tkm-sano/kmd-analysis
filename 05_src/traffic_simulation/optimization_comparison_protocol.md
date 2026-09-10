@@ -1,5 +1,11 @@
 # Classical and QAOA Comparison Protocol
 
+## 2026-09-09の設計更新
+
+今後の研究パイプラインは[最新B2C配送パイプライン](../../RESEARCH_PIPELINE_REFERENCE.md#b2c-pipeline-20260909)を設計正本とする。住宅向け宅配を主対象に、39,956候補地点から層化・重み付き非復元抽出し、customer数nと複数seedを実験パラメータにする。主需要単位は配送件数、Baselineは単一depot、主指標はDFR_orders。OR-ToolsとQUBO→QAOA→Qiskit Aerは同一instance・共通Hard Constraintsを使用し、独立Validatorを通して比較する。技術Scenarioではcustomer・需要・Time Window・道路条件を原則固定する。
+
+旧記述との不整合は上記の最新方針を優先する。既存成果物の生成・受入事実は保持し、今後の設計採択を実装完了とは扱わない。
+
 ## Common Instance
 
 Both solvers receive the same frozen customers, vehicles, demands, distance/travel-time/energy matrices, constraints, feasibility checker, objective and final evaluator. Vehicle class is fixed by vehicle type: a small delivery van uses `delivery`, while a heavy freight vehicle uses `truck`.
