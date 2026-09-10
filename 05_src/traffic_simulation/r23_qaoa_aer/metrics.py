@@ -16,6 +16,23 @@ def qiskit_label_to_bits(label: str) -> tuple[int, ...]:
     return tuple(int(c) for c in reversed(label))
 
 
+def ising_energy(spins: tuple[int, ...], input_data: R23Input) -> float:
+    energy = input_data.ising_constant
+    energy += sum(input_data.ising_linear[i] * spins[i] for i in input_data.ising_linear)
+    energy += sum(value * spins[a] * spins[b] for (a, b), value in input_data.ising_quadratic.items())
+    return float(energy)
+
+
+def energy_statistics(probabilities: Mapping[str, float], input_data: R23Input) -> dict[str, float]:
+    values = []
+    for label, probability in probabilities.items():
+        spins = tuple(1 if bit == "0" else -1 for bit in label)
+        values.append((float(probability), ising_energy(spins, input_data)))
+    expectation = sum(probability * energy for probability, energy in values)
+    variance = sum(probability * (energy - expectation) ** 2 for probability, energy in values)
+    return {"expectation": float(expectation), "variance": float(variance)}
+
+
 def probability_metrics(probabilities: Mapping[str, float], input_data: R23Input, *, threshold: float = 1e-12) -> dict[str, Any]:
     records = []
     for label, probability in sorted(probabilities.items()):

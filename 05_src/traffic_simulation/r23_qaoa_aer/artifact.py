@@ -11,6 +11,8 @@ from .schema import canonical_json, config_payload, sha256_bytes
 _NON_SEMANTIC = {
     "runtime_seconds", "timestamp_utc", "started_at", "completed_at", "total_wall_seconds",
     "elapsed_seconds", "optimizer_evaluator_seconds_inclusive", "expectation_evaluator_seconds_accumulated",
+    "circuit_construction_seconds", "transpilation_seconds", "aer_execution_seconds",
+    "expectation_seconds", "evaluation_total_seconds",
 }
 
 
