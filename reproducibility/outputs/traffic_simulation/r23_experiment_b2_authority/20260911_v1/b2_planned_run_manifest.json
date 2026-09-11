@@ -64,6 +64,7 @@
       "optimizer": "NELDER_MEAD",
       "optimizer_method": "Nelder-Mead",
       "p": 2,
+      "parameter_order": "[gamma_1..gamma_p, beta_1..beta_p]",
       "repetition": 1,
       "research_wall_time_policy": "NO_RESEARCH_WALL_TIME_CAP",
       "run_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead",
@@ -101,6 +102,7 @@
       "optimizer": "NELDER_MEAD",
       "optimizer_method": "Nelder-Mead",
       "p": 3,
+      "parameter_order": "[gamma_1..gamma_p, beta_1..beta_p]",
       "repetition": 1,
       "research_wall_time_policy": "NO_RESEARCH_WALL_TIME_CAP",
       "run_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead",
@@ -136,6 +138,7 @@
       "optimizer": "NELDER_MEAD",
       "optimizer_method": "Nelder-Mead",
       "p": 2,
+      "parameter_order": "[gamma_1..gamma_p, beta_1..beta_p]",
       "repetition": 1,
       "research_wall_time_policy": "NO_RESEARCH_WALL_TIME_CAP",
       "run_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead",
@@ -173,6 +176,7 @@
       "optimizer": "NELDER_MEAD",
       "optimizer_method": "Nelder-Mead",
       "p": 3,
+      "parameter_order": "[gamma_1..gamma_p, beta_1..beta_p]",
       "repetition": 1,
       "research_wall_time_policy": "NO_RESEARCH_WALL_TIME_CAP",
       "run_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead",
@@ -208,6 +212,7 @@
       "optimizer": "NELDER_MEAD",
       "optimizer_method": "Nelder-Mead",
       "p": 2,
+      "parameter_order": "[gamma_1..gamma_p, beta_1..beta_p]",
       "repetition": 1,
       "research_wall_time_policy": "NO_RESEARCH_WALL_TIME_CAP",
       "run_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead",
@@ -245,6 +250,7 @@
       "optimizer": "NELDER_MEAD",
       "optimizer_method": "Nelder-Mead",
       "p": 3,
+      "parameter_order": "[gamma_1..gamma_p, beta_1..beta_p]",
       "repetition": 1,
       "research_wall_time_policy": "NO_RESEARCH_WALL_TIME_CAP",
       "run_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead",
@@ -254,6 +260,24 @@
     }
   ],
   "schema_version": "r23-b2-planned-run-manifest-v1",
+  "scientific_parameters": {
+    "backend": "exact CPU Qiskit Aer statevector",
+    "encoding": "frozen authority encoding",
+    "exact_route_comparison": "frozen exact-reference semantics",
+    "invalid_bitstring_handling": "frozen implementation semantics",
+    "parameter_order": "[gamma_1..gamma_p, beta_1..beta_p]",
+    "probability_semantics": "exact statevector probability mass",
+    "qaoa_ansatz": "frozen R23 implementation",
+    "qubo_formulation": "R20/R21/R22 reduced route-ordering authority",
+    "routing_baseline": "frozen",
+    "runtime_semantics": "frozen R23 timing semantics",
+    "shots": "NONE",
+    "simulator_seed": 17,
+    "transpiler_settings": {
+      "optimization_level": 1,
+      "seed_transpiler": 17
+    }
+  },
   "stopping_tolerances": "NOT_DEFINED_BY_EXPERIMENT_B_DESIGN_AUTHORITY; design review required; no SciPy default inferred",
   "wall_time_policy": "NO_RESEARCH_WALL_TIME_CAP"
 }

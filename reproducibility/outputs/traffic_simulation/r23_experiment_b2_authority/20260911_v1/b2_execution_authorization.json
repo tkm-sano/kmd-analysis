@@ -9,7 +9,7 @@
     "instance_authority": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/manifest.json",
     "lambda_authority": "reproducibility/config/traffic_simulation/r20_formal_penalty/20260911_r20_formal_lambda_v1.json",
     "planned_manifest": "b2_planned_run_manifest.json",
-    "planned_manifest_sha256": "5f3c655d21ba553ed89b50669a09cf72e36cc033f7d5a8a0e0d46df6d738fffc"
+    "planned_manifest_sha256": "391dfdbd48c6c3eeb002da656fcd745fc6bfdb3b50e30eca3fd30b236f7e02d8"
   },
   "authorization_id": "R23_EXPERIMENT_B2_EXECUTION_AUTHORIZATION_V1",
   "authorized_optimizer": null,
@@ -25,20 +25,21 @@
   "blocking_finding": "Experiment B design authority does not explicitly define Nelder-Mead stopping tolerances (xatol/fatol) or optimizer-specific options. Applying SciPy defaults would be an unapproved parameter assumption.",
   "branch": "main",
   "classification": "EXPERIMENT_B2_REQUIRES_DESIGN_REVIEW",
-  "created_at": "2026-09-11T09:07:10.403266+00:00",
+  "created_at": "2026-09-11T10:45:17.575435+00:00",
   "execution_authorized": false,
   "execution_performed": false,
   "full_evrp_status": {
     "R20": "BLOCKED",
     "R21": "NOT_STARTED"
   },
-  "git_commit": "6e96e8746d1ffabe0b859111875a938aac87e1f2",
+  "git_commit": "f96223322a40fd82c5ed0fb4650737bc98380dd2",
   "proposed_optimizer": {
     "common_objective_evaluation_cap": 900,
     "maxiter": 300,
     "method": "Nelder-Mead",
     "name": "NELDER_MEAD",
     "optimizer_specific_options": "UNFROZEN",
+    "parameter_order": "[gamma_1..gamma_p, beta_1..beta_p]",
     "stopping_tolerances": "UNFROZEN"
   },
   "repository": "/home/takuma/kmd-analysis",
@@ -56,6 +57,24 @@
   },
   "schema_version": "r23-b2-execution-authorization-v1",
   "scientific_justification": "B1 showed valid scientific outputs in all 36 runs, exact best decoded routes in 36/36, initialization-dependent probability distributions, non-uniform p=3 probability changes, increased p=3 CPU Aer burden, selected-instance heterogeneity, COBYLA success 5/failure 31, all 31 failures at MAXFUN/nfev=300, zero scientific failures, zero objective-cap hits, and no established COBYLA convergence. B2 is restricted to testing whether these observations are optimizer-specific using one predeclared deterministic derivative-free comparator.",
+  "scientific_parameters": {
+    "backend": "exact CPU Qiskit Aer statevector",
+    "encoding": "frozen authority encoding",
+    "exact_route_comparison": "frozen exact-reference semantics",
+    "invalid_bitstring_handling": "frozen implementation semantics",
+    "parameter_order": "[gamma_1..gamma_p, beta_1..beta_p]",
+    "probability_semantics": "exact statevector probability mass",
+    "qaoa_ansatz": "frozen R23 implementation",
+    "qubo_formulation": "R20/R21/R22 reduced route-ordering authority",
+    "routing_baseline": "frozen",
+    "runtime_semantics": "frozen R23 timing semantics",
+    "shots": "NONE",
+    "simulator_seed": 17,
+    "transpiler_settings": {
+      "optimization_level": 1,
+      "seed_transpiler": 17
+    }
+  },
   "scientific_parameters_unchanged": true,
   "scope": {
     "baseline": "B1 v2 fixed_0.1 COBYLA six records; immutable references",
