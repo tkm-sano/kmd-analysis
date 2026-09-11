@@ -84,6 +84,8 @@ def main():
           "Nelder-Mead gap": n["relative_gap"], "COBYLA T_total": c["T_total"],
           "Nelder-Mead T_total": n["T_total"], "runtime ratio": x["ratios"]["T_total_NM_over_COBYLA"],
           "COBYLA nfev": c["nfev"], "Nelder-Mead nfev": n["nfev"],
+          "COBYLA selected best route": json.dumps(c["selected_best_route"], ensure_ascii=False),
+          "Nelder-Mead selected best route": json.dumps(n["selected_best_route"], ensure_ascii=False),
           "COBYLA termination": c["message"], "Nelder-Mead termination": n["message"],
           "exact optimum COBYLA": c["exact_optimum_found"], "exact optimum Nelder-Mead": n["exact_optimum_found"]})
     fields = list(flat[0])
