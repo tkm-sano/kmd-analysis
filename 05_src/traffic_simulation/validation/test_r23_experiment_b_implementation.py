@@ -65,6 +65,33 @@ def test_nelder_mead_smoke_has_normalized_native_metadata():
     assert math.isfinite(result.final_objective)
 
 
+def test_nelder_mead_explicit_none_bounds_are_dispatched_once():
+    result = minimize_objective(
+        optimizer_name="NELDER_MEAD",
+        fun=lambda x: float(sum(v * v for v in x)),
+        x0=[0.1, -0.1],
+        maxiter=5,
+        objective_cap=50,
+        options={"bounds": None, "xatol": 1e-4, "fatol": 1e-4, "adaptive": False, "initial_simplex": None, "disp": False},
+    )
+    assert result.nfev is not None and result.nfev > 0
+
+
+def test_nelder_mead_p2_and_p3_parameter_dimensions_smoke():
+    for p in (2, 3):
+        result = minimize_objective(
+            optimizer_name="NELDER_MEAD",
+            fun=lambda x: float(sum(v * v for v in x)),
+            x0=[0.1] * (2 * p),
+            maxiter=3,
+            objective_cap=50,
+            options={"maxfev": 50, "xatol": 1e-4, "fatol": 1e-4, "adaptive": False, "initial_simplex": None, "bounds": None, "disp": False},
+        )
+        assert result.optimizer_method == "Nelder-Mead"
+        assert len(result.final_parameters) == 2 * p
+        assert result.nfev is not None and result.nfev > 0
+
+
 def test_objective_cap_is_enforced_before_an_extra_call():
     calls = []
 

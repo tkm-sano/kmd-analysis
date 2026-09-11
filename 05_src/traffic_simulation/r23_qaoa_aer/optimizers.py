@@ -59,6 +59,12 @@ def minimize_objective(
     """
     method = optimizer_method(optimizer_name)
     method_options = dict(options or {})
+    # scipy.optimize.minimize dispatches ``bounds`` as an explicit keyword to
+    # the method implementation.  Keeping bounds=None in ``options`` would
+    # therefore pass the keyword twice under SciPy 1.17.1.  None is the
+    # governed B2 policy, so omit it and let the dispatcher pass it once.
+    if method == "Nelder-Mead" and method_options.get("bounds") is None:
+        method_options.pop("bounds", None)
     method_options.setdefault("maxiter", maxiter)
     if method == "Nelder-Mead":
         method_options.setdefault("maxfev", objective_cap)
