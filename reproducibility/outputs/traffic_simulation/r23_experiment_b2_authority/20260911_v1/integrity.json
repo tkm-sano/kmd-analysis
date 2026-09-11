@@ -1,0 +1,17 @@
+{
+  "baseline_records_reexecuted": false,
+  "critical_findings": [],
+  "execution_performed": false,
+  "high_findings": [],
+  "low_findings": [
+    "Design authority implementation_gate text says COBYLA-only although the frozen implementation authority and six targeted tests support NELDER_MEAD; recorded as resolved by implementation validation, not silently edited."
+  ],
+  "medium_findings": [
+    "Nelder-Mead stopping tolerances and optimizer-specific options are not frozen by the design authority; no authorized execution issued."
+  ],
+  "preflight_technical_checks": "6/6 planned conditions structurally resolved; authorization gate blocked by design ambiguity",
+  "schema_version": "r23-b2-authorization-integrity-v1",
+  "scientific_execution_invoked": false,
+  "source_artifacts_modified": false,
+  "status": "PASS_WITH_DESIGN_BLOCK"
+}

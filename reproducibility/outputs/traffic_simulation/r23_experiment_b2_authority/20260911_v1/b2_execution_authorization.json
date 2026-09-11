@@ -1,0 +1,75 @@
+{
+  "authority_references": {
+    "cobyla_baseline_manifest": "b2_cobyla_baseline_manifest.json",
+    "cobyla_baseline_manifest_sha256": "5be438e122701c2503b86a017feea5dd16680e3bf17571a6bed0190a7b9dd4b1",
+    "exact_reference_authority": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/exact_references.json",
+    "experiment_b_design": "reproducibility/config/traffic_simulation/r23_experiment_b/20260911_experiment_b_v1.json",
+    "implementation_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b1_implementation_fix/20260911_v1/implementation_authority_v2.json",
+    "initialization_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b_authority/20260911_v1/initialization_authority.json",
+    "instance_authority": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/manifest.json",
+    "lambda_authority": "reproducibility/config/traffic_simulation/r20_formal_penalty/20260911_r20_formal_lambda_v1.json",
+    "planned_manifest": "b2_planned_run_manifest.json",
+    "planned_manifest_sha256": "5f3c655d21ba553ed89b50669a09cf72e36cc033f7d5a8a0e0d46df6d738fffc"
+  },
+  "authorization_id": "R23_EXPERIMENT_B2_EXECUTION_AUTHORIZATION_V1",
+  "authorized_optimizer": null,
+  "authorized_output_root": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v1/",
+  "basis": {
+    "b1_evidence_review_expected_sha256": "8db16a3f66191c1de34b4f1cbaededdf9760cf0fb13f9e1d852b2c4e26cae767",
+    "b1_evidence_review_sha256": "8db16a3f66191c1de34b4f1cbaededdf9760cf0fb13f9e1d852b2c4e26cae767",
+    "b1_final_classification": "EXPERIMENT_B1_EVIDENCE_ACCEPTED_WITH_LIMITATIONS",
+    "b1_readiness": "EXPERIMENT_B2_JUSTIFIED_READY_FOR_AUTHORIZATION",
+    "b1_v2_integrity_sha256": "4b5f3ccfab17deb77022a1fd742e6e05c7acda74bc580f7868e66612c91ef21b",
+    "b1_v2_manifest_sha256": "b73d48200bf2cb6c61834cf8cf60ad9b535114074322bea6dfc8327d2981983d"
+  },
+  "blocking_finding": "Experiment B design authority does not explicitly define Nelder-Mead stopping tolerances (xatol/fatol) or optimizer-specific options. Applying SciPy defaults would be an unapproved parameter assumption.",
+  "branch": "main",
+  "classification": "EXPERIMENT_B2_REQUIRES_DESIGN_REVIEW",
+  "created_at": "2026-09-11T09:07:10.403266+00:00",
+  "execution_authorized": false,
+  "execution_performed": false,
+  "full_evrp_status": {
+    "R20": "BLOCKED",
+    "R21": "NOT_STARTED"
+  },
+  "git_commit": "6e96e8746d1ffabe0b859111875a938aac87e1f2",
+  "proposed_optimizer": {
+    "common_objective_evaluation_cap": 900,
+    "maxiter": 300,
+    "method": "Nelder-Mead",
+    "name": "NELDER_MEAD",
+    "optimizer_specific_options": "UNFROZEN",
+    "stopping_tolerances": "UNFROZEN"
+  },
+  "repository": "/home/takuma/kmd-analysis",
+  "required_next_action": "Design review must freeze Nelder-Mead stopping tolerances/options before an execution authorization can be issued.",
+  "research_questions": [
+    "Same instance/p/initialization: how do COBYLA and Nelder-Mead differ in P_feasible, P_optimal, and best decoded route?",
+    "Does changing optimizer still yield the exact optimal route as best decoded feasible solution?",
+    "What is the CPU simulation burden difference by optimizer?",
+    "Can COBYLA MAXFUN behavior be compared as optimizer-specific termination behavior?"
+  ],
+  "runtime_policy": {
+    "fairness_basis": "common objective evaluations",
+    "objective_evaluation_cap": 900,
+    "wall_time": "NO_RESEARCH_WALL_TIME_CAP"
+  },
+  "schema_version": "r23-b2-execution-authorization-v1",
+  "scientific_justification": "B1 showed valid scientific outputs in all 36 runs, exact best decoded routes in 36/36, initialization-dependent probability distributions, non-uniform p=3 probability changes, increased p=3 CPU Aer burden, selected-instance heterogeneity, COBYLA success 5/failure 31, all 31 failures at MAXFUN/nfev=300, zero scientific failures, zero objective-cap hits, and no established COBYLA convergence. B2 is restricted to testing whether these observations are optimizer-specific using one predeclared deterministic derivative-free comparator.",
+  "scientific_parameters_unchanged": true,
+  "scope": {
+    "baseline": "B1 v2 fixed_0.1 COBYLA six records; immutable references",
+    "initialization": "fixed_0.1",
+    "instances": [
+      "routing_v18_n4_rank01",
+      "routing_v18_n4_rank03",
+      "routing_v18_n4_rank05"
+    ],
+    "n": 4,
+    "new_run_count": 6,
+    "p": [
+      2,
+      3
+    ]
+  }
+}
