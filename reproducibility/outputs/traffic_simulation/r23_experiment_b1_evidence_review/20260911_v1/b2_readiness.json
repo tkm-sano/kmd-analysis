@@ -1,0 +1,29 @@
+{
+  "basis": [
+    "B1 v2 integrity PASS",
+    "all 36 B1 scientific runs valid",
+    "B1 fixed_0.1 baseline is reproducible against corrected Formal A",
+    "B1 shows initialization and depth/instance heterogeneity that motivates a pre-specified optimizer comparison"
+  ],
+  "classification": "EXPERIMENT_B2_JUSTIFIED_READY_FOR_AUTHORIZATION",
+  "next_task": "R23_EXPERIMENT_B2_EXECUTION_AUTHORIZATION",
+  "not_executed": true,
+  "scope": {
+    "authorization_required": true,
+    "baseline": "B1 fixed_0.1 COBYLA",
+    "instances": [
+      "routing_v18_n4_rank01",
+      "routing_v18_n4_rank03",
+      "routing_v18_n4_rank05"
+    ],
+    "new_runs": 6,
+    "optimizer_comparison": [
+      "COBYLA",
+      "Nelder-Mead"
+    ],
+    "p": [
+      2,
+      3
+    ]
+  }
+}

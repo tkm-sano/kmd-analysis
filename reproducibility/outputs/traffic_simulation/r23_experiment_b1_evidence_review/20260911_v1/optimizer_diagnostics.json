@@ -1,0 +1,99 @@
+{
+  "by_optimizer_success": {
+    "false": {
+      "budget_hit_count": 0,
+      "count": 31,
+      "exact_optimum_found_count": 31,
+      "messages": [
+        "Return from COBYLA because the objective function has been evaluated MAXFUN times."
+      ],
+      "nfev": {
+        "coefficient_of_variation": 0.0,
+        "count": 31,
+        "max": 300.0,
+        "mean": 300.0,
+        "median": 300.0,
+        "min": 300.0,
+        "range": 0.0,
+        "std_population": 0.0
+      },
+      "optimizer_status_codes": [
+        3
+      ],
+      "run_ids": [
+        "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank01_p2_init_random_seed_11_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank01_p2_init_random_seed_37_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank01_p2_init_random_seed_53_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank01_p3_init_random_seed_11_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank01_p3_init_random_seed_23_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank01_p3_init_random_seed_37_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank01_p3_init_random_seed_53_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank01_p3_init_random_seed_71_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank03_p2_init_random_seed_11_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank03_p2_init_random_seed_23_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank03_p2_init_random_seed_37_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank03_p2_init_random_seed_71_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank03_p3_init_random_seed_11_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank03_p3_init_random_seed_23_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank03_p3_init_random_seed_37_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank03_p3_init_random_seed_53_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank03_p3_init_random_seed_71_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank05_p2_init_random_seed_11_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank05_p2_init_random_seed_23_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank05_p2_init_random_seed_37_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank05_p2_init_random_seed_53_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank05_p3_init_random_seed_11_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank05_p3_init_random_seed_23_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank05_p3_init_random_seed_37_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank05_p3_init_random_seed_53_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank05_p3_init_random_seed_71_rep1_optimizer_cobyla"
+      ],
+      "scientific_failure_count": 0,
+      "termination_reasons": [
+        "native_optimizer"
+      ]
+    },
+    "true": {
+      "budget_hit_count": 0,
+      "count": 5,
+      "exact_optimum_found_count": 5,
+      "messages": [
+        "Return from COBYLA because the trust region radius reaches its lower bound."
+      ],
+      "nfev": {
+        "coefficient_of_variation": 0.10856283282908105,
+        "count": 5,
+        "max": 288.0,
+        "mean": 256.0,
+        "median": 247.0,
+        "min": 216.0,
+        "range": 72.0,
+        "std_population": 27.79208520424475
+      },
+      "optimizer_status_codes": [
+        0
+      ],
+      "run_ids": [
+        "routing_v18_n4_rank01_p2_init_random_seed_23_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank01_p2_init_random_seed_71_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank03_p2_init_random_seed_53_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_cobyla",
+        "routing_v18_n4_rank05_p2_init_random_seed_71_rep1_optimizer_cobyla"
+      ],
+      "scientific_failure_count": 0,
+      "termination_reasons": [
+        "native_optimizer"
+      ]
+    }
+  },
+  "interpretation": "optimizer_success=false is not scientific run failure here: 31 runs reported COBYLA MAXFUN termination, while all 36 scientific records were valid, objective cap was not hit, and all 36 best decoded feasible routes matched exact references. This does not establish optimizer convergence.",
+  "optimizer_success_counts": {
+    "false": 31,
+    "true": 5
+  }
+}

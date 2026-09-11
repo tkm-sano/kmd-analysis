@@ -1,0 +1,86 @@
+{
+  "P_optimal_is_probability_mass_not_found_flag": true,
+  "authority_snapshot": {
+    "b1_integrity_sha256": "4b5f3ccfab17deb77022a1fd742e6e05c7acda74bc580f7868e66612c91ef21b",
+    "b1_manifest_sha256": "b73d48200bf2cb6c61834cf8cf60ad9b535114074322bea6dfc8327d2981983d",
+    "b1_reexecution_authorization_sha256": "b9d2dccc23498f4b12268eb82302554072fdb63dfb1c4970814f0fc10d68062f",
+    "design_sha256": "f14ce583419bee74964d1445f3cbc182da8bc8c482083992625396d7ab1b45ed",
+    "formal_a_review_manifest_sha256": "72628a15216824d93306c8748f7ceb9616b345a86e1602b0aa4ba8c451fbc723",
+    "initialization_authority_sha256": "43940ecc84d94197ad3eedc2069480f97246a185897ef477621c6159721ba665",
+    "v1_failure_manifest_sha256": "40d06c87fb4ddd3c72368416a6529dec4b9dfada5a928579d0278ebf3a0be910"
+  },
+  "b2_readiness": "EXPERIMENT_B2_JUSTIFIED_READY_FOR_AUTHORIZATION",
+  "classification": "EXPERIMENT_B1_EVIDENCE_ACCEPTED_WITH_LIMITATIONS",
+  "created_at_utc": "2026-09-11T09:00:24.666251+00:00",
+  "exact_optimum_found_count": 36,
+  "findings": {
+    "not_supported": [
+      "initialization materially changes the best decoded route: the best route equals the exact route in all runs",
+      "COBYLA converged",
+      "high P_optimal: exact optimum found is not P_optimal≈1",
+      "quantum advantage",
+      "QPU speedup",
+      "generalization beyond n=4",
+      "generalization beyond the selected three instances",
+      "QAOA solved with 100% probability"
+    ],
+    "supported": [
+      "initialization changes the QAOA probability distribution as shown by nonzero P_feasible/P_optimal ranges in all six instance×p cells",
+      "p=3 increases CPU simulation burden relative to p=2 in all 18 paired comparisons",
+      "all 36 runs contain an exact optimal route as the best decoded feasible route",
+      "selected three formal instances show instance-level heterogeneity in probability metrics and runtime"
+    ],
+    "supported_with_limitations": [
+      "initialization changes P_feasible and P_optimal within this deterministic n=4 sample; the magnitude is cell-dependent",
+      "p=3 improves P_feasible in 15/18 and P_optimal in 13/18 paired comparisons, not uniformly",
+      "optimizer failure status is compatible with valid scientific output in this dataset, but convergence is not established",
+      "B2 is scientifically justified for authorization review, not yet executed"
+    ]
+  },
+  "full_evrp_status": {
+    "R20": "BLOCKED",
+    "R21": "NOT_STARTED"
+  },
+  "no_new_scientific_execution": true,
+  "parameter_gate": {
+    "exact_reference_linkage": true,
+    "execution_authorization_linkage": true,
+    "implementation_authority_linkage": true,
+    "initialization_authority_linkage": true,
+    "initializations_exact": true,
+    "instance_linkage": true,
+    "instances_exact": true,
+    "lambda_3": true,
+    "lambda_authority_linkage": true,
+    "maxiter_300": true,
+    "n_4": true,
+    "objective_cap_900": true,
+    "optimizer_cobyla": true,
+    "p_exact": true,
+    "planned_36": true,
+    "post_execution_authority_drift": true,
+    "probability_integrity": true,
+    "r20_r21_r22_linkage": true,
+    "repetition_1": true,
+    "runtime_validation": true,
+    "scientific_failures_0": true,
+    "shots_none": true,
+    "terminal_36": true,
+    "v1_failure_untouched": true
+  },
+  "research_questions": {
+    "RQ-B1-1": "Initialization changes distributional metrics and runtime/nfev, but not the selected best route in this sample.",
+    "RQ-B1-2": "Variation is present at both depths; p=3 does not remove it.",
+    "RQ-B1-3": "Variation differs by selected instance; instance-level heterogeneity is observed.",
+    "RQ-B1-4": "36/36 exact best-route findings coexist with low P_optimal values; they are distinct quantities.",
+    "RQ-B1-5": "31 optimizer failures are MAXFUN termination, not scientific failures; no convergence claim follows."
+  },
+  "review_id": "R23_EXPERIMENT_B1_EVIDENCE_REVIEW_V1",
+  "reviewed_runs": 36,
+  "scientific_failures": 0,
+  "source_roots": {
+    "b1_v2": "reproducibility/outputs/traffic_simulation/r23_experiment_b1/20260911_v2",
+    "formal_a_review": "reproducibility/outputs/traffic_simulation/r23_formal_evidence_review/20260911_v1",
+    "formal_a_view": "reproducibility/outputs/traffic_simulation/r23_formal_experiment_corrective_completion/20260911_v1/corrected_analytical_view/observations.json"
+  }
+}
