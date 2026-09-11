@@ -1,0 +1,101 @@
+{
+  "review_id": "R23_REDUCED_PROBLEM_FINAL_REVIEW_20260911_V1",
+  "classification": "R23_REDUCED_PROBLEM_BASELINE_ACCEPTED_WITH_LIMITATIONS",
+  "formal_problem_definition": {
+    "customer_only_position_encoding": true,
+    "logical_qubits": "n^2",
+    "exact_one_hot_constraints": true,
+    "lambda": 3.0,
+    "directed_asymmetric_travel_time": true,
+    "exact_reference_comparison": true
+  },
+  "evidence_linkage": {
+    "Formal_A": {
+      "root": "reproducibility/outputs/traffic_simulation/r23_formal_evidence_review/20260911_v1",
+      "classification": "FORMAL_EVIDENCE_ACCEPTED_WITH_LIMITATIONS"
+    },
+    "B1": {
+      "root": "reproducibility/outputs/traffic_simulation/r23_experiment_b1_evidence_review/20260911_v1",
+      "classification": "EXPERIMENT_B1_EVIDENCE_ACCEPTED_WITH_LIMITATIONS"
+    },
+    "B2": {
+      "root": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_evidence_review/20260911_v1",
+      "classification": "EXPERIMENT_B2_EVIDENCE_ACCEPTED_WITH_LIMITATIONS"
+    }
+  },
+  "supported_findings": [
+    "problem-size dependence",
+    "p dependence and probability degradation",
+    "CPU simulation scaling",
+    "initialization sensitivity",
+    "instance heterogeneity",
+    "exact optimum recovery",
+    "termination uncertainty",
+    "optimizer sensitivity within frozen n=4/3-instance/fixed-init design",
+    "optimizer termination differences",
+    "CPU simulation burden differences"
+  ],
+  "supported_with_limitations": [
+    "n=2,3,4 formal evidence only",
+    "descriptive p/initialization/optimizer comparisons",
+    "exact best-route recovery in reviewed runs"
+  ],
+  "unsupported_claims": [
+    "QAOA convergence established",
+    "optimizer independence universally established",
+    "Nelder-Mead or COBYLA superiority",
+    "quantum advantage",
+    "QPU speedup",
+    "n>4 generalization",
+    "Full EVRP generalization"
+  ],
+  "limitations": [
+    "small n",
+    "deterministic small instance sample",
+    "exact statevector",
+    "no finite shots",
+    "no noise",
+    "CPU Aer",
+    "limited optimizer set",
+    "limited initialization set",
+    "no Full EVRP constraints"
+  ],
+  "next_scientific_stage": "R23_REDUCED_PROBLEM_REPOSITORY_CONSOLIDATION",
+  "full_evrp_status": {
+    "R20": "BLOCKED",
+    "R21": "NOT_STARTED"
+  },
+  "source_hashes": {
+    "B2_v2": {
+      "root": "outputs/traffic_simulation/r23_experiment_b2/20260911_v2",
+      "manifest_sha256": "f93afebce06bc409735e9414cf26f706428b31dff1d178fd214de36831404406",
+      "summary_sha256": "24678adfa0b6bb240c11092e54eb8391e44903a29498557e41d555ceffca31aa",
+      "integrity_sha256": "2786e6848175ba1215b119d9c9f6bc4090788bea0a02630711d81c05e4313f68",
+      "raw_comparison_sha256": "a290bd2ecd9dc7ba40d28898a2e92a4ed4d908e263eced25b014c3235dba2766"
+    },
+    "B1_v2": {
+      "root": "outputs/traffic_simulation/r23_experiment_b1/20260911_v2",
+      "manifest_sha256": "b73d48200bf2cb6c61834cf8cf60ad9b535114074322bea6dfc8327d2981983d",
+      "summary_sha256": "cdbe63ffd109d3abc6fa0da31dfd6e8e800b0399e576eaa5bd7edc618e9d4669",
+      "integrity_sha256": "4b5f3ccfab17deb77022a1fd742e6e05c7acda74bc580f7868e66612c91ef21b"
+    },
+    "B2_v1_excluded": {
+      "root": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v1",
+      "reason": "implementation failure; optimizer not reached; nfev=0; no scientific metrics"
+    },
+    "B1_v2_fixed_scope": {
+      "count": 6,
+      "optimizer": "COBYLA",
+      "initialization": "fixed_0.1",
+      "instances": [
+        "routing_v18_n4_rank01",
+        "routing_v18_n4_rank03",
+        "routing_v18_n4_rank05"
+      ],
+      "p": [
+        2,
+        3
+      ]
+    }
+  }
+}
