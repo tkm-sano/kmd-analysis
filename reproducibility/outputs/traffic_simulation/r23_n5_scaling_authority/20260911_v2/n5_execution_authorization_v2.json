@@ -1,0 +1,16 @@
+{
+  "schema_version": "r23-n5-execution-authorization-v2",
+  "authorization_id": "R23_N5_SCALING_EXECUTION_AUTHORIZATION_V2",
+  "classification": "R23_N5_SCALING_AUTHORIZED_READY_TO_EXECUTE",
+  "parent_v1_authority": {"root": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1", "planned_manifest_sha256": "07de44ffd7dfed8a31268fe81467c366c82770e0a01a0b3e3daa25e2252ab6a8", "previous_classification": "R23_N5_SCALING_NOT_AUTHORIZED_RESOURCE_LIMIT"},
+  "resource_authority": {"v2_preflight": "n5_resource_preflight_v2.json", "v2_preflight_sha256": "77fbcfdd7c6eada919906dec7f550acfae28708f90c16436db54f0897b2e8cf7", "frozen_environment": "frozen_environment_validation.json", "machine": "machine_resource_validation.json", "allocation_probe": "aer_25q_allocation_probe.json", "peak_memory": "aer_25q_peak_memory.json"},
+  "scientific_authorities": {"instance": "../20260911_v1/n5_instance_selection.json", "exact_reference": "../20260911_v1/n5_exact_references.json", "lambda": "../20260911_v1/n5_penalty_authority.json", "validation": "../20260911_v1/n5_validation_authority.json", "planned_manifest": "../20260911_v1/n5_planned_run_manifest.json"},
+  "planned_scope": {"n": 5, "instance_ids": ["routing_v18_n5_rank01", "routing_v18_n5_rank02", "routing_v18_n5_rank03"], "p": 1, "optimizer": "COBYLA", "initialization": "fixed_0.1", "lambda": 4.0, "backend": "AerSimulator statevector CPU", "shots": "NONE", "repetition": 1, "planned_scientific_run_count": 3, "output_root": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_execution/20260911_v1/"},
+  "gates": {"instance_authority": "PASS", "reachability": "PASS", "exact_reference": "PASS", "lambda_authority": "PASS", "validation_authority": "PASS", "resource_preflight_v2": "PASS", "frozen_runtime": "PASS", "implementation_compatibility": "PASS", "scope_minimal": "PASS", "namespace": "PASS", "stop_conditions": "PASS"},
+  "system_resource_safety_guard": ["allocation failure", "OS OOM", "cgroup memory breach", "severe memory pressure", "disk exhaustion", "fatal backend error"],
+  "scientific_stop_conditions": ["probability integrity failure", "exact reference mismatch", "authority drift", "validation failure", "optimizer fatal exception"],
+  "wall_time_policy": "No fixed research wall-time cap; system safety guards remain independent.",
+  "execution_performed": false,
+  "authorization_effect": "Authorizes a future execution task only; does not execute or create scientific outputs in this task.",
+  "status": "AUTHORIZED_READY_TO_EXECUTE"
+}

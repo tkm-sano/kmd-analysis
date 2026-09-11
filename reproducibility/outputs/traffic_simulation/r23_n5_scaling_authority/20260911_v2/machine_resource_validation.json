@@ -1,0 +1,10 @@
+{
+  "schema_version": "r23-n5-machine-resource-validation-v2",
+  "ram": {"total_kib": 1584675340, "available_kib": 1514183416, "available_tib": 1.404},
+  "swap": {"total_kib": 8388604, "free_kib": 8388604, "used": "0"},
+  "cpu": {"model": "AMD EPYC 9684X 96-Core Processor", "sockets": 2, "physical_cores": 192, "logical_cpus": 384},
+  "disk": {"mount": "/home", "free_bytes": 11678755061760, "free_tib": 10.626},
+  "process_limits": {"ulimit_virtual_memory": "unlimited", "ulimit_data": "unlimited", "ulimit_max_memory": "unlimited", "open_files": 1048576},
+  "cgroup": {"memory_max": "max", "memory_high": "max", "memory_current_at_check_bytes": 3087810560, "scope": "user.slice/user-1011.slice/session-17438.scope"},
+  "status": "PASS; observed process/cgroup limits exceed raw and observed probe requirements."
+}

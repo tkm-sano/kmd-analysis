@@ -1,0 +1,19 @@
+{
+  "schema_version": "r23-n5-aer-peak-memory-v2",
+  "classification": "RESOURCE_PREFLIGHT_PROBE",
+  "scientific_qaoa": false,
+  "backend": {"class": "AerSimulator", "method": "statevector", "device": "CPU", "precision": "double", "enable_truncation": false},
+  "circuit": "25 qubits with H on every qubit and save_statevector; no QAOA, QUBO, optimizer, objective, probability metric, or route",
+  "state_dimension": 33554432,
+  "statevector_length": 33554432,
+  "statevector_dtype": "complex128",
+  "wall_seconds": 2.6787410103715956,
+  "maximum_rss_kib": 599040,
+  "maximum_rss_gib": 0.571,
+  "ru_maxrss_delta_kib": 522240,
+  "external_time_max_rss_kib": 599040,
+  "exit_status": 0,
+  "page_faults": {"major": 0, "swaps": 0},
+  "backend_name": "aer_simulator_statevector",
+  "status": "PASS"
+}

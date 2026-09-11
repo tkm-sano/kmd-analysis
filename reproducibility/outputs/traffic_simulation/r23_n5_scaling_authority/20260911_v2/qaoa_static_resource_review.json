@@ -1,0 +1,14 @@
+{
+  "schema_version": "r23-n5-qaoa-static-resource-review-v2",
+  "scientific_execution": false,
+  "n": 5,
+  "logical_qubits": 25,
+  "p": 1,
+  "parameter_count": 2,
+  "state_dimension": 33554432,
+  "qubo_structure": {"constant": 1, "linear_terms": 25, "quadratic_terms": 180, "coefficient_entries": 206},
+  "qaoa_circuit_indicators": {"initial_h_gates": 25, "linear_rz_gates": 25, "quadratic_cx_rz_cx_gates": 540, "mixer_rx_gates": 25, "estimated_total_gates": 615, "estimated_two_qubit_gates": 360},
+  "expectation_risk": "Statevector plus Pauli operator representation, temporary buffers, transpilation, Statevector conversion, and expectation evaluation add memory beyond 0.5 GiB; the minimal Aer probe validates backend allocation but not full QAOA peak memory.",
+  "runtime_projection": "n=5/n=4 state dimension ratio is 512; runtime is not asserted to scale exactly 512x. Existing n=4 optimizer evaluation uncertainty remains a separate burden.",
+  "status": "PASS for static compatibility; full scientific QAOA resource burden remains to be recorded during authorized execution."
+}

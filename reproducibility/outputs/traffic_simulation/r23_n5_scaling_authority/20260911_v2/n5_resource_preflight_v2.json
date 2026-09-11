@@ -1,0 +1,11 @@
+{
+  "schema_version": "r23-n5-resource-preflight-v2",
+  "classification": "R23_N5_RESOURCE_PREFLIGHT_PASSED",
+  "parent_v1": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_resource_preflight.json",
+  "scope": "Environment, allocation, and minimal Aer feasibility only; no scientific QAOA execution",
+  "gate_results": {"frozen_environment_identified": "PASS", "versions_match": "PASS", "qiskit_aer_import": "PASS", "exact_cpu_statevector_backend": "PASS", "process_memory_limit": "PASS", "25q_allocation": "PASS", "25q_minimal_aer_probe": "PASS", "no_oom": "PASS", "no_swap_thrashing": "PASS", "peak_memory_below_available": "PASS", "disk": "PASS", "implementation_compatibility": "PASS"},
+  "peak_memory": {"observed_peak_rss_kib": 599040, "observed_peak_gib": 0.571, "available_memory_kib": 1514183416, "available_to_peak_ratio": 2526.8, "interpretation": "Observed minimal-probe peak is approximately 2,527x below MemAvailable; cgroup and ulimit memory caps are unlimited."},
+  "limitations": ["minimal probe is not full QAOA", "full Hamiltonian expectation peak is not measured", "future scientific run must record its own resource metrics"],
+  "execution_performed": false,
+  "status": "PASS"
+}
