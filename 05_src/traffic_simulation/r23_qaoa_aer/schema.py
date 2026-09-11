@@ -9,6 +9,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
 
+from .initialization import generate_initial_parameters, initialization_vector_sha256
+
 R23_SCHEMA_VERSION = "r23-reduced-qaoa-aer-v1"
 R23_SCOPE = "INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY"
 R22_REPORT_SHA256 = "1b6015bcaf38d58fb98a743f47346be9e68601c0b0f7c09567ca77186ea26cea"
@@ -85,6 +87,10 @@ class R23Config:
     maxiter: int = 100
     max_evaluations: int = 300
     initial_parameter: float = 0.1
+    initial_parameters: tuple[float, ...] | None = None
+    initialization_id: str = "fixed_0.1"
+    initialization_seed: int | None = None
+    optimizer_options: dict[str, Any] | None = None
     seed: int = 17
     repetition: int = 1
     expectation_mode: str = "exact_statevector"
@@ -102,7 +108,7 @@ class R23Config:
             raise R23SchemaError("p exceeds the governed reduced R23 range")
         if n_logical > self.max_logical_qubits:
             raise R23SchemaError("logical-qubit software guard exceeded")
-        if self.optimizer != "COBYLA" or self.maxiter <= 0 or self.max_evaluations <= 0:
+        if self.optimizer not in ("COBYLA", "NELDER_MEAD") or self.maxiter <= 0 or self.max_evaluations <= 0:
             raise R23SchemaError("unsupported optimizer or invalid iteration/evaluation guard")
         if not math.isfinite(self.initial_parameter) or (self.wall_time_seconds is not None and not math.isfinite(self.wall_time_seconds)):
             raise R23SchemaError("configuration contains non-finite values")
@@ -116,6 +122,14 @@ class R23Config:
             raise R23SchemaError("probability threshold must be finite and non-negative")
         if memory_preflight(n_logical, self.memory_limit_gib)["status"] != "PASS":
             raise R23SchemaError("software memory guard exceeded")
+        if self.initial_parameters is not None:
+            if len(self.initial_parameters) != 2 * self.p or not all(math.isfinite(float(x)) for x in self.initial_parameters):
+                raise R23SchemaError("initial_parameters must contain exactly 2p finite values")
+        elif self.initialization_id != "fixed_0.1":
+            try:
+                generate_initial_parameters(self.p, self.initialization_id, self.initialization_seed)
+            except (TypeError, ValueError) as exc:
+                raise R23SchemaError(str(exc)) from exc
 
 
 def load_r22_instance(artifact_dir: Path, instance_id: str) -> R23Input:
@@ -191,4 +205,8 @@ def config_payload(config: R23Config, input_data: R23Input, *, instance_id: str 
         "memory_limit_gib": config.memory_limit_gib, "probability_threshold": config.probability_threshold,
         "r22_ising_coefficient_hash": input_data.ising_coefficient_hash, "r22_qubo_coefficient_hash": input_data.qubo_coefficient_hash,
         "r22_scope": R23_SCOPE,
+        "initialization_id": config.initialization_id,
+        "initialization_seed": config.initialization_seed,
+        "initial_parameters": list(config.initial_parameters) if config.initial_parameters is not None else list(generate_initial_parameters(config.p, config.initialization_id, config.initialization_seed)),
+        "initialization_vector_sha256": initialization_vector_sha256(config.initial_parameters if config.initial_parameters is not None else generate_initial_parameters(config.p, config.initialization_id, config.initialization_seed)),
     }
