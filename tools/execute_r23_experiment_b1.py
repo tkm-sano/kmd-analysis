@@ -15,7 +15,7 @@ AUTH = ROOT / "reproducibility/outputs/traffic_simulation/r23_experiment_b_autho
 OUT = ROOT / "reproducibility/outputs/traffic_simulation/r23_experiment_b1/20260911_v1"
 DESIGN = ROOT / "reproducibility/config/traffic_simulation/r23_experiment_b/20260911_experiment_b_v1.json"
 FORMAL = ROOT / "reproducibility/config/traffic_simulation/r23_formal_experiment/20260911_r23_formal_v1.json"
-R22 = ROOT / "reproducibility/outputs/traffic_simulation/r22_ising_conversion/20260910_formal_reduced_v1"
+R22 = ROOT / "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r22"
 INSTANCE_AUTH = ROOT / "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1"
 EXPECTED_DESIGN = "f14ce583419bee74964d1445f3cbc182da8bc8c482083992625396d7ab1b45ed"
 EXPECTED_INIT = "43940ecc84d94197ad3eedc2069480f97246a185897ef477621c6159721ba665"
@@ -70,7 +70,7 @@ def main():
         if not (per_gate["authorized_run_id"] and per_gate["n"] and per_gate["instance_id"] and per_gate["p"] and len(per_gate["initialization_vector_sha256"]) == 64 and per_gate["optimizer"] and per_gate["lambda"] == 3.0 and per_gate["maxiter"] == 300 and per_gate["objective_evaluation_cap"] == 900 and per_gate["shots"] == "NONE" and per_gate["exact_reference"]): raise RuntimeError("run preflight failure " + run_id)
         started = time.time()
         try:
-            data = load_r22_instance(R22, planned["instance_id"])
+            data = load_r22_instance(R22 / planned["instance_id"], planned["instance_id"])
             cfg = R23Config(p=planned["p"], optimizer="COBYLA", maxiter=300, max_evaluations=900, initial_parameters=initial, initialization_id=init_id, initialization_seed=seed, repetition=1, wall_time_seconds=None, seed=17, optimization_level=1, memory_limit_gib=8.0)
             result = run_single(data, cfg)
             record = {"schema_version": "r23-experiment-b1-terminal-record-v1", "classification": "RESEARCH_TERMINAL_RECORD", "run_id": run_id, "condition_id": planned["condition_id"], "planned_order": index, "authority": {"design_sha256": sha(DESIGN), "implementation_authority_sha256": sha(AUTH/"implementation_authority.json"), "initialization_authority_sha256": sha(AUTH/"initialization_authority.json"), "b1_authorization_sha256": sha(AUTH/"b1_execution_authorization.json"), "instance_authority_manifest_sha256": sha(INSTANCE_AUTH/"manifest.json"), "lambda_policy_sha256": auth["lambda_policy_sha256"]}, "run_preflight": per_gate, "result": result, "elapsed_process_seconds": time.time()-started}

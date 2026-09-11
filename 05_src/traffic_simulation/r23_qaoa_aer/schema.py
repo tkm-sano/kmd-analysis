@@ -133,8 +133,84 @@ class R23Config:
 
 
 def load_r22_instance(artifact_dir: Path, instance_id: str) -> R23Input:
-    """Load R22's exact Ising coefficients without reconstructing them from QUBO."""
+    """Load one explicitly identified R22 instance authority.
+
+    A formal instance authority directory contains ``r22_input.json`` and
+    ``validation.json``.  The older central conversion report remains
+    supported only for legacy/synthetic callers; it is never searched as a
+    fallback for a formal per-instance directory.
+    """
     artifact_dir = Path(artifact_dir)
+    formal_input_path = artifact_dir / "r22_input.json"
+    formal_validation_path = artifact_dir / "validation.json"
+    formal_manifest_path = artifact_dir / "manifest.json"
+    if formal_input_path.exists() or formal_validation_path.exists():
+        if not (formal_input_path.exists() and formal_validation_path.exists() and formal_manifest_path.exists()):
+            raise R23SchemaError("incomplete formal R22 authority directory")
+        formal_manifest = json.loads(formal_manifest_path.read_text(encoding="utf-8"))
+        expected_files = formal_manifest.get("files", {})
+        for filename in ("r22_input.json", "validation.json"):
+            if expected_files.get(filename) != sha256_file(artifact_dir / filename):
+                raise R23SchemaError("formal R22 authority file hash mismatch")
+        item = json.loads(formal_input_path.read_text(encoding="utf-8"))
+        validation = json.loads(formal_validation_path.read_text(encoding="utf-8"))
+        if item.get("instance_id") != instance_id or validation.get("instance_id") != instance_id:
+            raise R23SchemaError("formal R22 authority instance ID mismatch")
+        if formal_manifest.get("instance_id") != instance_id or formal_manifest.get("status") != "R22_FORMAL_INSTANCE_PASS":
+            raise R23SchemaError("formal R22 authority membership/status mismatch")
+        if validation.get("status") != "R22_FORMAL_INSTANCE_PASS" or not all(validation.get("checks", {}).values()):
+            raise R23SchemaError("formal R22 per-instance validation is not PASS")
+        if item.get("n") * item.get("n") != item.get("n_logical") or item.get("n_logical") != len(item.get("ising_coefficients", {}).get("linear", {})):
+            raise R23SchemaError("formal R22 authority dimensions are invalid")
+        coefficients = item["ising_coefficients"]
+        meta_path = artifact_dir.parent.parent / "r21" / instance_id / "r21_input.json"
+        if not meta_path.exists():
+            raise R23SchemaError("corresponding formal R21 authority is missing")
+        r21_input = json.loads(meta_path.read_text(encoding="utf-8"))
+        if r21_input.get("instance_id") != instance_id:
+            raise R23SchemaError("formal R21 authority instance ID mismatch")
+        if tuple(r21_input.get("customer_ids", [])) != tuple(item.get("customer_ids", [])) or r21_input.get("depot_id") != item.get("depot_id"):
+            raise R23SchemaError("formal R21/R22 customer or depot mismatch")
+        if item.get("lambda") != 3.0 or validation.get("lambda_policy_id") != "R20_COMMON_GLOBAL_LAMBDA_V1":
+            raise R23SchemaError("formal lambda authority linkage mismatch")
+        if validation.get("lambda_policy_sha256") != "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95":
+            raise R23SchemaError("formal lambda authority hash mismatch")
+        r20_path = artifact_dir.parent.parent / "r20" / instance_id / "r20_input.json"
+        if not r20_path.exists():
+            raise R23SchemaError("corresponding formal R20 authority is missing")
+        r20_input = json.loads(r20_path.read_text(encoding="utf-8"))
+        if r20_input.get("instance_id") != instance_id or r20_input.get("qubo_coefficient_hash") != item.get("qubo_coefficient_hash"):
+            raise R23SchemaError("formal R20/R22 coefficient or instance linkage mismatch")
+        exact_reference_path = artifact_dir.parent.parent / "exact_references.json"
+        exact_references = json.loads(exact_reference_path.read_text(encoding="utf-8")) if exact_reference_path.exists() else {}
+        exact_reference = exact_references.get("instances", {}).get(instance_id, {})
+        if not exact_reference or not exact_reference.get("reference_hash"):
+            raise R23SchemaError("formal exact-reference linkage is missing")
+        if exact_reference.get("reference_hash") != r20_input.get("validation", {}).get("exact_reference_hash"):
+            raise R23SchemaError("formal exact-reference hash linkage mismatch")
+        bits = frozenset(tuple(int(v) for v in b) for b in r20_input["validation"]["global_minimum_bitstrings"])
+        spins = frozenset(tuple(1 if bit == 0 else -1 for bit in b) for b in bits)
+        linear = {int(k): float(v) for k, v in coefficients["linear"].items()}
+        quadratic = {}
+        for key, value in coefficients["quadratic"].items():
+            a, b = (int(x) for x in key.split(","))
+            if a >= b:
+                raise R23SchemaError("formal R22 Ising coupler is not canonical")
+            quadratic[(a, b)] = float(value)
+        node_ids = (item["depot_id"], *item["customer_ids"])
+        raw_matrix = r21_input["normalized_travel_time_matrix"]
+        normalized_matrix = {origin: {destination: float(raw_matrix[origin][destination]) for destination in node_ids} for origin in node_ids}
+        payload = dict(item)
+        payload.update({"validation": validation, "r20_input_authority": str(r20_path), "r21_input_authority": str(meta_path), "exact_reference_authority": str(exact_reference_path), "formal_instance_authority": str(artifact_dir)})
+        return R23Input(
+            instance_id=instance_id, n=int(item["n"]), customer_ids=tuple(item["customer_ids"]), depot_id=item["depot_id"],
+            ising_constant=float(coefficients["constant"]), ising_linear=linear, ising_quadratic=quadratic,
+            ising_coefficient_hash=str(item["ising_coefficient_hash"]), qubo_coefficient_hash=str(item["qubo_coefficient_hash"]),
+            lambda_value=float(item["lambda"]), bound=float(item["B"]), exact_optimal_bitstrings=bits,
+            exact_optimal_spin_states=spins, exact_optimal_routes=frozenset(tuple(r) for r in item["r21_optimal_routes"]),
+            normalized_matrix=normalized_matrix, payload=payload,
+        )
+    # Legacy central conversion path: retained for synthetic/legacy tests only.
     report_path, manifest_path = artifact_dir / "conversion_results.json", artifact_dir / "manifest.json"
     if not report_path.exists() or not manifest_path.exists():
         raise R23SchemaError("R22 authoritative artifact files are missing")
