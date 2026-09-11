@@ -1,0 +1,37 @@
+{
+  "authority_id": "R23_EXPERIMENT_B_IMPLEMENTATION_SOURCE_SET_V2",
+  "bug_fixed": "Authority-driven formal per-instance R22 loading; central legacy fixture is not used for formal IDs.",
+  "classification": "EXPERIMENT_B_IMPLEMENTATION_FIX_SOURCE_SET_FROZEN",
+  "execution_performed": false,
+  "formal_semantics_unchanged": true,
+  "implementation_commit": "ce0c6e36a73833f14de50e524ab72a6a0189d1c6",
+  "loader_contract": "formal instance authority directory with manifest/r22_input/validation plus corresponding R20/R21/exact-reference linkage; fail closed on ambiguity/hash/identity mismatch",
+  "parent_authority_id": "R23_EXPERIMENT_B_IMPLEMENTATION_SOURCE_SET_V1",
+  "runtime": {
+    "environment_path": "/home/takuma/.conda/envs/evrp-quantum-temp",
+    "numpy": "2.4.6",
+    "platform": "Linux-6.8.0-136-generic-x86_64-with-glibc2.39",
+    "python": "3.11.16 (main, Sep  2 2026, 23:39:52) [GCC 15.3.0]",
+    "qiskit": "2.5.2",
+    "qiskit_aer": "0.17.2",
+    "qiskit_algorithms": "0.4.0",
+    "qiskit_optimization": "0.7.0",
+    "scipy": "1.17.1"
+  },
+  "source_hashes": {
+    "05_src/traffic_simulation/r23_qaoa_aer/hamiltonian.py": "f38947e84cdb1094cd35c80462ed7db9c693da7e0f2f622e187053c235435f03",
+    "05_src/traffic_simulation/r23_qaoa_aer/initialization.py": "8fdac4a5f110e1890bf2cabcfcfd6cf257897eaeae1f45a5aa50228b27872188",
+    "05_src/traffic_simulation/r23_qaoa_aer/metrics.py": "76cd7e838eeb7817f0bc5021299ad27ce8c6d70b1735280026918840704667e8",
+    "05_src/traffic_simulation/r23_qaoa_aer/optimizers.py": "8e45272b13ace73b227ce3e936f8273b29d9c65f3231bc8a7310c2d4931cf344",
+    "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py": "6d0e26fe2f14a77cabd6d938226965479bb8ec46805efee5dcaf7af7c3a6bf67",
+    "05_src/traffic_simulation/r23_qaoa_aer/schema.py": "0b9e74c7dcf5ede92e295cee6344dd45044923a7c56ccc56dd28826c721c19d5",
+    "05_src/traffic_simulation/validation/test_r23_formal_instance_loader.py": "123067f5fd953e5025cc98aa36e7cad26b11c03ff1cba345378682cea504bc39",
+    "tools/execute_r23_experiment_b1.py": "c6783f972a902a9b80789019be853de3d263196af60a49d3c1c680274aacc2c3"
+  },
+  "validation_artifacts": {
+    "b1_preflight_resolution": "reproducibility/outputs/traffic_simulation/r23_experiment_b1_implementation_fix/20260911_v1/b1_preflight_resolution.json",
+    "loader_validation": "reproducibility/outputs/traffic_simulation/r23_experiment_b1_implementation_fix/20260911_v1/loader_validation.json",
+    "regression_validation": "reproducibility/outputs/traffic_simulation/r23_experiment_b1_implementation_fix/20260911_v1/regression_validation.json",
+    "root_cause": "reproducibility/outputs/traffic_simulation/r23_experiment_b1_implementation_fix/20260911_v1/root_cause.json"
+  }
+}

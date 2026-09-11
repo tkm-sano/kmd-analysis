@@ -1,0 +1,15 @@
+{
+  "aer_scientific_evaluations": 0,
+  "all_36_same_failure": true,
+  "classification": "R22_AUTHORITY_RESOLUTION_IMPLEMENTATION_EXCEPTION",
+  "correct_authority_pattern": "r23_formal_instance_authority/20260911_v1/r22/<formal_instance_id>/r22_input.json plus validation.json and corresponding R20/R21/exact-reference authorities",
+  "failing_function": "traffic_simulation.r23_qaoa_aer.schema.load_r22_instance",
+  "formal_a_difference": "Formal A historical artifacts used the already-materialized formal authority lineage; this B1 runner incorrectly called the legacy central loader contract.",
+  "historical_failure_artifact_sha256": "40d06c87fb4ddd3c72368416a6529dec4b9dfada5a928579d0278ebf3a0be910",
+  "observed_exception": "R23SchemaError: R22 instance selection is not unique",
+  "optimizer_started": false,
+  "previous_resolution_defect": "B1 runner passed the central conversion directory; its report contains legacy/synthetic fixtures and did not contain the formal rank01/rank03/rank05 instance IDs.",
+  "previous_resolution_path": "reproducibility/outputs/traffic_simulation/r22_ising_conversion/20260910_formal_reduced_v1/conversion_results.json",
+  "qaoa_started": false,
+  "schema_version": "r23-b1-root-cause-v1"
+}

@@ -1,0 +1,30 @@
+{
+  "authorization_id": "R23_EXPERIMENT_B1_REEXECUTION_AUTHORIZATION_V1",
+  "b1_planned_run_manifest_sha256": "9e987f38b1c492de81489c830fe8e988ae4ec2976851dcfdaea3af340f897dec",
+  "checks": {
+    "condition_level_36_of_36": true,
+    "instance_level_3_of_3": true,
+    "no_design_change": true,
+    "no_initialization_change": true,
+    "no_research_wall_time_cap": true,
+    "qaoa_not_executed_in_preflight": true,
+    "same_36_scientific_conditions": true
+  },
+  "classification": "EXPERIMENT_B1_REEXECUTION_AUTHORIZED_READY_TO_EXECUTE",
+  "conditions": 36,
+  "design_sha256": "f14ce583419bee74964d1445f3cbc182da8bc8c482083992625396d7ab1b45ed",
+  "execution_authorized": true,
+  "execution_performed": false,
+  "formal_instance_authority_manifest_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78",
+  "implementation_authority_id": "R23_EXPERIMENT_B_IMPLEMENTATION_SOURCE_SET_V2",
+  "implementation_authority_sha256": "a47f40bdde11ea0e4155e428de032fc9ec521086cc75da814957c1d3c2780ce5",
+  "initialization_authority_sha256": "43940ecc84d94197ad3eedc2069480f97246a185897ef477621c6159721ba665",
+  "lambda_policy_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95",
+  "next_task": "R23_EXPERIMENT_B1_REEXECUTION",
+  "original_failed_attempt_manifest": "reproducibility/outputs/traffic_simulation/r23_experiment_b1/20260911_v1/manifest.json",
+  "original_failed_attempt_manifest_sha256": "40d06c87fb4ddd3c72368416a6529dec4b9dfada5a928579d0278ebf3a0be910",
+  "preflight_resolution_sha256": "b991279594ef65f236b8fd600c873f46c8ef97bb915186e4a3a4bdff4bf3a421",
+  "rationale": "All previous attempts failed before optimizer/Aer evaluation; reexecution is a non-selective correction of an implementation failure, not adaptive retry.",
+  "root_cause_sha256": "18c80cac7bf6b02be436ccf444705144261e5a437aca9d6d2d7a1425c0a9fc99",
+  "schema_version": "r23-b1-reexecution-authorization-v1"
+}
