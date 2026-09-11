@@ -1,0 +1,63 @@
+{
+  "amendment_id": "R23_EXPERIMENT_B2_NELDER_MEAD_DESIGN_AMENDMENT_V1",
+  "common_budget_semantics": {
+    "fairness_basis": "same common objective evaluation cap, while internal termination remains optimizer-specific",
+    "objective_evaluation_cap": 900,
+    "wall_time_policy": "NONE"
+  },
+  "created_at": "2026-09-11T11:00:54.381864+00:00",
+  "effective_scope": "R23 Experiment B2 only; 3 frozen n=4 instances x p=2,3 x fixed_0.1; no other experiment or optimizer.",
+  "frozen_scipy": {
+    "both_budgets_unset_policy": "N*200; not applicable because maxiter and maxfev are explicitly set by this amendment.",
+    "environment": "/home/takuma/.conda/envs/evrp-quantum-temp",
+    "signature_defaults": {
+      "adaptive": false,
+      "bounds": null,
+      "disp": false,
+      "fatol": 0.0001,
+      "initial_simplex": null,
+      "maxfev": null,
+      "maxiter": null,
+      "xatol": 0.0001
+    },
+    "source_authority": "/home/takuma/.conda/envs/evrp-quantum-temp/lib/python3.11/site-packages/scipy/optimize/_optimize.py",
+    "source_function": "scipy.optimize._optimize._minimize_neldermead",
+    "source_sha256": "041a1807ccaa68115c93b07bed497d25c294a7d730ce5a7cb1f21fc5a185fa61",
+    "version": "1.17.1"
+  },
+  "implementation_gate_review": {
+    "current_state": "Nelder-Mead is supported by the frozen implementation authority and targeted validation; historical COBYLA-only wording is retained as provenance and does not override current implementation evidence.",
+    "historical_wording": "Current R23 qaoa.py/schema.py accept COBYLA only. B2 requires a new optimizer adapter/schema path, preserved source hashes, separate smoke validation, and result metadata capture before authority build.",
+    "implementation_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b1_implementation_fix/20260911_v1/implementation_authority_v2.json",
+    "implementation_authority_sha256": "4e3a2e5289a156668878361ddbf805ca6de825d2bbfe9077429a5f69bf7fac24"
+  },
+  "no_tuning": true,
+  "optimizer_configuration": {
+    "method": "Nelder-Mead",
+    "optimizer": "NELDER_MEAD",
+    "options": {
+      "adaptive": false,
+      "bounds": null,
+      "disp": false,
+      "fatol": 0.0001,
+      "initial_simplex": null,
+      "maxfev": 900,
+      "maxiter": 300,
+      "xatol": 0.0001
+    },
+    "parameter_order": "[gamma_1..gamma_p, beta_1..beta_p]"
+  },
+  "parent_design_authority": "reproducibility/config/traffic_simulation/r23_experiment_b/20260911_experiment_b_v1.json",
+  "parent_design_sha256": "f14ce583419bee74964d1445f3cbc182da8bc8c482083992625396d7ab1b45ed",
+  "reason": "Resolve the B2 authorization block by explicitly freezing the frozen-environment Nelder-Mead defaults already used by the adapter, without tuning.",
+  "schema_version": "r23-b2-nelder-mead-design-amendment-v1",
+  "scientific_rationale": "Use the frozen SciPy 1.17.1 defaults explicitly so B2 isolates optimizer choice and adds no performance tuning degree of freedom.",
+  "termination_semantics": {
+    "convergence": "SciPy Nelder-Mead convergence requires both simplex x spread <= xatol and function spread <= fatol.",
+    "external_cap": "The project objective callback refuses a call once 900 objective evaluations have occurred; this remains the common research cap.",
+    "maxfev": "Explicitly 900, aligned with the project common objective evaluation cap; SciPy stops at the first reached limit.",
+    "maxiter": "Nelder-Mead iteration limit; 300, optimizer-specific and not equivalent workload across optimizers.",
+    "wall_time": "No research wall-time stop; wall time is a measurement outcome."
+  },
+  "tuning_statement": "No tolerance search, benchmark, pilot, adaptive selection, or parameter tuning was performed."
+}
