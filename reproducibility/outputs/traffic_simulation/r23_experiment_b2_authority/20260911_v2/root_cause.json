@@ -1,0 +1,19 @@
+{
+  "aer_scientific_evaluation_started": false,
+  "affected_runs": "6/6",
+  "authority_drift": false,
+  "created_at": "2026-09-11T11:13:44.843349+00:00",
+  "duplicate_argument_path": "R23 adapter places bounds=None in options; scipy.optimize.minimize dispatch supplies bounds=bounds explicitly to _minimize_neldermead; Python receives bounds twice.",
+  "exception_message": "scipy.optimize._optimize._minimize_neldermead() got multiple values for keyword argument 'bounds'",
+  "exception_type": "TypeError",
+  "failing_function": "traffic_simulation.r23_qaoa_aer.optimizers.minimize_objective",
+  "failure_signature": "bounds=None duplicate dispatch",
+  "fix_summary": "For governed Nelder-Mead bounds=None, remove bounds from method options and let SciPy dispatch it once as its explicit keyword. No scientific parameter or optimizer setting changes.",
+  "nelder_mead_adapter": "minimize_objective(method='Nelder-Mead')",
+  "optimizer_dispatch_function": "scipy.optimize.minimize",
+  "optimizer_launched": false,
+  "parent_failed_manifest": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v1/manifest.json",
+  "parent_failed_manifest_sha256": "d1cd291e49ea5ebdc07797e9d8684dcc6fe415efd543c5aeb4174bb50bd838db",
+  "schema_version": "r23-b2-root-cause-v2",
+  "scientific_metrics_generated": false
+}

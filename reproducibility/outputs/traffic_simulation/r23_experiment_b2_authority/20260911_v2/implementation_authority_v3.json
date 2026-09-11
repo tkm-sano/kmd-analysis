@@ -1,0 +1,35 @@
+{
+  "authority_id": "R23_EXPERIMENT_B_IMPLEMENTATION_SOURCE_SET_V3",
+  "changed_source_files": [
+    "05_src/traffic_simulation/r23_qaoa_aer/optimizers.py",
+    "05_src/traffic_simulation/validation/test_r23_experiment_b_implementation.py"
+  ],
+  "created_at": "2026-09-11T11:13:44.843349+00:00",
+  "fix": "Nelder-Mead bounds=None is removed from options before scipy.optimize.minimize dispatch; SciPy supplies bounds exactly once.",
+  "formal_execution_performed": false,
+  "optimizer_settings_unchanged": true,
+  "parent_authority_id": "R23_EXPERIMENT_B_IMPLEMENTATION_SOURCE_SET_V2",
+  "root_cause": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/root_cause.json",
+  "root_cause_sha256": "6dbb33c267e7670db8af6e41dd91545142ce8ffd8b2ee6b25b9cbbfcbc472e83",
+  "schema_version": "r23-b2-implementation-authority-v3",
+  "scientific_semantics_unchanged": true,
+  "source_hashes": {
+    "05_src/traffic_simulation/r23_qaoa_aer/hamiltonian.py": "f38947e84cdb1094cd35c80462ed7db9c693da7e0f2f622e187053c235435f03",
+    "05_src/traffic_simulation/r23_qaoa_aer/initialization.py": "8fdac4a5f110e1890bf2cabcfcfd6cf257897eaeae1f45a5aa50228b27872188",
+    "05_src/traffic_simulation/r23_qaoa_aer/metrics.py": "76cd7e838eeb7817f0bc5021299ad27ce8c6d70b1735280026918840704667e8",
+    "05_src/traffic_simulation/r23_qaoa_aer/optimizers.py": "7fcbdf1f0572712f277e4afccef6c30ac3dedff8a7e1f3c6f27c40b6396ef710",
+    "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py": "6d0e26fe2f14a77cabd6d938226965479bb8ec46805efee5dcaf7af7c3a6bf67",
+    "05_src/traffic_simulation/r23_qaoa_aer/schema.py": "0b9e74c7dcf5ede92e295cee6344dd45044923a7c56ccc56dd28826c721c19d5",
+    "05_src/traffic_simulation/validation/test_r23_experiment_b_implementation.py": "f6af9bb0bbaef6f672162f31168f0fcd48c6286cfe48b46766fb36c0d7fb1b97"
+  },
+  "validation": {
+    "cobyla_regression": "PASS",
+    "fixed_0.1": "PASS",
+    "frozen_scipy": "1.17.1",
+    "objective_cap": "PASS",
+    "p2_smoke": "PASS",
+    "p3_smoke": "PASS",
+    "py_compile": "PASS",
+    "targeted_pytest": "PASS: 8 passed"
+  }
+}
