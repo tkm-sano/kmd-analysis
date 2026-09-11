@@ -1,0 +1,34 @@
+{
+  "architecture": {
+    "S1": "n=5 resource preflight and very limited frozen formal instances; no authorization implied",
+    "S2": "expand n only after S1 evidence review and resource acceptance"
+  },
+  "blockers": [
+    "memory/peak allocation",
+    "CPU simulator wall-clock burden",
+    "transpilation and optimizer evaluation burden",
+    "artifact size",
+    "R22 full-state validation at 2^25 states",
+    "R20/R22 authority validation method for n=5"
+  ],
+  "classification": "SCALING_EXTENSION_DESIGN_READY_WITH_RESOURCE_REDESIGN",
+  "exact_aer_recommendation": "C_CHANGE_SCALING_METHODOLOGY_BEFORE_N5",
+  "experiment_b_priority": "B1_REQUIRED_BEFORE_SCALING_EXTENSION",
+  "experiment_c_priority": "REQUIRED_BEFORE_SCENARIO_MODELLING",
+  "n5": {
+    "amplitude_count": 33554432,
+    "assessment": "raw statevector fits nominal guard, but actual Aer peak exceeds one raw statevector; preflight and staged execution required; no runtime extrapolation",
+    "current_guard_gib": 8.0,
+    "logical_qubits": 25,
+    "raw_statevector_memory_bytes": {
+      "complex128": 536870912,
+      "complex64": 268435456
+    },
+    "raw_statevector_memory_gib": {
+      "complex128": 0.5,
+      "complex64": 0.25
+    }
+  },
+  "r22_validation": "SCALING_DESIGN_REQUIREMENT: replace or supplement full-state enumeration with coefficient-level analytical equivalence plus targeted deterministic checks; do not assume 2^25 full-state validation is operationally cheap",
+  "separation": "separate algorithmic response scaling from classical simulator resource scaling"
+}
