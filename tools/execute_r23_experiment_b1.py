@@ -12,6 +12,7 @@ from traffic_simulation.r23_qaoa_aer.schema import R23Config, load_r22_instance,
 from traffic_simulation.r23_qaoa_aer.initialization import generate_initial_parameters, initialization_vector_sha256
 
 AUTH = ROOT / "reproducibility/outputs/traffic_simulation/r23_experiment_b_authority/20260911_v1"
+FIX_AUTH = ROOT / "reproducibility/outputs/traffic_simulation/r23_experiment_b1_implementation_fix/20260911_v1"
 OUT = ROOT / "reproducibility/outputs/traffic_simulation/r23_experiment_b1/20260911_v2"
 DESIGN = ROOT / "reproducibility/config/traffic_simulation/r23_experiment_b/20260911_experiment_b_v1.json"
 FORMAL = ROOT / "reproducibility/config/traffic_simulation/r23_formal_experiment/20260911_r23_formal_v1.json"
@@ -20,7 +21,8 @@ INSTANCE_AUTH = ROOT / "reproducibility/outputs/traffic_simulation/r23_formal_in
 EXPECTED_DESIGN = "f14ce583419bee74964d1445f3cbc182da8bc8c482083992625396d7ab1b45ed"
 EXPECTED_INIT = "43940ecc84d94197ad3eedc2069480f97246a185897ef477621c6159721ba665"
 EXPECTED_RUN_MANIFEST = "9e987f38b1c492de81489c830fe8e988ae4ec2976851dcfdaea3af340f897dec"
-EXPECTED_AUTH = "bb3e2e4251e980290bbd4516e8621f4eea920d542b1a6dad6053af5ccacdaa4c"
+EXPECTED_AUTH = "b9d2dccc23498f4b12268eb82302554072fdb63dfb1c4970814f0fc10d68062f"
+EXPECTED_IMPL = "4e3a2e5289a156668878361ddbf805ca6de825d2bbfe9077429a5f69bf7fac24"
 
 def write_json(path: Path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -33,12 +35,13 @@ def versions():
     return {"python": sys.version, "platform": platform.platform(), "numpy": numpy.__version__, "scipy": scipy.__version__, "qiskit": qiskit.__version__, "qiskit_aer": qiskit_aer.__version__, "qiskit_algorithms": qiskit_algorithms.__version__, "qiskit_optimization": qiskit_optimization.__version__, "environment_path": "/home/takuma/.conda/envs/evrp-quantum-temp"}
 
 def authority_gate():
-    design = json.loads(DESIGN.read_text()); auth = json.loads((AUTH/"b1_execution_authorization.json").read_text()); manifest = json.loads((AUTH/"b1_planned_run_manifest.json").read_text()); init = json.loads((AUTH/"initialization_authority.json").read_text()); instance_manifest = json.loads((INSTANCE_AUTH/"manifest.json").read_text()); formal = json.loads(FORMAL.read_text())
+    design = json.loads(DESIGN.read_text()); auth = json.loads((FIX_AUTH/"b1_reexecution_authorization.json").read_text()); prior_auth = json.loads((AUTH/"b1_execution_authorization.json").read_text()); manifest = json.loads((AUTH/"b1_planned_run_manifest.json").read_text()); init = json.loads((AUTH/"initialization_authority.json").read_text()); instance_manifest = json.loads((INSTANCE_AUTH/"manifest.json").read_text()); formal = json.loads(FORMAL.read_text())
     checks = {
         "design_hash": sha(DESIGN) == EXPECTED_DESIGN == auth["design_sha256"],
         "initialization_authority_hash": sha(AUTH/"initialization_authority.json") == EXPECTED_INIT == auth["initialization_authority_sha256"],
         "b1_manifest_hash": sha(AUTH/"b1_planned_run_manifest.json") == EXPECTED_RUN_MANIFEST == auth["b1_planned_run_manifest_sha256"],
-        "authorization_hash": sha(AUTH/"b1_execution_authorization.json") == EXPECTED_AUTH,
+        "authorization_hash": sha(FIX_AUTH/"b1_reexecution_authorization.json") == EXPECTED_AUTH,
+        "implementation_v2_hash": sha(FIX_AUTH/"implementation_authority_v2.json") == EXPECTED_IMPL == auth["implementation_authority_sha256"],
         "authorization_permits_execution": auth["execution_authorized"] is True and auth["execution_performed"] is False,
         "exact_36": len(manifest["runs"]) == 36 and manifest["run_count"] == 36,
         "unique_ids": len({x["run_id"] for x in manifest["runs"]}) == 36,
@@ -47,7 +50,7 @@ def authority_gate():
         "initializations": {x["initialization_id"] for x in manifest["runs"]} == {"fixed_0.1", "random_seed_11", "random_seed_23", "random_seed_37", "random_seed_53", "random_seed_71"},
         "no_research_wall_time_cap": manifest["wall_time_policy"] == "NO_RESEARCH_WALL_TIME_CAP",
         "instance_authority_hash": sha(INSTANCE_AUTH/"manifest.json") == auth["formal_instance_authority_manifest_sha256"],
-        "lambda_hash": sha(ROOT / auth["lambda_policy"]) == auth["lambda_policy_sha256"] and json.loads((ROOT/auth["lambda_policy"]).read_text())["selected_lambda"] == 3.0,
+        "lambda_hash": sha(ROOT / prior_auth["lambda_policy"]) == auth["lambda_policy_sha256"] and json.loads((ROOT/prior_auth["lambda_policy"]).read_text())["selected_lambda"] == 3.0,
         "r20_r21_r22_authority": instance_manifest["r20_authority_count"] == instance_manifest["r21_authority_count"] == instance_manifest["r22_authority_count"] == 15 and formal["authority"]["r21_status"] == "PASS" and formal["authority"]["r22_status"] == "PASS",
         "runtime": versions()["environment_path"] == "/home/takuma/.conda/envs/evrp-quantum-temp",
     }
@@ -59,7 +62,7 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT/"runs").mkdir(exist_ok=True)
     runtime = versions()
-    preflight = {"classification": "B1_EXECUTION_PREFLIGHT", "authority_gate": "PASS", "known_validation_limitation": "KNOWN_VALIDATION_LIMITATION: pytest unavailable in frozen environment; not installed", "runtime": runtime, "design_sha256": sha(DESIGN), "initialization_authority_sha256": sha(AUTH/"initialization_authority.json"), "planned_run_manifest_sha256": sha(AUTH/"b1_planned_run_manifest.json"), "authorization_sha256": sha(AUTH/"b1_execution_authorization.json"), "instance_authority_manifest_sha256": sha(INSTANCE_AUTH/"manifest.json"), "lambda_policy_sha256": auth["lambda_policy_sha256"], "expected_condition_count": 36, "execution_order": [x["run_id"] for x in plan["runs"]], "research_wall_time_cap": None, "execution_started_utc": datetime.now(timezone.utc).isoformat()}
+    preflight = {"classification": "B1_EXECUTION_PREFLIGHT", "authority_gate": "PASS", "known_validation_limitation": "KNOWN_VALIDATION_LIMITATION: pytest unavailable in frozen environment; not installed", "runtime": runtime, "design_sha256": sha(DESIGN), "implementation_authority_v2_sha256": sha(FIX_AUTH/"implementation_authority_v2.json"), "initialization_authority_sha256": sha(AUTH/"initialization_authority.json"), "planned_run_manifest_sha256": sha(AUTH/"b1_planned_run_manifest.json"), "authorization_sha256": sha(FIX_AUTH/"b1_reexecution_authorization.json"), "instance_authority_manifest_sha256": sha(INSTANCE_AUTH/"manifest.json"), "lambda_policy_sha256": auth["lambda_policy_sha256"], "expected_condition_count": 36, "execution_order": [x["run_id"] for x in plan["runs"]], "research_wall_time_cap": None, "execution_started_utc": datetime.now(timezone.utc).isoformat()}
     write_json(OUT/"execution_preflight.json", preflight)
     terminal = []
     for index, planned in enumerate(plan["runs"], 1):
@@ -73,7 +76,7 @@ def main():
             data = load_r22_instance(R22 / planned["instance_id"], planned["instance_id"])
             cfg = R23Config(p=planned["p"], optimizer="COBYLA", maxiter=300, max_evaluations=900, initial_parameters=initial, initialization_id=init_id, initialization_seed=seed, repetition=1, wall_time_seconds=None, seed=17, optimization_level=1, memory_limit_gib=8.0)
             result = run_single(data, cfg)
-            record = {"schema_version": "r23-experiment-b1-terminal-record-v1", "classification": "RESEARCH_TERMINAL_RECORD", "run_id": run_id, "condition_id": planned["condition_id"], "planned_order": index, "authority": {"design_sha256": sha(DESIGN), "implementation_authority_sha256": sha(AUTH/"implementation_authority.json"), "initialization_authority_sha256": sha(AUTH/"initialization_authority.json"), "b1_authorization_sha256": sha(AUTH/"b1_execution_authorization.json"), "instance_authority_manifest_sha256": sha(INSTANCE_AUTH/"manifest.json"), "lambda_policy_sha256": auth["lambda_policy_sha256"]}, "run_preflight": per_gate, "result": result, "elapsed_process_seconds": time.time()-started}
+            record = {"schema_version": "r23-experiment-b1-terminal-record-v2", "classification": "RESEARCH_TERMINAL_RECORD", "run_id": run_id, "condition_id": planned["condition_id"], "planned_order": index, "authority": {"design_sha256": sha(DESIGN), "implementation_authority_sha256": sha(FIX_AUTH/"implementation_authority_v2.json"), "initialization_authority_sha256": sha(AUTH/"initialization_authority.json"), "b1_authorization_sha256": sha(FIX_AUTH/"b1_reexecution_authorization.json"), "instance_authority_manifest_sha256": sha(INSTANCE_AUTH/"manifest.json"), "lambda_policy_sha256": auth["lambda_policy_sha256"]}, "run_preflight": per_gate, "result": result, "elapsed_process_seconds": time.time()-started}
         except Exception as exc:
             record = {"schema_version": "r23-experiment-b1-terminal-record-v1", "classification": "RESEARCH_TERMINAL_RECORD", "run_id": run_id, "condition_id": planned["condition_id"], "planned_order": index, "run_preflight": per_gate, "terminal_outcome": "IMPLEMENTATION_EXCEPTION", "exception": repr(exc), "elapsed_process_seconds": time.time()-started}
         write_json(OUT/"runs"/(run_id+".json"), record); terminal.append(record)
