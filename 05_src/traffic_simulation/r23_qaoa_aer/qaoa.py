@@ -89,7 +89,7 @@ def run_single(input_data: R23Input, config: R23Config) -> dict[str, Any]:
     def objective(values):
         nonlocal objective_eval_total
         elapsed = time.perf_counter() - started
-        if len(trace) >= config.max_evaluations or elapsed > config.wall_time_seconds:
+        if len(trace) >= config.max_evaluations or (config.wall_time_seconds is not None and elapsed > config.wall_time_seconds):
             raise R23ResourceGuard("objective evaluation resource guard reached")
         t = time.perf_counter()
         gamma, beta = repository_parameters(values, config.p)

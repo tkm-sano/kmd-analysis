@@ -93,7 +93,7 @@ class R23Config:
     optimization_level: int = 1
     max_logical_qubits: int = 16
     max_p: int = 3
-    wall_time_seconds: float = 600.0
+    wall_time_seconds: float | None = None
     memory_limit_gib: float = 8.0
     probability_threshold: float = 1e-12
 
@@ -104,8 +104,10 @@ class R23Config:
             raise R23SchemaError("logical-qubit software guard exceeded")
         if self.optimizer != "COBYLA" or self.maxiter <= 0 or self.max_evaluations <= 0:
             raise R23SchemaError("unsupported optimizer or invalid iteration/evaluation guard")
-        if not math.isfinite(self.initial_parameter) or not math.isfinite(self.wall_time_seconds):
+        if not math.isfinite(self.initial_parameter) or (self.wall_time_seconds is not None and not math.isfinite(self.wall_time_seconds)):
             raise R23SchemaError("configuration contains non-finite values")
+        if self.wall_time_seconds is not None and self.wall_time_seconds <= 0:
+            raise R23SchemaError("wall-time safety guard must be positive when configured")
         if self.repetition != 1 or self.expectation_mode != "exact_statevector":
             raise R23SchemaError("only the deterministic exact-expectation baseline is supported")
         if self.backend_method != "statevector" or self.device != "CPU":
