@@ -1,0 +1,8 @@
+{
+  "schema_version": "r23-n5-readiness-v1",
+  "classification": "N5_REQUIRES_RESOURCE_PREFLIGHT_BEFORE_AUTHORIZATION",
+  "decision": "Do not execute n=5 QAOA in this review. A future authorization may consider one limited scaling step only after resource preflight and validation redesign pass.",
+  "requirements": ["instance authority", "Routing Baseline authority", "complete directed reachability", "new n=5 lambda authority (do not inherit lambda=3.0)", "encoding/coefficients/structural validation", "redesigned validation PASS", "exact route reference", "memory/resource preflight", "separate output namespace", "scientific question", "stop conditions"],
+  "lambda_note": "The theorem lambda > (n+1)/2 implies n=5 requires lambda > 3.0 if that theorem is the governing condition; no value is selected or executed here.",
+  "recommended_next_task": "R23_N5_SCALING_AUTHORIZATION"
+}

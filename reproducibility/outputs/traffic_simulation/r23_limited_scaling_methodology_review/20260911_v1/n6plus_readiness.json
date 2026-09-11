@@ -1,0 +1,6 @@
+{
+  "schema_version": "r23-n6plus-readiness-v1",
+  "classification": "N6PLUS_EXECUTION_NOT_RECOMMENDED_WITH_CURRENT_EXACT_CPU_AER_STATEVECTOR_METHOD",
+  "basis": {"n6_logical_qubits": 36, "n6_raw_statevector": "1 TiB", "n6_route_count": 720, "n7_raw_statevector": "8 PiB", "validation": "full bitstring exhaustive and statevector are not credible default methods"},
+  "policy": "Use analytical/structural/targeted/sampled validation plus exact route enumeration where feasible; do not authorize current exact CPU Aer statevector QAOA for n>=6 without a separately approved methodology and resource case."
+}

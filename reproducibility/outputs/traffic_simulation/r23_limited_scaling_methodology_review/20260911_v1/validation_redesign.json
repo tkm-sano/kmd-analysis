@@ -1,0 +1,20 @@
+{
+  "schema_version": "r23-limited-scaling-validation-redesign-v1",
+  "principle": "Do not treat coefficient, structural, route-exact, bitstring-exhaustive, and Aer validation as one scaling problem.",
+  "layers": [
+    {"id": "A", "name": "analytical coefficient", "policy": "Generate QUBO from equations and compare coefficient structure, signs, index coverage, and hashes."},
+    {"id": "B", "name": "structural one-hot", "policy": "Check row/column exact-one structure and penalty construction analytically."},
+    {"id": "C", "name": "targeted exhaustive", "policy": "Exhaustively validate small substructures or selected variable subsets only."},
+    {"id": "D", "name": "known feasible route", "policy": "Encode known permutations; require zero constraint penalty and objective equality."},
+    {"id": "E", "name": "known invalid states", "policy": "Construct duplicate-customer, missing-customer, and duplicate-position states; require positive penalty."},
+    {"id": "F", "name": "fixed-seed sampled", "policy": "Sample bitstrings with a recorded seed and report coverage/uncertainty; never call it exhaustive."},
+    {"id": "G", "name": "exact route reference", "policy": "Continue n! route enumeration for exact optimum where route costs are available."}
+  ],
+  "policies_by_scale": {
+    "n<=4": ["A", "B", "C", "D", "E", "F", "G"],
+    "n=5": ["A", "B", "C", "D", "E", "F", "G"],
+    "n>=6": ["A", "B", "D", "E", "F", "G"]
+  },
+  "full_bitstring_policy": "Required for baseline n<=4 only; not required for n>=5 unless separately justified by a resource preflight and scientific question.",
+  "important_semantics": "Exact P_feasible/P_optimal from full-state probabilities must not be conflated with sampled estimates."
+}

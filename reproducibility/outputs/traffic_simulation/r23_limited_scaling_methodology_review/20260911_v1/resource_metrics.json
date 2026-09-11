@@ -1,0 +1,14 @@
+{
+  "schema_version": "r23-limited-scaling-resource-metrics-v1",
+  "required": ["n", "logical_qubits", "state_dimension", "circuit_depth", "qaoa_p", "nfev", "T_total", "T_Aer", "T_transpile", "T_Aer_per_nfev", "peak_memory_if_reliable", "exact_route_enumeration_time", "validation_time"],
+  "definitions": {"T_total": "wall-clock envelope", "T_Aer": "sum of Aer execution time", "T_Aer_per_nfev": "T_Aer/nfev", "peak_memory_if_reliable": "record only with a documented measurement method"},
+  "existing_evidence": {
+    "Formal_A_n4_p2_mean": {"T_total_s": 371.2620926317759, "T_Aer_s": 252.776559761446, "nfev": 280.0, "T_Aer_per_nfev_s": 0.8985897538637799},
+    "Formal_A_n4_p3_mean": {"T_total_s": 524.4737217446789, "T_Aer_s": 396.5890044425614, "nfev": 300.0, "T_Aer_per_nfev_s": 1.3219633481418716},
+    "B1_n4_p2_mean_18_runs": {"T_total_s": 373.92692694099, "T_Aer_s": 252.25099766228556, "nfev": 287.77777777777777, "T_Aer_per_nfev_s": 0.8803433979000634},
+    "B1_n4_p3_mean_18_runs": {"T_total_s": 530.8703990656003, "T_Aer_s": 402.30043396428744, "nfev": 300.0, "T_Aer_per_nfev_s": 1.3410014465476248},
+    "B2_overall_COBYLA_mean_6": {"T_total_s": 441.66095623366226, "T_Aer_s": 318.42764912863885, "nfev": 290.3333333333333, "T_Aer_per_nfev_s": 1.0866708008161571},
+    "B2_overall_Nelder_Mead_mean_6": {"T_total_s": 505.66869939359214, "T_Aer_s": 359.0932075601692, "nfev": 350.0, "T_Aer_per_nfev_s": 0.9662944558013556}
+  },
+  "source_artifacts": ["r23_formal_evidence_review/20260911_v1/runtime_review.json", "r23_experiment_b1_evidence_review/20260911_v1/runtime_analysis.json", "r23_experiment_b2_evidence_review/20260911_v1/runtime_comparison.json"]
+}

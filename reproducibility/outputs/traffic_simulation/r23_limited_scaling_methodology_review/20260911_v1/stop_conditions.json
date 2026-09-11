@@ -1,0 +1,5 @@
+{
+  "schema_version": "r23-limited-scaling-stop-conditions-v1",
+  "stop_conditions": ["memory infeasible", "projected runtime infeasible", "validation no longer scientifically adequate", "exact reference unavailable", "probability semantics no longer comparable", "implementation authority incomplete", "scientific value too low relative to compute cost"],
+  "policy": "Stop is evidence-based and resource/scientific-question dependent; no arbitrary wall-time threshold is imposed. A failed gate stops authorization before execution."
+}

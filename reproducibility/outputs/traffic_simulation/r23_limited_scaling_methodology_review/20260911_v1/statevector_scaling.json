@@ -1,0 +1,15 @@
+{
+  "schema_version": "r23-limited-scaling-statevector-v1",
+  "formula": {"logical_qubits": "n^2", "amplitudes": "2^(n^2)", "complex128_bytes_per_amplitude": 16},
+  "rows": [
+    {"n": 2, "logical_qubits": 4, "amplitudes": 16, "raw_bytes": 256, "raw_gib": 0.0000002384185791015625, "conceptual_size": "256 B"},
+    {"n": 3, "logical_qubits": 9, "amplitudes": 512, "raw_bytes": 8192, "raw_gib": 0.00000762939453125, "conceptual_size": "8 KiB"},
+    {"n": 4, "logical_qubits": 16, "amplitudes": 65536, "raw_bytes": 1048576, "raw_gib": 0.0009765625, "conceptual_size": "1 MiB"},
+    {"n": 5, "logical_qubits": 25, "amplitudes": 33554432, "raw_bytes": 536870912, "raw_gib": 0.5, "conceptual_size": "0.5 GiB"},
+    {"n": 6, "logical_qubits": 36, "amplitudes": 68719476736, "raw_bytes": 1099511627776, "raw_gib": 1024, "conceptual_size": "1 TiB"},
+    {"n": 7, "logical_qubits": 49, "amplitudes": 562949953421312, "raw_bytes": 9007199254740992, "raw_gib": 8388608, "conceptual_size": "8 PiB"}
+  ],
+  "interpretation": "Raw theoretical minimum is not actual peak memory. Qiskit/Aer execution can additionally require circuit representation, temporary buffers, expectation/Hamiltonian workspaces, and Python overhead; optimizer repetition multiplies elapsed work, not necessarily resident state memory.",
+  "n5_key_point": "25 logical qubits and 2^25 amplitudes; 0.5 GiB complex128 raw statevector only.",
+  "execution_status": "No statevector benchmark or QAOA execution was run in this review."
+}

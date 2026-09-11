@@ -1,0 +1,22 @@
+{
+  "review_id": "R23_LIMITED_SCALING_METHODOLOGY_REVIEW",
+  "date": "2026-09-11",
+  "classification": "R23_LIMITED_SCALING_METHODOLOGY_REVIEW_COMPLETED",
+  "starting_head": "c9dfdc09fdd587ead13d8714eb3d2e135d60d46b",
+  "scope": "Reduced Problem only; no new scientific execution",
+  "authority": ["05_src/traffic_simulation/specifications/ROUTING_BASELINE_CANONICAL.md", "05_src/traffic_simulation/specifications/R23_REDUCED_PROBLEM_CANONICAL.md", "05_src/traffic_simulation/specifications/README.md", "05_src/traffic_simulation/R23_ROADMAP.md", "05_src/traffic_simulation/R23_STATUS.md", "05_src/traffic_simulation/R23_NEXT_STEPS.md"],
+  "encoding": {"type": "customer-only position encoding", "logical_variables": "n^2", "table": [{"n": 2, "logical_qubits": 4}, {"n": 3, "logical_qubits": 9}, {"n": 4, "logical_qubits": 16}, {"n": 5, "logical_qubits": 25}, {"n": 6, "logical_qubits": 36}, {"n": 7, "logical_qubits": 49}]},
+  "separation_of_scaling": {"qubo_coefficients": "analytical/polynomial construction", "one_hot_constraints": "structural/analytical", "exact_route_optimum": "n!", "full_bitstrings": "2^(n^2)", "aer_statevector": "2^(n^2) amplitudes plus execution overhead"},
+  "runtime_conclusion": "n=4 already carries hundreds of seconds per run and Aer is a dominant component; current methodology must not be extrapolated to n=5 without preflight.",
+  "n5_decision": "N5_REQUIRES_RESOURCE_PREFLIGHT_BEFORE_AUTHORIZATION",
+  "n6plus_decision": "N6PLUS_EXECUTION_NOT_RECOMMENDED_WITH_CURRENT_EXACT_CPU_AER_STATEVECTOR_METHOD",
+  "future_methodology": [
+    {"method": "shot-based simulation", "compatibility": "same encoding; probability semantics become sampled", "continuity": "limited; report alongside but not as exact P metrics"},
+    {"method": "approximate simulation", "compatibility": "potentially same Hamiltonian", "continuity": "requires error characterization; not direct exact comparison"},
+    {"method": "tensor-network simulation", "compatibility": "circuit-dependent", "continuity": "conditional on approximation/error reporting"},
+    {"method": "decomposition/subproblem/hybrid", "compatibility": "changes computational object or scope", "continuity": "must define mapping and cannot claim full-state equivalence automatically"}
+  ],
+  "comparability_policy": "Formal A/B1/B2 exact P_feasible and P_optimal remain exact full-state metrics. Sampled estimates receive distinct names, denominators, uncertainty, and method labels; no pooled direct comparison without an approved bridge study.",
+  "next_scientific_task": "R23_N5_SCALING_AUTHORIZATION",
+  "prohibited_execution_confirmed": ["n=5 QAOA", "n>=6 QAOA", "Formal A rerun", "B1 rerun", "B2 rerun", "optimizer tuning", "shots/noise/QPU"]
+}
