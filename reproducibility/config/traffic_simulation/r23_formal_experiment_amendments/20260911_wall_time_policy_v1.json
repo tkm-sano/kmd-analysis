@@ -1,0 +1,156 @@
+{
+  "amendment_id": "R23_FORMAL_EXPERIMENT_A_PROTOCOL_AMENDMENT_V1",
+  "amendment_type": "POST_EXECUTION_PROTOCOL_AMENDMENT",
+  "amendment_status": "WALL_TIME_POLICY_AMENDMENT_READY",
+  "date": "2026-09-11",
+  "original_formal_design": {
+    "design_id": "R23_FORMAL_EXPERIMENT_DESIGN_V1",
+    "design_path": "reproducibility/config/traffic_simulation/r23_formal_experiment/20260911_r23_formal_v1.json",
+    "design_sha256": "9259b8c9e5b872f3f59a7a53b7bae07e053c9d1644573cfd1ead30668253805c"
+  },
+  "original_execution_artifact": {
+    "artifact_path": "reproducibility/outputs/traffic_simulation/r23_formal_experiment/20260911_formal_v1/",
+    "manifest_path": "reproducibility/outputs/traffic_simulation/r23_formal_experiment/20260911_formal_v1/manifest.json",
+    "manifest_sha256": "edcd848b73a41aec0798fed4a2c2eb77c2b4ca1b9f419f4cc454f1bee764fce1",
+    "integrity_path": "reproducibility/outputs/traffic_simulation/r23_formal_experiment/20260911_formal_v1/integrity.json",
+    "integrity_sha256": "fdc47a0b462ab8798bfafa63f5790ec74d532df804f3a5eef45f377ca29358e9",
+    "original_classification": "FORMAL_EXPERIMENT_A_COMPLETED_WITH_LIMITATIONS",
+    "original_matrix": "45 conditions; 41 PASS; 4 wall-time guard stops"
+  },
+  "trigger": {
+    "observed_after_execution": true,
+    "statement": "This amendment was triggered after observing that four n=4 Formal Experiment A conditions reached the original 600-second per-run wall-time guard during optimizer execution.",
+    "affected_run_count": 4,
+    "affected_runs": [
+      "routing_v18_n4_rank01_p3_init_fixed01_rep1",
+      "routing_v18_n4_rank02_p2_init_fixed01_rep1",
+      "routing_v18_n4_rank02_p3_init_fixed01_rep1",
+      "routing_v18_n4_rank05_p3_init_fixed01_rep1"
+    ]
+  },
+  "wall_time_policy_change": {
+    "before": {
+      "max_wall_time_per_run_seconds": 600,
+      "role": "FORMAL_PER_RUN_STOP_CONDITION",
+      "stop_label": "RESOURCE_GUARD_STOP",
+      "scientific_consequence": "wall-clock censoring made effective optimization budget depend on n and p"
+    },
+    "after": {
+      "research_parameter": false,
+      "formal_research_stopping_criterion": false,
+      "formal_setting": "NO_RESEARCH_WALL_TIME_CAP",
+      "numerical_wall_time_limit_seconds": null,
+      "safety_guard_class": "NON_BINDING_EMERGENCY_SAFETY_GUARD",
+      "purpose": "protect against OS hang, deadlock, pathological or infinite execution only",
+      "intended_behavior": "not reached during ordinary formal execution and not used to censor the algorithmic comparison",
+      "runtime_recording": "MEASURED_OUTCOME"
+    }
+  },
+  "research_budget": {
+    "algorithmic_stopping_criteria": [
+      "optimizer-defined termination",
+      "maxiter boundary",
+      "objective evaluation cap",
+      "genuine execution error"
+    ],
+    "optimizer": "COBYLA",
+    "maxiter": 300,
+    "objective_evaluation_cap": 900,
+    "final_expectation_evaluation": "additional to objective callback cap, unchanged"
+  },
+  "stop_condition_semantics": {
+    "valid_algorithmic_termination": [
+      "OPTIMIZER_DEFINED_TERMINATION",
+      "MAXITER_BOUNDARY",
+      "OBJECTIVE_EVALUATION_CAP"
+    ],
+    "execution_failure": [
+      "SOURCE_CONFIG_ENVIRONMENT_DRIFT",
+      "NAN_OR_INF",
+      "IMPLEMENTATION_EXCEPTION",
+      "ARTIFACT_OR_PROVENANCE_FAILURE",
+      "MEMORY_SAFETY_FAILURE"
+    ],
+    "emergency_safety_termination": [
+      "FORMAL_RUN_EMERGENCY_WALL_TIME_STOP"
+    ],
+    "wall_time_mapping_rule": "A wall-time safety stop is never described as an optimizer failure unless the optimizer independently reports a genuine failure. Historical labels and bytes are not rewritten."
+  },
+  "unchanged_research_factors": {
+    "n": [2, 3, 4],
+    "instances_per_n": 5,
+    "instance_set": "same 15 frozen instances",
+    "p": [1, 2, 3],
+    "lambda": 3.0,
+    "optimizer": "COBYLA",
+    "maxiter": 300,
+    "objective_evaluation_cap": 900,
+    "initialization": "all parameters = 0.1",
+    "repetition": 1,
+    "expectation": "exact CPU statevector",
+    "shots": "NONE",
+    "transpiler_optimization_level": 1,
+    "transpiler_seed": 17,
+    "simulator_seed": 17,
+    "primary_metrics": ["P_feasible", "P_optimal", "relative_optimality_gap"],
+    "secondary_metrics": "unchanged from original design",
+    "references": ["R20", "R21", "R22"],
+    "authority": "unchanged exact references and R20/R21/R22 authority"
+  },
+  "runtime_as_outcome": {
+    "role": "measured outcome/diagnostic, never an optimization stopping budget",
+    "metrics": [
+      "T_total",
+      "T_optimizer_total",
+      "T_objective_eval_total",
+      "T_circuit_build_total",
+      "T_transpile_total",
+      "T_Aer_total",
+      "T_expectation_total",
+      "T_decode_total",
+      "T_final_evaluation"
+    ]
+  },
+  "historical_evidence_treatment": {
+    "four_runs": "RIGHT-CENSORED_BY_ORIGINAL_WALL_TIME_POLICY",
+    "retain_original_evidence": true,
+    "prohibited_operations": ["delete", "overwrite", "relabel original bytes", "regenerate original summary", "replace original 45 records"],
+    "interpretation": "The four records do not establish mathematical QAOA failure, intrinsic COBYLA failure, n=4 infeasibility, or p=3 non-completion. They establish only that the original 600-second policy prevented full observation.",
+    "historical_status": "FORMAL_EXPERIMENT_A_COMPLETED_WITH_LIMITATIONS"
+  },
+  "post_hoc_disclosure": {
+    "is_post_execution": true,
+    "is_preregistered_original_design": false,
+    "claim_prohibition": [
+      "Do not claim the original experiment had no wall-time limit.",
+      "Do not claim this amendment was preregistered.",
+      "Do not claim the four original records were fully optimized."
+    ],
+    "versioning_decision": "Keep R23_FORMAL_EXPERIMENT_DESIGN_V1 recoverable and link this separate amendment; do not silently overwrite V1 or relabel it as preregistered amended design."
+  },
+  "corrective_completion_policy": {
+    "recommendation": "CORRECTIVE_COMPLETION_RUNS_RECOMMENDED",
+    "run_count": 4,
+    "scope": "only the four affected conditions",
+    "prospective_classification": "FORMAL_EXPERIMENT_A_CORRECTIVE_COMPLETION",
+    "same_condition_ids": true,
+    "new_attempt_ids_required": true,
+    "only_difference": "removal of the binding 600-second research wall-time cap; retain only the non-binding emergency safety policy",
+    "no_tuning": true,
+    "full_45_run_reexecution_required": false,
+    "methodological_rationale": "The 41 unaffected observations already use the frozen scientific factors. Completing only the four right-censored cells restores the missing algorithmic observations while preserving the original 45-run evidence and avoids changing the estimand or introducing unnecessary new runs. Full reexecution is not required because no scientific factor, implementation authority, or comparison target changed.",
+    "required_controls": "same instance, p, lambda, initialization, COBYLA, maxiter, objective cap, seeds, runtime environment, exact references, and metrics"
+  },
+  "authorization": {
+    "corrective_authorization_artifact": "reproducibility/config/traffic_simulation/r23_formal_experiment_amendments/20260911_corrective_completion_authorization_v1.json",
+    "scope_exactly_four_conditions": true,
+    "execution_in_this_task": false
+  },
+  "r23_and_full_evrp_status": {
+    "r23_status": "FORMAL_EXPERIMENT_A_COMPLETED_PENDING_REVIEW",
+    "optional_substatus": "CORRECTIVE_COMPLETION_PENDING",
+    "full_evrp_r20": "BLOCKED",
+    "full_evrp_r21": "NOT_STARTED"
+  },
+  "gate": "WALL_TIME_POLICY_AMENDMENT_READY"
+}

@@ -1,0 +1,55 @@
+{
+  "authorization_id": "R23_FORMAL_EXPERIMENT_A_CORRECTIVE_COMPLETION_AUTHORIZATION_V1",
+  "authorization_type": "CORRECTIVE_COMPLETION_RUNS",
+  "authorization_status": "AUTHORIZED_PENDING_SEPARATE_EXECUTION",
+  "execution_performed": false,
+  "date": "2026-09-11",
+  "amendment_id": "R23_FORMAL_EXPERIMENT_A_PROTOCOL_AMENDMENT_V1",
+  "amendment_path": "reproducibility/config/traffic_simulation/r23_formal_experiment_amendments/20260911_wall_time_policy_v1.json",
+  "amendment_sha256": "1cccff923d0da811776909a54a752cdc978b03004091151d6a9d5a5b825b484e",
+  "scope": {
+    "run_count": 4,
+    "condition_ids": [
+      "routing_v18_n4_rank01_p3_init_fixed01_rep1",
+      "routing_v18_n4_rank02_p2_init_fixed01_rep1",
+      "routing_v18_n4_rank02_p3_init_fixed01_rep1",
+      "routing_v18_n4_rank05_p3_init_fixed01_rep1"
+    ],
+    "new_attempt_ids_required": true,
+    "classification": "FORMAL_EXPERIMENT_A_CORRECTIVE_COMPLETION"
+  },
+  "scientific_settings": {
+    "n": 4,
+    "p": "per condition ID",
+    "lambda": 3.0,
+    "initialization": "all parameters = 0.1",
+    "optimizer": "COBYLA",
+    "maxiter": 300,
+    "objective_evaluation_cap": 900,
+    "repetition": 1,
+    "expectation": "exact CPU statevector",
+    "shots": "NONE",
+    "transpiler_optimization_level": 1,
+    "transpiler_seed": 17,
+    "simulator_seed": 17,
+    "runtime_environment": "same as original formal execution",
+    "tuning": "none"
+  },
+  "wall_time_policy": {
+    "research_wall_time_cap": "NONE",
+    "safety_guard": "NON_BINDING_EMERGENCY_SAFETY_GUARD",
+    "numerical_limit_seconds": null,
+    "runtime": "record as measured outcome"
+  },
+  "prohibitions": {
+    "execute_in_current_task": false,
+    "authorize_other_conditions": false,
+    "replace_original_formal_experiment": false,
+    "authorize_full_45_run_reexecution": false
+  },
+  "historical_provenance": {
+    "original_design_id": "R23_FORMAL_EXPERIMENT_DESIGN_V1",
+    "original_design_sha256": "9259b8c9e5b872f3f59a7a53b7bae07e053c9d1644573cfd1ead30668253805c",
+    "original_execution_manifest_sha256": "edcd848b73a41aec0798fed4a2c2eb77c2b4ca1b9f419f4cc454f1bee764fce1"
+  }
+}
