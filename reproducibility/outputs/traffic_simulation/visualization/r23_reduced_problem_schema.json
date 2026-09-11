@@ -1,0 +1,49 @@
+{
+  "schema_version": "r23-visualization-ready-v1",
+  "required": [
+    "timestamp",
+    "experiment",
+    "instance",
+    "vehicle",
+    "customer",
+    "route",
+    "delivered",
+    "pending",
+    "SOC",
+    "charging",
+    "time_window",
+    "objective",
+    "optimizer",
+    "evaluation",
+    "P_feasible",
+    "P_optimal",
+    "runtime"
+  ],
+  "present_fields": [
+    "experiment",
+    "instance",
+    "route",
+    "objective",
+    "optimizer",
+    "evaluation",
+    "P_feasible",
+    "P_optimal",
+    "runtime"
+  ],
+  "future_fields": [
+    "timestamp",
+    "vehicle",
+    "customer",
+    "delivered",
+    "pending",
+    "SOC",
+    "charging",
+    "time_window"
+  ],
+  "field_semantics": {
+    "P_feasible": "配送ルールを守ったルートが出る確率",
+    "P_optimal": "最も良いルートが出る確率",
+    "runtime": "CPU Aer statevector elapsed time in seconds"
+  },
+  "scope_note": "Future EVRP fields are schema placeholders only; no Full EVRP data is generated."
+}

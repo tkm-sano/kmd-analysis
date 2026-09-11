@@ -1,3 +1,9 @@
+## R23 Reduced Problem evidence（現行）
+
+正式なReduced Problem結果は、[R23 evidence viewer](../../../reproducibility/outputs/traffic_simulation/visualization/r23_reduced_problem_evidence.html)で確認できる。データsourceは[B2 Evidence Review](../../../reproducibility/outputs/traffic_simulation/r23_experiment_b2_evidence_review/20260911_v1/paired_optimizer_comparison.json)であり、rank01/rank03/rank05 × p=2/3、COBYLA/Nelder-Mead、fixed_0.1の12 rowsを表示する。route、exact route、gap、P_feasible、P_optimal、CPU runtime、nfevを日本語で確認できる。
+
+`r23_reduced_problem_schema.json`は現行visualization-ready schemaである。timestamp、vehicle、customer、delivered/pending、SOC、charging、time_windowは将来Full EVRPへ追加可能な予約fieldであり、現時点のデータは生成しない。既存のcurrent mapは受入道路網の確認用であり、本viewerとは役割を分ける。
+
 # 交通シミュレーション可視化：前提・見方・運用手順
 
 ## 現行統合マップ（2026-09-09追加）
