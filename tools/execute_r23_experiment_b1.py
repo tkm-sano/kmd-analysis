@@ -12,7 +12,7 @@ from traffic_simulation.r23_qaoa_aer.schema import R23Config, load_r22_instance,
 from traffic_simulation.r23_qaoa_aer.initialization import generate_initial_parameters, initialization_vector_sha256
 
 AUTH = ROOT / "reproducibility/outputs/traffic_simulation/r23_experiment_b_authority/20260911_v1"
-OUT = ROOT / "reproducibility/outputs/traffic_simulation/r23_experiment_b1/20260911_v1"
+OUT = ROOT / "reproducibility/outputs/traffic_simulation/r23_experiment_b1/20260911_v2"
 DESIGN = ROOT / "reproducibility/config/traffic_simulation/r23_experiment_b/20260911_experiment_b_v1.json"
 FORMAL = ROOT / "reproducibility/config/traffic_simulation/r23_formal_experiment/20260911_r23_formal_v1.json"
 R22 = ROOT / "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r22"
