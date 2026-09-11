@@ -1,0 +1,40 @@
+{
+  "authority_id": "R23_EXPERIMENT_B_IMPLEMENTATION_SOURCE_SET_V1",
+  "classification": "EXPERIMENT_B_IMPLEMENTATION_SOURCE_SET_FROZEN",
+  "common_objective_cap": 900,
+  "execution_performed": false,
+  "final_evaluation_outside_optimizer_nfev": true,
+  "hamiltonian_semantics_unchanged": true,
+  "implementation_commit": "8f3e0ee8a10a8d3c7f163a11094dbab866d1e11e",
+  "optimizer_support": {
+    "COBYLA": "SciPy method COBYLA via explicit adapter",
+    "NELDER_MEAD": "SciPy method Nelder-Mead via explicit adapter",
+    "unsupported": [
+      "SPSA",
+      "all other optimizers"
+    ]
+  },
+  "probability_semantics_unchanged": true,
+  "schema_version": "r23-experiment-b-implementation-authority-v1",
+  "source_hashes": {
+    "05_src/traffic_simulation/r23_qaoa_aer/artifact.py": "8cd85364e834809ec54202b93cd955531c9b1693b6b175ee65615a9eb4bf9a6d",
+    "05_src/traffic_simulation/r23_qaoa_aer/hamiltonian.py": "f38947e84cdb1094cd35c80462ed7db9c693da7e0f2f622e187053c235435f03",
+    "05_src/traffic_simulation/r23_qaoa_aer/initialization.py": "8fdac4a5f110e1890bf2cabcfcfd6cf257897eaeae1f45a5aa50228b27872188",
+    "05_src/traffic_simulation/r23_qaoa_aer/metrics.py": "76cd7e838eeb7817f0bc5021299ad27ce8c6d70b1735280026918840704667e8",
+    "05_src/traffic_simulation/r23_qaoa_aer/optimizers.py": "8e45272b13ace73b227ce3e936f8273b29d9c65f3231bc8a7310c2d4931cf344",
+    "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py": "6d0e26fe2f14a77cabd6d938226965479bb8ec46805efee5dcaf7af7c3a6bf67",
+    "05_src/traffic_simulation/r23_qaoa_aer/schema.py": "74fc7d8af55bfddc5205fcc9d0dc021ca9835ec4ea21ce7b2b8cb8b57d3adbd4",
+    "05_src/traffic_simulation/validation/test_r23_experiment_b_implementation.py": "6004ddbc08a1fb8e254afc02ed34b4a3b8b270f654b65940232553b2c278fb8d"
+  },
+  "termination_categories": [
+    "OPTIMIZER_REPORTED_SUCCESS",
+    "OPTIMIZER_REPORTED_FAILURE",
+    "MAXITER_REACHED",
+    "OBJECTIVE_EVALUATION_CAP_REACHED",
+    "EXTERNAL_SAFETY_STOP",
+    "IMPLEMENTATION_EXCEPTION",
+    "TERMINATION_UNKNOWN"
+  ],
+  "validation_summary": "reproducibility/outputs/traffic_simulation/r23_experiment_b_authority/20260911_v1/validation_summary.json",
+  "validation_summary_sha256": "a7e9191e9f0293652077fb6bf9742c6c7443ddd8705a9d9fc4b29bc981a57621"
+}

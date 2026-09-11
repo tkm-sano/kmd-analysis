@@ -1,0 +1,201 @@
+{
+  "all_smokes_pass": true,
+  "classification": "NON_RESEARCH_IMPLEMENTATION_VALIDATION",
+  "execution_scope": "synthetic_n2_only",
+  "formal_experiment_b_conditions_used": false,
+  "smoke_a_cobyla_regression": {
+    "adapter": {
+      "final_objective": 1.460500091771521e-05,
+      "final_parameters": [
+        0.2962719310058449,
+        -0.1991594629737276
+      ],
+      "nfev": 20
+    },
+    "comparison_tolerance": "exact float equality observed for this deterministic objective",
+    "qiskit_wrapper": {
+      "final_objective": 1.460500091771521e-05,
+      "final_parameters": [
+        0.2962719310058449,
+        -0.1991594629737276
+      ],
+      "nfev": 20
+    },
+    "status": "PASS"
+  },
+  "smoke_b_nelder_mead": {
+    "P_feasible": 0.12426691576683321,
+    "P_optimal": 0.06213345788341661,
+    "absolute_optimality_gap": null,
+    "final_objective": 2.7832365755573285,
+    "nfev": 9,
+    "nit": 5,
+    "optimizer_method": "Nelder-Mead",
+    "optimizer_status": 2,
+    "optimizer_success": false,
+    "relative_optimality_gap": null,
+    "status": "PASS",
+    "termination_message": "Maximum number of iterations has been exceeded.",
+    "termination_status": "MAXITER_REACHED"
+  },
+  "smoke_c_objective_cap": {
+    "budget_hit": true,
+    "expectation_evaluation_count": 3,
+    "objective_evaluation_count": 2,
+    "status": "PASS",
+    "termination_source": "explicit_objective_callback_guard",
+    "termination_status": "OBJECTIVE_EVALUATION_CAP_REACHED"
+  },
+  "smoke_d_initialization": {
+    "fixed_0.1_p2": [
+      0.1,
+      0.1,
+      0.1,
+      0.1
+    ],
+    "rng": "numpy.random.Generator(numpy.random.PCG64(seed))",
+    "status": "PASS",
+    "vectors": {
+      "p2_seed11": {
+        "beta_in_domain": true,
+        "deterministic": true,
+        "dimension": 4,
+        "gamma_in_domain": true,
+        "parameters": [
+          -2.333762244609258,
+          -0.004537324106032248,
+          0.3188664946609694,
+          -1.4806671488548195
+        ],
+        "sha256": "2073a4331cf2478e753b89d4978c3f865a0dc93ea1fe5837aea3a8b920f29c15"
+      },
+      "p2_seed23": {
+        "beta_in_domain": true,
+        "deterministic": true,
+        "dimension": 4,
+        "gamma_in_domain": true,
+        "parameters": [
+          1.218517482962425,
+          0.8888082150018626,
+          -1.1666485767518533,
+          -1.2135719518482924
+        ],
+        "sha256": "d3385871a30412f9b71b4f073fd39e793ec70ccfe7c020f3a815ba83971d074d"
+      },
+      "p2_seed37": {
+        "beta_in_domain": true,
+        "deterministic": true,
+        "dimension": 4,
+        "gamma_in_domain": true,
+        "parameters": [
+          1.2827313286505495,
+          1.015794531176624,
+          -1.3540476827009895,
+          0.6371201646958022
+        ],
+        "sha256": "9b8859cb76260e87d7543246af235e3aac16966b88ae46bbfb29410b40a1215a"
+      },
+      "p2_seed53": {
+        "beta_in_domain": true,
+        "deterministic": true,
+        "dimension": 4,
+        "gamma_in_domain": true,
+        "parameters": [
+          -3.0716796848305283,
+          1.3754562033382962,
+          -0.5305295756711068,
+          1.3605881639816961
+        ],
+        "sha256": "37c7c511cff79ac73a9f83236b186d6676afd2ce652c80af3f476bea46688463"
+      },
+      "p2_seed71": {
+        "beta_in_domain": true,
+        "deterministic": true,
+        "dimension": 4,
+        "gamma_in_domain": true,
+        "parameters": [
+          -1.5493475588773857,
+          0.1730316075104561,
+          0.8199134556560548,
+          0.42336436406867217
+        ],
+        "sha256": "4d7afb40827481f35d0d69032dbfbb4f9fa6102d1536431a100858425bba8f71"
+      },
+      "p3_seed11": {
+        "beta_in_domain": true,
+        "deterministic": true,
+        "dimension": 6,
+        "gamma_in_domain": true,
+        "parameters": [
+          -2.333762244609258,
+          -0.004537324106032248,
+          0.6377329893219388,
+          -1.4806671488548195,
+          -1.1060728262120585,
+          1.345264603918467
+        ],
+        "sha256": "428f4d8bd33c14165f020a6f154bcca00d3a0a3c1744983f0fde899e9a6607bc"
+      },
+      "p3_seed23": {
+        "beta_in_domain": true,
+        "deterministic": true,
+        "dimension": 6,
+        "gamma_in_domain": true,
+        "parameters": [
+          1.218517482962425,
+          0.8888082150018626,
+          -2.3332971535037066,
+          -1.2135719518482924,
+          0.48174916328563633,
+          1.1104182474592577
+        ],
+        "sha256": "49d8e598436083598c81ebfdeec7c655b1ac02fe6467cfca53cf3b0e62486f7c"
+      },
+      "p3_seed37": {
+        "beta_in_domain": true,
+        "deterministic": true,
+        "dimension": 6,
+        "gamma_in_domain": true,
+        "parameters": [
+          1.2827313286505495,
+          1.015794531176624,
+          -2.708095365401979,
+          0.6371201646958022,
+          -0.56874697816091,
+          -0.15677906328309343
+        ],
+        "sha256": "58a1767c50bec5395ac542e6664e62b2ba9e320753b32135fb8ddc51a0b467be"
+      },
+      "p3_seed53": {
+        "beta_in_domain": true,
+        "deterministic": true,
+        "dimension": 6,
+        "gamma_in_domain": true,
+        "parameters": [
+          -3.0716796848305283,
+          1.3754562033382962,
+          -1.0610591513422136,
+          1.3605881639816961,
+          -1.2414795859859047,
+          0.5228761258591348
+        ],
+        "sha256": "bd07b8203f80bb9f5bd3c1d0f3d8e3f2af856bc53e8c53c1fd1ffc8f199b9812"
+      },
+      "p3_seed71": {
+        "beta_in_domain": true,
+        "deterministic": true,
+        "dimension": 6,
+        "gamma_in_domain": true,
+        "parameters": [
+          -1.5493475588773857,
+          0.1730316075104561,
+          1.6398269113121096,
+          0.42336436406867217,
+          -0.9293697213350578,
+          -1.4270065769034002
+        ],
+        "sha256": "cd29e739907fae83630de2e146588f85b492e5de59f8d37ce0374949f2a6fb7c"
+      }
+    }
+  }
+}
