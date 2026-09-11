@@ -1,3 +1,10 @@
+## 現行R23 status（2026-09-11）
+
+Routing Baselineは`COMPLETE`、Reduced Problemは`R23_REDUCED_PROBLEM_BASELINE_ACCEPTED_WITH_LIMITATIONS`。Formal A、Experiment B1、Experiment B2はReduced Problem scope内で完了している。現在読むべき仕様は[仕様index](specifications/README.md)、[Routing Baseline canonical](specifications/ROUTING_BASELINE_CANONICAL.md)、[Reduced Problem canonical](specifications/R23_REDUCED_PROBLEM_CANONICAL.md)。
+
+次の科学タスクは`R23_LIMITED_SCALING_METHODOLOGY_REVIEW`。これはn≥5 executionではない。Full-EVRP R20は`BLOCKED`、R21は`NOT_STARTED`。B2 v1は履歴として保持し科学比較から除外、B2 v2が現行evidenceである。
+
+
 # Tokyo traffic simulation extension
 
 This directory is an additive research layer. It must not overwrite the
@@ -34,7 +41,7 @@ The current controlled quantum-method branch is scoped to
 | R20 reduced formulation | `FORMULATION_VERIFIED = PASS` | [`r20_route_ordering/`](r20_route_ordering/) and [`R20_QAOA_SUBPROBLEM_SPEC.md`](specifications/R20_QAOA_SUBPROBLEM_SPEC.md) |
 | R21 reduced QUBO validation | `PASS` | [`r21_qubo_validation/`](r21_qubo_validation/); authoritative run `20260910_formal_reduced_v4` |
 | R22 reduced Ising conversion | `PASS` | [`r22_ising_conversion/`](r22_ising_conversion/); authoritative run `20260910_formal_reduced_v1` |
-| R23 reduced QAOA/Aer | `FORMAL_EXPERIMENT_DESIGN_FROZEN_READY_TO_RUN` | [`r23_qaoa_aer/`](r23_qaoa_aer/); design V1 frozen, formal 45-run Experiment A not executed |
+| R23 reduced QAOA/Aer | `ACCEPTED_WITH_LIMITATIONS` | [`r23_qaoa_aer/`](r23_qaoa_aer/); design V1 frozen, Formal A/B1/B2 evidence is complete within the accepted Reduced Problem scope |
 
 The reduced objective is static directed road-network travel time, using a
 customer-only row-major `n x n` position encoding. The model enforces only

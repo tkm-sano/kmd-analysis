@@ -9,7 +9,7 @@ Current Authority: `Adopted reduced Single-Vehicle Route Ordering formulation an
 - Status: ADOPTED_AND_FORMULATION_VERIFIED_SCOPED
 - Scope: frozen initial reduced route-ordering formulation; full-EVRP exclusions remain
 - Current R20 Status: BLOCKED
-- Current reduced downstream state: R21 PASS; R22 PASS; R23 READY_FOR_PILOT
+- Current reduced downstream state: R21 PASS; R22 PASS; R23 ACCEPTED_WITH_LIMITATIONS
 - Formal adoption: SUBPROBLEM_FORMULATION_ADOPTED; FORMULATION_VERIFIED = PASS for `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY`
 - Authority rule: This document does not supersede the current R20 formal artifacts, R15/R16/R19 authority, or the execution plan.
 
@@ -26,7 +26,7 @@ Full-EVRP R20は引き続きBLOCKEDであり、本仕様書のscoped PASSからf
 ### 2.1 Confirmed current state
 
 - R20 Status: BLOCKED
-- Reduced path: R21 PASS; R22 PASS; R23 READY_FOR_PILOT (execution authorization remains separate)
+- Reduced path: R21 PASS; R22 PASS; R23 ACCEPTED_WITH_LIMITATIONS (execution authorization remains separate)
 - 既存R20はfull EVRPを対象とするposition-indexed formulation候補、variable registry、HC mapping、penalty framework、Rosenberg auxiliary registry、resource estimateを持つ。
 - full-EVRP R20には、全制約を対象とするaccepted coefficient builder、numeric penalty certificate、decoder、independent validatorがない。本仕様のreduced route-orderingにはexact reference・exact enumeration・独立validator/decoderがあり、formal gate reviewによりFORMULATION_VERIFIEDがscoped PASSとなった。
 - 既存R20のn=10 full-EVRP estimateは13,782 logical binary variables、estimated couplersは17,953であり、full exact formulationはAer/QAOAの正式実行対象として未準備である。
@@ -649,7 +649,7 @@ The restrictions above applied to the preceding implementation/evidence tasks. T
 - Basis: corrected direct/expanded QUBO equality, independent decoder/validator, exact synthetic and real-data-derived validation, Routing Baseline complete-reachability adapter, and proved universal/instance-aware conservative penalty bounds.
 - Numerical policy: `λ > B` remains the mathematical requirement. For initial R23 Formal Experiment A only, `R20_COMMON_GLOBAL_LAMBDA_V1` adopts common `λ=3.0`; `κ=10`, `δ_min=1e-6`, and `λ=B+max(10e_noise,1e-6B)` remain non-authoritative implementation-policy candidates.
 - Scope limitations: complete-reachability subsets only; static normalized travel time; non-self zero-time inputs rejected; self-loops excluded; no unreachable-transition penalty; invalid samples discarded without repair; reduced route-ordering only.
-- This scoped PASS does not validate full EVRP and did not itself authorize downstream execution. Subsequent separate governance and evidence records established R21 PASS, R22 PASS, and R23 READY_FOR_PILOT for the same reduced scope only.
+- This scoped PASS does not validate full EVRP and did not itself authorize downstream execution. Subsequent separate governance and evidence records established R21 PASS, R22 PASS, and R23 ACCEPTED_WITH_LIMITATIONS for the same reduced scope only.
 
 ## 16. Historical gate-task execution record
 
@@ -892,7 +892,7 @@ For each subset, validate all IDs, exact directed-pair completeness, statuses/nu
 - Unresolved labels: ROUTING_BASELINE_SPEC_CONFLICT for non-self zero time; future unreachable-transition hard constraint and formal numerical λ adoption remain
 - FORMULATION_VERIFIED: PASS (scope: INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY)
 - R20 Status: BLOCKED
-- Reduced downstream state: R21 PASS; R22 PASS; R23 READY_FOR_PILOT
+- Reduced downstream state: R21 PASS; R22 PASS; R23 ACCEPTED_WITH_LIMITATIONS
 - Prohibited actions: none performed
 
-本書はfull EVRPを解いたことやformal QAOA performanceを示さない。R21/R22の実行可否と結果は`EVRP_EXECUTION_PLAN.md`の別gate recordがauthorityであり、現在は同じreduced scopeについてR21/R22 PASS、R23 READY_FOR_PILOTである。採択済みsubproblem formulationと、未採択のformal numerical λ policy、unreachable-transition extension、full-EVRP constraintsを分離して扱う。
+本書はfull EVRPを解いたことやformal QAOA performanceを示さない。R21/R22の実行可否と結果は`EVRP_EXECUTION_PLAN.md`の別gate recordがauthorityであり、現在は同じreduced scopeについてR21/R22 PASS、R23 ACCEPTED_WITH_LIMITATIONSである。採択済みsubproblem formulationと、未採択のformal numerical λ policy、unreachable-transition extension、full-EVRP constraintsを分離して扱う。

@@ -3,7 +3,7 @@
 > **Scope note (2026-09-10):** 本文の道路属性・較正問題は、基準日 `2026-07-31` における
 > network-workstreamの履歴・未解消事項である。現行のnetwork/Routing Baseline受入と、
 > `EVRP_EXECUTION_PLAN.md` が管理するreduced R20--R23 quantum branchのstatusを上書きしない。
-> reduced branchはR21/R22 PASS、R23 READY_FOR_PILOTだが、full-EVRPの下流比較はなおblockedである。
+> reduced branchはR21/R22 PASS、R23 ACCEPTED_WITH_LIMITATIONSだが、full-EVRPの下流比較はなおblockedである。
 
 > **文書状態**: 現状説明・問題追跡文書
 > **状態基準日**: 2026-07-31

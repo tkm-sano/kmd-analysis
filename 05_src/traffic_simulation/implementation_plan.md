@@ -1186,7 +1186,7 @@ OD生成規則、時間帯係数、車種構成、経路選択、乱数シード
 
 > **2026-09-10 current-state note:** full-EVRP基盤は未完了だが、独立したinitial reduced
 > route-ordering branchではR20 formulation、R21 exact QUBO validation、R22 Ising conversionが
-> PASSし、R23 QAOA/Aer runnerはimplementation smoke済みで `READY_FOR_PILOT` である。以下の
+> PASSし、R23 QAOA/Aer runnerはimplementation smoke済みで `ACCEPTED_WITH_LIMITATIONS` である。以下の
 > full-EVRP記述をreduced branchの完了主張として読まない。reduced modelは単一車両、固定depot、
 > static directed travel time、customer-once/position-onceだけを扱う。
 

@@ -1,3 +1,8 @@
+## 現行のReduced Problem baseline（2026-09-11）
+
+Routing Baseline、Reduced Problem formulation、Formal A、Experiment B1、Experiment B2を完了し、最終分類は`R23_REDUCED_PROBLEM_BASELINE_ACCEPTED_WITH_LIMITATIONS`。現行仕様は[traffic-simulation specification index](05_src/traffic_simulation/specifications/README.md)、現行statusは[RESEARCH_STATUS](RESEARCH_STATUS.md)。次の科学タスクは`R23_LIMITED_SCALING_METHODOLOGY_REVIEW`であり、n≥5、Full EVRP、QPU、追加scientific executionは未実施である。
+
+
 # Tokyo Urban Delivery × Quantum Future Society
 
 東京都大田区を対象に、実データに基づく都市配送モデルを構築し、配送計画の作成方法と将来の配送条件が都市配送需要の充足へ与える影響を評価する修士研究です。
@@ -126,14 +131,14 @@ Routing Baseline
   -> R20 reduced route-ordering formulation             [FORMULATION_VERIFIED = PASS]
   -> R21_REDUCED_QUBO_VALIDATION                        [PASS]
   -> R22_REDUCED_ISING_CONVERSION                       [PASS]
-  -> R23_REDUCED_QAOA_AER_EXECUTION                     [READY_FOR_PILOT]
+  -> R23_REDUCED_QAOA_AER_EXECUTION                     [ACCEPTED_WITH_LIMITATIONS]
   -> R24_QUANTUM_SOLUTION_DECODE                        [NOT AUTHORIZED]
 ```
 
 このPASSは `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY` に限定される。現在のQUBOは
 customer-onlyの `n x n` position encodingで、静的な有向travel timeを最小化し、customer-onceと
 position-onceだけをpenalty化する。capacity、time window、battery/SOC、charging、fleet sizing、
-一般のunreachable transitionは含まない。formal QAOA pilot/baselineは未実行であり、AerはCPU上の
+一般のunreachable transitionは含まない。Formal A/B1/B2は完了しており、AerはCPU上の
 software simulatorであって量子実機性能やquantum advantageの証拠ではない。
 
 数式・scope・stage gateの正本は[EVRP Execution Plan](EVRP_EXECUTION_PLAN.md)と
@@ -156,7 +161,7 @@ software simulatorであって量子実機性能やquantum advantageの証拠で
   ├─ 3. 配送条件                            [PARTIAL]
   ├─ 4. 配送シミュレーション                [PARTIAL]
   ├─ 5. 配送最適化問題                      [REDUCED PATH VALIDATED / FULL EVRP BLOCKED]
-  └─ 6. 計算手法比較                        [R23 READY_FOR_PILOT / FORMAL RUN NOT STARTED]
+  └─ 6. 計算手法比較                        [R23 ACCEPTED_WITH_LIMITATIONS]
 ```
 
 ### できるようになったこと
@@ -176,7 +181,7 @@ software simulatorであって量子実機性能やquantum advantageの証拠で
 - 警視庁2024年データによる独立した妥当性確認には進んでいない。
 - 接続不能と強制移動が残る予備道路網の配送結果を正式評価へ使用できない。
 - 宅配便個数相当を、配送停止、時間分布、車両、積載、稼働時間、充電条件へ変換する共通配送問題は未固定である。
-- 古典最適化とQAOAの正式比較は実施していない。
+- Reduced Problem scopeのB1/B2比較は完了している。
 
 ## 現在の主要ボトルネック
 

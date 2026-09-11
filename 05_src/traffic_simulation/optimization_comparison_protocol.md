@@ -28,7 +28,7 @@ R21/R22 evidence or the initial R23 raw-QAOA metrics.
 First compare objective and feasibility on the frozen static instance. Then map both visit orders with the same road-routing rule and evaluate them under the same SUMO traffic seeds. Report static optimization quality separately from realized traffic performance. Qiskit Aer results do not establish quantum advantage.
 
 The reduced quantum path currently has R21 QUBO-equivalence PASS and R22
-QUBO-to-Ising full-state-equivalence PASS. R23 is `READY_FOR_PILOT`; formal
+QUBO-to-Ising full-state-equivalence PASS. R23 is `ACCEPTED_WITH_LIMITATIONS`; formal
 QAOA evidence does not yet exist. The frozen initial R23 baseline uses CPU Aer
 exact expectation, six instances, `p={1,2,3}`, COBYLA, and 18 configurations;
 finite shots, GPU/H100, optimizer comparison, and cloud QPU are excluded.

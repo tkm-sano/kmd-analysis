@@ -3,7 +3,7 @@
 
 # 研究進捗ダッシュボード
 
-**状態更新日:** 2026-09-10
+**状態更新日:** 2026-09-11
 
 ## 現在地
 
@@ -11,7 +11,7 @@
 |---|---|
 | 現在工程 | 7 / 21: **観測拡充・交通需要生成** |
 | 完了工程 | 6工程 |
-| 概要 | 正式道路網とRouting Baselineは受入済み。full-EVRP本線では需要・顧客・TW等の定義が未完である一方、独立したreduced route-ordering branchはR21/R22 PASS、R23 FORMAL_EXPERIMENT_DESIGN_FROZEN_READY_TO_RUN |
+| 概要 | 正式道路網とRouting Baselineは受入済み。full-EVRP本線では需要・顧客・TW等の定義が未完である一方、独立したreduced route-ordering branchはR21/R22 PASS、R23 Reduced Problem baseline ACCEPTED_WITH_LIMITATIONS |
 
 ```mermaid
 flowchart LR
@@ -33,20 +33,20 @@ flowchart LR
 |---|---|---|
 | 道路網仕様 | **受入済み** (`accepted`) | V18 geometry/length re-acceptanceとR12-R14 Routing Baseline validationがPASS。旧v16停止記録は履歴であり現行network gateではない |
 | 正式SUMO道路網 | **受入済み** (`accepted`) | current V18 authorityでFORMAL_NETWORK_ACCEPTED=true。accepted scopeとhashはEVRP_EXECUTION_PLAN.mdを正本とする |
-| 下流実験 | **scope別** (`scope_split`) | full-EVRP比較は未準備。INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLYはR21/R22 PASS、R23 formal design frozenだがformal QAOA未実行 |
+| 下流実験 | **scope別** (`scope_split`) | full-EVRP比較は未準備。INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLYはR21/R22 PASS、R23 Formal A/B1/B2 completed within Reduced Problem scope |
 
 ## 現在の阻害事項
 
 - full-EVRP本線ではR05-R11のcustomer sampling、demand、time window、service time、depot、EV、charging station定義が未完了
 - full-EVRP R20はcapacity、time window、battery/SOC、charging、fleet、一般reachabilityを含むaccepted QUBOがなくBLOCKED
-- reduced R23はpilot evidence review・implementation validation・design freeze済みだが、formal 45-run Experiment Aは未実行
+- reduced R23はFormal A/B1/B2 evidence reviewを完了し、baseline accepted with limitations
 - Aer結果を量子実機性能またはquantum advantageへ一般化できない
 
 ## 次の作業
 
 1. EVRP_EXECUTION_PLAN.mdに従いfull-EVRP本線の未完Definition stageを進める
-2. reduced branchは[freeze済みformal design](reproducibility/config/traffic_simulation/r23_formal_experiment/20260911_r23_formal_v1.json)のexecution authorizationを別taskで判断する
-3. R23はR22 Hamiltonianとlambdaを変更せず、pilotとformal baselineを分離する
+2. R23 reduced branchのrepository/specification consolidationを完了し、次にlimited scaling methodologyをreviewする
+3. R23 pilotとformal baselineを分離し、R22 Hamiltonianとlambdaを変更しない
 4. full-EVRP/Hayate評価とreduced method evidenceをscope付きで統合する
 
 ## 全工程
