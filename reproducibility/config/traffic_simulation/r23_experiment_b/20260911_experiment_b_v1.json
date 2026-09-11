@@ -1,0 +1,215 @@
+{
+  "schema_version": "r23-experiment-b-design-v1",
+  "design_id": "R23_EXPERIMENT_B_DESIGN_V1",
+  "design_status": "FROZEN_RESEARCH_DESIGN_IMPLEMENTATION_GATE_PENDING",
+  "design_classification": "EXPERIMENT_B_DESIGN_IMPLEMENTATION_FIX_REQUIRED",
+  "execution_authorized": false,
+  "execution_performed": false,
+  "research_question": "How robust are the Formal Experiment A QAOA outcomes to parameter initialization and classical optimizer choice under fixed problem instances and QAOA depth?",
+  "preceding_authority": {
+    "evidence_review_root": "reproducibility/outputs/traffic_simulation/r23_formal_evidence_review/20260911_v1/",
+    "evidence_review_classification": "FORMAL_EXPERIMENT_A_EVIDENCE_ACCEPTED_WITH_LIMITATIONS",
+    "evidence_review_manifest_sha256": "72628a15216824d93306c8748f7ceb9616b345a86e1602b0aa4ba8c451fbc723",
+    "reason_for_priority": "n=4 shows low P_optimal, non-monotonic p effects, large instance heterogeneity, and 45/45 TERMINATION_UNKNOWN; robustness must be characterized before n>=5 scaling."
+  },
+  "scientific_scope": {
+    "experiment_role": "robustness diagnosis, not a new scaling experiment",
+    "n_values": [4],
+    "excluded_n_values": [2, 3, 5],
+    "p_values": [2, 3],
+    "lambda": 3.0,
+    "lambda_policy_id": "R20_COMMON_GLOBAL_LAMBDA_V1",
+    "formal_instances_only": true,
+    "instance_selection_policy": "Use deterministic authority ranks rank01, rank03, rank05 from the frozen R23 instance set; selection is defined before execution and is not based on QAOA outcomes. This is a robustness diagnostic sample, not representative population inference.",
+    "instance_ids": [
+      "routing_v18_n4_rank01",
+      "routing_v18_n4_rank03",
+      "routing_v18_n4_rank05"
+    ]
+  },
+  "stages": {
+    "B1_initialization_robustness": {
+      "purpose": "Test initialization sensitivity while holding optimizer fixed to the Formal A comparator.",
+      "optimizer": "COBYLA",
+      "initialization_conditions": [
+        {
+          "id": "fixed_0.1",
+          "type": "baseline",
+          "definition": "all 2p parameters equal 0.1",
+          "seed": null
+        },
+        {
+          "id": "random_seed_11",
+          "type": "seeded_random",
+          "definition": "gamma layers independently Uniform[-pi, pi); beta layers independently Uniform[-pi/2, pi/2)",
+          "rng": "numpy.random.Generator(numpy.random.PCG64(seed))",
+          "seed": 11
+        },
+        {
+          "id": "random_seed_23",
+          "type": "seeded_random",
+          "definition": "gamma layers independently Uniform[-pi, pi); beta layers independently Uniform[-pi/2, pi/2)",
+          "rng": "numpy.random.Generator(numpy.random.PCG64(seed))",
+          "seed": 23
+        },
+        {
+          "id": "random_seed_37",
+          "type": "seeded_random",
+          "definition": "gamma layers independently Uniform[-pi, pi); beta layers independently Uniform[-pi/2, pi/2)",
+          "rng": "numpy.random.Generator(numpy.random.PCG64(seed))",
+          "seed": 37
+        },
+        {
+          "id": "random_seed_53",
+          "type": "seeded_random",
+          "definition": "gamma layers independently Uniform[-pi, pi); beta layers independently Uniform[-pi/2, pi/2)",
+          "rng": "numpy.random.Generator(numpy.random.PCG64(seed))",
+          "seed": 53
+        },
+        {
+          "id": "random_seed_71",
+          "type": "seeded_random",
+          "definition": "gamma layers independently Uniform[-pi, pi); beta layers independently Uniform[-pi/2, pi/2)",
+          "rng": "numpy.random.Generator(numpy.random.PCG64(seed))",
+          "seed": 71
+        }
+      ],
+      "run_count": 36,
+      "repetition": 1
+    },
+    "B2_optimizer_robustness": {
+      "purpose": "Compare a deterministic derivative-free optimizer against COBYLA using the B1 fixed_0.1 observations as the predeclared comparator.",
+      "baseline_optimizer": "COBYLA",
+      "comparator_optimizer": "NELDER_MEAD",
+      "initialization_condition": "fixed_0.1",
+      "new_comparator_runs": 6,
+      "comparison_control_runs": "B1 fixed_0.1 COBYLA runs for the same 3 instances x 2 p values",
+      "repetition": 1,
+      "execution_dependency": "Run only after B1 review and comparator implementation/smoke validation; no adaptive selection of instances, p, seeds, or budgets."
+    }
+  },
+  "initialization_policy": {
+    "parameter_order": "[gamma_1..gamma_p, beta_1..beta_p]",
+    "parameter_domains": {
+      "gamma": "Uniform[-pi, pi), principal-angle diagnostic domain",
+      "beta": "Uniform[-pi/2, pi/2), principal-angle diagnostic domain"
+    },
+    "domain_rationale": "The current repository exposes unconstrained gamma/beta values and applies them directly in RZ/RX rotations. The bounded symmetric domains are a frozen robustness-design convention, not a physical bound or an inference from Formal A.",
+    "seed_count": 5,
+    "random_initialization_count": 5,
+    "total_initialization_conditions": 6,
+    "same_initialization_for_optimizer_comparison": true
+  },
+  "optimizer_policy": {
+    "common_objective_evaluation_cap": 900,
+    "fairness_basis": "common objective evaluations, not maxiter",
+    "maxiter": {
+      "COBYLA": {
+        "value": 300,
+        "semantics": "optimizer-specific safety/iteration configuration; not a cross-optimizer workload equivalence"
+      },
+      "NELDER_MEAD": {
+        "value": 300,
+        "semantics": "optimizer-specific safety/iteration configuration; common objective cap remains the fairness constraint"
+      }
+    },
+    "termination_fields": [
+      "objective_evaluation_count",
+      "configured_maxiter",
+      "configured_objective_cap",
+      "budget_hit",
+      "termination_status",
+      "termination_message",
+      "optimizer_success",
+      "nit",
+      "nfev"
+    ],
+    "optimizer_choice_rationale": "Nelder-Mead is a deterministic derivative-free comparator appropriate for exact deterministic expectations and small parameter dimension. SPSA is available but is not selected as the primary comparator because its stochastic-approximation design is less clean for isolating deterministic optimizer dependence here.",
+    "implementation_gate": "Current R23 qaoa.py/schema.py accept COBYLA only. B2 requires a new optimizer adapter/schema path, preserved source hashes, separate smoke validation, and result metadata capture before authority build."
+  },
+  "execution_controls": {
+    "expectation_mode": "exact_statevector",
+    "shots": "NONE",
+    "backend": "AerSimulator",
+    "method": "statevector",
+    "device": "CPU",
+    "optimization_level": 1,
+    "seed_simulator": 17,
+    "seed_transpiler": 17,
+    "wall_time_policy": "NO_RESEARCH_WALL_TIME_CAP",
+    "emergency_infrastructure_guard": "If required, non-binding safety-only guard; record separately and never classify as a research outcome or optimizer failure.",
+    "fixed_formulation": "R20/R21/R22 reduced route-ordering authority, lambda=3.0, frozen Routing Baseline instances"
+  },
+  "metrics": {
+    "primary": ["P_feasible", "P_optimal", "relative_optimality_gap"],
+    "secondary": ["objective_evaluation_count", "termination_status", "optimizer_success", "nit", "nfev", "final_expectation", "absolute_optimality_gap", "T_total", "T_optimizer_total", "T_objective_eval_total", "T_Aer_total", "T_transpile_total", "T_expectation_total"],
+    "initialization_robustness_diagnostics": ["median_P_feasible", "min_P_feasible", "max_P_feasible", "median_P_optimal", "min_P_optimal", "max_P_optimal", "gap_zero_fraction", "descriptive_dispersion"],
+    "interpretation": "Dispersion is descriptive across the predeclared initialization conditions; it is not population uncertainty or optimizer stochastic uncertainty beyond the tested design."
+  },
+  "termination_metadata_plan": {
+    "objective": "Determine whether TERMINATION_UNKNOWN is a COBYLA wrapper/API limitation or persists across optimizer interfaces.",
+    "capture_rule": "Extract native optimizer result fields without changing optimizer behavior; preserve empty/None values rather than infer success.",
+    "required_pre_execution_work": "Inspect and validate adapter result APIs in a non-formal smoke test; do not modify historical Formal A artifacts."
+  },
+  "candidate_design_comparison": {
+    "combined_72_run_candidate": {
+      "matrix": "n={3,4} x ranks={01,03,05} x p={2,3} x 6 initializations x COBYLA",
+      "run_count": 72,
+      "rough_serial_burden": "approximately 4.7 hours using Formal A corrected T_total means; n=4 dominates"
+    },
+    "n4_focused_36_run_candidate": {
+      "matrix": "n={4} x ranks={01,03,05} x p={2,3} x 6 initializations x COBYLA",
+      "run_count": 36,
+      "rough_serial_burden": "approximately 4.6 hours using selected corrected n=4 T_total observations; halves condition count but saves only about 10 minutes versus 72 because n=4 dominates",
+      "information_tradeoff": "loses direct n=3 robustness comparison but directly addresses the pre-scaling n=4 uncertainty with the smallest informative B1"
+    },
+    "adopted": "n4_focused_36_run_candidate"
+  },
+  "run_counts": {
+    "B1": 36,
+    "B2_incremental_NELDER_MEAD": 6,
+    "B2_reused_COBYLA_controls": 6,
+    "total_potential_unique_runs": 42,
+    "total_potential_comparison_observations": 48,
+    "counting_rule": "B2 COBYLA controls are reused from B1 rather than re-executed; 42 is the number of unique executions if both stages complete."
+  },
+  "robustness_decision_rule": {
+    "classification": "descriptive_only",
+    "robust": "No material ordering change in P_feasible/P_optimal across the six initializations, with all gap statuses preserved; no universal numeric threshold is predeclared because the design is a small deterministic diagnostic sample.",
+    "moderately_sensitive": "Some initialization-dependent spread or ordering changes, but the main qualitative conclusion is preserved.",
+    "highly_sensitive": "Large initialization-dependent spread or frequent loss of feasible/optimal concentration, or qualitative conclusions change across initializations.",
+    "optimizer_convergence": "Never inferred from nfev alone; native success/termination metadata must be available or reported unresolved."
+  },
+  "scaling_gate_after_b": {
+    "id": "R23_SCALING_EXTENSION_READY",
+    "requirements": [
+      "initialization robustness characterized",
+      "optimizer dependence characterized or explicitly bounded",
+      "no unresolved implementation defect",
+      "termination metadata limitation understood",
+      "n=5 resource methodology redesigned",
+      "R22 n>=5 validation method designed",
+      "scaling experiment design frozen"
+    ],
+    "does_not_authorize_n5": true
+  },
+  "experiment_c": {
+    "status": "REQUIRED_BEFORE_SCENARIO_MODELLING",
+    "excluded_from_b": true,
+    "expectation_mode_remains_exact": true
+  },
+  "resource_preflight": {
+    "required_before_execution": true,
+    "n4_current_guard_gib": 8.0,
+    "preflight_outputs": ["estimated_peak_memory", "available_memory", "expected_run_count", "expected_wall_burden", "artifact_storage"],
+    "no_runtime_extrapolation": true
+  },
+  "stop_conditions": [
+    "Any authority/hash mismatch",
+    "Any change to frozen R20/R21/R22/R23 scientific parameters",
+    "Comparator implementation or result metadata cannot be validated",
+    "Resource preflight fails",
+    "A safety-only infrastructure guard triggers; preserve partial records and stop without relabeling as algorithmic failure"
+  ],
+  "prohibitions": ["no Experiment B execution in this design task", "no n>=5", "no Experiment C", "no shots", "no historical artifact mutation", "no QPU/GPU", "no future-QPU claim", "no scaling regression", "no Full-EVRP advancement", "no remote push"]
+}
