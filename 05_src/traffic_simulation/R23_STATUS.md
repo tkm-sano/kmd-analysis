@@ -5,6 +5,7 @@
 | Routing Baseline | COMPLETE |
 | Reduced Problem | ACCEPTED_WITH_LIMITATIONS |
 | Limited scaling methodology review | COMPLETE; n=5 preflight required, n>=6 current exact CPU Aer statevector not recommended |
+| N5 scaling authorization | NOT_AUTHORIZED_RESOURCE_LIMIT; frozen exact Aer runtime unavailable in current environment |
 | Formal A | COMPLETE |
 | Experiment B1 | COMPLETE |
 | Experiment B2 | COMPLETE |
@@ -16,4 +17,4 @@
 | Full EVRP R20 | BLOCKED |
 | Full EVRP R21 | NOT_STARTED |
 
-EvidenceはReduced Problem scopeに限る。CPU AerはQPU runtimeではなく、exact best routeの一致はprobability=1、sampling success、convergence、quantum advantageを意味しない。次は`R23_N5_SCALING_AUTHORIZATION`だが、n=5 QAOAはresource preflight・再設計validation・新しいλ authorityの承認後に限る。
+EvidenceはReduced Problem scopeに限る。CPU AerはQPU runtimeではなく、exact best routeの一致はprobability=1、sampling success、convergence、quantum advantageを意味しない。n=5はresource limitにより未認可であり、次は`R24_CAPACITY_EXTENSION_DESIGN`とする。

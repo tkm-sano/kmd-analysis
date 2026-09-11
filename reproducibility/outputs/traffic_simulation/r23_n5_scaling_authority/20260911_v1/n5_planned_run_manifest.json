@@ -1,0 +1,12 @@
+{
+  "schema_version": "r23-n5-planned-run-manifest-v1",
+  "classification": "PLANNED_NOT_AUTHORIZED",
+  "scientific_objective": ["compare n=4 to n=5 probability behavior", "best decoded feasible route quality", "CPU exact Aer burden", "test redesigned validation", "decide whether methodology can continue"],
+  "scope": {"n": 5, "instances": ["routing_v18_n5_rank01", "routing_v18_n5_rank02", "routing_v18_n5_rank03"], "planned_run_count": 3, "p": [1], "optimizer": "COBYLA", "initialization": "fixed_0.1", "repetition": 1},
+  "lambda": 4.0,
+  "backend": {"class": "AerSimulator", "method": "statevector", "device": "CPU", "shots": "NONE"},
+  "references": {"exact": "n5_exact_references.json", "validation": "n5_validation_authority.json", "resource": "n5_resource_preflight.json", "penalty": "n5_penalty_authority.json"},
+  "output_root": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_execution/20260911_v1/",
+  "stop_conditions": ["OOM or allocation failure", "runtime behavior indicating infeasibility", "optimizer fatal exception", "probability integrity failure", "exact reference mismatch", "authority drift", "validation failure"],
+  "prohibition": "Do not execute until n5_execution_authorization.json changes to AUTHORIZED."
+}

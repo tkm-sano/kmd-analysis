@@ -1,0 +1,8 @@
+{
+  "schema_version": "r23-n5-validation-authority-v1",
+  "required_layers": ["analytical coefficient", "structural one-hot", "known valid routes", "known invalid states", "targeted exhaustive local checks", "fixed-seed sampled bitstrings", "120-route exact enumeration"],
+  "sample_policy": {"count": 4096, "seed": 2501, "generator": "Python random.Random getrandbits(1)", "purpose": "classical validation bitstrings only; not QAOA shots", "post_hoc_tuning": false},
+  "results": {"selected_instances": 3, "known_valid_penalty": 0, "known_invalid_penalty_positive": true, "coefficient_linear_count": 25, "coefficient_quadratic_count": 180, "direct_expanded_max_abs_difference": "1.14e-13", "targeted_exhaustive": "local structural checks only; full 2^25 enumeration not run", "sample_status_counts_per_instance": {"INVALID_BOTH": 4095, "INVALID_POSITION_ONCE": 1}, "exact_routes": 120},
+  "probability_policy": "No probability metric is produced by this validation. Future exact P_feasible/P_optimal require exact statevector denominator semantics; sampled validation is not a substitute for those semantics.",
+  "status": "PASS for redesigned n=5 validation methodology; QAOA execution remains unauthorized."
+}

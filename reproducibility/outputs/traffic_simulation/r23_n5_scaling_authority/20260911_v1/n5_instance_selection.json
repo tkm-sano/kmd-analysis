@@ -1,0 +1,13 @@
+{
+  "schema_version": "r23-n5-instance-selection-v1",
+  "selection_status": "PASS_FOR_AUTHORITY_CANDIDATES",
+  "candidate_population": {"source": "reproducibility/outputs/traffic_simulation/demand/evrp_r13_routing/20260909_r13_routing_fixture_n10_v18_geometry_reaccepted", "depot": "DEP_006", "customers": 10, "directed_pairs": 110, "complete_reachability": true, "all_status": "OK", "routing_arcs_sha256": "29c1a68a71838bb44629cbf4bf7230a0492e9484c0a97d0c2fb2e370f2ca2ec1", "selection_seed": 2301},
+  "selection_rule": "Enumerate all C(10,5)=252 combinations; sort SHA256('2301|DEP_006|sorted_customer_ids joined by comma|5') ascending. Rank is selection order only, not difficulty.",
+  "selected_count": 3,
+  "selected": [
+    {"rank": 1, "instance_id": "routing_v18_n5_rank01", "selection_key_sha256": "00cb18f9a1b580cab90a53be90169bb93b9e3c64ad183d7dacd05b00948702f9", "customer_ids": ["2026-01-01-13111-bldg-117556", "2026-01-01-13111-bldg-130096", "2026-01-01-13111-bldg-138702", "2026-01-01-13111-bldg-2510665", "2026-01-01-13111-bldg-79791"], "all_selected_directed_pairs_reachable": true, "asymmetric_unordered_pairs": "15/15"},
+    {"rank": 2, "instance_id": "routing_v18_n5_rank02", "selection_key_sha256": "00ded77cfdfac97941f9dfbf8caf474b06ff8ab7a9b5e3ba22c1c0a48473ae58", "customer_ids": ["2026-01-01-13111-bldg-130096", "2026-01-01-13111-bldg-2510665", "2026-01-01-13111-bldg-29995", "2026-01-01-13111-bldg-37628", "2026-01-01-13111-bldg-55213"], "all_selected_directed_pairs_reachable": true, "asymmetric_unordered_pairs": "15/15"},
+    {"rank": 3, "instance_id": "routing_v18_n5_rank03", "selection_key_sha256": "00fcd38ed1a49e98811727f2a2316167eb5b69fdc83af45c1f4f5b47a151a48f", "customer_ids": ["2026-01-01-13111-bldg-117556", "2026-01-01-13111-bldg-130096", "2026-01-01-13111-bldg-145438", "2026-01-01-13111-bldg-2510665", "2026-01-01-13111-bldg-37628"], "all_selected_directed_pairs_reachable": true, "asymmetric_unordered_pairs": "15/15"}
+  ],
+  "selection_rationale": "Three deterministic candidates preserve limited heterogeneity while keeping the planned QAOA scope minimal; rank is not a difficulty score."
+}

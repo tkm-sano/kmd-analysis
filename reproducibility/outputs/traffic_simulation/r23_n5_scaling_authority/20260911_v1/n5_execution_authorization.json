@@ -1,0 +1,10 @@
+{
+  "schema_version": "r23-n5-execution-authorization-v1",
+  "classification": "R23_N5_SCALING_NOT_AUTHORIZED_RESOURCE_LIMIT",
+  "decision": "NOT AUTHORIZED",
+  "gate_results": {"instance_authority": "PASS", "complete_reachability": "PASS", "exact_references": "PASS", "n5_lambda_authority": "PASS", "redesigned_validation": "PASS", "resource_preflight": "NOT_PASS", "exact_cpu_aer_feasible": "NOT_PASS_UNVERIFIED", "minimal_scope": "PASS", "implementation_compatibility": "NOT_PASS_FROZEN_RUNTIME_UNAVAILABLE", "output_namespace_clean": "PASS", "stop_conditions_frozen": "PASS"},
+  "blocking_reason": "Current machine lacks Qiskit, Qiskit Aer, and SciPy and differs from the frozen execution metadata; raw memory plausibility is insufficient to authorize actual Aer peak-memory feasibility.",
+  "execution_performed": false,
+  "n6plus": "N6PLUS_EXECUTION_NOT_RECOMMENDED_WITH_CURRENT_EXACT_CPU_AER_STATEVECTOR_METHOD",
+  "next_task": "R24_CAPACITY_EXTENSION_DESIGN"
+}

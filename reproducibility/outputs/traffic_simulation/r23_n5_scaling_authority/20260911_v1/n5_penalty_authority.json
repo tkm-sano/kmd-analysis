@@ -1,0 +1,11 @@
+{
+  "schema_version": "r23-n5-penalty-authority-v1",
+  "authority_id": "R23_N5_LAMBDA_AUTHORITY_V1",
+  "scope": {"n": 5, "formulation": "normalized complete-reachability customer-only position encoding", "depot_encoded": false},
+  "lambda": 4.0,
+  "decision_rule": "Smallest positive integer satisfying strict universal theorem bound lambda > (n+1)/2; 4 > 3.0.",
+  "checks": {"strict_theorem_inequality": true, "lambda_minus_bound": 0.5, "minimum_positive_one_hot_penalty": 2, "penalty_energy_margin": 1.0, "feasible_route_upper_bound": 6, "dominance": "2*lambda=8 > 6 >= normalized feasible route upper bound", "empirical_tuning": false, "lambda_3_reused": false},
+  "coefficient_policy": "Build direct and expanded QUBO from the canonical equations; require coefficient structure and direct/expanded energy agreement on known and sampled states.",
+  "valid_invalid_policy": "Known feasible encodings must have penalty=0; constructed duplicate/missing customer, duplicate position, and empty position states must have penalty>0.",
+  "status": "PASS as a theorem-consistent n=5 authority; not executed as QAOA input."
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": "r23-n5-resource-preflight-v1",
+  "classification": "R23_N5_SCALING_NOT_AUTHORIZED_RESOURCE_LIMIT",
+  "scope": "Static preflight only; no QAOA objective evaluation or benchmark",
+  "requirements": {"logical_qubits": 25, "state_dimension": 33554432, "raw_complex128_memory": "0.5 GiB", "state_dimension_ratio_to_n4": 512},
+  "observed_machine": {"ram_total": "1.5 TiB", "ram_available": "1.4 TiB", "swap": "8 GiB total, 0 used", "disk_free": "11 TiB", "cpu": "2 sockets AMD EPYC 9684X 96-Core, 384 logical CPUs"},
+  "software_observed": {"python": "3.13.5", "qiskit": "NOT_INSTALLED", "qiskit_aer": "NOT_INSTALLED", "numpy": "2.3.5", "scipy": "NOT_INSTALLED"},
+  "frozen_execution_metadata": {"python": "3.11.16", "qiskit": "2.5.2", "qiskit_aer": "0.17.2", "numpy": "2.4.6", "scipy": "1.17.1", "backend": "AerSimulator statevector CPU"},
+  "assessment": {"raw_memory_fit": "STATIC_PLAUSIBLE", "actual_aer_peak_memory": "UNVERIFIED", "temporary_buffers": "UNVERIFIED", "hamiltonian_and_python_overhead": "UNVERIFIED", "frozen_runtime_available": false, "exact_cpu_aer_feasible": "NOT_PASS"},
+  "decision": "Do not authorize until the frozen execution environment is available and a non-scientific backend/allocation preflight can verify peak-memory safety. No system settings were changed.",
+  "system_safety_guard": {"minimum_free_memory": "must be defined by execution owner before any future run", "emergency_abort": "required on allocation failure or memory pressure", "disk_safety": "preserve output namespace and reject insufficient free space", "classification": "SYSTEM_RESOURCE_SAFETY_GUARD, not scientific wall-time termination"}
+}
