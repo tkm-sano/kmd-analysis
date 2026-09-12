@@ -1,0 +1,11 @@
+{
+  "schema_version": "r23-n5-continuation-decision-v1",
+  "decision_timestamp": "2026-09-12T09:32:26+09:00",
+  "classification": "PENDING_RANK01_COMPLETION",
+  "execution_classification": "R23_N5_RANK01_EXECUTION_CONTINUE",
+  "axes": {"scientific_validity": "PENDING_RANK01_COMPLETION", "scientific_value": "PENDING_RANK01_REVIEW; rank02/rank03 provide authorized instance/probability/route robustness and runtime-resource variation", "resource_feasibility": "CURRENT_SAFETY_PASS; rank01 final peak/runtime required before final continuation judgment", "marginal_value_vs_compute_burden": "PENDING_RANK01_REVIEW; no fixed wall-time cap introduced"},
+  "rank02_rank03_authorization": "Existing authorization scope only; no new scientific conditions; no run launched in this review",
+  "runner_behavior": {"sequential_execution": "single-instance invocation; no automatic sequence", "next_run_trigger": "none observed/implemented", "restart_behavior": "no restart path", "progress_persistence": "writes STARTED before work and terminal record/progress on completion or exception", "failure_handling": "writes SCIENTIFIC_EXECUTION_FAILURE terminal/progress then raises", "automatic_retry": "none"},
+  "n4_comparison": "NOT_PERFORMED_BECAUSE_RANK01_INCOMPLETE; any later comparison must be LIMITED_SCALING_OBSERVATION because instance, lambda, and p differ",
+  "full_evrp": {"R20": "BLOCKED", "R21": "NOT_STARTED"}
+}
