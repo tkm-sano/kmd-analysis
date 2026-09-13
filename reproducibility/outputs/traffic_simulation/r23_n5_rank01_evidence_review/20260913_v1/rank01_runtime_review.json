@@ -1,0 +1,17 @@
+{
+  "schema_version": "r23-n5-rank01-runtime-review-v1",
+  "status": "PASS_WITH_MEASUREMENT_LIMITATION",
+  "T_total_s": 153434.09043177636,
+  "T_Aer_s": 306.781193879433,
+  "T_transpile_s": 16.943095699883997,
+  "T_Aer_over_T_total": 0.00199943,
+  "T_total_minus_T_Aer_s": 153127.30923789693,
+  "T_total_per_nfev_s": 511.4469681059212,
+  "T_Aer_per_nfev_s": 1.02260397959811,
+  "measured_phases": ["wall-clock total", "Aer execution across objective evaluations", "transpilation across objective evaluations"],
+  "not_measured_in_compact_artifact": ["optimizer overhead separately", "objective evaluation total separately", "circuit construction", "expectation calculation", "probability/state extraction", "decoding/validation", "Hamiltonian construction", "serialization", "resource monitoring overhead", "other remainder"],
+  "implementation_findings": ["each objective evaluation calls _statevector_and_expectation", "circuit construction, simulator creation, transpilation and execution occur in that path", "Statevector is materialized and probability/expectation processing occurs outside the Aer timer", "final probability_metrics iterates over the full probability mapping for decoding and validation", "no repeated-transpilation or large-array cause is proven by the compact artifact"],
+  "interpretation": "Aer is approximately 0.20% of the wall-clock envelope; the remaining approximately 153127.31 s must not be assigned to a specific phase without run-level timing output.",
+  "implementation_optimization_candidate": ["cache invariant circuit/operator construction where scientifically equivalent", "avoid redundant conversions", "vectorize or otherwise audit full-state metric processing", "persist complete phase timing for the next controlled run"],
+  "code_changed": false
+}

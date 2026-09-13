@@ -1,0 +1,10 @@
+{
+  "schema_version": "r23-n5-runtime-bottleneck-review-v1",
+  "classification": "IMPLEMENTATION_OPTIMIZATION_CANDIDATE",
+  "evidence_level": "code-path diagnosis; not phase-level runtime proof",
+  "measured": {"T_total_s": 153434.09043177636, "T_Aer_s": 306.781193879433, "T_transpile_s": 16.943095699883997},
+  "candidate_paths": ["per-evaluation circuit construction", "per-evaluation simulator/transpile path", "Statevector materialization and probability extraction outside Aer timer", "full probability-map iteration for energy statistics and route validation", "unmeasured Python orchestration and conversion overhead"],
+  "not_proven": ["a single dominant bottleneck", "Python full-state loop as the sole cause", "repeated transpilation as the sole cause", "Hamiltonian construction as dominant"],
+  "required_before_remaining_runs": ["instrument phase timings without changing scientific parameters", "record objective/circuit/transpile/Aer/expectation/decode/serialization totals", "check invariant caching/vectorization equivalence", "re-run a controlled validation fixture before adopting any optimization"],
+  "code_changed": false
+}

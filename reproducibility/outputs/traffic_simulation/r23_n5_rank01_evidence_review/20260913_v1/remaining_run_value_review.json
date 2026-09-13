@@ -1,0 +1,9 @@
+{
+  "schema_version": "r23-n5-remaining-run-value-review-v1",
+  "rank02_rank03_started": false,
+  "new_scientific_information": ["instance variation of P_feasible", "instance variation of P_optimal", "robustness of exact optimum recovery", "runtime variation", "memory variation"],
+  "rank01_limitation": "One instance cannot support instance-robustness claims.",
+  "burden_reference": {"rank01_T_total_h": 42.6206, "two_run_same_scale_h": 85.2412, "interpretation": "estimate only; instance-dependent variation is unknown"},
+  "options": {"A_continue_unchanged": "value for robustness, but high and poorly decomposed burden", "B_pause_for_runtime_diagnosis": "recommended; preserves scientific scope while investigating the 99.8% unassigned wall time", "C_stop_after_rank01": "defensible if limited evidence is sufficient, but loses instance-robustness information"},
+  "decision_basis": "The marginal value of two additional instances is real, but should be weighed after runtime diagnosis because rank01 consumed more than 42 hours and approximately 201.6 GiB peak RSS."
+}

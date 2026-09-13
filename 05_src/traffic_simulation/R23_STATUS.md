@@ -1,13 +1,14 @@
-# R23 / Reduced Problem research status（現行）
+# R23 / Reduced Problem research status（現行、2026-09-13）
 
 | area | status |
 |---|---|
 | Routing Baseline | COMPLETE |
 | Reduced Problem | ACCEPTED_WITH_LIMITATIONS |
 | Limited scaling methodology review | COMPLETE; n=5 preflight required, n>=6 current exact CPU Aer statevector not recommended |
-| N5 scaling authorization | NOT_AUTHORIZED_RESOURCE_LIMIT; frozen exact Aer runtime unavailable in current environment |
-| N5 resource preflight remediation | PASSED; frozen Aer CPU statevector probe feasible; scientific execution not performed |
-| N5 scaling execution authorization | AUTHORIZED_READY_TO_EXECUTE; execution deferred to next task |
+| N5 scaling authorization | AUTHORIZED_READY_TO_EXECUTE; rank01 completed under frozen V2 scope |
+| N5 resource preflight remediation | PASSED; minimal 25q probe 0.571 GiB |
+| N5 scaling execution | PARTIAL / UNDER_REVIEW; rank01 COMPLETE, rank02 NOT_RUN, rank03 NOT_RUN |
+| N5 remaining-run decision | R23_N5_REMAINING_RUNS_PAUSE_FOR_RUNTIME_DIAGNOSIS |
 | Formal A | COMPLETE |
 | Experiment B1 | COMPLETE |
 | Experiment B2 | COMPLETE |
@@ -19,4 +20,4 @@
 | Full EVRP R20 | BLOCKED |
 | Full EVRP R21 | NOT_STARTED |
 
-EvidenceはReduced Problem scopeに限る。CPU AerはQPU runtimeではなく、exact best routeの一致はprobability=1、sampling success、convergence、quantum advantageを意味しない。n=5のresource preflightはPASSし、実行authorization V2を発行したが、科学実行は未実施である。次は`R23_N5_SCALING_EXECUTION`とする。
+EvidenceはReduced Problem scopeに限る。rank01はn=5、25 logical qubits、p=1、lambda=4.0、COBYLA、fixed_0.1、CPU Aer statevectorで完了し、exact optimum routeを回収した。P_feasible=0.006366971625605308、P_optimal=0.00005447231886991554、T_total=153434.09043177636 s、T_Aer=306.781193879433 s、peak RSS=201.583 GiBである。COBYLAは300評価上限に到達し、optimizer convergence successではない。rank02/rank03は未実行。追加実行はruntime bottleneck診断後に再判定する。CPU AerはQPU runtimeではなく、exact best routeの一致はprobability=1、sampling success、convergence、quantum advantageを意味しない。

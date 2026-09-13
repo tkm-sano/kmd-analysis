@@ -1,12 +1,13 @@
 # R23 Reduced Problem roadmap（現行）
 
-Current: `R23_LIMITED_SCALING_METHODOLOGY_REVIEW_COMPLETED`
+Current: `R23_N5_RANK01_EVIDENCE_REVIEW_COMPLETED_REMAINING_RUNS_PAUSED`
 
 1. `R23_REDUCED_PROBLEM_REPOSITORY_CONSOLIDATION` — 完了
 2. `R23_LIMITED_SCALING_METHODOLOGY_REVIEW` — 完了。n=5はresource preflight前提、n>=6は現行exact CPU Aer statevector方法では非推奨
-3. `R23_N5_SCALING_AUTHORIZATION` — resource remediation完了、実行authorization V2発行（科学実行未実施）
-4. `R23_N5_SCALING_EXECUTION` — 次。V1 scientific designを変更せず3条件のみ実行
-5. `R24_CAPACITY_EXTENSION_DESIGN` — 未着手
+3. `R23_N5_SCALING_AUTHORIZATION` — resource remediation完了、実行authorization V2発行
+4. `R23_N5_RANK01_EVIDENCE_REVIEW` — 完了。EXACT_REFERENCE_INTEGRITY_PASS、rank01 COMPLETE
+5. `R23_N5_RUNTIME_OPTIMIZATION_REVIEW` — 次。rank02/rank03は未起動
+6. `R24_CAPACITY_EXTENSION_DESIGN` — 未着手
 6. Capacity — 未着手
 7. Time Window — 未着手
 8. Battery / SOC — 未着手

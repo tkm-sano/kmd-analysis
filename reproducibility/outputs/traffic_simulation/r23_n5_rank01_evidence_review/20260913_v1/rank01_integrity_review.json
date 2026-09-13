@@ -1,0 +1,22 @@
+{
+  "schema_version": "r23-n5-rank01-integrity-review-v1",
+  "status": "PASS_WITH_DOCUMENTATION_CAVEAT",
+  "artifact_readable": true,
+  "instance_id": "routing_v18_n5_rank01",
+  "parameter_checks": {
+    "n": {"actual": 5, "expected": 5, "status": "PASS"},
+    "p": {"actual": 1, "expected": 1, "status": "PASS"},
+    "lambda": {"actual": 4.0, "expected": 4.0, "status": "PASS"},
+    "optimizer": {"actual": "COBYLA", "expected": "COBYLA", "status": "PASS"},
+    "initialization": {"actual": "fixed_0.1", "expected": "fixed_0.1", "status": "PASS"},
+    "repetition": {"actual": 1, "expected": 1, "status": "PASS"},
+    "backend": {"actual": "AerSimulator statevector CPU", "expected": "AerSimulator statevector CPU", "status": "PASS"},
+    "shots": {"actual": "NONE", "expected": "NONE", "status": "PASS"}
+  },
+  "run_status": {"scientific": "OPTIMAL_FOUND", "process_exit_status": 0, "execution_performed": true},
+  "environment": {"authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v2/frozen_environment_validation.json", "authority_match": true, "status": "PASS"},
+  "manifest_scope_match": true,
+  "manifest_caveat": "The V2 authorization records execution_performed=false because it is a pre-execution authority artifact; the completed result is recorded by the run artifact and progress.json.",
+  "parameter_drift": false,
+  "decision": "INTEGRITY_PASS"
+}

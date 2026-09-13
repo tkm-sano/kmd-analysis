@@ -1,0 +1,16 @@
+{
+  "schema_version": "r23-n5-rank01-resource-review-v1",
+  "status": "RESOURCE_SAFETY_PASS_WITH_HIGH_BURDEN",
+  "peak_rss_gib": 201.5834732055664,
+  "minimal_25q_probe_peak_gib": 0.571,
+  "scientific_peak_over_probe": 353.036,
+  "total_ram_gib": 1511.195,
+  "mem_available_before_gib": 1442.0,
+  "scientific_peak_over_total_ram": 0.133387,
+  "scientific_peak_over_available_before": 0.139793,
+  "swap_used_after_bytes": 786432,
+  "process_exit_status": 0,
+  "safety_evidence": ["no OOM or allocation failure", "process exited normally", "disk remained available", "observed scientific peak was below available memory"],
+  "interpretation": "The 201.6 GiB scientific peak is approximately 353x the minimal probe and cannot be explained by the 25-qubit statevector alone. The artifact does not establish which allocation caused the difference.",
+  "status": "PASS"
+}
