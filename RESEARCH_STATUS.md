@@ -33,18 +33,18 @@ flowchart LR
 |---|---|---|
 | 道路網仕様 | **受入済み** (`accepted`) | V18 geometry/length re-acceptanceとR12-R14 Routing Baseline validationがPASS。旧v16停止記録は履歴であり現行network gateではない |
 | 正式SUMO道路網 | **受入済み** (`accepted`) | current V18 authorityでFORMAL_NETWORK_ACCEPTED=true。accepted scopeとhashはEVRP_EXECUTION_PLAN.mdを正本とする |
-| 下流実験 | **scope別** (`scope_split`) | full-EVRP比較は未準備。Reduced ProblemではR21/R22、Formal A/B1/B2、R23 n=5 rank01が完了。runtime optimization prototypeのequivalence gate未完了のためrank02/rank03は未実行 |
+| 下流実験 | **scope別** (`scope_split`) | full-EVRP比較は未準備。Reduced ProblemではR21/R22、Formal A/B1/B2、R23 n=5 rank01が完了。runtime optimizationはvalidated、rank02/rank03はAUTHORIZED_NOT_RUN |
 
 ## 現在の阻害事項
 
 - full-EVRP本線ではR05-R11のcustomer sampling、demand、time window、service time、depot、EV、charging station定義が未完了
 - full-EVRP R20はcapacity、time window、battery/SOC、charging、fleet、一般reachabilityを含むaccepted QUBOがなくBLOCKED
-- reduced R23はFormal A/B1/B2 evidence reviewとn=5 rank01 evidence reviewを完了し、baseline accepted with limitations。runtime optimization candidateはequivalence gate未完了、rank02/rank03は未実行
+- reduced R23はFormal A/B1/B2 evidence reviewとn=5 rank01 evidence reviewを完了し、baseline accepted with limitations。runtime optimization candidateは1e-12 equivalence PASS、rank02/rank03はAUTHORIZED_NOT_RUN
 - Aer結果を量子実機性能またはquantum advantageへ一般化できない
 
 ## 次の作業
 
-1. R23 n=5 runtime optimization equivalence gateのremediationを完了し、rank02/rank03の続行可否を再判定する
+1. `R23_N5_SCALING_REMAINING_EXECUTION_OPTIMIZED`としてrank02/rank03の正式runを別taskで実施する
 2. EVRP_EXECUTION_PLAN.mdに従いfull-EVRP本線の未完Definition stageを進める（R20/R21は現状維持）
 3. R23 pilotとformal baselineを分離し、R22 Hamiltonianとlambdaを変更しない
 4. full-EVRP/Hayate評価とreduced method evidenceをscope付きで統合する

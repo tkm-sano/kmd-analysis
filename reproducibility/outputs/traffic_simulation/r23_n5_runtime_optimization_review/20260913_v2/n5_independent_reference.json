@@ -1,0 +1,59 @@
+{
+  "status": "PASS",
+  "method": "numeric ndarray abs(statevector.data)**2; full numeric sum; independently constructed feasible indices",
+  "full_python_dictionary_generated": false,
+  "points": {
+    "A_rank01_initial": {
+      "status": "PASS",
+      "comparison": {
+        "reference": {
+          "P_total": 0.9999999999999978,
+          "P_feasible": 0.00010572686963257352,
+          "P_optimal": 8.911426703519106e-07,
+          "P_invalid": 0.9998942731303652,
+          "expectation": 150.25280453984814
+        },
+        "candidate": {
+          "P_total": 1.0000000000000002,
+          "P_feasible": 0.00010572686963257352,
+          "P_optimal": 8.911426703519106e-07,
+          "P_invalid": 0.9998942731303676,
+          "expectation": 150.25280453984809
+        },
+        "absolute_differences": {
+          "P_total": 2.4424906541753444e-15,
+          "P_feasible": 0.0,
+          "P_optimal": 0.0,
+          "P_invalid": 2.4424906541753444e-15,
+          "expectation": 5.684341886080802e-14
+        }
+      }
+    },
+    "C_fixed_profiling": {
+      "status": "PASS",
+      "comparison": {
+        "reference": {
+          "P_total": 0.9999999999999997,
+          "P_feasible": 0.00012166709820681566,
+          "P_optimal": 1.019988593823083e-06,
+          "P_invalid": 0.9998783329017928,
+          "expectation": 152.17565139639865
+        },
+        "candidate": {
+          "P_total": 1.000000000000002,
+          "P_feasible": 0.00012166709820681566,
+          "P_optimal": 1.019988593823083e-06,
+          "P_invalid": 0.9998783329017952,
+          "expectation": 152.17565139639828
+        },
+        "absolute_differences": {
+          "P_total": 2.3314683517128287e-15,
+          "P_feasible": 0.0,
+          "P_optimal": 0.0,
+          "P_invalid": 2.3314683517128287e-15,
+          "expectation": 3.694822225952521e-13
+        }
+      }
+    }
+  }
+}

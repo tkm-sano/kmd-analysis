@@ -8,7 +8,7 @@
 | N5 scaling authorization | AUTHORIZED_READY_TO_EXECUTE; rank01 completed under frozen V2 scope |
 | N5 resource preflight remediation | PASSED; minimal 25q probe 0.571 GiB |
 | N5 scaling execution | PARTIAL / UNDER_REVIEW; rank01 COMPLETE, rank02 NOT_RUN, rank03 NOT_RUN |
-| N5 remaining-run decision | R23_N5_RUNTIME_OPTIMIZATION_EQUIVALENCE_FAILED; rank02/rank03 remain NOT_RUN |
+| N5 remaining-run decision | R23_N5_RUNTIME_OPTIMIZATION_VALIDATED_READY_FOR_REMAINING_RUNS; rank02 AUTHORIZED_NOT_RUN, rank03 AUTHORIZED_NOT_RUN |
 | Formal A | COMPLETE |
 | Experiment B1 | COMPLETE |
 | Experiment B2 | COMPLETE |
@@ -20,4 +20,4 @@
 | Full EVRP R20 | BLOCKED |
 | Full EVRP R21 | NOT_STARTED |
 
-EvidenceはReduced Problem scopeに限る。rank01はn=5、25 logical qubits、p=1、lambda=4.0、COBYLA、fixed_0.1、CPU Aer statevectorで完了し、exact optimum routeを回収した。P_feasible=0.006366971625605308、P_optimal=0.00005447231886991554、T_total=153434.09043177636 s、T_Aer=306.781193879433 s、peak RSS=201.583 GiBである。COBYLAは300評価上限に到達し、optimizer convergence successではない。runtime prototypeは数学的に有望だが、元実装との完了済みn=5 cross-checkがないため、rank02/rank03には未採用。判定は`R23_N5_RUNTIME_OPTIMIZATION_EQUIVALENCE_FAILED`であり、これはscientific result failureではなくadoption gate未完了を意味する。CPU AerはQPU runtimeではなく、exact best routeの一致はprobability=1、sampling success、convergence、quantum advantageを意味しない。
+EvidenceはReduced Problem scopeに限る。rank01はn=5、25 logical qubits、p=1、lambda=4.0、COBYLA、fixed_0.1、CPU Aer statevectorで完了し、exact optimum routeを回収した。元実装とvalidated candidateのn=2/3/4 exhaustiveおよびn=5 independent numeric-array cross-checkは1e-12でPASS。candidateは120 feasible indicesのみを参照し、full Python probability dictionaryを生成しない。rank02/rank03の正式runは未実行。判定は`R23_N5_RUNTIME_OPTIMIZATION_VALIDATED_READY_FOR_REMAINING_RUNS`、次taskは`R23_N5_SCALING_REMAINING_EXECUTION_OPTIMIZED`である。CPU AerはQPU runtimeではなく、exact best routeの一致はprobability=1、sampling success、convergence、quantum advantageを意味しない。

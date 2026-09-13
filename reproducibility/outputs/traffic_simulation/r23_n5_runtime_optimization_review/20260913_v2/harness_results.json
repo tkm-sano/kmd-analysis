@@ -1,0 +1,260 @@
+{
+  "schema_version": "r23-n5-runtime-equivalence-remediation-v2",
+  "tolerance": 1e-12,
+  "small_n": {
+    "n2": {
+      "parameters": [
+        0.1,
+        0.1
+      ],
+      "statevector_sha256": "bf6c3a8955211e6cc142b8c6c967539a544d2ba0dfa8b4f3e1add0566d38f667",
+      "state_dimension": 16,
+      "reference": {
+        "P_total": 1.0000000000000004,
+        "P_feasible": 0.20031697681512525,
+        "P_optimal": 0.10025752058512195,
+        "P_invalid": 0.7996830231848752,
+        "expectation": 9.003936264083354
+      },
+      "candidate": {
+        "P_total": 1.0000000000000004,
+        "P_feasible": 0.20031697681512525,
+        "P_optimal": 0.10025752058512195,
+        "P_invalid": 0.7996830231848752,
+        "expectation": 9.003936264083348
+      },
+      "differences": {
+        "P_total": 0.0,
+        "P_feasible": 0.0,
+        "P_optimal": 0.0,
+        "P_invalid": 0.0,
+        "expectation": 5.329070518200751e-15
+      },
+      "route_index_counts": {
+        "reference": 2,
+        "candidate": 2,
+        "candidate_unique": 2,
+        "candidate_reference_same_set": true
+      },
+      "best_feasible_route": [
+        "2026-01-01-13111-bldg-130096",
+        "2026-01-01-13111-bldg-117556"
+      ],
+      "best_feasible_basis_index": 6,
+      "transpiled_depth": 17,
+      "small_full_method": true
+    },
+    "n3": {
+      "parameters": [
+        0.1,
+        0.1
+      ],
+      "statevector_sha256": "28f2111c3163fe636ad99d654112dc6fefc35fb7ac194331e4ac7c3303ce7023",
+      "state_dimension": 512,
+      "reference": {
+        "P_total": 0.9999999999999998,
+        "P_feasible": 0.03599265149694896,
+        "P_optimal": 0.0060323019538385215,
+        "P_invalid": 0.9640073485030508,
+        "expectation": 21.480892345254468
+      },
+      "candidate": {
+        "P_total": 0.9999999999999997,
+        "P_feasible": 0.03599265149694897,
+        "P_optimal": 0.0060323019538385215,
+        "P_invalid": 0.9640073485030507,
+        "expectation": 21.48089234525447
+      },
+      "differences": {
+        "P_total": 1.1102230246251565e-16,
+        "P_feasible": 6.938893903907228e-18,
+        "P_optimal": 0.0,
+        "P_invalid": 1.1102230246251565e-16,
+        "expectation": 3.552713678800501e-15
+      },
+      "route_index_counts": {
+        "reference": 6,
+        "candidate": 6,
+        "candidate_unique": 6,
+        "candidate_reference_same_set": true
+      },
+      "best_feasible_route": [
+        "2026-01-01-13111-bldg-138702",
+        "2026-01-01-13111-bldg-130096",
+        "2026-01-01-13111-bldg-117556"
+      ],
+      "best_feasible_basis_index": 84,
+      "transpiled_depth": 47,
+      "small_full_method": true
+    },
+    "n4": {
+      "parameters": [
+        0.1,
+        0.1
+      ],
+      "statevector_sha256": "70e66e4079743d020bca209e57f55fbfa4de31e3f90ad9a040906d63efc6fd5c",
+      "state_dimension": 65536,
+      "reference": {
+        "P_total": 1.0000000000000009,
+        "P_feasible": 0.0029835123372735353,
+        "P_optimal": 0.00012524983107576148,
+        "P_invalid": 0.9970164876627273,
+        "expectation": 58.20139383835672
+      },
+      "candidate": {
+        "P_total": 1.0000000000000009,
+        "P_feasible": 0.0029835123372735353,
+        "P_optimal": 0.00012524983107576148,
+        "P_invalid": 0.9970164876627273,
+        "expectation": 58.201393838356665
+      },
+      "differences": {
+        "P_total": 0.0,
+        "P_feasible": 0.0,
+        "P_optimal": 0.0,
+        "P_invalid": 0.0,
+        "expectation": 5.684341886080802e-14
+      },
+      "route_index_counts": {
+        "reference": 24,
+        "candidate": 24,
+        "candidate_unique": 24,
+        "candidate_reference_same_set": true
+      },
+      "best_feasible_route": [
+        "2026-01-01-13111-bldg-130096",
+        "2026-01-01-13111-bldg-117556",
+        "2026-01-01-13111-bldg-2510665",
+        "2026-01-01-13111-bldg-138702"
+      ],
+      "best_feasible_basis_index": 18450,
+      "transpiled_depth": 89,
+      "small_full_method": true
+    }
+  },
+  "n5": {
+    "A_rank01_initial": {
+      "parameters": [
+        0.1,
+        0.1
+      ],
+      "statevector_sha256": "476bfdf36b4b9853a1fb27da6efe0c213e19fc0d075ea17856612c239d5fcb44",
+      "state_dimension": 33554432,
+      "reference": {
+        "P_total": 0.9999999999999978,
+        "P_feasible": 0.00010572686963257352,
+        "P_optimal": 8.911426703519106e-07,
+        "P_invalid": 0.9998942731303652,
+        "expectation": 150.25280453984814
+      },
+      "candidate": {
+        "P_total": 1.0000000000000002,
+        "P_feasible": 0.00010572686963257352,
+        "P_optimal": 8.911426703519106e-07,
+        "P_invalid": 0.9998942731303676,
+        "expectation": 150.25280453984809
+      },
+      "differences": {
+        "P_total": 2.4424906541753444e-15,
+        "P_feasible": 0.0,
+        "P_optimal": 0.0,
+        "P_invalid": 2.4424906541753444e-15,
+        "expectation": 5.684341886080802e-14
+      },
+      "route_index_counts": {
+        "reference": 120,
+        "candidate": 120,
+        "candidate_unique": 120,
+        "candidate_reference_same_set": true
+      },
+      "best_feasible_route": [
+        "2026-01-01-13111-bldg-130096",
+        "2026-01-01-13111-bldg-79791",
+        "2026-01-01-13111-bldg-117556",
+        "2026-01-01-13111-bldg-2510665",
+        "2026-01-01-13111-bldg-138702"
+      ],
+      "best_feasible_basis_index": 2375716,
+      "transpiled_depth": 143,
+      "small_full_method": false
+    },
+    "C_fixed_profiling": {
+      "parameters": [
+        0.37,
+        -0.22
+      ],
+      "statevector_sha256": "b58b055effb163e6b2eb3b81382205a2f35057ecf703ac4df62e4a9d08edd6ff",
+      "state_dimension": 33554432,
+      "reference": {
+        "P_total": 0.9999999999999997,
+        "P_feasible": 0.00012166709820681566,
+        "P_optimal": 1.019988593823083e-06,
+        "P_invalid": 0.9998783329017928,
+        "expectation": 152.17565139639865
+      },
+      "candidate": {
+        "P_total": 1.000000000000002,
+        "P_feasible": 0.00012166709820681566,
+        "P_optimal": 1.019988593823083e-06,
+        "P_invalid": 0.9998783329017952,
+        "expectation": 152.17565139639828
+      },
+      "differences": {
+        "P_total": 2.3314683517128287e-15,
+        "P_feasible": 0.0,
+        "P_optimal": 0.0,
+        "P_invalid": 2.3314683517128287e-15,
+        "expectation": 3.694822225952521e-13
+      },
+      "route_index_counts": {
+        "reference": 120,
+        "candidate": 120,
+        "candidate_unique": 120,
+        "candidate_reference_same_set": true
+      },
+      "best_feasible_route": [
+        "2026-01-01-13111-bldg-138702",
+        "2026-01-01-13111-bldg-117556",
+        "2026-01-01-13111-bldg-79791",
+        "2026-01-01-13111-bldg-130096",
+        "2026-01-01-13111-bldg-2510665"
+      ],
+      "best_feasible_basis_index": 4719874,
+      "transpiled_depth": 143,
+      "small_full_method": false
+    }
+  },
+  "benchmark": {
+    "repetitions": 3,
+    "postprocessing": [
+      {
+        "total_norm": 1.0000000000000002,
+        "P_feasible": 0.00010572686963257352,
+        "P_optimal_lookup": 8.817886471048181e-07,
+        "P_invalid": 0.9998942731303676,
+        "elapsed_seconds": 0.007912860251963139
+      },
+      {
+        "total_norm": 1.0000000000000002,
+        "P_feasible": 0.00010572686963257352,
+        "P_optimal_lookup": 8.817886471048181e-07,
+        "P_invalid": 0.9998942731303676,
+        "elapsed_seconds": 0.005773091688752174
+      },
+      {
+        "total_norm": 1.0000000000000002,
+        "P_feasible": 0.00010572686963257352,
+        "P_optimal_lookup": 8.817886471048181e-07,
+        "P_invalid": 0.9998942731303676,
+        "elapsed_seconds": 0.005844460800290108
+      }
+    ],
+    "peak_rss_kib": 1756800,
+    "peak_rss_gib": 1.6754150390625,
+    "note": "candidate indexed amplitudes; no probabilities_dict and no full Python object dictionary"
+  },
+  "environment": {
+    "python": "3.11.14 | packaged by conda-forge | (main, Oct 22 2025, 22:46:25) [GCC 14.3.0]",
+    "numpy": "2.0.1"
+  }
+}
