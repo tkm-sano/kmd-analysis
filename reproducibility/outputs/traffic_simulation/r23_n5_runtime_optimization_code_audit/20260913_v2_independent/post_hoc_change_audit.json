@@ -1,0 +1,26 @@
+{
+  "conclusion": "No observed QUBO/Hamiltonian/parameter tuning; post-result code and authority changes documented; full freeze NOT_VERIFIED",
+  "evidence": [
+    "canonical_comparisons.json",
+    "git_provenance_audit.json",
+    "source_provenance_probes.json"
+  ],
+  "unchanged": [
+    "model",
+    "lambda=4",
+    "p=1",
+    "COBYLA",
+    "fixed initialization",
+    "1e-12 constants",
+    "raw denominator",
+    "SHA ranking rule"
+  ],
+  "changed": [
+    "postprocessing representation",
+    "qaoa dispatch and output contract after rank01",
+    "d4a8d78 helper guards and label sorting after rank02/03"
+  ],
+  "cap": "current300; missing execution-time runner prevents proof of no override",
+  "sorting": "current helper sorts binary labels; makes tied-cost first-route order agree with original. Previous unsorted helper membership was equivalent but order was not.",
+  "intentional_tuning_evidence": false
+}

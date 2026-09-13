@@ -1,0 +1,22 @@
+{
+  "conclusion": "Unfavorable raw facts retained, but current status contains materially misleading convergence claim",
+  "evidence": [
+    "05_src/traffic_simulation/R23_STATUS.md:24",
+    "reproducibility/outputs/traffic_simulation/r23_n5_scaling_evidence_review/20260913_v1/n5_optimizer_summary.json",
+    "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v1/before_after_benchmark.json",
+    "05_src/traffic_simulation/specifications/R23_REDUCED_PROBLEM_CANONICAL.md"
+  ],
+  "retained": {
+    "rank01_success": false,
+    "rank01_cap_reached": true,
+    "rank01_P_feasible": 0.006366971625605308,
+    "rank01_P_optimal": 5.447231886991554e-05,
+    "rank01_hours": 42.620580675493436,
+    "rank01_peak_GiB": 201.5834732055664,
+    "implementation_optimization_disclosed": true,
+    "benchmark_limitation_in_profiling_artifact": true,
+    "n6_not_recommended": true
+  },
+  "defect": "Current R23_STATUS.md says COBYLA convergence 3/3; false against native termination metadata. Not corrected in this audit.",
+  "blind_procedure": "Status content inspected by targeted non-audit claim search and pre-audit 0e149ed snapshots; previous audit classification/finding paths not opened."
+}

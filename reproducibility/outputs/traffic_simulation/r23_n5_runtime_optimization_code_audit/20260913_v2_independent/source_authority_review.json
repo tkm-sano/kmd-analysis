@@ -1,0 +1,50 @@
+{
+  "conclusion": "Original qaoa snapshot strongly supported; complete executed source authority NOT_VERIFIED",
+  "evidence": [
+    "source_provenance_probes.json",
+    "reproducibility/outputs/traffic_simulation/r23_n5_scaling_progress_review/20260912_v3/progress_review.json",
+    "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v2/frozen_environment_validation.json"
+  ],
+  "original": {
+    "commit": "9a4ce5600a211ffb92adf3b84fe2468d70be2b26",
+    "qaoa_sha256": "6d0e26fe2f14a77cabd6d938226965479bb8ec46805efee5dcaf7af7c3a6bf67",
+    "execution_entrypoint": "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+    "functions": [
+      "make_input",
+      "normalize_travel_time_matrix",
+      "enumerate_routes",
+      "build_expanded_qubo",
+      "convert_qubo_to_ising",
+      "run_single",
+      "minimize_objective",
+      "_statevector_and_expectation",
+      "build_qaoa_circuit",
+      "build_cost_operator",
+      "probability_metrics",
+      "energy_statistics"
+    ],
+    "execution_time_hash_available": false,
+    "authority_confidence": "INFERRED from artifact commit plus process snapshot; snapshot qaoa identical from ec476f3 through ff1d579"
+  },
+  "candidate": {
+    "relation": [
+      "direct modification of qaoa dispatch",
+      "separate helper",
+      "separate implementation version via original/v4 flag",
+      "runner wrapper"
+    ],
+    "first_commit": "ff1d579bad8e7c635406b2a5a620fc733f96e912",
+    "historical_helper_sha256": "c0892b96e375fe2c274eaab74dfeb59cb8ec3a8a1331bb44bca3bd22dc9a9691",
+    "integration_commit": "0e149edbf000ffdb187c21123beddb373b8bcff5",
+    "current_commit": "d4a8d78a04316414a9f19ff143264d96c88b3c9b",
+    "current_helper_sha256": "f96d76b53cda7034a4b57a6ffdea98bceed11c51a31d1218d69d8bb09cf3888f",
+    "current_qaoa_sha256": "b5ceb73312f623c8446c55576f31b528c4057834d6d8fd9a2f9d2835e4954056",
+    "historical_run_bytes_not_recovered": true
+  },
+  "environment": {
+    "authority_python": "/home/takuma/.conda/envs/evrp-quantum-temp/bin/python",
+    "current_frozen_versions_match": true,
+    "shell_python": "/opt/miniconda/bin/python (3.13.5)",
+    "shell_CONDA_PREFIX": "/home/takuma/kmd-analysis/.conda"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "claims": [
+    {
+      "claim": "rank01 exact route found",
+      "classification": "DIRECTLY_OBSERVED",
+      "basis": "retained scientific_result; historic execution provenance limited"
+    },
+    {
+      "claim": "rank01 success=false and cap reached",
+      "classification": "DIRECTLY_OBSERVED",
+      "basis": "native termination stored"
+    },
+    {
+      "claim": "all three raw P_feasible<1%",
+      "classification": "DERIVED",
+      "basis": "numeric result fields"
+    },
+    {
+      "claim": "COBYLA convergence 3/3",
+      "classification": "NOT_SUPPORTED",
+      "basis": "rank01 cap reached; optimizer reported success only rank02/03"
+    },
+    {
+      "claim": "robustness across seeds/initializations at n5",
+      "classification": "NOT_SUPPORTED",
+      "basis": "one fixed initialization/repetition"
+    },
+    {
+      "claim": "n5 descriptive probability decline vs n4",
+      "classification": "INFERRED",
+      "basis": "different instance populations, not controlled scaling law"
+    },
+    {
+      "claim": "statevector size 2^(n*n)",
+      "classification": "DERIVED",
+      "basis": "n*n qubits; 25q complex128 raw array 0.5GiB; n6 raw1TiB"
+    },
+    {
+      "claim": "formal 33.7x speedup",
+      "classification": "NOT_SUPPORTED",
+      "basis": "mismatched boundaries/conditions; PRELIMINARY_ONLY"
+    },
+    {
+      "claim": "indexed processing avoids dictionary overhead",
+      "classification": "DERIVED",
+      "basis": "source representation; magnitude workload-dependent"
+    },
+    {
+      "claim": "COBYLA general superiority",
+      "classification": "NOT_SUPPORTED",
+      "basis": "limited B2 comparisons; no global result"
+    },
+    {
+      "claim": "n5 generalizability / Full EVRP",
+      "classification": "NOT_SUPPORTED",
+      "basis": "three fixed reduced instances, no EV constraints"
+    },
+    {
+      "claim": "quantum advantage",
+      "classification": "NOT_SUPPORTED",
+      "basis": "CPU exact statevector, no QPU advantage benchmark"
+    },
+    {
+      "claim": "all execution bytes equal recorded commits",
+      "classification": "ASSUMED",
+      "basis": "contradicted by missing runner and v4 dispatcher"
+    }
+  ]
+}

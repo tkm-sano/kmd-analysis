@@ -1,0 +1,32 @@
+{
+  "conclusion": "PRELIMINARY_ONLY",
+  "evidence": [
+    "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v1/before_after_benchmark.json",
+    "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v1/profiling_harness.py",
+    "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/run_equivalence.py",
+    "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/runtime_benchmark.json",
+    "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v2/machine_resource_validation.json"
+  ],
+  "formal_speedup_allowed": false,
+  "scientific_speedup_allowed": false,
+  "conditions": {
+    "host": "hayate inferred from run/resource context; benchmark lacks full per-process capture",
+    "CPU": "AMD EPYC 9684X; authority 192 physical /384 logical",
+    "original_threads": "896 observed process threads in progress snapshot",
+    "candidate_threads": "not captured",
+    "CPU_affinity": "historical matched setting not captured",
+    "OMP": "not captured in compared benchmark",
+    "BLAS": "not captured",
+    "Aer_parallelism": "defaults, no matched explicit recording",
+    "environment": "frozen authority identified; full per-benchmark dependency capture incomplete",
+    "warmup": "no explicit prior rule; no first repetition removed in saved completed arrays",
+    "repetitions": "prototype3 and candidate3; original one attempt aborted >900s",
+    "timer": "original full T_total/nfev vs prototype evaluate; v2 arithmetic-only timer",
+    "setup": "v2 indices/simulation outside timer",
+    "postprocessing": "v2 skips actual helper validation and best-route adapter"
+  },
+  "repetition_policy": "all three completed times preserved; aborted original disclosed but not present as completed timing record; no evidence of fastest-only or slow successful exclusion",
+  "cache": "no persistent feasible/circuit/Hamiltonian cache or backend reuse in current path; benchmark idx prepared before timer",
+  "precomputation": "T_end_to_end = T_input_and_reference_setup + T_run_single; T_run_single includes initialization + optimizer evaluations + final evaluator + decoding. Existing compact T_total excludes make_input; v2 arithmetic benchmark excludes most work.",
+  "warm_bias": "no matched cold/warm process design or pre-fixed exclusion policy verified"
+}

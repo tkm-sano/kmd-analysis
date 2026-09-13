@@ -1,0 +1,157 @@
+{
+  "tolerance": 1e-12,
+  "probabilities": [
+    {
+      "n": 2,
+      "basis_states_checked": 16,
+      "feasible_count": 2,
+      "dtype": "complex128",
+      "candidate": {
+        "probability_total": 1.0000000000000007,
+        "P_feasible_exact": 0.20031697681512525,
+        "P_opt": 0.10025752058512195,
+        "invalid_probability_mass": 0.7996830231848754
+      },
+      "independent_reference": {
+        "probability_total": 1.0000000000000004,
+        "P_feasible_exact": 0.20031697681512525,
+        "P_opt": 0.10025752058512195,
+        "invalid_probability_mass": 0.7996830231848752
+      },
+      "absolute_differences": {
+        "probability_total": 2.220446049250313e-16,
+        "P_feasible_exact": 0.0,
+        "P_opt": 0.0,
+        "invalid_probability_mass": 2.220446049250313e-16
+      },
+      "historical_full_dictionary_differences": {
+        "probability_total": 2.220446049250313e-16,
+        "P_feasible_exact": 0.0,
+        "P_opt": 0.0,
+        "invalid_probability_mass": 2.220446049250313e-16
+      }
+    },
+    {
+      "n": 3,
+      "basis_states_checked": 512,
+      "feasible_count": 6,
+      "dtype": "complex128",
+      "candidate": {
+        "probability_total": 0.9999999999999997,
+        "P_feasible_exact": 0.03599265149694897,
+        "P_opt": 0.0060323019538385215,
+        "invalid_probability_mass": 0.9640073485030507
+      },
+      "independent_reference": {
+        "probability_total": 0.9999999999999998,
+        "P_feasible_exact": 0.03599265149694897,
+        "P_opt": 0.0060323019538385215,
+        "invalid_probability_mass": 0.9640073485030508
+      },
+      "absolute_differences": {
+        "probability_total": 1.1102230246251565e-16,
+        "P_feasible_exact": 0.0,
+        "P_opt": 0.0,
+        "invalid_probability_mass": 1.1102230246251565e-16
+      },
+      "historical_full_dictionary_differences": {
+        "probability_total": 6.661338147750939e-16,
+        "P_feasible_exact": 0.0,
+        "P_opt": 0.0,
+        "invalid_probability_mass": 6.661338147750939e-16
+      }
+    },
+    {
+      "n": 4,
+      "basis_states_checked": 65536,
+      "feasible_count": 24,
+      "dtype": "complex128",
+      "candidate": {
+        "probability_total": 1.0000000000000013,
+        "P_feasible_exact": 0.0029835123372735353,
+        "P_opt": 0.00012524983107576148,
+        "invalid_probability_mass": 0.9970164876627278
+      },
+      "independent_reference": {
+        "probability_total": 1.000000000000001,
+        "P_feasible_exact": 0.0029835123372735353,
+        "P_opt": 0.00012524983107576148,
+        "invalid_probability_mass": 0.9970164876627275
+      },
+      "absolute_differences": {
+        "probability_total": 2.220446049250313e-16,
+        "P_feasible_exact": 0.0,
+        "P_opt": 0.0,
+        "invalid_probability_mass": 2.220446049250313e-16
+      },
+      "historical_full_dictionary_differences": {
+        "probability_total": 1.2212453270876722e-14,
+        "P_feasible_exact": 4.336808689942018e-19,
+        "P_opt": 0.0,
+        "invalid_probability_mass": 1.2212453270876722e-14
+      }
+    },
+    {
+      "n": 5,
+      "parameters": [
+        0.1,
+        0.1
+      ],
+      "reference_method": "full numeric probability sum and independently derived 120 indices; not full dictionary",
+      "dtype": "complex128",
+      "state_sha256": "476bfdf36b4b9853a1fb27da6efe0c213e19fc0d075ea17856612c239d5fcb44",
+      "candidate": {
+        "probability_total": 1.0000000000000004,
+        "P_feasible_exact": 0.00010572686963257354,
+        "P_opt": 8.911426703519106e-07,
+        "invalid_probability_mass": 0.9998942731303678
+      },
+      "reference": {
+        "probability_total": 1.0000000000000004,
+        "P_feasible_exact": 0.00010572686963257354,
+        "P_opt": 8.911426703519106e-07,
+        "invalid_probability_mass": 0.9998942731303678
+      },
+      "absolute_differences": {
+        "probability_total": 0.0,
+        "P_feasible_exact": 0.0,
+        "P_opt": 0.0,
+        "invalid_probability_mass": 0.0
+      },
+      "timing_diagnostic_only": {
+        "circuit_construction_seconds": 0.0022888691164553165,
+        "transpilation_seconds": 0.07263937685638666,
+        "aer_execution_seconds": 1.667607312090695,
+        "expectation_seconds": 8.663820914924145,
+        "evaluation_total_seconds": 10.411072873044759
+      }
+    }
+  ],
+  "objectives": [
+    {
+      "n": 2,
+      "historical": 9.003936264083348,
+      "current": 9.003936264083348,
+      "difference": 0.0
+    },
+    {
+      "n": 3,
+      "historical": 21.48089234525447,
+      "current": 21.48089234525447,
+      "difference": 0.0
+    },
+    {
+      "n": 4,
+      "historical": 58.201393838356665,
+      "current": 58.201393838356665,
+      "difference": 0.0
+    },
+    {
+      "n": 5,
+      "candidate": 150.25280453984809,
+      "independent_diagonal": 150.25280453984817,
+      "difference": 8.526512829121202e-14,
+      "no_original_full_dictionary_rerun": true
+    }
+  ]
+}

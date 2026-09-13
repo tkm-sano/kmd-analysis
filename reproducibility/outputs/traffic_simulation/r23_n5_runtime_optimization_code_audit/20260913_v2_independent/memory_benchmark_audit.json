@@ -1,0 +1,22 @@
+{
+  "conclusion": "No formal reduction factor",
+  "evidence": [
+    "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v1/profiling_harness.py",
+    "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/memory_benchmark.json",
+    "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py:107-110"
+  ],
+  "original": {
+    "VmHWM": "not directly recorded in final raw file; Linux ru_maxrss is process peak RSS",
+    "absolute_peak_RSS_GiB": 201.5834732055664,
+    "sampled_RSS": "~180 GiB incomplete direct profile"
+  },
+  "candidate": {
+    "benchmark_absolute_ru_maxrss_GiB": 1.6754150390625,
+    "prototype_increment": "after-before ru_maxrss, not live RSS and not allocation peak",
+    "prototype_observed_RSS_GiB": "approximately 0.615",
+    "rank02_peak_GiB": 0.30858612060546875,
+    "rank03_peak_GiB": 0.2781257629394531
+  },
+  "caveat": "Some labels share absolute ru_maxrss units but workloads/process histories differ; peak delta is not comparable to absolute peak. Low rank02/03 peaks need reconciliation with claimed full 0.5GiB complex128 state.",
+  "formal_reduction_allowed": false
+}

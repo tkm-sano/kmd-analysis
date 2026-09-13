@@ -1,0 +1,147 @@
+{
+  "parameters": [
+    {
+      "parameter": "instance",
+      "value": "three SHA-ranked n5 combinations",
+      "authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_instance_selection.json",
+      "when_fixed": "66d8d73 (2026-09-11 22:18:24 +09), before rank01 22:32:21",
+      "result_dependent": "No evidence; independently recomputed",
+      "risk": "LOW"
+    },
+    {
+      "parameter": "n",
+      "value": 5,
+      "authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_planned_run_manifest.json",
+      "when_fixed": "66d8d73 (2026-09-11 22:18:24 +09), before rank01 22:32:21",
+      "result_dependent": "No observed n5 outcome dependency",
+      "risk": "LOW"
+    },
+    {
+      "parameter": "p",
+      "value": 1,
+      "authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_planned_run_manifest.json",
+      "when_fixed": "66d8d73 (2026-09-11 22:18:24 +09), before rank01 22:32:21",
+      "result_dependent": "Fixed before n5, after earlier n4 depth outcomes",
+      "risk": "MEDIUM"
+    },
+    {
+      "parameter": "lambda",
+      "value": 4.0,
+      "authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_penalty_authority.json",
+      "when_fixed": "66d8d73 (2026-09-11 22:18:24 +09), before rank01 22:32:21",
+      "result_dependent": "No empirical tuning evidence",
+      "risk": "LOW"
+    },
+    {
+      "parameter": "optimizer",
+      "value": "COBYLA",
+      "authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_planned_run_manifest.json",
+      "when_fixed": "66d8d73 (2026-09-11 22:18:24 +09), before rank01 22:32:21",
+      "result_dependent": "Fixed before n5; B2 results already available",
+      "risk": "MEDIUM"
+    },
+    {
+      "parameter": "initialization",
+      "value": [
+        0.1,
+        0.1
+      ],
+      "authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_planned_run_manifest.json",
+      "when_fixed": "66d8d73 (2026-09-11 22:18:24 +09), before rank01 22:32:21",
+      "result_dependent": "Fixed before n5; B1 outcomes available",
+      "risk": "MEDIUM"
+    },
+    {
+      "parameter": "cap",
+      "value": 300,
+      "authority": "05_src/traffic_simulation/r23_qaoa_aer/schema.py:94",
+      "when_fixed": "schema default pre-run; explicit n5 runner committed after outcomes",
+      "result_dependent": "Historical override cannot be fully excluded",
+      "risk": "HIGH"
+    },
+    {
+      "parameter": "seed",
+      "value": "simulation/transpile 17; selection 2301; validation 2501",
+      "authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_validation_authority.json",
+      "when_fixed": "schema default / pre-run selection and validation authority",
+      "result_dependent": "No n5 best-seed selection evidence",
+      "risk": "LOW"
+    },
+    {
+      "parameter": "tolerance",
+      "value": 1e-12,
+      "authority": "05_src/traffic_simulation/r23_qaoa_aer/schema.py:19-21",
+      "when_fixed": "R23 schema before n5",
+      "result_dependent": "No numeric relaxation; candidate enforcement removed",
+      "risk": "LOW"
+    },
+    {
+      "parameter": "denominator",
+      "value": "raw full state mass",
+      "authority": "05_src/traffic_simulation/r23_qaoa_aer/metrics.py",
+      "when_fixed": "R23 canonical before n5",
+      "result_dependent": "No evidence of renormalization",
+      "risk": "LOW"
+    },
+    {
+      "parameter": "maxiter",
+      "value": 300,
+      "authority": "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py:134",
+      "when_fixed": "explicit n5 code first committed after outcomes; frozen before-run assertion NOT_VERIFIED"
+    },
+    {
+      "parameter": "optimizer_options",
+      "value": "None -> {maxiter:300}; other SciPy COBYLA defaults",
+      "authority": "05_src/traffic_simulation/r23_qaoa_aer/optimizers.py:60-79",
+      "when_fixed": "current code known; actual run dirty-source options unverified"
+    },
+    {
+      "parameter": "repetition",
+      "value": 1,
+      "authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_planned_run_manifest.json",
+      "when_fixed": "66d8d73 (2026-09-11 22:18:24 +09), before rank01 22:32:21"
+    },
+    {
+      "parameter": "backend",
+      "value": "AerSimulator CPU",
+      "authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v2/n5_execution_authorization_v2.json",
+      "when_fixed": "66d8d73 (2026-09-11 22:18:24 +09), before rank01 22:32:21"
+    },
+    {
+      "parameter": "Aer method",
+      "value": "statevector",
+      "authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v2/n5_execution_authorization_v2.json",
+      "when_fixed": "66d8d73 (2026-09-11 22:18:24 +09), before rank01 22:32:21"
+    },
+    {
+      "parameter": "shots",
+      "value": "NONE; saved statevector; no measurement sampling",
+      "authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_planned_run_manifest.json",
+      "when_fixed": "66d8d73 (2026-09-11 22:18:24 +09), before rank01 22:32:21"
+    },
+    {
+      "parameter": "exact-reference policy",
+      "value": "all permutations; abs cost tolerance 1e-12; fixed selected instances unique; ties supported in metrics",
+      "authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_exact_references.json",
+      "when_fixed": "66d8d73 (2026-09-11 22:18:24 +09), before rank01 22:32:21"
+    },
+    {
+      "parameter": "frozen environment",
+      "value": "/home/takuma/.conda/envs/evrp-quantum-temp/bin/python",
+      "authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v2/frozen_environment_validation.json",
+      "when_fixed": "ec476f3 before execution",
+      "observed_match": {
+        "python": "3.11.16",
+        "numpy": "2.4.6",
+        "scipy": "1.17.1",
+        "qiskit": "2.5.2",
+        "qiskit-aer": "0.17.2",
+        "qiskit-algorithms": "0.4.0",
+        "qiskit-optimization": "0.7.0"
+      }
+    }
+  ],
+  "no_parameter_changed_by_audit": true,
+  "no_posthoc_tuning_proven": true,
+  "complete_pre_run_freeze_verified": false
+}

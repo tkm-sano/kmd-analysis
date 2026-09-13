@@ -1,0 +1,48 @@
+{
+  "classification": "CODE_AUDIT_FAIL",
+  "gates": {
+    "scientific_model_unchanged": true,
+    "QUBO_unchanged": true,
+    "Hamiltonian_unchanged": true,
+    "optimizer_objective_unchanged": true,
+    "bit_ordering_verified": true,
+    "no_optimum_leakage": true,
+    "no_result_hardcoding_in_scientific_candidate": true,
+    "no_denominator_change": true,
+    "no_tolerance_relaxation_in_effect": false,
+    "no_posthoc_parameter_tuning_verified": false,
+    "no_result_dependent_instance_selection": true,
+    "no_selective_scientific_run_exclusion_found": true,
+    "historical_artifacts_immutable_fully_verified": false,
+    "validation_sufficiently_independent_and_fail_sensitive": false,
+    "no_unresolved_HIGH": false,
+    "no_unresolved_CRITICAL": true,
+    "no_unresolved_MAJOR": false
+  },
+  "severity_counts": {
+    "MAJOR": 4,
+    "MODERATE": 5,
+    "MINOR": 1,
+    "CRITICAL": 0
+  },
+  "arbitrariness_counts": {
+    "LOW": 6,
+    "MEDIUM": 8,
+    "HIGH": 1
+  },
+  "scope": "Current main independently audited; normalized-domain mathematics passes; incomplete integrity guards, validation and historical provenance prevent code acceptance.",
+  "false_gate_meaning": "False includes NOT_VERIFIED evidence requirements; it is not proof of intentional misconduct.",
+  "R24": "Do not advance; no authority promotion",
+  "required_remediation": [
+    "I01",
+    "I02",
+    "I03",
+    "I04",
+    "I05",
+    "I06",
+    "I07",
+    "I08",
+    "I09",
+    "I10"
+  ]
+}

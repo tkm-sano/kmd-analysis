@@ -1,0 +1,18 @@
+{
+  "conclusion": "No optimum information enters circuit, scalar objective, update, stopping or best-route cost selection",
+  "evidence": [
+    "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+    "05_src/traffic_simulation/r23_qaoa_aer/hamiltonian.py",
+    "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+    "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py"
+  ],
+  "feasible_knowledge": "F constructed solely by permutations and one-hot constraints; helper checks supplied optimum belongs to F, never uses it to generate F",
+  "best_route": "minimum travel cost among all threshold-surviving feasible states, sorted label order for ties; no exact reference lookup",
+  "allowed_reporting": [
+    "P_optimal",
+    "exact route match",
+    "ground-energy/gap diagnostics already present in original"
+  ],
+  "strict_policy_note": "Exact reference is also used in legacy reporting diagnostics, not solely a field named P_optimal. No optimization leakage follows from that reporting use.",
+  "multiple_optimum": "helper sum covers all supplied optimal states; independent two-optimum fixture P_opt=1; runner explicitly restricts frozen instances to unique optimum"
+}

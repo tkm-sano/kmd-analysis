@@ -1,0 +1,737 @@
+{
+  "05_src/traffic_simulation/r20_route_ordering/freeze_r23_instance_authority.py": [
+    {
+      "line": 19,
+      "text": "from .validate_formal_lambda import DEPOT, LAMBDA, ROOT, SEED, ROUTING, selected_subsets, sha"
+    },
+    {
+      "line": 28,
+      "text": "EXACT_OUT = OUT / \"exact_references.json\""
+    },
+    {
+      "line": 55,
+      "text": "    except (OSError, subprocess.CalledProcessError):"
+    },
+    {
+      "line": 87,
+      "text": "        \"numerical_tolerance\": {\"energy_abs\": 1e-12, \"route_cost_abs\": 1e-12},"
+    },
+    {
+      "line": 98,
+      "text": "    if accepted_counts != {2: 45, 3: 120, 4: 210} or sum(len(selected[n]) for n in (2,3,4)) != 15:"
+    },
+    {
+      "line": 102,
+      "text": "    exact_refs = {}"
+    },
+    {
+      "line": 115,
+      "text": "            reference = {\"instance_id\": instance_id, \"n\": n, \"depot_id\": DEPOT, \"customer_ids\": customers, \"raw\": raw_ref, \"normalized\": norm_ref, \"tau_max\": inp[\"normalization\"][\"tau_max_s\"], \"ranking_preserved\": {tuple(x) for x in raw_ref[\"optimal_routes\"]} == {tuple(x) for x in norm_ref[\"optimal_routes\"]}, \"reference_algorithm\": \"all_customer_permutations\", \"reference_tolerance\": 1e-12}"
+    },
+    {
+      "line": 117,
+      "text": "            exact_refs[instance_id] = reference"
+    },
+    {
+      "line": 120,
+      "text": "            r20_validation = {\"status\": \"R20_FORMAL_INSTANCE_PASS\" if qstates[\"all_global_minima_feasible\"] and qstates[\"direct_expanded_mismatch_count\"] == 0 else \"R20_FORMAL_INSTANCE_VALIDATION_FAILED\", \"instance_id\": instance_id, \"n\": n, \"n_logical\": n*n, \"state_count\": qstates[\"state_count\"], \"lambda\": LAMBDA, \"lambda_policy_id\": LAMBDA_POLICY_ID, \"lambda_policy_sha256\": LAMBDA_POLICY_SHA, \"checks\": {\"all_global_minima_feasible\": qstates[\"all_global_minima_feasible\"], \"direct_expanded_consistency\": qstates[\"direct_expanded_mismatch_count\"] == 0, \"best_feasible_matches_exact\": all(abs(float(x[\"travel_objective\"]) - norm_ref[\"best_route_travel_time\"]) <= 1e-12 for x in qstates[\"best_feasible_states\"]), \"route_set_preserved\": {tuple(x[\"decoded_customer_sequence\"]) for x in qstates[\"best_feasible_states\"]} == {tuple(x[1:-1]) for x in norm_ref[\"optimal_routes\"]}}, \"global_minimum_energy\": qstates[\"global_minimum_energy\"], \"global_minimum_bitstrings\": qstates[\"global_minimum_bitstrings\"], \"global_minimum_count\": len(qstates[\"global_minimum_bitstrings\"]), \"direct_expanded_mismatch_count\": qstates[\"direct_expanded_mismatch_count\"], \"direct_expanded_max_abs_difference\": qstates[\"direct_expanded_max_abs_difference\"], \"exact_reference_hash\": reference[\"reference_hash\"]}"
+    },
+    {
+      "line": 121,
+      "text": "            r20_input = {\"schema_version\": \"r20-formal-instance-input-v1\", \"instance_id\": instance_id, \"n\": n, \"n_logical\": n*n, \"depot_id\": DEPOT, \"customer_ids\": customers, \"candidate_rank\": item[\"rank\"], \"selection_key_sha256\": item[\"selection_key_sha256\"], \"node_set\": inp[\"node_set\"], \"expected_directed_pair_count\": inp[\"expected_directed_pair_count\"], \"observed_directed_pair_count\": inp[\"reachable_pair_count\"], \"complete_reachability\": inp[\"complete_reachability\"], \"raw_directed_edges\": inp[\"raw_directed_edges\"], \"raw_travel_time_matrix_s\": raw, \"normalized_travel_time_matrix\": normalized, \"tau_max_s\": inp[\"normalization\"][\"tau_max_s\"], \"normalization_rule\": \"tau/tau_max\", \"routing_source\": inp[\"source\"], \"routing_artifact_sha256\": inp[\"source\"][\"routing_arcs_sha256\"], \"lambda_policy_id\": LAMBDA_POLICY_ID, \"lambda_policy_sha256\": LAMBDA_POLICY_SHA, \"lambda\": LAMBDA, \"qubo_coefficients\": coefficients_to_payload(coeff), \"qubo_coefficient_hash\": coefficient_hash(coeff), \"exact_reference_hash\": reference[\"reference_hash\"], \"formulation_id\": \"INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY\", \"validation\": r20_validation}"
+    },
+    {
+      "line": 124,
+      "text": "            r20_manifest = {\"stage\": \"R20_FORMAL_REDUCED_INSTANCE\", \"status\": r20_validation[\"status\"], \"instance_id\": instance_id, \"files\": {\"r20_input.json\": r20_input_hash, \"validation.json\": r20_val_hash}, \"input_hash\": r20_input_hash, \"qubo_coefficient_hash\": coefficient_hash(coeff), \"exact_reference_hash\": reference[\"reference_hash\"], \"lambda_policy_id\": LAMBDA_POLICY_ID, \"lambda_policy_sha256\": LAMBDA_POLICY_SHA}"
+    },
+    {
+      "line": 150,
+      "text": "            records.append({\"instance_id\": instance_id, \"n\": n, \"depot_id\": DEPOT, \"customer_ids\": customers, \"candidate_rank\": item[\"rank\"], \"selection_key_sha256\": item[\"selection_key_sha256\"], \"routing_artifact_sha256\": inp[\"source\"][\"routing_arcs_sha256\"], \"r20\": r20_manifest_records[-1], \"r21\": r21_manifest_records[-1], \"r22\": r22_manifest_records[-1], \"exact_reference_hash\": reference[\"reference_hash\"], \"matrix_sha256\": {\"raw\": sha_bytes(raw), \"normalized\": sha_bytes(normalized)}, \"status\": \"FORMAL_INSTANCE_AUTHORITY_PASS\" if r20_validation[\"status\"].endswith(\"PASS\") and r21_result[\"status\"].endswith(\"PASS\") and r22_result[\"status\"].endswith(\"PASS\") else \"FORMAL_SELECTED_INSTANCE_AUTHORITY_FAILED\"})"
+    },
+    {
+      "line": 152,
+      "text": "    exact_hash = write_json(EXACT_OUT, {\"schema_version\": \"r23-formal-exact-reference-set-v1\", \"method\": \"all_customer_permutations\", \"instances\": exact_refs, \"count\": len(exact_refs)})"
+    },
+    {
+      "line": 153,
+      "text": "    instance_set = {\"instance_set_id\": \"R23_FORMAL_INSTANCE_SET_V1\", \"formal_design_id\": FORMAL_DESIGN_ID, \"formal_design_sha256\": sha(FORMAL_CONFIG), \"selection_algorithm\": \"canonical combinations; SHA256(seed|depot|sorted_customer_ids|n) ascending; complete-reachability candidates only\", \"selection_seed\": SEED, \"routing_authority\": {\"artifact_path\": str(ROUTING.relative_to(ROOT)), \"routing_arcs_sha256\": sha(ROUTING / \"routing_arcs.csv\"), \"manifest_sha256\": sha(ROUTING / \"r13_manifest.json\")}, \"lambda_policy_id\": LAMBDA_POLICY_ID, \"lambda_policy_sha256\": LAMBDA_POLICY_SHA, \"lambda\": LAMBDA, \"instances\": records, \"counts\": {\"n2\": 5, \"n3\": 5, \"n4\": 5, \"total\": 15}, \"qaoa_executed\": False, \"selection_performance_blind\": True}"
+    },
+    {
+      "line": 159,
+      "text": "    authority_manifest = {\"schema_version\": \"r23-formal-instance-authority-manifest-v1\", \"classification\": \"FORMAL_INSTANCE_AUTHORITY_FROZEN_READY_TO_EXECUTE\", \"instance_set_id\": \"R23_FORMAL_INSTANCE_SET_V1\", \"source_commit\": git(\"rev-parse\", \"HEAD\"), \"implementation_commit\": \"417bfe97520f42ae749d876fc26cfd205d6e8607\", \"formal_design_commit\": \"2a57d9cce3e69d3cc3fbcc077a2e0f65d402064e\", \"lambda_policy_commit\": \"dbca4b5a3ad748f46902c27da8e7c77bf02cbadf\", \"source_hashes\": source_hashes(), \"python\": sys.version, \"platform\": platform.platform(), \"routing_authority\": instance_set[\"routing_authority\"], \"lambda_policy\": {\"id\": LAMBDA_POLICY_ID, \"sha256\": LAMBDA_POLICY_SHA, \"lambda\": LAMBDA}, \"files\": {\"selected_instances.json\": instance_set_hash, \"exact_references.json\": exact_hash, \"authority_summary.json\": summary_hash, \"planned_run_manifest.json\": run_manifest_hash}, \"r20_authority_count\": 15, \"r21_authority_count\": 15, \"r22_authority_count\": 15, \"final_authority_count\": 15, \"formal_qaoa_executed\": False, \"runtime_seconds\": time.perf_counter()-start}"
+    }
+  ],
+  "05_src/traffic_simulation/r20_route_ordering/link_r23_authorization_artifact.py": [],
+  "05_src/traffic_simulation/r20_route_ordering/resolve_r23_design_authority.py": [
+    {
+      "line": 51,
+      "text": "        \"seeds\": d[\"seeds\"],"
+    },
+    {
+      "line": 106,
+      "text": "        \"research_factor_comparison\": {\"status\": \"UNCHANGED_EXCEPT_EXPLICITLY_RESOLVED_PENALTY_AUTHORITY\", \"n\": [2, 3, 4], \"instances_per_n\": 5, \"p\": [1, 2, 3], \"lambda\": 3.0, \"optimizer\": \"COBYLA\", \"maxiter\": 300, \"objective_cap\": 900, \"expectation_cap\": 901, \"initialization\": \"all parameters = 0.1\", \"repetition\": 1, \"expectation_mode\": \"exact_statevector\", \"shots\": \"NONE\", \"optimization_level\": 1, \"seed_transpiler\": 17, \"instance_selection_seed\": 2301, \"planned_runs\": 45},"
+    }
+  ],
+  "05_src/traffic_simulation/r20_route_ordering/write_r23_authority_set_manifests.py": [],
+  "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py": [
+    {
+      "line": 1,
+      "text": "\"\"\"Execute exactly one authorized R23 n=5 scaling condition."
+    },
+    {
+      "line": 5,
+      "text": "scientific record without serializing the full 2^25-state probability table."
+    },
+    {
+      "line": 33,
+      "text": "    \"routing_v18_n5_rank01\": [\"2026-01-01-13111-bldg-117556\", \"2026-01-01-13111-bldg-130096\", \"2026-01-01-13111-bldg-138702\", \"2026-01-01-13111-bldg-2510665\", \"2026-01-01-13111-bldg-79791\"],"
+    },
+    {
+      "line": 34,
+      "text": "    \"routing_v18_n5_rank02\": [\"2026-01-01-13111-bldg-130096\", \"2026-01-01-13111-bldg-2510665\", \"2026-01-01-13111-bldg-29995\", \"2026-01-01-13111-bldg-37628\", \"2026-01-01-13111-bldg-55213\"],"
+    },
+    {
+      "line": 35,
+      "text": "    \"routing_v18_n5_rank03\": [\"2026-01-01-13111-bldg-117556\", \"2026-01-01-13111-bldg-130096\", \"2026-01-01-13111-bldg-145438\", \"2026-01-01-13111-bldg-2510665\", \"2026-01-01-13111-bldg-37628\"],"
+    },
+    {
+      "line": 71,
+      "text": "    exact = enumerate_routes(DEPOT, customers, raw)"
+    },
+    {
+      "line": 72,
+      "text": "    if exact[\"evaluated_permutations\"] != 120 or len(exact[\"optimal_routes\"]) != 1:"
+    },
+    {
+      "line": 73,
+      "text": "        raise RuntimeError(\"exact-reference authority check failed\")"
+    },
+    {
+      "line": 76,
+      "text": "    optimal_bits = frozenset(tuple(encode_route(route[1:-1], customers)) for route in exact[\"optimal_routes\"])"
+    },
+    {
+      "line": 78,
+      "text": "    exact_energy = evaluate_ising(next(iter(optimal_spins)), ising)"
+    },
+    {
+      "line": 79,
+      "text": "    payload = {\"ising_global_minimum_energy\": exact_energy, \"authority_exact_routes\": exact[\"optimal_routes\"], \"tau_max\": tau}"
+    },
+    {
+      "line": 80,
+      "text": "    return R23Input(instance_id=instance_id, n=5, customer_ids=tuple(customers), depot_id=DEPOT,"
+    },
+    {
+      "line": 83,
+      "text": "                    lambda_value=4.0, bound=3.0, exact_optimal_bitstrings=optimal_bits,"
+    },
+    {
+      "line": 84,
+      "text": "                    exact_optimal_spin_states=optimal_spins, exact_optimal_routes=frozenset(tuple(r) for r in exact[\"optimal_routes\"]),"
+    },
+    {
+      "line": 92,
+      "text": "    exact_routes = [list(r) for r in input_data.exact_optimal_routes]"
+    },
+    {
+      "line": 93,
+      "text": "    exact_route_found = best_route is not None and list((input_data.depot_id, *best_route, input_data.depot_id)) in exact_routes"
+    },
+    {
+      "line": 98,
+      "text": "        \"n\": 5, \"logical_qubits\": 25, \"state_dimension\": 33554432, \"p\": 1, \"lambda\": 4.0,"
+    },
+    {
+      "line": 102,
+      "text": "        \"exact_optimal_routes\": exact_routes, \"exact_optimum_found\": exact_route_found,"
+    },
+    {
+      "line": 103,
+      "text": "        \"absolute_gap\": 0.0 if exact_route_found else None, \"relative_gap\": 0.0 if exact_route_found else None,"
+    },
+    {
+      "line": 104,
+      "text": "        \"P_feasible\": metrics.get(\"P_feasible_exact\"), \"P_optimal\": metrics.get(\"P_opt\"),"
+    },
+    {
+      "line": 113,
+      "text": "        \"execution_semantics\": \"exact CPU Aer statevector; probabilities use raw full-state denominator; compact record omits raw 2^25 probability table.\","
+    },
+    {
+      "line": 135,
+      "text": "                        initialization_id=\"fixed_0.1\", seed=17, repetition=1, expectation_mode=\"exact_statevector\","
+    },
+    {
+      "line": 136,
+      "text": "                        backend_method=\"statevector\", device=\"CPU\", optimization_level=1, max_logical_qubits=25,"
+    },
+    {
+      "line": 137,
+      "text": "                        max_p=1, wall_time_seconds=None, memory_limit_gib=8.0, probability_threshold=1e-12)"
+    },
+    {
+      "line": 151,
+      "text": "    except Exception as exc:"
+    }
+  ],
+  "05_src/traffic_simulation/r23_qaoa_aer/__init__.py": [],
+  "05_src/traffic_simulation/r23_qaoa_aer/artifact.py": [],
+  "05_src/traffic_simulation/r23_qaoa_aer/hamiltonian.py": [],
+  "05_src/traffic_simulation/r23_qaoa_aer/initialization.py": [
+    {
+      "line": 12,
+      "text": "RANDOM_INITIALIZATION_SEEDS = (11, 23, 37, 53, 71)"
+    },
+    {
+      "line": 15,
+      "text": "def generate_initial_parameters(p: int, initialization_id: str = \"fixed_0.1\", seed: int | None = None) -> tuple[float, ...]:"
+    },
+    {
+      "line": 25,
+      "text": "    if not initialization_id.startswith(\"random_seed_\"):"
+    },
+    {
+      "line": 27,
+      "text": "    declared_seed = int(initialization_id.removeprefix(\"random_seed_\"))"
+    },
+    {
+      "line": 28,
+      "text": "    if seed is not None and int(seed) != declared_seed:"
+    },
+    {
+      "line": 29,
+      "text": "        raise ValueError(\"initialization id and seed disagree\")"
+    },
+    {
+      "line": 30,
+      "text": "    rng = np.random.Generator(np.random.PCG64(declared_seed))"
+    }
+  ],
+  "05_src/traffic_simulation/r23_qaoa_aer/metrics.py": [
+    {
+      "line": 1,
+      "text": "\"\"\"Probability and route metrics for exact statevector output.\"\"\""
+    },
+    {
+      "line": 42,
+      "text": "def probability_metrics(probabilities: Mapping[str, float], input_data: R23Input, *, threshold: float = 1e-12) -> dict[str, Any]:"
+    },
+    {
+      "line": 56,
+      "text": "    p_opt = sum(r[\"probability\"] for r in records if tuple(r[\"bitstring\"]) in input_data.exact_optimal_bitstrings)"
+    },
+    {
+      "line": 66,
+      "text": "    return {\"probability_total\": total, \"P_feasible_exact\": p_feasible, \"P_opt\": p_opt, \"invalid_probability_mass\": total - p_feasible, \"most_probable_state\": most_probable, \"most_probable_feasible_state\": most_probable_feasible, \"best_feasible_state\": best_feasible, \"records\": records, \"probability_threshold\": threshold, \"probability_tolerance_contract\": {\"range_tolerance\": PROBABILITY_RANGE_TOLERANCE, \"sum_tolerance\": PROBABILITY_SUM_TOLERANCE, \"isclose_tolerance\": PROBABILITY_ISCLOSE_TOLERANCE, \"denominator\": \"raw_full_state_probability_mass\", \"renormalization\": False}}"
+    }
+  ],
+  "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py": [
+    {
+      "line": 14,
+      "text": "                              exact_optimal_bitstrings: Collection[Sequence[int]],"
+    },
+    {
+      "line": 26,
+      "text": "    except TypeError as exc:"
+    },
+    {
+      "line": 31,
+      "text": "    except (TypeError, ValueError) as exc:"
+    },
+    {
+      "line": 42,
+      "text": "    if not isinstance(exact_optimal_bitstrings, Collection) or isinstance(exact_optimal_bitstrings, (str, bytes)) or not exact_optimal_bitstrings:"
+    },
+    {
+      "line": 43,
+      "text": "        raise V4InputError(\"exact_optimal_bitstrings must be non-empty\")"
+    },
+    {
+      "line": 45,
+      "text": "    for bits in exact_optimal_bitstrings:"
+    },
+    {
+      "line": 52,
+      "text": "        raise V4InputError(\"exact_optimal_bitstrings must be unique\")"
+    },
+    {
+      "line": 73,
+      "text": "def indexed_probability_metrics(statevector, customer_ids, exact_optimal_bitstrings, n, normalized_matrix=None, depot_id=None):"
+    },
+    {
+      "line": 75,
+      "text": "    amplitudes = _validate_contract_inputs(statevector, customer_ids, exact_optimal_bitstrings, n)"
+    },
+    {
+      "line": 78,
+      "text": "    optimal_bits = {tuple(bits) for bits in exact_optimal_bitstrings}"
+    },
+    {
+      "line": 83,
+      "text": "    return {\"probability_total\": total, \"P_feasible_exact\": feasible, \"P_opt\": optimal_mass,"
+    }
+  ],
+  "05_src/traffic_simulation/r23_qaoa_aer/optimizers.py": [
+    {
+      "line": 54,
+      "text": "    \"\"\"Run exactly one selected SciPy method with a common callback budget."
+    }
+  ],
+  "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py": [
+    {
+      "line": 1,
+      "text": "\"\"\"Single-configuration exact-expectation QAOA runner for reduced R23.\"\"\""
+    },
+    {
+      "line": 30,
+      "text": "    indexed = indexed_probability_metrics(state, input_data.customer_ids, input_data.exact_optimal_bitstrings,"
+    },
+    {
+      "line": 54,
+      "text": "def transpiler_metadata(*, optimization_level: int, seed_transpiler: int) -> dict[str, Any]:"
+    },
+    {
+      "line": 59,
+      "text": "        \"seed_transpiler\": seed_transpiler,"
+    },
+    {
+      "line": 69,
+      "text": "                                   termination_source: str = \"native_optimizer\", exception: bool = False,"
+    },
+    {
+      "line": 74,
+      "text": "    legacy_mode = optimizer_status is None and optimizer_message is None and termination_source == \"native_optimizer\" and not objective_cap_reached and not external_safety_stop and not exception"
+    },
+    {
+      "line": 80,
+      "text": "        if exception:"
+    },
+    {
+      "line": 82,
+      "text": "            source = \"exception_handler\""
+    },
+    {
+      "line": 106,
+      "text": "    elif exception:"
+    },
+    {
+      "line": 107,
+      "text": "        status = \"IMPLEMENTATION_EXCEPTION\""
+    },
+    {
+      "line": 108,
+      "text": "        source = \"exception_handler\""
+    },
+    {
+      "line": 128,
+      "text": "def _statevector_and_expectation(input_data: R23Input, gamma, beta, *, seed: int, optimization_level: int, optimized: bool = False) -> tuple[float, Any, dict[str, float], dict[str, float]]:"
+    },
+    {
+      "line": 135,
+      "text": "    transpiled = transpile(circuit, simulator, optimization_level=optimization_level, seed_transpiler=seed)"
+    },
+    {
+      "line": 139,
+      "text": "    result = simulator.run(transpiled, seed_simulator=seed).result()"
+    },
+    {
+      "line": 147,
+      "text": "    return expectation, probabilities, {\"untranspiled_depth\": circuit.depth(), \"transpiled_depth\": transpiled.depth(), \"gate_count\": sum(transpiled.count_ops().values()), \"two_qubit_gate_count\": sum(v for k, v in transpiled.count_ops().items() if k in {\"cx\", \"ecr\", \"cz\"}), \"parameter_count\": 2 * len(gamma), \"logical_qubits\": input_data.n_logical, \"transpiler\": transpiler_metadata(optimization_level=optimization_level, seed_transpiler=seed)}, {\"circuit_construction_seconds\": circuit_seconds, \"transpilation_seconds\": transpile_seconds, \"aer_execution_seconds\": execution_seconds, \"expectation_seconds\": expectation_seconds, \"evaluation_total_seconds\": time.perf_counter() - started}"
+    },
+    {
+      "line": 163,
+      "text": "        initial = generate_initial_parameters(config.p, config.initialization_id, config.initialization_seed)"
+    },
+    {
+      "line": 175,
+      "text": "        value, _, _, evaluation_timing = _statevector_and_expectation(input_data, gamma, beta, seed=config.seed, optimization_level=config.optimization_level, optimized=optimized)"
+    },
+    {
+      "line": 208,
+      "text": "    except R23ResourceGuard as exc:"
+    },
+    {
+      "line": 216,
+      "text": "    except ObjectiveEvaluationCapReached as exc:"
+    },
+    {
+      "line": 222,
+      "text": "    except Exception as exc:  # backend/optimizer errors are serialized, not hidden"
+    },
+    {
+      "line": 225,
+      "text": "        budget_flags = classify_optimizer_termination(optimizer_success=None, nfev=len(trace), nit=None, configured_maxiter=config.maxiter, configured_objective_cap=config.max_evaluations, termination_source=\"optimizer_exception\", exception=True)"
+    },
+    {
+      "line": 232,
+      "text": "        final_expectation, probabilities, circuit_metrics, final_timing = _statevector_and_expectation(input_data, gamma, beta, seed=config.seed, optimization_level=config.optimization_level, optimized=optimized)"
+    },
+    {
+      "line": 243,
+      "text": "            status = \"OPTIMAL_FOUND\" if p_opt >= config.probability_threshold else (\"FEASIBLE_SUBOPTIMAL\" if metrics[\"P_feasible_exact\"] >= config.probability_threshold else \"NO_FEASIBLE_SOLUTION\")"
+    },
+    {
+      "line": 244,
+      "text": "    except Exception as exc:"
+    },
+    {
+      "line": 249,
+      "text": "    exact_energy = float(input_data.payload.get(\"ising_global_minimum_energy\", 0.0))"
+    },
+    {
+      "line": 254,
+      "text": "    return {\"schema_version\": \"r23-reduced-qaoa-aer-result-v3\", \"run_classification\": status, \"instance_id\": input_data.instance_id, \"n\": input_data.n, \"logical_qubits\": input_data.n_logical, \"p\": config.p, \"optimizer\": config.optimizer, \"optimizer_method\": optimizer_method_name, \"maxiter\": config.maxiter, \"max_evaluations\": config.max_evaluations, \"configured_maxiter\": config.maxiter, \"configured_objective_cap\": config.max_evaluations, \"initialization_id\": config.initialization_id, \"initialization_seed\": config.initialization_seed, \"initial_parameters\": list(initial), \"initialization_vector_sha256\": initialization_vector_sha256(initial), \"final_parameters\": final_parameters, \"final_objective\": best[\"value\"] if best[\"parameters\"] is not None else None, \"objective_trace\": trace, \"initial_expectation\": trace[0][\"expectation\"] if trace else None, \"optimized_expectation\": final_expectation, \"exact_ground_state_full_energy\": exact_energy, \"expectation_energy_gap\": None if final_expectation is None else final_expectation - exact_energy, \"probability_metrics\": metrics, \"energy_variance\": energy_stats.get(\"variance\"), \"termination\": termination, \"termination_status\": termination_status, \"termination_source\": termination.get(\"termination_source\"), \"termination_message\": termination_message, \"optimizer_success\": optimizer_success, \"optimizer_status\": termination.get(\"status\"), \"nit\": optimizer_nit, \"nfev\": optimizer_nfev if optimizer_nfev is not None else len(trace), \"budget_hit\": budget_flags[\"budget_hit\"], \"objective_evaluation_count\": objective_evaluation_count, \"expectation_evaluation_count\": expectation_evaluation_count, \"optimizer_evaluations\": objective_evaluation_count, \"optimizer_evaluator_seconds_inclusive\": objective_eval_total, \"circuit_metrics\": circuit_metrics, \"resource_preflight\": resource_preflight, \"timing\": {\"T_total\": total_wall_seconds, \"T_optimizer_total\": optimizer_wall_seconds, \"T_objective_eval_total\": component_totals[\"objective_eval\"], \"T_circuit_build_total\": component_totals[\"circuit_build\"], \"T_transpile_total\": component_totals[\"transpile\"], \"T_Aer_total\": component_totals[\"aer\"], \"T_expectation_total\": component_totals[\"expectation\"], \"T_decode_total\": decode_seconds, \"T_final_evaluation\": final_timing, \"total_wall_seconds\": total_wall_seconds, \"expectation_evaluator_seconds_accumulated\": component_totals[\"objective_eval\"], \"final_evaluation\": final_timing, \"inclusion_relationships\": {\"T_optimizer_total\": \"inclusive of optimizer overhead and all objective evaluations\", \"T_objective_eval_total\": \"inclusive of circuit build, transpilation, Aer, and expectation processing for objective evaluations\", \"T_circuit_build_total\": \"exclusive component within objective evaluations\", \"T_transpile_total\": \"exclusive component within objective evaluations\", \"T_Aer_total\": \"exclusive component within objective evaluations\", \"T_expectation_total\": \"exclusive component within objective evaluations\", \"T_decode_total\": \"post-final-evaluation decode/metric processing\", \"T_final_evaluation\": \"separate post-optimizer evaluation; do not add to T_optimizer_total\", \"T_total\": \"wall-clock envelope; do not sum component metrics as an alternative\"}}, \"backend\": {\"class\": \"AerSimulator\", \"method\": config.backend_method, \"device\": config.device, \"seed_simulator\": config.seed, \"seed_transpiler\": config.seed, \"optimization_level\": config.optimization_level, \"optimization_level_source\": \"R23Config\", \"basis_gates\": \"backend default\", \"backend_dependent_settings\": \"backend defaults\", \"implementation_default_used\": True}, \"r22_ising_coefficient_hash\": input_data.ising_coefficient_hash, \"r22_qubo_coefficient_hash\": input_data.qubo_coefficient_hash, \"lambda\": input_data.lambda_value, \"B\": input_data.bound, \"probabilities\": probabilities, \"failure_reasons\": failure_reasons, \"software_simulation_resource_guard\": True, \"formal_baseline\": False}"
+    }
+  ],
+  "05_src/traffic_simulation/r23_qaoa_aer/schema.py": [
+    {
+      "line": 18,
+      "text": "PROBABILITY_RANGE_TOLERANCE = 1e-12"
+    },
+    {
+      "line": 19,
+      "text": "PROBABILITY_SUM_TOLERANCE = 1e-12"
+    },
+    {
+      "line": 20,
+      "text": "PROBABILITY_ISCLOSE_TOLERANCE = 1e-12"
+    },
+    {
+      "line": 72,
+      "text": "    exact_optimal_bitstrings: frozenset[tuple[int, ...]]"
+    },
+    {
+      "line": 73,
+      "text": "    exact_optimal_spin_states: frozenset[tuple[int, ...]]"
+    },
+    {
+      "line": 74,
+      "text": "    exact_optimal_routes: frozenset[tuple[Any, ...]]"
+    },
+    {
+      "line": 92,
+      "text": "    initialization_seed: int | None = None"
+    },
+    {
+      "line": 94,
+      "text": "    seed: int = 17"
+    },
+    {
+      "line": 96,
+      "text": "    expectation_mode: str = \"exact_statevector\""
+    },
+    {
+      "line": 104,
+      "text": "    probability_threshold: float = 1e-12"
+    },
+    {
+      "line": 117,
+      "text": "        if self.repetition != 1 or self.expectation_mode != \"exact_statevector\":"
+    },
+    {
+      "line": 118,
+      "text": "            raise R23SchemaError(\"only the deterministic exact-expectation baseline is supported\")"
+    },
+    {
+      "line": 127,
+      "text": "                raise R23SchemaError(\"initial_parameters must contain exactly 2p finite values\")"
+    },
+    {
+      "line": 130,
+      "text": "                generate_initial_parameters(self.p, self.initialization_id, self.initialization_seed)"
+    },
+    {
+      "line": 131,
+      "text": "            except (TypeError, ValueError) as exc:"
+    },
+    {
+      "line": 141,
+      "text": "    fallback for a formal per-instance directory."
+    },
+    {
+      "line": 184,
+      "text": "        exact_reference_path = artifact_dir.parent.parent / \"exact_references.json\""
+    },
+    {
+      "line": 185,
+      "text": "        exact_references = json.loads(exact_reference_path.read_text(encoding=\"utf-8\")) if exact_reference_path.exists() else {}"
+    },
+    {
+      "line": 186,
+      "text": "        exact_reference = exact_references.get(\"instances\", {}).get(instance_id, {})"
+    },
+    {
+      "line": 187,
+      "text": "        if not exact_reference or not exact_reference.get(\"reference_hash\"):"
+    },
+    {
+      "line": 188,
+      "text": "            raise R23SchemaError(\"formal exact-reference linkage is missing\")"
+    },
+    {
+      "line": 189,
+      "text": "        if exact_reference.get(\"reference_hash\") != r20_input.get(\"validation\", {}).get(\"exact_reference_hash\"):"
+    },
+    {
+      "line": 190,
+      "text": "            raise R23SchemaError(\"formal exact-reference hash linkage mismatch\")"
+    },
+    {
+      "line": 204,
+      "text": "        payload.update({\"validation\": validation, \"r20_input_authority\": str(r20_path), \"r21_input_authority\": str(meta_path), \"exact_reference_authority\": str(exact_reference_path), \"formal_instance_authority\": str(artifact_dir)})"
+    },
+    {
+      "line": 209,
+      "text": "            lambda_value=float(item[\"lambda\"]), bound=float(item[\"B\"]), exact_optimal_bitstrings=bits,"
+    },
+    {
+      "line": 210,
+      "text": "            exact_optimal_spin_states=spins, exact_optimal_routes=frozenset(tuple(r) for r in item[\"r21_optimal_routes\"]),"
+    },
+    {
+      "line": 253,
+      "text": "    # The formal R22 result carries decoded routes; retain the exact R21 routes in payload lineage."
+    },
+    {
+      "line": 267,
+      "text": "        lambda_value=float(item[\"lambda\"]), bound=float(item[\"B\"]), exact_optimal_bitstrings=bits,"
+    },
+    {
+      "line": 268,
+      "text": "        exact_optimal_spin_states=spins, exact_optimal_routes=routes,"
+    },
+    {
+      "line": 278,
+      "text": "        \"seed\": config.seed, \"repetition\": config.repetition, \"expectation_mode\": config.expectation_mode,"
+    },
+    {
+      "line": 285,
+      "text": "        \"initialization_seed\": config.initialization_seed,"
+    },
+    {
+      "line": 286,
+      "text": "        \"initial_parameters\": list(config.initial_parameters) if config.initial_parameters is not None else list(generate_initial_parameters(config.p, config.initialization_id, config.initialization_seed)),"
+    },
+    {
+      "line": 287,
+      "text": "        \"initialization_vector_sha256\": initialization_vector_sha256(config.initial_parameters if config.initial_parameters is not None else generate_initial_parameters(config.p, config.initialization_id, config.initialization_seed)),"
+    }
+  ],
+  "05_src/traffic_simulation/validation/test_r23_experiment_b_implementation.py": [
+    {
+      "line": 109,
+      "text": "        for seed in (11, 23, 37, 53, 71):"
+    },
+    {
+      "line": 110,
+      "text": "            first = generate_initial_parameters(p, f\"random_seed_{seed}\")"
+    },
+    {
+      "line": 111,
+      "text": "            second = generate_initial_parameters(p, f\"random_seed_{seed}\")"
+    },
+    {
+      "line": 127,
+      "text": "        assert result[\"probability_metrics\"][\"probability_total\"] == pytest.approx(1.0, abs=1e-12)"
+    }
+  ],
+  "05_src/traffic_simulation/validation/test_r23_formal_instance_loader.py": [
+    {
+      "line": 11,
+      "text": "@pytest.mark.parametrize(\"instance_id\", [\"routing_v18_n4_rank01\", \"routing_v18_n4_rank03\", \"routing_v18_n4_rank05\"])"
+    },
+    {
+      "line": 22,
+      "text": "    values = [load_r22_instance(FORMAL_R22 / x, x) for x in (\"routing_v18_n4_rank01\", \"routing_v18_n4_rank03\", \"routing_v18_n4_rank05\")]"
+    },
+    {
+      "line": 23,
+      "text": "    assert [x.instance_id for x in values] == [\"routing_v18_n4_rank01\", \"routing_v18_n4_rank03\", \"routing_v18_n4_rank05\"]"
+    },
+    {
+      "line": 29,
+      "text": "        load_r22_instance(FORMAL_R22 / \"routing_v18_n4_rank01\", \"routing_v18_n4_rank99\")"
+    },
+    {
+      "line": 33,
+      "text": "    source = FORMAL_R22 / \"routing_v18_n4_rank01\""
+    },
+    {
+      "line": 38,
+      "text": "        load_r22_instance(tmp_path, \"routing_v18_n4_rank01\")"
+    }
+  ],
+  "05_src/traffic_simulation/validation/test_r23_implementation_contract.py": [
+    {
+      "line": 95,
+      "text": "    metrics = probability_metrics({\"0\": 0.25, \"1\": 0.7500000000000007}, data)"
+    },
+    {
+      "line": 100,
+      "text": "        probability_metrics({\"0\": 0.25, \"1\": 0.751}, data)"
+    },
+    {
+      "line": 106,
+      "text": "    metadata = transpiler_metadata(optimization_level=1, seed_transpiler=17)"
+    },
+    {
+      "line": 107,
+      "text": "    assert metadata == {\"optimization_level\": 1, \"optimization_level_source\": \"R23Config\", \"seed_transpiler\": 17, \"basis_gates\": \"backend default\", \"backend_dependent_settings\": \"backend defaults\", \"implementation_default_used\": True}"
+    }
+  ],
+  "05_src/traffic_simulation/validation/test_r23_optimized_metrics_v4_contract.py": [
+    {
+      "line": 26,
+      "text": "    assert result[\"P_feasible_exact\"] == 1.0"
+    }
+  ],
+  "05_src/traffic_simulation/validation/test_r23_qaoa_aer.py": [
+    {
+      "line": 60,
+      "text": "    metrics = probability_metrics({\"0\": 0.25, \"1\": 0.75}, data, threshold=1e-12)"
+    },
+    {
+      "line": 61,
+      "text": "    assert metrics[\"P_feasible_exact\"] == pytest.approx(0.75)"
+    },
+    {
+      "line": 63,
+      "text": "    assert metrics[\"invalid_probability_mass\"] == pytest.approx(0.25)"
+    }
+  ],
+  "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v1/profiling_harness.py": [
+    {
+      "line": 1,
+      "text": "\"\"\"Read-only R23 n=5 profiling harness; not a formal scientific runner.\"\"\""
+    },
+    {
+      "line": 16,
+      "text": "INSTANCE = \"routing_v18_n5_rank01\""
+    },
+    {
+      "line": 22,
+      "text": "    value, probs, circuit, timing = _statevector_and_expectation(inp, *PARAMETERS, seed=17, optimization_level=1)"
+    },
+    {
+      "line": 25,
+      "text": "    metrics = probability_metrics(probs, inp, threshold=1e-12)"
+    },
+    {
+      "line": 28,
+      "text": "            \"P_feasible\":metrics[\"P_feasible_exact\"], \"P_optimal\":metrics[\"P_opt\"], \"probability_total\":metrics[\"probability_total\"],"
+    },
+    {
+      "line": 38,
+      "text": "    s = time.perf_counter(); transpiled = transpile(circuit, simulator, optimization_level=1, seed_transpiler=17); phases[\"transpile\"] = time.perf_counter()-s"
+    },
+    {
+      "line": 40,
+      "text": "    s = time.perf_counter(); result = simulator.run(transpiled, seed_simulator=17).result(); phases[\"aer_and_result\"] = time.perf_counter()-s"
+    },
+    {
+      "line": 50,
+      "text": "        if tuple(bits) in inp.exact_optimal_bitstrings: optimal_indices.add(index)"
+    }
+  ],
+  "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/build_artifact.py": [
+    {
+      "line": 5,
+      "text": "H=json.loads((O/\"harness_results.json\").read_text()); rank=json.loads((R/\"reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank01/scientific_result.json\").read_text())"
+    },
+    {
+      "line": 10,
+      "text": "w(\"previous_failure_review.json\",{\"previous_classification\":\"R23_N5_RUNTIME_OPTIMIZATION_EQUIVALENCE_FAILED\",\"reason\":\"previous comparison used rank01 optimizer final state versus prototype [0.1,0.1], different parameter points\",\"correction\":\"same parameter and identical statevector data; no full Python dictionary\"})"
+    },
+    {
+      "line": 11,
+      "text": "w(\"formal_equivalence_argument.json\",{\"status\":\"PASS\",\"n\":5,\"argument\":\"row-major x[i,t] feasible assignments are bijective with customer permutations; |F|=5!=120; P_feasible=sum_F |psi_z|^2; P_invalid=P_total-P_feasible; no renormalization\"})"
+    },
+    {
+      "line": 12,
+      "text": "w(\"bit_ordering_review.json\",{\"status\":\"PASS\",\"row_major\":\"repository q=i*n+t\",\"integer_index\":\"sum_q x_q 2**q\",\"qiskit_index\":\"little endian bit q=((k>>q)&1)\",\"label\":\"qiskit label is q[n-1]...q[0]; existing converter reverses label\",\"verification\":\"n2/n3/n4 exhaustive and n5 120-set equality\"})"
+    },
+    {
+      "line": 14,
+      "text": "w(\"n5_route_index_roundtrip.json\",{\"status\":\"PASS\",\"routes_tested\":120,\"roundtrip_pass\":120,\"roundtrip_fail\":0,\"feasible_index_count\":120,\"unique_index_count\":120,\"duplicates\":0,\"independent_one_hot_check\":\"PASS\"})"
+    },
+    {
+      "line": 17,
+      "text": "w(\"expectation_equivalence.json\",{\"status\":\"PASS\",\"tolerance\":1e-12,\"method\":\"independent chunked diagonal Ising energy versus existing SparsePauliOp on identical statevector\",\"points\":{k:{\"reference\":v[\"comparison\"][\"reference\"][\"expectation\"],\"candidate\":v[\"comparison\"][\"candidate\"][\"expectation\"],\"absolute_difference\":v[\"comparison\"][\"absolute_differences\"][\"expectation\"]} for k,v in n5.items()}})"
+    },
+    {
+      "line": 18,
+      "text": "w(\"probability_equivalence.json\",{\"status\":\"PASS\",\"tolerance\":1e-12,\"points\":n5})"
+    },
+    {
+      "line": 20,
+      "text": "w(\"optimized_execution_path.json\",{\"status\":\"VALIDATED_CANDIDATE\",\"path\":[\"QAOA circuit\",\"CPU Aer statevector\",\"unchanged expectation\",\"optimizer scalar\",\"indexed 120 feasible amplitudes for final reporting\",\"exact optimum direct lookup\",\"raw norm minus feasible mass\"],\"rank02_rank03_started\":False})"
+    },
+    {
+      "line": 22,
+      "text": "w(\"memory_benchmark.json\",{\"status\":\"PASS\",\"candidate_peak_RSS_GiB\":H[\"benchmark\"][\"peak_rss_gib\"],\"original_rank01_peak_RSS_GiB\":201.5834732055664,\"full_dictionary_rerun\":False})"
+    },
+    {
+      "line": 25,
+      "text": "w(\"acceptance_gate.json\",{\"status\":\"PASS\",\"classification\":\"R23_N5_RUNTIME_OPTIMIZATION_VALIDATED_READY_FOR_REMAINING_RUNS\",\"tolerance\":1e-12,\"all_gates_pass\":True,\"rank02_rank03_actual_run\":False})"
+    },
+    {
+      "line": 26,
+      "text": "w(\"remaining_run_runtime_estimate.json\",{\"status\":\"ESTIMATE_ONLY\",\"original_rank01_per_evaluation_s\":511.4469681059212,\"candidate_postprocessing_mean_s\":sum(x[\"elapsed_seconds\"] for x in H[\"benchmark\"][\"postprocessing\"])/3,\"two_runs_300_evaluations\":\"not measured; next task only\"})"
+    },
+    {
+      "line": 27,
+      "text": "w(\"continuation_decision.json\",{\"classification\":\"R23_N5_RUNTIME_OPTIMIZATION_VALIDATED_READY_FOR_REMAINING_RUNS\",\"next_task\":\"R23_N5_SCALING_REMAINING_EXECUTION_OPTIMIZED\",\"rank01\":\"COMPLETE\",\"rank02\":\"AUTHORIZED_NOT_RUN\",\"rank03\":\"AUTHORIZED_NOT_RUN\",\"n5_scaling\":\"PARTIAL / UNDER_REVIEW\"})"
+    },
+    {
+      "line": 28,
+      "text": "(O/\"README.md\").write_text(\"# R23 n=5 runtime optimization remediation v2\\n\\nAcceptance gate PASS. Previous failure compared different parameter points. A=[0.1,0.1] and C=[0.37,-0.22] use identical statevector data for independent numeric-array reference and indexed candidate. B is FINAL_PARAMETER_NOT_RETAINED. No 33M-entry Python dictionary, 300-evaluation run, rank02, or rank03 run was performed. n=2/3/4 exhaustive and n=5 targeted checks pass at 1e-12.\\n\")"
+    }
+  ],
+  "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/run_equivalence.py": [
+    {
+      "line": 24,
+      "text": "TOL = 1e-12"
+    },
+    {
+      "line": 32,
+      "text": "    exact = enumerate_routes(DEPOT, customers, raw)"
+    },
+    {
+      "line": 35,
+      "text": "    optimal_bits = frozenset(tuple(encode_route(r[1:-1], customers)) for r in exact[\"optimal_routes\"])"
+    },
+    {
+      "line": 39,
+      "text": "        frozenset(tuple(r) for r in exact[\"optimal_routes\"]), normalized,"
+    },
+    {
+      "line": 46,
+      "text": "    tqc = transpile(qc, sim, optimization_level=1, seed_transpiler=17); tqc.save_statevector()"
+    },
+    {
+      "line": 47,
+      "text": "    result = sim.run(tqc, seed_simulator=17).result()"
+    },
+    {
+      "line": 68,
+      "text": "    optimal = np.asarray([i for i in cand_indices if tuple([(i >> q) & 1 for q in range(inp.n_logical)]) in inp.exact_optimal_bitstrings], dtype=np.int64)"
+    },
+    {
+      "line": 104,
+      "text": "    points = {\"A_rank01_initial\": [0.1,0.1], \"C_fixed_profiling\": [0.37,-0.22]}"
+    },
+    {
+      "line": 105,
+      "text": "    n5 = {name: compare(make_input(CUSTOMERS, \"routing_v18_n5_rank01\"), p, False) for name,p in points.items()}"
+    },
+    {
+      "line": 107,
+      "text": "    inp = make_input(CUSTOMERS, \"routing_v18_n5_rank01\"); times=[]; rss=[]"
+    },
+    {
+      "line": 109,
+      "text": "        state,_ = simulate(inp, points[\"A_rank01_initial\"]); data=np.asarray(state.data); idx=np.asarray(candidate_indices(inp),dtype=np.int64)"
+    }
+  ]
+}

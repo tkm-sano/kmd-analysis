@@ -1,0 +1,243 @@
+{
+  "comparison_recorded_at_utc": "2026-09-13T17:36:49.130603+00:00",
+  "previous_first_content_read": "after independent seal; first explicit read was previous acceptance/finding/DOF files",
+  "independent_seal_sha256": "0056ab508c43dab22aa4057c5cad4a5fe3278c7f36293b814b69738a0bc338e9",
+  "independent_files_unchanged": true,
+  "previous_classification": "CODE_AUDIT_PASS_WITH_REMEDIATION",
+  "independent_classification": "CODE_AUDIT_FAIL",
+  "classification_agreement": false,
+  "previous_finding_count": 3,
+  "independent_finding_count": 10,
+  "previous_severity_counts": {
+    "MODERATE": 3,
+    "CRITICAL": 0,
+    "MAJOR": 0,
+    "MINOR": 0
+  },
+  "independent_severity_counts": {
+    "MAJOR": 4,
+    "MODERATE": 5,
+    "MINOR": 1,
+    "CRITICAL": 0
+  },
+  "previous_HIGH": 0,
+  "independent_HIGH": 1,
+  "previous_CRITICAL_MAJOR": 0,
+  "independent_CRITICAL_MAJOR": 4,
+  "correspondence": [
+    {
+      "previous": "AUD-M-001",
+      "current": [
+        "I05"
+      ],
+      "finding_agreement": "substantially same",
+      "severity_agreement": true,
+      "note": "Both reject formal runtime/memory multiplier; current adds actual timer exclusions and sub-raw-state RSS anomaly."
+    },
+    {
+      "previous": "AUD-M-002",
+      "current": [
+        "I01",
+        "I07"
+      ],
+      "finding_agreement": "same topic, materially different failure conclusion",
+      "severity_agreement": false,
+      "note": "Previous MODERATE assumes malformed paths fail closed. Independent probes demonstrate accepted zero/scaled norm and output inf/nan; I01 MAJOR. Current explicit dimension/finiteness guards are newer than previous source."
+    },
+    {
+      "previous": "AUD-M-003",
+      "current": [],
+      "current_decision": "optimizer MEDIUM in optimizer_selection_audit.json and degrees-of-freedom",
+      "finding_agreement": "rationale risk retained as a decision, not a standalone finding",
+      "severity_agreement": "no one-to-one severity",
+      "note": "Same MEDIUM optimizer risk; current does not infer B2-independent preference from pre-n5 timestamp alone."
+    }
+  ],
+  "new_independent_findings": [
+    "I02",
+    "I03",
+    "I04",
+    "I06",
+    "I08",
+    "I09",
+    "I10"
+  ],
+  "prior_only_register_finding": "AUD-M-003 is represented in the current optimizer risk decision; not silently discarded",
+  "arbitrariness_comparison": [
+    {
+      "decision": "instance",
+      "previous_decision": "instance selection",
+      "previous": "LOW",
+      "current": "LOW",
+      "agreement": true
+    },
+    {
+      "decision": "n",
+      "previous_decision": "n",
+      "previous": "LOW",
+      "current": "LOW",
+      "agreement": true
+    },
+    {
+      "decision": "p",
+      "previous_decision": "p",
+      "previous": "LOW",
+      "current": "MEDIUM",
+      "agreement": false
+    },
+    {
+      "decision": "lambda",
+      "previous_decision": "lambda",
+      "previous": "LOW",
+      "current": "LOW",
+      "agreement": true
+    },
+    {
+      "decision": "optimizer",
+      "previous_decision": "optimizer",
+      "previous": "MEDIUM",
+      "current": "MEDIUM",
+      "agreement": true
+    },
+    {
+      "decision": "initialization",
+      "previous_decision": "initialization",
+      "previous": "MEDIUM",
+      "current": "MEDIUM",
+      "agreement": true
+    },
+    {
+      "decision": "cap",
+      "previous_decision": "cap",
+      "previous": "LOW",
+      "current": "HIGH",
+      "agreement": false
+    },
+    {
+      "decision": "seed",
+      "previous_decision": "seed",
+      "previous": "MEDIUM",
+      "current": "LOW",
+      "agreement": false
+    },
+    {
+      "decision": "tolerance",
+      "previous_decision": "tolerance",
+      "previous": "LOW",
+      "current": "LOW",
+      "agreement": true
+    },
+    {
+      "decision": "denominator",
+      "previous_decision": "denominator",
+      "previous": "LOW",
+      "current": "LOW",
+      "agreement": true
+    },
+    {
+      "decision": "benchmark metric",
+      "previous_decision": "runtime measurement",
+      "previous": "MEDIUM",
+      "current": "MEDIUM",
+      "agreement": true
+    },
+    {
+      "decision": "memory metric",
+      "previous_decision": "memory measurement",
+      "previous": "MEDIUM",
+      "current": "MEDIUM",
+      "agreement": true
+    },
+    {
+      "decision": "optimization approach",
+      "previous_decision": "optimization candidate",
+      "previous": "MEDIUM",
+      "current": "MEDIUM",
+      "agreement": true
+    },
+    {
+      "decision": "validation cases",
+      "previous_decision": "validation cases",
+      "previous": "LOW",
+      "current": "MEDIUM",
+      "agreement": false
+    },
+    {
+      "decision": "continuation rule",
+      "previous_decision": "continuation rule",
+      "previous": "LOW",
+      "current": "MEDIUM",
+      "agreement": false
+    }
+  ],
+  "unmapped_previous_decision": "metric (generic; prior has 16 decisions, current has 15)",
+  "previous_declared_risk_counts": {
+    "LOW": 11,
+    "MEDIUM": 5,
+    "HIGH": 0
+  },
+  "previous_recomputed_risk_counts": {
+    "LOW": 9,
+    "MEDIUM": 7
+  },
+  "previous_count_inconsistency": "Previous declares LOW11/MEDIUM5 but its 16 rows count LOW9/MEDIUM7. This comparison-only observation is not added to sealed independent findings.",
+  "current_risk_counts": {
+    "LOW": 6,
+    "MEDIUM": 8,
+    "HIGH": 1
+  },
+  "agreements": [
+    "normalized mathematical equivalence",
+    "canonical Hamiltonian/QUBO unchanged",
+    "bit ordering",
+    "no production exact-optimum leakage",
+    "raw denominator",
+    "no observed result hardcoding",
+    "no formal runtime multiplier",
+    "optimizer rationale MEDIUM"
+  ],
+  "disagreements": [
+    "failure safety/severity",
+    "validation acceptance sensitivity",
+    "execution source authority completeness",
+    "historical immutability certainty",
+    "current convergence claim",
+    "cap pre-run authority/HIGH risk"
+  ],
+  "source_drift": {
+    "previous_helper_sha256": "c0892b96e375fe2c274eaab74dfeb59cb8ec3a8a1331bb44bca3bd22dc9a9691",
+    "current_helper_sha256": "f96d76b53cda7034a4b57a6ffdea98bceed11c51a31d1218d69d8bb09cf3888f",
+    "change": "d4a8d78 adds explicit guards and label sort, 66 insertions/5 deletions; model and qaoa source unchanged since previous audit",
+    "historical_failure_probes": [
+      {
+        "case": "norm_four",
+        "result": "ACCEPTED",
+        "total": 4.0,
+        "P_opt": 4.0
+      },
+      {
+        "case": "zero_norm",
+        "result": "ACCEPTED",
+        "total": 0.0,
+        "P_opt": 0.0
+      },
+      {
+        "case": "empty_optimum",
+        "result": "ACCEPTED",
+        "total": 1.0,
+        "P_opt": 0.0
+      }
+    ],
+    "conclusion": "Added guards explain improvements in NaN/dimension rejection, but norm acceptance, missing entrypoint commits, unconditional report PASS and convergence 3/3 already existed. Source drift alone does not explain audit disagreement."
+  },
+  "result": "CODE_AUDIT_RESULT_NOT_REPRODUCED",
+  "causes": [
+    "Previous treats current snapshot hash as execution-time authority without reconstructing wrapper/wiring.",
+    "Previous accepts generated PASS summaries without checking whether assertions drive them or actual helper is exercised.",
+    "Previous assumes malformed input fails closed; independent counterexamples refute it even on the historical helper.",
+    "Previous retained-facts check does not detect contradictory current convergence claim.",
+    "Current differentiates absence of observed tuning from evidence that run options were fixed before results."
+  ],
+  "no_reclassification_after_comparison": true,
+  "LLM_identity_limit": "Previous artifact does not certify auditor model identity; this is independent source/model-condition reassessment, not verified same-LLM experiment."
+}

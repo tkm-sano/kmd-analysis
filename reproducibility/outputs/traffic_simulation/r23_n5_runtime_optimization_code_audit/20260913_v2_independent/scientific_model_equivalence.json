@@ -1,0 +1,58 @@
+{
+  "conclusion": "Model, canonical QUBO, Hamiltonian and scalar objective unchanged for the same input; full reporting/validation semantics NOT_EQUIVALENT",
+  "evidence": [
+    "canonical_comparisons.json",
+    "actual_equivalence_probes.json",
+    "line_diff_classification.json"
+  ],
+  "definitions": {
+    "decision_variables": "customer-only n*n binary x[i,t]",
+    "ordering": "i*n+t, 0-based",
+    "travel": "directed depot->first + consecutive customers + last->depot",
+    "normalization": "raw directed time / maximum selected off-diagonal time; asymmetry preserved",
+    "penalty": "lambda times row and column squared one-hot errors",
+    "lambda": 4.0,
+    "qubo_offset": 40.0,
+    "mixer": "-sum X, RX(-2 beta)",
+    "ansatz_depth": 1,
+    "initial_state": "Hadamard uniform superposition",
+    "objective": "min Re(<psi|H_without_identity|psi>)+Ising constant",
+    "sign": "minimize unchanged",
+    "scaling": "no additional division or normalization"
+  },
+  "exact_numerical_hash_equality": "all three instances",
+  "objective_differences": [
+    {
+      "n": 2,
+      "historical": 9.003936264083348,
+      "current": 9.003936264083348,
+      "difference": 0.0
+    },
+    {
+      "n": 3,
+      "historical": 21.48089234525447,
+      "current": 21.48089234525447,
+      "difference": 0.0
+    },
+    {
+      "n": 4,
+      "historical": 58.201393838356665,
+      "current": 58.201393838356665,
+      "difference": 0.0
+    },
+    {
+      "n": 5,
+      "candidate": 150.25280453984809,
+      "independent_diagonal": 150.25280453984817,
+      "difference": 8.526512829121202e-14,
+      "no_original_full_dictionary_rerun": true
+    }
+  ],
+  "exact_reference_in_objective": false,
+  "probability_metric_in_objective": false,
+  "limitations": [
+    "n5 historical full Python dictionary evaluation not rerun",
+    "objective is mathematically identical, not a universal claim of bitwise floating equality",
+    "report output fields and accepted probability domain differ"
+  ]
+}

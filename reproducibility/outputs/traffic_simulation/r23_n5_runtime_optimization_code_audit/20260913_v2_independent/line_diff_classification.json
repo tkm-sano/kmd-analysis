@@ -1,0 +1,245 @@
+{
+  "baseline": "9a4ce5600a211ffb92adf3b84fe2468d70be2b26",
+  "candidate": "d4a8d78a04316414a9f19ff143264d96c88b3c9b",
+  "unknown_count": 0,
+  "changes": [
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+      "operation": "insert",
+      "original_lines": [
+        13,
+        12
+      ],
+      "candidate_lines": [
+        13,
+        13
+      ],
+      "classification": "PERFORMANCE_ONLY",
+      "reason": "representation / execution dispatch; scalar unchanged",
+      "old": "",
+      "new": "from traffic_simulation.r20_route_ordering.core import ValidationStatus, route_travel_time, validate_bitstring\n"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+      "operation": "insert",
+      "original_lines": [
+        16,
+        15
+      ],
+      "candidate_lines": [
+        17,
+        17
+      ],
+      "classification": "PERFORMANCE_ONLY",
+      "reason": "representation / execution dispatch; scalar unchanged",
+      "old": "",
+      "new": "from .optimized_metrics_v4 import indexed_probability_metrics\n"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+      "operation": "insert",
+      "original_lines": [
+        24,
+        23
+      ],
+      "candidate_lines": [
+        26,
+        51
+      ],
+      "classification": "SCIENTIFIC_SEMANTICS",
+      "reason": "report adapter preserves route cost/threshold but omits original probability validation and reporting fields",
+      "old": "",
+      "new": "\n\ndef _v4_reporting_metrics(state, input_data: R23Input, threshold: float) -> dict[str, Any]:\n    \"\"\"V4 final reporting adapter: only indexed feasible amplitudes are inspected.\"\"\"\n    indexed = indexed_probability_metrics(state, input_data.customer_ids, input_data.exact_optimal_bitstrings,\n                                          input_data.n, normalized_matrix=input_data.normalized_matrix,\n                                          depot_id=input_data.depot_id)\n    amplitudes = state.data if hasattr(state, \"data\") else state\n    candidates = []\n    for index in indexed[\"feasible_indices\"]:\n        probability = float(abs(amplitudes[index]) ** 2)\n        if probability < threshold:\n            continue\n        bits = tuple((int(index) >> q) & 1 for q in range(input_data.n * input_data.n))\n        validation = validate_bitstring(bits, input_data.n, input_data.customer_ids)\n        if validation.status == ValidationStatus.VALID:\n            candidates.append({\"qiskit_label\": format(index, f\"0{input_data.n * input_data.n}b\"),\n                               \"bitstring\": list(bits), \"probability\": probability, \"valid\": True,\n                               \"status\": validation.status.value, \"route\": list(validation.route)})\n    best = None\n    for record in candidates:\n        candidate = {\"record\": record, \"normalized_route_objective\": route_travel_time(input_data.depot_id, record[\"route\"], input_data.normalized_matrix)}\n        if best is None or candidate[\"normalized_route_objective\"] < best[\"normalized_route_objective\"]:\n            best = candidate\n    indexed[\"best_feasible_state\"] = best\n    return indexed\n"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+      "operation": "replace",
+      "original_lines": [
+        100,
+        100
+      ],
+      "candidate_lines": [
+        128,
+        128
+      ],
+      "classification": "PERFORMANCE_ONLY",
+      "reason": "representation / execution dispatch; scalar unchanged",
+      "old": "def _statevector_and_expectation(input_data: R23Input, gamma, beta, *, seed: int, optimization_level: int) -> tuple[float, dict[str, float], dict[str, float], dict[str, float]]:\n",
+      "new": "def _statevector_and_expectation(input_data: R23Input, gamma, beta, *, seed: int, optimization_level: int, optimized: bool = False) -> tuple[float, Any, dict[str, float], dict[str, float]]:\n"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+      "operation": "replace",
+      "original_lines": [
+        118,
+        118
+      ],
+      "candidate_lines": [
+        146,
+        146
+      ],
+      "classification": "PERFORMANCE_ONLY",
+      "reason": "representation / execution dispatch; scalar unchanged",
+      "old": "    probabilities = {str(label): float(value) for label, value in state.probabilities_dict().items()}\n",
+      "new": "    probabilities = state if optimized else {str(label): float(value) for label, value in state.probabilities_dict().items()}\n"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+      "operation": "replace",
+      "original_lines": [
+        122,
+        122
+      ],
+      "candidate_lines": [
+        150,
+        153
+      ],
+      "classification": "PERFORMANCE_ONLY",
+      "reason": "representation / execution dispatch; scalar unchanged",
+      "old": "def run_single(input_data: R23Input, config: R23Config) -> dict[str, Any]:\n",
+      "new": "def run_single(input_data: R23Input, config: R23Config, *, implementation: str = \"original\") -> dict[str, Any]:\n    if implementation not in {\"original\", \"v4\"}:\n        raise ValueError(\"unknown implementation\")\n    optimized = implementation == \"v4\"\n"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+      "operation": "replace",
+      "original_lines": [
+        144,
+        144
+      ],
+      "candidate_lines": [
+        175,
+        175
+      ],
+      "classification": "PERFORMANCE_ONLY",
+      "reason": "representation / execution dispatch; scalar unchanged",
+      "old": "        value, _, _, evaluation_timing = _statevector_and_expectation(input_data, gamma, beta, seed=config.seed, optimization_level=config.optimization_level)\n",
+      "new": "        value, _, _, evaluation_timing = _statevector_and_expectation(input_data, gamma, beta, seed=config.seed, optimization_level=config.optimization_level, optimized=optimized)\n"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+      "operation": "replace",
+      "original_lines": [
+        201,
+        201
+      ],
+      "candidate_lines": [
+        232,
+        232
+      ],
+      "classification": "PERFORMANCE_ONLY",
+      "reason": "representation / execution dispatch; scalar unchanged",
+      "old": "        final_expectation, probabilities, circuit_metrics, final_timing = _statevector_and_expectation(input_data, gamma, beta, seed=config.seed, optimization_level=config.optimization_level)\n",
+      "new": "        final_expectation, probabilities, circuit_metrics, final_timing = _statevector_and_expectation(input_data, gamma, beta, seed=config.seed, optimization_level=config.optimization_level, optimized=optimized)\n"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+      "operation": "replace",
+      "original_lines": [
+        203,
+        204
+      ],
+      "candidate_lines": [
+        234,
+        239
+      ],
+      "classification": "SCIENTIFIC_SEMANTICS",
+      "reason": "drops energy variance and full metric output; probability acceptance contract differs",
+      "old": "        metrics = probability_metrics(probabilities, input_data, threshold=config.probability_threshold)\n        energy_stats = energy_statistics(probabilities, input_data)\n",
+      "new": "        if optimized:\n            metrics = _v4_reporting_metrics(probabilities, input_data, config.probability_threshold)\n            energy_stats = {}\n        else:\n            metrics = probability_metrics(probabilities, input_data, threshold=config.probability_threshold)\n            energy_stats = energy_statistics(probabilities, input_data)\n"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+      "operation": "replace",
+      "original_lines": [
+        219,
+        219
+      ],
+      "candidate_lines": [
+        254,
+        254
+      ],
+      "classification": "PERFORMANCE_ONLY",
+      "reason": "representation / execution dispatch; scalar unchanged",
+      "old": "    return {\"schema_version\": \"r23-reduced-qaoa-aer-result-v3\", \"run_classification\": status, \"instance_id\": input_data.instance_id, \"n\": input_data.n, \"logical_qubits\": input_data.n_logical, \"p\": config.p, \"optimizer\": config.optimizer, \"optimizer_method\": optimizer_method_name, \"maxiter\": config.maxiter, \"max_evaluations\": config.max_evaluations, \"configured_maxiter\": config.maxiter, \"configured_objective_cap\": config.max_evaluations, \"initialization_id\": config.initialization_id, \"initialization_seed\": config.initialization_seed, \"initial_parameters\": list(initial), \"initialization_vector_sha256\": initialization_vector_sha256(initial), \"final_parameters\": final_parameters, \"final_objective\": best[\"value\"] if best[\"parameters\"] is not None else None, \"objective_trace\": trace, \"initial_expectation\": trace[0][\"expectation\"] if trace else None, \"optimized_expectation\": final_expectation, \"exact_ground_state_full_energy\": exact_energy, \"expectation_energy_gap\": None if final_expectation is None else final_expectation - exact_energy, \"probability_metrics\": metrics, \"energy_variance\": energy_stats.get(\"variance\"), \"termination\": termination, \"termination_status\": termination_status, \"termination_source\": termination.get(\"termination_source\"), \"termination_message\": termination_message, \"optimizer_success\": optimizer_success, \"optimizer_status\": termination.get(\"status\"), \"nit\": optimizer_nit, \"nfev\": optimizer_nfev if optimizer_nfev is not None else len(trace), \"budget_hit\": budget_flags[\"budget_hit\"], \"objective_evaluation_count\": objective_evaluation_count, \"expectation_evaluation_count\": expectation_evaluation_count, \"optimizer_evaluations\": objective_evaluation_count, \"optimizer_evaluator_seconds_inclusive\": objective_eval_total, \"circuit_metrics\": circuit_metrics, \"resource_preflight\": resource_preflight, \"timing\": {\"T_total\": total_wall_seconds, \"T_optimizer_total\": optimizer_wall_seconds, \"T_objective_eval_total\": component_totals[\"objective_eval\"], \"T_circuit_build_total\": component_totals[\"circuit_build\"], \"T_transpile_total\": component_totals[\"transpile\"], \"T_Aer_total\": component_totals[\"aer\"], \"T_expectation_total\": component_totals[\"expectation\"], \"T_decode_total\": decode_seconds, \"T_final_evaluation\": final_timing, \"total_wall_seconds\": total_wall_seconds, \"expectation_evaluator_seconds_accumulated\": component_totals[\"objective_eval\"], \"final_evaluation\": final_timing, \"inclusion_relationships\": {\"T_optimizer_total\": \"inclusive of optimizer overhead and all objective evaluations\", \"T_objective_eval_total\": \"inclusive of circuit build, transpilation, Aer, and expectation processing for objective evaluations\", \"T_circuit_build_total\": \"exclusive component within objective evaluations\", \"T_transpile_total\": \"exclusive component within objective evaluations\", \"T_Aer_total\": \"exclusive component within objective evaluations\", \"T_expectation_total\": \"exclusive component within objective evaluations\", \"T_decode_total\": \"post-final-evaluation decode/metric processing\", \"T_final_evaluation\": \"separate post-optimizer evaluation; do not add to T_optimizer_total\", \"T_total\": \"wall-clock envelope; do not sum component metrics as an alternative\"}}, \"backend\": {\"class\": \"AerSimulator\", \"method\": config.backend_method, \"device\": config.device, \"seed_simulator\": config.seed, \"seed_transpiler\": config.seed, \"optimization_level\": config.optimization_level, \"optimization_level_source\": \"R23Config\", \"basis_gates\": \"backend default\", \"backend_dependent_settings\": \"backend defaults\", \"implementation_default_used\": True}, \"r22_ising_coefficient_hash\": input_data.ising_coefficient_hash, \"r22_qubo_coefficient_hash\": input_data.qubo_coefficient_hash, \"lambda\": input_data.lambda_value, \"B\": input_data.bound, \"probabilities\": probabilities, \"failure_reasons\": failure_reasons, \"software_simulation_resource_guard\": True, \"formal_baseline\": False}",
+      "new": "    return {\"schema_version\": \"r23-reduced-qaoa-aer-result-v3\", \"run_classification\": status, \"instance_id\": input_data.instance_id, \"n\": input_data.n, \"logical_qubits\": input_data.n_logical, \"p\": config.p, \"optimizer\": config.optimizer, \"optimizer_method\": optimizer_method_name, \"maxiter\": config.maxiter, \"max_evaluations\": config.max_evaluations, \"configured_maxiter\": config.maxiter, \"configured_objective_cap\": config.max_evaluations, \"initialization_id\": config.initialization_id, \"initialization_seed\": config.initialization_seed, \"initial_parameters\": list(initial), \"initialization_vector_sha256\": initialization_vector_sha256(initial), \"final_parameters\": final_parameters, \"final_objective\": best[\"value\"] if best[\"parameters\"] is not None else None, \"objective_trace\": trace, \"initial_expectation\": trace[0][\"expectation\"] if trace else None, \"optimized_expectation\": final_expectation, \"exact_ground_state_full_energy\": exact_energy, \"expectation_energy_gap\": None if final_expectation is None else final_expectation - exact_energy, \"probability_metrics\": metrics, \"energy_variance\": energy_stats.get(\"variance\"), \"termination\": termination, \"termination_status\": termination_status, \"termination_source\": termination.get(\"termination_source\"), \"termination_message\": termination_message, \"optimizer_success\": optimizer_success, \"optimizer_status\": termination.get(\"status\"), \"nit\": optimizer_nit, \"nfev\": optimizer_nfev if optimizer_nfev is not None else len(trace), \"budget_hit\": budget_flags[\"budget_hit\"], \"objective_evaluation_count\": objective_evaluation_count, \"expectation_evaluation_count\": expectation_evaluation_count, \"optimizer_evaluations\": objective_evaluation_count, \"optimizer_evaluator_seconds_inclusive\": objective_eval_total, \"circuit_metrics\": circuit_metrics, \"resource_preflight\": resource_preflight, \"timing\": {\"T_total\": total_wall_seconds, \"T_optimizer_total\": optimizer_wall_seconds, \"T_objective_eval_total\": component_totals[\"objective_eval\"], \"T_circuit_build_total\": component_totals[\"circuit_build\"], \"T_transpile_total\": component_totals[\"transpile\"], \"T_Aer_total\": component_totals[\"aer\"], \"T_expectation_total\": component_totals[\"expectation\"], \"T_decode_total\": decode_seconds, \"T_final_evaluation\": final_timing, \"total_wall_seconds\": total_wall_seconds, \"expectation_evaluator_seconds_accumulated\": component_totals[\"objective_eval\"], \"final_evaluation\": final_timing, \"inclusion_relationships\": {\"T_optimizer_total\": \"inclusive of optimizer overhead and all objective evaluations\", \"T_objective_eval_total\": \"inclusive of circuit build, transpilation, Aer, and expectation processing for objective evaluations\", \"T_circuit_build_total\": \"exclusive component within objective evaluations\", \"T_transpile_total\": \"exclusive component within objective evaluations\", \"T_Aer_total\": \"exclusive component within objective evaluations\", \"T_expectation_total\": \"exclusive component within objective evaluations\", \"T_decode_total\": \"post-final-evaluation decode/metric processing\", \"T_final_evaluation\": \"separate post-optimizer evaluation; do not add to T_optimizer_total\", \"T_total\": \"wall-clock envelope; do not sum component metrics as an alternative\"}}, \"backend\": {\"class\": \"AerSimulator\", \"method\": config.backend_method, \"device\": config.device, \"seed_simulator\": config.seed, \"seed_transpiler\": config.seed, \"optimization_level\": config.optimization_level, \"optimization_level_source\": \"R23Config\", \"basis_gates\": \"backend default\", \"backend_dependent_settings\": \"backend defaults\", \"implementation_default_used\": True}, \"r22_ising_coefficient_hash\": input_data.ising_coefficient_hash, \"r22_qubo_coefficient_hash\": input_data.qubo_coefficient_hash, \"lambda\": input_data.lambda_value, \"B\": input_data.bound, \"probabilities\": probabilities, \"failure_reasons\": failure_reasons, \"software_simulation_resource_guard\": True, \"formal_baseline\": False}\n"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+      "operation": "insert",
+      "original_lines": [
+        1,
+        0
+      ],
+      "candidate_lines": [
+        1,
+        86
+      ],
+      "classification": "SCIENTIFIC_SEMANTICS",
+      "reason": "indexed metrics mathematical equivalence on normalized complex128; missing original norm/range guard changes accepted domain; includes validation and performance code",
+      "old": "",
+      "new": "\"\"\"Validated R23 post-processing candidate: indexed amplitudes, no probability dict.\"\"\"\nfrom __future__ import annotations\nimport itertools\nfrom collections.abc import Collection, Sequence\nfrom typing import Any\nimport numpy as np\nfrom traffic_simulation.r20_route_ordering.core import encode_route, route_travel_time\n\nclass V4InputError(ValueError):\n    \"\"\"Raised when the indexed V4 helper receives an invalid contract input.\"\"\"\n\n\ndef _validate_contract_inputs(statevector: Any, customer_ids: Sequence[Any],\n                              exact_optimal_bitstrings: Collection[Sequence[int]],\n                              n: int) -> np.ndarray:\n    if type(n) is not int or n <= 0:\n        raise V4InputError(\"n must be a positive integer\")\n    if not isinstance(customer_ids, Sequence) or isinstance(customer_ids, (str, bytes)):\n        raise V4InputError(\"customer_ids must be a sequence\")\n    customers = tuple(customer_ids)\n    if len(customers) != n:\n        raise V4InputError(\"n must equal the number of customer IDs\")\n    try:\n        if len(set(customers)) != n:\n            raise V4InputError(\"customer_ids must be unique\")\n    except TypeError as exc:\n        raise V4InputError(\"customer IDs must be hashable\") from exc\n    raw = statevector.data if hasattr(statevector, \"data\") else statevector\n    try:\n        amplitudes = np.asarray(raw)\n    except (TypeError, ValueError) as exc:\n        raise V4InputError(\"statevector must be a one-dimensional numeric array\") from exc\n    if amplitudes.ndim != 1:\n        raise V4InputError(\"statevector must be one-dimensional\")\n    if amplitudes.dtype.kind not in \"fc\":\n        raise V4InputError(\"statevector dtype must be a supported real or complex floating type\")\n    expected_dimension = 2 ** (n * n)\n    if amplitudes.size != expected_dimension:\n        raise V4InputError(f\"statevector length must be {expected_dimension} for n={n}\")\n    if not np.all(np.isfinite(amplitudes)):\n        raise V4InputError(\"statevector must not contain NaN or inf\")\n    if not isinstance(exact_optimal_bitstrings, Collection) or isinstance(exact_optimal_bitstrings, (str, bytes)) or not exact_optimal_bitstrings:\n        raise V4InputError(\"exact_optimal_bitstrings must be non-empty\")\n    normalized = []\n    for bits in exact_optimal_bitstrings:\n        if not isinstance(bits, Sequence) or isinstance(bits, (str, bytes)) or len(bits) != n * n:\n            raise V4InputError(\"each optimal bitstring must have dimension n*n\")\n        if any(type(bit) is not int or bit not in (0, 1) for bit in bits):\n            raise V4InputError(\"optimal bitstrings must contain only binary integers\")\n        normalized.append(tuple(bits))\n    if len(set(normalized)) != len(normalized):\n        raise V4InputError(\"exact_optimal_bitstrings must be unique\")\n    valid_indices = set(feasible_basis_indices(customers, n))\n    for bits in normalized:\n        index = sum(bit << i for i, bit in enumerate(bits))\n        if index not in valid_indices:\n            raise V4InputError(\"each optimal bitstring must encode a feasible route\")\n    return amplitudes\n\n\ndef feasible_basis_indices(customer_ids, n):\n    if type(n) is not int or n <= 0 or len(tuple(customer_ids)) != n:\n        raise V4InputError(\"n must equal the number of customer IDs\")\n    indices = tuple(sorted(\n        (sum(bit << i for i, bit in enumerate(encode_route(route, customer_ids)))\n         for route in itertools.permutations(customer_ids)),\n        key=lambda index: format(index, f\"0{n * n}b\"),\n    ))\n    if len(set(indices)) != len(indices):\n        raise V4InputError(\"feasible basis indices must be unique\")\n    return indices\n\ndef indexed_probability_metrics(statevector, customer_ids, exact_optimal_bitstrings, n, normalized_matrix=None, depot_id=None):\n    \"\"\"Return raw-denominator metrics using only feasible basis indices.\"\"\"\n    amplitudes = _validate_contract_inputs(statevector, customer_ids, exact_optimal_bitstrings, n)\n    indices = np.asarray(feasible_basis_indices(customer_ids, n), dtype=np.int64)\n    probabilities = np.abs(amplitudes[indices]) ** 2\n    optimal_bits = {tuple(bits) for bits in exact_optimal_bitstrings}\n    optimal = np.asarray([i for i in indices if tuple((int(i) >> q) & 1 for q in range(n*n)) in optimal_bits], dtype=np.int64)\n    total = float(np.vdot(amplitudes, amplitudes).real)\n    feasible = float(probabilities.sum(dtype=np.float64))\n    optimal_mass = float(np.abs(amplitudes[optimal]) @ np.abs(amplitudes[optimal]))\n    return {\"probability_total\": total, \"P_feasible_exact\": feasible, \"P_opt\": optimal_mass,\n            \"invalid_probability_mass\": total-feasible, \"feasible_indices\": indices.tolist(),\n            \"optimal_indices\": optimal.tolist(), \"renormalized\": False,\n            \"denominator\": \"raw_full_state_probability_mass\"}\n"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py",
+      "operation": "insert",
+      "original_lines": [
+        1,
+        0
+      ],
+      "candidate_lines": [
+        1,
+        158
+      ],
+      "classification": "SCIENTIFIC_SEMANTICS",
+      "reason": "runner newly committed after outcomes; whole historical entrypoint unavailable; carries scientific configuration and result provenance",
+      "old": "",
+      "new": "\"\"\"Execute exactly one authorized R23 n=5 scaling condition.\n\nThis is the scientific execution tool for the frozen three-condition scope.\nIt performs no retries, no alternative configurations, and writes a compact\nscientific record without serializing the full 2^25-state probability table.\n\"\"\"\nfrom __future__ import annotations\n\nimport csv\nimport hashlib\nimport json\nimport os\nimport resource\nimport subprocess\nimport sys\nimport time\nfrom pathlib import Path\n\nfrom traffic_simulation.r20_route_ordering.core import (\n    build_expanded_qubo, encode_route, enumerate_routes, normalize_travel_time_matrix,\n)\nfrom traffic_simulation.r22_ising_conversion.converter import convert_qubo_to_ising, evaluate_ising\nfrom traffic_simulation.r22_ising_conversion.schema import coefficient_hash, ising_coefficient_hash\nfrom traffic_simulation.r23_qaoa_aer.qaoa import run_single\nfrom traffic_simulation.r23_qaoa_aer.schema import R23Config, R23Input\n\nROOT = Path(__file__).resolve().parents[3]\nOUT = ROOT / \"reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1\"\nROUTING = ROOT / \"reproducibility/outputs/traffic_simulation/demand/evrp_r13_routing/20260909_r13_routing_fixture_n10_v18_geometry_reaccepted/routing_arcs.csv\"\nAUTH = ROOT / \"reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v2\"\nDEPOT = \"DEP_006\"\nINSTANCES = {\n    \"routing_v18_n5_rank01\": [\"2026-01-01-13111-bldg-117556\", \"2026-01-01-13111-bldg-130096\", \"2026-01-01-13111-bldg-138702\", \"2026-01-01-13111-bldg-2510665\", \"2026-01-01-13111-bldg-79791\"],\n    \"routing_v18_n5_rank02\": [\"2026-01-01-13111-bldg-130096\", \"2026-01-01-13111-bldg-2510665\", \"2026-01-01-13111-bldg-29995\", \"2026-01-01-13111-bldg-37628\", \"2026-01-01-13111-bldg-55213\"],\n    \"routing_v18_n5_rank03\": [\"2026-01-01-13111-bldg-117556\", \"2026-01-01-13111-bldg-130096\", \"2026-01-01-13111-bldg-145438\", \"2026-01-01-13111-bldg-2510665\", \"2026-01-01-13111-bldg-37628\"],\n}\n\ndef canonical(v):\n    return json.dumps(v, ensure_ascii=False, sort_keys=True, separators=(\",\", \":\"), allow_nan=False).encode()\n\ndef sha(path):\n    return hashlib.sha256(Path(path).read_bytes()).hexdigest()\n\ndef meminfo():\n    vals = {}\n    for line in Path(\"/proc/meminfo\").read_text().splitlines():\n        k, value, *_ = line.split()\n        if k in {\"MemAvailable:\", \"MemTotal:\", \"SwapFree:\", \"SwapTotal:\"}:\n            vals[k[:-1]] = int(value) * 1024\n    return vals\n\ndef disk_info():\n    st = os.statvfs(ROOT)\n    return {\"available_bytes\": st.f_bavail * st.f_frsize, \"total_bytes\": st.f_blocks * st.f_frsize}\n\ndef git_head():\n    return subprocess.run([\"git\", \"rev-parse\", \"HEAD\"], cwd=ROOT, check=True, capture_output=True, text=True).stdout.strip()\n\ndef load_matrix(customers):\n    nodes = [DEPOT, *customers]\n    rows = list(csv.DictReader(ROUTING.open(encoding=\"utf-8\")))\n    pairs = {(r[\"origin_id\"], r[\"destination_id\"]): float(r[\"travel_time_s\"]) for r in rows if r[\"origin_id\"] != r[\"destination_id\"]}\n    missing = [(a, b) for a in nodes for b in nodes if a != b and (a, b) not in pairs]\n    if missing:\n        raise RuntimeError(f\"complete reachability failure: {missing[:3]}\")\n    return {a: {b: (0.0 if a == b else pairs[(a, b)]) for b in nodes} for a in nodes}\n\ndef make_input(instance_id, customers):\n    raw = load_matrix(customers)\n    normalized, tau = normalize_travel_time_matrix(DEPOT, customers, raw)\n    exact = enumerate_routes(DEPOT, customers, raw)\n    if exact[\"evaluated_permutations\"] != 120 or len(exact[\"optimal_routes\"]) != 1:\n        raise RuntimeError(\"exact-reference authority check failed\")\n    qubo = build_expanded_qubo(DEPOT, customers, normalized, 4.0)\n    ising = convert_qubo_to_ising(qubo)\n    optimal_bits = frozenset(tuple(encode_route(route[1:-1], customers)) for route in exact[\"optimal_routes\"])\n    optimal_spins = frozenset(tuple(1 if bit == 0 else -1 for bit in bits) for bits in optimal_bits)\n    exact_energy = evaluate_ising(next(iter(optimal_spins)), ising)\n    payload = {\"ising_global_minimum_energy\": exact_energy, \"authority_exact_routes\": exact[\"optimal_routes\"], \"tau_max\": tau}\n    return R23Input(instance_id=instance_id, n=5, customer_ids=tuple(customers), depot_id=DEPOT,\n                    ising_constant=ising.constant, ising_linear=ising.linear, ising_quadratic=ising.quadratic,\n                    ising_coefficient_hash=ising_coefficient_hash(ising), qubo_coefficient_hash=coefficient_hash(qubo),\n                    lambda_value=4.0, bound=3.0, exact_optimal_bitstrings=optimal_bits,\n                    exact_optimal_spin_states=optimal_spins, exact_optimal_routes=frozenset(tuple(r) for r in exact[\"optimal_routes\"]),\n                    normalized_matrix=normalized, payload=payload)\n\ndef compact_result(result, input_data, before, after, started_at, ended_at):\n    metrics = result.get(\"probability_metrics\", {})\n    best = metrics.get(\"best_feasible_state\") or {}\n    best_record = best.get(\"record\") or {}\n    best_route = best_record.get(\"route\")\n    exact_routes = [list(r) for r in input_data.exact_optimal_routes]\n    exact_route_found = best_route is not None and list((input_data.depot_id, *best_route, input_data.depot_id)) in exact_routes\n    timings = result.get(\"timing\", {})\n    return {\n        \"schema_version\": \"r23-n5-scientific-result-v1\", \"run_id\": result[\"instance_id\"] + \"_p1_init_fixed01_rep1_optimizer_cobyla\",\n        \"instance_id\": result[\"instance_id\"], \"customers\": list(input_data.customer_ids), \"depot\": input_data.depot_id,\n        \"n\": 5, \"logical_qubits\": 25, \"state_dimension\": 33554432, \"p\": 1, \"lambda\": 4.0,\n        \"optimizer\": \"COBYLA\", \"initialization\": \"fixed_0.1\", \"initial_parameters\": result[\"initial_parameters\"],\n        \"backend\": result[\"backend\"], \"shots\": \"NONE\", \"repetition\": 1,\n        \"run_classification\": result[\"run_classification\"], \"best_decoded_feasible_route\": [input_data.depot_id, *best_route, input_data.depot_id] if best_route else None,\n        \"exact_optimal_routes\": exact_routes, \"exact_optimum_found\": exact_route_found,\n        \"absolute_gap\": 0.0 if exact_route_found else None, \"relative_gap\": 0.0 if exact_route_found else None,\n        \"P_feasible\": metrics.get(\"P_feasible_exact\"), \"P_optimal\": metrics.get(\"P_opt\"),\n        \"probability_total\": metrics.get(\"probability_total\"), \"invalid_probability_mass\": metrics.get(\"invalid_probability_mass\"),\n        \"probability_integrity\": {\"total\": metrics.get(\"probability_total\"), \"invalid_mass\": metrics.get(\"invalid_probability_mass\"), \"renormalized\": False},\n        \"nfev\": result.get(\"nfev\"), \"termination\": result.get(\"termination\"), \"termination_status\": result.get(\"termination_status\"),\n        \"T_total\": timings.get(\"T_total\"), \"T_Aer\": timings.get(\"T_Aer_total\"), \"T_transpile\": timings.get(\"T_transpile_total\"),\n        \"T_total_per_nfev\": (timings.get(\"T_total\") / result[\"nfev\"]) if result.get(\"nfev\") else None,\n        \"T_Aer_per_nfev\": (timings.get(\"T_Aer_total\") / result[\"nfev\"]) if result.get(\"nfev\") else None,\n        \"resource\": {\"before\": before, \"after\": after, \"peak_rss_kib\": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,\n                      \"peak_rss_gib\": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1048576, \"swap_used_before\": before[\"SwapTotal\"]-before[\"SwapFree\"], \"swap_used_after\": after[\"SwapTotal\"]-after[\"SwapFree\"], \"disk_after\": disk_info(), \"process_exit_status\": 0},\n        \"execution_semantics\": \"exact CPU Aer statevector; probabilities use raw full-state denominator; compact record omits raw 2^25 probability table.\",\n        \"started_at\": started_at, \"ended_at\": ended_at, \"source_commit\": git_head(),\n        \"implementation_provenance\": {\"authority_name\": \"R23_EXPERIMENT_B_IMPLEMENTATION_SOURCE_SET_V4\",\n                                      \"source_file\": \"05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py\",\n                                      \"source_sha256\": sha(ROOT / \"05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py\"),\n                                      \"execution_mode\": \"qaoa.run_single(implementation='v4')\"},\n    }\n\ndef main():\n    if len(sys.argv) != 2 or sys.argv[1] not in INSTANCES:\n        raise SystemExit(\"usage: run_n5_scaling.py routing_v18_n5_rank0X\")\n    instance_id = sys.argv[1]; customers = INSTANCES[instance_id]\n    OUT.mkdir(parents=True, exist_ok=True); run_dir = OUT / \"runs\" / instance_id; run_dir.mkdir(parents=True, exist_ok=True)\n    progress_path = OUT / \"progress.json\"\n    progress = json.loads(progress_path.read_text()) if progress_path.exists() else {\"planned\": 3, \"started\": [], \"terminal\": [], \"scientific_failures\": [], \"run_ids\": []}\n    if instance_id not in progress[\"started\"]: progress[\"started\"].append(instance_id)\n    progress[\"last_event\"] = {\"instance_id\": instance_id, \"status\": \"STARTED\", \"timestamp\": time.time()}\n    progress_path.write_text(json.dumps(progress, indent=2) + \"\\n\")\n    before = meminfo(); started = time.time(); started_iso = time.strftime(\"%Y-%m-%dT%H:%M:%SZ\", time.gmtime(started))\n    try:\n        inp = make_input(instance_id, customers)\n        cfg = R23Config(p=1, optimizer=\"COBYLA\", maxiter=300, max_evaluations=300, initial_parameter=0.1,\n                        initialization_id=\"fixed_0.1\", seed=17, repetition=1, expectation_mode=\"exact_statevector\",\n                        backend_method=\"statevector\", device=\"CPU\", optimization_level=1, max_logical_qubits=25,\n                        max_p=1, wall_time_seconds=None, memory_limit_gib=8.0, probability_threshold=1e-12)\n        result = run_single(inp, cfg, implementation=\"v4\")\n        after = meminfo(); ended = time.time(); ended_iso = time.strftime(\"%Y-%m-%dT%H:%M:%SZ\", time.gmtime(ended))\n        compact = compact_result(result, inp, before, after, started_iso, ended_iso)\n        (run_dir / \"scientific_result.json\").write_text(json.dumps(compact, indent=2, ensure_ascii=False) + \"\\n\")\n        (run_dir / \"resource_record.json\").write_text(json.dumps(compact[\"resource\"], indent=2, ensure_ascii=False) + \"\\n\")\n        terminal = {\"run_id\": compact[\"run_id\"], \"instance_id\": instance_id, \"status\": compact[\"run_classification\"], \"termination_status\": compact[\"termination_status\"], \"failure_reasons\": result.get(\"failure_reasons\", []), \"process_exit_status\": 0, \"execution_performed\": True}\n        (run_dir / \"terminal_record.json\").write_text(json.dumps(terminal, indent=2, ensure_ascii=False) + \"\\n\")\n        progress[\"terminal\"].append(instance_id); progress[\"run_ids\"].append(compact[\"run_id\"])\n        if compact[\"run_classification\"] in {\"BACKEND_FAILURE\", \"OPTIMIZER_FAILURE\", \"RESOURCE_GUARD_STOP\"}:\n            progress[\"scientific_failures\"].append(instance_id)\n        progress[\"last_event\"] = {\"instance_id\": instance_id, \"status\": compact[\"run_classification\"], \"timestamp\": time.time()}\n        progress_path.write_text(json.dumps(progress, indent=2) + \"\\n\")\n        print(json.dumps({\"instance_id\": instance_id, \"status\": compact[\"run_classification\"], \"P_feasible\": compact[\"P_feasible\"], \"P_optimal\": compact[\"P_optimal\"], \"nfev\": compact[\"nfev\"], \"T_total\": compact[\"T_total\"]}, ensure_ascii=False))\n    except Exception as exc:\n        after = meminfo(); terminal = {\"instance_id\": instance_id, \"status\": \"SCIENTIFIC_EXECUTION_FAILURE\", \"failure_type\": type(exc).__name__, \"message\": repr(exc), \"process_exit_status\": 1, \"execution_performed\": True, \"before\": before, \"after\": after, \"peak_rss_kib\": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}\n        (run_dir / \"terminal_record.json\").write_text(json.dumps(terminal, indent=2, ensure_ascii=False) + \"\\n\")\n        progress[\"terminal\"].append(instance_id); progress[\"scientific_failures\"].append(instance_id); progress[\"last_event\"] = {\"instance_id\": instance_id, \"status\": \"SCIENTIFIC_EXECUTION_FAILURE\", \"timestamp\": time.time()}; progress_path.write_text(json.dumps(progress, indent=2) + \"\\n\")\n        raise\n\nif __name__ == \"__main__\":\n    main()\n"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+      "detail_of_new_file": true,
+      "candidate_lines": [
+        1,
+        7
+      ],
+      "classification": "PERFORMANCE_ONLY",
+      "reason": "imports; module docstring separately documentation"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+      "detail_of_new_file": true,
+      "candidate_lines": [
+        8,
+        59
+      ],
+      "classification": "VALIDATION_ONLY",
+      "reason": "new dimensional, type, finiteness and reference guards; incomplete norm guard"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+      "detail_of_new_file": true,
+      "candidate_lines": [
+        60,
+        72
+      ],
+      "classification": "PERFORMANCE_ONLY",
+      "reason": "constraint permutations sorted in original label order"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+      "detail_of_new_file": true,
+      "candidate_lines": [
+        73,
+        86
+      ],
+      "classification": "SCIENTIFIC_SEMANTICS",
+      "reason": "metric replacement with incomplete accepted-domain equivalence"
+    }
+  ],
+  "categories_present": [
+    "PERFORMANCE_ONLY",
+    "SCIENTIFIC_SEMANTICS",
+    "VALIDATION_ONLY"
+  ],
+  "note": "Parent opcodes cover all changed lines; detail rows refine helper, not additional independent changes."
+}

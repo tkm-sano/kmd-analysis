@@ -1,0 +1,30 @@
+{
+  "conclusion": "No selective best-seed evidence in retained n5 records; LOW with audit-trail limits",
+  "evidence": [
+    "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_instance_selection.json",
+    "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_validation_authority.json",
+    "05_src/traffic_simulation/r23_qaoa_aer/schema.py",
+    "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v1/profiling_run_manifest.json",
+    "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/run_equivalence.py"
+  ],
+  "seeds": {
+    "selection": 2301,
+    "classical_validation": 2501,
+    "simulator": 17,
+    "transpiler": 17,
+    "profiling": 17,
+    "legacy_equivalence": 17,
+    "independent_audit_simulator": 17,
+    "optimizer": "no RNG option supplied",
+    "initialization": "fixed_0.1, no RNG"
+  },
+  "historical_B1_seeds": [
+    11,
+    23,
+    37,
+    53,
+    71
+  ],
+  "B1_interpretation": "separate prior design; not an n5 best-seed sweep",
+  "all_known_n5_runs_retained": true
+}

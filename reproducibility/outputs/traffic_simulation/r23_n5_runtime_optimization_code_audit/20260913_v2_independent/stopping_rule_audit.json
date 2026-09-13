@@ -1,0 +1,22 @@
+{
+  "conclusion": "HIGH authority uncertainty; current implementation guard correct; historical pre-run cap freeze NOT_VERIFIED",
+  "evidence": [
+    "05_src/traffic_simulation/r23_qaoa_aer/optimizers.py:68-80",
+    "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py:134-138",
+    "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_planned_run_manifest.json",
+    "source_provenance_probes.json"
+  ],
+  "current_cap": 300,
+  "current_maxiter": 300,
+  "current_wall_time_cap": null,
+  "current_policy_all_ranks_same": true,
+  "actual_nfev": {
+    "rank01": 300,
+    "rank02": 209,
+    "rank03": 138
+  },
+  "rank01": "cap reached, optimizer success=false, exact route recovery does not imply convergence",
+  "no_observed_rank01_extension": true,
+  "no_observed_midrun_cap_change": true,
+  "limitation": "Neither absence of observed edits nor schema default proves missing execution wrapper options; do not use B cap=900 as n5 authority."
+}

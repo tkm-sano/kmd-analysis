@@ -1,0 +1,142 @@
+{
+  "independent": true,
+  "previous_audit_read": false,
+  "findings": [
+    {
+      "id": "I01",
+      "severity": "MAJOR",
+      "title": "Candidate does not enforce original probability integrity contract",
+      "evidence": [
+        "05_src/traffic_simulation/r23_qaoa_aer/metrics.py:53-57",
+        "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py:72-86",
+        "failure_path_probes.json"
+      ],
+      "impact": "Zero-norm and norm-four states return ordinary metrics. Finite 1e308 amplitudes overflow to inf/nan without rejection. Original range/sum guard rejects these. Constants stay 1e-12, but enforcement is removed: accepted scientific domain differs.",
+      "status": "REMEDIATION_REQUIRED",
+      "remediation": "In a separately authorized source change, enforce original absolute 1e-12 range/sum and finite-result contract; add failing zero-norm, scaled-norm and overflow tests. Do not renormalize or relax tolerance."
+    },
+    {
+      "id": "I02",
+      "severity": "MAJOR",
+      "title": "Recorded run commits do not reconstruct the scientific execution entrypoint",
+      "evidence": [
+        "source_provenance_probes.json",
+        "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py",
+        "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+        "reproducibility/outputs/traffic_simulation/r23_n5_scaling_progress_review/20260912_v3/progress_review.json"
+      ],
+      "impact": "rank01 runner is absent at its recorded commit and has no execution-time source SHA. rank02/03 recorded ff1d579 has the helper SHA but qaoa.run_single has no implementation argument and runner is absent. Wiring and runner first appear at 0e149ed, after run completion. Current helper differs again at d4a8d78. A helper hash alone cannot certify executed bytes; no inference of fabrication is made.",
+      "status": "REMEDIATION_REQUIRED",
+      "remediation": "Recover contemporaneous runner, qaoa and dependency snapshots or logs with hashes and start-time dirty diff; explicitly qualify historical results if recovery is impossible. Preserve existing results and identify any future reproduction as new evidence."
+    },
+    {
+      "id": "I03",
+      "severity": "MAJOR",
+      "title": "Existing equivalence acceptance is not computed from assertions and does not exercise the shipped helper",
+      "evidence": [
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/build_artifact.py:8-29",
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/run_equivalence.py:58-139"
+      ],
+      "impact": "Report generator writes PASS/all_gates_pass=True independently of numerical differences. Harness reimplements candidate arithmetic instead of calling indexed_probability_metrics; small_full_method flag does not execute full enumeration; best_feasible_route maximizes probability rather than minimizing route cost. New probes substantiate normalized-domain equivalence but do not validate historical acceptance generation.",
+      "status": "REMEDIATION_REQUIRED",
+      "remediation": "Use actual candidate and original functions with an independent reference; derive every gate from measured assertions; mutation-test failing gates; make labels reflect actual coverage and best-route semantics."
+    },
+    {
+      "id": "I04",
+      "severity": "MAJOR",
+      "title": "Current canonical status asserts unsupported convergence 3/3",
+      "evidence": [
+        "05_src/traffic_simulation/R23_STATUS.md:24",
+        "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank01/scientific_result.json",
+        "reproducibility/outputs/traffic_simulation/r23_n5_scaling_evidence_review/20260913_v1/n5_optimizer_summary.json"
+      ],
+      "impact": "rank01 optimizer_success=false and OBJECTIVE_EVALUATION_CAP_REACHED at 300 contradict convergence 3/3. Other summary data retain the unfavorable result. rank02/03 only report native optimizer success; no global convergence is established.",
+      "status": "REMEDIATION_REQUIRED",
+      "remediation": "Correct status claim to exact route recovery 3/3; rank01 cap reached, native optimizer reported success 2/3; retain low raw probabilities and uncertainty. This audit leaves status documents unchanged."
+    },
+    {
+      "id": "I05",
+      "severity": "MODERATE",
+      "title": "Runtime and memory comparisons lack matched workloads and complete execution conditions",
+      "evidence": [
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v1/before_after_benchmark.json",
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v1/profiling_run_manifest.json",
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/runtime_benchmark.json",
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/memory_benchmark.json",
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/run_equivalence.py:132-136"
+      ],
+      "impact": "33.70x uses full rank01 run/nfev versus prototype single evaluation. Timed v2 region omits simulation, index construction, actual guards and route reporting. ru_maxrss absolute peak, peak increments and approximate observed RSS are different metrics. rank02/03 reported peaks 0.309/0.278 GiB are below a fully touched complex128 25q state (0.5 GiB), requiring provenance/process-boundary reconciliation.",
+      "status": "REMEDIATION_REQUIRED",
+      "remediation": "Retain PRELIMINARY_ONLY; measure matched source versions, parameters, timer and process boundaries with all thread settings and all repetitions, including setup/final reporting. Use identical absolute peak metrics; do not claim a formal reduction factor."
+    },
+    {
+      "id": "I06",
+      "severity": "MODERATE",
+      "title": "V4 drops reported scientific diagnostics under unchanged result schema",
+      "evidence": [
+        "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py:231-241",
+        "05_src/traffic_simulation/r23_qaoa_aer/metrics.py:69-80"
+      ],
+      "impact": "energy_variance becomes None; most_probable_state, most_probable_feasible_state, records and tolerance metadata are absent. Reduced compact route/probability results can agree, but complete run_single result equivalence is false. Threshold and route-cost tie order are preserved in current adapter.",
+      "status": "REMEDIATION_REQUIRED",
+      "remediation": "Document a versioned compact output contract and missing diagnostics; restore required diagnostics in a separately reviewed implementation if consumers require them. Do not advertise full output equivalence."
+    },
+    {
+      "id": "I07",
+      "severity": "MODERATE",
+      "title": "Numerical dtype contract accepts lower precision inputs",
+      "evidence": [
+        "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py:30-35",
+        "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py:79-81",
+        "failure_path_probes.json",
+        "supplemental_contract_probes.json"
+      ],
+      "impact": "dtype.kind accepts complex64/float32; vdot and optimal dot retain input precision. No implicit downcast occurs for governed complex128 Aer states, but the public helper does not enforce that scientific precision contract.",
+      "status": "REMEDIATION_REQUIRED",
+      "remediation": "Specify and enforce supported precision, then test error bounds with complex64/float32 and overflow. Preserve complex128/float64 production behavior and 1e-12 tolerance."
+    },
+    {
+      "id": "I08",
+      "severity": "MODERATE",
+      "title": "Historical immutability and optimizer replay evidence are incomplete",
+      "evidence": [
+        "artifact_immutability_audit.json",
+        "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py:86-115",
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/n5_parameter_point_comparison.json"
+      ],
+      "impact": "rank01 raw files are ignored/untracked. Current compact records omit final parameters, objective trace and explicit configured cap/options. Tracked rank02/03 records are unchanged since addition, but exact historical execution/replay cannot be established by the retained data.",
+      "status": "REMEDIATION_REQUIRED",
+      "remediation": "Archive immutable raw snapshots and execution-time hashes outside any existing output namespace; retain full compact optimizer trace/parameters/config in future runs. Record historical gaps explicitly rather than reconstructing unobserved facts."
+    },
+    {
+      "id": "I09",
+      "severity": "MINOR",
+      "title": "Penalty authority contains inconsistent margin arithmetic",
+      "evidence": [
+        "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_penalty_authority.json"
+      ],
+      "impact": "lambda=4 and bound=3 are correct, but lambda_minus_bound=0.5 and penalty_energy_margin=1.0 are inconsistent with 4-3=1 and 2*4-6=2. The sufficient inequality remains valid.",
+      "status": "REMEDIATION_REQUIRED",
+      "remediation": "Issue an authority erratum for derived margin fields while keeping lambda=4.0 and the scientific definition fixed."
+    },
+    {
+      "id": "I10",
+      "severity": "MODERATE",
+      "title": "Benchmark P_optimal_lookup is an arbitrary feasible index proxy",
+      "evidence": [
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/run_equivalence.py:135",
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/runtime_benchmark.json"
+      ],
+      "impact": "The timed benchmark uses idx[-1:] rather than the exact optimum set. It reports 8.817886471048181e-7 where actual rank01 initial P_optimal is 8.911426703519106e-7. This is not leakage into the optimizer or production helper, but benchmark output must not be used as scientific P_optimal.",
+      "status": "REMEDIATION_REQUIRED",
+      "remediation": "Label the existing value as an arbitrary feasible lookup proxy; benchmark the actual candidate reporting function with the authoritative optimum set and account for lookup setup."
+    }
+  ],
+  "severity_counts": {
+    "MAJOR": 4,
+    "MODERATE": 5,
+    "MINOR": 1,
+    "CRITICAL": 0
+  },
+  "count": 10
+}

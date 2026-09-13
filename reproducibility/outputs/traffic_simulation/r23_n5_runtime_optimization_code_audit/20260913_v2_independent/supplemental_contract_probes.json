@@ -1,0 +1,39 @@
+{
+  "best_route_minimizes_cost_not_probability": "PASS",
+  "exact_reference_changes_only_optimal_mass": "PASS",
+  "equal_cost_tie_order_matches_original": "PASS",
+  "deliberately_corrupted_P_opt_assertion_rejected": true,
+  "precision_cases": [
+    {
+      "dtype": "float32",
+      "candidate_total": 1.0,
+      "float64_reference_for_same_input": 1.0000000004403895,
+      "difference": 4.4038950264280174e-10
+    },
+    {
+      "dtype": "complex64",
+      "candidate_total": 1.0,
+      "float64_reference_for_same_input": 1.0000000004403895,
+      "difference": 4.4038950264280174e-10
+    },
+    {
+      "dtype": "float64",
+      "candidate_total": 1.0,
+      "float64_reference_for_same_input": 1.0,
+      "difference": 0.0
+    },
+    {
+      "dtype": "complex128",
+      "candidate_total": 1.0,
+      "float64_reference_for_same_input": 1.0,
+      "difference": 0.0
+    }
+  ],
+  "pytest_attempt": {
+    "command": "frozen Python -m pytest -q -p no:cacheprovider test_r23_optimized_metrics_v4_contract.py test_r23_qaoa_aer.py",
+    "exit_code": 1,
+    "reason": "No module named pytest in frozen authority environment",
+    "environment_modified": false,
+    "fallback": "Direct assertion-based audit scripts use exact frozen scientific dependencies; pytest suite not claimed as run."
+  }
+}

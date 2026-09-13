@@ -1,0 +1,19 @@
+{
+  "conclusion": "Same raw mass definitions on normalized complex128 states; integrity enforcement differs (I01)",
+  "evidence": [
+    "05_src/traffic_simulation/r23_qaoa_aer/metrics.py",
+    "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+    "actual_equivalence_probes.json",
+    "failure_path_probes.json"
+  ],
+  "P_feasible": "sum over constraint-derived permutation indices of |psi[k]|^2",
+  "P_optimal": "sum over all exact-optimal bitstrings; multiple optimum supported",
+  "P_invalid": "P_total-P_feasible",
+  "P_total": "raw full state norm; no division, no renormalization",
+  "tolerance": 1e-12,
+  "threshold": "only route reporting, not P_feasible or P_optimal aggregation",
+  "dtype": "actual Aer complex128; feasible sum float64; vdot/input precision risk for complex64",
+  "guard_equivalence": false,
+  "sum_order": "float sums vs vector sums differ within 1e-12 on probes",
+  "index_overflow": "n5 max <2**25, int64 safe; n>=8 outside resource scope"
+}

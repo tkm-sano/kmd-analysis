@@ -1,0 +1,30 @@
+{
+  "conclusion": "REMEDIATION_REQUIRED",
+  "evidence": [
+    "failure_path_probes.json",
+    "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+    "05_src/traffic_simulation/r23_qaoa_aer/schema.py"
+  ],
+  "fail_closed": [
+    "NaN/inf amplitudes",
+    "wrong dimension/rank",
+    "empty state",
+    "empty optimum set",
+    "duplicate optimum",
+    "malformed/nonfeasible optimal bits"
+  ],
+  "fail_open": [
+    "zero norm",
+    "norm four",
+    "finite input overflow yielding inf/nan",
+    "complex64 precision contract"
+  ],
+  "external_indices": "not an input; internally generated unique index set; duplicate customer IDs rejected",
+  "silent_fallback_search": {
+    "broad_except": "run_single serializes OPTIMIZER_FAILURE/BACKEND_FAILURE explicitly; not hidden success",
+    "default_zeros": "payload.get(ising_global_minimum_energy,0.0) can silently fabricate reporting reference if missing; current runner supplies it; historical unchanged diagnostic limitation",
+    "missing_file": "formal loader checks and rejects missing required exact reference; progress file default is execution bookkeeping only",
+    "warning_only": "existing report generator ignores failing numerical evidence (I03)"
+  },
+  "no_source_fix_in_this_audit": true
+}

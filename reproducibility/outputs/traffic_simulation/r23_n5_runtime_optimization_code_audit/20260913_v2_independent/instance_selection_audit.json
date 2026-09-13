@@ -1,0 +1,12 @@
+{
+  "conclusion": "LOW; deterministic top three recomputed; no outcome-based exclusions found",
+  "evidence": [
+    "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_instance_selection.json",
+    "selection_recomputation.json"
+  ],
+  "population": "10 customers, 252 five-customer subsets",
+  "rule": "ascending SHA256('2301|DEP_006|comma-joined sorted IDs|5')",
+  "selected_before_n5_outcomes": true,
+  "exclusions": "249 unselected by fixed top-three quota; no difficulty/reachability exclusion among the population recorded",
+  "limitation": "Three subsets of one fixture are not a representative population sample; no global claim about hidden unrecorded experiments."
+}

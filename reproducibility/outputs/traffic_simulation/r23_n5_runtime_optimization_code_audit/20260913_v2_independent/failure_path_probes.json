@@ -1,0 +1,129 @@
+{
+  "cases": [
+    {
+      "case": "zero_norm",
+      "candidate": "ACCEPTED",
+      "original": "REJECTED",
+      "details": {
+        "probability_total": "0.0",
+        "P_feasible_exact": "0.0",
+        "P_opt": "0.0",
+        "invalid_probability_mass": "0.0"
+      }
+    },
+    {
+      "case": "norm_four",
+      "candidate": "ACCEPTED",
+      "original": "REJECTED",
+      "details": {
+        "probability_total": "3.9999999999999996",
+        "P_feasible_exact": "3.9999999999999996",
+        "P_opt": "1.0",
+        "invalid_probability_mass": "0.0"
+      }
+    },
+    {
+      "case": "NaN",
+      "candidate": "REJECTED",
+      "original": "REJECTED",
+      "details": {
+        "exception": "V4InputError",
+        "message": "statevector must not contain NaN or inf"
+      }
+    },
+    {
+      "case": "inf",
+      "candidate": "REJECTED",
+      "original": "REJECTED",
+      "details": {
+        "exception": "V4InputError",
+        "message": "statevector must not contain NaN or inf"
+      }
+    },
+    {
+      "case": "wrong_dimension",
+      "candidate": "REJECTED",
+      "original": "ACCEPTED",
+      "details": {
+        "exception": "V4InputError",
+        "message": "statevector length must be 16 for n=2"
+      }
+    },
+    {
+      "case": "wrong_rank",
+      "candidate": "REJECTED",
+      "original": "ACCEPTED",
+      "details": {
+        "exception": "V4InputError",
+        "message": "statevector must be one-dimensional"
+      }
+    },
+    {
+      "case": "empty_state",
+      "candidate": "REJECTED",
+      "original": "REJECTED",
+      "details": {
+        "exception": "V4InputError",
+        "message": "statevector length must be 16 for n=2"
+      }
+    },
+    {
+      "case": "complex64",
+      "candidate": "ACCEPTED",
+      "original": "ACCEPTED",
+      "details": {
+        "probability_total": "1.0",
+        "P_feasible_exact": "1.0",
+        "P_opt": "0.25",
+        "invalid_probability_mass": "0.0"
+      }
+    },
+    {
+      "case": "finite_overflow",
+      "candidate": "ACCEPTED",
+      "original": "REJECTED",
+      "details": {
+        "probability_total": "inf",
+        "P_feasible_exact": "inf",
+        "P_opt": "inf",
+        "invalid_probability_mass": "nan"
+      }
+    },
+    {
+      "case": "empty_optimum",
+      "candidate": "REJECTED"
+    },
+    {
+      "case": "duplicate_optimum",
+      "candidate": "REJECTED"
+    },
+    {
+      "case": "invalid_index_bits",
+      "candidate": "REJECTED"
+    },
+    {
+      "case": "malformed_bitstring",
+      "candidate": "REJECTED"
+    },
+    {
+      "case": "wrong_length",
+      "candidate": "REJECTED"
+    }
+  ],
+  "validation_cases": {
+    "duplicate_customer": "INVALID_CUSTOMER_ONCE",
+    "missing_customer": "INVALID_BOTH",
+    "duplicate_position": "INVALID_POSITION_ONCE",
+    "empty_assignment": "INVALID_BOTH",
+    "malformed": "INVALID_BITSTRING"
+  },
+  "multiple_optimum": {
+    "P_opt": 0.9999999999999999,
+    "P_feasible_exact": 0.9999999999999999
+  },
+  "nonoptimal_valid_route": {
+    "probability": 0.75,
+    "P_opt_when_only_first_optimal": 0.25
+  },
+  "indices_interface": "No external index list accepted; indices constructed from constraints; missing/duplicate optimum inputs reject. int64 max index at n5 < 2**25."
+}
