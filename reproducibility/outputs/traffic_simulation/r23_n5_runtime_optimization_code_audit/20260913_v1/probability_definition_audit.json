@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "P_feasible": "sum(abs(psi[index])**2 for index in F)",
+  "P_optimal": "sum(abs(psi[index])**2 for indices whose bitstring is in supplied exact_optimal_bitstrings)",
+  "P_invalid": "P_total-P_feasible",
+  "P_total": "vdot(state,state).real",
+  "renormalization": false,
+  "top_k_or_observed_only": false,
+  "tolerance": 1e-12
+}

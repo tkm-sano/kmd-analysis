@@ -1,0 +1,125 @@
+{
+  "status": "PASS",
+  "parameters": [
+    {
+      "parameter": "n",
+      "value": 5,
+      "source_authority": "n5_execution_authorization_v2 / planned manifest",
+      "fixed_before_result": true,
+      "changed_after_result": false,
+      "risk": "LOW"
+    },
+    {
+      "parameter": "instance",
+      "value": "rank01/02/03 deterministic SHA ranking",
+      "source_authority": "n5_instance_selection",
+      "fixed_before_result": true,
+      "changed_after_result": false,
+      "risk": "LOW"
+    },
+    {
+      "parameter": "p",
+      "value": 1,
+      "source_authority": "planned manifest / authorization",
+      "fixed_before_result": true,
+      "changed_after_result": false,
+      "risk": "LOW"
+    },
+    {
+      "parameter": "lambda",
+      "value": 4.0,
+      "source_authority": "n5_penalty_authority theorem lambda>(n+1)/2",
+      "fixed_before_result": true,
+      "changed_after_result": false,
+      "risk": "LOW"
+    },
+    {
+      "parameter": "optimizer",
+      "value": "COBYLA",
+      "source_authority": "planned manifest / prior methodology",
+      "fixed_before_result": true,
+      "changed_after_result": false,
+      "risk": "MEDIUM"
+    },
+    {
+      "parameter": "optimizer_options",
+      "value": "defaults",
+      "source_authority": "R23Config / no custom options",
+      "fixed_before_result": true,
+      "changed_after_result": false,
+      "risk": "MEDIUM"
+    },
+    {
+      "parameter": "maxiter/evaluation_cap",
+      "value": 300,
+      "source_authority": "planned manifest / R23 policy",
+      "fixed_before_result": true,
+      "changed_after_result": false,
+      "risk": "LOW"
+    },
+    {
+      "parameter": "initial_parameters",
+      "value": "[0.1,0.1]",
+      "source_authority": "fixed_0.1 authority",
+      "fixed_before_result": true,
+      "changed_after_result": false,
+      "risk": "LOW"
+    },
+    {
+      "parameter": "repetition",
+      "value": 1,
+      "source_authority": "planned manifest",
+      "fixed_before_result": true,
+      "changed_after_result": false,
+      "risk": "LOW"
+    },
+    {
+      "parameter": "backend/method",
+      "value": "AerSimulator/statevector/CPU",
+      "source_authority": "authorization v2",
+      "fixed_before_result": true,
+      "changed_after_result": false,
+      "risk": "LOW"
+    },
+    {
+      "parameter": "shots",
+      "value": "NONE",
+      "source_authority": "authorization v2",
+      "fixed_before_result": true,
+      "changed_after_result": false,
+      "risk": "LOW"
+    },
+    {
+      "parameter": "seed",
+      "value": 17,
+      "source_authority": "runner/config and frozen execution",
+      "fixed_before_result": true,
+      "changed_after_result": false,
+      "risk": "MEDIUM"
+    },
+    {
+      "parameter": "tolerance",
+      "value": 1e-12,
+      "source_authority": "equivalence and validation contract",
+      "fixed_before_result": true,
+      "changed_after_result": false,
+      "risk": "LOW"
+    },
+    {
+      "parameter": "denominator",
+      "value": "raw full-state norm; no renormalization",
+      "source_authority": "formal equivalence argument",
+      "fixed_before_result": true,
+      "changed_after_result": false,
+      "risk": "LOW"
+    },
+    {
+      "parameter": "exact reference",
+      "value": "all 120 route permutations",
+      "source_authority": "n5 exact references",
+      "fixed_before_result": true,
+      "changed_after_result": false,
+      "risk": "LOW"
+    }
+  ]
+}

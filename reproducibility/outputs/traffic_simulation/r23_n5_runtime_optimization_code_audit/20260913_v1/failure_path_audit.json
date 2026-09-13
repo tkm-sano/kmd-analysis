@@ -1,0 +1,15 @@
+{
+  "status": "PASS_WITH_REMEDIATION",
+  "fail_closed": [
+    "out-of-range index/state dimension errors propagate",
+    "NaN/inf are not silently substituted"
+  ],
+  "gaps": [
+    "V4 helper has no explicit norm/range/duplicate-index assertions",
+    "malformed n/customer mismatch is not explicitly rejected in helper",
+    "empty optimal index would fail rather than silently fallback"
+  ],
+  "silent_fallback": false,
+  "risk": "MODERATE",
+  "remediation": "add explicit validation assertions in a future audit-only/generalization change; do not change authority in this audit"
+}

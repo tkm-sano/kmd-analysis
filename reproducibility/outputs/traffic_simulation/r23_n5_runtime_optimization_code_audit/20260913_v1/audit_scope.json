@@ -1,0 +1,69 @@
+{
+  "audit_id": "R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT",
+  "formal_runs_started": false,
+  "sources": [
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+      "role": "original runner/objective and Aer execution",
+      "state": "current; original rank01 source at 9a4ce56",
+      "hash": "current SHA b5ceb73312f623c8446c55576f31b528c4057834d6d8fd9a2f9d2835e4954056"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+      "role": "V4 indexed probability candidate",
+      "state": "current; validated candidate",
+      "hash": "SHA c0892b96e375fe2c274eaab74dfeb59cb8ec3a8a1331bb44bca3bd22dc9a9691"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/metrics.py",
+      "role": "original dictionary metrics",
+      "state": "current/original",
+      "hash": "SHA 76cd7e838eeb7817f0bc5021299ad27ce8c6d70b1735280026918840704667e8"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/hamiltonian.py",
+      "role": "QAOA circuit/Hamiltonian",
+      "state": "current/original",
+      "hash": "SHA f38947e84cdb1094cd35c80462ed7db9c693da7e0f2f622e187053c235435f03"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/optimizers.py",
+      "role": "COBYLA adapter and cap",
+      "state": "current/original",
+      "hash": "SHA 7fcbdf1f0572712f277e4afccef6c30ac3dedff8a7e1f3c6f27c40b6396ef710"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/schema.py",
+      "role": "parameter/schema guards",
+      "state": "current/original",
+      "hash": "SHA 0b9e74c7dcf5ede92e295cee6344dd45044923a7c56ccc56dd28826c721c19d5"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py",
+      "role": "authorized n=5 runner and provenance",
+      "state": "current execution wrapper",
+      "hash": "SHA 76a0b89d4999abad7fb7472740b84ac128c1863571299ef43ed7e9f43924d254"
+    },
+    {
+      "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/run_equivalence.py",
+      "role": "independent equivalence harness",
+      "state": "historical audit input",
+      "hash": "SHA 969f09874c74121ae13d30e8a7f2f7efda569259ad6a5528687ef0d537b0c65c"
+    }
+  ],
+  "covered": [
+    "original implementation",
+    "profiling implementation",
+    "V4 candidate",
+    "equivalence harness",
+    "route-index conversion",
+    "feasible enumeration",
+    "P_feasible/P_optimal/P_invalid",
+    "expectation",
+    "statevector",
+    "optimizer objective",
+    "decoder/validation",
+    "benchmark",
+    "authority/status artifacts"
+  ]
+}

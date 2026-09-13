@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "rules": {
+    "objective_cap": 300,
+    "wall_time_cap": "none",
+    "resource_emergency": [
+      "OOM",
+      "allocation failure",
+      "cgroup breach",
+      "severe memory pressure",
+      "disk exhaustion",
+      "fatal backend error"
+    ],
+    "scientific_integrity": [
+      "probability failure",
+      "exact reference mismatch",
+      "authority drift",
+      "validation failure",
+      "optimizer fatal exception"
+    ]
+  },
+  "post_rank01_cap_extension": false,
+  "risk": "LOW"
+}

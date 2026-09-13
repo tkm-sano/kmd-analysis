@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "original_to_candidate": {
+    "candidate_file": "optimized_metrics_v4.py",
+    "added_lines": 25,
+    "removed_lines": 0,
+    "classification": "PERFORMANCE_ONLY"
+  },
+  "integration_diff": {
+    "file": "qaoa.py",
+    "added_lines": 39,
+    "removed_lines": 10,
+    "classification": "PERFORMANCE_ONLY plus explicit execution dispatch; no Hamiltonian/QUBO/optimizer mathematics changed"
+  },
+  "PERFORMANCE_ONLY": [
+    "avoid probabilities_dict in evaluation/final reporting",
+    "indexed 120 feasible amplitudes",
+    "raw norm minus feasible mass",
+    "direct lookup over supplied exact-reference bitstrings"
+  ],
+  "SCIENTIFIC_SEMANTICS": [],
+  "VALIDATION_ONLY": [
+    "equivalence harness and assertions are separate from optimizer"
+  ],
+  "UNKNOWN": [],
+  "method": "line-level git diff inspected; candidate does not contain Hamiltonian or optimizer implementation"
+}
