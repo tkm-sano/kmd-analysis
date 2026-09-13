@@ -52,7 +52,7 @@ permutation enumerationでexact referenceを作成し、best decoded feasible ro
 
 ## Next
 
-更新後の状態: n=5の既存scientific recordsは`R23_N5_SCALING_EVIDENCE_ACCEPTED_WITH_LIMITATIONS`として保持する。route recovery=3/3、relative gap=0（3/3）に対しoptimizer reported success=2/3。rank01はsuccess=false、300 evaluation cap reached。rank02/03はexecution lineage/resource provenance制約付きで未再承認である。独立auditは`CODE_AUDIT_FAIL`、`CODE_AUDIT_RESULT_NOT_REPRODUCED`。現在REMEDIATION_INCOMPLETE（I03のrepository-wide無条件PASS除去が未完了）。修正後は別taskの独立再監査を行い、この修正ではCODE_AUDIT_PASSを宣言しない。R24は`NOT_AUTHORIZED_PENDING_R23_REMEDIATION`。
+更新後の状態: n=5の既存scientific recordsは`R23_N5_SCALING_EVIDENCE_ACCEPTED_WITH_LIMITATIONS`として保持する。route recovery=3/3、relative gap=0（3/3）に対しoptimizer reported success=2/3。rank01はsuccess=false、300 evaluation cap reached。rank02/03はexecution lineage/resource provenance制約付きで未再承認である。standing auditは`CODE_AUDIT_FAIL`、`CODE_AUDIT_RESULT_NOT_REPRODUCED`。I03 validation gate修正が完了し、現在`REMEDIATION_COMPLETED_PENDING_INDEPENDENT_REAUDIT`。新gateが検出したB2旧terminal-index SHA不整合6件は未修復・独立review待ち。修正後は別taskの独立再監査を行い、この修正ではCODE_AUDIT_PASSを宣言しない。R24は`NOT_AUTHORIZED_PENDING_R23_REMEDIATION`。
 
 n=5だけのλ authorityはλ=4.0、strict sufficient condition λ>(5+1)/2=3。λ−bound=1、2λ−(n+1)=2が正しいmarginである。旧authorityの0.5/1.0表記はerratumで訂正し、元artifactとλは変更しない。n=2,3,4のλ=3.0を変更しない。
 

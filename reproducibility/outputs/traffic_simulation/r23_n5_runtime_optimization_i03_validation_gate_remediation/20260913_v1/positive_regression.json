@@ -1,0 +1,179 @@
+{
+  "status": "VERIFIED",
+  "environment": {
+    "python": "/home/takuma/.conda/envs/evrp-quantum-temp/bin/python",
+    "version": "3.11.16 (main, Sep  2 2026, 23:39:52) [GCC 15.3.0]",
+    "dependencies": {
+      "qiskit": "2.5.2",
+      "qiskit-aer": "0.17.2",
+      "qiskit-algorithms": "0.4.0",
+      "qiskit-optimization": "0.7.0",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1"
+    },
+    "environment_modified": false,
+    "pytest_installed_by_task": false
+  },
+  "experiments": [
+    {
+      "experiment": "B1",
+      "result": "VERIFIED",
+      "basis": "executed independent run/reference/probability checks; not prior classification",
+      "scientific_run_count": 36,
+      "retained_optimizer_failures": 31,
+      "actual_overall_evidence_gate": "VERIFIED",
+      "artifact_integrity": "VERIFIED",
+      "artifact_failures": []
+    },
+    {
+      "experiment": "B2",
+      "result": "VERIFIED",
+      "basis": "executed independent run/reference/probability checks; not prior classification",
+      "scientific_run_count": 6,
+      "retained_optimizer_failures": 3,
+      "actual_overall_evidence_gate": "FAILED",
+      "artifact_integrity": "FAILED",
+      "artifact_failures": [
+        {
+          "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/record_SHA",
+          "dimension": "artifact_integrity",
+          "requirement": "record_SHA",
+          "required": "REQUIRED",
+          "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "FAILED",
+          "evidence": "SHA mismatch: reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead.json"
+        },
+        {
+          "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/record_SHA",
+          "dimension": "artifact_integrity",
+          "requirement": "record_SHA",
+          "required": "REQUIRED",
+          "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "FAILED",
+          "evidence": "SHA mismatch: reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead.json"
+        },
+        {
+          "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/record_SHA",
+          "dimension": "artifact_integrity",
+          "requirement": "record_SHA",
+          "required": "REQUIRED",
+          "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "FAILED",
+          "evidence": "SHA mismatch: reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead.json"
+        },
+        {
+          "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/record_SHA",
+          "dimension": "artifact_integrity",
+          "requirement": "record_SHA",
+          "required": "REQUIRED",
+          "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "FAILED",
+          "evidence": "SHA mismatch: reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead.json"
+        },
+        {
+          "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/record_SHA",
+          "dimension": "artifact_integrity",
+          "requirement": "record_SHA",
+          "required": "REQUIRED",
+          "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "FAILED",
+          "evidence": "SHA mismatch: reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead.json"
+        },
+        {
+          "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/record_SHA",
+          "dimension": "artifact_integrity",
+          "requirement": "record_SHA",
+          "required": "REQUIRED",
+          "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "FAILED",
+          "evidence": "SHA mismatch: reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead.json"
+        }
+      ]
+    }
+  ],
+  "gate_cases_tested": 8,
+  "n5_gate_compatibility": "VERIFIED",
+  "entrypoints": [
+    {
+      "path": "tools/authorize_r23_experiment_b2.py",
+      "exit_code": 1,
+      "status": "FAILED",
+      "historical_writes": false
+    },
+    {
+      "path": "tools/review_r23_experiment_b2_nelder_mead.py",
+      "exit_code": 1,
+      "status": "FAILED",
+      "historical_writes": false
+    },
+    {
+      "path": "tools/build_r23_experiment_b2_reexecution_authority.py",
+      "exit_code": 1,
+      "status": "FAILED",
+      "historical_writes": false
+    },
+    {
+      "path": "tools/finalize_r23_b1_v2.py",
+      "exit_code": 0,
+      "status": "VERIFIED",
+      "historical_writes": false
+    },
+    {
+      "path": "tools/finalize_r23_experiment_b2_reexecution.py",
+      "exit_code": 1,
+      "status": "FAILED",
+      "historical_writes": false
+    },
+    {
+      "path": "tools/finalize_r23_experiment_b2_failure.py",
+      "exit_code": 1,
+      "status": "FAILED",
+      "historical_writes": false
+    },
+    {
+      "path": "reproducibility/tools/r23_b2_evidence_review.py",
+      "exit_code": 1,
+      "status": "FAILED",
+      "historical_writes": false
+    },
+    {
+      "path": "tools/build_r23_experiment_b1_fix_authority.py",
+      "exit_code": 0,
+      "status": "VERIFIED",
+      "historical_writes": false
+    },
+    {
+      "path": "tools/build_r23_experiment_b_authority.py",
+      "exit_code": 0,
+      "status": "VERIFIED",
+      "historical_writes": false
+    },
+    {
+      "path": "05_src/traffic_simulation/r20_route_ordering/resolve_r23_design_authority.py",
+      "exit_code": 0,
+      "status": "VERIFIED",
+      "historical_writes": false
+    }
+  ],
+  "scientific_AST_checks": [
+    {
+      "path": "tools/execute_r23_experiment_b2.py",
+      "scientific_call_and_options_AST_unchanged": true
+    },
+    {
+      "path": "tools/execute_r23_experiment_b2_reexecution.py",
+      "scientific_call_and_options_AST_unchanged": true
+    },
+    {
+      "path": "05_src/traffic_simulation/r20_route_ordering/freeze_r23_instance_authority.py",
+      "all_AST_except_new_validation_guard_unchanged": true
+    }
+  ],
+  "important": "Positive scientific integrity does not override FAILED B2 historical record SHA consistency. No old result or index is rewritten."
+}

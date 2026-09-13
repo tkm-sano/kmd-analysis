@@ -1,6 +1,6 @@
 # R23 Reduced Problem roadmap（現行）
 
-Current: `CODE_AUDIT_FAIL` / `CODE_AUDIT_RESULT_NOT_REPRODUCED` / REMEDIATION_INCOMPLETE。I03のrepository-wide無条件PASS除去が未完了。既存scientific recordsは保持。
+Current: standing audit `CODE_AUDIT_FAIL` / `CODE_AUDIT_RESULT_NOT_REPRODUCED`。`REMEDIATION_COMPLETED_PENDING_INDEPENDENT_REAUDIT`。I03 gate修正完了、B2旧SHA不整合の検出結果を独立再監査へ渡す。既存scientific recordsは保持。
 
 1. `R23_REDUCED_PROBLEM_REPOSITORY_CONSOLIDATION` — 完了
 2. `R23_LIMITED_SCALING_METHODOLOGY_REVIEW` — 完了。n=5はresource preflight前提、n>=6は現行exact CPU Aer statevector方法では非推奨

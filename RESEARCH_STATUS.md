@@ -33,7 +33,7 @@ flowchart LR
 |---|---|---|
 | 道路網仕様 | **受入済み** (`accepted`) | V18 geometry/length re-acceptanceとR12-R14 Routing Baseline validationがPASS。旧v16停止記録は履歴であり現行network gateではない |
 | 正式SUMO道路網 | **受入済み** (`accepted`) | current V18 authorityでFORMAL_NETWORK_ACCEPTED=true。accepted scopeとhashはEVRP_EXECUTION_PLAN.mdを正本とする |
-| 下流実験 | **scope別** (`scope_split`) | full-EVRP比較は未準備。R23既存n5 evidenceはACCEPTED_WITH_LIMITATIONSで保持。独立code auditはCODE_AUDIT_FAIL / CODE_AUDIT_RESULT_NOT_REPRODUCED、REMEDIATION_INCOMPLETE（I03残存）。rank02/03はexecution/resource provenance制約付きで未再承認 |
+| 下流実験 | **scope別** (`scope_split`) | full-EVRP比較は未準備。R23既存n5 evidenceはACCEPTED_WITH_LIMITATIONSで保持。standing auditはCODE_AUDIT_FAIL / CODE_AUDIT_RESULT_NOT_REPRODUCED。I03修正完了、REMEDIATION_COMPLETED_PENDING_INDEPENDENT_REAUDIT。rank02/03未再承認、B2旧terminal-index SHA不整合6件を新gateが検出 |
 
 ## 現在の阻害事項
 
@@ -45,7 +45,7 @@ flowchart LR
 ## 次の作業
 
 1. EVRP_EXECUTION_PLAN.mdに従いfull-EVRP本線の未完Definition stageを進める
-2. R23 I03残存6箇所の無条件PASSを修正・検証する。remediation完了後は別task R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT_POST_REMEDIATION_RERUN。独立PASS後のみphase closureとR24を検討する
+2. R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT_POST_REMEDIATION_RERUNを別taskで実施。I03修正とB2旧SHA不整合の検出結果をレビューし、独立PASS後のみphase closureとR24を検討する
 3. R23 pilotとformal baselineを分離し、R22 Hamiltonianとlambdaを変更しない
 4. full-EVRP/Hayate評価とreduced method evidenceをscope付きで統合する
 

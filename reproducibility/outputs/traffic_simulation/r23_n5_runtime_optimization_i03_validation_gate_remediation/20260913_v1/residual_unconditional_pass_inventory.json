@@ -1,0 +1,334 @@
+{
+  "previous_file_count": 6,
+  "confirmed_original_file_count": 6,
+  "actual_file_count": 14,
+  "unit": "affected file/function clusters, not literal PASS occurrences",
+  "additional_file_count": 8,
+  "locations": [
+    {
+      "id": "G01",
+      "file": "tools/authorize_r23_experiment_b2.py",
+      "function": "main / module-level summary generation",
+      "experiment": "B2",
+      "current_behavior": "Outputs success summaries without computing every represented validation condition",
+      "why_invalid": "targeted_tests_pass/py_compile and six passing tests declared without invocation",
+      "matched_lines": [
+        {
+          "line": 69,
+          "text": "    current_head = subprocess.check_output([\"git\", \"rev-parse\", \"HEAD\"], cwd=ROOT, text=True).strip()"
+        },
+        {
+          "line": 121,
+          "text": "        \"technical_preflight_status\": \"PASS\" if conditions_gate else \"FAIL\","
+        },
+        {
+          "line": 143,
+          "text": "            \"status\": \"PASS\", \"passed\": 6, \"failed\": 0,"
+        },
+        {
+          "line": 144,
+          "text": "            \"py_compile\": \"PASS\", \"scientific_semantics_source_hashes\": source_hash_gate,"
+        },
+        {
+          "line": 186,
+          "text": "    integrity = {\"schema_version\": \"r23-b2-authorization-integrity-v1\", \"status\": \"PASS_WITH_DESIGN_BLOCK\", \"critical_findings\": [], \"high_findings\": [], \"medium_findings\": [\"Nelder-Mead stopping tolerances and optimizer-specific options are not frozen by the design authority; no authorized execution issued.\"], \"low_findings\": [\"Design authority implementation_gate text says COBYLA-only although the frozen implementation authority and six targeted tests support NELDER_MEAD; recorded as resolved by implementation validation, not silently edited.\"], \"execution_performed\": False, \"scientific_execution_invoked\": False, \"preflight_technical_checks\": \"6/6 planned conditions structurally resolved; authorization gate blocked by design ambiguity\", \"source_artifacts_modified\": False, \"baseline_records_reexecuted\": False}"
+        }
+      ],
+      "sha256": "413ada46ab84da012983928e41d07db015a3a309c95c776a37cc4f2b31bbc569",
+      "source_archive": "historical_source_snapshots/01_authorize_r23_experiment_b2.py.txt",
+      "previously_reported": true
+    },
+    {
+      "id": "G02",
+      "file": "tools/review_r23_experiment_b2_nelder_mead.py",
+      "function": "main / module-level summary generation",
+      "experiment": "B2",
+      "current_behavior": "Outputs success summaries without computing every represented validation condition",
+      "why_invalid": "implementation and technical preflight PASS assigned without validating all listed conditions",
+      "matched_lines": [
+        {
+          "line": 129,
+          "text": "    implementation_gate = {\"schema_version\": \"r23-b2-implementation-gate-review-v1\", \"historical_wording\": design[\"optimizer_policy\"][\"implementation_gate\"], \"current_implementation\": \"NELDER_MEAD supported by optimizer adapter, schema, qaoa path, and targeted tests\", \"historical_artifacts_modified\": False, \"status\": \"PASS\", \"authority_sha256\": sha(IMPLEMENTATION), \"source_semantics_unchanged\": True}"
+        },
+        {
+          "line": 134,
+          "text": "    preflight.update({\"schema_version\": \"r23-b2-authorization-preflight-v2\", \"design_amendment\": rel(AMEND), \"design_amendment_sha256\": amendment_sha, \"classification\": \"B2_AUTHORIZATION_PREFLIGHT_V2\", \"authorization_gate_status\": \"PASS\"})"
+        },
+        {
+          "line": 139,
+          "text": "    preflight[\"checks\"].update({\"stopping_tolerances_and_options_frozen\": True, \"maxfev_policy_frozen\": True, \"adaptive_frozen\": True, \"design_amendment_hash_pass\": sha(AMEND) == amendment_sha, \"all_authority_hashes_pass\": True})"
+        },
+        {
+          "line": 140,
+          "text": "    preflight[\"technical_preflight_status\"] = \"PASS\""
+        },
+        {
+          "line": 146,
+          "text": "        \"repository\": str(ROOT), \"branch\": \"main\", \"git_commit\": subprocess.check_output([\"git\", \"rev-parse\", \"HEAD\"], cwd=ROOT, text=True).strip(),"
+        }
+      ],
+      "sha256": "3aa99f1c7d6240b34f74a3bd6012113931670fb2f294cf79f2e69ac0b81c9bc2",
+      "source_archive": "historical_source_snapshots/02_review_r23_experiment_b2_nelder_mead.py.txt",
+      "previously_reported": true
+    },
+    {
+      "id": "G03",
+      "file": "tools/build_r23_experiment_b2_reexecution_authority.py",
+      "function": "main / module-level summary generation",
+      "experiment": "B2",
+      "current_behavior": "Outputs success summaries without computing every represented validation condition",
+      "why_invalid": "constant pytest/smoke validation results in authority generator",
+      "matched_lines": [
+        {
+          "line": 34,
+          "text": "    impl3={'schema_version':'r23-b2-implementation-authority-v3','authority_id':'R23_EXPERIMENT_B_IMPLEMENTATION_SOURCE_SET_V3','parent_authority_id':'R23_EXPERIMENT_B_IMPLEMENTATION_SOURCE_SET_V2','created_at':now,'changed_source_files':['05_src/traffic_simulation/r23_qaoa_aer/optimizers.py','05_src/traffic_simulation/validation/test_r23_experiment_b_implementation.py'],'source_hashes':current,'root_cause':rel(OUT/'root_cause.json'),'root_cause_sha256':sha(OUT/'root_cause.json'),'fix':'Nelder-Mead bounds=None is removed from options before scipy.optimize.minimize dispatch; SciPy supplies bounds exactly once.','scientific_semantics_unchanged':all(same.values()),'optimizer_settings_unchanged':True,'formal_execution_performed':False,'validation':{'targeted_pytest':'PASS: 8 passed','py_compile':'PASS','frozen_scipy':'1.17.1','cobyla_regression':'PASS','p2_smoke':'PASS','p3_smoke':'PASS','objective_cap':'PASS','fixed_0.1':'PASS'}}"
+        },
+        {
+          "line": 36,
+          "text": "    validation={'schema_version':'r23-b2-optimizer-dispatch-validation-v2','classification':'NON_RESEARCH_IMPLEMENTATION_VALIDATION','created_at':now,'frozen_environment':'/home/takuma/.conda/envs/evrp-quantum-temp','scipy_version':'1.17.1','nelder_mead_invocation':'PASS','cobyla_regression':'PASS','p2_smoke':'PASS','p3_smoke':'PASS','bounds_dispatch':'PASS: bounds=None omitted from options and supplied once by SciPy dispatch','maxiter':{'value':300,'status':'PASS'},'maxfev':{'value':900,'status':'PASS'},'xatol':{'value':1e-4,'status':'PASS'},'fatol':{'value':1e-4,'status':'PASS'},'adaptive':{'value':False,'status':'PASS'},'initial_simplex':{'value':None,'status':'PASS'},'disp':{'value':False,'status':'PASS'},'objective_evaluation_cap':'PASS','fixed_0.1_initialization':'PASS','exact_statevector_semantics':'UNCHANGED','qubo_semantics':'UNCHANGED','hamiltonian_semantics':'UNCHANGED','decoding_semantics':'UNCHANGED','probability_semantics':'UNCHANGED','exact_reference_semantics':'UNCHANGED','runtime_semantics':'UNCHANGED','scientific_execution':'NOT_PERFORMED'}"
+        },
+        {
+          "line": 43,
+          "text": "    checks={'formal_instance_authority':True,'exact_reference_authority':True,'R20_linkage':True,'R21_linkage':True,'R22_linkage':True,'lambda':sha(LAMBDA)=='8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95','initialization':True,'design_amendment':sha(AMEND)=='bf6acf30ccd04615237dbdac9dba14b707d8b59f70514960597d04ec09e371fd','implementation_authority_v3':True,'nelder_mead_adapter':True,'no_duplicate_bounds_dispatch':True,'backend':True,'no_synthetic_pilot_fallback':True,'output_namespace_clean':not (ROOT/'reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2').exists()}"
+        },
+        {
+          "line": 44,
+          "text": "    pre={'schema_version':'r23-b2-reexecution-preflight-v1','classification':'B2_REEXECUTION_AUTHORIZATION_PREFLIGHT','status':'PASS' if all(checks.values()) else 'FAIL','created_at':now,'condition_count':6,'unique_condition_count':6,'checks':checks,'conditions':runs,'implementation_authority_v3_sha256':sha(OUT/'implementation_authority_v3.json'),'failed_v1_manifest_sha256':sha(FAIL/'manifest.json')}"
+        }
+      ],
+      "sha256": "b95682c345ede223a107302f97b71e939bef29a2443e17fac9ae57fbca847acd",
+      "source_archive": "historical_source_snapshots/03_build_r23_experiment_b2_reexecution_authority.py.txt",
+      "previously_reported": true
+    },
+    {
+      "id": "G04",
+      "file": "tools/finalize_r23_b1_v2.py",
+      "function": "main / module-level summary generation",
+      "experiment": "B1",
+      "current_behavior": "Outputs success summaries without computing every represented validation condition",
+      "why_invalid": "aggregate PASS is not conditioned on computed integrity booleans",
+      "matched_lines": [
+        {
+          "line": 113,
+          "text": "base={\"classification\":\"BASELINE_REPRODUCIBILITY_PASS_WITH_RUNTIME_VARIATION\",\"comparisons\":baseline,"
+        },
+        {
+          "line": 124,
+          "text": "integrity_obj={\"schema_version\":\"R23_B1_V2_FINAL_INTEGRITY_V1\",\"status\":\"PASS\",\"classification\":\"B1_SCIENTIFIC_INTEGRITY\","
+        }
+      ],
+      "sha256": "173101a4a416664104b4ef416afaed07929c538869a85c41f332ee10ff061dc1",
+      "source_archive": "historical_source_snapshots/04_finalize_r23_b1_v2.py.txt",
+      "previously_reported": true
+    },
+    {
+      "id": "G05",
+      "file": "tools/finalize_r23_experiment_b2_reexecution.py",
+      "function": "main / module-level summary generation",
+      "experiment": "B2",
+      "current_behavior": "Outputs success summaries without computing every represented validation condition",
+      "why_invalid": "aggregate PASS independent of prob_pass/params_pass/exact_pass",
+      "matched_lines": [
+        {
+          "line": 31,
+          "text": "    summary={'schema_version':'r23-b2-summary-v2','classification':'EXPERIMENT_B2_EVIDENCE_READY_FOR_REVIEW','planned_runs':6,'started_runs':6,'completed_terminal_runs':6,'scientific_failures':0,'optimizer_success_count':sum(r['optimizer_success'] is True for r in nm),'optimizer_failure_count':sum(r['optimizer_success'] is False for r in nm),'exact_optimum_found_count':sum(r['scientific_result']['exact_optimum_found'] for r in records),'relative_gap_summary':stats([r['scientific_result']['relative_optimality_gap'] for r in records]),'P_feasible_summary':stats([m['P_feasible_exact'] for m in ms]),'P_optimal_summary':stats([m['P_opt'] for m in ms]),'runtime_summary':stats([r['timing']['T_total'] for r in nm]),'Aer_runtime_summary':stats([r['timing']['T_Aer_total'] for r in nm]),'nfev_summary':stats([r['nfev'] for r in nm]),'termination_reason_summary':{},'baseline_source':comparison['baseline_source'],'integrity_result':'PASS','scientific_interpretation_note':'exact_optimum_found means the best decoded feasible route matched the exact reference; it does not mean P_optimal=1, 100% probability, or optimizer convergence. No optimizer superiority or independence conclusion is made.'}"
+        },
+        {
+          "line": 37,
+          "text": "    integrity={'schema_version':'r23-b2-integrity-v2','status':'PASS','classification':summary['classification'],'planned_count':6,'started_count':6,'terminal_count':6,'scientific_failures':0,'unique_run_ids':6,'duplicate_count':0,'probability_integrity':prob_pass,'exact_reference_integrity':exact_pass,'lambda_integrity':params_pass,'runtime_integrity':all(r['timing']['T_total']>=r['timing']['T_Aer_total']>=0 for r in nm),'scientific_parameter_drift':not params_pass,'implementation_authority_drift':False,'authorization_drift':False,'cobyla_reexecuted':False,'b1_reexecuted':False,'retry_performed':False,'scientific_execution_performed':True}"
+        }
+      ],
+      "sha256": "0982a29d3a153a322f8afb4d623cb13ee7ae4cb4635078d46efa297cd9c09955",
+      "source_archive": "historical_source_snapshots/05_finalize_r23_experiment_b2_reexecution.py.txt",
+      "previously_reported": true
+    },
+    {
+      "id": "G06",
+      "file": "05_src/traffic_simulation/r23_qaoa_aer/artifact.py",
+      "function": "build_provenance_lineage",
+      "experiment": "R21/R22 lineage",
+      "current_behavior": "Outputs success summaries without computing every represented validation condition",
+      "why_invalid": "lineage PASS manufactured from file existence/hash collection, not comparison to authority",
+      "matched_lines": [
+        {
+          "line": 76,
+          "text": "            \"status\": \"PASS\","
+        },
+        {
+          "line": 84,
+          "text": "            \"status\": \"PASS\","
+        },
+        {
+          "line": 107,
+          "text": "        if lineage[stage][\"status\"] != \"PASS\":"
+        },
+        {
+          "line": 108,
+          "text": "            raise ValueError(f\"{stage} authority is not PASS\")"
+        }
+      ],
+      "sha256": "8cd85364e834809ec54202b93cd955531c9b1693b6b175ee65615a9eb4bf9a6d",
+      "source_archive": "historical_source_snapshots/06_artifact.py.txt",
+      "previously_reported": true
+    },
+    {
+      "id": "G07",
+      "file": "tools/finalize_r23_experiment_b2_failure.py",
+      "function": "main / module-level summary generation",
+      "experiment": "B2",
+      "current_behavior": "Outputs success summaries without computing every represented validation condition",
+      "why_invalid": "Constant scientific integrity/baseline success, gap zeros or preflight claims without checking represented contents",
+      "matched_lines": [
+        {
+          "line": 29,
+          "text": "    summary = {\"schema_version\": \"r23-b2-summary-v1\", \"classification\": \"EXPERIMENT_B2_COMPLETED_WITH_FAILURES_REQUIRES_REVIEW\", \"authorized_runs\": 6, \"started_runs\": 6, \"completed_terminal_runs\": 6, \"scientific_failures\": 6, \"implementation_failures\": 6, \"optimizer_success_count\": 0, \"optimizer_failure_count\": 6, \"exact_optimum_found_count\": 0, \"relative_gap_summary\": {\"status\": \"NO_SCIENTIFIC_RESULT\", \"values\": []}, \"P_feasible_summary\": {\"status\": \"NO_SCIENTIFIC_RESULT\", \"values\": []}, \"P_optimal_summary\": {\"status\": \"NO_SCIENTIFIC_RESULT\", \"values\": []}, \"runtime_summary\": {\"status\": \"NO_SCIENTIFIC_RESULT\", \"values\": []}, \"Aer_runtime_summary\": {\"status\": \"NO_SCIENTIFIC_RESULT\", \"values\": []}, \"nfev_summary\": {\"count\": 6, \"min\": 0, \"max\": 0, \"values\": [0] * 6}, \"termination_reasons\": {\"IMPLEMENTATION_EXCEPTION\": 6}, \"failure_messages\": failure_messages, \"comparison_baseline_source\": \"B1 v2 fixed_0.1 COBYLA six immutable records\", \"integrity_result\": \"PASS_WITH_SCIENTIFIC_FAILURES\", \"no_retry\": True, \"scientific_conclusion\": None}"
+        },
+        {
+          "line": 33,
+          "text": "    integrity = {\"schema_version\": \"r23-b2-integrity-v1\", \"status\": \"PASS_WITH_SCIENTIFIC_FAILURES\", \"classification\": summary[\"classification\"], \"planned_count\": 6, \"started_count\": 6, \"terminal_count\": 6, \"unique_run_ids\": 6, \"duplicate_count\": 0, \"authority_gate\": \"PASS\", \"authority_drift\": False, \"scientific_parameter_drift\": False, \"probability_integrity\": \"NOT_AVAILABLE_DUE_TO_IMPLEMENTATION_EXCEPTION\", \"exact_reference_integrity\": \"NOT_AVAILABLE_DUE_TO_IMPLEMENTATION_EXCEPTION\", \"lambda_integrity\": \"PASS_AT_PREFLIGHT\", \"runtime_integrity\": \"NOT_AVAILABLE_DUE_TO_IMPLEMENTATION_EXCEPTION\", \"implementation_failures\": 6, \"retry_performed\": False, \"cobyla_reexecuted\": False, \"scientific_results_valid\": False, \"failure_cause\": \"SciPy 1.17.1 Nelder-Mead dispatch received bounds twice because the execution path passed bounds=None inside options; all failures occurred before optimizer/Aer scientific evaluation.\", \"execution_performed\": True}"
+        }
+      ],
+      "sha256": "22e2564d1e8ae0400c492fa305ba3b9793803050afc83b50a181b623320258aa",
+      "source_archive": "historical_source_snapshots/07_finalize_r23_experiment_b2_failure.py.txt",
+      "previously_reported": false
+    },
+    {
+      "id": "G08",
+      "file": "reproducibility/tools/r23_b2_evidence_review.py",
+      "function": "main / module-level summary generation",
+      "experiment": "B2",
+      "current_behavior": "Outputs success summaries without computing every represented validation condition",
+      "why_invalid": "Constant scientific integrity/baseline success, gap zeros or preflight claims without checking represented contents",
+      "matched_lines": [
+        {
+          "line": 149,
+          "text": "    review = {\"review_id\":\"R23_EXPERIMENT_B2_EVIDENCE_REVIEW_20260911_V1\",\"classification\":\"EXPERIMENT_B2_EVIDENCE_ACCEPTED_WITH_LIMITATIONS\",\"no_new_scientific_execution\":True,\"research_questions\":{\"RQ-B2-1\":{\"classification\":\"SUPPORTED_WITH_LIMITATIONS\",\"finding\":\"P_feasible and P_optimal differ across all six paired observations; descriptive frozen-design evidence only.\"},\"RQ-B2-2\":{\"classification\":\"SUPPORTED_WITH_LIMITATIONS\",\"finding\":\"Both optimizers found exact best decoded routes in 6/6 pairs; this is not P_optimal=1, sampling success, convergence, or advantage.\"},\"RQ-B2-3\":{\"classification\":\"SUPPORTED_WITH_LIMITATIONS\",\"finding\":\"Runtime, Aer runtime and nfev differ by optimizer in the six pairs; CPU Aer burden only.\"},\"RQ-B2-4\":{\"classification\":\"SUPPORTED_WITH_LIMITATIONS\",\"finding\":\"COBYLA MAXFUN and Nelder-Mead MAXITER behaviors are distinct and optimizer-specific; convergence is not established.\"}},\"integrity\":sources,\"b2_v2_integrity_recheck\":{\"planned\":6,\"started\":6,\"terminal\":6,\"scientific_failures\":0,\"exact_optimum_found\":\"6/6\",\"relative_gap\":\"0 for all\",\"probability\":\"PASS\",\"exact_reference\":\"PASS\",\"lambda\":\"PASS\",\"runtime\":\"PASS\",\"authority_drift\":False},\"v1_excluded\":True,\"paired_conditions\":{\"instances\":instances,\"p\":[2,3],\"initialization\":\"fixed_0.1\",\"count\":6},\"boundary\":\"All optimizer comparisons are within this frozen n=4 / 3-instance / fixed-init design; no strong statistical generalization.\"}"
+        }
+      ],
+      "sha256": "f3977b411d0f18824c4fb4238e791387f419a4c54d6efbd143bc1e08045960cc",
+      "source_archive": "historical_source_snapshots/08_r23_b2_evidence_review.py.txt",
+      "previously_reported": false
+    },
+    {
+      "id": "G09",
+      "file": "tools/build_r23_experiment_b1_fix_authority.py",
+      "function": "main",
+      "experiment": "B1",
+      "current_behavior": "constant pytest12/12 and compile PASS without executing tests",
+      "why_invalid": "unexecuted regression claims in B1 authority builder",
+      "matched_lines": [
+        {
+          "line": 34,
+          "text": " regression=dump('regression_validation.json',{'schema_version':'r23-b1-regression-validation-v1','classification':'NON_RESEARCH_IMPLEMENTATION_VALIDATION','py_compile':'PASS','targeted_pytest':{'environment':'/home/takuma/.conda/envs/evrp-r23-validation','command':'pytest -q test_r23_formal_instance_loader.py test_r23_experiment_b_implementation.py','passed':12,'failed':0,'status':'PASS'},'cobyla_regression':'PASS via existing direct smoke and implementation tests','formal_a_rerun':False,'b1_formal_rerun':False,'qaoa_execution':False,'semantics_unchanged':True})"
+        }
+      ],
+      "sha256": "41d79fc80474ba2ca3f8313330e7cb84cf2c460582aaa155e634118babc518d2",
+      "source_archive": "historical_source_snapshots/09_build_r23_experiment_b1_fix_authority.py.txt",
+      "previously_reported": false
+    },
+    {
+      "id": "G10",
+      "file": "tools/execute_r23_experiment_b2.py",
+      "function": "main / preflight checks",
+      "experiment": "B2",
+      "current_behavior": "constant validation booleans or unexecuted pytest/compile success",
+      "why_invalid": "individual reported validation claims exceed executed conditions; top-level guards do not validate every named check",
+      "matched_lines": [
+        {
+          "line": 58,
+          "text": "    dump(OUT / \"execution_preflight.json\", {\"schema_version\": \"r23-b2-execution-preflight-v1\", \"classification\": \"RESEARCH_EXECUTION_PREFLIGHT\", \"status\": \"PASS\", \"authorization_id\": auth[\"authorization_id\"], \"authorization_sha256\": sha(AUTHZ), \"design_amendment_sha256\": sha(AMEND), \"planned_manifest_sha256\": sha(PLAN), \"checks\": base_checks, \"run_count\": 6, \"execution_order\": [x[\"run_id\"] for x in plan[\"runs\"]], \"runtime\": runtime, \"started_at\": datetime.now(timezone.utc).isoformat(), \"research_wall_time_cap\": None})"
+        }
+      ],
+      "sha256": "3c26fd03abcd7471392979e1da6bb2b2aea35d76beab879cb03a1a23967ed5d7",
+      "source_archive": "historical_source_snapshots/10_execute_r23_experiment_b2.py.txt",
+      "previously_reported": false
+    },
+    {
+      "id": "G11",
+      "file": "tools/execute_r23_experiment_b2_reexecution.py",
+      "function": "main / preflight checks",
+      "experiment": "B2",
+      "current_behavior": "constant validation booleans or unexecuted pytest/compile success",
+      "why_invalid": "individual reported validation claims exceed executed conditions; top-level guards do not validate every named check",
+      "matched_lines": [
+        {
+          "line": 34,
+          "text": "    dump(OUT/'execution_preflight.json',{'schema_version':'r23-b2-reexecution-execution-preflight-v1','classification':'RESEARCH_EXECUTION_PREFLIGHT','status':'PASS','authorization_id':auth['authorization_id'],'authorization_sha256':sha(AUTHZ),'implementation_authority_sha256':sha(IMPL),'design_amendment_sha256':sha(AMEND),'planned_manifest_sha256':sha(PLAN),'failed_v1_manifest_sha256':sha(FAIL/'manifest.json'),'checks':checks,'condition_count':6,'runtime':runtime,'started_at':datetime.now(timezone.utc).isoformat(),'research_wall_time_cap':None})"
+        }
+      ],
+      "sha256": "4bf4cb5d54da9ac41ddda9b33e67d1f2d5c0cb95acee180651f923605cb0878e",
+      "source_archive": "historical_source_snapshots/11_execute_r23_experiment_b2_reexecution.py.txt",
+      "previously_reported": false
+    },
+    {
+      "id": "G12",
+      "file": "tools/build_r23_experiment_b_authority.py",
+      "function": "main / preflight checks",
+      "experiment": "B2",
+      "current_behavior": "constant validation booleans or unexecuted pytest/compile success",
+      "why_invalid": "individual reported validation claims exceed executed conditions; top-level guards do not validate every named check",
+      "matched_lines": [],
+      "sha256": "2cc798f259beaf9ce333fa2b6690597d5c9a1dc1add94fd0799f2b3ca03fafd0",
+      "source_archive": "historical_source_snapshots/12_build_r23_experiment_b_authority.py.txt",
+      "previously_reported": false
+    },
+    {
+      "id": "G13",
+      "file": "05_src/traffic_simulation/r20_route_ordering/resolve_r23_design_authority.py",
+      "function": "main / preflight checks",
+      "experiment": "Formal A input/design authority",
+      "current_behavior": "constant validation booleans or unexecuted pytest/compile success",
+      "why_invalid": "individual reported validation claims exceed executed conditions; top-level guards do not validate every named check",
+      "matched_lines": [
+        {
+          "line": 103,
+          "text": "        \"formal_design_record\": {\"path\": str(DESIGN_RECORD.relative_to(ROOT)), \"sha256\": sha_file(DESIGN_RECORD), \"expected_sha256\": \"6726406a7d3ae01971547994763b56f67bc0b6379ef856b35c10282aa807d1b0\", \"status\": \"PASS\"},"
+        },
+        {
+          "line": 133,
+          "text": "        \"checks\": {\"implementation_authority\": \"PASS\", \"resolved_design\": \"PASS\", \"lambda_authority\": \"PASS\", \"instance_authority_15_of_15\": \"PASS\", \"r20_authority_15_of_15\": \"PASS\", \"r21_authority_15_of_15\": \"PASS\", \"r22_authority_15_of_15\": \"PASS\", \"planned_matrix_45_unique\": \"PASS\", \"runtime_environment\": \"PASS\", \"authority_drift\": \"PASS\", \"qaoa_executed\": False, \"optimizer_executed\": False},"
+        }
+      ],
+      "sha256": "3ff90ca8f009000765037e51aae9e3f168e16ed6a27eedb17e8a19e7b48b9b36",
+      "source_archive": "historical_source_snapshots/13_resolve_r23_design_authority.py.txt",
+      "previously_reported": false
+    },
+    {
+      "id": "G14",
+      "file": "05_src/traffic_simulation/r20_route_ordering/freeze_r23_instance_authority.py",
+      "function": "main / preflight checks",
+      "experiment": "Formal A input/design authority",
+      "current_behavior": "constant validation booleans or unexecuted pytest/compile success",
+      "why_invalid": "individual reported validation claims exceed executed conditions; top-level guards do not validate every named check",
+      "matched_lines": [
+        {
+          "line": 120,
+          "text": "            r20_validation = {\"status\": \"R20_FORMAL_INSTANCE_PASS\" if qstates[\"all_global_minima_feasible\"] and qstates[\"direct_expanded_mismatch_count\"] == 0 else \"R20_FORMAL_INSTANCE_VALIDATION_FAILED\", \"instance_id\": instance_id, \"n\": n, \"n_logical\": n*n, \"state_count\": qstates[\"state_count\"], \"lambda\": LAMBDA, \"lambda_policy_id\": LAMBDA_POLICY_ID, \"lambda_policy_sha256\": LAMBDA_POLICY_SHA, \"checks\": {\"all_global_minima_feasible\": qstates[\"all_global_minima_feasible\"], \"direct_expanded_consistency\": qstates[\"direct_expanded_mismatch_count\"] == 0, \"best_feasible_matches_exact\": all(abs(float(x[\"travel_objective\"]) - norm_ref[\"best_route_travel_time\"]) <= 1e-12 for x in qstates[\"best_feasible_states\"]), \"route_set_preserved\": {tuple(x[\"decoded_customer_sequence\"]) for x in qstates[\"best_feasible_states\"]} == {tuple(x[1:-1]) for x in norm_ref[\"optimal_routes\"]}}, \"global_minimum_energy\": qstates[\"global_minimum_energy\"], \"global_minimum_bitstrings\": qstates[\"global_minimum_bitstrings\"], \"global_minimum_count\": len(qstates[\"global_minimum_bitstrings\"]), \"direct_expanded_mismatch_count\": qstates[\"direct_expanded_mismatch_count\"], \"direct_expanded_max_abs_difference\": qstates[\"direct_expanded_max_abs_difference\"], \"exact_reference_hash\": reference[\"reference_hash\"]}"
+        },
+        {
+          "line": 130,
+          "text": "            r21_result[\"status\"] = \"R21_FORMAL_INSTANCE_PASS\" if r21_result[\"status\"] == \"PASS\" else \"R21_FORMAL_INSTANCE_VALIDATION_FAILED\""
+        },
+        {
+          "line": 137,
+          "text": "            r22_payload = {\"schema_version\": \"r22-reduced-ising-conversion-v1\", \"r21\": {\"validation_results_sha256\": r21_val_hash, \"manifest_sha256\": r21_manifest_hash, \"status\": \"PASS\", \"scope\": \"INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY\"}, \"instance_id\": instance_id, \"depot_id\": DEPOT, \"customer_ids\": customers, \"n\": n, \"n_logical\": n*n, \"variable_ordering\": r21_payload[\"variable_ordering\"], \"qubo_coefficients\": r21_payload[\"qubo_coefficients\"], \"qubo_coefficient_hash\": r21_payload[\"coefficient_hash\"], \"lambda\": LAMBDA, \"B\": bound, \"bound_type\": r21_payload[\"bound_type\"], \"normalization_metadata\": {\"tau_max\": r21_payload[\"tau_max\"], \"input_scale\": \"normalized\", \"rule\": \"tau/tau_max\"}, \"numerical_tolerance\": r21_payload[\"numerical_tolerance\"], \"r21_optimal_routes\": r21_result[\"qubo_optimal_routes\"]}"
+        },
+        {
+          "line": 140,
+          "text": "            r22_result[\"status\"] = \"R22_FORMAL_INSTANCE_PASS\" if r22_result[\"status\"] == \"PASS\" else \"R22_FORMAL_INSTANCE_EQUIVALENCE_FAILED\""
+        },
+        {
+          "line": 150,
+          "text": "            records.append({\"instance_id\": instance_id, \"n\": n, \"depot_id\": DEPOT, \"customer_ids\": customers, \"candidate_rank\": item[\"rank\"], \"selection_key_sha256\": item[\"selection_key_sha256\"], \"routing_artifact_sha256\": inp[\"source\"][\"routing_arcs_sha256\"], \"r20\": r20_manifest_records[-1], \"r21\": r21_manifest_records[-1], \"r22\": r22_manifest_records[-1], \"exact_reference_hash\": reference[\"reference_hash\"], \"matrix_sha256\": {\"raw\": sha_bytes(raw), \"normalized\": sha_bytes(normalized)}, \"status\": \"FORMAL_INSTANCE_AUTHORITY_PASS\" if r20_validation[\"status\"].endswith(\"PASS\") and r21_result[\"status\"].endswith(\"PASS\") and r22_result[\"status\"].endswith(\"PASS\") else \"FORMAL_SELECTED_INSTANCE_AUTHORITY_FAILED\"})"
+        },
+        {
+          "line": 155,
+          "text": "    summary = {\"schema_version\": \"r23-formal-instance-authority-summary-v1\", \"instance_set_id\": \"R23_FORMAL_INSTANCE_SET_V1\", \"instances\": records, \"counts\": {\"total\": len(records), \"pass\": sum(x[\"status\"] == \"FORMAL_INSTANCE_AUTHORITY_PASS\" for x in records), \"by_n\": {str(n): sum(x[\"n\"] == n for x in records) for n in (2,3,4)}}, \"qaoa_executed\": False}"
+        }
+      ],
+      "sha256": "3d7975045870ad79c75a7d9ccc718662394b5fc461b5905a4e9c42c16835108f",
+      "source_archive": "historical_source_snapshots/14_freeze_r23_instance_authority.py.txt",
+      "previously_reported": false
+    }
+  ]
+}

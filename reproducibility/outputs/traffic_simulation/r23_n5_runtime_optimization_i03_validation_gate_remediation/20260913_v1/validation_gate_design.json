@@ -1,0 +1,97 @@
+{
+  "contract": "05_src/traffic_simulation/specifications/R23_I03_VALIDATION_GATE_CONTRACT.md",
+  "status_contract": [
+    "VERIFIED",
+    "FAILED",
+    "PARTIAL",
+    "NOT_TESTED",
+    "BLOCKED"
+  ],
+  "aggregation": "Required FAILED > BLOCKED > incomplete; all required VERIFIED => VERIFIED. Empty NOT_TESTED; no required PARTIAL. Optional outcomes remain visible.",
+  "implementation": [
+    "05_src/traffic_simulation/validation/r23_validation_gate.py",
+    "05_src/traffic_simulation/validation/r23_evidence_gate.py",
+    "05_src/traffic_simulation/validation/r23_lineage_gate.py"
+  ],
+  "required": [
+    "nonempty expected/actual condition set",
+    "run artifact SHA",
+    "reference/input authority integrity",
+    "record conditions and initialization",
+    "termination metadata",
+    "route/bit feasibility",
+    "independent directed cost/gap",
+    "raw full-state probability integrity",
+    "recorded authority hash consistency"
+  ],
+  "by_experiment": {
+    "B1": {
+      "required": "all common integrity checks",
+      "optional": [
+        "native optimizer success",
+        "exact optimum recovery"
+      ],
+      "not_applicable": [
+        "numeric nit",
+        "stored gap: recomputed instead"
+      ]
+    },
+    "B2": {
+      "required": "all common integrity checks plus immutable B1 comparison authority",
+      "optional": [
+        "native optimizer success",
+        "exact optimum recovery"
+      ],
+      "not_applicable": [
+        "new historical dispatch smoke/pytest claims"
+      ]
+    },
+    "B2_FAILURE": {
+      "required": "same retained-record checks; no failure-run exclusion",
+      "optional": [
+        "native optimizer success",
+        "exact optimum recovery"
+      ],
+      "not_applicable": [
+        "claim of new scientific reexecution"
+      ]
+    },
+    "FORMAL_AUTHORITY": {
+      "required": [
+        "manifest binding",
+        "planned design matrix",
+        "per-stage file hashes",
+        "independent exact reference"
+      ],
+      "optional": [],
+      "not_applicable": [
+        "new optimizer runs",
+        "historical optimizer convergence revalidation"
+      ]
+    },
+    "R21_R22_LINEAGE": {
+      "required": [
+        "pinned results SHA",
+        "pinned manifest SHA",
+        "manifest binds results",
+        "declared status/check consistency"
+      ],
+      "optional": [],
+      "not_applicable": [
+        "fresh scientific revalidation"
+      ]
+    }
+  },
+  "optional": [
+    "native optimizer success/convergence",
+    "exact optimum recovered"
+  ],
+  "not_applicable": [
+    "numeric COBYLA nit where API reports None",
+    "stored B1 gap absent in schema: derive instead",
+    "historical pytest/dispatch smoke: NOT_TESTED, no new claim"
+  ],
+  "separation": "validator returns checks; wrappers print them; report writer aggregates measured outcomes, never grants research acceptance",
+  "legacy_PASS": "Retained only after explicit assertions/predicates or as input historical status; maps to VERIFIED for that specific check, not all scientific dimensions.",
+  "authority": "I03 only; previous remediation and audit immutable"
+}

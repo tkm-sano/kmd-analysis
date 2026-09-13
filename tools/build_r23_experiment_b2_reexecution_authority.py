@@ -1,54 +1,17 @@
-#!/usr/bin/env python3
-"""Build B2 reexecution authority after the minimal dispatch fix; never executes runs."""
-from __future__ import annotations
-import hashlib, json, subprocess
-from datetime import datetime, timezone
+"""Read-only replacement for a historical report/authorization generator.
+
+Original source is preserved in git and the I03 source snapshot.
+This entrypoint never overwrites historical evidence or authorizes execution.
+All reported outcomes come from the shared evidence validator.
+"""
 from pathlib import Path
+import sys
 
-ROOT=Path(__file__).resolve().parents[1]
-OUT=ROOT/'reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2'
-AUTH1=ROOT/'reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v1'
-FAIL=ROOT/'reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v1'
-PLAN1=AUTH1/'b2_planned_run_manifest_v2.json'; AUTHZ1=AUTH1/'b2_execution_authorization_v2.json'
-AMEND=ROOT/'reproducibility/config/traffic_simulation/r23_experiment_b_amendments/20260911_nelder_mead_settings_v1.json'
-DESIGN=ROOT/'reproducibility/config/traffic_simulation/r23_experiment_b/20260911_experiment_b_v1.json'
-INST=ROOT/'reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1'
-LAMBDA=ROOT/'reproducibility/config/traffic_simulation/r20_formal_penalty/20260911_r20_formal_lambda_v1.json'
-IMPL2=ROOT/'reproducibility/outputs/traffic_simulation/r23_experiment_b1_implementation_fix/20260911_v1/implementation_authority_v2.json'
-SRC=['05_src/traffic_simulation/r23_qaoa_aer/hamiltonian.py','05_src/traffic_simulation/r23_qaoa_aer/initialization.py','05_src/traffic_simulation/r23_qaoa_aer/metrics.py','05_src/traffic_simulation/r23_qaoa_aer/optimizers.py','05_src/traffic_simulation/r23_qaoa_aer/qaoa.py','05_src/traffic_simulation/r23_qaoa_aer/schema.py','05_src/traffic_simulation/validation/test_r23_experiment_b_implementation.py']
-OPTIONS={'maxiter':300,'maxfev':900,'xatol':1e-4,'fatol':1e-4,'adaptive':False,'initial_simplex':None,'bounds':None,'disp':False}
-IDS=['routing_v18_n4_rank01','routing_v18_n4_rank03','routing_v18_n4_rank05']
-
-def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
-def load(p): return json.loads(p.read_text())
-def dump(p,x): p.parent.mkdir(parents=True,exist_ok=True); p.write_text(json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True,allow_nan=False)+'\n')
-def rel(p): return str(p.relative_to(ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "05_src"))
+from traffic_simulation.validation.r23_evidence_gate import cli
 
 def main():
-    now=datetime.now(timezone.utc).isoformat(); oldplan=load(PLAN1); oldauth=load(AUTHZ1); oldimpl=load(IMPL2)
-    assert sha(FAIL/'manifest.json')=='d1cd291e49ea5ebdc07797e9d8684dcc6fe415efd543c5aeb4174bb50bd838db'
-    assert oldauth['execution_performed'] is False and oldplan['run_count']==6
-    root_cause={'schema_version':'r23-b2-root-cause-v2','failure_signature':'bounds=None duplicate dispatch','exception_type':'TypeError','exception_message':'scipy.optimize._optimize._minimize_neldermead() got multiple values for keyword argument \'bounds\'','failing_function':'traffic_simulation.r23_qaoa_aer.optimizers.minimize_objective','optimizer_dispatch_function':'scipy.optimize.minimize','nelder_mead_adapter':'minimize_objective(method=\'Nelder-Mead\')','duplicate_argument_path':'R23 adapter places bounds=None in options; scipy.optimize.minimize dispatch supplies bounds=bounds explicitly to _minimize_neldermead; Python receives bounds twice.','affected_runs':'6/6','optimizer_launched':False,'aer_scientific_evaluation_started':False,'scientific_metrics_generated':False,'authority_drift':False,'fix_summary':'For governed Nelder-Mead bounds=None, remove bounds from method options and let SciPy dispatch it once as its explicit keyword. No scientific parameter or optimizer setting changes.','created_at':now,'parent_failed_manifest':rel(FAIL/'manifest.json'),'parent_failed_manifest_sha256':sha(FAIL/'manifest.json')}
-    dump(OUT/'root_cause.json',root_cause)
-    current={p:sha(ROOT/p) for p in SRC}; same={p:current[p]==oldimpl['source_hashes'][p] for p in SRC if p!='05_src/traffic_simulation/r23_qaoa_aer/optimizers.py' and p in oldimpl['source_hashes']}
-    impl3={'schema_version':'r23-b2-implementation-authority-v3','authority_id':'R23_EXPERIMENT_B_IMPLEMENTATION_SOURCE_SET_V3','parent_authority_id':'R23_EXPERIMENT_B_IMPLEMENTATION_SOURCE_SET_V2','created_at':now,'changed_source_files':['05_src/traffic_simulation/r23_qaoa_aer/optimizers.py','05_src/traffic_simulation/validation/test_r23_experiment_b_implementation.py'],'source_hashes':current,'root_cause':rel(OUT/'root_cause.json'),'root_cause_sha256':sha(OUT/'root_cause.json'),'fix':'Nelder-Mead bounds=None is removed from options before scipy.optimize.minimize dispatch; SciPy supplies bounds exactly once.','scientific_semantics_unchanged':all(same.values()),'optimizer_settings_unchanged':True,'formal_execution_performed':False,'validation':{'targeted_pytest':'PASS: 8 passed','py_compile':'PASS','frozen_scipy':'1.17.1','cobyla_regression':'PASS','p2_smoke':'PASS','p3_smoke':'PASS','objective_cap':'PASS','fixed_0.1':'PASS'}}
-    dump(OUT/'implementation_authority_v3.json',impl3)
-    validation={'schema_version':'r23-b2-optimizer-dispatch-validation-v2','classification':'NON_RESEARCH_IMPLEMENTATION_VALIDATION','created_at':now,'frozen_environment':'/home/takuma/.conda/envs/evrp-quantum-temp','scipy_version':'1.17.1','nelder_mead_invocation':'PASS','cobyla_regression':'PASS','p2_smoke':'PASS','p3_smoke':'PASS','bounds_dispatch':'PASS: bounds=None omitted from options and supplied once by SciPy dispatch','maxiter':{'value':300,'status':'PASS'},'maxfev':{'value':900,'status':'PASS'},'xatol':{'value':1e-4,'status':'PASS'},'fatol':{'value':1e-4,'status':'PASS'},'adaptive':{'value':False,'status':'PASS'},'initial_simplex':{'value':None,'status':'PASS'},'disp':{'value':False,'status':'PASS'},'objective_evaluation_cap':'PASS','fixed_0.1_initialization':'PASS','exact_statevector_semantics':'UNCHANGED','qubo_semantics':'UNCHANGED','hamiltonian_semantics':'UNCHANGED','decoding_semantics':'UNCHANGED','probability_semantics':'UNCHANGED','exact_reference_semantics':'UNCHANGED','runtime_semantics':'UNCHANGED','scientific_execution':'NOT_PERFORMED'}
-    dump(OUT/'optimizer_dispatch_validation.json',validation)
-    runs=[]
-    for x in oldplan['runs']:
-        y=dict(x); y['reexecution_of_run_id']=x['run_id']; y['execution_performed']=False; y['implementation_authority_v3']=rel(OUT/'implementation_authority_v3.json'); y['implementation_authority_v3_sha256']=sha(OUT/'implementation_authority_v3.json'); runs.append(y)
-    plan={'schema_version':'r23-b2-reexecution-planned-manifest-v1','manifest_id':'R23_EXPERIMENT_B2_REEXECUTION_PLANNED_MANIFEST_V1','classification':'B2_REEXECUTION_SCOPE_READY_FOR_AUTHORIZATION','created_at':now,'parent_failed_execution':rel(FAIL/'manifest.json'),'parent_failed_execution_manifest_sha256':sha(FAIL/'manifest.json'),'parent_planned_manifest':rel(PLAN1),'parent_planned_manifest_sha256':sha(PLAN1),'implementation_authority_v3':rel(OUT/'implementation_authority_v3.json'),'implementation_authority_v3_sha256':sha(OUT/'implementation_authority_v3.json'),'design_amendment':rel(AMEND),'design_amendment_sha256':sha(AMEND),'run_count':6,'unique_condition_count':6,'execution_performed':False,'scientific_conditions_identical_to_v1':True,'runs':runs}
-    planpath=OUT/'b2_reexecution_planned_manifest.json'; dump(planpath,plan); plansha=sha(planpath)
-    checks={'formal_instance_authority':True,'exact_reference_authority':True,'R20_linkage':True,'R21_linkage':True,'R22_linkage':True,'lambda':sha(LAMBDA)=='8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95','initialization':True,'design_amendment':sha(AMEND)=='bf6acf30ccd04615237dbdac9dba14b707d8b59f70514960597d04ec09e371fd','implementation_authority_v3':True,'nelder_mead_adapter':True,'no_duplicate_bounds_dispatch':True,'backend':True,'no_synthetic_pilot_fallback':True,'output_namespace_clean':not (ROOT/'reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2').exists()}
-    pre={'schema_version':'r23-b2-reexecution-preflight-v1','classification':'B2_REEXECUTION_AUTHORIZATION_PREFLIGHT','status':'PASS' if all(checks.values()) else 'FAIL','created_at':now,'condition_count':6,'unique_condition_count':6,'checks':checks,'conditions':runs,'implementation_authority_v3_sha256':sha(OUT/'implementation_authority_v3.json'),'failed_v1_manifest_sha256':sha(FAIL/'manifest.json')}
-    prepath=OUT/'b2_reexecution_preflight.json'; dump(prepath,pre)
-    auth={'schema_version':'r23-b2-reexecution-authorization-v1','authorization_id':'R23_EXPERIMENT_B2_REEXECUTION_AUTHORIZATION_V1','created_at':now,'classification':'EXPERIMENT_B2_REEXECUTION_AUTHORIZED_READY_TO_EXECUTE','execution_authorized':True,'execution_performed':False,'parent_failed_execution':rel(FAIL),'failed_execution_manifest_sha256':sha(FAIL/'manifest.json'),'root_cause_artifact':rel(OUT/'root_cause.json'),'root_cause_sha256':sha(OUT/'root_cause.json'),'implementation_authority_v3':rel(OUT/'implementation_authority_v3.json'),'implementation_authority_v3_sha256':sha(OUT/'implementation_authority_v3.json'),'design_amendment':rel(AMEND),'design_amendment_sha256':sha(AMEND),'experiment_b_design_authority':rel(DESIGN),'b1_evidence_review_authority':'reproducibility/outputs/traffic_simulation/r23_experiment_b1_evidence_review/20260911_v1/manifest.json','b1_evidence_review_sha256':'8db16a3f66191c1de34b4f1cbaededdf9760cf0fb13f9e1d852b2c4e26cae767','instance_authority':rel(INST/'manifest.json'),'exact_reference_authority':rel(INST/'exact_references.json'),'lambda_authority':rel(LAMBDA),'cobyla_baseline_authority':rel(AUTH1/'b2_cobyla_baseline_manifest.json'),'planned_manifest':rel(planpath),'planned_manifest_sha256':plansha,'preflight':rel(prepath),'authorized_output_root':'reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/','authorized_conditions':runs,'condition_count':6,'unique_condition_count':6,'scientific_conditions_identical_to_failed_v1':True,'scientific_settings':{'optimizer':'NELDER_MEAD','method':'Nelder-Mead','scipy_version':'1.17.1','maxiter':300,'maxfev':900,'xatol':1e-4,'fatol':1e-4,'adaptive':False,'initial_simplex':None,'bounds':None,'callback':None,'disp':False,'objective_evaluation_cap':900,'wall_time_policy':'NONE','initialization':'fixed_0.1','parameter_order':'[gamma_1,...,gamma_p,beta_1,...,beta_p]'},'full_evrp_status':{'R20':'BLOCKED','R21':'NOT_STARTED'}}
-    authpath=OUT/'b2_reexecution_authorization.json'; dump(authpath,auth)
-    manifest={'schema_version':'r23-b2-reexecution-authority-manifest-v1','classification':auth['classification'],'execution_performed':False,'artifacts':{p.name:sha(p) for p in sorted(OUT.iterdir()) if p.is_file() and p.name not in {'manifest.json','SHA256SUMS'}},'authorization_sha256':sha(authpath),'planned_manifest_sha256':plansha,'failed_v1_manifest_sha256':sha(FAIL/'manifest.json')}
-    dump(OUT/'manifest.json',manifest)
-    files=sorted(p for p in OUT.iterdir() if p.is_file() and p.name!='SHA256SUMS'); (OUT/'SHA256SUMS').write_text(''.join(f'{sha(p)}  {p.name}\n' for p in files))
-    (OUT/'README.md').write_text('# R23 Experiment B2 Reexecution Authorization\n\nClassification: `EXPERIMENT_B2_REEXECUTION_AUTHORIZED_READY_TO_EXECUTE`\n\nThis namespace records the minimal dispatch fix and a non-executing authorization for the same six B2 conditions. The failed v1 namespace is preserved. No scientific reexecution was performed.\n')
-    manifest['artifacts']={p.name:sha(p) for p in sorted(OUT.iterdir()) if p.is_file() and p.name not in {'manifest.json','SHA256SUMS'}}; dump(OUT/'manifest.json',manifest); files=sorted(p for p in OUT.iterdir() if p.is_file() and p.name!='SHA256SUMS'); (OUT/'SHA256SUMS').write_text(''.join(f'{sha(p)}  {p.name}\n' for p in files))
-    print(json.dumps({'classification':auth['classification'],'execution_performed':False,'implementation_authority_sha256':sha(OUT/'implementation_authority_v3.json'),'planned_manifest_sha256':plansha,'authorization_sha256':sha(authpath),'manifest_sha256':sha(OUT/'manifest.json')},indent=2))
-if __name__=='__main__': main()
+    return cli("B2")
+
+if __name__ == "__main__":
+    raise SystemExit(main())

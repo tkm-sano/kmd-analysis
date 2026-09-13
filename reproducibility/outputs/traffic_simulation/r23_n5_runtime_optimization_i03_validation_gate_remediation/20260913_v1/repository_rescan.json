@@ -1,0 +1,740 @@
+{
+  "scope": "All tracked R23-named Python paths, including formal authority and profiler; new I03 validators/scripts added explicitly. Historical raw JSON is not executable validation authority.",
+  "method": "targeted text inventory plus manual control-flow classification and executable negative regression; not a formal whole-program proof",
+  "files_scanned": 54,
+  "files": [
+    {
+      "path": "05_src/traffic_simulation/r20_route_ordering/freeze_r23_instance_authority.py",
+      "sha256": "f7ae7d206edc48ef70f539d1ee01319543762846d844bc1788596eb53d4053b0",
+      "classification": "CONDITION_BACKED",
+      "basis": "R20/R21/R22 statuses computed from validations; new R21 guard before compatibility PASS in R22 input",
+      "matches": [
+        {
+          "line": 130,
+          "text": "            r21_result[\"status\"] = \"R21_FORMAL_INSTANCE_PASS\" if r21_result[\"status\"] == \"PASS\" else \"R21_FORMAL_INSTANCE_VALIDATION_FAILED\""
+        },
+        {
+          "line": 140,
+          "text": "            r22_payload = {\"schema_version\": \"r22-reduced-ising-conversion-v1\", \"r21\": {\"validation_results_sha256\": r21_val_hash, \"manifest_sha256\": r21_manifest_hash, \"status\": \"PASS\", \"scope\": \"INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY\"}, \"instance_id\": instance_id, \"depot_id\": DEPOT, \"customer_ids\": customers, \"n\": n, \"n_logical\": n*n, \"variable_ordering\": r21_payload[\"variable_ordering\"], \"qubo_coefficients\": r21_payload[\"qubo_coefficients\"], \"qubo_coefficient_hash\": r21_payload[\"coefficient_hash\"], \"lambda\": LAMBDA, \"B\": bound, \"bound_type\": r21_payload[\"bound_type\"], \"normalization_metadata\": {\"tau_max\": r21_payload[\"tau_max\"], \"input_scale\": \"normalized\", \"rule\": \"tau/tau_max\"}, \"numerical_tolerance\": r21_payload[\"numerical_tolerance\"], \"r21_optimal_routes\": r21_result[\"qubo_optimal_routes\"]}"
+        },
+        {
+          "line": 143,
+          "text": "            r22_result[\"status\"] = \"R22_FORMAL_INSTANCE_PASS\" if r22_result[\"status\"] == \"PASS\" else \"R22_FORMAL_INSTANCE_EQUIVALENCE_FAILED\""
+        },
+        {
+          "line": 153,
+          "text": "            records.append({\"instance_id\": instance_id, \"n\": n, \"depot_id\": DEPOT, \"customer_ids\": customers, \"candidate_rank\": item[\"rank\"], \"selection_key_sha256\": item[\"selection_key_sha256\"], \"routing_artifact_sha256\": inp[\"source\"][\"routing_arcs_sha256\"], \"r20\": r20_manifest_records[-1], \"r21\": r21_manifest_records[-1], \"r22\": r22_manifest_records[-1], \"exact_reference_hash\": reference[\"reference_hash\"], \"matrix_sha256\": {\"raw\": sha_bytes(raw), \"normalized\": sha_bytes(normalized)}, \"status\": \"FORMAL_INSTANCE_AUTHORITY_PASS\" if r20_validation[\"status\"].endswith(\"PASS\") and r21_result[\"status\"].endswith(\"PASS\") and r22_result[\"status\"].endswith(\"PASS\") else \"FORMAL_SELECTED_INSTANCE_AUTHORITY_FAILED\"})"
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/r20_route_ordering/link_r23_authorization_artifact.py",
+      "sha256": "0df30f7ff2a4d6883c6b4dc9199feb25d0cb152e259ce8fee87612203c158221",
+      "classification": "NO_MATCH",
+      "basis": "no targeted positive-status pattern",
+      "matches": []
+    },
+    {
+      "path": "05_src/traffic_simulation/r20_route_ordering/resolve_r23_design_authority.py",
+      "sha256": "3982a8713bbf8c549ffb40133976db8ece2583d0fef4b091af8a131bc3c90e2c",
+      "classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "matches": []
+    },
+    {
+      "path": "05_src/traffic_simulation/r20_route_ordering/write_r23_authority_set_manifests.py",
+      "sha256": "fdd2c7de4ffc27dbaf8a5a26c3813a9578b905145b2f3482511fa2f70924e37e",
+      "classification": "CONDITION_BACKED",
+      "basis": "status is a ternary over nonempty15 records and every status, not file existence alone",
+      "matches": [
+        {
+          "line": 25,
+          "text": "        payload = {\"schema_version\": f\"r23-formal-{stage}-authority-set-v1\", \"instance_set_id\": \"R23_FORMAL_INSTANCE_SET_V1\", \"stage\": stage.upper(), \"count\": len(records), \"status\": \"PASS\" if len(records) == 15 and all(x[\"status\"].endswith(\"PASS\") for x in records) else \"FAIL\", \"records\": records}"
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py",
+      "sha256": "76a0b89d4999abad7fb7472740b84ac128c1863571299ef43ed7e9f43924d254",
+      "classification": "NO_MATCH",
+      "basis": "no targeted positive-status pattern",
+      "matches": []
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/__init__.py",
+      "sha256": "4936c3c2b76de8e11677282ba487159618c015432075d0963a297621b5a99a4f",
+      "classification": "NO_MATCH",
+      "basis": "no targeted positive-status pattern",
+      "matches": []
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/artifact.py",
+      "sha256": "66285aff39ee9e1008070070e5e4a16713f392a967a8d4bb838bf6e660e1727b",
+      "classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "matches": [
+        {
+          "line": 117,
+          "text": "        if (record[\"status\"] != \"VERIFIED\" or len(checks) != len(expected)"
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/execution_provenance.py",
+      "sha256": "2e2f5b5f31fdd1a243e09018849e94ef73c760930426b6d7fd42c8769afbac59",
+      "classification": "NO_MATCH",
+      "basis": "no targeted positive-status pattern",
+      "matches": []
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/hamiltonian.py",
+      "sha256": "f38947e84cdb1094cd35c80462ed7db9c693da7e0f2f622e187053c235435f03",
+      "classification": "NO_MATCH",
+      "basis": "no targeted positive-status pattern",
+      "matches": []
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/initialization.py",
+      "sha256": "8fdac4a5f110e1890bf2cabcfcfd6cf257897eaeae1f45a5aa50228b27872188",
+      "classification": "NO_MATCH",
+      "basis": "no targeted positive-status pattern",
+      "matches": []
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/metrics.py",
+      "sha256": "76cd7e838eeb7817f0bc5021299ad27ce8c6d70b1735280026918840704667e8",
+      "classification": "NO_MATCH",
+      "basis": "no targeted positive-status pattern",
+      "matches": []
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+      "sha256": "1ea9d3cb0efeb6df3c7ef57f6d89541388d0089d1f58361254d284b3fcbdc187",
+      "classification": "NO_MATCH",
+      "basis": "no targeted positive-status pattern",
+      "matches": []
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/optimizers.py",
+      "sha256": "7fcbdf1f0572712f277e4afccef6c30ac3dedff8a7e1f3c6f27c40b6396ef710",
+      "classification": "NO_MATCH",
+      "basis": "no targeted positive-status pattern",
+      "matches": []
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+      "sha256": "89097d258d1422a196818e194fafdbf406b06a6abc94b30f6c27eeffbecbb8d7",
+      "classification": "CONDITION_BACKED",
+      "basis": "initial PASS is internal control state overwritten after actual final metric evaluation; exceptions set failure, no unconditional terminal PASS",
+      "matches": [
+        {
+          "line": 195,
+          "text": "    status, failure_reasons = \"PASS\", []"
+        },
+        {
+          "line": 249,
+          "text": "        if status == \"PASS\":"
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/schema.py",
+      "sha256": "0b9e74c7dcf5ede92e295cee6344dd45044923a7c56ccc56dd28826c721c19d5",
+      "classification": "CONDITION_BACKED",
+      "basis": "computed memory bound predicate; other PASS literals compare input authority statuses, not emit fabricated output",
+      "matches": [
+        {
+          "line": 54,
+          "text": "        \"status\": \"PASS\" if estimated_peak_bytes <= guard_bytes else \"FAIL\","
+        },
+        {
+          "line": 123,
+          "text": "        if memory_preflight(n_logical, self.memory_limit_gib)[\"status\"] != \"PASS\":"
+        },
+        {
+          "line": 162,
+          "text": "            raise R23SchemaError(\"formal R22 per-instance validation is not PASS\")"
+        },
+        {
+          "line": 221,
+          "text": "    if report.get(\"status\") != \"PASS\" or report.get(\"scope\") != R23_SCOPE:"
+        },
+        {
+          "line": 222,
+          "text": "        raise R23SchemaError(\"R22 artifact is not PASS for the required reduced scope\")"
+        },
+        {
+          "line": 223,
+          "text": "    if manifest.get(\"status\") != \"PASS\" or manifest.get(\"r22_stage\") != \"R22_REDUCED_ISING_CONVERSION\":"
+        },
+        {
+          "line": 229,
+          "text": "    if item.get(\"status\") != \"PASS\" or not all(item.get(\"checks\", {}).values()):"
+        },
+        {
+          "line": 230,
+          "text": "        raise R23SchemaError(\"selected R22 instance is not PASS\")"
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/validation/r23_evidence_gate.py",
+      "sha256": "02c31471aedb86ee92b22ffa876ae5525964765923b40b869225161ad689de6a",
+      "classification": "EXECUTED_VALIDATOR",
+      "basis": "condition evaluation, required/optional aggregation and explicit missing-evidence failures; negative mutation regression",
+      "matches": [
+        {
+          "line": 277,
+          "text": "    return 0 if result['status']=='VERIFIED' else 1"
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/validation/r23_lineage_gate.py",
+      "sha256": "a12d8bf8610125374388e65eaba3b06cb7e432e148519c2a8bc8e8c37ebf5f57",
+      "classification": "EXECUTED_VALIDATOR",
+      "basis": "condition evaluation, required/optional aggregation and explicit missing-evidence failures; negative mutation regression",
+      "matches": [
+        {
+          "line": 17,
+          "text": "        require(result['status'] in ('PASS','VERIFIED') and manifest['status'] in ('PASS','VERIFIED'),'authority declares failure')"
+        },
+        {
+          "line": 21,
+          "text": "        require(all(x in ('PASS','VERIFIED') for x in statuses),'instance authority status not successful')"
+        },
+        {
+          "line": 25,
+          "text": "    return {'status':aggregate_checks(rows),'checks':rows,'scientific_revalidation':'NOT_TESTED','legacy_PASS_mapping':'PASS accepted only as historical declared status, not emitted as new verification'}"
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/validation/r23_validation_gate.py",
+      "sha256": "8eea6f4c0067c463ad3244083ceeeae6d68e90e4afbc50dd215a4a8c0a3323ef",
+      "classification": "EXECUTED_VALIDATOR",
+      "basis": "condition evaluation, required/optional aggregation and explicit missing-evidence failures; negative mutation regression",
+      "matches": []
+    },
+    {
+      "path": "05_src/traffic_simulation/validation/test_r23_experiment_b_implementation.py",
+      "sha256": "f6af9bb0bbaef6f672162f31168f0fcd48c6286cfe48b46766fb36c0d7fb1b97",
+      "classification": "TEST_FIXTURE_OR_ASSERTION",
+      "basis": "test expected values/input fixtures, not scientific evidence generators",
+      "matches": []
+    },
+    {
+      "path": "05_src/traffic_simulation/validation/test_r23_formal_instance_loader.py",
+      "sha256": "123067f5fd953e5025cc98aa36e7cad26b11c03ff1cba345378682cea504bc39",
+      "classification": "TEST_FIXTURE_OR_ASSERTION",
+      "basis": "test expected values/input fixtures, not scientific evidence generators",
+      "matches": []
+    },
+    {
+      "path": "05_src/traffic_simulation/validation/test_r23_implementation_contract.py",
+      "sha256": "f5517b5ae45d457990a5b89ce1a0b276dfc27da4f82cff5121a1b83be8822080",
+      "classification": "TEST_FIXTURE_OR_ASSERTION",
+      "basis": "test expected values/input fixtures, not scientific evidence generators",
+      "matches": [
+        {
+          "line": 85,
+          "text": "    assert result[\"status\"] == \"PASS\""
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/validation/test_r23_optimized_metrics_v4_contract.py",
+      "sha256": "2662a5a88a0ff9cde03f0f8af5b756b6dcd03eaccaf80f4f9fbf7f511d0adac1",
+      "classification": "TEST_FIXTURE_OR_ASSERTION",
+      "basis": "test expected values/input fixtures, not scientific evidence generators",
+      "matches": []
+    },
+    {
+      "path": "05_src/traffic_simulation/validation/test_r23_qaoa_aer.py",
+      "sha256": "f3c5cb802402e567235d14117ca2556e3dcf4469a42f75e2c0b0246f9f1b904d",
+      "classification": "TEST_FIXTURE_OR_ASSERTION",
+      "basis": "test expected values/input fixtures, not scientific evidence generators",
+      "matches": [
+        {
+          "line": 25,
+          "text": "    assert data.payload[\"status\"] == \"PASS\""
+        }
+      ]
+    },
+    {
+      "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v1/profiling_harness.py",
+      "sha256": "bdb5370543176614d5ca4decfa58b34b8fc14b2b00ee48450f60c65fceb48d66",
+      "classification": "HISTORICAL_OR_RETIRED",
+      "basis": "only tracked profiler/retired n5 scripts; no current success generator; immutable prior outputs not regenerated",
+      "matches": []
+    },
+    {
+      "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/build_artifact.py",
+      "sha256": "71f7b62c5f442ce3dbe081a4f78148170bf70c84b226ee774a108c53f6a08176",
+      "classification": "HISTORICAL_OR_RETIRED",
+      "basis": "only tracked profiler/retired n5 scripts; no current success generator; immutable prior outputs not regenerated",
+      "matches": []
+    },
+    {
+      "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/run_equivalence.py",
+      "sha256": "71f7b62c5f442ce3dbe081a4f78148170bf70c84b226ee774a108c53f6a08176",
+      "classification": "HISTORICAL_OR_RETIRED",
+      "basis": "only tracked profiler/retired n5 scripts; no current success generator; immutable prior outputs not regenerated",
+      "matches": []
+    },
+    {
+      "path": "reproducibility/tools/r23_b2_evidence_review.py",
+      "sha256": "e898e04a64b05cccb35f7ac06392aac9cf2534af04b15bc5d63cf538886ca3e0",
+      "classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "matches": []
+    },
+    {
+      "path": "reproducibility/tools/r23_i03_regression.py",
+      "sha256": "14e24e343487814e9182093fbd415a2f62f370ab6bc2e1e9eae05074f7be3986",
+      "classification": "ASSERTION_HARNESS_OR_REPORT",
+      "basis": "positive statements derived from executed assertions/regression artifacts; no scientific acceptance",
+      "matches": [
+        {
+          "line": 32,
+          "text": "            assert all(run['status']=='VERIFIED' for run in r['runs'])"
+        },
+        {
+          "line": 34,
+          "text": "            if profile=='B1':assert r['status']=='VERIFIED'"
+        },
+        {
+          "line": 39,
+          "text": "        else:assert r['status']!='VERIFIED'"
+        },
+        {
+          "line": 74,
+          "text": "    formal=validate_experiment(ROOT,'FORMAL_AUTHORITY');assert formal['status']=='VERIFIED',formal"
+        },
+        {
+          "line": 128,
+          "text": "        parsed=json.loads(proc.stdout);assert (proc.returncode==0)==(parsed['status']=='VERIFIED')"
+        },
+        {
+          "line": 139,
+          "text": "        else:raise AssertionError('R21 failed validation promoted to PASS')"
+        },
+        {
+          "line": 145,
+          "text": "    write('positive_regression.json',{'status':'VERIFIED','environment':environment,'experiments':positive,'gate_cases_tested':len(gate_cases),'n5_gate_compatibility':'VERIFIED','entrypoints':entrypoints,'scientific_AST_checks':ast_checks,"
+        },
+        {
+          "line": 147,
+          "text": "    write('negative_regression.json',{'status':'VERIFIED' if negative and all(x['detected'] for x in negative) else 'FAILED','cases':negative,'mutations_touch_originals':False})"
+        }
+      ]
+    },
+    {
+      "path": "reproducibility/tools/r23_i03_remediation.py",
+      "sha256": "ee7903cee6454086b84f01d844e57360afa63f28e99b7eed7f494746beab2e4a",
+      "classification": "ASSERTION_HARNESS_OR_REPORT",
+      "basis": "positive statements derived from executed assertions/regression artifacts; no scientific acceptance",
+      "matches": [
+        {
+          "line": 42,
+          "text": "  text=(ROOT/path).read_text();matches=[{'line':n,'text':t} for n,t in enumerate(text.splitlines(),1) if 'PASS' in t or ('True' in t and ('check' in t or 'validation' in t))]"
+        },
+        {
+          "line": 50,
+          "text": "  'actual_file_count':len(rows),'unit':'affected file/function clusters, not literal PASS occurrences','additional_file_count':len(ADDITIONAL),'locations':rows})"
+        },
+        {
+          "line": 61,
+          "text": "   'matched_lines':[{'line':n,'text':t} for n,t in enumerate(source.splitlines(),1) if 'PASS' in t],"
+        }
+      ]
+    },
+    {
+      "path": "reproducibility/tools/r23_i03_report.py",
+      "sha256": "bb42bc9d34b85b6db26a51b600f8528b2e15dcdc9276286b270d88fec363e8ed",
+      "classification": "ASSERTION_HARNESS_OR_REPORT",
+      "basis": "positive statements derived from executed assertions/regression artifacts; no scientific acceptance",
+      "matches": [
+        {
+          "line": 17,
+          "text": " 'tools/execute_r23_experiment_b1.py':'authority_gate raises unless nonempty fixed run count, source/authority hashes and conditions satisfy predicates; PASS is downstream of this gate',"
+        },
+        {
+          "line": 20,
+          "text": " 'tools/review_r23_experiment_b1.py':'assert all(parameter_gate.values()) at line230 before integrity PASS; exact36 and provenance links explicitly checked',"
+        },
+        {
+          "line": 21,
+          "text": " 'tools/review_r23_formal_evidence.py':'PASS ternaries depend on actual declared/observed hash comparisons or computed mismatches; historical acceptance narrative is not a newly executed validation',"
+        },
+        {
+          "line": 22,
+          "text": " 'tools/validate_r23_experiment_b_implementation.py':'PASS ternaries compare actual adapter/native optimizer outputs and executed smoke conditions',"
+        },
+        {
+          "line": 23,
+          "text": " '05_src/traffic_simulation/r23_qaoa_aer/schema.py':'computed memory bound predicate; other PASS literals compare input authority statuses, not emit fabricated output',"
+        },
+        {
+          "line": 24,
+          "text": " '05_src/traffic_simulation/r23_qaoa_aer/qaoa.py':'initial PASS is internal control state overwritten after actual final metric evaluation; exceptions set failure, no unconditional terminal PASS',"
+        },
+        {
+          "line": 25,
+          "text": " '05_src/traffic_simulation/r20_route_ordering/freeze_r23_instance_authority.py':'R20/R21/R22 statuses computed from validations; new R21 guard before compatibility PASS in R22 input',"
+        },
+        {
+          "line": 27,
+          "text": " 'reproducibility/tools/r23_n5_independent_audit_contracts.py':'explicit route/cost/optimal-mass/tie assertions at lines26-41 precede report PASS strings',"
+        },
+        {
+          "line": 28,
+          "text": " 'reproducibility/tools/r23_n5_independent_audit_compare.py':'seal/source hashes and no-drift assertions precede verification PASS',"
+        },
+        {
+          "line": 29,
+          "text": " 'reproducibility/tools/r23_n5_independent_audit.py':'probe assertions executed before final diagnostic PASS; failure-contract counterexamples retained',"
+        },
+        {
+          "line": 39,
+          "text": "        matches=[{'line':n,'text':s} for n,s in enumerate(source.splitlines(),1) if re.search(r'\\bPASS\\b|all_gates_pass|targeted_tests_pass|[\\\"\\x27](?:status|success|validated)[\\\"\\x27].{0,6}(?:True|[\\\"\\x27]VERIFIED)',s)]"
+        },
+        {
+          "line": 104,
+          "text": "        'positive_regression':positive['status']=='VERIFIED','negative_regression':bool(negative['cases']) and all(c['detected'] and c['result'] in ('FAILED','BLOCKED') for c in negative['cases']),"
+        }
+      ]
+    },
+    {
+      "path": "reproducibility/tools/r23_n5_independent_audit.py",
+      "sha256": "a351c9f95d87d5ccd9f3289716ccedf0ca2f885fd6cefebf2df1fca255b7d5b7",
+      "classification": "CONDITION_BACKED",
+      "basis": "probe assertions executed before final diagnostic PASS; failure-contract counterexamples retained",
+      "matches": [
+        {
+          "line": 319,
+          "text": "    print(json.dumps({'output':str(OUT),'probe_assertions':'PASS','failure_contract_evidence':outcomes[:9]}))"
+        }
+      ]
+    },
+    {
+      "path": "reproducibility/tools/r23_n5_independent_audit_compare.py",
+      "sha256": "8ee98a72ff77f2d701dded202c41a36c79d873e33bcf5eed4a08856357482cb2",
+      "classification": "CONDITION_BACKED",
+      "basis": "seal/source hashes and no-drift assertions precede verification PASS",
+      "matches": [
+        {
+          "line": 81,
+          "text": "            'conclusion':'Added guards explain improvements in NaN/dimension rejection, but norm acceptance, missing entrypoint commits, unconditional report PASS and convergence 3/3 already existed. Source drift alone does not explain audit disagreement.'},"
+        },
+        {
+          "line": 84,
+          "text": "                  'Previous accepts generated PASS summaries without checking whether assertions drive them or actual helper is exercised.',"
+        },
+        {
+          "line": 102,
+          "text": "    write('verification.json',{'independent_seal':'PASS','source_and_scoped_artifact_hashes':'PASS','scoped_file_count':len(current_files),"
+        }
+      ]
+    },
+    {
+      "path": "reproducibility/tools/r23_n5_independent_audit_contracts.py",
+      "sha256": "20f3aea31f633fe9afe682b57b2c2847195e1b7af1fff788a10911a5738cdf7e",
+      "classification": "CONDITION_BACKED",
+      "basis": "explicit route/cost/optimal-mass/tie assertions at lines26-41 precede report PASS strings",
+      "matches": [
+        {
+          "line": 49,
+          "text": "    report={'best_route_minimizes_cost_not_probability':'PASS','exact_reference_changes_only_optimal_mass':'PASS',"
+        },
+        {
+          "line": 50,
+          "text": "        'equal_cost_tie_order_matches_original':'PASS','deliberately_corrupted_P_opt_assertion_rejected':detected,'precision_cases':cases,"
+        }
+      ]
+    },
+    {
+      "path": "reproducibility/tools/r23_n5_independent_audit_report.py",
+      "sha256": "b57be2ec46f604ad21acdc252bd769e76a47ea5e2cda9e3d79018c73dfeb61ed",
+      "classification": "HISTORICAL_FINDING_DESCRIPTION",
+      "basis": "matching prose describes old findings; not a new validation success claim",
+      "matches": [
+        {
+          "line": 52,
+          "text": "        'Report generator writes PASS/all_gates_pass=True independently of numerical differences. Harness reimplements candidate arithmetic instead of calling indexed_probability_metrics; small_full_method flag does not execute full enumeration; best_feasible_route maximizes probability rather than minimizing route cost. New probes substantiate normalized-domain equivalence but do not validate historical acceptance generation.',"
+        },
+        {
+          "line": 100,
+          "text": "    decision('validation cases','existing n2/3/4 points and n5 A/C; new audit negative probes','more states / mutations / tied routes','after candidate; audit cases before new probes',OPT+'run_equivalence.py','Post-implementation validation, not selection of scientific runs','MEDIUM','legacy hardcoded PASS does not reject failing evidence; independent probes improve coverage')"
+        },
+        {
+          "line": 163,
+          "text": "        problematic=['unconditional PASS literals in report generator (I03)','idx[-1:] pseudo-optimal benchmark lookup (I10)'])"
+        },
+        {
+          "line": 187,
+          "text": "    report('validation_independence_audit.json','Independent current normalized-input probes PASS; historical acceptance NOT_SUFFICIENT',"
+        },
+        {
+          "line": 191,
+          "text": "        historical_report='all gates hardcoded PASS; numerical comparison object merely serialized; no threshold guard; no actual full small-state branch',"
+        }
+      ]
+    },
+    {
+      "path": "reproducibility/tools/r23_n5_remediation_evidence.py",
+      "sha256": "fb2d81c1c78977a356103caa8ed78953356e23eeb5f614877e1168b4d4126819",
+      "classification": "HISTORICAL_FINDING_DESCRIPTION",
+      "basis": "matching prose describes old findings; not a new validation success claim",
+      "matches": []
+    },
+    {
+      "path": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "sha256": "3ce2beae2fff2a788139f7b087a86357b5889bd9e7c4fa8e0a0507494993229e",
+      "classification": "ASSERTION_HARNESS_OR_REPORT",
+      "basis": "positive statements derived from executed assertions/regression artifacts; no scientific acceptance",
+      "matches": []
+    },
+    {
+      "path": "reproducibility/tools/r23_n5_remediation_report.py",
+      "sha256": "f76960c4f335e96d3e5a3538c4b9ad2a7905ddfd395954f205cdb5000f12f4cc",
+      "classification": "HISTORICAL_FINDING_DESCRIPTION",
+      "basis": "matching prose describes old findings; not a new validation success claim",
+      "matches": [
+        {
+          "line": 38,
+          "text": "            if re.search(r'[\\\"\\x27]PASS[\\\"\\x27]|all_gates_pass|targeted_tests_pass',text):"
+        },
+        {
+          "line": 41,
+          "text": "        {'path':'tools/authorize_r23_experiment_b2.py','lines':[138,143,144],'issue':'targeted_tests_pass/py_compile and six passing tests declared without invocation'},"
+        },
+        {
+          "line": 42,
+          "text": "        {'path':'tools/review_r23_experiment_b2_nelder_mead.py','lines':[129,140],'issue':'implementation and technical preflight PASS assigned without validating all listed conditions'},"
+        },
+        {
+          "line": 44,
+          "text": "        {'path':'tools/finalize_r23_b1_v2.py','lines':[124],'issue':'aggregate PASS is not conditioned on computed integrity booleans'},"
+        },
+        {
+          "line": 45,
+          "text": "        {'path':'tools/finalize_r23_experiment_b2_reexecution.py','lines':[31,37],'issue':'aggregate PASS independent of prob_pass/params_pass/exact_pass'},"
+        },
+        {
+          "line": 46,
+          "text": "        {'path':'05_src/traffic_simulation/r23_qaoa_aer/artifact.py','lines':[76,84],'issue':'lineage PASS manufactured from file existence/hash collection, not comparison to authority'},"
+        },
+        {
+          "line": 49,
+          "text": "        'guard_backed_examples':['tools/review_r23_experiment_b1.py: parameter_gate assert precedes PASS','tools/execute_r23_experiment_b2.py: gate assertions precede execution preflight','tools/validate_r23_experiment_b_implementation.py: scalar and explicit condition comparisons'],"
+        },
+        {
+          "line": 50,
+          "text": "        'historical_audit_assertions':'Independent audit PASS strings are downstream of explicit assertions; previous audit output remains immutable.',"
+        },
+        {
+          "line": 70,
+          "text": "        'residual':'n5 finding target repaired, but requested repository-wide unconditional PASS removal is incomplete; retain MAJOR I03 rather than equating passing local tests with complete closure',"
+        },
+        {
+          "line": 178,
+          "text": "    (OUT/'README.md').write_text('# R23 n5 audit remediation\\n\\n'+classification+'\\n\\nPrimary authority: independent audit 33ae964; original IDs preserved in INITIAL_FINDINGS.md and finding_authority.json. Request section IDs I05–I10 differ from original IDs: consult the explicit mapping.\\n\\nFrozen-environment regression: 16/16 VERIFIED. I01 safety guards, reporting corrections, n5 evidence-bound gate, provenance reconstruction and metadata/benchmark contracts implemented. I03 remains MAJOR because repository-wide search found six additional old R23 generator/provenance PASS locations; these are recorded, not silently certified. No independent CODE_AUDIT_PASS is granted.\\n\\nRank02/03 remain not reauthorized. Dirty source lineage is STRONGLY_INFERRED; final parameter/trajectory evidence and resource reconciliation remain missing. Reruns are required for formal acceptance, but none started. Historical scientific files and prior audits unchanged.\\n\\nReproduce regression: `PYTHONDONTWRITEBYTECODE=1 /home/takuma/.conda/envs/evrp-quantum-temp/bin/python reproducibility/tools/r23_n5_remediation_regression.py`. Do not rerun initial snapshot collection or overwrite historical audits. Report regeneration: same Python with reproducibility/tools/r23_n5_remediation_report.py. Hash verification: from this directory, `sha256sum -c SHA256SUMS`.\\n\\nSee FINAL_REPORT.md, finding_closure_register.json and remediation_gate.json. R24 remains blocked.\\n')"
+        }
+      ]
+    },
+    {
+      "path": "reproducibility/tools/r23_n5_runtime_optimization_code_audit.py",
+      "sha256": "71f7b62c5f442ce3dbe081a4f78148170bf70c84b226ee774a108c53f6a08176",
+      "classification": "NO_MATCH",
+      "basis": "no targeted positive-status pattern",
+      "matches": []
+    },
+    {
+      "path": "reproducibility/tools/r23_n5_scaling_evidence_review.py",
+      "sha256": "71f7b62c5f442ce3dbe081a4f78148170bf70c84b226ee774a108c53f6a08176",
+      "classification": "NO_MATCH",
+      "basis": "no targeted positive-status pattern",
+      "matches": []
+    },
+    {
+      "path": "tools/authorize_r23_experiment_b2.py",
+      "sha256": "199d7ecf8f8cda2f9bd076d7aed22be0c69a0d24a2b1291e4164e30cb70be775",
+      "classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "matches": []
+    },
+    {
+      "path": "tools/build_r23_experiment_b1_fix_authority.py",
+      "sha256": "8ecd27bedaa4702c241db36dd8f3e8d552ce84ee3ad0dc4f0eecfa82f363f45b",
+      "classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "matches": []
+    },
+    {
+      "path": "tools/build_r23_experiment_b2_reexecution_authority.py",
+      "sha256": "199d7ecf8f8cda2f9bd076d7aed22be0c69a0d24a2b1291e4164e30cb70be775",
+      "classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "matches": []
+    },
+    {
+      "path": "tools/build_r23_experiment_b_authority.py",
+      "sha256": "7025445deb08ec697950d9d1293787b45172260ea872bc10677283bad7fafddf",
+      "classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "matches": []
+    },
+    {
+      "path": "tools/execute_r23_experiment_b1.py",
+      "sha256": "b30ffd89d0f68325eb0937596b3694f04ff45ce25da9a1217f04e47926fc89d2",
+      "classification": "CONDITION_BACKED",
+      "basis": "authority_gate raises unless nonempty fixed run count, source/authority hashes and conditions satisfy predicates; PASS is downstream of this gate",
+      "matches": [
+        {
+          "line": 54,
+          "text": "        \"r20_r21_r22_authority\": instance_manifest[\"r20_authority_count\"] == instance_manifest[\"r21_authority_count\"] == instance_manifest[\"r22_authority_count\"] == 15 and formal[\"authority\"][\"r21_status\"] == \"PASS\" and formal[\"authority\"][\"r22_status\"] == \"PASS\","
+        },
+        {
+          "line": 65,
+          "text": "    preflight = {\"classification\": \"B1_EXECUTION_PREFLIGHT\", \"authority_gate\": \"PASS\", \"known_validation_limitation\": \"KNOWN_VALIDATION_LIMITATION: pytest unavailable in frozen environment; not installed\", \"runtime\": runtime, \"design_sha256\": sha(DESIGN), \"implementation_authority_v2_sha256\": sha(FIX_AUTH/\"implementation_authority_v2.json\"), \"initialization_authority_sha256\": sha(AUTH/\"initialization_authority.json\"), \"planned_run_manifest_sha256\": sha(AUTH/\"b1_planned_run_manifest.json\"), \"authorization_sha256\": sha(FIX_AUTH/\"b1_reexecution_authorization.json\"), \"instance_authority_manifest_sha256\": sha(INSTANCE_AUTH/\"manifest.json\"), \"lambda_policy_sha256\": auth[\"lambda_policy_sha256\"], \"expected_condition_count\": 36, \"execution_order\": [x[\"run_id\"] for x in plan[\"runs\"]], \"research_wall_time_cap\": None, \"execution_started_utc\": datetime.now(timezone.utc).isoformat()}"
+        }
+      ]
+    },
+    {
+      "path": "tools/execute_r23_experiment_b2.py",
+      "sha256": "ea02abaedaca45e976f80c3d3865bb2fcc24fba91da591bbe5b76a3d4a7b0a04",
+      "classification": "CONDITION_BACKED",
+      "basis": "gate assertions plus evaluated base_checks and fail-closed if; existence fields explicitly existence-only, not scientific validation",
+      "matches": [
+        {
+          "line": 61,
+          "text": "    dump(OUT / \"execution_preflight.json\", {\"schema_version\": \"r23-b2-execution-preflight-v1\", \"classification\": \"RESEARCH_EXECUTION_PREFLIGHT\", \"status\": \"PASS\", \"authorization_id\": auth[\"authorization_id\"], \"authorization_sha256\": sha(AUTHZ), \"design_amendment_sha256\": sha(AMEND), \"planned_manifest_sha256\": sha(PLAN), \"checks\": base_checks, \"run_count\": 6, \"execution_order\": [x[\"run_id\"] for x in plan[\"runs\"]], \"runtime\": runtime, \"started_at\": datetime.now(timezone.utc).isoformat(), \"research_wall_time_cap\": None})"
+        }
+      ]
+    },
+    {
+      "path": "tools/execute_r23_experiment_b2_reexecution.py",
+      "sha256": "7fc1bf3798cab6f40e6b812a536f136260e780208cd15dc5f8ec45315bdfc383",
+      "classification": "CONDITION_BACKED",
+      "basis": "gate assertions plus evaluated checks and fail-closed if; no fabricated dispatch smoke or linkage claim",
+      "matches": [
+        {
+          "line": 36,
+          "text": "    dump(OUT/'execution_preflight.json',{'schema_version':'r23-b2-reexecution-execution-preflight-v1','classification':'RESEARCH_EXECUTION_PREFLIGHT','status':'PASS','authorization_id':auth['authorization_id'],'authorization_sha256':sha(AUTHZ),'implementation_authority_sha256':sha(IMPL),'design_amendment_sha256':sha(AMEND),'planned_manifest_sha256':sha(PLAN),'failed_v1_manifest_sha256':sha(FAIL/'manifest.json'),'checks':checks,'condition_count':6,'runtime':runtime,'started_at':datetime.now(timezone.utc).isoformat(),'research_wall_time_cap':None})"
+        }
+      ]
+    },
+    {
+      "path": "tools/finalize_r23_b1_v2.py",
+      "sha256": "f8d016af9456caadd7a71883c3f21c11a03c7444d5c82fde8ffad6a54fac0e77",
+      "classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "matches": []
+    },
+    {
+      "path": "tools/finalize_r23_experiment_b1_failure.py",
+      "sha256": "49082cdb72d24228e827464a549cbf060b1699c8ee269f8a398395325c4f215e",
+      "classification": "NO_MATCH",
+      "basis": "no targeted positive-status pattern",
+      "matches": []
+    },
+    {
+      "path": "tools/finalize_r23_experiment_b2_failure.py",
+      "sha256": "87d962e39108a906345d5d35277e5f5b0af8d578218c9a2a2bca2ef284315294",
+      "classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "matches": []
+    },
+    {
+      "path": "tools/finalize_r23_experiment_b2_reexecution.py",
+      "sha256": "199d7ecf8f8cda2f9bd076d7aed22be0c69a0d24a2b1291e4164e30cb70be775",
+      "classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "matches": []
+    },
+    {
+      "path": "tools/review_r23_experiment_b1.py",
+      "sha256": "a0a5457944bb611885007d4b9b972d32be222c60e99cb963e66412696f35df9d",
+      "classification": "CONDITION_BACKED",
+      "basis": "assert all(parameter_gate.values()) at line230 before integrity PASS; exact36 and provenance links explicitly checked",
+      "matches": [
+        {
+          "line": 247,
+          "text": "    write_json(\"b2_readiness.json\", {\"classification\": \"EXPERIMENT_B2_JUSTIFIED_READY_FOR_AUTHORIZATION\", \"basis\": [\"B1 v2 integrity PASS\", \"all 36 B1 scientific runs valid\", \"B1 fixed_0.1 baseline is reproducible against corrected Formal A\", \"B1 shows initialization and depth/instance heterogeneity that motivates a pre-specified optimizer comparison\"], \"scope\": {\"optimizer_comparison\": [\"COBYLA\", \"Nelder-Mead\"], \"instances\": INSTANCES, \"p\": P_VALUES, \"new_runs\": 6, \"baseline\": \"B1 fixed_0.1 COBYLA\", \"authorization_required\": True}, \"not_executed\": True, \"next_task\": \"R23_EXPERIMENT_B2_EXECUTION_AUTHORIZATION\"})"
+        },
+        {
+          "line": 259,
+          "text": "    write_json(\"integrity.json\", {\"status\": \"PASS\", \"critical_high_failures\": 0, \"parameter_gate\": parameter_gate, \"source_artifacts_not_modified\": True, \"analysis_execution\": \"read-only review; no B1/B2/C/full-EVRP execution\"})"
+        }
+      ]
+    },
+    {
+      "path": "tools/review_r23_experiment_b2_nelder_mead.py",
+      "sha256": "199d7ecf8f8cda2f9bd076d7aed22be0c69a0d24a2b1291e4164e30cb70be775",
+      "classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "matches": []
+    },
+    {
+      "path": "tools/review_r23_formal_evidence.py",
+      "sha256": "7f8f16fc6ee048f071783ebeb02d391683192114b3a48cee704394c9ea028b96",
+      "classification": "CONDITION_BACKED",
+      "basis": "PASS ternaries depend on actual declared/observed hash comparisons or computed mismatches; historical acceptance narrative is not a newly executed validation",
+      "matches": [
+        {
+          "line": 237,
+          "text": "        chain.append({\"label\": label, \"path\": rel(path), \"exists\": exists, \"actual_sha256\": actual, \"declared_sha256\": declared, \"status\": \"PASS\" if ok else \"FAIL\"})"
+        },
+        {
+          "line": 254,
+          "text": "    provenance_pass = all(x[\"status\"] == \"PASS\" for x in chain) and all(authority_link_checks.values()) and original_integrity[\"status\"] == \"PASS\" and corrected_view_integrity[\"status\"] == \"PASS\""
+        },
+        {
+          "line": 258,
+          "text": "    corrected_summary_payload = {\"standard_deviation_convention\": \"population SD (ddof=0), matching repository corrected summary\", \"by_n_p\": corrected_stats, \"by_n\": by_n, \"by_instance\": by_instance, \"agreement_with_existing_corrected_summary\": {\"status\": \"PASS\" if not mismatches else \"MISMATCH\", \"mismatch_count\": len(mismatches), \"mismatches\": mismatches}}"
+        },
+        {
+          "line": 265,
+          "text": "    json_dump(REVIEW / \"evidence_review.json\", {\"review_id\": \"R23_FORMAL_EXPERIMENT_A_EVIDENCE_REVIEW_V1\", \"review_timestamp_utc\": datetime.now(timezone.utc).isoformat(), \"branch_head\": \"see manifest\", \"evidence_acceptance\": \"FORMAL_EXPERIMENT_A_EVIDENCE_ACCEPTED_WITH_LIMITATIONS\", \"r23_status_recommendation\": \"FORMAL_EXPERIMENT_A_EVIDENCE_ACCEPTED_WITH_LIMITATIONS\", \"original_integrity\": {\"planned_conditions\": original_manifest[\"planned_runs\"], \"terminal_records\": original_manifest[\"completed_runs\"], \"original_uncensored\": 41, \"original_right_censored\": 4, \"integrity_status\": original_integrity[\"status\"], \"authority_drift_after_execution\": original_integrity[\"authority_drift_after_execution\"], \"configuration_changed\": original_integrity[\"configuration_changed\"], \"environment_changed\": original_integrity[\"environment_changed\"], \"immutable_historical_layer\": True}, \"corrective_integrity\": {\"authorized\": 4, \"completed\": 4, \"all_pass\": all(x[\"status\"] == \"CORRECTIVE_RUN_PASS\" for x in corrective_summary[\"corrective_observations\"]), \"separate_post_execution_layer\": True, \"integrity_status\": corrected_integrity[\"status\"]}, \"corrected_view_integrity\": {\"status\": corrected_view_integrity[\"status\"], \"observation_count\": corrected_view_integrity[\"observation_count\"], \"original_summary_not_modified\": corrected_view_integrity[\"original_summary_not_modified\"], \"original_41_preserved_by_reference\": corrected_view[\"original_41_preserved_by_reference\"]}, \"provenance\": {\"status\": \"PASS\" if provenance_pass else \"FORMAL_EVIDENCE_PROVENANCE_FAILURE\", \"chain\": chain, \"authority_link_checks\": authority_link_checks}, \"completeness\": {\"expected\": 45, \"actual\": len(corrected), \"unique_conditions\": len({x[\"condition_id\"] for x in corrected}), \"by_n_p\": {f\"n{k[0]}_p{k[1]}\": v for k, v in Counter((x[\"n\"], x[\"p\"]) for x in corrected).items()}, \"by_n\": {str(k): v for k, v in Counter(x[\"n\"] for x in corrected).items()}, \"missing\": sorted(set(f\"routing_v18_n{n}_rank{rank:02d}_p{p}_init_fixed01_rep1\" for n in [2,3,4] for rank in range(1,6) for p in [1,2,3]) - {x[\"condition_id\"] for x in corrected}), \"duplicate_condition_count\": len(corrected) - len({x[\"condition_id\"] for x in corrected})}, \"corrective_replacements\": replacement_check, \"recomputed_summary_agreement\": {\"status\": \"PASS\" if not mismatches else \"MISMATCH\", \"mismatch_count\": len(mismatches)}, \"gap_and_exact_route\": {\"absolute_gap_zero_count\": sum(close(r[\"absolute_optimality_gap\"], 0) for r in raw_rows), \"relative_gap_zero_count\": sum(close(r[\"relative_optimality_gap\"], 0) for r in raw_rows), \"exact_best_decoded_route_count\": exact_count, \"interpretation\": \"gap=0 means best decoded feasible route equals exact optimum; it does not imply high P_optimal, sampling success, optimizer convergence, finite-shot success, robustness, or quantum advantage\"}, \"optimizer\": {\"termination_status_counts\": dict(termination), \"optimizer_success_counts\": dict(Counter(str(r[\"optimizer_success\"]) for r in raw_rows)), \"nit_counts\": dict(Counter(str(r[\"nit\"]) for r in raw_rows)), \"termination_unknown_count\": termination.get(\"TERMINATION_UNKNOWN\", 0), \"convergence_established\": False, \"conclusion\": \"optimizer convergence cannot be established from this formal evidence\"}, \"p_effects\": p_effects, \"corrected_stats_by_n\": by_n, \"runtime_by_n_p\": runtime, \"corrective_impact\": impact, \"wall_time_amendment_assessment\": \"SUPPORTED_WITH_LIMITATIONS: four old right-censored conditions completed under no wall-time research cap, supporting policy censoring rather than an algorithmic feasibility boundary; this does not establish n>=5 feasibility\", \"claims\": {\"problem_size_reduces_P_feasible\": \"SUPPORTED_WITH_LIMITATIONS\", \"problem_size_reduces_P_optimal\": \"SUPPORTED_WITH_LIMITATIONS\", \"increasing_p_improves_P_feasible\": \"SUPPORTED_WITH_LIMITATIONS\", \"increasing_p_improves_P_optimal\": \"SUPPORTED_WITH_LIMITATIONS\", \"always_finds_exact_optimum\": \"SUPPORTED_WITH_LIMITATIONS: all 45 best decoded routes are exact, but not a claim of sampling or optimizer reliability\", \"cpu_burden_rises_sharply_by_n4\": \"SUPPORTED\", \"COBYLA_converged\": \"NOT_SUPPORTED\", \"finite_shot_reliably_samples_optimum\": \"NOT_SUPPORTED\", \"quantum_advantage\": \"NOT_SUPPORTED\", \"Aer_predicts_QPU_scaling\": \"NOT_SUPPORTED\"}, \"limitations\": [\"n only 2,3,4\", \"five deterministic reproducibility instances per n, not representative random population\", \"one initialization and repetition=1\", \"COBYLA only\", \"exact expectation and shots=NONE\", \"lambda fixed at 3.0\", \"p only 1,2,3\", \"CPU Aer only\", \"termination uncertainty\", \"post-execution wall-time amendment/corrective completion\"], \"sample_selection\": \"reproducibility and instance heterogeneity evidence, not population representativeness or inferential uncertainty\", \"experiment_b\": \"B1_REQUIRED_BEFORE_SCALING_EXTENSION\", \"experiment_b_rationale\": \"n=4 p2/p3 heterogeneity and universal termination uncertainty make initialization/optimizer robustness a prerequisite\", \"experiment_c\": \"REQUIRED_BEFORE_SCENARIO_MODELLING\", \"experiment_c_rationale\": \"n=4 P_optimal is typically 10^-4 to 10^-3 in corrected cells, so exact-statevector probability is not operational finite-shot success\", \"scaling_readiness\": \"SCALING_EXTENSION_DESIGN_READY_WITH_RESOURCE_REDESIGN\", \"full_evrp_status\": {\"R20\": \"BLOCKED\", \"R21\": \"NOT_STARTED\"}, \"no_execution\": {\"qaoa_executed_by_review\": False, \"original_or_corrective_modified\": False, \"n_ge_5_executed\": False, \"experiment_b_executed\": False, \"experiment_c_executed\": False, \"future_qpu_claim\": False, \"prohibited_action\": False}})"
+        },
+        {
+          "line": 269,
+          "text": "    manifest = {\"schema_version\": \"r23-formal-evidence-review-manifest-v1\", \"review_id\": \"R23_FORMAL_EXPERIMENT_A_EVIDENCE_REVIEW_V1\", \"created_at_utc\": datetime.now(timezone.utc).isoformat(), \"source_roots\": {\"original\": rel(ORIG), \"corrective\": rel(CORR), \"corrected_view\": rel(VIEW)}, \"source_manifest_hashes\": {\"original\": sha(ORIG/\"manifest.json\"), \"corrective\": sha(CORR/\"manifest.json\"), \"corrected_view\": sha(VIEW/\"manifest.json\")}, \"artifacts\": artifacts, \"provenance_status\": \"PASS\" if provenance_pass else \"FORMAL_EVIDENCE_PROVENANCE_FAILURE\", \"no_execution_performed\": True, \"original_and_corrective_artifacts_modified\": False}"
+        }
+      ]
+    },
+    {
+      "path": "tools/validate_r23_experiment_b_implementation.py",
+      "sha256": "cbe3f8c0a42f7086db950fd8753a8bc666b847a707d592a07d6b9c34875e453c",
+      "classification": "CONDITION_BACKED",
+      "basis": "PASS ternaries compare actual adapter/native optimizer outputs and executed smoke conditions",
+      "matches": [
+        {
+          "line": 44,
+          "text": "        \"status\": \"PASS\" if adapted.final_parameters == list(native.x) and adapted.final_objective == float(native.fun) and adapted.nfev == int(native.nfev) else \"FAIL\","
+        },
+        {
+          "line": 52,
+          "text": "        \"status\": \"PASS\" if smoke_b[\"optimizer_method\"] == \"Nelder-Mead\" and smoke_b[\"nfev\"] > 0 and math.isfinite(smoke_b[\"final_objective\"]) else \"FAIL\","
+        },
+        {
+          "line": 63,
+          "text": "        \"status\": \"PASS\" if smoke_c[\"budget_hit\"] and smoke_c[\"termination_status\"] == \"OBJECTIVE_EVALUATION_CAP_REACHED\" and smoke_c[\"objective_evaluation_count\"] == 2 and smoke_c[\"expectation_evaluation_count\"] == 3 else \"FAIL\","
+        },
+        {
+          "line": 74,
+          "text": "    smoke[\"smoke_d_initialization\"] = {\"status\": \"PASS\" if all(v[\"deterministic\"] and v[\"dimension\"] in (4, 6) and v[\"gamma_in_domain\"] and v[\"beta_in_domain\"] for v in vectors.values()) else \"FAIL\", \"fixed_0.1_p2\": list(generate_initial_parameters(2, \"fixed_0.1\")), \"vectors\": vectors, \"rng\": \"numpy.random.Generator(numpy.random.PCG64(seed))\"}"
+        },
+        {
+          "line": 75,
+          "text": "    smoke[\"all_smokes_pass\"] = all(smoke[key][\"status\"] == \"PASS\" for key in (\"smoke_a_cobyla_regression\", \"smoke_b_nelder_mead\", \"smoke_c_objective_cap\", \"smoke_d_initialization\"))"
+        }
+      ]
+    }
+  ],
+  "ordinary_python_pass_statements": 2,
+  "unreviewed_positive_matches": [],
+  "residual_unconditional_pass_count": 0,
+  "meaning": "Only unguarded positive validation generation counts. Input status comparisons, legitimate fixtures and executed assertions are distinguished."
+}
