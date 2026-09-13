@@ -1,0 +1,960 @@
+{
+  "entries": [
+    {
+      "path": "05_src/traffic_simulation/r20_route_ordering/freeze_r23_instance_authority.py",
+      "sha256": "f7ae7d206edc48ef70f539d1ee01319543762846d844bc1788596eb53d4053b0",
+      "roles": [
+        "generators_or_reporters"
+      ],
+      "control_flow_classification": "CONDITION_BACKED",
+      "basis": "R20/R21/R22 statuses computed from validations; new R21 guard before compatibility PASS in R22 input",
+      "functions": [
+        {
+          "name": "canonical",
+          "line": 42
+        },
+        {
+          "name": "write_json",
+          "line": 46
+        },
+        {
+          "name": "git",
+          "line": 52
+        },
+        {
+          "name": "source_hashes",
+          "line": 59
+        },
+        {
+          "name": "make_r21_payload",
+          "line": 75
+        },
+        {
+          "name": "main",
+          "line": 92
+        },
+        {
+          "name": "sha_bytes",
+          "line": 169
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/r20_route_ordering/resolve_r23_design_authority.py",
+      "sha256": "3982a8713bbf8c549ffb40133976db8ece2583d0fef4b091af8a131bc3c90e2c",
+      "roles": [
+        "wrappers",
+        "generators_or_reporters"
+      ],
+      "control_flow_classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "functions": [
+        {
+          "name": "main",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/r20_route_ordering/write_r23_authority_set_manifests.py",
+      "sha256": "fdd2c7de4ffc27dbaf8a5a26c3813a9578b905145b2f3482511fa2f70924e37e",
+      "roles": [
+        "generators_or_reporters"
+      ],
+      "control_flow_classification": "CONDITION_BACKED",
+      "basis": "status is a ternary over nonempty15 records and every status, not file existence alone",
+      "functions": [
+        {
+          "name": "canonical",
+          "line": 9
+        },
+        {
+          "name": "sha",
+          "line": 12
+        },
+        {
+          "name": "write",
+          "line": 15
+        },
+        {
+          "name": "main",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/artifact.py",
+      "sha256": "66285aff39ee9e1008070070e5e4a16713f392a967a8d4bb838bf6e660e1727b",
+      "roles": [
+        "provenance_validators",
+        "wrappers"
+      ],
+      "control_flow_classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "functions": [
+        {
+          "name": "semantic_artifact",
+          "line": 20
+        },
+        {
+          "name": "config_hash",
+          "line": 28
+        },
+        {
+          "name": "source_hashes",
+          "line": 32
+        },
+        {
+          "name": "build_provenance_lineage",
+          "line": 53
+        },
+        {
+          "name": "validate_provenance_lineage",
+          "line": 99
+        },
+        {
+          "name": "build_formal_manifest",
+          "line": 127
+        },
+        {
+          "name": "write_smoke_artifact",
+          "line": 155
+        },
+        {
+          "name": "rel",
+          "line": 57
+        },
+        {
+          "name": "file_hash",
+          "line": 59
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/execution_provenance.py",
+      "sha256": "2e2f5b5f31fdd1a243e09018849e94ef73c760930426b6d7fd42c8769afbac59",
+      "roles": [
+        "provenance_validators"
+      ],
+      "control_flow_classification": "NO_MATCH",
+      "basis": "no targeted positive-status pattern",
+      "functions": [
+        {
+          "name": "validate_formal_run_metadata",
+          "line": 22
+        },
+        {
+          "name": "require",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/validation/r23_evidence_gate.py",
+      "sha256": "02c31471aedb86ee92b22ffa876ae5525964765923b40b869225161ad689de6a",
+      "roles": [
+        "validators",
+        "exact_reference_validators",
+        "integrity_validators",
+        "provenance_validators"
+      ],
+      "control_flow_classification": "EXECUTED_VALIDATOR",
+      "basis": "condition evaluation, required/optional aggregation and explicit missing-evidence failures; negative mutation regression",
+      "functions": [
+        {
+          "name": "finite",
+          "line": 29
+        },
+        {
+          "name": "close",
+          "line": 30
+        },
+        {
+          "name": "require",
+          "line": 31
+        },
+        {
+          "name": "sha",
+          "line": 33
+        },
+        {
+          "name": "load",
+          "line": 38
+        },
+        {
+          "name": "check",
+          "line": 42
+        },
+        {
+          "name": "hash_check",
+          "line": 54
+        },
+        {
+          "name": "manifest_checks",
+          "line": 61
+        },
+        {
+          "name": "run_set_check",
+          "line": 71
+        },
+        {
+          "name": "route_cost",
+          "line": 78
+        },
+        {
+          "name": "reference_check",
+          "line": 84
+        },
+        {
+          "name": "validate_run",
+          "line": 97
+        },
+        {
+          "name": "_validate_experiment",
+          "line": 186
+        },
+        {
+          "name": "validate_experiment",
+          "line": 238
+        },
+        {
+          "name": "validate_formal_authority",
+          "line": 245
+        },
+        {
+          "name": "cli",
+          "line": 269
+        },
+        {
+          "name": "add",
+          "line": 100
+        },
+        {
+          "name": "result",
+          "line": 102
+        },
+        {
+          "name": "refs",
+          "line": 103
+        },
+        {
+          "name": "conditions",
+          "line": 106
+        },
+        {
+          "name": "termination",
+          "line": 117
+        },
+        {
+          "name": "route",
+          "line": 127
+        },
+        {
+          "name": "objective",
+          "line": 135
+        },
+        {
+          "name": "probabilities",
+          "line": 144
+        },
+        {
+          "name": "recovery",
+          "line": 158
+        },
+        {
+          "name": "provenance",
+          "line": 161
+        },
+        {
+          "name": "convergence",
+          "line": 180
+        },
+        {
+          "name": "count_check",
+          "line": 195
+        },
+        {
+          "name": "design_check",
+          "line": 250
+        },
+        {
+          "name": "label",
+          "line": 150
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/validation/r23_lineage_gate.py",
+      "sha256": "a12d8bf8610125374388e65eaba3b06cb7e432e148519c2a8bc8e8c37ebf5f57",
+      "roles": [
+        "validators",
+        "provenance_validators"
+      ],
+      "control_flow_classification": "EXECUTED_VALIDATOR",
+      "basis": "condition evaluation, required/optional aggregation and explicit missing-evidence failures; negative mutation regression",
+      "functions": [
+        {
+          "name": "lineage_authority_checks",
+          "line": 6
+        },
+        {
+          "name": "add",
+          "line": 8
+        },
+        {
+          "name": "results_hash",
+          "line": 9
+        },
+        {
+          "name": "manifest_hash",
+          "line": 10
+        },
+        {
+          "name": "binding",
+          "line": 11
+        },
+        {
+          "name": "declared_contents",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/validation/r23_validation_gate.py",
+      "sha256": "8eea6f4c0067c463ad3244083ceeeae6d68e90e4afbc50dd215a4a8c0a3323ef",
+      "roles": [
+        "validators",
+        "status_aggregators"
+      ],
+      "control_flow_classification": "EXECUTED_VALIDATOR",
+      "basis": "condition evaluation, required/optional aggregation and explicit missing-evidence failures; negative mutation regression",
+      "functions": [
+        {
+          "name": "aggregate_checks",
+          "line": 7
+        },
+        {
+          "name": "numerical_comparison",
+          "line": 26
+        },
+        {
+          "name": "evaluate_gate",
+          "line": 32
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/validation/test_r23_experiment_b_implementation.py",
+      "sha256": "f6af9bb0bbaef6f672162f31168f0fcd48c6286cfe48b46766fb36c0d7fb1b97",
+      "roles": [
+        "validators",
+        "regression_harness"
+      ],
+      "control_flow_classification": "TEST_FIXTURE_OR_ASSERTION",
+      "basis": "test expected values/input fixtures, not scientific evidence generators",
+      "functions": [
+        {
+          "name": "synthetic_b_input",
+          "line": 14
+        },
+        {
+          "name": "test_optimizer_selection_and_rejection",
+          "line": 35
+        },
+        {
+          "name": "test_cobyla_adapter_matches_qiskit_wrapper_on_deterministic_objective",
+          "line": 47
+        },
+        {
+          "name": "test_nelder_mead_smoke_has_normalized_native_metadata",
+          "line": 58
+        },
+        {
+          "name": "test_nelder_mead_explicit_none_bounds_are_dispatched_once",
+          "line": 68
+        },
+        {
+          "name": "test_nelder_mead_p2_and_p3_parameter_dimensions_smoke",
+          "line": 80
+        },
+        {
+          "name": "test_objective_cap_is_enforced_before_an_extra_call",
+          "line": 95
+        },
+        {
+          "name": "test_initialization_is_deterministic_and_in_domain",
+          "line": 107
+        },
+        {
+          "name": "test_run_single_supports_both_optimizers_and_preserves_final_eval_boundary",
+          "line": 119
+        },
+        {
+          "name": "objective",
+          "line": 48
+        },
+        {
+          "name": "objective",
+          "line": 98
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/validation/test_r23_formal_instance_loader.py",
+      "sha256": "123067f5fd953e5025cc98aa36e7cad26b11c03ff1cba345378682cea504bc39",
+      "roles": [
+        "validators",
+        "regression_harness"
+      ],
+      "control_flow_classification": "TEST_FIXTURE_OR_ASSERTION",
+      "basis": "test expected values/input fixtures, not scientific evidence generators",
+      "functions": [
+        {
+          "name": "test_formal_r22_instance_resolves_from_per_instance_authority",
+          "line": 12
+        },
+        {
+          "name": "test_formal_r22_instances_are_distinct",
+          "line": 21
+        },
+        {
+          "name": "test_formal_r22_unknown_id_fails_closed",
+          "line": 27
+        },
+        {
+          "name": "test_formal_r22_hash_mismatch_fails_closed",
+          "line": 32
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/validation/test_r23_implementation_contract.py",
+      "sha256": "f5517b5ae45d457990a5b89ce1a0b276dfc27da4f82cff5121a1b83be8822080",
+      "roles": [
+        "validators",
+        "regression_harness"
+      ],
+      "control_flow_classification": "TEST_FIXTURE_OR_ASSERTION",
+      "basis": "test expected values/input fixtures, not scientific evidence generators",
+      "functions": [
+        {
+          "name": "tiny_input",
+          "line": 22
+        },
+        {
+          "name": "test_boundary_without_optimizer_reason_is_unknown",
+          "line": 26
+        },
+        {
+          "name": "test_optimizer_success_is_not_inferred_from_budget",
+          "line": 35
+        },
+        {
+          "name": "test_objective_cap_and_maxiter_use_their_own_api_fields",
+          "line": 43
+        },
+        {
+          "name": "test_runtime_contract_is_inclusive_and_not_additive",
+          "line": 48
+        },
+        {
+          "name": "test_provenance_lineage_and_source_hashes",
+          "line": 60
+        },
+        {
+          "name": "test_formal_manifest_requires_complete_lineage",
+          "line": 74
+        },
+        {
+          "name": "test_memory_preflight_passes_for_pilot_qubits",
+          "line": 82
+        },
+        {
+          "name": "test_memory_preflight_rejects_over_guard_without_allocation",
+          "line": 88
+        },
+        {
+          "name": "test_probability_tolerance_and_raw_mass_semantics",
+          "line": 93
+        },
+        {
+          "name": "test_transpiler_metadata_contract",
+          "line": 105
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/validation/test_r23_optimized_metrics_v4_contract.py",
+      "sha256": "2662a5a88a0ff9cde03f0f8af5b756b6dcd03eaccaf80f4f9fbf7f511d0adac1",
+      "roles": [
+        "validators",
+        "regression_harness"
+      ],
+      "control_flow_classification": "TEST_FIXTURE_OR_ASSERTION",
+      "basis": "test expected values/input fixtures, not scientific evidence generators",
+      "functions": [
+        {
+          "name": "valid_case",
+          "line": 13
+        },
+        {
+          "name": "test_valid_inputs_preserve_raw_probability_semantics",
+          "line": 22
+        },
+        {
+          "name": "test_invalid_inputs_fail_closed",
+          "line": 45
+        }
+      ]
+    },
+    {
+      "path": "05_src/traffic_simulation/validation/test_r23_qaoa_aer.py",
+      "sha256": "f3c5cb802402e567235d14117ca2556e3dcf4469a42f75e2c0b0246f9f1b904d",
+      "roles": [
+        "validators",
+        "regression_harness"
+      ],
+      "control_flow_classification": "TEST_FIXTURE_OR_ASSERTION",
+      "basis": "test expected values/input fixtures, not scientific evidence generators",
+      "functions": [
+        {
+          "name": "tiny_input",
+          "line": 18
+        },
+        {
+          "name": "test_r22_loader_and_provenance",
+          "line": 22
+        },
+        {
+          "name": "test_reject_missing_or_bad_r22_artifact",
+          "line": 30
+        },
+        {
+          "name": "test_operator_basis_state_and_constant_offset",
+          "line": 35
+        },
+        {
+          "name": "test_qaoa_circuit_mixer_and_parameter_convention",
+          "line": 44
+        },
+        {
+          "name": "test_qiskit_little_endian_label_conversion",
+          "line": 54
+        },
+        {
+          "name": "test_probability_metrics_preserve_ties_and_invalid_mass",
+          "line": 58
+        },
+        {
+          "name": "test_energy_statistics_uses_repository_qubit_order",
+          "line": 66
+        },
+        {
+          "name": "test_config_and_guard_validation",
+          "line": 74
+        },
+        {
+          "name": "test_implementation_smoke_single_n2_p1",
+          "line": 85
+        },
+        {
+          "name": "test_smoke_semantic_result_is_deterministic",
+          "line": 99
+        }
+      ]
+    },
+    {
+      "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/build_artifact.py",
+      "sha256": "71f7b62c5f442ce3dbe081a4f78148170bf70c84b226ee774a108c53f6a08176",
+      "roles": [
+        "generators_or_reporters"
+      ],
+      "control_flow_classification": "HISTORICAL_OR_RETIRED",
+      "basis": "only tracked profiler/retired n5 scripts; no current success generator; immutable prior outputs not regenerated",
+      "functions": [
+        {
+          "name": "main",
+          "line": 4
+        }
+      ]
+    },
+    {
+      "path": "reproducibility/tools/r23_b2_evidence_review.py",
+      "sha256": "e898e04a64b05cccb35f7ac06392aac9cf2534af04b15bc5d63cf538886ca3e0",
+      "roles": [
+        "wrappers"
+      ],
+      "control_flow_classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "functions": [
+        {
+          "name": "main",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "reproducibility/tools/r23_i03_regression.py",
+      "sha256": "14e24e343487814e9182093fbd415a2f62f370ab6bc2e1e9eae05074f7be3986",
+      "roles": [
+        "regression_harness"
+      ],
+      "control_flow_classification": "ASSERTION_HARNESS_OR_REPORT",
+      "basis": "positive statements derived from executed assertions/regression artifacts; no scientific acceptance",
+      "functions": [
+        {
+          "name": "main",
+          "line": 20
+        },
+        {
+          "name": "scientific_nodes",
+          "line": 104
+        },
+        {
+          "name": "visit_If",
+          "line": 141
+        }
+      ]
+    },
+    {
+      "path": "reproducibility/tools/r23_i03_report.py",
+      "sha256": "bb42bc9d34b85b6db26a51b600f8528b2e15dcdc9276286b270d88fec363e8ed",
+      "roles": [
+        "generators_or_reporters"
+      ],
+      "control_flow_classification": "ASSERTION_HARNESS_OR_REPORT",
+      "basis": "positive statements derived from executed assertions/regression artifacts; no scientific acceptance",
+      "functions": [
+        {
+          "name": "read",
+          "line": 14
+        },
+        {
+          "name": "rescan",
+          "line": 32
+        },
+        {
+          "name": "report",
+          "line": 57
+        },
+        {
+          "name": "seal",
+          "line": 123
+        }
+      ]
+    },
+    {
+      "path": "reproducibility/tools/r23_n5_independent_audit_report.py",
+      "sha256": "b57be2ec46f604ad21acdc252bd769e76a47ea5e2cda9e3d79018c73dfeb61ed",
+      "roles": [
+        "generators_or_reporters"
+      ],
+      "control_flow_classification": "HISTORICAL_FINDING_DESCRIPTION",
+      "basis": "matching prose describes old findings; not a new validation success claim",
+      "functions": [
+        {
+          "name": "load",
+          "line": 27
+        },
+        {
+          "name": "write",
+          "line": 28
+        },
+        {
+          "name": "sh",
+          "line": 29
+        },
+        {
+          "name": "git",
+          "line": 30
+        },
+        {
+          "name": "report",
+          "line": 31
+        },
+        {
+          "name": "main",
+          "line": 33
+        },
+        {
+          "name": "finding",
+          "line": 39
+        },
+        {
+          "name": "decision",
+          "line": 84
+        }
+      ]
+    },
+    {
+      "path": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "sha256": "3ce2beae2fff2a788139f7b087a86357b5889bd9e7c4fa8e0a0507494993229e",
+      "roles": [
+        "regression_harness"
+      ],
+      "control_flow_classification": "ASSERTION_HARNESS_OR_REPORT",
+      "basis": "positive statements derived from executed assertions/regression artifacts; no scientific acceptance",
+      "functions": [
+        {
+          "name": "sha",
+          "line": 32
+        },
+        {
+          "name": "write",
+          "line": 33
+        },
+        {
+          "name": "historical",
+          "line": 34
+        },
+        {
+          "name": "old_module",
+          "line": 35
+        },
+        {
+          "name": "make_input",
+          "line": 42
+        },
+        {
+          "name": "independent_indices",
+          "line": 51
+        },
+        {
+          "name": "check_domain",
+          "line": 54
+        },
+        {
+          "name": "mapping",
+          "line": 105
+        },
+        {
+          "name": "invalid_inputs",
+          "line": 116
+        },
+        {
+          "name": "multiple",
+          "line": 140
+        },
+        {
+          "name": "gate_mutations",
+          "line": 147
+        },
+        {
+          "name": "metadata_test",
+          "line": 155
+        },
+        {
+          "name": "source_check",
+          "line": 176
+        },
+        {
+          "name": "environment",
+          "line": 185
+        },
+        {
+          "name": "retired",
+          "line": 190
+        },
+        {
+          "name": "main",
+          "line": 197
+        },
+        {
+          "name": "function",
+          "line": 180
+        },
+        {
+          "name": "execute",
+          "line": 199
+        }
+      ]
+    },
+    {
+      "path": "reproducibility/tools/r23_n5_remediation_report.py",
+      "sha256": "f76960c4f335e96d3e5a3538c4b9ad2a7905ddfd395954f205cdb5000f12f4cc",
+      "roles": [
+        "generators_or_reporters"
+      ],
+      "control_flow_classification": "HISTORICAL_FINDING_DESCRIPTION",
+      "basis": "matching prose describes old findings; not a new validation success claim",
+      "functions": [
+        {
+          "name": "read",
+          "line": 11
+        },
+        {
+          "name": "report",
+          "line": 14
+        },
+        {
+          "name": "seal",
+          "line": 182
+        },
+        {
+          "name": "verify",
+          "line": 187
+        }
+      ]
+    },
+    {
+      "path": "tools/authorize_r23_experiment_b2.py",
+      "sha256": "199d7ecf8f8cda2f9bd076d7aed22be0c69a0d24a2b1291e4164e30cb70be775",
+      "roles": [
+        "wrappers",
+        "generators_or_reporters"
+      ],
+      "control_flow_classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "functions": [
+        {
+          "name": "main",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "tools/build_r23_experiment_b1_fix_authority.py",
+      "sha256": "8ecd27bedaa4702c241db36dd8f3e8d552ce84ee3ad0dc4f0eecfa82f363f45b",
+      "roles": [
+        "wrappers",
+        "generators_or_reporters"
+      ],
+      "control_flow_classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "functions": [
+        {
+          "name": "main",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "path": "tools/build_r23_experiment_b2_reexecution_authority.py",
+      "sha256": "199d7ecf8f8cda2f9bd076d7aed22be0c69a0d24a2b1291e4164e30cb70be775",
+      "roles": [
+        "wrappers",
+        "generators_or_reporters"
+      ],
+      "control_flow_classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "functions": [
+        {
+          "name": "main",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "tools/build_r23_experiment_b_authority.py",
+      "sha256": "7025445deb08ec697950d9d1293787b45172260ea872bc10677283bad7fafddf",
+      "roles": [
+        "wrappers",
+        "generators_or_reporters"
+      ],
+      "control_flow_classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "functions": [
+        {
+          "name": "main",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "path": "tools/finalize_r23_b1_v2.py",
+      "sha256": "f8d016af9456caadd7a71883c3f21c11a03c7444d5c82fde8ffad6a54fac0e77",
+      "roles": [
+        "wrappers",
+        "generators_or_reporters"
+      ],
+      "control_flow_classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "functions": [
+        {
+          "name": "main",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "tools/finalize_r23_experiment_b1_failure.py",
+      "sha256": "49082cdb72d24228e827464a549cbf060b1699c8ee269f8a398395325c4f215e",
+      "roles": [
+        "generators_or_reporters"
+      ],
+      "control_flow_classification": "NO_MATCH",
+      "basis": "no targeted positive-status pattern",
+      "functions": [
+        {
+          "name": "sha",
+          "line": 7
+        },
+        {
+          "name": "dump",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "tools/finalize_r23_experiment_b2_failure.py",
+      "sha256": "87d962e39108a906345d5d35277e5f5b0af8d578218c9a2a2bca2ef284315294",
+      "roles": [
+        "wrappers",
+        "generators_or_reporters"
+      ],
+      "control_flow_classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "functions": [
+        {
+          "name": "main",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "tools/finalize_r23_experiment_b2_reexecution.py",
+      "sha256": "199d7ecf8f8cda2f9bd076d7aed22be0c69a0d24a2b1291e4164e30cb70be775",
+      "roles": [
+        "wrappers",
+        "generators_or_reporters"
+      ],
+      "control_flow_classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "functions": [
+        {
+          "name": "main",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "tools/review_r23_experiment_b2_nelder_mead.py",
+      "sha256": "199d7ecf8f8cda2f9bd076d7aed22be0c69a0d24a2b1291e4164e30cb70be775",
+      "roles": [
+        "wrappers"
+      ],
+      "control_flow_classification": "REPLACED",
+      "basis": "read-only validator wrapper or evidence-driven lineage; no unconditional status creation",
+      "functions": [
+        {
+          "name": "main",
+          "line": 13
+        }
+      ]
+    }
+  ],
+  "flow": [
+    "historical wrappers -> read-only evidence/lineage validators",
+    "validators -> REQUIRED/OPTIONAL/NOT_APPLICABLE check records",
+    "status aggregator -> separate scientific/artifact/provenance/optional-outcome dimensions",
+    "reporters -> measured outcomes; no audit promotion"
+  ],
+  "contract": "reproducibility/outputs/traffic_simulation/r23_repository_rebaseline/20260913_v2/validation_status_contract.json",
+  "probability_guards": {
+    "path": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+    "sha256": "1ea9d3cb0efeb6df3c7ef57f6d89541388d0089d1f58361254d284b3fcbdc187",
+    "evidence": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/i01_probability_integrity_remediation.json",
+    "current_source_unchanged_from_I03": true
+  },
+  "I03": "RESOLVED; no new validation source changes"
+}

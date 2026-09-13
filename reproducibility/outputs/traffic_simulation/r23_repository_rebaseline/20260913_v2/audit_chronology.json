@@ -1,0 +1,186 @@
+{
+  "events": [
+    {
+      "role": "initial audit",
+      "commit": "7fbbd9c2d6dd798d3a157dcdef27e2fbf4e4bf0b",
+      "time": "2026-09-14T01:06:47+09:00",
+      "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_code_audit/20260913_v1/acceptance_gate.json",
+      "sha256": "8125a1a7a3a758d7b6038517662f8bdbff464fc7915e82f5f349a0f4b6b62288",
+      "recorded_decision": {
+        "status": "CODE_AUDIT_PASS_WITH_REMEDIATION",
+        "scientific_semantics_unchanged": true,
+        "exact_optimum_leakage": false,
+        "hidden_result_hardcoding": false,
+        "denominator_unchanged": true,
+        "tolerance_relaxed": false,
+        "post_hoc_tuning_found": false,
+        "selective_exclusion_found": false,
+        "bit_ordering_verified": true,
+        "hamiltonian_qubo_unchanged": true,
+        "original_artifacts_immutable": true,
+        "independent_validation_adequate": true,
+        "high_arbitrariness": 0,
+        "critical_findings": 0,
+        "major_findings": 0,
+        "required_before_new_formal_execution": [
+          "complete benchmark environment/setup accounting",
+          "add explicit malformed-input guards or document contract",
+          "expand optimizer/selection rationale in audit documentation"
+        ],
+        "rank02_rank03_started_by_this_audit": false,
+        "next_task": "R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT_REMEDIATION"
+      },
+      "current_disposition": "SUPERSEDED_BY_INDEPENDENT_AUDIT"
+    },
+    {
+      "role": "initial audit followup",
+      "commit": null,
+      "time": null,
+      "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_code_audit/20260913_v2/final_classification.json",
+      "sha256": "346f44d54b9071756c3e664ccba8af490c486ed76f98433a9b09e92a16608029",
+      "recorded_decision": {
+        "audit_id": "R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT",
+        "classification": "R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT_CLOSED",
+        "gate": "CODE_AUDIT_PASS",
+        "scope": "future reuse and reproducibility authority; no scientific result recomputation",
+        "scientific_status_unchanged": "R23_N5_SCALING_EVIDENCE_ACCEPTED_WITH_LIMITATIONS",
+        "next": "R24_CAPACITY_EXTENSION_DESIGN"
+      },
+      "current_disposition": "SUPERSEDED_BY_INDEPENDENT_AUDIT",
+      "related_context_commit": "7fbbd9c2d6dd798d3a157dcdef27e2fbf4e4bf0b",
+      "context_commit_time": "2026-09-14T01:06:47+09:00",
+      "commit_limitation": "Ignored local historical artifact: no tracked commit for these exact bytes; chronology position comes from audit lineage, context commit is not blob attestation."
+    },
+    {
+      "role": "frozen environment remediation",
+      "commit": "d4a8d78a04316414a9f19ff143264d96c88b3c9b",
+      "time": "2026-09-14T02:17:24+09:00",
+      "path": "reproducibility/outputs/traffic_simulation/r23_frozen_environment_authority_remediation/20260913_v1/final_classification.json",
+      "sha256": "ff62a75863b21b6fa5223504bc51c5a521487ded669cc9aeef55da7bd599cf57",
+      "recorded_decision": {
+        "classification": "R23_FROZEN_ENVIRONMENT_AUTHORITY_REMEDIATION_PASSED",
+        "closure_readiness": "R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT_REMEDIATION_READY_TO_CLOSE",
+        "scientific_evidence_status": "R23_N5_SCALING_EVIDENCE_ACCEPTED_WITH_LIMITATIONS",
+        "next_task": "R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT_REMEDIATION_CLOSURE",
+        "r24_started": false
+      },
+      "current_disposition": "REMEDIATION_EVIDENCE; any prior audit acceptance SUPERSEDED_BY_INDEPENDENT_AUDIT"
+    },
+    {
+      "role": "independent audit",
+      "commit": "33ae964bca0e61199621ee976a927cd4069e1723",
+      "time": "2026-09-14T02:37:08+09:00",
+      "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_code_audit/20260913_v2_independent/acceptance_gate.json",
+      "sha256": "8786a9168a218974843e625185f7a94d5f6696029cc8ab4a0d5431a8aa27f2cc",
+      "recorded_decision": {
+        "classification": "CODE_AUDIT_FAIL",
+        "gates": {
+          "scientific_model_unchanged": true,
+          "QUBO_unchanged": true,
+          "Hamiltonian_unchanged": true,
+          "optimizer_objective_unchanged": true,
+          "bit_ordering_verified": true,
+          "no_optimum_leakage": true,
+          "no_result_hardcoding_in_scientific_candidate": true,
+          "no_denominator_change": true,
+          "no_tolerance_relaxation_in_effect": false,
+          "no_posthoc_parameter_tuning_verified": false,
+          "no_result_dependent_instance_selection": true,
+          "no_selective_scientific_run_exclusion_found": true,
+          "historical_artifacts_immutable_fully_verified": false,
+          "validation_sufficiently_independent_and_fail_sensitive": false,
+          "no_unresolved_HIGH": false,
+          "no_unresolved_CRITICAL": true,
+          "no_unresolved_MAJOR": false
+        },
+        "severity_counts": {
+          "MAJOR": 4,
+          "MODERATE": 5,
+          "MINOR": 1,
+          "CRITICAL": 0
+        },
+        "arbitrariness_counts": {
+          "LOW": 6,
+          "MEDIUM": 8,
+          "HIGH": 1
+        },
+        "scope": "Current main independently audited; normalized-domain mathematics passes; incomplete integrity guards, validation and historical provenance prevent code acceptance.",
+        "false_gate_meaning": "False includes NOT_VERIFIED evidence requirements; it is not proof of intentional misconduct.",
+        "R24": "Do not advance; no authority promotion",
+        "required_remediation": [
+          "I01",
+          "I02",
+          "I03",
+          "I04",
+          "I05",
+          "I06",
+          "I07",
+          "I08",
+          "I09",
+          "I10"
+        ]
+      },
+      "current_disposition": "CURRENT_AUDIT_AUTHORITY"
+    },
+    {
+      "role": "I01-I10 remediation",
+      "commit": "9cce6ebacfb180b0df84874d9b3648b8935eefe0",
+      "time": "2026-09-14T03:11:52+09:00",
+      "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/remediation_gate.json",
+      "sha256": "1dc34514daf256c74f727e0dc46a98d6b0d5b5af702bcda2712a0d62eccfa610",
+      "recorded_decision": {
+        "checks": {
+          "executed_regression": true,
+          "scientific_artifacts_immutable": true,
+          "no_scientific_semantics_change": true,
+          "no_unresolved_critical": true,
+          "no_unresolved_major": false,
+          "no_unresolved_HIGH_arbitrariness": true,
+          "repository_wide_unconditional_pass_removed": false
+        },
+        "classification": "R23_N5_RUNTIME_OPTIMIZATION_AUDIT_REMEDIATION_INCOMPLETE",
+        "status": "REMEDIATION_INCOMPLETE",
+        "independent_audit_classification": "CODE_AUDIT_FAIL",
+        "audit_reproducibility": "CODE_AUDIT_RESULT_NOT_REPRODUCED",
+        "unresolved_severity_counts": {
+          "MAJOR": 1
+        },
+        "R24": "NOT_AUTHORIZED_PENDING_R23_REMEDIATION",
+        "next_task": "Complete remaining I03 generator/provenance-status guards, then R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT_POST_REMEDIATION_RERUN",
+        "self_audit_pass_granted": false,
+        "scientific_runs_started": 0
+      },
+      "current_disposition": "REMEDIATION_EVIDENCE; I03 partial state subsequently superseded"
+    },
+    {
+      "role": "I03 remediation",
+      "commit": "3e440ce319deab180c47999d25350d2a841ec76a",
+      "time": "2026-09-14T03:41:18+09:00",
+      "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/final_classification.json",
+      "sha256": "8041076fcc3cf3e2f610a2df8b0c55a80ff548456ca1cc34314072043386a51f",
+      "recorded_decision": {
+        "classification": "R23_I03_VALIDATION_GATE_REMEDIATION_PASSED",
+        "overall_remediation": "R23_N5_RUNTIME_OPTIMIZATION_AUDIT_REMEDIATION_COMPLETED_PENDING_INDEPENDENT_REAUDIT",
+        "remaining_I03_MAJORS": 0,
+        "remaining_prior_HIGH_risks": 0,
+        "HIGH_risk_source": "previous remediation; no other finding/risk reevaluated",
+        "standing_independent_audit": "CODE_AUDIT_FAIL / CODE_AUDIT_RESULT_NOT_REPRODUCED",
+        "self_CODE_AUDIT_PASS": false,
+        "new_evidence_issue": "B2 v2 6 terminal-index SHA mismatches: artifact integrity FAILED, not repaired or accepted; must accompany independent re-audit",
+        "rank02_rank03": "prior provenance limitations and non-reauthorization unchanged",
+        "R24": "BLOCKED",
+        "next_task": "R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT_POST_REMEDIATION_RERUN"
+      },
+      "current_disposition": "REMEDIATION_EVIDENCE; I03 RESOLVED"
+    },
+    {
+      "role": "post-remediation independent re-audit",
+      "commit": null,
+      "time": null,
+      "state": "PENDING_REAUDIT",
+      "task": "R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT_POST_REMEDIATION_RERUN",
+      "standing_classification": "CODE_AUDIT_FAIL_PENDING_POST_REMEDIATION_REAUDIT"
+    }
+  ],
+  "role_rule": "Remediation completion does not supersede the independent audit outcome; only a subsequent independent audit may do so."
+}

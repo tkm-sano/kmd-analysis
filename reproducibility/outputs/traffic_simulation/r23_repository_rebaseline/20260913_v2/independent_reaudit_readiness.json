@@ -1,0 +1,71 @@
+{
+  "task": "R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT_POST_REMEDIATION_RERUN",
+  "status": "PENDING_WORKTREE_CLEANUP",
+  "checklist": [
+    {
+      "item": "scientific_model_frozen",
+      "status": "VERIFIED",
+      "evidence": "scientific_authority_integrity_review.json"
+    },
+    {
+      "item": "remediation_committed",
+      "status": "VERIFIED",
+      "evidence": "3e440ce319deab180c47999d25350d2a841ec76a"
+    },
+    {
+      "item": "I03_resolved",
+      "status": "VERIFIED",
+      "evidence": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/i03_closure_gate.json"
+    },
+    {
+      "item": "active_unconditional_PASS_zero",
+      "status": "VERIFIED",
+      "evidence": "unconditional_pass_rescan.json"
+    },
+    {
+      "item": "probability_guards_present",
+      "status": "VERIFIED",
+      "evidence": "validation_architecture_inventory.json"
+    },
+    {
+      "item": "status_claims_corrected",
+      "status": "VERIFIED",
+      "evidence": "status_document_review.json"
+    },
+    {
+      "item": "B2_SHA_mismatches_explicit",
+      "status": "VERIFIED",
+      "evidence": "b2_terminal_index_sha_inventory.json"
+    },
+    {
+      "item": "execution_provenance_map_complete_with_limitations",
+      "status": "VERIFIED",
+      "evidence": "execution_provenance_map.json"
+    },
+    {
+      "item": "current_authority_map_complete",
+      "status": "VERIFIED",
+      "evidence": "final_authority_map.json"
+    },
+    {
+      "item": "local_ignored_authority_available_and_pinned",
+      "status": "VERIFIED",
+      "evidence": "local_ignored_authority_dependencies.json"
+    },
+    {
+      "item": "working_tree_clean",
+      "status": "PENDING",
+      "evidence": "cleanup_manifest.json"
+    }
+  ],
+  "audit_targets": [
+    "I01-I10 remediation",
+    "I03 closure",
+    "B2 terminal-index SHA mismatch 6件",
+    "rank02/03 execution provenance",
+    "stopping-rule authority",
+    "benchmark claims",
+    "corrected route recovery vs optimizer success wording"
+  ],
+  "does_not_mean": "Scientific acceptance, code audit PASS, R23 closure, R24 start or scientific rerun approval."
+}

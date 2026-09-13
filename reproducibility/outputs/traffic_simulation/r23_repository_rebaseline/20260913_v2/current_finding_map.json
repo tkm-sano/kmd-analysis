@@ -1,0 +1,171 @@
+{
+  "count": 11,
+  "I01_I10_remediation_addressed": 10,
+  "I01_I10_plain_RESOLVED": [
+    "I01",
+    "I03",
+    "I04",
+    "I06",
+    "I07",
+    "I09",
+    "I10"
+  ],
+  "resolved_with_documented_limitations": [
+    "I02",
+    "I05",
+    "I08"
+  ],
+  "unresolved_preexisting_findings": [],
+  "preexisting_residual_limitations": [
+    "I02/I08 execution provenance and resource reconciliation",
+    "I05 benchmark comparability",
+    "historical stopping-rule maxiter/objective cap interpretation; no retrospective authorization"
+  ],
+  "new_unresolved_items": [
+    "B2_TERMINAL_INDEX_SHA_INCONSISTENCY"
+  ],
+  "audit_not_overridden": true,
+  "findings": [
+    {
+      "id": "I01",
+      "independent_finding": "Candidate does not enforce original probability integrity contract",
+      "independent_authority": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_code_audit/20260913_v2_independent/finding_register.json",
+      "remediation": [
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/i01_probability_integrity_remediation.json"
+      ],
+      "current_state": "RESOLVED",
+      "residual_limitation": "Regression coverage finite; independent re-audit pending.",
+      "independent_closure": "PENDING_INDEPENDENT_REAUDIT",
+      "starting_original_severity": "MAJOR",
+      "severity_reassessed_here": false
+    },
+    {
+      "id": "I02",
+      "independent_finding": "Recorded run commits do not reconstruct the scientific execution entrypoint",
+      "independent_authority": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_code_audit/20260913_v2_independent/finding_register.json",
+      "remediation": [
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/i02_execution_provenance_reconstruction.json"
+      ],
+      "current_state": "RESOLVED_WITH_DOCUMENTED_PROVENANCE_LIMITATION",
+      "residual_limitation": "Dirty-source reconstruction STRONGLY_INFERRED for rank01/02/03; absent full trajectory/final-state attestation; rank02/03 resource RSS discrepancy and NOT_REAUTHORIZED retained. Prior rerun requirement for formal acceptance not decided anew.",
+      "independent_closure": "PENDING_INDEPENDENT_REAUDIT",
+      "starting_original_severity": "MAJOR",
+      "severity_reassessed_here": false
+    },
+    {
+      "id": "I03",
+      "independent_finding": "Existing equivalence acceptance is not computed from assertions and does not exercise the shipped helper",
+      "independent_authority": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_code_audit/20260913_v2_independent/finding_register.json",
+      "remediation": [
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/i03_validation_gate_remediation.json",
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/i03_closure_gate.json",
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/final_classification.json"
+      ],
+      "current_state": "RESOLVED",
+      "residual_limitation": "Gate closure verified; B2 terminal-index SHA failure is a separate unresolved item. Independent re-audit pending.",
+      "independent_closure": "PENDING_INDEPENDENT_REAUDIT",
+      "starting_original_severity": "MAJOR",
+      "severity_reassessed_here": false
+    },
+    {
+      "id": "I04",
+      "independent_finding": "Current canonical status asserts unsupported convergence 3/3",
+      "independent_authority": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_code_audit/20260913_v2_independent/finding_register.json",
+      "remediation": [
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/i04_convergence_claim_remediation.json"
+      ],
+      "current_state": "RESOLVED",
+      "residual_limitation": "Regression coverage finite; independent re-audit pending.",
+      "independent_closure": "PENDING_INDEPENDENT_REAUDIT",
+      "starting_original_severity": "MAJOR",
+      "severity_reassessed_here": false
+    },
+    {
+      "id": "I05",
+      "independent_finding": "Runtime and memory comparisons lack matched workloads and complete execution conditions",
+      "independent_authority": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_code_audit/20260913_v2_independent/finding_register.json",
+      "remediation": [
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/i08_benchmark_claim_remediation.json"
+      ],
+      "current_state": "RESOLVED_WITH_DOCUMENTED_LIMITATION",
+      "residual_limitation": "Matched workload/resource evidence absent; benchmark PRELIMINARY_ONLY; no formal speedup/memory ratio.",
+      "independent_closure": "PENDING_INDEPENDENT_REAUDIT",
+      "starting_original_severity": "MODERATE",
+      "severity_reassessed_here": false
+    },
+    {
+      "id": "I06",
+      "independent_finding": "V4 drops reported scientific diagnostics under unchanged result schema",
+      "independent_authority": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_code_audit/20260913_v2_independent/finding_register.json",
+      "remediation": [
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/i10_execution_metadata_contract.json"
+      ],
+      "current_state": "RESOLVED",
+      "residual_limitation": "Regression coverage finite; independent re-audit pending.",
+      "independent_closure": "PENDING_INDEPENDENT_REAUDIT",
+      "starting_original_severity": "MODERATE",
+      "severity_reassessed_here": false
+    },
+    {
+      "id": "I07",
+      "independent_finding": "Numerical dtype contract accepts lower precision inputs",
+      "independent_authority": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_code_audit/20260913_v2_independent/finding_register.json",
+      "remediation": [
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/i01_probability_integrity_remediation.json"
+      ],
+      "current_state": "RESOLVED",
+      "residual_limitation": "Regression coverage finite; independent re-audit pending.",
+      "independent_closure": "PENDING_INDEPENDENT_REAUDIT",
+      "starting_original_severity": "MODERATE",
+      "severity_reassessed_here": false
+    },
+    {
+      "id": "I08",
+      "independent_finding": "Historical immutability and optimizer replay evidence are incomplete",
+      "independent_authority": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_code_audit/20260913_v2_independent/finding_register.json",
+      "remediation": [
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/i02_execution_provenance_reconstruction.json"
+      ],
+      "current_state": "RESOLVED_WITH_DOCUMENTED_PROVENANCE_LIMITATION",
+      "residual_limitation": "Dirty-source reconstruction STRONGLY_INFERRED for rank01/02/03; absent full trajectory/final-state attestation; rank02/03 resource RSS discrepancy and NOT_REAUTHORIZED retained. Prior rerun requirement for formal acceptance not decided anew.",
+      "independent_closure": "PENDING_INDEPENDENT_REAUDIT",
+      "starting_original_severity": "MODERATE",
+      "severity_reassessed_here": false
+    },
+    {
+      "id": "I09",
+      "independent_finding": "Penalty authority contains inconsistent margin arithmetic",
+      "independent_authority": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_code_audit/20260913_v2_independent/finding_register.json",
+      "remediation": [
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/i07_lambda_erratum.json"
+      ],
+      "current_state": "RESOLVED",
+      "residual_limitation": "Regression coverage finite; independent re-audit pending.",
+      "independent_closure": "PENDING_INDEPENDENT_REAUDIT",
+      "starting_original_severity": "MINOR",
+      "severity_reassessed_here": false
+    },
+    {
+      "id": "I10",
+      "independent_finding": "Benchmark P_optimal_lookup is an arbitrary feasible index proxy",
+      "independent_authority": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_code_audit/20260913_v2_independent/finding_register.json",
+      "remediation": [
+        "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/i08_benchmark_claim_remediation.json"
+      ],
+      "current_state": "RESOLVED",
+      "residual_limitation": "Regression coverage finite; independent re-audit pending.",
+      "independent_closure": "PENDING_INDEPENDENT_REAUDIT",
+      "starting_original_severity": "MODERATE",
+      "severity_reassessed_here": false
+    },
+    {
+      "id": "B2_TERMINAL_INDEX_SHA_INCONSISTENCY",
+      "independent_finding": "New item detected by I03 validation, not yet independently assessed",
+      "remediation": "NONE; historical data/index unchanged",
+      "current_state": "UNRESOLVED",
+      "residual_limitation": "6 derived-annotation/index hash mismatches; scientific integrity 6/6 VERIFIED and artifact integrity FAILED remain separate",
+      "severity": "PENDING_INDEPENDENT_SEVERITY_ASSESSMENT",
+      "evidence": "b2_terminal_index_sha_inventory.json"
+    }
+  ]
+}

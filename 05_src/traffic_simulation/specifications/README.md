@@ -11,7 +11,11 @@ Updated: 2026-09-11。Routing BaselineとReduced Problemで現在読むべき文
 - [R23 roadmap](../R23_ROADMAP.md)
 - [R23 status](../R23_STATUS.md)
 
-## 現行evidence
+## Authority入口とhistorical evidence review
+
+- [R23 final authority map](../../../reproducibility/outputs/traffic_simulation/r23_repository_rebaseline/20260913_v2/final_authority_map.json)（scientific/audit/remediationの役割と現行status）
+
+以下のreviewはhistorical。B2 artifact integrityはFAILED、旧reviewによる受入は新たに承認しない。
 
 - [Formal A evidence review](../../../reproducibility/outputs/traffic_simulation/r23_formal_evidence_review/20260911_v1/evidence_review.json)
 - [B1 Evidence Review](../../../reproducibility/outputs/traffic_simulation/r23_experiment_b1_evidence_review/20260911_v1/README.md)
@@ -20,7 +24,7 @@ Updated: 2026-09-11。Routing BaselineとReduced Problemで現在読むべき文
 
 ## 旧版
 
-`R23_FORMAL_EXPERIMENT_DESIGN_V1.md`、`R23_EXPERIMENT_B_DESIGN_V1.md`、initial proposalは、実行前の計画・proposalを保存する旧版である。現行結果や次工程の根拠としては使用しない。
+`R23_FORMAL_EXPERIMENT_DESIGN_V1.md`、`R23_EXPERIMENT_B_DESIGN_V1.md`、initial proposalは、実行前の計画・proposalを保存する旧版である。結果判定や次工程の単独根拠にはしない。実行前design authorityとしての役割は保持し、amendment・raw evidenceとの関係はauthority mapで追跡する。
 
 ## 履歴
 

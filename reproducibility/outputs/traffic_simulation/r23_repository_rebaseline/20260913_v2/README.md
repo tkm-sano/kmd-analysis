@@ -1,0 +1,17 @@
+# R23 repository rebaseline and worktree cleanup V2
+
+Entry point: [final_authority_map.json](final_authority_map.json). This map pins 23 role-specific authority nodes and distinguishes current scientific evidence, standing independent audit, historical decisions, remediation and unresolved items. Artifact directory label follows the requested 20260913_v2; work was performed on 2026-09-14 JST.
+
+Standing classification is `CODE_AUDIT_FAIL_PENDING_POST_REMEDIATION_REAUDIT`. Scientific evidence remains `R23_N5_SCALING_EVIDENCE_ACCEPTED_WITH_LIMITATIONS`. Remediation is `COMPLETED_PENDING_INDEPENDENT_REAUDIT`; I03 is `RESOLVED`. R23 phase is OPEN; R24 is `R24_NOT_STARTED_BLOCKED_PENDING_R23_POST_REMEDIATION_REAUDIT`.
+
+B2 `B2_TERMINAL_INDEX_SHA_INCONSISTENCY` remains UNRESOLVED, with severity `PENDING_INDEPENDENT_SEVERITY_ASSESSMENT`. All six old index SHA values exactly reconstruct by reversing only `/scientific_result/exact_optimum_found` from true to false **in memory** and serializing with Python `json.dumps(record, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False) + "\n"`. The historical finalizer changed this derived flag and saved run files without refreshing the index. Raw probabilities, routes, trace, and source authority fields are identical in this full-byte reconstruction. The current flag agrees with exact reference. Classification is DERIVED_ARTIFACT_MISMATCH; this explanation does not repair the index or confer acceptance. See [inventory](b2_terminal_index_sha_inventory.json) and [impact assessment](b2_sha_impact_assessment.json).
+
+Scientific facts come from raw run JSON, fixed routing CSV, exact references, and the existing read-only B2 validator. No scientific run, circuit execution, optimizer replay, regression rerun, code audit, or historical artifact write was performed. n5 route recovery is 3/3, optimizer reported success 2/3; probabilities remain recorded compact observations with historical reconstruction limits.
+
+The existing sealed I03 inventory was fully rehashed: 574 historical files unchanged. Some authority bytes (including rank01 and exact references) are ignored local files: [local dependency inventory](local_ignored_authority_dependencies.json). They are retained and pinned; clean Git status is not a fresh-clone portability claim. The pre-existing untracked pilot configuration is required by current regression and is committed unchanged. Status YAML is updated only as the source of RESEARCH_STATUS.md; no scientific configuration changed.
+
+Cleanup sequence: inventory/classify → commit authority/status/evidence → backup and verify per-file SHA, file count and byte count → explicitly remove verified five files → inspect `git clean -nd` → measure clean status → commit cleanup receipt. The second receipt commit documents actual cleanup, not a predeclared success. See [cleanup manifest](cleanup_manifest.json), [readiness checklist](independent_reaudit_readiness.json), and [scientific integrity](scientific_authority_integrity_review.json).
+
+Verify this new bundle from this directory with `sha256sum -c SHA256SUMS`. SHA256SUMS covers all bundle files except itself. It seals this sidecar, not a repair of prior seals. Current status document hashes are in authority_inventory.json; the commit field refers to last starting tracked revision and modified_by_rebaseline identifies intended prose edits. Use Git history for the containing rebaseline and final receipt commit IDs.
+
+Next task: `R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT_POST_REMEDIATION_RERUN`.

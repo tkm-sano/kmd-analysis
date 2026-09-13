@@ -1,0 +1,65 @@
+{
+  "phase": "PLANNED; no original removed before authority commit",
+  "backup_root": "/home/takuma/kmd-analysis_worktree_backup/20260913_rebaseline_v2",
+  "files": [
+    {
+      "original_path": ".tmp_patch_probe",
+      "backup_path": "/home/takuma/kmd-analysis_worktree_backup/20260913_rebaseline_v2/.tmp_patch_probe",
+      "sha256": "25be323556dad377abb57fe7ec8c4b99a6527f488dda28d0c9b686528659c909",
+      "byte_size": 6,
+      "classification": "SAFE_TO_REMOVE",
+      "removal_reason": "Patch probe containing only probe newline; non-research scratch",
+      "backup_verified": false,
+      "removed": false
+    },
+    {
+      "original_path": "reproducibility/outputs/research_model_workbook/20260909_175947/reconstruction_validation.json",
+      "backup_path": "/home/takuma/kmd-analysis_worktree_backup/20260913_rebaseline_v2/reproducibility/outputs/research_model_workbook/20260909_175947/reconstruction_validation.json",
+      "sha256": "b6cc03efc5f8ac0318b415c25562213e64902ddd1b631880bb429dc878f34869",
+      "byte_size": 2833,
+      "classification": "SHOULD_BACKUP_AND_REMOVE",
+      "removal_reason": "Historical workbook generation/revision; tools/revise_research_model_xlsx.py and tools/rebuild_current_research_model.py; reconstruction_validation.json records source hashes",
+      "backup_verified": false,
+      "removed": false
+    },
+    {
+      "original_path": "reproducibility/outputs/research_model_workbook/20260909_175947/research_model_3page_ja_revised.xlsx",
+      "backup_path": "/home/takuma/kmd-analysis_worktree_backup/20260913_rebaseline_v2/reproducibility/outputs/research_model_workbook/20260909_175947/research_model_3page_ja_revised.xlsx",
+      "sha256": "d0bc4e7facae41f0a12043649c381bd0a628aeeffd72679537a37d4347c8e25a",
+      "byte_size": 18310,
+      "classification": "SHOULD_BACKUP_AND_REMOVE",
+      "removal_reason": "Historical workbook generation/revision; tools/revise_research_model_xlsx.py and tools/rebuild_current_research_model.py; reconstruction_validation.json records source hashes",
+      "backup_verified": false,
+      "removed": false
+    },
+    {
+      "original_path": "research_model_3page_ja.xlsx",
+      "backup_path": "/home/takuma/kmd-analysis_worktree_backup/20260913_rebaseline_v2/research_model_3page_ja.xlsx",
+      "sha256": "9c1a76f086061b144811903f1c93e8369a80815d179036137987d4a826c3d988",
+      "byte_size": 16908,
+      "classification": "SHOULD_BACKUP_AND_REMOVE",
+      "removal_reason": "Historical workbook generation/revision; tools/revise_research_model_xlsx.py and tools/rebuild_current_research_model.py; reconstruction_validation.json records source hashes",
+      "backup_verified": false,
+      "removed": false
+    },
+    {
+      "original_path": "research_model_3page_ja_revised.xlsx",
+      "backup_path": "/home/takuma/kmd-analysis_worktree_backup/20260913_rebaseline_v2/research_model_3page_ja_revised.xlsx",
+      "sha256": "6e0e474317aa0b2986a2c8214760569059f20a758a36ebb42792fe7127217e6d",
+      "byte_size": 26017,
+      "classification": "SHOULD_BACKUP_AND_REMOVE",
+      "removal_reason": "Historical workbook generation/revision; tools/revise_research_model_xlsx.py and tools/rebuild_current_research_model.py; reconstruction_validation.json records source hashes",
+      "backup_verified": false,
+      "removed": false
+    }
+  ],
+  "file_count": 5,
+  "byte_count": 64074,
+  "backup_status": "PENDING",
+  "removal_status": "PENDING",
+  "ignored_material": "KEEP; no git clean -x or ignored deletion",
+  "retained_and_committed": [
+    "reproducibility/config/traffic_simulation/r23_pilot_configuration/20260910_r23_reduced_pilot_v1.json"
+  ],
+  "final_worktree_gate": "PENDING"
+}

@@ -1,0 +1,165 @@
+{
+  "method": "Read immutable run bytes; enumerate 120 directed routes per n5 instance from pinned routing CSV; B2 read-only validator recomputes exact reference and raw probability masses. No scientific run.",
+  "routing_source": "reproducibility/outputs/traffic_simulation/demand/evrp_r13_routing/20260909_r13_routing_fixture_n10_v18_geometry_reaccepted/routing_arcs.csv",
+  "routing_sha256": "29c1a68a71838bb44629cbf4bf7230a0492e9484c0a97d0c2fb2e370f2ca2ec1",
+  "n5": {
+    "summary": {
+      "number_of_runs": 3,
+      "optimal_route_recovery_count": 3,
+      "route_gap_summary": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "optimizer_success_count": 2,
+      "optimizer_non_success_count": 1,
+      "cap_reached_count": 1,
+      "P_feasible_range": [
+        0.006366971625605308,
+        0.007978143668511524
+      ],
+      "P_optimal_range": [
+        5.447231886991554e-05,
+        6.636000200882145e-05
+      ],
+      "rank01_total_runtime_seconds": 153434.09043177636,
+      "rank01_total_runtime_hours": 42.620580675493436,
+      "rank01_peak_rss_gib": 201.5834732055664,
+      "rank02_rank03_provenance": "STRONGLY_INFERRED; NOT_REAUTHORIZED",
+      "n_ge_6": "Current exact CPU Aer statevector NOT_RECOMMENDED; 36 qubits require 2^36 * 16 bytes = 1 TiB for state alone; no execution authorized",
+      "methodology_authority": "reproducibility/outputs/traffic_simulation/r23_limited_scaling_methodology_review/20260911_v1"
+    },
+    "runs": [
+      {
+        "run_id": "routing_v18_n5_rank01_p1_init_fixed01_rep1_optimizer_cobyla",
+        "instance_id": "routing_v18_n5_rank01",
+        "optimizer": "COBYLA",
+        "initialization": "fixed_0.1",
+        "initial_parameters": [
+          0.1,
+          0.1
+        ],
+        "termination": {
+          "nfev": 300,
+          "nit": null,
+          "success": false,
+          "status": 3,
+          "message": "Return from COBYLA because the objective function has been evaluated MAXFUN times.",
+          "termination_status": "OBJECTIVE_EVALUATION_CAP_REACHED",
+          "budget_hit": true,
+          "maxiter_boundary_reached": false,
+          "objective_cap_hit": true,
+          "termination_source": "explicit_objective_callback_guard",
+          "optimizer_status": 3
+        },
+        "P_feasible": 0.006366971625605308,
+        "P_optimal": 5.447231886991554e-05,
+        "probability_total": 0.9999999999998028,
+        "invalid_probability_mass": 0.9936330283741975,
+        "T_total": 153434.09043177636,
+        "source_commit": "9a4ce5600a211ffb92adf3b84fe2468d70be2b26",
+        "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank01/scientific_result.json",
+        "sha256": "43eceae6d7e6459ba4a10094c8d358677b87999af1ccbfb6f25ab03cd11360b9",
+        "exact_reference": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_exact_references.json",
+        "enumerated_routes": 120,
+        "recomputed_exact_cost": 2029.9397492760756,
+        "recomputed_decoded_cost": 2029.9397492760756,
+        "route_recovered": true,
+        "relative_gap": 0.0,
+        "recorded_relative_gap": 0.0,
+        "peak_rss_gib": 201.5834732055664,
+        "probability_evidence_limit": "Recorded compact result; full state and final parameters absent, so probability trajectory not independently reproduced in this task."
+      },
+      {
+        "run_id": "routing_v18_n5_rank02_p1_init_fixed01_rep1_optimizer_cobyla",
+        "instance_id": "routing_v18_n5_rank02",
+        "optimizer": "COBYLA",
+        "initialization": "fixed_0.1",
+        "initial_parameters": [
+          0.1,
+          0.1
+        ],
+        "termination": {
+          "nfev": 209,
+          "nit": null,
+          "success": true,
+          "status": 0,
+          "message": "Return from COBYLA because the trust region radius reaches its lower bound.",
+          "termination_status": "OPTIMIZER_REPORTED_SUCCESS",
+          "budget_hit": false,
+          "maxiter_boundary_reached": false,
+          "objective_cap_hit": false,
+          "termination_source": "native_optimizer",
+          "optimizer_status": 0
+        },
+        "P_feasible": 0.007659407194320995,
+        "P_optimal": 6.593481397305275e-05,
+        "probability_total": 0.9999999999999929,
+        "invalid_probability_mass": 0.9923405928056719,
+        "T_total": 2561.287391833961,
+        "source_commit": "ff1d579bad8e7c635406b2a5a620fc733f96e912",
+        "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/scientific_result.json",
+        "sha256": "133c8daa531d1f12a6f9343931f6acbc1143c2a8e21772eedebcf8db438eefe8",
+        "exact_reference": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_exact_references.json",
+        "enumerated_routes": 120,
+        "recomputed_exact_cost": 2073.5424884489876,
+        "recomputed_decoded_cost": 2073.5424884489876,
+        "route_recovered": true,
+        "relative_gap": 0.0,
+        "recorded_relative_gap": 0.0,
+        "peak_rss_gib": 0.30858612060546875,
+        "probability_evidence_limit": "Recorded compact result; full state and final parameters absent, so probability trajectory not independently reproduced in this task."
+      },
+      {
+        "run_id": "routing_v18_n5_rank03_p1_init_fixed01_rep1_optimizer_cobyla",
+        "instance_id": "routing_v18_n5_rank03",
+        "optimizer": "COBYLA",
+        "initialization": "fixed_0.1",
+        "initial_parameters": [
+          0.1,
+          0.1
+        ],
+        "termination": {
+          "nfev": 138,
+          "nit": null,
+          "success": true,
+          "status": 0,
+          "message": "Return from COBYLA because the trust region radius reaches its lower bound.",
+          "termination_status": "OPTIMIZER_REPORTED_SUCCESS",
+          "budget_hit": false,
+          "maxiter_boundary_reached": false,
+          "objective_cap_hit": false,
+          "termination_source": "native_optimizer",
+          "optimizer_status": 0
+        },
+        "P_feasible": 0.007978143668511524,
+        "P_optimal": 6.636000200882145e-05,
+        "probability_total": 1.0000000000000018,
+        "invalid_probability_mass": 0.9920218563314902,
+        "T_total": 1704.4330657268874,
+        "source_commit": "ff1d579bad8e7c635406b2a5a620fc733f96e912",
+        "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank03/scientific_result.json",
+        "sha256": "45d9641ac28c315b9fa0701a8b80ab08e2c5ccb2e84c8310cb8047896e69a195",
+        "exact_reference": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_exact_references.json",
+        "enumerated_routes": 120,
+        "recomputed_exact_cost": 1992.3382265540058,
+        "recomputed_decoded_cost": 1992.3382265540058,
+        "route_recovered": true,
+        "relative_gap": 0.0,
+        "recorded_relative_gap": 0.0,
+        "peak_rss_gib": 0.2781257629394531,
+        "probability_evidence_limit": "Recorded compact result; full state and final parameters absent, so probability trajectory not independently reproduced in this task."
+      }
+    ]
+  },
+  "B2": {
+    "runs": 6,
+    "valid_scientific_results": 6,
+    "facts_artifact": "b2_scientific_facts.json",
+    "validation_artifact": "b2_readonly_validation.json",
+    "exact_optimum_recovery": 6,
+    "relative_gap_range": [
+      0.0,
+      0.0
+    ]
+  }
+}

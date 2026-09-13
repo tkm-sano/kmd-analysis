@@ -1,0 +1,68 @@
+{
+  "runs": [
+    {
+      "run": "rank01",
+      "result_authority": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank01/scientific_result.json",
+        "sha256": "43eceae6d7e6459ba4a10094c8d358677b87999af1ccbfb6f25ab03cd11360b9",
+        "archive": "historical_run_snapshots/routing_v18_n5_rank01/scientific_result.json",
+        "mtime_utc": "2026-09-13T08:17:08.929619+00:00",
+        "filesystem_birth": "-"
+      },
+      "recorded_source": "9a4ce5600a211ffb92adf3b84fe2468d70be2b26",
+      "reconstructed_source": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/reconstructed_sources/rank01_runner.py.txt",
+        "sha256": "7f920468dd24e2e0991bb41150b088d0ae3b629443dde0e867997d8e8b0190e5",
+        "later_commit": "0e149edbf000ffdb187c21123beddb373b8bcff5"
+      },
+      "confidence": "STRONGLY_INFERRED",
+      "limitation": "source_commit is repository HEAD; execution used an uncommitted runner. Timestamped FileChange records reconstruct the bytes later committed at 0e149ed. Historical trajectory/final parameters and complete process source attestation absent; resource peak metric contradicts logged RSS for remaining runs. Retained observations remain usable with explicit limitations.",
+      "formal_acceptance": "NOT_REAUTHORIZED",
+      "prior_rerun_assessment": "RERUN_RECOMMENDED",
+      "authority": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/provenance_status_by_run.json"
+    },
+    {
+      "run": "rank02",
+      "result_authority": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/scientific_result.json",
+        "sha256": "133c8daa531d1f12a6f9343931f6acbc1143c2a8e21772eedebcf8db438eefe8",
+        "archive": "historical_run_snapshots/routing_v18_n5_rank02/scientific_result.json",
+        "mtime_utc": "2026-09-13T15:07:32.004956+00:00",
+        "filesystem_birth": "-"
+      },
+      "recorded_source": "ff1d579bad8e7c635406b2a5a620fc733f96e912",
+      "reconstructed_source": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/reconstructed_sources/rank02_rank03_runner.py.txt",
+        "sha256": "76a0b89d4999abad7fb7472740b84ac128c1863571299ef43ed7e9f43924d254",
+        "later_commit": "0e149edbf000ffdb187c21123beddb373b8bcff5"
+      },
+      "confidence": "STRONGLY_INFERRED",
+      "limitation": "source_commit is repository HEAD; execution used an uncommitted runner and uncommitted qaoa V4 wiring. Timestamped FileChange records reconstruct the bytes later committed at 0e149ed. Historical trajectory/final parameters and complete process source attestation absent; resource peak metric contradicts logged RSS for remaining runs. Retained observations remain usable with explicit limitations.",
+      "formal_acceptance": "NOT_REAUTHORIZED",
+      "prior_rerun_assessment": "RERUN_REQUIRED_FOR_FORMAL_ACCEPTANCE",
+      "authority": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/provenance_status_by_run.json"
+    },
+    {
+      "run": "rank03",
+      "result_authority": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank03/scientific_result.json",
+        "sha256": "45d9641ac28c315b9fa0701a8b80ab08e2c5ccb2e84c8310cb8047896e69a195",
+        "archive": "historical_run_snapshots/routing_v18_n5_rank03/scientific_result.json",
+        "mtime_utc": "2026-09-13T15:36:09.080909+00:00",
+        "filesystem_birth": "-"
+      },
+      "recorded_source": "ff1d579bad8e7c635406b2a5a620fc733f96e912",
+      "reconstructed_source": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/reconstructed_sources/rank02_rank03_runner.py.txt",
+        "sha256": "76a0b89d4999abad7fb7472740b84ac128c1863571299ef43ed7e9f43924d254",
+        "later_commit": "0e149edbf000ffdb187c21123beddb373b8bcff5"
+      },
+      "confidence": "STRONGLY_INFERRED",
+      "limitation": "source_commit is repository HEAD; execution used an uncommitted runner and uncommitted qaoa V4 wiring. Timestamped FileChange records reconstruct the bytes later committed at 0e149ed. Historical trajectory/final parameters and complete process source attestation absent; resource peak metric contradicts logged RSS for remaining runs. Retained observations remain usable with explicit limitations.",
+      "formal_acceptance": "NOT_REAUTHORIZED",
+      "prior_rerun_assessment": "RERUN_REQUIRED_FOR_FORMAL_ACCEPTANCE",
+      "authority": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/provenance_status_by_run.json"
+    }
+  ],
+  "B2_relation": "Separate earlier dataset. Its six reconstructed flag-only hash differences do not change recorded source authority. No common cause inferred."
+}

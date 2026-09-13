@@ -1,0 +1,150 @@
+{
+  "configuration_id": "R23_REDUCED_PILOT_V1",
+  "configuration_status": "R23_PILOT_CONFIGURATION_FROZEN",
+  "readiness_classification": "READY_TO_RUN_R23_PILOT",
+  "source_commit": "ab55ba3ae3eedd2d372dd5b3a578059b65a62861",
+  "scope": "INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY",
+  "pilot_purpose": [
+    "end_to_end_pipeline correctness",
+    "R22 Ising Hamiltonian and R23 evaluator consistency",
+    "COBYLA termination and evaluation accounting",
+    "p-dependent parameter/circuit metadata capture",
+    "runtime instrumentation and artifact reproducibility",
+    "raw exact distribution, decoded route, feasibility, and quality metric capture"
+  ],
+  "explicit_non_purposes": [
+    "quantum advantage claim",
+    "future QPU performance estimation",
+    "formal scaling-law determination",
+    "formal optimizer comparison",
+    "hardware or cloud execution"
+  ],
+  "authority": {
+    "execution_plan": "EVRP_EXECUTION_PLAN.md",
+    "r20_specification": "05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md",
+    "r21_results": "reproducibility/outputs/traffic_simulation/r21_qubo_validation/20260910_formal_reduced_v4/validation_results.json",
+    "r21_results_sha256": "c4baeead366ea2f750cd4ecdd18acc507746dfecd744d0803ed74b5bbb46049f",
+    "r21_manifest": "reproducibility/outputs/traffic_simulation/r21_qubo_validation/20260910_formal_reduced_v4/manifest.json",
+    "r21_manifest_sha256": "9a6fc459ef1f5cbf1824b9b0197a2f56f9d67cc88de18bd6bcd8ff7f575691a2",
+    "r22_results": "reproducibility/outputs/traffic_simulation/r22_ising_conversion/20260910_formal_reduced_v1/conversion_results.json",
+    "r22_results_sha256": "1b6015bcaf38d58fb98a743f47346be9e68601c0b0f7c09567ca77186ea26cea",
+    "r22_manifest": "reproducibility/outputs/traffic_simulation/r22_ising_conversion/20260910_formal_reduced_v1/manifest.json",
+    "r22_manifest_sha256": "2bd1bed556b265cc4b6f555497f78e1e432c8d22dabfcccb722fe0faf0da46d9",
+    "r23_schema": "05_src/traffic_simulation/r23_qaoa_aer/schema.py",
+    "r23_runner": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+    "r23_hamiltonian": "05_src/traffic_simulation/r23_qaoa_aer/hamiltonian.py",
+    "r23_metrics": "05_src/traffic_simulation/r23_qaoa_aer/metrics.py",
+    "r23_tests": "05_src/traffic_simulation/validation/test_r23_qaoa_aer.py",
+    "temporary_environment_diagnostic": "reproducibility/outputs/traffic_simulation/temporary_quantum_diagnostic/20260910_temporary_qiskit_aer_environment_smoke_test_n10/"
+  },
+  "problem_definition": {
+    "problem": "Single-Vehicle Route Ordering Problem",
+    "fixed_depot": true,
+    "customer_only_encoding": true,
+    "encoding": "row-major x[i,t], customer-once and position-once",
+    "objective": "static directed travel-time minimization",
+    "asymmetric_travel_time": true,
+    "complete_directed_reachability_only": true,
+    "missing_diagonal_or_self_loop_as_formal_edge": false,
+    "invalid_bitstrings": "discard",
+    "classical_repair": false,
+    "hamiltonian_mutation": false
+  },
+  "selected_instances": [
+    {
+      "instance_id": "synthetic_n2_unique",
+      "source": "R21/R22 synthetic validated fixture",
+      "n_customers": 2,
+      "n_logical": 4,
+      "ising_qubits": 4,
+      "coupler_count": 6,
+      "qubo_density": 1.0,
+      "exact_optimum_available": true,
+      "matrix_hash_sha256": "71e9028d5460c42dfccf1bb070a82a6a2080e1b764d85f1ef24c4734562328c",
+      "r21_input_hash_sha256": "d3e98d13de08f5a6d90f6437846bfd9b40d4352a74127b41d23a9fb6080496a7",
+      "qubo_coefficient_hash_sha256": "5399f6d6aa02c166323fbc11853289f343e4facfeaf7f18965524f8a3c0e10e2",
+      "ising_coefficient_hash_sha256": "9c85f516d1e581fd0aae6786c7e719375dc0494aa9ca04dbc11e16123e33a1aa",
+      "exact_optimum_normalized": 0.375,
+      "exact_optimal_route_set": [[1, 2]],
+      "expected_statevector_amplitudes": 16
+    },
+    {
+      "instance_id": "routing_baseline_v18_first_3_customers",
+      "source": "Routing Baseline-derived complete-reachability validated fixture",
+      "n_customers": 3,
+      "n_logical": 9,
+      "ising_qubits": 9,
+      "coupler_count": 30,
+      "qubo_density": 0.8333333333333334,
+      "exact_optimum_available": true,
+      "matrix_hash_sha256": "b4d03a16e854d2e7c6528b35873cc4ba396f1740a8c2a24254af4d7f4530d928",
+      "r21_input_hash_sha256": "a0dba955a1a705bbe7daa43af392c4f1ba6de590f15aab2e965714debd5e3a8a8",
+      "qubo_coefficient_hash_sha256": "9cd30111fda4939d663d2e115fa2ba10cc04867794a06341fc3eb0d65c489da7",
+      "ising_coefficient_hash_sha256": "00c76b8f76dccbb456d0eefbe9ad468f956866b33953a8e32f712ee207e02dd8",
+      "exact_optimum_normalized": 2.5124791361998122,
+      "exact_optimal_route_set": [["2026-01-01-13111-bldg-96242", "2026-01-01-13111-bldg-130096", "2026-01-01-13111-bldg-117556"]],
+      "expected_statevector_amplitudes": 512
+    }
+  ],
+  "ladder": {
+    "selected_n": [2, 3],
+    "n4_status": "DEFERRED_CANDIDATE",
+    "n4_reason": "16 qubits and 65536 amplitudes are within the software guard, but runtime burden cannot be established without the prohibited formal execution; it is excluded from this frozen matrix.",
+    "n4_theoretical_amplitudes": 65536
+  },
+  "qaoa": {
+    "p_values": [1, 2, 3],
+    "parameter_order": "[gamma_1..gamma_p,beta_1..beta_p]",
+    "parameter_count_by_p": {"1": 2, "2": 4, "3": 6},
+    "mixer": "standard transverse-field X mixer H_M=-sum_i X_i",
+    "initial_state": "plus_state_tensor_product"
+  },
+  "optimizer": {
+    "name": "COBYLA",
+    "family": "derivative-free",
+    "maxiter": 100,
+    "objective_evaluation_cap": 300,
+    "expectation_evaluation_cap": 301,
+    "budget_semantics": "COBYLA maxiter is an optimizer iteration setting; implementation guards objective calls separately; final post-optimization evaluation is additional."
+  },
+  "expectation_policy": {
+    "mode": "exact_statevector",
+    "implementation": "AerSimulator(method=statevector, device=CPU) followed by Statevector.expectation_value",
+    "shots": "NONE",
+    "finite_shot_noise": false,
+    "probability_source": "exact statevector probabilities_dict",
+    "constant_offset_restored": true
+  },
+  "initialization": {
+    "policy": "deterministic_fixed_initialization",
+    "value": 0.1,
+    "generation": "all 2p entries equal 0.1",
+    "vector_by_p": {"1": [0.1, 0.1], "2": [0.1, 0.1, 0.1, 0.1], "3": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]},
+    "vector_sha256_by_p": {
+      "1": "e75e5719584f8cc250b9173c06291bb5f2c7326860ed1a307c699609fa3cf26b",
+      "2": "3b0738777bedc10eb65dc72fb308adbaf94beb2c699303d034b89f489cd4e510",
+      "3": "0f8015efb10626f9372ee1be4f3ed753655c06b5e6dce5cf2806a98b5287bd3d"
+    },
+    "warm_start": false
+  },
+  "repetitions": {"count": 1, "purpose": "minimum deterministic correctness/stability/artifact check; not formal statistical replication"},
+  "seed_policy": {
+    "python": "NOT_APPLICABLE",
+    "numpy": "NOT_APPLICABLE",
+    "algorithm": "NOT_APPLICABLE",
+    "optimizer": "NOT_APPLICABLE_COBYLA_DETERMINISTIC_PATH",
+    "initialization": "NOT_APPLICABLE_DETERMINISTIC_FIXED_VECTOR",
+    "simulator": 17,
+    "transpiler": 17,
+    "seed_scope": "record per run; no unrecorded global RNG state"
+  },
+  "runtime_metrics": ["T_total", "T_circuit", "T_transpile", "T_optimizer", "T_expectation", "aer_execution_time", "objective_evaluation_count", "expectation_evaluation_count"],
+  "runtime_contract": "T_circuit/T_transpile/T_expectation are recorded for the final evaluation by the current runner; T_optimizer is inclusive objective-evaluator wall time. Aggregate component decomposition across all optimizer evaluations is an implementation follow-up, not silently inferred.",
+  "quality_metrics": ["best_decoded_route_objective", "absolute_optimality_gap", "relative_optimality_gap", "feasible_solution_status", "P_feasible_exact", "P_opt", "final_expectation_value", "best_observed_energy", "expectation_energy_gap", "energy_variance", "invalid_probability_mass"],
+  "relative_gap_epsilon_ref": 1e-12,
+  "resource_guards": {"max_logical_qubits": 16, "max_p": 3, "max_wall_time_seconds": 600, "memory_limit_gib": 8.0, "cpu_only": true, "gpu_required": false, "cloud_qpu": false, "oom_or_crash_probing": false},
+  "pilot_matrix": {"instances": 2, "n_values": [2, 3], "p_values": [1, 2, 3], "initializations": 1, "repetitions": 1, "planned_run_count": 6, "formal_baseline_run_count": 18, "n4_included": false},
+  "software_environment": {"environment_name": "evrp-quantum-temp", "python": "3.11.16", "qiskit": "2.5.2", "qiskit_aer": "0.17.2", "qiskit_algorithms": "0.4.0", "qiskit_optimization": "0.7.0", "numpy": "2.4.6", "scipy": "1.17.1", "backend_class": "AerSimulator", "method": "statevector", "device": "CPU"},
+  "classification_semantics": {"frozen_status": "R23_PILOT_CONFIGURATION_FROZEN", "not_pilot_completed": true, "not_r23_pass": true, "not_formal_experiment_finalization": true, "not_future_hardware_parameter": true, "not_quantum_advantage_threshold": true},
+  "artifact_hashes": {"semantic_configuration_sha256": "85f8f743a71f1684cb4798586c0ded1a3e8ff356c8c26ba7614c46ff4556523b"}
+}

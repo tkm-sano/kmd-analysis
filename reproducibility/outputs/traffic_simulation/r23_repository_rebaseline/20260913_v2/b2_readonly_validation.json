@@ -1,0 +1,2457 @@
+{
+  "experiment": "B2",
+  "plan": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_planned_manifest.json",
+  "expected_runs": 6,
+  "actual_runs": 6,
+  "checks": [
+    {
+      "validation_id": "B2/run_count",
+      "dimension": "execution_completeness",
+      "requirement": "run_count",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_planned_manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "expected_from_authority": 6,
+        "actual": 6,
+        "missing": [],
+        "extra": []
+      }
+    },
+    {
+      "validation_id": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/README.md/SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/README.md",
+        "expected_sha256": "42916e8460f4b209fe61006e10827ebe9b255af174cbbe7e78e58e2096dc51ef",
+        "actual_sha256": "42916e8460f4b209fe61006e10827ebe9b255af174cbbe7e78e58e2096dc51ef"
+      }
+    },
+    {
+      "validation_id": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/b2_summary.json/SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/b2_summary.json",
+        "expected_sha256": "24678adfa0b6bb240c11092e54eb8391e44903a29498557e41d555ceffca31aa",
+        "actual_sha256": "24678adfa0b6bb240c11092e54eb8391e44903a29498557e41d555ceffca31aa"
+      }
+    },
+    {
+      "validation_id": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/cobyla_vs_nelder_mead_raw_comparison.json/SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/cobyla_vs_nelder_mead_raw_comparison.json",
+        "expected_sha256": "a290bd2ecd9dc7ba40d28898a2e92a4ed4d908e263eced25b014c3235dba2766",
+        "actual_sha256": "a290bd2ecd9dc7ba40d28898a2e92a4ed4d908e263eced25b014c3235dba2766"
+      }
+    },
+    {
+      "validation_id": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/execution_preflight.json/SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/execution_preflight.json",
+        "expected_sha256": "d981fe4bbd611d1f3e9467a041ffa72748ca0e692765faeeab9cac021b42e2f4",
+        "actual_sha256": "d981fe4bbd611d1f3e9467a041ffa72748ca0e692765faeeab9cac021b42e2f4"
+      }
+    },
+    {
+      "validation_id": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/integrity.json/SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/integrity.json",
+        "expected_sha256": "2786e6848175ba1215b119d9c9f6bc4090788bea0a02630711d81c05e4313f68",
+        "actual_sha256": "2786e6848175ba1215b119d9c9f6bc4090788bea0a02630711d81c05e4313f68"
+      }
+    },
+    {
+      "validation_id": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/progress.json/SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/progress.json",
+        "expected_sha256": "cb8cc2d394f5d74a29e1543ea89d6051ecc3ef8e9547fa382cb0a642fbcdbf0c",
+        "actual_sha256": "cb8cc2d394f5d74a29e1543ea89d6051ecc3ef8e9547fa382cb0a642fbcdbf0c"
+      }
+    },
+    {
+      "validation_id": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json/SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+        "expected_sha256": "ad52ac50a841f7302e4b6745a183b922ee2343f5661b09d965e71d95515c298e",
+        "actual_sha256": "ad52ac50a841f7302e4b6745a183b922ee2343f5661b09d965e71d95515c298e"
+      }
+    },
+    {
+      "validation_id": "B2/terminal_index_coverage",
+      "dimension": "artifact_integrity",
+      "requirement": "terminal_index_coverage",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": true
+    },
+    {
+      "validation_id": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank01/r20_input.json/SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank01/manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank01/r20_input.json",
+        "expected_sha256": "350008ab569c1e1fd303dc476eef4eddf8b0f211d465b6738fe6a851a854a7e6",
+        "actual_sha256": "350008ab569c1e1fd303dc476eef4eddf8b0f211d465b6738fe6a851a854a7e6"
+      }
+    },
+    {
+      "validation_id": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank01/validation.json/SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank01/manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank01/validation.json",
+        "expected_sha256": "ecaa6d49669a2b5403753cefa5ee61facd59e427decf1180e05c4b541b395713",
+        "actual_sha256": "ecaa6d49669a2b5403753cefa5ee61facd59e427decf1180e05c4b541b395713"
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01/exact_reference_SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "exact_reference_SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank01/manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank01.json",
+        "expected_sha256": "38a9f5990aa474cc0127f54a331025592b82c26ea3960ebf22f9ecf1149e11b1",
+        "actual_sha256": "38a9f5990aa474cc0127f54a331025592b82c26ea3960ebf22f9ecf1149e11b1"
+      }
+    },
+    {
+      "validation_id": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank03/r20_input.json/SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank03/manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank03/r20_input.json",
+        "expected_sha256": "c3871f7fd93ac5d2130823ba5bb467362336b21860e1c990270aa3d77be3b718",
+        "actual_sha256": "c3871f7fd93ac5d2130823ba5bb467362336b21860e1c990270aa3d77be3b718"
+      }
+    },
+    {
+      "validation_id": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank03/validation.json/SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank03/manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank03/validation.json",
+        "expected_sha256": "954b29ad00aec7337bb45ac7103eab41dbe97fc3ccc69e536e11c3253cb01893",
+        "actual_sha256": "954b29ad00aec7337bb45ac7103eab41dbe97fc3ccc69e536e11c3253cb01893"
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03/exact_reference_SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "exact_reference_SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank03/manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank03.json",
+        "expected_sha256": "bf61f62b4e485b1136d1f915d9ddf354459dff092d1d2b9391c26d9f6ac9cea1",
+        "actual_sha256": "bf61f62b4e485b1136d1f915d9ddf354459dff092d1d2b9391c26d9f6ac9cea1"
+      }
+    },
+    {
+      "validation_id": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank05/r20_input.json/SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank05/manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank05/r20_input.json",
+        "expected_sha256": "0e22e66ec5bb1d60ce2a9e4287f4cccf3401fc8721b510bdde5673b5f9d5bf01",
+        "actual_sha256": "0e22e66ec5bb1d60ce2a9e4287f4cccf3401fc8721b510bdde5673b5f9d5bf01"
+      }
+    },
+    {
+      "validation_id": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank05/validation.json/SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank05/manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank05/validation.json",
+        "expected_sha256": "0272842b001520529008266cd49a3eb011fee44be8875ceee3ea33d651892683",
+        "actual_sha256": "0272842b001520529008266cd49a3eb011fee44be8875ceee3ea33d651892683"
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05/exact_reference_SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "exact_reference_SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/r20/routing_v18_n4_rank05/manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank05.json",
+        "expected_sha256": "e7d9cac7a7a63edf0b6cb7335f953f87dc08e511533984c2121273dc1ec24bcf",
+        "actual_sha256": "e7d9cac7a7a63edf0b6cb7335f953f87dc08e511533984c2121273dc1ec24bcf"
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/record_SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "record_SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "FAILED",
+      "evidence": "SHA mismatch: reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead.json"
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/conditions",
+      "dimension": "execution_completeness",
+      "requirement": "conditions",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "instance_id": "routing_v18_n4_rank01",
+        "n": 4,
+        "p": 2,
+        "optimizer": "NELDER_MEAD",
+        "initialization_id": "fixed_0.1"
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/termination_metadata",
+      "dimension": "scientific_validity",
+      "requirement": "termination_metadata",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "success": true,
+        "nfev": 279,
+        "termination": "OPTIMIZER_REPORTED_SUCCESS",
+        "message": "Optimization terminated successfully."
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/independent_reference",
+      "dimension": "scientific_validity",
+      "requirement": "independent_reference",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "optimum": 2.825072388446065,
+        "optimal_routes": [
+          [
+            "2026-01-01-13111-bldg-138702",
+            "2026-01-01-13111-bldg-130096",
+            "2026-01-01-13111-bldg-2510665",
+            "2026-01-01-13111-bldg-117556"
+          ]
+        ],
+        "enumerated": 24
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/decoded_feasibility",
+      "dimension": "feasibility",
+      "requirement": "decoded_feasibility",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "route": [
+          "2026-01-01-13111-bldg-138702",
+          "2026-01-01-13111-bldg-130096",
+          "2026-01-01-13111-bldg-2510665",
+          "2026-01-01-13111-bldg-117556"
+        ],
+        "recomputed_cost": 2.825072388446065
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/route_objective_gap",
+      "dimension": "scientific_validity",
+      "requirement": "route_objective_gap",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "cost": 2.825072388446065,
+        "exact_cost": 2.825072388446065,
+        "absolute_gap": 0.0,
+        "relative_gap": 0.0,
+        "gap_stored_in_B1": true
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/raw_probability_integrity",
+      "dimension": "probability_integrity",
+      "requirement": "raw_probability_integrity",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "probability_total": 0.9999999999999982,
+        "P_feasible_exact": 0.13898506308817188,
+        "P_opt": 0.00596156621991719,
+        "invalid_probability_mass": 0.8610149369118263
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/recorded_authority_hashes",
+      "dimension": "provenance_completeness",
+      "requirement": "recorded_authority_hashes",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": [
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/manifest.json",
+          "expected_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78",
+          "actual_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78"
+        },
+        {
+          "path": "reproducibility/config/traffic_simulation/r20_formal_penalty/20260911_r20_formal_lambda_v1.json",
+          "expected_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95",
+          "actual_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/implementation_authority_v3.json",
+          "expected_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3",
+          "actual_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_authorization.json",
+          "expected_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a",
+          "actual_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_planned_manifest.json",
+          "expected_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3",
+          "actual_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank01.json",
+          "expected_sha256": "38a9f5990aa474cc0127f54a331025592b82c26ea3960ebf22f9ecf1149e11b1",
+          "actual_sha256": "38a9f5990aa474cc0127f54a331025592b82c26ea3960ebf22f9ecf1149e11b1"
+        }
+      ]
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/exact_optimum_recovery",
+      "dimension": "exact_optimum_recovery",
+      "requirement": "exact_optimum_recovery",
+      "required": "OPTIONAL",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "route_in_independent_optimal_set": true
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/optimizer_convergence",
+      "dimension": "optimizer_convergence",
+      "requirement": "optimizer_convergence",
+      "required": "OPTIONAL",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "scope": "native optimizer success only; not global convergence"
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/record_SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "record_SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "FAILED",
+      "evidence": "SHA mismatch: reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead.json"
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/conditions",
+      "dimension": "execution_completeness",
+      "requirement": "conditions",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "instance_id": "routing_v18_n4_rank01",
+        "n": 4,
+        "p": 3,
+        "optimizer": "NELDER_MEAD",
+        "initialization_id": "fixed_0.1"
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/termination_metadata",
+      "dimension": "scientific_validity",
+      "requirement": "termination_metadata",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "success": false,
+        "nfev": 446,
+        "termination": "MAXITER_REACHED",
+        "message": "Maximum number of iterations has been exceeded."
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/independent_reference",
+      "dimension": "scientific_validity",
+      "requirement": "independent_reference",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "optimum": 2.825072388446065,
+        "optimal_routes": [
+          [
+            "2026-01-01-13111-bldg-138702",
+            "2026-01-01-13111-bldg-130096",
+            "2026-01-01-13111-bldg-2510665",
+            "2026-01-01-13111-bldg-117556"
+          ]
+        ],
+        "enumerated": 24
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/decoded_feasibility",
+      "dimension": "feasibility",
+      "requirement": "decoded_feasibility",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "route": [
+          "2026-01-01-13111-bldg-138702",
+          "2026-01-01-13111-bldg-130096",
+          "2026-01-01-13111-bldg-2510665",
+          "2026-01-01-13111-bldg-117556"
+        ],
+        "recomputed_cost": 2.825072388446065
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/route_objective_gap",
+      "dimension": "scientific_validity",
+      "requirement": "route_objective_gap",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "cost": 2.825072388446065,
+        "exact_cost": 2.825072388446065,
+        "absolute_gap": 0.0,
+        "relative_gap": 0.0,
+        "gap_stored_in_B1": true
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/raw_probability_integrity",
+      "dimension": "probability_integrity",
+      "requirement": "raw_probability_integrity",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "probability_total": 1.0000000000000104,
+        "P_feasible_exact": 0.15475382876727714,
+        "P_opt": 0.006831144581396031,
+        "invalid_probability_mass": 0.8452461712327333
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/recorded_authority_hashes",
+      "dimension": "provenance_completeness",
+      "requirement": "recorded_authority_hashes",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": [
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/manifest.json",
+          "expected_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78",
+          "actual_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78"
+        },
+        {
+          "path": "reproducibility/config/traffic_simulation/r20_formal_penalty/20260911_r20_formal_lambda_v1.json",
+          "expected_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95",
+          "actual_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/implementation_authority_v3.json",
+          "expected_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3",
+          "actual_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_authorization.json",
+          "expected_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a",
+          "actual_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_planned_manifest.json",
+          "expected_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3",
+          "actual_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank01.json",
+          "expected_sha256": "38a9f5990aa474cc0127f54a331025592b82c26ea3960ebf22f9ecf1149e11b1",
+          "actual_sha256": "38a9f5990aa474cc0127f54a331025592b82c26ea3960ebf22f9ecf1149e11b1"
+        }
+      ]
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/exact_optimum_recovery",
+      "dimension": "exact_optimum_recovery",
+      "requirement": "exact_optimum_recovery",
+      "required": "OPTIONAL",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "route_in_independent_optimal_set": true
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/optimizer_convergence",
+      "dimension": "optimizer_convergence",
+      "requirement": "optimizer_convergence",
+      "required": "OPTIONAL",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "FAILED",
+      "evidence": "optimizer reported success=false; scientific validity evaluated separately"
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/record_SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "record_SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "FAILED",
+      "evidence": "SHA mismatch: reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead.json"
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/conditions",
+      "dimension": "execution_completeness",
+      "requirement": "conditions",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "instance_id": "routing_v18_n4_rank03",
+        "n": 4,
+        "p": 2,
+        "optimizer": "NELDER_MEAD",
+        "initialization_id": "fixed_0.1"
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/termination_metadata",
+      "dimension": "scientific_validity",
+      "requirement": "termination_metadata",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "success": true,
+        "nfev": 211,
+        "termination": "OPTIMIZER_REPORTED_SUCCESS",
+        "message": "Optimization terminated successfully."
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/independent_reference",
+      "dimension": "scientific_validity",
+      "requirement": "independent_reference",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "optimum": 2.917140287015925,
+        "optimal_routes": [
+          [
+            "2026-01-01-13111-bldg-96242",
+            "2026-01-01-13111-bldg-79791",
+            "2026-01-01-13111-bldg-55213",
+            "2026-01-01-13111-bldg-29995"
+          ]
+        ],
+        "enumerated": 24
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/decoded_feasibility",
+      "dimension": "feasibility",
+      "requirement": "decoded_feasibility",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "route": [
+          "2026-01-01-13111-bldg-96242",
+          "2026-01-01-13111-bldg-79791",
+          "2026-01-01-13111-bldg-55213",
+          "2026-01-01-13111-bldg-29995"
+        ],
+        "recomputed_cost": 2.917140287015925
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/route_objective_gap",
+      "dimension": "scientific_validity",
+      "requirement": "route_objective_gap",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "cost": 2.917140287015925,
+        "exact_cost": 2.917140287015925,
+        "absolute_gap": 0.0,
+        "relative_gap": 0.0,
+        "gap_stored_in_B1": true
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/raw_probability_integrity",
+      "dimension": "probability_integrity",
+      "requirement": "raw_probability_integrity",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "probability_total": 1.000000000000001,
+        "P_feasible_exact": 0.13508406760463945,
+        "P_opt": 0.0060573820403665235,
+        "invalid_probability_mass": 0.8649159323953617
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/recorded_authority_hashes",
+      "dimension": "provenance_completeness",
+      "requirement": "recorded_authority_hashes",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": [
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/manifest.json",
+          "expected_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78",
+          "actual_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78"
+        },
+        {
+          "path": "reproducibility/config/traffic_simulation/r20_formal_penalty/20260911_r20_formal_lambda_v1.json",
+          "expected_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95",
+          "actual_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/implementation_authority_v3.json",
+          "expected_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3",
+          "actual_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_authorization.json",
+          "expected_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a",
+          "actual_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_planned_manifest.json",
+          "expected_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3",
+          "actual_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank03.json",
+          "expected_sha256": "bf61f62b4e485b1136d1f915d9ddf354459dff092d1d2b9391c26d9f6ac9cea1",
+          "actual_sha256": "bf61f62b4e485b1136d1f915d9ddf354459dff092d1d2b9391c26d9f6ac9cea1"
+        }
+      ]
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/exact_optimum_recovery",
+      "dimension": "exact_optimum_recovery",
+      "requirement": "exact_optimum_recovery",
+      "required": "OPTIONAL",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "route_in_independent_optimal_set": true
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/optimizer_convergence",
+      "dimension": "optimizer_convergence",
+      "requirement": "optimizer_convergence",
+      "required": "OPTIONAL",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "scope": "native optimizer success only; not global convergence"
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/record_SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "record_SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "FAILED",
+      "evidence": "SHA mismatch: reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead.json"
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/conditions",
+      "dimension": "execution_completeness",
+      "requirement": "conditions",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "instance_id": "routing_v18_n4_rank03",
+        "n": 4,
+        "p": 3,
+        "optimizer": "NELDER_MEAD",
+        "initialization_id": "fixed_0.1"
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/termination_metadata",
+      "dimension": "scientific_validity",
+      "requirement": "termination_metadata",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "success": false,
+        "nfev": 470,
+        "termination": "MAXITER_REACHED",
+        "message": "Maximum number of iterations has been exceeded."
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/independent_reference",
+      "dimension": "scientific_validity",
+      "requirement": "independent_reference",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "optimum": 2.917140287015925,
+        "optimal_routes": [
+          [
+            "2026-01-01-13111-bldg-96242",
+            "2026-01-01-13111-bldg-79791",
+            "2026-01-01-13111-bldg-55213",
+            "2026-01-01-13111-bldg-29995"
+          ]
+        ],
+        "enumerated": 24
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/decoded_feasibility",
+      "dimension": "feasibility",
+      "requirement": "decoded_feasibility",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "route": [
+          "2026-01-01-13111-bldg-96242",
+          "2026-01-01-13111-bldg-79791",
+          "2026-01-01-13111-bldg-55213",
+          "2026-01-01-13111-bldg-29995"
+        ],
+        "recomputed_cost": 2.917140287015925
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/route_objective_gap",
+      "dimension": "scientific_validity",
+      "requirement": "route_objective_gap",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "cost": 2.917140287015925,
+        "exact_cost": 2.917140287015925,
+        "absolute_gap": 0.0,
+        "relative_gap": 0.0,
+        "gap_stored_in_B1": true
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/raw_probability_integrity",
+      "dimension": "probability_integrity",
+      "requirement": "raw_probability_integrity",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "probability_total": 1.000000000000009,
+        "P_feasible_exact": 0.04875296437628228,
+        "P_opt": 0.002282607794609613,
+        "invalid_probability_mass": 0.9512470356237268
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/recorded_authority_hashes",
+      "dimension": "provenance_completeness",
+      "requirement": "recorded_authority_hashes",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": [
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/manifest.json",
+          "expected_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78",
+          "actual_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78"
+        },
+        {
+          "path": "reproducibility/config/traffic_simulation/r20_formal_penalty/20260911_r20_formal_lambda_v1.json",
+          "expected_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95",
+          "actual_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/implementation_authority_v3.json",
+          "expected_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3",
+          "actual_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_authorization.json",
+          "expected_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a",
+          "actual_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_planned_manifest.json",
+          "expected_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3",
+          "actual_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank03.json",
+          "expected_sha256": "bf61f62b4e485b1136d1f915d9ddf354459dff092d1d2b9391c26d9f6ac9cea1",
+          "actual_sha256": "bf61f62b4e485b1136d1f915d9ddf354459dff092d1d2b9391c26d9f6ac9cea1"
+        }
+      ]
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/exact_optimum_recovery",
+      "dimension": "exact_optimum_recovery",
+      "requirement": "exact_optimum_recovery",
+      "required": "OPTIONAL",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "route_in_independent_optimal_set": true
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/optimizer_convergence",
+      "dimension": "optimizer_convergence",
+      "requirement": "optimizer_convergence",
+      "required": "OPTIONAL",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "FAILED",
+      "evidence": "optimizer reported success=false; scientific validity evaluated separately"
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/record_SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "record_SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "FAILED",
+      "evidence": "SHA mismatch: reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead.json"
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/conditions",
+      "dimension": "execution_completeness",
+      "requirement": "conditions",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "instance_id": "routing_v18_n4_rank05",
+        "n": 4,
+        "p": 2,
+        "optimizer": "NELDER_MEAD",
+        "initialization_id": "fixed_0.1"
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/termination_metadata",
+      "dimension": "scientific_validity",
+      "requirement": "termination_metadata",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "success": true,
+        "nfev": 223,
+        "termination": "OPTIMIZER_REPORTED_SUCCESS",
+        "message": "Optimization terminated successfully."
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/independent_reference",
+      "dimension": "scientific_validity",
+      "requirement": "independent_reference",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "optimum": 2.6237490530220966,
+        "optimal_routes": [
+          [
+            "2026-01-01-13111-bldg-138702",
+            "2026-01-01-13111-bldg-79791",
+            "2026-01-01-13111-bldg-55213",
+            "2026-01-01-13111-bldg-29995"
+          ]
+        ],
+        "enumerated": 24
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/decoded_feasibility",
+      "dimension": "feasibility",
+      "requirement": "decoded_feasibility",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "route": [
+          "2026-01-01-13111-bldg-138702",
+          "2026-01-01-13111-bldg-79791",
+          "2026-01-01-13111-bldg-55213",
+          "2026-01-01-13111-bldg-29995"
+        ],
+        "recomputed_cost": 2.6237490530220966
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/route_objective_gap",
+      "dimension": "scientific_validity",
+      "requirement": "route_objective_gap",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "cost": 2.6237490530220966,
+        "exact_cost": 2.6237490530220966,
+        "absolute_gap": 0.0,
+        "relative_gap": 0.0,
+        "gap_stored_in_B1": true
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/raw_probability_integrity",
+      "dimension": "probability_integrity",
+      "requirement": "raw_probability_integrity",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "probability_total": 0.9999999999999901,
+        "P_feasible_exact": 0.13422255633418514,
+        "P_opt": 0.005976562431752008,
+        "invalid_probability_mass": 0.865777443665805
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/recorded_authority_hashes",
+      "dimension": "provenance_completeness",
+      "requirement": "recorded_authority_hashes",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": [
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/manifest.json",
+          "expected_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78",
+          "actual_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78"
+        },
+        {
+          "path": "reproducibility/config/traffic_simulation/r20_formal_penalty/20260911_r20_formal_lambda_v1.json",
+          "expected_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95",
+          "actual_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/implementation_authority_v3.json",
+          "expected_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3",
+          "actual_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_authorization.json",
+          "expected_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a",
+          "actual_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_planned_manifest.json",
+          "expected_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3",
+          "actual_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank05.json",
+          "expected_sha256": "e7d9cac7a7a63edf0b6cb7335f953f87dc08e511533984c2121273dc1ec24bcf",
+          "actual_sha256": "e7d9cac7a7a63edf0b6cb7335f953f87dc08e511533984c2121273dc1ec24bcf"
+        }
+      ]
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/exact_optimum_recovery",
+      "dimension": "exact_optimum_recovery",
+      "requirement": "exact_optimum_recovery",
+      "required": "OPTIONAL",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "route_in_independent_optimal_set": true
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/optimizer_convergence",
+      "dimension": "optimizer_convergence",
+      "requirement": "optimizer_convergence",
+      "required": "OPTIONAL",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "scope": "native optimizer success only; not global convergence"
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/record_SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "record_SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "FAILED",
+      "evidence": "SHA mismatch: reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead.json"
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/conditions",
+      "dimension": "execution_completeness",
+      "requirement": "conditions",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "instance_id": "routing_v18_n4_rank05",
+        "n": 4,
+        "p": 3,
+        "optimizer": "NELDER_MEAD",
+        "initialization_id": "fixed_0.1"
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/termination_metadata",
+      "dimension": "scientific_validity",
+      "requirement": "termination_metadata",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "success": false,
+        "nfev": 471,
+        "termination": "MAXITER_REACHED",
+        "message": "Maximum number of iterations has been exceeded."
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/independent_reference",
+      "dimension": "scientific_validity",
+      "requirement": "independent_reference",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "optimum": 2.6237490530220966,
+        "optimal_routes": [
+          [
+            "2026-01-01-13111-bldg-138702",
+            "2026-01-01-13111-bldg-79791",
+            "2026-01-01-13111-bldg-55213",
+            "2026-01-01-13111-bldg-29995"
+          ]
+        ],
+        "enumerated": 24
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/decoded_feasibility",
+      "dimension": "feasibility",
+      "requirement": "decoded_feasibility",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "route": [
+          "2026-01-01-13111-bldg-138702",
+          "2026-01-01-13111-bldg-79791",
+          "2026-01-01-13111-bldg-55213",
+          "2026-01-01-13111-bldg-29995"
+        ],
+        "recomputed_cost": 2.6237490530220966
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/route_objective_gap",
+      "dimension": "scientific_validity",
+      "requirement": "route_objective_gap",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "cost": 2.6237490530220966,
+        "exact_cost": 2.6237490530220966,
+        "absolute_gap": 0.0,
+        "relative_gap": 0.0,
+        "gap_stored_in_B1": true
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/raw_probability_integrity",
+      "dimension": "probability_integrity",
+      "requirement": "raw_probability_integrity",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "probability_total": 1.000000000000007,
+        "P_feasible_exact": 0.05608904386165815,
+        "P_opt": 0.0026518034504426032,
+        "invalid_probability_mass": 0.943910956138349
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/recorded_authority_hashes",
+      "dimension": "provenance_completeness",
+      "requirement": "recorded_authority_hashes",
+      "required": "REQUIRED",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": [
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/manifest.json",
+          "expected_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78",
+          "actual_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78"
+        },
+        {
+          "path": "reproducibility/config/traffic_simulation/r20_formal_penalty/20260911_r20_formal_lambda_v1.json",
+          "expected_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95",
+          "actual_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/implementation_authority_v3.json",
+          "expected_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3",
+          "actual_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_authorization.json",
+          "expected_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a",
+          "actual_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_planned_manifest.json",
+          "expected_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3",
+          "actual_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank05.json",
+          "expected_sha256": "e7d9cac7a7a63edf0b6cb7335f953f87dc08e511533984c2121273dc1ec24bcf",
+          "actual_sha256": "e7d9cac7a7a63edf0b6cb7335f953f87dc08e511533984c2121273dc1ec24bcf"
+        }
+      ]
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/exact_optimum_recovery",
+      "dimension": "exact_optimum_recovery",
+      "requirement": "exact_optimum_recovery",
+      "required": "OPTIONAL",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "route_in_independent_optimal_set": true
+      }
+    },
+    {
+      "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/optimizer_convergence",
+      "dimension": "optimizer_convergence",
+      "requirement": "optimizer_convergence",
+      "required": "OPTIONAL",
+      "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "FAILED",
+      "evidence": "optimizer reported success=false; scientific validity evaluated separately"
+    },
+    {
+      "validation_id": "B2/baseline_manifest_SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "baseline_manifest_SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v1/b2_cobyla_baseline_manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b1/20260911_v2/manifest.json",
+        "expected_sha256": "b73d48200bf2cb6c61834cf8cf60ad9b535114074322bea6dfc8327d2981983d",
+        "actual_sha256": "b73d48200bf2cb6c61834cf8cf60ad9b535114074322bea6dfc8327d2981983d"
+      }
+    },
+    {
+      "validation_id": "B2/routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_cobyla/baseline_SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "baseline_SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v1/b2_cobyla_baseline_manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b1/20260911_v2/runs/routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_cobyla.json",
+        "expected_sha256": "eca78df2717eab9159a222bc64ff8d41d2db8dfdb00b97dee96ce3ff3d287af9",
+        "actual_sha256": "eca78df2717eab9159a222bc64ff8d41d2db8dfdb00b97dee96ce3ff3d287af9"
+      }
+    },
+    {
+      "validation_id": "B2/routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_cobyla/baseline_SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "baseline_SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v1/b2_cobyla_baseline_manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b1/20260911_v2/runs/routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_cobyla.json",
+        "expected_sha256": "ec585d1da56ded2afebd76f8de4b6fdeea4766ed7fe4ff6102b06c0e0a6a074f",
+        "actual_sha256": "ec585d1da56ded2afebd76f8de4b6fdeea4766ed7fe4ff6102b06c0e0a6a074f"
+      }
+    },
+    {
+      "validation_id": "B2/routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_cobyla/baseline_SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "baseline_SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v1/b2_cobyla_baseline_manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b1/20260911_v2/runs/routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_cobyla.json",
+        "expected_sha256": "3d488cf09d5a6c70d16152f47bc22893e2b5ca0f0adcd91f61fea614d135fe28",
+        "actual_sha256": "3d488cf09d5a6c70d16152f47bc22893e2b5ca0f0adcd91f61fea614d135fe28"
+      }
+    },
+    {
+      "validation_id": "B2/routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_cobyla/baseline_SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "baseline_SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v1/b2_cobyla_baseline_manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b1/20260911_v2/runs/routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_cobyla.json",
+        "expected_sha256": "c4a3db80ab57b2ce45903ae9d7314df15bc517958cd92ff58227f428ad535de9",
+        "actual_sha256": "c4a3db80ab57b2ce45903ae9d7314df15bc517958cd92ff58227f428ad535de9"
+      }
+    },
+    {
+      "validation_id": "B2/routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_cobyla/baseline_SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "baseline_SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v1/b2_cobyla_baseline_manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b1/20260911_v2/runs/routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_cobyla.json",
+        "expected_sha256": "c59671e997406a65a411bfe10347fdcfa970a6a47f1977cc7b61f79094a683c7",
+        "actual_sha256": "c59671e997406a65a411bfe10347fdcfa970a6a47f1977cc7b61f79094a683c7"
+      }
+    },
+    {
+      "validation_id": "B2/routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_cobyla/baseline_SHA",
+      "dimension": "artifact_integrity",
+      "requirement": "baseline_SHA",
+      "required": "REQUIRED",
+      "source_authority": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v1/b2_cobyla_baseline_manifest.json",
+      "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+      "result": "VERIFIED",
+      "evidence": {
+        "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b1/20260911_v2/runs/routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_cobyla.json",
+        "expected_sha256": "2dca26937d7ae4885e3627c3ff3002939bdbcd95c3641f98fe4b175add99ce84",
+        "actual_sha256": "2dca26937d7ae4885e3627c3ff3002939bdbcd95c3641f98fe4b175add99ce84"
+      }
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead",
+      "checks": [
+        {
+          "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/conditions",
+          "dimension": "execution_completeness",
+          "requirement": "conditions",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "instance_id": "routing_v18_n4_rank01",
+            "n": 4,
+            "p": 2,
+            "optimizer": "NELDER_MEAD",
+            "initialization_id": "fixed_0.1"
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/termination_metadata",
+          "dimension": "scientific_validity",
+          "requirement": "termination_metadata",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "success": true,
+            "nfev": 279,
+            "termination": "OPTIMIZER_REPORTED_SUCCESS",
+            "message": "Optimization terminated successfully."
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/independent_reference",
+          "dimension": "scientific_validity",
+          "requirement": "independent_reference",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "optimum": 2.825072388446065,
+            "optimal_routes": [
+              [
+                "2026-01-01-13111-bldg-138702",
+                "2026-01-01-13111-bldg-130096",
+                "2026-01-01-13111-bldg-2510665",
+                "2026-01-01-13111-bldg-117556"
+              ]
+            ],
+            "enumerated": 24
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/decoded_feasibility",
+          "dimension": "feasibility",
+          "requirement": "decoded_feasibility",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "route": [
+              "2026-01-01-13111-bldg-138702",
+              "2026-01-01-13111-bldg-130096",
+              "2026-01-01-13111-bldg-2510665",
+              "2026-01-01-13111-bldg-117556"
+            ],
+            "recomputed_cost": 2.825072388446065
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/route_objective_gap",
+          "dimension": "scientific_validity",
+          "requirement": "route_objective_gap",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "cost": 2.825072388446065,
+            "exact_cost": 2.825072388446065,
+            "absolute_gap": 0.0,
+            "relative_gap": 0.0,
+            "gap_stored_in_B1": true
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/raw_probability_integrity",
+          "dimension": "probability_integrity",
+          "requirement": "raw_probability_integrity",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "probability_total": 0.9999999999999982,
+            "P_feasible_exact": 0.13898506308817188,
+            "P_opt": 0.00596156621991719,
+            "invalid_probability_mass": 0.8610149369118263
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/recorded_authority_hashes",
+          "dimension": "provenance_completeness",
+          "requirement": "recorded_authority_hashes",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": [
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/manifest.json",
+              "expected_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78",
+              "actual_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78"
+            },
+            {
+              "path": "reproducibility/config/traffic_simulation/r20_formal_penalty/20260911_r20_formal_lambda_v1.json",
+              "expected_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95",
+              "actual_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/implementation_authority_v3.json",
+              "expected_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3",
+              "actual_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_authorization.json",
+              "expected_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a",
+              "actual_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_planned_manifest.json",
+              "expected_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3",
+              "actual_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank01.json",
+              "expected_sha256": "38a9f5990aa474cc0127f54a331025592b82c26ea3960ebf22f9ecf1149e11b1",
+              "actual_sha256": "38a9f5990aa474cc0127f54a331025592b82c26ea3960ebf22f9ecf1149e11b1"
+            }
+          ]
+        },
+        {
+          "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/exact_optimum_recovery",
+          "dimension": "exact_optimum_recovery",
+          "requirement": "exact_optimum_recovery",
+          "required": "OPTIONAL",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "route_in_independent_optimal_set": true
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead/optimizer_convergence",
+          "dimension": "optimizer_convergence",
+          "requirement": "optimizer_convergence",
+          "required": "OPTIONAL",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "scope": "native optimizer success only; not global convergence"
+          }
+        }
+      ],
+      "status": "VERIFIED"
+    },
+    {
+      "run_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead",
+      "checks": [
+        {
+          "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/conditions",
+          "dimension": "execution_completeness",
+          "requirement": "conditions",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "instance_id": "routing_v18_n4_rank01",
+            "n": 4,
+            "p": 3,
+            "optimizer": "NELDER_MEAD",
+            "initialization_id": "fixed_0.1"
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/termination_metadata",
+          "dimension": "scientific_validity",
+          "requirement": "termination_metadata",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "success": false,
+            "nfev": 446,
+            "termination": "MAXITER_REACHED",
+            "message": "Maximum number of iterations has been exceeded."
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/independent_reference",
+          "dimension": "scientific_validity",
+          "requirement": "independent_reference",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "optimum": 2.825072388446065,
+            "optimal_routes": [
+              [
+                "2026-01-01-13111-bldg-138702",
+                "2026-01-01-13111-bldg-130096",
+                "2026-01-01-13111-bldg-2510665",
+                "2026-01-01-13111-bldg-117556"
+              ]
+            ],
+            "enumerated": 24
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/decoded_feasibility",
+          "dimension": "feasibility",
+          "requirement": "decoded_feasibility",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "route": [
+              "2026-01-01-13111-bldg-138702",
+              "2026-01-01-13111-bldg-130096",
+              "2026-01-01-13111-bldg-2510665",
+              "2026-01-01-13111-bldg-117556"
+            ],
+            "recomputed_cost": 2.825072388446065
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/route_objective_gap",
+          "dimension": "scientific_validity",
+          "requirement": "route_objective_gap",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "cost": 2.825072388446065,
+            "exact_cost": 2.825072388446065,
+            "absolute_gap": 0.0,
+            "relative_gap": 0.0,
+            "gap_stored_in_B1": true
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/raw_probability_integrity",
+          "dimension": "probability_integrity",
+          "requirement": "raw_probability_integrity",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "probability_total": 1.0000000000000104,
+            "P_feasible_exact": 0.15475382876727714,
+            "P_opt": 0.006831144581396031,
+            "invalid_probability_mass": 0.8452461712327333
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/recorded_authority_hashes",
+          "dimension": "provenance_completeness",
+          "requirement": "recorded_authority_hashes",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": [
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/manifest.json",
+              "expected_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78",
+              "actual_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78"
+            },
+            {
+              "path": "reproducibility/config/traffic_simulation/r20_formal_penalty/20260911_r20_formal_lambda_v1.json",
+              "expected_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95",
+              "actual_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/implementation_authority_v3.json",
+              "expected_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3",
+              "actual_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_authorization.json",
+              "expected_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a",
+              "actual_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_planned_manifest.json",
+              "expected_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3",
+              "actual_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank01.json",
+              "expected_sha256": "38a9f5990aa474cc0127f54a331025592b82c26ea3960ebf22f9ecf1149e11b1",
+              "actual_sha256": "38a9f5990aa474cc0127f54a331025592b82c26ea3960ebf22f9ecf1149e11b1"
+            }
+          ]
+        },
+        {
+          "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/exact_optimum_recovery",
+          "dimension": "exact_optimum_recovery",
+          "requirement": "exact_optimum_recovery",
+          "required": "OPTIONAL",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "route_in_independent_optimal_set": true
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead/optimizer_convergence",
+          "dimension": "optimizer_convergence",
+          "requirement": "optimizer_convergence",
+          "required": "OPTIONAL",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "FAILED",
+          "evidence": "optimizer reported success=false; scientific validity evaluated separately"
+        }
+      ],
+      "status": "VERIFIED"
+    },
+    {
+      "run_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead",
+      "checks": [
+        {
+          "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/conditions",
+          "dimension": "execution_completeness",
+          "requirement": "conditions",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "instance_id": "routing_v18_n4_rank03",
+            "n": 4,
+            "p": 2,
+            "optimizer": "NELDER_MEAD",
+            "initialization_id": "fixed_0.1"
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/termination_metadata",
+          "dimension": "scientific_validity",
+          "requirement": "termination_metadata",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "success": true,
+            "nfev": 211,
+            "termination": "OPTIMIZER_REPORTED_SUCCESS",
+            "message": "Optimization terminated successfully."
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/independent_reference",
+          "dimension": "scientific_validity",
+          "requirement": "independent_reference",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "optimum": 2.917140287015925,
+            "optimal_routes": [
+              [
+                "2026-01-01-13111-bldg-96242",
+                "2026-01-01-13111-bldg-79791",
+                "2026-01-01-13111-bldg-55213",
+                "2026-01-01-13111-bldg-29995"
+              ]
+            ],
+            "enumerated": 24
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/decoded_feasibility",
+          "dimension": "feasibility",
+          "requirement": "decoded_feasibility",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "route": [
+              "2026-01-01-13111-bldg-96242",
+              "2026-01-01-13111-bldg-79791",
+              "2026-01-01-13111-bldg-55213",
+              "2026-01-01-13111-bldg-29995"
+            ],
+            "recomputed_cost": 2.917140287015925
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/route_objective_gap",
+          "dimension": "scientific_validity",
+          "requirement": "route_objective_gap",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "cost": 2.917140287015925,
+            "exact_cost": 2.917140287015925,
+            "absolute_gap": 0.0,
+            "relative_gap": 0.0,
+            "gap_stored_in_B1": true
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/raw_probability_integrity",
+          "dimension": "probability_integrity",
+          "requirement": "raw_probability_integrity",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "probability_total": 1.000000000000001,
+            "P_feasible_exact": 0.13508406760463945,
+            "P_opt": 0.0060573820403665235,
+            "invalid_probability_mass": 0.8649159323953617
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/recorded_authority_hashes",
+          "dimension": "provenance_completeness",
+          "requirement": "recorded_authority_hashes",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": [
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/manifest.json",
+              "expected_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78",
+              "actual_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78"
+            },
+            {
+              "path": "reproducibility/config/traffic_simulation/r20_formal_penalty/20260911_r20_formal_lambda_v1.json",
+              "expected_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95",
+              "actual_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/implementation_authority_v3.json",
+              "expected_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3",
+              "actual_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_authorization.json",
+              "expected_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a",
+              "actual_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_planned_manifest.json",
+              "expected_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3",
+              "actual_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank03.json",
+              "expected_sha256": "bf61f62b4e485b1136d1f915d9ddf354459dff092d1d2b9391c26d9f6ac9cea1",
+              "actual_sha256": "bf61f62b4e485b1136d1f915d9ddf354459dff092d1d2b9391c26d9f6ac9cea1"
+            }
+          ]
+        },
+        {
+          "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/exact_optimum_recovery",
+          "dimension": "exact_optimum_recovery",
+          "requirement": "exact_optimum_recovery",
+          "required": "OPTIONAL",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "route_in_independent_optimal_set": true
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead/optimizer_convergence",
+          "dimension": "optimizer_convergence",
+          "requirement": "optimizer_convergence",
+          "required": "OPTIONAL",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "scope": "native optimizer success only; not global convergence"
+          }
+        }
+      ],
+      "status": "VERIFIED"
+    },
+    {
+      "run_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead",
+      "checks": [
+        {
+          "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/conditions",
+          "dimension": "execution_completeness",
+          "requirement": "conditions",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "instance_id": "routing_v18_n4_rank03",
+            "n": 4,
+            "p": 3,
+            "optimizer": "NELDER_MEAD",
+            "initialization_id": "fixed_0.1"
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/termination_metadata",
+          "dimension": "scientific_validity",
+          "requirement": "termination_metadata",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "success": false,
+            "nfev": 470,
+            "termination": "MAXITER_REACHED",
+            "message": "Maximum number of iterations has been exceeded."
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/independent_reference",
+          "dimension": "scientific_validity",
+          "requirement": "independent_reference",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "optimum": 2.917140287015925,
+            "optimal_routes": [
+              [
+                "2026-01-01-13111-bldg-96242",
+                "2026-01-01-13111-bldg-79791",
+                "2026-01-01-13111-bldg-55213",
+                "2026-01-01-13111-bldg-29995"
+              ]
+            ],
+            "enumerated": 24
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/decoded_feasibility",
+          "dimension": "feasibility",
+          "requirement": "decoded_feasibility",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "route": [
+              "2026-01-01-13111-bldg-96242",
+              "2026-01-01-13111-bldg-79791",
+              "2026-01-01-13111-bldg-55213",
+              "2026-01-01-13111-bldg-29995"
+            ],
+            "recomputed_cost": 2.917140287015925
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/route_objective_gap",
+          "dimension": "scientific_validity",
+          "requirement": "route_objective_gap",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "cost": 2.917140287015925,
+            "exact_cost": 2.917140287015925,
+            "absolute_gap": 0.0,
+            "relative_gap": 0.0,
+            "gap_stored_in_B1": true
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/raw_probability_integrity",
+          "dimension": "probability_integrity",
+          "requirement": "raw_probability_integrity",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "probability_total": 1.000000000000009,
+            "P_feasible_exact": 0.04875296437628228,
+            "P_opt": 0.002282607794609613,
+            "invalid_probability_mass": 0.9512470356237268
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/recorded_authority_hashes",
+          "dimension": "provenance_completeness",
+          "requirement": "recorded_authority_hashes",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": [
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/manifest.json",
+              "expected_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78",
+              "actual_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78"
+            },
+            {
+              "path": "reproducibility/config/traffic_simulation/r20_formal_penalty/20260911_r20_formal_lambda_v1.json",
+              "expected_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95",
+              "actual_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/implementation_authority_v3.json",
+              "expected_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3",
+              "actual_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_authorization.json",
+              "expected_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a",
+              "actual_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_planned_manifest.json",
+              "expected_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3",
+              "actual_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank03.json",
+              "expected_sha256": "bf61f62b4e485b1136d1f915d9ddf354459dff092d1d2b9391c26d9f6ac9cea1",
+              "actual_sha256": "bf61f62b4e485b1136d1f915d9ddf354459dff092d1d2b9391c26d9f6ac9cea1"
+            }
+          ]
+        },
+        {
+          "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/exact_optimum_recovery",
+          "dimension": "exact_optimum_recovery",
+          "requirement": "exact_optimum_recovery",
+          "required": "OPTIONAL",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "route_in_independent_optimal_set": true
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead/optimizer_convergence",
+          "dimension": "optimizer_convergence",
+          "requirement": "optimizer_convergence",
+          "required": "OPTIONAL",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "FAILED",
+          "evidence": "optimizer reported success=false; scientific validity evaluated separately"
+        }
+      ],
+      "status": "VERIFIED"
+    },
+    {
+      "run_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead",
+      "checks": [
+        {
+          "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/conditions",
+          "dimension": "execution_completeness",
+          "requirement": "conditions",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "instance_id": "routing_v18_n4_rank05",
+            "n": 4,
+            "p": 2,
+            "optimizer": "NELDER_MEAD",
+            "initialization_id": "fixed_0.1"
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/termination_metadata",
+          "dimension": "scientific_validity",
+          "requirement": "termination_metadata",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "success": true,
+            "nfev": 223,
+            "termination": "OPTIMIZER_REPORTED_SUCCESS",
+            "message": "Optimization terminated successfully."
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/independent_reference",
+          "dimension": "scientific_validity",
+          "requirement": "independent_reference",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "optimum": 2.6237490530220966,
+            "optimal_routes": [
+              [
+                "2026-01-01-13111-bldg-138702",
+                "2026-01-01-13111-bldg-79791",
+                "2026-01-01-13111-bldg-55213",
+                "2026-01-01-13111-bldg-29995"
+              ]
+            ],
+            "enumerated": 24
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/decoded_feasibility",
+          "dimension": "feasibility",
+          "requirement": "decoded_feasibility",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "route": [
+              "2026-01-01-13111-bldg-138702",
+              "2026-01-01-13111-bldg-79791",
+              "2026-01-01-13111-bldg-55213",
+              "2026-01-01-13111-bldg-29995"
+            ],
+            "recomputed_cost": 2.6237490530220966
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/route_objective_gap",
+          "dimension": "scientific_validity",
+          "requirement": "route_objective_gap",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "cost": 2.6237490530220966,
+            "exact_cost": 2.6237490530220966,
+            "absolute_gap": 0.0,
+            "relative_gap": 0.0,
+            "gap_stored_in_B1": true
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/raw_probability_integrity",
+          "dimension": "probability_integrity",
+          "requirement": "raw_probability_integrity",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "probability_total": 0.9999999999999901,
+            "P_feasible_exact": 0.13422255633418514,
+            "P_opt": 0.005976562431752008,
+            "invalid_probability_mass": 0.865777443665805
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/recorded_authority_hashes",
+          "dimension": "provenance_completeness",
+          "requirement": "recorded_authority_hashes",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": [
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/manifest.json",
+              "expected_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78",
+              "actual_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78"
+            },
+            {
+              "path": "reproducibility/config/traffic_simulation/r20_formal_penalty/20260911_r20_formal_lambda_v1.json",
+              "expected_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95",
+              "actual_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/implementation_authority_v3.json",
+              "expected_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3",
+              "actual_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_authorization.json",
+              "expected_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a",
+              "actual_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_planned_manifest.json",
+              "expected_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3",
+              "actual_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank05.json",
+              "expected_sha256": "e7d9cac7a7a63edf0b6cb7335f953f87dc08e511533984c2121273dc1ec24bcf",
+              "actual_sha256": "e7d9cac7a7a63edf0b6cb7335f953f87dc08e511533984c2121273dc1ec24bcf"
+            }
+          ]
+        },
+        {
+          "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/exact_optimum_recovery",
+          "dimension": "exact_optimum_recovery",
+          "requirement": "exact_optimum_recovery",
+          "required": "OPTIONAL",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "route_in_independent_optimal_set": true
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead/optimizer_convergence",
+          "dimension": "optimizer_convergence",
+          "requirement": "optimizer_convergence",
+          "required": "OPTIONAL",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "scope": "native optimizer success only; not global convergence"
+          }
+        }
+      ],
+      "status": "VERIFIED"
+    },
+    {
+      "run_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead",
+      "checks": [
+        {
+          "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/conditions",
+          "dimension": "execution_completeness",
+          "requirement": "conditions",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "instance_id": "routing_v18_n4_rank05",
+            "n": 4,
+            "p": 3,
+            "optimizer": "NELDER_MEAD",
+            "initialization_id": "fixed_0.1"
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/termination_metadata",
+          "dimension": "scientific_validity",
+          "requirement": "termination_metadata",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "success": false,
+            "nfev": 471,
+            "termination": "MAXITER_REACHED",
+            "message": "Maximum number of iterations has been exceeded."
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/independent_reference",
+          "dimension": "scientific_validity",
+          "requirement": "independent_reference",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "optimum": 2.6237490530220966,
+            "optimal_routes": [
+              [
+                "2026-01-01-13111-bldg-138702",
+                "2026-01-01-13111-bldg-79791",
+                "2026-01-01-13111-bldg-55213",
+                "2026-01-01-13111-bldg-29995"
+              ]
+            ],
+            "enumerated": 24
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/decoded_feasibility",
+          "dimension": "feasibility",
+          "requirement": "decoded_feasibility",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "route": [
+              "2026-01-01-13111-bldg-138702",
+              "2026-01-01-13111-bldg-79791",
+              "2026-01-01-13111-bldg-55213",
+              "2026-01-01-13111-bldg-29995"
+            ],
+            "recomputed_cost": 2.6237490530220966
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/route_objective_gap",
+          "dimension": "scientific_validity",
+          "requirement": "route_objective_gap",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "cost": 2.6237490530220966,
+            "exact_cost": 2.6237490530220966,
+            "absolute_gap": 0.0,
+            "relative_gap": 0.0,
+            "gap_stored_in_B1": true
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/raw_probability_integrity",
+          "dimension": "probability_integrity",
+          "requirement": "raw_probability_integrity",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "probability_total": 1.000000000000007,
+            "P_feasible_exact": 0.05608904386165815,
+            "P_opt": 0.0026518034504426032,
+            "invalid_probability_mass": 0.943910956138349
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/recorded_authority_hashes",
+          "dimension": "provenance_completeness",
+          "requirement": "recorded_authority_hashes",
+          "required": "REQUIRED",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": [
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/manifest.json",
+              "expected_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78",
+              "actual_sha256": "c9cb0078d391353ca3a0afbad58f2a57f673fb05c8bcedabe5b8e54991ceef78"
+            },
+            {
+              "path": "reproducibility/config/traffic_simulation/r20_formal_penalty/20260911_r20_formal_lambda_v1.json",
+              "expected_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95",
+              "actual_sha256": "8f6f3b8feeeb85b556dc6fb23478fa5ef529bfac2ac4beb68c2d2bc7ff62bf95"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/implementation_authority_v3.json",
+              "expected_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3",
+              "actual_sha256": "b0e3013dda0c89aa5aec85b5bbee3af44f956a47e427a51deeee5fd277d2fab3"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_authorization.json",
+              "expected_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a",
+              "actual_sha256": "8dd330c51372908e356d0fe0facfed8b10a79c8f82c6be1ddfc46f870560ee1a"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2_authority/20260911_v2/b2_reexecution_planned_manifest.json",
+              "expected_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3",
+              "actual_sha256": "5600f9055fc857761f795721f347dc8234b81858b9a379bc750a8452b9bd9cc3"
+            },
+            {
+              "path": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank05.json",
+              "expected_sha256": "e7d9cac7a7a63edf0b6cb7335f953f87dc08e511533984c2121273dc1ec24bcf",
+              "actual_sha256": "e7d9cac7a7a63edf0b6cb7335f953f87dc08e511533984c2121273dc1ec24bcf"
+            }
+          ]
+        },
+        {
+          "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/exact_optimum_recovery",
+          "dimension": "exact_optimum_recovery",
+          "requirement": "exact_optimum_recovery",
+          "required": "OPTIONAL",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "VERIFIED",
+          "evidence": {
+            "route_in_independent_optimal_set": true
+          }
+        },
+        {
+          "validation_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead/optimizer_convergence",
+          "dimension": "optimizer_convergence",
+          "requirement": "optimizer_convergence",
+          "required": "OPTIONAL",
+          "source_authority": "planned manifest / frozen R20 input / exact reference / initialization authority",
+          "check_implementation": "traffic_simulation.validation.r23_evidence_gate",
+          "result": "FAILED",
+          "evidence": "optimizer reported success=false; scientific validity evaluated separately"
+        }
+      ],
+      "status": "VERIFIED"
+    }
+  ],
+  "dimensions": {
+    "artifact_integrity": "FAILED",
+    "exact_optimum_recovery": "VERIFIED",
+    "execution_completeness": "VERIFIED",
+    "feasibility": "VERIFIED",
+    "optimizer_convergence": "FAILED",
+    "probability_integrity": "VERIFIED",
+    "provenance_completeness": "VERIFIED",
+    "scientific_validity": "VERIFIED"
+  },
+  "status": "FAILED",
+  "result_counts": {
+    "VERIFIED": 76,
+    "FAILED": 9
+  },
+  "scope": "Integrity of retained evidence, not new experiment authorization. Missing/contradictory historical evidence stays visible; no repair or exclusion.",
+  "optional_checks": [
+    "optimizer_convergence",
+    "exact_optimum_recovery"
+  ],
+  "not_applicable": [
+    "nit numeric for COBYLA (native API may return None)",
+    "stored B1 gap (derived independently instead)"
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "issues": [
+    {
+      "id": "C01",
+      "topic": "audit acceptance",
+      "source_a": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_code_audit/20260913_v2/final_classification.json",
+      "source_b": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_code_audit/20260913_v2_independent/acceptance_gate.json",
+      "conflict": "Earlier PASS/CLOSED and R24 next versus later independent FAIL",
+      "current_interpretation": "Prior audit acceptance SUPERSEDED_BY_INDEPENDENT_AUDIT; current FAIL pending re-audit",
+      "needs_edit": false,
+      "edit_state": "HISTORICAL_PRESERVED_OR_DIMENSIONS_SEPARATED"
+    },
+    {
+      "id": "C02",
+      "topic": "I03 closure",
+      "source_a": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/README.md",
+      "source_b": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/i03_closure_gate.json",
+      "conflict": "Old INCOMPLETE/PARTIAL versus later I03 RESOLVED",
+      "current_interpretation": "Role-specific I03 continuation supersedes old I03 open state; old evidence preserved",
+      "needs_edit": false,
+      "edit_state": "HISTORICAL_PRESERVED_OR_DIMENSIONS_SEPARATED"
+    },
+    {
+      "id": "C03",
+      "topic": "B2 integrity",
+      "source_a": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/integrity.json",
+      "source_b": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/b2_validation_review.json",
+      "conflict": "Historical artifact PASS versus six SHA failures",
+      "current_interpretation": "B2 scientific integrity VERIFIED independently from artifact integrity FAILED; new unresolved item",
+      "needs_edit": false,
+      "edit_state": "HISTORICAL_PRESERVED_OR_DIMENSIONS_SEPARATED"
+    },
+    {
+      "id": "C04",
+      "topic": "n5 optimizer wording",
+      "source_a": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_evidence_review/20260913_v1/n5_optimizer_summary.json",
+      "source_b": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank01/scientific_result.json",
+      "conflict": "Earlier convergence wording versus native success=false",
+      "current_interpretation": "Route recovery 3/3; optimizer success 2/3; current docs already corrected at start",
+      "needs_edit": false,
+      "edit_state": "HISTORICAL_PRESERVED_OR_DIMENSIONS_SEPARATED"
+    },
+    {
+      "id": "C05",
+      "topic": "runtime speedup",
+      "source_a": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/runtime_benchmark.json",
+      "source_b": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/i08_benchmark_claim_remediation.json",
+      "conflict": "33.7/speedup extrapolation lacks matched workload",
+      "current_interpretation": "PRELIMINARY_ONLY; no formal speedup claim",
+      "needs_edit": false,
+      "edit_state": "HISTORICAL_PRESERVED_OR_DIMENSIONS_SEPARATED"
+    },
+    {
+      "id": "C06",
+      "topic": "memory ratio",
+      "source_a": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/memory_benchmark.json",
+      "source_b": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/i08_benchmark_claim_remediation.json",
+      "conflict": "327 memory ratio conflates absolute peak with candidate metric",
+      "current_interpretation": "No memory reduction ratio; rank01 absolute peak retained",
+      "needs_edit": false,
+      "edit_state": "HISTORICAL_PRESERVED_OR_DIMENSIONS_SEPARATED"
+    },
+    {
+      "id": "C07",
+      "topic": "penalty margin",
+      "source_a": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_penalty_authority.json",
+      "source_b": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/i07_lambda_erratum.json",
+      "conflict": "Old lambda-bound 0.5 and margin 1.0 versus correct 1 and 2",
+      "current_interpretation": "λ=4 unchanged, derived arithmetic erratum only",
+      "needs_edit": false,
+      "edit_state": "HISTORICAL_PRESERVED_OR_DIMENSIONS_SEPARATED"
+    },
+    {
+      "id": "C08",
+      "topic": "execution provenance",
+      "source_a": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs",
+      "source_b": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/provenance_status_by_run.json",
+      "conflict": "Recorded HEAD does not reconstruct runtime sources; RSS conflict",
+      "current_interpretation": "STRONGLY_INFERRED source reconstruction, partial process/resource attestation; not reauthorized",
+      "needs_edit": false,
+      "edit_state": "HISTORICAL_PRESERVED_OR_DIMENSIONS_SEPARATED"
+    },
+    {
+      "id": "C09",
+      "topic": "R24 status",
+      "source_a": "05_src/traffic_simulation/R23_STATUS.md",
+      "source_b": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/final_classification.json",
+      "conflict": "Old NOT_AUTHORIZED_PENDING_R23_REMEDIATION label implies remediation still pending",
+      "current_interpretation": "R24_NOT_STARTED_BLOCKED_PENDING_R23_POST_REMEDIATION_REAUDIT",
+      "needs_edit": true,
+      "edit_state": "CORRECTED"
+    },
+    {
+      "id": "C10",
+      "topic": "canonical B2 acceptance",
+      "source_a": "05_src/traffic_simulation/specifications/R23_REDUCED_PROBLEM_CANONICAL.md",
+      "source_b": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/b2_validation_review.json",
+      "conflict": "Current evidence paragraph omits FAILED dimension despite later Next paragraph warning",
+      "current_interpretation": "Explicit 6/6 scientific VERIFIED versus artifact FAILED in current evidence",
+      "needs_edit": true,
+      "edit_state": "CORRECTED"
+    },
+    {
+      "id": "C11",
+      "topic": "spec index authority roles",
+      "source_a": "05_src/traffic_simulation/specifications/README.md",
+      "source_b": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/final_classification.json",
+      "conflict": "Current evidence index links old reviews without later audit/remediation; treats old pre-execution plans as wholly non-authority",
+      "current_interpretation": "Map entrypoint, historical reviews retained; pre-execution role preserved",
+      "needs_edit": true,
+      "edit_state": "CORRECTED"
+    },
+    {
+      "id": "C12",
+      "topic": "roadmap/next-step consistency",
+      "source_a": "05_src/traffic_simulation/R23_ROADMAP.md",
+      "source_b": "05_src/traffic_simulation/R23_NEXT_STEPS.md",
+      "conflict": "Duplicated roadmap numbering and repeated next audit prose; stale R24 label",
+      "current_interpretation": "Single next independent audit, R23 OPEN and R24 blocked",
+      "needs_edit": true,
+      "edit_state": "CORRECTED"
+    },
+    {
+      "id": "C13",
+      "topic": "generated status consistency",
+      "source_a": "RESEARCH_STATUS.md",
+      "source_b": "reproducibility/config/traffic_simulation/research_stage.yml",
+      "conflict": "Generated dashboard must not revert revised current status",
+      "current_interpretation": "Synchronize status-only YAML and generator output; scientific configuration unchanged",
+      "needs_edit": true,
+      "edit_state": "CORRECTED"
+    },
+    {
+      "id": "C14",
+      "topic": "stopping-rule authority",
+      "source_a": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_planned_run_manifest.json",
+      "source_b": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_audit_remediation/20260913_v1/i05_stopping_rule_authority_review.json",
+      "conflict": "Formal manifest lacks explicit effective options; B1/B2 cap cannot supply n5 authority",
+      "current_interpretation": "Timestamped runner cap300 pre-fixed evidence retained, process source STRONGLY_INFERRED; independent assessment pending",
+      "needs_edit": false,
+      "edit_state": "HISTORICAL_PRESERVED_OR_DIMENSIONS_SEPARATED"
+    }
+  ],
+  "count": 14,
+  "current_doc_corrections": 5,
+  "search": "contradiction_search.json",
+  "no_new_audit_decision": true
+}

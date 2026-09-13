@@ -1,0 +1,610 @@
+{
+  "finding_id": "B2_TERMINAL_INDEX_SHA_INCONSISTENCY",
+  "count": 6,
+  "items": [
+    {
+      "id": "B2-SHA-01",
+      "finding_id": "B2_TERMINAL_INDEX_SHA_INCONSISTENCY",
+      "artifact": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+      "bytes": 34868567,
+      "expected_sha256": "dedf511bb6c8b65e613da68aaff1422f4f63dc29304a3ace4ce8cb7394e643fe",
+      "actual_sha256": "dc2cd274d1fcdeeffd1562ec639f9dbeec6409c5e238c51e49c1337642cb062d",
+      "declared_by": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+      "declared_pointer": "/records/0/sha256",
+      "hash_object": "entire run terminal JSON, containing result/probabilities, optimizer trace and derived scientific_result",
+      "integrity_status": "FAILED",
+      "classification": "DERIVED_ARTIFACT_MISMATCH",
+      "scientific_content_affected": "Derived exact_optimum_found annotation differs (false to true); all other serialized bytes reconstruct identically, including raw probabilities, routes, optimizer trace and source authority. No numerical scientific quantity difference identified.",
+      "first_committed_mismatch": "de3aa7815eb9911ff1abbb2eb19dbef13b33b3e5",
+      "first_commit_time": "2026-09-11T21:10:50+09:00",
+      "first_commit_actual_sha256": "dc2cd274d1fcdeeffd1562ec639f9dbeec6409c5e238c51e49c1337642cb062d",
+      "history_path_commit_count": 1,
+      "historical_origin": {
+        "source": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/historical_source_snapshots/05_finalize_r23_experiment_b2_reexecution.py.txt",
+        "lines": [
+          21,
+          27
+        ],
+        "mechanism": "finalizer recalculates customer-sequence equality and rewrites run JSON without refreshing terminal index",
+        "expected_bytes_reconstructed_in_memory": true,
+        "reconstructed_sha256": "dedf511bb6c8b65e613da68aaff1422f4f63dc29304a3ace4ce8cb7394e643fe",
+        "only_changed_json_pointer": "/scientific_result/exact_optimum_found",
+        "old_value": false,
+        "current_value": true,
+        "exact_wall_clock_of_finalizer": "UNKNOWN; bounded by first commit; no timestamp edited"
+      },
+      "provenance_relation": "No source authority field changes in byte-reconstruction; n5 rank02/03 dirty-source execution is a separate dataset/problem, no shared cause established",
+      "referenced_by": [
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v1/terminal_records.json",
+          "matched": [
+            "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead.json"
+          ],
+          "last_commit": "dc9a0ffd802b7e7633ee07aade279ff487a7015e"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+          "matched": [
+            "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "dedf511bb6c8b65e613da68aaff1422f4f63dc29304a3ace4ce8cb7394e643fe"
+          ],
+          "last_commit": "de3aa7815eb9911ff1abbb2eb19dbef13b33b3e5"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/artifact_immutability_review.json",
+          "matched": [
+            "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "dc2cd274d1fcdeeffd1562ec639f9dbeec6409c5e238c51e49c1337642cb062d",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/b2_validation_review.json",
+          "matched": [
+            "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/initial_artifact_snapshot.json",
+          "matched": [
+            "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "dc2cd274d1fcdeeffd1562ec639f9dbeec6409c5e238c51e49c1337642cb062d",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/other_scope_validation_review.json",
+          "matched": [
+            "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/positive_regression.json",
+          "matched": [
+            "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/validation_manifest.json",
+          "matched": [
+            "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        }
+      ],
+      "severity": "PENDING_INDEPENDENT_SEVERITY_ASSESSMENT"
+    },
+    {
+      "id": "B2-SHA-02",
+      "finding_id": "B2_TERMINAL_INDEX_SHA_INCONSISTENCY",
+      "artifact": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+      "bytes": 35051174,
+      "expected_sha256": "fe28e4bf13db3cbb944e5248feb559adb8337b74ed556db37e6cb81972fe2843",
+      "actual_sha256": "ca385005520d1f3d5c89d81d817790da02fc985270af8d7c233ce29929006f17",
+      "declared_by": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+      "declared_pointer": "/records/1/sha256",
+      "hash_object": "entire run terminal JSON, containing result/probabilities, optimizer trace and derived scientific_result",
+      "integrity_status": "FAILED",
+      "classification": "DERIVED_ARTIFACT_MISMATCH",
+      "scientific_content_affected": "Derived exact_optimum_found annotation differs (false to true); all other serialized bytes reconstruct identically, including raw probabilities, routes, optimizer trace and source authority. No numerical scientific quantity difference identified.",
+      "first_committed_mismatch": "de3aa7815eb9911ff1abbb2eb19dbef13b33b3e5",
+      "first_commit_time": "2026-09-11T21:10:50+09:00",
+      "first_commit_actual_sha256": "ca385005520d1f3d5c89d81d817790da02fc985270af8d7c233ce29929006f17",
+      "history_path_commit_count": 1,
+      "historical_origin": {
+        "source": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/historical_source_snapshots/05_finalize_r23_experiment_b2_reexecution.py.txt",
+        "lines": [
+          21,
+          27
+        ],
+        "mechanism": "finalizer recalculates customer-sequence equality and rewrites run JSON without refreshing terminal index",
+        "expected_bytes_reconstructed_in_memory": true,
+        "reconstructed_sha256": "fe28e4bf13db3cbb944e5248feb559adb8337b74ed556db37e6cb81972fe2843",
+        "only_changed_json_pointer": "/scientific_result/exact_optimum_found",
+        "old_value": false,
+        "current_value": true,
+        "exact_wall_clock_of_finalizer": "UNKNOWN; bounded by first commit; no timestamp edited"
+      },
+      "provenance_relation": "No source authority field changes in byte-reconstruction; n5 rank02/03 dirty-source execution is a separate dataset/problem, no shared cause established",
+      "referenced_by": [
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v1/terminal_records.json",
+          "matched": [
+            "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead.json"
+          ],
+          "last_commit": "dc9a0ffd802b7e7633ee07aade279ff487a7015e"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+          "matched": [
+            "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "fe28e4bf13db3cbb944e5248feb559adb8337b74ed556db37e6cb81972fe2843"
+          ],
+          "last_commit": "de3aa7815eb9911ff1abbb2eb19dbef13b33b3e5"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/artifact_immutability_review.json",
+          "matched": [
+            "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "ca385005520d1f3d5c89d81d817790da02fc985270af8d7c233ce29929006f17",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/b2_validation_review.json",
+          "matched": [
+            "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/initial_artifact_snapshot.json",
+          "matched": [
+            "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "ca385005520d1f3d5c89d81d817790da02fc985270af8d7c233ce29929006f17",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/other_scope_validation_review.json",
+          "matched": [
+            "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/positive_regression.json",
+          "matched": [
+            "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/validation_manifest.json",
+          "matched": [
+            "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        }
+      ],
+      "severity": "PENDING_INDEPENDENT_SEVERITY_ASSESSMENT"
+    },
+    {
+      "id": "B2-SHA-03",
+      "finding_id": "B2_TERMINAL_INDEX_SHA_INCONSISTENCY",
+      "artifact": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+      "bytes": 34806312,
+      "expected_sha256": "6695865c5651690407aeb98a489b6ea040171f49846c29571a8e6864906382db",
+      "actual_sha256": "ce37109912a51dcd56828ea3a1e65d52ecc61f9a56da9d3f9cc22a480e1c6a28",
+      "declared_by": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+      "declared_pointer": "/records/2/sha256",
+      "hash_object": "entire run terminal JSON, containing result/probabilities, optimizer trace and derived scientific_result",
+      "integrity_status": "FAILED",
+      "classification": "DERIVED_ARTIFACT_MISMATCH",
+      "scientific_content_affected": "Derived exact_optimum_found annotation differs (false to true); all other serialized bytes reconstruct identically, including raw probabilities, routes, optimizer trace and source authority. No numerical scientific quantity difference identified.",
+      "first_committed_mismatch": "de3aa7815eb9911ff1abbb2eb19dbef13b33b3e5",
+      "first_commit_time": "2026-09-11T21:10:50+09:00",
+      "first_commit_actual_sha256": "ce37109912a51dcd56828ea3a1e65d52ecc61f9a56da9d3f9cc22a480e1c6a28",
+      "history_path_commit_count": 1,
+      "historical_origin": {
+        "source": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/historical_source_snapshots/05_finalize_r23_experiment_b2_reexecution.py.txt",
+        "lines": [
+          21,
+          27
+        ],
+        "mechanism": "finalizer recalculates customer-sequence equality and rewrites run JSON without refreshing terminal index",
+        "expected_bytes_reconstructed_in_memory": true,
+        "reconstructed_sha256": "6695865c5651690407aeb98a489b6ea040171f49846c29571a8e6864906382db",
+        "only_changed_json_pointer": "/scientific_result/exact_optimum_found",
+        "old_value": false,
+        "current_value": true,
+        "exact_wall_clock_of_finalizer": "UNKNOWN; bounded by first commit; no timestamp edited"
+      },
+      "provenance_relation": "No source authority field changes in byte-reconstruction; n5 rank02/03 dirty-source execution is a separate dataset/problem, no shared cause established",
+      "referenced_by": [
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v1/terminal_records.json",
+          "matched": [
+            "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead.json"
+          ],
+          "last_commit": "dc9a0ffd802b7e7633ee07aade279ff487a7015e"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+          "matched": [
+            "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "6695865c5651690407aeb98a489b6ea040171f49846c29571a8e6864906382db"
+          ],
+          "last_commit": "de3aa7815eb9911ff1abbb2eb19dbef13b33b3e5"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/artifact_immutability_review.json",
+          "matched": [
+            "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "ce37109912a51dcd56828ea3a1e65d52ecc61f9a56da9d3f9cc22a480e1c6a28",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/b2_validation_review.json",
+          "matched": [
+            "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/initial_artifact_snapshot.json",
+          "matched": [
+            "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "ce37109912a51dcd56828ea3a1e65d52ecc61f9a56da9d3f9cc22a480e1c6a28",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/other_scope_validation_review.json",
+          "matched": [
+            "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/positive_regression.json",
+          "matched": [
+            "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/validation_manifest.json",
+          "matched": [
+            "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        }
+      ],
+      "severity": "PENDING_INDEPENDENT_SEVERITY_ASSESSMENT"
+    },
+    {
+      "id": "B2-SHA-04",
+      "finding_id": "B2_TERMINAL_INDEX_SHA_INCONSISTENCY",
+      "artifact": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+      "bytes": 35070692,
+      "expected_sha256": "aac6f8153836fb7036ed8c691fafc25ca67d937bb7b42aeebf7e06af0607ddb6",
+      "actual_sha256": "87a02d1f5c78c10160d81dd14c247e0a818b608b3da13170bcdd24acf363386f",
+      "declared_by": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+      "declared_pointer": "/records/3/sha256",
+      "hash_object": "entire run terminal JSON, containing result/probabilities, optimizer trace and derived scientific_result",
+      "integrity_status": "FAILED",
+      "classification": "DERIVED_ARTIFACT_MISMATCH",
+      "scientific_content_affected": "Derived exact_optimum_found annotation differs (false to true); all other serialized bytes reconstruct identically, including raw probabilities, routes, optimizer trace and source authority. No numerical scientific quantity difference identified.",
+      "first_committed_mismatch": "de3aa7815eb9911ff1abbb2eb19dbef13b33b3e5",
+      "first_commit_time": "2026-09-11T21:10:50+09:00",
+      "first_commit_actual_sha256": "87a02d1f5c78c10160d81dd14c247e0a818b608b3da13170bcdd24acf363386f",
+      "history_path_commit_count": 1,
+      "historical_origin": {
+        "source": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/historical_source_snapshots/05_finalize_r23_experiment_b2_reexecution.py.txt",
+        "lines": [
+          21,
+          27
+        ],
+        "mechanism": "finalizer recalculates customer-sequence equality and rewrites run JSON without refreshing terminal index",
+        "expected_bytes_reconstructed_in_memory": true,
+        "reconstructed_sha256": "aac6f8153836fb7036ed8c691fafc25ca67d937bb7b42aeebf7e06af0607ddb6",
+        "only_changed_json_pointer": "/scientific_result/exact_optimum_found",
+        "old_value": false,
+        "current_value": true,
+        "exact_wall_clock_of_finalizer": "UNKNOWN; bounded by first commit; no timestamp edited"
+      },
+      "provenance_relation": "No source authority field changes in byte-reconstruction; n5 rank02/03 dirty-source execution is a separate dataset/problem, no shared cause established",
+      "referenced_by": [
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v1/terminal_records.json",
+          "matched": [
+            "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead.json"
+          ],
+          "last_commit": "dc9a0ffd802b7e7633ee07aade279ff487a7015e"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+          "matched": [
+            "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "aac6f8153836fb7036ed8c691fafc25ca67d937bb7b42aeebf7e06af0607ddb6"
+          ],
+          "last_commit": "de3aa7815eb9911ff1abbb2eb19dbef13b33b3e5"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/artifact_immutability_review.json",
+          "matched": [
+            "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "87a02d1f5c78c10160d81dd14c247e0a818b608b3da13170bcdd24acf363386f",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/b2_validation_review.json",
+          "matched": [
+            "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/initial_artifact_snapshot.json",
+          "matched": [
+            "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "87a02d1f5c78c10160d81dd14c247e0a818b608b3da13170bcdd24acf363386f",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/other_scope_validation_review.json",
+          "matched": [
+            "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/positive_regression.json",
+          "matched": [
+            "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/validation_manifest.json",
+          "matched": [
+            "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        }
+      ],
+      "severity": "PENDING_INDEPENDENT_SEVERITY_ASSESSMENT"
+    },
+    {
+      "id": "B2-SHA-05",
+      "finding_id": "B2_TERMINAL_INDEX_SHA_INCONSISTENCY",
+      "artifact": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+      "bytes": 34816648,
+      "expected_sha256": "ab909b317c4f2ed3257249848fdf1eb41c85bc82e731c1b1e333d6471cb13fff",
+      "actual_sha256": "027eba3d4cd50562219cf21b24b7a540b7f19c31e589573371005c819ea4c677",
+      "declared_by": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+      "declared_pointer": "/records/4/sha256",
+      "hash_object": "entire run terminal JSON, containing result/probabilities, optimizer trace and derived scientific_result",
+      "integrity_status": "FAILED",
+      "classification": "DERIVED_ARTIFACT_MISMATCH",
+      "scientific_content_affected": "Derived exact_optimum_found annotation differs (false to true); all other serialized bytes reconstruct identically, including raw probabilities, routes, optimizer trace and source authority. No numerical scientific quantity difference identified.",
+      "first_committed_mismatch": "de3aa7815eb9911ff1abbb2eb19dbef13b33b3e5",
+      "first_commit_time": "2026-09-11T21:10:50+09:00",
+      "first_commit_actual_sha256": "027eba3d4cd50562219cf21b24b7a540b7f19c31e589573371005c819ea4c677",
+      "history_path_commit_count": 1,
+      "historical_origin": {
+        "source": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/historical_source_snapshots/05_finalize_r23_experiment_b2_reexecution.py.txt",
+        "lines": [
+          21,
+          27
+        ],
+        "mechanism": "finalizer recalculates customer-sequence equality and rewrites run JSON without refreshing terminal index",
+        "expected_bytes_reconstructed_in_memory": true,
+        "reconstructed_sha256": "ab909b317c4f2ed3257249848fdf1eb41c85bc82e731c1b1e333d6471cb13fff",
+        "only_changed_json_pointer": "/scientific_result/exact_optimum_found",
+        "old_value": false,
+        "current_value": true,
+        "exact_wall_clock_of_finalizer": "UNKNOWN; bounded by first commit; no timestamp edited"
+      },
+      "provenance_relation": "No source authority field changes in byte-reconstruction; n5 rank02/03 dirty-source execution is a separate dataset/problem, no shared cause established",
+      "referenced_by": [
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v1/terminal_records.json",
+          "matched": [
+            "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead.json"
+          ],
+          "last_commit": "dc9a0ffd802b7e7633ee07aade279ff487a7015e"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+          "matched": [
+            "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "ab909b317c4f2ed3257249848fdf1eb41c85bc82e731c1b1e333d6471cb13fff"
+          ],
+          "last_commit": "de3aa7815eb9911ff1abbb2eb19dbef13b33b3e5"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/artifact_immutability_review.json",
+          "matched": [
+            "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "027eba3d4cd50562219cf21b24b7a540b7f19c31e589573371005c819ea4c677",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/b2_validation_review.json",
+          "matched": [
+            "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/initial_artifact_snapshot.json",
+          "matched": [
+            "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "027eba3d4cd50562219cf21b24b7a540b7f19c31e589573371005c819ea4c677",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/other_scope_validation_review.json",
+          "matched": [
+            "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/positive_regression.json",
+          "matched": [
+            "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/validation_manifest.json",
+          "matched": [
+            "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        }
+      ],
+      "severity": "PENDING_INDEPENDENT_SEVERITY_ASSESSMENT"
+    },
+    {
+      "id": "B2-SHA-06",
+      "finding_id": "B2_TERMINAL_INDEX_SHA_INCONSISTENCY",
+      "artifact": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+      "bytes": 35073492,
+      "expected_sha256": "3d1e9b71d1222fbc7b42adc8af2ec0ffca9ab776433c52029ee8019b7e031389",
+      "actual_sha256": "0ef9ceed1ae14db085a7ba64b51ae9e26228a1a9019e113d03084141b4607a86",
+      "declared_by": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+      "declared_pointer": "/records/5/sha256",
+      "hash_object": "entire run terminal JSON, containing result/probabilities, optimizer trace and derived scientific_result",
+      "integrity_status": "FAILED",
+      "classification": "DERIVED_ARTIFACT_MISMATCH",
+      "scientific_content_affected": "Derived exact_optimum_found annotation differs (false to true); all other serialized bytes reconstruct identically, including raw probabilities, routes, optimizer trace and source authority. No numerical scientific quantity difference identified.",
+      "first_committed_mismatch": "de3aa7815eb9911ff1abbb2eb19dbef13b33b3e5",
+      "first_commit_time": "2026-09-11T21:10:50+09:00",
+      "first_commit_actual_sha256": "0ef9ceed1ae14db085a7ba64b51ae9e26228a1a9019e113d03084141b4607a86",
+      "history_path_commit_count": 1,
+      "historical_origin": {
+        "source": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/historical_source_snapshots/05_finalize_r23_experiment_b2_reexecution.py.txt",
+        "lines": [
+          21,
+          27
+        ],
+        "mechanism": "finalizer recalculates customer-sequence equality and rewrites run JSON without refreshing terminal index",
+        "expected_bytes_reconstructed_in_memory": true,
+        "reconstructed_sha256": "3d1e9b71d1222fbc7b42adc8af2ec0ffca9ab776433c52029ee8019b7e031389",
+        "only_changed_json_pointer": "/scientific_result/exact_optimum_found",
+        "old_value": false,
+        "current_value": true,
+        "exact_wall_clock_of_finalizer": "UNKNOWN; bounded by first commit; no timestamp edited"
+      },
+      "provenance_relation": "No source authority field changes in byte-reconstruction; n5 rank02/03 dirty-source execution is a separate dataset/problem, no shared cause established",
+      "referenced_by": [
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v1/terminal_records.json",
+          "matched": [
+            "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead.json"
+          ],
+          "last_commit": "dc9a0ffd802b7e7633ee07aade279ff487a7015e"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/terminal_records.json",
+          "matched": [
+            "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "3d1e9b71d1222fbc7b42adc8af2ec0ffca9ab776433c52029ee8019b7e031389"
+          ],
+          "last_commit": "de3aa7815eb9911ff1abbb2eb19dbef13b33b3e5"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/artifact_immutability_review.json",
+          "matched": [
+            "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "0ef9ceed1ae14db085a7ba64b51ae9e26228a1a9019e113d03084141b4607a86",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/b2_validation_review.json",
+          "matched": [
+            "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/initial_artifact_snapshot.json",
+          "matched": [
+            "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "0ef9ceed1ae14db085a7ba64b51ae9e26228a1a9019e113d03084141b4607a86",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/other_scope_validation_review.json",
+          "matched": [
+            "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/positive_regression.json",
+          "matched": [
+            "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_i03_validation_gate_remediation/20260913_v1/validation_manifest.json",
+          "matched": [
+            "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+            "r23_experiment_b2/20260911_v2/terminal_records.json"
+          ],
+          "last_commit": "3e440ce319deab180c47999d25350d2a841ec76a"
+        }
+      ],
+      "severity": "PENDING_INDEPENDENT_SEVERITY_ASSESSMENT"
+    }
+  ],
+  "reference_search_scope": "tracked R23 text files under 5MB; exact basename, expected/actual SHA or index path. Run payloads handled separately.",
+  "first_commit_index_sha256": "ad52ac50a841f7302e4b6745a183b922ee2343f5661b09d965e71d95515c298e",
+  "current_index_sha256": "ad52ac50a841f7302e4b6745a183b922ee2343f5661b09d965e71d95515c298e",
+  "first_commit_index_equals_current": true
+}

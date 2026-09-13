@@ -33,19 +33,19 @@ flowchart LR
 |---|---|---|
 | 道路網仕様 | **受入済み** (`accepted`) | V18 geometry/length re-acceptanceとR12-R14 Routing Baseline validationがPASS。旧v16停止記録は履歴であり現行network gateではない |
 | 正式SUMO道路網 | **受入済み** (`accepted`) | current V18 authorityでFORMAL_NETWORK_ACCEPTED=true。accepted scopeとhashはEVRP_EXECUTION_PLAN.mdを正本とする |
-| 下流実験 | **scope別** (`scope_split`) | full-EVRP比較は未準備。R23既存n5 evidenceはACCEPTED_WITH_LIMITATIONSで保持。standing auditはCODE_AUDIT_FAIL / CODE_AUDIT_RESULT_NOT_REPRODUCED。I03修正完了、REMEDIATION_COMPLETED_PENDING_INDEPENDENT_REAUDIT。rank02/03未再承認、B2旧terminal-index SHA不整合6件を新gateが検出 |
+| 下流実験 | **scope別** (`scope_split`) | full-EVRP比較は未準備。R23既存n5 evidenceはACCEPTED_WITH_LIMITATIONSで保持。standing auditはCODE_AUDIT_FAIL_PENDING_POST_REMEDIATION_REAUDIT / CODE_AUDIT_RESULT_NOT_REPRODUCED。I03 RESOLVED、COMPLETED_PENDING_INDEPENDENT_REAUDIT。rank02/03未再承認。B2科学整合性6/6 VERIFIED / artifact integrity FAILED、B2_TERMINAL_INDEX_SHA_INCONSISTENCY 6件は独立評価待ち |
 
 ## 現在の阻害事項
 
 - full-EVRP本線ではR05-R11のcustomer sampling、demand、time window、service time、depot、EV、charging station定義が未完了
 - full-EVRP R20はcapacity、time window、battery/SOC、charging、fleet、一般reachabilityを含むaccepted QUBOがなくBLOCKED
-- reduced R23はroute recovery 3/3、optimizer reported success 2/3。rank01 success=false、cap reached。runtime benchmark PRELIMINARY_ONLY、n≥6非推奨。R24はNOT_AUTHORIZED_PENDING_R23_REMEDIATION
+- reduced R23はroute recovery 3/3、optimizer reported success 2/3。rank01 success=false、cap reached。runtime benchmark PRELIMINARY_ONLY、n≥6非推奨。R24はR24_NOT_STARTED_BLOCKED_PENDING_R23_POST_REMEDIATION_REAUDIT
 - Aer結果を量子実機性能またはquantum advantageへ一般化できない
 
 ## 次の作業
 
 1. EVRP_EXECUTION_PLAN.mdに従いfull-EVRP本線の未完Definition stageを進める
-2. R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT_POST_REMEDIATION_RERUNを別taskで実施。I03修正とB2旧SHA不整合の検出結果をレビューし、独立PASS後のみphase closureとR24を検討する
+2. R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT_POST_REMEDIATION_RERUNを別taskで実施。authority入口はreproducibility/outputs/traffic_simulation/r23_repository_rebaseline/20260913_v2/final_authority_map.json。I03 closureとB2 SHA不整合6件を独立評価する。R23 phaseはOPEN、R24はBLOCKED
 3. R23 pilotとformal baselineを分離し、R22 Hamiltonianとlambdaを変更しない
 4. full-EVRP/Hayate評価とreduced method evidenceをscope付きで統合する
 

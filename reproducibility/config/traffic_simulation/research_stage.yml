@@ -17,15 +17,15 @@ readiness:
     label_ja: 下流実験
     status: scope_split
     status_label_ja: scope別
-    note_ja: full-EVRP比較は未準備。R23既存n5 evidenceはACCEPTED_WITH_LIMITATIONSで保持。standing auditはCODE_AUDIT_FAIL / CODE_AUDIT_RESULT_NOT_REPRODUCED。I03修正完了、REMEDIATION_COMPLETED_PENDING_INDEPENDENT_REAUDIT。rank02/03未再承認、B2旧terminal-index SHA不整合6件を新gateが検出
+    note_ja: full-EVRP比較は未準備。R23既存n5 evidenceはACCEPTED_WITH_LIMITATIONSで保持。standing auditはCODE_AUDIT_FAIL_PENDING_POST_REMEDIATION_REAUDIT / CODE_AUDIT_RESULT_NOT_REPRODUCED。I03 RESOLVED、COMPLETED_PENDING_INDEPENDENT_REAUDIT。rank02/03未再承認。B2科学整合性6/6 VERIFIED / artifact integrity FAILED、B2_TERMINAL_INDEX_SHA_INCONSISTENCY 6件は独立評価待ち
 blockers:
   - full-EVRP本線ではR05-R11のcustomer sampling、demand、time window、service time、depot、EV、charging station定義が未完了
   - full-EVRP R20はcapacity、time window、battery/SOC、charging、fleet、一般reachabilityを含むaccepted QUBOがなくBLOCKED
-  - reduced R23はroute recovery 3/3、optimizer reported success 2/3。rank01 success=false、cap reached。runtime benchmark PRELIMINARY_ONLY、n≥6非推奨。R24はNOT_AUTHORIZED_PENDING_R23_REMEDIATION
+  - reduced R23はroute recovery 3/3、optimizer reported success 2/3。rank01 success=false、cap reached。runtime benchmark PRELIMINARY_ONLY、n≥6非推奨。R24はR24_NOT_STARTED_BLOCKED_PENDING_R23_POST_REMEDIATION_REAUDIT
   - Aer結果を量子実機性能またはquantum advantageへ一般化できない
 next_actions:
   - EVRP_EXECUTION_PLAN.mdに従いfull-EVRP本線の未完Definition stageを進める
-  - R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT_POST_REMEDIATION_RERUNを別taskで実施。I03修正とB2旧SHA不整合の検出結果をレビューし、独立PASS後のみphase closureとR24を検討する
+  - R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT_POST_REMEDIATION_RERUNを別taskで実施。authority入口はreproducibility/outputs/traffic_simulation/r23_repository_rebaseline/20260913_v2/final_authority_map.json。I03 closureとB2 SHA不整合6件を独立評価する。R23 phaseはOPEN、R24はBLOCKED
   - R23 pilotとformal baselineを分離し、R22 Hamiltonianとlambdaを変更しない
   - full-EVRP/Hayate評価とreduced method evidenceをscope付きで統合する
 stages:

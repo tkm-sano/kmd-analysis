@@ -1,0 +1,24 @@
+{
+  "authority": "05_src/traffic_simulation/specifications/R23_I03_VALIDATION_GATE_CONTRACT.md",
+  "authority_sha256": "6a70acd2b55facd19176d53a45da3e51b6105e727af9a5053e73f2b59a67d137",
+  "definitions": {
+    "VERIFIED": "An executed condition succeeded; limited to named evidence and dimension.",
+    "FAILED": "An executed condition failed.",
+    "BLOCKED": "Required evidence is missing or unreadable.",
+    "PARTIAL": "Only part of applicable checks completed, or no REQUIRED checks.",
+    "NOT_TESTED": "Not executed; includes empty gate.",
+    "NOT_APPLICABLE": "The check does not apply to this profile/native API; exclusion requires stated reason, never a successful test."
+  },
+  "aggregation": "Among REQUIRED checks: FAILED before BLOCKED; all VERIFIED -> VERIFIED; all NOT_TESTED -> NOT_TESTED; mixture -> PARTIAL. Empty -> NOT_TESTED; no REQUIRED checks -> PARTIAL. OPTIONAL failures remain visible without deciding scientific integrity. NOT_APPLICABLE checks are not failures.",
+  "dimensions": [
+    "execution_completeness",
+    "artifact_integrity",
+    "scientific_validity",
+    "feasibility",
+    "probability_integrity",
+    "provenance_completeness",
+    "exact_optimum_recovery (optional)",
+    "optimizer_convergence (optional)"
+  ],
+  "legacy_PASS": "Only guarded historical PASS maps to VERIFIED for its executed predicate; literal narrative/existence is not scientific revalidation."
+}

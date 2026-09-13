@@ -1,0 +1,341 @@
+{
+  "source": "raw run JSON and exact-reference authority, not status documents",
+  "runs": [
+    {
+      "run_id": "routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead",
+      "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank01_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+      "sha256": "dc2cd274d1fcdeeffd1562ec639f9dbeec6409c5e238c51e49c1337642cb062d",
+      "scientific_result": {
+        "P_feasible": 0.13898506308817188,
+        "P_optimal": 0.00596156621991719,
+        "absolute_optimality_gap": 0.0,
+        "best_decoded_route_feasible": true,
+        "exact_optimal_route": [
+          "2026-01-01-13111-bldg-138702",
+          "2026-01-01-13111-bldg-130096",
+          "2026-01-01-13111-bldg-2510665",
+          "2026-01-01-13111-bldg-117556"
+        ],
+        "exact_optimum_found": true,
+        "probability_normalization_check": 1.0000000000000053,
+        "probability_semantics": "raw full-state denominator; no renormalization",
+        "relative_optimality_gap": 0.0,
+        "selected_best_decoded_route": [
+          "2026-01-01-13111-bldg-138702",
+          "2026-01-01-13111-bldg-130096",
+          "2026-01-01-13111-bldg-2510665",
+          "2026-01-01-13111-bldg-117556"
+        ]
+      },
+      "optimizer": "NELDER_MEAD",
+      "optimizer_method": "Nelder-Mead",
+      "initialization": "fixed_0.1",
+      "initial_parameters": [
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "termination": {
+        "budget_hit": false,
+        "maxiter_boundary_reached": false,
+        "message": "Optimization terminated successfully.",
+        "nfev": 279,
+        "nit": 163,
+        "objective_cap_hit": false,
+        "optimizer_status": 0,
+        "status": 0,
+        "success": true,
+        "termination_source": "native_optimizer",
+        "termination_status": "OPTIMIZER_REPORTED_SUCCESS"
+      },
+      "optimizer_success": true,
+      "nfev": 279,
+      "nit": 163,
+      "probability_states": 65536,
+      "T_total": 333.16058620018885,
+      "exact_reference": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank01.json"
+    },
+    {
+      "run_id": "routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead",
+      "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank01_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+      "sha256": "ca385005520d1f3d5c89d81d817790da02fc985270af8d7c233ce29929006f17",
+      "scientific_result": {
+        "P_feasible": 0.15475382876727714,
+        "P_optimal": 0.006831144581396031,
+        "absolute_optimality_gap": 0.0,
+        "best_decoded_route_feasible": true,
+        "exact_optimal_route": [
+          "2026-01-01-13111-bldg-138702",
+          "2026-01-01-13111-bldg-130096",
+          "2026-01-01-13111-bldg-2510665",
+          "2026-01-01-13111-bldg-117556"
+        ],
+        "exact_optimum_found": true,
+        "probability_normalization_check": 1.00000000000003,
+        "probability_semantics": "raw full-state denominator; no renormalization",
+        "relative_optimality_gap": 0.0,
+        "selected_best_decoded_route": [
+          "2026-01-01-13111-bldg-138702",
+          "2026-01-01-13111-bldg-130096",
+          "2026-01-01-13111-bldg-2510665",
+          "2026-01-01-13111-bldg-117556"
+        ]
+      },
+      "optimizer": "NELDER_MEAD",
+      "optimizer_method": "Nelder-Mead",
+      "initialization": "fixed_0.1",
+      "initial_parameters": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "termination": {
+        "budget_hit": false,
+        "maxiter_boundary_reached": true,
+        "message": "Maximum number of iterations has been exceeded.",
+        "nfev": 446,
+        "nit": 300,
+        "objective_cap_hit": false,
+        "optimizer_status": 2,
+        "status": 2,
+        "success": false,
+        "termination_source": "native_optimizer",
+        "termination_status": "MAXITER_REACHED"
+      },
+      "optimizer_success": false,
+      "nfev": 446,
+      "nit": 300,
+      "probability_states": 65536,
+      "T_total": 705.5257346644066,
+      "exact_reference": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank01.json"
+    },
+    {
+      "run_id": "routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead",
+      "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank03_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+      "sha256": "ce37109912a51dcd56828ea3a1e65d52ecc61f9a56da9d3f9cc22a480e1c6a28",
+      "scientific_result": {
+        "P_feasible": 0.13508406760463942,
+        "P_optimal": 0.0060573820403665235,
+        "absolute_optimality_gap": 0.0,
+        "best_decoded_route_feasible": true,
+        "exact_optimal_route": [
+          "2026-01-01-13111-bldg-96242",
+          "2026-01-01-13111-bldg-79791",
+          "2026-01-01-13111-bldg-55213",
+          "2026-01-01-13111-bldg-29995"
+        ],
+        "exact_optimum_found": true,
+        "probability_normalization_check": 1.0000000000000198,
+        "probability_semantics": "raw full-state denominator; no renormalization",
+        "relative_optimality_gap": 0.0,
+        "selected_best_decoded_route": [
+          "2026-01-01-13111-bldg-96242",
+          "2026-01-01-13111-bldg-79791",
+          "2026-01-01-13111-bldg-55213",
+          "2026-01-01-13111-bldg-29995"
+        ]
+      },
+      "optimizer": "NELDER_MEAD",
+      "optimizer_method": "Nelder-Mead",
+      "initialization": "fixed_0.1",
+      "initial_parameters": [
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "termination": {
+        "budget_hit": false,
+        "maxiter_boundary_reached": false,
+        "message": "Optimization terminated successfully.",
+        "nfev": 211,
+        "nit": 124,
+        "objective_cap_hit": false,
+        "optimizer_status": 0,
+        "status": 0,
+        "success": true,
+        "termination_source": "native_optimizer",
+        "termination_status": "OPTIMIZER_REPORTED_SUCCESS"
+      },
+      "optimizer_success": true,
+      "nfev": 211,
+      "nit": 124,
+      "probability_states": 65536,
+      "T_total": 255.76094211405143,
+      "exact_reference": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank03.json"
+    },
+    {
+      "run_id": "routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead",
+      "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank03_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+      "sha256": "87a02d1f5c78c10160d81dd14c247e0a818b608b3da13170bcdd24acf363386f",
+      "scientific_result": {
+        "P_feasible": 0.04875296437628227,
+        "P_optimal": 0.002282607794609613,
+        "absolute_optimality_gap": 0.0,
+        "best_decoded_route_feasible": true,
+        "exact_optimal_route": [
+          "2026-01-01-13111-bldg-96242",
+          "2026-01-01-13111-bldg-79791",
+          "2026-01-01-13111-bldg-55213",
+          "2026-01-01-13111-bldg-29995"
+        ],
+        "exact_optimum_found": true,
+        "probability_normalization_check": 1.0000000000000138,
+        "probability_semantics": "raw full-state denominator; no renormalization",
+        "relative_optimality_gap": 0.0,
+        "selected_best_decoded_route": [
+          "2026-01-01-13111-bldg-96242",
+          "2026-01-01-13111-bldg-79791",
+          "2026-01-01-13111-bldg-55213",
+          "2026-01-01-13111-bldg-29995"
+        ]
+      },
+      "optimizer": "NELDER_MEAD",
+      "optimizer_method": "Nelder-Mead",
+      "initialization": "fixed_0.1",
+      "initial_parameters": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "termination": {
+        "budget_hit": false,
+        "maxiter_boundary_reached": true,
+        "message": "Maximum number of iterations has been exceeded.",
+        "nfev": 470,
+        "nit": 300,
+        "objective_cap_hit": false,
+        "optimizer_status": 2,
+        "status": 2,
+        "success": false,
+        "termination_source": "native_optimizer",
+        "termination_status": "MAXITER_REACHED"
+      },
+      "optimizer_success": false,
+      "nfev": 470,
+      "nit": 300,
+      "probability_states": 65536,
+      "T_total": 738.4124735919759,
+      "exact_reference": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank03.json"
+    },
+    {
+      "run_id": "routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead",
+      "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank05_p2_init_fixed01_rep1_optimizer_nelder_mead.json",
+      "sha256": "027eba3d4cd50562219cf21b24b7a540b7f19c31e589573371005c819ea4c677",
+      "scientific_result": {
+        "P_feasible": 0.13422255633418514,
+        "P_optimal": 0.005976562431752008,
+        "absolute_optimality_gap": 0.0,
+        "best_decoded_route_feasible": true,
+        "exact_optimal_route": [
+          "2026-01-01-13111-bldg-138702",
+          "2026-01-01-13111-bldg-79791",
+          "2026-01-01-13111-bldg-55213",
+          "2026-01-01-13111-bldg-29995"
+        ],
+        "exact_optimum_found": true,
+        "probability_normalization_check": 0.9999999999999972,
+        "probability_semantics": "raw full-state denominator; no renormalization",
+        "relative_optimality_gap": 0.0,
+        "selected_best_decoded_route": [
+          "2026-01-01-13111-bldg-138702",
+          "2026-01-01-13111-bldg-79791",
+          "2026-01-01-13111-bldg-55213",
+          "2026-01-01-13111-bldg-29995"
+        ]
+      },
+      "optimizer": "NELDER_MEAD",
+      "optimizer_method": "Nelder-Mead",
+      "initialization": "fixed_0.1",
+      "initial_parameters": [
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "termination": {
+        "budget_hit": false,
+        "maxiter_boundary_reached": false,
+        "message": "Optimization terminated successfully.",
+        "nfev": 223,
+        "nit": 130,
+        "objective_cap_hit": false,
+        "optimizer_status": 0,
+        "status": 0,
+        "success": true,
+        "termination_source": "native_optimizer",
+        "termination_status": "OPTIMIZER_REPORTED_SUCCESS"
+      },
+      "optimizer_success": true,
+      "nfev": 223,
+      "nit": 130,
+      "probability_states": 65536,
+      "T_total": 265.7682580789551,
+      "exact_reference": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank05.json"
+    },
+    {
+      "run_id": "routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead",
+      "path": "reproducibility/outputs/traffic_simulation/r23_experiment_b2/20260911_v2/runs/routing_v18_n4_rank05_p3_init_fixed01_rep1_optimizer_nelder_mead.json",
+      "sha256": "0ef9ceed1ae14db085a7ba64b51ae9e26228a1a9019e113d03084141b4607a86",
+      "scientific_result": {
+        "P_feasible": 0.05608904386165815,
+        "P_optimal": 0.0026518034504426032,
+        "absolute_optimality_gap": 0.0,
+        "best_decoded_route_feasible": true,
+        "exact_optimal_route": [
+          "2026-01-01-13111-bldg-138702",
+          "2026-01-01-13111-bldg-79791",
+          "2026-01-01-13111-bldg-55213",
+          "2026-01-01-13111-bldg-29995"
+        ],
+        "exact_optimum_found": true,
+        "probability_normalization_check": 1.0000000000000147,
+        "probability_semantics": "raw full-state denominator; no renormalization",
+        "relative_optimality_gap": 0.0,
+        "selected_best_decoded_route": [
+          "2026-01-01-13111-bldg-138702",
+          "2026-01-01-13111-bldg-79791",
+          "2026-01-01-13111-bldg-55213",
+          "2026-01-01-13111-bldg-29995"
+        ]
+      },
+      "optimizer": "NELDER_MEAD",
+      "optimizer_method": "Nelder-Mead",
+      "initialization": "fixed_0.1",
+      "initial_parameters": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "termination": {
+        "budget_hit": false,
+        "maxiter_boundary_reached": true,
+        "message": "Maximum number of iterations has been exceeded.",
+        "nfev": 471,
+        "nit": 300,
+        "objective_cap_hit": false,
+        "optimizer_status": 2,
+        "status": 2,
+        "success": false,
+        "termination_source": "native_optimizer",
+        "termination_status": "MAXITER_REACHED"
+      },
+      "optimizer_success": false,
+      "nfev": 471,
+      "nit": 300,
+      "probability_states": 65536,
+      "T_total": 735.384201711975,
+      "exact_reference": "reproducibility/outputs/traffic_simulation/r23_formal_instance_authority/20260911_v1/_refs/routing_v18_n4_rank05.json"
+    }
+  ]
+}

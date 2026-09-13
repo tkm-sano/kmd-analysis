@@ -1,0 +1,129 @@
+{
+  "starting_state": "starting_state.json",
+  "entries": [
+    {
+      "path": ".tmp_patch_probe",
+      "type": "file",
+      "size_bytes": 6,
+      "file_count": 1,
+      "sha256": "25be323556dad377abb57fe7ec8c4b99a6527f488dda28d0c9b686528659c909",
+      "sha_definition": "file bytes, or ordered path/hash JSON for multiple files",
+      "files": [
+        {
+          "path": ".tmp_patch_probe",
+          "sha256": "25be323556dad377abb57fe7ec8c4b99a6527f488dda28d0c9b686528659c909",
+          "bytes": 6,
+          "duplicate_untracked_paths": []
+        }
+      ],
+      "origin": "Patch probe containing only probe newline; non-research scratch",
+      "unique": true,
+      "research_value": "none",
+      "classification": "SAFE_TO_REMOVE",
+      "action": "backup, verify then remove after authority commit"
+    },
+    {
+      "path": "reproducibility/config/traffic_simulation/r23_pilot_configuration",
+      "type": "directory",
+      "size_bytes": 9054,
+      "file_count": 1,
+      "sha256": "5729bca462fd68bbf4f6ab6b3f5b24412086bb757fe6ce17c35730149915b79d",
+      "sha_definition": "file bytes, or ordered path/hash JSON for multiple files",
+      "files": [
+        {
+          "path": "reproducibility/config/traffic_simulation/r23_pilot_configuration/20260910_r23_reduced_pilot_v1.json",
+          "sha256": "5729bca462fd68bbf4f6ab6b3f5b24412086bb757fe6ce17c35730149915b79d",
+          "bytes": 9054,
+          "duplicate_untracked_paths": []
+        }
+      ],
+      "origin": "Frozen pilot configuration referenced by current I03 regression and implementation contract tests; required reproducibility input",
+      "unique": true,
+      "research_value": "required historical regression input",
+      "classification": "SHOULD_COMMIT",
+      "action": "commit unchanged"
+    },
+    {
+      "path": "reproducibility/outputs/research_model_workbook",
+      "type": "directory",
+      "size_bytes": 21143,
+      "file_count": 2,
+      "sha256": "b0a94272ae8b0c22f1e108b24d731d7adcb099a358e4544fb79e9292c8ba7fcf",
+      "sha_definition": "file bytes, or ordered path/hash JSON for multiple files",
+      "files": [
+        {
+          "path": "reproducibility/outputs/research_model_workbook/20260909_175947/reconstruction_validation.json",
+          "sha256": "b6cc03efc5f8ac0318b415c25562213e64902ddd1b631880bb429dc878f34869",
+          "bytes": 2833,
+          "duplicate_untracked_paths": []
+        },
+        {
+          "path": "reproducibility/outputs/research_model_workbook/20260909_175947/research_model_3page_ja_revised.xlsx",
+          "sha256": "d0bc4e7facae41f0a12043649c381bd0a628aeeffd72679537a37d4347c8e25a",
+          "bytes": 18310,
+          "zip_members": 14,
+          "workbook_xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><x:workbook xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><x:sheets><x:sheet name=\"Page1_Open_Data\" sheetId=\"1\" r:id=\"R8011df176be540f9\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" /><x:sheet name=\"Page2_Model_Flow\" sheetId=\"2\" r:id=\"R963c0fe69891439c\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" /><x:sheet name=\"Page3_Results\" sheetId=\"3\" r:id=\"R81960b8e015145d8\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" /></x:sheets><x:calcPr fullCalcOnLoad=\"1\" forceFullCalc=\"1\" calcMode=\"auto\" /></x:workbook>",
+          "zip_crc_error": null,
+          "duplicate_untracked_paths": []
+        }
+      ],
+      "origin": "Historical workbook generation/revision; tools/revise_research_model_xlsx.py and tools/rebuild_current_research_model.py; reconstruction_validation.json records source hashes",
+      "unique": true,
+      "research_value": "historical research model workbook; preserve outside repo",
+      "classification": "SHOULD_BACKUP_AND_REMOVE",
+      "action": "backup, verify then remove after authority commit"
+    },
+    {
+      "path": "research_model_3page_ja.xlsx",
+      "type": "file",
+      "size_bytes": 16908,
+      "file_count": 1,
+      "sha256": "9c1a76f086061b144811903f1c93e8369a80815d179036137987d4a826c3d988",
+      "sha_definition": "file bytes, or ordered path/hash JSON for multiple files",
+      "files": [
+        {
+          "path": "research_model_3page_ja.xlsx",
+          "sha256": "9c1a76f086061b144811903f1c93e8369a80815d179036137987d4a826c3d988",
+          "bytes": 16908,
+          "zip_members": 14,
+          "workbook_xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><x:workbook xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><x:sheets><x:sheet name=\"Page1_Open_Data\" sheetId=\"1\" r:id=\"R8011df176be540f9\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" /><x:sheet name=\"Page2_Model_Flow\" sheetId=\"2\" r:id=\"R963c0fe69891439c\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" /><x:sheet name=\"Page3_Results\" sheetId=\"3\" r:id=\"R81960b8e015145d8\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" /></x:sheets></x:workbook>",
+          "zip_crc_error": null,
+          "duplicate_untracked_paths": []
+        }
+      ],
+      "origin": "Historical workbook generation/revision; tools/revise_research_model_xlsx.py and tools/rebuild_current_research_model.py; reconstruction_validation.json records source hashes",
+      "unique": true,
+      "research_value": "historical research model workbook; preserve outside repo",
+      "classification": "SHOULD_BACKUP_AND_REMOVE",
+      "action": "backup, verify then remove after authority commit"
+    },
+    {
+      "path": "research_model_3page_ja_revised.xlsx",
+      "type": "file",
+      "size_bytes": 26017,
+      "file_count": 1,
+      "sha256": "6e0e474317aa0b2986a2c8214760569059f20a758a36ebb42792fe7127217e6d",
+      "sha_definition": "file bytes, or ordered path/hash JSON for multiple files",
+      "files": [
+        {
+          "path": "research_model_3page_ja_revised.xlsx",
+          "sha256": "6e0e474317aa0b2986a2c8214760569059f20a758a36ebb42792fe7127217e6d",
+          "bytes": 26017,
+          "zip_members": 20,
+          "workbook_xml": "<workbook xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><workbookPr /><workbookProtection /><bookViews><workbookView visibility=\"visible\" minimized=\"0\" showHorizontalScroll=\"1\" showVerticalScroll=\"1\" showSheetTabs=\"1\" tabRatio=\"600\" firstSheet=\"0\" activeTab=\"0\" autoFilterDateGrouping=\"1\" /></bookViews><sheets><sheet name=\"01_入力と仮定\" sheetId=\"1\" state=\"visible\" r:id=\"rId1\" /><sheet name=\"02_モデルと制約\" sheetId=\"2\" state=\"visible\" r:id=\"rId2\" /><sheet name=\"03_パイプラインと評価\" sheetId=\"3\" state=\"visible\" r:id=\"rId3\" /></sheets><definedNames><definedName name=\"_xlnm._FilterDatabase\" localSheetId=\"0\" hidden=\"1\">'01_入力と仮定'!$A$3:$F$27</definedName><definedName name=\"_xlnm.Print_Titles\" localSheetId=\"0\">'01_入力と仮定'!$1:$3</definedName><definedName name=\"_xlnm.Print_Area\" localSheetId=\"0\">'01_入力と仮定'!$A$1:$F$27</definedName><definedName name=\"_xlnm._FilterDatabase\" localSheetId=\"1\" hidden=\"1\">'02_モデルと制約'!$A$3:$F$30</definedName><definedName name=\"_xlnm.Print_Titles\" localSheetId=\"1\">'02_モデルと制約'!$1:$3</definedName><definedName name=\"_xlnm.Print_Area\" localSheetId=\"1\">'02_モデルと制約'!$A$1:$F$30</definedName><definedName name=\"_xlnm._FilterDatabase\" localSheetId=\"2\" hidden=\"1\">'03_パイプラインと評価'!$A$3:$F$28</definedName><definedName name=\"_xlnm.Print_Titles\" localSheetId=\"2\">'03_パイプラインと評価'!$1:$3</definedName><definedName name=\"_xlnm.Print_Area\" localSheetId=\"2\">'03_パイプラインと評価'!$A$1:$F$28</definedName></definedNames><calcPr calcId=\"124519\" fullCalcOnLoad=\"1\" /></workbook>",
+          "zip_crc_error": null,
+          "duplicate_untracked_paths": []
+        }
+      ],
+      "origin": "Historical workbook generation/revision; tools/revise_research_model_xlsx.py and tools/rebuild_current_research_model.py; reconstruction_validation.json records source hashes",
+      "unique": true,
+      "research_value": "historical research model workbook; preserve outside repo",
+      "classification": "SHOULD_BACKUP_AND_REMOVE",
+      "action": "backup, verify then remove after authority commit"
+    }
+  ],
+  "entry_count": 5,
+  "file_count": 6,
+  "ignored_action": "KEEP: environments, local data, generated visualizations and caches; ignored files do not affect clean Git gate",
+  "ignored_inventory": "starting_ignored_files.txt"
+}
