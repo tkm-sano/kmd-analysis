@@ -1,0 +1,9 @@
+{
+  "schema_version": "r23-n5-memory-bottleneck-review-v1",
+  "rank01_peak_rss_gib": 201.5834732055664,
+  "minimal_probe_peak_gib": 0.571,
+  "ratio": 353.036,
+  "profiling_observation": "original direct profiling reached approximately 180 GiB RSS before being stopped; equivalent-index prototype ru_maxrss delta was approximately 0.615 GiB",
+  "interpretation": "full-state Python label/dict/object materialization is a major measured candidate, but the stopped original profiling does not prove it is the sole source of rank01 peak RSS",
+  "low_overhead_method": "resource.getrusage ru_maxrss and phase perf_counter; no tracemalloc in n=5 profiling"
+}

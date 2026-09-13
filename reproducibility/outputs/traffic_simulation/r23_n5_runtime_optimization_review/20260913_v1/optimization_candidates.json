@@ -1,0 +1,7 @@
+{
+  "schema_version": "r23-n5-optimization-candidates-v1",
+  "SAFE_EQUIVALENT": ["precompute 120 feasible route bitstrings and basis indices", "aggregate P_feasible/P_optimal by direct index lookup", "derive invalid mass as total minus feasible mass", "avoid full state labels/dict for optimizer evaluations", "retain compact artifact and avoid raw probability serialization"],
+  "NEEDS_EQUIVALENCE_TEST": ["reuse parameterized circuit", "transpile once and bind parameters", "reuse AerSimulator", "precompute diagonal cost data or direct expectation vector"],
+  "METHOD_CHANGE": ["change QUBO/Hamiltonian/lambda/p/optimizer/options/initialization/backend/shots/denominator/tolerance", "approximate or shot-based simulation", "change decoding or feasibility definition"],
+  "prototype_scope": "equivalent-index probability aggregation only; source authority not overwritten"
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": "r23-n5-objective-code-path-v1",
+  "authority": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py and hamiltonian.py; runner used 2026-09-13 profiling only",
+  "steps": [
+    "objective(values) receives optimizer vector and repository_parameters splits gamma/beta",
+    "_statevector_and_expectation calls build_qaoa_circuit",
+    "AerSimulator(method=statevector, device=CPU) is created per evaluation",
+    "transpile is called per evaluation",
+    "simulator.run(...).result() is timed as Aer",
+    "Statevector(result.data(0)[statevector]) is materialized outside Aer timing",
+    "build_cost_operator is called and Statevector.expectation_value is timed as expectation",
+    "state.probabilities_dict() is converted to a 33,554,432-entry Python dict outside the Aer timer",
+    "optimizer receives only the scalar expectation; final evaluation then runs probability_metrics and energy_statistics over the full mapping"
+  ],
+  "source_lines": {"qaoa": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py:90-119, 126-154, 200-208", "metrics": "05_src/traffic_simulation/r23_qaoa_aer/metrics.py:42-66", "circuit": "05_src/traffic_simulation/r23_qaoa_aer/hamiltonian.py:21-53"}
+}

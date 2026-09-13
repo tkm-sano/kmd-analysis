@@ -1,0 +1,13 @@
+{
+  "schema_version": "r23-n5-bottleneck-candidates-v1",
+  "observed": ["original micro-profiling exceeded 15 minutes and approximately 180 GiB RSS before completion", "T_Aer is only about 0.20% of rank01 wall time", "prototype avoided full Python probability mapping and completed 3 direct evaluations in 16.69-25.63 s"],
+  "candidates": [
+    {"id":"full_probability_dict", "classification":"SAFE_EQUIVALENT", "evidence":"probabilities_dict creates all basis labels and float objects; only 120 feasible basis indices are needed for P_feasible/P_optimal"},
+    {"id":"full_state_decoding", "classification":"SAFE_EQUIVALENT", "evidence":"feasible routes are exactly the 120 permutations; invalid mass follows total minus feasible mass"},
+    {"id":"direct_diagonal_expectation", "classification":"NEEDS_EQUIVALENCE_TEST", "evidence":"operator is diagonal, but numerical equivalence must be tested"},
+    {"id":"circuit_transpile_reuse", "classification":"NEEDS_EQUIVALENCE_TEST", "evidence":"topology is invariant but parameter binding/transpiled behavior must be checked"},
+    {"id":"simulator_reuse", "classification":"NEEDS_EQUIVALENCE_TEST", "evidence":"same backend settings, but determinism and lifecycle behavior require testing"},
+    {"id":"serialization_reduction", "classification":"SAFE_EQUIVALENT", "evidence":"formal compact artifact already omits raw 2^25 table; no required optimizer-time serialization found"},
+    {"id":"optimizer_or_parameter_changes", "classification":"METHOD_CHANGE", "evidence":"prohibited by authority"}
+  ]
+}

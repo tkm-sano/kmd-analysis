@@ -1,0 +1,8 @@
+{
+  "schema_version": "r23-n5-runtime-equivalence-review-v1",
+  "status": "PASS_FOR_INDEX_AGGREGATION; FULL_ORIGINAL_N5_DICTIONARY_CROSSCHECK_NOT_COMPLETED",
+  "mathematical_equivalence": {"feasible_count": 120, "basis_indices": "existing row-major encoding", "P_feasible": "sum of probabilities at the 120 feasible indices", "P_optimal": "sum at exact optimum indices", "P_invalid": "P_total-P_feasible", "renormalization": false, "status": "PASS"},
+  "prototype_n5_observed": {"objective": 150.25280453984809, "P_feasible": 0.00010572686963257352, "P_optimal": 8.911426703519106e-7, "probability_total": 1.0000000000000004, "feasible_count": 120},
+  "tests": {"small_n_exhaustive_index_mapping": "PASS for n=2,3,4", "n5_single_evaluation": "PASS for prototype internal integrity; original full dictionary comparison not completed because original profiling was stopped", "method_parameters": "unchanged"},
+  "limitation": "A formal adoption gate for rank02/rank03 requires a completed controlled equivalence test of any final optimized implementation. This review does not silently authorize remaining runs."
+}

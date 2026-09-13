@@ -1,0 +1,9 @@
+{
+  "schema_version": "r23-n5-timing-boundary-review-v1",
+  "T_Aer_definition": "time.perf_counter interval from immediately before simulator.run(transpiled, seed_simulator=seed).result() to immediately after result() returns",
+  "T_Aer_excludes": ["Statevector materialization", "operator construction", "expectation_value", "probabilities_dict", "probability metrics", "decoding", "final validation"],
+  "T_transpile_definition": "time.perf_counter interval around transpile(circuit, simulator, optimization_level, seed_transpiler) for every objective evaluation and final evaluation; compact rank01 artifact stores the objective-evaluation sum only",
+  "unmeasured_remainder_using_requested_definition_s": 153110.36614219705,
+  "unmeasured_remainder_fraction": 0.997891,
+  "status": "BOUNDARIES_CONFIRMED"
+}
