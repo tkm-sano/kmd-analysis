@@ -10,9 +10,11 @@ from qiskit import transpile
 from qiskit_aer import AerSimulator
 from qiskit.quantum_info import Statevector
 
+from traffic_simulation.r20_route_ordering.core import ValidationStatus, route_travel_time, validate_bitstring
 from .hamiltonian import build_cost_operator, build_qaoa_circuit, repository_parameters
 from .initialization import generate_initial_parameters, initialization_vector_sha256
 from .metrics import energy_statistics, probability_metrics
+from .optimized_metrics_v4 import indexed_probability_metrics
 from .optimizers import ObjectiveEvaluationCapReached, minimize_objective, optimizer_method
 from .schema import R23Config, R23Input, R23SchemaError, memory_preflight
 
@@ -21,6 +23,32 @@ class R23ResourceGuard(RuntimeError):
     def __init__(self, message: str, *, reason_code: str = "EXTERNAL_SAFETY_STOP") -> None:
         super().__init__(message)
         self.reason_code = reason_code
+
+
+def _v4_reporting_metrics(state, input_data: R23Input, threshold: float) -> dict[str, Any]:
+    """V4 final reporting adapter: only indexed feasible amplitudes are inspected."""
+    indexed = indexed_probability_metrics(state, input_data.customer_ids, input_data.exact_optimal_bitstrings,
+                                          input_data.n, normalized_matrix=input_data.normalized_matrix,
+                                          depot_id=input_data.depot_id)
+    amplitudes = state.data if hasattr(state, "data") else state
+    candidates = []
+    for index in indexed["feasible_indices"]:
+        probability = float(abs(amplitudes[index]) ** 2)
+        if probability < threshold:
+            continue
+        bits = tuple((int(index) >> q) & 1 for q in range(input_data.n * input_data.n))
+        validation = validate_bitstring(bits, input_data.n, input_data.customer_ids)
+        if validation.status == ValidationStatus.VALID:
+            candidates.append({"qiskit_label": format(index, f"0{input_data.n * input_data.n}b"),
+                               "bitstring": list(bits), "probability": probability, "valid": True,
+                               "status": validation.status.value, "route": list(validation.route)})
+    best = None
+    for record in candidates:
+        candidate = {"record": record, "normalized_route_objective": route_travel_time(input_data.depot_id, record["route"], input_data.normalized_matrix)}
+        if best is None or candidate["normalized_route_objective"] < best["normalized_route_objective"]:
+            best = candidate
+    indexed["best_feasible_state"] = best
+    return indexed
 
 
 def transpiler_metadata(*, optimization_level: int, seed_transpiler: int) -> dict[str, Any]:
@@ -97,7 +125,7 @@ def classify_optimizer_termination(*, optimizer_success: bool | None, nfev: int 
             "optimizer_status": optimizer_status}
 
 
-def _statevector_and_expectation(input_data: R23Input, gamma, beta, *, seed: int, optimization_level: int) -> tuple[float, dict[str, float], dict[str, float], dict[str, float]]:
+def _statevector_and_expectation(input_data: R23Input, gamma, beta, *, seed: int, optimization_level: int, optimized: bool = False) -> tuple[float, Any, dict[str, float], dict[str, float]]:
     started = time.perf_counter()
     circuit_started = time.perf_counter()
     circuit = build_qaoa_circuit(input_data, len(gamma), gamma, beta)
@@ -115,11 +143,14 @@ def _statevector_and_expectation(input_data: R23Input, gamma, beta, *, seed: int
     operator = build_cost_operator(input_data, include_constant=False)
     expectation = float(state.expectation_value(operator).real + input_data.ising_constant)
     expectation_seconds = time.perf_counter() - expectation_started
-    probabilities = {str(label): float(value) for label, value in state.probabilities_dict().items()}
+    probabilities = state if optimized else {str(label): float(value) for label, value in state.probabilities_dict().items()}
     return expectation, probabilities, {"untranspiled_depth": circuit.depth(), "transpiled_depth": transpiled.depth(), "gate_count": sum(transpiled.count_ops().values()), "two_qubit_gate_count": sum(v for k, v in transpiled.count_ops().items() if k in {"cx", "ecr", "cz"}), "parameter_count": 2 * len(gamma), "logical_qubits": input_data.n_logical, "transpiler": transpiler_metadata(optimization_level=optimization_level, seed_transpiler=seed)}, {"circuit_construction_seconds": circuit_seconds, "transpilation_seconds": transpile_seconds, "aer_execution_seconds": execution_seconds, "expectation_seconds": expectation_seconds, "evaluation_total_seconds": time.perf_counter() - started}
 
 
-def run_single(input_data: R23Input, config: R23Config) -> dict[str, Any]:
+def run_single(input_data: R23Input, config: R23Config, *, implementation: str = "original") -> dict[str, Any]:
+    if implementation not in {"original", "v4"}:
+        raise ValueError("unknown implementation")
+    optimized = implementation == "v4"
     config.validate(input_data.n_logical)
     resource_preflight = memory_preflight(input_data.n_logical, config.memory_limit_gib)
     started = time.perf_counter(); trace = []; objective_eval_total = 0.0
@@ -141,7 +172,7 @@ def run_single(input_data: R23Input, config: R23Config) -> dict[str, Any]:
             raise R23ResourceGuard("non-binding emergency safety guard reached", reason_code="EXTERNAL_SAFETY_STOP")
         t = time.perf_counter()
         gamma, beta = repository_parameters(values, config.p)
-        value, _, _, evaluation_timing = _statevector_and_expectation(input_data, gamma, beta, seed=config.seed, optimization_level=config.optimization_level)
+        value, _, _, evaluation_timing = _statevector_and_expectation(input_data, gamma, beta, seed=config.seed, optimization_level=config.optimization_level, optimized=optimized)
         duration = time.perf_counter() - t; objective_eval_total += duration
         component_totals["objective_eval"] += duration
         component_totals["circuit_build"] += evaluation_timing["circuit_construction_seconds"]
@@ -198,10 +229,14 @@ def run_single(input_data: R23Input, config: R23Config) -> dict[str, Any]:
         optimizer_wall_seconds = time.perf_counter() - optimizer_started
     gamma, beta = repository_parameters(final_parameters, config.p)
     try:
-        final_expectation, probabilities, circuit_metrics, final_timing = _statevector_and_expectation(input_data, gamma, beta, seed=config.seed, optimization_level=config.optimization_level)
+        final_expectation, probabilities, circuit_metrics, final_timing = _statevector_and_expectation(input_data, gamma, beta, seed=config.seed, optimization_level=config.optimization_level, optimized=optimized)
         decode_started = time.perf_counter()
-        metrics = probability_metrics(probabilities, input_data, threshold=config.probability_threshold)
-        energy_stats = energy_statistics(probabilities, input_data)
+        if optimized:
+            metrics = _v4_reporting_metrics(probabilities, input_data, config.probability_threshold)
+            energy_stats = {}
+        else:
+            metrics = probability_metrics(probabilities, input_data, threshold=config.probability_threshold)
+            energy_stats = energy_statistics(probabilities, input_data)
         decode_seconds = time.perf_counter() - decode_started
         p_opt = metrics["P_opt"]
         if status == "PASS":

@@ -52,4 +52,4 @@ permutation enumerationでexact referenceを作成し、best decoded feasible ro
 
 ## Next
 
-次の科学タスクは`R23_LIMITED_SCALING_METHODOLOGY_REVIEW`。本整理ではn≥5 executionを行わない。
+更新後の状態: n=5 rank01/rank02/rank03とEvidence Reviewを完了し、`R23_REDUCED_PROBLEM_SCALING_COMPLETED_WITH_LIMITATIONS`と判定する。rank01はoriginal、rank02/rank03はvalidated-equivalent V4である。n≥6はraw exact statevector scaling（36 logical qubits、約1 TiB）を理由に本methodologyでは実行しない。次工程は`R24_CAPACITY_EXTENSION_DESIGN`。

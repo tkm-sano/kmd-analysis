@@ -1,0 +1,137 @@
+{
+  "rows": [
+    {
+      "instance": "routing_v18_n5_rank01",
+      "implementation_authority": "ORIGINAL_RANK01",
+      "implementation_sha256": "original-authority",
+      "logical_qubits": 25,
+      "state_dimension": 33554432,
+      "exact_optimum_recovery": true,
+      "relative_gap": 0.0,
+      "P_feasible": 0.006366971625605308,
+      "P_optimal": 5.447231886991554e-05,
+      "optimizer_success": false,
+      "termination": "OBJECTIVE_EVALUATION_CAP_REACHED",
+      "nfev": 300,
+      "T_total": 153434.09043177636,
+      "T_Aer": 306.781193879433,
+      "T_total_per_nfev": 511.4469681059212,
+      "T_Aer_per_nfev": 1.02260397959811,
+      "peak_RSS_GiB": 201.5834732055664,
+      "exact_route": [
+        "DEP_006",
+        "2026-01-01-13111-bldg-130096",
+        "2026-01-01-13111-bldg-79791",
+        "2026-01-01-13111-bldg-117556",
+        "2026-01-01-13111-bldg-2510665",
+        "2026-01-01-13111-bldg-138702",
+        "DEP_006"
+      ],
+      "selected_route": [
+        "DEP_006",
+        "2026-01-01-13111-bldg-130096",
+        "2026-01-01-13111-bldg-79791",
+        "2026-01-01-13111-bldg-117556",
+        "2026-01-01-13111-bldg-2510665",
+        "2026-01-01-13111-bldg-138702",
+        "DEP_006"
+      ],
+      "integrity": "PASS"
+    },
+    {
+      "instance": "routing_v18_n5_rank02",
+      "implementation_authority": "R23_EXPERIMENT_B_IMPLEMENTATION_SOURCE_SET_V4",
+      "implementation_sha256": "c0892b96e375fe2c274eaab74dfeb59cb8ec3a8a1331bb44bca3bd22dc9a9691",
+      "logical_qubits": 25,
+      "state_dimension": 33554432,
+      "exact_optimum_recovery": true,
+      "relative_gap": 0.0,
+      "P_feasible": 0.007659407194320995,
+      "P_optimal": 6.593481397305275e-05,
+      "optimizer_success": true,
+      "termination": "OPTIMIZER_REPORTED_SUCCESS",
+      "nfev": 209,
+      "T_total": 2561.287391833961,
+      "T_Aer": 351.7672255039215,
+      "T_total_per_nfev": 12.25496359729168,
+      "T_Aer_per_nfev": 1.683096772746036,
+      "peak_RSS_GiB": 0.30858612060546875,
+      "exact_route": [
+        "DEP_006",
+        "2026-01-01-13111-bldg-130096",
+        "2026-01-01-13111-bldg-2510665",
+        "2026-01-01-13111-bldg-55213",
+        "2026-01-01-13111-bldg-29995",
+        "2026-01-01-13111-bldg-37628",
+        "DEP_006"
+      ],
+      "selected_route": [
+        "DEP_006",
+        "2026-01-01-13111-bldg-130096",
+        "2026-01-01-13111-bldg-2510665",
+        "2026-01-01-13111-bldg-55213",
+        "2026-01-01-13111-bldg-29995",
+        "2026-01-01-13111-bldg-37628",
+        "DEP_006"
+      ],
+      "integrity": "PASS"
+    },
+    {
+      "instance": "routing_v18_n5_rank03",
+      "implementation_authority": "R23_EXPERIMENT_B_IMPLEMENTATION_SOURCE_SET_V4",
+      "implementation_sha256": "c0892b96e375fe2c274eaab74dfeb59cb8ec3a8a1331bb44bca3bd22dc9a9691",
+      "logical_qubits": 25,
+      "state_dimension": 33554432,
+      "exact_optimum_recovery": true,
+      "relative_gap": 0.0,
+      "P_feasible": 0.007978143668511524,
+      "P_optimal": 6.636000200882145e-05,
+      "optimizer_success": true,
+      "termination": "OPTIMIZER_REPORTED_SUCCESS",
+      "nfev": 138,
+      "T_total": 1704.4330657268874,
+      "T_Aer": 230.35673474846408,
+      "T_total_per_nfev": 12.350964244397735,
+      "T_Aer_per_nfev": 1.6692517010758265,
+      "peak_RSS_GiB": 0.2781257629394531,
+      "exact_route": [
+        "DEP_006",
+        "2026-01-01-13111-bldg-37628",
+        "2026-01-01-13111-bldg-117556",
+        "2026-01-01-13111-bldg-2510665",
+        "2026-01-01-13111-bldg-145438",
+        "2026-01-01-13111-bldg-130096",
+        "DEP_006"
+      ],
+      "selected_route": [
+        "DEP_006",
+        "2026-01-01-13111-bldg-37628",
+        "2026-01-01-13111-bldg-117556",
+        "2026-01-01-13111-bldg-2510665",
+        "2026-01-01-13111-bldg-145438",
+        "2026-01-01-13111-bldg-130096",
+        "DEP_006"
+      ],
+      "integrity": "PASS"
+    }
+  ],
+  "aggregate": {
+    "P_feasible": {
+      "min": 0.006366971625605308,
+      "mean": 0.007334840829479276,
+      "median": 0.007659407194320995,
+      "max": 0.007978143668511524
+    },
+    "P_optimal": {
+      "min": 5.447231886991554e-05,
+      "mean": 6.225571161726325e-05,
+      "median": 6.593481397305275e-05,
+      "max": 6.636000200882145e-05
+    }
+  },
+  "rank01_reference": {
+    "P_feasible": 0.006366971625605308,
+    "P_optimal": 5.447231886991554e-05
+  },
+  "interpretation": "instance variation; n=3, no statistical generalization"
+}
