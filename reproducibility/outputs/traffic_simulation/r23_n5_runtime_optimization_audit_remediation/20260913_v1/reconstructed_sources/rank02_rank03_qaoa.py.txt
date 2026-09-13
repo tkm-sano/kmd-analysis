@@ -48,13 +48,6 @@ def _v4_reporting_metrics(state, input_data: R23Input, threshold: float) -> dict
         if best is None or candidate["normalized_route_objective"] < best["normalized_route_objective"]:
             best = candidate
     indexed["best_feasible_state"] = best
-    indexed["reporting_contract"] = {
-        "version": "r23-v4-indexed-report-v1",
-        "probability_threshold": threshold,
-        "probability_tolerance": 1e-12,
-        "omitted_diagnostics": ["energy_variance", "most_probable_state", "most_probable_feasible_state", "records"],
-        "scope": "raw probability aggregates and minimum-cost thresholded feasible route; not full original result equivalence",
-    }
     return indexed
 
 

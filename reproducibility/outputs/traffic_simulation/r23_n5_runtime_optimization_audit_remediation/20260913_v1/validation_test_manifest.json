@@ -1,0 +1,253 @@
+{
+  "required_ids": [
+    "environment",
+    "model_source_unchanged",
+    "n2",
+    "n3",
+    "n4",
+    "n5_rank01",
+    "n5_rank02",
+    "n5_rank03",
+    "mapping_rank01",
+    "mapping_rank02",
+    "mapping_rank03",
+    "invalid_inputs",
+    "multiple_optimum",
+    "gate_mutations",
+    "provenance_missing_fields",
+    "retired_generators"
+  ],
+  "tests": [
+    {
+      "test_id": "environment",
+      "requirement": "frozen dependency versions",
+      "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "executed": true,
+      "result": "VERIFIED",
+      "checks": [
+        {
+          "passed": true,
+          "error": null
+        }
+      ],
+      "evidence": "regression_evidence.json#environment"
+    },
+    {
+      "test_id": "model_source_unchanged",
+      "requirement": "scientific definitions/objective unchanged",
+      "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "executed": true,
+      "result": "VERIFIED",
+      "checks": [
+        {
+          "passed": true,
+          "error": null
+        }
+      ],
+      "evidence": "regression_evidence.json#model_source_unchanged"
+    },
+    {
+      "test_id": "n2",
+      "requirement": "valid-domain metrics/expectation/route",
+      "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "executed": true,
+      "result": "VERIFIED",
+      "checks": [
+        {
+          "passed": true,
+          "error": null
+        }
+      ],
+      "evidence": "regression_evidence.json#n2"
+    },
+    {
+      "test_id": "n3",
+      "requirement": "valid-domain metrics/expectation/route",
+      "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "executed": true,
+      "result": "VERIFIED",
+      "checks": [
+        {
+          "passed": true,
+          "error": null
+        }
+      ],
+      "evidence": "regression_evidence.json#n3"
+    },
+    {
+      "test_id": "n4",
+      "requirement": "valid-domain metrics/expectation/route",
+      "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "executed": true,
+      "result": "VERIFIED",
+      "checks": [
+        {
+          "passed": true,
+          "error": null
+        }
+      ],
+      "evidence": "regression_evidence.json#n4"
+    },
+    {
+      "test_id": "n5_rank01",
+      "requirement": "valid n5 fixed point",
+      "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "executed": true,
+      "result": "VERIFIED",
+      "checks": [
+        {
+          "passed": true,
+          "error": null
+        }
+      ],
+      "evidence": "regression_evidence.json#n5_rank01"
+    },
+    {
+      "test_id": "mapping_rank01",
+      "requirement": "120 route/index roundtrips",
+      "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "executed": true,
+      "result": "VERIFIED",
+      "checks": [
+        {
+          "passed": true,
+          "error": null
+        }
+      ],
+      "evidence": "regression_evidence.json#mapping_rank01"
+    },
+    {
+      "test_id": "n5_rank02",
+      "requirement": "valid n5 fixed point",
+      "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "executed": true,
+      "result": "VERIFIED",
+      "checks": [
+        {
+          "passed": true,
+          "error": null
+        }
+      ],
+      "evidence": "regression_evidence.json#n5_rank02"
+    },
+    {
+      "test_id": "mapping_rank02",
+      "requirement": "120 route/index roundtrips",
+      "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "executed": true,
+      "result": "VERIFIED",
+      "checks": [
+        {
+          "passed": true,
+          "error": null
+        }
+      ],
+      "evidence": "regression_evidence.json#mapping_rank02"
+    },
+    {
+      "test_id": "n5_rank03",
+      "requirement": "valid n5 fixed point",
+      "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "executed": true,
+      "result": "VERIFIED",
+      "checks": [
+        {
+          "passed": true,
+          "error": null
+        }
+      ],
+      "evidence": "regression_evidence.json#n5_rank03"
+    },
+    {
+      "test_id": "mapping_rank03",
+      "requirement": "120 route/index roundtrips",
+      "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "executed": true,
+      "result": "VERIFIED",
+      "checks": [
+        {
+          "passed": true,
+          "error": null
+        }
+      ],
+      "evidence": "regression_evidence.json#mapping_rank03"
+    },
+    {
+      "test_id": "invalid_inputs",
+      "requirement": "invalid_inputs",
+      "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "executed": true,
+      "result": "VERIFIED",
+      "checks": [
+        {
+          "passed": true,
+          "error": null
+        }
+      ],
+      "evidence": "regression_evidence.json#invalid_inputs"
+    },
+    {
+      "test_id": "multiple_optimum",
+      "requirement": "multiple_optimum",
+      "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "executed": true,
+      "result": "VERIFIED",
+      "checks": [
+        {
+          "passed": true,
+          "error": null
+        }
+      ],
+      "evidence": "regression_evidence.json#multiple_optimum"
+    },
+    {
+      "test_id": "gate_mutations",
+      "requirement": "gate_mutations",
+      "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "executed": true,
+      "result": "VERIFIED",
+      "checks": [
+        {
+          "passed": true,
+          "error": null
+        }
+      ],
+      "evidence": "regression_evidence.json#gate_mutations"
+    },
+    {
+      "test_id": "provenance_missing_fields",
+      "requirement": "provenance_missing_fields",
+      "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "executed": true,
+      "result": "VERIFIED",
+      "checks": [
+        {
+          "passed": true,
+          "error": null
+        }
+      ],
+      "evidence": "regression_evidence.json#provenance_missing_fields"
+    },
+    {
+      "test_id": "retired_generators",
+      "requirement": "retired_generators",
+      "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "executed": true,
+      "result": "VERIFIED",
+      "checks": [
+        {
+          "passed": true,
+          "error": null
+        }
+      ],
+      "evidence": "regression_evidence.json#retired_generators"
+    }
+  ],
+  "gate": {
+    "result": "VERIFIED",
+    "passed": true,
+    "missing_ids": [],
+    "required_count": 16,
+    "executed_count": 16
+  }
+}

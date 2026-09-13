@@ -1,0 +1,25 @@
+{
+  "test": {
+    "test_id": "multiple_optimum",
+    "requirement": "multiple_optimum",
+    "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+    "executed": true,
+    "result": "VERIFIED",
+    "checks": [
+      {
+        "passed": true,
+        "error": null
+      }
+    ],
+    "evidence": "regression_evidence.json#multiple_optimum"
+  },
+  "evidence": {
+    "optimum_indices": [
+      9,
+      6
+    ],
+    "expected_mass": 1.0,
+    "observed_mass": 0.9999999999999999,
+    "one_optimum_mass": 0.25
+  }
+}

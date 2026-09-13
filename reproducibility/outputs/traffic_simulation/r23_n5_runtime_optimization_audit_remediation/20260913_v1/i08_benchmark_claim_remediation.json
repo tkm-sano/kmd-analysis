@@ -1,0 +1,19 @@
+{
+  "original_ids": [
+    "I05",
+    "I10"
+  ],
+  "classification": "PRELIMINARY_ONLY",
+  "runtime": "33.7x is an unmatched historical diagnostic ratio, not formal/scientific speedup",
+  "memory": "201.6 GiB original observed absolute peak RSS versus approximately 0.615 GiB candidate incremental RSS: metrics not directly comparable; no 327x formal reduction",
+  "proxy_erratum": "Legacy idx[-1:] P_optimal_lookup is an arbitrary feasible-index lookup microbenchmark, not verified optimum mass. Archived code retired; new regression invokes actual optimal-set helper.",
+  "formal_contract": "05_src/traffic_simulation/specifications/R23_RUNTIME_REMEDIATION_CONTRACT.md",
+  "formal_benchmark_executed": false,
+  "formal_comparability": "NOT_TESTED",
+  "accounting": "T_total=T_setup+T_warmup+sum(T_eval)+T_final; also report cold total without warmup; include feasible caches, circuit/Hamiltonian/backend construction and final guards/decoding",
+  "residual": [
+    "historical thread/affinity/warm-up/boundaries unmatched",
+    "rank02/03 peak RSS conflict unreconciled",
+    "no formal ratio authorized"
+  ]
+}

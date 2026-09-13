@@ -1,0 +1,35 @@
+{
+  "original_ids": [
+    "I02",
+    "I06",
+    "I08"
+  ],
+  "contract": "05_src/traffic_simulation/specifications/R23_RUNTIME_REMEDIATION_CONTRACT.md",
+  "implementation": "05_src/traffic_simulation/r23_qaoa_aer/execution_provenance.py",
+  "required": [
+    "git commit",
+    "source SHA",
+    "runner SHA",
+    "helper SHA",
+    "authority manifest SHA",
+    "source manifest",
+    "clean worktree",
+    "environment path",
+    "dependency versions",
+    "hostname",
+    "CPU",
+    "thread settings",
+    "command line",
+    "start/end timestamp",
+    "effective optimizer options",
+    "seeds",
+    "termination status",
+    "resource metrics and units",
+    "final parameters",
+    "objective trace SHA"
+  ],
+  "missing_policy": "FORMAL_RUN_PROVENANCE_INCOMPLETE; do not elevate to formal evidence",
+  "admission_scope": "Structural fail-closed validator tested; caller must bind recorded hashes to archived source/config files and enforce at start and end. No existing scientific runner changed or authorized.",
+  "test": "regression_evidence.json#provenance_missing_fields",
+  "compact_reporting_contract": "qaoa._v4_reporting_metrics now labels intentionally omitted diagnostics and candidate output version"
+}

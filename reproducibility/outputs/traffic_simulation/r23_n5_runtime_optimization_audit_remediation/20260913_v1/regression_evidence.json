@@ -1,0 +1,486 @@
+{
+  "environment": {
+    "python": "/home/takuma/.conda/envs/evrp-quantum-temp/bin/python",
+    "observed": {
+      "python": "3.11.16",
+      "qiskit": "2.5.2",
+      "qiskit_aer": "0.17.2",
+      "qiskit_algorithms": "0.4.0",
+      "qiskit_optimization": "0.7.0",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1"
+    },
+    "expected": {
+      "python": "3.11.16",
+      "qiskit": "2.5.2",
+      "qiskit_aer": "0.17.2",
+      "qiskit_algorithms": "0.4.0",
+      "qiskit_optimization": "0.7.0",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1"
+    },
+    "environment_modified": false
+  },
+  "model_source_unchanged": {
+    "unchanged_source_paths": [
+      "r20_route_ordering/core.py",
+      "r22_ising_conversion/converter.py",
+      "r23_qaoa_aer/hamiltonian.py",
+      "r23_qaoa_aer/schema.py",
+      "r23_qaoa_aer/optimizers.py",
+      "r23_qaoa_aer/initialization.py",
+      "r23_n5_scaling/run_n5_scaling.py"
+    ],
+    "objective_and_runner_AST_equal": true
+  },
+  "n2": {
+    "instance": "regression_n2",
+    "n": 2,
+    "parameters": [
+      0.1,
+      0.1
+    ],
+    "dtype": "complex128",
+    "candidate": {
+      "probability_total": 1.0000000000000007,
+      "P_feasible_exact": 0.20031697681512525,
+      "P_opt": 0.10025752058512195,
+      "invalid_probability_mass": 0.7996830231848754
+    },
+    "independent_reference": {
+      "probability_total": 1.0000000000000004,
+      "P_feasible_exact": 0.20031697681512525,
+      "P_opt": 0.10025752058512195,
+      "invalid_probability_mass": 0.7996830231848752
+    },
+    "absolute_differences": {
+      "probability_total": 2.220446049250313e-16,
+      "P_feasible_exact": 0.0,
+      "P_opt": 0.0,
+      "invalid_probability_mass": 2.220446049250313e-16
+    },
+    "before_after_differences": {
+      "probability_total": 0.0,
+      "P_feasible_exact": 0.0,
+      "P_opt": 0.0,
+      "invalid_probability_mass": 0.0
+    },
+    "expectation": 9.003936264083348,
+    "independent_expectation": 9.003936264083354,
+    "expectation_difference": 5.329070518200751e-15,
+    "decoded_route": [
+      "2026-01-01-13111-bldg-130096",
+      "2026-01-01-13111-bldg-117556"
+    ],
+    "before_after_route_equal": true,
+    "basis_state_mass": 1.0,
+    "coverage": "full numeric probabilities; full one-hot mask n<=4, independent factorial indices n5; fixed point, not optimizer trajectory"
+  },
+  "n3": {
+    "instance": "regression_n3",
+    "n": 3,
+    "parameters": [
+      0.1,
+      0.1
+    ],
+    "dtype": "complex128",
+    "candidate": {
+      "probability_total": 0.9999999999999997,
+      "P_feasible_exact": 0.03599265149694897,
+      "P_opt": 0.0060323019538385215,
+      "invalid_probability_mass": 0.9640073485030507
+    },
+    "independent_reference": {
+      "probability_total": 0.9999999999999998,
+      "P_feasible_exact": 0.03599265149694897,
+      "P_opt": 0.0060323019538385215,
+      "invalid_probability_mass": 0.9640073485030508
+    },
+    "absolute_differences": {
+      "probability_total": 1.1102230246251565e-16,
+      "P_feasible_exact": 0.0,
+      "P_opt": 0.0,
+      "invalid_probability_mass": 1.1102230246251565e-16
+    },
+    "before_after_differences": {
+      "probability_total": 0.0,
+      "P_feasible_exact": 0.0,
+      "P_opt": 0.0,
+      "invalid_probability_mass": 0.0
+    },
+    "expectation": 21.48089234525447,
+    "independent_expectation": 21.480892345254468,
+    "expectation_difference": 3.552713678800501e-15,
+    "decoded_route": [
+      "2026-01-01-13111-bldg-138702",
+      "2026-01-01-13111-bldg-130096",
+      "2026-01-01-13111-bldg-117556"
+    ],
+    "before_after_route_equal": true,
+    "basis_state_mass": 1.0,
+    "coverage": "full numeric probabilities; full one-hot mask n<=4, independent factorial indices n5; fixed point, not optimizer trajectory"
+  },
+  "n4": {
+    "instance": "regression_n4",
+    "n": 4,
+    "parameters": [
+      0.1,
+      0.1
+    ],
+    "dtype": "complex128",
+    "candidate": {
+      "probability_total": 1.0000000000000013,
+      "P_feasible_exact": 0.0029835123372735353,
+      "P_opt": 0.00012524983107576148,
+      "invalid_probability_mass": 0.9970164876627278
+    },
+    "independent_reference": {
+      "probability_total": 1.000000000000001,
+      "P_feasible_exact": 0.0029835123372735353,
+      "P_opt": 0.00012524983107576148,
+      "invalid_probability_mass": 0.9970164876627275
+    },
+    "absolute_differences": {
+      "probability_total": 2.220446049250313e-16,
+      "P_feasible_exact": 0.0,
+      "P_opt": 0.0,
+      "invalid_probability_mass": 2.220446049250313e-16
+    },
+    "before_after_differences": {
+      "probability_total": 0.0,
+      "P_feasible_exact": 0.0,
+      "P_opt": 0.0,
+      "invalid_probability_mass": 0.0
+    },
+    "expectation": 58.201393838356665,
+    "independent_expectation": 58.201393838356736,
+    "expectation_difference": 7.105427357601002e-14,
+    "decoded_route": [
+      "2026-01-01-13111-bldg-138702",
+      "2026-01-01-13111-bldg-130096",
+      "2026-01-01-13111-bldg-2510665",
+      "2026-01-01-13111-bldg-117556"
+    ],
+    "before_after_route_equal": true,
+    "basis_state_mass": 1.0,
+    "coverage": "full numeric probabilities; full one-hot mask n<=4, independent factorial indices n5; fixed point, not optimizer trajectory"
+  },
+  "n5_rank01": {
+    "instance": "routing_v18_n5_rank01",
+    "n": 5,
+    "parameters": [
+      0.1,
+      0.1
+    ],
+    "dtype": "complex128",
+    "candidate": {
+      "probability_total": 1.0000000000000004,
+      "P_feasible_exact": 0.00010572686963257354,
+      "P_opt": 8.911426703519106e-07,
+      "invalid_probability_mass": 0.9998942731303678
+    },
+    "independent_reference": {
+      "probability_total": 1.0000000000000004,
+      "P_feasible_exact": 0.00010572686963257354,
+      "P_opt": 8.911426703519106e-07,
+      "invalid_probability_mass": 0.9998942731303678
+    },
+    "absolute_differences": {
+      "probability_total": 0.0,
+      "P_feasible_exact": 0.0,
+      "P_opt": 0.0,
+      "invalid_probability_mass": 0.0
+    },
+    "before_after_differences": {
+      "probability_total": 0.0,
+      "P_feasible_exact": 0.0,
+      "P_opt": 0.0,
+      "invalid_probability_mass": 0.0
+    },
+    "expectation": 150.25280453984809,
+    "independent_expectation": 150.25280453984817,
+    "expectation_difference": 8.526512829121202e-14,
+    "decoded_route": [
+      "2026-01-01-13111-bldg-130096",
+      "2026-01-01-13111-bldg-79791",
+      "2026-01-01-13111-bldg-117556",
+      "2026-01-01-13111-bldg-2510665",
+      "2026-01-01-13111-bldg-138702"
+    ],
+    "before_after_route_equal": true,
+    "basis_state_mass": 1.0,
+    "coverage": "full numeric probabilities; full one-hot mask n<=4, independent factorial indices n5; fixed point, not optimizer trajectory"
+  },
+  "mapping_rank01": {
+    "rank": "rank01",
+    "feasible_routes": 120,
+    "unique_indices": 120,
+    "roundtrip_passed": 120
+  },
+  "n5_rank02": {
+    "instance": "routing_v18_n5_rank02",
+    "n": 5,
+    "parameters": [
+      0.1,
+      0.1
+    ],
+    "dtype": "complex128",
+    "candidate": {
+      "probability_total": 1.0000000000000029,
+      "P_feasible_exact": 0.0001055764556580117,
+      "P_opt": 8.979836389686702e-07,
+      "invalid_probability_mass": 0.9998944235443449
+    },
+    "independent_reference": {
+      "probability_total": 1.000000000000003,
+      "P_feasible_exact": 0.0001055764556580117,
+      "P_opt": 8.979836389686702e-07,
+      "invalid_probability_mass": 0.9998944235443451
+    },
+    "absolute_differences": {
+      "probability_total": 2.220446049250313e-16,
+      "P_feasible_exact": 0.0,
+      "P_opt": 0.0,
+      "invalid_probability_mass": 2.220446049250313e-16
+    },
+    "before_after_differences": {
+      "probability_total": 0.0,
+      "P_feasible_exact": 0.0,
+      "P_opt": 0.0,
+      "invalid_probability_mass": 0.0
+    },
+    "expectation": 154.9199227648949,
+    "independent_expectation": 154.91992276489532,
+    "expectation_difference": 4.263256414560601e-13,
+    "decoded_route": [
+      "2026-01-01-13111-bldg-130096",
+      "2026-01-01-13111-bldg-2510665",
+      "2026-01-01-13111-bldg-55213",
+      "2026-01-01-13111-bldg-29995",
+      "2026-01-01-13111-bldg-37628"
+    ],
+    "before_after_route_equal": true,
+    "basis_state_mass": 1.0,
+    "coverage": "full numeric probabilities; full one-hot mask n<=4, independent factorial indices n5; fixed point, not optimizer trajectory"
+  },
+  "mapping_rank02": {
+    "rank": "rank02",
+    "feasible_routes": 120,
+    "unique_indices": 120,
+    "roundtrip_passed": 120
+  },
+  "n5_rank03": {
+    "instance": "routing_v18_n5_rank03",
+    "n": 5,
+    "parameters": [
+      0.1,
+      0.1
+    ],
+    "dtype": "complex128",
+    "candidate": {
+      "probability_total": 1.0000000000000007,
+      "P_feasible_exact": 0.00010562311079585384,
+      "P_opt": 8.976089558502064e-07,
+      "invalid_probability_mass": 0.9998943768892048
+    },
+    "independent_reference": {
+      "probability_total": 1.0000000000000009,
+      "P_feasible_exact": 0.00010562311079585384,
+      "P_opt": 8.976089558502064e-07,
+      "invalid_probability_mass": 0.999894376889205
+    },
+    "absolute_differences": {
+      "probability_total": 2.220446049250313e-16,
+      "P_feasible_exact": 0.0,
+      "P_opt": 0.0,
+      "invalid_probability_mass": 2.220446049250313e-16
+    },
+    "before_after_differences": {
+      "probability_total": 0.0,
+      "P_feasible_exact": 0.0,
+      "P_opt": 0.0,
+      "invalid_probability_mass": 0.0
+    },
+    "expectation": 151.8344458516303,
+    "independent_expectation": 151.8344458516305,
+    "expectation_difference": 1.9895196601282805e-13,
+    "decoded_route": [
+      "2026-01-01-13111-bldg-37628",
+      "2026-01-01-13111-bldg-117556",
+      "2026-01-01-13111-bldg-2510665",
+      "2026-01-01-13111-bldg-145438",
+      "2026-01-01-13111-bldg-130096"
+    ],
+    "before_after_route_equal": true,
+    "basis_state_mass": 1.0,
+    "coverage": "full numeric probabilities; full one-hot mask n<=4, independent factorial indices n5; fixed point, not optimizer trajectory"
+  },
+  "mapping_rank03": {
+    "rank": "rank03",
+    "feasible_routes": 120,
+    "unique_indices": 120,
+    "roundtrip_passed": 120
+  },
+  "invalid_inputs": {
+    "cases": [
+      {
+        "case": "zero_norm",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "raw probability norm violates the absolute 1e-12 unit-sum contract"
+      },
+      {
+        "case": "norm_four",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "raw probability norm violates the absolute 1e-12 unit-sum contract"
+      },
+      {
+        "case": "norm_0_999",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "raw probability norm violates the absolute 1e-12 unit-sum contract"
+      },
+      {
+        "case": "NaN",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "statevector must not contain NaN or inf"
+      },
+      {
+        "case": "inf",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "statevector must not contain NaN or inf"
+      },
+      {
+        "case": "finite_overflow",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "raw probability norm violates the absolute 1e-12 unit-sum contract"
+      },
+      {
+        "case": "wrong_dimension",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "statevector length must be 16 for n=2"
+      },
+      {
+        "case": "wrong_rank",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "statevector must be one-dimensional"
+      },
+      {
+        "case": "malformed_complex",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "statevector dtype must be float64 or complex128; no implicit precision conversion"
+      },
+      {
+        "case": "complex64",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "statevector dtype must be float64 or complex128; no implicit precision conversion"
+      },
+      {
+        "case": "float32",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "statevector dtype must be float64 or complex128; no implicit precision conversion"
+      },
+      {
+        "case": "empty_input",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "statevector length must be 16 for n=2"
+      },
+      {
+        "case": "invalid_optimal_index",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "each optimal bitstring must encode a feasible route"
+      },
+      {
+        "case": "duplicate_optimal_index",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "exact_optimal_bitstrings must be unique"
+      },
+      {
+        "case": "missing_optimal_index",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "exact_optimal_bitstrings must be non-empty"
+      },
+      {
+        "case": "malformed_optimal_bits",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "optimal bitstrings must contain only binary integers"
+      },
+      {
+        "case": "duplicate_customer",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "customer_ids must be unique"
+      },
+      {
+        "case": "computed_norm_-1.0",
+        "rejected": true
+      },
+      {
+        "case": "computed_norm_nan",
+        "rejected": true
+      },
+      {
+        "case": "computed_norm_inf",
+        "rejected": true
+      }
+    ],
+    "index_policy": "External index arrays are not accepted; invalid/duplicate/missing optimal bit encodings exercise corresponding contract."
+  },
+  "multiple_optimum": {
+    "optimum_indices": [
+      9,
+      6
+    ],
+    "expected_mass": 1.0,
+    "observed_mass": 0.9999999999999999,
+    "one_optimum_mass": 0.25
+  },
+  "gate_mutations": {
+    "mutations_rejected": 9,
+    "positive_gate_verified": true
+  },
+  "provenance_missing_fields": {
+    "missing_fields_rejected": [
+      "git_commit",
+      "source_sha256",
+      "runner_sha256",
+      "helper_sha256",
+      "authority_manifest_sha256",
+      "environment_path",
+      "dependency_versions",
+      "hostname",
+      "cpu",
+      "thread_settings",
+      "command_line",
+      "start_timestamp",
+      "end_timestamp",
+      "optimizer_options",
+      "seeds",
+      "termination_status",
+      "resource_metrics",
+      "source_manifest",
+      "dirty_worktree",
+      "final_parameters",
+      "objective_trace_sha256"
+    ],
+    "policy": "FORMAL_RUN_PROVENANCE_INCOMPLETE",
+    "fixture_is_not_execution_evidence": true
+  },
+  "retired_generators": {
+    "entrypoints_rejected": 4
+  }
+}

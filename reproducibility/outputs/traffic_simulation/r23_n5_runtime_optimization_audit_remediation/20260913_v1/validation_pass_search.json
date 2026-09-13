@@ -1,0 +1,336 @@
+{
+  "matches": [
+    {
+      "path": "05_src/traffic_simulation/r20_route_ordering/freeze_r23_instance_authority.py",
+      "line": 130,
+      "text": "            r21_result[\"status\"] = \"R21_FORMAL_INSTANCE_PASS\" if r21_result[\"status\"] == \"PASS\" else \"R21_FORMAL_INSTANCE_VALIDATION_FAILED\""
+    },
+    {
+      "path": "05_src/traffic_simulation/r20_route_ordering/freeze_r23_instance_authority.py",
+      "line": 137,
+      "text": "            r22_payload = {\"schema_version\": \"r22-reduced-ising-conversion-v1\", \"r21\": {\"validation_results_sha256\": r21_val_hash, \"manifest_sha256\": r21_manifest_hash, \"status\": \"PASS\", \"scope\": \"INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY\"}, \"instance_id\": instance_id, \"depot_id\": DEPOT, \"customer_ids\": customers, \"n\": n, \"n_logical\": n*n, \"variable_ordering\": r21_payload[\"variable_ordering\"], \"qubo_coefficients\": r21_payload[\"qubo_coefficients\"], \"qubo_coefficient_hash\": r21_payload[\"coefficient_hash\"], \"lambda\": LAMBDA, \"B\": bound, \"bound_type\": r21_payload[\"bound_type\"], \"normalization_metadata\": {\"tau_max\": r21_payload[\"tau_max\"], \"input_scale\": \"normalized\", \"rule\": \"tau/tau_max\"}, \"numerical_tolerance\": r21_payload[\"numerical_tolerance\"], \"r21_optimal_routes\": r21_result[\"qubo_optimal_routes\"]}"
+    },
+    {
+      "path": "05_src/traffic_simulation/r20_route_ordering/freeze_r23_instance_authority.py",
+      "line": 140,
+      "text": "            r22_result[\"status\"] = \"R22_FORMAL_INSTANCE_PASS\" if r22_result[\"status\"] == \"PASS\" else \"R22_FORMAL_INSTANCE_EQUIVALENCE_FAILED\""
+    },
+    {
+      "path": "05_src/traffic_simulation/r20_route_ordering/freeze_r23_instance_authority.py",
+      "line": 150,
+      "text": "            records.append({\"instance_id\": instance_id, \"n\": n, \"depot_id\": DEPOT, \"customer_ids\": customers, \"candidate_rank\": item[\"rank\"], \"selection_key_sha256\": item[\"selection_key_sha256\"], \"routing_artifact_sha256\": inp[\"source\"][\"routing_arcs_sha256\"], \"r20\": r20_manifest_records[-1], \"r21\": r21_manifest_records[-1], \"r22\": r22_manifest_records[-1], \"exact_reference_hash\": reference[\"reference_hash\"], \"matrix_sha256\": {\"raw\": sha_bytes(raw), \"normalized\": sha_bytes(normalized)}, \"status\": \"FORMAL_INSTANCE_AUTHORITY_PASS\" if r20_validation[\"status\"].endswith(\"PASS\") and r21_result[\"status\"].endswith(\"PASS\") and r22_result[\"status\"].endswith(\"PASS\") else \"FORMAL_SELECTED_INSTANCE_AUTHORITY_FAILED\"})"
+    },
+    {
+      "path": "05_src/traffic_simulation/r20_route_ordering/resolve_r23_design_authority.py",
+      "line": 103,
+      "text": "        \"formal_design_record\": {\"path\": str(DESIGN_RECORD.relative_to(ROOT)), \"sha256\": sha_file(DESIGN_RECORD), \"expected_sha256\": \"6726406a7d3ae01971547994763b56f67bc0b6379ef856b35c10282aa807d1b0\", \"status\": \"PASS\"},"
+    },
+    {
+      "path": "05_src/traffic_simulation/r20_route_ordering/resolve_r23_design_authority.py",
+      "line": 133,
+      "text": "        \"checks\": {\"implementation_authority\": \"PASS\", \"resolved_design\": \"PASS\", \"lambda_authority\": \"PASS\", \"instance_authority_15_of_15\": \"PASS\", \"r20_authority_15_of_15\": \"PASS\", \"r21_authority_15_of_15\": \"PASS\", \"r22_authority_15_of_15\": \"PASS\", \"planned_matrix_45_unique\": \"PASS\", \"runtime_environment\": \"PASS\", \"authority_drift\": \"PASS\", \"qaoa_executed\": False, \"optimizer_executed\": False},"
+    },
+    {
+      "path": "05_src/traffic_simulation/r20_route_ordering/write_r23_authority_set_manifests.py",
+      "line": 25,
+      "text": "        payload = {\"schema_version\": f\"r23-formal-{stage}-authority-set-v1\", \"instance_set_id\": \"R23_FORMAL_INSTANCE_SET_V1\", \"stage\": stage.upper(), \"count\": len(records), \"status\": \"PASS\" if len(records) == 15 and all(x[\"status\"].endswith(\"PASS\") for x in records) else \"FAIL\", \"records\": records}"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/artifact.py",
+      "line": 76,
+      "text": "            \"status\": \"PASS\","
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/artifact.py",
+      "line": 84,
+      "text": "            \"status\": \"PASS\","
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/artifact.py",
+      "line": 107,
+      "text": "        if lineage[stage][\"status\"] != \"PASS\":"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+      "line": 195,
+      "text": "    status, failure_reasons = \"PASS\", []"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+      "line": 249,
+      "text": "        if status == \"PASS\":"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/schema.py",
+      "line": 54,
+      "text": "        \"status\": \"PASS\" if estimated_peak_bytes <= guard_bytes else \"FAIL\","
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/schema.py",
+      "line": 123,
+      "text": "        if memory_preflight(n_logical, self.memory_limit_gib)[\"status\"] != \"PASS\":"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/schema.py",
+      "line": 221,
+      "text": "    if report.get(\"status\") != \"PASS\" or report.get(\"scope\") != R23_SCOPE:"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/schema.py",
+      "line": 223,
+      "text": "    if manifest.get(\"status\") != \"PASS\" or manifest.get(\"r22_stage\") != \"R22_REDUCED_ISING_CONVERSION\":"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/schema.py",
+      "line": 229,
+      "text": "    if item.get(\"status\") != \"PASS\" or not all(item.get(\"checks\", {}).values()):"
+    },
+    {
+      "path": "05_src/traffic_simulation/validation/test_r23_implementation_contract.py",
+      "line": 85,
+      "text": "    assert result[\"status\"] == \"PASS\""
+    },
+    {
+      "path": "05_src/traffic_simulation/validation/test_r23_qaoa_aer.py",
+      "line": 25,
+      "text": "    assert data.payload[\"status\"] == \"PASS\""
+    },
+    {
+      "path": "reproducibility/tools/r23_b2_evidence_review.py",
+      "line": 149,
+      "text": "    review = {\"review_id\":\"R23_EXPERIMENT_B2_EVIDENCE_REVIEW_20260911_V1\",\"classification\":\"EXPERIMENT_B2_EVIDENCE_ACCEPTED_WITH_LIMITATIONS\",\"no_new_scientific_execution\":True,\"research_questions\":{\"RQ-B2-1\":{\"classification\":\"SUPPORTED_WITH_LIMITATIONS\",\"finding\":\"P_feasible and P_optimal differ across all six paired observations; descriptive frozen-design evidence only.\"},\"RQ-B2-2\":{\"classification\":\"SUPPORTED_WITH_LIMITATIONS\",\"finding\":\"Both optimizers found exact best decoded routes in 6/6 pairs; this is not P_optimal=1, sampling success, convergence, or advantage.\"},\"RQ-B2-3\":{\"classification\":\"SUPPORTED_WITH_LIMITATIONS\",\"finding\":\"Runtime, Aer runtime and nfev differ by optimizer in the six pairs; CPU Aer burden only.\"},\"RQ-B2-4\":{\"classification\":\"SUPPORTED_WITH_LIMITATIONS\",\"finding\":\"COBYLA MAXFUN and Nelder-Mead MAXITER behaviors are distinct and optimizer-specific; convergence is not established.\"}},\"integrity\":sources,\"b2_v2_integrity_recheck\":{\"planned\":6,\"started\":6,\"terminal\":6,\"scientific_failures\":0,\"exact_optimum_found\":\"6/6\",\"relative_gap\":\"0 for all\",\"probability\":\"PASS\",\"exact_reference\":\"PASS\",\"lambda\":\"PASS\",\"runtime\":\"PASS\",\"authority_drift\":False},\"v1_excluded\":True,\"paired_conditions\":{\"instances\":instances,\"p\":[2,3],\"initialization\":\"fixed_0.1\",\"count\":6},\"boundary\":\"All optimizer comparisons are within this frozen n=4 / 3-instance / fixed-init design; no strong statistical generalization.\"}"
+    },
+    {
+      "path": "reproducibility/tools/r23_n5_independent_audit.py",
+      "line": 319,
+      "text": "    print(json.dumps({'output':str(OUT),'probe_assertions':'PASS','failure_contract_evidence':outcomes[:9]}))"
+    },
+    {
+      "path": "reproducibility/tools/r23_n5_independent_audit_compare.py",
+      "line": 102,
+      "text": "    write('verification.json',{'independent_seal':'PASS','source_and_scoped_artifact_hashes':'PASS','scoped_file_count':len(current_files),"
+    },
+    {
+      "path": "reproducibility/tools/r23_n5_independent_audit_contracts.py",
+      "line": 49,
+      "text": "    report={'best_route_minimizes_cost_not_probability':'PASS','exact_reference_changes_only_optimal_mass':'PASS',"
+    },
+    {
+      "path": "reproducibility/tools/r23_n5_independent_audit_contracts.py",
+      "line": 50,
+      "text": "        'equal_cost_tie_order_matches_original':'PASS','deliberately_corrupted_P_opt_assertion_rejected':detected,'precision_cases':cases,"
+    },
+    {
+      "path": "reproducibility/tools/r23_n5_independent_audit_report.py",
+      "line": 52,
+      "text": "        'Report generator writes PASS/all_gates_pass=True independently of numerical differences. Harness reimplements candidate arithmetic instead of calling indexed_probability_metrics; small_full_method flag does not execute full enumeration; best_feasible_route maximizes probability rather than minimizing route cost. New probes substantiate normalized-domain equivalence but do not validate historical acceptance generation.',"
+    },
+    {
+      "path": "tools/authorize_r23_experiment_b2.py",
+      "line": 121,
+      "text": "        \"technical_preflight_status\": \"PASS\" if conditions_gate else \"FAIL\","
+    },
+    {
+      "path": "tools/authorize_r23_experiment_b2.py",
+      "line": 137,
+      "text": "            \"targeted_tests_pass\": True,"
+    },
+    {
+      "path": "tools/authorize_r23_experiment_b2.py",
+      "line": 143,
+      "text": "            \"status\": \"PASS\", \"passed\": 6, \"failed\": 0,"
+    },
+    {
+      "path": "tools/authorize_r23_experiment_b2.py",
+      "line": 144,
+      "text": "            \"py_compile\": \"PASS\", \"scientific_semantics_source_hashes\": source_hash_gate,"
+    },
+    {
+      "path": "tools/build_r23_experiment_b1_fix_authority.py",
+      "line": 34,
+      "text": " regression=dump('regression_validation.json',{'schema_version':'r23-b1-regression-validation-v1','classification':'NON_RESEARCH_IMPLEMENTATION_VALIDATION','py_compile':'PASS','targeted_pytest':{'environment':'/home/takuma/.conda/envs/evrp-r23-validation','command':'pytest -q test_r23_formal_instance_loader.py test_r23_experiment_b_implementation.py','passed':12,'failed':0,'status':'PASS'},'cobyla_regression':'PASS via existing direct smoke and implementation tests','formal_a_rerun':False,'b1_formal_rerun':False,'qaoa_execution':False,'semantics_unchanged':True})"
+    },
+    {
+      "path": "tools/build_r23_experiment_b2_reexecution_authority.py",
+      "line": 34,
+      "text": "    impl3={'schema_version':'r23-b2-implementation-authority-v3','authority_id':'R23_EXPERIMENT_B_IMPLEMENTATION_SOURCE_SET_V3','parent_authority_id':'R23_EXPERIMENT_B_IMPLEMENTATION_SOURCE_SET_V2','created_at':now,'changed_source_files':['05_src/traffic_simulation/r23_qaoa_aer/optimizers.py','05_src/traffic_simulation/validation/test_r23_experiment_b_implementation.py'],'source_hashes':current,'root_cause':rel(OUT/'root_cause.json'),'root_cause_sha256':sha(OUT/'root_cause.json'),'fix':'Nelder-Mead bounds=None is removed from options before scipy.optimize.minimize dispatch; SciPy supplies bounds exactly once.','scientific_semantics_unchanged':all(same.values()),'optimizer_settings_unchanged':True,'formal_execution_performed':False,'validation':{'targeted_pytest':'PASS: 8 passed','py_compile':'PASS','frozen_scipy':'1.17.1','cobyla_regression':'PASS','p2_smoke':'PASS','p3_smoke':'PASS','objective_cap':'PASS','fixed_0.1':'PASS'}}"
+    },
+    {
+      "path": "tools/build_r23_experiment_b2_reexecution_authority.py",
+      "line": 36,
+      "text": "    validation={'schema_version':'r23-b2-optimizer-dispatch-validation-v2','classification':'NON_RESEARCH_IMPLEMENTATION_VALIDATION','created_at':now,'frozen_environment':'/home/takuma/.conda/envs/evrp-quantum-temp','scipy_version':'1.17.1','nelder_mead_invocation':'PASS','cobyla_regression':'PASS','p2_smoke':'PASS','p3_smoke':'PASS','bounds_dispatch':'PASS: bounds=None omitted from options and supplied once by SciPy dispatch','maxiter':{'value':300,'status':'PASS'},'maxfev':{'value':900,'status':'PASS'},'xatol':{'value':1e-4,'status':'PASS'},'fatol':{'value':1e-4,'status':'PASS'},'adaptive':{'value':False,'status':'PASS'},'initial_simplex':{'value':None,'status':'PASS'},'disp':{'value':False,'status':'PASS'},'objective_evaluation_cap':'PASS','fixed_0.1_initialization':'PASS','exact_statevector_semantics':'UNCHANGED','qubo_semantics':'UNCHANGED','hamiltonian_semantics':'UNCHANGED','decoding_semantics':'UNCHANGED','probability_semantics':'UNCHANGED','exact_reference_semantics':'UNCHANGED','runtime_semantics':'UNCHANGED','scientific_execution':'NOT_PERFORMED'}"
+    },
+    {
+      "path": "tools/build_r23_experiment_b2_reexecution_authority.py",
+      "line": 44,
+      "text": "    pre={'schema_version':'r23-b2-reexecution-preflight-v1','classification':'B2_REEXECUTION_AUTHORIZATION_PREFLIGHT','status':'PASS' if all(checks.values()) else 'FAIL','created_at':now,'condition_count':6,'unique_condition_count':6,'checks':checks,'conditions':runs,'implementation_authority_v3_sha256':sha(OUT/'implementation_authority_v3.json'),'failed_v1_manifest_sha256':sha(FAIL/'manifest.json')}"
+    },
+    {
+      "path": "tools/execute_r23_experiment_b1.py",
+      "line": 54,
+      "text": "        \"r20_r21_r22_authority\": instance_manifest[\"r20_authority_count\"] == instance_manifest[\"r21_authority_count\"] == instance_manifest[\"r22_authority_count\"] == 15 and formal[\"authority\"][\"r21_status\"] == \"PASS\" and formal[\"authority\"][\"r22_status\"] == \"PASS\","
+    },
+    {
+      "path": "tools/execute_r23_experiment_b1.py",
+      "line": 65,
+      "text": "    preflight = {\"classification\": \"B1_EXECUTION_PREFLIGHT\", \"authority_gate\": \"PASS\", \"known_validation_limitation\": \"KNOWN_VALIDATION_LIMITATION: pytest unavailable in frozen environment; not installed\", \"runtime\": runtime, \"design_sha256\": sha(DESIGN), \"implementation_authority_v2_sha256\": sha(FIX_AUTH/\"implementation_authority_v2.json\"), \"initialization_authority_sha256\": sha(AUTH/\"initialization_authority.json\"), \"planned_run_manifest_sha256\": sha(AUTH/\"b1_planned_run_manifest.json\"), \"authorization_sha256\": sha(FIX_AUTH/\"b1_reexecution_authorization.json\"), \"instance_authority_manifest_sha256\": sha(INSTANCE_AUTH/\"manifest.json\"), \"lambda_policy_sha256\": auth[\"lambda_policy_sha256\"], \"expected_condition_count\": 36, \"execution_order\": [x[\"run_id\"] for x in plan[\"runs\"]], \"research_wall_time_cap\": None, \"execution_started_utc\": datetime.now(timezone.utc).isoformat()}"
+    },
+    {
+      "path": "tools/execute_r23_experiment_b2.py",
+      "line": 58,
+      "text": "    dump(OUT / \"execution_preflight.json\", {\"schema_version\": \"r23-b2-execution-preflight-v1\", \"classification\": \"RESEARCH_EXECUTION_PREFLIGHT\", \"status\": \"PASS\", \"authorization_id\": auth[\"authorization_id\"], \"authorization_sha256\": sha(AUTHZ), \"design_amendment_sha256\": sha(AMEND), \"planned_manifest_sha256\": sha(PLAN), \"checks\": base_checks, \"run_count\": 6, \"execution_order\": [x[\"run_id\"] for x in plan[\"runs\"]], \"runtime\": runtime, \"started_at\": datetime.now(timezone.utc).isoformat(), \"research_wall_time_cap\": None})"
+    },
+    {
+      "path": "tools/execute_r23_experiment_b2_reexecution.py",
+      "line": 34,
+      "text": "    dump(OUT/'execution_preflight.json',{'schema_version':'r23-b2-reexecution-execution-preflight-v1','classification':'RESEARCH_EXECUTION_PREFLIGHT','status':'PASS','authorization_id':auth['authorization_id'],'authorization_sha256':sha(AUTHZ),'implementation_authority_sha256':sha(IMPL),'design_amendment_sha256':sha(AMEND),'planned_manifest_sha256':sha(PLAN),'failed_v1_manifest_sha256':sha(FAIL/'manifest.json'),'checks':checks,'condition_count':6,'runtime':runtime,'started_at':datetime.now(timezone.utc).isoformat(),'research_wall_time_cap':None})"
+    },
+    {
+      "path": "tools/finalize_r23_b1_v2.py",
+      "line": 124,
+      "text": "integrity_obj={\"schema_version\":\"R23_B1_V2_FINAL_INTEGRITY_V1\",\"status\":\"PASS\",\"classification\":\"B1_SCIENTIFIC_INTEGRITY\","
+    },
+    {
+      "path": "tools/finalize_r23_experiment_b2_failure.py",
+      "line": 33,
+      "text": "    integrity = {\"schema_version\": \"r23-b2-integrity-v1\", \"status\": \"PASS_WITH_SCIENTIFIC_FAILURES\", \"classification\": summary[\"classification\"], \"planned_count\": 6, \"started_count\": 6, \"terminal_count\": 6, \"unique_run_ids\": 6, \"duplicate_count\": 0, \"authority_gate\": \"PASS\", \"authority_drift\": False, \"scientific_parameter_drift\": False, \"probability_integrity\": \"NOT_AVAILABLE_DUE_TO_IMPLEMENTATION_EXCEPTION\", \"exact_reference_integrity\": \"NOT_AVAILABLE_DUE_TO_IMPLEMENTATION_EXCEPTION\", \"lambda_integrity\": \"PASS_AT_PREFLIGHT\", \"runtime_integrity\": \"NOT_AVAILABLE_DUE_TO_IMPLEMENTATION_EXCEPTION\", \"implementation_failures\": 6, \"retry_performed\": False, \"cobyla_reexecuted\": False, \"scientific_results_valid\": False, \"failure_cause\": \"SciPy 1.17.1 Nelder-Mead dispatch received bounds twice because the execution path passed bounds=None inside options; all failures occurred before optimizer/Aer scientific evaluation.\", \"execution_performed\": True}"
+    },
+    {
+      "path": "tools/finalize_r23_experiment_b2_reexecution.py",
+      "line": 31,
+      "text": "    summary={'schema_version':'r23-b2-summary-v2','classification':'EXPERIMENT_B2_EVIDENCE_READY_FOR_REVIEW','planned_runs':6,'started_runs':6,'completed_terminal_runs':6,'scientific_failures':0,'optimizer_success_count':sum(r['optimizer_success'] is True for r in nm),'optimizer_failure_count':sum(r['optimizer_success'] is False for r in nm),'exact_optimum_found_count':sum(r['scientific_result']['exact_optimum_found'] for r in records),'relative_gap_summary':stats([r['scientific_result']['relative_optimality_gap'] for r in records]),'P_feasible_summary':stats([m['P_feasible_exact'] for m in ms]),'P_optimal_summary':stats([m['P_opt'] for m in ms]),'runtime_summary':stats([r['timing']['T_total'] for r in nm]),'Aer_runtime_summary':stats([r['timing']['T_Aer_total'] for r in nm]),'nfev_summary':stats([r['nfev'] for r in nm]),'termination_reason_summary':{},'baseline_source':comparison['baseline_source'],'integrity_result':'PASS','scientific_interpretation_note':'exact_optimum_found means the best decoded feasible route matched the exact reference; it does not mean P_optimal=1, 100% probability, or optimizer convergence. No optimizer superiority or independence conclusion is made.'}"
+    },
+    {
+      "path": "tools/finalize_r23_experiment_b2_reexecution.py",
+      "line": 37,
+      "text": "    integrity={'schema_version':'r23-b2-integrity-v2','status':'PASS','classification':summary['classification'],'planned_count':6,'started_count':6,'terminal_count':6,'scientific_failures':0,'unique_run_ids':6,'duplicate_count':0,'probability_integrity':prob_pass,'exact_reference_integrity':exact_pass,'lambda_integrity':params_pass,'runtime_integrity':all(r['timing']['T_total']>=r['timing']['T_Aer_total']>=0 for r in nm),'scientific_parameter_drift':not params_pass,'implementation_authority_drift':False,'authorization_drift':False,'cobyla_reexecuted':False,'b1_reexecuted':False,'retry_performed':False,'scientific_execution_performed':True}"
+    },
+    {
+      "path": "tools/review_r23_experiment_b1.py",
+      "line": 259,
+      "text": "    write_json(\"integrity.json\", {\"status\": \"PASS\", \"critical_high_failures\": 0, \"parameter_gate\": parameter_gate, \"source_artifacts_not_modified\": True, \"analysis_execution\": \"read-only review; no B1/B2/C/full-EVRP execution\"})"
+    },
+    {
+      "path": "tools/review_r23_experiment_b2_nelder_mead.py",
+      "line": 129,
+      "text": "    implementation_gate = {\"schema_version\": \"r23-b2-implementation-gate-review-v1\", \"historical_wording\": design[\"optimizer_policy\"][\"implementation_gate\"], \"current_implementation\": \"NELDER_MEAD supported by optimizer adapter, schema, qaoa path, and targeted tests\", \"historical_artifacts_modified\": False, \"status\": \"PASS\", \"authority_sha256\": sha(IMPLEMENTATION), \"source_semantics_unchanged\": True}"
+    },
+    {
+      "path": "tools/review_r23_experiment_b2_nelder_mead.py",
+      "line": 134,
+      "text": "    preflight.update({\"schema_version\": \"r23-b2-authorization-preflight-v2\", \"design_amendment\": rel(AMEND), \"design_amendment_sha256\": amendment_sha, \"classification\": \"B2_AUTHORIZATION_PREFLIGHT_V2\", \"authorization_gate_status\": \"PASS\"})"
+    },
+    {
+      "path": "tools/review_r23_experiment_b2_nelder_mead.py",
+      "line": 140,
+      "text": "    preflight[\"technical_preflight_status\"] = \"PASS\""
+    },
+    {
+      "path": "tools/review_r23_formal_evidence.py",
+      "line": 237,
+      "text": "        chain.append({\"label\": label, \"path\": rel(path), \"exists\": exists, \"actual_sha256\": actual, \"declared_sha256\": declared, \"status\": \"PASS\" if ok else \"FAIL\"})"
+    },
+    {
+      "path": "tools/review_r23_formal_evidence.py",
+      "line": 254,
+      "text": "    provenance_pass = all(x[\"status\"] == \"PASS\" for x in chain) and all(authority_link_checks.values()) and original_integrity[\"status\"] == \"PASS\" and corrected_view_integrity[\"status\"] == \"PASS\""
+    },
+    {
+      "path": "tools/review_r23_formal_evidence.py",
+      "line": 258,
+      "text": "    corrected_summary_payload = {\"standard_deviation_convention\": \"population SD (ddof=0), matching repository corrected summary\", \"by_n_p\": corrected_stats, \"by_n\": by_n, \"by_instance\": by_instance, \"agreement_with_existing_corrected_summary\": {\"status\": \"PASS\" if not mismatches else \"MISMATCH\", \"mismatch_count\": len(mismatches), \"mismatches\": mismatches}}"
+    },
+    {
+      "path": "tools/review_r23_formal_evidence.py",
+      "line": 265,
+      "text": "    json_dump(REVIEW / \"evidence_review.json\", {\"review_id\": \"R23_FORMAL_EXPERIMENT_A_EVIDENCE_REVIEW_V1\", \"review_timestamp_utc\": datetime.now(timezone.utc).isoformat(), \"branch_head\": \"see manifest\", \"evidence_acceptance\": \"FORMAL_EXPERIMENT_A_EVIDENCE_ACCEPTED_WITH_LIMITATIONS\", \"r23_status_recommendation\": \"FORMAL_EXPERIMENT_A_EVIDENCE_ACCEPTED_WITH_LIMITATIONS\", \"original_integrity\": {\"planned_conditions\": original_manifest[\"planned_runs\"], \"terminal_records\": original_manifest[\"completed_runs\"], \"original_uncensored\": 41, \"original_right_censored\": 4, \"integrity_status\": original_integrity[\"status\"], \"authority_drift_after_execution\": original_integrity[\"authority_drift_after_execution\"], \"configuration_changed\": original_integrity[\"configuration_changed\"], \"environment_changed\": original_integrity[\"environment_changed\"], \"immutable_historical_layer\": True}, \"corrective_integrity\": {\"authorized\": 4, \"completed\": 4, \"all_pass\": all(x[\"status\"] == \"CORRECTIVE_RUN_PASS\" for x in corrective_summary[\"corrective_observations\"]), \"separate_post_execution_layer\": True, \"integrity_status\": corrected_integrity[\"status\"]}, \"corrected_view_integrity\": {\"status\": corrected_view_integrity[\"status\"], \"observation_count\": corrected_view_integrity[\"observation_count\"], \"original_summary_not_modified\": corrected_view_integrity[\"original_summary_not_modified\"], \"original_41_preserved_by_reference\": corrected_view[\"original_41_preserved_by_reference\"]}, \"provenance\": {\"status\": \"PASS\" if provenance_pass else \"FORMAL_EVIDENCE_PROVENANCE_FAILURE\", \"chain\": chain, \"authority_link_checks\": authority_link_checks}, \"completeness\": {\"expected\": 45, \"actual\": len(corrected), \"unique_conditions\": len({x[\"condition_id\"] for x in corrected}), \"by_n_p\": {f\"n{k[0]}_p{k[1]}\": v for k, v in Counter((x[\"n\"], x[\"p\"]) for x in corrected).items()}, \"by_n\": {str(k): v for k, v in Counter(x[\"n\"] for x in corrected).items()}, \"missing\": sorted(set(f\"routing_v18_n{n}_rank{rank:02d}_p{p}_init_fixed01_rep1\" for n in [2,3,4] for rank in range(1,6) for p in [1,2,3]) - {x[\"condition_id\"] for x in corrected}), \"duplicate_condition_count\": len(corrected) - len({x[\"condition_id\"] for x in corrected})}, \"corrective_replacements\": replacement_check, \"recomputed_summary_agreement\": {\"status\": \"PASS\" if not mismatches else \"MISMATCH\", \"mismatch_count\": len(mismatches)}, \"gap_and_exact_route\": {\"absolute_gap_zero_count\": sum(close(r[\"absolute_optimality_gap\"], 0) for r in raw_rows), \"relative_gap_zero_count\": sum(close(r[\"relative_optimality_gap\"], 0) for r in raw_rows), \"exact_best_decoded_route_count\": exact_count, \"interpretation\": \"gap=0 means best decoded feasible route equals exact optimum; it does not imply high P_optimal, sampling success, optimizer convergence, finite-shot success, robustness, or quantum advantage\"}, \"optimizer\": {\"termination_status_counts\": dict(termination), \"optimizer_success_counts\": dict(Counter(str(r[\"optimizer_success\"]) for r in raw_rows)), \"nit_counts\": dict(Counter(str(r[\"nit\"]) for r in raw_rows)), \"termination_unknown_count\": termination.get(\"TERMINATION_UNKNOWN\", 0), \"convergence_established\": False, \"conclusion\": \"optimizer convergence cannot be established from this formal evidence\"}, \"p_effects\": p_effects, \"corrected_stats_by_n\": by_n, \"runtime_by_n_p\": runtime, \"corrective_impact\": impact, \"wall_time_amendment_assessment\": \"SUPPORTED_WITH_LIMITATIONS: four old right-censored conditions completed under no wall-time research cap, supporting policy censoring rather than an algorithmic feasibility boundary; this does not establish n>=5 feasibility\", \"claims\": {\"problem_size_reduces_P_feasible\": \"SUPPORTED_WITH_LIMITATIONS\", \"problem_size_reduces_P_optimal\": \"SUPPORTED_WITH_LIMITATIONS\", \"increasing_p_improves_P_feasible\": \"SUPPORTED_WITH_LIMITATIONS\", \"increasing_p_improves_P_optimal\": \"SUPPORTED_WITH_LIMITATIONS\", \"always_finds_exact_optimum\": \"SUPPORTED_WITH_LIMITATIONS: all 45 best decoded routes are exact, but not a claim of sampling or optimizer reliability\", \"cpu_burden_rises_sharply_by_n4\": \"SUPPORTED\", \"COBYLA_converged\": \"NOT_SUPPORTED\", \"finite_shot_reliably_samples_optimum\": \"NOT_SUPPORTED\", \"quantum_advantage\": \"NOT_SUPPORTED\", \"Aer_predicts_QPU_scaling\": \"NOT_SUPPORTED\"}, \"limitations\": [\"n only 2,3,4\", \"five deterministic reproducibility instances per n, not representative random population\", \"one initialization and repetition=1\", \"COBYLA only\", \"exact expectation and shots=NONE\", \"lambda fixed at 3.0\", \"p only 1,2,3\", \"CPU Aer only\", \"termination uncertainty\", \"post-execution wall-time amendment/corrective completion\"], \"sample_selection\": \"reproducibility and instance heterogeneity evidence, not population representativeness or inferential uncertainty\", \"experiment_b\": \"B1_REQUIRED_BEFORE_SCALING_EXTENSION\", \"experiment_b_rationale\": \"n=4 p2/p3 heterogeneity and universal termination uncertainty make initialization/optimizer robustness a prerequisite\", \"experiment_c\": \"REQUIRED_BEFORE_SCENARIO_MODELLING\", \"experiment_c_rationale\": \"n=4 P_optimal is typically 10^-4 to 10^-3 in corrected cells, so exact-statevector probability is not operational finite-shot success\", \"scaling_readiness\": \"SCALING_EXTENSION_DESIGN_READY_WITH_RESOURCE_REDESIGN\", \"full_evrp_status\": {\"R20\": \"BLOCKED\", \"R21\": \"NOT_STARTED\"}, \"no_execution\": {\"qaoa_executed_by_review\": False, \"original_or_corrective_modified\": False, \"n_ge_5_executed\": False, \"experiment_b_executed\": False, \"experiment_c_executed\": False, \"future_qpu_claim\": False, \"prohibited_action\": False}})"
+    },
+    {
+      "path": "tools/review_r23_formal_evidence.py",
+      "line": 269,
+      "text": "    manifest = {\"schema_version\": \"r23-formal-evidence-review-manifest-v1\", \"review_id\": \"R23_FORMAL_EXPERIMENT_A_EVIDENCE_REVIEW_V1\", \"created_at_utc\": datetime.now(timezone.utc).isoformat(), \"source_roots\": {\"original\": rel(ORIG), \"corrective\": rel(CORR), \"corrected_view\": rel(VIEW)}, \"source_manifest_hashes\": {\"original\": sha(ORIG/\"manifest.json\"), \"corrective\": sha(CORR/\"manifest.json\"), \"corrected_view\": sha(VIEW/\"manifest.json\")}, \"artifacts\": artifacts, \"provenance_status\": \"PASS\" if provenance_pass else \"FORMAL_EVIDENCE_PROVENANCE_FAILURE\", \"no_execution_performed\": True, \"original_and_corrective_artifacts_modified\": False}"
+    },
+    {
+      "path": "tools/validate_r23_experiment_b_implementation.py",
+      "line": 44,
+      "text": "        \"status\": \"PASS\" if adapted.final_parameters == list(native.x) and adapted.final_objective == float(native.fun) and adapted.nfev == int(native.nfev) else \"FAIL\","
+    },
+    {
+      "path": "tools/validate_r23_experiment_b_implementation.py",
+      "line": 52,
+      "text": "        \"status\": \"PASS\" if smoke_b[\"optimizer_method\"] == \"Nelder-Mead\" and smoke_b[\"nfev\"] > 0 and math.isfinite(smoke_b[\"final_objective\"]) else \"FAIL\","
+    },
+    {
+      "path": "tools/validate_r23_experiment_b_implementation.py",
+      "line": 63,
+      "text": "        \"status\": \"PASS\" if smoke_c[\"budget_hit\"] and smoke_c[\"termination_status\"] == \"OBJECTIVE_EVALUATION_CAP_REACHED\" and smoke_c[\"objective_evaluation_count\"] == 2 and smoke_c[\"expectation_evaluation_count\"] == 3 else \"FAIL\","
+    },
+    {
+      "path": "tools/validate_r23_experiment_b_implementation.py",
+      "line": 74,
+      "text": "    smoke[\"smoke_d_initialization\"] = {\"status\": \"PASS\" if all(v[\"deterministic\"] and v[\"dimension\"] in (4, 6) and v[\"gamma_in_domain\"] and v[\"beta_in_domain\"] for v in vectors.values()) else \"FAIL\", \"fixed_0.1_p2\": list(generate_initial_parameters(2, \"fixed_0.1\")), \"vectors\": vectors, \"rng\": \"numpy.random.Generator(numpy.random.PCG64(seed))\"}"
+    },
+    {
+      "path": "tools/validate_r23_experiment_b_implementation.py",
+      "line": 75,
+      "text": "    smoke[\"all_smokes_pass\"] = all(smoke[key][\"status\"] == \"PASS\" for key in (\"smoke_a_cobyla_regression\", \"smoke_b_nelder_mead\", \"smoke_c_objective_cap\", \"smoke_d_initialization\"))"
+    }
+  ],
+  "unresolved": [
+    {
+      "path": "tools/authorize_r23_experiment_b2.py",
+      "lines": [
+        138,
+        143,
+        144
+      ],
+      "issue": "targeted_tests_pass/py_compile and six passing tests declared without invocation"
+    },
+    {
+      "path": "tools/review_r23_experiment_b2_nelder_mead.py",
+      "lines": [
+        129,
+        140
+      ],
+      "issue": "implementation and technical preflight PASS assigned without validating all listed conditions"
+    },
+    {
+      "path": "tools/build_r23_experiment_b2_reexecution_authority.py",
+      "lines": [
+        34,
+        36
+      ],
+      "issue": "constant pytest/smoke validation results in authority generator"
+    },
+    {
+      "path": "tools/finalize_r23_b1_v2.py",
+      "lines": [
+        124
+      ],
+      "issue": "aggregate PASS is not conditioned on computed integrity booleans"
+    },
+    {
+      "path": "tools/finalize_r23_experiment_b2_reexecution.py",
+      "lines": [
+        31,
+        37
+      ],
+      "issue": "aggregate PASS independent of prob_pass/params_pass/exact_pass"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/artifact.py",
+      "lines": [
+        76,
+        84
+      ],
+      "issue": "lineage PASS manufactured from file existence/hash collection, not comparison to authority"
+    }
+  ],
+  "guard_backed_examples": [
+    "tools/review_r23_experiment_b1.py: parameter_gate assert precedes PASS",
+    "tools/execute_r23_experiment_b2.py: gate assertions precede execution preflight",
+    "tools/validate_r23_experiment_b_implementation.py: scalar and explicit condition comparisons"
+  ],
+  "historical_audit_assertions": "Independent audit PASS strings are downstream of explicit assertions; previous audit output remains immutable.",
+  "scope_limitation": "Search inventory is comprehensive over tracked R23 Python names; manual control-flow review is not a formal whole-program proof. Six remaining locations explicitly prevent global I03 closure."
+}

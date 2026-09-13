@@ -1,0 +1,154 @@
+"""Execute exactly one authorized R23 n=5 scaling condition.
+
+This is the scientific execution tool for the frozen three-condition scope.
+It performs no retries, no alternative configurations, and writes a compact
+scientific record without serializing the full 2^25-state probability table.
+"""
+from __future__ import annotations
+
+import csv
+import hashlib
+import json
+import os
+import resource
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+from traffic_simulation.r20_route_ordering.core import (
+    build_expanded_qubo, encode_route, enumerate_routes, normalize_travel_time_matrix,
+)
+from traffic_simulation.r22_ising_conversion.converter import convert_qubo_to_ising, evaluate_ising
+from traffic_simulation.r22_ising_conversion.schema import coefficient_hash, ising_coefficient_hash
+from traffic_simulation.r23_qaoa_aer.qaoa import run_single
+from traffic_simulation.r23_qaoa_aer.schema import R23Config, R23Input
+
+ROOT = Path(__file__).resolve().parents[3]
+OUT = ROOT / "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1"
+ROUTING = ROOT / "reproducibility/outputs/traffic_simulation/demand/evrp_r13_routing/20260909_r13_routing_fixture_n10_v18_geometry_reaccepted/routing_arcs.csv"
+AUTH = ROOT / "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v2"
+DEPOT = "DEP_006"
+INSTANCES = {
+    "routing_v18_n5_rank01": ["2026-01-01-13111-bldg-117556", "2026-01-01-13111-bldg-130096", "2026-01-01-13111-bldg-138702", "2026-01-01-13111-bldg-2510665", "2026-01-01-13111-bldg-79791"],
+    "routing_v18_n5_rank02": ["2026-01-01-13111-bldg-130096", "2026-01-01-13111-bldg-2510665", "2026-01-01-13111-bldg-29995", "2026-01-01-13111-bldg-37628", "2026-01-01-13111-bldg-55213"],
+    "routing_v18_n5_rank03": ["2026-01-01-13111-bldg-117556", "2026-01-01-13111-bldg-130096", "2026-01-01-13111-bldg-145438", "2026-01-01-13111-bldg-2510665", "2026-01-01-13111-bldg-37628"],
+}
+
+def canonical(v):
+    return json.dumps(v, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()
+
+def sha(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+def meminfo():
+    vals = {}
+    for line in Path("/proc/meminfo").read_text().splitlines():
+        k, value, *_ = line.split()
+        if k in {"MemAvailable:", "MemTotal:", "SwapFree:", "SwapTotal:"}:
+            vals[k[:-1]] = int(value) * 1024
+    return vals
+
+def disk_info():
+    st = os.statvfs(ROOT)
+    return {"available_bytes": st.f_bavail * st.f_frsize, "total_bytes": st.f_blocks * st.f_frsize}
+
+def git_head():
+    return subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, check=True, capture_output=True, text=True).stdout.strip()
+
+def load_matrix(customers):
+    nodes = [DEPOT, *customers]
+    rows = list(csv.DictReader(ROUTING.open(encoding="utf-8")))
+    pairs = {(r["origin_id"], r["destination_id"]): float(r["travel_time_s"]) for r in rows if r["origin_id"] != r["destination_id"]}
+    missing = [(a, b) for a in nodes for b in nodes if a != b and (a, b) not in pairs]
+    if missing:
+        raise RuntimeError(f"complete reachability failure: {missing[:3]}")
+    return {a: {b: (0.0 if a == b else pairs[(a, b)]) for b in nodes} for a in nodes}
+
+def make_input(instance_id, customers):
+    raw = load_matrix(customers)
+    normalized, tau = normalize_travel_time_matrix(DEPOT, customers, raw)
+    exact = enumerate_routes(DEPOT, customers, raw)
+    if exact["evaluated_permutations"] != 120 or len(exact["optimal_routes"]) != 1:
+        raise RuntimeError("exact-reference authority check failed")
+    qubo = build_expanded_qubo(DEPOT, customers, normalized, 4.0)
+    ising = convert_qubo_to_ising(qubo)
+    optimal_bits = frozenset(tuple(encode_route(route[1:-1], customers)) for route in exact["optimal_routes"])
+    optimal_spins = frozenset(tuple(1 if bit == 0 else -1 for bit in bits) for bits in optimal_bits)
+    exact_energy = evaluate_ising(next(iter(optimal_spins)), ising)
+    payload = {"ising_global_minimum_energy": exact_energy, "authority_exact_routes": exact["optimal_routes"], "tau_max": tau}
+    return R23Input(instance_id=instance_id, n=5, customer_ids=tuple(customers), depot_id=DEPOT,
+                    ising_constant=ising.constant, ising_linear=ising.linear, ising_quadratic=ising.quadratic,
+                    ising_coefficient_hash=ising_coefficient_hash(ising), qubo_coefficient_hash=coefficient_hash(qubo),
+                    lambda_value=4.0, bound=3.0, exact_optimal_bitstrings=optimal_bits,
+                    exact_optimal_spin_states=optimal_spins, exact_optimal_routes=frozenset(tuple(r) for r in exact["optimal_routes"]),
+                    normalized_matrix=normalized, payload=payload)
+
+def compact_result(result, input_data, before, after, started_at, ended_at):
+    metrics = result.get("probability_metrics", {})
+    best = metrics.get("best_feasible_state") or {}
+    best_record = best.get("record") or {}
+    best_route = best_record.get("route")
+    exact_routes = [list(r) for r in input_data.exact_optimal_routes]
+    exact_route_found = best_route is not None and list((input_data.depot_id, *best_route, input_data.depot_id)) in exact_routes
+    timings = result.get("timing", {})
+    return {
+        "schema_version": "r23-n5-scientific-result-v1", "run_id": result["instance_id"] + "_p1_init_fixed01_rep1_optimizer_cobyla",
+        "instance_id": result["instance_id"], "customers": list(input_data.customer_ids), "depot": input_data.depot_id,
+        "n": 5, "logical_qubits": 25, "state_dimension": 33554432, "p": 1, "lambda": 4.0,
+        "optimizer": "COBYLA", "initialization": "fixed_0.1", "initial_parameters": result["initial_parameters"],
+        "backend": result["backend"], "shots": "NONE", "repetition": 1,
+        "run_classification": result["run_classification"], "best_decoded_feasible_route": [input_data.depot_id, *best_route, input_data.depot_id] if best_route else None,
+        "exact_optimal_routes": exact_routes, "exact_optimum_found": exact_route_found,
+        "absolute_gap": 0.0 if exact_route_found else None, "relative_gap": 0.0 if exact_route_found else None,
+        "P_feasible": metrics.get("P_feasible_exact"), "P_optimal": metrics.get("P_opt"),
+        "probability_total": metrics.get("probability_total"), "invalid_probability_mass": metrics.get("invalid_probability_mass"),
+        "probability_integrity": {"total": metrics.get("probability_total"), "invalid_mass": metrics.get("invalid_probability_mass"), "renormalized": False},
+        "nfev": result.get("nfev"), "termination": result.get("termination"), "termination_status": result.get("termination_status"),
+        "T_total": timings.get("T_total"), "T_Aer": timings.get("T_Aer_total"), "T_transpile": timings.get("T_transpile_total"),
+        "T_total_per_nfev": (timings.get("T_total") / result["nfev"]) if result.get("nfev") else None,
+        "T_Aer_per_nfev": (timings.get("T_Aer_total") / result["nfev"]) if result.get("nfev") else None,
+        "resource": {"before": before, "after": after, "peak_rss_kib": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
+                      "peak_rss_gib": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1048576, "swap_used_before": before["SwapTotal"]-before["SwapFree"], "swap_used_after": after["SwapTotal"]-after["SwapFree"], "disk_after": disk_info(), "process_exit_status": 0},
+        "execution_semantics": "exact CPU Aer statevector; probabilities use raw full-state denominator; compact record omits raw 2^25 probability table.",
+        "started_at": started_at, "ended_at": ended_at, "source_commit": git_head(),
+    }
+
+def main():
+    if len(sys.argv) != 2 or sys.argv[1] not in INSTANCES:
+        raise SystemExit("usage: run_n5_scaling.py routing_v18_n5_rank0X")
+    instance_id = sys.argv[1]; customers = INSTANCES[instance_id]
+    OUT.mkdir(parents=True, exist_ok=True); run_dir = OUT / "runs" / instance_id; run_dir.mkdir(parents=True, exist_ok=True)
+    progress_path = OUT / "progress.json"
+    progress = json.loads(progress_path.read_text()) if progress_path.exists() else {"planned": 3, "started": [], "terminal": [], "scientific_failures": [], "run_ids": []}
+    if instance_id not in progress["started"]: progress["started"].append(instance_id)
+    progress["last_event"] = {"instance_id": instance_id, "status": "STARTED", "timestamp": time.time()}
+    progress_path.write_text(json.dumps(progress, indent=2) + "\n")
+    before = meminfo(); started = time.time(); started_iso = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(started))
+    try:
+        inp = make_input(instance_id, customers)
+        cfg = R23Config(p=1, optimizer="COBYLA", maxiter=300, max_evaluations=300, initial_parameter=0.1,
+                        initialization_id="fixed_0.1", seed=17, repetition=1, expectation_mode="exact_statevector",
+                        backend_method="statevector", device="CPU", optimization_level=1, max_logical_qubits=25,
+                        max_p=1, wall_time_seconds=None, memory_limit_gib=8.0, probability_threshold=1e-12)
+        result = run_single(inp, cfg)
+        after = meminfo(); ended = time.time(); ended_iso = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(ended))
+        compact = compact_result(result, inp, before, after, started_iso, ended_iso)
+        (run_dir / "scientific_result.json").write_text(json.dumps(compact, indent=2, ensure_ascii=False) + "\n")
+        (run_dir / "resource_record.json").write_text(json.dumps(compact["resource"], indent=2, ensure_ascii=False) + "\n")
+        terminal = {"run_id": compact["run_id"], "instance_id": instance_id, "status": compact["run_classification"], "termination_status": compact["termination_status"], "failure_reasons": result.get("failure_reasons", []), "process_exit_status": 0, "execution_performed": True}
+        (run_dir / "terminal_record.json").write_text(json.dumps(terminal, indent=2, ensure_ascii=False) + "\n")
+        progress["terminal"].append(instance_id); progress["run_ids"].append(compact["run_id"])
+        if compact["run_classification"] in {"BACKEND_FAILURE", "OPTIMIZER_FAILURE", "RESOURCE_GUARD_STOP"}:
+            progress["scientific_failures"].append(instance_id)
+        progress["last_event"] = {"instance_id": instance_id, "status": compact["run_classification"], "timestamp": time.time()}
+        progress_path.write_text(json.dumps(progress, indent=2) + "\n")
+        print(json.dumps({"instance_id": instance_id, "status": compact["run_classification"], "P_feasible": compact["P_feasible"], "P_optimal": compact["P_optimal"], "nfev": compact["nfev"], "T_total": compact["T_total"]}, ensure_ascii=False))
+    except Exception as exc:
+        after = meminfo(); terminal = {"instance_id": instance_id, "status": "SCIENTIFIC_EXECUTION_FAILURE", "failure_type": type(exc).__name__, "message": repr(exc), "process_exit_status": 1, "execution_performed": True, "before": before, "after": after, "peak_rss_kib": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}
+        (run_dir / "terminal_record.json").write_text(json.dumps(terminal, indent=2, ensure_ascii=False) + "\n")
+        progress["terminal"].append(instance_id); progress["scientific_failures"].append(instance_id); progress["last_event"] = {"instance_id": instance_id, "status": "SCIENTIFIC_EXECUTION_FAILURE", "timestamp": time.time()}; progress_path.write_text(json.dumps(progress, indent=2) + "\n")
+        raise
+
+if __name__ == "__main__":
+    main()

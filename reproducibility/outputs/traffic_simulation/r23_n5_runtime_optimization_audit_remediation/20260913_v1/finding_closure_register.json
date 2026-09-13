@@ -1,0 +1,735 @@
+{
+  "authority": "finding_authority.json",
+  "findings": [
+    {
+      "id": "I01",
+      "finding": "Candidate does not enforce original probability integrity contract",
+      "original_severity": "MAJOR",
+      "remediation": {
+        "original_ids": [
+          "I01",
+          "I07"
+        ],
+        "status": "RESOLVED",
+        "source": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+        "contract": "finite float64/complex128, finite derived masses, abs(sum(abs(psi)**2)-1)<=1e-12, original probability range tolerance",
+        "prohibited_repairs": [
+          "renormalization",
+          "NaN replacement",
+          "clipping",
+          "warning-only continuation"
+        ],
+        "evidence": [
+          "invalid_input_regression.json",
+          "valid_domain_regression.json",
+          "multiple_optimum_regression.json"
+        ],
+        "valid_domain_limit": "fixed initial points and basis fixtures; not a rerun of historical optimizer trajectories"
+      },
+      "evidence": [
+        "i01_probability_integrity_remediation.json"
+      ],
+      "status": "RESOLVED",
+      "resolved": true,
+      "new_severity": "NONE",
+      "residual_limitation": "Regression coverage finite; independent re-audit pending."
+    },
+    {
+      "id": "I02",
+      "finding": "Recorded run commits do not reconstruct the scientific execution entrypoint",
+      "original_severity": "MAJOR",
+      "remediation": {
+        "original_ids": [
+          "I02",
+          "I08"
+        ],
+        "status": "RESOLVED_WITH_DOCUMENTED_PROVENANCE_LIMITATION",
+        "runs": [
+          {
+            "rank": "01",
+            "level": "STRONGLY_INFERRED",
+            "recorded_commit": "9a4ce5600a211ffb92adf3b84fe2468d70be2b26",
+            "started_at": "2026-09-11T13:32:21Z",
+            "ended_at": "2026-09-13T08:09:35Z",
+            "host": "hayate (resource/process context)",
+            "runner": "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py",
+            "helper": null,
+            "environment": "/home/takuma/.conda/envs/evrp-quantum-temp",
+            "reconstruction": {
+              "archive": "reconstructed_sources/rank01_runner.py.txt",
+              "sha256": "7f920468dd24e2e0991bb41150b088d0ae3b629443dde0e867997d8e8b0190e5"
+            },
+            "contradiction": "EXECUTION_PROVENANCE_METADATA_INCONSISTENCY",
+            "explanation": "source_commit is repository HEAD; execution used an uncommitted runner. Timestamped FileChange records reconstruct the bytes later committed at 0e149ed.",
+            "files": [
+              {
+                "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank01/resource_record.json",
+                "sha256": "a533b34317e82b0b7a85bb5bfe9740b54f14f7cf6c6aada6a30aad02f0bee0a2",
+                "archive": "historical_run_snapshots/routing_v18_n5_rank01/resource_record.json",
+                "mtime_utc": "2026-09-13T08:17:08.930619+00:00",
+                "filesystem_birth": "-"
+              },
+              {
+                "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank01/scientific_result.json",
+                "sha256": "43eceae6d7e6459ba4a10094c8d358677b87999af1ccbfb6f25ab03cd11360b9",
+                "archive": "historical_run_snapshots/routing_v18_n5_rank01/scientific_result.json",
+                "mtime_utc": "2026-09-13T08:17:08.929619+00:00",
+                "filesystem_birth": "-"
+              },
+              {
+                "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank01/terminal_record.json",
+                "sha256": "115884b567b70bbd26b60e5a35991a6a47ad59985a435b40477622f45736ebc5",
+                "archive": "historical_run_snapshots/routing_v18_n5_rank01/terminal_record.json",
+                "mtime_utc": "2026-09-13T08:17:08.930619+00:00",
+                "filesystem_birth": "-"
+              }
+            ],
+            "formal_acceptance": "NOT_REAUTHORIZED",
+            "rerun_requirement": "RERUN_RECOMMENDED",
+            "reason": "Historical trajectory/final parameters and complete process source attestation absent; resource peak metric contradicts logged RSS for remaining runs. Retained observations remain usable with explicit limitations."
+          },
+          {
+            "rank": "02",
+            "level": "STRONGLY_INFERRED",
+            "recorded_commit": "ff1d579bad8e7c635406b2a5a620fc733f96e912",
+            "started_at": "2026-09-13T14:17:17Z",
+            "ended_at": "2026-09-13T14:59:58Z",
+            "host": "hayate (resource/process context)",
+            "runner": "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py",
+            "helper": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+            "environment": "/home/takuma/.conda/envs/evrp-quantum-temp",
+            "reconstruction": {
+              "archive": "reconstructed_sources/rank02_rank03_runner.py.txt",
+              "sha256": "76a0b89d4999abad7fb7472740b84ac128c1863571299ef43ed7e9f43924d254",
+              "matches_0e149ed": true
+            },
+            "contradiction": "EXECUTION_PROVENANCE_METADATA_INCONSISTENCY",
+            "explanation": "source_commit is repository HEAD; execution used an uncommitted runner and uncommitted qaoa V4 wiring. Timestamped FileChange records reconstruct the bytes later committed at 0e149ed.",
+            "files": [
+              {
+                "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/resource_record.json",
+                "sha256": "3b04a037ab5a645002cf466f9a12580471bddfce5c89cf1566844326e5ea5eaf",
+                "archive": "historical_run_snapshots/routing_v18_n5_rank02/resource_record.json",
+                "mtime_utc": "2026-09-13T15:07:32.005956+00:00",
+                "filesystem_birth": "-"
+              },
+              {
+                "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/scientific_result.json",
+                "sha256": "133c8daa531d1f12a6f9343931f6acbc1143c2a8e21772eedebcf8db438eefe8",
+                "archive": "historical_run_snapshots/routing_v18_n5_rank02/scientific_result.json",
+                "mtime_utc": "2026-09-13T15:07:32.004956+00:00",
+                "filesystem_birth": "-"
+              },
+              {
+                "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/terminal_record.json",
+                "sha256": "1eb5832f25250d5c61792f3b499271a7bbecc834650c453ab738ca80c35a1bb9",
+                "archive": "historical_run_snapshots/routing_v18_n5_rank02/terminal_record.json",
+                "mtime_utc": "2026-09-13T15:07:32.006956+00:00",
+                "filesystem_birth": "-"
+              }
+            ],
+            "formal_acceptance": "NOT_REAUTHORIZED",
+            "rerun_requirement": "RERUN_REQUIRED_FOR_FORMAL_ACCEPTANCE",
+            "reason": "Historical trajectory/final parameters and complete process source attestation absent; resource peak metric contradicts logged RSS for remaining runs. Retained observations remain usable with explicit limitations."
+          },
+          {
+            "rank": "03",
+            "level": "STRONGLY_INFERRED",
+            "recorded_commit": "ff1d579bad8e7c635406b2a5a620fc733f96e912",
+            "started_at": "2026-09-13T15:00:10Z",
+            "ended_at": "2026-09-13T15:28:35Z",
+            "host": "hayate (resource/process context)",
+            "runner": "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py",
+            "helper": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+            "environment": "/home/takuma/.conda/envs/evrp-quantum-temp",
+            "reconstruction": {
+              "archive": "reconstructed_sources/rank02_rank03_runner.py.txt",
+              "sha256": "76a0b89d4999abad7fb7472740b84ac128c1863571299ef43ed7e9f43924d254",
+              "matches_0e149ed": true
+            },
+            "contradiction": "EXECUTION_PROVENANCE_METADATA_INCONSISTENCY",
+            "explanation": "source_commit is repository HEAD; execution used an uncommitted runner and uncommitted qaoa V4 wiring. Timestamped FileChange records reconstruct the bytes later committed at 0e149ed.",
+            "files": [
+              {
+                "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank03/resource_record.json",
+                "sha256": "b880345244937f006aae7a1c0b8acb6971bd9cfa0f7dfd2f423020a8d5561c2f",
+                "archive": "historical_run_snapshots/routing_v18_n5_rank03/resource_record.json",
+                "mtime_utc": "2026-09-13T15:36:09.081909+00:00",
+                "filesystem_birth": "-"
+              },
+              {
+                "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank03/scientific_result.json",
+                "sha256": "45d9641ac28c315b9fa0701a8b80ab08e2c5ccb2e84c8310cb8047896e69a195",
+                "archive": "historical_run_snapshots/routing_v18_n5_rank03/scientific_result.json",
+                "mtime_utc": "2026-09-13T15:36:09.080909+00:00",
+                "filesystem_birth": "-"
+              },
+              {
+                "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank03/terminal_record.json",
+                "sha256": "83c56637a5c9d1cd3463adf15df4abed8ac7d7ef928ef71a10f532c680369b26",
+                "archive": "historical_run_snapshots/routing_v18_n5_rank03/terminal_record.json",
+                "mtime_utc": "2026-09-13T15:36:09.082909+00:00",
+                "filesystem_birth": "-"
+              }
+            ],
+            "formal_acceptance": "NOT_REAUTHORIZED",
+            "rerun_requirement": "RERUN_REQUIRED_FOR_FORMAL_ACCEPTANCE",
+            "reason": "Historical trajectory/final parameters and complete process source attestation absent; resource peak metric contradicts logged RSS for remaining runs. Retained observations remain usable with explicit limitations."
+          }
+        ],
+        "evidence": [
+          "execution_log_evidence.json",
+          "original_artifact_snapshot.json",
+          "historical_run_snapshots/"
+        ],
+        "reconstruction": "Timestamped FileChange patches replay uniquely to later committed runner/qaoa. This establishes a strongly inferred dirty-source explanation, not cryptographic process attestation.",
+        "journal": {
+          "query": "journalctl 2026-09-11..2026-09-14 PIDs 609374 and 3556883",
+          "result": "no visible entries; current user lacks full system journal access"
+        },
+        "resource_contradiction": "Contemporaneous rank02 ps RSS exceeds 798660 KiB while final ru_maxrss is 323576 KiB. The cause/process accounting is not reconciled; rank03 similarly inconsistent.",
+        "quantity_verification_limit": "Recorded routes and costs remain independently checkable. Final probability distribution/optimizer trajectory cannot be reproduced without final parameters/state/trace. New fixed-point regression does not certify those historical values.",
+        "formal_acceptance": "rank02/03 NOT_REAUTHORIZED; RERUN_REQUIRED_FOR_FORMAL_ACCEPTANCE; no scientific rerun authorized or performed"
+      },
+      "evidence": [
+        "i02_execution_provenance_reconstruction.json"
+      ],
+      "status": "RESOLVED_WITH_DOCUMENTED_PROVENANCE_LIMITATION",
+      "resolved": true,
+      "new_severity": "MODERATE",
+      "residual_limitation": "See evidence; formal historical acceptance not implied."
+    },
+    {
+      "id": "I03",
+      "finding": "Existing equivalence acceptance is not computed from assertions and does not exercise the shipped helper",
+      "original_severity": "MAJOR",
+      "remediation": {
+        "original_ids": [
+          "I03"
+        ],
+        "status": "PARTIAL",
+        "resolved_n5_generators": [
+          {
+            "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/build_artifact.py",
+            "original_sha256": "7d0db10bdcb6aab1fabddaa0a2d5677c84d936ea7584ada1f6262f65031e59bd",
+            "archive": "historical_generator_sources/1_build_artifact.py.txt",
+            "reason": "Unconditional validation summaries / inaccurate coverage or benchmark proxy. Historical outputs immutable; executable legacy entrypoint replaced with fail-closed retirement notice."
+          },
+          {
+            "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/run_equivalence.py",
+            "original_sha256": "969f09874c74121ae13d30e8a7f2f7efda569259ad6a5528687ef0d537b0c65c",
+            "archive": "historical_generator_sources/2_run_equivalence.py.txt",
+            "reason": "Unconditional validation summaries / inaccurate coverage or benchmark proxy. Historical outputs immutable; executable legacy entrypoint replaced with fail-closed retirement notice."
+          },
+          {
+            "path": "reproducibility/tools/r23_n5_scaling_evidence_review.py",
+            "original_sha256": "f1a299edc9a55047c47d0573eeacc71310afeef3a15d79645152a11aa79cc668",
+            "archive": "historical_generator_sources/3_r23_n5_scaling_evidence_review.py.txt",
+            "reason": "Unconditional validation summaries / inaccurate coverage or benchmark proxy. Historical outputs immutable; executable legacy entrypoint replaced with fail-closed retirement notice."
+          },
+          {
+            "path": "reproducibility/tools/r23_n5_runtime_optimization_code_audit.py",
+            "original_sha256": "c91fcda8b186060af182186772bf9713765fa9d5a045a8799a752594c388bf4b",
+            "archive": "historical_generator_sources/4_r23_n5_runtime_optimization_code_audit.py.txt",
+            "reason": "Unconditional validation summaries / inaccurate coverage or benchmark proxy. Historical outputs immutable; executable legacy entrypoint replaced with fail-closed retirement notice."
+          }
+        ],
+        "replacement": "reproducibility/tools/r23_n5_remediation_regression.py calls actual before/after helpers with independent references",
+        "gate": "05_src/traffic_simulation/validation/r23_validation_gate.py; exact nonempty required set, executed checks and evidence mandatory",
+        "executed_gate": {
+          "result": "VERIFIED",
+          "passed": true,
+          "missing_ids": [],
+          "required_count": 16,
+          "executed_count": 16
+        },
+        "remaining_unconditional_locations": [
+          {
+            "path": "tools/authorize_r23_experiment_b2.py",
+            "lines": [
+              138,
+              143,
+              144
+            ],
+            "issue": "targeted_tests_pass/py_compile and six passing tests declared without invocation"
+          },
+          {
+            "path": "tools/review_r23_experiment_b2_nelder_mead.py",
+            "lines": [
+              129,
+              140
+            ],
+            "issue": "implementation and technical preflight PASS assigned without validating all listed conditions"
+          },
+          {
+            "path": "tools/build_r23_experiment_b2_reexecution_authority.py",
+            "lines": [
+              34,
+              36
+            ],
+            "issue": "constant pytest/smoke validation results in authority generator"
+          },
+          {
+            "path": "tools/finalize_r23_b1_v2.py",
+            "lines": [
+              124
+            ],
+            "issue": "aggregate PASS is not conditioned on computed integrity booleans"
+          },
+          {
+            "path": "tools/finalize_r23_experiment_b2_reexecution.py",
+            "lines": [
+              31,
+              37
+            ],
+            "issue": "aggregate PASS independent of prob_pass/params_pass/exact_pass"
+          },
+          {
+            "path": "05_src/traffic_simulation/r23_qaoa_aer/artifact.py",
+            "lines": [
+              76,
+              84
+            ],
+            "issue": "lineage PASS manufactured from file existence/hash collection, not comparison to authority"
+          }
+        ],
+        "residual": "n5 finding target repaired, but requested repository-wide unconditional PASS removal is incomplete; retain MAJOR I03 rather than equating passing local tests with complete closure",
+        "evidence": [
+          "validation_test_manifest.json",
+          "validation_pass_search.json",
+          "regression_evidence.json#gate_mutations"
+        ]
+      },
+      "evidence": [
+        "i03_validation_gate_remediation.json"
+      ],
+      "status": "PARTIAL",
+      "resolved": false,
+      "new_severity": "MAJOR",
+      "residual_limitation": "See evidence; formal historical acceptance not implied."
+    },
+    {
+      "id": "I04",
+      "finding": "Current canonical status asserts unsupported convergence 3/3",
+      "original_severity": "MAJOR",
+      "remediation": {
+        "original_ids": [
+          "I04"
+        ],
+        "status": "RESOLVED",
+        "wording": {
+          "optimal_route_recovered": "3/3",
+          "relative_route_objective_gap": "0 for 3/3",
+          "optimizer_reported_success": "2/3",
+          "rank01": false,
+          "rank02": true,
+          "rank03": true,
+          "rank01_cap_reached": true
+        },
+        "limitation": "rank02/03 retained observations, not formal reauthorization; native optimizer success does not prove global convergence",
+        "corrected_documents": [
+          "05_src/traffic_simulation/R23_STATUS.md",
+          "05_src/traffic_simulation/R23_NEXT_STEPS.md",
+          "05_src/traffic_simulation/R23_ROADMAP.md",
+          "05_src/traffic_simulation/specifications/R23_REDUCED_PROBLEM_CANONICAL.md",
+          "RESEARCH_STATUS.md"
+        ],
+        "historical_records": "unchanged; old claims superseded by current status and this erratum"
+      },
+      "evidence": [
+        "i04_convergence_claim_remediation.json"
+      ],
+      "status": "RESOLVED",
+      "resolved": true,
+      "new_severity": "NONE",
+      "residual_limitation": "Regression coverage finite; independent re-audit pending."
+    },
+    {
+      "id": "I05",
+      "finding": "Runtime and memory comparisons lack matched workloads and complete execution conditions",
+      "original_severity": "MODERATE",
+      "remediation": {
+        "original_ids": [
+          "I05",
+          "I10"
+        ],
+        "classification": "PRELIMINARY_ONLY",
+        "runtime": "33.7x is an unmatched historical diagnostic ratio, not formal/scientific speedup",
+        "memory": "201.6 GiB original observed absolute peak RSS versus approximately 0.615 GiB candidate incremental RSS: metrics not directly comparable; no 327x formal reduction",
+        "proxy_erratum": "Legacy idx[-1:] P_optimal_lookup is an arbitrary feasible-index lookup microbenchmark, not verified optimum mass. Archived code retired; new regression invokes actual optimal-set helper.",
+        "formal_contract": "05_src/traffic_simulation/specifications/R23_RUNTIME_REMEDIATION_CONTRACT.md",
+        "formal_benchmark_executed": false,
+        "formal_comparability": "NOT_TESTED",
+        "accounting": "T_total=T_setup+T_warmup+sum(T_eval)+T_final; also report cold total without warmup; include feasible caches, circuit/Hamiltonian/backend construction and final guards/decoding",
+        "residual": [
+          "historical thread/affinity/warm-up/boundaries unmatched",
+          "rank02/03 peak RSS conflict unreconciled",
+          "no formal ratio authorized"
+        ]
+      },
+      "evidence": [
+        "i08_benchmark_claim_remediation.json"
+      ],
+      "status": "RESOLVED_WITH_DOCUMENTED_LIMITATION",
+      "resolved": true,
+      "new_severity": "MODERATE",
+      "residual_limitation": "See evidence; formal historical acceptance not implied."
+    },
+    {
+      "id": "I06",
+      "finding": "V4 drops reported scientific diagnostics under unchanged result schema",
+      "original_severity": "MODERATE",
+      "remediation": {
+        "original_ids": [
+          "I02",
+          "I06",
+          "I08"
+        ],
+        "contract": "05_src/traffic_simulation/specifications/R23_RUNTIME_REMEDIATION_CONTRACT.md",
+        "implementation": "05_src/traffic_simulation/r23_qaoa_aer/execution_provenance.py",
+        "required": [
+          "git commit",
+          "source SHA",
+          "runner SHA",
+          "helper SHA",
+          "authority manifest SHA",
+          "source manifest",
+          "clean worktree",
+          "environment path",
+          "dependency versions",
+          "hostname",
+          "CPU",
+          "thread settings",
+          "command line",
+          "start/end timestamp",
+          "effective optimizer options",
+          "seeds",
+          "termination status",
+          "resource metrics and units",
+          "final parameters",
+          "objective trace SHA"
+        ],
+        "missing_policy": "FORMAL_RUN_PROVENANCE_INCOMPLETE; do not elevate to formal evidence",
+        "admission_scope": "Structural fail-closed validator tested; caller must bind recorded hashes to archived source/config files and enforce at start and end. No existing scientific runner changed or authorized.",
+        "test": "regression_evidence.json#provenance_missing_fields",
+        "compact_reporting_contract": "qaoa._v4_reporting_metrics now labels intentionally omitted diagnostics and candidate output version"
+      },
+      "evidence": [
+        "i10_execution_metadata_contract.json"
+      ],
+      "status": "RESOLVED",
+      "resolved": true,
+      "new_severity": "NONE",
+      "residual_limitation": "Regression coverage finite; independent re-audit pending."
+    },
+    {
+      "id": "I07",
+      "finding": "Numerical dtype contract accepts lower precision inputs",
+      "original_severity": "MODERATE",
+      "remediation": {
+        "original_ids": [
+          "I01",
+          "I07"
+        ],
+        "status": "RESOLVED",
+        "source": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+        "contract": "finite float64/complex128, finite derived masses, abs(sum(abs(psi)**2)-1)<=1e-12, original probability range tolerance",
+        "prohibited_repairs": [
+          "renormalization",
+          "NaN replacement",
+          "clipping",
+          "warning-only continuation"
+        ],
+        "evidence": [
+          "invalid_input_regression.json",
+          "valid_domain_regression.json",
+          "multiple_optimum_regression.json"
+        ],
+        "valid_domain_limit": "fixed initial points and basis fixtures; not a rerun of historical optimizer trajectories"
+      },
+      "evidence": [
+        "i01_probability_integrity_remediation.json"
+      ],
+      "status": "RESOLVED",
+      "resolved": true,
+      "new_severity": "NONE",
+      "residual_limitation": "Regression coverage finite; independent re-audit pending."
+    },
+    {
+      "id": "I08",
+      "finding": "Historical immutability and optimizer replay evidence are incomplete",
+      "original_severity": "MODERATE",
+      "remediation": {
+        "original_ids": [
+          "I02",
+          "I08"
+        ],
+        "status": "RESOLVED_WITH_DOCUMENTED_PROVENANCE_LIMITATION",
+        "runs": [
+          {
+            "rank": "01",
+            "level": "STRONGLY_INFERRED",
+            "recorded_commit": "9a4ce5600a211ffb92adf3b84fe2468d70be2b26",
+            "started_at": "2026-09-11T13:32:21Z",
+            "ended_at": "2026-09-13T08:09:35Z",
+            "host": "hayate (resource/process context)",
+            "runner": "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py",
+            "helper": null,
+            "environment": "/home/takuma/.conda/envs/evrp-quantum-temp",
+            "reconstruction": {
+              "archive": "reconstructed_sources/rank01_runner.py.txt",
+              "sha256": "7f920468dd24e2e0991bb41150b088d0ae3b629443dde0e867997d8e8b0190e5"
+            },
+            "contradiction": "EXECUTION_PROVENANCE_METADATA_INCONSISTENCY",
+            "explanation": "source_commit is repository HEAD; execution used an uncommitted runner. Timestamped FileChange records reconstruct the bytes later committed at 0e149ed.",
+            "files": [
+              {
+                "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank01/resource_record.json",
+                "sha256": "a533b34317e82b0b7a85bb5bfe9740b54f14f7cf6c6aada6a30aad02f0bee0a2",
+                "archive": "historical_run_snapshots/routing_v18_n5_rank01/resource_record.json",
+                "mtime_utc": "2026-09-13T08:17:08.930619+00:00",
+                "filesystem_birth": "-"
+              },
+              {
+                "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank01/scientific_result.json",
+                "sha256": "43eceae6d7e6459ba4a10094c8d358677b87999af1ccbfb6f25ab03cd11360b9",
+                "archive": "historical_run_snapshots/routing_v18_n5_rank01/scientific_result.json",
+                "mtime_utc": "2026-09-13T08:17:08.929619+00:00",
+                "filesystem_birth": "-"
+              },
+              {
+                "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank01/terminal_record.json",
+                "sha256": "115884b567b70bbd26b60e5a35991a6a47ad59985a435b40477622f45736ebc5",
+                "archive": "historical_run_snapshots/routing_v18_n5_rank01/terminal_record.json",
+                "mtime_utc": "2026-09-13T08:17:08.930619+00:00",
+                "filesystem_birth": "-"
+              }
+            ],
+            "formal_acceptance": "NOT_REAUTHORIZED",
+            "rerun_requirement": "RERUN_RECOMMENDED",
+            "reason": "Historical trajectory/final parameters and complete process source attestation absent; resource peak metric contradicts logged RSS for remaining runs. Retained observations remain usable with explicit limitations."
+          },
+          {
+            "rank": "02",
+            "level": "STRONGLY_INFERRED",
+            "recorded_commit": "ff1d579bad8e7c635406b2a5a620fc733f96e912",
+            "started_at": "2026-09-13T14:17:17Z",
+            "ended_at": "2026-09-13T14:59:58Z",
+            "host": "hayate (resource/process context)",
+            "runner": "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py",
+            "helper": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+            "environment": "/home/takuma/.conda/envs/evrp-quantum-temp",
+            "reconstruction": {
+              "archive": "reconstructed_sources/rank02_rank03_runner.py.txt",
+              "sha256": "76a0b89d4999abad7fb7472740b84ac128c1863571299ef43ed7e9f43924d254",
+              "matches_0e149ed": true
+            },
+            "contradiction": "EXECUTION_PROVENANCE_METADATA_INCONSISTENCY",
+            "explanation": "source_commit is repository HEAD; execution used an uncommitted runner and uncommitted qaoa V4 wiring. Timestamped FileChange records reconstruct the bytes later committed at 0e149ed.",
+            "files": [
+              {
+                "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/resource_record.json",
+                "sha256": "3b04a037ab5a645002cf466f9a12580471bddfce5c89cf1566844326e5ea5eaf",
+                "archive": "historical_run_snapshots/routing_v18_n5_rank02/resource_record.json",
+                "mtime_utc": "2026-09-13T15:07:32.005956+00:00",
+                "filesystem_birth": "-"
+              },
+              {
+                "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/scientific_result.json",
+                "sha256": "133c8daa531d1f12a6f9343931f6acbc1143c2a8e21772eedebcf8db438eefe8",
+                "archive": "historical_run_snapshots/routing_v18_n5_rank02/scientific_result.json",
+                "mtime_utc": "2026-09-13T15:07:32.004956+00:00",
+                "filesystem_birth": "-"
+              },
+              {
+                "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/terminal_record.json",
+                "sha256": "1eb5832f25250d5c61792f3b499271a7bbecc834650c453ab738ca80c35a1bb9",
+                "archive": "historical_run_snapshots/routing_v18_n5_rank02/terminal_record.json",
+                "mtime_utc": "2026-09-13T15:07:32.006956+00:00",
+                "filesystem_birth": "-"
+              }
+            ],
+            "formal_acceptance": "NOT_REAUTHORIZED",
+            "rerun_requirement": "RERUN_REQUIRED_FOR_FORMAL_ACCEPTANCE",
+            "reason": "Historical trajectory/final parameters and complete process source attestation absent; resource peak metric contradicts logged RSS for remaining runs. Retained observations remain usable with explicit limitations."
+          },
+          {
+            "rank": "03",
+            "level": "STRONGLY_INFERRED",
+            "recorded_commit": "ff1d579bad8e7c635406b2a5a620fc733f96e912",
+            "started_at": "2026-09-13T15:00:10Z",
+            "ended_at": "2026-09-13T15:28:35Z",
+            "host": "hayate (resource/process context)",
+            "runner": "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py",
+            "helper": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+            "environment": "/home/takuma/.conda/envs/evrp-quantum-temp",
+            "reconstruction": {
+              "archive": "reconstructed_sources/rank02_rank03_runner.py.txt",
+              "sha256": "76a0b89d4999abad7fb7472740b84ac128c1863571299ef43ed7e9f43924d254",
+              "matches_0e149ed": true
+            },
+            "contradiction": "EXECUTION_PROVENANCE_METADATA_INCONSISTENCY",
+            "explanation": "source_commit is repository HEAD; execution used an uncommitted runner and uncommitted qaoa V4 wiring. Timestamped FileChange records reconstruct the bytes later committed at 0e149ed.",
+            "files": [
+              {
+                "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank03/resource_record.json",
+                "sha256": "b880345244937f006aae7a1c0b8acb6971bd9cfa0f7dfd2f423020a8d5561c2f",
+                "archive": "historical_run_snapshots/routing_v18_n5_rank03/resource_record.json",
+                "mtime_utc": "2026-09-13T15:36:09.081909+00:00",
+                "filesystem_birth": "-"
+              },
+              {
+                "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank03/scientific_result.json",
+                "sha256": "45d9641ac28c315b9fa0701a8b80ab08e2c5ccb2e84c8310cb8047896e69a195",
+                "archive": "historical_run_snapshots/routing_v18_n5_rank03/scientific_result.json",
+                "mtime_utc": "2026-09-13T15:36:09.080909+00:00",
+                "filesystem_birth": "-"
+              },
+              {
+                "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank03/terminal_record.json",
+                "sha256": "83c56637a5c9d1cd3463adf15df4abed8ac7d7ef928ef71a10f532c680369b26",
+                "archive": "historical_run_snapshots/routing_v18_n5_rank03/terminal_record.json",
+                "mtime_utc": "2026-09-13T15:36:09.082909+00:00",
+                "filesystem_birth": "-"
+              }
+            ],
+            "formal_acceptance": "NOT_REAUTHORIZED",
+            "rerun_requirement": "RERUN_REQUIRED_FOR_FORMAL_ACCEPTANCE",
+            "reason": "Historical trajectory/final parameters and complete process source attestation absent; resource peak metric contradicts logged RSS for remaining runs. Retained observations remain usable with explicit limitations."
+          }
+        ],
+        "evidence": [
+          "execution_log_evidence.json",
+          "original_artifact_snapshot.json",
+          "historical_run_snapshots/"
+        ],
+        "reconstruction": "Timestamped FileChange patches replay uniquely to later committed runner/qaoa. This establishes a strongly inferred dirty-source explanation, not cryptographic process attestation.",
+        "journal": {
+          "query": "journalctl 2026-09-11..2026-09-14 PIDs 609374 and 3556883",
+          "result": "no visible entries; current user lacks full system journal access"
+        },
+        "resource_contradiction": "Contemporaneous rank02 ps RSS exceeds 798660 KiB while final ru_maxrss is 323576 KiB. The cause/process accounting is not reconciled; rank03 similarly inconsistent.",
+        "quantity_verification_limit": "Recorded routes and costs remain independently checkable. Final probability distribution/optimizer trajectory cannot be reproduced without final parameters/state/trace. New fixed-point regression does not certify those historical values.",
+        "formal_acceptance": "rank02/03 NOT_REAUTHORIZED; RERUN_REQUIRED_FOR_FORMAL_ACCEPTANCE; no scientific rerun authorized or performed"
+      },
+      "evidence": [
+        "i02_execution_provenance_reconstruction.json"
+      ],
+      "status": "RESOLVED_WITH_DOCUMENTED_PROVENANCE_LIMITATION",
+      "resolved": true,
+      "new_severity": "MODERATE",
+      "residual_limitation": "See evidence; formal historical acceptance not implied."
+    },
+    {
+      "id": "I09",
+      "finding": "Penalty authority contains inconsistent margin arithmetic",
+      "original_severity": "MINOR",
+      "remediation": {
+        "original_id": "I09",
+        "original_artifact_unchanged": true,
+        "authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_penalty_authority.json",
+        "condition": "lambda > (n+1)/2",
+        "n": 5,
+        "bound": 3.0,
+        "lambda": 4.0,
+        "strict_condition_satisfied": true,
+        "correct_margin": 1.0,
+        "correct_penalty_margin": 2.0,
+        "erroneous_margins": [
+          0.5,
+          1.0
+        ],
+        "scientific_parameter_change": false,
+        "canonical_correction": "05_src/traffic_simulation/specifications/R23_REDUCED_PROBLEM_CANONICAL.md"
+      },
+      "evidence": [
+        "i07_lambda_erratum.json"
+      ],
+      "status": "RESOLVED",
+      "resolved": true,
+      "new_severity": "NONE",
+      "residual_limitation": "Regression coverage finite; independent re-audit pending."
+    },
+    {
+      "id": "I10",
+      "finding": "Benchmark P_optimal_lookup is an arbitrary feasible index proxy",
+      "original_severity": "MODERATE",
+      "remediation": {
+        "original_ids": [
+          "I05",
+          "I10"
+        ],
+        "classification": "PRELIMINARY_ONLY",
+        "runtime": "33.7x is an unmatched historical diagnostic ratio, not formal/scientific speedup",
+        "memory": "201.6 GiB original observed absolute peak RSS versus approximately 0.615 GiB candidate incremental RSS: metrics not directly comparable; no 327x formal reduction",
+        "proxy_erratum": "Legacy idx[-1:] P_optimal_lookup is an arbitrary feasible-index lookup microbenchmark, not verified optimum mass. Archived code retired; new regression invokes actual optimal-set helper.",
+        "formal_contract": "05_src/traffic_simulation/specifications/R23_RUNTIME_REMEDIATION_CONTRACT.md",
+        "formal_benchmark_executed": false,
+        "formal_comparability": "NOT_TESTED",
+        "accounting": "T_total=T_setup+T_warmup+sum(T_eval)+T_final; also report cold total without warmup; include feasible caches, circuit/Hamiltonian/backend construction and final guards/decoding",
+        "residual": [
+          "historical thread/affinity/warm-up/boundaries unmatched",
+          "rank02/03 peak RSS conflict unreconciled",
+          "no formal ratio authorized"
+        ]
+      },
+      "evidence": [
+        "i08_benchmark_claim_remediation.json"
+      ],
+      "status": "RESOLVED",
+      "resolved": true,
+      "new_severity": "NONE",
+      "residual_limitation": "Regression coverage finite; independent re-audit pending."
+    }
+  ],
+  "new_unresolved_locations_are_I03_scope_extension": [
+    {
+      "path": "tools/authorize_r23_experiment_b2.py",
+      "lines": [
+        138,
+        143,
+        144
+      ],
+      "issue": "targeted_tests_pass/py_compile and six passing tests declared without invocation"
+    },
+    {
+      "path": "tools/review_r23_experiment_b2_nelder_mead.py",
+      "lines": [
+        129,
+        140
+      ],
+      "issue": "implementation and technical preflight PASS assigned without validating all listed conditions"
+    },
+    {
+      "path": "tools/build_r23_experiment_b2_reexecution_authority.py",
+      "lines": [
+        34,
+        36
+      ],
+      "issue": "constant pytest/smoke validation results in authority generator"
+    },
+    {
+      "path": "tools/finalize_r23_b1_v2.py",
+      "lines": [
+        124
+      ],
+      "issue": "aggregate PASS is not conditioned on computed integrity booleans"
+    },
+    {
+      "path": "tools/finalize_r23_experiment_b2_reexecution.py",
+      "lines": [
+        31,
+        37
+      ],
+      "issue": "aggregate PASS independent of prob_pass/params_pass/exact_pass"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/artifact.py",
+      "lines": [
+        76,
+        84
+      ],
+      "issue": "lineage PASS manufactured from file existence/hash collection, not comparison to authority"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "claims": [
+    {
+      "claim": "optimal route recovered3/3",
+      "classification": "DIRECTLY_OBSERVED",
+      "basis": "historical route fields; independently checkable costs, provenance qualified"
+    },
+    {
+      "claim": "optimizer success2/3",
+      "classification": "DIRECTLY_OBSERVED",
+      "basis": "native flags, not global convergence"
+    },
+    {
+      "claim": "gap0 for3/3",
+      "classification": "DERIVED",
+      "basis": "reported route costs vs frozen exact reference"
+    },
+    {
+      "claim": "unchanged valid-domain probability metrics",
+      "classification": "DERIVED",
+      "basis": "executed fixed-point and basis regression; not historical trajectory reproduction"
+    },
+    {
+      "claim": "dirty-source execution lineage",
+      "classification": "INFERRED",
+      "basis": "timestamped source edits and process logs"
+    },
+    {
+      "claim": "general robustness/scaling law",
+      "classification": "NOT_SUPPORTED",
+      "basis": "limited deterministic instances and one initialization"
+    },
+    {
+      "claim": "formal speedup or memory reduction factor",
+      "classification": "NOT_SUPPORTED",
+      "basis": "unmatched timing/memory metrics"
+    },
+    {
+      "claim": "optimizer superiority",
+      "classification": "NOT_SUPPORTED",
+      "basis": "B2 continuity does not establish general superiority"
+    },
+    {
+      "claim": "quantum advantage/speedup",
+      "classification": "NOT_SUPPORTED",
+      "basis": "CPU exact simulator evidence only"
+    },
+    {
+      "claim": "future benchmark settings",
+      "classification": "ASSUMED",
+      "basis": "prospective contract, NOT_EXECUTED"
+    }
+  ],
+  "formal_docs_policy": "NOT_SUPPORTED claims explicitly denied; historical artifacts not retroactively rewritten"
+}

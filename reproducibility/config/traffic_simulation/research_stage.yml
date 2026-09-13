@@ -17,15 +17,15 @@ readiness:
     label_ja: 下流実験
     status: scope_split
     status_label_ja: scope別
-    note_ja: full-EVRP比較は未準備。INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLYはR21/R22 PASS、R23 Formal A/B1/B2 completed within Reduced Problem scope
+    note_ja: full-EVRP比較は未準備。R23既存n5 evidenceはACCEPTED_WITH_LIMITATIONSで保持。独立code auditはCODE_AUDIT_FAIL / CODE_AUDIT_RESULT_NOT_REPRODUCED、REMEDIATION_INCOMPLETE（I03残存）。rank02/03はexecution/resource provenance制約付きで未再承認
 blockers:
   - full-EVRP本線ではR05-R11のcustomer sampling、demand、time window、service time、depot、EV、charging station定義が未完了
   - full-EVRP R20はcapacity、time window、battery/SOC、charging、fleet、一般reachabilityを含むaccepted QUBOがなくBLOCKED
-  - reduced R23はFormal A/B1/B2 evidence reviewを完了し、baseline accepted with limitations
+  - reduced R23はroute recovery 3/3、optimizer reported success 2/3。rank01 success=false、cap reached。runtime benchmark PRELIMINARY_ONLY、n≥6非推奨。R24はNOT_AUTHORIZED_PENDING_R23_REMEDIATION
   - Aer結果を量子実機性能またはquantum advantageへ一般化できない
 next_actions:
   - EVRP_EXECUTION_PLAN.mdに従いfull-EVRP本線の未完Definition stageを進める
-  - R23 reduced branchのrepository/specification consolidationを完了し、次にlimited scaling methodologyをreviewする
+  - R23 I03残存6箇所の無条件PASSを修正・検証する。remediation完了後は別task R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT_POST_REMEDIATION_RERUN。独立PASS後のみphase closureとR24を検討する
   - R23 pilotとformal baselineを分離し、R22 Hamiltonianとlambdaを変更しない
   - full-EVRP/Hayate評価とreduced method evidenceをscope付きで統合する
 stages:

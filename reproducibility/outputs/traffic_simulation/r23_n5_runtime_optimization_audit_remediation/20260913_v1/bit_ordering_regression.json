@@ -1,0 +1,66 @@
+{
+  "ranks": {
+    "mapping_rank01": {
+      "rank": "rank01",
+      "feasible_routes": 120,
+      "unique_indices": 120,
+      "roundtrip_passed": 120
+    },
+    "mapping_rank02": {
+      "rank": "rank02",
+      "feasible_routes": 120,
+      "unique_indices": 120,
+      "roundtrip_passed": 120
+    },
+    "mapping_rank03": {
+      "rank": "rank03",
+      "feasible_routes": 120,
+      "unique_indices": 120,
+      "roundtrip_passed": 120
+    }
+  },
+  "tests": [
+    {
+      "test_id": "mapping_rank01",
+      "requirement": "120 route/index roundtrips",
+      "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "executed": true,
+      "result": "VERIFIED",
+      "checks": [
+        {
+          "passed": true,
+          "error": null
+        }
+      ],
+      "evidence": "regression_evidence.json#mapping_rank01"
+    },
+    {
+      "test_id": "mapping_rank02",
+      "requirement": "120 route/index roundtrips",
+      "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "executed": true,
+      "result": "VERIFIED",
+      "checks": [
+        {
+          "passed": true,
+          "error": null
+        }
+      ],
+      "evidence": "regression_evidence.json#mapping_rank02"
+    },
+    {
+      "test_id": "mapping_rank03",
+      "requirement": "120 route/index roundtrips",
+      "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+      "executed": true,
+      "result": "VERIFIED",
+      "checks": [
+        {
+          "passed": true,
+          "error": null
+        }
+      ],
+      "evidence": "regression_evidence.json#mapping_rank03"
+    }
+  ]
+}

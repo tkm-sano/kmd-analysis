@@ -3,7 +3,7 @@
 
 # 研究進捗ダッシュボード
 
-**状態更新日:** 2026-09-13
+**状態更新日:** 2026-09-11
 
 ## 現在地
 
@@ -33,19 +33,19 @@ flowchart LR
 |---|---|---|
 | 道路網仕様 | **受入済み** (`accepted`) | V18 geometry/length re-acceptanceとR12-R14 Routing Baseline validationがPASS。旧v16停止記録は履歴であり現行network gateではない |
 | 正式SUMO道路網 | **受入済み** (`accepted`) | current V18 authorityでFORMAL_NETWORK_ACCEPTED=true。accepted scopeとhashはEVRP_EXECUTION_PLAN.mdを正本とする |
-| 下流実験 | **scope別** (`scope_split`) | full-EVRP比較は未準備。Reduced ProblemではR21/R22、Formal A/B1/B2、R23 n=5 rank01/rank02/rank03とEvidence Reviewが完了。runtime optimizationはvalidated、scalingはaccepted with limitations |
+| 下流実験 | **scope別** (`scope_split`) | full-EVRP比較は未準備。R23既存n5 evidenceはACCEPTED_WITH_LIMITATIONSで保持。独立code auditはCODE_AUDIT_FAIL / CODE_AUDIT_RESULT_NOT_REPRODUCED、REMEDIATION_INCOMPLETE（I03残存）。rank02/03はexecution/resource provenance制約付きで未再承認 |
 
 ## 現在の阻害事項
 
 - full-EVRP本線ではR05-R11のcustomer sampling、demand、time window、service time、depot、EV、charging station定義が未完了
 - full-EVRP R20はcapacity、time window、battery/SOC、charging、fleet、一般reachabilityを含むaccepted QUBOがなくBLOCKED
-- reduced R23はFormal A/B1/B2 evidence reviewとn=5 3-run evidence reviewを完了し、scaling completed with limitations。runtime optimization candidateは1e-12 equivalence PASS。次工程はR24 capacity design
+- reduced R23はroute recovery 3/3、optimizer reported success 2/3。rank01 success=false、cap reached。runtime benchmark PRELIMINARY_ONLY、n≥6非推奨。R24はNOT_AUTHORIZED_PENDING_R23_REMEDIATION
 - Aer結果を量子実機性能またはquantum advantageへ一般化できない
 
 ## 次の作業
 
-1. `R24_CAPACITY_EXTENSION_DESIGN`を開始する
-2. EVRP_EXECUTION_PLAN.mdに従いfull-EVRP本線の未完Definition stageを進める（R20/R21は現状維持）
+1. EVRP_EXECUTION_PLAN.mdに従いfull-EVRP本線の未完Definition stageを進める
+2. R23 I03残存6箇所の無条件PASSを修正・検証する。remediation完了後は別task R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT_POST_REMEDIATION_RERUN。独立PASS後のみphase closureとR24を検討する
 3. R23 pilotとformal baselineを分離し、R22 Hamiltonianとlambdaを変更しない
 4. full-EVRP/Hayate評価とreduced method evidenceをscope付きで統合する
 

@@ -1,0 +1,23 @@
+{
+  "request_id": "I05",
+  "original_finding": "HIGH cap decision in independent DOF, not register I05",
+  "classification": "VERIFIED_PRE_FIXED",
+  "scope_of_verification": "Declared pre-run runner source in timestamped local FileChange; execution lineage remains STRONGLY_INFERRED",
+  "maxiter": 300,
+  "objective_evaluation_cap": 300,
+  "optimizer_options": null,
+  "wall_time_seconds": null,
+  "runner_created_at": "2026-09-11T13:32:14.461Z",
+  "rank01_launch_at": "2026-09-11T13:32:20.724Z",
+  "rank02_v4_wiring_completed_at": "2026-09-13T14:16:48.954Z",
+  "rank02_start": "2026-09-13T14:17:17Z",
+  "evidence": [
+    "execution_log_evidence.json",
+    "reconstructed_sources/rank01_runner.py.txt",
+    "reconstructed_sources/rank02_rank03_runner.py.txt"
+  ],
+  "risk_before": "HIGH",
+  "risk_after": "MEDIUM",
+  "basis": "New directly dated source evidence resolves absent runner bytes; manifest still omits explicit effective options and source attestation. No observed cap extension, rank-specific override or result-dependent wall-time stopping.",
+  "not_authority": "B1/B2 cap900 cannot authorize n5 cap300. Native maxiter and project evaluation cap are distinct controls."
+}

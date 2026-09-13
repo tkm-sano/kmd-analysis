@@ -1,0 +1,97 @@
+{
+  "original_ids": [
+    "I03"
+  ],
+  "status": "PARTIAL",
+  "resolved_n5_generators": [
+    {
+      "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/build_artifact.py",
+      "original_sha256": "7d0db10bdcb6aab1fabddaa0a2d5677c84d936ea7584ada1f6262f65031e59bd",
+      "archive": "historical_generator_sources/1_build_artifact.py.txt",
+      "reason": "Unconditional validation summaries / inaccurate coverage or benchmark proxy. Historical outputs immutable; executable legacy entrypoint replaced with fail-closed retirement notice."
+    },
+    {
+      "path": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/run_equivalence.py",
+      "original_sha256": "969f09874c74121ae13d30e8a7f2f7efda569259ad6a5528687ef0d537b0c65c",
+      "archive": "historical_generator_sources/2_run_equivalence.py.txt",
+      "reason": "Unconditional validation summaries / inaccurate coverage or benchmark proxy. Historical outputs immutable; executable legacy entrypoint replaced with fail-closed retirement notice."
+    },
+    {
+      "path": "reproducibility/tools/r23_n5_scaling_evidence_review.py",
+      "original_sha256": "f1a299edc9a55047c47d0573eeacc71310afeef3a15d79645152a11aa79cc668",
+      "archive": "historical_generator_sources/3_r23_n5_scaling_evidence_review.py.txt",
+      "reason": "Unconditional validation summaries / inaccurate coverage or benchmark proxy. Historical outputs immutable; executable legacy entrypoint replaced with fail-closed retirement notice."
+    },
+    {
+      "path": "reproducibility/tools/r23_n5_runtime_optimization_code_audit.py",
+      "original_sha256": "c91fcda8b186060af182186772bf9713765fa9d5a045a8799a752594c388bf4b",
+      "archive": "historical_generator_sources/4_r23_n5_runtime_optimization_code_audit.py.txt",
+      "reason": "Unconditional validation summaries / inaccurate coverage or benchmark proxy. Historical outputs immutable; executable legacy entrypoint replaced with fail-closed retirement notice."
+    }
+  ],
+  "replacement": "reproducibility/tools/r23_n5_remediation_regression.py calls actual before/after helpers with independent references",
+  "gate": "05_src/traffic_simulation/validation/r23_validation_gate.py; exact nonempty required set, executed checks and evidence mandatory",
+  "executed_gate": {
+    "result": "VERIFIED",
+    "passed": true,
+    "missing_ids": [],
+    "required_count": 16,
+    "executed_count": 16
+  },
+  "remaining_unconditional_locations": [
+    {
+      "path": "tools/authorize_r23_experiment_b2.py",
+      "lines": [
+        138,
+        143,
+        144
+      ],
+      "issue": "targeted_tests_pass/py_compile and six passing tests declared without invocation"
+    },
+    {
+      "path": "tools/review_r23_experiment_b2_nelder_mead.py",
+      "lines": [
+        129,
+        140
+      ],
+      "issue": "implementation and technical preflight PASS assigned without validating all listed conditions"
+    },
+    {
+      "path": "tools/build_r23_experiment_b2_reexecution_authority.py",
+      "lines": [
+        34,
+        36
+      ],
+      "issue": "constant pytest/smoke validation results in authority generator"
+    },
+    {
+      "path": "tools/finalize_r23_b1_v2.py",
+      "lines": [
+        124
+      ],
+      "issue": "aggregate PASS is not conditioned on computed integrity booleans"
+    },
+    {
+      "path": "tools/finalize_r23_experiment_b2_reexecution.py",
+      "lines": [
+        31,
+        37
+      ],
+      "issue": "aggregate PASS independent of prob_pass/params_pass/exact_pass"
+    },
+    {
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/artifact.py",
+      "lines": [
+        76,
+        84
+      ],
+      "issue": "lineage PASS manufactured from file existence/hash collection, not comparison to authority"
+    }
+  ],
+  "residual": "n5 finding target repaired, but requested repository-wide unconditional PASS removal is incomplete; retain MAJOR I03 rather than equating passing local tests with complete closure",
+  "evidence": [
+    "validation_test_manifest.json",
+    "validation_pass_search.json",
+    "regression_evidence.json#gate_mutations"
+  ]
+}

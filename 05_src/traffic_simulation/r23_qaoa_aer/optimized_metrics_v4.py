@@ -1,10 +1,12 @@
 """Validated R23 post-processing candidate: indexed amplitudes, no probability dict."""
 from __future__ import annotations
 import itertools
+import math
 from collections.abc import Collection, Sequence
 from typing import Any
 import numpy as np
 from traffic_simulation.r20_route_ordering.core import encode_route, route_travel_time
+from .schema import PROBABILITY_RANGE_TOLERANCE, PROBABILITY_SUM_TOLERANCE
 
 class V4InputError(ValueError):
     """Raised when the indexed V4 helper receives an invalid contract input."""
@@ -32,8 +34,8 @@ def _validate_contract_inputs(statevector: Any, customer_ids: Sequence[Any],
         raise V4InputError("statevector must be a one-dimensional numeric array") from exc
     if amplitudes.ndim != 1:
         raise V4InputError("statevector must be one-dimensional")
-    if amplitudes.dtype.kind not in "fc":
-        raise V4InputError("statevector dtype must be a supported real or complex floating type")
+    if amplitudes.dtype not in (np.dtype(np.float64), np.dtype(np.complex128)):
+        raise V4InputError("statevector dtype must be float64 or complex128; no implicit precision conversion")
     expected_dimension = 2 ** (n * n)
     if amplitudes.size != expected_dimension:
         raise V4InputError(f"statevector length must be {expected_dimension} for n={n}")
@@ -74,13 +76,27 @@ def indexed_probability_metrics(statevector, customer_ids, exact_optimal_bitstri
     """Return raw-denominator metrics using only feasible basis indices."""
     amplitudes = _validate_contract_inputs(statevector, customer_ids, exact_optimal_bitstrings, n)
     indices = np.asarray(feasible_basis_indices(customer_ids, n), dtype=np.int64)
-    probabilities = np.abs(amplitudes[indices]) ** 2
     optimal_bits = {tuple(bits) for bits in exact_optimal_bitstrings}
     optimal = np.asarray([i for i in indices if tuple((int(i) >> q) & 1 for q in range(n*n)) in optimal_bits], dtype=np.int64)
-    total = float(np.vdot(amplitudes, amplitudes).real)
-    feasible = float(probabilities.sum(dtype=np.float64))
-    optimal_mass = float(np.abs(amplitudes[optimal]) @ np.abs(amplitudes[optimal]))
+    try:
+        with np.errstate(over="raise", invalid="raise", divide="raise"):
+            total = float(np.vdot(amplitudes, amplitudes).real)
+            if not math.isfinite(total) or abs(total - 1.0) > PROBABILITY_SUM_TOLERANCE:
+                raise V4InputError("raw probability norm violates the absolute 1e-12 unit-sum contract")
+            probabilities = np.abs(amplitudes[indices]) ** 2
+            feasible = float(probabilities.sum(dtype=np.float64))
+            optimal_mass = float(np.abs(amplitudes[optimal]) @ np.abs(amplitudes[optimal]))
+    except FloatingPointError as exc:
+        raise V4InputError("non-finite probability computation") from exc
+    invalid_mass = total - feasible
+    # Retain the original tolerance and raw values, including harmless roundoff.
+    # Never normalize, clip, replace non-finite values, or repair invalid mass.
+    for value in (total, feasible, optimal_mass, invalid_mass, *probabilities):
+        if not math.isfinite(value) or not -PROBABILITY_RANGE_TOLERANCE <= value <= 1.0 + PROBABILITY_RANGE_TOLERANCE:
+            raise V4InputError("probability violates the finite/range contract")
+    if optimal_mass > feasible + PROBABILITY_RANGE_TOLERANCE:
+        raise V4InputError("optimal probability exceeds feasible probability")
     return {"probability_total": total, "P_feasible_exact": feasible, "P_opt": optimal_mass,
-            "invalid_probability_mass": total-feasible, "feasible_indices": indices.tolist(),
+            "invalid_probability_mass": invalid_mass, "feasible_indices": indices.tolist(),
             "optimal_indices": optimal.tolist(), "renormalized": False,
             "denominator": "raw_full_state_probability_mass"}

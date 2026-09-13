@@ -1,0 +1,21 @@
+{
+  "original_ids": [
+    "I01",
+    "I07"
+  ],
+  "status": "RESOLVED",
+  "source": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+  "contract": "finite float64/complex128, finite derived masses, abs(sum(abs(psi)**2)-1)<=1e-12, original probability range tolerance",
+  "prohibited_repairs": [
+    "renormalization",
+    "NaN replacement",
+    "clipping",
+    "warning-only continuation"
+  ],
+  "evidence": [
+    "invalid_input_regression.json",
+    "valid_domain_regression.json",
+    "multiple_optimum_regression.json"
+  ],
+  "valid_domain_limit": "fixed initial points and basis fixtures; not a rerun of historical optimizer trajectories"
+}

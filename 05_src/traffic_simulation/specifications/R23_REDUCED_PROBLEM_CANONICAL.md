@@ -52,4 +52,8 @@ permutation enumerationでexact referenceを作成し、best decoded feasible ro
 
 ## Next
 
-更新後の状態: n=5 rank01/rank02/rank03とEvidence Reviewを完了し、`R23_REDUCED_PROBLEM_SCALING_COMPLETED_WITH_LIMITATIONS`と判定する。rank01はoriginal、rank02/rank03はvalidated-equivalent V4である。n≥6はraw exact statevector scaling（36 logical qubits、約1 TiB）を理由に本methodologyでは実行しない。次工程は`R24_CAPACITY_EXTENSION_DESIGN`。
+更新後の状態: n=5の既存scientific recordsは`R23_N5_SCALING_EVIDENCE_ACCEPTED_WITH_LIMITATIONS`として保持する。route recovery=3/3、relative gap=0（3/3）に対しoptimizer reported success=2/3。rank01はsuccess=false、300 evaluation cap reached。rank02/03はexecution lineage/resource provenance制約付きで未再承認である。独立auditは`CODE_AUDIT_FAIL`、`CODE_AUDIT_RESULT_NOT_REPRODUCED`。現在REMEDIATION_INCOMPLETE（I03のrepository-wide無条件PASS除去が未完了）。修正後は別taskの独立再監査を行い、この修正ではCODE_AUDIT_PASSを宣言しない。R24は`NOT_AUTHORIZED_PENDING_R23_REMEDIATION`。
+
+n=5だけのλ authorityはλ=4.0、strict sufficient condition λ>(5+1)/2=3。λ−bound=1、2λ−(n+1)=2が正しいmarginである。旧authorityの0.5/1.0表記はerratumで訂正し、元artifactとλは変更しない。n=2,3,4のλ=3.0を変更しない。
+
+n=5は全rankでP_feasible<1%、P_optimal約5.45e-5〜6.64e-5。rank01は42.62h、absolute peak RSS 201.58GiB。runtime benchmarkはPRELIMINARY_ONLY、異なるRSS metricsからmemory reduction factorを算出しない。n≥6は36 logical qubits・raw約1TiBで現methodology非推奨。[remediation contract](R23_RUNTIME_REMEDIATION_CONTRACT.md)を参照する。

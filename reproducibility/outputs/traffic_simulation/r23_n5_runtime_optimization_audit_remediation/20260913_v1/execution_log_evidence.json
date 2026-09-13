@@ -1,0 +1,1214 @@
+{
+  "collection_timestamp": "2026-09-13T17:48:06.696880+00:00",
+  "log_files": [
+    {
+      "path": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "sha256": "9f7b80e6e6420a98552d534d71d3bc833cf7f87729af59ec8c4c47e131cc4bf9"
+    },
+    {
+      "path": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "sha256": "b1a09adec72ad3bfc0ba82cc9c1505a9264186a571cd90e551b62f6a456ea07f"
+    }
+  ],
+  "source_events": [
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 474,
+      "timestamp": "2026-09-11T13:32:14.461Z",
+      "path": "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py",
+      "change": {
+        "type": "add",
+        "content": "\"\"\"Execute exactly one authorized R23 n=5 scaling condition.\n\nThis is the scientific execution tool for the frozen three-condition scope.\nIt performs no retries, no alternative configurations, and writes a compact\nscientific record without serializing the full 2^25-state probability table.\n\"\"\"\nfrom __future__ import annotations\n\nimport csv\nimport hashlib\nimport json\nimport os\nimport resource\nimport subprocess\nimport sys\nimport time\nfrom pathlib import Path\n\nfrom traffic_simulation.r20_route_ordering.core import (\n    build_expanded_qubo, encode_route, enumerate_routes, normalize_travel_time_matrix,\n)\nfrom traffic_simulation.r22_ising_conversion.converter import convert_qubo_to_ising, evaluate_ising\nfrom traffic_simulation.r22_ising_conversion.schema import coefficient_hash, ising_coefficient_hash\nfrom traffic_simulation.r23_qaoa_aer.qaoa import run_single\nfrom traffic_simulation.r23_qaoa_aer.schema import R23Config, R23Input\n\nROOT = Path(__file__).resolve().parents[3]\nOUT = ROOT / \"reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1\"\nROUTING = ROOT / \"reproducibility/outputs/traffic_simulation/demand/evrp_r13_routing/20260909_r13_routing_fixture_n10_v18_geometry_reaccepted/routing_arcs.csv\"\nAUTH = ROOT / \"reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v2\"\nDEPOT = \"DEP_006\"\nINSTANCES = {\n    \"routing_v18_n5_rank01\": [\"2026-01-01-13111-bldg-117556\", \"2026-01-01-13111-bldg-130096\", \"2026-01-01-13111-bldg-138702\", \"2026-01-01-13111-bldg-2510665\", \"2026-01-01-13111-bldg-79791\"],\n    \"routing_v18_n5_rank02\": [\"2026-01-01-13111-bldg-130096\", \"2026-01-01-13111-bldg-2510665\", \"2026-01-01-13111-bldg-29995\", \"2026-01-01-13111-bldg-37628\", \"2026-01-01-13111-bldg-55213\"],\n    \"routing_v18_n5_rank03\": [\"2026-01-01-13111-bldg-117556\", \"2026-01-01-13111-bldg-130096\", \"2026-01-01-13111-bldg-145438\", \"2026-01-01-13111-bldg-2510665\", \"2026-01-01-13111-bldg-37628\"],\n}\n\ndef canonical(v):\n    return json.dumps(v, ensure_ascii=False, sort_keys=True, separators=(\",\", \":\"), allow_nan=False).encode()\n\ndef sha(path):\n    return hashlib.sha256(Path(path).read_bytes()).hexdigest()\n\ndef meminfo():\n    vals = {}\n    for line in Path(\"/proc/meminfo\").read_text().splitlines():\n        k, value, *_ = line.split()\n        if k in {\"MemAvailable:\", \"MemTotal:\", \"SwapFree:\", \"SwapTotal:\"}:\n            vals[k[:-1]] = int(value) * 1024\n    return vals\n\ndef disk_info():\n    st = os.statvfs(ROOT)\n    return {\"available_bytes\": st.f_bavail * st.f_frsize, \"total_bytes\": st.f_blocks * st.f_frsize}\n\ndef git_head():\n    return subprocess.run([\"git\", \"rev-parse\", \"HEAD\"], cwd=ROOT, check=True, capture_output=True, text=True).stdout.strip()\n\ndef load_matrix(customers):\n    nodes = [DEPOT, *customers]\n    rows = list(csv.DictReader(ROUTING.open(encoding=\"utf-8\")))\n    pairs = {(r[\"origin_id\"], r[\"destination_id\"]): float(r[\"travel_time_s\"]) for r in rows if r[\"origin_id\"] != r[\"destination_id\"]}\n    missing = [(a, b) for a in nodes for b in nodes if a != b and (a, b) not in pairs]\n    if missing:\n        raise RuntimeError(f\"complete reachability failure: {missing[:3]}\")\n    return {a: {b: (0.0 if a == b else pairs[(a, b)]) for b in nodes} for a in nodes}\n\ndef make_input(instance_id, customers):\n    raw = load_matrix(customers)\n    normalized, tau = normalize_travel_time_matrix(DEPOT, customers, raw)\n    exact = enumerate_routes(DEPOT, customers, raw)\n    if exact[\"evaluated_permutations\"] != 120 or len(exact[\"optimal_routes\"]) != 1:\n        raise RuntimeError(\"exact-reference authority check failed\")\n    qubo = build_expanded_qubo(DEPOT, customers, normalized, 4.0)\n    ising = convert_qubo_to_ising(qubo)\n    optimal_bits = frozenset(tuple(encode_route(route[1:-1], customers)) for route in exact[\"optimal_routes\"])\n    optimal_spins = frozenset(tuple(1 if bit == 0 else -1 for bit in bits) for bits in optimal_bits)\n    exact_energy = evaluate_ising(next(iter(optimal_spins)), ising)\n    payload = {\"ising_global_minimum_energy\": exact_energy, \"authority_exact_routes\": exact[\"optimal_routes\"], \"tau_max\": tau}\n    return R23Input(instance_id=instance_id, n=5, customer_ids=tuple(customers), depot_id=DEPOT,\n                    ising_constant=ising.constant, ising_linear=ising.linear, ising_quadratic=ising.quadratic,\n                    ising_coefficient_hash=ising_coefficient_hash(ising), qubo_coefficient_hash=coefficient_hash(qubo),\n                    lambda_value=4.0, bound=3.0, exact_optimal_bitstrings=optimal_bits,\n                    exact_optimal_spin_states=optimal_spins, exact_optimal_routes=frozenset(tuple(r) for r in exact[\"optimal_routes\"]),\n                    normalized_matrix=normalized, payload=payload)\n\ndef compact_result(result, input_data, before, after, started_at, ended_at):\n    metrics = result.get(\"probability_metrics\", {})\n    best = metrics.get(\"best_feasible_state\") or {}\n    best_record = best.get(\"record\") or {}\n    best_route = best_record.get(\"route\")\n    exact_routes = [list(r) for r in input_data.exact_optimal_routes]\n    exact_route_found = best_route is not None and list((input_data.depot_id, *best_route, input_data.depot_id)) in exact_routes\n    timings = result.get(\"timing\", {})\n    return {\n        \"schema_version\": \"r23-n5-scientific-result-v1\", \"run_id\": result[\"instance_id\"] + \"_p1_init_fixed01_rep1_optimizer_cobyla\",\n        \"instance_id\": result[\"instance_id\"], \"customers\": list(input_data.customer_ids), \"depot\": input_data.depot_id,\n        \"n\": 5, \"logical_qubits\": 25, \"state_dimension\": 33554432, \"p\": 1, \"lambda\": 4.0,\n        \"optimizer\": \"COBYLA\", \"initialization\": \"fixed_0.1\", \"initial_parameters\": result[\"initial_parameters\"],\n        \"backend\": result[\"backend\"], \"shots\": \"NONE\", \"repetition\": 1,\n        \"run_classification\": result[\"run_classification\"], \"best_decoded_feasible_route\": [input_data.depot_id, *best_route, input_data.depot_id] if best_route else None,\n        \"exact_optimal_routes\": exact_routes, \"exact_optimum_found\": exact_route_found,\n        \"absolute_gap\": 0.0 if exact_route_found else None, \"relative_gap\": 0.0 if exact_route_found else None,\n        \"P_feasible\": metrics.get(\"P_feasible_exact\"), \"P_optimal\": metrics.get(\"P_opt\"),\n        \"probability_total\": metrics.get(\"probability_total\"), \"invalid_probability_mass\": metrics.get(\"invalid_probability_mass\"),\n        \"probability_integrity\": {\"total\": metrics.get(\"probability_total\"), \"invalid_mass\": metrics.get(\"invalid_probability_mass\"), \"renormalized\": False},\n        \"nfev\": result.get(\"nfev\"), \"termination\": result.get(\"termination\"), \"termination_status\": result.get(\"termination_status\"),\n        \"T_total\": timings.get(\"T_total\"), \"T_Aer\": timings.get(\"T_Aer_total\"), \"T_transpile\": timings.get(\"T_transpile_total\"),\n        \"T_total_per_nfev\": (timings.get(\"T_total\") / result[\"nfev\"]) if result.get(\"nfev\") else None,\n        \"T_Aer_per_nfev\": (timings.get(\"T_Aer_total\") / result[\"nfev\"]) if result.get(\"nfev\") else None,\n        \"resource\": {\"before\": before, \"after\": after, \"peak_rss_kib\": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,\n                      \"peak_rss_gib\": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1048576, \"swap_used_before\": before[\"SwapTotal\"]-before[\"SwapFree\"], \"swap_used_after\": after[\"SwapTotal\"]-after[\"SwapFree\"], \"disk_after\": disk_info(), \"process_exit_status\": 0},\n        \"execution_semantics\": \"exact CPU Aer statevector; probabilities use raw full-state denominator; compact record omits raw 2^25 probability table.\",\n        \"started_at\": started_at, \"ended_at\": ended_at, \"source_commit\": git_head(),\n    }\n\ndef main():\n    if len(sys.argv) != 2 or sys.argv[1] not in INSTANCES:\n        raise SystemExit(\"usage: run_n5_scaling.py routing_v18_n5_rank0X\")\n    instance_id = sys.argv[1]; customers = INSTANCES[instance_id]\n    OUT.mkdir(parents=True, exist_ok=True); run_dir = OUT / \"runs\" / instance_id; run_dir.mkdir(parents=True, exist_ok=True)\n    progress_path = OUT / \"progress.json\"\n    progress = json.loads(progress_path.read_text()) if progress_path.exists() else {\"planned\": 3, \"started\": [], \"terminal\": [], \"scientific_failures\": [], \"run_ids\": []}\n    if instance_id not in progress[\"started\"]: progress[\"started\"].append(instance_id)\n    progress[\"last_event\"] = {\"instance_id\": instance_id, \"status\": \"STARTED\", \"timestamp\": time.time()}\n    progress_path.write_text(json.dumps(progress, indent=2) + \"\\n\")\n    before = meminfo(); started = time.time(); started_iso = time.strftime(\"%Y-%m-%dT%H:%M:%SZ\", time.gmtime(started))\n    try:\n        inp = make_input(instance_id, customers)\n        cfg = R23Config(p=1, optimizer=\"COBYLA\", maxiter=300, max_evaluations=300, initial_parameter=0.1,\n                        initialization_id=\"fixed_0.1\", seed=17, repetition=1, expectation_mode=\"exact_statevector\",\n                        backend_method=\"statevector\", device=\"CPU\", optimization_level=1, max_logical_qubits=25,\n                        max_p=1, wall_time_seconds=None, memory_limit_gib=8.0, probability_threshold=1e-12)\n        result = run_single(inp, cfg)\n        after = meminfo(); ended = time.time(); ended_iso = time.strftime(\"%Y-%m-%dT%H:%M:%SZ\", time.gmtime(ended))\n        compact = compact_result(result, inp, before, after, started_iso, ended_iso)\n        (run_dir / \"scientific_result.json\").write_text(json.dumps(compact, indent=2, ensure_ascii=False) + \"\\n\")\n        (run_dir / \"resource_record.json\").write_text(json.dumps(compact[\"resource\"], indent=2, ensure_ascii=False) + \"\\n\")\n        terminal = {\"run_id\": compact[\"run_id\"], \"instance_id\": instance_id, \"status\": compact[\"run_classification\"], \"termination_status\": compact[\"termination_status\"], \"failure_reasons\": result.get(\"failure_reasons\", []), \"process_exit_status\": 0, \"execution_performed\": True}\n        (run_dir / \"terminal_record.json\").write_text(json.dumps(terminal, indent=2, ensure_ascii=False) + \"\\n\")\n        progress[\"terminal\"].append(instance_id); progress[\"run_ids\"].append(compact[\"run_id\"])\n        if compact[\"run_classification\"] in {\"BACKEND_FAILURE\", \"OPTIMIZER_FAILURE\", \"RESOURCE_GUARD_STOP\"}:\n            progress[\"scientific_failures\"].append(instance_id)\n        progress[\"last_event\"] = {\"instance_id\": instance_id, \"status\": compact[\"run_classification\"], \"timestamp\": time.time()}\n        progress_path.write_text(json.dumps(progress, indent=2) + \"\\n\")\n        print(json.dumps({\"instance_id\": instance_id, \"status\": compact[\"run_classification\"], \"P_feasible\": compact[\"P_feasible\"], \"P_optimal\": compact[\"P_optimal\"], \"nfev\": compact[\"nfev\"], \"T_total\": compact[\"T_total\"]}, ensure_ascii=False))\n    except Exception as exc:\n        after = meminfo(); terminal = {\"instance_id\": instance_id, \"status\": \"SCIENTIFIC_EXECUTION_FAILURE\", \"failure_type\": type(exc).__name__, \"message\": repr(exc), \"process_exit_status\": 1, \"execution_performed\": True, \"before\": before, \"after\": after, \"peak_rss_kib\": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}\n        (run_dir / \"terminal_record.json\").write_text(json.dumps(terminal, indent=2, ensure_ascii=False) + \"\\n\")\n        progress[\"terminal\"].append(instance_id); progress[\"scientific_failures\"].append(instance_id); progress[\"last_event\"] = {\"instance_id\": instance_id, \"status\": \"SCIENTIFIC_EXECUTION_FAILURE\", \"timestamp\": time.time()}; progress_path.write_text(json.dumps(progress, indent=2) + \"\\n\")\n        raise\n\nif __name__ == \"__main__\":\n    main()\n"
+      }
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 67,
+      "timestamp": "2026-09-13T14:16:09.295Z",
+      "path": "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py",
+      "change": {
+        "type": "update",
+        "unified_diff": "@@ -114,2 +114,6 @@\n         \"started_at\": started_at, \"ended_at\": ended_at, \"source_commit\": git_head(),\n+        \"implementation_provenance\": {\"authority_name\": \"R23_EXPERIMENT_B_IMPLEMENTATION_SOURCE_SET_V4\",\n+                                      \"source_file\": \"05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py\",\n+                                      \"source_sha256\": sha(ROOT / \"05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py\"),\n+                                      \"execution_mode\": \"qaoa.run_single(implementation='v4')\"},\n     }\n@@ -133,3 +137,3 @@\n                         max_p=1, wall_time_seconds=None, memory_limit_gib=8.0, probability_threshold=1e-12)\n-        result = run_single(inp, cfg)\n+        result = run_single(inp, cfg, implementation=\"v4\")\n         after = meminfo(); ended = time.time(); ended_iso = time.strftime(\"%Y-%m-%dT%H:%M:%SZ\", time.gmtime(ended))\n",
+        "move_path": null
+      }
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 67,
+      "timestamp": "2026-09-13T14:16:09.295Z",
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+      "change": {
+        "type": "update",
+        "unified_diff": "@@ -6,3 +6,3 @@\n import numpy as np\n-from traffic_simulation.r20_route_ordering.core import encode_route, route_travel_time\n+from traffic_simulation.r20_route_ordering.core import encode_route, route_travel_time, validate_bitstring, ValidationStatus\n \n@@ -21,5 +21,23 @@\n     optimal_mass = float(np.abs(amplitudes[optimal]) @ np.abs(amplitudes[optimal]))\n+    if not math.isclose(total, 1.0, rel_tol=0.0, abs_tol=1e-12):\n+        raise ValueError(f\"V4 probability norm failure: {total}\")\n+    feasible_records = []\n+    for index, probability in zip(indices.tolist(), probabilities.tolist()):\n+        if probability < 1e-12:\n+            continue\n+        bits = tuple((int(index) >> q) & 1 for q in range(n * n))\n+        validation = validate_bitstring(bits, n, customer_ids)\n+        if validation.status == ValidationStatus.VALID:\n+            feasible_records.append({\"qiskit_label\": format(index, f\"0{n*n}b\"), \"bitstring\": list(bits),\n+                                     \"probability\": float(probability), \"valid\": True,\n+                                     \"status\": validation.status.value, \"route\": list(validation.route)})\n+    best_feasible = None\n+    for record in feasible_records:\n+        cost = route_travel_time(depot_id, record[\"route\"], normalized_matrix) if normalized_matrix and depot_id else 0.0\n+        candidate = {\"record\": record, \"normalized_route_objective\": cost}\n+        if best_feasible is None or cost < best_feasible[\"normalized_route_objective\"]:\n+            best_feasible = candidate\n     return {\"probability_total\": total, \"P_feasible_exact\": feasible, \"P_opt\": optimal_mass,\n             \"invalid_probability_mass\": total-feasible, \"feasible_indices\": indices.tolist(),\n-            \"optimal_indices\": optimal.tolist(), \"renormalized\": False,\n+            \"optimal_indices\": optimal.tolist(), \"renormalized\": False, \"best_feasible_state\": best_feasible,\n             \"denominator\": \"raw_full_state_probability_mass\"}\n",
+        "move_path": null
+      }
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 67,
+      "timestamp": "2026-09-13T14:16:09.295Z",
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+      "change": {
+        "type": "update",
+        "unified_diff": "@@ -15,2 +15,3 @@\n from .metrics import energy_statistics, probability_metrics\n+from .optimized_metrics_v4 import indexed_probability_metrics\n from .optimizers import ObjectiveEvaluationCapReached, minimize_objective, optimizer_method\n@@ -99,3 +100,3 @@\n \n-def _statevector_and_expectation(input_data: R23Input, gamma, beta, *, seed: int, optimization_level: int) -> tuple[float, dict[str, float], dict[str, float], dict[str, float]]:\n+def _statevector_and_expectation(input_data: R23Input, gamma, beta, *, seed: int, optimization_level: int, optimized: bool = False) -> tuple[float, Any, dict[str, float], dict[str, float]]:\n     started = time.perf_counter()\n@@ -117,3 +118,3 @@\n     expectation_seconds = time.perf_counter() - expectation_started\n-    probabilities = {str(label): float(value) for label, value in state.probabilities_dict().items()}\n+    probabilities = state if optimized else {str(label): float(value) for label, value in state.probabilities_dict().items()}\n     return expectation, probabilities, {\"untranspiled_depth\": circuit.depth(), \"transpiled_depth\": transpiled.depth(), \"gate_count\": sum(transpiled.count_ops().values()), \"two_qubit_gate_count\": sum(v for k, v in transpiled.count_ops().items() if k in {\"cx\", \"ecr\", \"cz\"}), \"parameter_count\": 2 * len(gamma), \"logical_qubits\": input_data.n_logical, \"transpiler\": transpiler_metadata(optimization_level=optimization_level, seed_transpiler=seed)}, {\"circuit_construction_seconds\": circuit_seconds, \"transpilation_seconds\": transpile_seconds, \"aer_execution_seconds\": execution_seconds, \"expectation_seconds\": expectation_seconds, \"evaluation_total_seconds\": time.perf_counter() - started}\n@@ -121,3 +122,6 @@\n \n-def run_single(input_data: R23Input, config: R23Config) -> dict[str, Any]:\n+def run_single(input_data: R23Input, config: R23Config, *, implementation: str = \"original\") -> dict[str, Any]:\n+    if implementation not in {\"original\", \"v4\"}:\n+        raise ValueError(\"unknown implementation\")\n+    optimized = implementation == \"v4\"\n     config.validate(input_data.n_logical)\n@@ -143,3 +147,3 @@\n         gamma, beta = repository_parameters(values, config.p)\n-        value, _, _, evaluation_timing = _statevector_and_expectation(input_data, gamma, beta, seed=config.seed, optimization_level=config.optimization_level)\n+        value, _, _, evaluation_timing = _statevector_and_expectation(input_data, gamma, beta, seed=config.seed, optimization_level=config.optimization_level, optimized=optimized)\n         duration = time.perf_counter() - t; objective_eval_total += duration\n@@ -200,6 +204,11 @@\n     try:\n-        final_expectation, probabilities, circuit_metrics, final_timing = _statevector_and_expectation(input_data, gamma, beta, seed=config.seed, optimization_level=config.optimization_level)\n+        final_expectation, probabilities, circuit_metrics, final_timing = _statevector_and_expectation(input_data, gamma, beta, seed=config.seed, optimization_level=config.optimization_level, optimized=optimized)\n         decode_started = time.perf_counter()\n-        metrics = probability_metrics(probabilities, input_data, threshold=config.probability_threshold)\n-        energy_stats = energy_statistics(probabilities, input_data)\n+        if optimized:\n+            metrics = indexed_probability_metrics(probabilities, input_data.customer_ids, input_data.exact_optimal_bitstrings,\n+                                                  input_data.n, normalized_matrix=input_data.normalized_matrix, depot_id=input_data.depot_id)\n+            energy_stats = {}\n+        else:\n+            metrics = probability_metrics(probabilities, input_data, threshold=config.probability_threshold)\n+            energy_stats = energy_statistics(probabilities, input_data)\n         decode_seconds = time.perf_counter() - decode_started\n",
+        "move_path": null
+      }
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 83,
+      "timestamp": "2026-09-13T14:16:35.368Z",
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+      "change": {
+        "type": "update",
+        "unified_diff": "@@ -6,3 +6,3 @@\n import numpy as np\n-from traffic_simulation.r20_route_ordering.core import encode_route, route_travel_time, validate_bitstring, ValidationStatus\n+from traffic_simulation.r20_route_ordering.core import encode_route, route_travel_time\n \n@@ -21,23 +21,5 @@\n     optimal_mass = float(np.abs(amplitudes[optimal]) @ np.abs(amplitudes[optimal]))\n-    if not math.isclose(total, 1.0, rel_tol=0.0, abs_tol=1e-12):\n-        raise ValueError(f\"V4 probability norm failure: {total}\")\n-    feasible_records = []\n-    for index, probability in zip(indices.tolist(), probabilities.tolist()):\n-        if probability < 1e-12:\n-            continue\n-        bits = tuple((int(index) >> q) & 1 for q in range(n * n))\n-        validation = validate_bitstring(bits, n, customer_ids)\n-        if validation.status == ValidationStatus.VALID:\n-            feasible_records.append({\"qiskit_label\": format(index, f\"0{n*n}b\"), \"bitstring\": list(bits),\n-                                     \"probability\": float(probability), \"valid\": True,\n-                                     \"status\": validation.status.value, \"route\": list(validation.route)})\n-    best_feasible = None\n-    for record in feasible_records:\n-        cost = route_travel_time(depot_id, record[\"route\"], normalized_matrix) if normalized_matrix and depot_id else 0.0\n-        candidate = {\"record\": record, \"normalized_route_objective\": cost}\n-        if best_feasible is None or cost < best_feasible[\"normalized_route_objective\"]:\n-            best_feasible = candidate\n     return {\"probability_total\": total, \"P_feasible_exact\": feasible, \"P_opt\": optimal_mass,\n             \"invalid_probability_mass\": total-feasible, \"feasible_indices\": indices.tolist(),\n-            \"optimal_indices\": optimal.tolist(), \"renormalized\": False, \"best_feasible_state\": best_feasible,\n+            \"optimal_indices\": optimal.tolist(), \"renormalized\": False,\n             \"denominator\": \"raw_full_state_probability_mass\"}\n",
+        "move_path": null
+      }
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 90,
+      "timestamp": "2026-09-13T14:16:45.893Z",
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+      "change": {
+        "type": "update",
+        "unified_diff": "@@ -12,2 +12,3 @@\n \n+from traffic_simulation.r20_route_ordering.core import ValidationStatus, route_travel_time, validate_bitstring\n from .hamiltonian import build_cost_operator, build_qaoa_circuit, repository_parameters\n@@ -26,2 +27,28 @@\n \n+def _v4_reporting_metrics(state, input_data: R23Input, threshold: float) -> dict[str, Any]:\n+    \"\"\"V4 final reporting adapter: only indexed feasible amplitudes are inspected.\"\"\"\n+    indexed = indexed_probability_metrics(state, input_data.customer_ids, input_data.exact_optimal_bitstrings,\n+                                          input_data.n, normalized_matrix=input_data.normalized_matrix,\n+                                          depot_id=input_data.depot_id)\n+    amplitudes = state.data if hasattr(state, \"data\") else state\n+    candidates = []\n+    for index in indexed[\"feasible_indices\"]:\n+        probability = float(abs(amplitudes[index]) ** 2)\n+        if probability < threshold:\n+            continue\n+        bits = tuple((int(index) >> q) & 1 for q in range(input_data.n * input_data.n))\n+        validation = validate_bitstring(bits, input_data.n, input_data.customer_ids)\n+        if validation.status == ValidationStatus.VALID:\n+            candidates.append({\"qiskit_label\": format(index, f\"0{input_data.n * input_data.n}b\"),\n+                               \"bitstring\": list(bits), \"probability\": probability, \"valid\": True,\n+                               \"status\": validation.status.value, \"route\": list(validation.route)})\n+    best = None\n+    for record in candidates:\n+        candidate = {\"record\": record, \"normalized_route_objective\": route_travel_time(input_data.depot_id, record[\"route\"], input_data.normalized_matrix)}\n+        if best is None or candidate[\"normalized_route_objective\"] < best[\"normalized_route_objective\"]:\n+            best = candidate\n+    indexed[\"best_feasible_state\"] = best\n+    return indexed\n+\n+\n def transpiler_metadata(*, optimization_level: int, seed_transpiler: int) -> dict[str, Any]:\n",
+        "move_path": null
+      }
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 97,
+      "timestamp": "2026-09-13T14:16:48.954Z",
+      "path": "05_src/traffic_simulation/r23_qaoa_aer/qaoa.py",
+      "change": {
+        "type": "update",
+        "unified_diff": "@@ -234,4 +234,3 @@\n         if optimized:\n-            metrics = indexed_probability_metrics(probabilities, input_data.customer_ids, input_data.exact_optimal_bitstrings,\n-                                                  input_data.n, normalized_matrix=input_data.normalized_matrix, depot_id=input_data.depot_id)\n+            metrics = _v4_reporting_metrics(probabilities, input_data, config.probability_threshold)\n             energy_stats = {}\n",
+        "move_path": null
+      }
+    }
+  ],
+  "process_and_launch_evidence": [
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 304,
+      "timestamp": "2026-09-11T13:22:51.663Z",
+      "command": "/bin/bash -lc set -e\nFP=/home/takuma/.conda/envs/evrp-quantum-temp/bin/python\n/usr/bin/time -v $FP - <<'PY'\nimport gc, resource, time\nimport numpy as np\nn=25; dim=2**n\nbefore=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss\nt=time.perf_counter()\na=np.zeros(dim,dtype=np.complex128)\na.real[:] = 1.0\nalloc_time=time.perf_counter()-t\npeak=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss\nprint({'probe':'RAW_STATEVECTOR_ALLOCATION_PROBE','n':n,'dimension':dim,'nbytes':a.nbytes,'allocation_seconds':alloc_time,'ru_maxrss_kib':peak,'ru_maxrss_delta_kib':peak-before,'checksum':float(a.real.sum())})\ndel a; gc.collect()\nPY\n/usr/bin/time -v $FP - <<'PY'\nimport gc, resource, time\nfrom qiskit import QuantumCircuit\nfrom qiskit_aer import AerSimulator\nn=25\nqc=QuantumCircuit(n)\nfor q in range(n): qc.h(q)\nqc.save_statevector()\nbefore=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss\nt=time.perf_counter()\nbackend=AerSimulator(method='statevector',device='CPU',enable_truncation=False,precision='double',max_parallel_threads=1)\nresult=backend.run(qc).result()\nelapsed=time.perf_counter()-t\npeak=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss\nsv=result.data(0)['statevector']\nprint({'probe':'MINIMAL_AER_25Q_STATEVECTOR_PROBE','n':n,'dimension':2**n,'elapsed_seconds':elapsed,'ru_maxrss_kib':peak,'ru_maxrss_delta_kib':peak-before,'statevector_length':len(sv),'statevector_dtype':str(getattr(sv,'dtype','unknown')),'backend':backend.name,'scientific_qaoa':False,'optimizer':False,'qubo':False,'objective':False})\ndel sv,result,backend,qc; gc.collect()\nPY",
+      "stdout_scoped": [
+        "\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:00.15",
+        "\tMaximum resident set size (kbytes): 546364",
+        "\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:03.13",
+        "\tMaximum resident set size (kbytes): 599040"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 480,
+      "timestamp": "2026-09-11T13:32:20.724Z",
+      "launch_tool_input": "const r = await tools.exec_command({cmd:\"set -o pipefail\\nFP=/home/takuma/.conda/envs/evrp-quantum-temp/bin/python\\nPYTHONPATH=05_src /usr/bin/time -v \\\"$FP\\\" 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01\",\"workdir\":\"/home/takuma/kmd-analysis\",\"yield_time_ms\":1000,\"max_output_tokens\":4000}); text(JSON.stringify(r));\n"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 523,
+      "timestamp": "2026-09-11T13:34:14.862Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling|evrp-quantum-temp/bin/python' | head -20; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       01:53  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       01:53 1113  7.9 125249788 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 536,
+      "timestamp": "2026-09-11T13:34:51.081Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -5; free -h | head -3; ls -lh reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank01 2>/dev/null || true",
+      "stdout_scoped": [
+        " 609373       02:30  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       02:30  868  9.1 145254652 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 557,
+      "timestamp": "2026-09-11T13:36:01.239Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       03:40  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       03:40  623  8.0 126810364 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 576,
+      "timestamp": "2026-09-11T13:37:09.287Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       04:48  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       04:48  500 11.5 183333120 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 595,
+      "timestamp": "2026-09-11T13:38:18.248Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3; jq '.terminal,.scientific_failures' reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/progress.json",
+      "stdout_scoped": [
+        " 609373       05:57  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       05:57  422  9.6 153194748 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 622,
+      "timestamp": "2026-09-11T13:40:01.254Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       07:40  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       07:40  350 12.0 191680768 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 641,
+      "timestamp": "2026-09-11T13:41:11.112Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       08:50  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       08:50  317 12.1 192000248 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 668,
+      "timestamp": "2026-09-11T13:42:52.073Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       10:31  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       10:31  282 11.8 187807996 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 687,
+      "timestamp": "2026-09-11T13:43:59.977Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       11:39  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       11:39  265 12.8 203962620 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 706,
+      "timestamp": "2026-09-11T13:45:09.702Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       12:48  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       12:48  250  4.6 73581104 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 727,
+      "timestamp": "2026-09-11T13:46:18.356Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       13:57  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       13:57  369  1.8 28743916 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 746,
+      "timestamp": "2026-09-11T13:47:27.197Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       15:06  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       15:06  349  7.3 116140288 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 765,
+      "timestamp": "2026-09-11T13:48:34.432Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       16:13  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       16:13  331  7.2 115613944 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 792,
+      "timestamp": "2026-09-11T13:50:16.759Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       17:55  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       17:55  309 11.7 185772280 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 811,
+      "timestamp": "2026-09-11T13:51:24.107Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       19:03  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       19:03  297 12.2 194390268 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 830,
+      "timestamp": "2026-09-11T13:52:32.331Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       20:11  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       20:11  286 12.5 198709504 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 851,
+      "timestamp": "2026-09-11T13:53:41.355Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       21:20  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       21:20  276 12.7 202189048 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 870,
+      "timestamp": "2026-09-11T13:54:50.299Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       22:29  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       22:29  267 12.7 201318652 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 883,
+      "timestamp": "2026-09-11T13:55:25.966Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       23:05  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       23:05  262 13.0 206633212 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 901,
+      "timestamp": "2026-09-11T13:56:33.470Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       24:12  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       24:12  255  4.7 75911000 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 923,
+      "timestamp": "2026-09-11T13:57:43.181Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       25:22  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       25:22  318  3.0 48098480 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 942,
+      "timestamp": "2026-09-11T13:58:51.426Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       26:30  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       26:30  309  7.8 123794624 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 961,
+      "timestamp": "2026-09-11T14:00:01.803Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       27:40  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       27:40  300  9.3 148763840 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 982,
+      "timestamp": "2026-09-11T14:01:11.386Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       28:50  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       28:50  292 10.4 165698748 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1000,
+      "timestamp": "2026-09-11T14:02:19.482Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       29:58  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       29:58  285 12.2 194108608 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1022,
+      "timestamp": "2026-09-11T14:03:30.806Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       31:09  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       31:09  278 12.6 200152260 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1041,
+      "timestamp": "2026-09-11T14:04:40.134Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       32:19  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       32:19  271 12.8 203412668 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1060,
+      "timestamp": "2026-09-11T14:05:49.062Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       33:28  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       33:28  265 12.8 203640000 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1081,
+      "timestamp": "2026-09-11T14:07:00.408Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3; du -sh reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1 2>/dev/null",
+      "stdout_scoped": [
+        " 609373       34:39  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       34:39  260  4.6 73463332 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1100,
+      "timestamp": "2026-09-11T14:08:09.537Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       35:48  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       35:48  310  1.9 30943428 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1119,
+      "timestamp": "2026-09-11T14:09:19.712Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       36:58  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       36:58  303  6.9 110833876 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1140,
+      "timestamp": "2026-09-11T14:10:27.903Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       38:06  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       38:06  297  8.5 135942356 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1158,
+      "timestamp": "2026-09-11T14:11:39.010Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       39:18  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       39:18  291 10.2 163098844 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1178,
+      "timestamp": "2026-09-11T14:12:49.259Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       40:28  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       40:28  286 12.1 191957208 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1199,
+      "timestamp": "2026-09-11T14:13:59.931Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       41:39  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       41:38  281 12.4 197454044 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1218,
+      "timestamp": "2026-09-11T14:15:08.018Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       42:47  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       42:47  276 12.6 200323284 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1239,
+      "timestamp": "2026-09-11T14:16:16.543Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       43:55  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       43:55  271 12.6 200093912 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1258,
+      "timestamp": "2026-09-11T14:17:25.993Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       45:05  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       45:05  267 13.2 210653400 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1277,
+      "timestamp": "2026-09-11T14:18:33.583Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       46:12  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       46:12  263  0.5 8160732 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1298,
+      "timestamp": "2026-09-11T14:19:43.336Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       47:22  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       47:22  295  4.9 77867752 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1316,
+      "timestamp": "2026-09-11T14:20:52.813Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       48:31  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       48:31  291  7.4 118240716 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1338,
+      "timestamp": "2026-09-11T14:22:03.279Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       49:42  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       49:42  286  9.9 158111176 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1357,
+      "timestamp": "2026-09-11T14:23:11.901Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       50:50  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       50:50  282 10.5 166579660 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1378,
+      "timestamp": "2026-09-11T14:24:21.976Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       52:01  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       52:01  278 12.3 195694032 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1396,
+      "timestamp": "2026-09-11T14:25:30.536Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       53:09  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       53:09  274 12.5 198899144 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1416,
+      "timestamp": "2026-09-11T14:26:41.841Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       54:20  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       54:20  270 12.6 200611276 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1437,
+      "timestamp": "2026-09-11T14:27:51.066Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       55:30  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       55:30  267 13.3 211264972 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1455,
+      "timestamp": "2026-09-11T14:29:02.215Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       56:41  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       56:41  294  0.5 8477188 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1475,
+      "timestamp": "2026-09-11T14:30:11.088Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       57:50  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       57:50  290  6.0 95326736 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1496,
+      "timestamp": "2026-09-11T14:31:19.623Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373       58:58  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374       58:58  287  8.6 137587220 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1515,
+      "timestamp": "2026-09-11T14:32:28.630Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:00:07  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:00:07  283  8.0 127287828 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1535,
+      "timestamp": "2026-09-11T14:33:37.668Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:01:16  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:01:16  280 11.9 189925908 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1555,
+      "timestamp": "2026-09-11T14:34:46.853Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:02:25  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:02:25  276 12.4 196991512 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1573,
+      "timestamp": "2026-09-11T14:35:59.725Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:03:38  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:03:38  273 12.6 200636944 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1595,
+      "timestamp": "2026-09-11T14:37:10.801Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:04:49  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:04:49  270 12.7 202418708 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1614,
+      "timestamp": "2026-09-11T14:38:19.960Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:05:59  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:05:59  267  4.5 71689696 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1634,
+      "timestamp": "2026-09-11T14:39:31.755Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:07:10  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:07:10  290  1.3 21145176 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1653,
+      "timestamp": "2026-09-11T14:40:43.715Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:08:22  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:08:22  287  7.1 113389164 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1674,
+      "timestamp": "2026-09-11T14:41:54.192Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:09:33  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:09:33  283  7.6 121613924 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1688,
+      "timestamp": "2026-09-11T14:42:34.045Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:10:13  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:10:13  282  8.2 130424420 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1715,
+      "timestamp": "2026-09-11T14:44:16.330Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:11:55  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:11:55  277 12.2 193355368 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1733,
+      "timestamp": "2026-09-11T14:45:25.500Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:13:04  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:13:04  275  8.8 140131940 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1754,
+      "timestamp": "2026-09-11T14:46:34.803Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:14:13  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:14:13  272 12.8 203763300 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1773,
+      "timestamp": "2026-09-11T14:47:45.776Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:15:24  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:15:24  269 12.9 205821544 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1795,
+      "timestamp": "2026-09-11T14:48:58.707Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:16:37  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:16:37  266  4.7 75995632 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1807,
+      "timestamp": "2026-09-11T14:49:36.210Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:17:15  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:17:15  291  0.6 10310152 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1835,
+      "timestamp": "2026-09-11T14:51:19.631Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:18:58  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:18:58  287  8.0 127109656 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1853,
+      "timestamp": "2026-09-11T14:52:28.808Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:20:07  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:20:07  284  9.3 148384280 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1874,
+      "timestamp": "2026-09-11T14:53:39.147Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:21:18  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:21:18  282 10.5 167758356 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1893,
+      "timestamp": "2026-09-11T14:54:49.785Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01' | head -3; free -h | head -3",
+      "stdout_scoped": [
+        " 609373    01:22:28  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:22:28  279 10.4 166050332 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1924,
+      "timestamp": "2026-09-11T14:57:02.610Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01|PID'",
+      "stdout_scoped": [
+        " 609373    01:24:41  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:24:41  274 12.9 205576724 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1954,
+      "timestamp": "2026-09-11T14:59:15.996Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01|PID'",
+      "stdout_scoped": [
+        " 609373    01:26:55  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:26:55  270  4.8 76181600 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 1976,
+      "timestamp": "2026-09-11T15:00:25.312Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01|PID'; free -h",
+      "stdout_scoped": [
+        " 609373    01:28:04  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:28:04  288  3.2 50898460 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 2006,
+      "timestamp": "2026-09-11T15:03:08.087Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01|PID'",
+      "stdout_scoped": [
+        " 609373    01:30:47  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:30:47  283  9.7 155272744 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 2023,
+      "timestamp": "2026-09-11T15:04:15.256Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01|PID'; awk '/MemAvailable|SwapFree/ {print}' /proc/meminfo",
+      "stdout_scoped": [
+        " 609373    01:31:54  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:31:54  280 10.8 172203564 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 2052,
+      "timestamp": "2026-09-11T15:06:29.536Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,%mem,rss,stat,args | rg 'run_n5_scaling.py routing_v18_n5_rank01|PID'; jq '.terminal,.scientific_failures' reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/progress.json",
+      "stdout_scoped": [
+        " 609373    01:34:08  0.0  0.0  1556 Ss   /usr/bin/time -v /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01",
+        " 609374    01:34:08  276 10.8 172600876 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/11/rollout-2026-09-11T22-10-44-01a09097-87ec-7030-a272-51e5226064ab.jsonl",
+      "line": 2091,
+      "timestamp": "2026-09-11T15:09:44.028Z",
+      "command": "/bin/bash -lc ps -p 609374 -o pid,etime,%cpu,%mem,rss,vsz,stat,cmd; awk '/MemAvailable|SwapFree/ {print}' /proc/meminfo",
+      "stdout_scoped": [
+        " 609374    01:37:23  288  4.1 65785236 123808212 Rl /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank01"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 134,
+      "timestamp": "2026-09-13T14:18:27.218Z",
+      "command": "/bin/bash -lc free -h; df -h /home | tail -1; ps -eo pid,etime,%cpu,%mem,rss,stat,cmd | rg 'run_n5_scaling|evrp-quantum-temp/bin/python' | rg -v 'rg '",
+      "stdout_scoped": [
+        "3556883       01:10 29419  0.0 786908 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank02"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 147,
+      "timestamp": "2026-09-13T14:19:04.220Z",
+      "command": "/bin/bash -lc free -h; ps -eo pid,etime,%cpu,rss,stat,cmd | rg 'run_n5_scaling.py routing_v18_n5_rank02' | rg -v 'rg '",
+      "stdout_scoped": [
+        "3556883       01:47 29459 798660 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank02"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 168,
+      "timestamp": "2026-09-13T14:20:15.491Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,rss,stat,cmd | rg 'run_n5_scaling.py routing_v18_n5_rank02' | rg -v 'rg '; free -h | tail -2",
+      "stdout_scoped": [
+        "3556883       02:58 29524 806008 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank02"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 187,
+      "timestamp": "2026-09-13T14:21:21.797Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,rss,stat,cmd | rg 'run_n5_scaling.py routing_v18_n5_rank02' | rg -v 'rg '; sed -n '1,120p' reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/progress.json",
+      "stdout_scoped": [
+        "3556883       04:05 29560 810720 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank02"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 206,
+      "timestamp": "2026-09-13T14:22:27.636Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,rss,stat,cmd | rg 'run_n5_scaling.py routing_v18_n5_rank02' | rg -v 'rg '; free -h | tail -2",
+      "stdout_scoped": [
+        "3556883       05:10 29497 813456 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank02"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 233,
+      "timestamp": "2026-09-13T14:24:37.282Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,rss,stat,cmd | rg 'run_n5_scaling.py routing_v18_n5_rank02' | rg -v 'rg '; test -f reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/terminal_record.json && sed -n '1,80p' reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/terminal_record.json || true",
+      "stdout_scoped": [
+        "3556883       07:20 29436 819756 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank02"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 262,
+      "timestamp": "2026-09-13T14:26:46.916Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,rss,stat,cmd | rg 'run_n5_scaling.py routing_v18_n5_rank02' | rg -v 'rg '",
+      "stdout_scoped": [
+        "3556883       09:30 29422 828228 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank02"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 287,
+      "timestamp": "2026-09-13T14:28:55.002Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,rss,stat,cmd | rg 'run_n5_scaling.py routing_v18_n5_rank02' | rg -v 'rg '; test -f reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/terminal_record.json && sed -n '1,120p' reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/terminal_record.json || true",
+      "stdout_scoped": [
+        "3556883       11:38 29372 832880 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank02"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 314,
+      "timestamp": "2026-09-13T14:31:04.433Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,rss,stat,cmd | rg 'run_n5_scaling.py routing_v18_n5_rank02' | rg -v 'rg '; free -h | tail -2",
+      "stdout_scoped": [
+        "3556883       13:47 29347 836876 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank02"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 339,
+      "timestamp": "2026-09-13T14:32:41.334Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,rss,stat,cmd | rg 'run_n5_scaling.py routing_v18_n5_rank02' | rg -v 'rg '; test -f reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/terminal_record.json && sed -n '1,80p' reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/terminal_record.json || true",
+      "stdout_scoped": [
+        "3556883       15:24 29343 838376 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank02"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 366,
+      "timestamp": "2026-09-13T14:34:51.033Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,rss,stat,cmd | rg 'run_n5_scaling.py routing_v18_n5_rank02' | rg -v 'rg '; test -f reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/terminal_record.json && sed -n '1,120p' reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/terminal_record.json || true",
+      "stdout_scoped": [
+        "3556883       17:34 29349 842340 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank02"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 401,
+      "timestamp": "2026-09-13T14:37:57.285Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,rss,stat,cmd | rg 'run_n5_scaling.py routing_v18_n5_rank02' | rg -v 'rg '; free -h | tail -2",
+      "stdout_scoped": [
+        "3556883       20:40 29328 846752 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank02"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 442,
+      "timestamp": "2026-09-13T14:42:03.841Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,rss,stat,cmd | rg 'run_n5_scaling.py routing_v18_n5_rank02' | rg -v 'rg '; test -f reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/terminal_record.json && sed -n '1,100p' reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/terminal_record.json || true",
+      "stdout_scoped": [
+        "3556883       24:47 29343 855544 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank02"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 493,
+      "timestamp": "2026-09-13T14:47:11.270Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,rss,stat,cmd | rg 'run_n5_scaling.py routing_v18_n5_rank02' | rg -v 'rg '; test -f reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/terminal_record.json && sed -n '1,100p' reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/terminal_record.json || true",
+      "stdout_scoped": [
+        "3556883       29:54 29328 859384 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank02"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 544,
+      "timestamp": "2026-09-13T14:52:18.885Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,rss,stat,cmd | rg 'run_n5_scaling.py routing_v18_n5_rank02' | rg -v 'rg '; free -h | tail -2",
+      "stdout_scoped": [
+        "3556883       35:02 29334 863744 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank02"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 595,
+      "timestamp": "2026-09-13T14:57:27.330Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,rss,stat,cmd | rg 'run_n5_scaling.py routing_v18_n5_rank02' | rg -v 'rg '; test -f reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/terminal_record.json && sed -n '1,100p' reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/terminal_record.json || true",
+      "stdout_scoped": [
+        "3556883       40:10 29333 866256 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank02"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 618,
+      "timestamp": "2026-09-13T14:59:58.626Z",
+      "command": "/bin/bash -lc VENV=/home/takuma/.conda/envs/evrp-quantum-temp; export PYTHONPATH=\"$PWD/05_src\"; exec \"$VENV/bin/python\" 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank02",
+      "stdout_scoped": [
+        "{\"instance_id\": \"routing_v18_n5_rank02\", \"status\": \"OPTIMAL_FOUND\", \"P_feasible\": 0.007659407194320995, \"P_optimal\": 6.593481397305275e-05, \"nfev\": 209, \"T_total\": 2561.287391833961}"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 644,
+      "timestamp": "2026-09-13T15:00:15.331Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,rss,stat,cmd | rg 'run_n5_scaling.py routing_v18_n5_rank03' | rg -v 'rg '; free -h | tail -2",
+      "stdout_scoped": [
+        "3650393       00:05 23359 738096 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank03"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 699,
+      "timestamp": "2026-09-13T15:06:23.800Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,rss,stat,cmd | rg 'run_n5_scaling.py routing_v18_n5_rank03' | rg -v 'rg '; test -f reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank03/terminal_record.json && sed -n '1,80p' reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank03/terminal_record.json || true",
+      "stdout_scoped": [
+        "3650393       06:13 29260 818760 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank03"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 752,
+      "timestamp": "2026-09-13T15:12:31.075Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,rss,stat,cmd | rg 'run_n5_scaling.py routing_v18_n5_rank03' | rg -v 'rg '; free -h | tail -2",
+      "stdout_scoped": [
+        "3650393       12:21 29311 839952 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank03"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 831,
+      "timestamp": "2026-09-13T15:21:40.359Z",
+      "command": "/bin/bash -lc ps -eo pid,etime,%cpu,rss,stat,cmd | rg 'run_n5_scaling.py routing_v18_n5_rank03' | rg -v 'rg '; test -f reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank03/terminal_record.json && sed -n '1,100p' reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank03/terminal_record.json || true",
+      "stdout_scoped": [
+        "3650393       21:30 29388 853512 Ssl+ /home/takuma/.conda/envs/evrp-quantum-temp/bin/python 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank03"
+      ],
+      "status": "completed"
+    },
+    {
+      "log": "/home/takuma/.codex/sessions/2026/09/13/rollout-2026-09-13T23-13-09-01a09b1d-6268-7f62-9ded-1e5606cba10f.jsonl",
+      "line": 886,
+      "timestamp": "2026-09-13T15:28:35.636Z",
+      "command": "/bin/bash -lc VENV=/home/takuma/.conda/envs/evrp-quantum-temp; export PYTHONPATH=\"$PWD/05_src\"; exec \"$VENV/bin/python\" 05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py routing_v18_n5_rank03",
+      "stdout_scoped": [
+        "{\"instance_id\": \"routing_v18_n5_rank03\", \"status\": \"OPTIMAL_FOUND\", \"P_feasible\": 0.007978143668511524, \"P_optimal\": 6.636000200882145e-05, \"nfev\": 138, \"T_total\": 1704.4330657268874}"
+      ],
+      "status": "completed"
+    }
+  ],
+  "reconstructed_sources": {
+    "rank01_runner": {
+      "archive": "reconstructed_sources/rank01_runner.py.txt",
+      "sha256": "7f920468dd24e2e0991bb41150b088d0ae3b629443dde0e867997d8e8b0190e5"
+    },
+    "rank02_rank03_runner": {
+      "archive": "reconstructed_sources/rank02_rank03_runner.py.txt",
+      "sha256": "76a0b89d4999abad7fb7472740b84ac128c1863571299ef43ed7e9f43924d254",
+      "matches_0e149ed": true
+    },
+    "rank02_rank03_qaoa": {
+      "archive": "reconstructed_sources/rank02_rank03_qaoa.py.txt",
+      "sha256": "b5ceb73312f623c8446c55576f31b528c4057834d6d8fd9a2f9d2835e4954056",
+      "matches_0e149ed": true
+    },
+    "historical_helper": {
+      "archive": "reconstructed_sources/historical_helper.py.txt",
+      "sha256": "c0892b96e375fe2c274eaab74dfeb59cb8ec3a8a1331bb44bca3bd22dc9a9691"
+    }
+  },
+  "shell_history": {
+    "available": true,
+    "scoped_match_count": 0,
+    "matches": []
+  },
+  "scheduler": {
+    "sacct": null,
+    "squeue": null,
+    "qstat": null,
+    "evidence": "direct command execution; no scheduler ID recorded"
+  },
+  "limitations": [
+    "Logs are local contemporaneous records, not signed process-memory attestations.",
+    "No run-time hash of the full imported source closure or final optimizer trace retained.",
+    "Filesystem mtime is current evidence, not immutable creation time."
+  ]
+}

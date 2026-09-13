@@ -1,0 +1,135 @@
+{
+  "test": {
+    "test_id": "invalid_inputs",
+    "requirement": "invalid_inputs",
+    "implementation": "reproducibility/tools/r23_n5_remediation_regression.py",
+    "executed": true,
+    "result": "VERIFIED",
+    "checks": [
+      {
+        "passed": true,
+        "error": null
+      }
+    ],
+    "evidence": "regression_evidence.json#invalid_inputs"
+  },
+  "evidence": {
+    "cases": [
+      {
+        "case": "zero_norm",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "raw probability norm violates the absolute 1e-12 unit-sum contract"
+      },
+      {
+        "case": "norm_four",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "raw probability norm violates the absolute 1e-12 unit-sum contract"
+      },
+      {
+        "case": "norm_0_999",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "raw probability norm violates the absolute 1e-12 unit-sum contract"
+      },
+      {
+        "case": "NaN",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "statevector must not contain NaN or inf"
+      },
+      {
+        "case": "inf",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "statevector must not contain NaN or inf"
+      },
+      {
+        "case": "finite_overflow",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "raw probability norm violates the absolute 1e-12 unit-sum contract"
+      },
+      {
+        "case": "wrong_dimension",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "statevector length must be 16 for n=2"
+      },
+      {
+        "case": "wrong_rank",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "statevector must be one-dimensional"
+      },
+      {
+        "case": "malformed_complex",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "statevector dtype must be float64 or complex128; no implicit precision conversion"
+      },
+      {
+        "case": "complex64",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "statevector dtype must be float64 or complex128; no implicit precision conversion"
+      },
+      {
+        "case": "float32",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "statevector dtype must be float64 or complex128; no implicit precision conversion"
+      },
+      {
+        "case": "empty_input",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "statevector length must be 16 for n=2"
+      },
+      {
+        "case": "invalid_optimal_index",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "each optimal bitstring must encode a feasible route"
+      },
+      {
+        "case": "duplicate_optimal_index",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "exact_optimal_bitstrings must be unique"
+      },
+      {
+        "case": "missing_optimal_index",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "exact_optimal_bitstrings must be non-empty"
+      },
+      {
+        "case": "malformed_optimal_bits",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "optimal bitstrings must contain only binary integers"
+      },
+      {
+        "case": "duplicate_customer",
+        "rejected": true,
+        "exception": "V4InputError",
+        "message": "customer_ids must be unique"
+      },
+      {
+        "case": "computed_norm_-1.0",
+        "rejected": true
+      },
+      {
+        "case": "computed_norm_nan",
+        "rejected": true
+      },
+      {
+        "case": "computed_norm_inf",
+        "rejected": true
+      }
+    ],
+    "index_policy": "External index arrays are not accepted; invalid/duplicate/missing optimal bit encodings exercise corresponding contract."
+  }
+}

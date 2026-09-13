@@ -1,0 +1,136 @@
+{
+  "runs": [
+    {
+      "rank": "01",
+      "level": "STRONGLY_INFERRED",
+      "recorded_commit": "9a4ce5600a211ffb92adf3b84fe2468d70be2b26",
+      "started_at": "2026-09-11T13:32:21Z",
+      "ended_at": "2026-09-13T08:09:35Z",
+      "host": "hayate (resource/process context)",
+      "runner": "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py",
+      "helper": null,
+      "environment": "/home/takuma/.conda/envs/evrp-quantum-temp",
+      "reconstruction": {
+        "archive": "reconstructed_sources/rank01_runner.py.txt",
+        "sha256": "7f920468dd24e2e0991bb41150b088d0ae3b629443dde0e867997d8e8b0190e5"
+      },
+      "contradiction": "EXECUTION_PROVENANCE_METADATA_INCONSISTENCY",
+      "explanation": "source_commit is repository HEAD; execution used an uncommitted runner. Timestamped FileChange records reconstruct the bytes later committed at 0e149ed.",
+      "files": [
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank01/resource_record.json",
+          "sha256": "a533b34317e82b0b7a85bb5bfe9740b54f14f7cf6c6aada6a30aad02f0bee0a2",
+          "archive": "historical_run_snapshots/routing_v18_n5_rank01/resource_record.json",
+          "mtime_utc": "2026-09-13T08:17:08.930619+00:00",
+          "filesystem_birth": "-"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank01/scientific_result.json",
+          "sha256": "43eceae6d7e6459ba4a10094c8d358677b87999af1ccbfb6f25ab03cd11360b9",
+          "archive": "historical_run_snapshots/routing_v18_n5_rank01/scientific_result.json",
+          "mtime_utc": "2026-09-13T08:17:08.929619+00:00",
+          "filesystem_birth": "-"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank01/terminal_record.json",
+          "sha256": "115884b567b70bbd26b60e5a35991a6a47ad59985a435b40477622f45736ebc5",
+          "archive": "historical_run_snapshots/routing_v18_n5_rank01/terminal_record.json",
+          "mtime_utc": "2026-09-13T08:17:08.930619+00:00",
+          "filesystem_birth": "-"
+        }
+      ],
+      "formal_acceptance": "NOT_REAUTHORIZED",
+      "rerun_requirement": "RERUN_RECOMMENDED",
+      "reason": "Historical trajectory/final parameters and complete process source attestation absent; resource peak metric contradicts logged RSS for remaining runs. Retained observations remain usable with explicit limitations."
+    },
+    {
+      "rank": "02",
+      "level": "STRONGLY_INFERRED",
+      "recorded_commit": "ff1d579bad8e7c635406b2a5a620fc733f96e912",
+      "started_at": "2026-09-13T14:17:17Z",
+      "ended_at": "2026-09-13T14:59:58Z",
+      "host": "hayate (resource/process context)",
+      "runner": "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py",
+      "helper": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+      "environment": "/home/takuma/.conda/envs/evrp-quantum-temp",
+      "reconstruction": {
+        "archive": "reconstructed_sources/rank02_rank03_runner.py.txt",
+        "sha256": "76a0b89d4999abad7fb7472740b84ac128c1863571299ef43ed7e9f43924d254",
+        "matches_0e149ed": true
+      },
+      "contradiction": "EXECUTION_PROVENANCE_METADATA_INCONSISTENCY",
+      "explanation": "source_commit is repository HEAD; execution used an uncommitted runner and uncommitted qaoa V4 wiring. Timestamped FileChange records reconstruct the bytes later committed at 0e149ed.",
+      "files": [
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/resource_record.json",
+          "sha256": "3b04a037ab5a645002cf466f9a12580471bddfce5c89cf1566844326e5ea5eaf",
+          "archive": "historical_run_snapshots/routing_v18_n5_rank02/resource_record.json",
+          "mtime_utc": "2026-09-13T15:07:32.005956+00:00",
+          "filesystem_birth": "-"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/scientific_result.json",
+          "sha256": "133c8daa531d1f12a6f9343931f6acbc1143c2a8e21772eedebcf8db438eefe8",
+          "archive": "historical_run_snapshots/routing_v18_n5_rank02/scientific_result.json",
+          "mtime_utc": "2026-09-13T15:07:32.004956+00:00",
+          "filesystem_birth": "-"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank02/terminal_record.json",
+          "sha256": "1eb5832f25250d5c61792f3b499271a7bbecc834650c453ab738ca80c35a1bb9",
+          "archive": "historical_run_snapshots/routing_v18_n5_rank02/terminal_record.json",
+          "mtime_utc": "2026-09-13T15:07:32.006956+00:00",
+          "filesystem_birth": "-"
+        }
+      ],
+      "formal_acceptance": "NOT_REAUTHORIZED",
+      "rerun_requirement": "RERUN_REQUIRED_FOR_FORMAL_ACCEPTANCE",
+      "reason": "Historical trajectory/final parameters and complete process source attestation absent; resource peak metric contradicts logged RSS for remaining runs. Retained observations remain usable with explicit limitations."
+    },
+    {
+      "rank": "03",
+      "level": "STRONGLY_INFERRED",
+      "recorded_commit": "ff1d579bad8e7c635406b2a5a620fc733f96e912",
+      "started_at": "2026-09-13T15:00:10Z",
+      "ended_at": "2026-09-13T15:28:35Z",
+      "host": "hayate (resource/process context)",
+      "runner": "05_src/traffic_simulation/r23_n5_scaling/run_n5_scaling.py",
+      "helper": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+      "environment": "/home/takuma/.conda/envs/evrp-quantum-temp",
+      "reconstruction": {
+        "archive": "reconstructed_sources/rank02_rank03_runner.py.txt",
+        "sha256": "76a0b89d4999abad7fb7472740b84ac128c1863571299ef43ed7e9f43924d254",
+        "matches_0e149ed": true
+      },
+      "contradiction": "EXECUTION_PROVENANCE_METADATA_INCONSISTENCY",
+      "explanation": "source_commit is repository HEAD; execution used an uncommitted runner and uncommitted qaoa V4 wiring. Timestamped FileChange records reconstruct the bytes later committed at 0e149ed.",
+      "files": [
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank03/resource_record.json",
+          "sha256": "b880345244937f006aae7a1c0b8acb6971bd9cfa0f7dfd2f423020a8d5561c2f",
+          "archive": "historical_run_snapshots/routing_v18_n5_rank03/resource_record.json",
+          "mtime_utc": "2026-09-13T15:36:09.081909+00:00",
+          "filesystem_birth": "-"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank03/scientific_result.json",
+          "sha256": "45d9641ac28c315b9fa0701a8b80ab08e2c5ccb2e84c8310cb8047896e69a195",
+          "archive": "historical_run_snapshots/routing_v18_n5_rank03/scientific_result.json",
+          "mtime_utc": "2026-09-13T15:36:09.080909+00:00",
+          "filesystem_birth": "-"
+        },
+        {
+          "path": "reproducibility/outputs/traffic_simulation/r23_n5_scaling/20260911_v1/runs/routing_v18_n5_rank03/terminal_record.json",
+          "sha256": "83c56637a5c9d1cd3463adf15df4abed8ac7d7ef928ef71a10f532c680369b26",
+          "archive": "historical_run_snapshots/routing_v18_n5_rank03/terminal_record.json",
+          "mtime_utc": "2026-09-13T15:36:09.082909+00:00",
+          "filesystem_birth": "-"
+        }
+      ],
+      "formal_acceptance": "NOT_REAUTHORIZED",
+      "rerun_requirement": "RERUN_REQUIRED_FOR_FORMAL_ACCEPTANCE",
+      "reason": "Historical trajectory/final parameters and complete process source attestation absent; resource peak metric contradicts logged RSS for remaining runs. Retained observations remain usable with explicit limitations."
+    }
+  ],
+  "new_scientific_runs": 0
+}

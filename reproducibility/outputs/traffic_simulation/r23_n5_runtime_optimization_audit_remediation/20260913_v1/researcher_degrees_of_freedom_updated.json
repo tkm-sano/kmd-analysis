@@ -1,0 +1,193 @@
+{
+  "decisions": [
+    {
+      "Decision": "instance",
+      "value": "three SHA-ranked n5 combinations",
+      "Alternatives": "other combinations / more ranks",
+      "When fixed": "66d8d73 (2026-09-11 22:18:24 +09), before rank01 22:32:21",
+      "Authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_instance_selection.json",
+      "Result-dependent?": "No evidence; independently recomputed",
+      "Risk": "LOW",
+      "reason": "252 combinations, seed 2301; no difficulty term or exclusions",
+      "original_risk": "LOW",
+      "remediation_note": "Historical decision preserved; no scientific parameter changed."
+    },
+    {
+      "Decision": "n",
+      "value": 5,
+      "Alternatives": "n4 / n6 / different encoding",
+      "When fixed": "66d8d73 (2026-09-11 22:18:24 +09), before rank01 22:32:21",
+      "Authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_planned_run_manifest.json",
+      "Result-dependent?": "No observed n5 outcome dependency",
+      "Risk": "LOW",
+      "reason": "next-size resource observation; n6 not recommended",
+      "original_risk": "LOW",
+      "remediation_note": "Historical decision preserved; no scientific parameter changed."
+    },
+    {
+      "Decision": "p",
+      "value": 1,
+      "Alternatives": "p2 / p3",
+      "When fixed": "66d8d73 (2026-09-11 22:18:24 +09), before rank01 22:32:21",
+      "Authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_planned_run_manifest.json",
+      "Result-dependent?": "Fixed before n5, after earlier n4 depth outcomes",
+      "Risk": "MEDIUM",
+      "reason": "minimal resource experiment; cannot establish optimal depth or absence of influence from earlier studies",
+      "original_risk": "MEDIUM",
+      "remediation_note": "Historical decision preserved; no scientific parameter changed."
+    },
+    {
+      "Decision": "lambda",
+      "value": 4.0,
+      "Alternatives": "any real lambda>3",
+      "When fixed": "66d8d73 (2026-09-11 22:18:24 +09), before rank01 22:32:21",
+      "Authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_penalty_authority.json",
+      "Result-dependent?": "No empirical tuning evidence",
+      "Risk": "LOW",
+      "reason": "smallest integer satisfying strict sufficient bound; numeric margin typo separate",
+      "original_risk": "LOW",
+      "remediation_note": "Historical decision preserved; no scientific parameter changed."
+    },
+    {
+      "Decision": "optimizer",
+      "value": "COBYLA",
+      "Alternatives": "Nelder-Mead / other optimizers",
+      "When fixed": "66d8d73 (2026-09-11 22:18:24 +09), before rank01 22:32:21",
+      "Authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_planned_run_manifest.json",
+      "Result-dependent?": "Fixed before n5; B2 results already available",
+      "Risk": "MEDIUM",
+      "reason": "baseline continuity plausible; comparative selection rationale not fully recorded, no general superiority",
+      "original_risk": "MEDIUM",
+      "remediation_note": "Historical decision preserved; no scientific parameter changed."
+    },
+    {
+      "Decision": "initialization",
+      "value": [
+        0.1,
+        0.1
+      ],
+      "Alternatives": "other fixed / random initializations",
+      "When fixed": "66d8d73 (2026-09-11 22:18:24 +09), before rank01 22:32:21",
+      "Authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_planned_run_manifest.json",
+      "Result-dependent?": "Fixed before n5; B1 outcomes available",
+      "Risk": "MEDIUM",
+      "reason": "baseline not robust over initializations; no n5 seed/initialization sweep evidence",
+      "original_risk": "MEDIUM",
+      "remediation_note": "Historical decision preserved; no scientific parameter changed."
+    },
+    {
+      "Decision": "cap",
+      "value": 300,
+      "Alternatives": "900 / other budget",
+      "When fixed": "2026-09-11T13:32:14.461Z pre-launch FileChange",
+      "Authority": "execution_log_evidence.json and reconstructed_sources/rank01_runner.py.txt",
+      "Result-dependent?": "No observed change; exact executed closure strongly inferred",
+      "Risk": "MEDIUM",
+      "reason": "New pre-run source bytes establish 300/300/None defaults; effective process attestation still missing.",
+      "original_risk": "HIGH",
+      "remediation_note": "Historical decision preserved; no scientific parameter changed."
+    },
+    {
+      "Decision": "seed",
+      "value": "simulation/transpile 17; selection 2301; validation 2501",
+      "Alternatives": "other fixed seeds",
+      "When fixed": "schema default / pre-run selection and validation authority",
+      "Authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v1/n5_validation_authority.json",
+      "Result-dependent?": "No n5 best-seed selection evidence",
+      "Risk": "LOW",
+      "reason": "deterministic baseline; fixed_0.1 has no initialization RNG",
+      "original_risk": "LOW",
+      "remediation_note": "Historical decision preserved; no scientific parameter changed."
+    },
+    {
+      "Decision": "tolerance",
+      "value": 1e-12,
+      "Alternatives": "other tolerances",
+      "When fixed": "R23 schema before n5",
+      "Authority": "05_src/traffic_simulation/r23_qaoa_aer/schema.py:19-21",
+      "Result-dependent?": "No numeric relaxation; candidate enforcement removed",
+      "Risk": "LOW",
+      "reason": "fixed definition; implementation gap is I01, not evidence of tuned numeric tolerance",
+      "original_risk": "LOW",
+      "remediation_note": "Historical decision preserved; no scientific parameter changed."
+    },
+    {
+      "Decision": "denominator",
+      "value": "raw full state mass",
+      "Alternatives": "conditional feasible normalization",
+      "When fixed": "R23 canonical before n5",
+      "Authority": "05_src/traffic_simulation/r23_qaoa_aer/metrics.py",
+      "Result-dependent?": "No evidence of renormalization",
+      "Risk": "LOW",
+      "reason": "both sum raw probabilities; no division by feasible mass",
+      "original_risk": "LOW",
+      "remediation_note": "Historical decision preserved; no scientific parameter changed."
+    },
+    {
+      "Decision": "benchmark metric",
+      "value": "mixed full-run/eval/postprocess time",
+      "Alternatives": "matched end-to-end or matched microbenchmark",
+      "When fixed": "after original runtime observed",
+      "Authority": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v1/before_after_benchmark.json",
+      "Result-dependent?": "Yes: diagnostic choice after bottleneck observation",
+      "Risk": "MEDIUM",
+      "reason": "reasonable diagnosis, formal speedup unsupported",
+      "original_risk": "MEDIUM",
+      "remediation_note": "Historical decision preserved; no scientific parameter changed."
+    },
+    {
+      "Decision": "memory metric",
+      "value": "ru_maxrss / delta / sampled RSS",
+      "Alternatives": "uniform absolute process peak",
+      "When fixed": "after original resource observation",
+      "Authority": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v1/profiling_harness.py",
+      "Result-dependent?": "Yes: exploratory measurement design",
+      "Risk": "MEDIUM",
+      "reason": "must remain preliminary; no formal factor",
+      "original_risk": "MEDIUM",
+      "remediation_note": "Historical decision preserved; no scientific parameter changed."
+    },
+    {
+      "Decision": "optimization approach",
+      "value": "constraint-indexed amplitudes",
+      "Alternatives": "full probability ndarray / dictionary",
+      "When fixed": "after rank01 runtime",
+      "Authority": "05_src/traffic_simulation/r23_qaoa_aer/optimized_metrics_v4.py",
+      "Result-dependent?": "Yes: performance diagnosis, not QAOA tuning",
+      "Risk": "MEDIUM",
+      "reason": "mathematical probability sum valid; actual contract and source lineage need remediation",
+      "original_risk": "MEDIUM",
+      "remediation_note": "Historical decision preserved; no scientific parameter changed."
+    },
+    {
+      "Decision": "validation cases",
+      "value": "existing n2/3/4 points and n5 A/C; new audit negative probes",
+      "Alternatives": "more states / mutations / tied routes",
+      "When fixed": "after candidate; audit cases before new probes",
+      "Authority": "reproducibility/outputs/traffic_simulation/r23_n5_runtime_optimization_review/20260913_v2/run_equivalence.py",
+      "Result-dependent?": "Post-implementation validation, not selection of scientific runs",
+      "Risk": "MEDIUM",
+      "reason": "legacy hardcoded PASS does not reject failing evidence; independent probes improve coverage",
+      "original_risk": "MEDIUM",
+      "remediation_note": "Historical decision preserved; no scientific parameter changed."
+    },
+    {
+      "Decision": "continuation rule",
+      "value": "complete rank02/03 after equivalence; n6 stop",
+      "Alternatives": "stop n5 / defer optimized execution",
+      "When fixed": "pre-run safety conditions; post-rank01 performance review",
+      "Authority": "reproducibility/outputs/traffic_simulation/r23_n5_scaling_authority/20260911_v2/n5_execution_authorization_v2.json",
+      "Result-dependent?": "Yes: resource feasibility review; all three records retained",
+      "Risk": "MEDIUM",
+      "reason": "continuation rationale explicit but validation/provenance acceptance deficient; R24 remains blocked in this audit",
+      "original_risk": "MEDIUM",
+      "remediation_note": "Historical decision preserved; no scientific parameter changed."
+    }
+  ],
+  "counts": {
+    "LOW": 6,
+    "MEDIUM": 9,
+    "HIGH": 0
+  },
+  "unit": "15 independent-audit decision rows; risk reassessment is not independent re-audit acceptance"
+}

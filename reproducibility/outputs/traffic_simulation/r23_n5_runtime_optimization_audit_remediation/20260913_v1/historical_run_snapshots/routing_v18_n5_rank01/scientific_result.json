@@ -1,0 +1,118 @@
+{
+  "schema_version": "r23-n5-scientific-result-v1",
+  "run_id": "routing_v18_n5_rank01_p1_init_fixed01_rep1_optimizer_cobyla",
+  "instance_id": "routing_v18_n5_rank01",
+  "customers": [
+    "2026-01-01-13111-bldg-117556",
+    "2026-01-01-13111-bldg-130096",
+    "2026-01-01-13111-bldg-138702",
+    "2026-01-01-13111-bldg-2510665",
+    "2026-01-01-13111-bldg-79791"
+  ],
+  "depot": "DEP_006",
+  "n": 5,
+  "logical_qubits": 25,
+  "state_dimension": 33554432,
+  "p": 1,
+  "lambda": 4.0,
+  "optimizer": "COBYLA",
+  "initialization": "fixed_0.1",
+  "initial_parameters": [
+    0.1,
+    0.1
+  ],
+  "backend": {
+    "class": "AerSimulator",
+    "method": "statevector",
+    "device": "CPU",
+    "seed_simulator": 17,
+    "seed_transpiler": 17,
+    "optimization_level": 1,
+    "optimization_level_source": "R23Config",
+    "basis_gates": "backend default",
+    "backend_dependent_settings": "backend defaults",
+    "implementation_default_used": true
+  },
+  "shots": "NONE",
+  "repetition": 1,
+  "run_classification": "OPTIMAL_FOUND",
+  "best_decoded_feasible_route": [
+    "DEP_006",
+    "2026-01-01-13111-bldg-130096",
+    "2026-01-01-13111-bldg-79791",
+    "2026-01-01-13111-bldg-117556",
+    "2026-01-01-13111-bldg-2510665",
+    "2026-01-01-13111-bldg-138702",
+    "DEP_006"
+  ],
+  "exact_optimal_routes": [
+    [
+      "DEP_006",
+      "2026-01-01-13111-bldg-130096",
+      "2026-01-01-13111-bldg-79791",
+      "2026-01-01-13111-bldg-117556",
+      "2026-01-01-13111-bldg-2510665",
+      "2026-01-01-13111-bldg-138702",
+      "DEP_006"
+    ]
+  ],
+  "exact_optimum_found": true,
+  "absolute_gap": 0.0,
+  "relative_gap": 0.0,
+  "P_feasible": 0.006366971625605308,
+  "P_optimal": 5.447231886991554e-05,
+  "probability_total": 0.9999999999998028,
+  "invalid_probability_mass": 0.9936330283741975,
+  "probability_integrity": {
+    "total": 0.9999999999998028,
+    "invalid_mass": 0.9936330283741975,
+    "renormalized": false
+  },
+  "nfev": 300,
+  "termination": {
+    "nfev": 300,
+    "nit": null,
+    "success": false,
+    "status": 3,
+    "message": "Return from COBYLA because the objective function has been evaluated MAXFUN times.",
+    "termination_status": "OBJECTIVE_EVALUATION_CAP_REACHED",
+    "budget_hit": true,
+    "maxiter_boundary_reached": false,
+    "objective_cap_hit": true,
+    "termination_source": "explicit_objective_callback_guard",
+    "optimizer_status": 3
+  },
+  "termination_status": "OBJECTIVE_EVALUATION_CAP_REACHED",
+  "T_total": 153434.09043177636,
+  "T_Aer": 306.781193879433,
+  "T_transpile": 16.943095699883997,
+  "T_total_per_nfev": 511.4469681059212,
+  "T_Aer_per_nfev": 1.02260397959811,
+  "resource": {
+    "before": {
+      "MemTotal": 1622707548160,
+      "MemAvailable": 1548351246336,
+      "SwapTotal": 8589930496,
+      "SwapFree": 8589930496
+    },
+    "after": {
+      "MemTotal": 1622707548160,
+      "MemAvailable": 1495738568704,
+      "SwapTotal": 8589930496,
+      "SwapFree": 8589144064
+    },
+    "peak_rss_kib": 211375592,
+    "peak_rss_gib": 201.5834732055664,
+    "swap_used_before": 0,
+    "swap_used_after": 786432,
+    "disk_after": {
+      "available_bytes": 11656660647936,
+      "total_bytes": 15341279641600
+    },
+    "process_exit_status": 0
+  },
+  "execution_semantics": "exact CPU Aer statevector; probabilities use raw full-state denominator; compact record omits raw 2^25 probability table.",
+  "started_at": "2026-09-11T13:32:21Z",
+  "ended_at": "2026-09-13T08:09:35Z",
+  "source_commit": "9a4ce5600a211ffb92adf3b84fe2468d70be2b26"
+}
