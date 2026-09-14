@@ -1,6 +1,6 @@
 {
   "task": "R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT_POST_REMEDIATION_RERUN",
-  "status": "PENDING_WORKTREE_CLEANUP",
+  "status": "READY",
   "checklist": [
     {
       "item": "scientific_model_frozen",
@@ -54,8 +54,8 @@
     },
     {
       "item": "working_tree_clean",
-      "status": "PENDING",
-      "evidence": "cleanup_manifest.json"
+      "status": "VERIFIED",
+      "evidence": "cleanup_manifest.json#worktree_measurement"
     }
   ],
   "audit_targets": [
@@ -67,5 +67,7 @@
     "benchmark claims",
     "corrected route recovery vs optimizer success wording"
   ],
-  "does_not_mean": "Scientific acceptance, code audit PASS, R23 closure, R24 start or scientific rerun approval."
+  "does_not_mean": "Scientific acceptance, code audit PASS, R23 closure, R24 start or scientific rerun approval.",
+  "authority_commit": "29f6048de345ebde6fcd05fcd4aabd52a862f9cb",
+  "receipt_commit_note": "Receipt-only changes committed after measured clean gate; verify final HEAD/status as recorded in final response."
 }

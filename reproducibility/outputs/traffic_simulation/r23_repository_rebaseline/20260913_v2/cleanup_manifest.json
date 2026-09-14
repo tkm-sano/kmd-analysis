@@ -1,5 +1,5 @@
 {
-  "phase": "PLANNED; no original removed before authority commit",
+  "phase": "COMPLETED",
   "backup_root": "/home/takuma/kmd-analysis_worktree_backup/20260913_rebaseline_v2",
   "files": [
     {
@@ -9,8 +9,13 @@
       "byte_size": 6,
       "classification": "SAFE_TO_REMOVE",
       "removal_reason": "Patch probe containing only probe newline; non-research scratch",
-      "backup_verified": false,
-      "removed": false
+      "backup_verified": true,
+      "removed": true,
+      "source_count": 1,
+      "backup_count": 1,
+      "source_sha256": "25be323556dad377abb57fe7ec8c4b99a6527f488dda28d0c9b686528659c909",
+      "backup_sha256": "25be323556dad377abb57fe7ec8c4b99a6527f488dda28d0c9b686528659c909",
+      "backup_byte_size": 6
     },
     {
       "original_path": "reproducibility/outputs/research_model_workbook/20260909_175947/reconstruction_validation.json",
@@ -19,8 +24,13 @@
       "byte_size": 2833,
       "classification": "SHOULD_BACKUP_AND_REMOVE",
       "removal_reason": "Historical workbook generation/revision; tools/revise_research_model_xlsx.py and tools/rebuild_current_research_model.py; reconstruction_validation.json records source hashes",
-      "backup_verified": false,
-      "removed": false
+      "backup_verified": true,
+      "removed": true,
+      "source_count": 1,
+      "backup_count": 1,
+      "source_sha256": "b6cc03efc5f8ac0318b415c25562213e64902ddd1b631880bb429dc878f34869",
+      "backup_sha256": "b6cc03efc5f8ac0318b415c25562213e64902ddd1b631880bb429dc878f34869",
+      "backup_byte_size": 2833
     },
     {
       "original_path": "reproducibility/outputs/research_model_workbook/20260909_175947/research_model_3page_ja_revised.xlsx",
@@ -29,8 +39,13 @@
       "byte_size": 18310,
       "classification": "SHOULD_BACKUP_AND_REMOVE",
       "removal_reason": "Historical workbook generation/revision; tools/revise_research_model_xlsx.py and tools/rebuild_current_research_model.py; reconstruction_validation.json records source hashes",
-      "backup_verified": false,
-      "removed": false
+      "backup_verified": true,
+      "removed": true,
+      "source_count": 1,
+      "backup_count": 1,
+      "source_sha256": "d0bc4e7facae41f0a12043649c381bd0a628aeeffd72679537a37d4347c8e25a",
+      "backup_sha256": "d0bc4e7facae41f0a12043649c381bd0a628aeeffd72679537a37d4347c8e25a",
+      "backup_byte_size": 18310
     },
     {
       "original_path": "research_model_3page_ja.xlsx",
@@ -39,8 +54,13 @@
       "byte_size": 16908,
       "classification": "SHOULD_BACKUP_AND_REMOVE",
       "removal_reason": "Historical workbook generation/revision; tools/revise_research_model_xlsx.py and tools/rebuild_current_research_model.py; reconstruction_validation.json records source hashes",
-      "backup_verified": false,
-      "removed": false
+      "backup_verified": true,
+      "removed": true,
+      "source_count": 1,
+      "backup_count": 1,
+      "source_sha256": "9c1a76f086061b144811903f1c93e8369a80815d179036137987d4a826c3d988",
+      "backup_sha256": "9c1a76f086061b144811903f1c93e8369a80815d179036137987d4a826c3d988",
+      "backup_byte_size": 16908
     },
     {
       "original_path": "research_model_3page_ja_revised.xlsx",
@@ -49,17 +69,41 @@
       "byte_size": 26017,
       "classification": "SHOULD_BACKUP_AND_REMOVE",
       "removal_reason": "Historical workbook generation/revision; tools/revise_research_model_xlsx.py and tools/rebuild_current_research_model.py; reconstruction_validation.json records source hashes",
-      "backup_verified": false,
-      "removed": false
+      "backup_verified": true,
+      "removed": true,
+      "source_count": 1,
+      "backup_count": 1,
+      "source_sha256": "6e0e474317aa0b2986a2c8214760569059f20a758a36ebb42792fe7127217e6d",
+      "backup_sha256": "6e0e474317aa0b2986a2c8214760569059f20a758a36ebb42792fe7127217e6d",
+      "backup_byte_size": 26017
     }
   ],
   "file_count": 5,
   "byte_count": 64074,
-  "backup_status": "PENDING",
-  "removal_status": "PENDING",
+  "backup_status": "VERIFIED",
+  "removal_status": "VERIFIED",
   "ignored_material": "KEEP; no git clean -x or ignored deletion",
   "retained_and_committed": [
     "reproducibility/config/traffic_simulation/r23_pilot_configuration/20260910_r23_reduced_pilot_v1.json"
   ],
-  "final_worktree_gate": "PENDING"
+  "final_worktree_gate": "VERIFIED",
+  "authority_commit": "29f6048de345ebde6fcd05fcd4aabd52a862f9cb",
+  "backup_verified_at": "2026-09-13T19:02:33.978872+00:00",
+  "removed_empty_directories": [
+    "reproducibility/outputs/research_model_workbook/20260909_175947",
+    "reproducibility/outputs/research_model_workbook"
+  ],
+  "worktree_measurement": {
+    "head": "29f6048de345ebde6fcd05fcd4aabd52a862f9cb",
+    "git_status_short": "",
+    "git_status": "On branch main\nYour branch is ahead of 'origin/main' by 114 commits.\n  (use \"git push\" to publish your local commits)\n\nnothing to commit, working tree clean",
+    "git_clean_nd": "",
+    "staged_count": 0,
+    "unstaged_tracked_count": 0,
+    "untracked_count": 0,
+    "measured_at_utc": "2026-09-13T19:04:54.572768+00:00",
+    "scope": "After cleanup before receipt writing; final receipt commit is checked separately in final response."
+  },
+  "remaining_dry_run_candidates": [],
+  "ignored_entries_removed": 0
 }
