@@ -1,0 +1,4 @@
+# N5 full benchmark protocol (sealed before execution)
+
+Workload: historically selected `routing_v18_n5_rank01`, depot `DEP_006`, its five customers, V18 directed routing matrix, n=5, p=1, lambda=4.0, fixed QAOA parameters `[0.1,0.1]`, exact CPU Aer statevector, shots NONE, seed 17. This measures one fixed objective evaluation of the baseline and V4 postprocessing implementations; it does not run the optimizer and does not change scientific parameters. `T_TOTAL_OBJECTIVE` starts immediately before circuit construction and ends after probability metrics; `T_AER` is simulator execution; `T_POSTPROCESS` is probability/route aggregation. Memory is process `ru_maxrss` in KiB for both implementations. One valid full run per implementation is authorized because the baseline n=5 full state probability dictionary is memory/time intensive; all attempts are retained.
+
