@@ -1,0 +1,41 @@
+{
+  "schema_version": "r24-demand-capacity-summary-v1",
+  "status": "BLOCKED",
+  "population": "39,956 scoped unique building stops",
+  "statistics": {
+    "n_customers": 39956,
+    "expected_parcel_equivalent_per_customer_day": {
+      "min": 0.16358551245615172,
+      "p01": 0.16358551245615172,
+      "p05": 0.16358551245615172,
+      "p25": 0.4619229112494537,
+      "median": 1.4722696121053653,
+      "mean": 1.5465262306041347,
+      "p75": 2.3490379421089345,
+      "p90": 3.073403375037782,
+      "p95": 3.5318118527950118,
+      "p99": 4.649841692721775,
+      "max": 7.858572993251421,
+      "sd_population": 1.1537545078593492,
+      "zero_count": 0
+    },
+    "expected_total_parcel_equivalent_per_day": 61793.0020700188,
+    "realized_current_stop_proxy_total_parcel_equivalent_on_2026_01_01": 81859,
+    "q_kg_per_vehicle": 2000,
+    "total_kg_per_day": null,
+    "capacity_only_theoretical_lower_bound_fleet_size": null,
+    "capacity_pressure": null,
+    "capacity_calculation_status": "BLOCKED_BY_STOP_PARCEL_WEIGHT_AUTHORITY_INSUFFICIENT"
+  },
+  "capacity_authority": {
+    "profile_id": "managed_urban_ev_delivery_v1",
+    "Q_kg": 2000,
+    "basis": "fixed research vehicle profile; not observed commercial payload"
+  },
+  "not_computed": [
+    "customer kg/day",
+    "Ota total kg/day",
+    "m_min_capacity",
+    "rho"
+  ]
+}
