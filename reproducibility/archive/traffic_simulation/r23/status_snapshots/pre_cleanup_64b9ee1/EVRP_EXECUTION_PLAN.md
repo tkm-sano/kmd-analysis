@@ -46,8 +46,8 @@ Residential / B2C last-mile parcel delivery。Baseline problemはE-VRPTWを基�
 | OR-Tools package | IMPLEMENTED_NOT_VALIDATED | 9.12.4544導入済み。13制約付き本番model/runner/解検証はNOT_IMPLEMENTED。 |
 | Common instance / independent EVRP validator | NOT_IMPLEMENTED | 05_src/optimizationには古い__pycache__のみ。source不在を実装済みとしない。 |
 | Reduced QUBO / Ising | ACCEPTED_SCOPED | `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY`についてR20 formulation、R21 exact QUBO validation、R22 full-state Ising equivalenceがPASS。full-EVRP QUBO/Isingは未完。 |
-| Reduced QAOA authority | SEE_CURRENT_INDEX | Reduced R23のclosure・最終結果・制約・R24 gateは[R23_STATUS.md](05_src/traffic_simulation/R23_STATUS.md)を参照する。full-EVRPの未完状態とは分離する。 |
-| Qiskit / Aer | IMPLEMENTED_SCOPED_ENVIRONMENT | isolated `evrp-quantum-temp`でPython 3.11.16、Qiskit 2.5.2、Aer 0.17.2、qiskit-optimization 0.7.0、qiskit-algorithms 0.4.0を確認。GPU/QPU evidenceではない。reduced CPU simulation benchmarkのauthorityはR23_STATUS.mdを参照する。 |
+| Reduced QAOA runner | IMPLEMENTED_NOT_FORMALLY_EXECUTED | R23 input/provenance、Qiskit operator mapping、QAOA runner、metrics、artifact writer、tests、implementation smokeを実装。statusは`READY_FOR_PILOT`で、formal pilot/baselineは未実行。 |
+| Qiskit / Aer | IMPLEMENTED_SCOPED_ENVIRONMENT | isolated `evrp-quantum-temp`でPython 3.11.16、Qiskit 2.5.2、Aer 0.17.2、qiskit-optimization 0.7.0、qiskit-algorithms 0.4.0を確認。CPU statevector smokeのみで、GPU/QPU/formal performance evidenceではない。 |
 | 運用パラメータの実測根拠 | UNKNOWN | 住宅service time、採択EVの消費率、charger利用条件等は未確定。 |
 | Tests / manifests / generated reports | PARTIAL | 既存portal 6検査PASS・旧需要13 tests PASS。下流EVRP実験の受入manifestとreportはない。 |
 

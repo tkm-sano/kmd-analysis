@@ -1,6 +1,6 @@
-## Current Reduced Problem authority
+## 現行のReduced Problem baseline（2026-09-11）
 
-R23最終状態・結果・制約とR24 gateは[R23_STATUS.md](05_src/traffic_simulation/R23_STATUS.md)を参照する。過去証拠は[archive](reproducibility/archive/traffic_simulation/r23/README.md)に保持する。
+Routing Baseline、Reduced Problem formulation、Formal A、Experiment B1、Experiment B2を完了し、最終分類は`R23_REDUCED_PROBLEM_BASELINE_ACCEPTED_WITH_LIMITATIONS`。現行仕様は[traffic-simulation specification index](05_src/traffic_simulation/specifications/README.md)、現行statusは[RESEARCH_STATUS](RESEARCH_STATUS.md)。次の科学タスクは`R23_LIMITED_SCALING_METHODOLOGY_REVIEW`であり、n≥5、Full EVRP、QPU、追加scientific executionは未実施である。
 
 
 # Tokyo Urban Delivery × Quantum Future Society
@@ -131,7 +131,8 @@ Routing Baseline
   -> R20 reduced route-ordering formulation             [FORMULATION_VERIFIED = PASS]
   -> R21_REDUCED_QUBO_VALIDATION                        [PASS]
   -> R22_REDUCED_ISING_CONVERSION                       [PASS]
-  -> R23 / R24 current state                          [See R23_STATUS.md]
+  -> R23_REDUCED_QAOA_AER_EXECUTION                     [ACCEPTED_WITH_LIMITATIONS]
+  -> R24_QUANTUM_SOLUTION_DECODE                        [NOT AUTHORIZED]
 ```
 
 このPASSは `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY` に限定される。現在のQUBOは
@@ -160,7 +161,7 @@ software simulatorであって量子実機性能やquantum advantageの証拠で
   ├─ 3. 配送条件                            [PARTIAL]
   ├─ 4. 配送シミュレーション                [PARTIAL]
   ├─ 5. 配送最適化問題                      [REDUCED PATH VALIDATED / FULL EVRP BLOCKED]
-  └─ 6. 計算手法比較                        [See R23_STATUS.md]
+  └─ 6. 計算手法比較                        [R23 ACCEPTED_WITH_LIMITATIONS]
 ```
 
 ### できるようになったこと

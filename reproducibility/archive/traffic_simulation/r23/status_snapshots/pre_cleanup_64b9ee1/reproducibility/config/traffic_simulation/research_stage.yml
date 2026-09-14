@@ -1,7 +1,7 @@
 schema_version: 2
 updated_at: "2026-09-14"
 current_stage_id: demand_and_observations
-current_summary_ja: 正式道路網とRouting Baselineは受入済み。full-EVRP本線の定義は未完。reduced branchの現行R23 authorityは05_src/traffic_simulation/R23_STATUS.mdを参照
+current_summary_ja: 正式道路網とRouting Baselineは受入済み。full-EVRP本線では需要・顧客・TW等の定義が未完である一方、独立したreduced route-ordering branchはR21/R22 PASS、R23 Reduced Problem baseline ACCEPTED_WITH_LIMITATIONS
 readiness:
   - id: specification
     label_ja: 道路網仕様
@@ -17,16 +17,16 @@ readiness:
     label_ja: 下流実験
     status: scope_split
     status_label_ja: scope別
-    note_ja: full-EVRP比較は未準備。R23の正式closure・最終結果・制約・R24 gateは05_src/traffic_simulation/R23_STATUS.mdを唯一のcurrent indexとする
+    note_ja: full-EVRP比較は未準備。R23はCODE_AUDIT_PASS_WITH_LIMITATIONS / RESULT_REPRODUCED_WITH_LIMITATIONSで文書化された制約付き完了。provenance-complete clean run PASSED、route recovery 3/3、optimizer success 2/3。rank02/03のhistorical provenance limitation、B2 artifact integrity FAILED（6件、MODERATE DERIVED_ARTIFACT_MISMATCH）は非阻害制約として保持
 blockers:
   - full-EVRP本線ではR05-R11のcustomer sampling、demand、time window、service time、depot、EV、charging station定義が未完了
   - full-EVRP R20はcapacity、time window、battery/SOC、charging、fleet、一般reachabilityを含むaccepted QUBOがなくBLOCKED
-  - R23の制約とR24 gateは05_src/traffic_simulation/R23_STATUS.mdを参照。Full-EVRPの阻害事項とは分離する
+  - reduced R23はR23_CLOSED_WITH_DOCUMENTED_LIMITATIONS。route recovery 3/3、optimizer reported success 2/3。rank01 success=false、cap reached。formal n=5 fixed-workload benchmarkはsingle run/implementationで51.2982x runtime、312.9934x peak RSSの観測値。一般化不可、n≥6非推奨。R24はR24_READY_TO_START / R24_NOT_STARTED
   - Aer結果を量子実機性能またはquantum advantageへ一般化できない
 next_actions:
   - EVRP_EXECUTION_PLAN.mdに従いfull-EVRP本線の未完Definition stageを進める
-  - 次候補はR24設計・開始前レビュー。現行authorityは05_src/traffic_simulation/R23_STATUS.md、履歴証拠はreproducibility/archive/traffic_simulation/r23/。R24は未開始
-  - R23の固定scientific protocolとarchive evidenceを保持する
+  - R23 closure authorityはreproducibility/outputs/traffic_simulation/r23_formal_closure/20260913_v1/。B2 SHA不整合6件、historical provenance、benchmark repetition制約をlimitationとして保持。R23 phaseはCLOSED_WITH_DOCUMENTED_LIMITATIONS、R24はREADY_TO_STARTだが未開始
+  - R23 pilotとformal baselineを分離し、R22 Hamiltonianとlambdaを変更しない
   - full-EVRP/Hayate評価とreduced method evidenceをscope付きで統合する
 stages:
   - id: environment

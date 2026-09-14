@@ -1,7 +1,5 @@
 # R23 runtime remediation contract
 
-Scope: supporting implementation contract. Historical evidence and prospective benchmark sections below record the remediation stage, not current status or accepted benchmark authority. See [R23_STATUS.md](../R23_STATUS.md) for current authority. The original pre-cleanup document is preserved in archive status snapshots.
-
 Authority: independent audit commit `33ae964bca0e61199621ee976a927cd4069e1723`, `20260913_v2_independent`. Original finding IDs remain unchanged; the remediation artifact maps the differently numbered request sections to them.
 
 ## Probability and output contract
@@ -34,4 +32,4 @@ Before launching, freeze a new authority manifest and new output namespace. Requ
 
 At completion retain timezone-aware start/end timestamps, native termination, final parameters, complete compact objective trace and SHA256, resource metric/units/PID/timer boundaries, source hashes rechecked against launch, stdout/stderr and process exit code. `execution_provenance.validate_formal_run_metadata` provides a fail-closed structural admission guard. Missing metadata is FORMAL_RUN_PROVENANCE_INCOMPLETE; syntactically valid metadata alone does not establish scientific acceptance. Bind all hash entries to archived files and verify them before promotion. Legacy runner outputs cannot be promoted without this contract and independent review.
 
-Current closure and R24 gate: see [R23_STATUS.md](../R23_STATUS.md).
+R24 remains NOT_AUTHORIZED_PENDING_R23_REMEDIATION. After remediation, a different task must perform `R23_N5_RUNTIME_OPTIMIZATION_CODE_AUDIT_POST_REMEDIATION_RERUN`; only a subsequent independent PASS permits phase closure and consideration of R24. No new audit PASS is declared by the remediation author.

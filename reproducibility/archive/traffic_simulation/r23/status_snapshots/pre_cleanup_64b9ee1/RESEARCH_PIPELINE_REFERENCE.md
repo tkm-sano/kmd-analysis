@@ -1013,7 +1013,7 @@ R22でvalidatedされた同一reduced Ising HamiltonianをCPU Aer上のQAOAへ�
 
 ### 現在の状態
 
-Current reduced R23/R24 status and accepted evidence: see [R23_STATUS.md](05_src/traffic_simulation/R23_STATUS.md). Full-EVRP and quantum hardware remain separate scopes.
+`R23_REDUCED_QAOA_AER_EXECUTION = READY_FOR_PILOT`。runner、Hamiltonian mapping、metrics、artifact writer、tests、implementation smokeは実装済み。governed pilotとformal 18-configuration baselineは未実行。full-EVRP QAOAとquantum hardware executionは未承認。
 
 ### 開始条件
 
@@ -1031,8 +1031,8 @@ R22 reduced PASS artifact/hash、frozen Ising coefficients、exact R21/R22 state
 
 | コマンド | 目的 | 読取/書込 | 注記 |
 |---|---|---|---|
-| Governed pilot | API/runtime/resource/artifact確認 | See current evidence index | See R23_STATUS.md; implementation smokeとは分離。 |
-| Formal baseline | 6 instances x p={1,2,3} | See current evidence index | See R23_STATUS.md; 18 optimizations。 |
+| Governed pilot | API/runtime/resource/artifact確認 | future write | `NOT RUN`; implementation smokeとは分離。 |
+| Formal baseline | 6 instances x p={1,2,3} | future write | `NOT AUTHORIZED`; 18 optimizations。 |
 
 ### 実装
 
@@ -1045,21 +1045,21 @@ R22 reduced PASS artifact/hash、frozen Ising coefficients、exact R21/R22 state
 
 | 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
 |---|---|---|---|
-| Pilot evidence | API/runtime/resource/artifact | `reproducibility/outputs/traffic_simulation/r23_qaoa_aer/<pilot_run_id>/` | See R23_STATUS.md |
-| Formal baseline | config/run/summary/manifest | same root, distinct formal run ID | See R23_STATUS.md |
-| Raw metrics | P_opt、P_feasible、energy/gaps、optimizer/circuit/timing | See current evidence index | no repair; exact referenceを使用。 |
+| Pilot evidence | API/runtime/resource/artifact | `reproducibility/outputs/traffic_simulation/r23_qaoa_aer/<pilot_run_id>/` | `NOT RUN` |
+| Formal baseline | config/run/summary/manifest | same root, distinct formal run ID | `NOT RUN` |
+| Raw metrics | P_opt、P_feasible、energy/gaps、optimizer/circuit/timing | future artifact | no repair; exact referenceを使用。 |
 
 ### 正本・信頼源
 
-[EVRP execution plan](EVRP_EXECUTION_PLAN.md)のR23 reduced governance、governance commit `5f88e6ae242357c784b246d7740a006f483e7798`、R22 formal artifact、R23 source/tests。current result/benchmark authorityは[R23_STATUS.md](05_src/traffic_simulation/R23_STATUS.md)を参照する。
+[EVRP execution plan](EVRP_EXECUTION_PLAN.md)のR23 reduced governance、governance commit `5f88e6ae242357c784b246d7740a006f483e7798`、R22 formal artifact、R23 source/tests。formal performance authorityはまだ存在しない。
 
 ### 検証
 
 | Validator・ゲート | コマンド | 合格条件 | 現在の状態 |
 |---|---|---|---|
 | Implementation smoke | R23 tests/temp artifact | operator/endianness/metrics/API semantics | `PASS / NON-AUTHORITATIVE` |
-| Governed pilot | Archived fixed protocol | n=2/n=3 p=1、runtime/termination/guards/artifact | See R23_STATUS.md |
-| Formal baseline | Archived fixed protocol | complete protocol/provenance/reproducibility | See R23_STATUS.md |
+| Governed pilot | future frozen pilot | n=2/n=3 p=1、runtime/termination/guards/artifact | `NOT RUN` |
+| Formal baseline | future frozen 18-run config | complete protocol/provenance/reproducibility | `NOT RUN` |
 
 ### 受入・DONE条件
 

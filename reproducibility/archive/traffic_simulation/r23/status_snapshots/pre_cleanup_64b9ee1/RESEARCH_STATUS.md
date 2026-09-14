@@ -11,7 +11,7 @@
 |---|---|
 | 現在工程 | 7 / 21: **観測拡充・交通需要生成** |
 | 完了工程 | 6工程 |
-| 概要 | 正式道路網とRouting Baselineは受入済み。full-EVRP本線の定義は未完。reduced branchの現行R23 authorityは05_src/traffic_simulation/R23_STATUS.mdを参照 |
+| 概要 | 正式道路網とRouting Baselineは受入済み。full-EVRP本線では需要・顧客・TW等の定義が未完である一方、独立したreduced route-ordering branchはR21/R22 PASS、R23 Reduced Problem baseline ACCEPTED_WITH_LIMITATIONS |
 
 ```mermaid
 flowchart LR
@@ -33,20 +33,20 @@ flowchart LR
 |---|---|---|
 | 道路網仕様 | **受入済み** (`accepted`) | V18 geometry/length re-acceptanceとR12-R14 Routing Baseline validationがPASS。旧v16停止記録は履歴であり現行network gateではない |
 | 正式SUMO道路網 | **受入済み** (`accepted`) | current V18 authorityでFORMAL_NETWORK_ACCEPTED=true。accepted scopeとhashはEVRP_EXECUTION_PLAN.mdを正本とする |
-| 下流実験 | **scope別** (`scope_split`) | full-EVRP比較は未準備。R23の正式closure・最終結果・制約・R24 gateは05_src/traffic_simulation/R23_STATUS.mdを唯一のcurrent indexとする |
+| 下流実験 | **scope別** (`scope_split`) | full-EVRP比較は未準備。R23はCODE_AUDIT_PASS_WITH_LIMITATIONS / RESULT_REPRODUCED_WITH_LIMITATIONSで文書化された制約付き完了。provenance-complete clean run PASSED、route recovery 3/3、optimizer success 2/3。rank02/03のhistorical provenance limitation、B2 artifact integrity FAILED（6件、MODERATE DERIVED_ARTIFACT_MISMATCH）は非阻害制約として保持 |
 
 ## 現在の阻害事項
 
 - full-EVRP本線ではR05-R11のcustomer sampling、demand、time window、service time、depot、EV、charging station定義が未完了
 - full-EVRP R20はcapacity、time window、battery/SOC、charging、fleet、一般reachabilityを含むaccepted QUBOがなくBLOCKED
-- R23の制約とR24 gateは05_src/traffic_simulation/R23_STATUS.mdを参照。Full-EVRPの阻害事項とは分離する
+- reduced R23はR23_CLOSED_WITH_DOCUMENTED_LIMITATIONS。route recovery 3/3、optimizer reported success 2/3。rank01 success=false、cap reached。formal n=5 fixed-workload benchmarkはsingle run/implementationで51.2982x runtime、312.9934x peak RSSの観測値。一般化不可、n≥6非推奨。R24はR24_READY_TO_START / R24_NOT_STARTED
 - Aer結果を量子実機性能またはquantum advantageへ一般化できない
 
 ## 次の作業
 
 1. EVRP_EXECUTION_PLAN.mdに従いfull-EVRP本線の未完Definition stageを進める
-2. 次候補はR24設計・開始前レビュー。現行authorityは05_src/traffic_simulation/R23_STATUS.md、履歴証拠はreproducibility/archive/traffic_simulation/r23/。R24は未開始
-3. R23の固定scientific protocolとarchive evidenceを保持する
+2. R23 closure authorityはreproducibility/outputs/traffic_simulation/r23_formal_closure/20260913_v1/。B2 SHA不整合6件、historical provenance、benchmark repetition制約をlimitationとして保持。R23 phaseはCLOSED_WITH_DOCUMENTED_LIMITATIONS、R24はREADY_TO_STARTだが未開始
+3. R23 pilotとformal baselineを分離し、R22 Hamiltonianとlambdaを変更しない
 4. full-EVRP/Hayate評価とreduced method evidenceをscope付きで統合する
 
 ## 全工程
