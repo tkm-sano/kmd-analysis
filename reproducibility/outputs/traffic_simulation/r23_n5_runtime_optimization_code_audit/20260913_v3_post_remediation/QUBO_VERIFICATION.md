@@ -1,0 +1,3 @@
+# QUBO verification
+
+`evaluate_direct_qubo` implements travel plus `lambda*(customer penalty + position penalty)`, while `build_expanded_qubo` expands the same squared exact-one constraints with constant `2*n*lambda`, linear `-2*lambda`, same-row/same-position quadratic penalties, and directed adjacent travel terms. The implementation excludes self transitions and does not symmetrize the directed matrix. Random algebraic spot checks over the implementation agree by construction; formal n=5 exhaustive coefficient enumeration was not run because 2^25 state enumeration is unsafe. n=5 authority records `lambda=4.0`; no optimum lookup enters QUBO construction. Assessment: `SUPPORTED_WITH_LIMITATIONS`.
