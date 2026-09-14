@@ -1,0 +1,2826 @@
+{
+  "schema_version": "r23-clean-run-v1",
+  "run_id": "routing_v18_n5_rank02_clean_v1",
+  "instance_id": "routing_v18_n5_rank02",
+  "customers": [
+    "2026-01-01-13111-bldg-130096",
+    "2026-01-01-13111-bldg-2510665",
+    "2026-01-01-13111-bldg-29995",
+    "2026-01-01-13111-bldg-37628",
+    "2026-01-01-13111-bldg-55213"
+  ],
+  "depot": "DEP_006",
+  "n": 5,
+  "p": 1,
+  "lambda": 4.0,
+  "optimizer": "COBYLA",
+  "initial_parameters": [
+    0.1,
+    0.1
+  ],
+  "final_parameters": [
+    0.06892178864797376,
+    1.0522187187995962
+  ],
+  "evaluation_cap": 300,
+  "backend": {
+    "class": "AerSimulator",
+    "method": "statevector",
+    "device": "CPU",
+    "seed_simulator": 17,
+    "seed_transpiler": 17,
+    "optimization_level": 1,
+    "optimization_level_source": "R23Config",
+    "basis_gates": "backend default",
+    "backend_dependent_settings": "backend defaults",
+    "implementation_default_used": true
+  },
+  "shots": "NONE",
+  "run_classification": "OPTIMAL_FOUND",
+  "optimizer_success": true,
+  "nfev": 112,
+  "termination": {
+    "nfev": 112,
+    "nit": null,
+    "success": true,
+    "status": 0,
+    "message": "Return from COBYLA because the trust region radius reaches its lower bound.",
+    "termination_status": "OPTIMIZER_REPORTED_SUCCESS",
+    "budget_hit": false,
+    "maxiter_boundary_reached": false,
+    "objective_cap_hit": false,
+    "termination_source": "native_optimizer",
+    "optimizer_status": 0
+  },
+  "termination_status": "OPTIMIZER_REPORTED_SUCCESS",
+  "exact_optimal_routes": [
+    [
+      "DEP_006",
+      "2026-01-01-13111-bldg-130096",
+      "2026-01-01-13111-bldg-2510665",
+      "2026-01-01-13111-bldg-55213",
+      "2026-01-01-13111-bldg-29995",
+      "2026-01-01-13111-bldg-37628",
+      "DEP_006"
+    ]
+  ],
+  "best_decoded_feasible_route": [
+    "DEP_006",
+    "2026-01-01-13111-bldg-130096",
+    "2026-01-01-13111-bldg-2510665",
+    "2026-01-01-13111-bldg-55213",
+    "2026-01-01-13111-bldg-29995",
+    "2026-01-01-13111-bldg-37628",
+    "DEP_006"
+  ],
+  "exact_optimum_found": true,
+  "independent_exact_cost": 2073.5424884489876,
+  "decoded_objective": 3.0752579343437163,
+  "P_feasible": 0.007921799425519457,
+  "P_optimal": 6.812762116377918e-05,
+  "probability_total": 1.0000000000000004,
+  "invalid_probability_mass": 0.992078200574481,
+  "renormalized": false,
+  "timing": {
+    "T_total": 365.4091319181025,
+    "T_optimizer_total": 361.9959255279973,
+    "T_objective_eval_total": 361.84736055182293,
+    "T_circuit_build_total": 0.20297559723258018,
+    "T_transpile_total": 6.248763808514923,
+    "T_Aer_total": 123.48639975721017,
+    "T_expectation_total": 224.8978383410722,
+    "T_decode_total": 0.04442300135269761,
+    "T_final_evaluation": {
+      "circuit_construction_seconds": 0.0018323096446692944,
+      "transpilation_seconds": 0.05589890433475375,
+      "aer_execution_seconds": 1.109562132973224,
+      "expectation_seconds": 2.1965865436941385,
+      "evaluation_total_seconds": 3.3687150571495295
+    },
+    "total_wall_seconds": 365.4091319181025,
+    "expectation_evaluator_seconds_accumulated": 361.84736055182293,
+    "final_evaluation": {
+      "circuit_construction_seconds": 0.0018323096446692944,
+      "transpilation_seconds": 0.05589890433475375,
+      "aer_execution_seconds": 1.109562132973224,
+      "expectation_seconds": 2.1965865436941385,
+      "evaluation_total_seconds": 3.3687150571495295
+    },
+    "inclusion_relationships": {
+      "T_optimizer_total": "inclusive of optimizer overhead and all objective evaluations",
+      "T_objective_eval_total": "inclusive of circuit build, transpilation, Aer, and expectation processing for objective evaluations",
+      "T_circuit_build_total": "exclusive component within objective evaluations",
+      "T_transpile_total": "exclusive component within objective evaluations",
+      "T_Aer_total": "exclusive component within objective evaluations",
+      "T_expectation_total": "exclusive component within objective evaluations",
+      "T_decode_total": "post-final-evaluation decode/metric processing",
+      "T_final_evaluation": "separate post-optimizer evaluation; do not add to T_optimizer_total",
+      "T_total": "wall-clock envelope; do not sum component metrics as an alternative"
+    }
+  },
+  "objective_trace": [
+    {
+      "evaluation": 1,
+      "parameters": [
+        0.1,
+        0.1
+      ],
+      "expectation": 154.9199227648949,
+      "elapsed_seconds": 3.083388308994472,
+      "timing": {
+        "circuit_construction_seconds": 0.0018066796474158764,
+        "transpilation_seconds": 0.09067548485472798,
+        "aer_execution_seconds": 1.0666861291974783,
+        "expectation_seconds": 1.8606907804496586,
+        "evaluation_total_seconds": 3.025095210876316
+      },
+      "cumulative_elapsed_seconds": 3.0963844498619437,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.0018066796474158764,
+        "transpile": 0.09067548485472798,
+        "aer": 1.0666861291974783,
+        "expectation": 1.8606907804496586,
+        "objective_eval": 3.083388308994472
+      }
+    },
+    {
+      "evaluation": 2,
+      "parameters": [
+        1.1,
+        0.1
+      ],
+      "expectation": 155.21789328389164,
+      "elapsed_seconds": 3.0135717471130192,
+      "timing": {
+        "circuit_construction_seconds": 0.001801499631255865,
+        "transpilation_seconds": 0.05555720301344991,
+        "aer_execution_seconds": 1.0100630992092192,
+        "expectation_seconds": 1.8836989840492606,
+        "evaluation_total_seconds": 2.956016832962632
+      },
+      "cumulative_elapsed_seconds": 6.1109032719396055,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.0036081792786717415,
+        "transpile": 0.1462326878681779,
+        "aer": 2.0767492284066975,
+        "expectation": 3.7443897644989192,
+        "objective_eval": 6.096960056107491
+      }
+    },
+    {
+      "evaluation": 3,
+      "parameters": [
+        0.1,
+        1.1
+      ],
+      "expectation": 81.38803995520578,
+      "elapsed_seconds": 3.1783448550850153,
+      "timing": {
+        "circuit_construction_seconds": 0.0017253290861845016,
+        "transpilation_seconds": 0.05382646294310689,
+        "aer_execution_seconds": 1.1696122791618109,
+        "expectation_seconds": 1.890815972816199,
+        "evaluation_total_seconds": 3.1200763271190226
+      },
+      "cumulative_elapsed_seconds": 9.289562427904457,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.005333508364856243,
+        "transpile": 0.20005915081128478,
+        "aer": 3.2463615075685084,
+        "expectation": 5.635205737315118,
+        "objective_eval": 9.275304911192507
+      }
+    },
+    {
+      "evaluation": 4,
+      "parameters": [
+        0.09594777039320776,
+        2.0999917896839024
+      ],
+      "expectation": 317.5850635854533,
+      "elapsed_seconds": 3.1199056752957404,
+      "timing": {
+        "circuit_construction_seconds": 0.0017029386945068836,
+        "transpilation_seconds": 0.05331292096525431,
+        "aer_execution_seconds": 0.9513349588960409,
+        "expectation_seconds": 2.0492050261236727,
+        "evaluation_total_seconds": 3.0602079103700817
+      },
+      "cumulative_elapsed_seconds": 12.410989402793348,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.007036447059363127,
+        "transpile": 0.2533720717765391,
+        "aer": 4.197696466464549,
+        "expectation": 7.684410763438791,
+        "objective_eval": 12.395210586488247
+      }
+    },
+    {
+      "evaluation": 5,
+      "parameters": [
+        -0.2975391850251583,
+        0.7967466465650663
+      ],
+      "expectation": 155.37976321921732,
+      "elapsed_seconds": 3.1911812839098275,
+      "timing": {
+        "circuit_construction_seconds": 0.0017446000128984451,
+        "transpilation_seconds": 0.05519489198923111,
+        "aer_execution_seconds": 1.1303081749938428,
+        "expectation_seconds": 1.9409101251512766,
+        "evaluation_total_seconds": 3.1329071559011936
+      },
+      "cumulative_elapsed_seconds": 15.603578634094447,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.008781047072261572,
+        "transpile": 0.3085669637657702,
+        "aer": 5.328004641458392,
+        "expectation": 9.625320888590068,
+        "objective_eval": 15.586391870398074
+      }
+    },
+    {
+      "evaluation": 6,
+      "parameters": [
+        0.17581333835873345,
+        1.0006152037437106
+      ],
+      "expectation": 197.89762837216904,
+      "elapsed_seconds": 2.9441831656731665,
+      "timing": {
+        "circuit_construction_seconds": 0.0018014796078205109,
+        "transpilation_seconds": 0.05511907022446394,
+        "aer_execution_seconds": 1.0173988491296768,
+        "expectation_seconds": 1.8055999660864472,
+        "evaluation_total_seconds": 2.8845807411707938
+      },
+      "cumulative_elapsed_seconds": 18.548767815809697,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.010582526680082083,
+        "transpile": 0.36368603399023414,
+        "aer": 6.345403490588069,
+        "expectation": 11.430920854676515,
+        "objective_eval": 18.53057503607124
+      }
+    },
+    {
+      "evaluation": 7,
+      "parameters": [
+        -0.018583265600477752,
+        1.3200863674095389
+      ],
+      "expectation": 226.84280464696099,
+      "elapsed_seconds": 3.199585358146578,
+      "timing": {
+        "circuit_construction_seconds": 0.0018208096735179424,
+        "transpilation_seconds": 0.05401997407898307,
+        "aer_execution_seconds": 1.0945742400363088,
+        "expectation_seconds": 1.9861956122331321,
+        "evaluation_total_seconds": 3.141838774085045
+      },
+      "cumulative_elapsed_seconds": 21.74990271171555,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.012403336353600025,
+        "transpile": 0.4177060080692172,
+        "aer": 7.439977730624378,
+        "expectation": 13.417116466909647,
+        "objective_eval": 21.73016039421782
+      }
+    },
+    {
+      "evaluation": 8,
+      "parameters": [
+        0.1776243006128192,
+        1.0369566184729064
+      ],
+      "expectation": 194.6277377697716,
+      "elapsed_seconds": 3.026986526325345,
+      "timing": {
+        "circuit_construction_seconds": 0.001917290035635233,
+        "transpilation_seconds": 0.05580425402149558,
+        "aer_execution_seconds": 1.042359215207398,
+        "expectation_seconds": 1.8646200080402195,
+        "evaluation_total_seconds": 2.968456666916609
+      },
+      "cumulative_elapsed_seconds": 24.778648047707975,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.014320626389235258,
+        "transpile": 0.4735102620907128,
+        "aer": 8.482336945831776,
+        "expectation": 15.281736474949867,
+        "objective_eval": 24.757146920543164
+      }
+    },
+    {
+      "evaluation": 9,
+      "parameters": [
+        0.13152169076354678,
+        1.1388121503064097
+      ],
+      "expectation": 161.5840461669036,
+      "elapsed_seconds": 3.1333161457441747,
+      "timing": {
+        "circuit_construction_seconds": 0.0018164808861911297,
+        "transpilation_seconds": 0.05407564481720328,
+        "aer_execution_seconds": 1.0991637837141752,
+        "expectation_seconds": 1.9153138329274952,
+        "evaluation_total_seconds": 3.0748281069099903
+      },
+      "cumulative_elapsed_seconds": 27.9129394791089,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.016137107275426388,
+        "transpile": 0.5275859069079161,
+        "aer": 9.581500729545951,
+        "expectation": 17.19705030787736,
+        "objective_eval": 27.89046306628734
+      }
+    },
+    {
+      "evaluation": 10,
+      "parameters": [
+        0.0037284983928193294,
+        1.072948235209166
+      ],
+      "expectation": 132.7897951886844,
+      "elapsed_seconds": 3.313235635869205,
+      "timing": {
+        "circuit_construction_seconds": 0.001777030061930418,
+        "transpilation_seconds": 0.053917963989079,
+        "aer_execution_seconds": 1.1007749820128083,
+        "expectation_seconds": 2.0927623622119427,
+        "evaluation_total_seconds": 3.2541719642467797
+      },
+      "cumulative_elapsed_seconds": 31.227579202968627,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.017914137337356806,
+        "transpile": 0.5815038708969951,
+        "aer": 10.68227571155876,
+        "expectation": 19.289812670089304,
+        "objective_eval": 31.203698702156544
+      }
+    },
+    {
+      "evaluation": 11,
+      "parameters": [
+        0.10059493975385239,
+        1.149996460341601
+      ],
+      "expectation": 82.04401878921675,
+      "elapsed_seconds": 3.2049847547896206,
+      "timing": {
+        "circuit_construction_seconds": 0.0017978600226342678,
+        "transpilation_seconds": 0.055816594045609236,
+        "aer_execution_seconds": 1.0839377399533987,
+        "expectation_seconds": 1.9840638278983533,
+        "evaluation_total_seconds": 3.1309773921966553
+      },
+      "cumulative_elapsed_seconds": 34.43423706712201,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.019711997359991074,
+        "transpile": 0.6373204649426043,
+        "aer": 11.766213451512158,
+        "expectation": 21.273876497987658,
+        "objective_eval": 34.408683456946164
+      }
+    },
+    {
+      "evaluation": 12,
+      "parameters": [
+        0.12498361461742319,
+        1.0990950134542004
+      ],
+      "expectation": 152.3330123338675,
+      "elapsed_seconds": 3.111943958327174,
+      "timing": {
+        "circuit_construction_seconds": 0.0017497800290584564,
+        "transpilation_seconds": 0.05335459113121033,
+        "aer_execution_seconds": 0.9854006627574563,
+        "expectation_seconds": 2.0081150489859283,
+        "evaluation_total_seconds": 3.052881496027112
+      },
+      "cumulative_elapsed_seconds": 37.547284841071814,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.02146177738904953,
+        "transpile": 0.6906750560738146,
+        "aer": 12.751614114269614,
+        "expectation": 23.281991546973586,
+        "objective_eval": 37.52062741527334
+      }
+    },
+    {
+      "evaluation": 13,
+      "parameters": [
+        0.09981900269084008,
+        1.0950032770765155
+      ],
+      "expectation": 81.07516217413026,
+      "elapsed_seconds": 3.105258619878441,
+      "timing": {
+        "circuit_construction_seconds": 0.0017732689157128334,
+        "transpilation_seconds": 0.054671297781169415,
+        "aer_execution_seconds": 1.1425037593580782,
+        "expectation_seconds": 1.8432194199413061,
+        "evaluation_total_seconds": 3.0469901328906417
+      },
+      "cumulative_elapsed_seconds": 40.65312884375453,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.023235046304762363,
+        "transpile": 0.745346353854984,
+        "aer": 13.894117873627692,
+        "expectation": 25.125210966914892,
+        "objective_eval": 40.62588603515178
+      }
+    },
+    {
+      "evaluation": 14,
+      "parameters": [
+        0.0898200052316376,
+        1.0951448744312309
+      ],
+      "expectation": 56.56570629270092,
+      "elapsed_seconds": 3.19354499084875,
+      "timing": {
+        "circuit_construction_seconds": 0.0017675799317657948,
+        "transpilation_seconds": 0.054368026088923216,
+        "aer_execution_seconds": 1.1088832160457969,
+        "expectation_seconds": 1.9658429068513215,
+        "evaluation_total_seconds": 3.1357156061567366
+      },
+      "cumulative_elapsed_seconds": 43.84816103288904,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.025002626236528158,
+        "transpile": 0.7997143799439073,
+        "aer": 15.00300108967349,
+        "expectation": 27.091053873766214,
+        "objective_eval": 43.81943102600053
+      }
+    },
+    {
+      "evaluation": 15,
+      "parameters": [
+        0.06982114447044147,
+        1.095358341651875
+      ],
+      "expectation": 36.09969440484046,
+      "elapsed_seconds": 3.0734214750118554,
+      "timing": {
+        "circuit_construction_seconds": 0.0017236187122762203,
+        "transpilation_seconds": 0.05231239506974816,
+        "aer_execution_seconds": 1.0630589658394456,
+        "expectation_seconds": 1.894690309651196,
+        "evaluation_total_seconds": 3.01614489313215
+      },
+      "cumulative_elapsed_seconds": 46.92279256507754,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.02672624494880438,
+        "transpile": 0.8520267750136554,
+        "aer": 16.066060055512935,
+        "expectation": 28.98574418341741,
+        "objective_eval": 46.892852501012385
+      }
+    },
+    {
+      "evaluation": 16,
+      "parameters": [
+        0.06299150217917213,
+        1.0765605761949568
+      ],
+      "expectation": 36.92739113533813,
+      "elapsed_seconds": 3.042447016108781,
+      "timing": {
+        "circuit_construction_seconds": 0.0020468407310545444,
+        "transpilation_seconds": 0.0543000060133636,
+        "aer_execution_seconds": 1.0512724909931421,
+        "expectation_seconds": 1.8724819477647543,
+        "evaluation_total_seconds": 2.9845765503123403
+      },
+      "cumulative_elapsed_seconds": 49.96659725904465,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.028773085679858923,
+        "transpile": 0.906326781027019,
+        "aer": 17.117332546506077,
+        "expectation": 30.858226131182164,
+        "objective_eval": 49.935299517121166
+      }
+    },
+    {
+      "evaluation": 17,
+      "parameters": [
+        0.060557400698385416,
+        1.0991243808611362
+      ],
+      "expectation": 38.677395603459715,
+      "elapsed_seconds": 3.0126322829164565,
+      "timing": {
+        "circuit_construction_seconds": 0.0017943400889635086,
+        "transpilation_seconds": 0.05473319813609123,
+        "aer_execution_seconds": 1.0141254980117083,
+        "expectation_seconds": 1.8784458902664483,
+        "evaluation_total_seconds": 2.9538528728298843
+      },
+      "cumulative_elapsed_seconds": 52.98043506778777,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.03056742576882243,
+        "transpile": 0.9610599791631103,
+        "aer": 18.131458044517785,
+        "expectation": 32.73667202144861,
+        "objective_eval": 52.94793180003762
+      }
+    },
+    {
+      "evaluation": 18,
+      "parameters": [
+        0.07473083240244395,
+        1.0944123160653558
+      ],
+      "expectation": 37.35142701829726,
+      "elapsed_seconds": 3.1105409958399832,
+      "timing": {
+        "circuit_construction_seconds": 0.0020644012838602066,
+        "transpilation_seconds": 0.054177625104784966,
+        "aer_execution_seconds": 1.039064183831215,
+        "expectation_seconds": 1.9515844280831516,
+        "evaluation_total_seconds": 3.0520358169451356
+      },
+      "cumulative_elapsed_seconds": 56.09222106076777,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.03263182705268264,
+        "transpile": 1.0152376042678952,
+        "aer": 19.170522228349,
+        "expectation": 34.688256449531764,
+        "objective_eval": 56.058472795877606
+      }
+    },
+    {
+      "evaluation": 19,
+      "parameters": [
+        0.07005765086707129,
+        1.0965857636348757
+      ],
+      "expectation": 36.150878700397016,
+      "elapsed_seconds": 3.200661337003112,
+      "timing": {
+        "circuit_construction_seconds": 0.0019505713135004044,
+        "transpilation_seconds": 0.05985980620607734,
+        "aer_execution_seconds": 1.0731664691120386,
+        "expectation_seconds": 2.001774621196091,
+        "evaluation_total_seconds": 3.140888150781393
+      },
+      "cumulative_elapsed_seconds": 59.294079024810344,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.03458239836618304,
+        "transpile": 1.0750974104739726,
+        "aer": 20.24368869746104,
+        "expectation": 36.690031070727855,
+        "objective_eval": 59.25913413288072
+      }
+    },
+    {
+      "evaluation": 20,
+      "parameters": [
+        0.06732214022926106,
+        1.0954288951958138
+      ],
+      "expectation": 36.22855243181725,
+      "elapsed_seconds": 3.286248743068427,
+      "timing": {
+        "circuit_construction_seconds": 0.001806359738111496,
+        "transpilation_seconds": 0.055634843185544014,
+        "aer_execution_seconds": 1.157465189229697,
+        "expectation_seconds": 2.0083818370476365,
+        "evaluation_total_seconds": 3.2280121059156954
+      },
+      "cumulative_elapsed_seconds": 62.581853145733476,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.03638875810429454,
+        "transpile": 1.1307322536595166,
+        "aer": 21.401153886690736,
+        "expectation": 38.69841290777549,
+        "objective_eval": 62.545382875949144
+      }
+    },
+    {
+      "evaluation": 21,
+      "parameters": [
+        0.07051953657962473,
+        1.0946426263021511
+      ],
+      "expectation": 36.13033101137188,
+      "elapsed_seconds": 3.1399437841027975,
+      "timing": {
+        "circuit_construction_seconds": 0.0017624404281377792,
+        "transpilation_seconds": 0.05383496405556798,
+        "aer_execution_seconds": 1.0738332830369473,
+        "expectation_seconds": 1.9471314228139818,
+        "evaluation_total_seconds": 3.0812505851499736
+      },
+      "cumulative_elapsed_seconds": 65.72293573711067,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.03815119853243232,
+        "transpile": 1.1845672177150846,
+        "aer": 22.474987169727683,
+        "expectation": 40.64554433058947,
+        "objective_eval": 65.68532666005194
+      }
+    },
+    {
+      "evaluation": 22,
+      "parameters": [
+        0.06888758034880205,
+        1.0949999312296108
+      ],
+      "expectation": 36.08028499489646,
+      "elapsed_seconds": 2.971548656001687,
+      "timing": {
+        "circuit_construction_seconds": 0.0018949201330542564,
+        "transpilation_seconds": 0.05467315763235092,
+        "aer_execution_seconds": 0.9608505773358047,
+        "expectation_seconds": 1.8900904622860253,
+        "evaluation_total_seconds": 2.9122549425810575
+      },
+      "cumulative_elapsed_seconds": 68.69583288999274,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.040046118665486574,
+        "transpile": 1.2392403753474355,
+        "aer": 23.435837747063488,
+        "expectation": 42.5356347928755,
+        "objective_eval": 68.65687531605363
+      }
+    },
+    {
+      "evaluation": 23,
+      "parameters": [
+        0.06803195376818115,
+        1.0955175248487128
+      ],
+      "expectation": 36.14775341761019,
+      "elapsed_seconds": 3.098533278796822,
+      "timing": {
+        "circuit_construction_seconds": 0.001737348735332489,
+        "transpilation_seconds": 0.053420151118189096,
+        "aer_execution_seconds": 0.9961478789336979,
+        "expectation_seconds": 1.98427227512002,
+        "evaluation_total_seconds": 3.0397759382613003
+      },
+      "cumulative_elapsed_seconds": 71.79571861494333,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.04178346740081906,
+        "transpile": 1.2926605264656246,
+        "aer": 24.431985625997186,
+        "expectation": 44.51990706799552,
+        "objective_eval": 71.75540859485045
+      }
+    },
+    {
+      "evaluation": 24,
+      "parameters": [
+        0.06897500874718926,
+        1.0945076342916196
+      ],
+      "expectation": 36.06312233357181,
+      "elapsed_seconds": 3.126575279980898,
+      "timing": {
+        "circuit_construction_seconds": 0.0017877700738608837,
+        "transpilation_seconds": 0.05437401728704572,
+        "aer_execution_seconds": 1.0977634731680155,
+        "expectation_seconds": 1.897460710722953,
+        "evaluation_total_seconds": 3.057509654201567
+      },
+      "cumulative_elapsed_seconds": 74.92346901167184,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.04357123747467995,
+        "transpile": 1.3470345437526703,
+        "aer": 25.5297490991652,
+        "expectation": 46.41736777871847,
+        "objective_eval": 74.88198387483135
+      }
+    },
+    {
+      "evaluation": 25,
+      "parameters": [
+        0.06888068276106984,
+        1.0940166122876904
+      ],
+      "expectation": 36.050535336158745,
+      "elapsed_seconds": 3.367956904694438,
+      "timing": {
+        "circuit_construction_seconds": 0.001984971109777689,
+        "transpilation_seconds": 0.05483164871111512,
+        "aer_execution_seconds": 1.1457806248217821,
+        "expectation_seconds": 2.1025335676968098,
+        "evaluation_total_seconds": 3.3096460779197514
+      },
+      "cumulative_elapsed_seconds": 78.29275015508756,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.045556208584457636,
+        "transpile": 1.4018661924637854,
+        "aer": 26.675529723986983,
+        "expectation": 48.51990134641528,
+        "objective_eval": 78.24994077952579
+      }
+    },
+    {
+      "evaluation": 26,
+      "parameters": [
+        0.06852592696524831,
+        1.0936642654055828
+      ],
+      "expectation": 36.05460133647905,
+      "elapsed_seconds": 3.454200054053217,
+      "timing": {
+        "circuit_construction_seconds": 0.0017850291915237904,
+        "transpilation_seconds": 0.054871678818017244,
+        "aer_execution_seconds": 1.122818699106574,
+        "expectation_seconds": 2.2114669722504914,
+        "evaluation_total_seconds": 3.3957826462574303
+      },
+      "cumulative_elapsed_seconds": 81.74848833680153,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.047341237775981426,
+        "transpile": 1.4567378712818027,
+        "aer": 27.798348423093557,
+        "expectation": 50.73136831866577,
+        "objective_eval": 81.704140833579
+      }
+    },
+    {
+      "evaluation": 27,
+      "parameters": [
+        0.06900343826205213,
+        1.0939930307911605
+      ],
+      "expectation": 36.04699330635762,
+      "elapsed_seconds": 3.118052942212671,
+      "timing": {
+        "circuit_construction_seconds": 0.001961340196430683,
+        "transpilation_seconds": 0.054573188070207834,
+        "aer_execution_seconds": 1.0987328384071589,
+        "expectation_seconds": 1.9002759060822427,
+        "evaluation_total_seconds": 3.060034155845642
+      },
+      "cumulative_elapsed_seconds": 84.86719808308408,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.04930257797241211,
+        "transpile": 1.5113110593520105,
+        "aer": 28.897081261500716,
+        "expectation": 52.631644224748015,
+        "objective_eval": 84.82219377579167
+      }
+    },
+    {
+      "evaluation": 28,
+      "parameters": [
+        0.06915565595019672,
+        1.0937947134308112
+      ],
+      "expectation": 36.03915931987869,
+      "elapsed_seconds": 3.151347632985562,
+      "timing": {
+        "circuit_construction_seconds": 0.0017838501371443272,
+        "transpilation_seconds": 0.05544674210250378,
+        "aer_execution_seconds": 1.0858154078014195,
+        "expectation_seconds": 1.9470122698694468,
+        "evaluation_total_seconds": 3.0934231467545033
+      },
+      "cumulative_elapsed_seconds": 88.01970901200548,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.05108642810955644,
+        "transpile": 1.5667578014545143,
+        "aer": 29.982896669302136,
+        "expectation": 54.57865649461746,
+        "objective_eval": 87.97354140877724
+      }
+    },
+    {
+      "evaluation": 29,
+      "parameters": [
+        0.06954302838571993,
+        1.0934785764412058
+      ],
+      "expectation": 36.03321746618758,
+      "elapsed_seconds": 3.053647629916668,
+      "timing": {
+        "circuit_construction_seconds": 0.0017547598108649254,
+        "transpilation_seconds": 0.052987897768616676,
+        "aer_execution_seconds": 1.0108530190773308,
+        "expectation_seconds": 1.925641033332795,
+        "evaluation_total_seconds": 2.995705933775753
+      },
+      "cumulative_elapsed_seconds": 91.07455558795482,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.05284118792042136,
+        "transpile": 1.619745699223131,
+        "aer": 30.993749688379467,
+        "expectation": 56.50429752795026,
+        "objective_eval": 91.0271890386939
+      }
+    },
+    {
+      "evaluation": 30,
+      "parameters": [
+        0.06928282279674759,
+        1.0930516185375811
+      ],
+      "expectation": 36.016924355824415,
+      "elapsed_seconds": 3.22322502406314,
+      "timing": {
+        "circuit_construction_seconds": 0.0019669309258461,
+        "transpilation_seconds": 0.055605262983590364,
+        "aer_execution_seconds": 1.0450645838864148,
+        "expectation_seconds": 2.0577306831255555,
+        "evaluation_total_seconds": 3.1654318692162633
+      },
+      "cumulative_elapsed_seconds": 94.2990854489617,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.05480811884626746,
+        "transpile": 1.6753509622067213,
+        "aer": 32.03881427226588,
+        "expectation": 58.56202821107581,
+        "objective_eval": 94.25041406275705
+      }
+    },
+    {
+      "evaluation": 31,
+      "parameters": [
+        0.06912499523088797,
+        1.0925771815455
+      ],
+      "expectation": 36.00335320620928,
+      "elapsed_seconds": 3.2819992429576814,
+      "timing": {
+        "circuit_construction_seconds": 0.001959390938282013,
+        "transpilation_seconds": 0.054088163655251265,
+        "aer_execution_seconds": 1.0139609049074352,
+        "expectation_seconds": 2.1483052861876786,
+        "evaluation_total_seconds": 3.223440494388342
+      },
+      "cumulative_elapsed_seconds": 97.58240856882185,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.056767509784549475,
+        "transpile": 1.7294391258619726,
+        "aer": 33.05277517717332,
+        "expectation": 60.71033349726349,
+        "objective_eval": 97.53241330571473
+      }
+    },
+    {
+      "evaluation": 32,
+      "parameters": [
+        0.06921336438336578,
+        1.0915810937517336
+      ],
+      "expectation": 35.974110898586034,
+      "elapsed_seconds": 3.4873173111118376,
+      "timing": {
+        "circuit_construction_seconds": 0.0017197690904140472,
+        "transpilation_seconds": 0.054896588902920485,
+        "aer_execution_seconds": 1.2502038409002125,
+        "expectation_seconds": 2.1179770110175014,
+        "evaluation_total_seconds": 3.4291446241550148
+      },
+      "cumulative_elapsed_seconds": 101.07092714682221,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.05848727887496352,
+        "transpile": 1.784335714764893,
+        "aer": 34.30297901807353,
+        "expectation": 62.82831050828099,
+        "objective_eval": 101.01973061682656
+      }
+    },
+    {
+      "evaluation": 33,
+      "parameters": [
+        0.06933544269358724,
+        1.0895848230070264
+      ],
+      "expectation": 35.9186583530355,
+      "elapsed_seconds": 3.2936492348089814,
+      "timing": {
+        "circuit_construction_seconds": 0.0020642313174903393,
+        "transpilation_seconds": 0.05414842488244176,
+        "aer_execution_seconds": 1.1732580629177392,
+        "expectation_seconds": 2.0010705729946494,
+        "evaluation_total_seconds": 3.2354566380381584
+      },
+      "cumulative_elapsed_seconds": 104.36589617002755,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.06055151019245386,
+        "transpile": 1.8384841396473348,
+        "aer": 35.47623708099127,
+        "expectation": 64.82938108127564,
+        "objective_eval": 104.31337985163555
+      }
+    },
+    {
+      "evaluation": 34,
+      "parameters": [
+        0.06774875771037049,
+        1.0859129800414253
+      ],
+      "expectation": 35.90214407124749,
+      "elapsed_seconds": 3.3767126980237663,
+      "timing": {
+        "circuit_construction_seconds": 0.0017741397023200989,
+        "transpilation_seconds": 0.057429872918874025,
+        "aer_execution_seconds": 1.1893520099110901,
+        "expectation_seconds": 2.0645902580581605,
+        "evaluation_total_seconds": 3.3176186559721828
+      },
+      "cumulative_elapsed_seconds": 107.74390104366466,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.06232564989477396,
+        "transpile": 1.8959140125662088,
+        "aer": 36.66558909090236,
+        "expectation": 66.8939713393338,
+        "objective_eval": 107.69009254965931
+      }
+    },
+    {
+      "evaluation": 35,
+      "parameters": [
+        0.07130272915920223,
+        1.0840774182906556
+      ],
+      "expectation": 35.95885050557942,
+      "elapsed_seconds": 3.3047576653771102,
+      "timing": {
+        "circuit_construction_seconds": 0.001733310054987669,
+        "transpilation_seconds": 0.05486803920939565,
+        "aer_execution_seconds": 1.2944889119826257,
+        "expectation_seconds": 1.888513698708266,
+        "evaluation_total_seconds": 3.244972458574921
+      },
+      "cumulative_elapsed_seconds": 111.04986196476966,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.06405895994976163,
+        "transpile": 1.9507820517756045,
+        "aer": 37.960078002884984,
+        "expectation": 68.78248503804207,
+        "objective_eval": 110.99485021503642
+      }
+    },
+    {
+      "evaluation": 36,
+      "parameters": [
+        0.06576574006938952,
+        1.0861730589439882
+      ],
+      "expectation": 36.2639161081413,
+      "elapsed_seconds": 3.406819310039282,
+      "timing": {
+        "circuit_construction_seconds": 0.0017413990572094917,
+        "transpilation_seconds": 0.05282525811344385,
+        "aer_execution_seconds": 1.069091814570129,
+        "expectation_seconds": 2.21979293320328,
+        "evaluation_total_seconds": 3.3476819582283497
+      },
+      "cumulative_elapsed_seconds": 114.45774078089744,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.06580035900697112,
+        "transpile": 2.0036073098890483,
+        "aer": 39.02916981745511,
+        "expectation": 71.00227797124535,
+        "objective_eval": 114.4016695250757
+      }
+    },
+    {
+      "evaluation": 37,
+      "parameters": [
+        0.0676837379847298,
+        1.08541722563118
+      ],
+      "expectation": 35.89666532658495,
+      "elapsed_seconds": 3.4622713420540094,
+      "timing": {
+        "circuit_construction_seconds": 0.0017510000616312027,
+        "transpilation_seconds": 0.05645427806302905,
+        "aer_execution_seconds": 1.0818646233528852,
+        "expectation_seconds": 2.2589719370007515,
+        "evaluation_total_seconds": 3.403375940863043
+      },
+      "cumulative_elapsed_seconds": 117.92058299575001,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.06755135906860232,
+        "transpile": 2.0600615879520774,
+        "aer": 40.111034440808,
+        "expectation": 73.2612499082461,
+        "objective_eval": 117.86394086712971
+      }
+    },
+    {
+      "evaluation": 38,
+      "parameters": [
+        0.06866556964858746,
+        1.0852274716224042
+      ],
+      "expectation": 35.81489092481948,
+      "elapsed_seconds": 3.229488623328507,
+      "timing": {
+        "circuit_construction_seconds": 0.0018193400464951992,
+        "transpilation_seconds": 0.054436357226222754,
+        "aer_execution_seconds": 1.07642642268911,
+        "expectation_seconds": 2.0344401518814266,
+        "evaluation_total_seconds": 3.171928789000958
+      },
+      "cumulative_elapsed_seconds": 121.1512213749811,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.06937069911509752,
+        "transpile": 2.1144979451783,
+        "aer": 41.18746086349711,
+        "expectation": 75.29569006012753,
+        "objective_eval": 121.09342949045822
+      }
+    },
+    {
+      "evaluation": 39,
+      "parameters": [
+        0.06963080756587432,
+        1.0849660987794543
+      ],
+      "expectation": 35.80492406098088,
+      "elapsed_seconds": 3.1152030401863158,
+      "timing": {
+        "circuit_construction_seconds": 0.002067090943455696,
+        "transpilation_seconds": 0.05441393610090017,
+        "aer_execution_seconds": 0.9813366159796715,
+        "expectation_seconds": 2.0165515248663723,
+        "evaluation_total_seconds": 3.0591713851317763
+      },
+      "cumulative_elapsed_seconds": 124.26773028168827,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.07143779005855322,
+        "transpile": 2.1689118812792003,
+        "aer": 42.16879747947678,
+        "expectation": 77.3122415849939,
+        "objective_eval": 124.20863253064454
+      }
+    },
+    {
+      "evaluation": 40,
+      "parameters": [
+        0.06942272141722723,
+        1.0839879882771382
+      ],
+      "expectation": 35.77548350640312,
+      "elapsed_seconds": 3.1397549230605364,
+      "timing": {
+        "circuit_construction_seconds": 0.001757659949362278,
+        "transpilation_seconds": 0.05273583810776472,
+        "aer_execution_seconds": 1.119433468207717,
+        "expectation_seconds": 1.903403117787093,
+        "evaluation_total_seconds": 3.0816615070216358
+      },
+      "cumulative_elapsed_seconds": 127.40870190085843,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.0731954500079155,
+        "transpile": 2.221647719386965,
+        "aer": 43.2882309476845,
+        "expectation": 79.21564470278099,
+        "objective_eval": 127.34838745370507
+      }
+    },
+    {
+      "evaluation": 41,
+      "parameters": [
+        0.06948992429094301,
+        1.082990248945567
+      ],
+      "expectation": 35.75309732337395,
+      "elapsed_seconds": 3.2604728899896145,
+      "timing": {
+        "circuit_construction_seconds": 0.001737428829073906,
+        "transpilation_seconds": 0.05196382291615009,
+        "aer_execution_seconds": 1.193828172981739,
+        "expectation_seconds": 1.9479005197063088,
+        "evaluation_total_seconds": 3.1999429599381983
+      },
+      "cumulative_elapsed_seconds": 130.67038297792897,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.0749328788369894,
+        "transpile": 2.273611542303115,
+        "aer": 44.482059120666236,
+        "expectation": 81.1635452224873,
+        "objective_eval": 130.6088603436947
+      }
+    },
+    {
+      "evaluation": 42,
+      "parameters": [
+        0.07074790489684518,
+        1.0814354226545704
+      ],
+      "expectation": 35.814029161186056,
+      "elapsed_seconds": 3.056457058992237,
+      "timing": {
+        "circuit_construction_seconds": 0.0017571388743817806,
+        "transpilation_seconds": 0.05422962503507733,
+        "aer_execution_seconds": 1.0019462979398668,
+        "expectation_seconds": 1.9353036708198488,
+        "evaluation_total_seconds": 2.9980347310192883
+      },
+      "cumulative_elapsed_seconds": 133.7280598427169,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.07669001771137118,
+        "transpile": 2.3278411673381925,
+        "aer": 45.4840054186061,
+        "expectation": 83.09884889330715,
+        "objective_eval": 133.66531740268692
+      }
+    },
+    {
+      "evaluation": 43,
+      "parameters": [
+        0.06854240479845354,
+        1.0826705509453347
+      ],
+      "expectation": 35.75782155122913,
+      "elapsed_seconds": 2.9886201778426766,
+      "timing": {
+        "circuit_construction_seconds": 0.0017885402776300907,
+        "transpilation_seconds": 0.05456878803670406,
+        "aer_execution_seconds": 1.0590345980599523,
+        "expectation_seconds": 1.809851008001715,
+        "evaluation_total_seconds": 2.9302689409814775
+      },
+      "cumulative_elapsed_seconds": 136.71785407792777,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.07847855798900127,
+        "transpile": 2.3824099553748965,
+        "aer": 46.543040016666055,
+        "expectation": 84.90869990130886,
+        "objective_eval": 136.6539375805296
+      }
+    },
+    {
+      "evaluation": 44,
+      "parameters": [
+        0.06973691094955031,
+        1.082555510414413
+      ],
+      "expectation": 35.75145345604224,
+      "elapsed_seconds": 3.091334007214755,
+      "timing": {
+        "circuit_construction_seconds": 0.0018011899664998055,
+        "transpilation_seconds": 0.055008229333907366,
+        "aer_execution_seconds": 1.0606196667067707,
+        "expectation_seconds": 1.9112140499055386,
+        "evaluation_total_seconds": 3.033082150388509
+      },
+      "cumulative_elapsed_seconds": 139.81037196097896,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.08027974795550108,
+        "transpile": 2.437418184708804,
+        "aer": 47.603659683372825,
+        "expectation": 86.8199139512144,
+        "objective_eval": 139.74527158774436
+      }
+    },
+    {
+      "evaluation": 45,
+      "parameters": [
+        0.07023126968831167,
+        1.0824806142368717
+      ],
+      "expectation": 35.78188585559681,
+      "elapsed_seconds": 3.10574415512383,
+      "timing": {
+        "circuit_construction_seconds": 0.0017991396598517895,
+        "transpilation_seconds": 0.055889524053782225,
+        "aer_execution_seconds": 1.047007052693516,
+        "expectation_seconds": 1.9371957606635988,
+        "evaluation_total_seconds": 3.046399091836065
+      },
+      "cumulative_elapsed_seconds": 142.91741528408602,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.08207888761535287,
+        "transpile": 2.493307708762586,
+        "aer": 48.65066673606634,
+        "expectation": 88.757109711878,
+        "objective_eval": 142.85101574286819
+      }
+    },
+    {
+      "evaluation": 46,
+      "parameters": [
+        0.0696282263167618,
+        1.0824937637497611
+      ],
+      "expectation": 35.74564182207703,
+      "elapsed_seconds": 2.9249177002348006,
+      "timing": {
+        "circuit_construction_seconds": 0.0017622602172195911,
+        "transpilation_seconds": 0.054292155895382166,
+        "aer_execution_seconds": 0.996325477026403,
+        "expectation_seconds": 1.8097563269548118,
+        "evaluation_total_seconds": 2.8666912033222616
+      },
+      "cumulative_elapsed_seconds": 145.84292705683038,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.08384114783257246,
+        "transpile": 2.5475998646579683,
+        "aer": 49.646992213092744,
+        "expectation": 90.56686603883281,
+        "objective_eval": 145.77593344310299
+      }
+    },
+    {
+      "evaluation": 47,
+      "parameters": [
+        0.06942010952059045,
+        1.0823552451620142
+      ],
+      "expectation": 35.736700238616606,
+      "elapsed_seconds": 2.955542046111077,
+      "timing": {
+        "circuit_construction_seconds": 0.0017504291608929634,
+        "transpilation_seconds": 0.053905964363366365,
+        "aer_execution_seconds": 0.9755113334394991,
+        "expectation_seconds": 1.8622102518565953,
+        "evaluation_total_seconds": 2.8969993167556822
+      },
+      "cumulative_elapsed_seconds": 148.799718469847,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.08559157699346542,
+        "transpile": 2.6015058290213346,
+        "aer": 50.62250354653224,
+        "expectation": 92.42907629068941,
+        "objective_eval": 148.73147548921406
+      }
+    },
+    {
+      "evaluation": 48,
+      "parameters": [
+        0.06903318679964428,
+        1.082038557921956
+      ],
+      "expectation": 35.727866926449025,
+      "elapsed_seconds": 2.9979008361697197,
+      "timing": {
+        "circuit_construction_seconds": 0.0017889193259179592,
+        "transpilation_seconds": 0.054627657402306795,
+        "aer_execution_seconds": 0.9630471146665514,
+        "expectation_seconds": 1.9156180517747998,
+        "evaluation_total_seconds": 2.9391462355852127
+      },
+      "cumulative_elapsed_seconds": 151.79897987376899,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.08738049631938338,
+        "transpile": 2.6561334864236414,
+        "aer": 51.585550661198795,
+        "expectation": 94.34469434246421,
+        "objective_eval": 151.72937632538378
+      }
+    },
+    {
+      "evaluation": 49,
+      "parameters": [
+        0.06899692947649774,
+        1.0815398742481523
+      ],
+      "expectation": 35.71679085759588,
+      "elapsed_seconds": 3.082233394961804,
+      "timing": {
+        "circuit_construction_seconds": 0.0018485006876289845,
+        "transpilation_seconds": 0.05493374029174447,
+        "aer_execution_seconds": 1.0913474131375551,
+        "expectation_seconds": 1.8697910429909825,
+        "evaluation_total_seconds": 3.0225927410647273
+      },
+      "cumulative_elapsed_seconds": 154.88256941689178,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.08922899700701237,
+        "transpile": 2.711067226715386,
+        "aer": 52.67689807433635,
+        "expectation": 96.21448538545519,
+        "objective_eval": 154.8116097203456
+      }
+    },
+    {
+      "evaluation": 50,
+      "parameters": [
+        0.06877620379005554,
+        1.0805645383207179
+      ],
+      "expectation": 35.6995233684719,
+      "elapsed_seconds": 2.975851624738425,
+      "timing": {
+        "circuit_construction_seconds": 0.0017908699810504913,
+        "transpilation_seconds": 0.05574518442153931,
+        "aer_execution_seconds": 0.9708960168063641,
+        "expectation_seconds": 1.882081808988005,
+        "evaluation_total_seconds": 2.915162335149944
+      },
+      "cumulative_elapsed_seconds": 157.85982863977551,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.09101986698806286,
+        "transpile": 2.766812411136925,
+        "aer": 53.647794091142714,
+        "expectation": 98.0965671944432,
+        "objective_eval": 157.787461345084
+      }
+    },
+    {
+      "evaluation": 51,
+      "parameters": [
+        0.06702049607274195,
+        1.079606681122924
+      ],
+      "expectation": 35.84699029545362,
+      "elapsed_seconds": 3.0667810100130737,
+      "timing": {
+        "circuit_construction_seconds": 0.002052810974419117,
+        "transpilation_seconds": 0.05379510298371315,
+        "aer_execution_seconds": 0.9474536892957985,
+        "expectation_seconds": 1.9987342548556626,
+        "evaluation_total_seconds": 3.006786963902414
+      },
+      "cumulative_elapsed_seconds": 160.92778579704463,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.09307267796248198,
+        "transpile": 2.8206075141206384,
+        "aer": 54.59524778043851,
+        "expectation": 100.09530144929886,
+        "objective_eval": 160.85424235509709
+      }
+    },
+    {
+      "evaluation": 52,
+      "parameters": [
+        0.06970722360581816,
+        1.0801995696882885
+      ],
+      "expectation": 35.696979449452826,
+      "elapsed_seconds": 2.993971182964742,
+      "timing": {
+        "circuit_construction_seconds": 0.001880949828773737,
+        "transpilation_seconds": 0.05444359593093395,
+        "aer_execution_seconds": 0.9706711759790778,
+        "expectation_seconds": 1.9022378190420568,
+        "evaluation_total_seconds": 2.9341000872664154
+      },
+      "cumulative_elapsed_seconds": 163.92332510882989,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.09495362779125571,
+        "transpile": 2.8750511100515723,
+        "aer": 55.56591895641759,
+        "expectation": 101.99753926834092,
+        "objective_eval": 163.84821353806183
+      }
+    },
+    {
+      "evaluation": 53,
+      "parameters": [
+        0.06959531101949956,
+        1.0797122550332416
+      ],
+      "expectation": 35.68198426308831,
+      "elapsed_seconds": 3.140986043959856,
+      "timing": {
+        "circuit_construction_seconds": 0.001847610343247652,
+        "transpilation_seconds": 0.053850374184548855,
+        "aer_execution_seconds": 1.0871066702529788,
+        "expectation_seconds": 1.9347716751508415,
+        "evaluation_total_seconds": 3.081883192062378
+      },
+      "cumulative_elapsed_seconds": 167.06564093008637,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.09680123813450336,
+        "transpile": 2.928901484236121,
+        "aer": 56.65302562667057,
+        "expectation": 103.93231094349176,
+        "objective_eval": 166.98919958202168
+      }
+    },
+    {
+      "evaluation": 54,
+      "parameters": [
+        0.06931046864757211,
+        1.0787536806630675
+      ],
+      "expectation": 35.654715638607655,
+      "elapsed_seconds": 3.0299186781048775,
+      "timing": {
+        "circuit_construction_seconds": 0.001789039932191372,
+        "transpilation_seconds": 0.055175499990582466,
+        "aer_execution_seconds": 1.0304484707303345,
+        "expectation_seconds": 1.8802787479944527,
+        "evaluation_total_seconds": 2.9713122989051044
+      },
+      "cumulative_elapsed_seconds": 170.09687347570434,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.09859027806669474,
+        "transpile": 2.9840769842267036,
+        "aer": 57.683474097400904,
+        "expectation": 105.81258969148621,
+        "objective_eval": 170.01911826012656
+      }
+    },
+    {
+      "evaluation": 55,
+      "parameters": [
+        0.06885258960363852,
+        1.0768067993669619
+      ],
+      "expectation": 35.616549034453044,
+      "elapsed_seconds": 3.054836564231664,
+      "timing": {
+        "circuit_construction_seconds": 0.001854990143328905,
+        "transpilation_seconds": 0.0542445951141417,
+        "aer_execution_seconds": 0.9652201062999666,
+        "expectation_seconds": 1.9689208408817649,
+        "evaluation_total_seconds": 2.9948991872370243
+      },
+      "cumulative_elapsed_seconds": 173.1530862469226,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.10044526821002364,
+        "transpile": 3.0383215793408453,
+        "aer": 58.64869420370087,
+        "expectation": 107.78151053236797,
+        "objective_eval": 173.07395482435822
+      }
+    },
+    {
+      "evaluation": 56,
+      "parameters": [
+        0.06966262215198629,
+        1.0749781804152343
+      ],
+      "expectation": 35.5881289692709,
+      "elapsed_seconds": 3.231954287737608,
+      "timing": {
+        "circuit_construction_seconds": 0.0017121490091085434,
+        "transpilation_seconds": 0.05418210523203015,
+        "aer_execution_seconds": 1.1503062541596591,
+        "expectation_seconds": 1.9622236527502537,
+        "evaluation_total_seconds": 3.1729512559249997
+      },
+      "cumulative_elapsed_seconds": 176.38623361103237,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.10215741721913218,
+        "transpile": 3.0925036845728755,
+        "aer": 59.79900045786053,
+        "expectation": 109.74373418511823,
+        "objective_eval": 176.30590911209583
+      }
+    },
+    {
+      "evaluation": 57,
+      "parameters": [
+        0.06903722980251918,
+        1.0730784740144377
+      ],
+      "expectation": 35.54130334879771,
+      "elapsed_seconds": 3.2535502850078046,
+      "timing": {
+        "circuit_construction_seconds": 0.002045240718871355,
+        "transpilation_seconds": 0.055122879799455404,
+        "aer_execution_seconds": 1.1661199289374053,
+        "expectation_seconds": 1.966346056200564,
+        "evaluation_total_seconds": 3.19432355184108
+      },
+      "cumulative_elapsed_seconds": 179.6409778818488,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.10420265793800354,
+        "transpile": 3.147626564372331,
+        "aer": 60.965120386797935,
+        "expectation": 111.71008024131879,
+        "objective_eval": 179.55945939710364
+      }
+    },
+    {
+      "evaluation": 58,
+      "parameters": [
+        0.06706183153854563,
+        1.069600284586202
+      ],
+      "expectation": 35.6381099171558,
+      "elapsed_seconds": 3.143956288229674,
+      "timing": {
+        "circuit_construction_seconds": 0.001723680179566145,
+        "transpilation_seconds": 0.05513190105557442,
+        "aer_execution_seconds": 1.1055640801787376,
+        "expectation_seconds": 1.9184718248434365,
+        "evaluation_total_seconds": 3.0853047790005803
+      },
+      "cumulative_elapsed_seconds": 182.78614639583975,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.10592633811756968,
+        "transpile": 3.2027584654279053,
+        "aer": 62.07068446697667,
+        "expectation": 113.62855206616223,
+        "objective_eval": 182.7034156853333
+      }
+    },
+    {
+      "evaluation": 59,
+      "parameters": [
+        0.07099453026098387,
+        1.0726674084292886
+      ],
+      "expectation": 35.67876248850939,
+      "elapsed_seconds": 3.021712051704526,
+      "timing": {
+        "circuit_construction_seconds": 0.0017830301076173782,
+        "transpilation_seconds": 0.05359262228012085,
+        "aer_execution_seconds": 0.947772020008415,
+        "expectation_seconds": 1.9536911169998348,
+        "evaluation_total_seconds": 2.9618337051942945
+      },
+      "cumulative_elapsed_seconds": 185.80910764401779,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.10770936822518706,
+        "transpile": 3.256351087708026,
+        "aer": 63.01845648698509,
+        "expectation": 115.58224318316206,
+        "objective_eval": 185.72512773703784
+      }
+    },
+    {
+      "evaluation": 60,
+      "parameters": [
+        0.06808417817458026,
+        1.0727756661636758
+      ],
+      "expectation": 35.577096961133265,
+      "elapsed_seconds": 3.259916227776557,
+      "timing": {
+        "circuit_construction_seconds": 0.0018537701107561588,
+        "transpilation_seconds": 0.11907029803842306,
+        "aer_execution_seconds": 1.0541575192473829,
+        "expectation_seconds": 2.0221231691539288,
+        "evaluation_total_seconds": 3.2014680886641145
+      },
+      "cumulative_elapsed_seconds": 189.07024144893512,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.10956313833594322,
+        "transpile": 3.3754213857464492,
+        "aer": 64.07261400623247,
+        "expectation": 117.60436635231599,
+        "objective_eval": 188.9850439648144
+      }
+    },
+    {
+      "evaluation": 61,
+      "parameters": [
+        0.06911293176520962,
+        1.0728402111074529
+      ],
+      "expectation": 35.536678830934136,
+      "elapsed_seconds": 3.3061968088150024,
+      "timing": {
+        "circuit_construction_seconds": 0.0017854799516499043,
+        "transpilation_seconds": 0.05356541182845831,
+        "aer_execution_seconds": 1.2456098208203912,
+        "expectation_seconds": 1.9400853021070361,
+        "evaluation_total_seconds": 3.2454658593051136
+      },
+      "cumulative_elapsed_seconds": 192.3770838319324,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.11134861828759313,
+        "transpile": 3.4289867975749075,
+        "aer": 65.31822382705286,
+        "expectation": 119.54445165442303,
+        "objective_eval": 192.2912407736294
+      }
+    },
+    {
+      "evaluation": 62,
+      "parameters": [
+        0.06960577834059285,
+        1.072755936240897
+      ],
+      "expectation": 35.5447413607195,
+      "elapsed_seconds": 3.348853452131152,
+      "timing": {
+        "circuit_construction_seconds": 0.0017221798188984394,
+        "transpilation_seconds": 0.054314715787768364,
+        "aer_execution_seconds": 1.2035838919691741,
+        "expectation_seconds": 2.0265241619199514,
+        "evaluation_total_seconds": 3.290674635209143
+      },
+      "cumulative_elapsed_seconds": 195.7270634090528,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.11307079810649157,
+        "transpile": 3.483301513362676,
+        "aer": 66.52180771902204,
+        "expectation": 121.57097581634298,
+        "objective_eval": 195.64009422576055
+      }
+    },
+    {
+      "evaluation": 63,
+      "parameters": [
+        0.06895679464598006,
+        1.0726449645966039
+      ],
+      "expectation": 35.534134256178874,
+      "elapsed_seconds": 3.1401407341472805,
+      "timing": {
+        "circuit_construction_seconds": 0.0018048402853310108,
+        "transpilation_seconds": 0.05458252690732479,
+        "aer_execution_seconds": 1.0768168419599533,
+        "expectation_seconds": 1.9434158690273762,
+        "evaluation_total_seconds": 3.08123746374622
+      },
+      "cumulative_elapsed_seconds": 198.86845090985298,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.11487563839182258,
+        "transpile": 3.5378840402700007,
+        "aer": 67.59862456098199,
+        "expectation": 123.51439168537036,
+        "objective_eval": 198.78023495990783
+      }
+    },
+    {
+      "evaluation": 64,
+      "parameters": [
+        0.06903391789559497,
+        1.0724071579432721
+      ],
+      "expectation": 35.52908925716321,
+      "elapsed_seconds": 2.9557794597931206,
+      "timing": {
+        "circuit_construction_seconds": 0.001793739851564169,
+        "transpilation_seconds": 0.054506277199834585,
+        "aer_execution_seconds": 1.0116018359549344,
+        "expectation_seconds": 1.8239877899177372,
+        "evaluation_total_seconds": 2.8966555087827146
+      },
+      "cumulative_elapsed_seconds": 201.82568656792864,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.11666937824338675,
+        "transpile": 3.5923903174698353,
+        "aer": 68.61022639693692,
+        "expectation": 125.3383794752881,
+        "objective_eval": 201.73601441970095
+      }
+    },
+    {
+      "evaluation": 65,
+      "parameters": [
+        0.06921400874282362,
+        1.071940716857234
+      ],
+      "expectation": 35.52091800057056,
+      "elapsed_seconds": 2.970920542255044,
+      "timing": {
+        "circuit_construction_seconds": 0.0017807497642934322,
+        "transpilation_seconds": 0.057705994695425034,
+        "aer_execution_seconds": 1.0025954679585993,
+        "expectation_seconds": 1.8461904199793935,
+        "evaluation_total_seconds": 2.9126788550056517
+      },
+      "cumulative_elapsed_seconds": 204.7982682590373,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.11845012800768018,
+        "transpile": 3.6500963121652603,
+        "aer": 69.61282186489552,
+        "expectation": 127.18456989526749,
+        "objective_eval": 204.706934961956
+      }
+    },
+    {
+      "evaluation": 66,
+      "parameters": [
+        0.06921326313171415,
+        1.070940717135202
+      ],
+      "expectation": 35.503480513028705,
+      "elapsed_seconds": 3.0451885159127414,
+      "timing": {
+        "circuit_construction_seconds": 0.0018041599541902542,
+        "transpilation_seconds": 0.053303640335798264,
+        "aer_execution_seconds": 1.0170214669778943,
+        "expectation_seconds": 1.9116433560848236,
+        "evaluation_total_seconds": 2.9881101553328335
+      },
+      "cumulative_elapsed_seconds": 207.84488193271682,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.12025428796187043,
+        "transpile": 3.7033999525010586,
+        "aer": 70.62984333187342,
+        "expectation": 129.0962132513523,
+        "objective_eval": 207.75212347786874
+      }
+    },
+    {
+      "evaluation": 67,
+      "parameters": [
+        0.06923722111331158,
+        1.0689408606365707
+      ],
+      "expectation": 35.47046239484354,
+      "elapsed_seconds": 3.1135728382505476,
+      "timing": {
+        "circuit_construction_seconds": 0.0018509100191295147,
+        "transpilation_seconds": 0.057337981183081865,
+        "aer_execution_seconds": 0.9455585773102939,
+        "expectation_seconds": 2.047319214325398,
+        "evaluation_total_seconds": 3.0574370129033923
+      },
+      "cumulative_elapsed_seconds": 210.95987227885053,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.12210519798099995,
+        "transpile": 3.7607379336841404,
+        "aer": 71.57540190918371,
+        "expectation": 131.1435324656777,
+        "objective_eval": 210.86569631611928
+      }
+    },
+    {
+      "evaluation": 68,
+      "parameters": [
+        0.07110070611532991,
+        1.0654014505660572
+      ],
+      "expectation": 35.58813655335126,
+      "elapsed_seconds": 3.003328808117658,
+      "timing": {
+        "circuit_construction_seconds": 0.0017557903192937374,
+        "transpilation_seconds": 0.05377577291801572,
+        "aer_execution_seconds": 0.9807243682444096,
+        "expectation_seconds": 1.9039011429995298,
+        "evaluation_total_seconds": 2.94449643837288
+      },
+      "cumulative_elapsed_seconds": 213.96451409393921,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.12386098830029368,
+        "transpile": 3.814513706602156,
+        "aer": 72.55612627742812,
+        "expectation": 133.04743360867724,
+        "objective_eval": 213.86902512423694
+      }
+    },
+    {
+      "evaluation": 69,
+      "parameters": [
+        0.06726978911112107,
+        1.0685814008797736
+      ],
+      "expectation": 35.590336554196455,
+      "elapsed_seconds": 3.1980279069393873,
+      "timing": {
+        "circuit_construction_seconds": 0.0017567290924489498,
+        "transpilation_seconds": 0.05536949122324586,
+        "aer_execution_seconds": 1.1150840600021183,
+        "expectation_seconds": 1.9636808377690613,
+        "evaluation_total_seconds": 3.1404777732677758
+      },
+      "cumulative_elapsed_seconds": 217.1636193068698,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.12561771739274263,
+        "transpile": 3.869883197825402,
+        "aer": 73.67121033743024,
+        "expectation": 135.0111144464463,
+        "objective_eval": 217.06705303117633
+      }
+    },
+    {
+      "evaluation": 70,
+      "parameters": [
+        0.07020809548469614,
+        1.0687012714986937
+      ],
+      "expectation": 35.51695253581228,
+      "elapsed_seconds": 3.197382992133498,
+      "timing": {
+        "circuit_construction_seconds": 0.002015000209212303,
+        "transpilation_seconds": 0.055917204823344946,
+        "aer_execution_seconds": 1.219709238037467,
+        "expectation_seconds": 1.8573025977239013,
+        "evaluation_total_seconds": 3.13927423581481
+      },
+      "cumulative_elapsed_seconds": 220.36209520604461,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.12763271760195494,
+        "transpile": 3.925800402648747,
+        "aer": 74.8909195754677,
+        "expectation": 136.8684170441702,
+        "objective_eval": 220.26443602330983
+      }
+    },
+    {
+      "evaluation": 71,
+      "parameters": [
+        0.06917732382884234,
+        1.0686981420437245
+      ],
+      "expectation": 35.46598643048202,
+      "elapsed_seconds": 3.4819968310184777,
+      "timing": {
+        "circuit_construction_seconds": 0.0017860792577266693,
+        "transpilation_seconds": 0.05421178508549929,
+        "aer_execution_seconds": 1.2201454108580947,
+        "expectation_seconds": 2.1421154593117535,
+        "evaluation_total_seconds": 3.422603308223188
+      },
+      "cumulative_elapsed_seconds": 223.84466469986364,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.1294187968596816,
+        "transpile": 3.9800121877342463,
+        "aer": 76.1110649863258,
+        "expectation": 139.01053250348195,
+        "objective_eval": 223.7464328543283
+      }
+    },
+    {
+      "evaluation": 72,
+      "parameters": [
+        0.06868126641719281,
+        1.0686354759097478
+      ],
+      "expectation": 35.47108973575777,
+      "elapsed_seconds": 3.2820749138481915,
+      "timing": {
+        "circuit_construction_seconds": 0.002030271105468273,
+        "transpilation_seconds": 0.054582668002694845,
+        "aer_execution_seconds": 1.1073744469322264,
+        "expectation_seconds": 2.057042276021093,
+        "evaluation_total_seconds": 3.2258434370160103
+      },
+      "cumulative_elapsed_seconds": 227.12789401970804,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.13144906796514988,
+        "transpile": 4.034594855736941,
+        "aer": 77.21843943325803,
+        "expectation": 141.06757477950305,
+        "objective_eval": 227.0285077681765
+      }
+    },
+    {
+      "evaluation": 73,
+      "parameters": [
+        0.06930616926251391,
+        1.0684839018649017
+      ],
+      "expectation": 35.46419571738507,
+      "elapsed_seconds": 3.4393483782187104,
+      "timing": {
+        "circuit_construction_seconds": 0.0017826701514422894,
+        "transpilation_seconds": 0.05596631532534957,
+        "aer_execution_seconds": 1.2055883309803903,
+        "expectation_seconds": 2.115080962423235,
+        "evaluation_total_seconds": 3.3830899819731712
+      },
+      "cumulative_elapsed_seconds": 230.56842717481777,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.13323173811659217,
+        "transpile": 4.090561171062291,
+        "aer": 78.42402776423842,
+        "expectation": 143.18265574192628,
+        "objective_eval": 230.4678561463952
+      }
+    },
+    {
+      "evaluation": 74,
+      "parameters": [
+        0.0695517114871173,
+        1.0684369016953614
+      ],
+      "expectation": 35.47028053327129,
+      "elapsed_seconds": 3.378463357221335,
+      "timing": {
+        "circuit_construction_seconds": 0.0018433798104524612,
+        "transpilation_seconds": 0.05403028428554535,
+        "aer_execution_seconds": 1.1677989549934864,
+        "expectation_seconds": 2.0923263570293784,
+        "evaluation_total_seconds": 3.320780823007226
+      },
+      "cumulative_elapsed_seconds": 233.94829018879682,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.13507511792704463,
+        "transpile": 4.144591455347836,
+        "aer": 79.5918267192319,
+        "expectation": 145.27498209895566,
+        "objective_eval": 233.84631950361654
+      }
+    },
+    {
+      "evaluation": 75,
+      "parameters": [
+        0.06926332122674937,
+        1.0684581327781675
+      ],
+      "expectation": 35.46309775198161,
+      "elapsed_seconds": 3.1682635229080915,
+      "timing": {
+        "circuit_construction_seconds": 0.0018487200140953064,
+        "transpilation_seconds": 0.05622430611401796,
+        "aer_execution_seconds": 1.0858255987986922,
+        "expectation_seconds": 1.963566045742482,
+        "evaluation_total_seconds": 3.1121323970146477
+      },
+      "cumulative_elapsed_seconds": 237.11776052694768,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.13692383794113994,
+        "transpile": 4.200815761461854,
+        "aer": 80.6776523180306,
+        "expectation": 147.23854814469814,
+        "objective_eval": 237.01458302652463
+      }
+    },
+    {
+      "evaluation": 76,
+      "parameters": [
+        0.0691978321792403,
+        1.0683825603979193
+      ],
+      "expectation": 35.46112944879688,
+      "elapsed_seconds": 3.100398112088442,
+      "timing": {
+        "circuit_construction_seconds": 0.0018641101196408272,
+        "transpilation_seconds": 0.05543340090662241,
+        "aer_execution_seconds": 1.0274435710161924,
+        "expectation_seconds": 1.9555360730737448,
+        "evaluation_total_seconds": 3.0444226576946676
+      },
+      "cumulative_elapsed_seconds": 240.22001561988145,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.13878794806078076,
+        "transpile": 4.256249162368476,
+        "aer": 81.70509588904679,
+        "expectation": 149.1940842177719,
+        "objective_eval": 240.11498113861308
+      }
+    },
+    {
+      "evaluation": 77,
+      "parameters": [
+        0.06908216578998283,
+        1.0682194000890322
+      ],
+      "expectation": 35.45801392625849,
+      "elapsed_seconds": 3.018124384339899,
+      "timing": {
+        "circuit_construction_seconds": 0.0017596893012523651,
+        "transpilation_seconds": 0.05401206389069557,
+        "aer_execution_seconds": 1.0332593927159905,
+        "expectation_seconds": 1.8662489159032702,
+        "evaluation_total_seconds": 2.960250258911401
+      },
+      "cumulative_elapsed_seconds": 243.23940229183063,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.14054763736203313,
+        "transpile": 4.310261226259172,
+        "aer": 82.73835528176278,
+        "expectation": 151.06033313367516,
+        "objective_eval": 243.13310552295297
+      }
+    },
+    {
+      "evaluation": 78,
+      "parameters": [
+        0.06896552787679437,
+        1.067836783313123
+      ],
+      "expectation": 35.45250344594524,
+      "elapsed_seconds": 3.278171109035611,
+      "timing": {
+        "circuit_construction_seconds": 0.001749349758028984,
+        "transpilation_seconds": 0.05510756000876427,
+        "aer_execution_seconds": 1.187731723766774,
+        "expectation_seconds": 1.9642330287024379,
+        "evaluation_total_seconds": 3.2137462189421058
+      },
+      "cumulative_elapsed_seconds": 246.51883457787335,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.1422969871200621,
+        "transpile": 4.365368786267936,
+        "aer": 83.92608700552955,
+        "expectation": 153.0245661623776,
+        "objective_eval": 246.41127663198858
+      }
+    },
+    {
+      "evaluation": 79,
+      "parameters": [
+        0.068381241507403,
+        1.0672903316331517
+      ],
+      "expectation": 35.4624037328323,
+      "elapsed_seconds": 3.2626837040297687,
+      "timing": {
+        "circuit_construction_seconds": 0.0018528900109231472,
+        "transpilation_seconds": 0.05438980692997575,
+        "aer_execution_seconds": 1.1088706338778138,
+        "expectation_seconds": 2.036142500117421,
+        "evaluation_total_seconds": 3.205974285956472
+      },
+      "cumulative_elapsed_seconds": 249.7828786186874,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.14414987713098526,
+        "transpile": 4.419758593197912,
+        "aer": 85.03495763940737,
+        "expectation": 155.06070866249502,
+        "objective_eval": 249.67396033601835
+      }
+    },
+    {
+      "evaluation": 80,
+      "parameters": [
+        0.06930192012510861,
+        1.0676203572165586
+      ],
+      "expectation": 35.45065115009706,
+      "elapsed_seconds": 3.310057362075895,
+      "timing": {
+        "circuit_construction_seconds": 0.0017421599477529526,
+        "transpilation_seconds": 0.05450600711628795,
+        "aer_execution_seconds": 1.1175731210969388,
+        "expectation_seconds": 2.074428197927773,
+        "evaluation_total_seconds": 3.2525694989599288
+      },
+      "cumulative_elapsed_seconds": 253.0940318671055,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.1458920370787382,
+        "transpile": 4.4742646003142,
+        "aer": 86.1525307605043,
+        "expectation": 157.1351368604228,
+        "objective_eval": 252.98401769809425
+      }
+    },
+    {
+      "evaluation": 81,
+      "parameters": [
+        0.06925638897816157,
+        1.0674256088798322
+      ],
+      "expectation": 35.44692270758149,
+      "elapsed_seconds": 3.555585727095604,
+      "timing": {
+        "circuit_construction_seconds": 0.0017344397492706776,
+        "transpilation_seconds": 0.05471031786873937,
+        "aer_execution_seconds": 1.3311075633391738,
+        "expectation_seconds": 2.103764748200774,
+        "evaluation_total_seconds": 3.4957183110527694
+      },
+      "cumulative_elapsed_seconds": 256.6508527910337,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.1476264768280089,
+        "transpile": 4.528974918182939,
+        "aer": 87.48363832384348,
+        "expectation": 159.23890160862356,
+        "objective_eval": 256.53960342518985
+      }
+    },
+    {
+      "evaluation": 82,
+      "parameters": [
+        0.06912989397162152,
+        1.0670461368606787
+      ],
+      "expectation": 35.43992787433467,
+      "elapsed_seconds": 3.4913586280308664,
+      "timing": {
+        "circuit_construction_seconds": 0.0018391902558505535,
+        "transpilation_seconds": 0.05518414964899421,
+        "aer_execution_seconds": 1.124532638117671,
+        "expectation_seconds": 2.247331788763404,
+        "evaluation_total_seconds": 3.433941265102476
+      },
+      "cumulative_elapsed_seconds": 260.1435463759117,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.14946566708385944,
+        "transpile": 4.5841590678319335,
+        "aer": 88.60817096196115,
+        "expectation": 161.48623339738697,
+        "objective_eval": 260.0309620532207
+      }
+    },
+    {
+      "evaluation": 83,
+      "parameters": [
+        0.06891653029887788,
+        1.0662751142000821
+      ],
+      "expectation": 35.42908712645087,
+      "elapsed_seconds": 3.436349608004093,
+      "timing": {
+        "circuit_construction_seconds": 0.0017932499758899212,
+        "transpilation_seconds": 0.05661950772628188,
+        "aer_execution_seconds": 1.22950349887833,
+        "expectation_seconds": 2.086100429762155,
+        "evaluation_total_seconds": 3.378690743818879
+      },
+      "cumulative_elapsed_seconds": 263.5811612899415,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.15125891705974936,
+        "transpile": 4.640778575558215,
+        "aer": 89.83767446083948,
+        "expectation": 163.57233382714912,
+        "objective_eval": 263.4673116612248
+      }
+    },
+    {
+      "evaluation": 84,
+      "parameters": [
+        0.06930739807296493,
+        1.064723591598513
+      ],
+      "expectation": 35.40839606848991,
+      "elapsed_seconds": 3.230946969240904,
+      "timing": {
+        "circuit_construction_seconds": 0.0018033492378890514,
+        "transpilation_seconds": 0.05358767183497548,
+        "aer_execution_seconds": 1.1728803319856524,
+        "expectation_seconds": 1.940232037100941,
+        "evaluation_total_seconds": 3.17315185489133
+      },
+      "cumulative_elapsed_seconds": 266.81339240586385,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.15306226629763842,
+        "transpile": 4.694366247393191,
+        "aer": 91.01055479282513,
+        "expectation": 165.51256586425006,
+        "objective_eval": 266.6982586304657
+      }
+    },
+    {
+      "evaluation": 85,
+      "parameters": [
+        0.06898855297779077,
+        1.0615395159390344
+      ],
+      "expectation": 35.363612232725075,
+      "elapsed_seconds": 3.290782825089991,
+      "timing": {
+        "circuit_construction_seconds": 0.001784670166671276,
+        "transpilation_seconds": 0.055755353067070246,
+        "aer_execution_seconds": 1.1152424081228673,
+        "expectation_seconds": 2.0588425919413567,
+        "evaluation_total_seconds": 3.2358861761167645
+      },
+      "cumulative_elapsed_seconds": 270.1054564178921,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.1548469364643097,
+        "transpile": 4.750121600460261,
+        "aer": 92.125797200948,
+        "expectation": 167.57140845619142,
+        "objective_eval": 269.9890414555557
+      }
+    },
+    {
+      "evaluation": 86,
+      "parameters": [
+        0.0680427779675303,
+        1.05520978374644
+      ],
+      "expectation": 35.32747337555173,
+      "elapsed_seconds": 3.239263003692031,
+      "timing": {
+        "circuit_construction_seconds": 0.001764239277690649,
+        "transpilation_seconds": 0.05431937472894788,
+        "aer_execution_seconds": 0.9256225060671568,
+        "expectation_seconds": 2.2004175023175776,
+        "evaluation_total_seconds": 3.1865365263074636
+      },
+      "cumulative_elapsed_seconds": 273.34592756908387,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.15661117574200034,
+        "transpile": 4.804440975189209,
+        "aer": 93.05141970701516,
+        "expectation": 169.771825958509,
+        "objective_eval": 273.22830445924774
+      }
+    },
+    {
+      "evaluation": 87,
+      "parameters": [
+        0.07422890737180644,
+        1.053569112239541
+      ],
+      "expectation": 36.50329242217117,
+      "elapsed_seconds": 3.5285682883113623,
+      "timing": {
+        "circuit_construction_seconds": 0.001778739970177412,
+        "transpilation_seconds": 0.057765854988247156,
+        "aer_execution_seconds": 1.2346670678816736,
+        "expectation_seconds": 2.1718401960097253,
+        "evaluation_total_seconds": 3.470900184009224
+      },
+      "cumulative_elapsed_seconds": 276.87572245299816,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.15838991571217775,
+        "transpile": 4.862206830177456,
+        "aer": 94.28608677489683,
+        "expectation": 171.94366615451872,
+        "objective_eval": 276.7568727475591
+      }
+    },
+    {
+      "evaluation": 88,
+      "parameters": [
+        0.06486498812929901,
+        1.055586150248714
+      ],
+      "expectation": 35.91281146933579,
+      "elapsed_seconds": 3.331965287681669,
+      "timing": {
+        "circuit_construction_seconds": 0.002046531066298485,
+        "transpilation_seconds": 0.05529273999854922,
+        "aer_execution_seconds": 1.1921046650968492,
+        "expectation_seconds": 2.0210350546985865,
+        "evaluation_total_seconds": 3.2750469967722893
+      },
+      "cumulative_elapsed_seconds": 280.2088006557897,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.16043644677847624,
+        "transpile": 4.917499570176005,
+        "aer": 95.47819143999368,
+        "expectation": 173.9647012092173,
+        "objective_eval": 280.08883803524077
+      }
+    },
+    {
+      "evaluation": 89,
+      "parameters": [
+        0.0679486863419618,
+        1.0544153362868822
+      ],
+      "expectation": 35.326547499189815,
+      "elapsed_seconds": 3.5684887641109526,
+      "timing": {
+        "circuit_construction_seconds": 0.0017941002734005451,
+        "transpilation_seconds": 0.05481206811964512,
+        "aer_execution_seconds": 1.2484120619483292,
+        "expectation_seconds": 2.199858427979052,
+        "evaluation_total_seconds": 3.5093027018010616
+      },
+      "cumulative_elapsed_seconds": 283.7779004126787,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.16223054705187678,
+        "transpile": 4.9723116382956505,
+        "aer": 96.72660350194201,
+        "expectation": 176.16455963719636,
+        "objective_eval": 283.6573267993517
+      }
+    },
+    {
+      "evaluation": 90,
+      "parameters": [
+        0.06953635882380756,
+        1.054217103871799
+      ],
+      "expectation": 35.29901040740019,
+      "elapsed_seconds": 3.397169951815158,
+      "timing": {
+        "circuit_construction_seconds": 0.0017493600025773048,
+        "transpilation_seconds": 0.05490920878946781,
+        "aer_execution_seconds": 1.1625697249546647,
+        "expectation_seconds": 2.114122011233121,
+        "evaluation_total_seconds": 3.3381332610733807
+      },
+      "cumulative_elapsed_seconds": 287.17624851083383,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.1639799070544541,
+        "transpile": 5.027220847085118,
+        "aer": 97.88917322689667,
+        "expectation": 178.27868164842948,
+        "objective_eval": 287.0544967511669
+      }
+    },
+    {
+      "evaluation": 91,
+      "parameters": [
+        0.07032269910742493,
+        1.0540699000730689
+      ],
+      "expectation": 35.36113366982441,
+      "elapsed_seconds": 3.2592497910372913,
+      "timing": {
+        "circuit_construction_seconds": 0.0018088691867887974,
+        "transpilation_seconds": 0.05495796911418438,
+        "aer_execution_seconds": 1.0820387662388384,
+        "expectation_seconds": 2.0576810939237475,
+        "evaluation_total_seconds": 3.200947912875563
+      },
+      "cumulative_elapsed_seconds": 290.43677457794547,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.16578877624124289,
+        "transpile": 5.082178816199303,
+        "aer": 98.97121199313551,
+        "expectation": 180.33636274235323,
+        "objective_eval": 290.31374654220417
+      }
+    },
+    {
+      "evaluation": 92,
+      "parameters": [
+        0.06949955787412505,
+        1.0540205188008946
+      ],
+      "expectation": 35.295659025730885,
+      "elapsed_seconds": 3.223920857999474,
+      "timing": {
+        "circuit_construction_seconds": 0.0018051797524094582,
+        "transpilation_seconds": 0.0554848019964993,
+        "aer_execution_seconds": 1.1376877590082586,
+        "expectation_seconds": 1.9663158860057592,
+        "evaluation_total_seconds": 3.166202603839338
+      },
+      "cumulative_elapsed_seconds": 293.66129078902304,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.16759395599365234,
+        "transpile": 5.137663618195802,
+        "aer": 100.10889975214377,
+        "expectation": 182.302678628359,
+        "objective_eval": 293.53766740020365
+      }
+    },
+    {
+      "evaluation": 93,
+      "parameters": [
+        0.0690997087969611,
+        1.0540095317407268
+      ],
+      "expectation": 35.28426249041708,
+      "elapsed_seconds": 3.5094754211604595,
+      "timing": {
+        "circuit_construction_seconds": 0.001792368944734335,
+        "transpilation_seconds": 0.05680398875847459,
+        "aer_execution_seconds": 1.2043096222914755,
+        "expectation_seconds": 2.1843578121624887,
+        "evaluation_total_seconds": 3.451969108078629
+      },
+      "cumulative_elapsed_seconds": 297.1719458368607,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.16938632493838668,
+        "transpile": 5.194467606954277,
+        "aer": 101.31320937443525,
+        "expectation": 184.48703644052148,
+        "objective_eval": 297.0471428213641
+      }
+    },
+    {
+      "evaluation": 94,
+      "parameters": [
+        0.06873062630736602,
+        1.053855330197692
+      ],
+      "expectation": 35.28388282196137,
+      "elapsed_seconds": 3.563741655088961,
+      "timing": {
+        "circuit_construction_seconds": 0.0017400998622179031,
+        "transpilation_seconds": 0.055642551742494106,
+        "aer_execution_seconds": 1.1562156099826097,
+        "expectation_seconds": 2.292765482328832,
+        "evaluation_total_seconds": 3.510377745144069
+      },
+      "cumulative_elapsed_seconds": 300.7369359587319,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.17112642480060458,
+        "transpile": 5.250110158696771,
+        "aer": 102.46942498441786,
+        "expectation": 186.7798019228503,
+        "objective_eval": 300.61088447645307
+      }
+    },
+    {
+      "evaluation": 95,
+      "parameters": [
+        0.0686512472986244,
+        1.0540389029978865
+      ],
+      "expectation": 35.287167216656,
+      "elapsed_seconds": 3.3421056689694524,
+      "timing": {
+        "circuit_construction_seconds": 0.0017643501050770283,
+        "transpilation_seconds": 0.05681352876126766,
+        "aer_execution_seconds": 1.2125431359745562,
+        "expectation_seconds": 2.0119911250658333,
+        "evaluation_total_seconds": 3.288012205157429
+      },
+      "cumulative_elapsed_seconds": 304.08027822570875,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.1728907749056816,
+        "transpile": 5.306923687458038,
+        "aer": 103.68196812039241,
+        "expectation": 188.79179304791614,
+        "objective_eval": 303.9529901454225
+      }
+    },
+    {
+      "evaluation": 96,
+      "parameters": [
+        0.06868473310731743,
+        1.0538354854455068
+      ],
+      "expectation": 35.28457943249015,
+      "elapsed_seconds": 3.3407949218526483,
+      "timing": {
+        "circuit_construction_seconds": 0.0017581791616976261,
+        "transpilation_seconds": 0.05519297020509839,
+        "aer_execution_seconds": 1.2159343538805842,
+        "expectation_seconds": 2.007057297974825,
+        "evaluation_total_seconds": 3.2841034228913486
+      },
+      "cumulative_elapsed_seconds": 307.42164949094877,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.17464895406737924,
+        "transpile": 5.362116657663137,
+        "aer": 104.897902474273,
+        "expectation": 190.79885034589097,
+        "objective_eval": 307.29378506727517
+      }
+    },
+    {
+      "evaluation": 97,
+      "parameters": [
+        0.06882027116099866,
+        1.0538110154121552
+      ],
+      "expectation": 35.28225906349512,
+      "elapsed_seconds": 3.283760081976652,
+      "timing": {
+        "circuit_construction_seconds": 0.0017488100565969944,
+        "transpilation_seconds": 0.05417949426919222,
+        "aer_execution_seconds": 0.9817030895501375,
+        "expectation_seconds": 2.1863219421356916,
+        "evaluation_total_seconds": 3.2288164030760527
+      },
+      "cumulative_elapsed_seconds": 310.70647713774815,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.17639776412397623,
+        "transpile": 5.416296151932329,
+        "aer": 105.87960556382313,
+        "expectation": 192.98517228802666,
+        "objective_eval": 310.5775451492518
+      }
+    },
+    {
+      "evaluation": 98,
+      "parameters": [
+        0.06901670780973193,
+        1.0537734302683555
+      ],
+      "expectation": 35.281476168954214,
+      "elapsed_seconds": 3.279177695978433,
+      "timing": {
+        "circuit_construction_seconds": 0.001765688881278038,
+        "transpilation_seconds": 0.0559652941301465,
+        "aer_execution_seconds": 1.040913071949035,
+        "expectation_seconds": 2.1194241479970515,
+        "evaluation_total_seconds": 3.222349066287279
+      },
+      "cumulative_elapsed_seconds": 313.9868899108842,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.17816345300525427,
+        "transpile": 5.472261446062475,
+        "aer": 106.92051863577217,
+        "expectation": 195.1045964360237,
+        "objective_eval": 313.85672284523025
+      }
+    },
+    {
+      "evaluation": 99,
+      "parameters": [
+        0.06899565408333229,
+        1.0535745415039552
+      ],
+      "expectation": 35.27965471033187,
+      "elapsed_seconds": 3.2932186918333173,
+      "timing": {
+        "circuit_construction_seconds": 0.0017496398650109768,
+        "transpilation_seconds": 0.0546650281175971,
+        "aer_execution_seconds": 1.2212332817725837,
+        "expectation_seconds": 1.950102326925844,
+        "evaluation_total_seconds": 3.232273630797863
+      },
+      "cumulative_elapsed_seconds": 317.281351339072,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.17991309287026525,
+        "transpile": 5.5269264741800725,
+        "aer": 108.14175191754475,
+        "expectation": 197.05469876294956,
+        "objective_eval": 317.14994153706357
+      }
+    },
+    {
+      "evaluation": 100,
+      "parameters": [
+        0.06904105864396524,
+        1.0533797636153905
+      ],
+      "expectation": 35.278259922658364,
+      "elapsed_seconds": 3.3005524617619812,
+      "timing": {
+        "circuit_construction_seconds": 0.0017831488512456417,
+        "transpilation_seconds": 0.0557734533213079,
+        "aer_execution_seconds": 1.1322358991019428,
+        "expectation_seconds": 2.0488163041882217,
+        "evaluation_total_seconds": 3.2430726387538016
+      },
+      "cumulative_elapsed_seconds": 320.58317563775927,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.1816962417215109,
+        "transpile": 5.58269992750138,
+        "aer": 109.2739878166467,
+        "expectation": 199.10351506713778,
+        "objective_eval": 320.45049399882555
+      }
+    },
+    {
+      "evaluation": 101,
+      "parameters": [
+        0.06936687313090656,
+        1.05314771853335
+      ],
+      "expectation": 35.283219163922,
+      "elapsed_seconds": 3.21588332997635,
+      "timing": {
+        "circuit_construction_seconds": 0.0017525791190564632,
+        "transpilation_seconds": 0.055888614151626825,
+        "aer_execution_seconds": 1.0112996697425842,
+        "expectation_seconds": 2.08624557685107,
+        "evaluation_total_seconds": 3.1599414558149874
+      },
+      "cumulative_elapsed_seconds": 323.8003030261025,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.18344882084056735,
+        "transpile": 5.638588541653007,
+        "aer": 110.28528748638928,
+        "expectation": 201.18976064398885,
+        "objective_eval": 323.6663773288019
+      }
+    },
+    {
+      "evaluation": 102,
+      "parameters": [
+        0.06886412451240112,
+        1.0532865203148931
+      ],
+      "expectation": 35.277322240536606,
+      "elapsed_seconds": 3.531965379137546,
+      "timing": {
+        "circuit_construction_seconds": 0.0018059201538562775,
+        "transpilation_seconds": 0.057189591228961945,
+        "aer_execution_seconds": 1.1673269388265908,
+        "expectation_seconds": 2.2470638607628644,
+        "evaluation_total_seconds": 3.478857470676303
+      },
+      "cumulative_elapsed_seconds": 327.3334285109304,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.18525474099442363,
+        "transpile": 5.695778132881969,
+        "aer": 111.45261442521587,
+        "expectation": 203.4368245047517,
+        "objective_eval": 327.19834270793945
+      }
+    },
+    {
+      "evaluation": 103,
+      "parameters": [
+        0.06882836446038507,
+        1.0530897432362487
+      ],
+      "expectation": 35.275909116030945,
+      "elapsed_seconds": 3.6835349542088807,
+      "timing": {
+        "circuit_construction_seconds": 0.001837149728089571,
+        "transpilation_seconds": 0.054854347836226225,
+        "aer_execution_seconds": 1.3120349450036883,
+        "expectation_seconds": 2.2612494467757642,
+        "evaluation_total_seconds": 3.6337959631346166
+      },
+      "cumulative_elapsed_seconds": 331.01821838179603,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.1870918907225132,
+        "transpile": 5.750632480718195,
+        "aer": 112.76464937021956,
+        "expectation": 205.69807395152748,
+        "objective_eval": 330.8818776621483
+      }
+    },
+    {
+      "evaluation": 104,
+      "parameters": [
+        0.06873367438210477,
+        1.0527011125772996
+      ],
+      "expectation": 35.27379858320667,
+      "elapsed_seconds": 3.416798031888902,
+      "timing": {
+        "circuit_construction_seconds": 0.0017552799545228481,
+        "transpilation_seconds": 0.055276840925216675,
+        "aer_execution_seconds": 1.1698762220330536,
+        "expectation_seconds": 2.132681808900088,
+        "evaluation_total_seconds": 3.3639903850853443
+      },
+      "cumulative_elapsed_seconds": 334.4362407508306,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.18884717067703605,
+        "transpile": 5.805909321643412,
+        "aer": 113.93452559225261,
+        "expectation": 207.83075576042756,
+        "objective_eval": 334.29867569403723
+      }
+    },
+    {
+      "evaluation": 105,
+      "parameters": [
+        0.06809385420766483,
+        1.052220872903408
+      ],
+      "expectation": 35.295770548946706,
+      "elapsed_seconds": 3.488684842828661,
+      "timing": {
+        "circuit_construction_seconds": 0.0018046796321868896,
+        "transpilation_seconds": 0.05526658985763788,
+        "aer_execution_seconds": 1.3188053430058062,
+        "expectation_seconds": 2.058575116097927,
+        "evaluation_total_seconds": 3.4396052062511444
+      },
+      "cumulative_elapsed_seconds": 337.92618842981756,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.19065185030922294,
+        "transpile": 5.86117591150105,
+        "aer": 115.25333093525842,
+        "expectation": 209.8893308765255,
+        "objective_eval": 337.7873605368659
+      }
+    },
+    {
+      "evaluation": 106,
+      "parameters": [
+        0.069110130047423,
+        1.0525659048406504
+      ],
+      "expectation": 35.27229800875239,
+      "elapsed_seconds": 3.386341826058924,
+      "timing": {
+        "circuit_construction_seconds": 0.001783999614417553,
+        "transpilation_seconds": 0.05448563722893596,
+        "aer_execution_seconds": 1.1608571531251073,
+        "expectation_seconds": 2.1144244289025664,
+        "evaluation_total_seconds": 3.335921002086252
+      },
+      "cumulative_elapsed_seconds": 341.3136571520008,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.1924358499236405,
+        "transpile": 5.915661548729986,
+        "aer": 116.41418808838353,
+        "expectation": 212.00375530542806,
+        "objective_eval": 341.1737023629248
+      }
+    },
+    {
+      "evaluation": 107,
+      "parameters": [
+        0.06917073310049798,
+        1.0523753077001734
+      ],
+      "expectation": 35.27178902154408,
+      "elapsed_seconds": 3.3107635537162423,
+      "timing": {
+        "circuit_construction_seconds": 0.0017666998319327831,
+        "transpilation_seconds": 0.05465938663110137,
+        "aer_execution_seconds": 1.0921847000718117,
+        "expectation_seconds": 2.1029854556545615,
+        "evaluation_total_seconds": 3.256244238000363
+      },
+      "cumulative_elapsed_seconds": 344.6256987131201,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.19420254975557327,
+        "transpile": 5.970320935361087,
+        "aer": 117.50637278845534,
+        "expectation": 214.10674076108262,
+        "objective_eval": 344.48446591664106
+      }
+    },
+    {
+      "evaluation": 108,
+      "parameters": [
+        0.0693521874233078,
+        1.0522911986713261
+      ],
+      "expectation": 35.275958786814826,
+      "elapsed_seconds": 3.182644717860967,
+      "timing": {
+        "circuit_construction_seconds": 0.0017438898794353008,
+        "transpilation_seconds": 0.05614179512485862,
+        "aer_execution_seconds": 1.0655451253987849,
+        "expectation_seconds": 1.9990557609125972,
+        "evaluation_total_seconds": 3.1271156151778996
+      },
+      "cumulative_elapsed_seconds": 347.8096033469774,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.19594643963500857,
+        "transpile": 6.026462730485946,
+        "aer": 118.57191791385412,
+        "expectation": 216.10579652199522,
+        "objective_eval": 347.667110634502
+      }
+    },
+    {
+      "evaluation": 109,
+      "parameters": [
+        0.06907827238673822,
+        1.0523372154908515
+      ],
+      "expectation": 35.270058380203,
+      "elapsed_seconds": 3.3686675280332565,
+      "timing": {
+        "circuit_construction_seconds": 0.0017429888248443604,
+        "transpilation_seconds": 0.05566609185189009,
+        "aer_execution_seconds": 1.0511940666474402,
+        "expectation_seconds": 2.1992860194295645,
+        "evaluation_total_seconds": 3.312386741861701
+      },
+      "cumulative_elapsed_seconds": 351.1793924518861,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.19768942845985293,
+        "transpile": 6.082128822337836,
+        "aer": 119.62311198050156,
+        "expectation": 218.30508254142478,
+        "objective_eval": 351.0357781625353
+      }
+    },
+    {
+      "evaluation": 110,
+      "parameters": [
+        0.06898845218652395,
+        1.0522932571966004
+      ],
+      "expectation": 35.26897602506227,
+      "elapsed_seconds": 3.7448926540091634,
+      "timing": {
+        "circuit_construction_seconds": 0.0017755902372300625,
+        "transpilation_seconds": 0.05598887428641319,
+        "aer_execution_seconds": 1.1914015780203044,
+        "expectation_seconds": 2.4339815359562635,
+        "evaluation_total_seconds": 3.687754973769188
+      },
+      "cumulative_elapsed_seconds": 354.9255845830776,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.199465018697083,
+        "transpile": 6.138117696624249,
+        "aer": 120.81451355852187,
+        "expectation": 220.73906407738104,
+        "objective_eval": 354.78067081654444
+      }
+    },
+    {
+      "evaluation": 111,
+      "parameters": [
+        0.06892178864797376,
+        1.0522187187995962
+      ],
+      "expectation": 35.2682501677606,
+      "elapsed_seconds": 3.6186389471404254,
+      "timing": {
+        "circuit_construction_seconds": 0.0017440393567085266,
+        "transpilation_seconds": 0.05495003890246153,
+        "aer_execution_seconds": 1.3713189768604934,
+        "expectation_seconds": 2.128566444851458,
+        "evaluation_total_seconds": 3.5610546241514385
+      },
+      "cumulative_elapsed_seconds": 358.5454531968571,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.20120905805379152,
+        "transpile": 6.193067735526711,
+        "aer": 122.18583253538236,
+        "expectation": 222.8676305222325,
+        "objective_eval": 358.39930976368487
+      }
+    },
+    {
+      "evaluation": 112,
+      "parameters": [
+        0.06882279082873548,
+        1.0522328408315345
+      ],
+      "expectation": 35.268825919250006,
+      "elapsed_seconds": 3.4480507881380618,
+      "timing": {
+        "circuit_construction_seconds": 0.001766539178788662,
+        "transpilation_seconds": 0.05569607298821211,
+        "aer_execution_seconds": 1.300567221827805,
+        "expectation_seconds": 2.030207818839699,
+        "evaluation_total_seconds": 3.392358156386763
+      },
+      "cumulative_elapsed_seconds": 361.9947378230281,
+      "cumulative_runtime_seconds": {
+        "circuit_build": 0.20297559723258018,
+        "transpile": 6.248763808514923,
+        "aer": 123.48639975721017,
+        "expectation": 224.8978383410722,
+        "objective_eval": 361.84736055182293
+      }
+    }
+  ],
+  "source_commit": "1c1002dde03eda64823421156b69696e81ccfdb9",
+  "source_hashes": {
+    "runner": "6a00943d74136d66b949fb6d283972c345e31123eab9aadaed7bf37af19d2dfa",
+    "qaoa": "89097d258d1422a196818e194fafdbf406b06a6abc94b30f6c27eeffbecbb8d7",
+    "optimized_metrics_v4": "1ea9d3cb0efeb6df3c7ef57f6d89541388d0089d1f58361254d284b3fcbdc187",
+    "hamiltonian": "f38947e84cdb1094cd35c80462ed7db9c693da7e0f2f622e187053c235435f03",
+    "core": "131a310a5cee2d4263d0fa5e33c9b2fb09bdae3bbe3399499e3065b8b56541d1",
+    "routing_input": "29c1a68a71838bb44629cbf4bf7230a0492e9484c0a97d0c2fb2e370f2ca2ec1"
+  },
+  "resource": {
+    "ru_maxrss_kib": 357212,
+    "ru_maxrss_start_kib": 104448
+  },
+  "started_at": "2026-09-14T01:30:56Z",
+  "ended_at": "2026-09-14T01:37:01Z"
+}

@@ -1,0 +1,34 @@
+{
+  "event": "RUN_END",
+  "timestamp": "2026-09-14T01:30:50Z",
+  "pid": 635795,
+  "exit_code": 0,
+  "output_sha256": "12077aed1daafce9db0a33e8be3d0264ba6fe381d3fb741bda4b49b08df0ed2a",
+  "runner_sha256_end": "6a00943d74136d66b949fb6d283972c345e31123eab9aadaed7bf37af19d2dfa",
+  "source_commit_end": "1c1002dde03eda64823421156b69696e81ccfdb9",
+  "source_hashes_end": {
+    "runner": "6a00943d74136d66b949fb6d283972c345e31123eab9aadaed7bf37af19d2dfa",
+    "qaoa": "89097d258d1422a196818e194fafdbf406b06a6abc94b30f6c27eeffbecbb8d7",
+    "optimized_metrics_v4": "1ea9d3cb0efeb6df3c7ef57f6d89541388d0089d1f58361254d284b3fcbdc187",
+    "hamiltonian": "f38947e84cdb1094cd35c80462ed7db9c693da7e0f2f622e187053c235435f03",
+    "core": "131a310a5cee2d4263d0fa5e33c9b2fb09bdae3bbe3399499e3065b8b56541d1",
+    "routing_input": "29c1a68a71838bb44629cbf4bf7230a0492e9484c0a97d0c2fb2e370f2ca2ec1"
+  },
+  "optimizer_success": false,
+  "nfev": 300,
+  "termination": {
+    "nfev": 300,
+    "nit": null,
+    "success": false,
+    "status": 3,
+    "message": "Return from COBYLA because the objective function has been evaluated MAXFUN times.",
+    "termination_status": "OBJECTIVE_EVALUATION_CAP_REACHED",
+    "budget_hit": true,
+    "maxiter_boundary_reached": false,
+    "objective_cap_hit": true,
+    "termination_source": "explicit_objective_callback_guard",
+    "optimizer_status": 3
+  },
+  "runtime_seconds": 982.4486653660424,
+  "peak_rss_kib": 351024
+}
