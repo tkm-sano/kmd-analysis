@@ -21,3 +21,9 @@
 - [R24現行研究設計ガイド（日本語）](../../../docs/ja/R24_CURRENT_RESEARCH_DESIGN_GUIDE_JA.md)
 - [Generated suite report](../../../reproducibility/outputs/traffic_simulation/r24_benchmark_instance_suite/20260915_v1/R24_BENCHMARK_INSTANCE_SUITE_REPORT.md)
 - [Generated suite結果（日本語）](../../../docs/ja/R24_BENCHMARK_INSTANCE_SUITE_REPORT_JA.md)
+- [Classical reference validation実行結果](../../../06_outputs/traffic_simulation/r24_classical_reference_validation/20260915_v1/R24_CLASSICAL_REFERENCE_VALIDATION_RESULTS.md)
+- [Classical reference実装](../r24_classical_reference/): HiGHS MILP、Exact Enumeration、decoder、独立validator
+
+```text
+NEXT_EXECUTABLE_TASK = run classical R24 reference benchmark
+```

@@ -58,7 +58,7 @@ Zero-distance/time arcsはすべてsame routing proxyとして検証済みで、
 - Non-degenerate ready: 84
 - Degenerate: 66
 
-R24-specific classical CVRP solverはまだ実装されておらず、MILP/CP-SAT optimizationは実行していません。
+このinstance-suite生成時点ではR24-specific classical CVRP solverとMILP optimizationは未実行でした。その後、HiGHS MILP、独立Exact Enumeration、独立validatorによるsmall-n validationを完了し、`R24_CLASSICAL_REFERENCE_VALIDATED`となりました。full 330-condition benchmarkは未実行です。
 
 ## Validation
 
@@ -92,5 +92,7 @@ Independent validatorが次を再検証し、すべてPASSしました。
 このsuiteは、大田区を基盤とするfreeze済み合成eligible benchmark populationからのrepeated-random subsetおよびcontrolled structural subsetです。実在carrierのroute、delivery、fleet、dispatch、または全大田区配送の統計的代表sampleではありません。
 
 ```text
-NEXT_EXECUTABLE_TASK = implement and validate classical R24 CVRP reference solver
+NEXT_EXECUTABLE_TASK = run classical R24 reference benchmark
 ```
+
+後続の実行結果: [R24 Classical Reference Validation](../../06_outputs/traffic_simulation/r24_classical_reference_validation/20260915_v1/R24_CLASSICAL_REFERENCE_VALIDATION_RESULTS.md)

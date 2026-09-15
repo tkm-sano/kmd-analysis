@@ -118,8 +118,23 @@ R23 single-vehicle route ordering
 - service time、time window、実fleet、reload、chargingは未導入
 - R24 QUBOとresource gateは未実行
 
+## Classical reference validation
+
+R24 classical referenceは、HiGHS 1.15.1によるdirected CVRP MILP、n≤4の独立Exact Enumeration、独立solution validatorとして実装・検証済みです。
+
+- Verdict: `R24_CLASSICAL_REFERENCE_VALIDATED`
+- Fleet semantics: `AT_MOST_M`
+- Subtour formulation: `LOAD_MTZ`
+- Validation conditions: 21
+- Exact / HiGHS optimum一致: 21/21
+- Solution validation: 42/42 PASS
+- Duplicate proxy / zero arc / asymmetric cost: PASS
+- Full 330-condition benchmark: 未実行
+
+実行結果は[確定成果物レポート](../../06_outputs/traffic_simulation/r24_classical_reference_validation/20260915_v1/R24_CLASSICAL_REFERENCE_VALIDATION_RESULTS.md)を参照してください。
+
 ## 次のtask
 
 ```text
-NEXT_EXECUTABLE_TASK = implement and validate classical R24 CVRP reference solver
+NEXT_EXECUTABLE_TASK = run classical R24 reference benchmark
 ```
