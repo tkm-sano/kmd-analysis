@@ -6,6 +6,8 @@ Role: **current design authority**
 
 Effective date: 2026-09-15 JST
 
+日本語案内: [R24現行研究設計ガイド](../../docs/ja/R24_CURRENT_RESEARCH_DESIGN_GUIDE_JA.md)。固定enum、数式、hash、authority boundaryは本書を正本とする。
+
 ## 1. Authority and reading rule
 
 This document is the single integrated authority for the research design currently in force. It consolidates the accepted design without requiring the reader to reconstruct it from historical artifacts. Stage-specific specifications, manifests, hashes, and evidence registers remain authoritative for their detailed values and execution evidence.

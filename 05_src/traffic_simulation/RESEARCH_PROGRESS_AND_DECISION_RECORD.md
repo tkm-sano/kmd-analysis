@@ -6,6 +6,8 @@ Role: **historical decision record**
 
 Current through: 2026-09-15 JST
 
+日本語案内: [R24現行研究設計ガイド](../../docs/ja/R24_CURRENT_RESEARCH_DESIGN_GUIDE_JA.md)。本書は意思決定の英語原文記録として保持する。
+
 ## 1. Purpose and authority boundary
 
 This document records how the research moved from a routing foundation and the R23 reduced problem to the current R24 controlled CVRP design. It explains dependencies, decisions, rejected alternatives, deferred scopes, and the current executable next task. It does not replace immutable run manifests or stage-specific evidence.

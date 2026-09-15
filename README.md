@@ -1,514 +1,192 @@
-## Current R24 authority
+# 東京都市配送 × 量子未来社会
+
+東京都大田区を対象に、公開データを基盤とする合成配送需要と道路ネットワークを用いて、古典計算・量子計算を含む配送計画手法と将来条件の影響を検討する研究リポジトリです。
+
+現在の中心課題は、実配送会社の運用再現ではなく、**大田区を基盤とする統制されたCVRPベンチマーク**です。観測されていない配送先、運行、車両群を実態として主張しません。
 
 更新基準日: **2026-09-15**
 
-R24は、実配送会社の運用再現ではなく、**Ota-grounded controlled CVRP benchmark**として進める。現在の設計状態は次のとおりである。
+## 現在の結論
 
-| Gate / validation | Current verdict | Frozen authority |
-|---|---|---|
-| Gate A | `GATE_A_ACCEPTED_WITH_LIMITATIONS` | positive-demand buildingをbenchmark customerとし、既存building-to-road mappingを非観測のrouting proxyとして使用 |
-| Gate B | `GATE_B_ACCEPTED_WITH_LIMITATIONS` | primary vehicle class = kei-class electric commercial van |
-| Gate C | `GATE_C_ACCEPTED_WITH_LIMITATIONS` | primary capacity dimension = methodological parcel-equivalent count |
-| Gate D | `GATE_D_ACCEPTED_WITH_LIMITATIONS` | `q_i=N_i`, `Q=14`, `rho_target in {0.50,0.70,0.90}`, `m=ceil(D/(rho_target Q))` |
-| Routing revalidation | `ROUTING_COMPATIBILITY_ACCEPTED_WITH_LIMITATIONS` | run_2 full mappingをrun_3 graphへ移送検証し、depot SCCでdirected reachabilityを確認 |
+R24 benchmark instance suiteは、freeze済み仕様どおり生成・検証済みです。
 
-Routing candidate 39,956件・81,859 parcel-equivalentsのうち、final `C_eligible` は39,930件・81,793 parcel-equivalentsである。26件・66 parcel-equivalentsはdepotとのdirected round-trip reachabilityを満たさず除外した。全件all-pairs ODは生成しておらず、population-levelではSCCを使用し、正式なordered-pair distance/travel time validationは選択済みinstanceに限定する。
-
-このcapacityはkg、m³、実観測parcel count、メーカー公称積載量のいずれでもない。住宅向けB2C parcel mass authorityが不足するためphysical kg/volume scenarioはdeferし、kei-vanの約350 kg級payloadを`Q=14`へ変換していない。また、observed physical stop、entrance、service event、dispatch、実fleetを主張しない。
-
-主要authorityは[Gate A sign-off](reproducibility/outputs/traffic_simulation/r24_gate_a_minimal_benchmark_abstraction/20260915_v1/GATE_A_SIGNOFF.md)、[Gate B vehicle-class decision](reproducibility/outputs/traffic_simulation/r24_gate_b_vehicle_class/20260915_v1/R24_GATE_B_VEHICLE_CLASS_DECISION.md)、[Gate C/D reassessment](reproducibility/outputs/traffic_simulation/r24_methodological_capacity_specification/20260915_v1/GATE_C_D_REASSESSMENT.md)、[routing compatibility revalidation](reproducibility/outputs/traffic_simulation/r24_routing_compatibility_revalidation/20260915_v1/R24_ROUTING_COMPATIBILITY_REVALIDATION.md)、[eligible population manifest](reproducibility/outputs/traffic_simulation/r24_routing_compatibility_revalidation/20260915_v1/C_ELIGIBLE_MANIFEST.csv)である。
-
-`NEXT_EXECUTABLE_TASK = freeze R24 instance generation specification`
-
-R23最終状態・結果・制約は[R23_STATUS.md](05_src/traffic_simulation/R23_STATUS.md)を参照する。過去証拠は[archive](reproducibility/archive/traffic_simulation/r23/README.md)に保持する。
-
-
-# Tokyo Urban Delivery × Quantum Future Society
-
-東京都大田区を対象に、実データに基づく都市配送モデルを構築し、配送計画の作成方法と将来の配送条件が都市配送需要の充足へ与える影響を評価する修士研究です。
-
-日常的な研究実行・検証はrepo rootの `./research` に集約しています。最初に `./research commands` で利用可能なcommandと未実装stageを確認してください。詳細は[Unified Research CLI](docs/20260903_20260903_research_cli.md)を参照してください。
-
-## Current Research Documentation
-
-| Document | Role |
+| 項目 | 現在の状態 |
 |---|---|
-| [Complete Current Research Design](05_src/traffic_simulation/CURRENT_RESEARCH_DESIGN.md) | 現在採用されている研究設計の統合authority |
-| [Research Progress and Decision Record](05_src/traffic_simulation/RESEARCH_PROGRESS_AND_DECISION_RECORD.md) | 研究の進行、設計変更、Gate判断のhistorical record |
-| [R23 Status](05_src/traffic_simulation/R23_STATUS.md) | R23 closure、結果、制約のcurrent index |
-| [End-to-End Workflow Authority](reproducibility/outputs/traffic_simulation/end_to_end_workflow_feasibility_audit/20260914_v2/END_TO_END_WORKFLOW_AUTHORITY.md) | 全体architectureと経済評価境界 |
-| [Routing Baseline Canonical Specification](05_src/traffic_simulation/specifications/ROUTING_BASELINE_CANONICAL.md) | directed routing cost・reachabilityの正式仕様 |
-
-## 研究目的
-
-> **量子計算が、都市配送需要の充足に与える影響を検討可能な枠組みを提案する。**
-
-## 研究の問い
-
-> **量子計算を用いた配送計画は、古典計算や過去の統計情報に基づく配送計画と比較して、都市配送需要の充足にどのような差をもたらすか。**
-
-ここでいう「影響」は、配送需要の発生から配送完了までを構成する条件が変化し、その変化が最終的な配送完了へどう現れるかを指します。本研究では、量子計算の影響を次の二つの経路に分けます。
-
-1. 配送計画の作成方法として量子計算を用いることによる変化
-2. 将来の技術条件が車両・運用条件を介して配送へ波及することによる変化
-
-## まず確認する重要ファイル
-
-| 順序 | 資料 | 役割 |
-|---:|---|---|
-| 1 | [Research Overview and Roadmap v17](RESEARCH_OVERVIEW.md) | 研究の問い、Stage 1–11、milestone、依存関係、現在地の主要入口 |
-| 2 | [Current Research Pipeline Reference](RESEARCH_PIPELINE_REFERENCE.md) | 各stageの実行、input/output、authority、validation、acceptance、handoff |
-| 3 | [研究全体の構造・現在地・作業管理規則](00_project_management/0-2-A_20260823_COMPLETE_研究全体構造と作業管理規則.md) | 研究工程、作業番号、本線・派生ルートの管理規則 |
-| 4 | [研究の現状と今後の設計案件](0-2_20260823_CURRENT_研究現状と設計案件.md) | 2026-08-23時点の道路、交通、配送、最適化設計記録 |
-| 5 | [交通量較正](2-3_20260823_CURRENT_交通量較正.md) | 一般交通需要、較正結果、受入判定、残課題 |
-| 6 | [最初の交通量較正記録](2-3_20260823_PARTIAL_交通量較正.md) | 最初の候補を不受理とした根拠と、後続診断の履歴 |
-| 7 | [Hayate Conda正本化の完了記録](0-2-B-2_20260825_COMPLETE_HayateConda正本化.md) | 正本環境の完了判定と全回帰の実行証拠 |
-| 8 | [シミュレーションモデル開発とV&V](05_src/traffic_simulation/20260730_20260903_simulation_model_development_and_vv.md) | 実装検証と現実に対する妥当性確認の境界 |
-| 9 | [合成需要と非最適化ベースライン仕様](05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md) | 配送需要、比較器、評価指標の現行仕様 |
-| 10 | [配送EVプロファイル](reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml) | 観測車両ではない固定モデル仮定の現行設定 |
-| 11 | [データ台帳](03_data/metadata/traffic_simulation_sources.csv) | 入力データ、取得日、SHA-256、用途、制限 |
-| 12 | [Hayate native環境](reproducibility/environment/README.md) | 正本実行環境、再構築、検証手順 |
-
-READMEは入口です。完了判定、数値、入力、実行条件についてREADMEと個別記録が矛盾する場合は、最新の完了記録、実行manifest、データ台帳を優先します。
-
-## 研究の全体構造
-
-本研究の中心は、単一の都市配送モデルを使った配送計画比較と将来シナリオ分析です。
+| R23 | `R23_CLOSED_WITH_DOCUMENTED_LIMITATIONS` |
+| Gate A | `GATE_A_ACCEPTED_WITH_LIMITATIONS` |
+| Gate B | `GATE_B_ACCEPTED_WITH_LIMITATIONS` |
+| Gate C | `GATE_C_ACCEPTED_WITH_LIMITATIONS` |
+| Gate D | `GATE_D_ACCEPTED_WITH_LIMITATIONS` |
+| Routing compatibility | `ROUTING_COMPATIBILITY_ACCEPTED_WITH_LIMITATIONS` |
+| Final eligible population | `39,930 customers / 81,793 methodological parcel-equivalents` |
+| Instance specification | `R24_INSTANCE_GENERATION_SPEC_FROZEN_WITH_LIMITATIONS` |
+| Instance suite | `R24_INSTANCE_SUITE_GENERATED_WITH_LIMITATIONS` |
+| Classical R24 solver | `NOT_IMPLEMENTED` |
+| R24 QUBO/QAOA | `NOT_EXECUTED` |
 
 ```text
-実データ
-  ↓
-都市配送モデルの構築
-  ↓
-【第1段階】配送計画手法の比較
-  ↓
-【第2段階】将来社会シナリオ分析
-  ↓
-【第3段階】バッテリー発展に基づくケース分析
-  ↓
-都市配送需要の充足への影響を解釈
+NEXT_EXECUTABLE_TASK = implement and validate classical R24 CVRP reference solver
 ```
 
-都市配送モデルは、道路、一般交通、配送需要、車両・充電、運行条件を受け取り、配送計画をSUMO上で実行して配送完了状況を出力します。
+## R24 instance suite
 
-```mermaid
-flowchart LR
-    A["道路ネットワーク"] --> G["都市配送モデル"]
-    B["一般交通"] --> G
-    C["配送需要"] --> G
-    D["車両・充電条件"] --> G
-    E["運行条件"] --> G
-    F["計画作成方法"] --> G
-    G --> H["配送シミュレーション"]
-    H --> I["需要充足と未配送理由"]
-```
+### Suite構成
 
-### 第1段階：配送計画手法の比較
+| Suite | 規模 | 生成結果 |
+|---|---|---:|
+| Primary: Repeated Random | `n={2,3,4,5,8,10,15,20}` × 10 repetitions | 80/80 valid |
+| Secondary: Controlled Structural | `n={4,10,20}` × 3 structures × 3 repetitions | 27/27 valid |
+| Reference: Fixed Anchor | Primary R01のn=4,10,20 alias | 3/3 valid |
 
-同一の道路、交通、需要、車両、制約、乱数条件で、次の計画作成方法を比較します。
+独立に生成したbase instanceは107件、anchor aliasを含むmanifest recordは110件です。全baseで`DEP_006`を含む全ordered-pair ODをaccepted run_3上で計算し、SUMO `delivery` connection、turn、edge sequence、partial-edge distance/timeを検証しています。
 
-- 過去の統計情報に基づく配送計画
-- 古典計算を用いた配送計画
-- 量子計算を用いた配送計画
+### Capacity条件
 
-この段階では、計画作成方法以外を可能な限り共通にし、solverの違いが需要充足へ与える効果を分離します。
-
-### 第2段階：将来社会シナリオ分析
-
-第1段階と同じ都市配送モデルへ、人口・世帯構造とEC利用の将来条件を入力し、配送需要の変化を評価します。
-
-```text
-将来人口・世帯構造
-  ↓
-EC利用シナリオ
-  ↓
-宅配需要
-  ↓
-都市配送モデル
-```
-
-### 第3段階：バッテリーケース分析
-
-量子計算を用いた材料・化学研究の知見を、バッテリー性能へ直接同一視せず、根拠付きの到達可能範囲として車両・運用条件へ接続します。
-
-```text
-材料・化学研究の知見
-  ↓
-材料特性または性能範囲
-  ↓
-バッテリー条件
-  ├─ 航続距離
-  └─ 充電所要時間
-  ↓
-都市配送モデル
-  ↓
-需要充足への波及
-```
-
-将来社会シナリオとバッテリーケースの組合せは、基準分析を固定した後の拡張とします。
-
-## 現在地
-
-更新基準日: **2026-09-15**
-
-### Reduced quantum pipeline
-
-配送最適化のうち、full EVRPとは分離した初期検証経路として、固定depot・単一車両の
-**Single-Vehicle Route Ordering Problem**を扱っている。現在の正本状態は次のとおりである。
-
-```text
-Routing Baseline
-  -> R20 reduced route-ordering formulation             [FORMULATION_VERIFIED = PASS]
-  -> R21_REDUCED_QUBO_VALIDATION                        [PASS]
-  -> R22_REDUCED_ISING_CONVERSION                       [PASS]
-  -> R23                                               [CLOSED_WITH_DOCUMENTED_LIMITATIONS]
-  -> R24 Gates A-D + routing compatibility             [ACCEPTED_WITH_LIMITATIONS]
-  -> R24 instance generation specification             [NEXT]
-```
-
-このPASSは `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY` に限定される。現在のQUBOは
-customer-onlyの `n x n` position encodingで、静的な有向travel timeを最小化し、customer-onceと
-position-onceだけをpenalty化する。capacity、time window、battery/SOC、charging、fleet sizing、
-一般のunreachable transitionは含まない。Formal A/B1/B2は完了しており、AerはCPU上の
-software simulatorであって量子実機性能やquantum advantageの証拠ではない。
-
-数式・scope・stage gateの正本は[EVRP Execution Plan](EVRP_EXECUTION_PLAN.md)と
-[R20 QAOA Subproblem Specification](05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md)、
-実装索引は[traffic simulation README](05_src/traffic_simulation/README.md)を参照する。
-
-```text
-0-1 社会科学としての問い                    [FIXED / documentation update]
-0-2 研究設計                                [CURRENT]
-0-3 方法論                                  [CURRENT]
-  ├─ 正本実行環境のHayate移行               [PARTIAL]
-  │   ├─ Mac側Git整理                       [COMPLETE]
-  │   └─ Hayate Conda正本化                 [COMPLETE]
-  ├─ 1. 道路・交通条件                      [PARTIAL]
-  ├─ 2. 交通状態                            [CURRENT]
-  │   ├─ 公式観測の取得・道路対応           [COMPLETE]
-  │   ├─ 測定断面・検出位置固定             [COMPLETE]
-  │   ├─ 交通量較正                         [CURRENT]
-  │   └─ 2024年観測による独立確認           [BLOCKED]
-  ├─ 3. 配送条件                            [PARTIAL]
-  ├─ 4. 配送シミュレーション                [PARTIAL]
-  ├─ 5. 配送最適化問題                      [REDUCED PATH VALIDATED / FULL EVRP BLOCKED]
-  └─ 6. 計算手法比較                        [See R23_STATUS.md]
-```
-
-### できるようになったこと
-
-- Hayate上のPython 3.11.15、SUMO 1.24.0、固定Python依存を正本実行環境として定義した。
-- Hayate native環境で交通シミュレーション検証の全回帰 `794 passed` を確認した（historical environment record）。これは現在のreduced R20--R23 stage PASSやfull-EVRP完成を意味しない。
-- 大田区の道路方向、通行権限、車線欠測を、元データの事実とモデル仮定を分けて処理できる。
-- 低容量・基準・高容量の車線仮定で予備走行し、車線仮定が配送結果へ非単調に影響し得ることを確認した。
-- 国土交通省2021年・警視庁2023年を較正用、警視庁2024年を独立確認用として分離した。
-- 公式PT小ゾーン本人運転ODにより、固定27測定群すべてへ経路上の空間的支持を確保した。
-- 第6回東京都市圏物資流動調査の宅配関連表を取得し、将来の配送需要・再配達・受取条件を検討する原資料として登録した。
-
-### まだできないこと
-
-- 一般交通の最初の較正候補は観測交通量を大幅に下回り、不受理である。
-- 大田区を通過する区外→区外交通の本人運転OD統合と再較正は完了していない。
-- 警視庁2024年データによる独立した妥当性確認には進んでいない。
-- 接続不能と強制移動が残る予備道路網の配送結果を正式評価へ使用できない。
-- R24のbenchmark customer、vehicle class、methodological capacity、eligible populationは固定済みだが、instance generation specificationとinstance-level ordered-pair routing validationは未固定である。
-- 宅配便個数相当をkg・m³・実配送停止・実fleetへ変換するphysical/operational scenarioは、対応authority不足のためR24 primary scopeからdeferしている。
-- Reduced Problem scopeのB1/B2比較は完了している。
-
-## 現在の主要ボトルネック
-
-| 優先度 | 問題 | 現在の状態 | 下流への影響 |
-|---|---|---|---|
-| 最優先 | 区外通過交通を含む一般交通需要 | 外外OD候補の取得・統合途中 | 交通量、渋滞、旅行時間を過小評価する可能性 |
-| 最優先 | 交通量較正 | 最初の候補は不受理 | 交通条件を正式な配送比較に使えない |
-| 最優先 | 独立Validation | 2024年観測を隔離中 | 過適合を検出できない |
-| 高 | 道路接続・配送到達性 | 接続不能と強制移動が残る | 配送失敗をsolver性能と区別できない |
-| 高 | 配送停止への変換 | 82,023個相当／日は停止数ではない | 正式配送問題と充足率の分母が定まらない |
-| 高 | 車両数 | `1・3・5台`は予備条件で、実運用または需要規模との対応根拠が未固定 | 充足率をsolver以上に直接支配し、車両不足と解品質を分離できない |
-| 高 | 配送先・配送停止数 | `25・50・100地点`は計算規模の予備条件で、82,023個相当／日からの変換根拠が未固定 | 問題規模と需要密度が恣意的になり、手法間差の解釈が変わる |
-| 高 | 需要／車両能力比 | 車両数、積載量、再積載回数、稼働時間を統合した能力指標が未定義 | 資源過剰では全手法が100%、不足では全手法が低水準へ飽和する |
-| 高 | 配送拠点 | 位置、数、担当区域、再積載の可否が未固定 | 総距離、到達性、必要車両数、充電機会が変わる |
-| 高 | 積載量・再積載 | 荷物量との対応、1運行の容量、拠点への帰還規則が未固定 | 容量不足と経路計画の品質を区別できない |
-| 高 | 稼働時間・サービス時間 | 運行可能時間、停止当たり荷役時間、時間窓が未固定 | 走行時間短縮が配送完了へ変換される割合を評価できない |
-| 高 | 出発時刻 | 同時出発と分散出発の基準が未固定 | 人工的な交通集中と待ち時間が生じる可能性 |
-| 高 | EV・充電条件 | 基準値と感度範囲が未固定 | 航続距離・充電制約の効果を評価できない |
-| 高 | 比較規約 | 古典参照解、計算予算、QAOA復号・修復が未固定 | solver間の公平な比較が成立しない |
-
-道路属性の未解決件数をゼロにすること自体を目的にしません。欠測は由来付きのモデル仮定と感度分析で扱い、明示的な矛盾は自動補完せず、研究結論へ影響する主要ボトルネックを優先します。
-
-### 交通・道路
-
-- 区外→区外で大田区を通過する交通が初期需要に不足しており、本人運転ODの統合と再較正が未完了である。
-- 最初の交通量較正候補は不受理であり、警視庁2024年による独立Validationも未実施である。
-- 道路接続、通行権限、配送往復到達性に未解決点があり、接続不能や強制移動を配送計画の失敗と区別する必要がある。
-- 車線数・速度・信号には観測で固定できない仮定があり、由来付き条件と感度分析が必要である。
-
-### 配送需要
-
-- `82,023宅配便個数相当／日`は、実注文、実配送先、配送停止数のいずれでもない。
-- 配送先数`25・50・100`は予備的な計算問題規模であり、実都市の配送停止数を表さない。
-- 人口比例需要は実注文や実配送先を表さず、事業所配送、昼間人口、地域別EC利用等を直接反映しない。
-- 配送需要の空間分布と時間分布、および宅配便個数相当から配送停止への変換が未固定である。
-
-### 車両数は独立した主要ボトルネック
-
-車両数は単なる実験パラメータではなく、配送需要充足率の上限を決める供給能力です。現在の`1・3・5台`は問題規模を確認する予備条件であり、大田区の配送需要、実在事業者の運用、拠点の担当区域から導いた正式値ではありません。
-
-車両数だけを独立に設定せず、少なくとも次の関係として扱います。
-
-```text
-割当配送需要
-  ÷
-（車両数 × 1台当たり積載量 × 再積載可能回数 × 稼働可能時間内の実行能力）
-  ↓
-需要／車両能力比
-```
-
-実際の実行能力には、道路旅行時間、渋滞、停止当たりサービス時間、時間窓、充電、拠点への帰還が影響します。そのため、同じ車両数でも他の仮定によって供給能力は変化します。
-
-正式比較では、次の三つを分離します。
-
-1. **資源不足:** どの計画でも完了不可能な需要
-2. **計画品質不足:** 実行可能な資源があるが、計画が悪いため完了できない需要
-3. **交通・運用上の失敗:** 渋滞、到達不能、充電、サービス時間等による未完了
-
-車両条件は、結果を見てsolver差が最大になる値を選びません。公的統計、物資流動調査、実運用資料等から設定できる基準条件と、低供給・基準・高供給の感度条件を実行前に固定します。直接根拠が得られない場合は、観測事実ではなく`model_assumed`として記録します。
-
-### その他の配送条件
-
-配送拠点の位置・数・担当区域、積載量と再積載、稼働時間、停止当たりサービス時間、時間窓、同時出発と分散出発、駐車・荷役・再配達、EV・充電条件は正式固定前です。これらは車両数と相互作用して実行可能な供給能力を変えるため、単独の便宜的な値ではなく、共通問題の一部として事前固定します。
-
-### 比較設計
-
-Full-EVRPの古典参照解と共通計算予算は未固定である。一方、reduced pathではQUBO定式化、exact reference、QUBO→Ising変換、raw bitstringのdiscard-only検証、およびR23 baseline designまで固定済みである。repairは初期reduced studyでは行わない。今後もsolverが決める顧客訪問順序と、SUMOまたは道路ルータが決める道路上の経路を分けて保存・評価する。
-
-## 評価対象
-
-主な評価対象は、都市配送需要の充足率です。
-
-> **配送需要充足率 = 完了条件を満たした合成配送需要 ÷ 割り当てた合成配送需要**
-
-各需要は、到着、期限、積載量、バッテリー、充電、重複配送等の必須条件を満たした場合だけ完了と判定します。経路生成またはシミュレーションに失敗した需要は完了へ含めません。
-
-充足率だけでは未配送理由を区別できないため、少なくとも次の原因分類を別に記録します。
-
-1. 資源不足
-2. 計画品質不足
-3. 交通・道路上の失敗
-4. 積載・稼働時間不足
-5. バッテリー・充電制約
-6. 計算時間制約
-
-この充足率は公開統計から作る合成需要に対する指標であり、実注文充足率、顧客満足度、配送を受けた人数、社会的便益を表しません。
-
-## 配送需要
-
-### 現在の基準尺度
-
-`parcel-equivalent`（宅配便個数相当）は、全国の年間宅配便取扱個数を人口と日数で正規化し、各比較手法へ同じ合成需要量を与えるための尺度です。
-
-```text
-一人一日当たりparcel-equivalent
-  = 全国の年間宅配便取扱個数
-    ÷ 日本の総人口
-    ÷ 365日
-```
-
-現在の基準値は `0.111345934 parcel-equivalent/人・日`、大田区の期待需要は約 `82,023 parcel-equivalent/日` です。
-
-1 parcel-equivalentは、実際の1注文、1顧客、1配送先、1停止、特定の重量・容積を意味しません。全国宅配便統計には個人宅向け以外の流動も含まれます。
-
-基準分布では、2020年国勢調査500 m人口メッシュを2024年4月1日の大田区人口736,652人へ比例調整します。この方法は、2020年のメッシュ内人口構成が2024年まで比例的に維持されたことと、境界メッシュ内で人口が一様であることを仮定します。
-
-## 将来需要シナリオ
-
-第2段階では、人口だけでなく世帯数とEC利用を介して将来配送需要を設定します。
-
-```text
-将来人口・世帯構造
-  ↓
-EC利用
-  ↓
-宅配需要
-  ↓
-需要倍率
-  ↓
-都市配送モデル
-```
+各customer demandとcapacityは次のとおりです。
 
 \[
-D_t = H_t \times p^{EC}_t \times r_t
+q_i=N_i,\qquad Q=14
 \]
-
-- \(D_t\): 年 \(t\) の配送需要
-- \(H_t\): 将来世帯数
-- \(p^{EC}_t\): EC利用率
-- \(r_t\): EC利用世帯当たりの宅配需要係数
-
-EC利用率は確定予測として扱わず、Low・Base・Highなど上限と飽和を持つシナリオとして設定します。基準年からの需要倍率は次で表します。
 
 \[
-M_t = \frac{D_t}{D_{base}}
+\rho^*\in\{0.50,0.70,0.90\},\qquad
+m=\left\lceil\frac{D}{\rho^*Q}\right\rceil
 \]
 
-高度な需要予測モデルを先に導入するのではなく、公的データ、仮定、変換式、シナリオを追跡可能にすることを優先します。
-将来の`D_t`と`M_t`は観測事実ではなく、仮定を明示したシナリオ値です。
+同一customer subsetを3条件で共通利用します。全330条件がexact bin-packing preflightでfeasibleでした。
 
-## 実験設計
+- non-degenerate `READY`: 135
+- `DEGENERATE_REGIME_SAME_M`: 195
+- `PACKING_INFEASIBLE`: 0
 
-予備条件として、配送先数 `25・50・100`、車両数 `1・3・5` が検討されています。ただし、これらは正式な実験条件ではなく、実都市需要と運用規模との対応根拠が必要です。問題サイズの系列と現実の配送能力シナリオを混同せず、配送先数は計算規模、車両数は供給能力の感度軸として管理します。
+Degenerate条件は保存しますが、後のcapacity-effect比較からは除外します。
 
-solverの効果とシナリオ条件の効果を分離するため、最終的な分析は次の多因子構造で設計します。
+### Duplicate routing proxy
 
-```text
-需要条件
-  × 交通条件
-  × 車両・EV条件
-  × 出発・運行条件
-  × solver
-  ↓
-配送需要充足率・未配送理由・計算要求
-```
+Building identityはrouting proxyとは別に保持します。Duplicate proxyを理由にcustomerを除外・統合・再抽選しません。
 
-少なくとも次を事前固定または感度条件として管理します。
+- within-instance duplicate proxyを含むindependent base: 16/107
+- 検証済みzero-distance ordered arcs: 304
+- 検証済みzero-travel-time ordered arcs: 304
+- routing validation failure: 0
+- hard rejection: 0
+- redraw: 0
 
-- 需要／車両比と配送停止数
-- 車両数、1台当たり積載量、再積載回数、稼働可能時間
-- 配送需要の空間・時間分布
-- 空いている時間帯、平常混雑、ピーク、局所混雑
-- 同時出発と分散出発
-- 拠点、積載量、サービス時間、時間窓
-- バッテリー容量、初期SOC、電費、充電速度
-- 乱数seedと反復回数
+## 固定入力
 
-交通条件と車両資源が過剰または不足すると、全solverの充足率が同じ水準へ飽和します。結果を見て差が大きい条件だけを選ばず、条件範囲と受入基準を実行前に固定します。
+| 入力 | 固定値 |
+|---|---|
+| Source horizon | designated synthetic day `2026-01-01` |
+| Eligible customers | 39,930 |
+| Total demand | 81,793 methodological parcel-equivalents |
+| Depot | `DEP_006` |
+| Primary vehicle class | kei-class electric commercial van |
+| Routing graph | accepted V18/run_3 |
+| run_3 SHA-256 | `460554c7716fe5e3e1410bbee790e69745a2c423146bac88e51e3a2b95f051b2` |
+| C_eligible SHA-256 | `245aad97ea49f7676dcebd414b46eb364d64e9d0fbeb4defa0c8e8b90604ca5c` |
 
-## 比較する計画作成方法
+## 重要な主張範囲
 
-| 手法 | 役割 | 現在の状態 |
-|---|---|---|
-| 統計情報に基づく非最適化基準 | 距離や時間で並べ替えない再現可能な比較器 | 仕様作成済み、正式実装前 |
-| 古典最適化 | 古典計算機上のsolverによる参照解・近似解 | 計画中 |
-| Qiskit Aer QAOA | QUBOへ変換した小規模問題の回路シミュレーション | 計画中 |
+許可される説明は、次の範囲です。
 
-三手法には、同一の需要、車両、制約、交通条件、道路網、乱数を与えます。次を分離して保存・比較します。
+> 大田区を基盤とする、freeze済み合成eligible benchmark populationから作成したrepeated-random subsetおよびcontrolled structural subset。
 
-1. solverの生出力
-2. 復号後の解
-3. 制約を満たすよう修復した解
-4. SUMO上で実現した配送結果
+次の主張は禁止されています。
 
-solverが決める顧客訪問順序と、SUMOまたはルータが決める道路上の経路を区別します。QAOAの回路生成、サンプリング、復号、修復に要する時間も計算要求として記録します。
+- 大田区の実配送全体を統計的に代表する
+- 実在carrierのroute、dispatch、fleetを再現する
+- 実観測parcel、order、customer、stopである
+- methodological capacityをkg、m³、メーカー公称payloadとみなす
+- model free-flow travel timeを実観測配送時間とみなす
+- 現在の結果をquantum advantageの証拠とみなす
 
-Qiskit Aerは古典計算機上の量子回路シミュレーターです。その結果を物理量子コンピュータの性能または量子優位性の証拠として扱いません。
+## 最初に読む資料
 
-## 使用する主なデータ
+日本語で現在地を確認する場合は、次の順序を推奨します。
 
-| データ | 状態 | 研究での役割 |
-|---|---|---|
-| 2026年N03行政区域 | 処理済み | 大田区境界 |
-| 2026-07-16 OpenStreetMap | 処理済み | 道路形状、接続、道路属性の候補 |
-| 国土交通省・令和3年度道路交通センサス | 処理済み | 一般交通量の較正 |
-| 警視庁2023年交通量 | 処理済み | 一般交通量の較正 |
-| 警視庁2024年交通量 | 道路対応済み・較正から隔離 | 独立Validation |
-| 2018年東京都市圏PT本人運転OD | 使用中 | 一般交通需要の空間分布 |
-| 区外→区外OD関連データ | 取得・統合確認中 | 大田区を通過する交通 |
-| 第6回東京都市圏物資流動調査の宅配関連表 | 原本取得済み | 配送需要、再配達、荷物量、時間・空間分布の根拠候補 |
-| 2020年国勢調査500 m人口メッシュ | 処理済み | 基準配送需要の空間分布 |
-| 2024年大田区人口・日本総人口・宅配便取扱個数 | 処理済み | 基準parcel-equivalentの計算 |
-| 国土数値情報P31・充電設備位置 | 使用実績あり、正式入力未固定 | 物流施設・充電場所の候補 |
+1. [R24現行研究設計ガイド（日本語）](docs/ja/R24_CURRENT_RESEARCH_DESIGN_GUIDE_JA.md)
+2. [R24 instance-generation仕様（日本語）](docs/ja/R24_INSTANCE_GENERATION_SPECIFICATION_JA.md)
+3. [R24 benchmark instance suite結果（日本語）](docs/ja/R24_BENCHMARK_INSTANCE_SUITE_REPORT_JA.md)
+4. [R23 status](05_src/traffic_simulation/R23_STATUS.md)
 
-提供元URL、取得日、対象期間、ライセンス、元ファイル名、SHA-256、処理、生成先、既知の制限は[データ台帳](03_data/metadata/traffic_simulation_sources.csv)と[取得記録](03_data/metadata/acquisition/README.md)で管理します。台帳に未登録の取得物は、正式入力として使用する前に原本、SHA-256、用途、制限を登録します。
+英語の原文authorityは、固定ID、schema、hash、enumを機械的に保持するため残しています。
 
-第三者データの元ファイルはGitへ登録しません。再現時は取得記録に従って入手し、登録SHA-256と照合します。
+| 正式資料 | 役割 |
+|---|---|
+| [Current Research Design](05_src/traffic_simulation/CURRENT_RESEARCH_DESIGN.md) | 現在採用されている研究設計の統合authority |
+| [Research Progress and Decision Record](05_src/traffic_simulation/RESEARCH_PROGRESS_AND_DECISION_RECORD.md) | 研究進行と判断のhistorical record |
+| [Frozen instance-generation specification](reproducibility/outputs/traffic_simulation/r24_instance_generation_specification/20260915_v1/R24_INSTANCE_GENERATION_SPECIFICATION.md) | n、seed、sampling、structural、anchor、validationの正本 |
+| [Generated instance-suite report](reproducibility/outputs/traffic_simulation/r24_benchmark_instance_suite/20260915_v1/R24_BENCHMARK_INSTANCE_SUITE_REPORT.md) | 実生成結果 |
+| [Routing compatibility revalidation](reproducibility/outputs/traffic_simulation/r24_routing_compatibility_revalidation/20260915_v1/R24_ROUTING_COMPATIBILITY_REVALIDATION.md) | final eligible populationとrun_3 compatibility |
+| [Methodological capacity specification](reproducibility/outputs/traffic_simulation/r24_methodological_capacity_specification/20260915_v1/R24_METHODOLOGICAL_CAPACITY_SPECIFICATION.md) | q_i、Q、rho、mの正本 |
+| [Routing Baseline](05_src/traffic_simulation/specifications/ROUTING_BASELINE_CANONICAL.md) | directed routing costとreachabilityの正本 |
 
-## 検証と妥当性確認
+## 実行入口
 
-本研究では、実装・構造の検証と、利用目的に対する妥当性確認を分けます。
-
-- **Verification:** 仕様、Schema、コード、データ変換、道路構造が定めた規則どおりであることを確認する。
-- **Calibration:** 較正用観測に対する誤差を小さくするよう、調整可能なモデル値を定める。
-- **Validation:** 較正に使っていない観測で、定めた用途に必要な精度と振る舞いを確認する。
-
-テストが合格しても、現実交通を十分に表すとは限りません。また、較正用観測への一致だけでValidation合格とはしません。
-
-現時点の交通量較正候補は、固定27測定群すべてに経路上の支持がある一方、需要倍率が上限1.5へ達しても重み付き絶対誤差率が87.07%で、不受理です。区外通過交通を統合して再較正した後でなければ、2024年観測による独立Validationへ進みません。
-
-## 再現方法
-
-正本実行環境はHayate上のnative CondaとSUMO 1.24.0です。Dockerは任意の副次クロスチェックです。
-
-- repository: `/home/takuma/kmd-analysis`
-- Python: `/home/takuma/kmd-analysis/.conda/bin/python`（3.11.15）
-- SUMO: `/home/takuma/kmd-analysis/.local/sumo-1.24.0/bin/sumo`（1.24.0）
-- Python依存正本: `reproducibility/environment/requirements-analysis.txt`
+日常的な研究実行・検証はrepository rootの`./research`に集約しています。
 
 ```bash
-cd /home/takuma/kmd-analysis
-source /opt/miniconda/etc/profile.d/conda.sh
-conda activate /home/takuma/kmd-analysis/.conda
-
-export SUMO_HOME=/home/takuma/kmd-analysis/.local/sumo-1.24.0/share/sumo
-export PATH=/home/takuma/kmd-analysis/.local/sumo-1.24.0/bin:$PATH
-export PYTHONPATH=/home/takuma/kmd-analysis/.local/sumo-1.24.0/share/sumo/tools:${PYTHONPATH:-}
-export LD_LIBRARY_PATH=/home/takuma/kmd-analysis/.conda/lib:${LD_LIBRARY_PATH:-}
-
-bash reproducibility/scripts/hayate/verify_hayate_native_environment.sh
-python -m pytest -q 05_src/traffic_simulation/validation
+./research commands
 ```
 
-詳細は[Hayate native環境の正本手順](reproducibility/environment/README.md)を参照してください。
+詳細は[統合Research CLI](docs/20260903_20260903_research_cli.md)を参照してください。
 
-## リポジトリ構成
+R24 instance suiteの再現コードは次の2ファイルです。
 
-| ディレクトリ | 内容 |
+- [generator](05_src/traffic_simulation/r24_instance_generation/generate_r24_benchmark_instance_suite.py)
+- [independent validator](05_src/traffic_simulation/r24_instance_generation/validate_r24_benchmark_instance_suite.py)
+
+生成済みartifactは次のdirectoryにあります。
+
+```text
+reproducibility/outputs/traffic_simulation/r24_benchmark_instance_suite/20260915_v1/
+```
+
+このdirectoryは生成物policyによりgitignore対象ですが、`SHA256SUMS.txt`が全artifactを検証します。
+
+## 現在の研究パイプライン
+
+```text
+R23 closure
+  -> Gate A customer/proxy semantics
+  -> Gate B vehicle class
+  -> Gate C/D methodological capacity
+  -> run_3 routing compatibility
+  -> final C_eligible
+  -> instance-generation specification freeze
+  -> R24 benchmark instance suite generation          [完了]
+  -> classical R24 CVRP reference implementation      [次]
+  -> classical benchmark execution
+  -> R24 QUBO design and validation
+  -> Resource Gate
+  -> QAOA where authorized
+  -> R23/R24 comparison
+  -> VRPTW / EVRP extensions
+  -> operational and economic outcomes
+```
+
+## 今回まだ実行していないもの
+
+- R24 CVRP MILP/CP-SAT optimization
+- R24 QUBO generation
+- R24 QAOA/QPU/statevector execution
+- routing graph regeneration
+- synthetic demand regeneration
+- physical kg/volume capacity scenario
+- observed dispatch、shift、service-time、time-window model
+
+## Repository構造
+
+| Directory | 内容 |
 |---|---|
-| [`00_project_management/`](00_project_management/) | 研究管理、現在地、環境、作業規則 |
-| [`01_research_design/`](01_research_design/) | 研究設計 |
-| [`02_literature/`](02_literature/) | 都市配送、量子経路最適化、評価方法、参考文献 |
-| [`03_data/metadata/`](03_data/metadata/) | データ台帳と取得記録 |
-| [`05_src/traffic_simulation/`](05_src/traffic_simulation/) | 道路、交通、需要、配送、検証、可視化のコードと仕様 |
-| [`06_outputs/`](06_outputs/) | レビュー済みの図、表、地図、報告書 |
-| [`reproducibility/config/`](reproducibility/config/) | バージョン管理された設定とSchema |
-| [`reproducibility/environment/`](reproducibility/environment/) | 正本環境の依存と再構築手順 |
-| [`reproducibility/outputs/`](reproducibility/outputs/) | Git管理外の再生成可能な実行結果 |
-| [`docker/`](docker/) | 任意の副次的Docker環境 |
-| [`legacy/non_sumo_route_proxy_analysis/`](legacy/non_sumo_route_proxy_analysis/) | SUMO導入前の旧研究 |
+| `00_project_management/` | 研究管理、環境、構造規則 |
+| `01_research_design/` | 研究設計と分析方法 |
+| `02_literature/` | 文献記録 |
+| `03_data/` | raw/processed dataとmetadata |
+| `05_src/` | 実装、仕様、検証コード |
+| `06_outputs/` | 主要な出力案内 |
+| `reproducibility/` | config、environment、manifest、execution artifact |
+| `docs/` | 利用ガイドと日本語案内 |
+| `legacy/` | 現行authorityではない過去資産 |
 
-## データとモデルの管理原則
-
-- 観測値、公式資料、規則導出値、推定値、モデル仮定、感度値を区別する。
-- 元データを都合よく書き換えず、変換規則と来歴を保存する。
-- 欠測を正式な事実として補完せず、必要なら明示的な仮定と感度分析で扱う。
-- 明示的な矛盾には自動fallbackを適用しない。
-- 較正用観測と独立Validation用観測を結果を見る前に分ける。
-- 比較手法間で需要、道路、交通、車両、制約、評価、乱数を共通化する。
-- 失敗、接続不能、強制移動、警告、未配送理由を成功結果と同様に保存する。
-- 過去成果物を上書きせず、入力・設定・コード・環境・出力の識別値を記録する。
-- 大田区で得た結果を東京都全域や他地域へそのまま一般化しない。
-
-## 主な制限
-
-- 公開データだけでは、全車両の真の起終点、実配送軌跡、顧客需要、全信号現示を復元できない。
-- 異なる年のPT、交通観測、人口、宅配便統計、道路データを統合するため、特定年の完全再現ではなく合成基準シナリオである。
-- 人口比例の基準需要は、事業所配送、昼間人口、地域別EC利用、再配達、配送停止を直接表さない。
-- 配送先数、車両数、出発時刻、サービス時間、EV・充電条件は正式固定前である。
-- 道路上の経路選択と顧客訪問順序最適化を区別しないと、solverが改善した対象を誤解する。
-- Qiskit Aerの結果は物理量子コンピュータの性能や量子優位性を示さない。
-
-## 次の作業
-
-1. 区外→区外の本人運転ODを一般則で統合し、同じ低自由度設計で交通量を再較正する。
-2. 道路接続、通行権限、配送往復到達性を確認し、接続不能と強制移動を原因別に整理する。
-3. 交通量較正の受入後、隔離済みの2024年観測で独立Validationを行う。
-4. 物資流動調査等を根拠候補に、宅配便個数相当を配送停止・空間分布・時間分布へ変換する最小モデルを固定する。
-5. 物資流動調査や実運用資料を根拠候補に、拠点、車両数、積載量、再積載、稼働時間、サービス時間、時間窓を共通配送問題として固定する。直接根拠がない車両数は仮定として明示し、低供給・基準・高供給の感度条件にする。
-6. EV・充電条件を基準値と感度範囲へ分ける。
-7. 小規模で古典最適解を確認できる問題から、非最適化・古典・QAOAを同じ検査器で比較する。
-8. 第1段階を固定した後、将来需要シナリオとバッテリーケースへ拡張する。
-
-## 要するに
-
-本研究の目的と問い、都市配送モデルを中心とする三段階の分析構造は固定しました。Hayate上の再現環境、道路・交通データの基盤、交通観測の道路対応までは整っています。現在の最大課題は、区外通過交通を含む一般交通を再較正し、接続可能な道路網と正式な配送停止・車両条件を固定することです。これらが独立Validationに合格した後で、初めて古典計算とQAOAを同一条件で比較します。
-
-本リポジトリのライセンスは[`LICENSE`](LICENSE)を参照してください。第三者データには、各提供元のライセンスと利用条件が適用されます。
+READMEと個別記録が矛盾する場合は、最新のcurrent authority、freeze済みspecification、execution manifest、SHA-256記録を優先してください。
