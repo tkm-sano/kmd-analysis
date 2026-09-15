@@ -120,6 +120,7 @@ Building identityはrouting proxyとは別に保持します。Duplicate proxy�
 | [Routing compatibility revalidation](reproducibility/outputs/traffic_simulation/r24_routing_compatibility_revalidation/20260915_v1/R24_ROUTING_COMPATIBILITY_REVALIDATION.md) | final eligible populationとrun_3 compatibility |
 | [Methodological capacity specification](reproducibility/outputs/traffic_simulation/r24_methodological_capacity_specification/20260915_v1/R24_METHODOLOGICAL_CAPACITY_SPECIFICATION.md) | q_i、Q、rho、mの正本 |
 | [Routing Baseline](05_src/traffic_simulation/specifications/ROUTING_BASELINE_CANONICAL.md) | directed routing costとreachabilityの正本 |
+| [Classical reference validation実行結果](06_outputs/traffic_simulation/r24_classical_reference_validation/20260915_v1/R24_CLASSICAL_REFERENCE_VALIDATION_RESULTS.md) | 21 conditionsのExact・HiGHS・独立validator照合結果 |
 
 ## 実行入口
 
