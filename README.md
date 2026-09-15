@@ -1,6 +1,26 @@
-## Current Reduced Problem authority
+## Current R24 authority
 
-R23最終状態・結果・制約とR24 gateは[R23_STATUS.md](05_src/traffic_simulation/R23_STATUS.md)を参照する。過去証拠は[archive](reproducibility/archive/traffic_simulation/r23/README.md)に保持する。
+更新基準日: **2026-09-15**
+
+R24は、実配送会社の運用再現ではなく、**Ota-grounded controlled CVRP benchmark**として進める。現在の設計状態は次のとおりである。
+
+| Gate / validation | Current verdict | Frozen authority |
+|---|---|---|
+| Gate A | `GATE_A_ACCEPTED_WITH_LIMITATIONS` | positive-demand buildingをbenchmark customerとし、既存building-to-road mappingを非観測のrouting proxyとして使用 |
+| Gate B | `GATE_B_ACCEPTED_WITH_LIMITATIONS` | primary vehicle class = kei-class electric commercial van |
+| Gate C | `GATE_C_ACCEPTED_WITH_LIMITATIONS` | primary capacity dimension = methodological parcel-equivalent count |
+| Gate D | `GATE_D_ACCEPTED_WITH_LIMITATIONS` | `q_i=N_i`, `Q=14`, `rho_target in {0.50,0.70,0.90}`, `m=ceil(D/(rho_target Q))` |
+| Routing revalidation | `ROUTING_COMPATIBILITY_ACCEPTED_WITH_LIMITATIONS` | run_2 full mappingをrun_3 graphへ移送検証し、depot SCCでdirected reachabilityを確認 |
+
+Routing candidate 39,956件・81,859 parcel-equivalentsのうち、final `C_eligible` は39,930件・81,793 parcel-equivalentsである。26件・66 parcel-equivalentsはdepotとのdirected round-trip reachabilityを満たさず除外した。全件all-pairs ODは生成しておらず、population-levelではSCCを使用し、正式なordered-pair distance/travel time validationは選択済みinstanceに限定する。
+
+このcapacityはkg、m³、実観測parcel count、メーカー公称積載量のいずれでもない。住宅向けB2C parcel mass authorityが不足するためphysical kg/volume scenarioはdeferし、kei-vanの約350 kg級payloadを`Q=14`へ変換していない。また、observed physical stop、entrance、service event、dispatch、実fleetを主張しない。
+
+主要authorityは[Gate A sign-off](reproducibility/outputs/traffic_simulation/r24_gate_a_minimal_benchmark_abstraction/20260915_v1/GATE_A_SIGNOFF.md)、[Gate B vehicle-class decision](reproducibility/outputs/traffic_simulation/r24_gate_b_vehicle_class/20260915_v1/R24_GATE_B_VEHICLE_CLASS_DECISION.md)、[Gate C/D reassessment](reproducibility/outputs/traffic_simulation/r24_methodological_capacity_specification/20260915_v1/GATE_C_D_REASSESSMENT.md)、[routing compatibility revalidation](reproducibility/outputs/traffic_simulation/r24_routing_compatibility_revalidation/20260915_v1/R24_ROUTING_COMPATIBILITY_REVALIDATION.md)、[eligible population manifest](reproducibility/outputs/traffic_simulation/r24_routing_compatibility_revalidation/20260915_v1/C_ELIGIBLE_MANIFEST.csv)である。
+
+`NEXT_EXECUTABLE_TASK = freeze R24 instance generation specification`
+
+R23最終状態・結果・制約は[R23_STATUS.md](05_src/traffic_simulation/R23_STATUS.md)を参照する。過去証拠は[archive](reproducibility/archive/traffic_simulation/r23/README.md)に保持する。
 
 
 # Tokyo Urban Delivery × Quantum Future Society
@@ -119,7 +139,7 @@ EC利用シナリオ
 
 ## 現在地
 
-更新基準日: **2026-09-10**
+更新基準日: **2026-09-15**
 
 ### Reduced quantum pipeline
 
@@ -131,7 +151,9 @@ Routing Baseline
   -> R20 reduced route-ordering formulation             [FORMULATION_VERIFIED = PASS]
   -> R21_REDUCED_QUBO_VALIDATION                        [PASS]
   -> R22_REDUCED_ISING_CONVERSION                       [PASS]
-  -> R23 / R24 current state                          [See R23_STATUS.md]
+  -> R23                                               [CLOSED_WITH_DOCUMENTED_LIMITATIONS]
+  -> R24 Gates A-D + routing compatibility             [ACCEPTED_WITH_LIMITATIONS]
+  -> R24 instance generation specification             [NEXT]
 ```
 
 このPASSは `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY` に限定される。現在のQUBOは
@@ -179,7 +201,8 @@ software simulatorであって量子実機性能やquantum advantageの証拠で
 - 大田区を通過する区外→区外交通の本人運転OD統合と再較正は完了していない。
 - 警視庁2024年データによる独立した妥当性確認には進んでいない。
 - 接続不能と強制移動が残る予備道路網の配送結果を正式評価へ使用できない。
-- 宅配便個数相当を、配送停止、時間分布、車両、積載、稼働時間、充電条件へ変換する共通配送問題は未固定である。
+- R24のbenchmark customer、vehicle class、methodological capacity、eligible populationは固定済みだが、instance generation specificationとinstance-level ordered-pair routing validationは未固定である。
+- 宅配便個数相当をkg・m³・実配送停止・実fleetへ変換するphysical/operational scenarioは、対応authority不足のためR24 primary scopeからdeferしている。
 - Reduced Problem scopeのB1/B2比較は完了している。
 
 ## 現在の主要ボトルネック

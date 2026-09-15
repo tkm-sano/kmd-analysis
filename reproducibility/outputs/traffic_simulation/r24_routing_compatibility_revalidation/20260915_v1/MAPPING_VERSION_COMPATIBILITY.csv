@@ -1,0 +1,7 @@
+check,run_2,run_3,status,basis
+run_2_source_hash,4625dbbc150cbcf72964bed0e90a8b33fe03f190ff4264aecaaf89e3aab0e40f,4625dbbc150cbcf72964bed0e90a8b33fe03f190ff4264aecaaf89e3aab0e40f,PASS,run_3 names run_2 as source
+edge_ids,full mapping edge IDs,preserved,PASS,run_3 preserved_semantics and all 39956 IDs exist
+from_to_nodes,stored per mapping row,checked per current edge,PASS,row-level exact ID comparison
+topology_oneway_permissions,accepted,identical signature,PASS,run_3 acceptance
+geometry,pre-repair,reaccepted repaired geometry,PASS,mapping point distances match within 0.001m for 39956/39956
+length_travel_time,superseded geometry lengths,current repaired length/speed,USE_RUN3_ONLY,distance/time must be recomputed per selected instance

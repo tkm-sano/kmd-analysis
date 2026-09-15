@@ -1,0 +1,6 @@
+stage,status,source_record_count,building_customer_count,parcel_equivalent,excluded_source_records,excluded_parcel_equivalent,pending_building_customers,reason
+source_horizon,VERIFIED,73547,,82246,0,0,0,"all saved records dated 2026-01-01 and positive"
+stable_building_assignment,VERIFIED,73200,39956,81859,347,387,0,"347 source records lack stable assigned building: unsupported_housing_type=321; no_candidate=26"
+historical_r03_mapping_candidate,VERIFIED_CANDIDATE_ONLY,73200,39956,81859,347,387,39956,"all candidates mapped on historical run_2 with valid source coordinates"
+current_routing_baseline_compatibility,NOT_EVALUATED,73200,0,0,347,387,39956,"accepted run_3 endpoints/reachability are fixture-scoped; pending full-population validation"
+final_c_eligible,NOT_MATERIALIZED,,,0,347,387,39956,"eligibility cannot be asserted before compatible mapping and directed DEP_006 reachability"

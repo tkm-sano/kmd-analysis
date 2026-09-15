@@ -1,0 +1,37 @@
+item,status,source,limitation,adopted_new_assumption
+synthetic request record identity,EXISTS,daily_requests.csv:request_id,household-day aggregate identity only,NONE
+household destination,EXISTS,daily_requests.csv:household_id,"synthetic household, not actual recipient",NONE
+saved mapped building destination,EXISTS,request_building_mapping.csv:building_id,73200 mapped records only,NONE
+realized content,EXISTS,daily_requests.csv:parcel_equivalent,"parcel-equivalent integer count, not shipment microdata",NONE
+expected daily rate,EXISTS,household_daily_expected_demand.csv:expected_parcel_equivalent_per_day,rate; cannot substitute for realized content,NONE
+synthetic date,EXISTS,daily_requests.csv:evaluation_date,"2026-01-01, day-only",NONE
+building-day record identity,EXISTS,building_delivery_stops_scoped.csv:stop_id,AGGREGATED_DELIVERY_DEMAND_RECORD,NONE
+road edge / endpoint nodes,EXISTS,candidate_delivery_edge_connections.csv,historical R03 routing proxy on old run_2 network,NONE
+building destination from household,DERIVABLE_WITHOUT_NEW_RANDOMNESS,saved scoped assignment join,unassigned 347 positive rows excluded explicitly,NONE
+coordinates for mapped demand,DERIVABLE_WITHOUT_NEW_RANDOMNESS,mapped building -> scoped stop -> R03 coordinates,geographic proxy,NONE
+routing node relation for mapped demand,DERIVABLE_WITHOUT_NEW_RANDOMNESS,mapped building -> scoped stop -> R03 edge endpoints,edge endpoints are not individual access points,NONE
+same-building child membership,DERIVABLE_WITHOUT_NEW_RANDOMNESS,request_building_mapping.csv and stop.request_ids,"candidate aggregation, not accepted event",NONE
+weekday of synthetic date,DERIVABLE_WITHOUT_NEW_RANDOMNESS,ISO date calendar arithmetic,Thursday; no operational weekday demand pattern,NONE
+individual parcel ID,NOT_AVAILABLE,primary saved demand and mapping schemas; normalized survey timing has no child request key,legacy fixtures/statistical categories cannot fill primary missing field,NONE
+individual shipment/delivery ID,NOT_AVAILABLE,primary saved demand and mapping schemas; normalized survey timing has no child request key,legacy fixtures/statistical categories cannot fill primary missing field,NONE
+observed transaction/request ID,NOT_AVAILABLE,primary saved demand and mapping schemas; normalized survey timing has no child request key,legacy fixtures/statistical categories cannot fill primary missing field,NONE
+exact request timestamp,NOT_AVAILABLE,primary saved demand and mapping schemas; normalized survey timing has no child request key,legacy fixtures/statistical categories cannot fill primary missing field,NONE
+request hour,NOT_AVAILABLE,primary saved demand and mapping schemas; normalized survey timing has no child request key,legacy fixtures/statistical categories cannot fill primary missing field,NONE
+request time bucket,NOT_AVAILABLE,primary saved demand and mapping schemas; normalized survey timing has no child request key,legacy fixtures/statistical categories cannot fill primary missing field,NONE
+request AM/PM,NOT_AVAILABLE,primary saved demand and mapping schemas; normalized survey timing has no child request key,legacy fixtures/statistical categories cannot fill primary missing field,NONE
+request release/cutoff,NOT_AVAILABLE,primary saved demand and mapping schemas; normalized survey timing has no child request key,legacy fixtures/statistical categories cannot fill primary missing field,NONE
+dispatch membership,NOT_AVAILABLE,primary saved demand and mapping schemas; normalized survey timing has no child request key,legacy fixtures/statistical categories cannot fill primary missing field,NONE
+departure time,NOT_AVAILABLE,primary saved demand and mapping schemas; normalized survey timing has no child request key,legacy fixtures/statistical categories cannot fill primary missing field,NONE
+wave membership,NOT_AVAILABLE,primary saved demand and mapping schemas; normalized survey timing has no child request key,legacy fixtures/statistical categories cannot fill primary missing field,NONE
+worker/vehicle shift,NOT_AVAILABLE,primary saved demand and mapping schemas; normalized survey timing has no child request key,legacy fixtures/statistical categories cannot fill primary missing field,NONE
+mass,NOT_AVAILABLE,primary saved demand and mapping schemas; normalized survey timing has no child request key,legacy fixtures/statistical categories cannot fill primary missing field,NONE
+volume,NOT_AVAILABLE,primary saved demand and mapping schemas; normalized survey timing has no child request key,legacy fixtures/statistical categories cannot fill primary missing field,NONE
+parcel class,NOT_AVAILABLE,primary saved demand and mapping schemas; normalized survey timing has no child request key,legacy fixtures/statistical categories cannot fill primary missing field,NONE
+parcel dimensions,NOT_AVAILABLE,primary saved demand and mapping schemas; normalized survey timing has no child request key,legacy fixtures/statistical categories cannot fill primary missing field,NONE
+physical entrance/access ID,NOT_AVAILABLE,primary saved demand and mapping schemas; normalized survey timing has no child request key,legacy fixtures/statistical categories cannot fill primary missing field,NONE
+parking/loading point,NOT_AVAILABLE,primary saved demand and mapping schemas; normalized survey timing has no child request key,legacy fixtures/statistical categories cannot fill primary missing field,NONE
+one building-day as one service event,DERIVABLE_WITH_MODEL_ASSUMPTION,NEW_ASSUMPTION_REQUIRED,not adopted; no new surrogate identities/events/times generated,NONE
+one request-row as one indivisible service event,DERIVABLE_WITH_MODEL_ASSUMPTION,NEW_ASSUMPTION_REQUIRED,not adopted; no new surrogate identities/events/times generated,NONE
+one synthetic day as operational CVRP horizon,DERIVABLE_WITH_MODEL_ASSUMPTION,NEW_ASSUMPTION_REQUIRED,not adopted; no new surrogate identities/events/times generated,NONE
+individual count expansion into surrogate parcels,DERIVABLE_WITH_MODEL_ASSUMPTION,NEW_ASSUMPTION_REQUIRED,not adopted; no new surrogate identities/events/times generated,NONE
+proxy location adopted as service access,DERIVABLE_WITH_MODEL_ASSUMPTION,NEW_ASSUMPTION_REQUIRED,not adopted; no new surrogate identities/events/times generated,NONE

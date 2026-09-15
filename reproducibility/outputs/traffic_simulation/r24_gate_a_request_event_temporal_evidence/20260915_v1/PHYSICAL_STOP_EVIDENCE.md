@@ -1,0 +1,12 @@
+# Physical stop evidence
+Building geometry: plateau_residential_building_candidates has GML geometry_ref/source_feature_id and building attributes; historical chocho join unresolved. Saved scoped stops have building representative WKT points. Missing scoped geospatial Parquet prerequisites in historical summary are not recovered or replaced by historical candidates. Representative point ≠ building entrance ≠ vehicle access.
+
+R03 saved candidate_delivery_edge_connections maps 39,956 source building-day IDs to 21,684 road edges plus from/to node IDs; source/manifest/network hashes verified. Mapping rule nearest_delivery_permitted_edge_midpoint actually chooses shape vertex at index len(shape)//2, as historical script shows. Distance min/median/max: 0.666787/16.596829/94.628786 m. This is a distance to that proxy vertex, not perpendicular road snap, entrance or parking evidence. No new mapper execution.
+
+The earlier run_2 request_stop_mapping summary reports median/p95/max 16.185094/35.479351/94.628786 m because its code indexes **all** network edges, whereas R03 restricts the candidate set to delivery-permitted edges and reports 16.596829/36.409268/94.628786 m from the detailed CSV. These are distinct mapping policies, not interchangeable measurements. R03 is the field-level routing-proxy evidence used here; neither policy establishes physical access.
+
+Classify as ROUTING_PROXY_STOP, retain source stop ID and old network hash. Generic delivery_permitted=true on old network is not class-specific road/access or depot reachability acceptance. Source summary sumo_mapping_executed=false describes an earlier stage, not absence of later R03 saved mapping.
+
+Accepted Routing Baseline has run_3 network and directed edge-offset endpoints for a scoped old fixture: 10 customers + DEP_006 + charger, 132 directed pairs. These are routing locations with mapping distances, not observed physical loading points. New population/class requires validation; all-39,956 accepted OD does not exist. Building point / edge / endpoint road node / physical access / service event are separate entities. Same node cannot prove common stop or legal access.
+
+Physical access-point IDs, entrance coordinates, parking/loading data, observed service visits: NOT_AVAILABLE in primary linked evidence. Geometry references do not supply them. NEW_ASSUMPTION_REQUIRED for adopting representative point / mapped road location as modeled service access; no such adoption in this audit.

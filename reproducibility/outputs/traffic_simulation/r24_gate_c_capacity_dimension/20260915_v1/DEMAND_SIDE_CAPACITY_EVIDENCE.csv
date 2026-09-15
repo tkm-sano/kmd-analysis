@@ -1,0 +1,14 @@
+evidence_item,status,current_value_or_scope,unit,source,capacity_use,limitation
+parcel_equivalent_count,EXISTS,"73,547 household-day rows; realized total 82,246; values 1-5",parcel_equivalent,"daily_requests.csv; Gate A evidence",METHODOLOGICAL_ONLY,"calibrated synthetic content count; not individually identified physical parcels"
+realized_household_day_count,EXISTS,73547,records,"daily_requests.csv",LINEAGE_ONLY,"record identity is household-day demand; not shipment/service event"
+building_aggregate_count,EXISTS,"39,956 buildings; 81,859 mapped parcel-equivalents",building and parcel_equivalent,"building_delivery_stops_scoped.csv",DIRECT_AGGREGATION_AVAILABLE,"building customer is model abstraction; 347 source rows/387 units excluded before aggregation"
+parcel_mass,NOT_AVAILABLE,,kg,"saved R24 demand schema",MASS_BLOCKER,"no measured or generated mass field"
+parcel_mass_from_external_mean,DERIVABLE_ONLY_WITH_MODEL_ASSUMPTION,,kg,"reviewed external supporting sources",NOT_AUTHORIZED,"no population-valid E[W] or F_W for Japanese residential B2C; scalar mean would erase uncertainty"
+parcel_volume,NOT_AVAILABLE,,m3,"saved R24 demand schema",VOLUME_BLOCKER,"no parcel volume field"
+parcel_dimensions,NOT_AVAILABLE,,mm,"saved R24 demand schema",VOLUME_BLOCKER,"no length/width/height fields"
+product_category,NOT_AVAILABLE,,category,"saved R24 demand schema",CONDITIONING_UNAVAILABLE,"cannot condition weight or volume on product mix"
+shipment_class,NOT_AVAILABLE,,category,"saved R24 demand schema",CONDITIONING_UNAVAILABLE,"no B2C/B2B/C2C or service-class record field"
+weight_distribution,NOT_AVAILABLE,,kg distribution,"saved R24 demand and reviewed sources",MASS_BLOCKER,"supporting sources mismatch population/denominator"
+size_distribution,NOT_AVAILABLE,,dimension or volume distribution,"saved R24 demand and reviewed sources",VOLUME_BLOCKER,"service size limits are not empirical size distributions"
+stop_level_parcel_equivalent_sum,EXISTS,"exact sum of child realized parcel-equivalent by building",parcel_equivalent/building/day,"Gate A aggregation contract",METHODOLOGICAL_AGGREGATION_READY,"cannot be relabeled kg m3 or actual parcel count"
+

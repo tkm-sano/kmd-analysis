@@ -1,0 +1,7 @@
+dimension,classification,demand_side_evidence,vehicle_side_evidence,physical_meaning,standard_cvrp_traceability,future_vrptw_evrp,qubo_feasibility,researcher_arbitrariness,decision_reason
+mass_kg,PRIMARY_CANDIDATE,"INSUFFICIENT: no B2C parcel mass/distribution","STRONG: official variant payload",HIGH,HIGH,HIGH,"FEASIBLE_WITH_INTEGER_SCALING",MEDIUM_TO_HIGH,"best physical pairing if matching demand authority is acquired; not frozen now"
+volume_m3,DEFER,"ABSENT: no parcel dimensions/volume","INSUFFICIENT: dimensions partial; usable m3 absent",HIGH,HIGH,HIGH,"FEASIBLE_BUT_REQUIRES_DISCRETIZATION",HIGH,"both sides lack compatible authority; bounding-box multiplication prohibited"
+parcel_count,METHODOLOGICAL_ONLY,"STRONG for synthetic parcel-equivalent; weak for actual parcel count","ABSENT: no manufacturer parcels-per-vehicle capacity",LOW_TO_MEDIUM,HIGH,HIGH,"SIMPLE_INTEGER_ENCODING",HIGH,"Q would be researcher-defined and physical load heterogeneity ignored"
+standardized_load_unit,REJECT_FOR_R24,"ABSENT: no mapping from demand to applicable standard unit","ABSENT: no kei-van capacity in matching standard unit",LOW,MEDIUM,MEDIUM,"SIMPLE_ONLY_AFTER_ARBITRARY_NORMALIZATION",VERY_HIGH,"available pallet standards target different logistics scope; custom LU prohibited as primary"
+mass_plus_volume,DEFER,"ABSENT for both physical fields","mass strong; usable volume insufficient",VERY_HIGH,MEDIUM,HIGH,"HIGHER_COST_TWO_CAPACITY_ENCODINGS",HIGH,"over-complex before single dimensions are evidenced; preserve as future scenario"
+

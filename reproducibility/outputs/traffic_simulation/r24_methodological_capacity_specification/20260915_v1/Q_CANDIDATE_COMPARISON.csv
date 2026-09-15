@@ -1,0 +1,10 @@
+Q_candidate,parcel_equivalent_unit,customers_with_q_gt_Q,share_with_q_gt_Q,all_candidate_customers_individually_feasible,arbitrariness,interpretability,regime_separation,fleet_behavior,conceptual_binary_slack_bits,decision,reason
+4,METHODOLOGICAL_PARCEL_EQUIVALENT,2827,0.0707528281,NO,HIGH,"small round value without source anchor",STRONGER,"fleet expansion but population censoring",3,REJECT,"excludes 7.08% of saved building customers"
+8,METHODOLOGICAL_PARCEL_EQUIVALENT,101,0.0025277806,NO,MEDIUM,"P99.5 boundary approximately",STRONGER,"more differentiated small-n fleets",4,REJECT,"quantile choice is researcher-set and excludes 101 customers"
+10,METHODOLOGICAL_PARCEL_EQUIVALENT,22,0.0005506057,NO,MEDIUM,"round decimal value",MEDIUM,"some small-n separation",4,REJECT,"excludes 22 customers and roundness is not authority"
+12,METHODOLOGICAL_PARCEL_EQUIVALENT,4,0.0001001101,NO,MEDIUM,"near observed maximum",MEDIUM_WEAK,"limited small-n separation",4,REJECT,"excludes four customers without a scientific exclusion basis"
+14,METHODOLOGICAL_PARCEL_EQUIVALENT,0,0,YES,LOW,"exact observed maximum and minimum population-preserving Q",WEAK_FOR_VERY_SMALL_N,"no capacity-based customer exclusion; some regime collapse",4,SELECT,"unique smallest integer covering the full saved q_i support"
+15,METHODOLOGICAL_PARCEL_EQUIVALENT,0,0,YES,MEDIUM,"one unit of ungrounded headroom",WEAKER,"more regime collapse than Q=14",4,REJECT,"no benefit over the population-preserving minimum"
+16,METHODOLOGICAL_PARCEL_EQUIVALENT,0,0,YES,MEDIUM,"power-of-two convenience only",WEAKER,"more headroom and regime collapse",5,REJECT,"encoding convenience is not scientific authority and slack width increases"
+20,METHODOLOGICAL_PARCEL_EQUIVALENT,0,0,YES,HIGH,"round value without demand anchor",WEAK,"substantial small-n redundancy",5,REJECT,"unsupported headroom"
+28,METHODOLOGICAL_PARCEL_EQUIVALENT,0,0,YES,HIGH,"twice the maximum",VERY_WEAK,"frequent small-n single-vehicle degeneracy",5,REJECT,"arbitrary multiplier and poor separation"

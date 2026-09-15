@@ -1,0 +1,15 @@
+item,classification,source,resolution,value_or_scope,limitation
+synthetic date,synthetic,daily_requests.evaluation_date; mapped records and scoped stops,day,2026-01-01,request/stop linked; not operating day
+generation date / artifact timestamp,observed,R03 manifest.created_at=2026-09-09T03:45:16.783245+00:00; historical summaries; Git,artifact clock,NOT_DELIVERY_TIME,R03 processing time only; original request generation clock unavailable
+generation seed date-like value,synthetic,generation_seed=20260829; assignment_seed=20260830,seed,NOT_DATE_EVIDENCE,numeric seeds are not generation timestamps
+delivery date,absent,primary demand schema,NONE,NOT_AVAILABLE,evaluation_date is synthetic label
+exact request timestamp,absent,daily_requests schema,NONE,NOT_AVAILABLE,no creation/release/arrival clock
+request hour / bucket / AM-PM,absent,primary demand schema,NONE,NOT_AVAILABLE,no request-linked timing
+survey receipt hour and weekday,observed,household_type_delivery_time.csv: day_code/day_label/hour_code/hour_label; source ss530,aggregate weekday/hour categories,EXTERNAL_REFERENCE_ONLY,source-reported aggregate survey; no synthetic request key; cannot allocate hours without new model assumption
+survey parking/box environment categories,observed,housing_delivery_environment.csv:road_parking_code/yard_parking_code/box_code; normalized additional ss tables,aggregate source categories,SOURCE_STATISTIC_ONLY,parking availability statistics exist; no building-linked physical access/loading point or timing
+weekday of synthetic date,derived,calendar arithmetic on 2026-01-01,weekday,Thursday,calendar label only; weekend can be derived false; no weekday pattern calibration
+dispatch time/membership,absent,primary saved demand / mapping,NONE,NOT_AVAILABLE,dispatch not mandatory horizon concept
+route departure / service windows,synthetic,legacy evrp_r07_time_window customer_time_windows and routing/EV fixtures,fixture seconds,LEGACY_FIXED_MODEL_ASSUMPTION,exists in historical fixtures; not primary request timestamp or observed departure
+shift / working time,absent,primary saved demand,NONE,NOT_AVAILABLE,legacy runtime schedule cannot establish worker/vehicle shift
+seasonal calibration,absent,synthetic date; national FY2024 annual calibration,annual source context,NOT_AVAILABLE_REQUEST_SEASONALITY,"January/calendar quarter derivable only as label, no seasonal generation factor"
+routing travel time,derived,legacy R13 routing_arcs; Routing Baseline,seconds,FREE_FLOW_MODEL,"duration/cost, not request/event timestamp; scope 12 endpoints"

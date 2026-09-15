@@ -1,0 +1,8 @@
+candidate_id,evidence_basis,form,parcel_level,publicly_numerical,target_compatibility,sampling_rule_status,decision,reason
+FW_OGAWA,"MLIT Ogawa demonstration","daily total-weight chart",NO,NO,CLOSE,"cannot reconstruct parcel distribution",REJECT_FOR_PRIMARY,"aggregation and public-data limitations"
+FW_AIR_2024,"MLIT FY2024 air-cargo courier aggregates","mean-like aggregate 4156 kg / 709 cases",NO,YES,WEAK,"mean only; case is not parcel",REJECT_FOR_PRIMARY,"wrong population and denominator; variance unavailable"
+FW_AIR_HISTORICAL,"MLIT 2007/2020 air-cargo courier aggregates","survey-year means",NO,YES,WEAK,"no defensible interpolation or fit",REJECT_FOR_PRIMARY,"temporal change plus air-cargo mismatch"
+FW_LOGISTICS_CENSUS,"2021 Logistics Census three-day shipment fields","potential shipment observations",NO,"not openly exposed at record level",INCOMPATIBLE,"target subset cannot be isolated even conceptually from published fields",REJECT_FOR_PRIMARY,"establishment freight scope; no residential B2C courier identity"
+FW_IPC_2017,"international cross-border shopper survey","self-reported categorical bins",APPROXIMATE,YES,WEAK,"piecewise/bin sampling possible only as transferred model assumption",SENSITIVITY_ONLY,"country/cross-border/reporting mismatch"
+FW_PARAMETRIC,"researcher-fitted lognormal/gamma/etc.",MODEL_ONLY,NO,NO,NONE,"shape and parameters unsupported",REJECT_FOR_PRIMARY,"would manufacture authority"
+FW_RECOMMENDED,"none",NOT_AUTHORIZED,NO,NO,NONE,"no sampling rule",NOT_AUTHORIZED,"acceptance criteria not met"
