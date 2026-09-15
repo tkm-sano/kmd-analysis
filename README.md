@@ -189,4 +189,6 @@ R23 closure
 | `docs/` | 利用ガイドと日本語案内 |
 | `legacy/` | 現行authorityではない過去資産 |
 
+今回のMarkdown整理方針とarchive対象は[Markdown参照・archive監査](docs/ja/MARKDOWN_REFERENCE_AUDIT_20260915.md)に記録しています。
+
 READMEと個別記録が矛盾する場合は、最新のcurrent authority、freeze済みspecification、execution manifest、SHA-256記録を優先してください。
