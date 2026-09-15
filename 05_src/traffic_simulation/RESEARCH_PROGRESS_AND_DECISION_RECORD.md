@@ -256,8 +256,7 @@ R23 closure
 Current executable path:
 
 ```text
-implement and validate classical R24 CVRP reference solver
-  -> run classical R24 reference benchmark
+run classical R24 reference benchmark
   -> R24 QUBO
   -> Resource Gate
   -> QAOA where authorized
@@ -269,7 +268,7 @@ implement and validate classical R24 CVRP reference solver
   -> Scenario Comparison
 ```
 
-`NEXT_EXECUTABLE_TASK = implement and validate classical R24 CVRP reference solver`
+`NEXT_EXECUTABLE_TASK = run classical R24 reference benchmark`
 
 ## 14. Instance-generation specification freeze
 
@@ -289,7 +288,7 @@ All 330 base/alias capacity conditions passed exact packing preflight. There wer
 
 An independent validator re-derived every primary and structural selection, checked anchor semantic hashes, checked all 14,600 stored OD rows against run_3 edge lengths/speeds and allowed `delivery` connections, and verified every m/rho calculation, packing certificate, and degeneracy flag. The execution verdict is **`R24_INSTANCE_SUITE_GENERATED_WITH_LIMITATIONS`**. Demand generation, routing-graph regeneration, MILP/CVRP optimization, QUBO, and QAOA were all `NONE`.
 
-No R24-specific classical CVRP reference solver currently exists. Historical R17/R18 EVRP/CP-SAT code is not promoted to the R24 reference without a new implementation and validation contract.
+R24-specific classical referenceはHiGHS 1.15.1の明示的MILP、n<=4の独立Exact Enumeration、独立solution validatorとして新規実装した。`AT_MOST_M` fleet semanticsとload-MTZ subtour formulationを固定し、機械的に選択した21 conditionsで全件proven optimal、全件objective一致、validator failure 0を確認した。最大objective差は `9.999894245993346e-10 s` である。full 330-condition benchmarkは未実行。
 
 ## 16. Principal evidence links
 
@@ -303,6 +302,7 @@ No R24-specific classical CVRP reference solver currently exists. Historical R17
 - [Routing compatibility revalidation](../../reproducibility/outputs/traffic_simulation/r24_routing_compatibility_revalidation/20260915_v1/R24_ROUTING_COMPATIBILITY_REVALIDATION.md)
 - [Frozen instance-generation specification](../../reproducibility/outputs/traffic_simulation/r24_instance_generation_specification/20260915_v1/R24_INSTANCE_GENERATION_SPECIFICATION.md)
 - [Generated benchmark instance suite](../../reproducibility/outputs/traffic_simulation/r24_benchmark_instance_suite/20260915_v1/R24_BENCHMARK_INSTANCE_SUITE_REPORT.md)
+- [Classical reference validation](../../reproducibility/outputs/traffic_simulation/r24_classical_reference_validation/20260915_v1/R24_CLASSICAL_REFERENCE_VALIDATION.md)
 
 ## 17. Documentation consolidation execution receipt
 
@@ -315,3 +315,16 @@ No R24-specific classical CVRP reference solver currently exists. Historical R17
 | Optimization | `NONE` |
 
 This task inspected existing tracked and gitignored authority artifacts and changed documentation only.
+
+## 18. R24 classical reference validation
+
+`CLASSICAL_REFERENCE_VALIDATION`として21 conditionsのみを実行した。Primary Random R01のn=2,3,4、Structural三構造のn=4 R01、固定Anchor n=4について各3 rhoを、solver結果を見る前の規則で選んだ。duplicate proxy/zero arc、directed asymmetric cost、degenerate/non-degenerate conditionを含む。
+
+- Primary MILP: HiGHS/highspy 1.15.1、threads=1、MIP gap=0
+- Independent reference: unlabeled customer partition × route permutationの完全列挙
+- Fleet semantics: `AT_MOST_M`
+- Subtour formulation: `LOAD_MTZ`
+- Exact/HiGHS optimum agreement: 21/21
+- Independent validator: 42/42 solutions valid
+- Verdict: `R24_CLASSICAL_REFERENCE_VALIDATED`
+- `NEXT_EXECUTABLE_TASK = run classical R24 reference benchmark`

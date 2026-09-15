@@ -13,17 +13,24 @@
 | Final C_eligible | 39,930 customers / 81,793 methodological parcel-equivalents |
 | Instance-generation specification | `FROZEN_WITH_LIMITATIONS` |
 | Benchmark instance suite | `GENERATED_WITH_LIMITATIONS` |
-| Classical R24 CVRP solver | `NOT_IMPLEMENTED` |
+| Classical R24 CVRP solver | `R24_CLASSICAL_REFERENCE_VALIDATED` |
 | R24 QUBO/QAOA | `NOT_EXECUTED` |
 
 ```text
-NEXT_EXECUTABLE_TASK = implement and validate classical R24 CVRP reference solver
+NEXT_EXECUTABLE_TASK = run classical R24 reference benchmark
 ```
 
 R24 instance generationのコード:
 
 - [generate_r24_benchmark_instance_suite.py](r24_instance_generation/generate_r24_benchmark_instance_suite.py)
 - [validate_r24_benchmark_instance_suite.py](r24_instance_generation/validate_r24_benchmark_instance_suite.py)
+
+R24 classical referenceのコード:
+
+- [r24_classical_reference](r24_classical_reference/): HiGHS MILP、独立Exact Enumeration、decoder、独立validator、validation runner
+- [validation test](validation/test_r24_classical_reference.py): known optimum、capacity、asymmetry、zero arc、corrupt solution等のunit fixtures
+
+Validation結果: 21/21 Exact/HiGHS optimum一致、42/42 decoded/exact solution validation合格、最大目的差 `9.999894245993346e-10 s`。full benchmarkは未実行です。
 
 生成済み結果:
 
@@ -62,6 +69,7 @@ Reduced modelはcustomer-only `n × n` position encodingで、静的directed tra
 | `r22_ising_conversion/` | QUBO-to-Ising変換とequivalence validation |
 | `r23_qaoa_aer/` | R23 QAOA/Aer infrastructure |
 | `r24_instance_generation/` | frozen R24 suite generatorと独立validator |
+| `r24_classical_reference/` | HiGHS CVRP MILP、Exact Enumeration、decoder、独立solution validator |
 
 新規moduleは可能な限り`traffic_simulation.paths`のcanonical path discoveryを使用し、host固有absolute pathを埋め込みません。既存の固定実装を変更する場合は、そのprovenance boundaryを明記します。
 

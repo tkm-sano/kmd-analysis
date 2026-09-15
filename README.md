@@ -21,11 +21,11 @@ R24 benchmark instance suiteは、freeze済み仕様どおり生成・検証済�
 | Final eligible population | `39,930 customers / 81,793 methodological parcel-equivalents` |
 | Instance specification | `R24_INSTANCE_GENERATION_SPEC_FROZEN_WITH_LIMITATIONS` |
 | Instance suite | `R24_INSTANCE_SUITE_GENERATED_WITH_LIMITATIONS` |
-| Classical R24 solver | `NOT_IMPLEMENTED` |
+| Classical R24 solver | `R24_CLASSICAL_REFERENCE_VALIDATED` |
 | R24 QUBO/QAOA | `NOT_EXECUTED` |
 
 ```text
-NEXT_EXECUTABLE_TASK = implement and validate classical R24 CVRP reference solver
+NEXT_EXECUTABLE_TASK = run classical R24 reference benchmark
 ```
 
 ## R24 instance suite
@@ -155,8 +155,8 @@ R23 closure
   -> final C_eligible
   -> instance-generation specification freeze
   -> R24 benchmark instance suite generation          [完了]
-  -> classical R24 CVRP reference implementation      [次]
-  -> classical benchmark execution
+  -> classical R24 CVRP reference validation          [完了]
+  -> classical benchmark execution                    [次]
   -> R24 QUBO design and validation
   -> Resource Gate
   -> QAOA where authorized
@@ -167,7 +167,7 @@ R23 closure
 
 ## 今回まだ実行していないもの
 
-- R24 CVRP MILP/CP-SAT optimization
+- full 330-condition R24 classical benchmark
 - R24 QUBO generation
 - R24 QAOA/QPU/statevector execution
 - routing graph regeneration

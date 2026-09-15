@@ -476,7 +476,7 @@ Active limitations include incomplete original demand-generator provenance, mixe
 | Final `C_eligible` | `READY_WITH_LIMITATIONS` | 39,930 eligible rows / 81,793 parcel-equivalents materialized |
 | Instance specification | `FROZEN_WITH_LIMITATIONS` | suite sizes, repetitions, seeds, selection, validation, packing, IDs and schema frozen |
 | R24 instances | `GENERATED_WITH_LIMITATIONS` | 80 random + 27 structural valid bases; 3 valid anchor aliases; 330 packing-feasible conditions |
-| Classical R24 | `NOT_IMPLEMENTED` | no R24-specific CVRP reference solver or result |
+| Classical R24 | `R24_CLASSICAL_REFERENCE_VALIDATED` | HiGHS MILP + independent exact enumeration + independent validator agreed on 21/21 small conditions |
 | R24 QUBO/QAOA | `NOT_EXECUTED` | no R24 encoding or quantum execution |
 | VRPTW | `DEFERRED` | temporal authority not accepted |
 | EVRP | `DEFERRED` | energy/SOC/charging specification not accepted |
@@ -487,20 +487,19 @@ Active limitations include incomplete original demand-generator provenance, mixe
 
 The completed routing and eligibility steps are retained in the dependency record; the remaining execution order is:
 
-1. implement and validate the Classical R24 CVRP reference solver;
-2. execute the prespecified classical benchmark only after its solver/validation contract is accepted;
-3. design and validate the R24 QUBO;
-4. execute the Resource Gate;
-5. execute QAOA only for authorized sizes;
-6. compare R23 and R24 within their distinct scopes;
-7. establish the VRPTW evidence/specification gate;
-8. establish the EVRP evidence/specification gate;
-9. produce operational outcomes;
-10. freeze energy-accounting and electricity-price authority and compute the economic outcome;
-11. execute prespecified scenario comparisons;
-12. complete sensitivity, reproducibility, and limitation analyses.
+1. execute the prespecified classical benchmark with the validated reference solver;
+2. design and validate the R24 QUBO;
+3. execute the Resource Gate;
+4. execute QAOA only for authorized sizes;
+5. compare R23 and R24 within their distinct scopes;
+6. establish the VRPTW evidence/specification gate;
+7. establish the EVRP evidence/specification gate;
+8. produce operational outcomes;
+9. freeze energy-accounting and electricity-price authority and compute the economic outcome;
+10. execute prespecified scenario comparisons;
+11. complete sensitivity, reproducibility, and limitation analyses.
 
-`NEXT_EXECUTABLE_TASK = implement and validate classical R24 CVRP reference solver`
+`NEXT_EXECUTABLE_TASK = run classical R24 reference benchmark`
 
 ## 25. Deprecated / superseded defaults
 
@@ -521,3 +520,4 @@ The following remain historical only: mandatory dispatch batching; quartile-by-t
 - [Instance generation readiness](../../reproducibility/outputs/traffic_simulation/r24_routing_compatibility_revalidation/20260915_v1/INSTANCE_GENERATION_READINESS.md)
 - [Frozen R24 instance-generation specification](../../reproducibility/outputs/traffic_simulation/r24_instance_generation_specification/20260915_v1/R24_INSTANCE_GENERATION_SPECIFICATION.md)
 - [Generated R24 benchmark instance suite](../../reproducibility/outputs/traffic_simulation/r24_benchmark_instance_suite/20260915_v1/R24_BENCHMARK_INSTANCE_SUITE_REPORT.md)
+- [R24 classical reference validation](../../reproducibility/outputs/traffic_simulation/r24_classical_reference_validation/20260915_v1/R24_CLASSICAL_REFERENCE_VALIDATION.md)
