@@ -1,6 +1,6 @@
 # Research Progress and Decision Record
 
-Document ID: `RESEARCH-PROGRESS-DECISION-RECORD-20260915-v3`
+Document ID: `RESEARCH-PROGRESS-DECISION-RECORD-20260915-v4`
 
 Role: **historical decision record**
 
@@ -23,12 +23,13 @@ The research evaluates how changes in technical and social conditions—includin
 The intended chain is:
 
 ```text
-technology / society / environment
-  -> demand, vehicle, network, energy, and method parameters
-  -> routing plan
-  -> operational outcomes
-  -> operating electricity expenditure
-  -> scenario comparison
+Technology / Social Scenario
+  -> Computational Capability
+  -> n_max(s)
+  -> Routing / EV Planning
+  -> Operational Outcomes
+  -> E_operation
+  -> C_op
 ```
 
 ## 3. Initial spatial and routing foundation
@@ -259,12 +260,14 @@ Current executable path:
 run classical R24 reference benchmark
   -> R24 QUBO
   -> Resource Gate
-  -> QAOA where authorized
-  -> R23/R24 comparison
+  -> QAOA / hybrid benchmark where authorized
+  -> classical / quantum / hybrid scaling analysis
   -> VRPTW
   -> EVRP
-  -> Operational Outcomes
-  -> Economic Outcome
+  -> future capability scenarios and scenario-specific n_max(s)
+  -> planning-scope expansion experiments
+  -> integrated social / demand / energy scenarios
+  -> Operational and Economic Outcomes
   -> Scenario Comparison
 ```
 
@@ -273,6 +276,8 @@ run classical R24 reference benchmark
 ## 14. Instance-generation specification freeze
 
 The specification was frozen before generating any instance or route matrix. The primary repeated-random suite uses hash-ranked SRSWOR from the final 39,930-customer eligible frame: quantum-comparable `n={2,3,4}` and classical-extension `n={5,8,10,15,20}`, with 10 repetitions per n. Seeds are SHA-256-derived from the protocol/suite/n/repetition identity and cannot be searched or manually selected.
+
+These `n` values are computational benchmark sizes, not statistically representative Ota delivery sample sizes and not a frozen operational customer count.
 
 The controlled structural suite uses `CLUSTERED`, `DISPERSED`, and `MIXED` at `n={4,10,20}`, three deterministic repetitions each, using EPSG:6677 Euclidean distance and fully specified hash-anchor, nearest, farthest-point, quota, and tie rules. Fixed anchors are the exact `R01` primary subsets at n=4,10,20; they are never post-hoc replacements.
 
@@ -328,3 +333,47 @@ This task inspected existing tracked and gitignored authority artifacts and chan
 - Independent validator: 42/42 solutions valid
 - Verdict: `R24_CLASSICAL_REFERENCE_VALIDATED`
 - `NEXT_EXECUTABLE_TASK = run classical R24 reference benchmark`
+
+## 19. Research-step policy update: optimization scale
+
+This documentation-only decision formally records a distinction that is consistent with the existing customer and instance semantics:
+
+\[
+\boxed{|C_{eligible}|=39{,}930},\qquad
+\boxed{C_{n,r}\subset C_{eligible}},\qquad
+\boxed{\text{Eligible Source Population}\neq\text{Optimization Instance}}.
+\]
+
+> **39,930 eligible customers are the Ota-grounded source population, not a mandatory single optimization instance. The research does not require solving all 39,930 customers simultaneously. Optimization scale is treated as a benchmark parameter and, later, as a future computational-capability scenario variable.**
+
+The research does not require solving the entire 39,930-customer population as one CVRP, VRPTW, EVRP, delivery run, operational planning instance, or quantum-computing target. The population is the upper source frame from which finite instances are generated. This does not change the existing meaning or count of `C_eligible`; it adds the research-step rule:
+
+\[
+\boxed{\text{Optimization Scale}=\text{Benchmark Parameter}\longrightarrow\text{Future Scenario Variable}}.
+\]
+
+For each future scenario
+
+\[
+s=(\text{Computation},\text{EV},\text{Demand},\text{Society},\text{Energy}),
+\]
+
+the computation component includes \(n_{\max}(s)\), the maximum optimization scale addressable under that scenario. It expresses computationally supported planning scope rather than a fixed operational population. Normally \(n_{\max}(s)\le39{,}930\); if a social scenario changes the synthetic eligible population, the scenario-specific population size may become the ceiling.
+
+Classical scaling measures \(n\rightarrow\) runtime/resource/optimality/feasibility to support \(n_{\max}^{classical}(s)\). Quantum/hybrid scaling measures \(n\rightarrow\) qubits/circuit resources/runtime/solution quality to support \(n_{\max}^{quantum}(s)\) or \(n_{\max}^{hybrid}(s)\). Candidate capability drivers include classical computing, HPC, quantum, quantum-classical hybrid, decomposition, AI-assisted optimization, Quantum × HPC, Quantum × HPC × AI, and future solver/hardware improvements.
+
+The three research layers are: (1) Method / Solver Benchmark, (2) Future Capability Scenario, and (3) Logistics / Economic Impact. Larger solvable instances are interpreted as potentially larger integrated planning scopes, whose effects on routing, EV planning, operation, energy, and the unchanged economic definition \(C_{op}=E_{operation}\times p_{electricity}\) are evaluated in later authorized work.
+
+The current research-step order is: (1) Common spatial / demand foundation; (2) R23 baseline; (3) R24 model / instance specification; (4) R24 classical reference validation; (5) R24 classical benchmark; (6) R24 QUBO; (7) Quantum resource gate; (8) QAOA / hybrid benchmark; (9) Classical / quantum / hybrid scaling analysis; (10) VRPTW extension; (11) EVRP extension; (12) EV / battery scenario parameterization; (13) Future computational capability scenarios; (14) scenario-specific \(n_{\max}(s)\); (15) planning-scope expansion experiments; (16) social / demand / energy scenarios; (17) integrated future scenarios; (18) operational outcome calculation; (19) economic outcome calculation; (20) scenario comparison; and (21) sensitivity / limitation / reproducibility analysis.
+
+### Superseded-wording audit
+
+The requested exact concepts—`operational-scale instance`, `full 39,930`, `solve all customers`, `full population optimization`, `real-scale instance`, `final instance size`, and `operational n`—had **0 contradictory occurrences** in current-looking documentation before this update. The search covered tracked Markdown outside `reproducibility/archive/`, `06_outputs/`, and `legacy/`; unrelated `full-population` network/data-processing and accounting uses were inspected separately.
+
+| Classification | Count | Treatment |
+|---|---:|---|
+| `REWRITE_CURRENT` | 0 phrase matches | No contradictory phrase required direct rewriting; the generic scenario chain and research steps were expanded to encode the new policy. |
+| `MARK_SUPERSEDED` | 2 policy defaults | “fix one operational-scale instance size” and “select one final operational n after classical scaling” are now explicitly superseded defaults, whether or not those exact strings appeared. |
+| `KEEP_HISTORICAL` | 0 target-phrase matches | Historical artifacts were not edited. Other uses of `full-population` refer to network/data processing or accounting, not a 39,930-customer optimization instance. |
+
+This update executed no scientific experiment, demand generation, instance generation, routing generation, HiGHS benchmark, QUBO, QAOA, VRPTW, or EVRP work. `NEXT_EXECUTABLE_TASK` remains `run classical R24 reference benchmark`.

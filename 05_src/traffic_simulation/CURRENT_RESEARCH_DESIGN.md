@@ -1,6 +1,6 @@
 # Complete Current Research Design
 
-Document ID: `CURRENT-RESEARCH-DESIGN-20260915-v3`
+Document ID: `CURRENT-RESEARCH-DESIGN-20260915-v4`
 
 Role: **current design authority**
 
@@ -54,6 +54,9 @@ flowchart LR
     M --> K
     L --> N[Scenario Comparison]
     J --> N
+    M --> O[Computational Capability]
+    O --> P[Scenario-specific n_max]
+    P --> F
 ```
 
 The architecture separates data lineage, customer meaning, instance construction, mathematical modeling, solution method, operation, and economics. A benchmark instance is not the same object as the source horizon or the full Ota eligible population.
@@ -166,6 +169,23 @@ edge(i)\in SCC(edge(DEP\_006))\}.
 
 `C_eligible` contains 39,930 customers and 81,793 methodological parcel-equivalents. The complete assessed ledger is preserved in the routing revalidation manifest; only rows marked `ELIGIBLE` belong to the set.
 
+> **39,930 eligible customers are the Ota-grounded source population, not a mandatory single optimization instance. The research does not require solving all 39,930 customers simultaneously. Optimization scale is treated as a benchmark parameter and, later, as a future computational-capability scenario variable.**
+
+Formally,
+
+\[
+\boxed{|C_{\mathrm{eligible}}|=39{,}930},\qquad
+\boxed{C_{n,r}\subset C_{\mathrm{eligible}}},
+\]
+
+and therefore:
+
+\[
+\boxed{\text{Eligible Source Population}\neq\text{Optimization Instance}}.
+\]
+
+The 39,930 customers are the Ota-grounded eligible source population from which optimization instances are constructed. They are not one delivery run, one operational planning instance, or a mandatory CVRP, VRPTW, EVRP, or quantum-computing target. This research does not require all 39,930 customers to be solved simultaneously. The count is a source-population ceiling for future instance construction, not the final optimization size.
+
 This identity is not an observed person, household, order, physical delivery stop, entrance, curb/loading position, or carrier service event. Multiple buildings sharing a proxy remain separate. Duplicate flags and group IDs are retained, and no implicit service-event aggregation is allowed.
 
 ## 10. Instance Generation
@@ -188,7 +208,7 @@ Sampling is without replacement within an instance. The purpose is to reduce dis
 
 Three fixed anchors at `n={4,10,20}` are exact aliases of primary repetition `R01`. A rejected or packing-infeasible source remains rejected/infeasible and is never replaced. Anchors support regression and cross-method comparison and are not additional independent observations.
 
-Problem size `n` is a computational benchmark parameter, not an Ota stop-count estimate. Every base customer subset is fixed before capacity conditions and reused unchanged for `rho*={0.50,0.70,0.90}`. The rule is sample once, validate, and record: no demand, difficulty, duplicate-proxy, zero-arc, capacity-effect, solver, or QAOA outcome can cause redraw. Base hard failures and capacity-condition packing failures remain under the planned ID.
+Problem size `n` is a **computational benchmark size**, not an Ota stop-count estimate or a statistically representative sample size for Ota delivery. In the frozen R24 benchmark, the quantum-comparable core is `n={2,3,4}` and the classical extension is `n={5,8,10,15,20}`. These values do not freeze a single operational-scale instance. Every base customer subset is fixed before capacity conditions and reused unchanged for `rho*={0.50,0.70,0.90}`. The rule is sample once, validate, and record: no demand, difficulty, duplicate-proxy, zero-arc, capacity-effect, solver, or QAOA outcome can cause redraw. Base hard failures and capacity-condition packing failures remain under the planned ID.
 
 All ordered pairs over the depot plus selected customers must be recomputed and connection-validated on run_3. Duplicate proxies remain eligible and are flagged. Exact deterministic bin-packing preflight is required for each capacity condition; `PACKING_INFEASIBLE` preserves the subset but blocks optimization of that condition. Same-m targets are retained and marked `DEGENERATE_REGIME_SAME_M`, then excluded from capacity-effect comparison.
 
@@ -351,6 +371,14 @@ The model is delivery-only, unsplittable, single-departure/single-return per use
 
 An exact or certifiably bounded MILP reference is required first for each authorized R24 size. It must report solver/version, formulation, tolerances, status, objective bound/gap, runtime, and decoded routes. A heuristic result cannot silently replace the exact-reference role.
 
+Classical scaling measures
+
+\[
+n\longrightarrow\text{runtime / resource / optimality / feasibility}
+\]
+
+to provide evidence for estimating or setting scenario-specific \(n_{\max}^{classical}(s)\). Its role is not to select one final operational customer count.
+
 ### Quantum
 
 The quantum path is:
@@ -366,6 +394,14 @@ validated R24 instance
 The QUBO must preserve customer allocation, fleet/depot, capacity, connectivity, and forbidden-arc semantics or explicitly declare a narrower subproblem. Integer `q_i`, `Q`, and `m` permit exact capacity encoding in principle; a simple per-vehicle slack over `0..14` needs four bits before formulation-specific auxiliaries. This is not yet a frozen R24 QUBO.
 
 CPU Aer is a software simulator. No QPU performance, general scaling, convergence, or quantum advantage claim follows from it.
+
+Quantum and hybrid scaling evaluate
+
+\[
+n\longrightarrow\text{qubits / circuit resources / runtime / solution quality}
+\]
+
+and connect the evidence to \(n_{\max}^{quantum}(s)\) or \(n_{\max}^{hybrid}(s)\). Directly solving all 39,930 eligible customers on a quantum computer is not a research requirement.
 
 ## 16. Evaluation metrics
 
@@ -430,23 +466,63 @@ The formal fixed economic definition is:
 
 Current economic scope excludes labor, vehicle purchase, depreciation, battery replacement, charging infrastructure, depot cost, maintenance, delay cost, and broader total cost of ownership. Results must be called operating electricity expenditure, not full logistics cost.
 
-## 21. Scenario comparison
+## 21. Future capability scenarios and scenario comparison
+
+A future scenario is represented at least as
+
+\[
+s=(\text{Computation},\text{EV},\text{Demand},\text{Society},\text{Energy}).
+\]
+
+Its computation component explicitly contains
+
+\[
+\boxed{n_{\max}(s)=\text{the maximum optimization scale addressable in scenario }s}.
+\]
+
+`n_max(s)` is not a fixed real-world customer count. It represents the planning scope supported by the scenario's computational capability. Candidate drivers include classical computing, HPC, quantum computing, quantum-classical hybrid methods, decomposition, AI-assisted optimization, Quantum × HPC, Quantum × HPC × AI, and other future solver or hardware improvements. Quantum computing alone is not the scenario driver.
+
+The governing relationship is:
+
+\[
+\boxed{\text{Computational Capability}\longrightarrow n_{\max}(s)},
+\qquad
+\boxed{n_{\max}(s)\le 39{,}930}.
+\]
+
+The second expression uses the current eligible population as the source-population ceiling. If a social scenario changes the future synthetic population itself, that scenario's eligible-population size may instead become the ceiling. Concrete future values—such as a progression from 20 to 50, 100, 500, or 1,000—must be designed and frozen in the future scenario specification; this policy update does not freeze them.
+
+Computational improvement is evaluated not only as runtime reduction but also as planning-scope expansion:
+
+\[
+\boxed{\text{Larger Solvable Instance}\longrightarrow\text{Larger Integrated Planning Scope}}.
+\]
 
 The scenario mechanism is:
 
 ```text
-technology / social / environmental scenario parameters
-  -> demand, vehicle, routing, traffic, and energy parameters
-  -> routing plan
-  -> operational outcomes
+Technology / Social Scenario
+  -> Computational Capability
+  -> n_max(s)
+  -> Routing / EV Planning
+  -> Operational Outcomes
   -> E_operation
   -> C_op
-  -> scenario differences and sensitivity
 ```
 
 Baseline and scenario values, source year, geographic/population transfer, units, uncertainty, and unchanged controls must be declared before outcomes. Solution-method effects and physical-scenario effects must be separable. A favorable result may not be used to select the scenario, instance, capacity, or solver budget retrospectively.
 
-## 22. Claims and limitations
+The fixed economic definition remains \(C_{op}=E_{operation}\times p_{electricity}\). This update changes only the computational-capability-to-planning-scale part of the research design.
+
+## 22. Research layers
+
+The research is organized into three layers:
+
+1. **Method / Solver Benchmark** — R23, R24, HiGHS, Exact Enumeration, QUBO, QAOA, and classical/quantum/hybrid scaling quantify solver capability.
+2. **Future Capability Scenario** — classical capability, quantum capability, HPC, AI, decomposition, and hybrid methods determine scenario-specific \(n_{\max}(s)\).
+3. **Logistics / Economic Impact** — planning-scope expansion is evaluated through distance, travel time, fleet use, capacity utilization, fulfillment, energy, charging, and \(C_{op}\).
+
+## 23. Claims and limitations
 
 The current study is:
 
@@ -463,7 +539,7 @@ The current study is:
 
 Active limitations include incomplete original demand-generator provenance, mixed source years/populations, non-observed household/building allocation, absent service-event/dispatch/fleet evidence, incomplete field-level road restriction authority, deferred physical load and temporal/energy models, and severe quantum-simulation resource growth.
 
-## 23. Current status
+## 24. Current status
 
 | Component | Status | Current meaning |
 |---|---|---|
@@ -483,29 +559,39 @@ Active limitations include incomplete original demand-generator provenance, mixe
 | Operational outcomes | `DEFERRED` | requires accepted models and executions |
 | Economic outcome | `DEFINITION_FROZEN; NUMERICS_DEFERRED` | formula fixed; energy/tariff values open |
 
-## 24. Remaining research steps
+## 25. Current research steps
 
-The completed routing and eligibility steps are retained in the dependency record; the remaining execution order is:
+Completed steps remain in the dependency record. The current end-to-end research order is:
 
-1. execute the prespecified classical benchmark with the validated reference solver;
-2. design and validate the R24 QUBO;
-3. execute the Resource Gate;
-4. execute QAOA only for authorized sizes;
-5. compare R23 and R24 within their distinct scopes;
-6. establish the VRPTW evidence/specification gate;
-7. establish the EVRP evidence/specification gate;
-8. produce operational outcomes;
-9. freeze energy-accounting and electricity-price authority and compute the economic outcome;
-10. execute prespecified scenario comparisons;
-11. complete sensitivity, reproducibility, and limitation analyses.
+1. Common spatial / demand foundation
+2. R23 baseline
+3. R24 model / instance specification
+4. R24 classical reference validation
+5. R24 classical benchmark
+6. R24 QUBO
+7. Quantum resource gate
+8. QAOA / hybrid benchmark
+9. Classical / quantum / hybrid scaling analysis
+10. VRPTW extension
+11. EVRP extension
+12. EV / battery scenario parameterization
+13. Future computational capability scenarios
+14. Scenario-specific \(n_{\max}(s)\)
+15. Planning-scope expansion experiments
+16. Social / demand / energy scenarios
+17. Integrated future scenarios
+18. Operational outcome calculation
+19. Economic outcome calculation
+20. Scenario comparison
+21. Sensitivity / limitation / reproducibility analysis
 
 `NEXT_EXECUTABLE_TASK = run classical R24 reference benchmark`
 
-## 25. Deprecated / superseded defaults
+## 26. Deprecated / superseded defaults
 
-The following remain historical only: mandatory dispatch batching; quartile-by-tertile primary design; nested PPS primary sampling; automatic `Q=2,000 kg`; building-as-observed-customer; physical-stop claims; daily-demand-as-one-tour; representative-small-`n` claims; and physical kg as the R24 primary capacity. They may be studied only through a newly versioned, evidence-backed scenario or method—not inherited silently.
+The following remain historical only: mandatory dispatch batching; quartile-by-tertile primary design; nested PPS primary sampling; automatic `Q=2,000 kg`; building-as-observed-customer; physical-stop claims; daily-demand-as-one-tour; representative-small-`n` claims; physical kg as the R24 primary capacity; fixing one operational-scale instance size; and choosing one final operational `n` after classical scaling. They may be studied only through a newly versioned, evidence-backed scenario or method—not inherited silently.
 
-## 26. Current evidence index
+## 27. Current evidence index
 
 - [R23 status](R23_STATUS.md)
 - [Research progress and decisions](RESEARCH_PROGRESS_AND_DECISION_RECORD.md)

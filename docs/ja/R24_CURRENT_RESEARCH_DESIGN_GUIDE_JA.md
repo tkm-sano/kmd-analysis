@@ -36,6 +36,18 @@
 
 ## Customerとrouting proxy
 
+> **39,930 eligible customersは、大田区を根拠としてoptimization instanceを生成するためのsource populationであり、必須の単一optimization instanceではありません。本研究は39,930 customers全体の同時求解を要求しません。Optimization scaleは現在はbenchmark parameter、将来はcomputational-capability scenario variableとして扱います。**
+
+\[
+|C_{\mathrm{eligible}}|=39{,}930,\qquad
+C_{n,r}\subset C_{\mathrm{eligible}},\qquad
+\text{Eligible Source Population}\neq\text{Optimization Instance}.
+\]
+
+39,930 customers全体を一つの配送便、実運用planning instance、CVRP / VRPTW / EVRP、またはquantum computerで必ず解く対象とはしません。39,930は将来instanceを生成できる現行source population ceilingです。
+
+> **本研究では39,930 customers全体を単一CVRP / VRPTW / EVRPとして解くことを必須の研究到達目標としない。**
+
 一つのstable positive-demand buildingを一つのbenchmark customer identityとします。道路上のedge-offsetはrouting proxyであり、entrance、curb、loading position、実停止地点ではありません。
 
 複数buildingが同じproxyを共有しても、customer identityは統合しません。Final populationでは28,274 customersが10,016 shared-proxy groupsに属します。
@@ -80,6 +92,8 @@ Primary repeated-random suiteはhash-ranked SRSWORです。需要重み、PPS、
 - Structural: `n={4,10,20}` × `CLUSTERED/DISPERSED/MIXED` × 3
 - Anchors: Primary R01のn=4,10,20 alias
 
+これらの`n`は`COMPUTATIONAL BENCHMARK SIZE`であり、大田区配送の統計的代表sample sizeでも、固定されたoperational instance sizeでもありません。
+
 No-redraw ruleは`sample once, validate, record`です。Demand pattern、difficulty、duplicate、zero arc、capacity strength、solver/QAOA結果を理由にsampleを変更しません。
 
 ## 生成済み結果
@@ -106,6 +120,38 @@ R23 single-vehicle route ordering
 ```
 
 下位layerで有効な定義は継承しますが、新しい制約やclaimには別のauthorityとvalidationが必要です。
+
+## Future capability scenarioとplanning scale
+
+将来scenarioを少なくとも
+
+\[
+s=(\text{Computation},\text{EV},\text{Demand},\text{Society},\text{Energy})
+\]
+
+として扱い、Computation scenarioに
+
+\[
+n_{\max}(s)=\text{scenario }s\text{で扱える最大optimization scale}
+\]
+
+を含めます。`n_max(s)`は固定された実運用customer数ではなく、classical computing、HPC、quantum、quantum-classical hybrid、decomposition、AI-assisted optimization、Quantum × HPC、Quantum × HPC × AIなどが支えるplanning scopeです。原則`n_max(s) <= 39,930`とし、社会scenarioがsynthetic eligible population自体を変える場合は、そのscenario固有のpopulation sizeを上限にできます。具体的なscale列は将来scenario設計で定め、今回freezeしません。
+
+Classical scalingは`n -> runtime / resource / optimality / feasibility`を測り、`n_max^classical(s)`の根拠を作ります。Quantum / hybrid scalingは`n -> qubits / circuit resources / runtime / solution quality`を測り、`n_max^quantum(s)`または`n_max^hybrid(s)`へ接続します。
+
+研究は、(1) Method / Solver Benchmark、(2) Future Capability Scenario、(3) Logistics / Economic Impactの3層で整理します。評価chainは次のとおりです。
+
+```text
+Technology / Social Scenario
+  -> Computational Capability
+  -> n_max(s)
+  -> Routing / EV Planning
+  -> Operational Outcomes
+  -> E_operation
+  -> C_op
+```
+
+計算能力向上をruntime短縮だけでなく、`Larger Solvable Instance -> Larger Integrated Planning Scope`として評価します。経済定義`C_op = E_operation × p_electricity`は変更しません。
 
 ## 現在の制限
 
