@@ -29,6 +29,16 @@ R23最終状態・結果・制約は[R23_STATUS.md](05_src/traffic_simulation/R2
 
 日常的な研究実行・検証はrepo rootの `./research` に集約しています。最初に `./research commands` で利用可能なcommandと未実装stageを確認してください。詳細は[Unified Research CLI](docs/20260903_20260903_research_cli.md)を参照してください。
 
+## Current Research Documentation
+
+| Document | Role |
+|---|---|
+| [Complete Current Research Design](05_src/traffic_simulation/CURRENT_RESEARCH_DESIGN.md) | 現在採用されている研究設計の統合authority |
+| [Research Progress and Decision Record](05_src/traffic_simulation/RESEARCH_PROGRESS_AND_DECISION_RECORD.md) | 研究の進行、設計変更、Gate判断のhistorical record |
+| [R23 Status](05_src/traffic_simulation/R23_STATUS.md) | R23 closure、結果、制約のcurrent index |
+| [End-to-End Workflow Authority](reproducibility/outputs/traffic_simulation/end_to_end_workflow_feasibility_audit/20260914_v2/END_TO_END_WORKFLOW_AUTHORITY.md) | 全体architectureと経済評価境界 |
+| [Routing Baseline Canonical Specification](05_src/traffic_simulation/specifications/ROUTING_BASELINE_CANONICAL.md) | directed routing cost・reachabilityの正式仕様 |
+
 ## 研究目的
 
 > **量子計算が、都市配送需要の充足に与える影響を検討可能な枠組みを提案する。**

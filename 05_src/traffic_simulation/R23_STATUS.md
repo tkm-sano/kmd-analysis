@@ -7,9 +7,9 @@
 | Reproducibility | `RESULT_REPRODUCED_WITH_LIMITATIONS` |
 | Clean run | `R23_PROVENANCE_CLEAN_RUN_PASSED` |
 | Unresolved CRITICAL / MAJOR | 0 / 0 |
-| R24 | `R24_READY_TO_START`; `R24_NOT_STARTED` |
+| R24 | See [CURRENT_RESEARCH_DESIGN.md](CURRENT_RESEARCH_DESIGN.md); Gates A-D and routing compatibility accepted with limitations |
 
-This file is the sole current R23 index. Roadmap, next steps and the research dashboard refer here. Scientific definitions remain in the canonical specifications; historical documents never override this current status.
+This file is the sole current R23 index. R24 and the integrated current design are maintained in [CURRENT_RESEARCH_DESIGN.md](CURRENT_RESEARCH_DESIGN.md). Roadmap, next steps and the research dashboard refer here for R23 only. Scientific definitions remain in the canonical specifications; historical documents never override this current status.
 
 ## Final scientific evidence
 
