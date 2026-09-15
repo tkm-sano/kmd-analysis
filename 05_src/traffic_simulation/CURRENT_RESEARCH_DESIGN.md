@@ -1,6 +1,6 @@
 # Complete Current Research Design
 
-Document ID: `CURRENT-RESEARCH-DESIGN-20260915-v2`
+Document ID: `CURRENT-RESEARCH-DESIGN-20260915-v3`
 
 Role: **current design authority**
 
@@ -189,6 +189,8 @@ Three fixed anchors at `n={4,10,20}` are exact aliases of primary repetition `R0
 Problem size `n` is a computational benchmark parameter, not an Ota stop-count estimate. Every base customer subset is fixed before capacity conditions and reused unchanged for `rho*={0.50,0.70,0.90}`. The rule is sample once, validate, and record: no demand, difficulty, duplicate-proxy, zero-arc, capacity-effect, solver, or QAOA outcome can cause redraw. Base hard failures and capacity-condition packing failures remain under the planned ID.
 
 All ordered pairs over the depot plus selected customers must be recomputed and connection-validated on run_3. Duplicate proxies remain eligible and are flagged. Exact deterministic bin-packing preflight is required for each capacity condition; `PACKING_INFEASIBLE` preserves the subset but blocks optimization of that condition. Same-m targets are retained and marked `DEGENERATE_REGIME_SAME_M`, then excluded from capacity-effect comparison.
+
+The frozen suite was generated without specification deviation. All 80 random bases, 27 structural bases, and three anchor aliases are valid; the 107 independently generated bases have complete connection-validated run_3 OD matrices. All 330 capacity conditions are packing-feasible. Of these, 135 are non-degenerate `READY` conditions and 195 are retained `DEGENERATE_REGIME_SAME_M` conditions. Sixteen independent bases contain at least one within-instance shared proxy group, producing 304 validated zero-distance and zero-time ordered arcs; no redraw or rejection occurred.
 
 ## 11. Vehicle
 
@@ -471,8 +473,8 @@ Active limitations include incomplete original demand-generator provenance, mixe
 | Routing compatibility | `ACCEPTED_WITH_LIMITATIONS` | run_2 mapping validated on run_3; population SCC checked |
 | Final `C_eligible` | `READY_WITH_LIMITATIONS` | 39,930 eligible rows / 81,793 parcel-equivalents materialized |
 | Instance specification | `FROZEN_WITH_LIMITATIONS` | suite sizes, repetitions, seeds, selection, validation, packing, IDs and schema frozen |
-| R24 instances | `NOT_EXECUTED` | no random, controlled, or anchor instance generated |
-| Classical R24 | `NOT_EXECUTED` | no CVRP MILP/reference result |
+| R24 instances | `GENERATED_WITH_LIMITATIONS` | 80 random + 27 structural valid bases; 3 valid anchor aliases; 330 packing-feasible conditions |
+| Classical R24 | `NOT_IMPLEMENTED` | no R24-specific CVRP reference solver or result |
 | R24 QUBO/QAOA | `NOT_EXECUTED` | no R24 encoding or quantum execution |
 | VRPTW | `DEFERRED` | temporal authority not accepted |
 | EVRP | `DEFERRED` | energy/SOC/charging specification not accepted |
@@ -483,23 +485,20 @@ Active limitations include incomplete original demand-generator provenance, mixe
 
 The completed routing and eligibility steps are retained in the dependency record; the remaining execution order is:
 
-1. generate the frozen R24 random, structural, and anchor suite manifests;
-2. compute and validate complete selected-instance ordered-pair run_3 costs;
-3. generate the three frozen capacity conditions and exact packing preflights;
-4. implement and solve Classical R24 CVRP;
-5. validate classical feasibility, objective, bounds, and reproducibility;
-6. design and validate the R24 QUBO;
-7. execute the Resource Gate;
-8. execute QAOA only for authorized sizes;
-9. compare R23 and R24 within their distinct scopes;
-10. establish the VRPTW evidence/specification gate;
-11. establish the EVRP evidence/specification gate;
-12. produce operational outcomes;
-13. freeze energy-accounting and electricity-price authority and compute the economic outcome;
-14. execute prespecified scenario comparisons;
-15. complete sensitivity, reproducibility, and limitation analyses.
+1. implement and validate the Classical R24 CVRP reference solver;
+2. execute the prespecified classical benchmark only after its solver/validation contract is accepted;
+3. design and validate the R24 QUBO;
+4. execute the Resource Gate;
+5. execute QAOA only for authorized sizes;
+6. compare R23 and R24 within their distinct scopes;
+7. establish the VRPTW evidence/specification gate;
+8. establish the EVRP evidence/specification gate;
+9. produce operational outcomes;
+10. freeze energy-accounting and electricity-price authority and compute the economic outcome;
+11. execute prespecified scenario comparisons;
+12. complete sensitivity, reproducibility, and limitation analyses.
 
-`NEXT_EXECUTABLE_TASK = generate R24 benchmark instance suite`
+`NEXT_EXECUTABLE_TASK = implement and validate classical R24 CVRP reference solver`
 
 ## 25. Deprecated / superseded defaults
 
@@ -519,3 +518,4 @@ The following remain historical only: mandatory dispatch batching; quartile-by-t
 - [Routing compatibility revalidation](../../reproducibility/outputs/traffic_simulation/r24_routing_compatibility_revalidation/20260915_v1/R24_ROUTING_COMPATIBILITY_REVALIDATION.md)
 - [Instance generation readiness](../../reproducibility/outputs/traffic_simulation/r24_routing_compatibility_revalidation/20260915_v1/INSTANCE_GENERATION_READINESS.md)
 - [Frozen R24 instance-generation specification](../../reproducibility/outputs/traffic_simulation/r24_instance_generation_specification/20260915_v1/R24_INSTANCE_GENERATION_SPECIFICATION.md)
+- [Generated R24 benchmark instance suite](../../reproducibility/outputs/traffic_simulation/r24_benchmark_instance_suite/20260915_v1/R24_BENCHMARK_INSTANCE_SUITE_REPORT.md)

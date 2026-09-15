@@ -1,6 +1,6 @@
 # Research Progress and Decision Record
 
-Document ID: `RESEARCH-PROGRESS-DECISION-RECORD-20260915-v2`
+Document ID: `RESEARCH-PROGRESS-DECISION-RECORD-20260915-v3`
 
 Role: **historical decision record**
 
@@ -254,8 +254,8 @@ R23 closure
 Current executable path:
 
 ```text
-generate R24 benchmark instance suite
-  -> Classical R24 CVRP and validation
+implement and validate classical R24 CVRP reference solver
+  -> run classical R24 reference benchmark
   -> R24 QUBO
   -> Resource Gate
   -> QAOA where authorized
@@ -267,7 +267,7 @@ generate R24 benchmark instance suite
   -> Scenario Comparison
 ```
 
-`NEXT_EXECUTABLE_TASK = generate R24 benchmark instance suite`
+`NEXT_EXECUTABLE_TASK = implement and validate classical R24 CVRP reference solver`
 
 ## 14. Instance-generation specification freeze
 
@@ -279,7 +279,17 @@ The frozen no-redraw rule preserves every selected subset under its planned ID. 
 
 Verdict: **`R24_INSTANCE_GENERATION_SPEC_FROZEN_WITH_LIMITATIONS`**. Scientific experiment, instance generation, routing generation, and optimization in this freeze step were all `NONE`.
 
-## 15. Principal evidence links
+## 15. Frozen instance-suite generation
+
+The generator ran from committed code against the frozen eligible manifest and accepted run_3 without changing n, repetitions, seeds, selection, structural rules, anchors, Q, rho, no-redraw, graph, depot, or rejection policy. It produced 80/80 valid random bases, 27/27 valid structural bases, and 3/3 valid anchor aliases. The 107 independently generated bases yielded complete directed run_3 OD matrices; no routing or hard-validation failure occurred.
+
+All 330 base/alias capacity conditions passed exact packing preflight. There were 135 non-degenerate `READY` conditions and 195 `DEGENERATE_REGIME_SAME_M` conditions. Degenerate records remain in the suite and are excluded only from later capacity-effect comparisons. Sixteen independent bases contained within-instance duplicate proxies. Their 304 zero-distance and 304 zero-time ordered arcs were connection/proxy validated and retained. No sampled ID was redrawn or replaced.
+
+An independent validator re-derived every primary and structural selection, checked anchor semantic hashes, checked all 14,600 stored OD rows against run_3 edge lengths/speeds and allowed `delivery` connections, and verified every m/rho calculation, packing certificate, and degeneracy flag. The execution verdict is **`R24_INSTANCE_SUITE_GENERATED_WITH_LIMITATIONS`**. Demand generation, routing-graph regeneration, MILP/CVRP optimization, QUBO, and QAOA were all `NONE`.
+
+No R24-specific classical CVRP reference solver currently exists. Historical R17/R18 EVRP/CP-SAT code is not promoted to the R24 reference without a new implementation and validation contract.
+
+## 16. Principal evidence links
 
 - [R23 current status](R23_STATUS.md)
 - [End-to-End Workflow Authority](../../reproducibility/outputs/traffic_simulation/end_to_end_workflow_feasibility_audit/20260914_v2/END_TO_END_WORKFLOW_AUTHORITY.md)
@@ -290,8 +300,9 @@ Verdict: **`R24_INSTANCE_GENERATION_SPEC_FROZEN_WITH_LIMITATIONS`**. Scientific 
 - [Methodological capacity specification](../../reproducibility/outputs/traffic_simulation/r24_methodological_capacity_specification/20260915_v1/R24_METHODOLOGICAL_CAPACITY_SPECIFICATION.md)
 - [Routing compatibility revalidation](../../reproducibility/outputs/traffic_simulation/r24_routing_compatibility_revalidation/20260915_v1/R24_ROUTING_COMPATIBILITY_REVALIDATION.md)
 - [Frozen instance-generation specification](../../reproducibility/outputs/traffic_simulation/r24_instance_generation_specification/20260915_v1/R24_INSTANCE_GENERATION_SPECIFICATION.md)
+- [Generated benchmark instance suite](../../reproducibility/outputs/traffic_simulation/r24_benchmark_instance_suite/20260915_v1/R24_BENCHMARK_INSTANCE_SUITE_REPORT.md)
 
-## 16. Documentation consolidation execution receipt
+## 17. Documentation consolidation execution receipt
 
 | Activity | Execution in this task |
 |---|---|
