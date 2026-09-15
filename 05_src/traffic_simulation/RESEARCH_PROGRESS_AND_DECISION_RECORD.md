@@ -1,6 +1,6 @@
 # Research Progress and Decision Record
 
-Document ID: `RESEARCH-PROGRESS-DECISION-RECORD-20260915-v1`
+Document ID: `RESEARCH-PROGRESS-DECISION-RECORD-20260915-v2`
 
 Role: **historical decision record**
 
@@ -254,8 +254,7 @@ R23 closure
 Current executable path:
 
 ```text
-freeze R24 instance generation specification
-  -> generate R24 benchmark instance manifest
+generate R24 benchmark instance suite
   -> Classical R24 CVRP and validation
   -> R24 QUBO
   -> Resource Gate
@@ -268,11 +267,19 @@ freeze R24 instance generation specification
   -> Scenario Comparison
 ```
 
-`NEXT_EXECUTABLE_TASK = freeze R24 instance generation specification`
+`NEXT_EXECUTABLE_TASK = generate R24 benchmark instance suite`
 
-The next specification must freeze `n`, repetitions, seeds/RNG/order, suite allocation, controlled-structure definitions, fixed anchors, duplicate/zero-arc handling, and failure/no-redraw rules. It must not generate an instance in the specification task.
+## 14. Instance-generation specification freeze
 
-## 14. Principal evidence links
+The specification was frozen before generating any instance or route matrix. The primary repeated-random suite uses hash-ranked SRSWOR from the final 39,930-customer eligible frame: quantum-comparable `n={2,3,4}` and classical-extension `n={5,8,10,15,20}`, with 10 repetitions per n. Seeds are SHA-256-derived from the protocol/suite/n/repetition identity and cannot be searched or manually selected.
+
+The controlled structural suite uses `CLUSTERED`, `DISPERSED`, and `MIXED` at `n={4,10,20}`, three deterministic repetitions each, using EPSG:6677 Euclidean distance and fully specified hash-anchor, nearest, farthest-point, quota, and tie rules. Fixed anchors are the exact `R01` primary subsets at n=4,10,20; they are never post-hoc replacements.
+
+The frozen no-redraw rule preserves every selected subset under its planned ID. Duplicate proxies and validated zero arcs are reported but not rejected. Every selected base requires complete ordered-pair run_3 routing and connection validation. The same base serves all three capacity regimes. Exact deterministic packing preflight may mark a capacity condition `PACKING_INFEASIBLE` but never redraw or reject the customer subset; equal-m targets are retained and excluded only from capacity-effect comparison.
+
+Verdict: **`R24_INSTANCE_GENERATION_SPEC_FROZEN_WITH_LIMITATIONS`**. Scientific experiment, instance generation, routing generation, and optimization in this freeze step were all `NONE`.
+
+## 15. Principal evidence links
 
 - [R23 current status](R23_STATUS.md)
 - [End-to-End Workflow Authority](../../reproducibility/outputs/traffic_simulation/end_to_end_workflow_feasibility_audit/20260914_v2/END_TO_END_WORKFLOW_AUTHORITY.md)
@@ -282,8 +289,9 @@ The next specification must freeze `n`, repetitions, seeds/RNG/order, suite allo
 - [Demand-side mass review](../../reproducibility/outputs/traffic_simulation/r24_demand_side_mass_evidence/20260915_v1/R24_DEMAND_SIDE_MASS_EVIDENCE_REVIEW.md)
 - [Methodological capacity specification](../../reproducibility/outputs/traffic_simulation/r24_methodological_capacity_specification/20260915_v1/R24_METHODOLOGICAL_CAPACITY_SPECIFICATION.md)
 - [Routing compatibility revalidation](../../reproducibility/outputs/traffic_simulation/r24_routing_compatibility_revalidation/20260915_v1/R24_ROUTING_COMPATIBILITY_REVALIDATION.md)
+- [Frozen instance-generation specification](../../reproducibility/outputs/traffic_simulation/r24_instance_generation_specification/20260915_v1/R24_INSTANCE_GENERATION_SPECIFICATION.md)
 
-## 15. Documentation consolidation execution receipt
+## 16. Documentation consolidation execution receipt
 
 | Activity | Execution in this task |
 |---|---|

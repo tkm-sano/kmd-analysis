@@ -1,6 +1,6 @@
 # Complete Current Research Design
 
-Document ID: `CURRENT-RESEARCH-DESIGN-20260915-v1`
+Document ID: `CURRENT-RESEARCH-DESIGN-20260915-v2`
 
 Role: **current design authority**
 
@@ -168,7 +168,7 @@ This identity is not an observed person, household, order, physical delivery sto
 
 ## 10. Instance Generation
 
-The three-suite hierarchy is adopted; its executable numerical specification is the next task.
+The executable instance-generation design is frozen by `R24-INSTANCE-GEN-20260915-v1` with verdict `R24_INSTANCE_GENERATION_SPEC_FROZEN_WITH_LIMITATIONS`.
 
 ### Primary: Repeated Random Suite
 
@@ -176,17 +176,19 @@ The three-suite hierarchy is adopted; its executable numerical specification is 
 C_{n,r}\sim SRSWOR(C_{eligible},n).
 \]
 
-Sampling is without replacement within an instance. The purpose is to reduce discretionary case selection and measure variation conditional on the eligible frame. It does not establish statistical representativeness of all Ota deliveries.
+Sampling is without replacement within an instance. The purpose is to reduce discretionary case selection and measure variation conditional on the eligible frame. It does not establish statistical representativeness of all Ota deliveries. The frozen primary sizes are `n={2,3,4}` for the quantum-comparable core and `n={5,8,10,15,20}` for the classical extension, with exactly 10 independently keyed deterministic repetitions per n. The key is derived by SHA-256 from protocol, suite, n, and repetition; a second SHA-256 ranks canonical eligible customer IDs to realize SRSWOR without library-dependent PRNG behavior.
 
 ### Secondary: Controlled Structural Suite
 
-Clustered, dispersed, and mixed cases will expose structural route differences. Before generation, the spatial/network metrics, normalization, thresholds, tie rules, candidate-screening method, and overlap policy must be frozen without viewing solver outcomes.
+`CLUSTERED`, `DISPERSED`, and `MIXED` cases expose structural route differences at `n={4,10,20}`, with three deterministic repetitions per `(structure,n)`. They use EPSG:6677 projected Euclidean metres, mechanically hash-keyed anchors, fixed tie rules, nearest-anchor selection for clustered cases, deterministic farthest-point traversal for dispersed cases, and two-anchor quota selection for mixed cases. They are stress tests and do not claim Ota-wide representativeness.
 
 ### Reference: Fixed Anchor Suite
 
-Stable-ID subsets will support regression and cross-method comparison. R23 anchors may retain a historical reference role, but they do not automatically acquire R24 horizon, demand, fleet, or capacity semantics.
+Three fixed anchors at `n={4,10,20}` are exact aliases of primary repetition `R01`. A rejected or packing-infeasible source remains rejected/infeasible and is never replaced. Anchors support regression and cross-method comparison and are not additional independent observations.
 
-Problem size `n` is a computational benchmark parameter, not an Ota stop-count estimate. The executable specification must freeze `n`, repetitions, seeds, RNG/library/version, canonical input order, suite allocation, anchors, duplicate/zero-arc handling, failure/no-redraw rules, and output schema. Every instance must preserve selected IDs and hashes and use the same instance across solution methods.
+Problem size `n` is a computational benchmark parameter, not an Ota stop-count estimate. Every base customer subset is fixed before capacity conditions and reused unchanged for `rho*={0.50,0.70,0.90}`. The rule is sample once, validate, and record: no demand, difficulty, duplicate-proxy, zero-arc, capacity-effect, solver, or QAOA outcome can cause redraw. Base hard failures and capacity-condition packing failures remain under the planned ID.
+
+All ordered pairs over the depot plus selected customers must be recomputed and connection-validated on run_3. Duplicate proxies remain eligible and are flagged. Exact deterministic bin-packing preflight is required for each capacity condition; `PACKING_INFEASIBLE` preserves the subset but blocks optimization of that condition. Same-m targets are retained and marked `DEGENERATE_REGIME_SAME_M`, then excluded from capacity-effect comparison.
 
 ## 11. Vehicle
 
@@ -468,7 +470,7 @@ Active limitations include incomplete original demand-generator provenance, mixe
 | Gate D | `ACCEPTED_WITH_LIMITATIONS` | `q_i`, `Q`, pressure regimes and `m` rule frozen |
 | Routing compatibility | `ACCEPTED_WITH_LIMITATIONS` | run_2 mapping validated on run_3; population SCC checked |
 | Final `C_eligible` | `READY_WITH_LIMITATIONS` | 39,930 eligible rows / 81,793 parcel-equivalents materialized |
-| Instance specification | `NEXT` | suite parameters and validation protocol not frozen |
+| Instance specification | `FROZEN_WITH_LIMITATIONS` | suite sizes, repetitions, seeds, selection, validation, packing, IDs and schema frozen |
 | R24 instances | `NOT_EXECUTED` | no random, controlled, or anchor instance generated |
 | Classical R24 | `NOT_EXECUTED` | no CVRP MILP/reference result |
 | R24 QUBO/QAOA | `NOT_EXECUTED` | no R24 encoding or quantum execution |
@@ -481,9 +483,9 @@ Active limitations include incomplete original demand-generator provenance, mixe
 
 The completed routing and eligibility steps are retained in the dependency record; the remaining execution order is:
 
-1. freeze R24 instance generation specification;
-2. generate versioned R24 benchmark instance manifests;
-3. compute and validate complete selected-instance ordered-pair run_3 costs;
+1. generate the frozen R24 random, structural, and anchor suite manifests;
+2. compute and validate complete selected-instance ordered-pair run_3 costs;
+3. generate the three frozen capacity conditions and exact packing preflights;
 4. implement and solve Classical R24 CVRP;
 5. validate classical feasibility, objective, bounds, and reproducibility;
 6. design and validate the R24 QUBO;
@@ -497,7 +499,7 @@ The completed routing and eligibility steps are retained in the dependency recor
 14. execute prespecified scenario comparisons;
 15. complete sensitivity, reproducibility, and limitation analyses.
 
-`NEXT_EXECUTABLE_TASK = freeze R24 instance generation specification`
+`NEXT_EXECUTABLE_TASK = generate R24 benchmark instance suite`
 
 ## 25. Deprecated / superseded defaults
 
@@ -516,3 +518,4 @@ The following remain historical only: mandatory dispatch batching; quartile-by-t
 - [Methodological capacity specification](../../reproducibility/outputs/traffic_simulation/r24_methodological_capacity_specification/20260915_v1/R24_METHODOLOGICAL_CAPACITY_SPECIFICATION.md)
 - [Routing compatibility revalidation](../../reproducibility/outputs/traffic_simulation/r24_routing_compatibility_revalidation/20260915_v1/R24_ROUTING_COMPATIBILITY_REVALIDATION.md)
 - [Instance generation readiness](../../reproducibility/outputs/traffic_simulation/r24_routing_compatibility_revalidation/20260915_v1/INSTANCE_GENERATION_READINESS.md)
+- [Frozen R24 instance-generation specification](../../reproducibility/outputs/traffic_simulation/r24_instance_generation_specification/20260915_v1/R24_INSTANCE_GENERATION_SPECIFICATION.md)
