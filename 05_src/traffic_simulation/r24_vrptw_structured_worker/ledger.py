@@ -50,8 +50,10 @@ class Ledger(StandardLedger):
     @contextmanager
     def lock(self):
         b,_=baseline();external=(ROOT/b['baseline']['source']).with_suffix('.lock')
-        # Existing Standard lock, opened read-only; no source/mirror modification.
-        with external.open('rb') as lock:
+        # NFS requires a writable descriptor for exclusive flock. This is the
+        # existing dedicated lock inode, NOT the immutable ledger data file.
+        # r+b neither truncates nor creates it; missing/permission errors fail closed.
+        with external.open('r+b') as lock:
             fcntl.flock(lock,fcntl.LOCK_EX)
             try:
                 baseline()

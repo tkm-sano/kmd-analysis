@@ -74,7 +74,7 @@ class DirectTests(unittest.TestCase):
         self.assertFalse({'h','x','initialize','state_preparation'}&set(body.count_ops()))
     def test_no_pending_output(self):
         for r in self.plans:self.assertFalse((ROOT/r['future_output']).exists())
-    def test_active_gate_supersession(self):self.assertEqual(execution.ACTIVE_PREFLIGHT,OUT)
+    def test_active_gate_supersession(self):self.assertEqual(execution.ACTIVE_PREFLIGHT,BASE/'r24_vrptw_structured_initial_state/20260922_v6_ledger_lock_preflight')
 
 
 def archived_uniform_fixture(run_id,spec=None,check_environment=True):

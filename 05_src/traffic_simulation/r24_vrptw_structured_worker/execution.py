@@ -10,10 +10,10 @@ from traffic_simulation.r24_vrptw_qaoa_worker import execution as original
 ORIGINAL_PERFORM=original.perform
 ORIGINAL_SUPERVISOR=original.supervised_run
 
-ACTIVE_PREFLIGHT=BASE/'r24_vrptw_structured_initial_state/20260922_v4_direct_build_preflight'
+ACTIVE_PREFLIGHT=BASE/'r24_vrptw_structured_initial_state/20260922_v6_ledger_lock_preflight'
 
 def preflight_gate(ident):
-    # v4 supersedes the code receipt only; prior validation artifacts stay immutable.
+    # v6 adds NFS lock acceptance; prior scientific and direct-build receipts stay immutable.
     root=ACTIVE_PREFLIGHT
     v=read(root/'VALIDATION.json')
     require(v['status']=='PASS' and v['GO_STOP']=='GO' and v['Uniform_construction']==0,'direct-build preflight receipt')
