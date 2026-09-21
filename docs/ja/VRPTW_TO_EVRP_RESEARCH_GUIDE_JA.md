@@ -4,9 +4,12 @@
 
 > **今どこにいるか：VRPTW Structured scientific sampling開始直前である。**
 >
-> 完了：VRPTWの定式化・古典参照・Uniform Standard QAOA study、道路経路の検証・可視化、Candidate Aのoffline validation、direct-build検証、clean Git baseline、NFS4 ledger lock検証。  
-> 未実施：Structured S01／S02／S03のscientific sampling、EVRP、EV電力消費・経済評価。  
-> 次：**S01 N003 WIDE × 3 repetitions**を、改めてfresh gateから開始する。  
+> 完了：VRPTWの定式化・古典参照・Uniform Standard QAOA study、道路経路の検証・可視化、Candidate Aのoffline validation、direct-build検証、clean Git baseline、NFS4 ledger lock検証。
+>
+> 未実施：Structured S01／S02／S03のscientific sampling、EVRP、EV電力消費・経済評価。
+>
+> 次：**S01 N003 WIDE × 3 repetitions**を、改めてfresh gateから開始する。
+>
 > 科学コードbaseline：`6ccbadbd42bdad6c95e22f7420aff6ee787c8997`。この文書は実験開始の指示ではない。
 
 このガイドの数値は既存成果物を読んだ記録である。以下では、**確認済みの事実・次に実行するfreeze済み計画・将来の設計案**を区別する。将来案を現在の実装・検証結果として読んではならない。末尾の参照案内はローカルartifactの所在も示す。
