@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "protected_files": 11816,
+  "changed": [],
+  "ledger_before_after": {
+    "cap_total": 2107,
+    "existing_consumed": 0,
+    "consumed_new": 370,
+    "reserved": 0,
+    "consumed": 370,
+    "failed_counted": 0,
+    "unknown_counted": 0,
+    "released_unused": 1737,
+    "remaining_unallocated": 1737,
+    "scientific_consumed": 363,
+    "scientific_reserved": 0,
+    "sanity_consumed": 7,
+    "sanity_reserved": 0,
+    "shots_consumed": 743424,
+    "shots_reserved": 0
+  },
+  "ledger_sha256": "7bd0ae76a1cfb79bfd00fcc8da53d140483f5ba923dd8f72549312f2d4688ef6",
+  "scientific_circuits_increment": 0,
+  "scientific_shots_increment": 0,
+  "optimizer_evaluations": 0,
+  "reservations": 0,
+  "tests": {
+    "tests": 26,
+    "pass": true,
+    "forbidden_attempts": [],
+    "uniform_full_calls": 0,
+    "uniform_initial_calls": 0,
+    "scientific_circuits": 0,
+    "scientific_shots": 0,
+    "optimizer_evaluations": 0,
+    "ledger_reservations": 0,
+    "scope": "22 direct-build tests + 4 read-only ledger regression tests; no NFS race/reservation retest"
+  },
+  "lightweight_tests": {
+    "passed": 4,
+    "environment": ".conda/bin/python",
+    "cache_disabled": true
+  },
+  "total_tests_passed": 30,
+  "active_receipt_hash_checks": {
+    "ARTIFACT_MANIFEST.json": 145,
+    "RUNTIME_DEPENDENCIES.json": 118,
+    "COMPARISON_REFERENCE_AUTHORITIES.json": 346
+  }
+}
