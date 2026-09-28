@@ -1,0 +1,142 @@
+{
+  "summary_manifest": {
+    "checked": 14,
+    "failures": []
+  },
+  "summary_sources": {
+    "checked": 28,
+    "failures": []
+  },
+  "figure_sources": {
+    "checked": 7,
+    "failures": []
+  },
+  "minimal_evrp_manifest": {
+    "checked": 36,
+    "failures": []
+  },
+  "finite_shot_manifest": {
+    "checked": 45,
+    "failures": []
+  },
+  "historical_ledgers": {
+    "checked": 329,
+    "failures": []
+  },
+  "archive_snapshot": {
+    "checked": 1,
+    "failures": []
+  },
+  "archive_current_overview": {
+    "checked": 1,
+    "failures": []
+  },
+  "syntax": {
+    "python": 12,
+    "json": 5,
+    "yaml_registries": 4,
+    "svg": 4
+  },
+  "evidence_snapshot_hashes": {
+    "checked": 21,
+    "failures": []
+  },
+  "links": {
+    "checked": 296,
+    "broken": [],
+    "git_ignored_local_only": 96,
+    "boundary": "repository-local links, archived snapshot resolved against original repository root; remote URLs and heading anchors not network-tested"
+  },
+  "offline_tests": {
+    "minimal_evrp_saved_result_and_unit_tests": 35,
+    "repository_ci_audit_tests": 4,
+    "status": "PASS",
+    "scientific_runners_invoked": false
+  },
+  "budget": {
+    "sampling": {
+      "consumed": 2,
+      "consumed_shots": 128,
+      "dense_consumed": 1,
+      "mps_consumed": 1,
+      "reserved": 0,
+      "reserved_shots": 0
+    },
+    "state_consumed": 2,
+    "source_state": "reproducibility/outputs/traffic_simulation/r24_meaningful_multi_vehicle_state/20260928_v3/SCIENTIFIC_ACCOUNTING.json"
+  },
+  "failures": [],
+  "protected_files": {
+    "source": "reproducibility/outputs/traffic_simulation/r24_finite_shot_supervised_execution_integration/20260928_v2/PROTECTED_SOURCE_PINS.json",
+    "checked": 15096,
+    "matching": 15095,
+    "explained_documentation_changes": [
+      {
+        "path": "README.md",
+        "historical_sha256": "15bcf632558e9f7bb212bca7bd2f4859a7818b4aab15d3fcdfa191814daaf74f",
+        "current_sha256": "ceea2aeb74c802af639e40207b1317667305551655edfb3e6c6a4d56bb066c3a",
+        "provenance": "User request: README.mdを研究リポジトリの入口として整理",
+        "historical_manifest_modified": false
+      }
+    ],
+    "unexplained_changes": 0
+  },
+  "scientific_delta": {
+    "backend_calls": 0,
+    "shots": 0,
+    "state_reruns": 0,
+    "optimizer": 0,
+    "retries": 0,
+    "reservations": 0
+  },
+  "diff_check": "PASS_AFTER_STAGED_FORMAT_REPAIR",
+  "classification_counts": {
+    "A": 9,
+    "B": 14,
+    "D": 24,
+    "C": 2
+  },
+  "precommit_format_repairs": [
+    {
+      "path": "reproducibility/figures/computation_platform/computation_platform_overview.svg",
+      "before_sha256": "d4f3f92732f797c39f213713366a7d6542ab284a4381ff67a29fc40c47a48dde",
+      "after_sha256": "cbb77dfc1c72d5f6ef977cb95dfcc2a847e0c2b25add6b60189b9c32855d3858",
+      "reason": "SVG trailing whitespace only; parsed XML semantic tree equivalent"
+    },
+    {
+      "path": "reproducibility/figures/computation_platform/quantum_computation_pipeline.svg",
+      "before_sha256": "8e07e3bc070f3db440fd1b4d6d0cf6514687bf46c6d0c33e88f986cfc32f586c",
+      "after_sha256": "2e2b9e5a443b826195cd80d33bbf94dd4233f77021a2f2c962140726fd7d4cb0",
+      "reason": "SVG trailing whitespace only; parsed XML semantic tree equivalent"
+    },
+    {
+      "path": "reproducibility/figures/computation_platform/n002_m2_tw_moderate_routes.svg",
+      "before_sha256": "f7bc3556755fa23b3147e4e7326a0492d8c9388301fe8a92bcec866efdb62633",
+      "after_sha256": "65350691c39490ac32ec2cce88e7932b8a4569883d9624ee49378d0831dcafb4",
+      "reason": "SVG trailing whitespace only; parsed XML semantic tree equivalent"
+    },
+    {
+      "path": "reproducibility/figures/computation_platform/n002_m2_tw_moderate_timeline.svg",
+      "before_sha256": "e8c99627954411b2dba2f0bfe74f2cf385c1a3987aee5f784b964cb83c40a815",
+      "after_sha256": "1fbe755bd167be9e93393833d81145c770c886187dd5688ba2475375a8d5acbd",
+      "reason": "SVG trailing whitespace only; parsed XML semantic tree equivalent"
+    },
+    {
+      "path": "reproducibility/figures/computation_platform/build_figures.py",
+      "before_sha256": "a8aec1266077a010edab84f57fade0ec978a1b51af17939bbe8614bc6860439f",
+      "after_sha256": "0416e798c5934396c284ff9cfffa37c59db39de0bd0c6fcd544ebd6ee3ce57f9",
+      "reason": "Normalize SVG trailing whitespace after rendering; no science or geometry changes"
+    },
+    {
+      "path": "docs/ja/RESEARCH_ARCHIVE_MIGRATION_PLAN.md",
+      "before_sha256": "bdd55caf50eae08957ea5fe9be4387eac3e0c1bf5defc363d6feae32cc3d9b39",
+      "after_sha256": "db63d02a61c482a8d13082a8e42b935cf53b1371eb4a177a533536f93fb0d7c0",
+      "reason": "Preserve Markdown line break with explicit br instead of trailing spaces"
+    }
+  ],
+  "protected_before_after": {
+    "checked": 15096,
+    "differences": [],
+    "status": "PASS"
+  }
+}

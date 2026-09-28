@@ -1,10 +1,40 @@
 # 現行研究パイプライン 実行・正本・検証リファレンス
 
+## 2026-09-27 Study B完了：method scaleはBLOCKED
+
+[Minimal EVRP量子resource静的監査](reproducibility/outputs/traffic_simulation/r24_minimal_evrp_quantum_resource_audit/20260927_v1/MINIMAL_EVRP_QUANTUM_RESOURCE_AUDIT.md)を完了。現行Direct表現はn5/m1でも34変数・471coupler・raw256GiBで、凍結backend上限256MiBを超える。METHOD_COMPARISON_SCALE_AUTHORITY=BLOCKED、選定nなし、S0_QUANTUM_PROTOCOL_RESOURCE_GATE=BLOCKED。n3/n4は検証・pilot/referenceのまま。MODEL_VALIDATION_SCALE_AUTHORITY=FROZEN、scenario scaleはPARTIALLY_FROZEN、main S0はNOT_AUTHORIZED。
+
+次は物理問題を変えない代替encoding/decompositionの静的比較。Study Aは別途未実行。凍結pilot/科学成果物/ledgerを保持し、新規最適化・Aer・QAOA・optimizer評価・circuits・shotsは全て0。以下の評価規模再整理段落はStudy B前の履歴であり、method状態と次taskは本段落が優先する。
+
+## 2026-09-27（評価規模再整理）：small-Nは検証・pilot scope
+
+[評価規模authority](reproducibility/outputs/traffic_simulation/r24_evaluation_scale_authority/20260927_v1/EVALUATION_SCALE_AUTHORITY.md)を現在の規模選定正本とする。既存N002/N003/N004はMODEL_VALIDATION_SCALEとして保持し、N004はS0_PILOT、N003はS0_METHOD_IMPLEMENTATION_REFERENCEへ役割を限定する。既存pilot S0の物理・比較contract・成果物は不変。以下の旧S0_SCALE_AUTHORITY=FROZENはsmall-input scopeの値であり、main評価規模を意味しない。
+
+MODEL_VALIDATION_SCALE_AUTHORITY=FROZEN、METHOD_COMPARISON_SCALE_AUTHORITY / SCENARIO_EVALUATION_SCALE_AUTHORITY / mainのS0_SCALE_AUTHORITY=PARTIALLY_FROZEN。候補は既存n20/R01のRandom・Clustered親sampleのnested prefix、n=3,4,5,8,10,15,20（3/4診断、5以上main候補）。最終二規模は未選定で、同じnを強制しない。量子現行Direct表現はn5/m1からmemory下限で不適合、scenario側は古典EVRP/Batteryの新規模証拠が必要。
+
+次は入力受入→Study A（controlled Classical scaling/Battery relevance）とStudy B（Minimal EVRP QUBO/resource監査）→二規模選定→main S0 authority更新。study設計は固定したが今回は実行していない。main S0はNOT_AUTHORIZED、全最適化/量子実行0。人口39,930顧客への直接外挿や39,930/n倍の経済換算は禁止する。
+
+## 2026-09-27：S0物理条件・共通contractの部分freeze
+
+[S0 authority](reproducibility/outputs/traffic_simulation/r24_s0_baseline_authority/20260926_v1/S0_BASELINE_AUTHORITY.md)を更新し、S0_PHYSICAL_AUTHORITY / S0_CLASSICAL_PROTOCOL / 共通条件contract / metricsをFROZEN、S0_QUANTUM_PROTOCOLをBLOCKED、S0_BASELINE_AUTHORITYをPARTIALLY_FROZENとした。scenario側は既存n4・最大3台の構造pilot、method比較は既存n3・1台で、同一規模とは扱わない。人口39,930顧客への代表性は主張しない。
+
+CURRENTはmodel20 kWh・初期100%・最低10%・r=.127 kWh/km。全simple配送routeの消費上限がusable18 kWhを下回るため、両layerでcharger訪問decisionを除外し充電INACTIVEを固定した。実車充電出力は未解決のまま、この限定S0のblockerにはしない。経済authorityは別extensionとしてNOT_STARTED。
+
+次作業は凍結S0条件に対するMinimal EVRP Quantum/QUBO encoding・同値性・資源監査。旧Exact/MILP sourceは保存Git treeでhash一致を確認済みだが、将来実行前の復元・runner接続は別途必要。S0/全最適化/量子実行はNOT_STARTED。本段落とS0正本が、以下の旧日付のS0未定義・経済必須記述に優先する。
+
+## 2026-09-26：Minimal EVRP以降の研究順序改訂
+
+VRPTW結果とMinimal EVRP設計authorityはFROZENである。既存経路EV回帰および制御10kWでの充電あり検証はPASS、Minimal EVRP classical modelもN002 WIDEの検証範囲でFROZENである。10kWはCONTROLLED_VALIDATION_CONDITIONであり実車充電性能ではない。実車の実効充電性能はUNRESOLVED/DEFERRED、S0は未実行である。
+
+今後の順序・状態の正本は[研究段階ロードマップ](01_research_design/RESEARCH_STAGE_ROADMAP.md)である。Battery根拠・条件freeze → S0 → 同一条件の[Classical/Quantum EVRP比較](01_research_design/CLASSICAL_QUANTUM_EVRP_COMPARISON_PLAN.md) → S0評価/freeze → [劣化・技術向上条件の比較](01_research_design/BATTERY_SCENARIO_COMPARISON_PLAN.md) → Battery差とmethod差の分離 → 感度分析 → [量子化学/材料R&Dと二系統の統合](01_research_design/BATTERY_QUANTUM_CHEMISTRY_RESEARCH_PIPELINE.md)へ進む。容量/SOH/技術容量・感度設計authorityはFROZENである。直近の次milestoneは完全なS0条件authorityの定義であり、S0実行ではない。実車充電出力は未解決である。
+
+以下の日付付き全体計画・statusは各時点の記録を保持する。post-Minimal-EVRPの順序・状態が異なる場合は上記master roadmapを優先する。過去のDFR目的・未配送許容等を現在の凍結Minimal EVRPへ導入しない。凍結科学成果物を変更せず、本改訂で新しい科学実行は行わない。
+
 文書ID: `DOC-RESEARCH-PIPELINE-REFERENCE`
 役割: `CURRENT_REFERENCE`
 ライフサイクル: `CURRENT`
 作成日: `2026-09-03`
-最終更新日: `2026-09-10`
+最終更新日: `2026-09-27`
 現行正本: `reproducibility/indexes/research_repository_index_v17.yml`
 
 状態: `CURRENT PIPELINE REFERENCE`
@@ -15,10 +45,10 @@
 
 <a id="b2c-pipeline-20260909"></a>
 
-## 最新採択方針 — B2C配送パイプライン（2026-09-09）
+## B2C配送パイプライン採択記録（2026-09-09）
 
 採択根拠: 2026-09-09の研究責任者による修正版パイプラインの指示。
-状態: `ADOPTED / CURRENT DESIGN`。以下を今後のパイプラインの設計正本とする。過去の記録と不整合の場合は、本節を優先する。実装・実行・検証・受入の完了は別途証拠で判定する。
+状態: `ADOPTED`（2026-09-09の全体設計記録）。post-Minimal-EVRPの将来順序・目的・状態は冒頭の2026-09-26 master roadmapを優先する。実装・実行・検証・受入の完了は別途証拠で判定する。
 
 主対象は**住宅向け宅配（B2C last-mile delivery）**。古典最適化と量子最適化は、同一のCommon Delivery Instance、Hard Constraints、目的の優先順位、独立Validatorを使用する。
 
@@ -155,7 +185,7 @@ EV性能変化によってDemand Fulfillment Rateがどの程度変化するか�
 ### 旧記録との整合と実装境界
 
 - 旧82,023 `parcel-equivalent/day`、73,547 request rows、39,956 Stopsは生成済み成果物の来歴として保持する。今後の主需要単位・customer数・DFR分母をこれらの旧集計値で固定しない。
-- 今後の需要抽出、時間窓生成、共通Hard Constraints、OR-Tools、QUBO/QAOA/Aer、独立Validator、評価は本節を優先する。旧比較器やB2B主入力案を必須工程として追加しない。
+- この採択当時の需要抽出・時間窓・比較器の背景は本節に保持する。post-Minimal-EVRPの現在の順序・目的・比較protocolは冒頭のmaster roadmapを優先する。旧比較器やB2B主入力案を必須工程として追加しない。
 - 受入済み道路網・mappingの証拠とhashは維持する。既存基準需要・Stopsの`DONE`は、新しいB2C需要生成の完了を意味しない。
 - 統計表の選択、層化・配賦の詳細、実験する $n$ とseed、時間窓・service time、depot位置、EV・充電の数値、最大運行時間、penalty・encoding・計算予算は別途configに固定する。ここでは値を創作しない。
 - 後続A～Q節は現行の実装・成果物・コマンドの台帳を兼ねる。旧設計に由来する記述は本節の採択内容に従って読み替え、未実装runnerを実装済みと扱わない。

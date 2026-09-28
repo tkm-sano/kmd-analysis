@@ -1,29 +1,33 @@
-# 研究概要（stable entry）
+# 研究概要
 
-文書ID: `ALIAS-RESEARCH-OVERVIEW`
-役割: `PRIMARY_ENTRY`
-ライフサイクル: `CURRENT`
-作成日: `2026-09-03`
-最終更新日: `2026-09-14`
-現行正本: `20260903_20260903_RESEARCH_OVERVIEW.md`
+最終更新：2026-09-28。現在の研究内容と参照先をまとめる入口。
 
-現行の研究概要・roadmapは次の文書である。
+## 研究の主題
 
-- [研究概要・ロードマップ v17](20260903_20260903_RESEARCH_OVERVIEW.md)
-- [現行Research Pipeline実行・正本・検証リファレンス](RESEARCH_PIPELINE_REFERENCE.md)
+量子技術の進展がEV配送の運用電力量に与える影響：東京都大田区のラストマイル配送をケースとして
 
-## 2026-09-09の設計更新
+[正式タイトルの正本](RESEARCH_TITLE_AUTHORITY.md)。東京都大田区のラストマイル配送を対象に、量子技術の能力条件とバッテリー性能の変化が、EV配送の計画・運用電力量に与える影響を調べる。
 
-今後の研究パイプラインは[最新B2C配送パイプライン](RESEARCH_PIPELINE_REFERENCE.md#b2c-pipeline-20260909)を設計正本とする。住宅向け宅配を主対象に、39,956候補地点から層化・重み付き非復元抽出し、customer数nと複数seedを実験パラメータにする。主需要単位は配送件数、Baselineは単一depot、主指標はDFR_orders。OR-ToolsとQUBO→QAOA→Qiskit Aerは同一instance・共通Hard Constraintsを使用し、独立Validatorを通して比較する。技術Scenarioではcustomer・需要・Time Window・道路条件を原則固定する。
+研究の問いと仮説は[専用の正本](RESEARCH_QUESTION_AND_HYPOTHESIS.md)に記録している。仮説は検証対象であり、確認済みの結果ではない。
 
-旧記述との不整合は上記の最新方針を優先する。既存成果物の生成・受入事実は保持し、今後の設計採択を実装完了とは扱わない。
+## 研究の進め方
 
-## Current reduced branch
+同一の配送・EV条件での古典計算と量子計算の比較、およびバッテリー条件を変えた運用電力量の比較を扱う。モデル検証の小規模ケース、手法比較の規模、バッテリー条件評価の規模を区別する。
 
-R23の正式closure・最終結果・制約とR24 gateは[R23_STATUS.md](05_src/traffic_simulation/R23_STATUS.md)を唯一のcurrent indexとする。full EVRPとreduced route orderingのscopeは分離する。旧statusを含む元文書はarchive status_snapshotsに保持する。
+段階順序と各研究系統の設計は[研究段階ロードマップ](01_research_design/RESEARCH_STAGE_ROADMAP.md)を参照する。ロードマップ内の日付付き実行状況・次taskには過去時点の記述があるため、直近の実行状況と入口は下記CURRENT_EXECUTIONを参照する。
 
-本stable entryはGitHub、Portal、CLI、外部linkとの互換性のために維持する。日付入り文書が正本であり、本文はここに複製しない。
+## 現在の到達点
+
+N002/M2/TW-MODERATEでは、実際に2台の使用が必要な問題について、Dense/MPSのstate-level比較がPASSしている。有限回測定のsampling専用監督入口は統合・凍結済みで、科学samplingは未開始、既定の実行guardは閉じている。
+
+この検証はbackendの整合性と処理経路の確認であり、量子優位性、省エネ効果、本評価規模での実行可能性を示すものではない。METHOD_COMPARISON_SCALEは未固定、Main S0は未許可。
+
+直近の状態、予算、正本成果物、次の限定taskと唯一の実行入口は[CURRENT_EXECUTION.md](CURRENT_EXECUTION.md)を参照する。この概要の更新は科学実行の許可や条件変更ではない。
+
+## 過去の説明
+
+旧方針・日付別の状況説明は[研究概要のアーカイブ](reproducibility/archive/project_management/research_overview/20260928_v1/README.md)へ分離した。更新前の全文とハッシュ、当時の参照先を保存している。履歴内の「次の作業」「CURRENT」等は当時の記録であり、現在の実行指示として使わない。
 
 <a id="stage-1--routing-baseline-next"></a>
 
-経路基準に関する判断は、上記の日付入り正本文書で維持する。
+旧アンカーはリンク互換性のため保持する。現在の実行状況は上記CURRENT_EXECUTION、過去の説明はアーカイブを参照する。
