@@ -1,0 +1,54 @@
+schema_version: 1
+source_registry_id: minimal_evrp_sources_20260926_v1
+accessed_at: '2026-09-26'
+sources:
+  - source_id: "SOURCE-MINIMAL-EVRP-MMC-SPEC-20260926"
+    publisher: "三菱自動車工業株式会社"
+    title: "ミニキャブ EV 主要諸元"
+    url: "https://www.mitsubishi-motors.co.jp/lineup/minicab_ev/spec/spe_02.html"
+    published_at: null
+    source_version: "retrieved2026-09-26; Last-Modified2026-09-17"
+    accessed_at: "2026-09-26"
+    source_type: "manufacturer_specification"
+    authority_level: "primary_manufacturer"
+    supported_claims: ["ZAB-U69V CD20.0kWh 2-seater quick-charge variant HLDDI;20.0kWh total energy;WLTC127Wh/km and180km", "Usable supply capacity is restricted;20.0kWh is not declared usable energy"]
+    current_model_role: "DIRECT_PARAMETER_SOURCE"
+    snapshot_path: "reproducibility/outputs/traffic_simulation/r24_minimal_evrp_design_authority/20260926_v1/source_snapshots/mitsubishi_spec.html"
+    sha256: "a01187cf2ee34bf5191334754ca1ef49ccf34fa8e0b10934a2ac6f1c1e955fd8"
+  - source_id: "SOURCE-MINIMAL-EVRP-MMC-CATALOGUE-202609"
+    publisher: "三菱自動車工業株式会社"
+    title: "ミニキャブ EV catalogue September2026"
+    url: "https://www.mitsubishi-motors.co.jp/lineup/minicab_ev/pdf/minicab_ev.pdf"
+    published_at: null
+    source_version: "2026-09 catalogue"
+    accessed_at: "2026-09-26"
+    source_type: "manufacturer_specification"
+    authority_level: "primary_manufacturer"
+    supported_claims: ["September2026 catalogue edition; printed page16 specification table corroborates selected vehicle/energy figures", "Printed page02 charging guide gives approximate durations and supply conditions, not a constant battery-side acceptance-power curve"]
+    current_model_role: "DIRECT_CORROBORATION_AND_CHARGING_LIMITATION"
+    snapshot_path: "reproducibility/outputs/traffic_simulation/r24_minimal_evrp_design_authority/20260926_v1/source_snapshots/mitsubishi_catalogue.pdf"
+    sha256: "41f12a7057f2158c3f6923aeeff73e22edafa08a0884a472d354d72cd1bd84d8"
+  - source_id: "SOURCE-MINIMAL-EVRP-MMC-GRADE-20260926"
+    publisher: "三菱自動車工業株式会社"
+    title: "CD20.0kWh 2-seater grade"
+    url: "https://www.mitsubishi-motors.co.jp/lineup/minicab_ev/grade/gra_01.html"
+    published_at: null
+    source_version: "retrieved2026-09-26; Last-Modified2026-09-17"
+    accessed_at: "2026-09-26"
+    source_type: "manufacturer_specification"
+    authority_level: "primary_manufacturer"
+    supported_claims: ["2-seater and quick-charge-option reference variant;WLTC127Wh/km and180km"]
+    current_model_role: "DIRECT_VARIANT_CORROBORATION"
+    snapshot_path: "reproducibility/outputs/traffic_simulation/r24_minimal_evrp_design_authority/20260926_v1/source_snapshots/mitsubishi_grade.html"
+    sha256: "89d0fd5765955d73335558f15a264eb2b31730165e6a169c8c36f928c5de6798"
+  - source_id: "SOURCE-MINIMAL-EVRP-SCHNEIDER2014-REFERENCE"
+    publisher: "INFORMS"
+    title: "The Electric Vehicle-Routing Problem with Time Windows and Recharging Stations"
+    url: "https://pubsonline.informs.org/doi/abs/10.1287/trsc.2013.0490"
+    published_at: "2014-03-06"
+    accessed_at: "2026-09-26"
+    source_type: "peer_reviewed_methodological_reference"
+    authority_level: "primary_publisher"
+    supported_claims: ["Bibliographic identity and abstract: EV routing with recharging, freight capacity and customer time windows"]
+    current_model_role: "REFERENCE_ONLY_NOT_EXACT_FORMULATION_AUTHORITY"
+    verification: "Publisher page read via browser; local HTTP capture403; no full-text formula-equivalence claim"
