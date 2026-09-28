@@ -1,0 +1,196 @@
+{
+  "schema": "r24_battery_sources_v1",
+  "access_date": "2026-09-26",
+  "policy": "additive registry; previous EV/charging registries unchanged",
+  "sources": [
+    {
+      "source_id": "BATTERY-MMC_SPEC",
+      "title": "ミニキャブ EV 主要諸元",
+      "organization": "三菱自動車",
+      "publication_date": "NOT_REPORTED (current page; catalogue version 2026-09)",
+      "section": "CD20.0kWh・2シーター HLDDI；駆動用バッテリー／一充電走行距離／交流電力量消費率",
+      "access_date": "2026-09-26",
+      "url": "https://www.mitsubishi-motors.co.jp/lineup/minicab_ev/spec/spe_02.html",
+      "snapshot": "reproducibility/outputs/traffic_simulation/r24_battery_scenario_authority/20260926_v1/sources/MMC_SPEC.html",
+      "sha256": "a01187cf2ee34bf5191334754ca1ef49ccf34fa8e0b10934a2ac6f1c1e955fd8",
+      "evidence_class": "OFFICIAL_OBSERVED",
+      "authority_role": "DIRECT_CURRENT_AUTHORITY",
+      "supported_values": {
+        "battery_total_energy_kwh": 20,
+        "WLTC_range_km": 180,
+        "AC_WLTC_Wh_per_km": 127
+      },
+      "applicable_population_or_technology": "ZAB-U69V HLDDI CD20.0kWh 2シーター",
+      "limitations": "total energy is not independently verified usable capacity; AC standardized consumption is not constant battery-side delivery consumption",
+      "reuses_source_id": "SOURCE-MINIMAL-EVRP-MMC-SPEC-20260926"
+    },
+    {
+      "source_id": "BATTERY-MMC_CATALOGUE",
+      "title": "MINICAB EV カタログ 2026年9月版",
+      "organization": "三菱自動車",
+      "publication_date": "2026-09 (document 260917)",
+      "section": "印刷p02 充電注記、p16 諸元",
+      "access_date": "2026-09-26",
+      "url": "https://www.mitsubishi-motors.co.jp/lineup/minicab_ev/pdf/minicab_ev.pdf",
+      "snapshot": "reproducibility/outputs/traffic_simulation/r24_battery_scenario_authority/20260926_v1/sources/MMC_CATALOGUE.pdf",
+      "sha256": "41f12a7057f2158c3f6923aeeff73e22edafa08a0884a472d354d72cd1bd84d8",
+      "evidence_class": "OFFICIAL_OBSERVED",
+      "authority_role": "DIRECT_CURRENT_AUTHORITY",
+      "supported_values": {
+        "normal_AC_V": 200,
+        "normal_AC_A": 15,
+        "normal_full_hours_approx": 7.5,
+        "rapid_to_percent_approx": 80,
+        "rapid_minutes_approx": 42,
+        "rapid_station_max_current_condition_A_at_least": 60,
+        "start_condition": "残量計1目盛・残量警告灯交互点滅"
+      },
+      "applicable_population_or_technology": "同上、急速充電オプション",
+      "limitations": "start gauge is not 0% SOC; temperature/current limitations; no constant effective accepted power established",
+      "reuses_source_id": "SOURCE-MINIMAL-EVRP-MMC-CATALOGUE-202609"
+    },
+    {
+      "source_id": "BATTERY-MMC_CHARGING",
+      "title": "ミニキャブ EV 走行・充電",
+      "organization": "三菱自動車",
+      "publication_date": "NOT_REPORTED",
+      "section": "急速充電・普通充電注意事項",
+      "access_date": "2026-09-26",
+      "url": "https://www.mitsubishi-motors.co.jp/lineup/minicab_ev/usp/usp_01.html",
+      "snapshot": "reproducibility/outputs/traffic_simulation/r24_battery_scenario_authority/20260926_v1/sources/MMC_CHARGING.html",
+      "sha256": "fb158c52787f3f2c661e9b5dbb156ed6bc2d0f065832f866edf7de8887f61c1d",
+      "evidence_class": "OFFICIAL_OBSERVED",
+      "authority_role": "SUPPORTING_REFERENCE",
+      "supported_values": {
+        "rapid_standard": "CHAdeMO"
+      },
+      "applicable_population_or_technology": "選択仕様の急速充電装備",
+      "limitations": "charger rating, accepted maximum and model effective power remain distinct",
+      "reuses_source_id": null
+    },
+    {
+      "source_id": "BATTERY-MLIT_PRESS",
+      "title": "第193回WP.29結果報告：EV等のバッテリー耐久性能の国連基準",
+      "organization": "国土交通省",
+      "publication_date": "2024-07-02",
+      "section": "本文[2]、別添2リンク",
+      "access_date": "2026-09-26",
+      "url": "https://www.mlit.go.jp/report/press/jidosha10_hh_000307.html",
+      "snapshot": "reproducibility/outputs/traffic_simulation/r24_battery_scenario_authority/20260926_v1/sources/MLIT_PRESS.html",
+      "sha256": "b2e3d753e89e5e7237d1cf92bd78263d80a19d33a53daaccc63c3477f64175b4",
+      "evidence_class": "PUBLIC_REGULATORY_CONDITION",
+      "authority_role": "SUPPORTING_REFERENCE",
+      "supported_values": {
+        "agreement_meeting": "2024-06-25/28"
+      },
+      "applicable_population_or_technology": "EV等",
+      "limitations": "pins date/context of attached summary; not a current compliance opinion",
+      "reuses_source_id": null
+    },
+    {
+      "source_id": "BATTERY-MLIT_2024",
+      "title": "EV等のバッテリー耐久性能の国連基準の概要",
+      "organization": "国土交通省",
+      "publication_date": "2024-07-02",
+      "section": "別添2 p1 対象車両・SOCE規制値表・耐久性能要件",
+      "access_date": "2026-09-26",
+      "url": "https://www.mlit.go.jp/report/press/content/001750864.pdf",
+      "snapshot": "reproducibility/outputs/traffic_simulation/r24_battery_scenario_authority/20260926_v1/sources/MLIT_2024.pdf",
+      "sha256": "caee83568c9d2d5c98f44d494b4e7eccff9646cc9c49e60984a26b991b95f73c",
+      "evidence_class": "PUBLIC_REGULATORY_CONDITION",
+      "authority_role": "PUBLIC_SCENARIO_AUTHORITY",
+      "supported_values": {
+        "light_goods_SOCE": [
+          {
+            "ratio": 0.75,
+            "age_years": 5,
+            "mileage_km": 100000,
+            "endpoint": "whichever_first"
+          },
+          {
+            "ratio": 0.65,
+            "age_years": 8,
+            "mileage_km": 160000,
+            "endpoint": "whichever_first"
+          }
+        ]
+      },
+      "applicable_population_or_technology": "車両総重量3.5t以下の乗用・小型貨物EV/PHEVのうち小型貨物列",
+      "limitations": "regulatory retained-energy thresholds, not average Minicab aging or warranty; 2024 version-pinned scenario anchor, not assertion of current universal law or selected vehicle homologation",
+      "reuses_source_id": null
+    },
+    {
+      "source_id": "BATTERY-NEDO_2020",
+      "title": "先進・革新蓄電池材料評価技術開発（第2期）2020年度実施方針 P18003",
+      "organization": "NEDO",
+      "publication_date": "2020-02 制定",
+      "section": "p7 表1（PDF page7）；p12制定日",
+      "access_date": "2026-09-26",
+      "url": "https://www.nedo.go.jp/content/100919685.pdf",
+      "snapshot": "reproducibility/outputs/traffic_simulation/r24_battery_scenario_authority/20260926_v1/sources/NEDO_2020.pdf",
+      "sha256": "31c6532a716ecd184424f1d925a1a5c03e1240888b96493ab240b59494743f1d",
+      "evidence_class": "PUBLIC_TECHNOLOGY_TARGET",
+      "authority_role": "PUBLIC_SCENARIO_AUTHORITY",
+      "supported_values": {
+        "target_years": [
+          2025,
+          2030
+        ],
+        "pack_Wh_per_kg": [
+          300,
+          400
+        ],
+        "pack_Wh_per_L": [
+          600,
+          800
+        ],
+        "calendar_years": [
+          10,
+          15
+        ],
+        "cycle_life": [
+          1500,
+          2000
+        ],
+        "EV_capacity_kwh": [
+          40,
+          40
+        ],
+        "PHEV_capacity_kwh": [
+          20,
+          20
+        ],
+        "EV_rapid_minutes": [
+          20,
+          20
+        ],
+        "PHEV_rapid_minutes": [
+          10,
+          10
+        ]
+      },
+      "applicable_population_or_technology": "第1世代全固体LIB（硫化物系）→次世代全固体LIB（高伝導硫化物系又は酸化物系）の実用化目標仕様例",
+      "limitations": "2025 values are targets, not measured Minicab/current pack density. Original table keeps capacity fixed and reduces mass/volume. Our capacity allocation is a separate research assumption. Charging interval not established for power derivation.",
+      "reuses_source_id": null
+    },
+    {
+      "source_id": "BATTERY-NEDO_GI",
+      "title": "次世代蓄電池・次世代モーターの開発",
+      "organization": "NEDO",
+      "publication_date": "NOT_REPORTED (page update history includes 2026-09-11)",
+      "section": "研究開発項目1 2030年技術目標",
+      "access_date": "2026-09-26",
+      "url": "https://green-innovation.nedo.go.jp/project/next-generation-storage-batteries-motors/summary/",
+      "snapshot": "reproducibility/outputs/traffic_simulation/r24_battery_scenario_authority/20260926_v1/sources/NEDO_GI.html",
+      "sha256": "6c718860ba80641b0fd58e59a9f1ee3f908046e8b65c4ce52695e6929ac6afed",
+      "evidence_class": "PUBLIC_TECHNOLOGY_TARGET",
+      "authority_role": "SUPPORTING_REFERENCE",
+      "supported_values": {
+        "2030_high_energy_pack_Wh_per_L": "700–800以上"
+      },
+      "applicable_population_or_technology": "グリーンイノベーション基金の別研究開発枠組み",
+      "limitations": "no matched reference density pair for selected Minicab conversion; do not mix denominator with P18003 or treat older pair as latest forecast",
+      "reuses_source_id": null
+    }
+  ]
+}
