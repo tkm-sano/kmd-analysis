@@ -1,6 +1,10 @@
-# Tokyo SUMO Network Current Specification
+<a id="tokyo-sumo-network-current-specification"></a>
 
-## Status
+# 東京交通シミュレーターの道路網現行仕様
+
+<a id="status"></a>
+
+## 状態
 
 - Configuration: `ota_ward_sumo_network_v16`
 - Approved v17 baseline policy: `ota_ward_attribute_resolution_policy_v17`
@@ -68,7 +72,7 @@ For a process-oriented view that separates operations, definitions, numeric
 settings, mechanically derived values and pending decisions, see
 `05_src/traffic_simulation/network_workflow_decisions_and_parameters.md`.
 
-## Attribute Mapping
+## 属性対応付け
 
 | OSM input | Resolver representation | SUMO representation |
 |---|---|---|
@@ -104,7 +108,9 @@ projections before and after resolution have identical SHA-256 values. This is
 complete execution coverage, not formal-input acceptance: the formal artifact
 remains `complete=false`.
 
-## Network Scope
+<a id="network-scope"></a>
+
+## 道路網 範囲
 
 - Geography: Ota Ward boundary with retained acquisition-envelope connectors.
 - Traffic side: Japanese left-hand traffic.
@@ -124,7 +130,9 @@ remains `complete=false`.
 
 Overseas driving-behavior evidence, weather and incident data, and pedestrian-related fields in driving-behavior sources are retained for later-stage contextual or sensitivity analyses. They are not inputs to the core comparison. Pedestrian-related fields are covariates describing a motorized driver's context; they do not add pedestrian agents or a pedestrian network mode.
 
-## Permission Governance
+<a id="permission-governance"></a>
+
+## 通行許可管理
 
 The approved v17 authority is the Resolver's expected permission set. Typemap
 permissions are provisional topology candidates, not a formal upper bound.
@@ -232,13 +240,13 @@ uses every governed way/direction/lane tuple, including tuples whose edges are
 later omitted during materialization. Excluded records remain accounted for
 and cannot be used to disguise blockers as zero.
 
-## Signal Structure
+## 信号構造
 
 Signalized-junction selection and connection-to-TLS-link mapping are network structure. In pinned SUMO 1.24.0 plain XML, TLS connection/link records belong to `.tll.xml`, not the permission `.con.xml` connection type. Provisional TLS output is review evidence only. After the governed connection set is fixed, reviewers produce `governed_reviewed.con.xml`, `governed_reviewed.tll.xml` and a hash-bound review manifest. Every controlled connection must have a reviewed link index, and each phase-state length must equal the controlled-link count. A later connection or signal-structure change invalidates the review, calibration and validation.
 
 SUMO's junction-joining heuristic is used only to extract candidates for treating multiple nearby OSM nodes as one SUMO junction. It does not determine whether road geometries cross or whether vehicles can move between them. The 10 m distance is a candidate-search width, not an acceptance rule. Formal conversion disables automatic joining and applies only reviewed joins recorded in the governed node file.
 
-## Required Order
+## 必要な順序
 
 ```text
 freeze current state and v16 history
@@ -301,7 +309,7 @@ not selected after observing build results. Independent validation follows
 calibration. The traffic-simulation code pytest suite is software verification
 and does not substitute for independent empirical traffic-model validation.
 
-## Acceptance Gates
+## 受入 Gates
 
 Attribute Resolution Acceptance applies only to the Resolver's formal
 attribute artifact. The v17 machine-readable gate must require all of the
@@ -361,31 +369,33 @@ This second gate alone can approve the formal network. These lists summarize
 the existing authorities and required v17 state migration; this summary does
 not replace their machine-readable contracts.
 
-## Verification State
+<a id="verification-state"></a>
 
-| Gate | Requirement | Actual implementation | Runtime/real-data evidence | Current result |
+## 実装検証状態
+
+| Gate | 要件 | Actual implementation | Runtime/real-data evidence | Current result |
 |---|---|---|---|---|
-| History freeze | Registered PBF, relation scope, recursive closure and hashes | implemented for v16 | v16 real-data closure accepted; ordinary 581 and bus 3 restrictions retained; reference errors zero | eligible |
-| History freeze | relation-closure `prepare` pipeline | implemented | v16 registered inputs reproduced identical PBF/XML/ID/role hashes twice | eligible |
-| Normative decision | Remaining v17 annexes and registries | baseline policy fixed; conditional grammar, permit registry, Japan speed table, and formal unpaved rule not approved | dependent inputs remain formal-ineligible | pending |
-| Contract finalization | v17 specification, machine-readable configuration, and Schema integration | baseline policy and base Schemas exist; production boundaries and v17 state configuration incomplete | isolated Schema tests only | pending |
-| Fixture freeze | v17 independent fixtures and production-independent oracles | v16 fixtures/oracles exist; v17 coverage and hash-bound manifest incomplete | v17 integrated fixture run not available | pending |
-| Resolver input | Managed vehicle profile | profile values, Schema, and static checks implemented | static profile and mass checks passed; runtime-boundary validation absent | pending |
+| History freeze | Registered PBF, relation scope, recursive closure and hashes | implemented for v16 | v16 real-data closure accepted; ordinary 581 and bus 3 restrictions retained; reference errors zero | 対象条件を満たす |
+| History freeze | relation-closure `prepare` pipeline | 実装済み | v16 registered inputs reproduced identical PBF/XML/ID/role hashes twice | 対象条件を満たす |
+| Normative decision | Remaining v17 annexes and registries | baseline policy fixed; conditional grammar, permit registry, Japan speed table, and formal unpaved rule not approved | dependent inputs remain formal-ineligible | 未処理 |
+| Contract finalization | v17 specification, machine-readable configuration, and Schema integration | baseline policy and base Schemas exist; production boundaries and v17 state configuration incomplete | isolated Schema tests only | 未処理 |
+| Fixture freeze | v17 independent fixtures and production-independent oracles | v16 fixtures/oracles exist; v17 coverage and hash-bound manifest incomplete | v17 integrated fixture run not available | 未処理 |
+| Resolver input | Managed vehicle profile | profile values, Schema, and static checks implemented | static profile and mass checks passed; runtime-boundary validation absent | 未処理 |
 | Resolver input | Vehicle-input validator | required validator does not exist | runtime check cannot run until implementation exists | not_implemented |
-| Resolver | Directed Segment production integration | Schema and pure generator implemented; production mapping absent | unit generation passed; integrated runtime fixture not run | pending |
-| Resolver | `oneway=-1` | pure generator unit generation passed; production mapping, Schema integration at production boundaries, relation mapping, and runtime fixture incomplete | one occurrence stopped in the registered structural Dry Run; not usable as formal build input | pending |
-| Resolver | Directional lanes | baseline policy fixed; production integration incomplete | formal explicit-direction rule lacks integrated runtime evidence | pending |
-| Resolver | Static access normalization and four-axis access specificity | Pareto comparison and conflict output implemented as an isolated utility; target-scope and production integration incomplete | isolated unit tests passed; production fixture not run | pending |
-| Resolver | Conditional parsing and evaluation | approved baseline requires it; grammar annex and production implementation incomplete | runtime fixture not run | pending |
-| Resolver | Final permission resolution | v16 permission artifact exists; v17 authority, target scope, and static/conditional integration incomplete | v16 fixture emits `complete=false` while blockers remain | pending |
-| Resolver | Permission expectation JSON | full-way completeness gate and lane-local rule trace implemented in v16 shape; v17 migration incomplete | v16 fixture confirms `complete=false` and no normalized XML while blockers remain | pending |
-| Resolver | Speed resolution | v16 value resolution exists; pending speed-rule annex and v17 production integration remain | no v17 runtime evidence | pending |
-| Resolver | Formal attribute evidence/imputation | required implementation does not exist | formal completion cannot be evaluated until implementation exists | not_implemented |
-| Resolver verification | Resolver integration tests | component tests exist; full v17 production-boundary integration is incomplete | no complete v17 integration run | pending |
+| 属性解決器 | Directed Segment production integration | Schema and pure generator implemented; production mapping absent | unit generation passed; integrated runtime fixture not run | 未処理 |
+| 属性解決器 | `oneway=-1` | pure generator unit generation passed; production mapping, Schema integration at production boundaries, relation mapping, and runtime fixture incomplete | one occurrence stopped in the registered structural Dry Run; not usable as formal build input | 未処理 |
+| 属性解決器 | Directional lanes | baseline policy fixed; production integration incomplete | formal explicit-direction rule lacks integrated runtime evidence | 未処理 |
+| 属性解決器 | Static access normalization and four-axis access specificity | Pareto comparison and conflict output implemented as an isolated utility; target-scope and production integration incomplete | isolated unit tests passed; production fixture not run | 未処理 |
+| 属性解決器 | Conditional parsing and evaluation | approved baseline requires it; grammar annex and production implementation incomplete | runtime fixture not run | 未処理 |
+| 属性解決器 | Final permission resolution | v16 permission artifact exists; v17 authority, target scope, and static/conditional integration incomplete | v16 fixture emits `complete=false` while blockers remain | 未処理 |
+| 属性解決器 | Permission expectation JSON | full-way completeness gate and lane-local rule trace implemented in v16 shape; v17 migration incomplete | v16 fixture confirms `complete=false` and no normalized XML while blockers remain | 未処理 |
+| 属性解決器 | Speed resolution | v16 value resolution exists; pending speed-rule annex and v17 production integration remain | no v17 runtime evidence | 未処理 |
+| 属性解決器 | Formal attribute evidence/imputation | required implementation does not exist | formal completion cannot be evaluated until implementation exists | not_implemented |
+| Resolver verification | Resolver integration tests | component tests exist; full v17 production-boundary integration is incomplete | no complete v17 integration run | 未処理 |
 | Resolver execution | v17 full-population runner and run | dedicated v17 runner is not implemented | v16 execution evidence is historical and is not v17 evidence | not_implemented |
 | Resolver review | Stop-record resolution and independent review | process specified; v17 stop records do not yet exist | not runnable before v17 full-population run | not_run |
-| Attribute acceptance | Attribute Resolution Acceptance | gate specified; v17 machine-readable gate and accepted artifact absent | acceptance not run | not_run |
-| Network prerequisite | Typemap importer governance fixture | importer and fixture exist | fixture ran and failed | failed |
+| Attribute acceptance | 属性解決の受入 | gate specified; v17 machine-readable gate and accepted artifact absent | acceptance not run | not_run |
+| Network prerequisite | Typemap importer governance fixture | importer and fixture exist | fixture ran and failed | 不合格 |
 | Reproducible build | Environment/build manifest | required manifest implementation does not exist | isolated commands do not constitute a manifest | not_implemented |
 | Structural build | Provisional structural build | small exploratory commands exist; governed build pipeline absent | no complete governed build manifest | not_implemented |
 | Structural build | Junction-join review and governed node file | required review and generator do not exist | runtime review cannot run until implementation exists | not_implemented |
@@ -394,19 +404,19 @@ not replace their machine-readable contracts.
 | Permission materialization | Permission Materializer pinned runtime fixture | fixture requirement exists; implementation prerequisite absent | not run | not_run |
 | Permission materialization | Governed lane/connection permission materialization | materializer absent | cannot run until materializer implementation and fixture pass | not_implemented |
 | Network audit | Lane/connection post-audit | required auditor does not exist | runtime audit cannot run until implementation exists | not_implemented |
-| Network audit | Turn-restriction mapping audit | Directed Segment mapping requirements fixed; auditor incomplete | no integrated runtime evidence | pending |
-| Network structure | Final connection set | procedure specified; production generation and review incomplete | no accepted final connection artifact | pending |
+| Network audit | Turn-restriction mapping audit | Directed Segment mapping requirements fixed; auditor incomplete | no integrated runtime evidence | 未処理 |
+| Network structure | Final connection set | procedure specified; production generation and review incomplete | no accepted final connection artifact | 未処理 |
 | Network structure | Post-permission signal/TLS review | required review implementation does not exist | runtime review cannot run until final connections exist | not_implemented |
 | Network audit | Warning/exclusion audit | required auditor does not exist | known warnings alone are not an audit | not_implemented |
-| Network acceptance | Structural quality gate | metrics fixed; thresholds not preregistered | gate not run | pending |
-| Network acceptance | Immutable hash-bound acceptance artifacts | publication policy fixed; artifacts not issued | no published acceptance set | pending |
+| Network acceptance | Structural quality gate | metrics fixed; thresholds not preregistered | gate not run | 未処理 |
+| Network acceptance | Immutable hash-bound acceptance artifacts | publication policy fixed; artifacts not issued | no published acceptance set | 未処理 |
 | Network acceptance | Final `net.xml` and SUMO 1.24.0 load | formal network not built; SUMO runtime exists | formal load not run | not_run |
-| Network acceptance | SUMO Network Integration Acceptance | gate specified; prerequisites incomplete | acceptance not run | not_run |
-| Downstream | Demand and observation inputs | incomplete | formal network prerequisite not satisfied | pending |
+| Network acceptance | 交通シミュレーターの道路網統合受入 | gate specified; prerequisites incomplete | acceptance not run | not_run |
+| Downstream | Demand and observation inputs | 未完了 | formal network prerequisite not satisfied | 未処理 |
 | Downstream | Calibration | design and inputs incomplete | calibration not run | not_run |
 | Downstream | Independent traffic-model validation | protocol stage exists; accepted network and calibrated model absent | independent empirical validation not run | not_run |
 | Downstream | Delivery, classical, and QAOA evaluation | comparison policy partially fixed; accepted inputs absent | formal evaluation not run | not_run |
-| Software verification | Traffic simulation code pytest suite | implemented | latest recorded suite passed; retain the recorded count only in its evidence record | passed |
+| Software verification | Traffic simulation code pytest suite | 実装済み | latest recorded suite passed; retain the recorded count only in its evidence record | 合格 |
 
 Pytest counts are progress indicators, not sufficient evidence. A passed code
 suite does not mean formal network acceptance, calibration completion,
@@ -415,7 +425,9 @@ downstream experiment readiness. Each recorded test run must include commit,
 container digest, exact command, collection hash, exit code, log hash and
 timestamps.
 
-## Summary and Remaining Formal Blockers
+<a id="summary-and-remaining-formal-blockers"></a>
+
+## まとめ ・ 残る正式阻害要因
 
 This revision makes state vocabulary, access-rule structure, execution order,
 and the two acceptance gates explicit while retaining v16 as immutable

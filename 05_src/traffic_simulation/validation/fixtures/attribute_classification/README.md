@@ -1,4 +1,6 @@
-# Attribute Classification Production Fixtures
+<a id="attribute-classification-production-fixtures"></a>
+
+# 属性分類正式検証用データ
 
 This directory contains the specification-derived fixture collection for the
 implemented Predicate Generator and the future Classifier and Resolver. The
@@ -7,7 +9,7 @@ production transformation code generated the checked-in oracle. The Predicate
 Generator now exists; independent human acceptance and pinned
 Classifier-Resolver execution remain pending.
 
-## Structure
+## 構造
 
 - `inputs.json` contains normalized, machine-readable case inputs.
 - `oracles.json` contains expected classification-resolution results.
@@ -25,7 +27,7 @@ The fixture descriptors conform to
 separate files so a future fixture runner can pass the input to production
 code without using the oracle as an input.
 
-## Coverage
+## 網羅率
 
 The collection includes:
 
@@ -41,7 +43,7 @@ The collection includes:
 - unsupported conditional speed semantics; and
 - deterministic byte-equal repeat output.
 
-## Independence And Acceptance
+## 独立性 ・ 受入
 
 `oracle.independently_authored=true` means that the oracle was authored from
 the normative specification rather than copied from production output. It
@@ -56,7 +58,9 @@ Production code MUST NOT update `oracles.json`. A changed specification or
 fixture decision requires a reviewed fixture revision and refreshed hashes;
 silently regenerating the oracle from classifier output is prohibited.
 
-## Validation
+<a id="validation"></a>
+
+## 検証
 
 Run the pinned repository validation with:
 

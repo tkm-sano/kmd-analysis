@@ -1,6 +1,8 @@
-# Ota Ward Formal Lane Evidence Policy v17
+<a id="ota-ward-formal-lane-evidence-policy-v17"></a>
 
-## Document control
+# Ota Ward 正式車線根拠方針 v17
+
+## 文書管理
 
 - Policy ID: `ota_ward_formal_lane_evidence_policy_v17`
 - Policy version: `1.0.0`
@@ -12,7 +14,9 @@
 This component fixes the meaning and evidence boundary for Formal lane values.
 It does not assert that the current network has complete lane evidence.
 
-## 1. Formal target quantity
+<a id="1-formal-target-quantity"></a>
+
+## 1. 正式対象量
 
 Formal lane structure represents the number of **governed directional moving
 lanes** and their `forward`, `backward`, and `both_ways` allocation for the
@@ -29,7 +33,9 @@ conditional lanes, and shared physical lanes without an approved materializer
 are excluded from Formal lane structure. `highway=service` alone never
 determines a lane count.
 
-## 2. Evidence hierarchy
+<a id="2-evidence-hierarchy"></a>
+
+## 2. 根拠階層
 
 The Formal hierarchy is:
 
@@ -43,7 +49,9 @@ Conflicts do not fall back to a lower priority. They fail closed. SUMO
 defaults, class defaults, statistical estimates, majority/median, nearest
 category, and undocumented defaults are never Formal evidence.
 
-## 3. Approved vector evidence and rules
+<a id="3-approved-vector-evidence-and-rules"></a>
+
+## 3. 承認済みベクトル根拠 ・ 規則
 
 `SOURCE_VECTOR` is limited to `turn:lanes`, `destination:lanes`, and
 `destination:ref:lanes`, and is valid only when all of the following hold:
@@ -70,7 +78,9 @@ Explicit directional pairs and explicit one-way active counts remain source
 evidence subject to the existing v17 consistency equations and fail-closed
 conflict rules.
 
-## 4. Unresolved and simulation-only values
+<a id="4-unresolved-and-simulation-only-values"></a>
+
+## 4. 未解決 ・ シミュレーション専用の値
 
 Shared physical, reversible, and conditional lanes remain unresolved for SUMO
 Formal materialization until a separate materializer is approved. A source
@@ -81,7 +91,9 @@ is `unresolved`.
 fallbacks and all class-based/statistical imputation. These values remain
 simulation-only and must never promote a Formal lane value.
 
-## 5. Provenance contract
+<a id="5-provenance-contract"></a>
+
+## 5. 出典・来歴 取り決め
 
 Formal records retain source Way ID, source snapshot hash, input tags, rule ID
 and version where applicable, applicability result, resolved directional
@@ -90,7 +102,9 @@ are `SOURCE_EXPLICIT`, `SOURCE_DIRECTIONAL`, `SOURCE_VECTOR`, and
 `DERIVED_DETERMINISTIC`. `UNRESOLVED` and `SIMULATION_MODEL_ASSUMED` are
 explicit non-Formal states.
 
-## 6. Acceptance boundary
+<a id="6-acceptance-boundary"></a>
+
+## 6. 受入境界
 
 Adopting this policy does not waive lane completeness. Acceptance still
 requires every governed Way to have a Formal lane structure with allowed

@@ -1,11 +1,15 @@
-# Attribute Criticality and Evidence Specification
+<a id="attribute-criticality-and-evidence-specification"></a>
+
+# 属性重要度 ・ 根拠仕様
 
 Japanese translation:
 [`ja/attribute_criticality_and_evidence_specification_ja.md`](ja/attribute_criticality_and_evidence_specification_ja.md).
 Machine-readable configuration and this English specification remain
 authoritative if the translations differ.
 
-## Purpose
+<a id="purpose"></a>
+
+## 目的
 
 This specification governs how missing `lanes` and `maxspeed` values are
 classified before the Resolver may apply any structural value. It prevents the
@@ -21,7 +25,9 @@ This specification does not authorize values. It defines the classification
 contract, evidence precedence, permissible actions and conditions that must be
 implemented and fixture-tested before classification may be used.
 
-## Observed-count Provenance
+<a id="observed-count-provenance"></a>
+
+## 観測された-件数出典・来歴
 
 Numbers in this specification are historical v15 observations, not live
 configuration constants. Their source is
@@ -40,7 +46,7 @@ artifact hashes.
 These counts MUST be regenerated from the next accepted closure. They MUST NOT
 be copied into acceptance logic or treated as expected production totals.
 
-## Governing Principles
+## 管理原則
 
 1. The classification unit is one `(osm_way_id, attribute, profile)` tuple.
 2. `lanes` and `maxspeed` MUST be classified independently.
@@ -57,7 +63,7 @@ be copied into acceptance logic or treated as expected production totals.
 8. A later promotion, such as identifying a calibration or delivery-route
    edge, invalidates the earlier classification and all dependent artifacts.
 
-## Analysis Profiles
+## 分析 Profiles
 
 | Profile | Permitted use | Criticality consequence |
 |---|---|---|
@@ -67,7 +73,7 @@ be copied into acceptance logic or treated as expected production totals.
 Changing a network from `structural` to `formal` requires reclassification.
 The structural classification is not promoted automatically.
 
-## Population and Subgraph Roles
+## 母集団 ・ 部分グラフ役割
 
 The classification population is the governed candidate-way set in an OSM
 input whose relation-closure acceptance gate has passed. The regional PBF and
@@ -91,7 +97,9 @@ affect relation, connection or conversion behavior. Its base levels are
 `L1/S1` in `structural` and `L2/S2` in `formal`, subject to promotion to
 `L3/S3`.
 
-## Tuple, Record and Revision Contract
+<a id="tuple-record-and-revision-contract"></a>
+
+## 組, 記録 ・ 改訂取り決め
 
 The tuple is `(osm_way_id, attribute, profile)`. The way ID is a positive
 decimal string, attribute is `lanes` or `maxspeed`, and profile is
@@ -144,7 +152,9 @@ snapshot with the same `classification_record_id`, an incremented
 snapshots are retained; multiple active revisions of one tuple MUST NOT appear
 in one snapshot.
 
-### Canonical record hash and ordering
+<a id="canonical-record-hash-and-ordering"></a>
+
+### 正本記録ハッシュ値 ・ 順序
 
 `record_sha256` is the SHA-256 of the UTF-8 RFC 8785 JSON Canonicalization
 Scheme representation of the record after removing only `record_sha256`
@@ -157,7 +167,9 @@ then `structural` before `formal`, and finally `record_revision` ascending.
 The profile key remains in the ordering contract even though a current
 artifact contains one profile.
 
-### Semantic validation
+<a id="semantic-validation"></a>
+
+### 意味上の検証
 
 JSON Schema validates the local shape and state machine. The registered
 `validate_attribute_classification.py` validator separately collects
@@ -192,7 +204,7 @@ Its CLI returns all detected errors in one JSON result:
 }
 ```
 
-## Predicate Artifact
+## 述語成果物
 
 The classifier MUST consume `attribute_classification_predicates.json` and
 MUST NOT rediscover predicates directly from OSM, routes, calibration settings
@@ -232,7 +244,7 @@ requires `asserted_role` to equal `subgraph_role`.
 `topology_support_reason` is always present: it is a nonempty string only for
 `topology_support` and is `null` for `final` and `excluded`.
 
-### Predicate Generator Contract
+### 述語生成器取り決め
 
 `generate_attribute_classification_predicates.py` consumes three explicit
 inputs: a relation-closed OSM XML file, a
@@ -259,7 +271,9 @@ configuration version 16 or later. The v15 Dry Run is therefore not an
 eligible production input. Synthetic fixtures use an explicit
 `synthetic_fixture` scope and cannot establish real-data acceptance.
 
-## Predicate Consistency Before Classification
+<a id="predicate-consistency-before-classification"></a>
+
+## 述語整合性前の分類
 
 Validation occurs in this order: schema; artifact/source hashes; duplicate way
 IDs; complete population coverage; role enum; role contradictions;
@@ -284,7 +298,9 @@ than guessing.
 Directional-lane and bus/PSV-lane semantics may coexist. Different lane and
 maxspeed levels are permitted where their attribute-specific predicates differ.
 
-## Lane Criticality
+<a id="lane-criticality"></a>
+
+## 車線重要度
 
 Lane criticality concerns capacity, directional allocation, lane-changing,
 junction connections and flow. It does not describe the geometric importance
@@ -297,12 +313,14 @@ of a road.
 | `L2` | The lane value participates in formal capacity, flow, connection or delivery evaluation, but no `L3` predicate applies | Explicit OSM, public evidence, reviewed evidence or an allowed validated model is required |
 | `L3` | The way is a calibration/validation segment, a reviewed major junction approach, has complex directional/lane semantics, or is promoted by an accepted delivery-route or sensitivity analysis | Automatic placeholder prohibited; attribute-specific evidence and any required human review are mandatory |
 
-### Lane classification order
+<a id="lane-classification-order"></a>
+
+### 車線 分類 順序
 
 After predicate consistency passes, the first matching rule in this order
 determines the level:
 
-| Rule ID | Predicate | Level |
+| 規則識別子 | Predicate | Level |
 |---|---|---|
 | `LANE-CRIT-001` | `subgraph_role=excluded` | `L0` |
 | `LANE-CRIT-002` | the way is a calibration or independent-validation segment | `L3` |
@@ -317,7 +335,7 @@ separate governed artifacts; a name or road class alone MUST NOT silently set
 them. Post-build or route-based promotion invalidates the earlier
 classification before formal use.
 
-## Maxspeed Criticality
+## 最高速度重要度
 
 Maxspeed criticality concerns free-flow travel time, route choice, arrival
 time, delivery feasibility and energy calculation. It does not treat observed
@@ -330,9 +348,11 @@ traffic speed as a legal speed limit.
 | `S2` | Speed participates in formal routing, travel-time, energy or delivery evaluation, but no `S3` predicate applies | Legal/administrative evidence, explicit supported OSM evidence or an allowed validated model is required |
 | `S3` | The way is a calibration/validation segment, contains conditional/directional/variable speed semantics, or is promoted by an accepted route or sensitivity analysis | Automatic placeholder prohibited; time-, direction- and vehicle-compatible evidence is mandatory |
 
-### Maxspeed classification order
+<a id="maxspeed-classification-order"></a>
 
-| Rule ID | Predicate | Level |
+### 最高速度分類順序
+
+| 規則識別子 | Predicate | Level |
 |---|---|---|
 | `SPEED-CRIT-001` | `subgraph_role=excluded` | `S0` |
 | `SPEED-CRIT-002` | the way is a calibration or independent-validation segment | `S3` |
@@ -344,13 +364,17 @@ traffic speed as a legal speed limit.
 JARTIC observed travel speed is calibration or validation evidence and MUST NOT
 be converted into `maxspeed`.
 
-## Evidence Hierarchy
+<a id="evidence-hierarchy"></a>
+
+## 根拠階層
 
 Evidence is evaluated for applicability before precedence. An evidence record
 that refers to another direction, date, vehicle class or segment cannot compete
 with an applicable record.
 
-### Lanes
+<a id="lanes"></a>
+
+### 車線数
 
 1. consistent explicit direction-specific OSM lane tags;
 2. consistent explicit OSM total lanes where directional allocation is not
@@ -363,7 +387,7 @@ with an applicable record.
 7. an approved structural placeholder for `L1` only; and
 8. unresolved.
 
-### Maxspeed
+### 最高速度
 
 1. applicable legal or administrative traffic-regulation evidence with date,
    direction and vehicle scope;
@@ -380,11 +404,11 @@ resolved by legal authority, reference date, segment and direction match,
 attribute definition, licence compatibility and match confidence. An
 unresolved conflict stops.
 
-## Resolution Actions and States
+## 解決作業 ・ 状態
 
 The Resolver may emit only these resolution actions:
 
-| Action | Meaning |
+| 作業 | 意味 |
 |---|---|
 | `adopt_explicit` | Use a supported explicit source value |
 | `derive_osm_rule` | Apply a deterministic OSM semantic rule |
@@ -420,11 +444,11 @@ The permitted combinations are:
 
 | Resolution action | Permitted value state | `resolved_value` | Review status |
 |---|---|---|---|
-| `adopt_explicit` | `explicit_osm` | required | `machine_classified` or `reviewed` |
-| `derive_osm_rule` | `derived_osm_rule` | required | `machine_classified` or `reviewed` |
-| `adopt_external_evidence` | `authoritative_external` | required | `reviewed` |
-| `apply_governed_rule` | `derived_validated_model` | required | `machine_classified` or `reviewed` |
-| `apply_structural_placeholder` | `structural_placeholder` | required | `machine_classified` or `reviewed` |
+| `adopt_explicit` | `explicit_osm` | 必須 | `machine_classified` or `reviewed` |
+| `derive_osm_rule` | `derived_osm_rule` | 必須 | `machine_classified` or `reviewed` |
+| `adopt_external_evidence` | `authoritative_external` | 必須 | `reviewed` |
+| `apply_governed_rule` | `derived_validated_model` | 必須 | `machine_classified` or `reviewed` |
+| `apply_structural_placeholder` | `structural_placeholder` | 必須 | `machine_classified` or `reviewed` |
 | `require_human_review` | `missing`, `conflict`, `conditional`, `valid_but_unsupported`, or `directionally_asymmetric` | null | `review_required` |
 | `stop_unresolved` | `missing`, `unresolved`, `conflict`, `valid_but_unsupported`, `conditional`, `directionally_asymmetric`, or `invalid` | null | `stopped` |
 | `exclude` | `excluded` | null | `machine_classified` |
@@ -435,7 +459,7 @@ only `exclude`; `L1/S1` permit all actions; `L2/S2` and `L3/S3` prohibit
 structural placeholders. Every adopted `L3/S3` decision requires `reviewed`.
 No other action-state-review-value combination is valid.
 
-## Component Responsibilities
+## 構成要素の責務
 
 The processing boundary is:
 
@@ -458,17 +482,17 @@ and structural-placeholder rules. Classification and resolution may later
 share one executable entry point, but their object contracts and decision
 responsibilities remain separate.
 
-## Profile-specific Required Artifacts
+## 設定プロファイル-specific 必須成果物
 
 | Artifact | Processing role | `structural` | `formal` |
 |---|---|---|---|
-| complete predicate artifact | Classifier input | required | required |
-| classification result | Classifier output and Resolver input | required | required |
+| complete predicate artifact | Classifier input | 必須 | 必須 |
+| classification result | Classifier output and Resolver input | 必須 | 必須 |
 | external evidence artifact | Resolver input | required when cited | required when cited |
 | structural-placeholder rule | Resolver input | required only when used | prohibited |
-| combined classification-resolution artifact | Resolver output and Semantic Validator target | required | required |
+| combined classification-resolution artifact | Resolver output and Semantic Validator target | 必須 | 必須 |
 
-## Resolution Order
+## 解決順序
 
 Resolution evaluates, in order: excluded role; applicable explicit OSM value;
 deterministic OSM semantic rule; applicable reviewed external evidence;
@@ -476,7 +500,9 @@ permitted validated model; eligible `L1/S1` structural placeholder; human
 review; then governed unresolved stop. Criticality never supplies a value by
 itself.
 
-## Structural Placeholder Gate
+<a id="structural-placeholder-gate"></a>
+
+## 構造上の仮置き判定基準
 
 A structural placeholder may be considered only if all conditions hold:
 
@@ -496,11 +522,13 @@ A structural placeholder may be considered only if all conditions hold:
 Failure of any condition produces `stop_unresolved`. A mode derived from many
 roads is not evidence that the value is correct for a particular road.
 
-## Failure Codes
+<a id="failure-codes"></a>
+
+## 不具合コード
 
 Criticality and evidence validation uses one stable code per requirement:
 
-| Requirement | Failure code | Test | Detection |
+| 要件 | Failure code | 試験 | 検出 |
 |---|---|---|---|
 | `AC-REQ-001` | `AC001` | `AC-TST-001` | retained tuple is missing |
 | `AC-REQ-002` | `AC002` | `AC-TST-002` | tuple is duplicated |
@@ -515,7 +543,9 @@ Criticality and evidence validation uses one stable code per requirement:
 
 Every failure code also requires the negative fixture `<code>-NEG-001`.
 
-## Fixture Contract
+<a id="fixture-contract"></a>
+
+## 検証用データ取り決め
 
 Before production classification, independent fixtures MUST cover:
 
@@ -569,7 +599,9 @@ The test runner verifies the oracle file hash and specification hash. Process
 independence cannot be proven from JSON content alone, so the author and
 review evidence must be retained in the fixture review record.
 
-## Current Status
+<a id="current-status"></a>
+
+## 現在の状況
 
 This specification fixes the population, tuple identity, predicate contract,
 classification order and the object boundary between classification and
@@ -597,7 +629,9 @@ population. After the next-version closure is accepted, complete
 `(osm_way_id, attribute, profile)` coverage must be generated from the new
 input rather than patched onto v15 records.
 
-## Current Implementation Order
+<a id="current-implementation-order"></a>
+
+## 現行実装順序
 
 1. Re-run the implemented Predicate Generator against the pinned synthetic
    fixture and retain deterministic success and fail-closed evidence.

@@ -1,12 +1,18 @@
-# Folder Structure and Policy
+<a id="folder-structure-and-policy"></a>
 
-## Before
+# フォルダー構成と管理方針
 
-The project mixed current scripts, raw and processed data, generated figures, legacy outputs, multiple presentations, backups, submissions, caches, and project documentation at the repository root.
+<a id="before"></a>
 
-## Final Target Structure
+## 整理前
 
-This is the intended final logical layout. It shows where each research stage leaves its source data, governed configuration, implementation, regenerable products, and reviewed deliverables. A `[P]` entry is planned and must not be interpreted as implemented merely because it appears in this diagram.
+このプロジェクトでは、現行スクリプト、未加工・加工データ、生成図、旧成果物、複数の発表資料、バックアップ、提出資料、一時保存データ、研究文書がリポジトリの最上位に混在していた。
+
+<a id="final-target-structure"></a>
+
+## 最終的な構成
+
+以下は目標とする最終的な論理構成である。各研究段階の原資料、管理対象の設定、実装、再生成可能な生成物、確認済み成果物の保存先を示す。`[P]`は計画中を表し、図に載っているだけで実装済みと解釈してはならない。
 
 ```text
 research/
@@ -70,9 +76,11 @@ The intended artifact flow is:
                   06_outputs / 08_documents
 ```
 
-The numbered directories describe the research lifecycle. `reproducibility/` is the machine-oriented execution boundary: it does not replace the source records, implementation, or reviewed research outputs in the numbered directories.
+番号付きディレクトリは研究の進行段階を表す。`reproducibility/`は機械処理の実行範囲を示すもので、番号付きディレクトリ内の出典記録、実装、確認済み研究成果を置き換えない。
 
-## Compact Path Inventory
+<a id="compact-path-inventory"></a>
+
+## 主要な保存先の一覧
 
 ```text
 00_project_management/
@@ -93,14 +101,18 @@ compose.yaml
 99_quarantine/ (temporary review only; cleared after confirmation)
 ```
 
-The repository root contains `README.md`, `LICENSE`, Git and Docker configuration, the numbered research directories, the current traffic-simulation `reproducibility/` boundary, the consolidated non-SUMO archive, and the isolated `docker/` environments. Current presentations are stored under `07_presentations/current/`; temporary execution logs and historical cleanup inventories are not retained.
+リポジトリ最上位には、`README.md`、`LICENSE`、版管理・コンテナー設定、番号付き研究ディレクトリ、現行交通シミュレーションの`reproducibility/`、統合した旧分析保管領域、分離した`docker/`環境を置く。現行の発表資料は`07_presentations/current/`に保存し、一時的な実行記録と過去の整理一覧は保持しない。
 
-The Tokyo traffic-simulation extension uses dedicated subtrees: source-specific raw inputs under `03_data/raw/traffic_simulation/`, generated inputs under `03_data/processed/traffic_simulation/`, source records in `03_data/metadata/traffic_simulation_sources.csv`, implementation under `05_src/traffic_simulation/`, reproducible run products under `reproducibility/outputs/traffic_simulation/`, and reviewed final artifacts under `06_outputs/traffic_simulation/`. Canonical paths are defined in `05_src/traffic_simulation/paths.py`; new modules do not use host-specific paths or fixed parent indexes. The frozen synthetic EVRP route-proxy line is isolated under `legacy/non_sumo_route_proxy_analysis/` and is not a formal traffic-simulation input.
+東京交通シミュレーションの拡張には専用の保存領域を使う。出典別の未加工入力は`03_data/raw/traffic_simulation/`、生成入力は`03_data/processed/traffic_simulation/`、出典記録は`03_data/metadata/traffic_simulation_sources.csv`、実装は`05_src/traffic_simulation/`、再現可能な実行成果物は`reproducibility/outputs/traffic_simulation/`、確認済み最終成果物は`06_outputs/traffic_simulation/`に置く。正本の保存先は`05_src/traffic_simulation/paths.py`で定義し、新規モジュールでは機器固有のパスや固定の親階層番号を使わない。固定済みの合成電気自動車配送問題の経路代理分析は`legacy/non_sumo_route_proxy_analysis/`に分離し、正式な交通シミュレーション入力として扱わない。
 
-## Naming
+<a id="naming"></a>
 
-Research artifacts use `NNN_YYYYMMDD_descriptive_file_name.ext`, or `NNN_YYYYMMDD_vNN_descriptive_file_name.ext` for versions. Names use English snake_case. External dataset identity is preserved in the provenance and renaming maps. Git internals and environment package files are excluded.
+## 命名規則
 
-## Retention
+研究成果物には`NNN_YYYYMMDD_descriptive_file_name.ext`、版番号を含める場合は`NNN_YYYYMMDD_vNN_descriptive_file_name.ext`を使う。ファイル名は英小文字の単語を下線で区切る。外部データセットの同一性は来歴と改名対応表で保持する。版管理の内部ファイルと環境パッケージはこの命名規則の対象外とする。
 
-Current and reproduction-required files remain active. Confirmed superseded versions, caches, temporary execution logs, and historical cleanup inventories are deleted. Scientific provenance, validation summaries, manifests, and the current Japanese revision audit remain because they support interpretation or reproduction.
+<a id="retention"></a>
+
+## 保存方針
+
+現行ファイルと再現に必要なファイルは利用可能な状態で保持する。置換済みと確認された旧版、一時保存データ、一時的な実行記録、過去の整理一覧は削除する。科学的来歴、検証のまとめ、成果物一覧、現行の日本語改訂監査は、解釈や再現を支えるため保持する。

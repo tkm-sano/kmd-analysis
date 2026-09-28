@@ -93,7 +93,8 @@ function showStage(node) {
         ${renderField("Out-of-scope claims",detail.out_of_scope_claims)}
         ${renderField("Evidence artifact",detail.evidence_artifact,"path")}
       </dl>`;
-    $("stage-dialog").showModal();
+    localizeJapanese($("stage-detail"));
+  $("stage-dialog").showModal();
     return;
   }
   $("stage-detail").innerHTML=`
@@ -116,6 +117,7 @@ function showStage(node) {
       ${renderField("Next action",detail.next_action)}
       ${renderField("Reproduce / inspect",detail.commands)}
     </dl>`;
+  localizeJapanese($("stage-detail"));
   $("stage-dialog").showModal();
 }
 
@@ -127,7 +129,7 @@ function renderEvidence(interpretation) {
     ${metric("Overall judgment",readableStatus(interpretation.overall_assessment),"Interpretation layer; not an adopted investment outcome")}
     ${metric("Direct analysis boundary",interpretation.direct_research_boundary,"Everything downstream is interpretation")}
     ${metric("Evidence sources",interpretation.source_counts.total,`${interpretation.source_counts.verified_research_input} verified research input · ${interpretation.source_counts.needs_source_verification} need source verification`)}
-  </div><p class="evidence-wording">${esc(interpretation.wording.ja)}</p><p class="evidence-wording en">${esc(interpretation.wording.en)}</p>`;
+  </div><p class="evidence-wording">${esc(interpretation.wording.ja)}</p>`;
 
   const downstream=interpretation.pathway_nodes.filter(node=>node.layer==="EVIDENCE_SUPPORTED_INTERPRETATION");
   $("evidence-pathway").innerHTML=`<div class="direct-zone"><strong>DIRECT ANALYSIS</strong><span>Technology / Optimization → Delivery Fulfillment</span></div><div class="boundary-line"><span>DIRECT ANALYSIS BOUNDARY</span></div><div class="interpretation-zone"><strong>EVIDENCE-SUPPORTED INTERPRETATION</strong><div>${downstream.map((node,index)=>`<button data-evidence-node="${esc(node.id)}"><span>${esc(node.label)}</span><small>${esc(readableStatus(node.evidence_status))}</small></button>${index<downstream.length-1?'<i>↓</i>':''}`).join("")}</div></div>`;
@@ -265,7 +267,9 @@ function render(state) {
   $("source-chain").innerHTML=Object.entries(state.source_of_truth).map(([key,value])=>`<span><strong>${esc(key)}</strong> ${pathLink(value,"open")}</span>`).join("");
 }
 
-fetch("/api/state")
-  .then(response=>{if(!response.ok) throw new Error(`Portal state HTTP ${response.status}`);return response.json();})
-  .then(render)
-  .catch(error=>{const box=$("error");box.hidden=false;box.textContent=`Portal state could not be loaded: ${error.message}`;});
+Promise.all(["/api/state", "/ja.json"].map(path=>fetch(path).then(response=>{
+  if (!response.ok) throw new Error(`資料の取得に失敗しました（応答番号 ${response.status}）`);
+  return response.json();
+})))
+  .then(([state,terms])=>{initializeJapanese(terms);render(state);localizeJapanese();})
+  .catch(error=>{const box=$("error");box.hidden=false;box.textContent=`研究ポータルの情報を読み込めませんでした： ${error.message}`;});

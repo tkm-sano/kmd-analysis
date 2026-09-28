@@ -1,7 +1,7 @@
-# Data policy
+# 研究用データ
 
-This public repository versions governed processed inputs used by the current research. Raw downloads are intentionally excluded to avoid redistributing third-party material and to keep the repository reviewable.
+この公開リポジトリでは、現行研究に用いる管理済みの加工入力を版管理する。第三者資料の再配布を避け、内容を確認しやすくするため、未加工のダウンロードデータは含めない。
 
-The prior non-SUMO route-proxy analysis and its analysis-specific frozen inputs are consolidated under `legacy/non_sumo_route_proxy_analysis/`. Shared provider records, access context, limitations, and source registries remain under `03_data/metadata/` and `02_literature/references/`.
+従来の交通シミュレーターを使わない経路代理分析と、その分析に固有の固定済み入力は、`legacy/non_sumo_route_proxy_analysis/`に集約した。共通の提供元記録、取得条件、限界、出典登録簿は、`03_data/metadata/`と`02_literature/references/`に保持する。
 
-To repeat acquisition or preprocessing, reacquire each source under its current upstream terms and run the relevant scripts under `05_src/data_processing/`. Reacquired raw files belong under `03_data/raw/`, which is ignored by Git.
+取得や前処理を再現する場合は、各提供元の現在の利用条件に従って資料を再取得し、`05_src/data_processing/`の該当スクリプトを使う。再取得した未加工ファイルは、版管理対象外の`03_data/raw/`へ保存する。

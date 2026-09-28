@@ -1,79 +1,81 @@
-# Resolver仕様書
+<a id="resolver仕様書"></a>
+
+# 属性解決器仕様書
 
 > 版に関する注意：版16成果物と実装の再現に必要な旧条項は履歴として残す。版17以後の
-> permissions authority、access具体性、方向付き区間、管理車両および二軸値状態は
+> 通行許可 正本、接続具体性、方向付き区間、管理車両および二軸値状態は
 > `../10_approved_attribute_resolution_policy.md`が優先する。
 
 ## 文書の位置付け
 
 本書は
 [`02_resolver_specification.md`](../02_resolver_specification.md)の日本語版で
-ある。要件ID、failure code、test ID、機械可読フィールド名および状態値は
+ある。要件識別子、不具合 コード、試験 識別子、機械可読フィールド名および状態値は
 英語正本と同一である。両文書に差異がある場合は、機械可読設定と英語正本を
 優先し、日本語版を修正する。日本語版だけで要件を追加または緩和しては
 ならない。
 
 ## 対象範囲
 
-Resolverは、OSMの`oneway`、車線数、速度、accessについて最終採用値を決める
-唯一のコンポーネントである。lanes・maxspeedのcriticality、証拠適用可能性、
-証拠順位、structural-placeholder gateは
+属性解決器は、オープンストリートマップの`oneway`、車線数、速度、接続について最終採用値を決める
+唯一のコンポーネントである。車線・maxspeedの重要度、証拠適用可能性、
+証拠順位、構造上の-仮置き 判定基準は
 `attribute_criticality_and_evidence_specification.md`を正本とする。`oneway`、
-access、permission、共通の証拠登録形式、出典管理は
+接続、通行許可、共通の証拠登録形式、出典管理は
 `network_attribute_governance.md`を正本とする。本書は両正本に基づく判断を
-消費するResolverの実行境界を定め、証拠順位を重複定義しない。
+消費する属性解決器の実行境界を定め、証拠順位を重複定義しない。
 
-Relation closureは上流の`prepare`責任である。PBF母集団の抽出、governed
-relation memberの再帰的補足、cycle検出、hash登録済みOSM XML・closure
-manifestの公開を行う。Resolverはそれらを検証・消費し、relation-scope会計を
-記録し、contract不完全時に停止するが、PBF抽出やclosure公開は行わない。専用
-closure仕様を分離するまでは、本書のclosure要件をResolver入力の規範的前提とする。
+関係要素の参照先の補完は上流の`prepare`責任である。PBF母集団の抽出、管理対象の
+関係 構成要素の再帰的補足、cycle検出、ハッシュ値登録済みオープンストリートマップ 拡張マークアップ形式・参照先の補完
+成果物一覧の公開を行う。属性解決器はそれらを検証・消費し、関係-範囲会計を
+記録し、取り決め不完全時に停止するが、PBF抽出や参照先の補完公開は行わない。専用
+参照先の補完仕様を分離するまでは、本書の参照先の補完要件を属性解決器入力の規範的前提とする。
 
 ## 入力と出力
 
-入力は、リポジトリ相対パスで指定され、hash登録されたOSM XML、版管理済み
-設定、統制typemapでなければならない。完全なclassification artifactは両profile
-で必須であり、全tuple record内に別々のclassification・resolution objectを持つ。
-完全なpredicate artifactも必須である。resolution objectが外部証拠を参照する
-場合はexternal evidence artifactが必須である。structural-placeholder ruleは
-structuralでplaceholderを使用する場合だけ必須とし、formalでは禁止する。
+入力は、リポジトリ相対パスで指定され、ハッシュ値登録されたオープンストリートマップ 拡張マークアップ形式、版管理済み
+設定、統制道路種別の対応表でなければならない。完全な分類 成果物は両設定プロファイル
+で必須であり、全組 記録内に別々の分類・解決 対象を持つ。
+完全な述語 成果物も必須である。解決 対象が外部証拠を参照する
+場合は外部 根拠 成果物が必須である。構造上の-仮置き 規則は
+構造上ので仮置きを使用する場合だけ必須とし、正式では禁止する。
 
 - `normalized.osm.xml`
 - `permission_expectations.schema.json`に適合する
   `permission_expectations.json`
-- 道路属性audit CSV
+- 道路属性監査 コンマ区切り形式
 - imputation summary JSON
-通常の統制停止では、audit、imputation summary、`complete=false`のpermission
-artifact、`failure_report.schema.json`に適合する`failure_report.json`を保持し、
+通常の統制停止では、監査、欠損補完 まとめ、`complete=false`の通行許可
+成果物、`failure_report.schema.json`に適合する`failure_report.json`を保持し、
 `normalized.osm.xml`は公開しない。
-整合した成果物集合を作る前に入力、設定、schema、公開処理が失敗した場合は、
-failure reportだけを公開する。`profile=formal`の未解決状態禁止は、成功した
-`complete=true` artifactへ適用し、統制済みfailure artifactは禁止しない。
-CLIは成功時に0、分類済みResolver failureで2、failure reportも公開できない
+整合した成果物集合を作る前に入力、設定、データ構造、公開処理が失敗した場合は、
+不具合 報告だけを公開する。`profile=formal`の未解決状態禁止は、成功した
+`complete=true` 成果物へ適用し、統制済み不具合 成果物は禁止しない。
+コマンド操作は成功時に0、分類済み属性解決器 不具合で2、不具合 報告も公開できない
 場合に3を返す。
 
 ## 規範要件
 
-| ID | 要件 | Failure | Test |
+| 識別子 | 要件 | 不具合 | 試験 |
 |---|---|---|---|
-| RS-REQ-001 | OSM rootは`osm`でなければならない。保持するwayは、空でない一意のIDと一意のtag keyを持たなければならない。 | RS001 | RS-TST-001 |
-| RS-REQ-002 | 明示的なtypemap whitelistに含まれる道路だけを保持できる。除外したすべてのhighway wayを数えなければならない。 | RS002 | RS-TST-002 |
-| RS-REQ-003 | 成功出力の前に、保持する全wayについて`oneway`、方向別車線数、`maxspeed`、permissionを解決しなければならない。 | RS003 | RS-TST-003 |
+| RS-REQ-001 | オープンストリートマップ 最上位は`osm`でなければならない。保持する道路地物は、空でない一意の識別子と一意の属性タグ キーを持たなければならない。 | RS001 | RS-TST-001 |
+| RS-REQ-002 | 明示的な道路種別の対応表 許可一覧に含まれる道路だけを保持できる。除外したすべてのhighway 道路地物を数えなければならない。 | RS002 | RS-TST-002 |
+| RS-REQ-003 | 成功出力の前に、保持する全道路地物について`oneway`、方向別車線数、`maxspeed`、通行許可を解決しなければならない。 | RS003 | RS-TST-003 |
 | RS-REQ-004 | `missing`、`valid_but_unsupported`、`conditional`、`directionally_asymmetric`、`conflict`、`invalid`を別々の状態として保持しなければならない。 | RS004 | RS-TST-004 |
-| RS-REQ-005 | structural imputationは、`L1`または`S1`と分類された真の欠損tupleに対し、`resolution_action=apply_structural_placeholder`で、全placeholder gateに合格し、事前登録済みの属性別unique-mode ruleが一つの値を決定する場合だけ適用できる。 | RS005 | RS-TST-005 |
-| RS-REQ-006 | 成功した`profile=formal`、`complete=true` artifactにはstructural placeholderまたは未解決の停止状態を含めてはならない。 | RS006 | RS-TST-006 |
+| RS-REQ-005 | 構造上の 欠損補完は、`L1`または`S1`と分類された真の欠損組に対し、`resolution_action=apply_structural_placeholder`で、全仮置き 判定基準に合格し、事前登録済みの属性別一意の最頻値 規則が一つの値を決定する場合だけ適用できる。 | RS005 | RS-TST-005 |
+| RS-REQ-006 | 成功した`profile=formal`、`complete=true` 成果物には構造上の 仮置きまたは未解決の停止状態を含めてはならない。 | RS006 | RS-TST-006 |
 | RS-REQ-007 | `oneway=-1`は、方向依存属性を含む完全な変換が実装されるまで停止しなければならない。部分的な反転は禁止する。 | RS007 | RS-TST-007 |
-| RS-REQ-008 | forward・backward tagのいずれについても、lane access値は各進行方向から見て左から右の順に読まなければならない。 | RS008 | RS-TST-008 |
-| RS-REQ-009 | Resolverのlane position 0は、その進行方向の最左車線を意味しなければならない。 | RS009 | RS-TST-009 |
-| RS-REQ-010 | 未対応のaccess key・value、方向suffixのない双方向lane access、lane value数の不一致は停止しなければならない。 | RS010 | RS-TST-010 |
-| RS-REQ-011 | 期待permissionは、解決済みOSM permission、選択typemap baseline、governed vClassの積集合と一致しなければならない。 | RS011 | RS-TST-011 |
-| RS-REQ-012 | expectation artifactはtype、方向、lane position、rule、hashの完全な来歴を含まなければならない。v13のmap-only形式はv15入力として無効である。 | RS012 | RS-TST-012 |
-| RS-REQ-013 | 明示的に統制された開発用overrideを除き、出力は原子的に書き込み、入力と別pathにし、既存出力を上書きしてはならない。 | RS013 | RS-TST-013 |
-| RS-REQ-014 | closure・Resolver artifactはsource type別にrelation scopeを分類し、governed vehicle固有restrictionを保持し、除外relationと補足要素を数え、governed trafficへ影響し得る未分類relation typeで停止しなければならない。 | RS014 | RS-TST-014 |
+| RS-REQ-008 | 順方向・逆方向 属性タグのいずれについても、車線 接続値は各進行方向から見て左から右の順に読まなければならない。 | RS008 | RS-TST-008 |
+| RS-REQ-009 | 属性解決器の車線 位置 0は、その進行方向の最左車線を意味しなければならない。 | RS009 | RS-TST-009 |
+| RS-REQ-010 | 未対応の接続 キー・値、方向接尾辞のない双方向車線 接続、車線 値数の不一致は停止しなければならない。 | RS010 | RS-TST-010 |
+| RS-REQ-011 | 期待通行許可は、解決済みオープンストリートマップ 通行許可、選択道路種別の対応表 基準、管理対象の vClassの積集合と一致しなければならない。 | RS011 | RS-TST-011 |
+| RS-REQ-012 | 期待値 成果物は種類、方向、車線 位置、規則、ハッシュ値の完全な来歴を含まなければならない。v13のマップ-only形式はv15入力として無効である。 | RS012 | RS-TST-012 |
+| RS-REQ-013 | 明示的に統制された開発用上書き指定を除き、出力は原子的に書き込み、入力と別保存先にし、既存出力を上書きしてはならない。 | RS013 | RS-TST-013 |
+| RS-REQ-014 | 参照先の補完・属性解決器 成果物は出典 種類別に関係 範囲を分類し、管理対象の 車両固有制限を保持し、除外関係と補足要素を数え、管理対象の 交通へ影響し得る未分類関係 種類で停止しなければならない。 | RS014 | RS-TST-014 |
 
-この要件・failure・testの一対一対応は次版contractである。実行済みv15 Dry Runと
-failure artifactは不変の履歴証拠として元のcodeを保持する。次のproduction run
-より前にResolver実装、schema、fixtureを同時に移行しなければならない。
+この要件・不具合・試験の一対一対応は次版取り決めである。実行済みv15 試行実行と
+不具合 成果物は不変の履歴証拠として元のコードを保持する。次の正式運用 実行
+より前に属性解決器実装、データ構造、検証用データを同時に移行しなければならない。
 
 ## 方向別車線配分
 
@@ -81,56 +83,60 @@ failure artifactは不変の履歴証拠として元のcodeを保持する。次
 `lanes:forward`と`lanes:backward`を必要とする。`lanes`からの等分推定は
 行わない。`structural`では、偶数の総車線数に限り、
 `resolution_action=apply_structural_placeholder`、
-`value_state=structural_placeholder`として等分し、方向配分rule IDをauditへ
-記録できる。`approved_assumption`はResolverのactionまたはvalue stateとして
+`value_state=structural_placeholder`として等分し、方向配分規則 識別子を監査へ
+記録できる。`approved_assumption`は属性解決器の処理または値の状態として
 使用しない。明示的な方向配分がない1車線または奇数車線、およびすべての
 `lanes:both_ways`は`RS008`で停止する。
 
-## Imputation donor
+<a id="imputation-donor"></a>
 
-donor適格性は属性別に判定する。lane donorは、解決可能な方向、sample単位に
-対応する整合した明示lane値、lane関連conditional・conflict tagなし、
-`oneway=-1`なし、structuralで解決可能なpermissionを必要とする。maxspeed欠損
-だけを理由にlane donorから除外しない。maxspeed donorは、sample方向に対応する
-canonicalな明示数値速度、speed関連conditional・directional・variable・
-conflict表現なし、`oneway=-1`なし、解決可能なpermissionを必要とする。lane欠損
-だけを理由にmaxspeed donorから除外しない。
+## 欠損補完属性提供元
 
-両ruleは`sumo_network.yml`に登録したgrouping key、source-population hash、
-除外条件、minimum sample size、minimum mode share、tie policy、sample unit、
-canonicalizationを使用する。対象tuple自身はsample属性が欠損しているためdonorに
-含めない。grouping値欠損、sample不足、同率modeは、隣接道路classへfallbackせず
-停止する。`40`と`40.0`のような小数として等価な速度はcanonical値`40`へ統合
+属性提供元適格性は属性別に判定する。車線 属性提供元は、解決可能な方向、標本単位に
+対応する整合した明示車線値、車線関連条件付き・矛盾 属性タグなし、
+`oneway=-1`なし、構造上ので解決可能な通行許可を必要とする。maxspeed欠損
+だけを理由に車線 属性提供元から除外しない。maxspeed 属性提供元は、標本方向に対応する
+正本な明示数値速度、速度関連条件付き・方向別・変数・
+矛盾表現なし、`oneway=-1`なし、解決可能な通行許可を必要とする。車線欠損
+だけを理由にmaxspeed 属性提供元から除外しない。
+
+両規則は`sumo_network.yml`に登録した群分け キー、出典-母集団 ハッシュ値、
+除外条件、最小 標本 規模、最頻値の最小比率、同順位 方針、標本 単位、
+正規化を使用する。対象組自身は標本属性が欠損しているため属性提供元に
+含めない。群分け値欠損、標本不足、同率最頻値は、隣接道路分類へ代替値せず
+停止する。`40`と`40.0`のような小数として等価な速度は正本値`40`へ統合
 する。
 
-Criticalityはway単位で一度だけではなく、
-`(osm_way_id, attribute, profile)`ごとに分類する。classificationとresolutionは
-同じimmutable profile snapshot内の別objectとし、hash-linked predicate artifactを
-使用する。統制語彙、証拠順位、artifact field、
-structural-placeholder gateは
-`attribute_criticality_and_evidence_specification.md`で定義する。4 schema、
-Predicate Generator、Semantic Validator、production fixture collectionは
-実装済みである。独立human reviewは研究責任者判断で省略しており、独立受理を
-完了条件として再要求しない。重要度Classifier・Resolver stageの
-実装・固定fixture検証が完了するまでは、classification・resolution統合入力を
-省略した全wayを`unclassified`とし、structural placeholderを通過させては
+Criticalityは道路地物単位で一度だけではなく、
+`(osm_way_id, attribute, profile)`ごとに分類する。分類と解決は
+同じimmutable 設定プロファイル 保存時点の記録内の別対象とし、ハッシュ値-linked 述語 成果物を
+使用する。統制語彙、証拠順位、成果物 項目、
+構造上の-仮置き 判定基準は
+`attribute_criticality_and_evidence_specification.md`で定義する。4 データ構造、
+Predicate Generator、Semantic 検証器、正式運用 検証用データ collectionは
+実装済みである。独立human 確認は研究責任者判断で省略しており、独立受理を
+完了条件として再要求しない。重要度Classifier・属性解決器 stageの
+実装・固定検証用データ検証が完了するまでは、分類・解決統合入力を
+省略した全道路地物を`unclassified`とし、構造上の 仮置きを通過させては
 ならない。
 
-観測されたv15例外母集団と未解決のdecision状態は、
+観測されたv15例外母集団と未解決の判断状態は、
 `reproducibility/config/traffic_simulation/resolver_exception_decision_table.yml`
-へ登録する。20件の例外分類rule、独立oracle、正常・異常・境界fixtureおよび
+へ登録する。20件の例外分類規則、独立正解判定器、正常・異常・境界検証用データおよび
 排他的分類器は実装済みであり、v15例外307行はすべてちょうど1件の
-decision-table entryへ一致した。一致なしと複数一致は0件である。ただし、
-これは値解決の完了を意味しない。各entryのresolution ruleと必要証拠が
+判断-table 入口へ一致した。一致なしと複数一致は0件である。ただし、
+これは値解決の完了を意味しない。各入口の解決 規則と必要証拠が
 実装されるまで、分類済みであることだけを根拠に解決を許可してはならない。
 
-## Permission trace
+<a id="permission-trace"></a>
 
-各way・方向・lane recordには、そのlaneへ実際に適用したruleだけを含める。
-順序付きtraceには、typemap baseline、研究scopeとの積集合、適用可能な一般、
-class、方向、lane固有のOSM遷移を記録する。source tag・value、lane-local値、
-変更前後のvClass集合を含める。別方向または別laneへ適用されるtagを、その
-laneのtraceへ含めてはならない。
+## 通行許可 追跡
+
+各道路地物・方向・車線 記録には、その車線へ実際に適用した規則だけを含める。
+順序付き追跡には、道路種別の対応表 基準、研究範囲との積集合、適用可能な一般、
+分類、方向、車線固有のオープンストリートマップ遷移を記録する。出典 属性タグ・値、車線-local値、
+変更前後のvClass集合を含める。別方向または別車線へ適用される属性タグを、その
+車線の追跡へ含めてはならない。
 
 ## 全管理属性の被覆と停止記録
 
@@ -149,43 +155,45 @@ laneのtraceへ含めてはならない。
 
 正式用では`structural_placeholder`を0件とする。
 `permission_expectations.complete=true`には、保持道路の完全な被覆と続行阻害項目
-0件の両方を必要とする。阻害項目が一つでも残る間、正規化済みOSM XMLを公開して
+0件の両方を必要とする。阻害項目が一つでも残る間、正規化済みオープンストリートマップ 拡張マークアップ形式を公開して
 はならない。不完全な監査記録と通行権限期待値は失敗証拠として保存できるが、
 道路網生成入力には使用できない。
 
 ## 公開処理と入力完全性
 
-すべてのartifactは一つのstaging directoryで生成し、検証後に公開する。
-置換時はbackupとrollbackを用い、例外発生時に異なるrunのartifactが混在
+すべての成果物は一つのstaging ディレクトリで生成し、検証後に公開する。
+置換時はbackupとrollbackを用い、例外発生時に異なる実行の成果物が混在
 しないようにする。`.part`は`finally`で削除する。`--overwrite`は開発用
-overrideに限り、formal orchestrationでは新しいrun identityとpathを使用する。
+上書き指定に限り、正式 orchestrationでは新しい実行 同一性と保存先を使用する。
 
-OSM tagは空でない`k`と、存在し空でない`v`を必要とする。保持するwayは有効な
-node参照を持たなければならない。実行済みv15は、`type=restriction`だけを
-保持した。その後の全入力auditでturn restrictionを持つ
-`type=restriction:bus`が3件見つかったため、完全一致によるtype保持だけでは
-governed vehicle universeに不十分である。次のformal候補を作る前に、版管理
-されたrelation-scope表で`type=restriction`を保持し、適用可能な車種固有
-restriction typeを統制し、governed trafficへ影響し得る未分類typeで停止
-しなければならない。道路接続に無関係と分類済みのrelationは、member参照検証
-前に除去できる。保持したrestrictionが意図的に除外したhighway wayを参照する
-場合はrestrictionも除去し、不明なmember wayを参照する場合は停止する。
+オープンストリートマップ 属性タグは空でない`k`と、存在し空でない`v`を必要とする。保持する道路地物は有効な
+ノード参照を持たなければならない。実行済みv15は、`type=restriction`だけを
+保持した。その後の全入力監査で右左折制限を持つ
+`type=restriction:bus`が3件見つかったため、完全一致による種類保持だけでは
+管理対象の 車両 universeに不十分である。次の正式候補を作る前に、版管理
+された関係-範囲表で`type=restriction`を保持し、適用可能な車種固有
+制限 種類を統制し、管理対象の 交通へ影響し得る未分類種類で停止
+しなければならない。道路接続に無関係と分類済みの関係は、構成要素参照検証
+前に除去できる。保持した制限が意図的に除外したhighway 道路地物を参照する
+場合は制限も除去し、不明な構成要素 道路地物を参照する場合は停止する。
 
-Resolver入力は、XML変換前に、governed restrictionの全memberを登録済み地域
-PBFからclosureする。closure・Resolver artifactはsource `type`別のrelation
-判断、保持restriction、欠損member参照、補足要素種別を数えなければならない。
-除外relationを道路証拠として解釈してはならないが、除外には明示的なscope rule
-が必要である。この会計は、除外relationが不正なOSMデータであることを意味
-しない。criticality mapを与える場合はsource fileと保持wayの完全被覆が必要で
-ある。v15 typemap contractは`allow`だけを許可し、保持typeに`disallow`が
-あればpolicy読込を停止する。
+属性解決器入力は、拡張マークアップ形式変換前に、管理対象の 制限の全構成要素を登録済み地域
+PBFから参照先の補完する。参照先の補完・属性解決器 成果物は出典 `type`別の関係
+判断、保持制限、欠損構成要素参照、補足要素種別を数えなければならない。
+除外関係を道路証拠として解釈してはならないが、除外には明示的な範囲 規則
+が必要である。この会計は、除外関係が不正なオープンストリートマップデータであることを意味
+しない。重要度 マップを与える場合は出典 ファイルと保持道路地物の完全被覆が必要で
+ある。v15 道路種別の対応表 取り決めは`allow`だけを許可し、保持種類に`disallow`が
+あれば方針読込を停止する。
 
-## 属性分類前のrelation closure
+<a id="属性分類前のrelation-closure"></a>
 
-次版relation closureにより分類母集団が固定されるまで、登録済み実データへ
-attribute criticalityを適用してはならない。実行済みv15 closureは、`type`が
-完全に`restriction`と一致するrelationだけを保持した。その後のtype別auditで、
-v15が除外したgoverned vehicle固有restrictionを3件確認した。
+## 属性分類前の関係要素の参照先の補完
+
+次版関係要素の参照先の補完により分類母集団が固定されるまで、登録済み実データへ
+属性 重要度を適用してはならない。実行済みv15 参照先の補完は、`type`が
+完全に`restriction`と一致する関係だけを保持した。その後の種類別監査で、
+v15が除外した管理対象の 車両固有制限を3件確認した。
 
 | Relation ID | Source type | Restriction |
 |---|---|---|
@@ -193,97 +201,105 @@ v15が除外したgoverned vehicle固有restrictionを3件確認した。
 | `16016506` | `restriction:bus` | `no_straight_on` |
 | `16026064` | `restriction:bus` | `only_straight_on` |
 
-`bus`はgoverned vClass universeに含まれるため、これらを道路外relationと分類
-できなかった。この上流scope blockerは、2026年7月30日に受理した
-`ota_ward_relation_closure_v16`のprepare実行で解消した。v15 closure、
-26,220件の候補way、Dry Runは不変baselineとして保持し、v16はbaselineを
-暗黙に変更せず、新しいconfig identityとartifact pathを使用する。
+`bus`は管理対象の vClass universeに含まれるため、これらを道路外関係と分類
+できなかった。この上流範囲 阻害要因は、2026年7月30日に受理した
+`ota_ward_relation_closure_v16`の準備実行で解消した。v15 参照先の補完、
+26,220件の候補道路地物、試行実行は不変基準として保持し、v16は基準を
+暗黙に変更せず、新しい設定 同一性と成果物 保存先を使用する。
 
-### 次版closure方針
+<a id="次版closure方針"></a>
 
-次版closure実装は、次の条件を満たさなければならない。
+### 次版参照先の補完方針
 
-1. 登録済み大田区BBOX extractとhash登録済み関東PBFから開始する。
-2. spatial extract内の全`type=restriction`を保持する。
-3. `type=restriction:bus`および他の車種固有restrictionは、そのvehicle scopeを
-   governed vClass universeへ対応づけた後に限り保持する。
-4. governed trafficを制約し得る未分類relation typeで停止する。
-5. 保持relationの全memberを登録済み地域PBFから再帰的に補足する。
-6. 補足したtopology-support node・wayと最終N03 analysis subgraphを区別する。
-7. node、way、relation member欠損を検証し、relation cycleを検出する。
-8. 保持、除外、停止relationをsource type・rule ID別に記録する。
-9. relation-closed PBFとOSM XMLを原子的に生成する。
-10. exact command、tool version、config・input hash、output hash、追加要素を
+次版参照先の補完実装は、次の条件を満たさなければならない。
+
+1. 登録済み大田区境界矩形 extractとハッシュ値登録済み関東PBFから開始する。
+2. 空間的な extract内の全`type=restriction`を保持する。
+3. `type=restriction:bus`および他の車種固有制限は、その車両 範囲を
+   管理対象の vClass universeへ対応づけた後に限り保持する。
+4. 管理対象の 交通を制約し得る未分類関係 種類で停止する。
+5. 保持関係の全構成要素を登録済み地域PBFから再帰的に補足する。
+6. 補足した接続構造-support ノード・道路地物と最終N03 analysis subgraphを区別する。
+7. ノード、道路地物、関係 構成要素欠損を検証し、関係 cycleを検出する。
+8. 保持、除外、停止関係を出典 種類・規則 識別子別に記録する。
+9. 関係-closed PBFとオープンストリートマップ 拡張マークアップ形式を原子的に生成する。
+10. 厳密 コマンド、ツール 版、設定・入力 ハッシュ値、出力 ハッシュ値、追加要素を
     prepare manifestへ記録する。
 
-車種固有restrictionの処理は、文字列prefix whitelistではない。governed
-vehicle universeへの適用可能性、restrictionの意味、source-tag形式には、
-明示的で版管理されたdecision ruleとfixtureが必要である。
+車種固有制限の処理は、文字列prefix 許可一覧ではない。管理対象の
+車両 universeへの適用可能性、制限の意味、出典-属性タグ形式には、
+明示的で版管理された判断 規則と検証用データが必要である。
 
-### 実行済みv16 closure
+<a id="実行済みv16-closure"></a>
+
+### 実行済みv16 参照先の補完
 
 受理済みv16実行は、`REL-ORDINARY-001`により`type=restriction` 581件、
 `REL-BUS-001`により`type=restriction:bus` 3件を保持した。登録済み関東PBF
-からmemberを再帰補完し、追加node 59件、追加way 16件、参照欠損0件、
-relation cycle 0件、OSM要素種別内の重複識別子0件を確認した。
+から構成要素を再帰補完し、追加ノード 59件、追加道路地物 16件、参照欠損0件、
+関係 cycle 0件、オープンストリートマップ要素種別内の重複識別子0件を確認した。
 
-3件のbus restrictionが参照するwayはv15の通常restriction closureですでに
-補われていたため、属性解決候補は26,220件のままである。ただし、relation集合、
-config identity、run identity、PBF・XML hashは異なるため、同一artifactでは
-ない。要素役割artifactは、N03境界と交差する最終分析対象13,494 way、
-relation memberである構造維持用555 way、除外context 309,360 wayを分けて
-記録する。固定command、hash、件数は
+3件のbus 制限が参照する道路地物はv15の通常制限 参照先の補完ですでに
+補われていたため、属性解決候補は26,220件のままである。ただし、関係集合、
+設定 同一性、実行 同一性、PBF・拡張マークアップ形式 ハッシュ値は異なるため、同一成果物では
+ない。要素役割成果物は、N03境界と交差する最終分析対象13,494 道路地物、
+関係 構成要素である構造維持用555 道路地物、除外文脈 309,360 道路地物を分けて
+記録する。固定コマンド、ハッシュ値、件数は
 `03_data/metadata/acquisition/20260730_ota_ward_relation_closure_v16.md`
 に記録した。
 
-### 母集団受入gate
+<a id="母集団受入gate"></a>
 
-実データcriticality classifierは、次の条件がすべて合格した後に限り開始
+### 母集団受入判定基準
+
+実データ重要度 classifierは、次の条件がすべて合格した後に限り開始
 できる。
 
 | Gate条件 | 必要な証拠 |
 |---|---|
-| 既知のbus restriction 3件を保持 | closure manifest内のrelation IDとretained-rule ID |
-| 保持relationの全memberが存在 | node、way、relation member欠損が0 |
-| closureが決定的 | 同一登録入力から同一semantic output |
-| support elementを識別 | 追加node・way IDとsupport・final-subgraph状態 |
-| 候補母集団を再集計 | origin・highway type別distinct governed way |
-| v15との差分を明示 | 追加・除去・不変のway・relation ID |
-| 新artifactを独立識別 | 新config ID、run ID、path、SHA-256 |
+| 既知のbus 制限 3件を保持 | 参照先の補完 成果物一覧内の関係 識別子とretained-規則 識別子 |
+| 保持関係の全構成要素が存在 | ノード、道路地物、関係 構成要素欠損が0 |
+| 参照先の補完が決定的 | 同一登録入力から同一意味上の 出力 |
+| support elementを識別 | 追加ノード・道路地物 識別子とsupport・最終-subgraph状態 |
+| 候補母集団を再集計 | 出発地・highway 種類別distinct 管理対象の 道路地物 |
+| v15との差分を明示 | 追加・除去・不変の道路地物・関係 識別子 |
+| 新成果物を独立識別 | 新設定 識別子、実行 識別子、保存先、SHA-256 |
 
-v16 closureはこのgateを満たした。候補way IDがともに26,220件であっても、
-criticality recordはv16入力hashから再生成し、履歴v15 recordをv16として
+v16 参照先の補完はこの判定基準を満たした。候補道路地物 識別子がともに26,220件であっても、
+重要度 記録はv16入力ハッシュ値から再生成し、履歴v15 記録をv16として
 付け替えたり追加修正したりしてはならない。
 
 ### 下流成果物の無効化
 
-新しいclosureを受理すると、v15 relation-closed入力の被覆またはhashに依存する
-次のartifactを無効化する。
+新しい参照先の補完を受理すると、v15 関係-closed入力の被覆またはハッシュ値に依存する
+次の成果物を無効化する。
 
-- 道路属性audit
+- 道路属性監査
 - permission expectations
 - imputation distributions
-- exception queueとDry Run summary
+- exception 待ち行列と試行実行 まとめ
 - attribute criticality coverage
 - candidate-way counts
-- これらの入力から作ったprovisional networkまたはmapping
+- これらの入力から作った暫定 道路網または対応付け
 
-次回runでは、受理済みclosureからこれらを再生成し、v15 baselineに対する
-追加・除去・不変blockerを報告しなければならない。
+次回実行では、受理済み参照先の補完からこれらを再生成し、v15 基準に対する
+追加・除去・不変阻害要因を報告しなければならない。
 
-## Lane順序の正本
+<a id="lane順序の正本"></a>
 
-OSM lane listは、各進行方向から見て左から右に解釈する。backward listはOSM
-wayと逆方向に走るという理由だけでResolver内部で反転しない。Materializerが
-後でSUMOの右から左のindexへ対応づける際にlane positionを反転する。
+## 車線順序の正本
+
+オープンストリートマップ 車線 listは、各進行方向から見て左から右に解釈する。逆方向 listはオープンストリートマップ
+道路地物と逆方向に走るという理由だけで属性解決器内部で反転しない。具体化処理が
+後でスーモの右から左の索引へ対応づける際に車線 位置を反転する。
 
 ## 成功条件
 
-`complete=true`には、blocker 0、保持する全wayにつき1件のexpectation record、
-方向別lane countとlane recordの完全一致、config・input・typemap hashの一致が
-必要である。governed vClass universeが空の成功artifactは禁止する。
+`complete=true`には、阻害要因 0、保持する全道路地物につき1件の期待値 記録、
+方向別車線 件数と車線 記録の完全一致、設定・入力・道路種別の対応表 ハッシュ値の一致が
+必要である。管理対象の vClass universeが空の成功成果物は禁止する。
 
-成功artifactでは、`normalized_osm`に同一runが出力した正規化XMLの
-repository-relative pathとSHA-256を記録する。失敗artifactは正規化XMLを公開
-しないため、この参照を含めない。この形式のfixture検証だけでは、登録済み
+成功成果物では、`normalized_osm`に同一実行が出力した正規化拡張マークアップ形式の
+リポジトリ-relative 保存先とSHA-256を記録する。失敗成果物は正規化拡張マークアップ形式を公開
+しないため、この参照を含めない。この形式の検証用データ検証だけでは、登録済み
 大田区extractに対する適格性を示さない。

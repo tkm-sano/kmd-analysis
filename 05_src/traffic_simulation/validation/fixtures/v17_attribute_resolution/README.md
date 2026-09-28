@@ -1,4 +1,4 @@
-# v17 Attribute Resolution Fixtures and Oracles
+# v17 属性解決検証用データ ・ Oracles
 
 This directory is the fixed Phase 2 specification-derived collection for
 `ota_ward_attribute_resolution_policy_v17`.

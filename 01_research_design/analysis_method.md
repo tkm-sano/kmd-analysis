@@ -1,5 +1,7 @@
-# Analysis Method
+<a id="analysis-method"></a>
 
-The analysis connects four evidence layers: literature extraction, public-data proxies, synthetic scenario generation, and constraint evaluation. Literature rows preserve problem instance, formulation, encoding, reported width, depth meaning, and evaluation modality. The Tokyo workflow validates inputs, samples synthetic customer configurations, uses a depot and route proxy, evaluates payload/operating-time/range/charging-related conditions, and tests spatial and parameter sensitivity.
+# 分析方法
 
-Outputs are exploratory constraint indicators, not optimized or observed operations. A classical optimization baseline, road-network routing, calibrated demand, time windows, and sequential SOC/charging dynamics belong to the real-world-optimization next stage. Systems thinking, morphological analysis, Delphi/expert elicitation, backcasting, FMEA, futures wheels, scenario planning, cross-impact analysis, and technology assessment are candidate methods for the broader application-stage framework; they are not current quantitative results.
+分析では、文献からの情報抽出、公開データによる代理指標、合成条件の生成、制約評価という四つの根拠の層を結び付ける。文献の各記録には、問題例、定式化、符号化、報告された回路幅、深さの意味、評価方式を保持する。東京を対象とする処理では、入力を検証し、合成顧客配置を抽出し、配送拠点と経路の代理表現を用いて、積載量・稼働時間・航続距離・充電の条件を評価する。さらに、空間条件とパラメーターに対する感度を調べる。
+
+出力は探索的な制約指標であり、最適化済みの運用や観測された運用を示すものではない。古典最適化の基準、道路網上の経路計算、較正済み需要、時間窓、充電率と充電の逐次的な変化は、次の実運用最適化段階で扱う。システム思考、形態分析、デルファイ法・専門家からの知見収集、バックキャスティング、故障モード影響解析、未来の影響展開図、シナリオ計画、相互影響分析、技術評価は、より広い応用段階の枠組みに使う候補手法であり、現在の定量的成果ではない。

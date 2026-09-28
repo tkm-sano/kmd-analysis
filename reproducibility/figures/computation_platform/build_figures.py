@@ -20,29 +20,29 @@ sources[str(net.relative_to(R))]=hashlib.sha256(net.read_bytes()).hexdigest()
 odpath=base/'od_manifest.csv';sources[str(odpath.relative_to(R))]=hashlib.sha256(odpath.read_bytes()).hexdigest();ods=list(csv.DictReader(odpath.open()));od={(x['origin_id'],x['destination_id']):x for x in ods}
 for x in inst['travel']:
  row=od[x['origin'],x['destination']];assert row['validation_status']=='PASS' and row['reachable']=='True';assert Fraction(row['travel_time_s'])==Fraction(x['travel_time_seconds']);assert Fraction(row['distance_m'])==Fraction(x['travel_distance'])
-plt.rcParams.update({'font.size':12,'font.family':'DejaVu Sans','svg.fonttype':'none','savefig.facecolor':'white'})
+plt.rcParams.update({'font.size':12,'font.family':['DejaVu Sans','Droid Sans Fallback'],'svg.fonttype':'none','savefig.facecolor':'white'})
 def save(fig,name):
  fig.savefig(O/(name+'.svg'),bbox_inches='tight');fig.savefig(O/(name+'.png'),bbox_inches='tight',dpi=130);plt.close(fig)
  svg=O/(name+'.svg');svg.write_text('\n'.join(line.rstrip() for line in svg.read_text().splitlines())+'\n')
 def box(ax,x,y,text,w=.7,h=.065,color='#e8f1f8'):
  ax.add_patch(FancyBboxPatch((x-w/2,y-h/2),w,h,boxstyle='round,pad=0.009',fc=color,ec='#456174',lw=1.2));ax.text(x,y,text,ha='center',va='center',fontsize=12)
 def arrow(ax,x,y,x2,y2):ax.annotate('',(x2,y2),(x,y),arrowprops={'arrowstyle':'->','lw':1.5,'color':'#456174'})
-fig,ax=plt.subplots(figsize=(12,12));ax.set(xlim=(0,1),ylim=(0,1));ax.axis('off');ax.set_title('Computation platform | validated scope and research extensions',fontsize=17,pad=18)
-for y,t in [( .94,'Geographic source data / mapped delivery proxies'),(.84,'Accepted directed road network'),(.74,'Saved OD: distance, travel time, reachability'),(.64,'Delivery model: VRPTW / EVRP constraints')]:box(ax,.5,y,t)
+fig,ax=plt.subplots(figsize=(12,12));ax.set(xlim=(0,1),ylim=(0,1));ax.axis('off');ax.set_title('計算基盤：検証済み範囲と今後の研究',fontsize=17,pad=18)
+for y,t in [( .94,'地理的な原資料・対応付け済み配送代理指標'),(.84,'受入済みの有向道路網'),(.74,'保存済み地点間データ：距離・移動時間・到達可能性'),(.64,'配送モデル：時間窓・電気自動車の制約')]:box(ax,.5,y,t)
 for y in [.94,.84,.74]:arrow(ax,.5,y-.037,.5,y-.063)
-box(ax,.23,.52,'Classical reference',w=.36);box(ax,.76,.52,'QUBO → fixed QAOA circuit',w=.40);arrow(ax,.4,.605,.23,.56);arrow(ax,.6,.605,.76,.56)
-box(ax,.76,.41,'Dense / MPS simulators',w=.40);arrow(ax,.76,.48,.76,.45)
-box(ax,.76,.30,'64-shot sampling → decoder',w=.40);arrow(ax,.76,.37,.76,.34)
-box(ax,.5,.19,'Independent physical validator');arrow(ax,.23,.48,.23,.23);arrow(ax,.23,.23,.38,.225);arrow(ax,.76,.26,.62,.225)
-box(ax,.5,.09,'Routes / time / vehicles → EV operating energy*',color='#fff1d5');arrow(ax,.5,.15,.5,.13)
-ax.text(.5,.005,'* EV-energy evaluation is a separate research stage; this smoke test does not establish energy savings.',ha='center',fontsize=10)
+box(ax,.23,.52,'古典計算の参照解',w=.36);box(ax,.76,.52,'二値二次最適化 → 固定量子回路',w=.40);arrow(ax,.4,.605,.23,.56);arrow(ax,.6,.605,.76,.56)
+box(ax,.76,.41,'全状態ベクトル・行列積状態',w=.40);arrow(ax,.76,.48,.76,.45)
+box(ax,.76,.30,'64回測定 → 復号',w=.40);arrow(ax,.76,.37,.76,.34)
+box(ax,.5,.19,'独立した物理検証');arrow(ax,.23,.48,.23,.23);arrow(ax,.23,.23,.38,.225);arrow(ax,.76,.26,.62,.225)
+box(ax,.5,.09,'経路・時間・車両 → 電気自動車の運用電力量※',color='#fff1d5');arrow(ax,.5,.15,.5,.13)
+ax.text(.5,.005,'※電力量評価は別の研究段階。この動作確認は省エネ効果を示すものではない。',ha='center',fontsize=10)
 save(fig,'computation_platform_overview')
-fig,ax=plt.subplots(figsize=(11,13));ax.axis('off');ax.set(xlim=(0,1),ylim=(0,1));ax.set_title('Quantum-circuit branch | N002 / M2 / TW-MODERATE',fontsize=17)
-steps=['Delivery problem → variables and physical constraints','QUBO: 20 variables / 72 couplers','Initial state: H on every qubit','Fixed QAOA circuit: p=1 / CX=144 / logical depth=60','Dense statevector  |  Matrix product state (MPS)','State-level validation: Protocol v2 four layers','Separate finite-shot runs: Dense64 + MPS64, seed 20260927','20-bit raw counts → decoder (no repair / no filtering)','Independent physical validator → integrity verdict / STOP']
+fig,ax=plt.subplots(figsize=(11,13));ax.axis('off');ax.set(xlim=(0,1),ylim=(0,1));ax.set_title('量子回路の処理：顧客2地点・車両2台・中程度の時間窓',fontsize=17)
+steps=['配送問題 → 変数と物理制約','二値二次最適化：20変数・72結合','初期状態：全量子ビットにアダマールゲート','固定量子近似最適化回路：1層・制御反転144個・論理深さ60','全状態ベクトル方式・行列積状態方式','量子状態の検証：第2版手順の四層監査','別実行の有限回測定：各方式64回・乱数の種20260927','20ビットの未加工測定度数 → 復号（修復・除外なし）','独立した物理検証 → 整合性判定・停止']
 for i,t in enumerate(steps):
  y=.94-i*.10;box(ax,.5,y,t,w=.94,h=.06)
  if i:arrow(ax,.5,y+.064,.5,y+.033)
-ax.text(.5,.035,'Dense and MPS are TWO CLASSICAL SIMULATORS of the same quantum circuit.\nState validation and sampling are separate runs; no state export in sampling.',ha='center',va='center',fontsize=12,color='#943b24')
+ax.text(.5,.035,'両方式とも、同一の量子回路を古典計算機で模擬する。\n状態検証と測定は別実行。測定時には状態を出力しない。',ha='center',va='center',fontsize=12,color='#943b24')
 save(fig,'quantum_computation_pipeline')
 # Read stored geometry only. Lane 0 polylines: no shortest-path recomputation.
 edges={}
@@ -81,30 +81,32 @@ fig,axs=plt.subplots(1,2,figsize=(15,10),sharex=True,sharey=True)
 for i,ax in enumerate(axs):
  ax.add_collection(LineCollection(bg,colors='#d6dbe0',linewidths=.45,rasterized=False))
  for j,lines in enumerate(route_data[i]):
-  color=['#006b9a','#d45e00'][j];ax.add_collection(LineCollection(lines,colors=color,linewidths=2,label=['Outbound','Return'][j]))
+  color=['#006b9a','#d45e00'][j];ax.add_collection(LineCollection(lines,colors=color,linewidths=2,label=['往路','復路'][j]))
   flat=[(a,b) for line in lines for a,b in zip(line,line[1:]) if math.dist(a,b)>8]
   for a,b in flat[::max(1,len(flat)//12)]:ax.annotate('',b,a,arrowprops={'arrowstyle':'->','color':color,'lw':1.5})
- for k,label in [(D,'Depot'),(C[0],'C1'),(C[1],'C2')]:
+ for k,label in [(D,'配送拠点'),(C[0],'顧客1'),(C[1],'顧客2')]:
   x,y=stops[k];ax.scatter(x,y,s=65,c='black',marker='s' if k==D else 'o',zorder=5);ax.annotate(label,(x,y),xytext=(8,8),textcoords='offset points',fontsize=13,bbox=dict(fc='white',alpha=.85,ec='none'))
- ax.set(xlim=bounds[:2],ylim=bounds[2:],aspect='equal',xlabel='SUMO network x (m)',ylabel='SUMO network y (m)');ax.set_title(f'Vehicle {i+1}: Depot → C{i+1} → Depot');ax.legend(loc='lower left')
-fig.suptitle('Saved classical feasible reference — actual directed road geometry',fontsize=18)
-fig.text(.5,.015,'C1: bldg-43666 | C2: bldg-67228 | depot: DEP_006\nMapped road access points; gray = network crop. Not a route observed in the 64-shot samples.',ha='center',fontsize=12)
+ ax.set(xlim=bounds[:2],ylim=bounds[2:],aspect='equal',xlabel='道路網の横座標（メートル）',ylabel='道路網の縦座標（メートル）');ax.set_title(f'車両{i+1}：配送拠点 → 顧客{i+1} → 配送拠点');ax.legend(loc='lower left')
+fig.suptitle('保存済みの古典実行可能参照解：実際の有向道路形状',fontsize=18)
+fig.text(.5,.015,'顧客1：建物43666・顧客2：建物67228・配送拠点：DEP_006\n道路上の対応付け位置を表示。灰色は周辺道路。64回測定で得た経路ではない。',ha='center',fontsize=12)
 save(fig,'n002_m2_tw_moderate_routes')
 # Timeline reads exact saved physical fleet events/returns; no optimization.
 valid=next(f for f in fleets if f['feasible']);one=[]
 for order in [C,C[::-1]]:one.append(next(f for f in fleets if order in f['routes'] and f['m_used']==1))
-fig,ax=plt.subplots(figsize=(15,8));rows=[('Vehicle 1',valid['vehicles'][0]),('Vehicle 2',valid['vehicles'][1])]+[(f'One vehicle: C{1+i} → C{2-i}',next(v for v in f['vehicles'] if v['used'])) for i,f in enumerate(one)]
+fig,ax=plt.subplots(figsize=(15,8));rows=[('車両1',valid['vehicles'][0]),('車両2',valid['vehicles'][1])]+[(f'1台の場合：顧客{1+i} → 顧客{2-i}',next(v for v in f['vehicles'] if v['used'])) for i,f in enumerate(one)]
 for idx,(label,v) in enumerate(rows):
  y=3-idx;previous=0
  for ev in v['events']:
   c=next(c for c in inst['customers'] if c['customer_id']==ev['customer']);start=float(Fraction(ev['service_start']));dur=float(c['service_duration']);lo=float(c['earliest_service_time']);hi=float(c['latest_service_time']);ci=C.index(c['customer_id'])+1
-  ax.broken_barh([(lo,hi-lo)],(y+.18,.15),facecolors='#a5d6a7');ax.text((lo+hi)/2,y+.38,f'C{ci} TW',ha='center',fontsize=10)
+  window_offset = .18 * (ci - 1) if idx >= 2 else 0
+  ax.broken_barh([(lo,hi-lo)],(y+.18+window_offset,.15),facecolors='#a5d6a7');ax.text((lo+hi)/2,y+.38+window_offset,f'顧客{ci}の時間窓',ha='center',fontsize=10)
   ax.broken_barh([(previous,start-previous)],(y-.13,.23),facecolors='#70a4ce');ax.broken_barh([(start,dur)],(y-.13,.23),facecolors='#f3bb53');ax.plot(start,y,'o',color='black' if ev['TW'] else '#c62828')
-  ax.text(start,y-.32,f'C{ci}: {start:.3f}s'+(' > deadline' if not ev['TW'] else ''),fontsize=10,color='black' if ev['TW'] else '#c62828');previous=start+dur
- ret=float(Fraction(v['return_time']));ax.broken_barh([(previous,ret-previous)],(y-.13,.23),facecolors='#70a4ce');ax.plot(ret,y,'s',color='#334455');ax.text(ret+10,y,f'{ret:.3f}s',va='center',fontsize=10)
+  ax.text(start,y-.32,f'顧客{ci}：{start:.3f}秒'+('（期限超過）' if not ev['TW'] else ''),fontsize=10,color='black' if ev['TW'] else '#c62828');previous=start+dur
+ ret=float(Fraction(v['return_time']));ax.broken_barh([(previous,ret-previous)],(y-.13,.23),facecolors='#70a4ce');ax.plot(ret,y,'s',color='#334455');ax.text(ret+10,y,f'{ret:.3f}秒',va='center',fontsize=10)
  ax.plot(0,y,'>',color='black')
-ax.set(yticks=[3,2,1,0],yticklabels=[x[0] for x in rows],xlabel='Elapsed seconds from depot opening / departure t=0',xlim=(-20,1450),ylim=(-.65,3.7));ax.grid(axis='x',alpha=.2);ax.set_title('Two vehicles are required by the frozen service-start time windows',fontsize=17,pad=20)
-fig.text(.5,.01,'Blue: road travel | gold: service | green: allowed service-start window | square: depot return\nBoth one-vehicle orders miss the SECOND customer deadline. AT_MOST_M is unchanged.',ha='center',fontsize=12)
+ax.set(yticks=[3,2,1,0],yticklabels=[x[0] for x in rows],xlabel='配送拠点の開場・出発からの経過時間（秒）',xlim=(-20,1450),ylim=(-.65,3.7));ax.grid(axis='x',alpha=.2);ax.set_title('固定した作業開始時間窓を満たすには車両2台が必要',fontsize=17,pad=20)
+fig.subplots_adjust(bottom=.20)
+fig.text(.5,.01,'青：道路移動・黄：作業・緑：作業開始の許容時間窓・四角：配送拠点への帰着\n1台では、どちらの順序でも第2顧客の期限を超える。使用台数の上限制約は同じ。',ha='center',fontsize=12)
 save(fig,'n002_m2_tw_moderate_timeline')
 (O/'FIGURE_DATA_PROVENANCE.json').write_text(json.dumps({'sources':sources,'geometry':'saved OD edge sequence; lane 0 shape clipped at saved offsets, scaled by declared lane length; no routing computation','route_status':'PASS','time_status':'PASS','background_edges_in_crop':len(bg),'figure_routes':'classical feasible reference, not sampled quantum solutions','science_calls':0,'shots':0},indent=2)+'\n')
 print('4 SVG + 4 PNG generated; route and timeline sources verified')

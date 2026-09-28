@@ -11,7 +11,7 @@
 |---|---|
 | 現在工程 | 7 / 21: **観測拡充・交通需要生成** |
 | 完了工程 | 6工程 |
-| 概要 | 正式道路網とRouting Baselineは受入済み。full-EVRP本線の定義は未完。reduced branchの現行R23 authorityは05_src/traffic_simulation/R23_STATUS.mdを参照 |
+| 概要 | 正式道路網と経路計算の基準は受入済み。完全な電気自動車配送経路問題本線の定義は未完。縮約問題の系統の現行R23 正本は05_src/traffic_simulation/R23_STATUS.mdを参照 |
 
 ```mermaid
 flowchart LR
@@ -31,45 +31,45 @@ flowchart LR
 
 | 対象 | 判定 | 説明 |
 |---|---|---|
-| 道路網仕様 | **受入済み** (`accepted`) | V18 geometry/length re-acceptanceとR12-R14 Routing Baseline validationがPASS。旧v16停止記録は履歴であり現行network gateではない |
-| 正式SUMO道路網 | **受入済み** (`accepted`) | current V18 authorityでFORMAL_NETWORK_ACCEPTED=true。accepted scopeとhashはEVRP_EXECUTION_PLAN.mdを正本とする |
-| 下流実験 | **scope別** (`scope_split`) | full-EVRP比較は未準備。R23の正式closure・最終結果・制約・R24 gateは05_src/traffic_simulation/R23_STATUS.mdを唯一のcurrent indexとする |
+| 道路網仕様 | **受入済み** (`accepted`) | V18 geometry/length re-受入とR12-R14 経路計算の基準 検証が合格。旧v16停止記録は履歴であり現行道路網 判定基準ではない |
+| 正式スーモ道路網 | **受入済み** (`accepted`) | 現行 V18 正本で正式道路網の受入=真。受入済み 範囲とハッシュ値はEVRP_EXECUTION_PLAN.mdを正本とする |
+| 下流実験 | **範囲別** (`scope_split`) | 完全な電気自動車配送経路問題比較は未準備。R23の正式参照先の補完・最終結果・制約・R24 判定基準は05_src/traffic_simulation/R23_STATUS.mdを唯一の現行 索引とする |
 
 ## 現在の阻害事項
 
-- full-EVRP本線ではR05-R11のcustomer sampling、demand、time window、service time、depot、EV、charging station定義が未完了
-- full-EVRP R20はcapacity、time window、battery/SOC、charging、fleet、一般reachabilityを含むaccepted QUBOがなくBLOCKED
-- R23の制約とR24 gateは05_src/traffic_simulation/R23_STATUS.mdを参照。Full-EVRPの阻害事項とは分離する
-- Aer結果を量子実機性能またはquantum advantageへ一般化できない
+- 完全な電気自動車配送経路問題本線ではR05-R11の顧客 標本抽出、demand、時間窓、作業時間、配送拠点、電気自動車、充電 station定義が未完了
+- 完全な電気自動車配送経路問題 R20は容量、時間窓、battery/SOC、充電、車両群、一般到達可能性を含む受入済み 制約なし二値二次最適化がなく実行不可
+- R23の制約とR24 判定基準は05_src/traffic_simulation/R23_STATUS.mdを参照。Full-電気自動車配送経路問題の阻害事項とは分離する
+- Aer結果を量子実機性能または量子優位性へ一般化できない
 
 ## 次の作業
 
-1. EVRP_EXECUTION_PLAN.mdに従いfull-EVRP本線の未完Definition stageを進める
-2. 次候補はR24設計・開始前レビュー。現行authorityは05_src/traffic_simulation/R23_STATUS.md、履歴証拠はreproducibility/archive/traffic_simulation/r23/。R24は未開始
-3. R23の固定scientific protocolとarchive evidenceを保持する
-4. full-EVRP/Hayate評価とreduced method evidenceをscope付きで統合する
+1. EVRP_EXECUTION_PLAN.mdに従い完全な電気自動車配送経路問題本線の未完Definition stageを進める
+2. 次候補はR24設計・開始前レビュー。現行正本は05_src/traffic_simulation/R23_STATUS.md、履歴証拠はreproducibility/archive/traffic_simulation/r23/。R24は未開始
+3. R23の固定scientific 手順とarchive 根拠を保持する
+4. full-EVRP/Hayate評価と縮約した 手法 根拠を範囲付きで統合する
 
 ## 全工程
 
-| # | 工程ID | 工程 | 状態 | 証拠 |
+| # | 工程識別子 | 工程 | 状態 | 証拠 |
 |---:|---|---|---|---|
 | 1 | `environment` | Docker・リポジトリ環境 | 完了 | [compose.yaml](compose.yaml)<br>[Dockerfile](docker/analysis/Dockerfile) |
 | 2 | `data_governance` | データ取得・来歴規約 | 完了 | [README.md](03_data/metadata/acquisition/README.md)<br>[traffic_simulation_sources.csv](03_data/metadata/traffic_simulation_sources.csv) |
 | 3 | `study_area` | N03大田区研究範囲 | 完了 | [study_areas.yml](reproducibility/config/traffic_simulation/study_areas.yml)<br>[20260717_mlit_n03_2026_tokyo_acquisition.md](03_data/metadata/acquisition/20260717_mlit_n03_2026_tokyo_acquisition.md) |
-| 4 | `baseline_inputs` | JARTIC・OSM基礎入力 | 完了 | [20260717_jartic_traffic_volume_acquisition.md](03_data/metadata/acquisition/20260717_jartic_traffic_volume_acquisition.md)<br>[20260717_osm_ota_ward_acquisition.md](03_data/metadata/acquisition/20260717_osm_ota_ward_acquisition.md) |
+| 4 | `baseline_inputs` | 日本道路交通情報センター・オープンストリートマップ基礎入力 | 完了 | [20260717_jartic_traffic_volume_acquisition.md](03_data/metadata/acquisition/20260717_jartic_traffic_volume_acquisition.md)<br>[20260717_osm_ota_ward_acquisition.md](03_data/metadata/acquisition/20260717_osm_ota_ward_acquisition.md) |
 | 5 | `input_visualization` | 入力道路・観測点レビュー地図 | 完了 | [render_study_area.py](05_src/traffic_simulation/visualization/render_study_area.py)<br>[README.md](05_src/traffic_simulation/visualization/README.md) |
-| 6 | `sumo_network` | SUMO道路網生成・構造検証 | 完了 | [relation_closure_v16.yml](reproducibility/config/traffic_simulation/relation_closure_v16.yml)<br>[20260730_ota_ward_relation_closure_v16.md](03_data/metadata/acquisition/20260730_ota_ward_relation_closure_v16.md)<br>[20260730_ota_ward_v15_exception_rule_validation.md](03_data/metadata/acquisition/20260730_ota_ward_v15_exception_rule_validation.md)<br>[build_sumo_network.py](05_src/traffic_simulation/network/build_sumo_network.py)<br>[classify_resolver_exceptions.py](05_src/traffic_simulation/network/classify_resolver_exceptions.py) |
+| 6 | `sumo_network` | スーモ道路網生成・構造検証 | 完了 | [relation_closure_v16.yml](reproducibility/config/traffic_simulation/relation_closure_v16.yml)<br>[20260730_ota_ward_relation_closure_v16.md](03_data/metadata/acquisition/20260730_ota_ward_relation_closure_v16.md)<br>[20260730_ota_ward_v15_exception_rule_validation.md](03_data/metadata/acquisition/20260730_ota_ward_v15_exception_rule_validation.md)<br>[build_sumo_network.py](05_src/traffic_simulation/network/build_sumo_network.py)<br>[classify_resolver_exceptions.py](05_src/traffic_simulation/network/classify_resolver_exceptions.py) |
 | 7 | `demand_and_observations` | **観測拡充・交通需要生成** | **進行中** | [EVRP_EXECUTION_PLAN.md](EVRP_EXECUTION_PLAN.md) |
-| 8 | `optimization_implementation_validation` | 最適化基盤検証・配送EV制約の段階追加 | 未着手 | - |
+| 8 | `optimization_implementation_validation` | 最適化基盤検証・配送電気自動車制約の段階追加 | 未着手 | - |
 | 9 | `signal_vehicle_driver` | 信号・車両・運転行動設定 | 未着手 | - |
 | 10 | `calibration` | 交通モデル較正 | 未着手 | - |
 | 11 | `independent_validation` | 独立データ検証 | 未着手 | - |
 | 12 | `environment_scenarios` | 天候・事故等の環境シナリオ固定 | 未着手 | - |
 | 13 | `delivery_instance` | 正式コスト行列・共通配送問題固定 | 未着手 | - |
-| 14 | `classical_qaoa` | 古典最適化・Aer QAOA正式比較 | 未着手 | - |
-| 15 | `simulation_evaluation` | 同一SUMO環境で走行・比較評価 | 未着手 | - |
+| 14 | `classical_qaoa` | 古典最適化・Aer 量子近似最適化アルゴリズム正式比較 | 未着手 | - |
+| 15 | `simulation_evaluation` | 同一スーモ環境で走行・比較評価 | 未着手 | - |
 | 16 | `driver_sensitivity` | 熟練ドライバー差の感度分析 | 未着手 | - |
-| 17 | `ev_delivery_evaluation` | EV配送・配送需要充足人口相当評価 | 未着手 | - |
+| 17 | `ev_delivery_evaluation` | 電気自動車配送・配送需要充足人口相当評価 | 未着手 | - |
 | 18 | `spatial_expansion` | 段階的な空間拡張 | 未着手 | - |
 | 19 | `ci_reproducibility` | CI・再現性検査 | 未着手 | - |
 | 20 | `hayate_reproduction` | hayate再現 | 未着手 | - |
@@ -77,11 +77,11 @@ flowchart LR
 
 ## 更新方法
 
-状態は次のYAMLだけを編集する。成果物の存在だけで工程を自動昇格させない。
+状態は次のヤムル形式だけを編集する。成果物の存在だけで工程を自動昇格させない。
 
 `reproducibility/config/traffic_simulation/research_stage.yml`
 
-YAML更新後にダッシュボードを再生成する。
+ヤムル形式更新後にダッシュボードを再生成する。
 
 ```bash
 PYTHONPATH=05_src python -m traffic_simulation.research_stage --write

@@ -1,12 +1,16 @@
-# TLS Review Specification
+<a id="tls-review-specification"></a>
 
-## Scope
+# 信号制御の確認 仕様
+
+<a id="scope"></a>
+
+## 範囲
 
 TLS Review starts only after the permission edge and connection set is fixed. It owns signalized-junction selection and connection-to-link assignment. It does not change lane/connection permissions or calibrate observed timing.
 
-## States
+## 状態
 
-| State | Meaning |
+| State | 意味 |
 |---|---|
 | `not_required` | No signalized junction is in scope |
 | `review_required` | A governed connection set exists but has no accepted mapping |
@@ -16,9 +20,11 @@ TLS Review starts only after the permission edge and connection set is fixed. It
 
 Only `not_required` and `reviewed` can satisfy the TLS input gate.
 
-## Normative Requirements
+<a id="normative-requirements"></a>
 
-| ID | Requirement | Failure | Test |
+## 必須要件
+
+| 識別子 | 要件 | 不具合 | 試験 |
 |---|---|---|---|
 | TLS-REQ-001 | Review MUST use the SHA-256 of canonical permission connections and reviewed nodes as its identity. | TLS001 | TLS-TST-001 |
 | TLS-REQ-002 | Provisional `.tll.xml` MAY be evidence but MUST NOT be final input. | TLS002 | TLS-TST-002 |
@@ -31,7 +37,9 @@ Only `not_required` and `reviewed` can satisfy the TLS input gate.
 | TLS-REQ-009 | Reviewed connection, TLS XML and manifest MUST validate against pinned XSD/schema before eligibility. | TLS009 | TLS-TST-009 |
 | TLS-REQ-010 | Signal cycle, duration, split and offset values without observed evidence MUST be marked initialized, not observed. | TLS010 | TLS-TST-010 |
 
-## Outputs
+<a id="outputs"></a>
+
+## 出力
 
 - `governed_reviewed.con.xml`
 - `governed_reviewed.tll.xml`

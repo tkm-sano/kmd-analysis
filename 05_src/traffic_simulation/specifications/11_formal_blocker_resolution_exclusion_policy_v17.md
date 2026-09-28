@@ -1,10 +1,14 @@
-# Formal Blocker Resolution and Exclusion Policy v17
+<a id="formal-blocker-resolution-and-exclusion-policy-v17"></a>
+
+# 正式阻害要因解決 ・ 除外方針 v17
 
 Status: approved  
 Approved by: repository owner directive  
 Approval date: 2026-08-04
 
-## Purpose
+<a id="purpose"></a>
+
+## 目的
 
 Every formal blocker shall receive exactly one strategy:
 
@@ -14,7 +18,9 @@ Every formal blocker shall receive exactly one strategy:
 
 The default is `preserve_and_resolve`. Exclusion is not attribute resolution and shall never add `out_of_scope` to `resolution_status`.
 
-## Mandatory identification and root cause
+<a id="mandatory-identification-and-root-cause"></a>
+
+## 必須特定 ・ 根本原因
 
 Every inventory entry shall contain `record_id`, `source_way_id`, `directed_segment_id`, `lane_position`, `vehicle_class`, `attribute_name`, and `stop_code`. Inapplicable fields shall be explicit `null` values.
 
@@ -24,7 +30,9 @@ The single most-upstream cause shall be selected from:
 
 Downstream effects belong in `secondary_causes`. `ACCESS_PERMISSION_UNRESOLVED` shall not be treated as the root cause when an upstream attribute record caused it. Permission blockers shall retain their causal upstream record IDs and shall be regenerated after upstream remediation.
 
-## Scope decision
+<a id="scope-decision"></a>
+
+## 範囲 判断
 
 The decision order is mandatory:
 
@@ -37,7 +45,9 @@ The decision order is mandatory:
 
 Missing OSM attributes, unsupported syntax, incomplete implementation, high blocker volume, schedule pressure, and a desire to pass acceptance are never exclusion evidence.
 
-## Strategy rules
+<a id="strategy-rules"></a>
+
+## 方針規則
 
 - Governed records with an implementable or registrable remedy use `preserve_and_resolve`.
 - Proven outside-scope records use `formal_exclusion` only when all exclusion requirements pass.
@@ -46,7 +56,9 @@ Missing OSM attributes, unsupported syntax, incomplete implementation, high bloc
 
 General-road direction, Directed Segment mapping, directional lanes, lane vectors, access rules, conditional grammar, Scenario Context, vehicle ontology, speed rules, production defects, and registry/schema/configuration inconsistencies are remediation work, not exclusion reasons.
 
-## Resolution change order
+<a id="resolution-change-order"></a>
+
+## 解決変更順序
 
 Every new resolving rule shall be introduced in this order:
 
@@ -63,7 +75,9 @@ Every new resolving rule shall be introduced in this order:
 
 Source OSM, generated JSON, and generated `.net.xml` shall not be manually patched.
 
-## Formal exclusion
+<a id="formal-exclusion"></a>
+
+## 正式 除外
 
 All of the following are mandatory:
 
@@ -75,7 +89,9 @@ All of the following are mandatory:
 
 Every excluded entry shall be written to the Exclusion Manifest with all fields required by `exclusion_manifest_v17.schema.json`. Unregistered rules stop with `EXCLUSION_RULE_UNREGISTERED`. `private` alone is not an exclusion rule.
 
-## Population accounting
+<a id="population-accounting"></a>
+
+## 母集団会計
 
 Every population dimension shall satisfy:
 
@@ -87,7 +103,9 @@ Every governed attribute collection shall satisfy:
 
 An ID shall not occur in both governed and excluded sets. Exclusions shall not be counted as resolved records. Materialization omission remains separate from exclusion.
 
-## Phase sequencing and acceptance
+<a id="phase-sequencing-and-acceptance"></a>
+
+## 工程順序 ・ 受入
 
 Phase 9 through Phase 12 may continue with explicit blockers. Phase 13 remediation priority is implementation defects, Directed Segment/relation mapping, directional lanes, Scenario Context, vehicle ontology, static access, conditional access, speed, evidence resolution, then formal exclusion.
 

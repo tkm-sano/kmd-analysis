@@ -59,8 +59,8 @@ def test_public_view_is_default_and_technical_content_is_collapsed() -> None:
     assert "SHA256" not in public_markup
     assert "./research " not in public_markup
     assert "Research Commands" not in public_markup
-    assert "Technical Details" in html
-    assert "Explore Network / Instances" in html
+    assert "技術的な詳細" in html
+    assert "道路網・配送問題を見る" in html
 
 
 def test_public_state_is_grounded_in_current_state() -> None:

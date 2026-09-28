@@ -1,32 +1,26 @@
-# Tokyo traffic-simulation raw data
+<a id="tokyo-traffic-simulation-raw-data"></a>
 
-This directory contains local, third-party source material for the additive
-Tokyo traffic-simulation layer. Downloaded files are ignored by Git; only this
-documentation and the empty directory skeleton are tracked.
+# 東京交通シミュレーションの未加工データ
 
-Use the following source-specific directories:
+このディレクトリには、追加の東京交通シミュレーションで使う第三者の原資料をローカルに保存する。ダウンロードしたファイルは版管理対象外とし、この説明と空のディレクトリ構成のみを管理する。
 
-- `boundaries/`: administrative and study-area boundaries, including MLIT N03.
-- `charging/`: charging-station API responses and source snapshots.
-- `driver_behavior/`: licensed external driver-behavior datasets or extracts.
-- `demand_proxy/`: official aggregate statistics used only to derive synthetic
-  demand proxies; parcel counts here are not customer or stop records.
-- `freight/`: freight-flow and aggregate freight-demand source tables.
-- `freight_network/`: designated freight-road GIS data, including MLIT N12.
-- `gtfs/`: public-transport GTFS and GTFS-RT snapshots.
-- `jartic/`: time-stamped JARTIC WFS API responses.
-- `logistics_hubs/`: logistics-facility GIS data, including MLIT P31.
-- `osm/`: date-pinned OpenStreetMap PBF or XML extracts.
-- `population/`: e-Stat population and household mesh source files.
-- `road_census/`: MLIT road-census segment and time-band tables.
-- `tokyo_police/`: Tokyo Metropolitan Police traffic-count archives.
-- `vehicles/`: official vehicle specification source snapshots.
+資料の種類に応じて、次のディレクトリを使う。
 
-For every acquired file, add one record to
-`03_data/metadata/traffic_simulation_sources.csv` before processing it. Preserve
-the original download, record its SHA-256 digest, and write derived data only
-under `03_data/processed/traffic_simulation/`.
+- `boundaries/`：国土数値情報の行政区域データを含む、行政区域と研究対象範囲の境界。
+- `charging/`：充電設備情報の取得結果と原資料の保存時点の記録。
+- `driver_behavior/`：利用許諾を得た外部の運転行動データまたはその抽出結果。
+- `demand_proxy/`：合成需要の代理指標の導出にのみ使う公的集計統計。荷物件数は顧客・配送地点の個別記録ではない。
+- `freight/`：貨物流動と集計貨物需要の原表。
+- `freight_network/`：国土数値情報の指定道路を含む貨物道路の地理情報。
+- `gtfs/`：公共交通の標準データとリアルタイム情報の保存時点の記録。
+- `jartic/`：日本道路交通情報センターの地理情報取得結果。取得時刻を記録する。
+- `logistics_hubs/`：国土数値情報を含む物流施設の地理情報。
+- `osm/`：日付を固定したオープンストリートマップの抽出データ。
+- `population/`：政府統計の人口・世帯メッシュ原資料。
+- `road_census/`：国土交通省の道路交通センサスの区間表・時間帯別表。
+- `tokyo_police/`：警視庁の交通量調査資料。
+- `vehicles/`：公式な車両諸元の原資料。
 
-Also create a human-readable acquisition and validation record by copying
-`03_data/metadata/acquisition/_template.md`. The acquisition-record index and
-the completed JARTIC example are under `03_data/metadata/acquisition/`.
+取得したファイルごとに、処理前に`03_data/metadata/traffic_simulation_sources.csv`へ1件の記録を追加する。取得時の原本を保持し、ハッシュ値を記録する。加工データの書込み先は`03_data/processed/traffic_simulation/`に限定する。
+
+`03_data/metadata/acquisition/_template.md`を複製し、人が読める取得・検証記録も作成する。取得記録の索引と日本道路交通情報センターの記入済み例は`03_data/metadata/acquisition/`にある。

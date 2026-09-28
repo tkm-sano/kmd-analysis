@@ -1,10 +1,14 @@
-# R23 reduced formal experiment design V1
+<a id="r23-reduced-formal-experiment-design-v1"></a>
+
+# R23 縮約した正式実験設計 V1
 
 This is a research-design decision record. It freezes the initial formal
 Experiment A conditions but does not execute the experiment and does not claim
 `R23 PASS`.
 
-## Frozen question and scope
+<a id="frozen-question-and-scope"></a>
+
+## 固定済み問い ・ 範囲
 
 The question is: how do problem scale and QAOA depth affect feasibility,
 optimal-solution probability, decoded route quality, and classical
@@ -16,7 +20,9 @@ The scope remains fixed-depot, customer-only `n x n` position encoding with
 R20/R21/R22 validated reduced formulation. Capacity, time windows, battery,
 charging, fleet, and multiple vehicles remain outside R23.
 
-## Experiment A decision
+<a id="experiment-a-decision"></a>
+
+## 実験 A 判断
 
 The primary design is `n x instance x p`:
 
@@ -33,7 +39,7 @@ SHA-256 and selected before any QAOA result is observed. The selected instance
 manifest, matrix hashes, and exact permutation-enumeration references must be
 frozen before execution. The resulting matrix is 15 instances and 45 runs.
 
-## Outcomes
+## 結果
 
 Primary outcomes are raw full-state `P_feasible`, raw full-state `P_optimal`,
 and relative optimality gap. Absolute gap, best decoded route objective,
@@ -47,7 +53,7 @@ future hardware performance, or quantum-advantage evidence. Inclusive and
 nested timing fields follow the implementation contract and are never summed
 twice.
 
-## Deferred designs and gates
+## 保留設計案 ・ gates
 
 Experiment B (initialization/optimizer robustness) is a separate deferred
 sensitivity experiment. Experiment C (finite-shot sensitivity) is deferred and
@@ -59,7 +65,9 @@ stop conditions are defined in the JSON configuration. A budget hit is a valid
 completed run with a diagnostic flag when the result and provenance are sound;
 it is not silently interpreted as convergence.
 
-## Status boundary
+<a id="status-boundary"></a>
+
+## 状態 境界
 
 The design is frozen as `R23_FORMAL_EXPERIMENT_DESIGN_V1` and ready for a
 separate execution authorization. Formal runs, p/n expansion, shots,

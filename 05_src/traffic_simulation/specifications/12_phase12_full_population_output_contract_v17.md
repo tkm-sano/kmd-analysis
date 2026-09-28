@@ -1,8 +1,12 @@
-# Phase 12 Full-Population Output Contract v17
+<a id="phase-12-full-population-output-contract-v17"></a>
+
+# 工程 12 母集団全体出力取り決め v17
 
 Status: approved
 
-## 1. Purpose
+<a id="1-purpose"></a>
+
+## 1. 目的
 
 Phase 12 SHALL execute the structural and formal v17 Resolver profiles against the fixed
 population and SHALL persist the complete, immutable evidence needed to reproduce every
@@ -10,7 +14,9 @@ count, blocker, exclusion decision, and profile difference. Phase 12 is an inven
 accounting phase. It does not claim that formal resolution or Attribute Resolution
 Acceptance is complete.
 
-## 2. Authority and fixed inputs
+<a id="2-authority-and-fixed-inputs"></a>
+
+## 2. 正本 ・ 固定済み入力
 
 The machine-readable authority is
 `reproducibility/config/traffic_simulation/v17_phase12_output_contract.yml`. The source OSM,
@@ -18,7 +24,7 @@ Configuration, Registry bundle, Semantic Invariants, Scenario Context, blocker p
 the source Git commit SHALL be hash-bound in each run manifest. A dirty worktree is
 prohibited.
 
-## 3. Required executions
+## 3. 必須実行
 
 Two independent executions, `run_1` and `run_2`, SHALL be performed in fresh output
 directories with identical inputs, container digest, library versions, effective arguments,
@@ -34,7 +40,9 @@ SHALL record `sumo_version: not_invoked_phase12` rather than claiming an unexecu
 version. The later SUMO Network Integration gate SHALL independently pin and execute its
 required SUMO runtime.
 
-## 4. Required artifacts
+<a id="4-required-artifacts"></a>
+
+## 4. 必須成果物
 
 Each run SHALL contain:
 
@@ -56,7 +64,9 @@ The profile artifacts SHALL embed the complete outputs of Directed Segment, dire
 lanes, static access, conditional access, final permission, and speed stages. Projection-
 only or summary-only files do not satisfy the full-population artifact requirement.
 
-## 5. Blocker identity and causality
+<a id="5-blocker-identity-and-causality"></a>
+
+## 5. 阻害要因同一性 ・ 因果関係
 
 Every blocker SHALL have one canonical `blocker_id`, one canonical `record_id`, a registered
 `root_cause_category`, and exactly one strategy. Permission blockers SHALL contain non-empty
@@ -71,7 +81,9 @@ Scenario Context. Every affected permission tuple SHALL link to that record. The
 record SHALL retain the observed access-tag keys, candidate rule IDs, and affected permission
 count. The link is diagnostic evidence and SHALL NOT change the permission status to resolved.
 
-## 6. Population accounting
+<a id="6-population-accounting"></a>
+
+## 6. 母集団会計
 
 Accounting SHALL be performed separately for each declared population unit. For every unit:
 
@@ -84,7 +96,9 @@ difference by registered assumption ID, exclusion ratios, and exclusion network 
 Empty production exclusions SHALL still report zero counts and identical before/after
 network metrics.
 
-## 7. Serialization and hashes
+<a id="7-serialization-and-hashes"></a>
+
+## 7. 直列化 ・ ハッシュ値
 
 Semantic JSON SHALL use UTF-8, lexicographically sorted object keys, compact separators,
 Unicode characters without ASCII escaping, and exactly one trailing newline in the file.
@@ -105,14 +119,16 @@ Each validator SHALL report required, completed, and failed check counts. Per-ca
 validation results and the whole-run result SHALL be derived from those reported results;
 they SHALL NOT be populated with unconditional success literals.
 
-## 8. Atomic publication and immutability
+## 8. 原子的な公開 ・ 不変性
 
 Every artifact SHALL first be written to a file in the destination directory, flushed and
 closed, validated, and then atomically renamed to its final name. Existing final files SHALL
 not be overwritten. A failed run SHALL retain no `published` artifact and SHALL never be
 promoted by copying only the successful subset.
 
-## 9. Phase 12 completion gate
+<a id="9-phase-12-completion-gate"></a>
+
+## 9. 工程 12 完了判定基準
 
 Phase 12 may be recorded as passed only when all required files exist, all schemas and
 semantic invariants pass, all hashes and accounting equations match, no record identity is

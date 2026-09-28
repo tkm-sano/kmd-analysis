@@ -1,14 +1,7 @@
-# Retained data-processing scripts
+<a id="retained-data-processing-scripts"></a>
 
-The scripts in this directory support provenance for processed artifacts that
-predate the additive Tokyo traffic-simulation layer. Some retain historical
-input names and output-table relationships and must not be used as new traffic
-data acquisition entry points.
+# 保持しているデータ処理スクリプト
 
-New network, demand, calibration, simulation, and validation code belongs under
-`05_src/traffic_simulation/` and imports locations from
-`traffic_simulation.paths`. New raw files are stored only under
-`03_data/raw/traffic_simulation/`; new generated inputs are stored only under
-`03_data/processed/traffic_simulation/`. Port individual transformations from
-this directory only after replacing their legacy paths and removing writes to
-frozen synthetic-EVRP artifacts.
+このディレクトリのスクリプトは、東京の交通シミュレーション機能を追加する前に作成された加工成果物の来歴を支える。一部には過去の入力名や出力表間の関係が残っているため、新しい交通データの取得入口として使ってはならない。
+
+新しい道路網・需要・較正・シミュレーション・検証のコードは`05_src/traffic_simulation/`に置き、保存先を`traffic_simulation.paths`から参照する。新しい未加工ファイルは`03_data/raw/traffic_simulation/`、新しい加工入力は`03_data/processed/traffic_simulation/`にのみ保存する。このディレクトリの個別処理を移植する場合は、旧保存先を置き換え、固定済みの合成電気自動車配送問題の成果物への書込みを取り除いてから行う。

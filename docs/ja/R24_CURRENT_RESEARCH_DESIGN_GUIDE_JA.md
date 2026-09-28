@@ -2,41 +2,43 @@
 
 更新日: 2026-09-15 JST
 
-この文書は、英語で記録されている[現行研究設計](../../05_src/traffic_simulation/CURRENT_RESEARCH_DESIGN.md)と[進捗・意思決定記録](../../05_src/traffic_simulation/RESEARCH_PROGRESS_AND_DECISION_RECORD.md)を日本語で読むための案内です。固定enum、schema、hash、数式については英語の原文authorityを優先します。
+この文書は、英語で記録されている[現行研究設計](../../05_src/traffic_simulation/CURRENT_RESEARCH_DESIGN.md)と[進捗・意思決定記録](../../05_src/traffic_simulation/RESEARCH_PROGRESS_AND_DECISION_RECORD.md)を日本語で読むための案内です。固定列挙値、データ構造、ハッシュ値、数式については英語の原文正本を優先します。
 
 ## 研究目的
 
-技術・社会・環境条件の変化が、EVによる住宅向けB2Cラストマイル配送の計画と運用を通じて、物流システムの運用・経済結果へどのように波及するかを評価します。
+技術・社会・環境条件の変化が、電気自動車による住宅向けB2Cラストマイル配送の計画と運用を通じて、物流システムの運用・経済結果へどのように波及するかを評価します。
 
-量子計算は候補となる解法です。量子優位性や、量子技術によるバッテリー性能向上を前提にはしません。古典参照解、計算資源の実行可能性、scenario evidenceを分離して検証します。
+量子計算は候補となる解法です。量子優位性や、量子技術によるバッテリー性能向上を前提にはしません。古典参照解、計算資源の実行可能性、想定条件 根拠を分離して検証します。
 
 ## 現在の研究範囲
 
 - 地理範囲: 東京都大田区
 - 用途: 住宅向けB2Cラストマイル配送
 - Primary vehicle class: kei-class electric commercial van
-- 現在の問題: multi-vehicle capacitated routingであるR24/CVRP
-- 現在の役割: 大田区を基盤とするcontrolled methodological benchmark
-- 対象外: 実在carrierの運用再構成、観測配送routeの復元
+- 現在の問題: 複数車両 capacitated 経路計算であるR24/CVRP
+- 現在の役割: 大田区を基盤とする条件を統制した methodological ベンチマーク
+- 対象外: 実在carrierの運用再構成、観測配送経路の復元
 
 ## データと意味
 
-道路はOSM由来のaccepted run_3 SUMO network、建物はPLATEAU、大田区範囲はMLIT N03、人口・世帯・住宅・宅配関連統計は公開統計を使用します。需要は公開統計で較正した合成需要です。
+道路はオープンストリートマップ由来の受入済み run_3 交通シミュレーターの道路網、建物はPLATEAU、大田区範囲はMLIT N03、人口・世帯・住宅・宅配関連統計は公開統計を使用します。需要は公開統計で較正した合成需要です。
 
-現在のsource horizonはdesignated synthetic day `2026-01-01`です。これは実観測日、dispatch wave、shift、tourではありません。
+現在の出典 計画期間はdesignated 合成 day `2026-01-01`です。これは実観測日、配車 wave、移動、tourではありません。
 
-| Stage | Customers/rows | Parcel-equivalents |
+| 段階 | Customers/rows | Parcel-equivalents |
 |---|---:|---:|
 | positive household-day source | 73,547 | 82,246 |
-| stable building assignmentあり | 73,200 | 81,859 |
+| stable 建物 割当あり | 73,200 | 81,859 |
 | positive-demand buildings | 39,956 | 81,859 |
 | final routing-eligible population | 39,930 | 81,793 |
 
-`parcel-equivalent`は、較正済み合成需要の抽象的な内容個数です。実parcel、注文、customer、stop、kg、m³ではありません。
+`parcel-equivalent`は、較正済み合成需要の抽象的な内容個数です。実荷物、注文、顧客、配送地点、kg、m³ではありません。
 
-## Customerとrouting proxy
+<a id="customerとrouting-proxy"></a>
 
-> **39,930 eligible customersは、大田区を根拠としてoptimization instanceを生成するためのsource populationであり、必須の単一optimization instanceではありません。本研究は39,930 customers全体の同時求解を要求しません。Optimization scaleは現在はbenchmark parameter、将来はcomputational-capability scenario variableとして扱います。**
+## 顧客と経路計算 代理指標
+
+> **39,930 対象条件を満たす 顧客は、大田区を根拠として最適化 問題例を生成するための出典 母集団であり、必須の単一最適化 問題例ではありません。本研究は39,930 顧客全体の同時求解を要求しません。最適化 規模は現在はベンチマーク パラメーター、将来はcomputational-capability 想定条件 変数として扱います。**
 
 \[
 |C_{\mathrm{eligible}}|=39{,}930,\qquad
@@ -44,30 +46,32 @@ C_{n,r}\subset C_{\mathrm{eligible}},\qquad
 \text{Eligible Source Population}\neq\text{Optimization Instance}.
 \]
 
-39,930 customers全体を一つの配送便、実運用planning instance、CVRP / VRPTW / EVRP、またはquantum computerで必ず解く対象とはしません。39,930は将来instanceを生成できる現行source population ceilingです。
+39,930 顧客全体を一つの配送便、実運用planning 問題例、容量制約付き配送経路問題 / 時間窓付き配送経路問題 / 電気自動車配送経路問題、または量子計算 computerで必ず解く対象とはしません。39,930は将来問題例を生成できる現行出典 母集団 ceilingです。
 
-> **本研究では39,930 customers全体を単一CVRP / VRPTW / EVRPとして解くことを必須の研究到達目標としない。**
+> **本研究では39,930 顧客全体を単一容量制約付き配送経路問題 / 時間窓付き配送経路問題 / 電気自動車配送経路問題として解くことを必須の研究到達目標としない。**
 
-一つのstable positive-demand buildingを一つのbenchmark customer identityとします。道路上のedge-offsetはrouting proxyであり、entrance、curb、loading position、実停止地点ではありません。
+一つのstable 正-demand 建物を一つのベンチマーク 顧客 同一性とします。道路上の道路区間-位置補正値は経路計算 代理指標であり、entrance、curb、loading 位置、実停止地点ではありません。
 
-複数buildingが同じproxyを共有しても、customer identityは統合しません。Final populationでは28,274 customersが10,016 shared-proxy groupsに属します。
+複数建物が同じ代理指標を共有しても、顧客 同一性は統合しません。Final 母集団では28,274 顧客が10,016 shared-代理指標 groupsに属します。
 
-## Routing
+## 経路計算
 
 - Graph: accepted V18/run_3
 - Graph SHA-256: `460554c7716fe5e3e1410bbee790e69745a2c423146bac88e51e3a2b95f051b2`
 - SUMO permission class: `delivery`
 - Depot: `DEP_006`
 - Depot edge: `617631294`
-- Objective: model/free-flow travel time最小
-- Distance: 同じfastest-time path上の道路距離
+- 目的: model/free-flow 移動 時間最小
+- Distance: 同じfastest-時間 保存先上の道路距離
 - Endpoint: edge plus offset
 
-Routingはdirectedかつconnection-awareです。`i -> j`と`j -> i`を別に扱い、missing/unreachable値を0や有限penaltyへ置換しません。Population-level SCCはeligibility screeningにだけ使い、instanceではdepotを含む全ordered-pair ODをrun_3上で計算します。
+Routingはdirectedかつ接続-awareです。`i -> j`と`j -> i`を別に扱い、missing/unreachable値を0や有限罰則項へ置換しません。Population-level SCCはeligibility screeningにだけ使い、問題例では配送拠点を含む全ordered-pair 出発地・到着地をrun_3上で計算します。
 
-## Capacity
+<a id="capacity"></a>
 
-Primary capacity unitは`METHODOLOGICAL_PARCEL_EQUIVALENT`です。
+## 容量
+
+Primary 容量 単位は`METHODOLOGICAL_PARCEL_EQUIVALENT`です。
 
 \[
 q_i=N_i,\qquad Q=14
@@ -80,11 +84,13 @@ m=\left\lceil\frac{D}{\rho^*Q}\right\rceil,
 \rho_{actual}=\frac{D}{mQ}
 \]
 
-`Q=14`は全candidateを個別に収容できる最小整数として固定したmethodological capacityです。Vehicle payloadのkg値から変換したものではありません。`mQ>=D`だけでは十分でないため、各条件でexact bin-packing preflightを行います。
+`Q=14`は全候補を個別に収容できる最小整数として固定したmethodological 容量です。車両 積載量のkg値から変換したものではありません。`mQ>=D`だけでは十分でないため、各条件で厳密 bin-packing 事前確認を行います。
 
-## Instance suite
+<a id="instance-suite"></a>
 
-Primary repeated-random suiteはhash-ranked SRSWORです。需要重み、PPS、quartile×tertile stratification、manual replacementは使用しません。
+## 問題例 検証一式
+
+Primary repeated-random 検証一式はハッシュ値-ranked SRSWORです。需要重み、PPS、quartile×tertile stratification、manual replacementは使用しません。
 
 - Quantum-comparable core: `n={2,3,4}`
 - Classical extension: `n={5,8,10,15,20}`
@@ -92,9 +98,9 @@ Primary repeated-random suiteはhash-ranked SRSWORです。需要重み、PPS、
 - Structural: `n={4,10,20}` × `CLUSTERED/DISPERSED/MIXED` × 3
 - Anchors: Primary R01のn=4,10,20 alias
 
-これらの`n`は`COMPUTATIONAL BENCHMARK SIZE`であり、大田区配送の統計的代表sample sizeでも、固定されたoperational instance sizeでもありません。
+これらの`n`は`COMPUTATIONAL BENCHMARK SIZE`であり、大田区配送の統計的代表標本 規模でも、固定されたoperational 問題例 規模でもありません。
 
-No-redraw ruleは`sample once, validate, record`です。Demand pattern、difficulty、duplicate、zero arc、capacity strength、solver/QAOA結果を理由にsampleを変更しません。
+No-redraw 規則は`sample once, validate, record`です。需要 pattern、difficulty、重複、zero 区間、容量 strength、solver/QAOA結果を理由に標本を変更しません。
 
 ## 生成済み結果
 
@@ -119,27 +125,29 @@ R23 single-vehicle route ordering
   -> EVRP battery/SOC/charging
 ```
 
-下位layerで有効な定義は継承しますが、新しい制約やclaimには別のauthorityとvalidationが必要です。
+下位層で有効な定義は継承しますが、新しい制約や主張には別の正本と検証が必要です。
 
-## Future capability scenarioとplanning scale
+<a id="future-capability-scenarioとplanning-scale"></a>
 
-将来scenarioを少なくとも
+## 将来能力想定条件と計画規模
+
+将来想定条件を少なくとも
 
 \[
 s=(\text{Computation},\text{EV},\text{Demand},\text{Society},\text{Energy})
 \]
 
-として扱い、Computation scenarioに
+として扱い、Computation 想定条件に
 
 \[
 n_{\max}(s)=\text{scenario }s\text{で扱える最大optimization scale}
 \]
 
-を含めます。`n_max(s)`は固定された実運用customer数ではなく、classical computing、HPC、quantum、quantum-classical hybrid、decomposition、AI-assisted optimization、Quantum × HPC、Quantum × HPC × AIなどが支えるplanning scopeです。原則`n_max(s) <= 39,930`とし、社会scenarioがsynthetic eligible population自体を変える場合は、そのscenario固有のpopulation sizeを上限にできます。具体的なscale列は将来scenario設計で定め、今回freezeしません。
+を含めます。`n_max(s)`は固定された実運用顧客数ではなく、古典計算 computing、高性能計算、量子計算、量子計算-古典計算 混合型、分解、AI-assisted 最適化、量子計算 × 高性能計算、量子計算 × 高性能計算 × AIなどが支えるplanning 範囲です。原則`n_max(s) <= 39,930`とし、社会想定条件が合成 対象条件を満たす 母集団自体を変える場合は、その想定条件固有の母集団 規模を上限にできます。具体的な規模列は将来想定条件設計で定め、今回固定しません。
 
-Classical scalingは`n -> runtime / resource / optimality / feasibility`を測り、`n_max^classical(s)`の根拠を作ります。Quantum / hybrid scalingは`n -> qubits / circuit resources / runtime / solution quality`を測り、`n_max^quantum(s)`または`n_max^hybrid(s)`へ接続します。
+古典計算 規模拡大は`n -> runtime / resource / optimality / feasibility`を測り、`n_max^classical(s)`の根拠を作ります。量子計算 / 混合型 規模拡大は`n -> qubits / circuit resources / runtime / solution quality`を測り、`n_max^quantum(s)`または`n_max^hybrid(s)`へ接続します。
 
-研究は、(1) Method / Solver Benchmark、(2) Future Capability Scenario、(3) Logistics / Economic Impactの3層で整理します。評価chainは次のとおりです。
+研究は、(1) 手法 / Solver Benchmark、(2) Future Capability 想定条件、(3) Logistics / Economic Impactの3層で整理します。評価chainは次のとおりです。
 
 ```text
 Technology / Social Scenario
@@ -151,35 +159,39 @@ Technology / Social Scenario
   -> C_op
 ```
 
-計算能力向上をruntime短縮だけでなく、`Larger Solvable Instance -> Larger Integrated Planning Scope`として評価します。経済定義`C_op = E_operation × p_electricity`は変更しません。
+計算能力向上を実行時間短縮だけでなく、`Larger Solvable Instance -> Larger Integrated Planning Scope`として評価します。経済定義`C_op = E_operation × p_electricity`は変更しません。
 
 ## 現在の制限
 
-- original demand generator provenanceの一部が不完全
-- synthetic household/building allocationは観測配送ではない
-- routing proxyはphysical stopではない
-- run_3はmodel-completed networkであり、全現地規制を保証しない
-- travel timeはfree-flow/model timeであり、観測配送時間ではない
-- capacityはmethodologicalで、physical mass/volumeではない
-- service time、time window、実fleet、reload、chargingは未導入
-- R24 QUBOとresource gateは未実行
+- original demand 生成器 出典・来歴の一部が不完全
+- 合成 household/building allocationは観測配送ではない
+- 経路計算 代理指標はphysical 配送地点ではない
+- run_3はモデル-completed 道路網であり、全現地規制を保証しない
+- 移動 時間はfree-flow/model 時間であり、観測配送時間ではない
+- 容量はmethodologicalで、physical mass/volumeではない
+- 作業時間、時間窓、実車両群、reload、充電は未導入
+- R24 制約なし二値二次最適化と資源 判定基準は未実行
 
-## Classical reference validation
+<a id="classical-reference-validation"></a>
 
-R24 classical referenceは、HiGHS 1.15.1によるdirected CVRP MILP、n≤4の独立Exact Enumeration、独立solution validatorとして実装・検証済みです。
+## 古典参照解の検証
+
+R24 古典参照解は、HiGHS 1.15.1によるdirected 容量制約付き配送経路問題 混合整数線形計画、n≤4の独立厳密 Enumeration、独立solution 検証器として実装・検証済みです。
 
 - Verdict: `R24_CLASSICAL_REFERENCE_VALIDATED`
 - Fleet semantics: `AT_MOST_M`
 - Subtour formulation: `LOAD_MTZ`
 - Validation conditions: 21
-- Exact / HiGHS optimum一致: 21/21
+- 厳密 / HiGHS optimum一致: 21/21
 - Solution validation: 42/42 PASS
 - Duplicate proxy / zero arc / asymmetric cost: PASS
-- Full 330-condition benchmark: 未実行
+- Full 330-条件 ベンチマーク: 未実行
 
 実行結果は[確定成果物レポート](../../06_outputs/traffic_simulation/r24_classical_reference_validation/20260915_v1/R24_CLASSICAL_REFERENCE_VALIDATION_RESULTS.md)を参照してください。
 
-## 次のtask
+<a id="次のtask"></a>
+
+## 次の作業
 
 ```text
 NEXT_EXECUTABLE_TASK = run classical R24 reference benchmark

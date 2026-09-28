@@ -1,4 +1,6 @@
-# Complete Current Research Design
+<a id="complete-current-research-design"></a>
+
+# 現行研究設計の全体
 
 Document ID: `CURRENT-RESEARCH-DESIGN-20260915-v4`
 
@@ -6,15 +8,17 @@ Role: **current design authority**
 
 Effective date: 2026-09-15 JST
 
-日本語案内: [R24現行研究設計ガイド](../../docs/ja/R24_CURRENT_RESEARCH_DESIGN_GUIDE_JA.md)。固定enum、数式、hash、authority boundaryは本書を正本とする。
+日本語案内: [R24現行研究設計ガイド](../../docs/ja/R24_CURRENT_RESEARCH_DESIGN_GUIDE_JA.md)。固定列挙値、数式、ハッシュ値、正本 境界は本書を正本とする。
 
-## 1. Authority and reading rule
+<a id="1-authority-and-reading-rule"></a>
+
+## 1. 正本 ・ 参照規則
 
 This document is the single integrated authority for the research design currently in force. It consolidates the accepted design without requiring the reader to reconstruct it from historical artifacts. Stage-specific specifications, manifests, hashes, and evidence registers remain authoritative for their detailed values and execution evidence.
 
 The companion [Research Progress and Decision Record](RESEARCH_PROGRESS_AND_DECISION_RECORD.md) explains how this design was reached. Deprecated proposals do not override this document. Earlier architecture documents remain current for architecture or definitions that were not superseded, but their old Gate statuses and `NEXT_EXECUTABLE_TASK` values are historical.
 
-## 2. Research question
+## 2. 研究の問い
 
 The primary research question is:
 
@@ -22,7 +26,9 @@ The primary research question is:
 
 Quantum computing is a candidate solution method, and quantum-enabled battery development may inform future technology scenarios. Neither quantum advantage nor a battery-performance improvement is assumed. Classical references, resource feasibility, and explicit scenario evidence are required before comparative claims.
 
-## 3. Scope
+<a id="3-scope"></a>
+
+## 3. 範囲
 
 - geography: Ota Ward, Tokyo;
 - application: residential B2C last-mile delivery;
@@ -31,7 +37,7 @@ Quantum computing is a candidate solution method, and quantum-enabled battery de
 - present optimization problem: R24 multi-vehicle capacitated routing after the closed R23 route-ordering study;
 - claim boundary: modeled, open-data-grounded and synthetic-demand-grounded results, not reconstruction of a named carrier's operations.
 
-## 4. End-to-End architecture
+## 4. 全工程の構成
 
 ```mermaid
 flowchart LR
@@ -61,9 +67,13 @@ flowchart LR
 
 The architecture separates data lineage, customer meaning, instance construction, mathematical modeling, solution method, operation, and economics. A benchmark instance is not the same object as the source horizon or the full Ota eligible population.
 
-## 5. Data and provenance
+<a id="5-data-and-provenance"></a>
 
-### 5.1 Current source categories
+## 5. データ ・ 出典・来歴
+
+<a id="51-current-source-categories"></a>
+
+### 5.1 現行出典分類
 
 | Category | Principal source | Current role |
 |---|---|---|
@@ -76,7 +86,9 @@ The architecture separates data lineage, customer meaning, instance construction
 | Vehicle specifications | manufacturer official records | real-vehicle reference envelope |
 | Traffic sources | JARTIC/MLIT and other accepted traffic evidence | separate network/traffic validation path; not observed delivery time |
 
-### 5.2 Classification system
+<a id="52-classification-system"></a>
+
+### 5.2 分類系
 
 Every input or parameter must retain a provenance class. The current vocabulary distinguishes at least:
 
@@ -91,13 +103,13 @@ Every input or parameter must retain a provenance class. The current vocabulary 
 
 Deterministic or reproducible does not mean empirically observed. Every generated artifact must preserve input paths, versions, hashes, transformation code/config, RNG and seed where applicable, units, and known gaps. The original household/building generator environment remains incomplete; this blocks a full regeneration claim, not bounded use of the verified saved snapshot.
 
-## 6. Synthetic demand
+## 6. 合成需要
 
 The demand pipeline uses public population, household, housing, parcel-total, and receipt-frequency evidence to calibrate synthetic household propensities, assign synthetic households to a PLATEAU-supported building frame, and realize a designated Poisson synthetic day.
 
 Current saved facts are:
 
-| Stage | Count | Parcel-equivalents |
+| 段階 | 件数 | Parcel-equivalents |
 |---|---:|---:|
 | positive household-day source rows on 2026-01-01 | 73,547 | 82,246 |
 | rows with stable assigned building | 73,200 | 81,859 |
@@ -110,7 +122,7 @@ The 347 source rows and 387 parcel-equivalents without a usable stable building 
 
 No current design authorizes regeneration, reinterpretation as observed demand, or automatic physical-mass conversion.
 
-## 7. Spatial and Routing Foundation
+## 7. 空間的な ・ 経路計算基盤
 
 The current graph is the accepted V18/run_3 SUMO 1.24.0 model network:
 
@@ -130,7 +142,7 @@ DEP_006 is the controlled benchmark depot/origin mapped to edge `617631294`. It 
 
 Population eligibility uses membership in the connection-aware `delivery` SCC containing DEP_006. This establishes directed mutual graph reachability without full-population all-pairs routing. Selected instances must still materialize and validate every ordered-pair status, distance, and travel time, including connection transitions and zero-cost duplicate endpoints.
 
-## 8. Planning Horizon
+## 8. 計画計画期間
 
 `R24-SOURCE-DAY-2026-01-01-v1` is the designated synthetic day used as the **source horizon**. Membership means that a saved realized synthetic demand row belongs to that date.
 
@@ -143,7 +155,9 @@ The source horizon is distinct from:
 
 No dispatch/wave/shift evidence is required for the controlled R24 benchmark. Those concepts require a future operational model and separate evidence.
 
-## 9. Benchmark customer and eligible population
+<a id="9-benchmark-customer-and-eligible-population"></a>
+
+## 9. ベンチマーク顧客 ・ 対象条件を満たす母集団
 
 The current customer construction is:
 
@@ -188,11 +202,15 @@ The 39,930 customers are the Ota-grounded eligible source population from which 
 
 This identity is not an observed person, household, order, physical delivery stop, entrance, curb/loading position, or carrier service event. Multiple buildings sharing a proxy remain separate. Duplicate flags and group IDs are retained, and no implicit service-event aggregation is allowed.
 
-## 10. Instance Generation
+<a id="10-instance-generation"></a>
+
+## 10. 問題例生成
 
 The executable instance-generation design is frozen by `R24-INSTANCE-GEN-20260915-v1` with verdict `R24_INSTANCE_GENERATION_SPEC_FROZEN_WITH_LIMITATIONS`.
 
-### Primary: Repeated Random Suite
+<a id="primary-repeated-random-suite"></a>
+
+### 主要な: 反復無作為検証一式
 
 \[
 C_{n,r}\sim SRSWOR(C_{eligible},n).
@@ -200,11 +218,13 @@ C_{n,r}\sim SRSWOR(C_{eligible},n).
 
 Sampling is without replacement within an instance. The purpose is to reduce discretionary case selection and measure variation conditional on the eligible frame. It does not establish statistical representativeness of all Ota deliveries. The frozen primary sizes are `n={2,3,4}` for the quantum-comparable core and `n={5,8,10,15,20}` for the classical extension, with exactly 10 independently keyed deterministic repetitions per n. The key is derived by SHA-256 from protocol, suite, n, and repetition; a second SHA-256 ranks canonical eligible customer IDs to realize SRSWOR without library-dependent PRNG behavior.
 
-### Secondary: Controlled Structural Suite
+<a id="secondary-controlled-structural-suite"></a>
+
+### 補助: 条件を統制した構造上の検証一式
 
 `CLUSTERED`, `DISPERSED`, and `MIXED` cases expose structural route differences at `n={4,10,20}`, with three deterministic repetitions per `(structure,n)`. They use EPSG:6677 projected Euclidean metres, mechanically hash-keyed anchors, fixed tie rules, nearest-anchor selection for clustered cases, deterministic farthest-point traversal for dispersed cases, and two-anchor quota selection for mixed cases. They are stress tests and do not claim Ota-wide representativeness.
 
-### Reference: Fixed Anchor Suite
+### 参照: 固定済み基準検証一式
 
 Three fixed anchors at `n={4,10,20}` are exact aliases of primary repetition `R01`. A rejected or packing-infeasible source remains rejected/infeasible and is never replaced. Anchors support regression and cross-method comparison and are not additional independent observations.
 
@@ -214,7 +234,9 @@ All ordered pairs over the depot plus selected customers must be recomputed and 
 
 The frozen suite was generated without specification deviation. All 80 random bases, 27 structural bases, and three anchor aliases are valid; the 107 independently generated bases have complete connection-validated run_3 OD matrices. All 330 capacity conditions are packing-feasible. Of these, 135 are non-degenerate `READY` conditions and 195 are retained `DEGENERATE_REGIME_SAME_M` conditions. Sixteen independent bases contain at least one within-instance shared proxy group, producing 304 validated zero-distance and zero-time ordered arcs; no redraw or rejection occurred.
 
-## 11. Vehicle
+<a id="11-vehicle"></a>
+
+## 11. 車両
 
 `R24_PRIMARY_VEHICLE_CLASS = kei-class electric commercial van`.
 
@@ -232,7 +254,9 @@ Light-duty electric trucks are a secondary scenario. Compact electric delivery v
 
 The current graph is compatible with the kei-class abstraction under the `delivery` permission domain with limitations. It does not comprehensively encode field-measured width, height, gross-weight, temporary/time-dependent, private-access, parking, or loading restrictions; graph compatibility is not universal real-world legal access.
 
-## 12. Capacity
+<a id="12-capacity"></a>
+
+## 12. 容量
 
 The primary capacity unit is `METHODOLOGICAL_PARCEL_EQUIVALENT`. It is not kg, m³, an observed parcel count, manufacturer capacity, or physical utilization.
 
@@ -270,7 +294,9 @@ Both target and actual pressure are recorded. `m` is a methodological available 
 
 Physical kg and volume capacity are deferred. Official kei-van payload evidence is preserved for a later physical scenario, but 350 kg is not 350 parcel-equivalents and does not determine `Q`.
 
-## 13. Routing model progression
+<a id="13-routing-model-progression"></a>
+
+## 13. 経路計算モデル進展
 
 \[
 R23\subset R24/CVRP\subset VRPTW\subset EVRP.
@@ -280,14 +306,18 @@ R23\subset R24/CVRP\subset VRPTW\subset EVRP.
 |---|---|
 | R23 | one vehicle; route ordering; directed travel-time objective |
 | R24 | multiple vehicles; exact-once allocation; depot tours; methodological capacity; connectivity |
-| VRPTW | time windows, service time, route-time feasibility |
-| EVRP | battery/SOC, energy consumption, charging locations, charging time and policy |
+| 時間窓付き配送経路問題 | time windows, service time, route-time feasibility |
+| 電気自動車配送経路問題 | battery/SOC, energy consumption, charging locations, charging time and policy |
 
 Each extension retains valid lower-layer definitions but requires new evidence and validation. Historical R23 QUBO penalties or resource conclusions are not automatically valid for the R24 encoding.
 
-## 14. R24 mathematical model
+<a id="14-r24-mathematical-model"></a>
 
-### 14.1 Sets and parameters
+## 14. R24 数理モデル
+
+<a id="141-sets-and-parameters"></a>
+
+### 14.1 集合 ・ パラメーター
 
 - `C`: finite nonempty selected R24 customer set, with `C subseteq C_eligible`;
 - `0`: DEP_006;
@@ -299,7 +329,7 @@ Each extension retains valid lower-layer definitions but requires new evidence a
 - `q_i`: positive integer methodological demand;
 - `Q=14`: common methodological capacity.
 
-### 14.2 Variables
+### 14.2 変数
 
 - `x_ijk in {0,1}`: vehicle `k` travels from service node `i` to `j` in the service-order graph;
 - `y_ik in {0,1}`: vehicle `k` serves customer `i`;
@@ -307,7 +337,9 @@ Each extension retains valid lower-layer definitions but requires new evidence a
 
 Road-network paths realize service-order arcs. Passing a building/proxy on a road path does not serve that customer.
 
-### 14.3 Objective
+<a id="143-objective"></a>
+
+### 14.3 目的
 
 \[
 \min \sum_{k\in K}\sum_{(i,j)\in A}c_{ij}x_{ijk}.
@@ -315,7 +347,7 @@ Road-network paths realize service-order arcs. Passing a building/proxy on a roa
 
 This minimizes total fleet directed model travel time, not makespan, energy, fleet count, service duration, or monetary cost.
 
-### 14.4 Constraints
+### 14.4 制約
 
 Exact-once service:
 
@@ -365,9 +397,11 @@ Reachability is enforced by the arc domain `A`; no self-loop is materialized, an
 
 The model is delivery-only, unsplittable, single-departure/single-return per used vehicle, homogeneous-fleet, no-reload, and single-depot. It has no fleet-minimization term. The target pressure uses available `m`; fewer vehicles may be used by a minimum-travel-time solution, which must be reported separately from available-fleet pressure.
 
-## 15. Solution methods
+## 15. 解手法
 
-### Classical
+<a id="classical"></a>
+
+### 古典計算
 
 An exact or certifiably bounded MILP reference is required first for each authorized R24 size. It must report solver/version, formulation, tolerances, status, objective bound/gap, runtime, and decoded routes. A heuristic result cannot silently replace the exact-reference role.
 
@@ -379,7 +413,9 @@ n\longrightarrow\text{runtime / resource / optimality / feasibility}
 
 to provide evidence for estimating or setting scenario-specific \(n_{\max}^{classical}(s)\). Its role is not to select one final operational customer count.
 
-### Quantum
+<a id="quantum"></a>
+
+### 量子計算
 
 The quantum path is:
 
@@ -403,7 +439,9 @@ n\longrightarrow\text{qubits / circuit resources / runtime / solution quality}
 
 and connect the evidence to \(n_{\max}^{quantum}(s)\) or \(n_{\max}^{hybrid}(s)\). Directly solving all 39,930 eligible customers on a quantum computer is not a research requirement.
 
-## 16. Evaluation metrics
+<a id="16-evaluation-metrics"></a>
+
+## 16. 評価 評価指標
 
 Quantum/QUBO reporting must preserve:
 
@@ -428,19 +466,23 @@ Classical/logistics reporting includes:
 
 Cross-method comparisons must use identical immutable instances and cost matrices.
 
-## 17. Planned VRPTW extension
+<a id="17-planned-vrptw-extension"></a>
+
+## 17. 計画済み時間窓付き配送経路問題拡張
 
 VRPTW will add customer time windows, service duration, vehicle operating horizon, waiting, lateness policy, and time propagation. Existing historical time-window/service fixtures are reference-only. No current evidence makes their values valid R24 inputs, and R24 contains no time-window or service-time constraint.
 
 A future gate must establish temporal semantics, units, source population, aggregation, feasibility rules, and provenance before execution.
 
-## 18. Planned EVRP extension
+<a id="18-planned-evrp-extension"></a>
+
+## 18. 計画済み電気自動車配送経路問題拡張
 
 EVRP will add battery capacity, initial/minimum SOC, edge/route energy, load/speed/temperature effects where supported, charging endpoints, compatibility, charging power/curve, dwell time, and policy.
 
 The N-VAN e:, Minicab EV, and e Every records provide vehicle-side battery/range/charging references. Catalog WLTC values are not direct route-energy functions. Historical eCanter or fixed-profile values are not automatically inherited. EVRP needs a separate coherent vehicle/scenario parameter freeze.
 
-## 19. Operational outcomes
+## 19. 運用上の結果
 
 Future operational outputs may include:
 
@@ -454,7 +496,7 @@ Future operational outputs may include:
 
 These will be model outcomes. Without observed carrier validation, they are not observed Ota operational performance.
 
-## 20. Economic outcome
+## 20. 経済的な結果
 
 The formal fixed economic definition is:
 
@@ -466,7 +508,9 @@ The formal fixed economic definition is:
 
 Current economic scope excludes labor, vehicle purchase, depreciation, battery replacement, charging infrastructure, depot cost, maintenance, delay cost, and broader total cost of ownership. Results must be called operating electricity expenditure, not full logistics cost.
 
-## 21. Future capability scenarios and scenario comparison
+<a id="21-future-capability-scenarios-and-scenario-comparison"></a>
+
+## 21. 将来能力想定条件 ・ 想定条件比較
 
 A future scenario is represented at least as
 
@@ -514,7 +558,9 @@ Baseline and scenario values, source year, geographic/population transfer, units
 
 The fixed economic definition remains \(C_{op}=E_{operation}\times p_{electricity}\). This update changes only the computational-capability-to-planning-scale part of the research design.
 
-## 22. Research layers
+<a id="22-research-layers"></a>
+
+## 22. 研究層
 
 The research is organized into three layers:
 
@@ -522,7 +568,9 @@ The research is organized into three layers:
 2. **Future Capability Scenario** — classical capability, quantum capability, HPC, AI, decomposition, and hybrid methods determine scenario-specific \(n_{\max}(s)\).
 3. **Logistics / Economic Impact** — planning-scope expansion is evaluated through distance, travel time, fleet use, capacity utilization, fulfillment, energy, charging, and \(C_{op}\).
 
-## 23. Claims and limitations
+<a id="23-claims-and-limitations"></a>
+
+## 23. 主張 ・ 限界
 
 The current study is:
 
@@ -539,9 +587,11 @@ The current study is:
 
 Active limitations include incomplete original demand-generator provenance, mixed source years/populations, non-observed household/building allocation, absent service-event/dispatch/fleet evidence, incomplete field-level road restriction authority, deferred physical load and temporal/energy models, and severe quantum-simulation resource growth.
 
-## 24. Current status
+<a id="24-current-status"></a>
 
-| Component | Status | Current meaning |
+## 24. 現行 状況
+
+| Component | 状態 | Current meaning |
 |---|---|---|
 | R23 | `CLOSED_WITH_DOCUMENTED_LIMITATIONS` | reduced single-vehicle route-ordering evidence closed |
 | Gate A | `ACCEPTED_WITH_LIMITATIONS` | source horizon, customer/proxy semantics and interface frozen |
@@ -554,12 +604,14 @@ Active limitations include incomplete original demand-generator provenance, mixe
 | R24 instances | `GENERATED_WITH_LIMITATIONS` | 80 random + 27 structural valid bases; 3 valid anchor aliases; 330 packing-feasible conditions |
 | Classical R24 | `R24_CLASSICAL_REFERENCE_VALIDATED` | HiGHS MILP + independent exact enumeration + independent validator agreed on 21/21 small conditions |
 | R24 QUBO/QAOA | `NOT_EXECUTED` | no R24 encoding or quantum execution |
-| VRPTW | `DEFERRED` | temporal authority not accepted |
-| EVRP | `DEFERRED` | energy/SOC/charging specification not accepted |
+| 時間窓付き配送経路問題 | `DEFERRED` | temporal authority not accepted |
+| 電気自動車配送経路問題 | `DEFERRED` | energy/SOC/charging specification not accepted |
 | Operational outcomes | `DEFERRED` | requires accepted models and executions |
 | Economic outcome | `DEFINITION_FROZEN; NUMERICS_DEFERRED` | formula fixed; energy/tariff values open |
 
-## 25. Current research steps
+<a id="25-current-research-steps"></a>
+
+## 25. 現行研究手順
 
 Completed steps remain in the dependency record. The current end-to-end research order is:
 
@@ -587,11 +639,15 @@ Completed steps remain in the dependency record. The current end-to-end research
 
 `NEXT_EXECUTABLE_TASK = run classical R24 reference benchmark`
 
-## 26. Deprecated / superseded defaults
+<a id="26-deprecated--superseded-defaults"></a>
+
+## 26. 廃止済み / 後続版に置換済み既定値
 
 The following remain historical only: mandatory dispatch batching; quartile-by-tertile primary design; nested PPS primary sampling; automatic `Q=2,000 kg`; building-as-observed-customer; physical-stop claims; daily-demand-as-one-tour; representative-small-`n` claims; physical kg as the R24 primary capacity; fixing one operational-scale instance size; and choosing one final operational `n` after classical scaling. They may be studied only through a newly versioned, evidence-backed scenario or method—not inherited silently.
 
-## 27. Current evidence index
+<a id="27-current-evidence-index"></a>
+
+## 27. 現行 根拠 索引
 
 - [R23 status](R23_STATUS.md)
 - [Research progress and decisions](RESEARCH_PROGRESS_AND_DECISION_RECORD.md)

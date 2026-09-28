@@ -1,10 +1,16 @@
-# SUMO Network Build and Validation Protocol
+<a id="sumo-network-build-and-validation-protocol"></a>
 
-## Build Boundary
+# 交通シミュレーターの道路網構築 ・ 検証手順
+
+<a id="build-boundary"></a>
+
+## 構築境界
 
 The structural profile is used only to debug geometry, direction, connectivity, conversion behavior and provenance. Before formal generation, all governed attributes, permissions, reviewed junction joins and signal structure must be fixed. A formal network change invalidates downstream calibration and validation.
 
-## Permission-Safe Build
+<a id="permission-safe-build"></a>
+
+## 通行許可-安全な構築
 
 1. Verify the registered PBF, typemap and configuration hashes.
 2. Convert PBF to raw OSM XML in the pinned analysis environment.
@@ -16,7 +22,9 @@ The structural profile is used only to debug geometry, direction, connectivity, 
 8. Audit, without editing `net.xml`, every generated lane, connection and TLS mapping.
 9. On mismatch, stop, fix the governed input, invalidate affected reviews and rerun final conversion.
 
-### Materializer I/O Contract
+<a id="materializer-io-contract"></a>
+
+### 具体化処理 I/O 取り決め
 
 The fixed interchange format is SUMO 1.24.0 plain XML. After the resolver has written immutable permission expectations, create a topology-only OSM copy with consumed access tags removed and run provisional `netconvert` with `--plain-output-prefix governed_provisional`, `--plain-output.lanes true`, `--output.original-names true`, `--lefthand true` and `--osm.lane-access true`. The required provisional files are `governed_provisional.nod.xml`, `.edg.xml`, `.con.xml` and `.tll.xml`.
 
@@ -24,7 +32,9 @@ The materializer never mutates provisional files. It writes `governed_permission
 
 Each external plain edge must have an exact record in `edge_provenance.json`. One OSM way may map to multiple edges and lanes. Direction is determined from the ordered OSM source-node subsequence and its start/end indices; an edge ID sign or coordinate-nearest match is not evidence. `param key="origId"` is retained as a cross-check, not as the complete lineage record. Any incomplete or ambiguous mapping stops the build.
 
-### Lane Permission Rule
+<a id="lane-permission-rule"></a>
+
+### 車線通行許可規則
 
 The resolver records lane positions in OSM order, left-to-right when viewed in the direction of travel. SUMO indices lanes right-to-left. With `n` lanes, resolver position `p` maps to SUMO lane index `n - 1 - p`. The materialized set is:
 
@@ -36,7 +46,9 @@ lane_allow = resolver_allow(way, direction, p)
 
 Lane counts must agree, the set must not exceed the typemap baseline, and nonempty `allow` is serialized as lexicographically sorted, space-separated vClasses. A lane with an empty governed set is serialized as `disallow="all"`, recorded as explicitly non-drivable topology and cannot be used by any vClass. The pinned left-hand fixture must verify that SUMO 1.24.0 preserves this representation and lane ordering. Failure stops real-data use and requires a versioned contract change.
 
-### Connection Permission Rule
+<a id="connection-permission-rule"></a>
+
+### 接続通行許可規則
 
 Only provisional connections are candidates, preserving importer topology and turn restrictions. The materializer does not synthesize an absent connection. For candidate `c`:
 
@@ -52,23 +64,29 @@ TLS structure is fixed only after this connection set. The review must assign ev
 
 The materializer is not yet implemented. The earlier importer governance fixture failed, and a materialized-output fixture has not been run. XSD inspection and a provisional plain-export probe establish only that these interfaces and `origId` are available; they do not validate the mapping rules.
 
-## Formal Build Completeness
+<a id="formal-build-completeness"></a>
+
+## 正式構築完全性
 
 Readiness is acyclic and evaluated at three boundaries. `formal_build_input_ready` contains only requirements that can be completed before final `netconvert`. `formal_network_acceptance` contains post-conversion audits, quality gates, artifacts and SUMO load. `downstream_experiment_ready` begins only after network acceptance and contains candidate-subgraph, demand, calibration and comparison-design requirements. A post-build artifact is never a prerequisite for starting the build that creates it. The current typed state of each requirement is authoritative in `network_current_specification.md` and `sumo_network.yml`; policy text or pytest assertions alone do not count as runtime or real-data verification.
 
-## Structural Gate
+<a id="structural-gate"></a>
+
+## 構造上の判定基準
 
 Report both way-count and road-length retention. Evaluate directed reachability separately for all governed vClasses, including depot-to-customer/charger and return-to-depot reachability. Also report major-road-pair reachability, largest drivable-component length share, direction mismatches, representative OD route success, XML/SUMO load status and classified warnings.
 
 Thresholds require result-blind preregistration and rationale. An unclassified warning or untraceable lane stops the build. `output.original-names=true` supports the one-to-many provenance chain from OSM way to SUMO edges and lanes.
 
-## Artifacts
+## 成果物
 
 Large generated OSM and `net.xml` files may remain outside Git. The `.netccfg`, build manifest, build summary, warning classification and artifact checksum list require immutable versioning in Git or content-addressed artifact storage, with a tracked index when external storage is used.
 
 The manifest records both container digests, SUMO, `netconvert`, PROJ, `osmium`, Python and dependency versions, locale, platform, precision options, all governed hashes and exact commands.
 
-## Evidence Priority
+<a id="evidence-priority"></a>
+
+## 根拠優先順位
 
 1. Pinned SUMO 1.24.0 runtime fixture.
 2. SUMO `v1_24_0` source or XSD.

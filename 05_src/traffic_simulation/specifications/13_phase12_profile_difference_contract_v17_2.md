@@ -1,4 +1,6 @@
-# Phase 12 Structural / Formal Profile Difference Contract v1.2.0
+<a id="phase-12-structural--formal-profile-difference-contract-v120"></a>
+
+# 工程 12 構造上の / 正式処理設定 Difference 取り決め v1.2.0
 
 This specification implements adopted decision `DEC-P12-FORMAL-ONLY-PROFILE-DIFFERENCE-002`.
 It applies to Phase 12 population units and does not promote a failed run or

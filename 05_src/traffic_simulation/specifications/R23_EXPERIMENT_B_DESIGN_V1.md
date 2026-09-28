@@ -1,6 +1,8 @@
-# R23 Experiment B Design V1 — Initialization / Optimizer Robustness
+# R23 実験 B 設計 V1 — 初期化 / 最適化処理頑健性
 
-## Status
+<a id="status"></a>
+
+## 状態
 
 This is a frozen research design, not an execution authorization.
 
@@ -10,19 +12,23 @@ This is a frozen research design, not an execution authorization.
 - Preceding evidence: `FORMAL_EXPERIMENT_A_EVIDENCE_ACCEPTED_WITH_LIMITATIONS`
 - Next scaling status after successful review: `R23_SCALING_EXTENSION_READY`
 
-## Research question
+## 研究の問い
 
 How robust are the Formal Experiment A QAOA outcomes to parameter initialization and classical optimizer choice under fixed problem instances and QAOA depth?
 
 Experiment B isolates robustness. It is not a new scaling experiment and does not include `n>=5`.
 
-## Why B precedes scaling
+<a id="why-b-precedes-scaling"></a>
+
+## 理由 B に先行する規模拡大
 
 Corrected Formal A shows a strong descriptive decline with problem size, non-monotonic depth effects at `n=3/4`, marked instance heterogeneity at `n=3,p=3` and `n=4,p=2/3`, and `TERMINATION_UNKNOWN` in all 45 conditions. The exact best decoded route is not enough to establish optimizer robustness or reliable finite-shot sampling. Initialization and optimizer dependence therefore must be characterized before an `n>=5` study.
 
-## Adopted staged design
+<a id="adopted-staged-design"></a>
 
-### B1 — initialization robustness
+## 採用済み段階的な設計
+
+### B1 — 初期化頑健性
 
 The smallest informative design focuses on the pre-scaling uncertainty regime:
 
@@ -36,7 +42,9 @@ The smallest informative design focuses on the pre-scaling uncertainty regime:
 
 The rank rule is fixed before execution and is not selected from desirable QAOA outcomes. It is a deterministic robustness diagnostic sample, not a representative population sample.
 
-### B2 — optimizer robustness
+<a id="b2--optimizer-robustness"></a>
+
+### B2 — 最適化処理頑健性
 
 B2 is conditional on B1 review and implementation validation:
 
@@ -49,7 +57,7 @@ B2 is conditional on B1 review and implementation validation:
 
 Nelder-Mead is preferred over SPSA for this comparison because the expectation is exact and deterministic and the parameter dimension is small. SPSA is available in the authority environment but is not selected as the primary comparator.
 
-## Initialization convention
+## 初期化規約
 
 The current repository parameter order is `[gamma_1..gamma_p, beta_1..beta_p]`. The current implementation accepts unconstrained angles and maps them directly into RZ/RX rotations. B therefore freezes the following diagnostic domain:
 
@@ -60,13 +68,17 @@ The current repository parameter order is `[gamma_1..gamma_p, beta_1..beta_p]`. 
 
 These are bounded symmetric design conventions, not physical parameter bounds.
 
-## Fair optimizer comparison
+<a id="fair-optimizer-comparison"></a>
+
+## 公平な最適化処理比較
 
 The common research fairness constraint is `objective_evaluation_cap=900`. `maxiter=300` is retained as an optimizer-specific safety/configuration value and is not treated as equal computational work across optimizer interfaces. Each result must preserve `nfev`, `nit`, native success, native message, termination status, budget flags, and timing.
 
 The amended policy is `NO_RESEARCH_WALL_TIME_CAP`. A separate non-binding infrastructure safety guard may exist, but it must be recorded as a safety event and never interpreted as optimizer failure.
 
-## Metrics and interpretation
+<a id="metrics-and-interpretation"></a>
+
+## 評価指標 ・ 解釈
 
 Primary outcomes remain the Formal A metrics:
 
@@ -78,13 +90,17 @@ Secondary outcomes include objective evaluations, native optimizer metadata, fin
 
 `gap=0` remains a route-quality result only. It does not establish high `P_optimal`, optimizer convergence, finite-shot success, or quantum advantage.
 
-## Termination metadata gate
+<a id="termination-metadata-gate"></a>
+
+## 終了付随情報判定基準
 
 The current R23 implementation imports and invokes COBYLA directly and the schema accepts only COBYLA. Before B2, a new adapter/schema path is required for Nelder-Mead. The adapter must be smoke-validated and must capture native result metadata without changing optimizer behavior. Historical Formal A artifacts remain immutable.
 
 If metadata remains unavailable, the result must preserve `None`/empty values and report convergence as unresolved; success must never be inferred from `nfev`.
 
-## Candidate design comparison
+<a id="candidate-design-comparison"></a>
+
+## 候補設計比較
 
 | Candidate | Runs | Information | Burden assessment |
 |---|---:|---|---|
@@ -93,7 +109,9 @@ If metadata remains unavailable, the result must preserve `None`/empty values an
 
 The 36-run n=4-focused design is adopted because it is the smallest design that directly addresses the gating uncertainty. It does not claim that n=3 behavior is robust; that limitation is explicit.
 
-## Scaling gate
+<a id="scaling-gate"></a>
+
+## 規模拡大判定基準
 
 After B, scaling may be designed only if initialization robustness, optimizer dependence, termination metadata, and implementation integrity are understood. This design does not authorize `n=5`. The scaling track must separately redesign CPU statevector/resource methodology and R22 validation.
 

@@ -1,4 +1,6 @@
-# Research Progress and Decision Record
+<a id="research-progress-and-decision-record"></a>
+
+# 研究進捗と意思決定記録
 
 Document ID: `RESEARCH-PROGRESS-DECISION-RECORD-20260915-v4`
 
@@ -8,7 +10,9 @@ Current through: 2026-09-15 JST
 
 日本語案内: [R24現行研究設計ガイド](../../docs/ja/R24_CURRENT_RESEARCH_DESIGN_GUIDE_JA.md)。本書は意思決定の英語原文記録として保持する。
 
-## 1. Purpose and authority boundary
+<a id="1-purpose-and-authority-boundary"></a>
+
+## 1. 目的 ・ 正本境界
 
 This document records how the research moved from a routing foundation and the R23 reduced problem to the current R24 controlled CVRP design. It explains dependencies, decisions, rejected alternatives, deferred scopes, and the current executable next task. It does not replace immutable run manifests or stage-specific evidence.
 
@@ -16,7 +20,9 @@ For the design currently in force, use [CURRENT_RESEARCH_DESIGN.md](CURRENT_RESE
 
 No experiment, demand generation, routing generation, instance generation, or optimization was performed to create this record.
 
-## 2. Research objective
+<a id="2-research-objective"></a>
+
+## 2. 研究目的
 
 The research evaluates how changes in technical and social conditions—including quantum technologies as candidate technologies or solution methods—propagate through electric residential B2C last-mile delivery into routing, operational outcomes, and the defined economic outcome. Quantum advantage is an empirical question; it is not assumed.
 
@@ -32,7 +38,9 @@ Technology / Social Scenario
   -> C_op
 ```
 
-## 3. Initial spatial and routing foundation
+<a id="3-initial-spatial-and-routing-foundation"></a>
+
+## 3. 初期空間的な ・ 経路計算基盤
 
 The geographic scope was fixed to Ota Ward, Tokyo. OSM road data, the N03 administrative boundary, PLATEAU buildings, census and housing statistics, and parcel-related public statistics were assembled into a common spatial foundation. Buildings were assigned stable identifiers and representative coordinates, then mapped to versioned road-network endpoints.
 
@@ -45,7 +53,9 @@ The accepted Routing Baseline established four rules that remain current:
 
 The accepted run_3/V18 network is a model-completed SUMO 1.24.0 graph. Its travel time is length divided by model speed under the Routing Baseline, not observed carrier travel time or dynamic congested travel time. DEP_006 was adopted as a controlled benchmark origin/depot proxy, not as an observed carrier depot or catchment.
 
-## 4. R23 reduced routing study
+<a id="4-r23-reduced-routing-study"></a>
+
+## 4. R23 縮約した 経路計算 調査
 
 R23 isolated a **Single-Vehicle Route Ordering Problem**: depart from one depot, visit every selected customer exactly once, and return. It used customer-position variables (`n^2` logical variables), a directed travel-time objective, squared exact-one QUBO penalties, exact permutation references, QUBO-to-Ising conversion, and depth-one QAOA on CPU Aer exact statevectors.
 
@@ -55,7 +65,7 @@ R23 did **not** model multiple vehicles, capacity, time windows, service time, b
 
 Final status: **`R23_CLOSED_WITH_DOCUMENTED_LIMITATIONS`**. R23 was closed rather than retrofitted into a CVRP; R24 was created as the next problem layer.
 
-## 5. End-to-End redesign
+## 5. 全工程の再設計
 
 The work was reorganized because an R24-only formulation could not by itself distinguish source data, synthetic transformations, customer semantics, instance construction, physical assumptions, routing, operation, and economics. The end-to-end architecture separated those responsibilities:
 
@@ -76,15 +86,21 @@ This redesign also established that the displayed conceptual order is not always
 
 The architecture audit initially left Gate A and later data gates open. Its architecture and economic boundary remain current, while its dated Gate statuses and next-task text were superseded by the later decisions below.
 
-## 6. Gate A evidence reconstruction and abstraction
+<a id="6-gate-a-evidence-reconstruction-and-abstraction"></a>
 
-### 6.1 Evidence finding
+## 6. 判定基準 A 根拠再構成 ・ 抽象化
+
+<a id="61-evidence-finding"></a>
+
+### 6.1 根拠確認事項
 
 The saved source horizon contains 73,547 positive synthetic household-day rows and 82,246 parcel-equivalents for `2026-01-01`. It does not contain individual observed parcel identifiers, observed entrances, physical curb/loading points, carrier service-event identities, dispatch batches, waves, or shifts. The original demand generator provenance is incomplete, although the saved snapshot can be inspected and conserved.
 
 An observational service-event reconstruction was therefore not supportable. Requiring it would have changed R24 from a controlled methodological benchmark into an unsupported carrier-operation reconstruction.
 
-### 6.2 Adopted minimum abstraction
+<a id="62-adopted-minimum-abstraction"></a>
+
+### 6.2 採用済み最小抽象化
 
 The decision was:
 
@@ -103,13 +119,17 @@ Gate A also froze source membership, customer and routing-proxy semantics, eligi
 
 Verdict: **`GATE_A_ACCEPTED_WITH_LIMITATIONS`**.
 
-## 7. Planning Horizon decision
+<a id="7-planning-horizon-decision"></a>
+
+## 7. 計画計画期間判断
 
 The Planning Horizon was frozen as the **designated synthetic day `2026-01-01` used as the source horizon**. It determines which saved demand records enter the source population. It is not an optimization instance, observed carrier day, dispatch wave, shift, tour, or operating period.
 
 Dispatch, wave, and shift were rejected as mandatory R24 Gate A fields because no supporting operational evidence exists. They remain future operational-model concepts. This allowed stable source membership without fabricating temporal operations.
 
-## 8. Gate B vehicle-class decision
+<a id="8-gate-b-vehicle-class-decision"></a>
+
+## 8. 判定基準 B 車両-分類判断
 
 Vehicle class was separated from a specific commercial model. Eight predeclared criteria were used: residential B2C relevance, urban last-mile suitability, public specification authority, capacity-data availability, EVRP-data availability, routing compatibility, modeling simplicity, and researcher arbitrariness.
 
@@ -125,7 +145,9 @@ The real models form a source-record-preserving reference envelope; no unsupport
 
 Verdict: **`GATE_B_ACCEPTED_WITH_LIMITATIONS`**. It triggered a later vehicle/routing compatibility check rather than blocking class selection.
 
-## 9. Gate C physical-capacity investigation
+<a id="9-gate-c-physical-capacity-investigation"></a>
+
+## 9. 判定基準 C 物理的な-容量調査
 
 Mass, volume, parcel count, standardized load units, and multidimensional capacity were compared. Vehicle-side mass evidence was strongest: primary-class variants commonly provide official payload records around 350 kg, subject to trim-specific exceptions. That alone could not establish `unit(q_i)=unit(Q)`.
 
@@ -133,7 +155,9 @@ A targeted search for Japanese residential B2C parcel mass evidence found no pub
 
 Verdict: **`DEMAND_SIDE_MASS_AUTHORITY_INSUFFICIENT`**. No `F_W`, mean parcel mass, synthetic parcel mass, or kg conversion was authorized. Physical mass and volume scenarios were deferred.
 
-## 10. Methodological capacity freeze
+<a id="10-methodological-capacity-freeze"></a>
+
+## 10. 方法論上の容量固定
 
 Stopping at the physical-evidence gap was rejected because R24's immediate purpose is a controlled methodological CVRP benchmark. The primary unit was explicitly labeled:
 
@@ -152,7 +176,7 @@ The pre-routing candidate snapshot had the following distribution:
 | Statistic | Value |
 |---|---:|
 | Customers | 39,956 |
-| Total | 81,859 |
+| 合計 | 81,859 |
 | Minimum / maximum | 1 / 14 |
 | Mean | 2.048729 |
 | Median | 2 |
@@ -182,7 +206,9 @@ Both target and actual pressure must be stored. Neither `m` nor `rho` is an obse
 
 Final status: **`GATE_C_ACCEPTED_WITH_LIMITATIONS`** and **`GATE_D_ACCEPTED_WITH_LIMITATIONS`**.
 
-## 11. Routing compatibility revalidation
+<a id="11-routing-compatibility-revalidation"></a>
+
+## 11. 経路計算の互換性再検証
 
 Although this consolidation was requested as preparation for routing revalidation, the repository's actual sequence has already completed that task. The record therefore preserves the completed result rather than reverting the status.
 
@@ -200,9 +226,13 @@ The 26 exclusions comprise one outbound-only, one inbound-only, and 24 unreachab
 
 Verdict: **`ROUTING_COMPATIBILITY_ACCEPTED_WITH_LIMITATIONS`** and **`FINAL_C_ELIGIBLE_READY = YES_WITH_LIMITATIONS`**.
 
-## 12. Adopted, rejected, and deferred decisions
+<a id="12-adopted-rejected-and-deferred-decisions"></a>
 
-### Adopted for current R24
+## 12. 採用済み, 不採用, ・ 保留判断
+
+<a id="adopted-for-current-r24"></a>
+
+### 採用済みの対象： 現行 R24
 
 - Ota-grounded controlled CVRP benchmark;
 - designated synthetic source day `2026-01-01`;
@@ -215,7 +245,9 @@ Verdict: **`ROUTING_COMPATIBILITY_ACCEPTED_WITH_LIMITATIONS`** and **`FINAL_C_EL
 - multi-vehicle capacitated directed travel-time minimization;
 - population SCC screening followed by selected-instance complete ordered-pair routing validation.
 
-### Rejected or superseded as current defaults
+<a id="rejected-or-superseded-as-current-defaults"></a>
+
+### 不採用 or 後続版に置換済み as 現行既定値
 
 - building = observed customer or physical stop;
 - mandatory observed service-event reconstruction;
@@ -227,7 +259,7 @@ Verdict: **`ROUTING_COMPATIBILITY_ACCEPTED_WITH_LIMITATIONS`** and **`FINAL_C_EL
 - representative-small-`n` claims;
 - choosing capacity or instances after viewing solver performance.
 
-### Deferred
+### 保留
 
 - physical kg and m³ capacity;
 - actual carrier fleet, tours, reloads, and dispatch structure;
@@ -239,7 +271,9 @@ Verdict: **`ROUTING_COMPATIBILITY_ACCEPTED_WITH_LIMITATIONS`** and **`FINAL_C_EL
 
 These deferrals limit claims but do not block the methodological R24 benchmark.
 
-## 13. Current position and critical path
+<a id="13-current-position-and-critical-path"></a>
+
+## 13. 現行位置 ・ 重要工程
 
 Completed dependency chain:
 
@@ -273,7 +307,9 @@ run classical R24 reference benchmark
 
 `NEXT_EXECUTABLE_TASK = run classical R24 reference benchmark`
 
-## 14. Instance-generation specification freeze
+<a id="14-instance-generation-specification-freeze"></a>
+
+## 14. 問題例-生成 仕様 固定
 
 The specification was frozen before generating any instance or route matrix. The primary repeated-random suite uses hash-ranked SRSWOR from the final 39,930-customer eligible frame: quantum-comparable `n={2,3,4}` and classical-extension `n={5,8,10,15,20}`, with 10 repetitions per n. Seeds are SHA-256-derived from the protocol/suite/n/repetition identity and cannot be searched or manually selected.
 
@@ -285,7 +321,9 @@ The frozen no-redraw rule preserves every selected subset under its planned ID. 
 
 Verdict: **`R24_INSTANCE_GENERATION_SPEC_FROZEN_WITH_LIMITATIONS`**. Scientific experiment, instance generation, routing generation, and optimization in this freeze step were all `NONE`.
 
-## 15. Frozen instance-suite generation
+<a id="15-frozen-instance-suite-generation"></a>
+
+## 15. 固定済み問題例-検証一式生成
 
 The generator ran from committed code against the frozen eligible manifest and accepted run_3 without changing n, repetitions, seeds, selection, structural rules, anchors, Q, rho, no-redraw, graph, depot, or rejection policy. It produced 80/80 valid random bases, 27/27 valid structural bases, and 3/3 valid anchor aliases. The 107 independently generated bases yielded complete directed run_3 OD matrices; no routing or hard-validation failure occurred.
 
@@ -293,9 +331,11 @@ All 330 base/alias capacity conditions passed exact packing preflight. There wer
 
 An independent validator re-derived every primary and structural selection, checked anchor semantic hashes, checked all 14,600 stored OD rows against run_3 edge lengths/speeds and allowed `delivery` connections, and verified every m/rho calculation, packing certificate, and degeneracy flag. The execution verdict is **`R24_INSTANCE_SUITE_GENERATED_WITH_LIMITATIONS`**. Demand generation, routing-graph regeneration, MILP/CVRP optimization, QUBO, and QAOA were all `NONE`.
 
-R24-specific classical referenceはHiGHS 1.15.1の明示的MILP、n<=4の独立Exact Enumeration、独立solution validatorとして新規実装した。`AT_MOST_M` fleet semanticsとload-MTZ subtour formulationを固定し、機械的に選択した21 conditionsで全件proven optimal、全件objective一致、validator failure 0を確認した。最大objective差は `9.999894245993346e-10 s` である。full 330-condition benchmarkは未実行。
+R24-specific 古典参照解はHiGHS 1.15.1の明示的混合整数線形計画、n<=4の独立厳密 Enumeration、独立solution 検証器として新規実装した。`AT_MOST_M` 車両群 意味と負荷-MTZ subtour 定式化を固定し、機械的に選択した21 条件で全件proven 最適、全件目的一致、検証器 不具合 0を確認した。最大目的差は `9.999894245993346e-10 s` である。全体 330-条件 ベンチマークは未実行。
 
-## 16. Principal evidence links
+<a id="16-principal-evidence-links"></a>
+
+## 16. 主要な根拠リンク
 
 - [R23 current status](R23_STATUS.md)
 - [End-to-End Workflow Authority](../../reproducibility/outputs/traffic_simulation/end_to_end_workflow_feasibility_audit/20260914_v2/END_TO_END_WORKFLOW_AUTHORITY.md)
@@ -309,7 +349,9 @@ R24-specific classical referenceはHiGHS 1.15.1の明示的MILP、n<=4の独立E
 - [Generated benchmark instance suite](../../reproducibility/outputs/traffic_simulation/r24_benchmark_instance_suite/20260915_v1/R24_BENCHMARK_INSTANCE_SUITE_REPORT.md)
 - [Classical reference validation](../../reproducibility/outputs/traffic_simulation/r24_classical_reference_validation/20260915_v1/R24_CLASSICAL_REFERENCE_VALIDATION.md)
 
-## 17. Documentation consolidation execution receipt
+<a id="17-documentation-consolidation-execution-receipt"></a>
+
+## 17. 文書統合実行記録
 
 | Activity | Execution in this task |
 |---|---|
@@ -317,16 +359,18 @@ R24-specific classical referenceはHiGHS 1.15.1の明示的MILP、n<=4の独立E
 | Demand generation | `NONE` |
 | Routing generation | `NONE` |
 | Instance generation | `NONE` |
-| Optimization | `NONE` |
+| 最適化 | `NONE` |
 
 This task inspected existing tracked and gitignored authority artifacts and changed documentation only.
 
-## 18. R24 classical reference validation
+<a id="18-r24-classical-reference-validation"></a>
 
-`CLASSICAL_REFERENCE_VALIDATION`として21 conditionsのみを実行した。Primary Random R01のn=2,3,4、Structural三構造のn=4 R01、固定Anchor n=4について各3 rhoを、solver結果を見る前の規則で選んだ。duplicate proxy/zero arc、directed asymmetric cost、degenerate/non-degenerate conditionを含む。
+## 18. R24 古典参照解 検証
+
+`CLASSICAL_REFERENCE_VALIDATION`として21 条件のみを実行した。Primary 無作為 R01のn=2,3,4、構造上の三構造のn=4 R01、固定Anchor n=4について各3 rhoを、求解器結果を見る前の規則で選んだ。重複 proxy/zero 区間、directed asymmetric 費用、degenerate/non-degenerate 条件を含む。
 
 - Primary MILP: HiGHS/highspy 1.15.1、threads=1、MIP gap=0
-- Independent reference: unlabeled customer partition × route permutationの完全列挙
+- Independent 参照: unlabeled 顧客 partition × 経路 permutationの完全列挙
 - Fleet semantics: `AT_MOST_M`
 - Subtour formulation: `LOAD_MTZ`
 - Exact/HiGHS optimum agreement: 21/21
@@ -334,7 +378,9 @@ This task inspected existing tracked and gitignored authority artifacts and chan
 - Verdict: `R24_CLASSICAL_REFERENCE_VALIDATED`
 - `NEXT_EXECUTABLE_TASK = run classical R24 reference benchmark`
 
-## 19. Research-step policy update: optimization scale
+<a id="19-research-step-policy-update-optimization-scale"></a>
+
+## 19. 研究-手順方針更新: 最適化規模
 
 This documentation-only decision formally records a distinction that is consistent with the existing customer and instance semantics:
 
@@ -366,11 +412,13 @@ The three research layers are: (1) Method / Solver Benchmark, (2) Future Capabil
 
 The current research-step order is: (1) Common spatial / demand foundation; (2) R23 baseline; (3) R24 model / instance specification; (4) R24 classical reference validation; (5) R24 classical benchmark; (6) R24 QUBO; (7) Quantum resource gate; (8) QAOA / hybrid benchmark; (9) Classical / quantum / hybrid scaling analysis; (10) VRPTW extension; (11) EVRP extension; (12) EV / battery scenario parameterization; (13) Future computational capability scenarios; (14) scenario-specific \(n_{\max}(s)\); (15) planning-scope expansion experiments; (16) social / demand / energy scenarios; (17) integrated future scenarios; (18) operational outcome calculation; (19) economic outcome calculation; (20) scenario comparison; and (21) sensitivity / limitation / reproducibility analysis.
 
-### Superseded-wording audit
+<a id="superseded-wording-audit"></a>
+
+### 後続版に置換済み-表現監査
 
 The requested exact concepts—`operational-scale instance`, `full 39,930`, `solve all customers`, `full population optimization`, `real-scale instance`, `final instance size`, and `operational n`—had **0 contradictory occurrences** in current-looking documentation before this update. The search covered tracked Markdown outside `reproducibility/archive/`, `06_outputs/`, and `legacy/`; unrelated `full-population` network/data-processing and accounting uses were inspected separately.
 
-| Classification | Count | Treatment |
+| 分類 | 件数 | Treatment |
 |---|---:|---|
 | `REWRITE_CURRENT` | 0 phrase matches | No contradictory phrase required direct rewriting; the generic scenario chain and research steps were expanded to encode the new policy. |
 | `MARK_SUPERSEDED` | 2 policy defaults | “fix one operational-scale instance size” and “select one final operational n after classical scaling” are now explicitly superseded defaults, whether or not those exact strings appeared. |

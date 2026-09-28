@@ -1,4 +1,6 @@
-# R20 QAOA Subproblem Specification
+<a id="r20-qaoa-subproblem-specification"></a>
+
+# R20 量子近似最適化アルゴリズム部分問題仕様
 
 Document ID: `R20-QAOA-SUBPROBLEM-SPEC`
 Role: `CURRENT_NORMATIVE`
@@ -13,28 +15,34 @@ Current Authority: `Adopted reduced Single-Vehicle Route Ordering formulation an
 - Formal adoption: SUBPROBLEM_FORMULATION_ADOPTED; FORMULATION_VERIFIED = PASS for `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY`
 - Authority rule: This document does not supersede the current R20 formal artifacts, R15/R16/R19 authority, or the execution plan.
 
-## 1. Purpose
+<a id="1-purpose"></a>
 
-本仕様書は、最初の量子サブ問題、QUBO formulation、exact validation method、bitstring decodeおよびvalidation ruleの数学的正本である。
+## 1. 目的
 
-今回の対象はSingle-Vehicle Route Ordering Problemである。このreduced formulationはscoped gateを通過し、同一係数についてR21 exact validationとR22 Ising equivalence validationもPASSした。R23 infrastructureは実装済みだが、formal QAOA pilot/baselineの実行を意味しない。
+本仕様書は、最初の量子サブ問題、制約なし二値二次最適化 定式化、厳密 検証 手法、ビット列 復号および検証 規則の数学的正本である。
 
-Full-EVRP R20は引き続きBLOCKEDであり、本仕様書のscoped PASSからfull EVRP、QAOA performance、QPU performanceを推論してはならない。
+今回の対象はSingle-車両 経路 Ordering Problemである。この縮約した 定式化はscoped 判定基準を通過し、同一係数についてR21 厳密 検証とR22 Ising equivalence 検証も合格した。R23 基盤は実装済みだが、正式 量子近似最適化アルゴリズム pilot/baselineの実行を意味しない。
 
-## 2. Current repository state and authority
+Full-電気自動車配送経路問題 R20は引き続き実行不可であり、本仕様書のscoped 合格から完全な電気自動車配送経路問題、量子近似最適化アルゴリズム 性能、量子処理装置 性能を推論してはならない。
 
-### 2.1 Confirmed current state
+<a id="2-current-repository-state-and-authority"></a>
+
+## 2. 現行リポジトリ状態 ・ 正本
+
+<a id="21-confirmed-current-state"></a>
+
+### 2.1 確認済み現行状態
 
 - R20 Status: BLOCKED
 - Reduced path: R21 PASS; R22 PASS; R23 ACCEPTED_WITH_LIMITATIONS (execution authorization remains separate)
-- 既存R20はfull EVRPを対象とするposition-indexed formulation候補、variable registry、HC mapping、penalty framework、Rosenberg auxiliary registry、resource estimateを持つ。
-- full-EVRP R20には、全制約を対象とするaccepted coefficient builder、numeric penalty certificate、decoder、independent validatorがない。本仕様のreduced route-orderingにはexact reference・exact enumeration・独立validator/decoderがあり、formal gate reviewによりFORMULATION_VERIFIEDがscoped PASSとなった。
-- 既存R20のn=10 full-EVRP estimateは13,782 logical binary variables、estimated couplersは17,953であり、full exact formulationはAer/QAOAの正式実行対象として未準備である。
-- CPU/Aer q=8〜30 diagnosticはTEMPORARY_IMPLEMENTATION_FEASIBILITY_DIAGNOSTICとしてのみ扱う。量子技術能力、将来QPU能力、formal problem-size limitではない。
-- Hayateはsimulation execution platformであり、量子技術の性能限界ではない。
+- 既存R20は完全な電気自動車配送経路問題を対象とする位置-indexed 定式化候補、変数 登録簿、HC 対応付け、罰則項 framework、Rosenberg auxiliary 登録簿、資源 estimateを持つ。
+- 完全な電気自動車配送経路問題 R20には、全制約を対象とする受入済み coefficient builder、numeric 罰則項 certificate、復号器、独立検証器がない。本仕様の縮約した訪問順序には厳密 参照・厳密 enumeration・独立validator/decoderがあり、正式 判定基準 確認によりFORMULATION_VERIFIEDがscoped 合格となった。
+- 既存R20のn=10 完全な電気自動車配送経路問題 estimateは13,782 論理上の 二値 変数、estimated couplersは17,953であり、全体 厳密 定式化はAer/QAOAの正式実行対象として未準備である。
+- CPU/Aer q=8〜30 diagnosticはTEMPORARY_IMPLEMENTATION_FEASIBILITY_DIAGNOSTICとしてのみ扱う。量子技術能力、将来量子処理装置能力、正式 problem-規模 limitではない。
+- Hayateはsimulation 実行 platformであり、量子技術の性能限界ではない。
 - Aer simulation limit != quantum computing technology limit
 
-### 2.2 Inspected files
+### 2.2 確認済みファイル
 
 以下を読み取り専用で確認した。
 
@@ -51,13 +59,17 @@ Full-EVRP R20は引き続きBLOCKEDであり、本仕様書のscoped PASSからf
 - 01_research_design/quantum_route_optimization_slide_structure.md
 - 05_src/traffic_simulation/temporary_quantum_diagnostic/run_diagnostic.py
 
-### 2.3 Repository conflict or boundary
+<a id="23-repository-conflict-or-boundary"></a>
 
-既存full-EVRP R20は13制約を表現する別経路であり、本書のSingle-Vehicle Route Ordering Problemはその完成を代替しない。本書は明示的なreduced branchのauthorityであり、full-EVRP statusと責任範囲は変更しない。
+### 2.3 リポジトリ矛盾 or 境界
 
-## 3. Adopted formal subproblem definition
+既存完全な電気自動車配送経路問題 R20は13制約を表現する別経路であり、本書のSingle-車両 経路 Ordering Problemはその完成を代替しない。本書は明示的な縮約問題の系統の正本であり、完全な電気自動車配送経路問題 状況と責任範囲は変更しない。
 
-### 3.1 Names and sets
+<a id="3-adopted-formal-subproblem-definition"></a>
+
+## 3. 採用済み正式部分問題定義
+
+### 3.1 名称 ・ 集合
 
 - Depot: 0
 - Customer set: C = {1, ..., n}
@@ -70,7 +82,9 @@ Full-EVRP R20は引き続きBLOCKEDであり、本仕様書のscoped PASSからf
 
 Distance may be retained as an auxiliary EVRP/fleet metric, but is not the formal objective of this initial QAOA subproblem. Time-dependent travel time τ_ij(t) is not introduced in the initial model.
 
-### 3.2 Route
+<a id="32-route"></a>
+
+### 3.2 経路
 
 A route is the closed sequence:
 
@@ -78,7 +92,9 @@ R(π) = (0, π_1, π_2, ..., π_n, 0)
 
 where every customer appears exactly once.
 
-### 3.3 Candidate objective
+<a id="33-candidate-objective"></a>
+
+### 3.3 候補目的
 
 The structural route objective is:
 
@@ -91,7 +107,9 @@ The formal objective is total travel-time minimization. Travel time is generated
 
 For an input containing UNREACHABLE pairs, f_route is defined only on permutations whose depot departure, every consecutive customer transition, and depot return are all REACHABLE. A permutation containing an unreachable leg is route-ordering-infeasible and has no numeric formal travel-time objective; no artificial infinity or large finite substitute is assigned.
 
-### 3.4 Feasible route
+<a id="34-feasible-route"></a>
+
+### 3.4 実行可能な経路
 
 A route is feasible for this subproblem if and only if:
 
@@ -103,11 +121,15 @@ A route is feasible for this subproblem if and only if:
 
 This is route-ordering feasibility only. It is not full EVRP feasibility.
 
-### 3.5 Adopted subproblem status
+<a id="35-adopted-subproblem-status"></a>
+
+### 3.5 採用済み部分問題状態
 
 The Single-Vehicle Route Ordering Problem is adopted as the first quantum subproblem. This adoption does not authorize QAOA execution, Ising conversion, or any later stage.
 
-## 4. Scope exclusions
+<a id="4-scope-exclusions"></a>
+
+## 4. 範囲 除外項目
 
 The following are explicitly outside the formal QUBO scope of this subproblem candidate:
 
@@ -131,9 +153,13 @@ The following are explicitly outside the formal QUBO scope of this subproblem ca
 
 Full EVRP feasibility is re-evaluated later by Hayate and the independent validator. Directed reachability, however, is part of the reduced route-ordering input and route feasibility: an unreachable leg MUST NOT be treated as a zero-cost route leg. Excluding a full-EVRP constraint from this candidate QUBO does not delete or weaken that constraint in the formal EVRP model.
 
-## 5. Adopted QUBO encoding
+<a id="5-adopted-qubo-encoding"></a>
 
-### 5.1 Position-based binary variables (adopted)
+## 5. 採用済み制約なし二値二次最適化符号化
+
+<a id="51-position-based-binary-variables-adopted"></a>
+
+### 5.1 訪問位置に基づく二値変数 (採用済み)
 
 Define:
 
@@ -155,7 +181,9 @@ N_total = N_logical + N_auxiliary
 
 The auxiliary count is not included in n².
 
-### 5.2 Customer exactly-once constraint
+<a id="52-customer-exactly-once-constraint"></a>
+
+### 5.2 顧客ちょうど一度の制約
 
 For each customer i:
 
@@ -166,7 +194,7 @@ The authoritative customer-once penalty is:
 P_customer(x) =
 Σ_(i∈C) (Σ_(t∈T) x_(i,t) - 1)²
 
-### 5.3 Position exactly-once constraint
+### 5.3 位置ちょうど一度の制約
 
 For each position t:
 
@@ -177,7 +205,9 @@ The authoritative position-once penalty is:
 P_position(x) =
 Σ_(t∈T) (Σ_(i∈C) x_(i,t) - 1)²
 
-### 5.4 Normalized travel-time objective
+<a id="54-normalized-travel-time-objective"></a>
+
+### 5.4 正規化済み移動時間目的
 
 Before QUBO construction, use the normalized static travel time for REACHABLE, non-self directed edges
 
@@ -194,7 +224,9 @@ H_travel(x) =
 
 The formal travel term excludes i=j. The coefficient builder MUST NOT require or create a self-loop τ̃_(i,i). Feasible routes never revisit the same customer consecutively, duplication is handled by the customer-once penalty, Routing Baseline does not treat self-loops as formal edges, and invalid-state energy must not depend on an undefined self-loop travel time.
 
-### 5.5 Complete QUBO objective and full expansion
+<a id="55-complete-qubo-objective-and-full-expansion"></a>
+
+### 5.5 完了制約なし二値二次最適化目的 ・ 全体展開
 
 The authoritative formulation is the direct squared-penalty form:
 
@@ -220,7 +252,7 @@ The previous expansion incorrectly recorded -λΣx and negative row/column pair 
 
 This scalar form is the adopted formulation. The numerical λ value remains unresolved by policy; a hierarchical or lexicographic alternative is not permitted without a new USER_RESEARCH_DECISION.
 
-### 5.6 Logical indexing, couplers, and density
+### 5.6 論理上の索引付け, 変数間結合, ・ 密度
 
 Use row-major indexing:
 
@@ -248,15 +280,19 @@ For this basic formulation N_logical=n² and N_auxiliary=0. If auxiliaries are l
 
 The exact count depends on whether the travel-time matrix is dense, sparse, symmetric, directed, and whether zero coefficients are removed. Density MUST use the same finalized coefficient map as coupler count.
 
-## 6. Penalty design
+<a id="6-penalty-design"></a>
 
-### 6.1 No arbitrary coefficient
+## 6. 罰則項設計
+
+### 6.1 いいえ任意の係数
 
 No fixed arbitrary penalty such as 1,000 or 1,000,000 is adopted without a coefficient-bound certificate. λ is a QUBO formulation parameter, not a QAOA tuning parameter, and MUST be verified and fixed before QAOA experiments.
 
 With 0≤τ̃≤1, every valid route objective lies in [0,n+1]. Raw travel coefficients lie in [0,1]; complete aggregated coefficient ranges remain λ-dependent and depend on matrix sparsity. The constant offset is 2nλ.
 
-### 6.2 Feasibility-dominance condition
+<a id="62-feasibility-dominance-condition"></a>
+
+### 6.2 実行可能性が優先される条件
 
 Let:
 
@@ -308,7 +344,9 @@ is sufficient. The route may be the deterministic input-order route or another i
 
 If a hierarchical objective is used, a separate proof is required for each priority level. The proof must include cross-term and auxiliary-product contributions.
 
-### 6.3 Theoretical-bound method
+<a id="63-theoretical-bound-method"></a>
+
+### 6.3 理論境界手法
 
 The theoretical method should:
 
@@ -319,7 +357,9 @@ The theoretical method should:
 5. prove that every violating assignment is dominated by the intended valid assignment class;
 6. record coefficient ranges, offsets, and numerical precision.
 
-### 6.4 Formal λ policy and proven bound
+<a id="64-formal-λ-policy-and-proven-bound"></a>
+
+### 6.4 正式 λ 方針 ・ 証明済み境界
 
 The proven policy is size-aware and cost-aware: for any accepted complete-reachability instance, use either the universal sufficient bound `λ>(n+1)/2` or the tighter instance-aware sufficient bound `λ>U_feasible/2`, with a recorded strictly positive margin. For the initial R23 Formal Experiment A scope only (`n={2,3,4}`), the common numerical policy `R20_COMMON_GLOBAL_LAMBDA_V1` adopts `λ=3.0`; this is a controlled formulation setting, not a QAOA-tuned value. The policy is not adopted for `n>=5`, future formulations, or full EVRP.
 
@@ -327,7 +367,9 @@ The proven policy is size-aware and cost-aware: for any accepted complete-reacha
 
 The former `UNRESOLVED_THEORETICAL_BOUND` status is resolved for the current complete-reachability formulation. This does not prove a bound for future unreachable-transition penalties, full EVRP QUBOs, unresolved zero-time inputs, or other formulations.
 
-### 6.5 Empirical-pilot method
+<a id="65-empirical-pilot-method"></a>
+
+### 6.5 経験的な-予備試験手法
 
 An empirical pilot may be used to explore candidate λ ranges on very small instances. It may measure:
 
@@ -340,7 +382,9 @@ An empirical pilot alone does not prove formal penalty validity. Formal acceptan
 
 For `R20_COMMON_GLOBAL_LAMBDA_V1`, exact/synthetic and real-data enumeration support the theorem but do not replace it. The bound margin, U_feasible, n, normalization rule, tau_max, and matrix identity must be recorded for every formal instance. The authority record is `reproducibility/config/traffic_simulation/r20_formal_penalty/20260911_r20_formal_lambda_v1.json` and its validation evidence.
 
-## 7. Depot representation comparison
+<a id="7-depot-representation-comparison"></a>
+
+## 7. 配送拠点表現比較
 
 The adopted representation is fixed depot 0 outside the binary positions. The alternative is retained only as a rejected comparison, not as an active candidate.
 
@@ -353,13 +397,19 @@ The adopted representation is fixed depot 0 outside the binary positions. The al
 | Exact validation | direct permutation comparison | additional validation of depot placement |
 | Semantics | naturally represents fixed depot start and return | can represent flexible depot positions, which is outside this candidate unless explicitly constrained |
 
-### Adopted decision
+<a id="adopted-decision"></a>
+
+### 採用済み判断
 
 Keep depot 0 fixed outside the binary customer-position variables and use an n×n customer-position matrix. This gives N_logical=n², simple permutation decoding, and direct depot-to-first/final-to-depot objective terms.
 
-## 8. Classical exact reference
+<a id="8-classical-exact-reference"></a>
 
-### 8.1 Original route-ordering optimum
+## 8. 古典計算 厳密 参照
+
+<a id="81-original-route-ordering-optimum"></a>
+
+### 8.1 元の訪問順序最適解
 
 For very small n, enumerate every permutation π of C. For each permutation:
 
@@ -372,7 +422,9 @@ For very small n, enumerate every permutation π of C. For each permutation:
 
 The number of permutations is n!.
 
-### 8.2 Exact QUBO optimum
+<a id="82-exact-qubo-optimum"></a>
+
+### 8.2 厳密制約なし二値二次最適化最適解
 
 For very small n, perform exact QUBO enumeration over all binary assignments of length n², or use a separately specified exact binary optimizer that is proven exhaustive for the tested instance.
 
@@ -386,7 +438,7 @@ For every bitstring:
 6. record the minimum among QUBO-feasible assignments;
 7. retain invalid minima separately rather than discarding them.
 
-### 8.3 Equivalence checks
+### 8.3 Equivalence 確認
 
 Before QAOA comparison, the following must hold for multiple very-small instances:
 
@@ -399,7 +451,9 @@ Before QAOA comparison, the following must hold for multiple very-small instance
 
 The formal reference is travel-time-based. Distance may be retained only as an auxiliary diagnostic/fleet metric.
 
-### 8.4 Exact validation design (specification only)
+<a id="84-exact-validation-design-specification-only"></a>
+
+### 8.4 厳密検証設計 (仕様のみ)
 
 For each very-small instance, the future validation harness MUST compare:
 
@@ -408,9 +462,13 @@ For each very-small instance, the future validation harness MUST compare:
 
 The harness MUST verify: (1) every QUBO global minimum is feasible; (2) every decoded QUBO optimum matches an original route optimum; (3) no infeasible state has lower energy than the best feasible state; (4) customer-once and position-once penalties are evaluated correctly; (5) normalization preserves route ranking; and (6) multiple optimal routes are all handled correctly. A formal validation run is not authorized in this task and may occur only after the existing gate rules and implementation prerequisites are confirmed.
 
-## 9. Decode specification
+<a id="9-decode-specification"></a>
 
-### 9.1 Bitstring shape
+## 9. 復号仕様
+
+<a id="91-bitstring-shape"></a>
+
+### 9.1 ビット列形状
 
 The decoder expects exactly n² binary values under a fixed variable ordering:
 
@@ -418,7 +476,9 @@ x_(1,1), ..., x_(1,n), x_(2,1), ..., x_(n,n)
 
 The variable ordering MUST be recorded in the final manifest. A bitstring of a different length is malformed.
 
-### 9.2 Valid one-hot assignment
+<a id="92-valid-one-hot-assignment"></a>
+
+### 9.2 有効一箇所のみが1の割当
 
 A bitstring is decode-valid if and only if:
 
@@ -435,9 +495,11 @@ The route is decoded by reading the customer i assigned to each position t:
 
 The closed route is then (0, π_1, ..., π_n, 0).
 
-### 9.3 Invalid conditions
+<a id="93-invalid-conditions"></a>
 
-| Condition | Classification |
+### 9.3 不正条件
+
+| Condition | 分類 |
 |---|---|
 | malformed bitstring length | DECODE_INVALID |
 | non-binary value | DECODE_INVALID |
@@ -448,15 +510,21 @@ The closed route is then (0, π_1, ..., π_n, 0).
 | decoded customer outside C | DECODE_INVALID |
 | valid permutation matrix but one or more unreachable route legs | decode succeeds structurally; ROUTE_ORDERING_INFEASIBLE and discard |
 
-### 9.4 Repair versus discard
+<a id="94-repair-versus-discard"></a>
+
+### 9.4 修復対破棄
 
 The adopted initial policy is DISCARD: retain the raw bitstring, classify it as invalid, and do not repair it or present a repaired route as a primary QAOA result. Invalid includes duplicate/missing customers, empty/multiple-filled positions, malformed assignments, and either one-hot constraint violation.
 
 If repair is later evaluated, Raw QAOA and QAOA + classical repair MUST be separate experimental pipelines. Raw and repaired samples, repair success, repair cost, and repair time MUST be retained under a new USER_RESEARCH_DECISION. Repaired output MUST NOT be reported as raw QAOA performance.
 
-## 10. Validation levels
+<a id="10-validation-levels"></a>
 
-### 10.1 QUBO feasibility
+## 10. 検証段階
+
+<a id="101-qubo-feasibility"></a>
+
+### 10.1 制約なし二値二次最適化 実行可能性
 
 QUBO feasibility checks only the internal assignment constraints:
 
@@ -466,7 +534,9 @@ QUBO feasibility checks only the internal assignment constraints:
 
 A QUBO-feasible bitstring must decode to a permutation for this candidate encoding.
 
-### 10.2 Route-ordering feasibility
+<a id="102-route-ordering-feasibility"></a>
+
+### 10.2 訪問順序実行可能性
 
 Route-ordering feasibility checks:
 
@@ -479,7 +549,9 @@ Route-ordering feasibility checks:
 
 The reachability rule is not yet formally fixed. If a disconnected or unavailable transition exists, the treatment requires a separate USER_RESEARCH_DECISION.
 
-### 10.3 Full EVRP feasibility
+<a id="103-full-evrp-feasibility"></a>
+
+### 10.3 完全な電気自動車配送経路問題実行可能性
 
 Full EVRP feasibility is a later Hayate/validator check including, as applicable:
 
@@ -496,9 +568,13 @@ QUBO-feasible does not imply full-EVRP-feasible.
 
 Route-ordering-feasible does not imply full-EVRP-feasible.
 
-## 11. Candidate solution-quality metrics
+<a id="11-candidate-solution-quality-metrics"></a>
 
-### 11.1 When exact optimum is known
+## 11. 候補解-品質評価指標
+
+<a id="111-when-exact-optimum-is-known"></a>
+
+### 11.1 時点厳密最適解 is 既知
 
 For small instances with exact enumeration:
 
@@ -512,7 +588,9 @@ For small instances with exact enumeration:
 
 Always store P_feasible = N_valid / N_total. For best objective, mean objective, optimality gap, optimal solution probability, and best-solution probability, the record MUST state whether the denominator is all samples or valid samples only. Invalid samples are never silently reassigned to a valid route.
 
-### 11.2 When exact optimum is unavailable
+<a id="112-when-exact-optimum-is-unavailable"></a>
+
+### 11.2 時点厳密最適解 is 未提供
 
 Use:
 
@@ -525,7 +603,9 @@ Use:
 
 Do not label an empirical best result “optimal” without an exact or formally justified reference.
 
-## 12. Problem-size recording rule
+<a id="12-problem-size-recording-rule"></a>
+
+## 12. 問題規模記録規則
 
 The encoding and formulation are invariant across problem sizes. The sequence n=2,3,4,5,... is an analysis ladder, not a QAOA authorization.
 
@@ -555,7 +635,9 @@ For the fixed-depot position-based candidate:
 
 No formal maximum n is defined.
 
-## 13. Reproducibility requirements
+<a id="13-reproducibility-requirements"></a>
+
+## 13. 再現性要件
 
 Before formal simulation, the following MUST be fixed and recorded:
 
@@ -589,9 +671,11 @@ Before formal simulation, the following MUST be fixed and recorded:
 
 Separate seeds SHOULD be used for instance generation, initial parameter generation, optimizer randomness, and shot sampling. Equal integer values across different roles do not make those random processes equivalent.
 
-## 14. Required research decisions
+<a id="14-required-research-decisions"></a>
 
-| Item | Classification | Current state |
+## 14. 必須研究判断
+
+| Item | 分類 | Current state |
 |---|---|---|
 | formal objective | USER_RESEARCH_DECISION | adopted: static road-network-based total travel time |
 | depot encoding | USER_RESEARCH_DECISION | adopted: depot fixed; customers only, n×n position encoding |
@@ -603,11 +687,11 @@ Separate seeds SHOULD be used for instance generation, initial parameter generat
 | invalid sample policy | USER_RESEARCH_DECISION | adopted: discard; no repair in initial study |
 | exact classical reference implementation | USER_RESEARCH_DECISION | implemented for complete numeric synthetic matrices; explicit-reachability extension remains IMPLEMENTATION_TASK |
 | problem-size ladder | USER_RESEARCH_DECISION | encoding/formulation common across n; ladder itself not an execution authorization |
-| QAOA p range | USER_RESEARCH_DECISION | unresolved |
-| shots | USER_RESEARCH_DECISION | unresolved |
-| optimizer | USER_RESEARCH_DECISION | unresolved |
-| iteration limits | USER_RESEARCH_DECISION | unresolved |
-| repetitions | MUST_BE_FIXED_FOR_REPRODUCIBILITY | not fixed |
+| QAOA p range | USER_RESEARCH_DECISION | 未解決 |
+| 回測定 | USER_RESEARCH_DECISION | 未解決 |
+| 最適化処理 | USER_RESEARCH_DECISION | 未解決 |
+| iteration limits | USER_RESEARCH_DECISION | 未解決 |
+| 反復回数 | MUST_BE_FIXED_FOR_REPRODUCIBILITY | not fixed |
 | seed policy | MUST_BE_FIXED_FOR_REPRODUCIBILITY | policy candidate defined, not fixed |
 | runtime measurement definition | MUST_BE_FIXED_FOR_REPRODUCIBILITY | components identified, inclusion rule not fixed |
 | formal solution-quality metrics | USER_RESEARCH_DECISION | candidate metrics defined, formal set unresolved |
@@ -616,7 +700,9 @@ Separate seeds SHOULD be used for instance generation, initial parameter generat
 | small-instance exact-equivalence harness | IMPLEMENTATION_TASK | implemented for n=2,3 synthetic instances; formal gate run remains separate |
 | pilot penalty sensitivity | CAN_BE_EMPIRICALLY_TUNED | only after scope/encoding decisions |
 
-## 15. Gate condition: FORMULATION_VERIFIED
+<a id="15-gate-condition-formulation_verified"></a>
+
+## 15. 判定基準条件: FORMULATION_VERIFIED
 
 The gate FORMULATION_VERIFIED may be PASS only when all of the following are satisfied:
 
@@ -639,7 +725,9 @@ FORMULATION_VERIFIED = NOT_PASS
 
 The restrictions above applied to the preceding implementation/evidence tasks. The separate gate review and transition record below supersede that historical status only for the explicitly scoped initial reduced formulation.
 
-### 15.1 FORMULATION_VERIFIED gate transition — 2026-09-10
+<a id="151-formulation_verified-gate-transition--2026-09-10"></a>
+
+### 15.1 FORMULATION_VERIFIED 判定基準移行 — 2026-09-10
 
 - Decision: `PASS_WITH_EXPLICIT_SCOPE_LIMITATIONS`
 - Gate status: `FORMULATION_VERIFIED = PASS`
@@ -651,7 +739,9 @@ The restrictions above applied to the preceding implementation/evidence tasks. T
 - Scope limitations: complete-reachability subsets only; static normalized travel time; non-self zero-time inputs rejected; self-loops excluded; no unreachable-transition penalty; invalid samples discarded without repair; reduced route-ordering only.
 - This scoped PASS does not validate full EVRP and did not itself authorize downstream execution. Subsequent separate governance and evidence records established R21 PASS, R22 PASS, and R23 ACCEPTED_WITH_LIMITATIONS for the same reduced scope only.
 
-## 16. Historical gate-task execution record
+<a id="16-historical-gate-task-execution-record"></a>
+
+## 16. 過去の記録判定基準-作業実行記録
 
 The following actions were not performed during the R20 gate task. Later R21/R22 records supersede only the downstream stage state, not this historical execution statement:
 
@@ -676,7 +766,9 @@ The following actions were not performed during the R20 gate task. Later R21/R22
 
 QAOA/Aer remains a software simulation layer. Aer simulation limits are not quantum-computing technology limits.
 
-## 16.1 Exact validation implementation record
+<a id="161-exact-validation-implementation-record"></a>
+
+## 16.1 厳密 検証 実装 記録
 
 - implementation: `05_src/traffic_simulation/r20_route_ordering/core.py`
 - package export: `05_src/traffic_simulation/r20_route_ordering/__init__.py`
@@ -691,9 +783,13 @@ QAOA/Aer remains a software simulation layer. Aer simulation limits are not quan
 - corrected evidence artifact: `reproducibility/outputs/traffic_simulation/r20_exact_validation/20260910_corrected_expanded_qubo_v12/`
 - implementation result: regression tests PASS; validation evidence is not a gate PASS
 
-## 16.2 Routing Baseline edge semantics and R20 input contract
+<a id="162-routing-baseline-edge-semantics-and-r20-input-contract"></a>
 
-### 16.2.1 Evidence and observed Routing Baseline contract
+## 16.2 経路計算の基準道路区間意味 ・ R20 入力取り決め
+
+<a id="1621-evidence-and-observed-routing-baseline-contract"></a>
+
+### 16.2.1 根拠 ・ 観測された経路計算の基準取り決め
 
 This boundary specification was derived by inspecting the R12 routing schema/config and OD manifest generator, the R13 directed routing implementation and validators, the R14 independent routing validator, the R15 common-instance builder/validator, and the corresponding R12--R15 machine-readable artifacts.
 
@@ -708,11 +804,13 @@ The observed Routing Baseline contract is:
 
 `ROUTING_BASELINE_SPEC_CONFLICT`: the accepted meaning of a reachable non-self zero-time edge is not consistent across R12, R13, and R14. The current real artifact does not resolve the conflict because it contains no such edge. R20 MUST stop on such an input; it MUST NOT reinterpret zero as unreachable or silently accept/reject it until the Routing Baseline authority resolves the policy.
 
-### 16.2.2 Edge classifications
+<a id="1622-edge-classifications"></a>
+
+### 16.2.2 道路区間分類
 
 For an R20-selected node set `V={depot} union customers`, every non-self directed pair has exactly one REACHABLE/UNREACHABLE classification; a diagonal, if encountered, is classified separately as SELF_LOOP:
 
-| Classification | Contract | R20 meaning |
+| 分類 | Contract | R20 meaning |
 |---|---|---|
 | `REACHABLE` | `i != j`, `reachable=true`, status `OK`, finite formal `travel_time_s`, and valid source/path provenance | The directed edge may be used. Its travel time is the only formal objective cost; optional distance remains auxiliary. |
 | `UNREACHABLE` | `i != j`, `reachable=false`, status `LEGITIMATE_UNREACHABLE`, `travel_time_s=null`, and `distance_m=null` | No formal numeric cost exists and the directed transition is forbidden. R20 does not estimate, impute, or assign a large cost. |
@@ -729,7 +827,9 @@ The R20 layer MUST consume the Routing Baseline reachability decision. It MUST N
 
 Malformed conditions include `reachable=true` with null/non-numeric/NaN/infinite/negative travel time, `reachable=false` with a numeric formal travel time or distance, a non-`OK` reachable status, a false status other than `LEGITIMATE_UNREACHABLE`, unknown location IDs, duplicate or inconsistent directed records, silent missing directed pairs, and any ambiguous boolean/null serialization. `ROUTING_ENGINE_FAILURE`, `INVALID_ENDPOINT`, and `MISSING_OD` stop the adapter.
 
-### 16.2.3 R20 reduced route-ordering input schema
+<a id="1623-r20-reduced-route-ordering-input-schema"></a>
+
+### 16.2.3 R20 縮約した訪問順序 入力 データ構造
 
 The adapter output is a versioned, machine-readable object with at least:
 
@@ -778,7 +878,9 @@ The selected-node completeness requirement is strict: all `(n+1)n` directed non-
 
 The schema preserves `tau[i,j] != tau[j,i]`. The adapter and QUBO layer MUST NOT average, mirror, fill, or otherwise symmetrize the two directions. Diagonal records and `tau[i,i]` are not required. An internal dense-array zero on the diagonal may be used only as a documented non-edge placeholder and MUST NOT enter `tau_max`, route cost, or a travel coefficient.
 
-### 16.2.4 Zero-time and normalization policy
+<a id="1624-zero-time-and-normalization-policy"></a>
+
+### 16.2.4 時間が0の ・ 正規化方針
 
 For `i != j`, zero MUST NOT encode UNREACHABLE. Because the Routing Baseline authorities conflict on whether a reachable zero-time edge is valid, such an edge is currently a stop condition labelled `ROUTING_BASELINE_SPEC_CONFLICT`. The accepted artifacts have strictly positive travel times, so this stop rule does not alter their observed values.
 
@@ -792,7 +894,9 @@ and
 
 Only validated REACHABLE non-self edges participate. Null unreachable edges, missing diagonals, NaN, infinity, negative values, zero edges pending conflict resolution, and malformed records are excluded by rejection rather than filtering. Normalization is impossible if `A_R` is empty or `tau_max` is non-finite or not strictly positive. Raw values remain immutable and normalized values are stored separately. Division by one positive common scalar preserves every reachable route's ordering and ties and preserves directed asymmetry; this property MUST be checked on each very-small real-data-derived instance.
 
-### 16.2.5 Unreachable-transition treatment
+<a id="1625-unreachable-transition-treatment"></a>
+
+### 16.2.5 到達不能-移行取扱い
 
 Option A, omission of an unreachable travel coefficient, is not sufficient to prohibit that transition. For a structurally valid permutation assignment, `P_customer=P_position=0`. If `(i,j)` at positions `t,t+1` is unreachable and its travel coefficient is merely absent, its contribution is zero:
 
@@ -814,7 +918,9 @@ A QUBO representation could add positive linear/quadratic hard-constraint penalt
 
 Adopted initial R20 policy: accept only a selected set `V={depot} union customers` satisfying `for all i,j in V, i!=j: reachable(i,j)=true`. Any missing, unreachable, or malformed required pair is rejected before QUBO construction. No unreachable-transition penalty is added, no coefficient is omitted as if it were a zero-cost usable edge, and no artificial large cost is introduced. Hard prohibition is deferred to a future extension and would require a new research decision and proof.
 
-### 16.2.6 Adapter boundary and failure behavior
+<a id="1626-adapter-boundary-and-failure-behavior"></a>
+
+### 16.2.6 変換器境界 ・ 不具合挙動
 
 The non-production adapter contract is:
 
@@ -832,13 +938,17 @@ The following always stop processing: requested location missing; ambiguous edge
 
 Detecting absence of a Hamiltonian cycle at input time prevents an undefined original-route optimum. For general `n` this decision is combinatorial; the adapter may use necessary graph checks, but a negative result must be sound. For very-small validation, exhaustive permutation checking is exact. A scalable exact/decision method is an `IMPLEMENTATION_TASK`; no formal production-size method is selected here.
 
-### 16.2.7 Very-small real-data-derived validation design
+<a id="1627-very-small-real-data-derived-validation-design"></a>
+
+### 16.2.7 極小実データ由来の検証設計
 
 Before formal Routing Baseline integration, create evidence-only subsets containing depot plus two and depot plus three customers from a versioned accepted artifact. Selection MUST be deterministic and recorded; it MUST include an asymmetric reverse pair, and a later dedicated fixture must include an explicit legitimate unreachable pair once the prohibition policy exists.
 
 For each subset, validate all IDs, exact directed-pair completeness, statuses/nulls, units, hashes, asymmetry preservation, and the raw/normalized edge sets. Enumerate every customer permutation, discard routes containing an unreachable leg, and record whether at least one reachable closed route exists. Compare raw and normalized optimal route sets, original permutation optimum, best feasible QUBO route, and direct-versus-expanded energy using the existing synthetic harness only after the adapter has produced a PASS input. An unreachable test MUST demonstrate that omission alone is rejected and, after separate adoption, that the explicit prohibition prevents the transition. No QAOA execution is part of this validation.
 
-### 16.2.8 Remaining decisions and tasks
+<a id="1628-remaining-decisions-and-tasks"></a>
+
+### 16.2.8 残る判断 ・ 作業
 
 - Initial complete-reachability subset rejection is adopted. It is a study-scope restriction, not a full-EVRP requirement, a road-network connectivity claim, a quantum requirement, a future-QPU limit, or a formal maximum problem size.
 - A future unreachable-transition hard constraint remains a `USER_RESEARCH_DECISION`; it is not implemented or assigned a coefficient here.
@@ -846,7 +956,9 @@ For each subset, validate all IDs, exact directed-pair completeness, statuses/nu
 - `IMPLEMENTATION_TASK`: a future explicit-unreachable QUBO formulation, dominance proof, and scalable Hamiltonian-cycle handling remain unimplemented.
 - `UNREACHABLE_TRANSITION_CONSTRAINT_REQUIRED`: deferred future-extension requirement; it is inactive for accepted initial instances because complete reachability is mandatory.
 
-## 16.3 Routing Baseline adapter and real-data-derived evidence record
+<a id="163-routing-baseline-adapter-and-real-data-derived-evidence-record"></a>
+
+## 16.3 経路計算の基準変換器 ・ 実データ由来の根拠記録
 
 - adapter: `05_src/traffic_simulation/r20_route_ordering/routing_adapter.py`
 - adapter version/schema: `1.0.0` / `r20-route-ordering-input-v1`
@@ -862,7 +974,9 @@ For each subset, validate all IDs, exact directed-pair completeness, statuses/nu
 - evidence artifact: `reproducibility/outputs/traffic_simulation/r20_real_data_validation/20260910_complete_reachability_v10/`
 - evidence status: `PASS_FORMULATION_EVIDENCE_ONLY`; this is not FORMULATION_VERIFIED PASS and does not authorize QAOA.
 
-## 16.4 Lambda-bound analysis record
+<a id="164-lambda-bound-analysis-record"></a>
+
+## 16.4 罰則係数-境界分析記録
 
 - analysis utility: `05_src/traffic_simulation/r20_route_ordering/analyze_lambda_bound.py`
 - analysis artifact: `reproducibility/outputs/traffic_simulation/r20_lambda_bound_analysis/20260910_adversarial_v8/lambda_bound_analysis.json`
@@ -875,7 +989,9 @@ For each subset, validate all IDs, exact directed-pair completeness, statuses/nu
 - adversarial evidence: all 12 deterministic n=2, n=3, and n=4 fixtures passed the bound check; n=4 used all 65,536 binary states per fixture
 - evidence classification: theorem-backed supporting evidence, not a numerical lambda adoption and not a QAOA experiment
 
-## 17. Final status
+<a id="17-final-status"></a>
+
+## 17. 最終状態
 
 - Modified file: 05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md
 - Modified existing status/decision/execution files: none
@@ -895,4 +1011,4 @@ For each subset, validate all IDs, exact directed-pair completeness, statuses/nu
 - Reduced downstream state: R21 PASS; R22 PASS; R23 ACCEPTED_WITH_LIMITATIONS
 - Prohibited actions: none performed
 
-本書はfull EVRPを解いたことやformal QAOA performanceを示さない。R21/R22の実行可否と結果は`EVRP_EXECUTION_PLAN.md`の別gate recordがauthorityであり、現在は同じreduced scopeについてR21/R22 PASS、R23 ACCEPTED_WITH_LIMITATIONSである。採択済みsubproblem formulationと、未採択のformal numerical λ policy、unreachable-transition extension、full-EVRP constraintsを分離して扱う。
+本書は完全な電気自動車配送経路問題を解いたことや正式 量子近似最適化アルゴリズム 性能を示さない。R21/R22の実行可否と結果は`EVRP_EXECUTION_PLAN.md`の別判定基準 記録が正本であり、現在は同じ縮約した 範囲についてR21/R22 合格、R23 ACCEPTED_WITH_LIMITATIONSである。採択済みsubproblem 定式化と、未採択の正式 numerical λ 方針、到達不能-移行 拡張、完全な電気自動車配送経路問題 constraintsを分離して扱う。

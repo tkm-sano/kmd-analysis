@@ -1,6 +1,8 @@
-# Ota Ward Relation Closure v16
+# Ota Ward 関係要素の参照先の補完 v16
 
-## Purpose and decision
+<a id="purpose-and-decision"></a>
+
+## 目的 ・ 判断
 
 This record fixes the accepted relation-closure population used before road
 attribute classification. It replaces neither the historical v15 Dry Run nor
@@ -13,9 +15,11 @@ restrictions as separate governed categories. Other relation types are counted
 and discarded under an explicit unrelated-type rule. An unclassified
 `restriction:*` type stops the process rather than being discarded.
 
-## Registered inputs
+<a id="registered-inputs"></a>
 
-| Input | Repository path | SHA-256 |
+## 登録済み入力
+
+| 入力 | Repository path | SHA-256 |
 |---|---|---|
 | Ota Ward acquisition-envelope extract | `03_data/processed/traffic_simulation/road_network/osm_extracts/osm_ota_ward_20260716.osm.pbf` | `10d554a13e89b815ca416c272d23d9477d52e312fa3d299f466fb3c01cf9d041` |
 | Kanto regional source authority | `03_data/raw/traffic_simulation/osm/kanto-260716.osm.pbf` | `aef890f28b652ed7bd2b0d77e86f263219b479fe3eedbdd8610dcfc1572c420d` |
@@ -26,7 +30,9 @@ The regional PBF is the source authority for every referenced element absent
 from the acquisition-envelope extract. The toolchain uses `osmium 1.15.0` in
 the repository's fixed `analysis` service.
 
-## Selection and closure rules
+<a id="selection-and-closure-rules"></a>
+
+## 選定 ・ 参照先の補完規則
 
 1. Every node and way in the registered BBOX extract enters the closure seed.
 2. Every exact `type=restriction` relation enters category
@@ -46,7 +52,9 @@ OSM identifiers have separate node, way and relation namespaces. The duplicate
 check therefore rejects two node IDs, two way IDs or two relation IDs with the
 same value; it does not treat `node/1` and `way/1` as a collision.
 
-## Commands
+<a id="commands"></a>
+
+## コマンド
 
 The implementation entry point is:
 
@@ -67,9 +75,11 @@ The exact expanded commands are retained in the generated manifest. The
 second execution used `--overwrite` only to test determinism after the first
 accepted output set existed.
 
-## Relation and element results
+<a id="relation-and-element-results"></a>
 
-| Measure | Result |
+## 関係要素 ・ 要素結果
+
+| Measure | 結果 |
 |---|---:|
 | Ordinary `type=restriction` relations | 581 |
 | Bus `type=restriction:bus` relations | 3 |
@@ -89,7 +99,7 @@ accepted output set existed.
 The three required bus relations are `16016504`, `16016506` and `16026064`.
 All are present in the accepted manifest.
 
-## Road roles and populations
+## Road 役割 ・ 母集団
 
 The closure retains more source context than the final analysis needs. Roles
 are therefore assigned separately:
@@ -110,9 +120,11 @@ zero removed ways and 26,220 unchanged ways. The three bus relations add
 governed semantics but introduce no new candidate way because their member
 ways were already present through the ordinary closure.
 
-## Fixed outputs
+<a id="fixed-outputs"></a>
 
-| Output | SHA-256 |
+## 固定済み出力
+
+| 出力 | SHA-256 |
 |---|---|
 | ID set | `9e9e25bc2db3c340a1fa1e085071a41626884ed2760c293ace226b11f4e9b789` |
 | Relation-closed PBF | `ea9c20b4c1214c7f6cb00afb977638f5e9b69535c53787e2108006814e61591d` |
@@ -127,7 +139,7 @@ accepted final manifest. The role artifact records each supplemented node and
 way as `final_analysis_target`, `topology_support`, or `excluded`; all 59
 supplemented nodes and 16 supplemented ways are topology support in this run.
 
-## Acceptance and downstream limit
+## 受入 ・ 下流限界
 
 The relation-closure population is accepted. This acceptance does not make a
 formal SUMO network available. The Classifier and Resolver must consume the

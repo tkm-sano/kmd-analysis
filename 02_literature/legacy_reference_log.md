@@ -1,4 +1,4 @@
-# Legacy Reference Log
+# 過去の参照記録
 
 作成日: 2026-08-26
 
@@ -6,7 +6,7 @@
 
 既存の文献候補、BibTeX、PDF/DOI/arXiv等の関連リンクは一旦削除した。今後は「将来使う予定」という理由だけでは文献を登録しない。研究設計、実装、分析、評価のいずれかで実際に使用した文献のみを、使用箇所と根拠を明記して再登録する。
 
-再登録時は、文献の使用目的、使用箇所、取得元、BibTeX key、DOI/URL、ローカルPDFの有無を同時に記録し、候補段階のリンク集を正本扱いしない。
+再登録時は、文献の使用目的、使用箇所、取得元、BibTeX キー、DOI/URL、ローカル文書ファイルの有無を同時に記録し、候補段階のリンク集を正本扱いしない。
 
 ## 削除前文献一覧
 
@@ -81,7 +81,7 @@
 | Electric vehicle charging chapter - Global EV Outlook 2026 | International Energy Agency | 2026 | official_report | https://www.iea.org/reports/global-ev-outlook-2026/electric-vehicle-charging-chap-6-and-10 | iea-ev-charging-2026 | 02_literature/extraction_tables/social_stage_sources.csv | 未使用候補を含む既存文献登録をリセットし、実際に研究設計・実装・分析・評価で使用した文献のみ再登録する方針へ移行するため。 |
 | Electric Medium- and Heavy-Duty Vehicle Charging Infrastructure Attributes and Development | NREL / OSTI | 2024 | technical_report | https://www.osti.gov/biblio/2478833 | nrel-mdhd-charging-2024 | 02_literature/extraction_tables/social_stage_sources.csv | 未使用候補を含む既存文献登録をリセットし、実際に研究設計・実装・分析・評価で使用した文献のみ再登録する方針へ移行するため。 |
 | The 2030 National Charging Network: Estimating U.S. Light-Duty Demand for Electric Vehicle Charging Infrastructure | Joint Office / NREL | 2023 | official_report | https://driveelectric.gov/files/2030-charging-network.pdf | joint-office-2030-charging-network | 02_literature/extraction_tables/social_stage_sources.csv | 未使用候補を含む既存文献登録をリセットし、実際に研究設計・実装・分析・評価で使用した文献のみ再登録する方針へ移行するため。 |
-| Transforming Urban Logistics: Sustainable and Efficient Last-Mile Delivery in Cities | World Economic Forum | 2024 | report | https://reports.weforum.org/docs/WEF_Transforming_Urban_Logistics_2024.pdf | wef-urban-logistics-2024 | 02_literature/extraction_tables/social_stage_sources.csv | 未使用候補を含む既存文献登録をリセットし、実際に研究設計・実装・分析・評価で使用した文献のみ再登録する方針へ移行するため。 |
+| Transforming Urban Logistics: Sustainable and Efficient Last-Mile Delivery in Cities | World Economic Forum | 2024 | 報告 | https://reports.weforum.org/docs/WEF_Transforming_Urban_Logistics_2024.pdf | wef-urban-logistics-2024 | 02_literature/extraction_tables/social_stage_sources.csv | 未使用候補を含む既存文献登録をリセットし、実際に研究設計・実装・分析・評価で使用した文献のみ再登録する方針へ移行するため。 |
 | EV bus and EV truck introduction support program | Tokyo Metropolitan Government Bureau of Environment | 2024 | official_policy | https://www.kankyo.metro.tokyo.lg.jp/vehicle/sgw/promotion/200500a20200527093539012 | tokyo-ev-bus-truck-subsidy-2024 | 02_literature/extraction_tables/social_stage_sources.csv | 未使用候補を含む既存文献登録をリセットし、実際に研究設計・実装・分析・評価で使用した文献のみ再登録する方針へ移行するため。 |
 | FY2026 EV bus and EV truck purchase subsidy press release | Tokyo Metropolitan Government | 2026 | official_policy | https://www.metro.tokyo.lg.jp/information/press/2026/03/2026033036 | tokyo-ev-truck-subsidy-2026 | 02_literature/extraction_tables/social_stage_sources.csv | 未使用候補を含む既存文献登録をリセットし、実際に研究設計・実装・分析・評価で使用した文献のみ再登録する方針へ移行するため。 |
 | eCanter electric trucks to Yamato Transport | Mitsubishi Fuso Truck and Bus Corporation | 2023 | company_release | https://www.mitsubishi-fuso.com/en/news-main/press-release/2023/09/12/first-delivery-of-newest-model-ecanter-electric-trucksaround-900-units-to-be-introduced-by-yamato-transport/ | yamato-ecanter-2023 | 02_literature/extraction_tables/social_stage_sources.csv | 未使用候補を含む既存文献登録をリセットし、実際に研究設計・実装・分析・評価で使用した文献のみ再登録する方針へ移行するため。 |
@@ -92,7 +92,7 @@
 | Comprehensive Logistics Policy Guidelines 2026-2030 | Ministry of Land Infrastructure Transport and Tourism Japan | 2026 | official_policy | https://www.mlit.go.jp/seisakutokatsu/freight/butsuryu03100.html | mlit-logistics-policy-2026-2030 | 02_literature/extraction_tables/social_stage_sources.csv | 未使用候補を含む既存文献登録をリセットし、実際に研究設計・実装・分析・評価で使用した文献のみ再登録する方針へ移行するため。 |
 | Logistics 2024 problem and policy package briefing | Ministry of Land Infrastructure Transport and Tourism Japan | 2024 | official_policy | https://wwwtb.mlit.go.jp/chugoku/content/000337333.pdf | mlit-logistics-2024-problem-briefing | 02_literature/extraction_tables/social_stage_sources.csv | 未使用候補を含む既存文献登録をリセットし、実際に研究設計・実装・分析・評価で使用した文献のみ再登録する方針へ移行するため。 |
 | Support project for logistics decarbonization and efficiency | Ministry of Land Infrastructure Transport and Tourism Japan | 2025 | official_policy | https://www.mlit.go.jp/report/press/tokatsu01_hh_000887.html | mlit-logistics-decarbonization-support | 02_literature/extraction_tables/social_stage_sources.csv | 未使用候補を含む既存文献登録をリセットし、実際に研究設計・実装・分析・評価で使用した文献のみ再登録する方針へ移行するため。 |
-| CVRPLIB Golden set / standard CVRP instances | CVRPLIB | - | benchmark_data_link | https://galgos.inf.puc-rio.br/cvrplib/index.php/en/instances | - | 01_research_design/quantum_route_optimization_slide_structure.md; 01_research_design/quantum_route_optimization_research_summary.md | 未使用候補を含む既存文献登録をリセットし、実際に研究設計・実装・分析・評価で使用した文献のみ再登録する方針へ移行するため。 |
+| CVRPLIB Golden set / standard CVRP instances | 容量制約付き配送問題の公開問題集 | - | benchmark_data_link | https://galgos.inf.puc-rio.br/cvrplib/index.php/en/instances | - | 01_research_design/quantum_route_optimization_slide_structure.md; 01_research_design/quantum_route_optimization_research_summary.md | 未使用候補を含む既存文献登録をリセットし、実際に研究設計・実装・分析・評価で使用した文献のみ再登録する方針へ移行するため。 |
 ## 削除対象
 
-削除対象は、文献登録簿、BibTeX、PDF取得・抽出メタデータ、発表用文献リンク、補助提出用文献 source registry、生成済み bibliography とした。コード、設定、実験成果物、データ処理成果物は対象外とした。
+削除対象は、文献登録簿、BibTeX、文書ファイル取得・抽出メタデータ、発表用文献リンク、補助提出用文献 出典 登録簿、生成済み bibliography とした。コード、設定、実験成果物、データ処理成果物は対象外とした。

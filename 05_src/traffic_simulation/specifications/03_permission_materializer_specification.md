@@ -1,14 +1,20 @@
-# Permission Materializer Specification
+<a id="permission-materializer-specification"></a>
+
+# 通行許可の具体化処理 仕様
 
 > Version note: v17 uses Resolver expected permissions as the formal authority.
 > Any v16 clause that intersects the final set with a typemap baseline is
 > superseded by `10_approved_attribute_resolution_policy.md`.
 
-## Scope and Authority
+<a id="scope-and-authority"></a>
+
+## 範囲 ・ 正本
 
 The Materializer projects already-decided permissions onto SUMO 1.24.0 plain XML. It MUST NOT interpret source access tags, choose a typemap type, guess topology, create a turn or finalize TLS logic.
 
-## Preconditions
+<a id="preconditions"></a>
+
+## 事前条件
 
 The following MUST validate before any success output is written:
 
@@ -19,7 +25,9 @@ The following MUST validate before any success output is written:
 - exact `config_id`, config version and all recorded hashes.
 - formal use requires profile `formal`.
 
-## Exact Edge Mapping
+<a id="exact-edge-mapping"></a>
+
+## 厳密道路区間対応付け
 
 Formal mapping uses `edge_provenance.json`; coordinate-nearest matching is prohibited. Each external provisional edge MUST have one governed OSM way ID, one SUMO type, a nonempty ordered source-node subsequence and source start/end indices.
 
@@ -31,7 +39,9 @@ start_index = end_index => PM006
 
 All source nodes MUST occur in the normalized OSM way in the recorded order. Reviewed node joins MUST supply explicit source-node lineage. An OSM way MAY map to multiple ordered edge records. SUMO edge-ID sign is never direction evidence.
 
-## Lane Mapping
+<a id="lane-mapping"></a>
+
+## 車線対応付け
 
 Resolver position `p` is left-to-right in the relevant travel direction. SUMO index 0 is the rightmost lane. For direction lane count `n`:
 
@@ -41,7 +51,9 @@ sumo_lane_index = n - 1 - p
 
 This formula applies to forward and backward records. SUMO lane children MUST have unique contiguous indices `0..n-1`, and edge `numLanes`, provenance lane count and expectation lane count MUST agree.
 
-## Permission Normalization
+<a id="permission-normalization"></a>
+
+## 通行許可正規化
 
 The universe is the seven governed vClasses in `sumo_network.yml`. Tokens are ASCII, case-sensitive and deduplicated before comparison.
 
@@ -55,13 +67,15 @@ The universe is the seven governed vClasses in `sumo_network.yml`. Tokens are AS
 
 Empty strings, unknown/unmanaged tokens and simultaneous `allow` plus `disallow` are rejected. The final lane set is expectation intersected with typemap baseline, governed universe and effective provisional restriction. A nonempty set is written as a lexicographically sorted `allow` with `disallow` removed.
 
-## Empty Lane and Edge Rules
+<a id="empty-lane-and-edge-rules"></a>
+
+## 空の車線 ・ 道路区間規則
 
 - If at least one lane on the directed edge remains usable, an empty lane is retained with `disallow="all"` and no `allow`.
 - If every lane on a directed edge is empty, the entire edge and every incident candidate connection are removed and recorded as `zero_permission_edge`.
 - Edge removal MUST preserve an explicit OSM-way/edge/action audit and MUST occur before TLS review.
 
-## Connection Rules
+## 接続規則
 
 Only explicit lane-to-lane `<connection>` elements with nonempty `from`, `to`, `fromLane` and `toLane` are supported. Their unique identity is `(from, to, fromLane, toLane)`. Duplicates stop.
 
@@ -75,13 +89,17 @@ Nonempty sets are written as sorted `allow`; empty connections are removed. Miss
 
 TLS assignments are not stored in the 1.24.0 connection type. The Materializer does not modify or emit final `.tll.xml`; provisional TLS output is evidence only and the TLS Review creates the reviewed file after permissions are fixed.
 
-## Deterministic Output
+<a id="deterministic-output"></a>
+
+## 決定的な出力
 
 Outputs MUST use UTF-8, XML declarations, LF endings, no generator timestamp comment, source element order for retained objects, numeric lane order, lexicographically ordered vClasses and deterministic attribute order defined by the serializer. Writes are atomic, partial success files are removed and existing outputs are not overwritten.
 
-## Normative Requirements
+<a id="normative-requirements"></a>
 
-| ID | Requirement | Failure | Test |
+## 必須要件
+
+| 識別子 | 要件 | 不具合 | 試験 |
 |---|---|---|---|
 | PM-REQ-001 | All preconditions and hashes MUST validate before transformation. | PM001-PM005 | PM-TST-001 |
 | PM-REQ-002 | Edge direction MUST come only from exact lineage indices. | PM006-PM009 | PM-TST-002 |

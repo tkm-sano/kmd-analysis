@@ -1,6 +1,8 @@
-# R24 Benchmark Instance Suite結果（日本語）
+<a id="r24-benchmark-instance-suite結果日本語"></a>
 
-原文execution report: [R24_BENCHMARK_INSTANCE_SUITE_REPORT.md](../../reproducibility/outputs/traffic_simulation/r24_benchmark_instance_suite/20260915_v1/R24_BENCHMARK_INSTANCE_SUITE_REPORT.md)
+# R24 ベンチマーク問題例群結果（日本語）
+
+原文実行 報告: [R24_BENCHMARK_INSTANCE_SUITE_REPORT.md](../../reproducibility/outputs/traffic_simulation/r24_benchmark_instance_suite/20260915_v1/R24_BENCHMARK_INSTANCE_SUITE_REPORT.md)
 
 Execution verdict: **`R24_INSTANCE_SUITE_GENERATED_WITH_LIMITATIONS`**
 
@@ -8,8 +10,8 @@ Execution verdict: **`R24_INSTANCE_SUITE_GENERATED_WITH_LIMITATIONS`**
 
 | Suite | Expected | Generated | Valid | Rejected |
 |---|---:|---:|---:|---:|
-| Random | 80 | 80 | 80 | 0 |
-| Structural | 27 | 27 | 27 | 0 |
+| 無作為 | 80 | 80 | 80 | 0 |
+| 構造上の | 27 | 27 | 27 | 0 |
 | Anchor aliases | 3 | 3 | 3 | 0 |
 
 - Independent bases: 107
@@ -22,9 +24,11 @@ Execution verdict: **`R24_INSTANCE_SUITE_GENERATED_WITH_LIMITATIONS`**
 - Hard rejection reasons: なし
 - Specification deviations: `NONE`
 
-## Duplicate proxyとzero arcs
+<a id="duplicate-proxyとzero-arcs"></a>
 
-107 independent bases中16件に、instance内で共有されるrouting proxyが含まれました。
+## 重複代理指標とzero arcs
+
+107 independent bases中16件に、問題例内で共有される経路計算 代理指標が含まれました。
 
 - duplicate-proxy customer occurrences: 128
 - duplicate-proxy group occurrences: 51
@@ -32,11 +36,13 @@ Execution verdict: **`R24_INSTANCE_SUITE_GENERATED_WITH_LIMITATIONS`**
 - zero-distance ordered arcs: 304
 - zero-travel-time ordered arcs: 304
 
-Zero-distance/time arcsはすべてsame routing proxyとして検証済みで、無効化やredrawをしていません。
+Zero-distance/time arcsはすべてsame 経路計算 代理指標として検証済みで、無効化やredrawをしていません。
 
-## Readiness
+## 準備状況
 
-### Quantum-comparable primary subset
+<a id="quantum-comparable-primary-subset"></a>
+
+### 量子計算-comparable 主要な subset
 
 - n: `{2,3,4}`
 - Base instances: 30
@@ -46,9 +52,11 @@ Zero-distance/time arcsはすべてsame routing proxyとして検証済みで、
 - Non-degenerate ready: 10
 - Degenerate: 80
 
-これはQUBO/QAOA input readinessであり、QAOA実行許可やresource feasibilityを意味しません。
+これはQUBO/QAOA 入力 準備状況であり、量子近似最適化アルゴリズム実行許可や資源 実行可能性を意味しません。
 
-### Classical-extension primary subset
+<a id="classical-extension-primary-subset"></a>
+
+### 古典計算-拡張主要な subset
 
 - n: `{5,8,10,15,20}`
 - Base instances: 50
@@ -58,22 +66,26 @@ Zero-distance/time arcsはすべてsame routing proxyとして検証済みで、
 - Non-degenerate ready: 84
 - Degenerate: 66
 
-このinstance-suite生成時点ではR24-specific classical CVRP solverとMILP optimizationは未実行でした。その後、HiGHS MILP、独立Exact Enumeration、独立validatorによるsmall-n validationを完了し、`R24_CLASSICAL_REFERENCE_VALIDATED`となりました。full 330-condition benchmarkは未実行です。
+この問題例-検証一式生成時点ではR24-specific 古典計算 容量制約付き配送経路問題 求解器と混合整数線形計画 最適化は未実行でした。その後、HiGHS 混合整数線形計画、独立厳密 Enumeration、独立検証器によるsmall-n 検証を完了し、`R24_CLASSICAL_REFERENCE_VALIDATED`となりました。全体 330-条件 ベンチマークは未実行です。
 
-## Validation
+<a id="validation"></a>
 
-Independent validatorが次を再検証し、すべてPASSしました。
+## 検証
+
+Independent 検証器が次を再検証し、すべて合格しました。
 
 - source population count、demand、hash
 - planned instance ID completeness
-- seed derivationとrandom selection再導出
-- structural selection再導出
-- anchor customer/q/OD hash同一性
-- 14,600 OD rowsのrun_3 edge sequence、connection、distance、time
-- 全330条件のm、actual rho、packing certificate、degeneracy
-- 全347 generated artifactのSHA-256
+- 乱数の種 derivationとrandom selection再導出
+- 構造上の selection再導出
+- 基準 customer/q/OD ハッシュ値同一性
+- 14,600 出発地・到着地 行のrun_3 道路区間 sequence、接続、距離、時間
+- 全330条件のm、実際の rho、packing certificate、degeneracy
+- 全347 生成済み 成果物のSHA-256
 
-## Fixed hashes
+<a id="fixed-hashes"></a>
+
+## 固定済みハッシュ値
 
 - C_eligible: `245aad97ea49f7676dcebd414b46eb364d64e9d0fbeb4defa0c8e8b90604ca5c`
 - run_3: `460554c7716fe5e3e1410bbee790e69745a2c423146bac88e51e3a2b95f051b2`
@@ -87,12 +99,14 @@ Independent validatorが次を再検証し、すべてPASSしました。
 - CVRP/MILP optimization: `NONE`
 - QUBO/QAOA: `NONE`
 
-## Claim boundary
+<a id="claim-boundary"></a>
 
-このsuiteは、大田区を基盤とするfreeze済み合成eligible benchmark populationからのrepeated-random subsetおよびcontrolled structural subsetです。実在carrierのroute、delivery、fleet、dispatch、または全大田区配送の統計的代表sampleではありません。
+## 主張境界
+
+この検証一式は、大田区を基盤とする固定済み合成対象条件を満たす ベンチマーク 母集団からのrepeated-random subsetおよび条件を統制した 構造上の subsetです。実在carrierの経路、配送、車両群、配車、または全大田区配送の統計的代表標本ではありません。
 
 ```text
 NEXT_EXECUTABLE_TASK = run classical R24 reference benchmark
 ```
 
-後続の実行結果: [R24 Classical Reference Validation](../../06_outputs/traffic_simulation/r24_classical_reference_validation/20260915_v1/R24_CLASSICAL_REFERENCE_VALIDATION_RESULTS.md)
+後続の実行結果: [R24 古典計算 Reference 検証](../../06_outputs/traffic_simulation/r24_classical_reference_validation/20260915_v1/R24_CLASSICAL_REFERENCE_VALIDATION_RESULTS.md)

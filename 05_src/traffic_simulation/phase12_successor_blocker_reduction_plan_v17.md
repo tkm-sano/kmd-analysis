@@ -1,11 +1,13 @@
-# Phase 12 Validated Successor Blocker Reduction Plan v1
+# 工程 12 検証済み後続版阻害要因縮減計画 v1
 
 This plan is anchored to `phase12_validated_successor_baseline_20260902_v1_2`.
 It decomposes the current Formal blocker inventory without resolving any
 blocker, adopting a new research decision, relaxing Formal policy, or
 building a SUMO network.
 
-## Baseline scope
+<a id="baseline-scope"></a>
+
+## 基準 範囲
 
 The canonical baseline is run_4 at source commit
 `0cbdb1ec392115468f14e9665e46af67e74ef43d`, configuration
@@ -15,15 +17,17 @@ and population accounting schema v17.2.0. The current Formal blocker count is
 determinism witness; its temporary run-id manifest-enum workaround is recorded
 as a pipeline governance gap, not as a baseline rule.
 
-## Decomposition by attribute and evidence class
+<a id="decomposition-by-attribute-and-evidence-class"></a>
+
+## 分解別属性 ・ 根拠分類
 
 Counts below are blocker records from the run_4 inventory. A source Way may
 occur in multiple downstream attributes; those occurrences are retained as
 manifestations, not summed as independent root causes.
 
-| Attribute | Total | genuine_rule_conflict | missing_evidence | missing_registered_rule | unsupported_source_syntax | Affected source Ways |
+| Attribute | 合計 | genuine_rule_conflict | missing_evidence | missing_registered_rule | unsupported_source_syntax | Affected source Ways |
 |---|---:|---:|---:|---:|---:|---:|
-| speed | 78,616 | 0 | 78,601 | 0 | 15 | 23,135 |
+| 速度 | 78,616 | 0 | 78,601 | 0 | 15 | 23,135 |
 | directional_lanes | 22,934 | 25 | 22,729 | 0 | 180 | 22,934 |
 | final_permission | 14,302 | 0 | 0 | 14,302 | 0 | 2,473 |
 | conditional_access | 35 | 0 | 1 | 0 | 34 | 35 |
@@ -34,7 +38,7 @@ The inventory has no separate evidence-class field; the four evidence classes
 above are the inventory `root_cause_category` values. Attribute totals and
 root-cause totals reconcile exactly to the inventory total.
 
-## Root-cause hierarchy
+## 根本原因階層
 
 1. `missing_evidence` (101,379) is the dominant upstream evidence deficit.
    It manifests mainly in speed (78,601), directional lanes (22,729), plus
@@ -49,9 +53,13 @@ root-cause totals reconcile exactly to the inventory total.
 4. `genuine_rule_conflict` (25) is confined to directional lanes and remains
    a decision-sensitive group until its conflict semantics are reviewed.
 
-## Priority blocker groups
+<a id="priority-blocker-groups"></a>
 
-### P0 — Freeze and repair blocker lineage/projection
+## 優先順位阻害要因群
+
+<a id="p0--freeze-and-repair-blocker-lineageprojection"></a>
+
+### P0 — 固定 ・ 修復阻害要因 lineage/projection
 
 - Count: 115,935 records; root-cause groups remain as above.
 - Affected population: all five attributes, 25,789 unique source Ways in the
@@ -66,7 +74,9 @@ root-cause totals reconcile exactly to the inventory total.
 - Validation: inventory total reconciliation, unique source identity checks,
   blocker/root-cause relationship checks, and repeat semantic hashing.
 
-### P1 — Directional-lane upstream evidence and syntax decomposition
+<a id="p1--directional-lane-upstream-evidence-and-syntax-decomposition"></a>
+
+### P1 — 方向別-車線上流根拠 ・ 構文分解
 
 - Count: 22,934 (`missing_evidence` 22,729, `genuine_rule_conflict` 25,
   `unsupported_source_syntax` 180).
@@ -85,7 +95,9 @@ root-cause totals reconcile exactly to the inventory total.
 - Validation: lane fixture tests, source-evidence provenance checks,
   population accounting, and no unauthorized Formal assumptions.
 
-### P2 — Speed evidence coverage
+<a id="p2--speed-evidence-coverage"></a>
+
+### P2 — 速度 根拠 網羅率
 
 - Count: 78,616 (`missing_evidence` 78,601, `unsupported_source_syntax` 15).
 - Affected source Ways: 23,135.
@@ -102,7 +114,9 @@ root-cause totals reconcile exactly to the inventory total.
 - Validation: speed fixtures, source evidence hashes, blocker projection,
   population equations, and determinism.
 
-### P3 — Final-permission rule registration
+<a id="p3--final-permission-rule-registration"></a>
+
+### P3 — 最終-通行許可規則登録
 
 - Count: 14,302 (`missing_registered_rule`).
 - Affected source Ways: 2,473; vehicle class: delivery.
@@ -119,7 +133,7 @@ root-cause totals reconcile exactly to the inventory total.
 - Validation: permission tuple fixtures, lane-to-permission lineage, blocker
   root-cause links, and Formal zero gates.
 
-### P4 — Unsupported syntax remediation
+### P4 — 未対応構文修正
 
 - Count: 229 across directional lanes (180), conditional access (34), and
   speed (15).
@@ -136,7 +150,9 @@ root-cause totals reconcile exactly to the inventory total.
 - Validation: positive/negative syntax fixtures, provenance, no fallback
   adoption, and semantic determinism.
 
-### P5 — Directed-segment relation mapping
+<a id="p5--directed-segment-relation-mapping"></a>
+
+### P5 — 有向-segment 関係要素対応付け
 
 - Count: 48 (`missing_evidence`), one affected source Way/relation projection.
 - Root cause: missing directed mapping evidence.
@@ -150,7 +166,9 @@ root-cause totals reconcile exactly to the inventory total.
 - Validation: relation identity closure, directed-segment fixtures, lineage,
   and population accounting.
 
-## Research decisions required
+<a id="research-decisions-required"></a>
+
+## 研究判断必須
 
 No new decision is adopted by this plan. Decision packets may be required for:
 
@@ -161,7 +179,9 @@ No new decision is adopted by this plan. Decision packets may be required for:
 
 Formal policy relaxation, typemap fallback, and imputation remain prohibited.
 
-## Mechanical pipeline gaps
+<a id="mechanical-pipeline-gaps"></a>
+
+## 機械処理の処理工程差分
 
 - Add root-cause-to-downstream blocker projection without changing blocker
   semantics.
@@ -171,7 +191,9 @@ Formal policy relaxation, typemap fallback, and imputation remain prohibited.
 - Extend the successor manifest and determinism schemas together when the
   run-ID contract is formally amended.
 
-## Run-ID contract issue
+<a id="run-id-contract-issue"></a>
+
+## 実行-識別子取り決め課題
 
 The run_5 workaround is a `PIPELINE_GAP` / governance improvement, not a
 baseline validity failure: run_5 used the same commit, inputs, semantic
@@ -179,7 +201,7 @@ artifacts, counts, provenance, and validators as run_4. It should be corrected
 before future reruns so the manifest schema, CLI, executor, and determinism
 report all accept the same run-ID set without temporary validation bypass.
 
-## Explicit non-actions
+## 明示的な実施しない作業
 
 This plan does not resolve blockers, adopt decisions, relax Formal policy,
 adopt typemap fallback or imputation, produce Permission Materializer output,

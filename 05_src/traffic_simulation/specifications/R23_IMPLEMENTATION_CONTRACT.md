@@ -1,4 +1,6 @@
-# R23 reduced implementation contract (forward-looking)
+<a id="r23-reduced-implementation-contract-forward-looking"></a>
+
+# R23 縮約した実装取り決め (将来向けの)
 
 This document records implementation and provenance requirements for a future
 formal R23 artifact. It does not adopt formal research factors, change the
@@ -6,7 +8,9 @@ frozen pilot, or authorize a new run. The artifact at
 `reproducibility/outputs/traffic_simulation/r23_reduced_pilot/20260911_frozen_v1/`
 is historical evidence and remains immutable.
 
-## Optimizer termination and budget
+<a id="optimizer-termination-and-budget"></a>
+
+## 最適化処理終了 ・ 予算
 
 Every result records `objective_evaluation_count`, `configured_maxiter`,
 `configured_objective_cap`, `budget_hit`, `termination_status`,
@@ -19,7 +23,9 @@ Evaluation count alone is not used to infer non-convergence. The supported statu
 `BUDGET_BOUNDARY_REACHED_TERMINATION_UNKNOWN`, `OPTIMIZER_FAILURE`, and
 `TERMINATION_UNKNOWN`.
 
-## Cumulative timing and trace
+<a id="cumulative-timing-and-trace"></a>
+
+## 累積時間計測 ・ 追跡
 
 For each objective evaluation, the trace stores the evaluation index,
 parameters, expectation, elapsed callback time, circuit construction time,
@@ -40,7 +46,9 @@ Nested components must not be added to `T_optimizer_total` or `T_total`.
 `T_final_evaluation` must not be added to optimizer totals. This is an
 inclusion contract, not a claim that all wall time is decomposed.
 
-## Provenance lineage
+<a id="provenance-lineage"></a>
+
+## 出典・来歴来歴
 
 The formal manifest schema requires standalone R20, R21, R22, and R23 lineage.
 R20 records specification path, SHA-256, and formulation identifier. R21 and
@@ -50,7 +58,7 @@ plus hashes for `qaoa.py`, `hamiltonian.py`, `metrics.py`, `schema.py`,
 `artifact.py`, and the execution entry point when supplied. Per-run artifacts
 must carry the same lineage.
 
-## Memory and transpiler contracts
+## メモリー ・ 回路変換器取り決め
 
 `memory_preflight` estimates complex128 statevector storage and a conservative
 four-statevector peak before Aer execution. A failed estimate stops execution.
@@ -63,7 +71,9 @@ historical pilot used the implementation default and must be labelled
 `PILOT_USED_IMPLEMENTATION_DEFAULT`; no formal transpiler value is adopted by
 this patch.
 
-## Probability contract
+<a id="probability-contract"></a>
+
+## 確率取り決め
 
 Probability range, sum, and `isclose` tolerances are each `1e-12`. Probabilities
 use raw full-state probability mass as denominator. Invalid states are not
@@ -71,7 +81,9 @@ repaired and are excluded only from decoded feasible-route analysis; their raw
 mass is retained as `invalid_probability_mass`. No implicit renormalization is
 permitted.
 
-## Test and provenance strategy
+<a id="test-and-provenance-strategy"></a>
+
+## 試験 ・ 出典・来歴方針
 
 The recommended validation path is a test-capable environment or CI job tied
 to the exact source hashes used for the formal artifact. Cloning the frozen
@@ -80,7 +92,9 @@ research-governance decision. Installing pytest into the frozen runtime is not
 permitted. The current frozen runtime has no pytest, so this patch adds test
 requirements but does not alter that environment.
 
-## Status boundary
+<a id="status-boundary"></a>
+
+## 状態 境界
 
 Formal problem-size ladder, instance count, p range, initialization and
 repetition policy, optimizer comparison, budget values, shots policy, primary

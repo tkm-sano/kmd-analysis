@@ -1,31 +1,37 @@
-# External traffic observation final inventory specification
+<a id="external-traffic-observation-final-inventory-specification"></a>
 
-## Status axes
+# 外部交通観測最終一覧仕様
+
+<a id="status-axes"></a>
+
+## 状態軸
 
 `direction_evidence_status`、`opposite_mapping_status`、`traffic_assignment_status`、
 `calibration_usability_status`を独立して管理する。
 
-direction解決は、反対車道mappingの正式採択、traffic assignment利用可能性、
-calibration利用可能性を自動的には意味しない。
+方向解決は、反対車道対応付けの正式採択、交通 割当利用可能性、
+較正利用可能性を自動的には意味しない。
 
-各statusは以下の異なる判断を表す。
+各状況は以下の異なる判断を表す。
 
 - `direction_evidence_status`
   - official observation sectionのUP / DOWN方向を正式に決定できているか
 - `opposite_mapping_status`
-  - 反対方向carriagewayをSUMO network上で正式に対応付けできているか
+  - 反対方向carriagewayを交通シミュレーターの道路網上で正式に対応付けできているか
 - `traffic_assignment_status`
-  - 観測交通量をSUMO上の対応方向へ正式に割り当て可能か
+  - 観測交通量をスーモ上の対応方向へ正式に割り当て可能か
 - `calibration_usability_status`
-  - 当該観測値をcurrent calibrationに使用可能か
+  - 当該観測値を現行 較正に使用可能か
 
 これらを混同せず、各段階の未解決理由を独立して保持する。
 
 ---
 
-## Nine-target final inventory
+<a id="nine-target-final-inventory"></a>
 
-| target | direction | opposite mapping | assignment | calibration |
+## 九つの-対象最終一覧
+
+| 対象 | 方向 | opposite mapping | 割当 | 較正 |
 | --- | --- | --- | --- | --- |
 | `13300010290` | `RESOLVED_DOWN` | `ACCEPTED_AS_PARTIAL_EDGE_MAPPING` | `BIDIRECTIONAL_ASSIGNMENT_AVAILABLE` | `VALIDATION_ONLY` |
 | `13400020050` | `RESOLVED_DOWN` | `ACCEPTED_AS_OPPOSITE_CARRIAGEWAY` | `BIDIRECTIONAL_ASSIGNMENT_AVAILABLE` | `CALIBRATION_USABLE` |
@@ -39,9 +45,11 @@ calibration利用可能性を自動的には意味しない。
 
 ---
 
-## Recomputed counts
+<a id="recomputed-counts"></a>
 
-9 targetの最終集計結果は以下である。
+## 再計算済み件数
+
+9 対象の最終集計結果は以下である。
 
 - target total: `9`
 - direction resolved: `9`
@@ -58,16 +66,16 @@ calibration利用可能性を自動的には意味しない。
 - contamination failure: `0`
 - data conflict: `0`
 
-assignment可能targetが6件である一方、current calibration usableが5件である差は、
-国道1号がhistorical observationであり、current calibrationには使用しないためである。
+割当可能対象が6件である一方、現行 較正 利用可能なが5件である差は、
+国道1号が過去の記録 observationであり、現行 較正には使用しないためである。
 
 ---
 
 ## 国道1号 `13300010290`
 
-国道1号はdirection、mapping、双方向traffic assignmentとも正式利用可能である。
+国道1号は方向、対応付け、双方向交通 割当とも正式利用可能である。
 
-反対方向carriagewayのmappingにはpartial-edge方式を使用する。
+反対方向carriagewayの対応付けには部分的-道路区間方式を使用する。
 
 - official observation section: `13300010260`
 - target: `13300010290`
@@ -77,9 +85,9 @@ assignment可能targetが6件である一方、current calibration usableが5件
 - opposite mapping status: `ACCEPTED_AS_PARTIAL_EDGE_MAPPING`
 - traffic assignment status: `BIDIRECTIONAL_ASSIGNMENT_AVAILABLE`
 
-UP側edge sequenceは14 edgeのまま保持する。
+UP側道路区間 sequenceは14 道路区間のまま保持する。
 
-末尾edge `542890137#0`のみ、
+末尾道路区間 `542890137#0`のみ、
 
 - coverage role: `PARTIAL_END_EDGE`
 - start position: `0 m`
@@ -89,16 +97,16 @@ UP側edge sequenceは14 edgeのまま保持する。
 
 `14.073 m`は公式Road Census境界値ではない。
 
-方向解決済みDOWN corridor始点を反対方向SUMO edgeへ投影した、
-再現可能なderived valueである。
+方向解決済みDOWN corridor始点を反対方向スーモ 道路区間へ投影した、
+再現可能な導出済み 値である。
 
-partial-edge情報は、
+部分的-道路区間情報は、
 
 `external_observation_partial_edge_mapping_v1.csv`
 
-へのreferenceとして保持し、新しいSUMO edgeは生成しない。
+への参照として保持し、新しいスーモ 道路区間は生成しない。
 
-国道1号の正式partial-edge review結果は以下である。
+国道1号の正式部分的-道路区間 確認結果は以下である。
 
 - coverage ratio: `0.840896`
 - endpoint difference: `17.968 m`
@@ -115,7 +123,7 @@ partial-edge情報は、
 
 は変更していない。
 
-一方、公式raw traffic seriesの観測日は2019-11-20である。
+一方、公式未加工 交通 seriesの観測日は2019-11-20である。
 
 したがって、
 
@@ -125,13 +133,13 @@ partial-edge情報は、
 
 として保持する。
 
-2021 current observationへsilent substitutionしない。
+2021 現行 observationへsilent substitutionしない。
 
 ---
 
 ## 都道316号 `13403160330 / 13403160340 / 13403160350`
 
-都道316号3 targetはすべてdirectionを正式解決済みである。
+都道316号3 対象はすべて方向を正式解決済みである。
 
 - direction evidence status: `RESOLVED_UP`
 - selected role: `UP_TERMINUS_TO_ORIGIN`
@@ -139,14 +147,14 @@ partial-edge情報は、
 
 したがって、これらを今後 `direction unresolved` と扱わない。
 
-残っている問題は反対方向carriagewayのspatial correspondenceである。
+残っている問題は反対方向carriagewayの空間的な correspondenceである。
 
 route identity、relation membership、topology、direction、contamination、
-oneway structure、target boundary consistencyはいずれもPASSしている。
+一方通行 structure、対象 境界 consistencyはいずれも合格している。
 
-一方、既存のspatial adoption criteriaを満たさない。
+一方、既存の空間的な adoption criteriaを満たさない。
 
-正式review結果：
+正式確認結果：
 
 - alternate official geometry coverage: `0.503218`
 - selected / alternate mutual coverage: `0.000000 / 0.000000`
@@ -158,7 +166,7 @@ oneway structure、target boundary consistencyはいずれもPASSしている。
 - coverage `>= 0.60`
 - endpoint / projection distance `<= 25 m`
 
-を変更せず適用した結果、3 targetとも、
+を変更せず適用した結果、3 対象とも、
 
 - opposite mapping status: `REVIEW_REQUIRED`
 - traffic assignment status: `REVIEW_REQUIRED`
@@ -166,43 +174,43 @@ oneway structure、target boundary consistencyはいずれもPASSしている。
 
 とする。
 
-正式reasonは、
+正式理由は、
 
 `SPATIAL_CORRESPONDENCE_BELOW_EXISTING_ADOPTION_CRITERIA`
 
 である。
 
-これはdirection evidence不足、route identity conflict、topology conflict、
-contaminationによる未解決ではない。
+これは方向 根拠不足、経路 同一性 矛盾、接続構造 矛盾、
+混入による未解決ではない。
 
-また、両端不一致と横方向分離を伴うため、端部切詰めのみを扱う既存partial-edge仕様では解決しない。
+また、両端不一致と横方向分離を伴うため、端部切詰めのみを扱う既存部分的-道路区間仕様では解決しない。
 
 ---
 
 ## final_traffic_observations.csv
 
-`final_traffic_observations.csv` は、公式raw `zkntrf13.csv`から
-対象観測地点の公開時間値を読み、9 targetへ展開したmachine-readable observation inventoryである。
+`final_traffic_observations.csv` は、公式未加工 `zkntrf13.csv`から
+対象観測地点の公開時間値を読み、9 対象へ展開したmachine-readable observation 一覧である。
 
 最終行数は `240` 行である。
 
-国道1号は24時間観測、他のcurrent observation地点は公式12時間観測
+国道1号は24時間観測、他の現行 observation地点は公式12時間観測
 （7時から18時）である。
 
 未公開夜間値は補完しない。
 
-small / large vehicle classは公式cross-section単位で合計し、
+small / large 車種は公式cross-section単位で合計し、
 `raw_observed_value`と`normalized_observed_value`は同値として保持する。
 
 観測値に対して以下を行わない。
 
-- mapped edge数による除算
-- one-to-many targetへの按分
-- historical値によるcurrent値の置換
+- mapped 道路区間数による除算
+- one-to-many 対象への按分
+- 過去の記録値による現行値の置換
 - DATA_NOT_AVAILABLEへの推定補完
 
-one-to-many targetについては、同一cross-section observation seriesを
-各targetへそのまま反復する。
+one-to-many 対象については、同一cross-section observation seriesを
+各対象へそのまま反復する。
 
 この方針は、
 
@@ -212,21 +220,23 @@ one-to-many targetについては、同一cross-section observation seriesを
 
 ---
 
-## Partial-edge handling
+<a id="partial-edge-handling"></a>
 
-partial-edge mappingはSUMO networkを物理的に変更する仕組みではない。
+## 部分的-道路区間取扱い
 
-partial-edgeは主として以下に使用する。
+部分的-道路区間 対応付けは交通シミュレーターの道路網を物理的に変更する仕組みではない。
+
+部分的-道路区間は主として以下に使用する。
 
 - observation sectionとの空間対応
-- coverage計算
-- boundary判定
+- 網羅率計算
+- 境界判定
 - endpoint correspondence
 - 空間集計
 - mapping QA
 
-traffic assignment、simulation、edge-based traffic countでは、
-車両は元のSUMO edge上に存在する。
+交通 割当、simulation、道路区間-based 交通 件数では、
+車両は元のスーモ 道路区間上に存在する。
 
 したがって、
 
@@ -234,36 +244,40 @@ traffic assignment、simulation、edge-based traffic countでは、
 
 とは解釈しない。
 
-edge sequenceとedge segment specificationを分離して保持する。
+道路区間 sequenceと道路区間 segment 仕様を分離して保持する。
 
 ---
 
-## Observation value policy
+<a id="observation-value-policy"></a>
+
+## 観測値方針
 
 観測値について以下を正式方針とする。
 
-- cross-section valueを保持する
-- mapped edge数で除算しない
-- one-to-many targetでは同じobservation seriesを反復する
-- historical observationはcalibration weight `0`
-- historical observationをcurrent observationへsilent substitutionしない
+- cross-section 値を保持する
+- mapped 道路区間数で除算しない
+- one-to-many 対象では同じobservation seriesを反復する
+- 過去の記録 observationは較正 重み `0`
+- 過去の記録 observationを現行 observationへsilent substitutionしない
 - DATA_NOT_AVAILABLEは推定値で補完しない
 
-current observation、historical validation、data not availableを
-共通schemaで扱う。
+現行 observation、過去の記録 検証、data not availableを
+共通データ構造で扱う。
 
-`HISTORICAL_EXTERNAL_VALIDATION`はcurrent calibrationには使用せず、
-外部validation用途に限定する。
+`HISTORICAL_EXTERNAL_VALIDATION`は現行 較正には使用せず、
+外部検証用途に限定する。
 
 ---
 
-## Canonical output location
+<a id="canonical-output-location"></a>
 
-canonical final external-observation artifactsは以下に生成する。
+## 正本出力位置
+
+正本 最終 外部-observation 成果物は以下に生成する。
 
 `03_data/processed/traffic_simulation/calibration/road_census_sumo_mapping_20260826/external_observation_finalization_20260827/`
 
-canonical artifactsは以下である。
+正本 成果物は以下である。
 
 - `external_observation_final_inventory.csv`
 - `final_traffic_observations.csv`
@@ -271,21 +285,23 @@ canonical artifactsは以下である。
 - `external_observation_final_inventory_validation.json`
 - `external_observation_final_inventory_manifest.json`
 
-schemaは以下を使用する。
+データ構造は以下を使用する。
 
 `reproducibility/config/traffic_simulation/final_traffic_observations.schema.json`
 
-generatorは以下である。
+生成器は以下である。
 
 `05_src/traffic_simulation/calibration/formalize_external_observation_inventory.py`
 
-reusable validatorは以下である。
+reusable 検証器は以下である。
 
 `05_src/traffic_simulation/validation/validate_external_observation_final_inventory.py`
 
 ---
 
-## Legacy / superseded artifacts
+<a id="legacy--superseded-artifacts"></a>
+
+## 旧版 / 後続版に置換済み成果物
 
 `road_census_sumo_mapping_20260826/`直下に存在する、
 
@@ -295,27 +311,29 @@ reusable validatorは以下である。
 - `external_observation_final_inventory_manifest.json`
 
 等の同名または類似成果物は、
-finalization以前のworkflow段階で生成されたlegacy / superseded artifactsである。
+finalization以前のworkflow段階で生成された旧版 / 後続版に置換済み 成果物である。
 
-これらはtraceabilityのため削除せず保持する。
+これらは追跡可能性のため削除せず保持する。
 
-ただし、downstream calibration、validation、正式集計では使用しない。
+ただし、downstream 較正、検証、正式集計では使用しない。
 
 downstream処理は必ず、
 
 `external_observation_finalization_20260827/`
 
-配下のcanonical artifactsを参照する。
+配下の正本 成果物を参照する。
 
-canonical / legacyの区別によって、旧statusと最新statusを混在させない。
+正本 / 旧版の区別によって、旧状況と最新状況を混在させない。
 
 ---
 
-## Provenance and non-mutation policy
+<a id="provenance-and-non-mutation-policy"></a>
 
-最終inventoryは既存のmachine-readable evidenceから再構成する。
+## 出典・来歴 ・ 変更を行わない方針
 
-主要inputには以下を含む。
+最終一覧は既存のmachine-readable 根拠から再構成する。
+
+主要入力には以下を含む。
 
 - direction final classification
 - direction cluster evidence
@@ -328,26 +346,28 @@ canonical / legacyの区別によって、旧statusと最新statusを混在さ�
 - official raw Road Census section data
 - official raw traffic series
 
-manifestにはinput / output hashを保持する。
+成果物一覧には入力 / 出力 ハッシュ値を保持する。
 
 既存の、
 
-- SUMO network
+- 交通シミュレーターの道路網
 - formal mapping
-- direction成果物
-- adoption review成果物
-- config
+- 方向成果物
+- adoption 確認成果物
+- 設定
 - thresholds
 
 は本finalization処理によって変更しない。
 
-結果に合わせてthresholdを変更しない。
+結果に合わせてしきい値を変更しない。
 
 ---
 
-## Validation
+<a id="validation"></a>
 
-canonical final inventoryに対する検証結果は以下である。
+## 検証
+
+正本 最終 一覧に対する検証結果は以下である。
 
 - automated tests: `14 passed`
 - reusable validator: `PASSED`
@@ -355,7 +375,7 @@ canonical final inventoryに対する検証結果は以下である。
 - target count: `9`
 - final traffic observation rows: `240`
 
-reusable validatorでは少なくとも以下を検証している。
+reusable 検証器では少なくとも以下を検証している。
 
 - 9 unique targets
 - 240 observation rows
@@ -366,7 +386,7 @@ reusable validatorでは少なくとも以下を検証している。
 - Route316 direction = `RESOLVED_UP`
 - Route316 traffic assignment = `REVIEW_REQUIRED`
 - Route316 calibration usability = `REVIEW_REQUIRED`
-- raw observed valueとnormalized observed valueが同値
+- 未加工 observed 値とnormalized observed 値が同値
 - historical observation rows = `48`
 - historical calibration weight = `0`
 - schema validation
@@ -374,7 +394,7 @@ reusable validatorでは少なくとも以下を検証している。
 - manifest output hash consistency
 - non-mutation contract
 
-最終validator実行結果：
+最終検証器実行結果：
 
 - status: `PASSED`
 - error count: `0`
@@ -383,4 +403,4 @@ reusable validatorでは少なくとも以下を検証している。
 
 以上をもって、
 `external_observation_finalization_20260827/`配下の成果物を
-external traffic observation final inventoryのcanonical outputとする。
+外部 交通 observation 最終 一覧の正本 出力とする。

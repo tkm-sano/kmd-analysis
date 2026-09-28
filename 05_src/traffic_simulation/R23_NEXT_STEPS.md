@@ -1,7 +1,9 @@
-# R23 next steps
+<a id="r23-next-steps"></a>
 
-See [current R23 authority](R23_STATUS.md) for status, final results, limits and R24 gate.
+# R23の次の作業
 
-Next permitted task: R24 design and pre-start review, when requested. R24 scientific design and implementation have not started. No additional R23 scientific run is required by this cleanup. Preserve fixed scientific definitions and all archived evidence.
+状態、最終結果、限界、R24への移行条件は[R23の現行正本](R23_STATUS.md)を参照する。
 
-Full-EVRP R20 remains BLOCKED and its R21 remains NOT_STARTED; those are separate scopes.
+次に許可される作業は、依頼された場合のR24の設計と開始前確認である。R24の科学的設計・実装は未着手。この整理のためにR23の追加科学実行を行う必要はない。固定済みの科学的定義とすべての保管済み根拠を保持する。
+
+完全な電気自動車配送経路問題のR20は引き続き実行不可であり、そのR21は未着手である。これらは別の対象範囲に属する。

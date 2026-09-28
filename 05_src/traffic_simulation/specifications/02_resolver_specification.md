@@ -1,4 +1,6 @@
-# Resolver Specification
+<a id="resolver-specification"></a>
+
+# 属性解決器 仕様
 
 > Version note: the v16 artifact and implementation clauses remain here for
 > reproducibility. For v17 and later, permission authority, access
@@ -11,7 +13,9 @@ Japanese translation:
 Machine-readable configuration and this English specification remain
 authoritative if the translations differ.
 
-## Scope
+<a id="scope"></a>
+
+## 範囲
 
 The Resolver is the only component that adopts final OSM `oneway`, lane count,
 speed and access values. Lane and maxspeed criticality, evidence applicability,
@@ -31,7 +35,9 @@ closure publication itself. Closure requirements remain here as normative
 Resolver input preconditions until a dedicated closure specification is
 introduced.
 
-## Inputs and Outputs
+<a id="inputs-and-outputs"></a>
+
+## 入力 ・ 出力
 
 Inputs MUST be repository-relative, hash-registered OSM XML, versioned config
 and a governed typemap. A complete classification artifact is mandatory for
@@ -56,9 +62,11 @@ to successful `complete=true` artifacts, not to governed failure artifacts.
 The CLI returns zero on success, two on a classified Resolver failure and
 three if even the failure report cannot be published.
 
-## Normative Requirements
+<a id="normative-requirements"></a>
 
-| ID | Requirement | Failure | Test |
+## 必須要件
+
+| 識別子 | 要件 | 不具合 | 試験 |
 |---|---|---|---|
 | RS-REQ-001 | The OSM root MUST be `osm`; retained ways MUST have unique nonempty IDs and unique tag keys. | RS001 | RS-TST-001 |
 | RS-REQ-002 | Only the explicit typemap whitelist MAY be retained; every excluded highway way MUST be counted. | RS002 | RS-TST-002 |
@@ -80,7 +88,9 @@ The executed v15 Dry Run and its failure artifacts are immutable historical
 evidence and retain their original codes. Resolver implementation, schemas and
 fixtures MUST migrate together before another production run.
 
-## Directional Lane Allocation
+<a id="directional-lane-allocation"></a>
+
+## 方向別車線配分
 
 `formal` requires explicit, consistent `lanes:forward` and
 `lanes:backward` for every bidirectional road. It never infers an equal split
@@ -91,7 +101,7 @@ directional-allocation rule ID. `approved_assumption` is not used as a
 Resolver action or value state. A single/odd total without explicit allocation
 and every `lanes:both_ways` case stop with `RS008`.
 
-## Imputation Donors
+## 欠損補完属性提供元
 
 Donor eligibility is attribute-specific.
 
@@ -140,11 +150,15 @@ classification result does not adopt an attribute value. Each entry remains
 stopped until its resolution rule and required Japanese/Tokyo evidence are
 implemented.
 
-## Permission Trace
+<a id="permission-trace"></a>
+
+## 通行許可追跡
 
 Each way-direction-lane record contains only the rules applied to that lane. The ordered trace records typemap baseline, research-scope intersection and applicable general, class, directional or lane-specific OSM transitions, including source tag/value, lane-local value, and before/after vClass sets. A tag applying to another direction or lane MUST NOT appear in that lane's trace.
 
-## Complete managed-attribute and stop accounting
+<a id="complete-managed-attribute-and-stop-accounting"></a>
+
+## 完了管理対象の-属性 ・ 停止会計
 
 The audit MUST contain exactly one `oneway`, `lanes` and `maxspeed`
 disposition for every retained way. It MUST also contain exactly one permission
@@ -166,7 +180,9 @@ and zero blockers. The Resolver MUST publish no normalized OSM XML while any
 blocker remains. An incomplete audit and permission artifact may be published
 as failure evidence, but it is not a network-build input.
 
-## Publication and Input Integrity
+<a id="publication-and-input-integrity"></a>
+
+## 公開 ・ 入力完全性
 
 All artifacts are generated in one staging directory and validated before publication. Replacement uses backups and rollback so an exception cannot mix artifacts from different runs. `.part` files are removed in `finally` cleanup. `--overwrite` is a development override only; formal orchestration uses new run identities and paths.
 
@@ -192,7 +208,9 @@ data. A supplied criticality map requires a source file and exact retained-way
 coverage. The v15 typemap contract is `allow`-only; any retained type with
 `disallow` stops policy loading.
 
-## Relation Closure Before Attribute Classification
+<a id="relation-closure-before-attribute-classification"></a>
+
+## 関係要素の参照先の補完前の属性分類
 
 Attribute criticality MUST NOT be applied to the registered real data until the
 next-version relation closure has fixed the classification population. The
@@ -213,7 +231,9 @@ was resolved by the accepted `ota_ward_relation_closure_v16` prepare run on
 an immutable baseline; v16 uses a new config identity and new artifact paths
 rather than silently changing that baseline.
 
-### Next-version closure policy
+<a id="next-version-closure-policy"></a>
+
+### 次の-版参照先の補完方針
 
 The next closure implementation MUST:
 
@@ -237,7 +257,9 @@ Vehicle-specific restriction handling is not a string-prefix whitelist.
 Applicability to the governed vehicle universe, restriction semantics and
 source-tag form require an explicit versioned decision rule and fixture.
 
-### Executed v16 closure
+<a id="executed-v16-closure"></a>
+
+### 実行済み v16 参照先の補完
 
 The accepted v16 run retains 581 `type=restriction` relations under
 `REL-ORDINARY-001` and three `type=restriction:bus` relations under
@@ -255,7 +277,9 @@ element-role artifact separately identifies 13,494 final N03-intersecting ways,
 The fixed commands, hashes and counts are recorded in
 `03_data/metadata/acquisition/20260730_ota_ward_relation_closure_v16.md`.
 
-### Population acceptance gate
+<a id="population-acceptance-gate"></a>
+
+### 母集団受入判定基準
 
 The real-data criticality classifier may start only after all of the following
 conditions pass:
@@ -274,7 +298,7 @@ The v16 closure satisfies this gate. Criticality records MUST be regenerated
 from the v16 input hash and MUST NOT relabel or patch the historical v15
 records merely because both candidate populations contain 26,220 way IDs.
 
-### Downstream invalidation
+### 下流無効化
 
 Accepting a new closure invalidates every artifact whose coverage or hash
 depends on the v15 relation-closed input, including:
@@ -290,11 +314,13 @@ depends on the v15 relation-closed input, including:
 The next run MUST regenerate these artifacts from the accepted closure and
 report added, removed and unchanged blockers against the v15 baseline.
 
-## Lane Order Authority
+<a id="lane-order-authority"></a>
+
+## 車線順序正本
 
 OSM lane lists are interpreted left-to-right in the respective direction of travel. Therefore a backward list is not reversed inside the Resolver merely because it travels opposite the OSM way. The Materializer later reverses lane positions when mapping to SUMO right-to-left indices.
 
-## Success Condition
+## 成功条件
 
 `complete=true` requires zero blockers, one expectation record per retained way, exact agreement between direction lane counts and lane records, and matching config/input/typemap hashes. A successful artifact with an empty governed vClass universe is prohibited.
 

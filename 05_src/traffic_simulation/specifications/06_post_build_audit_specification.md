@@ -1,12 +1,16 @@
-# Post-build Audit Specification
+<a id="post-build-audit-specification"></a>
 
-## Boundary
+# 構築後監査 仕様
+
+## 境界
 
 Post-build Audit detects discrepancies and decides acceptance. It MUST NOT edit `net.xml`, regenerate inputs, classify an unknown warning automatically or waive a threshold.
 
-## Normative Requirements
+<a id="normative-requirements"></a>
 
-| ID | Requirement | Failure | Test |
+## 必須要件
+
+| 識別子 | 要件 | 不具合 | 試験 |
 |---|---|---|---|
 | PA-REQ-001 | Final `net.xml` MUST validate against the pinned network XSD and load in pinned SUMO with exit code zero. | PA001-PA002 | PA-TST-001 |
 | PA-REQ-002 | Every expected external edge and lane MUST be traceable through edge provenance or an explicit generation rule. | PA003 | PA-TST-002 |
@@ -20,7 +24,9 @@ Post-build Audit detects discrepancies and decides acceptance. It MUST NOT edit 
 | PA-REQ-010 | The audit report MUST conform to schema and set acceptance true only when every blocking count is zero and every threshold passes. | PA014 | PA-TST-010 |
 | PA-REQ-011 | Audit reruns MUST be deterministic for identical inputs and auditor version. | PA015 | PA-TST-011 |
 
-## Warning Classes
+<a id="warning-classes"></a>
+
+## 注意事項分類
 
 - `BLOCKING`: conversion uncertainty, discarded governed content, unknown type/option or structural mismatch.
 - `ACKNOWLEDGED`: versioned approval with pattern, scope, rationale, reviewer and expiration/review rule.
@@ -28,6 +34,6 @@ Post-build Audit detects discrepancies and decides acceptance. It MUST NOT edit 
 
 Pattern-only suppression without a registry record is prohibited.
 
-## Acceptance
+## 受入
 
 `formal_network_acceptance` becomes satisfied only after schema/XSD/load success, exact permissions/TLS correspondence, zero unexplained elements and warnings, structural thresholds passed, and immutable reproducibility artifacts published.

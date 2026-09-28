@@ -1,14 +1,18 @@
-# R23 I03 validation gate contract
+<a id="r23-i03-validation-gate-contract"></a>
+
+# R23 I03 検証の判定基準 取り決め
 
 This is an I03-only continuation of remediation commit `9cce6eb`. It changes validation/reporting, not scientific execution parameters or historical evidence. Old authorization/report writers now call a read-only validator and print JSON; they no longer issue authorizations or overwrite historical namespaces. The two B2 execution scripts change preflight validation records only. Their scientific calls/options are AST-compared against the starting commit; no run is started.
 
-## Status and aggregation
+<a id="status-and-aggregation"></a>
+
+## 状態 ・ 集計
 
 `VERIFIED`: an executed condition succeeded; `FAILED`: an executed condition failed; `BLOCKED`: required evidence is missing/unreadable; `NOT_TESTED`: not executed; `PARTIAL`: only part of applicable checks completed. Historical guarded `PASS` maps to VERIFIED only for the specific executed preflight/assertion it represents. Artifact existence and declared historical statuses are not scientific revalidation.
 
 Each check declares REQUIRED, OPTIONAL or NOT_APPLICABLE. An empty gate is NOT_TESTED. Among REQUIRED checks, FAILED takes priority over BLOCKED; otherwise all VERIFIED gives VERIFIED, all NOT_TESTED gives NOT_TESTED, and a mixture gives PARTIAL. No REQUIRED checks gives PARTIAL. OPTIONAL outcomes remain visible but do not decide required integrity. NOT_APPLICABLE checks are not failures. The n5 compatibility gate follows these statuses while retaining its `passed` boolean and exact required-ID/evidence contract.
 
-## Dimensions
+## 次元
 
 Execution completeness compares the nonempty planned manifest run set with every actual run file, retaining optimizer failures. Artifact integrity compares actual bytes with declared manifest/terminal/baseline hashes. Scientific validity checks conditions, initialization vectors, native termination metadata and independently recomputed directed route cost/gap. Feasibility checks customer permutation, bits and Qiskit ordering. Probability integrity recomputes raw full-basis total/feasible/optimal/invalid masses at 1e-12 without candidate helpers. Exact references are checked by independently enumerating permutations over the frozen R20 normalized matrix.
 
@@ -16,7 +20,9 @@ Exact optimum recovery and native optimizer convergence/success are OPTIONAL out
 
 Provenance verification means **recorded authority SHA consistency**, not attestation of process memory or proof that every imported file matched at historical runtime. Source-attestation limitations remain outside this I03 repair. R21/R22 lineage verifies pinned result/manifest hashes, manifest binding and declared per-instance check consistency; fresh scientific revalidation is explicitly NOT_TESTED. The lineage admission check refuses an empty or incomplete check set even if a caller writes `status=VERIFIED`.
 
-## Dataset failures versus validator correctness
+<a id="dataset-failures-versus-validator-correctness"></a>
+
+## データセット不具合対検証器正しさ
 
 The B2 v2 terminal index contains six stale run-file hashes. The new validator must report artifact integrity FAILED; this task does not rewrite the index or raw runs. B2 v1 failure records remain included in a separate profile and cannot obtain overall scientific integrity VERIFIED. These detections do not mean the validator must be adjusted to reproduce a previous successful classification.
 

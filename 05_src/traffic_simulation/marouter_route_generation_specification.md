@@ -1,10 +1,14 @@
-# marouter route-generation specification and diagnosis
+<a id="marouter-route-generation-specification-and-diagnosis"></a>
+
+# marouter 経路-生成仕様 ・ 診断
 
 Date: 2026-08-28  
 Research stage: baseline traffic model, Step 4 (routing)  
 Status: diagnostic; route-generation configuration is not frozen
 
-## Scope
+<a id="scope"></a>
+
+## 範囲
 
 This stage decides whether SUMO 1.24.0 `marouter` can generate a plausible
 route set from the frozen network, TAZ definitions, and Tokyo PT OD demand.
@@ -16,7 +20,9 @@ The reproducible diagnostic is implemented in
 endpoint grid is defined by
 `reproducibility/config/traffic_simulation/route_generation/route2_down_fixed_endpoint_probe_v1.json`.
 
-## SUMO 1.24.0 implementation contract
+<a id="sumo-1240-implementation-contract"></a>
+
+## スーモ 1.24.0 実装 取り決め
 
 The official documentation describes `--paths` as repeated shortest-path
 search with a penalty added to every edge of the previously returned path.
@@ -52,7 +58,9 @@ Primary references:
 - <https://github.com/eclipse-sumo/sumo/blob/v1_24_0/src/marouter/marouter_main.cpp>
 - <https://github.com/eclipse-sumo/sumo/blob/v1_24_0/src/marouter/ROMAFrame.cpp>
 
-## Fixed-endpoint result
+<a id="fixed-endpoint-result"></a>
+
+## 固定済み-端点結果
 
 Probe:
 
@@ -67,7 +75,7 @@ Probe:
 route with a free-flow cost of 446.406454 seconds. This establishes legality
 independently of candidate generation.
 
-| paths | penalty | target routes | best target cost | ratio to forced-via |
+| paths | 罰則項 | target routes | best target cost | ratio to forced-via |
 |---:|---:|---:|---:|---:|
 | 20 | 1.0 | 0 | - | - |
 | 50 | 1.0 | 1 | 671.00 | 1.503 |
@@ -84,7 +92,9 @@ slower than the independently generated forced-via path. Raising `paths`
 alone does not converge toward that path: the default-penalty result is
 effectively unchanged between 100 and 200.
 
-## Canonical six-direction quality gate
+<a id="canonical-six-direction-quality-gate"></a>
+
+## 正本六つの-方向品質判定基準
 
 Route support is not defined as edge presence alone. A clean supporting route
 must:
@@ -127,7 +137,7 @@ one-iteration screening case in
 `marouter_candidate_experiments_v2.json`. Keeping this in a new configuration
 file preserves the v1 configuration hash recorded by completed runs.
 
-## Reproduction
+## 再現
 
 ```bash
 PYTHONPATH=05_src .conda/bin/python \

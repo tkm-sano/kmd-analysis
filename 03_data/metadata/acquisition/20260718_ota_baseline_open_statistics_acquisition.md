@@ -5,12 +5,12 @@
 - 記録日：`2026-07-18`
 - 実施者：`Codex`
 - 状態：`processed`
-- 出典台帳ID：`estat_census_2020_500m_jgd2011_mesh5339`、`estat_t001141_definition`、`ota_population_20240401`、`statistics_bureau_population_20241001`、`mlit_parcel_2024`
+- 出典台帳識別子：`estat_census_2020_500m_jgd2011_mesh5339`、`estat_t001141_definition`、`ota_population_20240401`、`statistics_bureau_population_20241001`、`mlit_parcel_2024`
 - 関連仕様：`05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md`
 
 ## 配布元と選択条件
 
-| ID | 配布者 | データセット・選択条件 | 配布ページ・取得URL | 利用条件 |
+| 識別子 | 配布者 | データセット・選択条件 | 配布ページ・取得URL | 利用条件 |
 |---|---|---|---|---|
 | `estat_census_2020_500m_jgd2011_mesh5339` | 総務省統計局・e-Stat | 令和2年国勢調査、500mメッシュ、JGD2011、人口及び世帯、表`T001141`、第1次地域区画`5339` | <https://www.e-stat.go.jp/gis/statmap-search?page=1&type=1&toukeiCode=00200521&toukeiYear=2020&aggregateUnit=H&serveyId=H002005112020&statsId=T001141&datum=2011>、<https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001141&code=5339&downloadType=2> | <https://www.e-stat.go.jp/terms-of-use> |
 | `estat_t001141_definition` | 総務省統計局・e-Stat | 表`T001141`定義書 | <https://www.e-stat.go.jp/help/data-definition-information/downloaddata/T001141.pdf> | e-Stat利用規約 |
@@ -18,9 +18,11 @@
 | `statistics_bureau_population_20241001` | 総務省統計局 | 人口推計2024年10月1日現在、第1表 | <https://www.stat.go.jp/data/jinsui/2024np/index.html>、<https://www.stat.go.jp/data/jinsui/2024np/zuhyou/05k2024-1.xlsx> | 総務省統計局サイトポリシー |
 | `mlit_parcel_2024` | 国土交通省 | 令和6年度宅配便等取扱個数 | <https://www.mlit.go.jp/report/press/jidosha04_hh_000341.html>、<https://www.mlit.go.jp/report/press/content/001906814.pdf> | 国土交通省ウェブサイト利用規約 |
 
-認証、アカウント、APIキーは不要であった。生データはGitへ登録しない。
+認証、アカウント、プログラム用インターフェースキーは不要であった。生データはGitへ登録しない。
 
-## 保存先とSHA-256
+<a id="保存先とsha-256"></a>
+
+## 保存先とハッシュ値-256
 
 | 原本 | ローカル保存先 | SHA-256 |
 |---|---|---|
@@ -66,11 +68,11 @@ mv 03_data/raw/traffic_simulation/demand_proxy/mlit_parcel_2024/mlit_parcel_2024
 
 ## 生データ検証結果
 
-- e-Stat ZIP：配布名`tblT001141H5339.zip`、約2.3 MB。正式CSV名は`tblT001141H5339.txt`、CP932、データ16,671行。列`T001141001`は定義書上の人口総数である。
-- ZIPには正式CSVのほか`.nfs00000000108003a400000807`が含まれていた。配布ZIP自体を改変せず保存し、加工時は正式名`tblT001141H5339.txt`だけを明示抽出する。`.nfs*`を自動選択しない。
-- 大田区XLSX：シート`1 `の人口は`736652`、世帯数は`414304`、基準日は2024年4月1日。
-- 全国人口XLSX：第1表の総人口は`123802`千人、基準日は2024年10月1日。
-- 国土交通省PDF：令和6年度宅配便取扱個数は`5,031,470,000`個。メール便は対象外。
+- e-Stat ZIP：配布名`tblT001141H5339.zip`、約2.3 MB。正式コンマ区切り形式名は`tblT001141H5339.txt`、CP932、データ16,671行。列`T001141001`は定義書上の人口総数である。
+- ZIPには正式コンマ区切り形式のほか`.nfs00000000108003a400000807`が含まれていた。配布ZIP自体を改変せず保存し、加工時は正式名`tblT001141H5339.txt`だけを明示抽出する。`.nfs*`を自動選択しない。
+- 大田区表計算ファイル：シート`1 `の人口は`736652`、世帯数は`414304`、基準日は2024年4月1日。
+- 全国人口表計算ファイル：第1表の総人口は`123802`千人、基準日は2024年10月1日。
+- 国土交通省文書ファイル：令和6年度宅配便取扱個数は`5,031,470,000`個。メール便は対象外。
 - 国土交通省の定義では消費者間、企業から消費者、企業間等を区別せず対象要件を満たす宅配便を全国集計し、都道府県別集計を行っていない。したがって個人宅需要または大田区観測値として扱わない。
 
 ## 主計算の再検証
@@ -144,12 +146,12 @@ docker compose run --rm analysis \
 - Git管理：本記録、出典台帳、計算仕様。
 - 完了：500mメッシュコード復元、N03交差、面積按分、2024年人口比例調整、人口・需要の最大剰余配分。
 - 次：集約配送点の規則を別途確定し、宅配便個数相当を配送停止回数と混同しない形で配送問題へ接続する。
-- 未実施：集約配送点、拠点、車両、未最適化走行、古典最適化、QAOA、`P_eq`算出。
+- 未実施：集約配送点、拠点、車両、未最適化走行、古典最適化、量子近似最適化アルゴリズム、`P_eq`算出。
 
 ## 失敗と修正
 
 | 日付 | 症状 | 原因 | 修正 | データへの影響 |
 |---|---|---|---|---|
-| 2026-07-18 | `analysis`コンテナでXLSXを読み込むと`ModuleNotFoundError: openpyxl` | 現行analysisイメージに`openpyxl`が含まれていない | `docker/analysis/requirements.txt`へ`openpyxl==3.1.5`を固定し、イメージを再構築した | 原本取得・SHA-256への影響なし。修正後にDocker内加工・テスト成功 |
+| 2026-07-18 | `analysis`コンテナで表計算ファイルを読み込むと`ModuleNotFoundError: openpyxl` | 現行analysisイメージに`openpyxl`が含まれていない | `docker/analysis/requirements.txt`へ`openpyxl==3.1.5`を固定し、イメージを再構築した | 原本取得・SHA-256への影響なし。修正後にDocker内加工・テスト成功 |
 | 2026-07-18 | 全面包含の合成テストが`partial`になった | 投影時に同一曲線を異なる線分長で近似したため、面積比が`0.999990...`になった | 全面包含は地理座標上の位相関係で判定し、その場合の交差面積をメッシュ全面積へ固定した | 境界メッシュの面積按分は変更せず、全面包含の人工的目減りだけを除去 |
 | 2026-07-18 | 初回加工が`registered filename mismatch`で停止した | 台帳の配布元ファイル名と、説明的なローカル保存名をコードが同一視した | `original_filename`と`local_raw_path`を独立項目として扱い、保存パスとSHA-256を検証するよう修正した | ハッシュ一致を再確認後に加工成功。原本変更なし |

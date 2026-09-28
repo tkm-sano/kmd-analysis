@@ -1,4 +1,4 @@
-# Approved Road-Attribute Resolution Policy — Compatibility Notice
+# 承認済み道路属性解決方針 — 互換性注意事項
 
 > This former summary is retained only for existing links. The normative v17
 > repository baseline is
@@ -6,7 +6,9 @@
 > If this summary differs from that specification, the complete v17
 > specification and its machine-readable authority take precedence.
 
-## Status
+<a id="status"></a>
+
+## 状態
 
 - Policy ID: `ota_ward_attribute_resolution_policy_v17`
 - Effective configuration: v17 and later
@@ -21,7 +23,9 @@ The configuration is validated by
 `reproducibility/config/traffic_simulation/schemas/approved_attribute_resolution_policy.schema.json`.
 This specification does not retroactively change the v16 run record.
 
-## Permission Authority
+<a id="permission-authority"></a>
+
+## 通行許可の正本
 
 Typemap permissions are provisional candidates for topology generation. They
 are not the formal permission authority. The Resolver determines expected
@@ -39,7 +43,7 @@ before the final `netconvert` run. The final `net.xml` is not patched. Final
 lanes and connections are regenerated and audited for exact equality with the
 Resolver expectation.
 
-## Access Specificity
+## 通行具体性
 
 Each applicable access rule has four independent specificity coordinates:
 
@@ -63,7 +67,7 @@ and purpose context is available and the condition evaluates true. Unsupported
 syntax, missing context, or a result that changes during the simulation
 interval remains formal-blocking.
 
-## Directed Road Model
+## 有向 Road モデル
 
 Source OSM Ways are immutable evidence. Travel directions are represented as
 separate Directed Segments.
@@ -85,7 +89,9 @@ stop with `RELATION_DIRECTED_MAPPING_MISSING`; ambiguous mappings stop with
 Until the generator, Schema, mappings, and pinned runtime fixtures pass, the
 production pipeline continues to stop on `oneway=-1`.
 
-## Managed Delivery Vehicle
+<a id="managed-delivery-vehicle"></a>
+
+## 管理対象の配送車両
 
 The baseline vehicle is
 `reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml`.
@@ -94,7 +100,9 @@ SUMO `delivery`; electric propulsion is represented by the SUMO battery device.
 It is not treated as OSM `hgv`. A vehicle may not switch to `truck` within one
 experiment.
 
-## Directional Lanes
+<a id="directional-lanes"></a>
+
+## 方向別車線
 
 An even total lane count on a bidirectional road is not divided equally in the
 formal profile when directional lane tags are absent, except for the narrow
@@ -143,7 +151,9 @@ including mode- and access-specific vectors, are not lane-count authority;
 conflicting approved vectors remain fail-closed, and explicit counts continue
 to be validated against all lane vectors.
 
-## Structural Placeholders
+<a id="structural-placeholders"></a>
+
+## 構造上の仮置き値
 
 Mode-based placeholder generation is
 `structural_placeholder_generation`, not formal attribute resolution.
@@ -152,7 +162,7 @@ prohibited for the formal network, calibration, independent validation, and
 delivery evaluation. Calibration performed against a placeholder network
 cannot be transferred to the formal network.
 
-## Resolution Contract
+## 解決取り決め
 
 New artifacts use two canonical fields:
 
@@ -170,7 +180,9 @@ Formal values require `resolution_status=resolved` and an approved origin.
 `model_assumed` is never formal eligible. The legacy `value_state` field is
 read compatibility only and is not written by new artifacts.
 
-## Remaining Implementation Gates
+<a id="remaining-implementation-gates"></a>
+
+## 残る実装 Gates
 
 - Update the Resolver and configuration so typemap candidates are not treated
   as the formal authority.
@@ -185,7 +197,9 @@ read compatibility only and is not written by new artifacts.
 
 These gates remain incomplete. This policy does not authorize a formal build.
 
-## Version 17 Requirements
+<a id="version-17-requirements"></a>
+
+## 版 17 要件
 
 | Requirement ID | Normative requirement | Test ID |
 |---|---|---|

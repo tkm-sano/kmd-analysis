@@ -1,7 +1,9 @@
-# R23 roadmap
+<a id="r23-roadmap"></a>
 
-See [current R23 authority](R23_STATUS.md) for the accepted closure, evidence and gate.
+# R23の段階計画
 
-Next permitted task is R24 design and pre-start review. Capacity, time windows, battery/SOC, charging, multiple vehicles and Full-EVRP integration remain future work. The exact CPU statevector approach does not establish n≥6 scalability.
+受理済みの完了判定、根拠、移行条件は[R23の現行正本](R23_STATUS.md)を参照する。
 
-Future assessment connects route optimization, battery assumptions, delivery operation, energy and operating cost. Operating cost remains `C_op = E_operation × p_electricity`; labor, vehicle purchase, infrastructure CAPEX and delay penalties are outside that metric. Full-EVRP R20 remains BLOCKED and its R21 remains NOT_STARTED.
+次に許可される作業はR24の設計と開始前確認である。容量、時間窓、電池・充電率、充電、複数車両、完全な電気自動車配送経路問題への統合は、今後の作業として残る。中央処理装置による厳密な状態ベクトル方式は、顧客数6以上への拡張可能性を示すものではない。
+
+今後の評価では、経路最適化、電池の仮定、配送運用、電力量、運用費用を結び付ける。運用費用は引き続き`C_op = E_operation × p_electricity`とし、人件費、車両購入費、設備投資額、遅延罰則費用はこの指標に含めない。完全な電気自動車配送経路問題のR20は実行不可、そのR21は未着手である。

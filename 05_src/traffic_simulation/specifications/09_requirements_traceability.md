@@ -1,6 +1,10 @@
-# Requirements Traceability
+<a id="requirements-traceability"></a>
 
-## Registry Rule
+# 要件追跡可能性
+
+<a id="registry-rule"></a>
+
+## 登録簿規則
 
 The machine-readable authority is `requirements_traceability.yml`. Every
 normative requirement in specifications 00-06 and the attribute-criticality
@@ -9,12 +13,12 @@ fixture class and a current implementation state. Test IDs may be
 `specified_not_implemented`; this blocks the relevant readiness gate but does
 not make the specification ambiguous.
 
-## Coverage Summary
+## 網羅率まとめ
 
-| Prefix | Requirements | Test family | Fixture specification | Current implementation |
+| Prefix | 要件 | Test family | Fixture specification | Current implementation |
 |---|---:|---|---|---|
 | `SIM-REQ` | 8 | `SIM-TST` | research comparison fixtures | specified, downstream pending |
-| `ARC-REQ` | 6 | `ARC-TST` | config/manifest state fixtures | partial |
+| `ARC-REQ` | 6 | `ARC-TST` | config/manifest state fixtures | 部分的 |
 | `RS-REQ` | 14 | `RS-TST` | resolver XML/JSON fixtures | v15 artifact implemented; relation-scope accounting pending |
 | `AC-REQ` | 10 | `AC-TST` | classification and resolution JSON fixtures | specified, schemas and implementation pending |
 | `PM-REQ` | 11 | `PM-TST` | materializer plain-XML fixtures | not implemented |
@@ -22,7 +26,9 @@ not make the specification ambiguous.
 | `BLD-REQ` | 11 | `BLD-TST` | pinned final-build fixtures | not implemented |
 | `PA-REQ` | 11 | `PA-TST` | post-build audit fixtures | not implemented |
 
-## Evidence Chain
+<a id="evidence-chain"></a>
+
+## 根拠のつながり
 
 ```text
 requirement ID

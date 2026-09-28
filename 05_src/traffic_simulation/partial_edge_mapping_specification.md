@@ -1,6 +1,10 @@
-# Road Census–SUMO partial-edge mapping specification v1.0.0
+<a id="road-censussumo-partial-edge-mapping-specification-v100"></a>
 
-## 1. Purpose and authority
+# 道路交通センサス–スーモ部分的-道路区間対応付け仕様 v1.0.0
+
+<a id="1-purpose-and-authority"></a>
+
+## 1. 目的 ・ 正本
 
 This specification adds an edge-segment layer to the existing ordered SUMO edge
 mapping. It does not replace `final_sumo_edge_sequence`, split a SUMO edge, modify a
@@ -22,7 +26,9 @@ Map imagery and visual inspection may be logged as supporting context but cannot
 `adoption_status`. GeoJSON coordinate order and a bare numeric OSM `ref` are not
 direction or route-identity proof.
 
-## 2. Storage model and key
+<a id="2-storage-model-and-key"></a>
+
+## 2. 保存モデル ・ キー
 
 The canonical v1 representation is a separate CSV/JSON-schema pair. Its row key is:
 
@@ -44,7 +50,7 @@ and:
 
 `used_length_m = end_position_m - start_position_m`.
 
-## 3. Coverage roles
+## 3. 網羅率役割
 
 | Role | Start/end meaning in edge direction | Used interval | Permitted conditions | Invalid conditions |
 |---|---|---|---|---|
@@ -58,7 +64,9 @@ At most the first and last rows may be partial. An interior row must be `FULL_ED
 The v1 CSV has one provenance tuple per row; a single-edge case with two independently
 derived anchors must reference a compound evidence record that contains both anchors.
 
-## 4. Boundary provenance and derivation rule
+<a id="4-boundary-provenance-and-derivation-rule"></a>
+
+## 4. 境界出典・来歴 ・ 導出規則
 
 `DERIVED_BY_GEOMETRIC_PROJECTION` means the position is a computed fact, not the
 official Road Census boundary. For rule
@@ -77,7 +85,9 @@ on the edge, route identity and topology pass, contamination passes, the unchang
 spatial criteria pass, and the derivation reproduces within 0.001 m. Projection error
 is evaluated against the existing `candidate_buffer_m`; no new threshold is introduced.
 
-## 5. Formal adoption rule v1
+<a id="5-formal-adoption-rule-v1"></a>
+
+## 5. 正式採択規則 v1
 
 `ACCEPTED_AS_PARTIAL_EDGE_MAPPING` requires all of the following:
 
@@ -97,7 +107,7 @@ Failure is classified without forced adoption as `ROUTE_IDENTITY_CONFLICT`,
 `OFFICIAL_DIRECTION_UNRESOLVED`, `GENUINE_GEOMETRY_MISMATCH`, or
 `INSUFFICIENT_EVIDENCE`. Candidate extraction is not automatic adoption.
 
-## 6. Downstream meaning
+## 6. 下流意味
 
 | Consumer | Level read | Meaning of a partial edge |
 |---|---|---|
@@ -109,7 +119,9 @@ Failure is classified without forced adoption as `ROUTE_IDENTITY_CONFLICT`,
 
 An application must not interpret a partial interval as a new edge ID.
 
-## 7. Network-wide screening
+<a id="7-network-wide-screening"></a>
+
+## 7. 道路網-wide 全体確認
 
 The reusable validator inventories all 66 base Road Census mappings and the nine current
 external-observation direction targets. It screens existing review, low-coverage,

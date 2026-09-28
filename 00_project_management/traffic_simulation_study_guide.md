@@ -1,20 +1,24 @@
-# Traffic Simulation Research Study Guide
+<a id="traffic-simulation-research-study-guide"></a>
+
+# 交通シミュレーション研究の学習ガイド
 
 更新日：2026年7月18日
 
 ## 目的
 
-現在のSUMO道路網設計は、SUMOの操作だけでなく、次の五分野を組み合わせて理解する必要がある。
+現在のスーモ道路網設計は、スーモの操作だけでなく、次の五分野を組み合わせて理解する必要がある。
 
-1. シミュレーションモデルのVerificationとValidation
-2. SUMO・OSMのデータ仕様
+1. シミュレーションモデルの実装検証と検証
+2. スーモ・オープンストリートマップのデータ仕様
 3. ソフトウェアテストとデータ来歴
 4. 再現可能な計算機実験
 5. 感度分析と不確実性評価
 
-この順序で学び、placeholderの制限、fixtureと正式実験の分離、設定の固定、代替条件の比較を、一つのV&Vと再現可能性の枠組みとして説明できることを目標とする。
+この順序で学び、仮置きの制限、検証用データと正式実験の分離、設定の固定、代替条件の比較を、一つのV&Vと再現可能性の枠組みとして説明できることを目標とする。
 
-## 1. VerificationとValidation
+<a id="1-verificationとvalidation"></a>
+
+## 1. 実装検証と検証
 
 ### 基礎資料
 
@@ -25,9 +29,9 @@ NIST IR 8298の主対象は数値流体シミュレーションである。V&V�
 
 | 概念 | 本研究で確認すること |
 |---|---|
-| Conceptual model validity | OSMタグをSUMO属性へ変換する規則が研究目的に適合するか |
-| Computerized model verification | Python前処理、validator、`netconvert`が固定仕様どおり動くか |
-| Data validity | OSM、公的データ、補完値の品質と基準日が用途に十分か |
+| Conceptual model validity | オープンストリートマップタグをスーモ属性へ変換する規則が研究目的に適合するか |
+| Computerized model verification | Python前処理、検証器、`netconvert`が固定仕様どおり動くか |
+| Data validity | オープンストリートマップ、公的データ、補完値の品質と基準日が用途に十分か |
 | Operational validity | 距離、旅行時間、交通量等が主張する現実対象と整合するか |
 
 読了後は、次の四つを区別して説明できることを到達目標とする。
@@ -39,9 +43,11 @@ NIST IR 8298の主対象は数値流体シミュレーションである。V&V�
 結果が主張する現実対象に対して妥当か
 ```
 
-テストが通ることはVerificationの証拠にはなるが、東京交通に対するValidationの完了を意味しない。
+テストが通ることは実装検証の証拠にはなるが、東京交通に対する検証の完了を意味しない。
 
-## 2. SUMOの仕様
+<a id="2-sumoの仕様"></a>
+
+## 2. スーモの仕様
 
 ### 必読資料
 
@@ -66,13 +72,15 @@ allow / disallow
 --type-files
 ```
 
-各項目について、OSM明示値、typemap値、importer-level default、global defaultのどれが採用されるかを区別する。オプションは固定SUMO 1.24.0の`netconvert --help`およびfixture実変換でも確認する。
+各項目について、オープンストリートマップ明示値、道路種別の対応表値、importer-level 既定値、global 既定値のどれが採用されるかを区別する。オプションは固定スーモ 1.24.0の`netconvert --help`および検証用データ実変換でも確認する。
 
-SUMO標準typemapの公式性と東京への地域適合性を分ける。公式値を固定することは再現性を高めるが、東京で実証的に妥当であることを保証しない。
+スーモ標準道路種別の対応表の公式性と東京への地域適合性を分ける。公式値を固定することは再現性を高めるが、東京で実証的に妥当であることを保証しない。
 
-## 3. OSMの意味論
+<a id="3-osmの意味論"></a>
 
-OSM Wikiは、OSMデータ消費時のタグの意味とコミュニティ慣習を確認する仕様資料として使用する。日本の法的規制やモデルの実証的妥当性を保証する資料とは扱わない。
+## 3. オープンストリートマップの意味論
+
+オープンストリートマップ Wikiは、オープンストリートマップデータ消費時のタグの意味とコミュニティ慣習を確認する仕様資料として使用する。日本の法的規制やモデルの実証的妥当性を保証する資料とは扱わない。
 
 ### 必読資料
 
@@ -97,11 +105,11 @@ access
 → 研究対象vClass集合との積集合
 ```
 
-`oneway`では`yes`、`no`、`-1`、roundaboutとmotorwayの暗黙規則、および暗黙値の解釈限界を確認する。曖昧な規則を多数派の方向へ統計補完しない。
+`oneway`では`yes`、`no`、`-1`、環状交差点とmotorwayの暗黙規則、および暗黙値の解釈限界を確認する。曖昧な規則を多数派の方向へ統計補完しない。
 
-`lanes`では、`lanes`が原則としてway全体の車線数であり、方向別情報を`lanes:forward`、`lanes:backward`、`lanes:both_ways`で表すことを確認する。`*:lanes`では`|`で区切られた値とOSM way方向、走行方向、左側通行の関係を確認する。
+`lanes`では、`lanes`が原則として道路地物全体の車線数であり、方向別情報を`lanes:forward`、`lanes:backward`、`lanes:both_ways`で表すことを確認する。`*:lanes`では`|`で区切られた値とオープンストリートマップ 道路地物方向、走行方向、左側通行の関係を確認する。
 
-`maxspeed`では、方向別、lane別、車種別、条件付き値と単位を確認する。実走速度を法的な`maxspeed`へ直接代入しない。`source:maxspeed`は由来の候補であり、値そのものと分けて保存する。
+`maxspeed`では、方向別、車線別、車種別、条件付き値と単位を確認する。実走速度を法的な`maxspeed`へ直接代入しない。`source:maxspeed`は由来の候補であり、値そのものと分けて保存する。
 
 ## 4. テストとデータ来歴
 
@@ -109,7 +117,7 @@ access
 
 - pytest, [About fixtures](https://docs.pytest.org/en/stable/explanation/fixtures.html)
 
-pytest fixture機能と、合成OSM XMLとしてのtest fixtureデータを区別する。
+pytest 検証用データ機能と、合成オープンストリートマップ 拡張マークアップ形式としての試験 検証用データデータを区別する。
 
 ```text
 test fixtureデータ
@@ -131,7 +139,7 @@ pytest fixture機能
 → 変換後品質ゲート
 ```
 
-欠損を拒否する前処理負例と、必須属性をmaterializeしたruntime正常系を分離する。
+欠損を拒否する前処理負例と、必須属性を具体化した実行時間正常系を分離する。
 
 ### データ来歴
 
@@ -139,9 +147,9 @@ pytest fixture機能
 
 | PROV概念 | 本研究の例 |
 |---|---|
-| Entity | OSM PBF、元way、正規化OSM XML、SUMO edge、監査CSV |
-| Activity | access解決、属性補完、`netconvert`実行、手動レビュー |
-| Agent | 前処理プログラム、SUMO 1.24.0、確認者 |
+| Entity | オープンストリートマップ PBF、元道路地物、正規化オープンストリートマップ 拡張マークアップ形式、スーモ 道路区間、監査コンマ区切り形式 |
+| Activity | 接続解決、属性補完、`netconvert`実行、手動レビュー |
+| Agent | 前処理プログラム、スーモ 1.24.0、確認者 |
 
 各採用値について、少なくとも次を追跡する。
 
@@ -171,7 +179,7 @@ validation_status: structural_only
 - [ACM Artifact Review and Badging](https://reviewers.acm.org/training-course/artifact-review-and-badging)
 - [IEEE Research Reproducibility](https://journals.ieeeauthorcenter.ieee.org/create-your-ieee-journal-article/research-reproducibility/)
 
-本研究で揃えるartifactは次のとおりである。
+本研究で揃える成果物は次のとおりである。
 
 ```text
 日付固定OSM snapshotとSHA-256
@@ -206,17 +214,17 @@ track除外 / 明示的な自動車通行根拠があるtrackだけ保持
 未解決属性で停止 / structural限定placeholder
 ```
 
-不確実な連続パラメータが増え、相互作用を含む評価が研究質問に必要となった段階でSALibを検討する。感度分析は設定値の変化に対する結果依存性、ablation studyは構成要素を除いた場合の寄与として区別する。
+不確実な連続パラメータが増え、相互作用を含む評価が研究質問に必要となった段階でSALibを検討する。感度分析は設定値の変化に対する結果依存性、ablation 調査は構成要素を除いた場合の寄与として区別する。
 
 ## 推奨学習順序
 
 | 段階 | 学習内容 | 到達目標 |
 |---|---|---|
-| 1 | SargentのV&V | Verification、Validation、data validity、operational validityを区別できる |
+| 1 | SargentのV&V | 実装検証、検証、data validity、operational validityを区別できる |
 | 2 | SUMO edge type、OSM import、`netconvert` | 属性の採用源と欠損時挙動を説明できる |
-| 3 | OSM access、oneway、lanes、maxspeed | OSMタグからSUMO permissionsまでの解釈順を説明できる |
-| 4 | pytestとW3C PROV | fixture、期待結果、値の来歴を設計できる |
-| 5 | ACM、IEEE、SALib | artifactと主要設定の頑健性評価を計画できる |
+| 3 | OSM access、oneway、lanes、maxspeed | オープンストリートマップタグからスーモ 通行許可までの解釈順を説明できる |
+| 4 | pytestとW3C PROV | 検証用データ、期待結果、値の来歴を設計できる |
+| 5 | ACM、IEEE、SALib | 成果物と主要設定の頑健性評価を計画できる |
 
 ## 最小読書セット
 
@@ -229,4 +237,4 @@ track除外 / 明示的な自動車通行根拠があるtrackだけ保持
 5. [ACM SIGSOFT Empirical Standards](https://www2.sigsoft.org/EmpiricalStandards/)
 6. [W3C PROV Overview](https://www.w3.org/TR/2013/NOTE-prov-overview-20130430/)
 
-この六件を理解した後、現在の`priority`、permissions、placeholder、validator、fixtureおよび感度分析を、場当たり的な設定ではなく、シミュレーション研究のV&Vと再現可能性の構成要素として説明できることを確認する。
+この六件を理解した後、現在の`priority`、通行許可、仮置き、検証器、検証用データおよび感度分析を、場当たり的な設定ではなく、シミュレーション研究のV&Vと再現可能性の構成要素として説明できることを確認する。

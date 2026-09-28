@@ -1,4 +1,6 @@
-# Formal network completion policy v17
+<a id="formal-network-completion-policy-v17"></a>
+
+# 正式 道路網 完了判定 方針 v17
 
 Status: **normative, adopted 2026-09-03**
 
@@ -8,23 +10,31 @@ Registry: `reproducibility/config/traffic_simulation/network_completion_method_r
 
 The keywords **MUST**, **MUST NOT**, **SHALL**, **SHALL NOT**, and **MAY** are normative.
 
-## 1. Context and evidence
+<a id="1-context-and-evidence"></a>
+
+## 1. 文脈 ・ 根拠
 
 The Phase 13 model-selection artifacts are read-only research authority for this Decision. They compare 3,286 source-explicit or deterministic-derived lane labels with 22,624 Ways lacking lane evidence. Explicit and missing populations are not exchangeable: highway total variation is 0.785, directionality total variation is 0.447, and endpoint-degree standardized mean difference is 0.856.
 
 The candidate hybrid's type-fallback stage produced approximately 49.7% exact accuracy and −0.600 prediction bias. The complete hybrid reached only 68.7% spatial accuracy, MAE 0.423, and bias −0.367. Local propagation performed better on explicit-domain spatial holdout (83.9%, MAE 0.203, bias −0.029) but covered only 13.6% there and has no missing-domain external validation. ExtraTrees at probability ≥0.8 reached 96.5% on a selective explicit-domain subset, while macro recall remained 0.25 and rare classes were not recovered. None of those results proves accuracy on missing Ways.
 
-## 2. Decision and alternatives
+<a id="2-decision-and-alternatives"></a>
+
+## 2. 判断 ・ 代替案
 
 The project SHALL use an **attribute-specific hierarchical hybrid with mandatory abstention and a separate simulation-only fallback layer**. A single universal imputer, unconditional local propagation, a highway-class mode, and SUMO or MATSim defaults are rejected as Formal completion policies. External fusion, local propagation, empirical models, and statistical/ML models remain candidates only behind their specified validation gates.
 
-## 3. Formal definition
+<a id="3-formal-definition"></a>
+
+## 3. 正式 定義
 
 **Formal** means a model-ready value that is acceptable for research use, whose method validity was verified before use, and whose provenance is complete.
 
 Formal is not limited to explicit source facts: normalized values, adopted deterministic derivations, validated external data, and validated inferred/model-derived values can be Formal. Formal is also not an arbitrary simulation fallback. A source assertion and a model-ready value MUST be represented separately; inferred values MUST NOT be written back or presented as source truth.
 
-## 4. Three layers and data flow
+<a id="4-three-layers-and-data-flow"></a>
+
+## 4. 三つの層 ・ データの流れ
 
 1. **Structural** preserves source representation, topology, lineage, raw values, normalized state, and registered structural assumptions. It makes no claim that an assumption is research-valid.
 2. **Formal** consumes Structural records and only methods currently allowed by the registry. It contains validated research-use values and a complete Formal-unresolved inventory.
@@ -32,7 +42,9 @@ Formal is not limited to explicit source facts: normalized values, adopted deter
 
 The flow is `source → Structural → Formal → Simulation-ready`. Every transformation SHALL append provenance rather than replace upstream provenance. Simulation-only output SHALL point to the unresolved Formal record it overlays. Reverse flow, write-back to source, and promotion by copying a simulation value into Formal are prohibited.
 
-## 5. Epistemic status and provenance
+<a id="5-epistemic-status-and-provenance"></a>
+
+## 5. 知識上の状態 ・ 出典・来歴
 
 Formal records may use only `OBSERVED`, `NORMALIZED`, `DETERMINISTIC_DERIVED`, `EXTERNAL_DATA_DERIVED`, `VALIDATED_LOCAL_INFERRED`, or `VALIDATED_MODEL_DERIVED`. Simulation-only overlays may use only `TYPE_DEFAULTED`, `SIMULATION_DEFAULTED`, or `CONSERVATIVE_FALLBACK`.
 
@@ -40,11 +52,13 @@ Implementations SHALL store these in distinct fields such as `formal_epistemic_s
 
 All values SHALL carry record and source identity, source snapshot/hash, attribute semantic kind, method/rule/model ID and version, Decision ID, input evidence IDs, applicable temporal and directional extent, output value/unit, epistemic status, and deterministic regeneration inputs. Model-derived values additionally require training-population and code hashes, features or their immutable hash, prediction distribution, calibrated confidence, applicability/OOD result, validation split and metrics, and abstention/sensitivity metadata.
 
-## 6. Method boundary
+<a id="6-method-boundary"></a>
+
+## 6. 手法 境界
 
 The registry classifications are normative:
 
-| Family | Status | Formal effect |
+| Family | 状態 | Formal effect |
 |---|---|---|
 | Explicit source evidence | `FORMAL_ALLOWED_NOW` | `OBSERVED` |
 | Lossless normalization | `FORMAL_ALLOWED_NOW` | `NORMALIZED` |
@@ -67,9 +81,13 @@ The registry classifications are normative:
 
 `FORMAL_ALLOWED_AFTER_VALIDATION` is not an allowlist entry for runtime Formal output. Promotion requires all gates plus a separate adopted promotion Decision and registration in the existing Formal evidence-method registry.
 
-## 7. Resolution hierarchy by attribute
+<a id="7-resolution-hierarchy-by-attribute"></a>
 
-### 7.1 Lanes
+## 7. 解決階層別属性
+
+<a id="71-lanes"></a>
+
+### 7.1 車線数
 
 Formal priority is:
 
@@ -81,7 +99,9 @@ Simulation-only priority after Formal abstention is:
 
 Total physical lanes, shared bidirectional lanes, directional lanes, and lane-vector semantics SHALL remain distinct. A lower stage MUST NOT override higher-stage evidence or hide a conflict.
 
-### 7.2 Speed
+<a id="72-speed"></a>
+
+### 7.2 速度
 
 Formal priority is:
 
@@ -97,7 +117,9 @@ Formal priority is:
 
 The registry represents the middle deterministic stages with the adopted deterministic-rule method. Simulation defaults are a separate overlay. Statistical or ML inference MAY prioritize manual review but MUST NOT grant legal access. Ambiguous conditional syntax, missing context, and incomparable specificity conflicts SHALL abstain.
 
-## 8. Validation gates and thresholds
+<a id="8-validation-gates-and-thresholds"></a>
+
+## 8. 検証 gates ・ しきい値
 
 Every local, empirical, or ML promotion SHALL pass all of the following on immutable data: source-Way train/test separation; spatial/corridor holdout; leakage audit; explicit-domain validation; independently labelled missing-domain validation; external validation; accuracy, MAE, and signed bias; class/stratum support; calibration and confidence; selective-risk/coverage reporting; abstention support; complete provenance; deterministic regeneration; and network/research sensitivity analysis.
 
@@ -113,19 +135,25 @@ These are minimum screening floors derived from the current benchmark, not suffi
 
 Confidence cutoffs SHALL be selected and calibrated on held-out missing-domain labels. The explicit-domain ExtraTrees ≥0.8 result is not a valid cutoff by itself.
 
-## 9. Missing-domain requirement
+<a id="9-missing-domain-requirement"></a>
+
+## 9. 欠落-領域要件
 
 Formal promotion requires both explicit-domain validation and missing-domain validation. Cross-validation on explicit-tagged Ways estimates donor-domain fit only. If missing-domain ground truth is insufficient, the method SHALL remain `FORMAL_ALLOWED_AFTER_VALIDATION`, irrespective of explicit-domain accuracy or model confidence.
 
-## 10. Abstention and conflicts
+## 10. 判断保留 ・ 矛盾
 
 A method SHALL abstain on missing or failed domain validation, OOD input, insufficient class/stratum support, low or uncalibrated confidence, leakage, lineage/date/extent/direction/semantic mismatch, unsupported syntax, or conflict. Conflicts SHALL stop unless an adopted deterministic precedence/specificity rule selects an already evidenced value. Voting, silent overwrite, and fallback-based conflict concealment are prohibited.
 
-## 11. Blocker semantics
+<a id="11-blocker-semantics"></a>
+
+## 11. 阻害要因意味
 
 A **Formal blocker** is an attribute for which Formal policy cannot establish a research-use value. A **simulation readiness blocker** is an attribute still lacking an executable value after applicable Formal resolution and registered simulation-only fallback. Therefore `Formal blocker > 0` with `Simulation-ready blocker = 0` is valid and expected.
 
-## 12. Network completion semantics
+<a id="12-network-completion-semantics"></a>
+
+## 12. 道路網 完了判定 意味
 
 `FORMAL_RESEARCH_READY` requires complete Formal provenance, a complete Formal-unresolved inventory, no silent inference, and satisfaction of every accepted validation gate. It does not require zero Formal blockers.
 
@@ -133,11 +161,13 @@ A **Formal blocker** is an attribute for which Formal policy cannot establish a 
 
 Neither state is claimed by adoption of this Decision alone.
 
-## 13. Rollback
+## 13. 差戻し
 
 A promoted method SHALL be deactivated when its validation metric, calibration, class-specific error, signed bias, source/model lineage, determinism, provenance, or sensitivity result exits its approved envelope. Affected Formal records SHALL return to `UNRESOLVED_FORMAL`. Simulation scenarios may remain only as explicitly labelled simulation-only outputs. Rollback SHALL NOT alter source truth or historical v17 artifacts.
 
-## 14. Current scope and next dependency
+<a id="14-current-scope-and-next-dependency"></a>
+
+## 14. 現行範囲 ・ 次の依存関係
 
 This Decision changes policy, specification, and registry only. It does not reduce lane, speed, or permission blockers; run the full population; build SUMO; promote a type default; or promote an unvalidated local/empirical/ML model.
 

@@ -1,12 +1,14 @@
-# 外部観測参照10件 正式mapping候補レビュー
+<a id="外部観測参照10件-正式mapping候補レビュー"></a>
+
+# 外部観測参照10件 正式対応付け候補レビュー
 
 review ID: `external_observation_mapping_candidate_review_20260827`
 
-既存mappingおよびmatching閾値は変更していない。10 target参照は6 unique公式観測区間を参照する。
+既存対応付けおよびmatching閾値は変更していない。10 対象参照は6 unique公式観測区間を参照する。
 
 ## 判定結果
 
-| 公式観測区間 | target区間 | 分類 | network被覆 | candidate coverage | route identity | connection violation |
+| 公式観測区間 | 対象区間 | 分類 | 道路網被覆 | candidate coverage | route identity | connection violation |
 |---|---|---|---:|---:|---|---:|
 | `13200100070` | 13200100080 | REVIEW_REQUIRED | 100.0% | 99.8% | CONFIRMED_CANONICAL_NAME_AND_ROUTE_RELATION | 0 |
 | `13300010260` | 13300010290 | NETWORK_EXTENSION_REQUIRED | 24.5% | 24.5% | CONFIRMED_PARTIAL_WAY_REF | 0 |
@@ -17,20 +19,20 @@ review ID: `external_observation_mapping_candidate_review_20260827`
 
 ## `13200100070`
 
-自動選択された`5219302`は無名・refなし・route relationなしの`motorway_link`であるため、正式候補から除外した。公式名「高速1号羽田線」に対し、次の二つの本線corridorを確認した。
+自動選択された`5219302`は無名・refなし・経路 関係なしの`motorway_link`であるため、正式候補から除外した。公式名「高速1号羽田線」に対し、次の二つの本線corridorを確認した。
 
-- `4854104#1;4854104#2`：coverage 99.8%、接続違反0
-- `45554540#0;45554540#1`：coverage 99.4%、接続違反0
+- `4854104#1;4854104#2`：網羅率 99.8%、接続違反0
+- `45554540#0;45554540#1`：網羅率 99.4%、接続違反0
 
-両方ともOSM `ref=1`、名称「首都高速1号羽田線」、route relation `4256244`、network=`首都高速道路`、relation ref=`1`である。relationのoperatorは空欄である。路線同一性は確認できるが、Census上り・下りへの割当が未確定のため`REVIEW_REQUIRED`とした。
+両方ともオープンストリートマップ `ref=1`、名称「首都高速1号羽田線」、経路 関係 `4256244`、道路網=`首都高速道路`、関係 ref=`1`である。関係の演算子は空欄である。路線同一性は確認できるが、Census上り・下りへの割当が未確定のため`REVIEW_REQUIRED`とした。
 
 ## `13403160320`
 
-7 edgeのselected corridorは接続違反0、coverage 58.1%で、変更していないmedium基準30%を満たす。OSM Wayの`ref=316`、別名「海岸通り」に加え、route relation `11699637`がnetwork=`JP:prefectural:tokyo`、ref=`316`、名称「日本橋芝浦大森線」を与える。正式路線identityと一致するため3 target参照を`AUTO_ACCEPT`とした。
+7 道路区間のselected corridorは接続違反0、網羅率 58.1%で、変更していないmedium基準30%を満たす。オープンストリートマップ 道路地物の`ref=316`、別名「海岸通り」に加え、経路 関係 `11699637`が道路網=`JP:prefectural:tokyo`、ref=`316`、名称「日本橋芝浦大森線」を与える。正式路線同一性と一致するため3 対象参照を`AUTO_ACCEPT`とした。
 
 ## `13300010260`の限定拡張
 
-公式geometry 1029.5mのうち、既存ネットワーク被覆は252.7m、未被覆は776.8m（75.5%）である。閾値調整ではなく、未被覆geometryの25m bufferを最小探索範囲とする。
+公式形状 1029.5mのうち、既存ネットワーク被覆は252.7m、未被覆は776.8m（75.5%）である。閾値調整ではなく、未被覆形状の25m bufferを最小探索範囲とする。
 
 ```json
 {
@@ -41,13 +43,13 @@ review ID: `external_observation_mapping_candidate_review_20260827`
 }
 ```
 
-これは最小の空間探索bboxである。実際のネットワーク生成では、bbox内の必要wayだけでなく、既存ネットワークへの接続nodeと該当restriction relationのclosureを含める。
+これは最小の空間探索bboxである。実際のネットワーク生成では、bbox内の必要道路地物だけでなく、既存ネットワークへの接続ノードと該当制限 関係の参照先の補完を含める。
 
-## Summary
+## まとめ
 
 - 既存ネットワークで正式採用可能：**8/10**
 - 手動確認：**1/10**
 - 限定ネットワーク拡張が必要：**1/10**
 - 未解決：**0/10**
 
-方向別traffic系列への最終割当は本レビューの範囲外であり、`direction_assignment_finalized=false`を維持する。
+方向別交通系列への最終割当は本レビューの範囲外であり、`direction_assignment_finalized=false`を維持する。

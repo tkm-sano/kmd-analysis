@@ -1,6 +1,10 @@
-# Ota Ward v15 Resolver Full Dry Run
+<a id="ota-ward-v15-resolver-full-dry-run"></a>
 
-## 1. Purpose and Scope
+# Ota Ward v15 属性解決器全体試行実行
+
+<a id="1-purpose-and-scope"></a>
+
+## 1. 目的と対象範囲
 
 This record describes the first full `structural` Resolver run over the
 registered Ota Ward input under configuration v15. Its purposes are to record
@@ -13,21 +17,23 @@ downstream simulation is authorized. The run exposed missing runtime
 provenance that cannot be reconstructed retroactively; those limitations are
 listed explicitly rather than filled with inferred values.
 
-## 2. Run Identity and Status
+<a id="2-run-identity-and-status"></a>
+
+## 2. 実行の識別と状態
 
 | Field | Recorded value |
 |---|---|
 | Evidence record ID | `ota-ward-v15-structural-20260723-01` |
 | Run window | approximately 2026-07-23 15:48:03 to 15:50:48 JST |
 | Run-window source | local output-file timestamps; not a runtime-emitted timestamp |
-| Configuration | `ota_ward_sumo_network_v15`, version 15 |
+| 設定 | `ota_ward_sumo_network_v15`, version 15 |
 | Profile | `structural` |
 | CLI exit code | 2 |
 | Classified result | governed Resolver validation failure |
-| Resolver output eligible | false |
-| Formal build input ready | false |
-| Formal network accepted | false |
-| Normalized OSM published | no |
+| Resolver output eligible | 偽 |
+| Formal build input ready | 偽 |
+| Formal network accepted | 偽 |
+| Normalized OSM published | いいえ |
 
 The failure report contains 46,056 governed blockers matching the audit stop
 rows. Therefore exit code 2 in this run denotes a completed Resolver evaluation
@@ -35,7 +41,9 @@ that stopped at its materialization gate, not an unclassified program crash.
 The approximate run window is useful for locating local files but is not a
 substitute for an emitted start and end timestamp.
 
-### CLI exit-code semantics
+<a id="cli-exit-code-semantics"></a>
+
+### コマンド操作 exit-コード意味
 
 | Exit code | Resolver meaning | Publication behavior |
 |---:|---|---|
@@ -49,12 +57,14 @@ alone is not sufficient to distinguish argument parsing from a governed
 validation failure. The failure-report contents and artifact hashes make that
 distinction for this run.
 
-## 3. Eligibility Gates
+## 3. 実行条件の判定
 
 The Resolver publication gate and the repository-wide readiness gates are
 different decisions.
 
-### Resolver publication gate
+<a id="resolver-publication-gate"></a>
+
+### 属性解決器公開判定基準
 
 The v15 Resolver permits a normalized OSM output only when all of the following
 conditions hold:
@@ -68,20 +78,22 @@ conditions hold:
    present; and
 5. the staged artifact set passes schema validation and atomic publication.
 
-| Resolver condition | Result | Evidence |
+| Resolver condition | 結果 | 根拠 |
 |---|---|---|
-| Input XML and retained references accepted | pass | Resolver reached all 26,220 candidate ways |
+| Input XML and retained references accepted | 合格 | Resolver reached all 26,220 candidate ways |
 | Audit stop rows equal zero | fail | 46,056 stop rows |
 | Permission expectation completeness | fail | `complete=false`; 1,874 of 26,220 ways have generated expectation records |
-| Incomplete permission artifact schema | pass | validated inside the Resolver |
-| Failure-report schema | pass | validated inside the Resolver |
+| Incomplete permission artifact schema | 合格 | validated inside the Resolver |
+| Failure-report schema | 合格 | validated inside the Resolver |
 | Atomic failure publication | pass for the observed local state | audit artifacts exist; normalized output and `.part` files do not |
 
 One blocker is sufficient to prevent normalized OSM publication. Warnings do
 not independently authorize output and are not a substitute for resolving a
 blocker.
 
-### Repository-wide readiness gates
+<a id="repository-wide-readiness-gates"></a>
+
+### リポジトリ-wide 準備状況 gates
 
 `formal_build_input_ready` additionally requires the materializer, reverse
 oneway handler, formal attribute evidence, junction and signal review, vehicle
@@ -91,9 +103,11 @@ evaluated only after a formal `netconvert` build and its post-build audits.
 These requirements are defined in
 `reproducibility/config/traffic_simulation/sumo_network.yml`.
 
-## 4. Registered Input Provenance
+<a id="4-registered-input-provenance"></a>
 
-| Input | Repository-relative path | SHA-256 |
+## 4. 登録済み入力の出典・来歴
+
+| 入力 | Repository-relative path | SHA-256 |
 |---|---|---|
 | Geofabrik Kanto PBF | `03_data/raw/traffic_simulation/osm/kanto-260716.osm.pbf` | `aef890f28b652ed7bd2b0d77e86f263219b479fe3eedbdd8610dcfc1572c420d` |
 | Registered Ota Ward BBOX extract | `03_data/processed/traffic_simulation/road_network/osm_extracts/osm_ota_ward_20260716.osm.pbf` | `10d554a13e89b815ca416c272d23d9477d52e312fa3d299f466fb3c01cf9d041` |
@@ -108,9 +122,11 @@ record and quality summary. The configuration hash above identifies the
 content used for the run; the file has subsequently changed as status and
 evidence fields were updated.
 
-## 5. Spatial Extent and Candidate Population
+## 5. 空間範囲と候補母集団
 
-### Authoritative study area
+<a id="authoritative-study-area"></a>
+
+### 正本の調査地域
 
 The research analysis extent is the N03 Ota Ward administrative boundary, not
 the PBF header BBOX or the coordinate extent of closure elements.
@@ -133,7 +149,9 @@ The BBOX is an acquisition envelope. A `complete_ways` extract can retain
 nodes outside it, and it includes areas outside the N03 polygon. Neither class
 of element is automatically an Ota Ward analysis observation.
 
-### Dry-run population
+<a id="dry-run-population"></a>
+
+### 試行実行母集団
 
 This Resolver run did not apply the final N03 polygon clip. It audited every
 v15-whitelisted motorized way in the relation-closed input:
@@ -155,7 +173,7 @@ The earlier count of 26,201 was produced by a visualization or pre-v15
 candidate filter and is not the denominator of this run. The exact v15 filter
 gives 26,204 ways before closure; the 16 closure ways produce 26,220.
 
-## 6. Relation Closure Procedure
+## 6. 関係要素の参照先補完手順
 
 The registered `complete_ways` extract contains 2,373 relations, including
 partial non-road relations and turn restrictions. A direct Resolver run first
@@ -206,9 +224,11 @@ exactly. `--add-referenced` adds referenced members from the fixed regional
 authority; the selected relation set contains no relation-to-relation members,
 so this run has no recursive relation cycle.
 
-### Closure and reference checks
+<a id="closure-and-reference-checks"></a>
 
-| Check | Result |
+### 参照先の補完 ・ 参照確認
+
+| Check | 結果 |
 |---|---:|
 | Nodes in relation-closed input | 1,709,627 |
 | Ways in relation-closed input | 323,409 |
@@ -245,13 +265,15 @@ The 1,792 non-restriction relations omitted from the closure ID set are:
 | `collection` | 1 |
 | `provides_feature` | 1 |
 | `tracks` | 1 |
-| Total | 1,792 |
+| 合計 | 1,792 |
 
 These relations were omitted from v15 Resolver member validation. The count is
 an audit of the executed scope, not a claim that the relations are invalid OSM
 data.
 
-### Retrospective relation-scope blocker
+<a id="retrospective-relation-scope-blocker"></a>
+
+### 事後の関係要素-範囲阻害要因
 
 The type-level audit found three `type=restriction:bus` relations:
 
@@ -274,7 +296,9 @@ way members belonged to highway types intentionally excluded by the typemap
 whitelist. The regional header retained by `osmium getid` is not an analysis
 extent.
 
-## 7. Configuration Loading and Execution Environment
+<a id="7-configuration-loading-and-execution-environment"></a>
+
+## 7. 設定の読込みと実行環境
 
 The CLI has no configuration-path argument. `load_policy()` reads the
 repository-root-relative constant:
@@ -289,7 +313,9 @@ the actual typemap SHA-256 differs from the hash stored in the configuration.
 The working directory for the container is `/workspace`, but configuration
 resolution uses `REPOSITORY_ROOT` rather than the shell working directory.
 
-### Environment observed for the run
+<a id="environment-observed-for-the-run"></a>
+
+### 環境観測されたの対象： その実行
 
 | Field | Value or evidence status |
 |---|---|
@@ -315,7 +341,9 @@ the formal runtime-fingerprint requirement. Future orchestration must emit the
 container digest, source-tree identity, dependency hashes, platform, locale and
 timestamps into a run manifest before execution.
 
-## 8. Exact Resolver Command
+<a id="8-exact-resolver-command"></a>
+
+## 8. 厳密属性解決器コマンド
 
 ```bash
 PYTHONPATH=05_src python -m traffic_simulation.network.resolve_osm_attributes \
@@ -333,7 +361,9 @@ and structural mode values were not applied. The attribute-specific
 criticality contract and its admissible evidence must be completed before such
 values can be used.
 
-## 9. Counting Units and Classification Definitions
+<a id="9-counting-units-and-classification-definitions"></a>
+
+## 9. 集計単位と分類の定義
 
 An audit row represents one governed attribute decision for one OSM way.
 Several attributes on the same way can stop, so blocker rows and blocked ways
@@ -348,7 +378,7 @@ value, and the unclassified way was not eligible for a structural placeholder.
 a present value or tag combination that cannot yet be resolved by the governed
 implementation. These categories are mutually exclusive for this summary.
 
-| Metric | Counting unit | Count | Denominator | Rate |
+| Metric | Counting unit | 件数 | Denominator | Rate |
 |---|---|---:|---:|---:|
 | Governed candidates | distinct ways | 26,220 | 26,220 | 100.00% |
 | Ways with at least one blocker | distinct ways | 24,346 | 26,220 | 92.85% |
@@ -362,33 +392,39 @@ The 1,874 permission records are generated only for ways that reached complete
 governed attribute resolution. They must not be described as the number of
 ways whose permissions alone are complete.
 
-## 10. Resolver Results
+<a id="10-resolver-results"></a>
 
-### Blockers by attribute
+## 10. 属性解決器 結果
+
+<a id="blockers-by-attribute"></a>
+
+### 阻害要因別属性
 
 | Attribute | Blocker rows |
 |---|---:|
 | `maxspeed` | 23,135 |
 | `lanes` | 22,656 |
-| permissions | 264 |
+| 通行許可 | 264 |
 | `oneway` | 1 |
 
-### Failure-code definitions and results
+<a id="failure-code-definitions-and-results"></a>
+
+### 不具合-コード定義 ・ 結果
 
 The normative requirements are in
 `05_src/traffic_simulation/specifications/02_resolver_specification.md`.
 
-| Code | Formal meaning in this run | Trigger condition | Attribute | Severity | Rows | Required response |
+| Code | Formal meaning in this run | Trigger condition | Attribute | 重大度 | Rows | Required response |
 |---|---|---|---|---|---:|---|
 | RS003 | Required attribute unresolved | A retained way lacks an adopted required value after allowed rules | `lanes`, `maxspeed` | formal blocker | 45,771 | provide governed evidence or an eligible rule |
 | RS007 | Reverse oneway transformation absent | `oneway=-1` requires a direction-safe transformation not yet implemented | `oneway` | formal blocker | 1 | implement and fixture-test the full transformation |
 | RS008 | Directional lane allocation unresolved | directional lane encoding is incomplete, conflicting, or cannot be allocated safely | `lanes`, permissions | formal blocker | 82 | specify and fixture-test allocation rules |
-| RS009 | Unsupported access semantics | a present OSM access key/value or conditional/lane form has no governed interpretation | permissions | formal blocker | 202 | add an explicit decision-table rule and fixture |
+| RS009 | Unsupported access semantics | a present OSM access key/value or conditional/lane form has no governed interpretation | 通行許可 | formal blocker | 202 | add an explicit decision-table rule and fixture |
 
 The code assignment follows `_resolver_failure()` in the v15 Resolver. RS010
 would represent a typemap-intersection error but did not occur in this run.
 
-### Rule and data exceptions
+### 規則 ・ データ例外
 
 | Attribute and state | Rows |
 |---|---:|
@@ -398,7 +434,9 @@ would represent a typemap-intersection error but did not occur in this run.
 | `oneway`, valid but unsupported | 1 |
 | `lanes`, conflict | 1 |
 
-### Permission exceptions by exact Resolver cause
+<a id="permission-exceptions-by-exact-resolver-cause"></a>
+
+### 通行許可例外別厳密属性解決器原因
 
 Each permission blocker in this run belongs to one distinct way, so `rows` and
 `distinct ways` are equal in this table.
@@ -419,18 +457,20 @@ Each permission blocker in this run belongs to one distinct way, so `rows` and
 | `hgv=destination` | 3 | 3 | freight-class policy decision required |
 | Unsupported `goods:conditional` | 1 | 1 | conditional parser and policy required |
 | `access=permit` | 1 | 1 | inclusion policy decision required |
-| Total | 264 | 264 | unresolved |
+| 合計 | 264 | 264 | 未解決 |
 
 No item in this table authorizes a one-off OSM edit. Repeated causes must become
 versioned decision-table rules and representative fixtures.
 
-### Oneway decisions
+<a id="oneway-decisions"></a>
+
+### 一方通行判断
 
 The report-local rule IDs below cross-reference the v15 configuration keys.
 They organize this evidence record; they do not create a second normative
 policy.
 
-| Report rule | Config condition | Result | Ways | Rate |
+| Report rule | Config condition | 結果 | Ways | Rate |
 |---|---|---|---:|---:|
 | ONEWAY-01 | explicit `oneway=yes/no` | adopt explicit value | 6,455 | 24.62% |
 | ONEWAY-02 | missing explicit value and `junction=roundabout` | derive `yes` before ordinary-road handling | 0 observed | 0.00% |
@@ -444,7 +484,9 @@ derived states used the ordinary-road bidirectional rule. The expected
 direction-dependent lane/access tag consistently; v15 deliberately does not
 perform a partial node-order reversal.
 
-## 11. Artifact Manifest and Publication Check
+<a id="11-artifact-manifest-and-publication-check"></a>
+
+## 11. 成果物一覧と公開確認
 
 | Artifact | SHA-256 |
 |---|---|
@@ -471,7 +513,9 @@ artifact repository or retention period is registered yet. Formal evidence
 therefore requires either durable artifact storage or a manifest-driven,
 independently tested regeneration procedure.
 
-## 12. Implementation Finding
+<a id="12-implementation-finding"></a>
+
+## 12. 実装 確認事項
 
 The first full attempt exposed quadratic XML removal: excluded ways were
 removed individually from a root containing approximately 1.7 million nodes.
@@ -485,7 +529,7 @@ Consequently this record makes no quantitative speedup claim. Fixture tests
 verify exclusion semantics, while a separate benchmark protocol would be
 needed to report wall-time or memory improvement.
 
-## 13. Limitations
+## 13. 限界
 
 1. The exact dirty source tree used by the run is not represented by one Git
    commit.
@@ -505,7 +549,7 @@ needed to report wall-time or memory improvement.
 8. Passing schemas proves artifact structure, not correctness of the unresolved
    permission semantics or eligibility for simulation.
 
-## 14. Ordered Next Actions
+## 14. 今後の作業順序
 
 1. Implement the schema and classifier defined by
    `attribute_criticality_and_evidence_specification.md`; the classification
@@ -540,7 +584,9 @@ needed to report wall-time or memory improvement.
 13. Execute formal `netconvert` only after every
     `formal_build_input_ready` requirement passes.
 
-## 15. Next-Run Comparison Baseline
+<a id="15-next-run-comparison-baseline"></a>
+
+## 15. 次回実行の比較基準
 
 Every later full run must compare its result with this baseline. A resolved
 blocker, a new blocker and a blocker whose code or resolution method changes
@@ -548,17 +594,17 @@ are different outcomes and must be reported separately.
 
 | Metric | v15 baseline | Next run | Difference |
 |---|---:|---:|---:|
-| Governed candidate ways | 26,220 | pending | pending |
-| Ways with blockers | 24,346 | pending | pending |
-| Blocker rows | 46,056 | pending | pending |
-| Bulk missing rows | 45,749 | pending | pending |
-| Rule/data exception rows | 307 | pending | pending |
-| Permission blockers | 264 | pending | pending |
-| Bidirectional lane-allocation blockers | 62 | pending | pending |
-| Unsupported `maxspeed` expressions | 22 | pending | pending |
-| Unsupported lane expressions | 19 | pending | pending |
-| Reverse oneway blockers | 1 | pending | pending |
-| Conflict rows | 1 | pending | pending |
+| Governed candidate ways | 26,220 | 未処理 | 未処理 |
+| Ways with blockers | 24,346 | 未処理 | 未処理 |
+| Blocker rows | 46,056 | 未処理 | 未処理 |
+| Bulk missing rows | 45,749 | 未処理 | 未処理 |
+| Rule/data exception rows | 307 | 未処理 | 未処理 |
+| Permission blockers | 264 | 未処理 | 未処理 |
+| Bidirectional lane-allocation blockers | 62 | 未処理 | 未処理 |
+| Unsupported `maxspeed` expressions | 22 | 未処理 | 未処理 |
+| Unsupported lane expressions | 19 | 未処理 | 未処理 |
+| Reverse oneway blockers | 1 | 未処理 | 未処理 |
+| Conflict rows | 1 | 未処理 | 未処理 |
 
 The comparison artifact must contain at least:
 

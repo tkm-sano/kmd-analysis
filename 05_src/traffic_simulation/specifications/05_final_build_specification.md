@@ -1,10 +1,14 @@
-# Final Build Specification
+<a id="final-build-specification"></a>
 
-## Boundary
+# 最終構築 仕様
+
+## 境界
 
 Final Build is a deterministic executor. It MUST NOT resolve attributes, alter permissions, guess missing connections, join unreviewed nodes or repair TLS mappings.
 
-## Required Inputs
+<a id="required-inputs"></a>
+
+## 必須入力
 
 - reviewed `.nod.xml`
 - `governed_permissions.edg.xml`
@@ -13,9 +17,11 @@ Final Build is a deterministic executor. It MUST NOT resolve attributes, alter p
 - typemap, config and all JSON manifests/audits
 - pinned SUMO 1.24.0 container digest
 
-## Normative Requirements
+<a id="normative-requirements"></a>
 
-| ID | Requirement | Failure | Test |
+## 必須要件
+
+| 識別子 | 要件 | 不具合 | 試験 |
 |---|---|---|---|
 | BLD-REQ-001 | `formal_build_input_ready` MUST be true before invocation. | BLD001 | BLD-TST-001 |
 | BLD-REQ-002 | All config IDs, versions, input hashes and schema versions MUST agree. | BLD002 | BLD-TST-002 |
@@ -29,6 +35,6 @@ Final Build is a deterministic executor. It MUST NOT resolve attributes, alter p
 | BLD-REQ-010 | Byte-identical `net.xml` is not required when pinned SUMO emits nonsemantic metadata; semantic digest and raw SHA-256 MUST both be recorded. | BLD013 | BLD-TST-010 |
 | BLD-REQ-011 | A failed build MUST publish only its failure report and immutable logs, never a success manifest or accepted network. | BLD014 | BLD-TST-011 |
 
-## Canonical Semantic Digest
+## 正本意味上のハッシュ値
 
 The semantic digest covers sorted external edge IDs, lane indices, numeric attributes at configured precision, effective permissions, connection identities, TLS IDs/link indices and phase states. It excludes generation timestamps, comments and absolute container paths. The canonicalization implementation itself is versioned and recorded.

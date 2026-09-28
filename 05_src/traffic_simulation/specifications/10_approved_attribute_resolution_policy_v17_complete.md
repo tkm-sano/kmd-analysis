@@ -1,6 +1,8 @@
-# Ota Ward SUMO Network — v17 Attribute Resolution Specification
+<a id="ota-ward-sumo-network--v17-attribute-resolution-specification"></a>
 
-## Document control
+# Ota Ward 交通シミュレーターの道路網 — v17 属性解決仕様
+
+## 文書管理
 
 - Policy ID: `ota_ward_attribute_resolution_policy_v17`
 - Document role: normative component specification
@@ -15,7 +17,9 @@
 
 This specification fixes the v17 contract for attribute resolution. It does not approve a formal SUMO network and does not assert that the described implementation, fixtures or runtime evidence already exist.
 
-## 1. Purpose
+<a id="1-purpose"></a>
+
+## 1. 目的
 
 The purpose of v17 Attribute Resolution is to transform registered OpenStreetMap source records into deterministic, auditable and profile-specific attribute artifacts before SUMO network generation.
 
@@ -32,7 +36,7 @@ The Resolver shall distinguish:
 
 The Resolver shall not silently repair unsupported explicit OSM values, edit source OSM data, edit generated `net.xml`, or use input order as an implicit conflict-resolution rule.
 
-## 2. Normative language
+## 2. 規範表現
 
 The terms **shall**, **shall not**, **must**, **must not**, **should** and **may** are normative.
 
@@ -43,7 +47,7 @@ The terms **shall**, **shall not**, **must**, **must not**, **should** and **may
 
 Examples are explanatory unless explicitly marked as fixture requirements.
 
-## 3. Authority and precedence
+## 3. 正本 ・ 優先順位
 
 The v17 authority shall consist of the following mutually consistent artifacts:
 
@@ -68,9 +72,11 @@ Precedence for correction shall be:
 
 The current-state summary document is not a second implementation contract.
 
-## 4. External basis and project-specific decisions
+<a id="4-external-basis-and-project-specific-decisions"></a>
 
-### 4.1 Externally grounded principles
+## 4. 外部根拠 ・ 本研究固有の判断
+
+### 4.1 外部根拠に基づく原則
 
 The following principles are adopted from public documentation and methodological guidance:
 
@@ -85,7 +91,9 @@ The following principles are adopted from public documentation and methodologica
 - acceptance criteria shall be defined before a model or simulation artifact is accepted for use.
 - deterministic JSON hashes require a fixed canonicalization procedure.
 
-### 4.2 Project-specific normative decisions
+<a id="42-project-specific-normative-decisions"></a>
+
+### 4.2 本研究固有の規範的な判断
 
 The following are v17 project decisions rather than direct OSM or SUMO requirements:
 
@@ -102,9 +110,13 @@ The following are v17 project decisions rather than direct OSM or SUMO requireme
 
 These decisions shall be verified by registered fixtures and independent oracles.
 
-## 5. Scope
+<a id="5-scope"></a>
 
-### 5.1 Geographic and modal scope
+## 5. 範囲
+
+<a id="51-geographic-and-modal-scope"></a>
+
+### 5.1 地理的な ・ 交通手段の範囲
 
 - Geography: Ota Ward analysis boundary with registered acquisition-envelope connectors.
 - Traffic side: Japanese left-hand traffic.
@@ -120,7 +132,9 @@ These decisions shall be verified by registered fixtures and independent oracles
 - `moped`, bicycle, pedestrian, rail and ship modes are outside the governed permission universe unless a later configuration version explicitly adds them.
 - A tag for a non-governed class shall not change the permission of a governed class.
 
-### 5.2 Managed vehicle context
+<a id="52-managed-vehicle-context"></a>
+
+### 5.2 管理対象の車両文脈
 
 The baseline managed vehicle is `managed_urban_ev_delivery_v1`.
 
@@ -139,7 +153,9 @@ Its registered properties shall be read from the vehicle registry rather than du
 
 The vehicle is not OSM `hgv` and shall not switch to `truck` within an experiment.
 
-### 5.3 Attribute scope
+<a id="53-attribute-scope"></a>
+
+### 5.3 属性範囲
 
 v17 governs at least the following attributes:
 
@@ -155,9 +171,13 @@ v17 governs at least the following attributes:
 
 Surface information may be retained as contextual evidence. It shall not remove a governed road in v17 unless an explicit, versioned exclusion rule is registered. `highway=track` remains outside scope because of road function, not because a particular surface is assumed.
 
-## 6. Core entities and record identity
+<a id="6-core-entities-and-record-identity"></a>
 
-### 6.1 Immutable source entities
+## 6. 中核対象 ・ 記録同一性
+
+<a id="61-immutable-source-entities"></a>
+
+### 6.1 変更不可出典対象
 
 The following source entities are immutable during resolution:
 
@@ -177,7 +197,9 @@ Production code shall not:
 
 Corrections to source data require a new registered source version.
 
-### 6.2 Resolver tuple
+<a id="62-resolver-tuple"></a>
+
+### 6.2 属性解決器 組
 
 A Resolver tuple shall be identified by the following dimensions, as applicable:
 
@@ -194,7 +216,9 @@ A Resolver tuple shall be identified by the following dimensions, as applicable:
 
 An attribute that is resolved before lanes or vehicle classes are expanded may use `null` for dimensions that are not applicable. `null` shall not be confused with an omitted required field.
 
-### 6.3 Deterministic record ID
+<a id="63-deterministic-record-id"></a>
+
+### 6.3 決定的な記録識別子
 
 `record_id` shall be the SHA-256 hash of the RFC 8785 canonical JSON representation of the record-key object.
 
@@ -202,7 +226,9 @@ The record-key object shall contain only identity fields. It shall not contain m
 
 A separate `classification_record_id` shall identify the value-free classification decision. Resolution shall not overwrite the classification identity.
 
-### 6.4 Minimum record structure
+<a id="64-minimum-record-structure"></a>
+
+### 6.4 最小記録構造
 
 Every v17 resolution record shall contain:
 
@@ -233,13 +259,17 @@ provenance:
 
 Fields that are not applicable shall use the Schema-defined `null` value. Required fields shall not be silently omitted.
 
-## 7. Resolution state contract
+<a id="7-resolution-state-contract"></a>
 
-### 7.1 Canonical field: `resolution_status`
+## 7. 解決状態取り決め
+
+<a id="71-canonical-field-resolution_status"></a>
+
+### 7.1 正本項目: `resolution_status`
 
 The allowed values are:
 
-| Value | Meaning |
+| Value | 意味 |
 |---|---|
 | `resolved` | One materializable effective value has been determined under the active profile. |
 | `unresolved` | Required information or an approved rule is missing. |
@@ -251,22 +281,26 @@ The allowed values are:
 
 An unregistered state is a schema error and formal blocker.
 
-### 7.2 Canonical field: `value_origin`
+<a id="72-canonical-field-value_origin"></a>
+
+### 7.2 正本項目: `value_origin`
 
 The allowed values are:
 
-| Value | Meaning | Formal eligibility |
+| Value | 意味 | Formal eligibility |
 |---|---|---:|
-| `source_explicit` | The effective value is explicitly present and directly applicable in the source. | yes |
-| `source_normalized` | An explicit source value is converted to a registered canonical equivalent without changing meaning. | yes |
-| `rule_derived` | The value is deterministically derived by a registered interpretation rule. | yes |
-| `evidence_derived` | The value is derived by an approved evidence-resolution method with traceable inputs. | yes |
-| `derived_validated_model` | The value is produced by an independently validated and approved model. | yes |
-| `model_assumed` | The value is a development assumption without formal evidential status. | no |
+| `source_explicit` | The effective value is explicitly present and directly applicable in the source. | はい |
+| `source_normalized` | An explicit source value is converted to a registered canonical equivalent without changing meaning. | はい |
+| `rule_derived` | The value is deterministically derived by a registered interpretation rule. | はい |
+| `evidence_derived` | The value is derived by an approved evidence-resolution method with traceable inputs. | はい |
+| `derived_validated_model` | The value is produced by an independently validated and approved model. | はい |
+| `model_assumed` | The value is a development assumption without formal evidential status. | いいえ |
 
 Legacy `derived_osm_rule` shall map to `rule_derived`. It shall not be emitted by a v17 writer.
 
-### 7.3 Cross-field invariants
+<a id="73-cross-field-invariants"></a>
+
+### 7.3 Cross-項目 invariants
 
 For `resolution_status=resolved`:
 
@@ -294,7 +328,7 @@ For `valid_but_unsupported`:
 - the original source key and value shall be retained;
 - the implementation shall not replace the value with a typemap or modal default.
 
-### 7.4 Legacy compatibility
+### 7.4 旧版互換性
 
 `value_state` is read compatibility only.
 
@@ -310,7 +344,9 @@ No mapping may be inferred from field names or surrounding records.
 
 ## 8. Profiles
 
-### 8.1 Structural profile
+<a id="81-structural-profile"></a>
+
+### 8.1 構造上の 設定プロファイル
 
 The structural profile exists only for:
 
@@ -333,7 +369,9 @@ It shall not be used for:
 - validation;
 - publication as a real-data formal network.
 
-### 8.2 Formal profile
+<a id="82-formal-profile"></a>
+
+### 8.2 正式 設定プロファイル
 
 The formal profile is the only profile eligible for Attribute Resolution Acceptance.
 
@@ -357,7 +395,9 @@ value_origin ∈ {
 
 `model_assumed` is prohibited.
 
-### 8.3 Registered structural assumptions
+<a id="83-registered-structural-assumptions"></a>
+
+### 8.3 登録済み構造上の assumptions
 
 At minimum, v17 may register the following structural-only assumptions:
 
@@ -390,9 +430,11 @@ An assumption shall never override:
 - an unresolved permission;
 - a bidirectional single-lane allocation.
 
-## 9. Directed Segment model
+<a id="9-directed-segment-model"></a>
 
-### 9.1 Definition
+## 9. 方向付き区間 モデル
+
+### 9.1 定義
 
 A Directed Segment is a travel-direction representation derived from an immutable source Way interval.
 
@@ -411,7 +453,7 @@ where:
 
 For a backward segment, geometry may be materialized in reverse traversal order, but the source Way and canonical interval shall remain unchanged.
 
-### 9.2 Direction meaning
+### 9.2 方向意味
 
 - `forward`: travel follows the original OSM Way node order.
 - `backward`: travel is opposite to the original OSM Way node order.
@@ -422,7 +464,9 @@ Coordinate-nearest matching shall not be formal direction evidence.
 
 Direction shall be established through exact source-node lineage.
 
-### 9.3 Base `oneway` normalization
+<a id="93-base-oneway-normalization"></a>
+
+### 9.3 Base `oneway` 正規化
 
 The following explicit values shall be supported:
 
@@ -443,7 +487,9 @@ Syntactically invalid values shall stop with `ONEWAY_VALUE_INVALID`.
 
 Valid but unsupported values shall stop with `ONEWAY_VALUE_UNSUPPORTED`.
 
-### 9.4 Directed Segment generation
+<a id="94-directed-segment-generation"></a>
+
+### 9.4 方向付き区間 生成
 
 - canonical `yes`: generate forward segments only;
 - canonical `no`: generate forward and backward segments;
@@ -451,7 +497,7 @@ Valid but unsupported values shall stop with `ONEWAY_VALUE_UNSUPPORTED`.
 
 For `oneway=-1`, production code shall not reverse the source Way and relabel it as forward.
 
-### 9.5 Missing `oneway`
+### 9.5 欠落 `oneway`
 
 When `oneway` is absent, the Resolver shall apply the registered `oneway_rule_registry` in deterministic priority order.
 
@@ -473,7 +519,9 @@ The source absence shall remain visible in audit data.
 
 If no rule matches, resolution shall stop with `ONEWAY_RULE_NOT_REGISTERED`.
 
-### 9.6 Class-specific directional exceptions
+<a id="96-class-specific-directional-exceptions"></a>
+
+### 9.6 分類-specific 方向別例外
 
 A governed class-specific directional rule shall not mutate base source direction.
 
@@ -481,7 +529,9 @@ The generated topology shall be the union of directions needed by at least one g
 
 An unsupported class-specific topology exception shall stop rather than being ignored.
 
-### 9.7 Turn-restriction relation mapping
+<a id="97-turn-restriction-relation-mapping"></a>
+
+### 9.7 右左折-制限関係要素対応付け
 
 Each original relation member shall be mapped to Directed Segment candidates using:
 
@@ -493,7 +543,7 @@ Each original relation member shall be mapped to Directed Segment candidates usi
 
 Candidate counts shall be handled as follows:
 
-| Candidate count | Result |
+| Candidate count | 結果 |
 |---:|---|
 | 1 | adopt the unique candidate |
 | 0 | stop with `RELATION_DIRECTED_MAPPING_MISSING` |
@@ -501,7 +551,9 @@ Candidate counts shall be handled as follows:
 
 Directional source tags shall remain attached to their source direction. They shall not be destructively swapped on the source Way.
 
-### 9.8 Directed Segment acceptance tests
+<a id="98-directed-segment-acceptance-tests"></a>
+
+### 9.8 方向付き区間 受入 試験
 
 Fixtures shall demonstrate:
 
@@ -515,9 +567,13 @@ Fixtures shall demonstrate:
 - no direction depends on SUMO edge-ID sign;
 - rerunning with the same input produces identical Directed Segment hashes.
 
-## 10. Directional lane resolution
+<a id="10-directional-lane-resolution"></a>
 
-### 10.1 Lane concepts
+## 10. 方向別車線解決
+
+<a id="101-lane-concepts"></a>
+
+### 10.1 車線 concepts
 
 The Resolver shall distinguish:
 
@@ -530,7 +586,9 @@ The Resolver shall distinguish:
 
 Parking lanes and shoulders shall not be counted as governed moving lanes unless a registered rule explicitly classifies them as such.
 
-### 10.2 One-way roads
+<a id="102-one-way-roads"></a>
+
+### 10.2 一方通行 roads
 
 For a one-way road:
 
@@ -609,7 +667,9 @@ If directional allocation is missing, the formal profile shall stop with:
 LANE_DIRECTIONAL_ALLOCATION_MISSING
 ```
 
-### 10.4 Structural even split
+<a id="104-structural-even-split"></a>
+
+### 10.4 構造上の even split
 
 The structural profile may apply `BIDIRECTIONAL_EVEN_LANE_EQUAL_SPLIT_V1` only when:
 
@@ -625,7 +685,9 @@ The result shall use `value_origin=model_assumed`.
 
 Odd totals, single-lane bidirectional roads and explicit asymmetric evidence shall not be structurally split by this assumption.
 
-### 10.5 Lane-vector consistency
+<a id="105-lane-vector-consistency"></a>
+
+### 10.5 車線-ベクトル整合性
 
 For each directional lane vector:
 
@@ -634,7 +696,9 @@ For each directional lane vector:
 - an omitted vector shall not be treated as an all-empty vector;
 - inconsistent vector lengths shall stop with `LANE_VECTOR_LENGTH_MISMATCH`.
 
-### 10.6 Lane orientation and SUMO mapping
+<a id="106-lane-orientation-and-sumo-mapping"></a>
+
+### 10.6 車線 orientation ・ スーモ対応付け
 
 Resolver lane positions shall be indexed left-to-right as viewed in the respective travel direction:
 
@@ -652,9 +716,13 @@ The same equation shall be used for forward and backward Directed Segments.
 
 The Resolver shall not reverse a backward OSM lane vector a second time.
 
-## 11. Speed resolution
+<a id="11-speed-resolution"></a>
 
-### 11.1 Canonical unit
+## 11. 速度 解決
+
+<a id="111-canonical-unit"></a>
+
+### 11.1 正本単位
 
 Resolver speeds shall be represented in km/h.
 
@@ -666,7 +734,9 @@ speed_mps = speed_kmh / 3.6
 
 Unit conversion shall not change `value_origin`.
 
-### 11.2 Priority of speed sources
+<a id="112-priority-of-speed-sources"></a>
+
+### 11.2 優先順位の速度出典
 
 For each Directed Segment, speed shall be resolved in the following order:
 
@@ -680,7 +750,7 @@ For each Directed Segment, speed shall be resolved in the following order:
 
 A lower-priority source shall not override a higher-priority applicable source.
 
-### 11.3 Explicit and symbolic values
+### 11.3 明示的な ・ 記号的な値
 
 Numeric source values shall be normalized with their registered unit.
 
@@ -692,13 +762,15 @@ Invalid values shall stop with `SPEED_VALUE_INVALID`.
 
 Valid but unsupported values shall stop with `SPEED_VALUE_UNSUPPORTED`.
 
-### 11.4 Directional asymmetry
+### 11.4 方向別非対称性
 
 Different valid forward and backward speeds shall remain separate.
 
 A directionally asymmetric explicit speed shall never be replaced by one symmetric structural value.
 
-### 11.5 Conditional speed
+<a id="115-conditional-speed"></a>
+
+### 11.5 条件付き速度
 
 Conditional speed shall use the same scenario interval and grammar-governance principles as conditional access.
 
@@ -708,9 +780,13 @@ If the effective speed changes within one simulation interval, the run shall eit
 
 The Resolver shall not average changing speed limits over an interval.
 
-## 12. Access-rule normalized representation
+<a id="12-access-rule-normalized-representation"></a>
 
-### 12.1 AccessRule record
+## 12. 通行-規則正規化済み表現
+
+<a id="121-accessrule-record"></a>
+
+### 12.1 AccessRule 記録
 
 Each parsed access statement shall be normalized to an `AccessRule` containing at least:
 
@@ -732,7 +808,9 @@ provenance:
 
 `source_order` may be used only where OSM semantics explicitly depend on order within the same conditional tag. It shall not resolve conflicts between independent tags or records.
 
-### 12.2 Target scope
+<a id="122-target-scope"></a>
+
+### 12.2 対象範囲
 
 Target scope shall be separate from the four semantic specificity axes.
 
@@ -756,7 +834,9 @@ A rule becomes a candidate only for tuples contained in its target scope.
 - a lane rule targets only its registered lane positions;
 - lane-local provenance shall not be copied to other lanes.
 
-### 12.3 Four semantic specificity axes
+<a id="123-four-semantic-specificity-axes"></a>
+
+### 12.3 四つの意味上の具体性軸
 
 The four axes are:
 
@@ -765,7 +845,9 @@ The four axes are:
 3. `temporal`
 4. `purpose`
 
-#### Spatial domain
+<a id="spatial-domain"></a>
+
+#### 空間的な領域
 
 Spatial domains shall be represented as explicit sets or registered predicates over the governed population.
 
@@ -780,7 +862,9 @@ network default
 
 Direction and lane are excluded from this axis because they are represented in target scope.
 
-#### Vehicle domain
+<a id="vehicle-domain"></a>
+
+#### 車両 領域
 
 Vehicle domains shall be explicit subsets of the governed vClass universe.
 
@@ -793,13 +877,17 @@ ancestry relation. When a child and parent project to the same governed vehicle
 set, the registered child remains strictly more vehicle-specific for that set.
 No ancestry may be inferred from equal projected sets or key-name similarity.
 
-#### Temporal domain
+<a id="temporal-domain"></a>
+
+#### 時間的な領域
 
 Temporal domains shall denote sets of instants over the registered scenario horizon.
 
 A conditional time range is more specific than an unconditional rule when its temporal set is a proper subset.
 
-#### Purpose domain
+<a id="purpose-domain"></a>
+
+#### 目的 領域
 
 Purpose domains shall denote registered trip-purpose and authorization states, including as applicable:
 
@@ -814,7 +902,9 @@ Purpose domains shall denote registered trip-purpose and authorization states, i
 
 The managed vehicle's trip purpose and authorization context shall be explicit in the scenario context.
 
-### 12.4 Scope-and-axis dominance
+<a id="124-scope-and-axis-dominance"></a>
+
+### 12.4 範囲-・-axis 優先関係
 
 Rule A dominates Rule B for a given tuple when all of the following hold:
 
@@ -833,7 +923,9 @@ Rules dominated by another applicable rule shall be removed.
 
 Rules not dominated by another applicable rule are maximal rules.
 
-### 12.5 Maximal-rule decision
+<a id="125-maximal-rule-decision"></a>
+
+### 12.5 極大-規則判断
 
 - one maximal rule: adopt its effect;
 - multiple maximal rules with the same effect: adopt the effect once and preserve all provenance;
@@ -841,9 +933,13 @@ Rules not dominated by another applicable rule are maximal rules.
 
 The implementation shall not choose the first, last or shortest independent rule.
 
-## 13. Access values and permissions
+<a id="13-access-values-and-permissions"></a>
 
-### 13.1 Permission output
+## 13. 通行値 ・ 通行許可
+
+<a id="131-permission-output"></a>
+
+### 13.1 通行許可 出力
 
 For every governed way/direction/lane/vehicle/scenario tuple, the Resolver shall output one of:
 
@@ -853,7 +949,9 @@ For every governed way/direction/lane/vehicle/scenario tuple, the Resolver shall
 
 The formal permission expectation shall be complete for every governed tuple.
 
-### 13.2 Core access-value semantics
+<a id="132-core-access-value-semantics"></a>
+
+### 13.2 中核通行-値意味
 
 The access-value registry shall at minimum define:
 
@@ -879,7 +977,9 @@ If required purpose or authorization context is absent, the record shall stop wi
 
 A known negative context, such as the managed vehicle explicitly having no permit, shall evaluate to denied rather than missing.
 
-### 13.3 Typemap permissions
+<a id="133-typemap-permissions"></a>
+
+### 13.3 道路種別の対応表通行許可
 
 Typemap permissions are provisional topology candidates.
 
@@ -889,9 +989,9 @@ The final permission set shall equal the Resolver expectation and remain within 
 
 The current v16 typemap-baseline intersection shall not be used as the v17 final authority.
 
-## 14. Conditional grammar and evaluation
+## 14. 条件付き文法 ・ 評価
 
-### 14.1 Supported v17 structure
+### 14.1 対応済み v17 構造
 
 A supported conditional value shall have one or more clauses:
 
@@ -905,7 +1005,9 @@ Within the same OSM conditional tag, when multiple clauses match, the last match
 
 After this intra-tag normalization, independent rules shall be combined through Section 12 rather than source order.
 
-### 14.2 Supported condition categories
+<a id="142-supported-condition-categories"></a>
+
+### 14.2 対応済み条件分類
 
 The v17 grammar may support only registered forms of:
 
@@ -925,7 +1027,9 @@ The exact grammar and token registry shall be versioned and hash-bound.
 
 School holidays, sunrise/sunset, weather, event-dependent access, free text and any unregistered token are unsupported unless explicitly added.
 
-### 14.3 Scenario context
+<a id="143-scenario-context"></a>
+
+### 14.3 想定条件 文脈
 
 The scenario context shall include all fields required by a potentially applicable registered rule, including:
 
@@ -942,7 +1046,7 @@ A required field that is absent shall not be treated as false.
 
 It shall stop with `ACCESS_CONTEXT_MISSING`.
 
-### 14.4 Within-interval changes
+### 14.4 Within-区間変化
 
 The evaluator shall identify all registered conditional boundaries within the simulation interval.
 
@@ -953,7 +1057,7 @@ If the effective permission differs between subintervals, the pipeline shall:
 
 It shall not adopt the value at only the start or end of the interval and shall not average permissions.
 
-### 14.5 Unsupported syntax
+### 14.5 未対応構文
 
 Unsupported conditional syntax shall stop with:
 
@@ -963,15 +1067,21 @@ ACCESS_CONDITIONAL_SYNTAX_UNSUPPORTED
 
 The static rule shall not be used as if the unsupported conditional tag did not exist.
 
-## 15. Evidence-based resolution
+<a id="15-evidence-based-resolution"></a>
 
-### 15.1 No generic imputation fallback
+## 15. 根拠-based 解決
+
+<a id="151-no-generic-imputation-fallback"></a>
+
+### 15.1 いいえ汎用欠損補完代替値
 
 v17 shall not contain a generic mode, median, nearest-neighbour or equal-split fallback for formal values.
 
 A missing value remains unresolved unless an approved rule or evidence method applies.
 
-### 15.2 Evidence method registry
+<a id="152-evidence-method-registry"></a>
+
+### 15.2 根拠 手法 登録簿
 
 An evidence-based method shall be enabled only through a versioned method record containing:
 
@@ -996,7 +1106,9 @@ oracle_hash:
 
 If no approved method is registered, `evidence_derived` and `derived_validated_model` shall not be emitted.
 
-### 15.3 Minimum donor eligibility
+<a id="153-minimum-donor-eligibility"></a>
+
+### 15.3 最小属性提供元対象条件
 
 A donor used for formal evidence resolution shall:
 
@@ -1012,7 +1124,9 @@ A donor used for formal evidence resolution shall:
 
 An ineligible donor shall stop the method with `EVIDENCE_DONOR_INELIGIBLE`.
 
-### 15.4 Manual evidence
+<a id="154-manual-evidence"></a>
+
+### 15.4 手動根拠
 
 Human review may register evidence, but shall not directly edit a production output.
 
@@ -1028,15 +1142,21 @@ The evidence shall be stored in a separate, versioned evidence record with:
 
 The Resolver shall consume the registered evidence and regenerate the complete artifact.
 
-## 16. Exclusions and population accounting
+<a id="16-exclusions-and-population-accounting"></a>
 
-### 16.1 Exclusion is not a resolution status
+## 16. 除外項目 ・ 母集団会計
+
+<a id="161-exclusion-is-not-a-resolution-status"></a>
+
+### 16.1 除外 is not a 解決状態
 
 `out_of_scope` shall not be added to `resolution_status`.
 
 A record excluded from the governed population shall appear in a separate exclusion manifest.
 
-### 16.2 Exclusion manifest
+<a id="162-exclusion-manifest"></a>
+
+### 16.2 除外成果物一覧
 
 Each exclusion entry shall contain:
 
@@ -1054,7 +1174,7 @@ population_version:
 
 An unregistered exclusion rule shall stop with `EXCLUSION_RULE_UNREGISTERED`.
 
-### 16.3 Population equation
+### 16.3 母集団式
 
 Every run shall report:
 
@@ -1074,7 +1194,9 @@ A population-definition change requires a new population or configuration versio
 
 The accepted v16 population shall not be retroactively changed.
 
-### 16.4 Materialization omission
+<a id="164-materialization-omission"></a>
+
+### 16.4 具体化欠落
 
 A Directed Segment whose formally resolved permission set is empty for all lanes may be omitted from SUMO materialization only as a recorded `materialization_omission`.
 
@@ -1099,9 +1221,13 @@ The original Resolver tuples remain in permission-completeness denominators.
 
 An empty resolved permission set shall be distinguished from an unresolved permission.
 
-## 17. Provenance, canonicalization and manifests
+<a id="17-provenance-canonicalization-and-manifests"></a>
 
-### 17.1 Provenance
+## 17. 出典・来歴, 正規化 ・ 成果物一覧
+
+<a id="171-provenance"></a>
+
+### 17.1 出典・来歴
 
 Each effective value shall be traceable to one or more of:
 
@@ -1114,7 +1240,9 @@ Each effective value shall be traceable to one or more of:
 
 Provenance shall identify the processing activity and the software/configuration version that produced the record.
 
-### 17.2 Canonical JSON
+<a id="172-canonical-json"></a>
+
+### 17.2 正本ジェイソン形式
 
 JSON artifacts used for identity or acceptance hashes shall be canonicalized using RFC 8785 JCS before SHA-256 calculation.
 
@@ -1122,7 +1250,9 @@ Duplicate JSON object keys shall be rejected.
 
 Hash-bearing fields shall not be included in the bytes from which their own hash is calculated unless a separate envelope format is defined.
 
-### 17.3 Environment/build manifest
+<a id="173-environmentbuild-manifest"></a>
+
+### 17.3 Environment/build 成果物一覧
 
 Every registered run shall record at least:
 
@@ -1144,15 +1274,19 @@ Every registered run shall record at least:
 - output hashes;
 - random seeds, including an explicit statement when no random process is used.
 
-### 17.4 Determinism
+### 17.4 決定性
 
 Two clean runs with the same registered inputs, environment and command shall produce identical canonical artifact hashes.
 
 A mismatch shall block acceptance and require a recorded investigation.
 
-## 18. Validation and acceptance
+<a id="18-validation-and-acceptance"></a>
 
-### 18.1 Validation layers
+## 18. 検証 ・ 受入
+
+<a id="181-validation-layers"></a>
+
+### 18.1 検証 層
 
 The pipeline shall distinguish:
 
@@ -1168,7 +1302,9 @@ The pipeline shall distinguish:
 
 Passing one layer shall not imply passing another.
 
-### 18.2 Attribute Resolution Acceptance scope
+<a id="182-attribute-resolution-acceptance-scope"></a>
+
+### 18.2 属性解決の受入 範囲
 
 Attribute Resolution Acceptance applies only to the formal Resolver artifact.
 
@@ -1182,7 +1318,9 @@ It does not approve:
 - traffic-model validity;
 - downstream experiments.
 
-### 18.3 Required acceptance conditions
+<a id="183-required-acceptance-conditions"></a>
+
+### 18.3 必須受入条件
 
 The gate shall pass only when all of the following are true:
 
@@ -1214,7 +1352,7 @@ In addition:
 - structural and formal artifacts are stored separately;
 - direct edits to source OSM or generated `net.xml` are absent.
 
-### 18.4 Definition of `complete`
+### 18.4 定義の `complete`
 
 `complete=true` means:
 
@@ -1226,11 +1364,13 @@ In addition:
 
 Execution over every input is not sufficient if non-resolved records remain.
 
-### 18.5 Gate result
+<a id="185-gate-result"></a>
+
+### 18.5 判定基準結果
 
 The acceptance artifact shall use:
 
-| Result | Meaning |
+| 結果 | 意味 |
 |---|---|
 | `passed` | Gate was executed and all conditions passed. |
 | `failed` | Gate was executed and at least one condition failed. |
@@ -1238,7 +1378,9 @@ The acceptance artifact shall use:
 
 Missing evidence shall not be reported as `passed`.
 
-### 18.6 Acceptance artifact
+<a id="186-acceptance-artifact"></a>
+
+### 18.6 受入成果物
 
 The gate shall emit:
 
@@ -1266,9 +1408,11 @@ accepted_by:
 accepted_at:
 ```
 
-## 19. Independent fixtures and oracles
+<a id="19-independent-fixtures-and-oracles"></a>
 
-### 19.1 Independence
+## 19. 独立検証用データ ・ oracles
+
+### 19.1 独立性
 
 Production code shall not generate expected oracle values.
 
@@ -1281,7 +1425,9 @@ Fixture authors and reviewers shall record:
 - independent reviewer;
 - review timestamp.
 
-### 19.2 Required case families
+<a id="192-required-case-families"></a>
+
+### 19.2 必須事例分類群
 
 Fixtures shall include at least:
 
@@ -1313,7 +1459,9 @@ Fixtures shall include at least:
 - legacy state migration;
 - unregistered state/rule/stop-code rejection.
 
-### 19.3 Boundary and metamorphic tests
+<a id="193-boundary-and-metamorphic-tests"></a>
+
+### 19.3 境界 ・ 変換関係に基づく試験
 
 The fixture suite shall include:
 
@@ -1331,7 +1479,9 @@ Changing independent record order shall not change the result.
 
 Changing clause order within a single conditional tag may change the result only where OSM last-match semantics apply.
 
-## 20. Stop-code registry
+<a id="20-stop-code-registry"></a>
+
+## 20. 停止-コード登録簿
 
 The v17 registry shall include at least:
 
@@ -1377,7 +1527,9 @@ Each code shall define:
 - permitted remediation;
 - fixture ID.
 
-## 21. Required implementation order
+<a id="21-required-implementation-order"></a>
+
+## 21. 必須実装順序
 
 The following dependency order is normative for reaching v17 acceptance:
 
@@ -1399,15 +1551,17 @@ Phase 13 resolve stop records through registered rules/evidence and rerun
 Phase 14 execute Attribute Resolution Acceptance
 ```
 
-### 21.1 Phase completion conditions
+<a id="211-phase-completion-conditions"></a>
 
-#### Phase 0
+### 21.1 工程完了条件
+
+#### 工程 0
 
 - v16 artifacts and hashes are registered;
 - v16 outputs are write-protected by workflow policy;
 - v17 output paths are separate.
 
-#### Phase 1
+#### 工程 1
 
 - document, configuration, Schema and registries use the same enums and rules;
 - no unresolved normative wording remains in the six core areas:
@@ -1418,24 +1572,24 @@ Phase 14 execute Attribute Resolution Acceptance
   - acceptance gate;
   - implementation order.
 
-#### Phase 2
+#### 工程 2
 
 - fixtures cover all registered stop codes;
 - independent oracle review is recorded.
 
-#### Phase 3
+#### 工程 3
 
 - v17 writers emit no `value_state`;
 - legacy read compatibility passes;
 - cross-field invariants pass.
 
-#### Phase 4
+#### 工程 4
 
 - source Way immutability passes;
 - `oneway=-1` integrated fixture passes;
 - relation mapping fixtures pass.
 
-#### Phase 5
+#### 工程 5
 
 - lane-count and vector consistency pass;
 - formal and structural outputs differ only through registered profile rules.
@@ -1448,36 +1602,36 @@ Phase 14 execute Attribute Resolution Acceptance
 - access results are independent of independent-record order;
 - conflicting maximal rules stop.
 
-#### Phase 9
+#### 工程 9
 
 - all symbolic/default speed values reference a versioned rule;
 - directionally asymmetric speeds are preserved.
 
-#### Phase 10
+#### 工程 10
 
 - no evidence-derived value is emitted before method approval;
 - donor eligibility and validation evidence are registered.
 
-#### Phase 11
+#### 工程 11
 
 - Schema, semantic, oracle and metamorphic tests pass.
 
-#### Phase 12
+#### 工程 12
 
 - all input records are accounted for;
 - structural/formal outputs and manifests are separate;
 - full-run hashes are recorded.
 
-#### Phase 13
+#### 工程 13
 
 - new exceptions are added first to decision tables and small fixtures;
 - no direct one-off source/output edit is used.
 
-#### Phase 14
+#### 工程 14
 
 - every Section 18 acceptance condition passes.
 
-### 21.2 Permitted parallel development
+### 21.2 許可する並行開発
 
 After Phase 2, the following may proceed on small fixtures in parallel:
 
@@ -1494,7 +1648,7 @@ This parallel work shall not:
 - produce publishable travel-time or capacity results;
 - transfer calibration from structural to formal networks.
 
-## 22. Transition from v16
+## 22. 移行からの v16
 
 The transition shall preserve the following facts:
 
@@ -1518,9 +1672,13 @@ The following implementation results shall not be inferred from specification co
 - independent validation;
 - downstream experiment readiness.
 
-## 23. Source references
+<a id="23-source-references"></a>
 
-### OSM semantics
+## 23. 出典 参照資料
+
+<a id="osm-semantics"></a>
+
+### オープンストリートマップ 意味
 
 - OpenStreetMap Wiki, `oneway=-1`  
   https://wiki.openstreetmap.org/wiki/Tag%3Aoneway%3D-1
@@ -1540,7 +1698,9 @@ The following implementation results shall not be inferred from specification co
 - OpenStreetMap Wiki, conditional restrictions and conflict evaluation  
   https://wiki.openstreetmap.org/wiki/Conditional_restrictions
 
-### SUMO network generation
+<a id="sumo-network-generation"></a>
+
+### 交通シミュレーターの道路網 生成
 
 - SUMO Documentation, OpenStreetMap import  
   https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html
@@ -1551,7 +1711,9 @@ The following implementation results shall not be inferred from specification co
 - SUMO Documentation, netconvert  
   https://sumo.dlr.de/docs/netconvert.html
 
-### Modeling, simulation and validation
+<a id="modeling-simulation-and-validation"></a>
+
+### モデル化, シミュレーション ・ 検証
 
 - FHWA Traffic Analysis Toolbox Volume III, Error Checking  
   https://ops.fhwa.dot.gov/publications/fhwahop18036/chapter4.htm
@@ -1565,7 +1727,9 @@ The following implementation results shall not be inferred from specification co
 - NASA-HDBK-7009B, Implementation Guide  
   https://standards.nasa.gov/standard/nasa/nasa-hdbk-7009
 
-### Provenance, Schema and reproducibility
+<a id="provenance-schema-and-reproducibility"></a>
+
+### 出典・来歴, データ構造 ・ 再現性
 
 - W3C PROV-O  
   https://www.w3.org/TR/prov-o/
@@ -1582,7 +1746,7 @@ The following implementation results shall not be inferred from specification co
 - Workflow Run RO-Crate  
   https://www.researchobject.org/workflow-run-crate/
 
-## 24. Approval checklist
+## 24. 承認確認項目
 
 The repository baseline approval record is:
 

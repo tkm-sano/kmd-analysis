@@ -2,7 +2,7 @@
 
 このディレクトリには、東京交通シミュレーションで使用する第三者データを、どのように取得・検証・加工したかを記録する。
 
-機械可読な出典情報の正本は [`../traffic_simulation_sources.csv`](../traffic_simulation_sources.csv) とする。Markdownの取得記録は、実行コマンド、判断事項、検証結果、失敗内容、復旧手順を補足するものであり、出典台帳の行や改変していない生データの代わりにはならない。
+機械可読な出典情報の正本は [`../traffic_simulation_sources.csv`](../traffic_simulation_sources.csv) とする。軽量マークアップ文書の取得記録は、実行コマンド、判断事項、検証結果、失敗内容、復旧手順を補足するものであり、出典台帳の行や改変していない生データの代わりにはならない。
 
 ## データ取得ごとに必要な記録
 
@@ -23,10 +23,10 @@
 
 ## 取得記録一覧
 
-- [`20260717_jartic_traffic_volume_acquisition.md`](20260717_jartic_traffic_volume_acquisition.md)：JARTICの1時間交通量の取得、正規化、検証記録。
+- [`20260717_jartic_traffic_volume_acquisition.md`](20260717_jartic_traffic_volume_acquisition.md)：日本道路交通情報センターの1時間交通量の取得、正規化、検証記録。
 - [`20260717_mlit_n03_2026_tokyo_acquisition.md`](20260717_mlit_n03_2026_tokyo_acquisition.md)：国土数値情報N03東京都版の取得、原本検証、大田区境界生成、固定設定、恣意性の統制記録。
-- [`20260717_osm_ota_ward_acquisition.md`](20260717_osm_ota_ward_acquisition.md)：日付固定Geofabrik関東PBFの取得、大田区BBOX抽出、構造分析、実行結果、恣意性、既知問題の記録。
-- [`20260718_ota_baseline_open_statistics_acquisition.md`](20260718_ota_baseline_open_statistics_acquisition.md)：未最適化・古典最適化・Aer QAOAの共通需要入力に用いる人口メッシュ、大田区人口、全国人口、全国宅配便取扱実績の取得・検証記録。
-- [`20260718_sumo_tokyo_motorized_typemap_design.md`](20260718_sumo_tokyo_motorized_typemap_design.md)：SUMO 1.24.0標準typemapを基準とした東京自動車系typemapの設計、作成、検証、未実施事項をまとめた単一の時系列作業記録。
+- [`20260717_osm_ota_ward_acquisition.md`](20260717_osm_ota_ward_acquisition.md)：日付固定Geofabrik関東PBFの取得、大田区境界矩形抽出、構造分析、実行結果、恣意性、既知問題の記録。
+- [`20260718_ota_baseline_open_statistics_acquisition.md`](20260718_ota_baseline_open_statistics_acquisition.md)：未最適化・古典最適化・Aer 量子近似最適化アルゴリズムの共通需要入力に用いる人口メッシュ、大田区人口、全国人口、全国宅配便取扱実績の取得・検証記録。
+- [`20260718_sumo_tokyo_motorized_typemap_design.md`](20260718_sumo_tokyo_motorized_typemap_design.md)：スーモ 1.24.0標準道路種別の対応表を基準とした東京自動車系道路種別の対応表の設計、作成、検証、未実施事項をまとめた単一の時系列作業記録。
 
 可視化の生成・閲覧・解釈・表示上の恣意性・不具合履歴は、[`../../../05_src/traffic_simulation/visualization/README.md`](../../../05_src/traffic_simulation/visualization/README.md)を参照する。
