@@ -157,7 +157,7 @@ def classify(path: str, important: dict[str, dict], text: str) -> tuple[str, str
     if path in important:
         item = important[path]
         return item["role"], item["lifecycle"], False
-    if path == "RESEARCH_OVERVIEW.md":
+    if path == "01_research_design/RESEARCH_OVERVIEW.md":
         return "PRIMARY_ENTRY", "CURRENT", False
     name = Path(path).name.lower()
     generated = (
@@ -172,8 +172,8 @@ def classify(path: str, important: dict[str, dict], text: str) -> tuple[str, str
         return "HISTORICAL_REFERENCE", "HISTORICAL", False
     if path in {
         "README_v2.md",
-        "RESEARCH_STATUS.md",
-        "2-3_20260823_PARTIAL_交通量較正.md",
+        "00_project_management/RESEARCH_STATUS.md",
+        "00_project_management/history/2-3_20260823_PARTIAL_交通量較正.md",
         "05_src/traffic_simulation/specifications/14_formal_network_completion_policy_v17.md",
     }:
         return "HISTORICAL_REFERENCE", "SUPERSEDED", False
@@ -214,7 +214,7 @@ def write_inventory(index: dict) -> None:
         validator_dependency = any(
             "validat" in source.lower() or "/test" in source.lower() for source in ref_by
         )
-        fixed_name = path.name.lower() == "readme.md" or path_rel == "RESEARCH_OVERVIEW.md"
+        fixed_name = path.name.lower() == "readme.md" or path_rel == "01_research_design/RESEARCH_OVERVIEW.md"
         safe_to_rename = bool(
             lifecycle == "CURRENT"
             and not generated

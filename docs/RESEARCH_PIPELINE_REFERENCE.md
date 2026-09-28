@@ -4,7 +4,7 @@
 
 ## 2026-09-27 調査B完了：手法比較の規模は実行不可
 
-[最小構成の電気自動車配送経路問題量子資源静的監査](reproducibility/outputs/traffic_simulation/r24_minimal_evrp_quantum_resource_audit/20260927_v1/MINIMAL_EVRP_QUANTUM_RESOURCE_AUDIT.md)を完了。現行直接表現表現はn5/m1でも34変数・471coupler・raw256GiBで、凍結計算方式上限256メビバイトを超える。METHOD_COMPARISON_SCALE_AUTHORITY=実行不可、選定nなし、S0_QUANTUM_PROTOCOL_RESOURCE_GATE=実行不可。n3/n4は検証・pilot/referenceのまま。MODEL_VALIDATION_SCALE_AUTHORITY=固定済み、想定条件評価の規模は一部固定済み、本実験の第0段階は未許可。
+[最小構成の電気自動車配送経路問題量子資源静的監査](../reproducibility/outputs/traffic_simulation/r24_minimal_evrp_quantum_resource_audit/20260927_v1/MINIMAL_EVRP_QUANTUM_RESOURCE_AUDIT.md)を完了。現行直接表現表現はn5/m1でも34変数・471coupler・raw256GiBで、凍結計算方式上限256メビバイトを超える。METHOD_COMPARISON_SCALE_AUTHORITY=実行不可、選定nなし、S0_QUANTUM_PROTOCOL_RESOURCE_GATE=実行不可。n3/n4は検証・pilot/referenceのまま。MODEL_VALIDATION_SCALE_AUTHORITY=固定済み、想定条件評価の規模は一部固定済み、本実験の第0段階は未許可。
 
 次は物理問題を変えない代替encoding/decompositionの静的比較。調査Aは別途未実行。凍結予備試験/科学成果物/台帳を保持し、新規最適化・Aer・量子近似最適化アルゴリズム・最適化処理評価・回路・回測定は全て0。以下の評価規模再整理段落は調査B前の履歴であり、手法状態と次作業は本段落が優先する。
 
@@ -12,7 +12,7 @@
 
 ## 2026-09-27（評価規模再整理）：小規模は検証・予備試験の範囲
 
-[評価規模正本](reproducibility/outputs/traffic_simulation/r24_evaluation_scale_authority/20260927_v1/EVALUATION_SCALE_AUTHORITY.md)を現在の規模選定正本とする。既存N002/N003/N004はMODEL_VALIDATION_SCALEとして保持し、N004はS0_PILOT、N003はS0_METHOD_IMPLEMENTATION_REFERENCEへ役割を限定する。既存予備試験 第0段階の物理・比較取り決め・成果物は不変。以下の旧S0_SCALE_AUTHORITY=固定済みはsmall-入力 範囲の値であり、本番評価規模を意味しない。
+[評価規模正本](../reproducibility/outputs/traffic_simulation/r24_evaluation_scale_authority/20260927_v1/EVALUATION_SCALE_AUTHORITY.md)を現在の規模選定正本とする。既存N002/N003/N004はMODEL_VALIDATION_SCALEとして保持し、N004はS0_PILOT、N003はS0_METHOD_IMPLEMENTATION_REFERENCEへ役割を限定する。既存予備試験 第0段階の物理・比較取り決め・成果物は不変。以下の旧S0_SCALE_AUTHORITY=固定済みはsmall-入力 範囲の値であり、本番評価規模を意味しない。
 
 MODEL_VALIDATION_SCALE_AUTHORITY=固定済み、METHOD_COMPARISON_SCALE_AUTHORITY / SCENARIO_EVALUATION_SCALE_AUTHORITY / 本番のS0_SCALE_AUTHORITY=PARTIALLY_FROZEN。候補は既存n20/R01の無作為・集積型親標本の入れ子構成の先頭部分、n=3,4,5,8,10,15,20（3/4診断、5以上本番候補）。最終二規模は未選定で、同じnを強制しない。量子現行直接表現表現はn5/m1からメモリー下限で不適合、想定条件側は古典EVRP/Batteryの新規模証拠が必要。
 
@@ -22,7 +22,7 @@ MODEL_VALIDATION_SCALE_AUTHORITY=固定済み、METHOD_COMPARISON_SCALE_AUTHORIT
 
 ## 2026-09-27：第0段階物理条件・共通取り決めの部分固定
 
-[第0段階 正本](reproducibility/outputs/traffic_simulation/r24_s0_baseline_authority/20260926_v1/S0_BASELINE_AUTHORITY.md)を更新し、S0_PHYSICAL_AUTHORITY / S0_CLASSICAL_PROTOCOL / 共通条件取り決め / 評価指標を固定済み、S0_QUANTUM_PROTOCOLを実行不可、S0_BASELINE_AUTHORITYを一部固定済みとした。想定条件側は既存n4・最大3台の構造予備試験、手法比較は既存n3・1台で、同一規模とは扱わない。人口39,930顧客への代表性は主張しない。
+[第0段階 正本](../reproducibility/outputs/traffic_simulation/r24_s0_baseline_authority/20260926_v1/S0_BASELINE_AUTHORITY.md)を更新し、S0_PHYSICAL_AUTHORITY / S0_CLASSICAL_PROTOCOL / 共通条件取り決め / 評価指標を固定済み、S0_QUANTUM_PROTOCOLを実行不可、S0_BASELINE_AUTHORITYを一部固定済みとした。想定条件側は既存n4・最大3台の構造予備試験、手法比較は既存n3・1台で、同一規模とは扱わない。人口39,930顧客への代表性は主張しない。
 
 現行はmodel20 kWh・初期100%・最低10%・r=.127 kWh/km。全単純な配送経路の消費上限がusable18 kWhを下回るため、両層で充電設備訪問判断を除外し充電無効を固定した。実車充電出力は未解決のまま、この限定第0段階の阻害要因にはしない。経済正本は別拡張として未着手。
 
@@ -34,7 +34,7 @@ MODEL_VALIDATION_SCALE_AUTHORITY=固定済み、METHOD_COMPARISON_SCALE_AUTHORIT
 
 時間窓付き配送経路問題結果と最小構成の電気自動車配送経路問題設計正本は固定済みである。既存経路電気自動車回帰および制御10kWでの充電あり検証は合格、最小構成の電気自動車配送経路問題 古典計算 モデルもN002 WIDEの検証範囲で固定済みである。10kWはCONTROLLED_VALIDATION_CONDITIONであり実車充電性能ではない。実車の実効充電性能はUNRESOLVED/DEFERRED、第0段階は未実行である。
 
-今後の順序・状態の正本は[研究段階ロードマップ](01_research_design/RESEARCH_STAGE_ROADMAP.md)である。電池根拠・条件固定 → 第0段階 → 同一条件の[Classical/Quantum EVRP比較](01_research_design/CLASSICAL_QUANTUM_EVRP_COMPARISON_PLAN.md) → 第0段階評価/固定 → [劣化・技術向上条件の比較](01_research_design/BATTERY_SCENARIO_COMPARISON_PLAN.md) → 電池差と手法差の分離 → 感度分析 → [量子化学/材料R&Dと二系統の統合](01_research_design/BATTERY_QUANTUM_CHEMISTRY_RESEARCH_PIPELINE.md)へ進む。容量/健全度/技術容量・感度設計正本は固定済みである。直近の次milestoneは完全な第0段階条件正本の定義であり、第0段階実行ではない。実車充電出力は未解決である。
+今後の順序・状態の正本は[研究段階ロードマップ](../01_research_design/RESEARCH_STAGE_ROADMAP.md)である。電池根拠・条件固定 → 第0段階 → 同一条件の[Classical/Quantum EVRP比較](../01_research_design/CLASSICAL_QUANTUM_EVRP_COMPARISON_PLAN.md) → 第0段階評価/固定 → [劣化・技術向上条件の比較](../01_research_design/BATTERY_SCENARIO_COMPARISON_PLAN.md) → 電池差と手法差の分離 → 感度分析 → [量子化学/材料R&Dと二系統の統合](../01_research_design/BATTERY_QUANTUM_CHEMISTRY_RESEARCH_PIPELINE.md)へ進む。容量/健全度/技術容量・感度設計正本は固定済みである。直近の次milestoneは完全な第0段階条件正本の定義であり、第0段階実行ではない。実車充電出力は未解決である。
 
 以下の日付付き全体計画・状況は各時点の記録を保持する。最小構成の電気自動車配送経路問題以降の順序・状態が異なる場合は上記全体の研究段階計画を優先する。過去の配送需要充足率目的・未配送許容等を現在の凍結最小構成の電気自動車配送経路問題へ導入しない。凍結科学成果物を変更せず、本改訂で新しい科学実行は行わない。
 
@@ -47,7 +47,7 @@ MODEL_VALIDATION_SCALE_AUTHORITY=固定済み、METHOD_COMPARISON_SCALE_AUTHORIT
 
 状態: `CURRENT PIPELINE REFERENCE`
 
-本書は、各研究工程の「実行 → 成果物 → 正本 → 検証 → 受入 → 次工程」を追跡する現行運用リファレンスである。研究の問い、概念枠組み、段階 1–11のロードマップ、マイルストーンは[研究概要・ロードマップ](RESEARCH_OVERVIEW.md)を参照する。本書は各決定記録、仕様、設定、データ構造、実行、受入成果物への索引であり、それらを置き換える第二の正本ではない。記載と正本成果物が矛盾する場合は、各節の「正本・信頼源」に示す成果物を優先する。
+本書は、各研究工程の「実行 → 成果物 → 正本 → 検証 → 受入 → 次工程」を追跡する現行運用リファレンスである。研究の問い、概念枠組み、段階 1–11のロードマップ、マイルストーンは[研究概要・ロードマップ](../01_research_design/RESEARCH_OVERVIEW.md)を参照する。本書は各決定記録、仕様、設定、データ構造、実行、受入成果物への索引であり、それらを置き換える第二の正本ではない。記載と正本成果物が矛盾する場合は、各節の「正本・信頼源」に示す成果物を優先する。
 
 説明、見出し、表項目は日本語で記載する。実在するコマンド、ファイル名、項目名、識別子、`DONE`や`NOT IMPLEMENTED`などの機械可読な状態値は、リポジトリ内の正本表記を保持する。
 
@@ -321,9 +321,9 @@ $y_i$ は顧客 $i$ の配送完了を表す0/1変数とする。分母は同じ
 
 | 入力 | 役割 | 正本パス | 状態 | 注記 |
 |---|---|---|---|---|
-| 出典台帳 | source identity / hash | [traffic_simulation_sources.csv](03_data/metadata/traffic_simulation_sources.csv) | `CURRENT` | 出典ごとの用途・制限を記録。 |
-| 来歴方針 | raw/derived provenance | [data_provenance.md](03_data/metadata/data_provenance.md) | `CURRENT` | 未加工原本の一部は再配布されない。 |
-| 取得記録 | source-specific acquisition evidence | [acquisition README](03_data/metadata/acquisition/README.md) | `CURRENT` | 個別記録から取得条件を追跡する。 |
+| 出典台帳 | source identity / hash | [traffic_simulation_sources.csv](../03_data/metadata/traffic_simulation_sources.csv) | `CURRENT` | 出典ごとの用途・制限を記録。 |
+| 来歴方針 | raw/derived provenance | [data_provenance.md](../03_data/metadata/data_provenance.md) | `CURRENT` | 未加工原本の一部は再配布されない。 |
+| 取得記録 | source-specific acquisition evidence | [acquisition README](../03_data/metadata/acquisition/README.md) | `CURRENT` | 個別記録から取得条件を追跡する。 |
 
 ### コマンド
 
@@ -336,8 +336,8 @@ $y_i$ は顧客 $i$ の配送完了を表す0/1変数とする。分母は同じ
 
 | 構成要素 | パス | 役割 |
 |---|---|---|
-| 基準値利用処理 | [prepare_baseline_demand.py](05_src/traffic_simulation/demand/prepare_baseline_demand.py) | 登録出典を基準 demandへ変換。 |
-| ネットワーク出典処理 | [traffic simulation README](05_src/traffic_simulation/README.md) | 出典道路表現の処理入口説明。 |
+| 基準値利用処理 | [prepare_baseline_demand.py](../05_src/traffic_simulation/demand/prepare_baseline_demand.py) | 登録出典を基準 demandへ変換。 |
+| ネットワーク出典処理 | [traffic simulation README](../05_src/traffic_simulation/README.md) | 出典道路表現の処理入口説明。 |
 
 ### 出力
 
@@ -398,9 +398,9 @@ $y_i$ は顧客 $i$ の配送完了を表す0/1変数とする。分母は同じ
 
 | 入力 | 役割 | 正本パス | 状態 | 注記 |
 |---|---|---|---|---|
-| 需要仕様 | definition / boundary | [baseline demand and comparator](05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md) | `CURRENT_NORMATIVE` | 実注文・停止ではない。 |
-| 需要設定 | parameters / output paths | [baseline_demand.yml](reproducibility/config/traffic_simulation/baseline_demand.yml) | `CURRENT` | `target_days: 1`、単位は`parcel_equivalent`。 |
-| 出典台帳 | governed inputs | [traffic_simulation_sources.csv](03_data/metadata/traffic_simulation_sources.csv) | `CURRENT` | 設定内出典 識別子を解決。 |
+| 需要仕様 | definition / boundary | [baseline demand and comparator](../05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md) | `CURRENT_NORMATIVE` | 実注文・停止ではない。 |
+| 需要設定 | parameters / output paths | [baseline_demand.yml](../reproducibility/config/traffic_simulation/baseline_demand.yml) | `CURRENT` | `target_days: 1`、単位は`parcel_equivalent`。 |
+| 出典台帳 | governed inputs | [traffic_simulation_sources.csv](../03_data/metadata/traffic_simulation_sources.csv) | `CURRENT` | 設定内出典 識別子を解決。 |
 
 ### コマンド
 
@@ -415,8 +415,8 @@ $y_i$ は顧客 $i$ の配送完了を表す0/1変数とする。分母は同じ
 
 | 構成要素 | パス | 役割 |
 |---|---|---|
-| 基準値生成器 | [prepare_baseline_demand.py](05_src/traffic_simulation/demand/prepare_baseline_demand.py) | メッシュ人口・荷物換算単位配賦。固定済み 正本 出力のためコマンド操作 構築からは実行しない。 |
-| 単体試験 | [test_prepare_baseline_demand.py](05_src/traffic_simulation/validation/test_prepare_baseline_demand.py) | source/config/配賦不変条件を検証。 |
+| 基準値生成器 | [prepare_baseline_demand.py](../05_src/traffic_simulation/demand/prepare_baseline_demand.py) | メッシュ人口・荷物換算単位配賦。固定済み 正本 出力のためコマンド操作 構築からは実行しない。 |
+| 単体試験 | [test_prepare_baseline_demand.py](../05_src/traffic_simulation/validation/test_prepare_baseline_demand.py) | source/config/配賦不変条件を検証。 |
 
 ### 出力
 
@@ -492,7 +492,7 @@ quality まとめに出典 ハッシュ値、設定 ハッシュ値、出力 ハ
 
 | 構成要素 | パス | 役割 |
 |---|---|---|
-| コマンド操作安全制御 | [demand.py](05_src/research_cli/demand.py) | 生成器不在時に構築を拒否。 |
+| コマンド操作安全制御 | [demand.py](../05_src/research_cli/demand.py) | 生成器不在時に構築を拒否。 |
 | 現行生成実装 | — | `NOT AVAILABLE` in current checkout |
 
 ### 出力
@@ -554,11 +554,11 @@ local 実行 summariesに乱数の種、設定 ハッシュ値、入力 成果�
 
 | 入力 | 役割 | 正本パス | 状態 | 注記 |
 |---|---|---|---|---|
-| 現行正本参照先 | authority resolver | [current_network_completion_authority_v17.yml](reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml) | `CURRENT` | 唯一の現行 道路網入口。 |
-| 判断 | method adoption | [phase13 Formal Completion Decision](reproducibility/config/traffic_simulation/decisions/phase13_formal_completion_three_tier_v1.yml) | `CURRENT` | Decision ID `DEC-P13-FORMAL-COMPLETION-THREE-TIER-001`。 |
-| 規範仕様 | Three-tier policy | [formal completion specification](05_src/traffic_simulation/specifications/20260903_20260903_formal_completion_three_tier_policy_v17.md) | `CURRENT_NORMATIVE` | strict/hybridを現行へ混ぜない。 |
-| パイプライン仕様 | ordered stages/gates | [network completion pipeline specification](05_src/traffic_simulation/specifications/20260903_20260903_network_completion_pipeline_v17.md) | `CURRENT_NORMATIVE` | SOURCE→…→ACCEPTANCE。 |
-| Registry・schema | machine-readable contract | [Three-tier registry](reproducibility/config/traffic_simulation/formal_completion_three_tier_registry_v17.yml) | `CURRENT` | policy/record schemasは正本から解決。 |
+| 現行正本参照先 | authority resolver | [current_network_completion_authority_v17.yml](../reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml) | `CURRENT` | 唯一の現行 道路網入口。 |
+| 判断 | method adoption | [phase13 Formal Completion Decision](../reproducibility/config/traffic_simulation/decisions/phase13_formal_completion_three_tier_v1.yml) | `CURRENT` | Decision ID `DEC-P13-FORMAL-COMPLETION-THREE-TIER-001`。 |
+| 規範仕様 | Three-tier policy | [formal completion specification](../05_src/traffic_simulation/specifications/20260903_20260903_formal_completion_three_tier_policy_v17.md) | `CURRENT_NORMATIVE` | strict/hybridを現行へ混ぜない。 |
+| パイプライン仕様 | ordered stages/gates | [network completion pipeline specification](../05_src/traffic_simulation/specifications/20260903_20260903_network_completion_pipeline_v17.md) | `CURRENT_NORMATIVE` | SOURCE→…→ACCEPTANCE。 |
+| Registry・schema | machine-readable contract | [Three-tier registry](../reproducibility/config/traffic_simulation/formal_completion_three_tier_registry_v17.yml) | `CURRENT` | policy/record schemasは正本から解決。 |
 
 ### コマンド
 
@@ -574,23 +574,23 @@ local 実行 summariesに乱数の種、設定 ハッシュ値、入力 成果�
 
 | 構成要素 | パス | 役割 |
 |---|---|---|
-| Three-階層補完 | [execute_three_tier_completion_streaming.py](05_src/traffic_simulation/network/execute_three_tier_completion_streaming.py) | 受入済み 構築 出典・来歴上の完了判定 実装。 |
-| Registry validator | [validate_formal_completion_three_tier_registry.py](05_src/traffic_simulation/network/validate_formal_completion_three_tier_registry.py) | policy/registry/schema整合性。 |
-| パイプライン検証器 | [validate_network_completion_pipeline.py](05_src/traffic_simulation/network/validate_network_completion_pipeline.py) | stage ordering/gate contract。 |
-| 正本検証器 | [validate_current_network_completion_authority.py](05_src/traffic_simulation/network/validate_current_network_completion_authority.py) | pointer/hash/acceptance integrity。 |
+| Three-階層補完 | [execute_three_tier_completion_streaming.py](../05_src/traffic_simulation/network/execute_three_tier_completion_streaming.py) | 受入済み 構築 出典・来歴上の完了判定 実装。 |
+| Registry validator | [validate_formal_completion_three_tier_registry.py](../05_src/traffic_simulation/network/validate_formal_completion_three_tier_registry.py) | policy/registry/schema整合性。 |
+| パイプライン検証器 | [validate_network_completion_pipeline.py](../05_src/traffic_simulation/network/validate_network_completion_pipeline.py) | stage ordering/gate contract。 |
+| 正本検証器 | [validate_current_network_completion_authority.py](../05_src/traffic_simulation/network/validate_current_network_completion_authority.py) | pointer/hash/acceptance integrity。 |
 
 ### 出力
 
 | 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
 |---|---|---|---|
 | 受入済み実行 | current run directory | `reproducibility/outputs/.../phase13_20260903_three_tier_completion/run_2` | `ACCEPTED` |
-| 受入済み道路網 | 交通シミュレーターの道路網 | [three_tier.net.xml](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/three_tier.net.xml) | `ACCEPTED` |
-| ネットワークグラフ規模 | 経路計算 グラフのノード / directed 道路区間数とスーモ 車線数 | [network_acceptance.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/network_acceptance.json) `/validation/counts` | `ACCEPTED` |
-| 来歴集計 | DIRECT/INFERRED/FALLBACK counts | [quality_accounting.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_1/quality_accounting.json) | `CURRENT REFERENCE FROM AUTHORITY` |
+| 受入済み道路網 | 交通シミュレーターの道路網 | [three_tier.net.xml](../reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/three_tier.net.xml) | `ACCEPTED` |
+| ネットワークグラフ規模 | 経路計算 グラフのノード / directed 道路区間数とスーモ 車線数 | [network_acceptance.json](../reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/network_acceptance.json) `/validation/counts` | `ACCEPTED` |
+| 来歴集計 | DIRECT/INFERRED/FALLBACK counts | [quality_accounting.json](../reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_1/quality_accounting.json) | `CURRENT REFERENCE FROM AUTHORITY` |
 
 ### 正本・信頼源
 
-[現行 道路網 正本](reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml)が決定記録、仕様、registry/schema、受入済み run/network/acceptance、ハッシュ値を解決する。階層型混合方式は`SUPERSEDED`、厳密方式 v17と旧実行は`HISTORICAL`。
+[現行 道路網 正本](../reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml)が決定記録、仕様、registry/schema、受入済み run/network/acceptance、ハッシュ値を解決する。階層型混合方式は`SUPERSEDED`、厳密方式 v17と旧実行は`HISTORICAL`。
 
 ### 検証
 
@@ -644,8 +644,8 @@ scoped 配送地点数、交通シミュレーターの道路網、配送 車両
 | 入力 | 役割 | 正本パス | 状態 | 注記 |
 |---|---|---|---|---|
 | 対象範囲内配送先 | mapping targets | `03_data/processed/traffic_simulation/demand/household_parcel_v1/pipelines_v1/building_delivery_stops_scoped.csv` | `AVAILABLE LOCALLY` | 39,956 stops。 |
-| 受入済み道路網 | permitted edges | [three_tier.net.xml](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/three_tier.net.xml) | `ACCEPTED` | authority-bound SHA。 |
-| 到達可能道路区間 上書き指定 | limited mapping fix | [routeable_edge_overrides.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/routeable_edge_overrides.json) | `CURRENT RUN ARTIFACT` | recorded 17-failed-OD cohort fix。 |
+| 受入済み道路網 | permitted edges | [three_tier.net.xml](../reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/three_tier.net.xml) | `ACCEPTED` | authority-bound SHA。 |
+| 到達可能道路区間 上書き指定 | limited mapping fix | [routeable_edge_overrides.json](../reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/routeable_edge_overrides.json) | `CURRENT RUN ARTIFACT` | recorded 17-failed-OD cohort fix。 |
 
 ### コマンド
 
@@ -659,19 +659,19 @@ scoped 配送地点数、交通シミュレーターの道路網、配送 車両
 
 | 構成要素 | パス | 役割 |
 |---|---|---|
-| 対応付け受入生成器 | [accept_three_tier_network_run.py](05_src/traffic_simulation/network/accept_three_tier_network_run.py) | 対応付け 成果物と受入 会計を生成した固定実行 スクリプト。日常実行しない。 |
-| 到達可能性修正検証器 | [validate_three_tier_routeability_fix.py](05_src/traffic_simulation/network/validate_three_tier_routeability_fix.py) | 対応付け fix後の到達可能性を検証。 |
+| 対応付け受入生成器 | [accept_three_tier_network_run.py](../05_src/traffic_simulation/network/accept_three_tier_network_run.py) | 対応付け 成果物と受入 会計を生成した固定実行 スクリプト。日常実行しない。 |
+| 到達可能性修正検証器 | [validate_three_tier_routeability_fix.py](../05_src/traffic_simulation/network/validate_three_tier_routeability_fix.py) | 対応付け fix後の到達可能性を検証。 |
 
 ### 出力
 
 | 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
 |---|---|---|---|
-| 配送先対応付け | 配送地点→道路区間対応 | [request_stop_mapping.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/request_stop_mapping.json) | `ACCEPTED` |
+| 配送先対応付け | 配送地点→道路区間対応 | [request_stop_mapping.json](../reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/request_stop_mapping.json) | `ACCEPTED` |
 | 対応付け集計 | mapped/unmapped/distance | network acceptance JSON `/mapping` | `ACCEPTED` |
 
 ### 正本・信頼源
 
-現行の正本の受入済み 実行と[network_acceptance.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/network_acceptance.json)。
+現行の正本の受入済み 実行と[network_acceptance.json](../reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/network_acceptance.json)。
 
 ### 検証
 
@@ -720,8 +720,8 @@ Routing 問題例で使用するStop subsetと到達不能組の方針。
 
 | 入力 | 役割 | 正本パス | 状態 | 注記 |
 |---|---|---|---|---|
-| 正本参照先 | accepted run resolution | [current authority](reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml) | `CURRENT` | run/network/SHAを固定。 |
-| 受入成果物 | formal gate state | [network_acceptance.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/network_acceptance.json) | `ACCEPTED` | `FORMAL_NETWORK_ACCEPTED=true`。 |
+| 正本参照先 | accepted run resolution | [current authority](../reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml) | `CURRENT` | run/network/SHAを固定。 |
+| 受入成果物 | formal gate state | [network_acceptance.json](../reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/network_acceptance.json) | `ACCEPTED` | `FORMAL_NETWORK_ACCEPTED=true`。 |
 
 ### コマンド
 
@@ -734,8 +734,8 @@ Routing 問題例で使用するStop subsetと到達不能組の方針。
 
 | 構成要素 | パス | 役割 |
 |---|---|---|
-| 正本検証器 | [validate_current_network_completion_authority.py](05_src/traffic_simulation/network/validate_current_network_completion_authority.py) | 保存先、ハッシュ値、フラグ整合性。 |
-| Portal・network validator | [validate_research_map_portal.py](05_src/traffic_simulation/network/validate_research_map_portal.py) | 受入済み 評価指標と現行 display整合性。 |
+| 正本検証器 | [validate_current_network_completion_authority.py](../05_src/traffic_simulation/network/validate_current_network_completion_authority.py) | 保存先、ハッシュ値、フラグ整合性。 |
+| Portal・network validator | [validate_research_map_portal.py](../05_src/traffic_simulation/network/validate_research_map_portal.py) | 受入済み 評価指標と現行 display整合性。 |
 
 ### 出力
 
@@ -796,9 +796,9 @@ Routing 問題例で使用するStop subsetと到達不能組の方針。
 
 | 入力 | 役割 | 正本パス | 状態 | 注記 |
 |---|---|---|---|---|
-| 受入済み道路網 | routing graph | [three_tier.net.xml](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/three_tier.net.xml) | `READY` | SHA-bound。 |
-| ネットワークグラフ規模 | graph traversal substrate scale | [network_acceptance.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/network_acceptance.json) `/validation/counts` | `READY` | Nodes 70,050 / directed edges 147,168 / lanes 154,728。 |
-| 受入済み対応付け | route endpoints | [request_stop_mapping.json](reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/request_stop_mapping.json) | `READY` | full Stops mapping。 |
+| 受入済み道路網 | routing graph | [three_tier.net.xml](../reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/three_tier.net.xml) | `READY` | SHA-bound。 |
+| ネットワークグラフ規模 | graph traversal substrate scale | [network_acceptance.json](../reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/network_acceptance.json) `/validation/counts` | `READY` | Nodes 70,050 / directed edges 147,168 / lanes 154,728。 |
+| 受入済み対応付け | route endpoints | [request_stop_mapping.json](../reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/request_stop_mapping.json) | `READY` | full Stops mapping。 |
 | リクエスト | demand records | `03_data/processed/traffic_simulation/demand/household_parcel_v1/pipelines_v1/daily_requests.csv` | `READY LOCALLY` | 問題例 範囲未選択。 |
 | 配送先 | candidate delivery endpoints | `03_data/processed/traffic_simulation/demand/household_parcel_v1/pipelines_v1/building_delivery_stops_scoped.csv` | `READY LOCALLY` | 39,956 all-pairsを前提にしない。 |
 
@@ -816,7 +816,7 @@ Routing 問題例で使用するStop subsetと到達不能組の方針。
 
 | 構成要素 | パス | 役割 |
 |---|---|---|
-| コマンド操作準備状況制御 | [routing.py](05_src/research_cli/routing.py) | input/gate表示、未実装構築拒否。 |
+| コマンド操作準備状況制御 | [routing.py](../05_src/research_cli/routing.py) | input/gate表示、未実装構築拒否。 |
 | 本番経路計算 実行器 | — | `NOT IMPLEMENTED` |
 | 本番経路計算 検証器 | — | `NOT IMPLEMENTED` |
 
@@ -831,7 +831,7 @@ Routing 問題例で使用するStop subsetと到達不能組の方針。
 
 ### 正本・信頼源
 
-現行 stage/decision 境界は[Research Overview 段階 1](RESEARCH_OVERVIEW.md#stage-1--routing-baseline-next)と[ポータル マップ](reproducibility/config/research_portal/research_map_v1.yml)。正式運用 経路計算 正本は`NOT AVAILABLE`。
+現行 stage/decision 境界は[Research Overview 段階 1](../01_research_design/RESEARCH_OVERVIEW.md#stage-1--routing-baseline-next)と[ポータル マップ](../reproducibility/config/research_portal/research_map_v1.yml)。正式運用 経路計算 正本は`NOT AVAILABLE`。
 
 ### 検証
 
@@ -882,8 +882,8 @@ routing scope、depot、delivery vehicle class、routing cost definition、unrea
 |---|---|---|---|---|
 | リクエスト・配送先 | common demand | current local paths | `AVAILABLE LOCALLY` | 層化・重み付き非復元抽出を採択済み。層と配賦の詳細は未固定。 |
 | 経路計算基準 | matrices/feasibility | 保存先未定 | `NOT AVAILABLE` | blocking input。 |
-| 比較手順 | design constraint | [optimization_comparison_protocol.md](05_src/traffic_simulation/optimization_comparison_protocol.md) | `CURRENT DESIGN` | common inputs/evaluatorを要求。 |
-| 電気自動車プロファイル | candidate fixed model assumption | [managed_urban_ev_delivery_v1.yml](reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml) | `CURRENT MODEL ASSUMPTION` | fleet/battery 問題例 受入ではない。 |
+| 比較手順 | design constraint | [optimization_comparison_protocol.md](../05_src/traffic_simulation/optimization_comparison_protocol.md) | `CURRENT DESIGN` | common inputs/evaluatorを要求。 |
+| 電気自動車プロファイル | candidate fixed model assumption | [managed_urban_ev_delivery_v1.yml](../reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml) | `CURRENT MODEL ASSUMPTION` | fleet/battery 問題例 受入ではない。 |
 
 ### コマンド
 
@@ -897,7 +897,7 @@ routing scope、depot、delivery vehicle class、routing cost definition、unrea
 
 | 構成要素 | パス | 役割 |
 |---|---|---|
-| コマンド操作安全制御 | [instance.py](05_src/research_cli/instance.py) | 現行 absenceを明示。 |
+| コマンド操作安全制御 | [instance.py](../05_src/research_cli/instance.py) | 現行 absenceを明示。 |
 | `common_delivery_instance.py` | `05_src/optimization/common_delivery_instance.py` | `NOT AVAILABLE` in current checkout |
 
 ### 出力
@@ -959,7 +959,7 @@ accepted Common Delivery Instance、fixed formulation/objective/constraints、so
 | 入力 | 役割 | 正本パス | 状態 | 注記 |
 |---|---|---|---|---|
 | 共通配送インスタンス | solver input | 保存先未定 | `NOT AVAILABLE` | blocking。 |
-| 比較手順 | fairness boundary | [optimization_comparison_protocol.md](05_src/traffic_simulation/optimization_comparison_protocol.md) | `CURRENT DESIGN` | 求解器実装ではない。 |
+| 比較手順 | fairness boundary | [optimization_comparison_protocol.md](../05_src/traffic_simulation/optimization_comparison_protocol.md) | `CURRENT DESIGN` | 求解器実装ではない。 |
 
 ### コマンド
 
@@ -974,7 +974,7 @@ accepted Common Delivery Instance、fixed formulation/objective/constraints、so
 
 | 構成要素 | パス | 役割 |
 |---|---|---|
-| コマンド操作安全制御 | [optimization.py](05_src/research_cli/optimization.py) | 欠落 正式運用 求解器を明示。 |
+| コマンド操作安全制御 | [optimization.py](../05_src/research_cli/optimization.py) | 欠落 正式運用 求解器を明示。 |
 | 本番定式化・求解器 | — | `NOT IMPLEMENTED` |
 
 ### 出力
@@ -1039,7 +1039,7 @@ Reduced 保存先では受入済み 経路計算の基準のcomplete-directed-�
 |---|---|---|---|---|
 | Reduced input | variable/data source | Routing Baseline-derived R20 input | `ACCEPTED SCOPED` | depot + ordered customers、complete directed reachability、travel time seconds。 |
 | 古典参照解 | equivalence reference | `r20_route_ordering/core.py` | `VERIFIED SCOPED` | 全`n!` permutation、固定済み 配送拠点、同一移動時間 行列。 |
-| 比較手順 | fairness/output accounting | [optimization_comparison_protocol.md](05_src/traffic_simulation/optimization_comparison_protocol.md) | `CURRENT DESIGN` | 制約なし二値二次最適化仕様ではない。 |
+| 比較手順 | fairness/output accounting | [optimization_comparison_protocol.md](../05_src/traffic_simulation/optimization_comparison_protocol.md) | `CURRENT DESIGN` | 制約なし二値二次最適化仕様ではない。 |
 
 ### コマンド
 
@@ -1051,21 +1051,21 @@ Reduced 保存先では受入済み 経路計算の基準のcomplete-directed-�
 
 | 構成要素 | パス | 役割 |
 |---|---|---|
-| Reduced formulation/builder | [r20_route_ordering](05_src/traffic_simulation/r20_route_ordering/) | row-major `n x n` position QUBO、exact reference、adapter、penalty analysis。 |
-| Stage-level validator | [r21_qubo_validation](05_src/traffic_simulation/r21_qubo_validation/) | frozen input/provenance、exact QUBO enumeration、V1--V8、artifact/manifest。 |
-| Regression tests | [validation](05_src/traffic_simulation/validation/) | R20/R21 exact, adapter, penalty, artifact tests。 |
+| Reduced formulation/builder | [r20_route_ordering](../05_src/traffic_simulation/r20_route_ordering) | row-major `n x n` position QUBO、exact reference、adapter、penalty analysis。 |
+| Stage-level validator | [r21_qubo_validation](../05_src/traffic_simulation/r21_qubo_validation) | frozen input/provenance、exact QUBO enumeration、V1--V8、artifact/manifest。 |
+| Regression tests | [validation](../05_src/traffic_simulation/validation) | R20/R21 exact, adapter, penalty, artifact tests。 |
 
 ### 出力
 
 | 出力 | 意味 | 正本パス・パターン | 現在の利用可否 |
 |---|---|---|---|
-| 制約なし二値二次最適化定式化 | variables/objective/penalties/scaling | [R20 specification](05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md) | `FORMULATION_VERIFIED / SCOPED` |
-| encoder・decoder contract | instance↔binary mapping | [r20_route_ordering](05_src/traffic_simulation/r20_route_ordering/) | `VERIFIED SCOPED` |
+| 制約なし二値二次最適化定式化 | variables/objective/penalties/scaling | [R20 specification](../05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md) | `FORMULATION_VERIFIED / SCOPED` |
+| encoder・decoder contract | instance↔binary mapping | [r20_route_ordering](../05_src/traffic_simulation/r20_route_ordering) | `VERIFIED SCOPED` |
 | 等価性報告 | QUBO vs exact classical | `reproducibility/outputs/traffic_simulation/r21_qubo_validation/20260910_formal_reduced_v4/` | `PASS`; 生成済み 出力はGit-ignore 方針に従う。 |
 
 ### 正本・信頼源
 
-[R20 仕様](05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md)、[電気自動車配送経路問題 実行 計画](EVRP_EXECUTION_PLAN.md)、R21 正式 成果物 v4。R21 検証-結果 SHA-256は`c4baeead366ea2f750cd4ecdd18acc507746dfecd744d0803ed74b5bbb46049f`、成果物一覧 SHA-256は`9a6fc459ef1f5cbf1824b9b0197a2f56f9d67cc88de18bd6bcd8ff7f575691a2`。
+[R20 仕様](../05_src/traffic_simulation/specifications/R20_QAOA_SUBPROBLEM_SPEC.md)、[電気自動車配送経路問題 実行 計画](../00_project_management/EVRP_EXECUTION_PLAN.md)、R21 正式 成果物 v4。R21 検証-結果 SHA-256は`c4baeead366ea2f750cd4ecdd18acc507746dfecd744d0803ed74b5bbb46049f`、成果物一覧 SHA-256は`9a6fc459ef1f5cbf1824b9b0197a2f56f9d67cc88de18bd6bcd8ff7f575691a2`。
 
 ### 検証
 
@@ -1105,7 +1105,7 @@ R22で検証済みされた同一縮約した Ising ハミルトニアンを中�
 
 ### 現在の状態
 
-Current reduced R23/R24 status and accepted evidence: see [R23_STATUS.md](05_src/traffic_simulation/R23_STATUS.md). Full-EVRP and quantum hardware remain separate scopes.
+Current reduced R23/R24 status and accepted evidence: see [R23_STATUS.md](../05_src/traffic_simulation/R23_STATUS.md). Full-EVRP and quantum hardware remain separate scopes.
 
 ### 開始条件
 
@@ -1117,7 +1117,7 @@ R22 縮約した 合格 artifact/hash、固定済み Ising coefficients、厳密
 |---|---|---|---|---|
 | 検証済みIsing | quantum problem | `reproducibility/outputs/traffic_simulation/r22_ising_conversion/20260910_formal_reduced_v1/` | `PASS / SCOPED` | R22 results/manifest ハッシュ値を固定。 |
 | Exact reference | performance reference | R21/R22 artifacts | `AVAILABLE SCOPED` | ground energy、all optimal states/routes、ties。 |
-| 比較手順 | fairness | [optimization_comparison_protocol.md](05_src/traffic_simulation/optimization_comparison_protocol.md) | `CURRENT DESIGN` | Aer結果は量子優位性を示さない。 |
+| 比較手順 | fairness | [optimization_comparison_protocol.md](../05_src/traffic_simulation/optimization_comparison_protocol.md) | `CURRENT DESIGN` | Aer結果は量子優位性を示さない。 |
 
 ### コマンド
 
@@ -1130,8 +1130,8 @@ R22 縮約した 合格 artifact/hash、固定済み Ising coefficients、厳密
 
 | 構成要素 | パス | 役割 |
 |---|---|---|
-| Reduced QAOA/Aer infrastructure | [r23_qaoa_aer](05_src/traffic_simulation/r23_qaoa_aer/) | R22 loader、SparsePauliOp mapping、QAOAAnsatz、COBYLA、exact Statevector metrics、artifact schema。 |
-| Tests | [test_r23_qaoa_aer.py](05_src/traffic_simulation/validation/test_r23_qaoa_aer.py) | endianness、offset、probability/route metrics、guards、determinism。 |
+| Reduced QAOA/Aer infrastructure | [r23_qaoa_aer](../05_src/traffic_simulation/r23_qaoa_aer) | R22 loader、SparsePauliOp mapping、QAOAAnsatz、COBYLA、exact Statevector metrics、artifact schema。 |
+| Tests | [test_r23_qaoa_aer.py](../05_src/traffic_simulation/validation/test_r23_qaoa_aer.py) | endianness、offset、probability/route metrics、guards、determinism。 |
 
 ### 出力
 
@@ -1143,7 +1143,7 @@ R22 縮約した 合格 artifact/hash、固定済み Ising coefficients、厳密
 
 ### 正本・信頼源
 
-[電気自動車配送経路問題 実行 計画](EVRP_EXECUTION_PLAN.md)のR23 縮約した governance、governance 変更記録 `5f88e6ae242357c784b246d7740a006f483e7798`、R22 正式 成果物、R23 source/tests。現行 result/benchmark 正本は[R23_STATUS.md](05_src/traffic_simulation/R23_STATUS.md)を参照する。
+[電気自動車配送経路問題 実行 計画](../00_project_management/EVRP_EXECUTION_PLAN.md)のR23 縮約した governance、governance 変更記録 `5f88e6ae242357c784b246d7740a006f483e7798`、R22 正式 成果物、R23 source/tests。現行 result/benchmark 正本は[R23_STATUS.md](../05_src/traffic_simulation/R23_STATUS.md)を参照する。
 
 ### 検証
 
@@ -1193,9 +1193,9 @@ accepted baseline、evidence-backed parameter sources、scenario scope/year、tr
 
 | 入力 | 役割 | 正本パス | 状態 | 注記 |
 |---|---|---|---|---|
-| 基準需要設定 | baseline comparator | [baseline_demand.yml](reproducibility/config/traffic_simulation/baseline_demand.yml) | `CURRENT` | 将来 valuesで上書きしない。 |
-| 電気自動車車両設定プロファイル | fixed model assumption | [managed_urban_ev_delivery_v1.yml](reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml) | `CURRENT ASSUMPTION` | measured real 車両ではない。 |
-| 将来想定条件 段階計画 | planned dimensions/gates | [Research Overview Stage 5](RESEARCH_OVERVIEW.md) | `PLANNED` | year/rates未固定。 |
+| 基準需要設定 | baseline comparator | [baseline_demand.yml](../reproducibility/config/traffic_simulation/baseline_demand.yml) | `CURRENT` | 将来 valuesで上書きしない。 |
+| 電気自動車車両設定プロファイル | fixed model assumption | [managed_urban_ev_delivery_v1.yml](../reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml) | `CURRENT ASSUMPTION` | measured real 車両ではない。 |
+| 将来想定条件 段階計画 | planned dimensions/gates | [Research Overview Stage 5](../01_research_design/RESEARCH_OVERVIEW.md) | `PLANNED` | year/rates未固定。 |
 
 ### コマンド
 
@@ -1209,7 +1209,7 @@ accepted baseline、evidence-backed parameter sources、scenario scope/year、tr
 
 | 構成要素 | パス | 役割 |
 |---|---|---|
-| EV profile schema・config | [managed vehicle profile schema](reproducibility/config/traffic_simulation/schemas/managed_vehicle_profile.schema.json) | current vehicle assumption contract。 |
+| EV profile schema・config | [managed vehicle profile schema](../reproducibility/config/traffic_simulation/schemas/managed_vehicle_profile.schema.json) | current vehicle assumption contract。 |
 | 将来需要・想定条件生成器 | — | `NOT IMPLEMENTED` |
 
 ### 出力
@@ -1287,7 +1287,7 @@ accepted network、Common Instance、validated plans、accepted scenarios/traffi
 
 | 構成要素 | パス | 役割 |
 |---|---|---|
-| コマンド操作安全制御 | [simulation.py](05_src/research_cli/simulation.py) | 配送 simulation不在を明示。 |
+| コマンド操作安全制御 | [simulation.py](../05_src/research_cli/simulation.py) | 配送 simulation不在を明示。 |
 | 本番配送実行器・検証器 | — | `NOT IMPLEMENTED` |
 
 ### 出力
@@ -1300,7 +1300,7 @@ accepted network、Common Instance、validated plans、accepted scenarios/traffi
 
 ### 正本・信頼源
 
-段階 6 段階計画と[V&V 参照](05_src/traffic_simulation/20260730_20260903_simulation_model_development_and_vv.md)。正式運用 実行 正本なし。
+段階 6 段階計画と[V&V 参照](../05_src/traffic_simulation/20260730_20260903_simulation_model_development_and_vv.md)。正式運用 実行 正本なし。
 
 ### 検証
 
@@ -1348,8 +1348,8 @@ validated Delivery Simulation、fixed denominator population/time horizon/exclus
 
 | 入力 | 役割 | 正本パス | 状態 | 注記 |
 |---|---|---|---|---|
-| 指標設計 | primary formula | [Research Overview Stage 7](RESEARCH_OVERVIEW.md) | `CURRENT RESEARCH DESIGN / NEEDS FORMALIZATION` | denominator scope unresolved。 |
-| 基準需要仕様 | demand/P_eq semantics | [baseline demand and comparator](05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md) | `CURRENT_NORMATIVE` | 今後の主指標は本書最新採択方針のDFR_orders。旧代理指標の来歴を参照。 |
+| 指標設計 | primary formula | [Research Overview Stage 7](../01_research_design/RESEARCH_OVERVIEW.md) | `CURRENT RESEARCH DESIGN / NEEDS FORMALIZATION` | denominator scope unresolved。 |
+| 基準需要仕様 | demand/P_eq semantics | [baseline demand and comparator](../05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md) | `CURRENT_NORMATIVE` | 今後の主指標は本書最新採択方針のDFR_orders。旧代理指標の来歴を参照。 |
 | シミュレーション結果 | evaluator input | 保存先未定 | `NOT AVAILABLE` | blocking。 |
 
 主要な研究設計：
@@ -1372,7 +1372,7 @@ DFR_demand = sum(q_i * y_i) / sum(q_i)  # 荷物量を導入する場合
 
 | 構成要素 | パス | 役割 |
 |---|---|---|
-| コマンド操作安全制御 | [evaluate.py](05_src/research_cli/evaluate.py) | 欠落 評価器を明示。 |
+| コマンド操作安全制御 | [evaluate.py](../05_src/research_cli/evaluate.py) | 欠落 評価器を明示。 |
 | 正本評価器 | — | `NOT IMPLEMENTED` |
 
 ### 出力
@@ -1433,8 +1433,8 @@ denominator scope、time horizon、unreachable/excluded demand treatment、prima
 
 | 入力 | 役割 | 正本パス | 状態 | 注記 |
 |---|---|---|---|---|
-| 解釈根拠 | claims/sources/boundaries | [fleet_capacity_interpretation_v1.yml](reproducibility/evidence/fleet_capacity_interpretation_v1.yml) | `CURRENT` | 道路網 正本とは分離。 |
-| エビデンスデータ構造 | status/traceability contract | [fleet_capacity_interpretation_v1.schema.json](reproducibility/evidence/fleet_capacity_interpretation_v1.schema.json) | `CURRENT` | 出典の確認 debtを保持。 |
+| 解釈根拠 | claims/sources/boundaries | [fleet_capacity_interpretation_v1.yml](../reproducibility/evidence/fleet_capacity_interpretation_v1.yml) | `CURRENT` | 道路網 正本とは分離。 |
+| エビデンスデータ構造 | status/traceability contract | [fleet_capacity_interpretation_v1.schema.json](../reproducibility/evidence/fleet_capacity_interpretation_v1.schema.json) | `CURRENT` | 出典の確認 debtを保持。 |
 | 充足率結果 | study-specific direct metric | 保存先未定 | `NOT AVAILABLE` | 結果 解釈は未実行。 |
 
 解釈経路：
@@ -1460,8 +1460,8 @@ denominator scope、time horizon、unreachable/excluded demand treatment、prima
 
 | 構成要素 | パス | 役割 |
 |---|---|---|
-| エビデンス検証器 | [validate_fleet_interpretation_evidence.py](05_src/traffic_simulation/validation/validate_fleet_interpretation_evidence.py) | schema/status/source refs/index separation検証。 |
-| ポータル状態・画面 | [serve.py](research_portal/serve.py) | 成果物からnode/panel/traceability生成。 |
+| エビデンス検証器 | [validate_fleet_interpretation_evidence.py](../05_src/traffic_simulation/validation/validate_fleet_interpretation_evidence.py) | schema/status/source refs/index separation検証。 |
+| ポータル状態・画面 | [serve.py](../research_portal/serve.py) | 成果物からnode/panel/traceability生成。 |
 
 ### 出力
 
@@ -1522,7 +1522,7 @@ accepted baseline results、uncertain parameters/ranges、rerun/comparison proto
 
 | 入力 | 役割 | 正本パス | 状態 | 注記 |
 |---|---|---|---|---|
-| 段階 10ロードマップ | required domains/gate | [Research Overview Stage 10](RESEARCH_OVERVIEW.md) | `PLANNED` | routing/network/demand/battery/optimization/QUBO/scenarioを横断。 |
+| 段階 10ロードマップ | required domains/gate | [Research Overview Stage 10](../01_research_design/RESEARCH_OVERVIEW.md) | `PLANNED` | routing/network/demand/battery/optimization/QUBO/scenarioを横断。 |
 | 受入済み基準結果 | comparison anchor | 保存先未定 | `NOT AVAILABLE` | blocking。 |
 | 感度分析登録簿・手順 | preregistered ranges | 保存先未定 | `NOT AVAILABLE` | blocking。 |
 
@@ -1598,9 +1598,9 @@ robustness 分類と不具合 boundariesをPublication / Reproducibility 固定�
 
 | 入力 | 役割 | 正本パス | 状態 | 注記 |
 |---|---|---|---|---|
-| リポジトリ索引 | current cross-reference | [research_repository_index_v17.yml](reproducibility/indexes/research_repository_index_v17.yml) | `CURRENT` | 最終 固定 成果物一覧ではない。 |
-| 現行正本 | accepted network pointer | [current network authority](reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml) | `CURRENT` | 道路網 範囲のみ。 |
-| ロードマップ | Stage 11 gate | [Research Overview](RESEARCH_OVERVIEW.md) | `CURRENT` | 最終 入力未完了。 |
+| リポジトリ索引 | current cross-reference | [research_repository_index_v17.yml](../reproducibility/indexes/research_repository_index_v17.yml) | `CURRENT` | 最終 固定 成果物一覧ではない。 |
+| 現行正本 | accepted network pointer | [current network authority](../reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml) | `CURRENT` | 道路網 範囲のみ。 |
+| ロードマップ | Stage 11 gate | [Research Overview](../01_research_design/RESEARCH_OVERVIEW.md) | `CURRENT` | 最終 入力未完了。 |
 
 ### コマンド
 
@@ -1614,8 +1614,8 @@ robustness 分類と不具合 boundariesをPublication / Reproducibility 固定�
 
 | 構成要素 | パス | 役割 |
 |---|---|---|
-| リポジトリ索引検証器 | [validate_research_repository_index.py](05_src/traffic_simulation/network/validate_research_repository_index.py) | current pointers existence。 |
-| Markdown・link validator | [validate_current_markdown_index.py](05_src/traffic_simulation/network/validate_current_markdown_index.py) | current metadata/link/inventory。 |
+| リポジトリ索引検証器 | [validate_research_repository_index.py](../05_src/traffic_simulation/network/validate_research_repository_index.py) | current pointers existence。 |
+| Markdown・link validator | [validate_current_markdown_index.py](../05_src/traffic_simulation/network/validate_current_markdown_index.py) | current metadata/link/inventory。 |
 | 最終凍結・公開版 実行器 | — | `NOT IMPLEMENTED` |
 
 ### 出力
@@ -1830,6 +1830,6 @@ publication、submission、archive release。
 
 ## 文書の役割分担
 
-`RESEARCH_OVERVIEW.md` = 研究概要・ロードマップ
+`01_research_design/RESEARCH_OVERVIEW.md` = 研究概要・ロードマップ
 
-`RESEARCH_PIPELINE_REFERENCE.md` = 現行パイプラインの実行・正本・検証リファレンス
+`docs/RESEARCH_PIPELINE_REFERENCE.md` = 現行パイプラインの実行・正本・検証リファレンス

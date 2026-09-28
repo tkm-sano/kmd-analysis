@@ -2,7 +2,7 @@
 
 > **範囲 note (2026-09-10):** 本文の道路属性・較正問題は、基準日 `2026-07-31` における
 > 道路網-workstreamの履歴・未解消事項である。現行のnetwork/Routing 基準受入と、
-> `EVRP_EXECUTION_PLAN.md` が管理する縮約した R20--R23 量子計算 分岐の状況を上書きしない。
+> `00_project_management/EVRP_EXECUTION_PLAN.md` が管理する縮約した R20--R23 量子計算 分岐の状況を上書きしない。
 > 縮約問題の系統はR21/R22 合格、R23 ACCEPTED_WITH_LIMITATIONSだが、完全な電気自動車配送経路問題の下流比較はなおblockedである。
 
 > **文書状態**: 現状説明・問題追跡文書
@@ -553,7 +553,7 @@ set、信号 junction/TLS リンク 確認、最終 `net.xml`、スーモ 1.24.0
 | 内容 | 正本・証拠 |
 |---|---|
 | 研究工程と利用可否 | `reproducibility/config/traffic_simulation/research_stage.yml` |
-| 閲覧用進捗 | `RESEARCH_STATUS.md` |
+| 閲覧用進捗 | `00_project_management/RESEARCH_STATUS.md` |
 | 要件実装状態 | `reproducibility/config/traffic_simulation/requirements_traceability.yml` |
 | 確定済み実装・検証 | `05_src/traffic_simulation/confirmed_implementation_and_verification.md` |
 | 確定済み道路母集団 | `05_src/traffic_simulation/confirmed_network_population_and_relation_closure.md` |

@@ -9,7 +9,7 @@ from openpyxl.worksheet.pagebreak import Break
 
 ROOT=Path(__file__).resolve().parents[1]
 TARGET=ROOT/'research_model_3page_ja_revised.xlsx'
-PLAN='EVRP_EXECUTION_PLAN.md'
+PLAN='00_project_management/EVRP_EXECUTION_PLAN.md'
 CFG='reproducibility/config/traffic_simulation/'
 DATA='reproducibility/outputs/traffic_simulation/demand/'
 R12=DATA+'evrp_r12_routing/20260909_r12_routing_spec_fixture_n10_v18_geometry_reaccepted/'
@@ -31,7 +31,7 @@ def add(s,a,b,c,d,e,ref=PLAN):
  s.append([a,b,c,d,e,source(ref)])
  cell=s.cell(s.max_row,6);cell.hyperlink=ref.split('#')[0];cell.comment=Comment('参照ファイル SHA-256: '+sources[ref.split('#')[0]],'Source provenance')
 
-s=sheet('01_入力と仮定','研究モデル｜入力と仮定','現行仕様の説明用資料。工程管理の正本はEVRP_EXECUTION_PLAN.md。fixture n=10は本実験の規模ではない。')
+s=sheet('01_入力と仮定','研究モデル｜入力と仮定','現行仕様の説明用資料。工程管理の正本は00_project_management/EVRP_EXECUTION_PLAN.md。fixture n=10は本実験の規模ではない。')
 rows=[
 ('研究対象','大田区の住宅向けB2C配送','共通E-VRPTW条件で古典・量子最適化を比較','研究設計','需要充足率と計算資源要求を評価',PLAN+'#Objective'),
 ('R02–04','候補母集団 C_all','39,956地点','candidate','全件を単一EVRPとして解かない',PLAN+'#Scope'),
@@ -128,7 +128,7 @@ for s in w:
   if row[0].row>3:s.row_dimensions[row[0].row].height=64
  s.sheet_properties.pageSetUpPr.fitToPage=True;s.page_setup.orientation='landscape';s.page_setup.paperSize=s.PAPERSIZE_A3;s.page_setup.fitToWidth=1;s.page_setup.fitToHeight=1
  s.print_options.horizontalCentered=True;s.print_area=f'A1:F{s.max_row}';s.print_title_rows='1:3'
- s.oddFooter.center.text='モデル設計の参照資料 ｜ 正本: EVRP_EXECUTION_PLAN.md';s.oddFooter.right.text='&P / &N'
+ s.oddFooter.center.text='モデル設計の参照資料 ｜ 正本: 00_project_management/EVRP_EXECUTION_PLAN.md';s.oddFooter.right.text='&P / &N'
 w.properties.title='現行EVRPモデル設計とパイプライン';w.properties.subject='現行仕様に根拠を限定した再構成';w.properties.creator='Research model documentation'
 # Backup is a byte-preserved historical workbook, never used as a content source.
 backup=ROOT/'reproducibility/outputs/research_model_workbook'/datetime.now().strftime('%Y%m%d_%H%M%S')

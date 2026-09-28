@@ -12,7 +12,7 @@ readiness:
     label_ja: 正式SUMO道路網
     status: accepted
     status_label_ja: 受入済み
-    note_ja: current V18 authorityでFORMAL_NETWORK_ACCEPTED=true。accepted scopeとhashはEVRP_EXECUTION_PLAN.mdを正本とする
+    note_ja: current V18 authorityでFORMAL_NETWORK_ACCEPTED=true。accepted scopeとhashは00_project_management/EVRP_EXECUTION_PLAN.mdを正本とする
   - id: downstream_experiment
     label_ja: 下流実験
     status: scope_split
@@ -24,7 +24,7 @@ blockers:
   - R23の制約とR24 gateは05_src/traffic_simulation/R23_STATUS.mdを参照。Full-EVRPの阻害事項とは分離する
   - Aer結果を量子実機性能またはquantum advantageへ一般化できない
 next_actions:
-  - EVRP_EXECUTION_PLAN.mdに従いfull-EVRP本線の未完Definition stageを進める
+  - 00_project_management/EVRP_EXECUTION_PLAN.mdに従いfull-EVRP本線の未完Definition stageを進める
   - 次候補はR24設計・開始前レビュー。現行authorityは05_src/traffic_simulation/R23_STATUS.md、履歴証拠はreproducibility/archive/traffic_simulation/r23/。R24は未開始
   - R23の固定scientific protocolとarchive evidenceを保持する
   - full-EVRP/Hayate評価とreduced method evidenceをscope付きで統合する
@@ -72,7 +72,7 @@ stages:
     label_ja: 観測拡充・交通需要生成
     status: in_progress
     evidence:
-      - EVRP_EXECUTION_PLAN.md
+      - 00_project_management/EVRP_EXECUTION_PLAN.md
   - id: optimization_implementation_validation
     label_ja: 最適化基盤検証・配送EV制約の段階追加
     status: planned

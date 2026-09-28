@@ -2,11 +2,11 @@ schema_version: 2
 index_id: RESEARCH-REPOSITORY-INDEX-V17
 status: CURRENT
 purpose: single_entrypoint_for_research_pipeline_traceability
-stable_research_overview: RESEARCH_OVERVIEW.md
-research_overview: 20260903_20260903_RESEARCH_OVERVIEW.md
+stable_research_overview: 01_research_design/RESEARCH_OVERVIEW.md
+research_overview: 00_project_management/history/20260903_20260903_RESEARCH_OVERVIEW.md
 research_cli: research
 research_cli_reference: docs/20260903_20260903_research_cli.md
-pipeline_reference: RESEARCH_PIPELINE_REFERENCE.md
+pipeline_reference: docs/RESEARCH_PIPELINE_REFERENCE.md
 human_repository_map: reproducibility/indexes/20260903_20260903_research_repository_map_v17.md
 markdown_inventory: reproducibility/indexes/markdown_inventory_v17.yml
 current_authority: reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml
@@ -63,16 +63,16 @@ filename_date_convention:
   date_meaning: created_updated
   git_dates_authoritative: true
   stable_aliases:
-    - path: RESEARCH_OVERVIEW.md
-      canonical: 20260903_20260903_RESEARCH_OVERVIEW.md
+    - path: 01_research_design/RESEARCH_OVERVIEW.md
+      canonical: 00_project_management/history/20260903_20260903_RESEARCH_OVERVIEW.md
       reason: GitHub_Portal_CLI_and_external_link_compatibility
   fixed_name_exceptions:
     # 2026-09-09: retain existing canonical paths for IDE, CLI and evidence links; metadata records the update.
-    - 20260903_20260903_RESEARCH_OVERVIEW.md
+    - 00_project_management/history/20260903_20260903_RESEARCH_OVERVIEW.md
     - 05_src/traffic_simulation/demand/20260718_20260903_baseline_demand_and_comparator.md
     - docs/20260903_20260903_research_cli.md
     - README.md
-    - RESEARCH_PIPELINE_REFERENCE.md
+    - docs/RESEARCH_PIPELINE_REFERENCE.md
     - research_portal/README.md
     - reproducibility/environment/README.md
 important_markdown:
@@ -80,7 +80,7 @@ important_markdown:
     document_id: DOC-RESEARCH-OVERVIEW-V17
     role: PRIMARY_ENTRY
     lifecycle: CURRENT
-    path: 20260903_20260903_RESEARCH_OVERVIEW.md
+    path: 00_project_management/history/20260903_20260903_RESEARCH_OVERVIEW.md
     created: '2026-09-03'
     updated: '2026-09-10'
     purpose: Research question, Stage 1-11 roadmap, gates, milestones, and current position.
@@ -161,7 +161,7 @@ important_markdown:
     document_id: DOC-RESEARCH-PIPELINE-REFERENCE
     role: CURRENT_REFERENCE
     lifecycle: CURRENT
-    path: RESEARCH_PIPELINE_REFERENCE.md
+    path: docs/RESEARCH_PIPELINE_REFERENCE.md
     created: '2026-09-03'
     updated: '2026-09-10'
     purpose: Current execution, input, output, authority, validation, acceptance, provenance, and handoff reference for every research pipeline.
@@ -170,7 +170,7 @@ important_markdown:
     document_id: EVRP-EXECUTION-PLAN-001
     role: CURRENT_NORMATIVE
     lifecycle: CURRENT
-    path: EVRP_EXECUTION_PLAN.md
+    path: 00_project_management/EVRP_EXECUTION_PLAN.md
     created: '2026-09-10'
     updated: '2026-09-10'
     purpose: Sole current execution-plan authority for full-EVRP and explicitly scoped reduced R20-R23 stage states.

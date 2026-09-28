@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Final
@@ -19,7 +20,7 @@ CONFIG_PATH: Final = (
     / "traffic_simulation"
     / "research_stage.yml"
 )
-OUTPUT_PATH: Final = REPOSITORY_ROOT / "RESEARCH_STATUS.md"
+OUTPUT_PATH: Final = REPOSITORY_ROOT / "00_project_management/RESEARCH_STATUS.md"
 SCHEMA_VERSION: Final = 2
 VALID_STATUSES: Final = frozenset({"completed", "in_progress", "planned"})
 
@@ -190,7 +191,7 @@ def render_research_status(progress: ResearchProgress) -> str:
     current = progress.current_stage
     evidence_links = []
     for stage in progress.stages:
-        links = "<br>".join(f"[{Path(path).name}]({path})" for path in stage.evidence)
+        links = "<br>".join(f"[{Path(path).name}]({os.path.relpath(REPOSITORY_ROOT / path, OUTPUT_PATH.parent)})" for path in stage.evidence)
         evidence_links.append(links or "-")
 
     lines = [
@@ -282,8 +283,8 @@ def main() -> int:
 
     parser = argparse.ArgumentParser(description=__doc__)
     action = parser.add_mutually_exclusive_group(required=True)
-    action.add_argument("--write", action="store_true", help="write RESEARCH_STATUS.md")
-    action.add_argument("--check", action="store_true", help="fail if RESEARCH_STATUS.md is stale")
+    action.add_argument("--write", action="store_true", help="write 00_project_management/RESEARCH_STATUS.md")
+    action.add_argument("--check", action="store_true", help="fail if 00_project_management/RESEARCH_STATUS.md is stale")
     args = parser.parse_args()
     expected = render_research_status(load_research_progress())
     if args.check:

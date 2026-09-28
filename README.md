@@ -18,10 +18,10 @@
 
 | 内容 | 最初に読むファイル |
 |---|---|
-| 現在地・実行状況・次の限定作業 | [現在の実行状況](CURRENT_EXECUTION.md) |
+| 現在地・実行状況・次の限定作業 | [現在の実行状況](00_project_management/CURRENT_EXECUTION.md) |
 | 計算基盤の概要・4点の図・検証履歴 | [計算基盤検証のまとめ](reproducibility/COMPUTATION_PLATFORM_SUMMARY.md) |
-| 正式な研究タイトル | [正式な研究タイトル](RESEARCH_TITLE_AUTHORITY.md) |
-| 問い・仮説の正本文言 | [研究の問いと仮説](RESEARCH_QUESTION_AND_HYPOTHESIS.md) |
+| 正式な研究タイトル | [正式な研究タイトル](01_research_design/RESEARCH_TITLE_AUTHORITY.md) |
+| 問い・仮説の正本文言 | [研究の問いと仮説](01_research_design/RESEARCH_QUESTION_AND_HYPOTHESIS.md) |
 | 最新の計算基盤検証の総合判定 | [複数台配送問題の総合判定](reproducibility/outputs/traffic_simulation/r24_meaningful_multi_vehicle_finite_shot/20260928_v1/MEANINGFUL_MULTI_VEHICLE_OVERALL_DECISION.json) |
 | 今後の研究段階・条件の関係 | [研究段階の見通し](01_research_design/RESEARCH_STAGE_ROADMAP.md) |
 | 環境・コマンド操作・再現コード・詳細資料への案内 | [環境・再現性・詳細資料の案内](docs/REPOSITORY_NAVIGATION.md) |
@@ -59,6 +59,8 @@
 **手法比較に用いる問題規模の選定・固定に向けた証拠整理と判断**：古典計算と量子計算の本比較に使用する配送問題の規模・条件を決定する段階です。まだ固定済みではなく、この研究案内は追加科学実行や本実験の第0段階の許可を与えません。
 
 ## 資料の構成
+
+直下の研究文書は用途別フォルダーに整理しています。[配置と移動先の案内](docs/REPOSITORY_ORGANIZATION.md)を参照してください。
 
 | ディレクトリ | 内容 |
 |---|---|

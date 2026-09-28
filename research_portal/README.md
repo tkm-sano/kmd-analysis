@@ -13,12 +13,12 @@
 
 初期表示の`Public / Research View`は研究コミュニケーションを優先する。ハッシュ値、成果物 保存先、実行 識別子、検証器、コマンド、登録簿 / データ構造、詳細出典・来歴、過去の記録 / 後続版に置換済み情報は削除せず、閉じた`Technical Details`へ分離する。技術的な詳細は認証境界ではなく、情報階層上の詳細表示である。
 
-各処理工程のinput/output、コマンド、正本、検証、受入、引継ぎは[`RESEARCH_PIPELINE_REFERENCE.md`](../RESEARCH_PIPELINE_REFERENCE.md)を参照する。
+各処理工程のinput/output、コマンド、正本、検証、受入、引継ぎは[`docs/RESEARCH_PIPELINE_REFERENCE.md`](../docs/RESEARCH_PIPELINE_REFERENCE.md)を参照する。
 
 役割分担は次のとおりである。
 
-- [`RESEARCH_OVERVIEW.md`](../RESEARCH_OVERVIEW.md): research overview / roadmap / conceptual framing
-- [`RESEARCH_PIPELINE_REFERENCE.md`](../RESEARCH_PIPELINE_REFERENCE.md): commands / inputs / outputs / authority / validation / detailed execution
+- [`01_research_design/RESEARCH_OVERVIEW.md`](../01_research_design/RESEARCH_OVERVIEW.md): research overview / roadmap / conceptual framing
+- [`docs/RESEARCH_PIPELINE_REFERENCE.md`](../docs/RESEARCH_PIPELINE_REFERENCE.md): commands / inputs / outputs / authority / validation / detailed execution
 - Research Portal: third-party-facing research map / progress / explanation
 
 研究の概要は概念研究マップと8段階の研究工程を表示する。詳細な実装／分析マップ、data 流れ、成果物追跡可能性、検証の判定基準は技術的な詳細で維持する。グラフの分類と公開説明モデルは`reproducibility/config/research_portal/research_map_v1.yml`で管理する。

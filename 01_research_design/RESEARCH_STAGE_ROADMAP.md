@@ -2,7 +2,7 @@
 
 # 最小構成の電気自動車配送経路問題以降の研究段階ロードマップ
 
-研究タイトルの正本：[正式タイトル（固定）](../RESEARCH_TITLE_AUTHORITY.md)。
+研究タイトルの正本：[正式タイトル（固定）](RESEARCH_TITLE_AUTHORITY.md)。
 
 更新：2026-09-27（厳密 符号化同値性監査完了）。CURRENT_MASTER_ROADMAP。規模の正本は[評価規模正本](../reproducibility/outputs/traffic_simulation/r24_evaluation_scale_authority/20260927_v1/EVALUATION_SCALE_AUTHORITY.md)。計画固定は実行許可ではない。
 

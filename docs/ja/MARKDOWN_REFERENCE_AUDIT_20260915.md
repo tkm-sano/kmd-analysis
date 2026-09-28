@@ -28,11 +28,11 @@ Archive先: [pre-R24 最上位 文書](../../reproducibility/archive/project_man
 
 次は古い記述を含みますが、現在も他文書から参照されるため、参照先を移行せずにarchiveしませんでした。
 
-- `RESEARCH_STATUS.md`
-- `RESEARCH_OVERVIEW.md`
-- `20260903_20260903_RESEARCH_OVERVIEW.md`
-- `RESEARCH_PIPELINE_REFERENCE.md`
-- `EVRP_EXECUTION_PLAN.md`
+- `00_project_management/RESEARCH_STATUS.md`
+- `01_research_design/RESEARCH_OVERVIEW.md`
+- `00_project_management/history/20260903_20260903_RESEARCH_OVERVIEW.md`
+- `docs/RESEARCH_PIPELINE_REFERENCE.md`
+- `00_project_management/EVRP_EXECUTION_PLAN.md`
 - 最上位の交通量較正・project-management記録
 
 これらを将来archiveする場合は、先にポータル、コマンド操作、リポジトリ索引、learning documentのリンクと正本表現を現行 R24文書へ移す必要があります。

@@ -25,7 +25,7 @@
 > **実装状況に関する注意**
 > 本文末尾の「現在の実装状態」と「次の実装順序」は、2026年7月30日時点の
 > リポジトリ状態を日本語で要約したものである。最新の実装状況は
-> [`RESEARCH_STATUS.md`](../../../RESEARCH_STATUS.md)と
+> [`00_project_management/RESEARCH_STATUS.md`](../../../00_project_management/RESEARCH_STATUS.md)と
 > [`current_issues_and_blockers.md`](../current_issues_and_blockers.md)を確認する。
 
 ### 本書で用いる日本語
@@ -564,7 +564,7 @@ excluded
 および正式実行コードからの正解結果の独立性は引き続き必須である。
 
 最新の実装状態と阻害事項は、
-[`RESEARCH_STATUS.md`](../../../RESEARCH_STATUS.md)、
+[`00_project_management/RESEARCH_STATUS.md`](../../../00_project_management/RESEARCH_STATUS.md)、
 [`current_issues_and_blockers.md`](../current_issues_and_blockers.md)、
 [`confirmed_implementation_and_verification.md`](../confirmed_implementation_and_verification.md)
 を正本として確認する。

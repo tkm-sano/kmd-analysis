@@ -3,7 +3,7 @@ map_id: RESEARCH-MAP-V2
 status: CURRENT
 authority_pointer: reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml
 repository_index_pointer: reproducibility/indexes/research_repository_index_v17.yml
-overview_pointer: RESEARCH_OVERVIEW.md
+overview_pointer: 01_research_design/RESEARCH_OVERVIEW.md
 interpretation_evidence_pointer: reproducibility/evidence/fleet_capacity_interpretation_v1.yml
 interpretation_evidence_schema_pointer: reproducibility/evidence/fleet_capacity_interpretation_v1.schema.json
 portal_philosophy: 第三者が研究の問い、方法、現在地、検証済み事項、限界、次工程を理解するための研究コミュニケーション層
@@ -13,7 +13,7 @@ interpretation_mode: Future scenario analysis — 直接因果の証明ではな
 public_view:
   role: Research communication layer
   why_it_matters: 都市配送の将来を考えるには、計画手法や技術条件の違いが、限られた時間と配送能力のもとで需要充足へどう現れるかを、同じ分析枠組みで比較する必要があります。
-  approach_intro: 住宅向け宅配を主対象に、39,956候補地点から人口・世帯の重みで層化・非復元抽出します。同一instanceとHard ConstraintsをOR-ToolsとQUBO・QAOA・Qiskit Aerに与え、共通独立Validatorで検証し、配送件数ベースの需要充足、問題規模、EV技術Scenarioを比較する計画です。最新設計はRESEARCH_PIPELINE_REFERENCE.mdの2026-09-09採択方針を参照します。
+  approach_intro: 住宅向け宅配を主対象に、39,956候補地点から人口・世帯の重みで層化・非復元抽出します。同一instanceとHard ConstraintsをOR-ToolsとQUBO・QAOA・Qiskit Aerに与え、共通独立Validatorで検証し、配送件数ベースの需要充足、問題規模、EV技術Scenarioを比較する計画です。最新設計はdocs/RESEARCH_PIPELINE_REFERENCE.mdの2026-09-09採択方針を参照します。
   approach:
     - {label: Open data, description: 道路・需要などの入力と出所を管理する}
     - {label: Traffic network, description: 配送地点を扱える道路ネットワークを構築・検証する}
@@ -145,8 +145,8 @@ network_trace:
 
 stage_details:
   research_question:
-    specification: 20260903_20260903_RESEARCH_OVERVIEW.md
-    canonical_artifact: 20260903_20260903_RESEARCH_OVERVIEW.md
+    specification: 00_project_management/history/20260903_20260903_RESEARCH_OVERVIEW.md
+    canonical_artifact: 00_project_management/history/20260903_20260903_RESEARCH_OVERVIEW.md
     result: Governed research question and Stage 1–11 roadmap
     next_action: Preserve the question while making stage claims testable
     commands: [./research status, ./research artifacts]
@@ -168,7 +168,7 @@ stage_details:
     result: Requests / Stops DONE
     commands: [./research demand status, ./research demand validate]
   routing_baseline:
-    decision: RESEARCH_OVERVIEW.md#stage-1--routing-baseline-next
+    decision: 01_research_design/RESEARCH_OVERVIEW.md#stage-1--routing-baseline-next
     result: No production routing artifact exists
     known_limitations: [Routing scope and cost definition are not adopted., Production routing runner and validator are not implemented.]
     blocking_dependency: [routing scope, depot, delivery vehicle class, routing cost definition]
@@ -228,11 +228,11 @@ unresolved_decisions:
   - {id: fleet_size, label: Fleet size, blocks: [Common Delivery Instance], evidence: 05_src/research_cli/instance.py}
   - {id: battery_parameters, label: Battery parameters, blocks: [Common Delivery Instance, Delivery Simulation], evidence: 05_src/research_cli/instance.py}
   - {id: vehicle_capacity, label: Vehicle capacity, blocks: [Common Delivery Instance], evidence: 05_src/research_cli/instance.py}
-  - {id: optimizer, label: Optimizer, blocks: [Classical Optimization], evidence: RESEARCH_OVERVIEW.md}
-  - {id: qubo_penalties, label: QUBO penalties, blocks: [QUBO], evidence: RESEARCH_OVERVIEW.md}
-  - {id: qaoa_depth, label: QAOA depth, blocks: [QAOA], evidence: RESEARCH_OVERVIEW.md}
-  - {id: scenario_year, label: Scenario year, blocks: [Delivery Simulation, Planning / Policy], evidence: RESEARCH_OVERVIEW.md}
-  - {id: future_demand, label: Future demand parameters, blocks: [Delivery Simulation, Fulfillment Evaluation], evidence: RESEARCH_OVERVIEW.md}
+  - {id: optimizer, label: Optimizer, blocks: [Classical Optimization], evidence: 01_research_design/RESEARCH_OVERVIEW.md}
+  - {id: qubo_penalties, label: QUBO penalties, blocks: [QUBO], evidence: 01_research_design/RESEARCH_OVERVIEW.md}
+  - {id: qaoa_depth, label: QAOA depth, blocks: [QAOA], evidence: 01_research_design/RESEARCH_OVERVIEW.md}
+  - {id: scenario_year, label: Scenario year, blocks: [Delivery Simulation, Planning / Policy], evidence: 01_research_design/RESEARCH_OVERVIEW.md}
+  - {id: future_demand, label: Future demand parameters, blocks: [Delivery Simulation, Fulfillment Evaluation], evidence: 01_research_design/RESEARCH_OVERVIEW.md}
 
 research_commands:
   - {command: ./research commands, purpose: Canonical command index}
@@ -248,7 +248,7 @@ timeline:
   - {date: '2026-09-03', event: Superseded Decision, detail: Hierarchical Hybrid superseded by Three-tier Formal Completion, source: reproducibility/config/traffic_simulation/network_completion_policy_lifecycle.yml}
   - {date: '2026-09-03', event: Three-tier adoption, detail: DIRECT / INFERRED / FALLBACK provenance policy became current, source: reproducibility/config/traffic_simulation/decisions/phase13_formal_completion_three_tier_v1.yml}
   - {date: '2026-09-03', event: Accepted network, detail: P13-THREE-TIER-RUN-2 accepted, source: reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/network_acceptance.json}
-  - {date: '2026-09-03', event: Roadmap creation, detail: Stage 1–11 roadmap recorded, source: 20260903_20260903_RESEARCH_OVERVIEW.md}
+  - {date: '2026-09-03', event: Roadmap creation, detail: Stage 1–11 roadmap recorded, source: 00_project_management/history/20260903_20260903_RESEARCH_OVERVIEW.md}
 
 historical:
   current:

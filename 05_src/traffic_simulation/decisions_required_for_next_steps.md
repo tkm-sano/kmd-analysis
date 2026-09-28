@@ -2,7 +2,7 @@
 
 > **範囲 note (2026-09-10):** 本表は2026-08-01時点のnetwork/full-EVRP未決定事項を保持する
 > 判断 registerである。現在の縮約した訪問順序 R20/R21/R22 合格とR23 ACCEPTED_WITH_LIMITATIONSは
-> `EVRP_EXECUTION_PLAN.md`の別分岐で管理する。ここに残る未決定事項を縮約した 合格へ逆適用しない。
+> `00_project_management/EVRP_EXECUTION_PLAN.md`の別分岐で管理する。ここに残る未決定事項を縮約した 合格へ逆適用しない。
 
 > **文書状態:** 未決定事項の横断管理表
 > **基準日:** 2026-08-01

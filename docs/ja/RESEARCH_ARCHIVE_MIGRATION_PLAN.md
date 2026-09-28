@@ -43,7 +43,7 @@
 
 確認先：
 
-- [現在の実行状況](../../CURRENT_EXECUTION.md)
+- [現在の実行状況](../../00_project_management/CURRENT_EXECUTION.md)
 - [標本抽出共通処理](../../reproducibility/outputs/traffic_simulation/r24_finite_shot_supervised_execution_integration/20260928_v1/sampling_common.py)
 - [sampling pipeline](../../reproducibility/outputs/traffic_simulation/r24_finite_shot_supervised_execution_integration/20260928_v1/sampling_pipeline.py)
 - [標本抽出監督入口](../../reproducibility/outputs/traffic_simulation/r24_finite_shot_supervised_execution_integration/20260928_v1/run_sampling_supervised.py)

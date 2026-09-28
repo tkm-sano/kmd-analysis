@@ -71,7 +71,7 @@ template = Path(__file__).with_name('summary_ja.md.in')
 record(template)
 markdown = template.read_text().format_map(values)
 for reference in re.findall(r'\]\(([^)]+)\)', markdown):
-    if reference.startswith(('outputs/', '../CURRENT_EXECUTION.md')):
+    if reference.startswith(('outputs/', '../00_project_management/CURRENT_EXECUTION.md')):
         record((ROOT / 'reproducibility' / reference).resolve())
 (ROOT / 'reproducibility/COMPUTATION_PLATFORM_SUMMARY.md').write_text(markdown)
 Path(__file__).with_name('SUMMARY_SOURCE_HASHES.json').write_text(json.dumps(SOURCES, indent=2) + '\n')

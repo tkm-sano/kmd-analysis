@@ -46,8 +46,8 @@ Full-電気自動車配送経路問題 R20は引き続き実行不可であり�
 
 以下を読み取り専用で確認した。
 
-- EVRP_EXECUTION_PLAN.md
-- RESEARCH_PIPELINE_REFERENCE.md
+- 00_project_management/EVRP_EXECUTION_PLAN.md
+- docs/RESEARCH_PIPELINE_REFERENCE.md
 - 05_src/traffic_simulation/specifications/00_research_simulation_requirements.md
 - 05_src/traffic_simulation/optimization_comparison_protocol.md
 - 05_src/traffic_simulation/evrp_r20_qubo_formulation/build_r20_spec.py
@@ -1011,4 +1011,4 @@ For each subset, validate all IDs, exact directed-pair completeness, statuses/nu
 - Reduced downstream state: R21 PASS; R22 PASS; R23 ACCEPTED_WITH_LIMITATIONS
 - Prohibited actions: none performed
 
-本書は完全な電気自動車配送経路問題を解いたことや正式 量子近似最適化アルゴリズム 性能を示さない。R21/R22の実行可否と結果は`EVRP_EXECUTION_PLAN.md`の別判定基準 記録が正本であり、現在は同じ縮約した 範囲についてR21/R22 合格、R23 ACCEPTED_WITH_LIMITATIONSである。採択済みsubproblem 定式化と、未採択の正式 numerical λ 方針、到達不能-移行 拡張、完全な電気自動車配送経路問題 constraintsを分離して扱う。
+本書は完全な電気自動車配送経路問題を解いたことや正式 量子近似最適化アルゴリズム 性能を示さない。R21/R22の実行可否と結果は`00_project_management/EVRP_EXECUTION_PLAN.md`の別判定基準 記録が正本であり、現在は同じ縮約した 範囲についてR21/R22 合格、R23 ACCEPTED_WITH_LIMITATIONSである。採択済みsubproblem 定式化と、未採択の正式 numerical λ 方針、到達不能-移行 拡張、完全な電気自動車配送経路問題 constraintsを分離して扱う。

@@ -16,4 +16,4 @@
 
 仮説は今後の検証対象であり、検証済みの研究結果を示すものではない。この記録によって、既存の実験条件・固定済み設定・結果・科学実行予算・台帳・実行権限を変更しない。
 
-研究タイトルは[正式タイトルの正本](RESEARCH_TITLE_AUTHORITY.md)、現在の科学実行状況は[CURRENT_EXECUTION.md](CURRENT_EXECUTION.md)を参照する。
+研究タイトルは[正式タイトルの正本](RESEARCH_TITLE_AUTHORITY.md)、現在の科学実行状況は[00_project_management/CURRENT_EXECUTION.md](../00_project_management/CURRENT_EXECUTION.md)を参照する。

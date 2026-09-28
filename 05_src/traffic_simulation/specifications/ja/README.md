@@ -25,10 +25,10 @@
 - 設定プロファイル別入力必須表：
   [`../attribute_criticality_and_evidence_specification.md#profile-specific-required-inputs`](../attribute_criticality_and_evidence_specification.md#profile-specific-required-inputs)
 - 現在の準備状況 判定基準：
-  [`../../../../RESEARCH_STATUS.md`](../../../../RESEARCH_STATUS.md)
+  [`../../../../RESEARCH_STATUS.md`](../../../../00_project_management/RESEARCH_STATUS.md)
 - 機械可読データ構造一覧：
   [`../../../../reproducibility/config/traffic_simulation/schemas`](../../../../reproducibility/config/traffic_simulation/schemas)
 
 全工程における操作、定義、数値設定の関係は、日本語の
 [`network_workflow_decisions_and_parameters.md`](../../network_workflow_decisions_and_parameters.md)
-を参照する。現在工程はリポジトリ直下の`RESEARCH_STATUS.md`で確認する。
+を参照する。現在工程はリポジトリ直下の`00_project_management/RESEARCH_STATUS.md`で確認する。

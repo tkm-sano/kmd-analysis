@@ -36,12 +36,12 @@
 
 このタイトルは研究の主題を表す正式タイトルであり、実験条件・研究結果・評価方法そのものを変更するものではない。科学的正本、固定済み設定、実行予算、科学台帳、実行可否は既存の正本に従う。
 
-現在の入口は[案内文書](README.md)、[研究概要](RESEARCH_OVERVIEW.md)、[研究段階ロードマップ](01_research_design/RESEARCH_STAGE_ROADMAP.md)、[実行状況](CURRENT_EXECUTION.md)から本ファイルを参照する。
+現在の入口は[案内文書](../README.md)、[研究概要](RESEARCH_OVERVIEW.md)、[研究段階ロードマップ](RESEARCH_STAGE_ROADMAP.md)、[実行状況](../00_project_management/CURRENT_EXECUTION.md)から本ファイルを参照する。
 
 次の旧名称・旧設計の題名は、現在の研究タイトル正本として扱わない。過去文書の内容や生成済み成果物は書き換えない。
 
 - 案内文書の旧見出し「東京都市配送 × 量子未来社会」：現在の案内文書は正式タイトルへ更新。過去の案内文書スナップショットは保持。
-- 「東京圏の物流における量子経路最適化の適用可能範囲評価手法の構築」：旧設計の[研究概要](01_research_design/quantum_route_optimization_research_summary.md)と[スライド構成案](01_research_design/quantum_route_optimization_slide_structure.md)に当時の題名として保持。
-- 「電気自動車・物流システムにおけるVRP/CVRP/EVRP問題規模と量子最適化技術の段階-Based Gap Assessment」：旧設計の[LaTeX原稿](08_documents/manuscripts/latex/main.tex)に保持。
+- 「東京圏の物流における量子経路最適化の適用可能範囲評価手法の構築」：旧設計の[研究概要](quantum_route_optimization_research_summary.md)と[スライド構成案](quantum_route_optimization_slide_structure.md)に当時の題名として保持。
+- 「電気自動車・物流システムにおけるVRP/CVRP/EVRP問題規模と量子最適化技術の段階-Based Gap Assessment」：旧設計の[LaTeX原稿](../08_documents/manuscripts/latex/main.tex)に保持。
 
 個別の論文・投稿資料固有のタイトルは、本研究の正式タイトルと区別する。過去の報告・実験成果物・再現性配下の保存済み正本やスナップショットに旧題が残っていても、歴史的記録の不整合とは扱わない。

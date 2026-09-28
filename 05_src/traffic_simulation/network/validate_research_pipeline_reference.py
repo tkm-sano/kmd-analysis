@@ -12,7 +12,7 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[3]
-REFERENCE = ROOT / "RESEARCH_PIPELINE_REFERENCE.md"
+REFERENCE = ROOT / "docs/RESEARCH_PIPELINE_REFERENCE.md"
 INDEX = ROOT / "reproducibility/indexes/research_repository_index_v17.yml"
 MAP = ROOT / "reproducibility/config/research_portal/research_map_v1.yml"
 AUTHORITY = ROOT / "reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml"

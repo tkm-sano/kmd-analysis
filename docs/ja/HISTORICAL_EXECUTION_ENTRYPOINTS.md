@@ -1,6 +1,6 @@
 # 過去段階・再現用コードの入口
 
-通常の入口は [CURRENT_EXECUTION.md](../../CURRENT_EXECUTION.md) です。以下は旧段階や検証目的のコードであり、現在の計算方式 Phase 1を起動する一覧ではありません。ファイルを移動せず、案内上で分離しています。
+通常の入口は [00_project_management/CURRENT_EXECUTION.md](../../00_project_management/CURRENT_EXECUTION.md) です。以下は旧段階や検証目的のコードであり、現在の計算方式 Phase 1を起動する一覧ではありません。ファイルを移動せず、案内上で分離しています。
 
 | 用途・段階 | 既存コードの場所 | 現在の扱い |
 |---|---|---|

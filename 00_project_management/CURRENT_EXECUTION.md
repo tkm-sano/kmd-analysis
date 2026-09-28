@@ -1,15 +1,15 @@
 # 現在の実行状況 — 複数台が必要な配送問題の検証 合格・完了 / 停止
 
-研究タイトル：[正式な研究タイトル](RESEARCH_TITLE_AUTHORITY.md)。研究の問い・仮説：[研究の問いと仮説](RESEARCH_QUESTION_AND_HYPOTHESIS.md)。
+研究タイトル：[正式な研究タイトル](../01_research_design/RESEARCH_TITLE_AUTHORITY.md)。研究の問い・仮説：[研究の問いと仮説](../01_research_design/RESEARCH_QUESTION_AND_HYPOTHESIS.md)。
 
 N002/M2/TW-MODERATEの量子状態の検証に合格に続き、有限回測定の動作確認が合格。凍結完了規則に従い、複数台配送問題の総合判定=合格・完了（この問題例の計算基盤検証のみ）。
 
-- [有限回測定の判定](reproducibility/outputs/traffic_simulation/r24_meaningful_multi_vehicle_finite_shot/20260928_v1/FINITE_SHOT_DECISION.json)
-- [複数台配送問題の総合判定](reproducibility/outputs/traffic_simulation/r24_meaningful_multi_vehicle_finite_shot/20260928_v1/MEANINGFUL_MULTI_VEHICLE_OVERALL_DECISION.json)
-- [監督停止記録](reproducibility/outputs/traffic_simulation/r24_meaningful_multi_vehicle_finite_shot/20260928_v1/STOP.json)
-- [科学会計](reproducibility/outputs/traffic_simulation/r24_meaningful_multi_vehicle_finite_shot/20260928_v1/SCIENTIFIC_ACCOUNTING.json)
-- [最終報告](reproducibility/outputs/traffic_simulation/r24_meaningful_multi_vehicle_finite_shot/20260928_v1/FINAL_REPORT.md)
-- [成果物一覧](reproducibility/outputs/traffic_simulation/r24_meaningful_multi_vehicle_finite_shot/20260928_v1/ARTIFACT_MANIFEST.json)
+- [有限回測定の判定](../reproducibility/outputs/traffic_simulation/r24_meaningful_multi_vehicle_finite_shot/20260928_v1/FINITE_SHOT_DECISION.json)
+- [複数台配送問題の総合判定](../reproducibility/outputs/traffic_simulation/r24_meaningful_multi_vehicle_finite_shot/20260928_v1/MEANINGFUL_MULTI_VEHICLE_OVERALL_DECISION.json)
+- [監督停止記録](../reproducibility/outputs/traffic_simulation/r24_meaningful_multi_vehicle_finite_shot/20260928_v1/STOP.json)
+- [科学会計](../reproducibility/outputs/traffic_simulation/r24_meaningful_multi_vehicle_finite_shot/20260928_v1/SCIENTIFIC_ACCOUNTING.json)
+- [最終報告](../reproducibility/outputs/traffic_simulation/r24_meaningful_multi_vehicle_finite_shot/20260928_v1/FINAL_REPORT.md)
+- [成果物一覧](../reproducibility/outputs/traffic_simulation/r24_meaningful_multi_vehicle_finite_shot/20260928_v1/ARTIFACT_MANIFEST.json)
 
 実行識別子: 69e866bf-66fc-4f7f-b25d-19fd39136990。第2版の標本抽出監督入口を第一操作として起動、新規実行の許可確認 合格。乱数の種20260927。全状態ベクトル方式64回の測定×1 → 全状態ベクトル方式 判定 合格 → 行列積状態方式64回の測定×1 → 復号器・検証器・資源・時間・会計・保護ファイル監査合格 → 停止。
 

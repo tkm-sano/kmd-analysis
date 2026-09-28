@@ -16,7 +16,7 @@ reproducibility/
 
 ## 縮約した量子計算段階の根拠
 
-各段階の生成成果物は引き続き版管理対象外とする。正本は、実行識別子、ハッシュ値、ソースと根拠の変更履歴、および[実行計画](../EVRP_EXECUTION_PLAN.md)の状態記録によって特定する。
+各段階の生成成果物は引き続き版管理対象外とする。正本は、実行識別子、ハッシュ値、ソースと根拠の変更履歴、および[実行計画](../00_project_management/EVRP_EXECUTION_PLAN.md)の状態記録によって特定する。
 
 - R21の正本実行: `outputs/traffic_simulation/r21_qubo_validation/20260910_formal_reduced_v4/`
   (`validation_results.json` SHA-256 `c4baeead366ea2f750cd4ecdd18acc507746dfecd744d0803ed74b5bbb46049f`,

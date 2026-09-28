@@ -26,7 +26,7 @@ Residential / B2C last-mile 荷物 配送。基準 problemはE-時間窓付き�
 
 39,956地点は候補母集団 $C_{\mathrm{all}}$ であり、全件を1つの電気自動車配送経路問題として解かない。$C_s\subset C_{\mathrm{all}}$、$n=|C_s|$ をproblem-規模実験パラメータとする。25/50/100等を固定想定条件として採択しない。基準は単一配送拠点を原則固定する。
 
-[最新B2C仕様](RESEARCH_PIPELINE_REFERENCE.md#b2c-pipeline-20260909)を参照するが、今回の指示で時間窓を**作業開始**に適用し、Operating 時間は**最大運行時間を設定した場合に適用**すると具体化した。本書がこれらと実行順序・停止条件の最新記録である。旧ロードマップ、コマンド操作やポータルの「Routing 次の工程」「需要 完了」は既存実装の表示であり、本書の次工程や合格を上書きしない。
+[最新B2C仕様](../docs/RESEARCH_PIPELINE_REFERENCE.md#b2c-pipeline-20260909)を参照するが、今回の指示で時間窓を**作業開始**に適用し、Operating 時間は**最大運行時間を設定した場合に適用**すると具体化した。本書がこれらと実行順序・停止条件の最新記録である。旧ロードマップ、コマンド操作やポータルの「Routing 次の工程」「需要 完了」は既存実装の表示であり、本書の次工程や合格を上書きしない。
 
 <a id="existing-state-audit"></a>
 
@@ -54,24 +54,24 @@ Residential / B2C last-mile 荷物 配送。基準 problemはE-時間窓付き�
 | OR-Tools package | IMPLEMENTED_NOT_VALIDATED | 9.12.4544導入済み。13制約付き本番model/runner/解検証はNOT_IMPLEMENTED。 |
 | Common instance / independent EVRP validator | NOT_IMPLEMENTED | 05_src/optimizationには古い__pycache__のみ。出典不在を実装済みとしない。 |
 | Reduced QUBO / Ising | ACCEPTED_SCOPED | `INITIAL_R20_REDUCED_ROUTE_ORDERING_SCOPE_ONLY`についてR20 定式化、R21 厳密 制約なし二値二次最適化 検証、R22 全体-状態 Ising equivalenceが合格。完全な電気自動車配送経路問題 QUBO/Isingは未完。 |
-| Reduced QAOA authority | SEE_CURRENT_INDEX | Reduced R23の参照先の補完・最終結果・制約・R24 判定基準は[R23_STATUS.md](05_src/traffic_simulation/R23_STATUS.md)を参照する。完全な電気自動車配送経路問題の未完状態とは分離する。 |
+| Reduced QAOA authority | SEE_CURRENT_INDEX | Reduced R23の参照先の補完・最終結果・制約・R24 判定基準は[R23_STATUS.md](../05_src/traffic_simulation/R23_STATUS.md)を参照する。完全な電気自動車配送経路問題の未完状態とは分離する。 |
 | Qiskit / Aer | IMPLEMENTED_SCOPED_ENVIRONMENT | isolated `evrp-quantum-temp`でPython 3.11.16、Qiskit 2.5.2、Aer 0.17.2、qiskit-最適化 0.7.0、qiskit-algorithms 0.4.0を確認。GPU/QPU 根拠ではない。縮約した 中央処理装置 simulation ベンチマークの正本はR23_STATUS.mdを参照する。 |
 | 運用パラメータの実測根拠 | UNKNOWN | 住宅作業時間、採択電気自動車の消費率、充電設備利用条件等は未確定。 |
 | Tests / manifests / generated reports | 一部完了 | 既存ポータル 6検査合格・旧需要13 試験 合格。下流電気自動車配送経路問題実験の受入成果物一覧と報告はない。 |
 
 主な証拠:
 
-- [道路網正本](reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml)
-- [geometry/length再受入authority](reproducibility/config/traffic_simulation/current_network_completion_authority_v18_geometry_reaccepted.yml)
-- [候補生成要約](03_data/processed/traffic_simulation/demand/household_parcel_v1/pipelines_v1/stop_generation_run_summary.json)
-- [旧処理工程要約](03_data/processed/traffic_simulation/demand/household_parcel_v1/pipelines_v1/pipeline_run_summary.json)
-- [宅配統計取得記録](03_data/metadata/acquisition/20260825_tokyo_metropolitan_goods_movement_delivery_receipt_tables.md)
-- [需要コード](05_src/traffic_simulation/demand/prepare_baseline_demand.py)
-- [経路計算入口](05_src/research_cli/routing.py)
-- [比較規約](05_src/traffic_simulation/optimization_comparison_protocol.md)
-- [EV profile](reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml)
-- [Depot proxy](legacy/non_sumo_route_proxy_analysis/data/processed/evrp_constraint_gap_inputs/depot_candidates_public_proxy_snapshot.csv)
-- [Charging proxy](legacy/non_sumo_route_proxy_analysis/data/processed/charger_access/eligible_charger_candidates.csv)
+- [道路網正本](../reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml)
+- [geometry/length再受入authority](../reproducibility/config/traffic_simulation/current_network_completion_authority_v18_geometry_reaccepted.yml)
+- [候補生成要約](../03_data/processed/traffic_simulation/demand/household_parcel_v1/pipelines_v1/stop_generation_run_summary.json)
+- [旧処理工程要約](../03_data/processed/traffic_simulation/demand/household_parcel_v1/pipelines_v1/pipeline_run_summary.json)
+- [宅配統計取得記録](../03_data/metadata/acquisition/20260825_tokyo_metropolitan_goods_movement_delivery_receipt_tables.md)
+- [需要コード](../05_src/traffic_simulation/demand/prepare_baseline_demand.py)
+- [経路計算入口](../05_src/research_cli/routing.py)
+- [比較規約](../05_src/traffic_simulation/optimization_comparison_protocol.md)
+- [EV profile](../reproducibility/config/traffic_simulation/scenario_profiles/managed_urban_ev_delivery_v1.yml)
+- [Depot proxy](../legacy/non_sumo_route_proxy_analysis/data/processed/evrp_constraint_gap_inputs/depot_candidates_public_proxy_snapshot.csv)
+- [Charging proxy](../legacy/non_sumo_route_proxy_analysis/data/processed/charger_access/eligible_charger_candidates.csv)
 
 旧処理工程 まとめの配送地点=0/未割当と、後続配送地点 まとめ・道路網 受入の39,956は異なる生成段階を示す。旧まとめのblocked snap 規則を現在の道路網受入へ適用しない。一方、候補再生成の完全な連鎖は未確認なのでR03のGateで説明を要求する。39,956が旧日の有効建物に限られる選択偏りは、新しい母集団の研究上の限界として残す。より大きい建物母集団へ黙って置換しない。
 
@@ -402,7 +402,7 @@ R01 Existing State 監査〜R15 共通配送問題 Definitionを合格として�
 - **Completed At:** 2026-09-09T11:05:00+09:00
 - **Commands:** `python` read-only ZIP/XLSX/XML/hash audit; `pdftotext -layout 03_data/raw/traffic_simulation/population/estat_2020_500m_jgd2011/T001141_definition.pdf -`
 - **Input Hashes:** Census ZIP `8a8b47563ffe88ec1afb5a17b8d29ac987b40df65498bec4c2fcf1829777f67d`; receipt manifest `b218db3c37faeb0ba21ac9b0b6a92ea4fc0d07feef423db9c9c97db82da38a5e`; all 20 manifest entries hash-match (19 unique filenames; duplicate `ss515_r06a.xlsx` entry is byte-identical).
-- **Output Hashes:** No separate generated file. This stage's adopted definition and column ledger are recorded in this section of `EVRP_EXECUTION_PLAN.md`; the plan file is not self-hashed.
+- **Output Hashes:** No separate generated file. This stage's adopted definition and column ledger are recorded in this section of `00_project_management/EVRP_EXECUTION_PLAN.md`; the plan file is not self-hashed.
 - **Software Versions:** Python 3.11.15; standard-library `zipfile`, `xml.etree.ElementTree`, `hashlib`; `pdftotext` available.
 - **結果:** 採用原本を固定した。国勢調査500mメッシュ（JGD2011）は `T001141001`（人口総数）と `T001141034`（世帯総数）を採用候補列として固定し、`T001141034`を住宅標本抽出 重みの第一候補とする。両列は定義文書ファイルで単位（人／世帯）を確認した。秘密処理は`HTKSYORI`/`HTKSAKI`/`GASSAN`を保持し、一般世帯の内訳列を合算先へ再配賦しない。宅配受取調査は `ss508_r06a.xlsx`（受取曜日×時間帯、単位: 件）、`ss515_r06a.xlsx`（日時指定区分、単位: 件）、`ss519_r06a.xlsx`（地域別受取頻度・再配達頻度、単位: 回/週・割合）を採用入力として固定した。ss508/ss515は時間窓較正、ss519は地域差の補助較正に使用し、個人調査の回答を大田区の実測注文へ直接同一視しない。
 - **検証結果:** Census header/XMLと定義文書ファイルの列番号・単位一致、受取調査表計算ファイルのタイトル・単位・カテゴリ存在を確認。選択原本は成果物一覧 ハッシュ値一致。採用値はOBSERVED（未加工表）、PUBLIC_STATISTICS_DERIVED（後続の集計・変換）、PROXY（住宅需要への利用）、SYNTHETIC_CALIBRATED（後続customer/TW生成）を工程ごとに分離する。未取得の表は必須入力にしていない。合格。
@@ -1024,7 +1024,7 @@ Recommendation: **`INSUFFICIENT_EVIDENCE`** for automatic adoption. The reposito
 | If C is selected, which field is the estimand: `household_count`, `request_count`, or `parcel_equivalent`? | `CHOOSE` |
 | May the current R04/R05 sample remain unchanged for the fixture while the production sampling policy is deferred? | `YES / NO` |
 
-**Audit conclusion:** current statuses R04–R17 are unchanged; no regeneration or execution occurred. R18 execution readiness remains **`REQUIRES_USER_DECISION`**. `EVRP_EXECUTION_PLAN.md` remains the sole progress/execution record.
+**Audit conclusion:** current statuses R04–R17 are unchanged; no regeneration or execution occurred. R18 execution readiness remains **`REQUIRES_USER_DECISION`**. `00_project_management/EVRP_EXECUTION_PLAN.md` remains the sole progress/execution record.
 
 <a id="r04r05-candidate-population-double-correction-re-audit--2026-09-09"></a>
 
@@ -1113,7 +1113,7 @@ User decisions required:
 3. If C is selected, choose field: `CHOOSE household_count / request_count / parcel_equivalent`.
 4. May the current R04/R05 fixture sample remain frozen while production sampling is deferred: `YES / NO`.
 
-**Final audit status:** R18 execution readiness remains **`REQUIRES_USER_DECISION`**. `EVRP_EXECUTION_PLAN.md` remains the sole execution record.
+**Final audit status:** R18 execution readiness remains **`REQUIRES_USER_DECISION`**. `00_project_management/EVRP_EXECUTION_PLAN.md` remains the sole execution record.
 
 <a id="r04r05-pps-role-separation-audit--2026-09-09"></a>
 
@@ -1407,7 +1407,7 @@ CP-SATの欠点は、モデル builder・整数規模・big-M上限・symmetry�
 - **Started At / Completed At:** 2026-09-10T01:10:00+09:00 / 2026-09-10T01:20:00+09:00
 - **Commands:** installed runtime audit `.conda/bin/python` with `ortools.sat.python.cp_model.CpSolver().parameters`; no solver/model solve command. R15/R16 JSON read-only reconstruction.
 - **Input Hashes:** R15 `7ca39facf83de619db7ec37daa90409834d89b4b75bfeb4e7c501ddef94b2ac4`; R16 `evrp-common-hard-constraints-v1` / `1b1c3132b44a542605b19f354a5d9c7464a093aa4cb23b04583ca92e0841ec67`; V18 network `460554c7716fe5e3e1410bbee790e69745a2c423146bac88e51e3a2b95f051b2`.
-- **Outputs:** [CP-SAT formulation spec](reproducibility/outputs/traffic_simulation/demand/evrp_r17_cpsat_standalone/20260910_r17_cpsat_standalone_formulation_fixture_n10_v18/cpsat_formulation_spec.json); [formulation validation report](reproducibility/outputs/traffic_simulation/demand/evrp_r17_cpsat_standalone/20260910_r17_cpsat_standalone_formulation_fixture_n10_v18/r17_cpsat_formulation_validation_report.json).
+- **Outputs:** [CP-SAT formulation spec](../reproducibility/outputs/traffic_simulation/demand/evrp_r17_cpsat_standalone/20260910_r17_cpsat_standalone_formulation_fixture_n10_v18/cpsat_formulation_spec.json); [formulation validation report](../reproducibility/outputs/traffic_simulation/demand/evrp_r17_cpsat_standalone/20260910_r17_cpsat_standalone_formulation_fixture_n10_v18/r17_cpsat_formulation_validation_report.json).
 - **Output Hashes:** specification `d012fe1871c4d63695e6ac294e7b1bc3835481ccd81fe7f41d234d1d5679c4fe`; validation report `2adc02c8801b676d21814b095d16f20cf3adc03559d9c6d15aedda8b8ffc453c`.
 - **Formulation summary:** position-indexed route with `x_pij` positional arc binaries and aggregate `x_ij`, `node_at[p,i]`, `active[p]`, `y_i`, exact depot start/return, payload grams, time milliseconds, energy joules, and 11 charger-event slots. General route positions are `2n+3`; charger slots are `n+1` from the R16/R17 route-gap derivation.
 - **Integer units:** time ms; energy J; payload g; source distance remains m. Battery `147,600,000 J`, minimum `29,520,000 J`, charging `70 J/ms`, event cap `1,800,000 ms`. Arc travel time uses ceiling to ms. Arc energy uses `ceil(Decimal(distance_m) * Decimal(energy_rate_kWh_per_km) * 3600)` J, so energy is never rounded downward and feasibility is not overestimated.
@@ -1429,7 +1429,7 @@ CP-SATの欠点は、モデル builder・整数規模・big-M上限・symmetry�
 - **Started At / Completed At:** 2026-09-10T01:25:00+09:00 / 2026-09-10T01:35:00+09:00
 - **コマンド:** OR-Tools 9.12.4544の`CpModel.AddImplication`、`Add(... > ...).OnlyEnforceIf(...)`、Boolean channelingのモデル-construction プログラム用インターフェース 動作確認。求解器 callなし。
 - **Inputs:** R15 `7ca39facf83de619db7ec37daa90409834d89b4b75bfeb4e7c501ddef94b2ac4`; R16 `evrp-common-hard-constraints-v1` / `1b1c3132b44a542605b19f354a5d9c7464a093aa4cb23b04583ca92e0841ec67`; V18 network `460554c7716fe5e3e1410bbee790e69745a2c423146bac88e51e3a2b95f051b2`.
-- **Outputs:** [ordering proof](reproducibility/outputs/traffic_simulation/demand/evrp_r17_cpsat_standalone/20260910_r17_cpsat_standalone_formulation_fixture_n10_v18_slot_order_proof/charger_slot_ordering_proof.json); [integer-model smoke contract](reproducibility/outputs/traffic_simulation/demand/evrp_r17_cpsat_standalone/20260910_r17_cpsat_standalone_formulation_fixture_n10_v18_slot_order_proof/integer_model_smoke_test_contract.json); [validation report](reproducibility/outputs/traffic_simulation/demand/evrp_r17_cpsat_standalone/20260910_r17_cpsat_standalone_formulation_fixture_n10_v18_slot_order_proof/r17_slot_order_validation_report.json).
+- **Outputs:** [ordering proof](../reproducibility/outputs/traffic_simulation/demand/evrp_r17_cpsat_standalone/20260910_r17_cpsat_standalone_formulation_fixture_n10_v18_slot_order_proof/charger_slot_ordering_proof.json); [integer-model smoke contract](../reproducibility/outputs/traffic_simulation/demand/evrp_r17_cpsat_standalone/20260910_r17_cpsat_standalone_formulation_fixture_n10_v18_slot_order_proof/integer_model_smoke_test_contract.json); [validation report](../reproducibility/outputs/traffic_simulation/demand/evrp_r17_cpsat_standalone/20260910_r17_cpsat_standalone_formulation_fixture_n10_v18_slot_order_proof/r17_slot_order_validation_report.json).
 - **Output Hashes:** ordering proof `92d9bccce409aba6ad44cccd9d8e5493a1c4c9db55cb5bd6246e234dec818e0d`; smoke contract `a68c3ec63b922eb24a5cbea59c695bec57bb79ca9fdec59843904321921de3d5`; validation report `8ad2dec265505136379e9f73f8cf5be05dabbf3a116cee16f9724b2a2a69518b`.
 - **Slot ordering proof:** `slot_used[c+1] => slot_used[c]` via `AddImplication`; used-slot order via `Add(slot_position[c+1] > slot_position[c]).OnlyEnforceIf(slot_used[c+1])`; unused slot position is fixed to 0 and no ordering is imposed on it. This uses no Big-M.
 - **Route-slot link:** `sum_p slot_at[c,p]=slot_used[c]`; `sum_c slot_at[c,p]=charger_at[p]`; `slot_at[c,p] => slot_position[c]=p`; at most one slot per route position. Thus a slot cannot be metadata-independent from route state, a used slot requires a charger node, and every charger visit has exactly one slot.
@@ -2552,7 +2552,7 @@ PY_AUDIT
 
 | Path | SHA-256 |
 |---|---|
-| `RESEARCH_PIPELINE_REFERENCE.md` | `2abee53ac768dc32ecddf20efbb0d778b6ed0ff7f992c2b709333b1a99511290` |
+| `docs/RESEARCH_PIPELINE_REFERENCE.md` | `2abee53ac768dc32ecddf20efbb0d778b6ed0ff7f992c2b709333b1a99511290` |
 | `reproducibility/config/traffic_simulation/current_network_completion_authority_v17.yml` | `5774598068e3f8008a661c0f519a48f0f312925856adad458fe99ede04082f86` |
 | `reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_2/network_acceptance.json` | `3a1ea4f81715eb1966394522799ec8beac332c87fddefdc1d5d0993d435948f0` |
 | `03_data/processed/traffic_simulation/demand/household_parcel_v1/pipelines_v1/building_delivery_stops_scoped.csv` | `fcfca5cb87bc482f1d98306c98823773e872f200c58ecb9090aa12985e3e80e0` |

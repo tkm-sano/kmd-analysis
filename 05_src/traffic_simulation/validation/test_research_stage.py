@@ -95,7 +95,7 @@ def test_renders_dashboard_from_governed_state(tmp_path: Path) -> None:
     assert "2 / 3: **SUMO道路網**" in dashboard
     assert "**未承認** (`not_accepted`)" in dashboard
     assert "1. 構造確認用ネットワークを生成する" in dashboard
-    assert "[source.csv](03_data/metadata/source.csv)" in dashboard
+    assert "[source.csv](../03_data/metadata/source.csv)" in dashboard
 
 
 def test_repository_dashboard_matches_governed_configuration() -> None:

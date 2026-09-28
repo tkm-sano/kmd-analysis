@@ -61,7 +61,7 @@
 
 本研究は21工程で管理している。機械可読な現在地の正本は
 `reproducibility/config/traffic_simulation/research_stage.yml`、閲覧用表示は
-リポジトリ直下の`RESEARCH_STATUS.md`である。本書へ記載した状態と正本が異なる場合、
+リポジトリ直下の`00_project_management/RESEARCH_STATUS.md`である。本書へ記載した状態と正本が異なる場合、
 正本を優先し、本書を同じコミットで更新する。
 
 ### 2.1 全工程の関係

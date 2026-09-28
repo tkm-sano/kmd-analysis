@@ -14,7 +14,7 @@ def inputs() -> int:
     print("Delivery vehicle class: UNRESOLVED")
     print("Routing scope: UNRESOLVED")
     print("Routing cost definition: UNRESOLVED")
-    print("Decision record: RESEARCH_OVERVIEW.md#stage-1--routing-baseline-next")
+    print("Decision record: 01_research_design/RESEARCH_OVERVIEW.md#stage-1--routing-baseline-next")
     if not ready:
         print_gate("Formal Network prerequisite", False, issues)
     return OK

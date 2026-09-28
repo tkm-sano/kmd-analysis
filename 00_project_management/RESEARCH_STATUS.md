@@ -32,7 +32,7 @@ flowchart LR
 | 対象 | 判定 | 説明 |
 |---|---|---|
 | 道路網仕様 | **受入済み** (`accepted`) | V18 geometry/length re-受入とR12-R14 経路計算の基準 検証が合格。旧v16停止記録は履歴であり現行道路網 判定基準ではない |
-| 正式スーモ道路網 | **受入済み** (`accepted`) | 現行 V18 正本で正式道路網の受入=真。受入済み 範囲とハッシュ値はEVRP_EXECUTION_PLAN.mdを正本とする |
+| 正式スーモ道路網 | **受入済み** (`accepted`) | 現行 V18 正本で正式道路網の受入=真。受入済み 範囲とハッシュ値は00_project_management/EVRP_EXECUTION_PLAN.mdを正本とする |
 | 下流実験 | **範囲別** (`scope_split`) | 完全な電気自動車配送経路問題比較は未準備。R23の正式参照先の補完・最終結果・制約・R24 判定基準は05_src/traffic_simulation/R23_STATUS.mdを唯一の現行 索引とする |
 
 ## 現在の阻害事項
@@ -44,7 +44,7 @@ flowchart LR
 
 ## 次の作業
 
-1. EVRP_EXECUTION_PLAN.mdに従い完全な電気自動車配送経路問題本線の未完Definition stageを進める
+1. 00_project_management/EVRP_EXECUTION_PLAN.mdに従い完全な電気自動車配送経路問題本線の未完Definition stageを進める
 2. 次候補はR24設計・開始前レビュー。現行正本は05_src/traffic_simulation/R23_STATUS.md、履歴証拠はreproducibility/archive/traffic_simulation/r23/。R24は未開始
 3. R23の固定scientific 手順とarchive 根拠を保持する
 4. full-EVRP/Hayate評価と縮約した 手法 根拠を範囲付きで統合する
@@ -53,13 +53,13 @@ flowchart LR
 
 | # | 工程識別子 | 工程 | 状態 | 証拠 |
 |---:|---|---|---|---|
-| 1 | `environment` | Docker・リポジトリ環境 | 完了 | [compose.yaml](compose.yaml)<br>[Dockerfile](docker/analysis/Dockerfile) |
-| 2 | `data_governance` | データ取得・来歴規約 | 完了 | [README.md](03_data/metadata/acquisition/README.md)<br>[traffic_simulation_sources.csv](03_data/metadata/traffic_simulation_sources.csv) |
-| 3 | `study_area` | N03大田区研究範囲 | 完了 | [study_areas.yml](reproducibility/config/traffic_simulation/study_areas.yml)<br>[20260717_mlit_n03_2026_tokyo_acquisition.md](03_data/metadata/acquisition/20260717_mlit_n03_2026_tokyo_acquisition.md) |
-| 4 | `baseline_inputs` | 日本道路交通情報センター・オープンストリートマップ基礎入力 | 完了 | [20260717_jartic_traffic_volume_acquisition.md](03_data/metadata/acquisition/20260717_jartic_traffic_volume_acquisition.md)<br>[20260717_osm_ota_ward_acquisition.md](03_data/metadata/acquisition/20260717_osm_ota_ward_acquisition.md) |
-| 5 | `input_visualization` | 入力道路・観測点レビュー地図 | 完了 | [render_study_area.py](05_src/traffic_simulation/visualization/render_study_area.py)<br>[README.md](05_src/traffic_simulation/visualization/README.md) |
-| 6 | `sumo_network` | スーモ道路網生成・構造検証 | 完了 | [relation_closure_v16.yml](reproducibility/config/traffic_simulation/relation_closure_v16.yml)<br>[20260730_ota_ward_relation_closure_v16.md](03_data/metadata/acquisition/20260730_ota_ward_relation_closure_v16.md)<br>[20260730_ota_ward_v15_exception_rule_validation.md](03_data/metadata/acquisition/20260730_ota_ward_v15_exception_rule_validation.md)<br>[build_sumo_network.py](05_src/traffic_simulation/network/build_sumo_network.py)<br>[classify_resolver_exceptions.py](05_src/traffic_simulation/network/classify_resolver_exceptions.py) |
-| 7 | `demand_and_observations` | **観測拡充・交通需要生成** | **進行中** | [EVRP_EXECUTION_PLAN.md](EVRP_EXECUTION_PLAN.md) |
+| 1 | `environment` | Docker・リポジトリ環境 | 完了 | [compose.yaml](../compose.yaml)<br>[Dockerfile](../docker/analysis/Dockerfile) |
+| 2 | `data_governance` | データ取得・来歴規約 | 完了 | [README.md](../03_data/metadata/acquisition/README.md)<br>[traffic_simulation_sources.csv](../03_data/metadata/traffic_simulation_sources.csv) |
+| 3 | `study_area` | N03大田区研究範囲 | 完了 | [study_areas.yml](../reproducibility/config/traffic_simulation/study_areas.yml)<br>[20260717_mlit_n03_2026_tokyo_acquisition.md](../03_data/metadata/acquisition/20260717_mlit_n03_2026_tokyo_acquisition.md) |
+| 4 | `baseline_inputs` | 日本道路交通情報センター・オープンストリートマップ基礎入力 | 完了 | [20260717_jartic_traffic_volume_acquisition.md](../03_data/metadata/acquisition/20260717_jartic_traffic_volume_acquisition.md)<br>[20260717_osm_ota_ward_acquisition.md](../03_data/metadata/acquisition/20260717_osm_ota_ward_acquisition.md) |
+| 5 | `input_visualization` | 入力道路・観測点レビュー地図 | 完了 | [render_study_area.py](../05_src/traffic_simulation/visualization/render_study_area.py)<br>[README.md](../05_src/traffic_simulation/visualization/README.md) |
+| 6 | `sumo_network` | スーモ道路網生成・構造検証 | 完了 | [relation_closure_v16.yml](../reproducibility/config/traffic_simulation/relation_closure_v16.yml)<br>[20260730_ota_ward_relation_closure_v16.md](../03_data/metadata/acquisition/20260730_ota_ward_relation_closure_v16.md)<br>[20260730_ota_ward_v15_exception_rule_validation.md](../03_data/metadata/acquisition/20260730_ota_ward_v15_exception_rule_validation.md)<br>[build_sumo_network.py](../05_src/traffic_simulation/network/build_sumo_network.py)<br>[classify_resolver_exceptions.py](../05_src/traffic_simulation/network/classify_resolver_exceptions.py) |
+| 7 | `demand_and_observations` | **観測拡充・交通需要生成** | **進行中** | [00_project_management/EVRP_EXECUTION_PLAN.md](EVRP_EXECUTION_PLAN.md) |
 | 8 | `optimization_implementation_validation` | 最適化基盤検証・配送電気自動車制約の段階追加 | 未着手 | - |
 | 9 | `signal_vehicle_driver` | 信号・車両・運転行動設定 | 未着手 | - |
 | 10 | `calibration` | 交通モデル較正 | 未着手 | - |

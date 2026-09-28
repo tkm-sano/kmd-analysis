@@ -6,7 +6,7 @@ import mimetypes
 import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import unquote, urlparse
+from urllib.parse import quote, unquote, urlparse
 
 import yaml
 
@@ -311,6 +311,14 @@ class Handler(BaseHTTPRequestHandler):
             return
         if parsed.path.startswith("/artifact/"):
             relative = unquote(parsed.path.removeprefix("/artifact/"))
+            relocations = json.loads((ROOT / "docs/ROOT_FILE_RELOCATIONS.json").read_text(encoding="utf-8"))
+            target = next((item["new"] for item in relocations["moves"] if item["old"] == relative), None)
+            if target is not None:
+                self.send_response(308)
+                self.send_header("Location", "/artifact/" + quote(target))
+                self.send_header("Content-Length", "0")
+                self.end_headers()
+                return
             self.send_file(ROOT / relative, root=ROOT, send_body=send_body)
             return
         relative = "index.html" if parsed.path == "/" else parsed.path.lstrip("/")
