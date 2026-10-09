@@ -1,0 +1,196 @@
+{
+  "model_version": "CONTROLLED_MASS_TO_DC_V1",
+  "created_date": "2026-10-06",
+  "freeze_scope": "Independent controlled research model; does not replace Battery/SOC production authority or CURRENT",
+  "interpretation": "CONTROLLED_COUNTERFACTUAL_NOT_TARGET_CALIBRATION",
+  "stage_inputs": [
+    {
+      "stage_id": "B0",
+      "e_pack_Wh_kg": 180.0,
+      "E_pack_fixed_Wh": 20000,
+      "E_vehicle_usable_assumed_Wh": 18000,
+      "m_pack_kg": 111.11111111111111,
+      "vehicle_mass_kg": 1100.0,
+      "running_mass_kg": 1155.0
+    },
+    {
+      "stage_id": "B1",
+      "e_pack_Wh_kg": 220.0,
+      "E_pack_fixed_Wh": 20000,
+      "E_vehicle_usable_assumed_Wh": 18000,
+      "m_pack_kg": 90.9090909090909,
+      "vehicle_mass_kg": 1079.79797979798,
+      "running_mass_kg": 1134.79797979798
+    },
+    {
+      "stage_id": "B2",
+      "e_pack_Wh_kg": 250.0,
+      "E_pack_fixed_Wh": 20000,
+      "E_vehicle_usable_assumed_Wh": 18000,
+      "m_pack_kg": 80.0,
+      "vehicle_mass_kg": 1068.888888888889,
+      "running_mass_kg": 1123.888888888889
+    }
+  ],
+  "Crr_model": {
+    "formula": "0.005+(0.01+0.0095*(v_kmh/100)^2)/p_bar",
+    "speed_conversion": "v_kmh=3.6*v_m_s",
+    "coefficient_unit": "dimensionless",
+    "cases": {
+      "CRR_LOWER_BOUND": {
+        "p_bar": 4.5
+      },
+      "CRR_UPPER_BOUND": {
+        "p_bar": 2.6
+      }
+    },
+    "interpretation": "Axle coefficient envelope, not pressure-change scenario or confidence interval; no midpoint"
+  },
+  "CdA": {
+    "value": 1.175,
+    "unit": "m2",
+    "status": "CONTROLLED_COMMON_PARAMETER"
+  },
+  "rho": {
+    "value": 1.2041,
+    "unit": "kg/m3"
+  },
+  "g": {
+    "value": 9.80665,
+    "unit": "m/s2"
+  },
+  "rotational_equivalent_mass": {
+    "value": 61,
+    "unit": "kg",
+    "stage_invariant": true
+  },
+  "grade_model": "FLAT_ROAD_CONTROLLED",
+  "grade_degrees": 0,
+  "turn_loss_scope": "EXCLUDED_BY_MODEL_BOUNDARY",
+  "eta_prop": 0.9,
+  "regen_model": "NO_REGEN_CONTROLLED",
+  "accepted_regen_Wh": 0,
+  "auxiliary_scope": "OUT_OF_SCOPE",
+  "running_mass_definition": {
+    "formula": "vehicle_mass_kg+55",
+    "driver_common_kg": 55,
+    "cargo_kg": 0,
+    "additional_equipment_kg": 0,
+    "status": "P1_EMPTY_LOAD_CONTROLLED_NOT_ACTUAL_PAYLOAD"
+  },
+  "integration_rule": {
+    "dt_s": 1,
+    "distance": "ds_m=v_t_m_s*dt_s",
+    "inertia": "exact adjacent-sample delta kinetic energy",
+    "resistive_work": "right endpoint speed",
+    "missing_intervals": "REJECT; no interpolation, speed padding or endpoint fabrication"
+  },
+  "energy_boundary": "BATTERY_SIDE_DC_DRIVING_ENERGY_CONTROLLED_TRACTION_NO_REGEN_AUXILIARY_EXCLUDED",
+  "equations": {
+    "rolling_J": "m_running*g*Crr(v_t,p)*ds",
+    "translational_J": "0.5*m_running*(v_t^2-v_prev^2)",
+    "rotational_J": "0.5*61*(v_t^2-v_prev^2)",
+    "aero_J": "0.5*rho*CdA*v_t^2*ds",
+    "grade_J": "0 under controlled flat-road condition",
+    "wheel_Wh": "(rolling_J+translational_J+rotational_J+aero_J+grade_J)/3600",
+    "traction_DC_Wh": "max(wheel_Wh,0)/eta_prop",
+    "accepted_regen_Wh": "0 by controlled no-regen choice",
+    "net_DC_Wh": "traction_DC_Wh",
+    "stock_next_Wh": "stock_current_Wh-net_DC_Wh"
+  },
+  "component_scope": {
+    "rolling": "CALCULATED",
+    "translation": "CALCULATED",
+    "rotation": "CONTROLLED_COMMON",
+    "aero": "CONTROLLED_COMMON",
+    "grade": "FLAT_ROAD_CONTROLLED",
+    "turn": "EXCLUDED_BY_MODEL_BOUNDARY",
+    "auxiliary": "OUT_OF_SCOPE"
+  },
+  "stock_accounting": {
+    "initial_Wh": 18000,
+    "max_Wh": 18000,
+    "initial_headroom_Wh": 0,
+    "status": "RESEARCH_USABLE_ASSUMPTION_NOT_OEM",
+    "negative_stock": "Flag failure; never clamp or alter trajectory"
+  },
+  "output_null_policy": "turn and auxiliary energy null with scope flags, not physical zero",
+  "source_refs": [
+    {
+      "id": "AERO_JPL",
+      "url": "https://ntrs.nasa.gov/api/citations/19860001616/downloads/19860001616.pdf",
+      "locator": "DOE/JPL84-79 Volume II Table 5-3 printed p5-7 / PDF167",
+      "role": "Historical modeled van: Cd0.47 * A2.50; controlled benchmark not target calibration",
+      "cache": "03_data/raw/final_mechanical_components_20261006/F01.pdf"
+    },
+    {
+      "id": "ROTATION",
+      "url": "https://doi.org/10.3390/pr10081664",
+      "locator": "Table 1",
+      "role": "Research normalization (1.05-1)*source curb1220 = fixed61kg; not measured target inertia; never scale with stage mass",
+      "cache": "03_data/raw/running_mass_qualification_20261006/M03.pdf"
+    },
+    {
+      "id": "ROLLING",
+      "url": "https://doi.org/10.3390/en14227524",
+      "locator": "Equation 4",
+      "role": "Dry pneumatic tire speed-pressure model",
+      "cache": "03_data/raw/running_mass_qualification_20261006/M02.pdf"
+    },
+    {
+      "id": "TIRE_PRESSURES",
+      "url": null,
+      "locator": "Mitsubishi MINICAB EV official manual January2026 p16-6; URL retained in prior source register",
+      "role": "Front260kPa rear450kPa; axle weighting unknown; retain both coefficient bounds",
+      "cache": "03_data/raw/running_mass_qualification_20261006/M04.pdf"
+    },
+    {
+      "id": "PROPULSION",
+      "url": "https://doi.org/10.3390/wevj14080230",
+      "locator": "Table3 Hull case; prior qualified controlled model",
+      "role": "Generic constant0.90 effective conversion; not MINICAB map",
+      "cache": "03_data/raw/vehicle_mass_to_energy_dc_20261006/D03.pdf"
+    },
+    {
+      "id": "LONGITUDINAL_SCOPE",
+      "url": "https://github.com/eclipse-sumo/sumo/blob/v1_24_0/src/utils/emissions/HelpersMMPEVEM.cpp",
+      "locator": "Longitudinal force family; local source cache",
+      "role": "Boundary excludes explicit radial term; selected model is not full MMPEVEM clone",
+      "cache": "03_data/raw/vehicle_mass_to_energy_20261006/HelpersMMPEVEM.cpp"
+    },
+    {
+      "id": "RHO",
+      "url": "https://github.com/eclipse-sumo/sumo/blob/v1_24_0/src/utils/emissions/HelpersEnergy.cpp",
+      "locator": "Source constants",
+      "role": "Controlled air density; not actual weather",
+      "cache": "03_data/raw/vehicle_mass_to_energy_20261006/HelpersEnergy.cpp"
+    }
+  ],
+  "input_hashes": {
+    "01_research_design/methodology/CONTROLLED_DC_VALIDATION.json": "90b3a477ed72766f90610a8f755ea35eed3eac93aaea4f0791e6a262a5212663",
+    "01_research_design/methodology/CONTROLLED_MECHANICAL_PARAMETERS.csv": "b5d82e5071cd29667083f90a2349b1963e8f24c4b009d620f60911d20f74ae15",
+    "01_research_design/methodology/PACK_SPECIFIC_ENERGY_MASS_PROPAGATION.csv": "85c30ee71835bb48b69c14b083f2316167614c9a464c38ca845a19317754456b",
+    "05_src/literature_analysis/validate_controlled_whole_trajectory_dc.py": "49b141ac9e3741b841389a8e084d99753b668b647e01cabfd7dd5b9778f23da8",
+    "03_data/raw/final_mechanical_components_20261006/model_plan.json": "2942c9c305fcda79f3d1d5d56863eb749a73683bc9647acece592dcc0c102da3",
+    "03_data/raw/final_mechanical_components_20261006/F01.pdf": "ed633f2e8398d8a6ac931e0a3c01204a4d04ca48568e8dd5602be8489534e4d2",
+    "03_data/raw/running_mass_qualification_20261006/M03.pdf": "14fea955b6b139fa64aa05b67bc044105967b7ad884bc303c21634225bb53a76",
+    "03_data/raw/running_mass_qualification_20261006/M02.pdf": "120850e1346a0cbad3b8bf55fc02a83b392a037cc3a5659540d9140f82a4de91",
+    "03_data/raw/running_mass_qualification_20261006/M04.pdf": "062e8a583cf1b2c36c1c70726f768e6343abfa1ddf3cc6bd1522e3d23090db8e",
+    "03_data/raw/vehicle_mass_to_energy_dc_20261006/D03.pdf": "74f0ed88787b7379b183539ed2e84cb12cbf5589735c918c4c64d30403378a46",
+    "03_data/raw/vehicle_mass_to_energy_20261006/HelpersMMPEVEM.cpp": "4c75d5d8367117a08be6541d78321dcd7061054a21abf66f6e6483550f34aa88",
+    "03_data/raw/vehicle_mass_to_energy_20261006/HelpersEnergy.cpp": "3469c226cfe8d66ada5a92bfe35c4ecf70078df68786a08a9e8eb66388d47eb0",
+    "01_research_design/methodology/FINAL_MECHANICAL_COMPONENT_REVIEW.md": "93d978989779ab465f99c1e90518c4a86911baa9728d3f766c26f5779e10f43b",
+    "01_research_design/methodology/WHOLE_TRAJECTORY_CONTROLLED_DC_RESULTS.csv": "ce021f6d17d4ae521124ad43a6e826ddde7512b9f81ac579337e352b2034b470",
+    "01_research_design/methodology/CONTROLLED_DC_ROBUSTNESS_RESULTS.csv": "99474dfc85405e085fc7485fe9285105c2f756f971c95fb52de4efd90ebfc38e",
+    "01_research_design/methodology/CONTROLLED_DC_INTERVAL_RESULTS.csv": "8a9d809f1faf6c95c902a7e3b701b2a7f715620e8871a21bfbd266bb15270fa6"
+  },
+  "reference_implementation": "05_src/literature_analysis/validate_controlled_whole_trajectory_dc.py",
+  "implementation_scope": "Diagnostic implementation pinned for equation/discretization provenance; do not run it as full-delivery adapter",
+  "optional_robustness": {
+    "CdA_alternative_m2": 1.125,
+    "basis": "Same JPL van without-radiator paired alternative; not confidence interval",
+    "primary": false
+  },
+  "change_policy": "No tuning after outcomes; changes require separate version and review",
+  "execution_authorized_in_this_task": false
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "kind": "SMOKE_TEST_AND_DEMONSTRATION_NOT_SCIENCE_PROTOCOL",
+  "routing_fixture": "data/examples/three_customers.json",
+  "trajectory_fixture": "data/examples/speed.csv",
+  "expected_energy_fixture": "data/examples/speed.json",
+  "battery_authority": "01_research_design/methodology/CONTROLLED_MASS_TO_DC_MODEL_FREEZE.json",
+  "results_index": "results/indexes/CANONICAL_RESULTS.json",
+  "quantum_demonstration_reference": "notebooks/02_pubo_qaoa.ipynb",
+  "parameter_policy": "Notebook02 defaults remain in its cells (gamma=0.001,beta=0.2,shots=64,seed=20261009,DO_OPTIMIZE=False); this config maps inputs only, not production QAOA settings",
+  "rights_status": "RIGHTS_PENDING"
+}
