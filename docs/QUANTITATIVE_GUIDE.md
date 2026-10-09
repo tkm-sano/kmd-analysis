@@ -2,6 +2,7 @@
 
 正式API・保存結果・小規模再利用の統合ガイドです。科学的凍結報告とは別の利用説明であり、研究の数値・RQ・仮説は変更しません。
 
+- [0. Open Data to Frozen Results](#0-open-data-to-frozen-results)
 - [1. Research Scope](#1-research-scope)
 - [2. Model Architecture](#2-model-architecture)
 - [3. Routing Model](#3-routing-model)
@@ -16,6 +17,171 @@
 - [12. GitHub and Hayate Responsibilities](#12-github-and-hayate-responsibilities)
 - [13. Data Attribution and Licensing](#13-data-attribution-and-licensing)
 - [14. Limitations and Provenance](#14-limitations-and-provenance)
+
+## 0. Open Data to Frozen Results
+
+本節は研究上の課題からデータ取得、加工、計算、結果の確定までを順に説明する。**CONFIRMED**は保存資料・実行記録で確認した事実、**RECONSTRUCTED**は複数の証拠を接続して再構成した経緯、**INFERRED**は研究設計からの推定、**UNKNOWN**は証拠不足である。過去の実行記録を読むことと、その工程を今回再実行することは別である。以下では新しい科学実験・需要生成・道路再構築を行っていない。全体の研究課題と今後の研究は[研究基準文書](research/RESEARCH_BASELINE_20261009.md)を参照する。
+
+### 0.1 研究上の問題意識
+
+**CONFIRMED：** 上位目的は必要な物流サービスを確保しながらエネルギー消費を下げることであり、正式RQはEV配送の経路計算とBattery性能を介した量子技術の影響を問う。そこで、経路を変えるPath 1と、同じ走行軌跡でパック・車両質量条件を変えるPath 2を接続した。実施済みの評価対象はDC牽引電力量であり、社会全体の消費、充電込みの主仮説の検証完了ではない。正式RQと仮説の原文は[第1節](#1-research-scope)に保持する。
+
+### 0.2 なぜオープンデータを組み合わせたか
+
+**RECONSTRUCTED：** 直線距離だけでは、道路の接続、向き、通行可能性が経路選択と走行に与える制約を表せない。一方、道路だけでは配送先の分布や需要量は分からない。このため、OSMの道路、PLATEAUの建物、行政界、公的統計の人口・世帯・受取頻度を異なる役割の入力として接続した。取得台帳、需要工程台帳、最終入力契約の対応から、この設計を再構成できる。道路属性の観測、統計による較正、研究者の仮定は同じ確実性を持たない。
+
+**INFERRED：** 個別企業の注文記録に依存せず、入力の出所と仮定を追跡できる比較問題を構成することは、合成需要を採用する合理的な理由である。ただし、配送会社へのデータ提供依頼や不許可の履歴を確認したわけではなく、「注文データを入手できなかったから」と過去の意思決定を断定しない。**CONFIRMED：** 実際に用いたのは統計から生成した需要であり、配送会社の実注文履歴ではない。
+
+### 0.3 対象地域とデータ選定
+
+**CONFIRMED：** 初期実装計画は、東京全域へ直ちに進まず、環境・データ統合検証を大田区で開始すると定めている。研究範囲は国土数値情報N03の2026年東京都行政界から行政区域コード`13111`を選び、東京都・大田区の名称も照合して固定した。観測点数や結果の良否で境界を動かさない設計である。境界矩形は取得用、行政界ポリゴンは地域判定用であり、同一ではない。
+
+**INFERRED：** 一自治体に限定し、道路・建物・統計を共通の地域キーで接続することは、都市規模のデータ処理を管理可能にする。**UNKNOWN：** 大田区を他自治体より優先した理由を、空港・工業地帯・所属機関との近さ等に帰す根拠は今回確認していない。都市の特性から後付けの選定理由を作らない。
+
+### 0.4 何を、どこから、どう取得したか
+
+**CONFIRMED：** OSMには地域ごとの固定snapshotを取得できるGeofabrikを用いた。2026-07-17の取得記録と出典台帳は、関東の`kanto-260716.osm.pbf`、データ時点`2026-07-16T20:21:30Z`、476,772,780 bytes、SHA256 `aef890f28b652ed7bd2b0d77e86f263219b479fe3eedbdd8610dcfc1572c420d`を記録する。[関東配布ページ](https://download.geofabrik.de/asia/japan/kanto.html)と[当時の日付固定URL](https://download.geofabrik.de/asia/japan/kanto-260716.osm.pbf)を区別する。現在のlatestは別のsnapshotであり、代用して同じ実験としない。日付固定URLの現在の取得成功までは保証しない。
+
+取得記録に残るコマンドは次である。これは当時のDocker・Hayate側コードを必要とする**履歴上の実行手順**であり、現在の小規模GitHub配布だけで実行できるコマンドではない。
+
+```bash
+docker compose run --rm analysis \
+  python -m traffic_simulation.network.fetch_osm \
+  --region ota_ward --snapshot-date 20260716
+```
+
+同処理は日付固定URLを組み立て、`.part`へ取得し、サイズ・PBF形式・要素数・SHA256を検査してから原本を確定した。Overpassやブラウザの手動エクスポートを用いたという記録ではない。道路データベースの出典は© OpenStreetMap contributors、利用条件はODbL 1.0であり、詳細は[帰属表示と配布](#13-data-attribution-and-licensing)を参照する。
+
+**CONFIRMED：** 建物には国土交通省Project PLATEAUの[3D都市モデル（大田区）（2025年度）](https://www.geospatial.jp/ckan/dataset/plateau-13111-ota-ku-2025)のCityGMLを採用した。保存ZIPは`13111_ota-ku_pref_2025_citygml_1_op.zip`、543,501,320 bytes、SHA256 `820f2b6c7af9e2a097c0868f3452953cbbe90f81c450ae5880f31eb52d159800`である。保存取得資料は2026-08-21、ZIP内READMEは作成2026-03-13・製品仕様第5.0版を示す。データ年度、README作成日、取得日を混同しない。
+
+**RECONSTRUCTED：** 配布ページで大田区2025年度を選び、CityGMLのZIP resourceを取得し、ファイル名・README・hashを保存するという取得経路が資料と整合する。**UNKNOWN：** 個別のブラウザクリック列や当時のcurlコマンドは確認できないため提示しない。建物形状・用途と位置を接続できることが研究上の採用意義であるが、CityGMLの全属性を計算に使ったとはしない。利用条件は配布ZIPの表示と提供元の条件を優先し、研究コードのApache-2.0を適用しない。
+
+**CONFIRMED：** 需要統計はe-Stat等の公的集計を用いた。2020年国勢調査の小地域CSV（表ID`000032163278`）と500mメッシュ（`T001141034`等）、2023年住宅・土地統計調査（表ID`000040209857`）は世帯構成・住宅区分・地域配分へ接続する。元表の全採用セルと合成世帯への変換は完全には復元できていない。
+
+受取頻度は[国土交通省・東京都市圏物資流動調査、令和6年度「個人のモノの受取調査」](https://www.e-stat.go.jp/stat-search/files?layout=dataset&tclass1=000001223521&tclass2=000001234242&toukei=00600520&tstat=000001078042)のss521「世帯人数別・世帯構成別宅配受取頻度（回数）・再配達頻度（割合）」である。`ss521_r06a.xlsx`、シート`ss521_R06`、SHA256 `5b6ae34c771739869648147487780d4f0bb1f2a556f36c5ff97ee0514de664e0`を保存manifestで識別できる。取得観測日は2026-08-23、manifest固定は08-29である。08-25の9表の原本固定記録にはss521は含まれないため、後続manifestと採用強度CSVで接続を確認した。
+
+**RECONSTRUCTED：** e-Statの該当統計・年度・表分類からExcelを取得することが一般的な取得手順である。ss521はworkspaceから供給されたファイルとの記録であり、当該URLから直接通信したログを意味しない。2026-10-09の説明整備時、Geofabrik配布ページは閲覧できたが、PLATEAU・e-Statの上記ページは閲覧ツールで取得できず、年度・取得日は保存された資料に基づいている。
+
+### 0.5 道路を走行計算に使える形へ加工する
+
+**CONFIRMED：** まずN03行政界からEPSG:4326の外接矩形（西139.652974773、南35.528198081、東139.826027782、北35.613210171）を機械生成した。osmium-tool 1.15.0の`extract --strategy complete_ways --set-bounds`で交差するwayの参照ノードを保持し、12,218,967 bytesの大田区抽出PBFを得た。wayを矩形境界で切断しないため、含まれるノードの範囲は取得矩形より広がり得る。初期抽出には40,880のhighway wayがあるが、その数を最終走行可能edge数としない。
+
+**RECONSTRUCTED：** 抽出だけではrelationの参照、方向、車線、速度、通行規制を確定できないため、後続の関係閉包・属性解決工程へ進んだ。保存された入力は`ota_ward_20260716_relation_closure_v16.osm.xml`であり、v17のblocker記録と属性補完へ接続する。highway種別にはmotorway/trunk/primary/secondary/tertiaryと各link、unclassified/residential/service/living_street等がある。自動車系の種別選択と、個別のdelivery車両の通行可否は別の判断である。
+
+**CONFIRMED（保存コードの内容）：** three-tier補完器は元の`lanes`、`maxspeed`、`access`等を読み、明示値・推定値・fallbackを分けて記録する。例えば保存コードの速度表はmotorway80、trunk60、primary50、secondary/tertiary40、residential30、service/living_street20 km/h等である。これらは欠損時のモデル規則であり、実測速度ではない。保存された値決定関数はaccess=noをno、他をyesへ処理する箇所を持つため、全法的通行規制を精密に復元したとは説明できない。`EXTRATREES_BENCHMARK_PROXY`という名称だけから学習済み機械学習モデルの使用を推定しない。採用runner・全補完レコード・最終値の完全な対応確認は未完了である。
+
+**RECONSTRUCTED：** 補完OSMをSUMO/netconvert 1.24.0で`--osm-files --proj.utm --ignore-errors`等の保存コマンドにより変換し、junction（接続点）、edge（有向道路）、lane（走行車線）を得た。OSMのwayとSUMO edgeは単純な一対一ではなく、道路接続と車線許可を含む変換である。変換成功だけで実都市の完全な通行再現や信号・交通量の妥当性を保証しない。
+
+**CONFIRMED／UNKNOWN：** 最終幾何補正の実コマンド・`repair_network_geometry_lengths.py`・repair報告は、lane形状をjunction端点へ接続し、接続後の折線長をlane lengthへ反映したと記録する。一方、config snapshotには「length維持」と実在を確認できない別generator名があり、整合しない。本説明は実在コード・コマンド・変換報告に基づくが、PBFから最終XMLまで完全な同一再生成が可能とはしない。最終XMLのhashは`460554c7716fe5e3e1410bbee790e69745a2c423146bac88e51e3a2b95f051b2`であり、下流planと一致する。この実ファイルを[道路データRelease](https://github.com/tkm-sano/kmd-analysis/releases/tag/road-data-20261009-rc1)で提供している。
+
+### 0.6 建物と統計を需要の基礎へ加工する
+
+**CONFIRMED：** 現在のHayateには建物候補CSVが存在し、building_id、building_usage、住宅区分との適合、geometry参照、階数・地下階数・高さ、source_file/feature_id、除外状態を記録している。過去の監査で未回収とされたCSVは今回実在を確認したが、中間parquetの生成器の回復を意味しない。保存されている高さ・階数の列を、そのまま世帯配分の重みとして使ったとはしない。
+
+**RECONSTRUCTED：** CityGMLの建物ID・用途を住宅候補へ対応させ、町丁目との空間的な対応を作り、代表点を後段の配送地点へ渡したという流れが工程台帳と保存出力から読める。**INFERRED：** 通常この接続には座標系を合わせた形状読込み、代表点の計算、行政区画への空間結合が必要である。しかし、代表点が重心か内部点か、使用した全用途コード、境界処理、入力ZIPの混合有無は確認できない。
+
+**UNKNOWN：** `plateau_buildings_all_with_chocho_points.geo.parquet`の記録hashは`6779656a0719bb91b9bf97513e23498d88f5bc9eacdebccfcc7d5b1b5e161fa0`であるが、原本と直接生成コード・ログは未回復である。ZIP内説明のLOD1建築物158,860棟と工程台帳の候補195,311行は一致しない。その理由を重複や建物分割だと断定しない。ZIP→候補→この中間parquetの完全来歴が残る確認点である。
+
+**CONFIRMED：** 公的統計から生成した合成世帯は384,353である。住宅区分は市区町村集計に基づく多項・カテゴリ割当、seed20260830との記録がある。これは実在世帯の個票や居住建物を観測したものではない。建物への割当では許された住宅候補からの一様離散選択を採用し、住戸数、入口、建物収容能力、最寄り候補による救済は使用していないと保存summaryに明示される。全世帯生成の乱数環境・固定行順・採用セルの詳細は未回復である。
+
+### 0.7 世帯から一日の合成配送需要を生成する
+
+**CONFIRMED：** 基準需要設定は2024年全国宅配便取扱量5,031,470,000、全国人口123,802,000、大田区人口736,652、365日を採用した。全国一人当たり日量を大田区人口へ移す式は`5,031,470,000 / 123,802,000 / 365 × 736,652`で、保存台帳の値は82,023.204937、整数の期待日量は82,023 parcel-equivalentである。これは全国規模の取扱量の人口比例移転であり、大田区住宅の実注文総数の実測・推定精度を保証しない。全国量には住宅B2C以外も含まれ得る。
+
+基準メッシュ工程は2020年人口メッシュを行政界との面積で按分し、2024年大田区人口へ再尺度化し、最大剰余法で整数を配分した。世帯への期待値配分では、ss521の受取経験のある世帯の人数別小計を使用する。採用週頻度は1人0.65148273、2人0.93035232、3〜4人1.18813494、5人以上1.45298673回/週である。共通参照0.8498914166013274回/週で割った相対強度rを用い、`lambda_h = 82023 × r_h / sum(r_h)`として各世帯の日量期待値を与える。週頻度をそのまま全世帯の実日量と解釈せず、都市全体の期待日量を配分する相対情報として使用している。
+
+**CONFIRMED：** 保存された生成仕様は`N_h,d ~ Poisson(lambda_h)`、seed20260829、合成評価日2026-01-01である。評価日の文字列は取得日より前でも、実際にその日に観測したという意味ではない。Poissonと世帯間独立性はモデル仮定であり、実測分散に適合したことを確認したものではない。保存された期待値合計82,023.00000048117と目標82,023の差は記録された許容差内である。乱数生成ライブラリ・全行順を含む原生成器は未回復なので、seedだけで全く同じ標本を再生成できるとはしない。
+
+|段階|保存値|何を数えるか|
+|---|---:|---|
+|合成世帯|384,353|統計から作った世帯record|
+|一日の期待総量|82,023|parcel-equivalent、乱数実現値ではない|
+|正の需要record|73,547|正の世帯日需要record（複数parcel-equivalentを含み得る）|
+|生成需要総量|82,246|parcel-equivalent、注文record数ではない|
+|建物対応済み世帯|382,369|全合成世帯のうち割当済み|
+|需要のある対応済みrecord|73,200|建物へ対応した需要record|
+|建物対応済み需要量|81,859|parcel-equivalent|
+|需要のある建物／配送地点|39,956|同一建物でまとめたstop|
+
+**CONFIRMED：** 後段のscoped summaryは、候補なし206世帯・住宅型非対応1,778世帯を残し、割当済み世帯を85,690建物へ対応させる。正の需要を持つrecordをbuilding IDで集約してparcel-equivalentを加算し、39,956地点とした。`matched`および`matched_cross_boundary`の範囲を採用し、曖昧・範囲外等を無断補完しない。生成総量82,246全体の保存ではなく、割当範囲内の81,859だけがstopへ保存されている。初期summaryのactive_buildings=0は建物割当以前の記録であり、後段の39,956を打ち消さない。
+
+### 0.8 配送地点から比較可能な配送問題へ
+
+**CONFIRMED：** 建物代表点は入口・停車場所ではない。配送地点を道路上のMODEL_SERVICE_POINTへ対応させ、delivery車両が利用する有向edge・lane・道路上位置を固定した。デポDEP_006はP31物流施設候補に由来する研究上の代理拠点であり、配送会社の営業区域を観測したものではない。位置の道路対応を確定してから、位置付きの有向OD旅行時間・距離、到達可能性を計算した。同一edge上でも進行方向により周回が必要となるため、専用position-aware routerを利用する。
+
+容量216 parcel-equivalentは実車積載kgから換算した値ではない。保存された設計はgroup需要中央値431を代表として`ceil(431/2)=216`を提案し、2026-09-30のcapacity freezeが採用を記録する。「代表groupを二つの容量予算で扱う」という方法論上の選択である。一次比較で固定し、108/432の感度候補と混ぜない。
+
+固定割当はgroup内の道路対応座標を1m整数格子へ置き、Morton/Z順で並べ、需要合計が216を超えない連続next-fit区間に分割する。顧客を分割・他groupへ移動・後から詰め替えない。得られた182 group・465 rosterは容量上の編成であり、時間窓・SOC可行性や最適車両台数を保証しない。空間順序は割当用で、訪問順は後のsolverが選ぶ。
+
+最終matched設計は、125顧客以上の26 parent・25 groupを選び、固定hash順から各3 replicateのnested部分集合n=3/4/5/25/99/125を作る。初期のPPS10顧客fixtureやEV41kWhの設計枝を、この最終20kWh評価へ混ぜない。親の需要・OD・時間窓を継承し、固定1車両、サービス102秒、時間窓幅7,200秒、出発0秒・帰還32,400秒を用いる。これらは研究条件であり実サービス時間の観測値ではない。102秒・時間窓幅の根拠の全来歴を今回独立に確定したとはしない。
+
+### 0.9 同じ入力で古典計算と量子計算を比較する
+
+**CONFIRMED：** 古典側は訪問順についてデポ発着を含む道路旅行時間を最小化し、容量・時間窓・全顧客一度訪問・帰還を独立に検査する。n≤5は完全列挙、n≥25は確定的ヒューリスティックとassignment LP下界である。**INFERRED：** 旅行時間を共通目的とし、その後で電力量を別評価する設計は、求解対象と物理的影響を分離するために有効であるが、この説明を当初の選定理由の逐語記録とはしない。
+
+**CONFIRMED：** 量子を比較対象とした根拠は正式RQである。同じ物理入力・固定割当・制約をCandidate Cの補助変数なし位置PUBOへ写し、旅行時間と罰則を計算する。正式Protocol V2は理想Statevector、p=1、H初期状態、X mixer、COBYLA最大100評価×2,048 shots、独立最終4,096 shotsである。古典前処理の全順列可行性表を用い、最終標本の復号・独立検査後に最小旅行時間の経路を選ぶ。計算本体・bit順序・同点規則は[第3・4節](#4-quantum-model-and-protocol-v2)を参照する。量子はR0/R1の小規模比較だけであり、古典6規模すべてで量子を実行したわけではない。
+
+### 0.10 訪問順をSUMOの走行軌跡へ接続する
+
+**CONFIRMED：** 最適化結果のcustomer_orderを配送端点列へ対応させ、隣接端点ごとの道路legを専用`duarouter_loop`で得る。leg境界の重複edgeを処理して一本のrouteへ連結し、停車lane・endPos・duration=102秒・予定出発までのuntilを設定する。走行typeはdeliveryで、保存planはSUMO1.24の既存挙動、seed20260930、step/FCD周期1秒、単独車両・背景交通なしを指定する。初期計画の状態表示は作成時点の記録であり、後続trajectory freezeを完了の根拠とする。
+
+native time-zero forkで実行し、時刻・速度・座標・lane/edge等を保存した。OD旅行時間は最適化の目的、SUMO観測所要時間は停車・待機・走行挙動を含む結果、DC入力は保存した1秒時刻・速度列である。lane上のpositionを累積走行距離としない。DC側の観測距離は区間速度×dtであり、tripinfoのrouteLengthとも別に記録する。背景交通や複数車両の相互作用を検証したとはしない。
+
+R0の同一経路78件はClassical軌跡に結合し、R1は同一59・異経路5の取得経路に対して下流評価した。未取得経路の架空軌跡は生成しない。全量再現には専用router、native fork、端点・assignment・道路網・保存planが必要で、標準SUMOのみで同一実験になるとは保証しない。[第5節](#5-simulation-and-trajectories)に入出力契約を示す。
+
+### 0.11 軌跡を固定してBattery条件と電力量を比較する
+
+**CONFIRMED：** Path 2は容量20kWhを固定し、比エネルギー180/220/250Wh/kgをパック質量111.111111/90.909091/80kgへ写す。共通の車体等の残余質量を保持して車両質量へ反映するため、車体自体を軽量化した実験ではない。量子計算がこのBattery性能を実現したという結果でもない。
+
+各経路の保存軌跡を全Battery条件で共通使用し、質量差によってSUMOを再走行させない。Controlled-DCは転がり・並進・回転・空気抵抗の仕事から正のwheel仕事を取り、効率0.90でBattery側DC Whへ換算する。平坦・回生なし、補機等は評価外である。18kWhからの累積消費による残量会計・負残量検出は行うが、SOC停止、充電、再計画は行わない。[第6節](#6-battery-and-controlled-dc-energy)の正式式・単位・freezeを優先する。
+
+### 0.12 保存結果を対応させ、最終結果として固定する
+
+**CONFIRMED：** 最終science実行はR0/R1各78件であるが、経路取得はR0が78/78、R1が64/78である。parent/replicateで対応した共通64ブロックについて両method・両scale・Battery条件・Crr条件を比較し、未取得14件を配送不能や電力量ゼロへ置換しない。
+
+Battery削減率は各条件のB0 DC Whを分母にした百分率、DはClassical−Quantumの削減率差、TはD_R1−D_R0であり単位はppである。全4比較条件でT=0が59、非ゼロが5（正1・負4）であり、非ゼロは異経路5件に一致する。古典6規模は468論理・460異なる問題で、SUMO時刻診断の遅延136停止・116経路、帰還期限超過4経路を保持する。[正式報告](../01_research_design/scenario_evaluation/final_quantitative_study_20261008/FINAL_QUANTITATIVE_STUDY_REPORT.md)と[第7節](#7-analysis-and-frozen-results)が数値の正本・解釈境界への入口である。
+
+**RECONSTRUCTED：** 以上は「地理・合成需要 → 制約付き経路 → 軌跡 → 質量感度」という接続を示す。ただし顧客数と同時に地理・時間窓・解法も変わり、経路取得subsetの偏りがある。量子優位、純粋な規模因果効果、物流全体の省エネルギーを実証したとはしない。最終freezeはこの限定された定量branchの保存結果を固定したもので、論文全体の完成を意味しない。
+
+### 0.13 再実行できる部分と未確認部分
+
+**CONFIRMED：** GitHubのNotebook01〜03は合成入力によるRouting・教材QAOA・Battery/Controlled-DCの計算例、04〜05は正式保存結果の参照である。これらを連続実行しても、原OSM・CityGML・統計から全量研究を再生成するものではない。道路Releaseの内容・hash検証、正式APIの軽量計算、保存集計の照合は公開範囲で行える。[Quickstart](#10-quickstart-and-dependencies)を利用する。
+
+**UNKNOWN：** 原建物parquetの生成器・入力組合せ、合成世帯の全採用セル・RNG環境、道路補完と最終geometryまでの完全な再生成対応が未確認である。以下の台帳では「ファイルがある」「処理の内容が分かる」「当時その処理で当該出力を生成したことを確認できる」を分ける。Hayate資料は現行GitHubリンクとして提示しない。旧資料のGit管理済みという記述も当時の状態であり、現在の配布を意味しない。
+
+### 工程の追跡表
+
+文章を読んだ後の確認用である。**H**はHayateのみ、**P**は現在のGitHubで参照可能である。Hのコード名は取得後に実行可能であることを保証しない。下の根拠キーから原位置へ追跡できる。
+
+|工程|取得元|入力|加工方法|実行コード|設定|出力|次工程|根拠|確認状態|
+|---|---|---|---|---|---|---|---|---|---|
+|地域・道路取得|Geofabrik／国交省N03|関東PBF・東京都行政界|固定日取得・complete_ways抽出|H `network/fetch_osm.py`|13111・固定BBOX|大田区抽出PBF|関係閉包|H1|CONFIRMED|
+|道路属性・変換|OSM加工物|閉包OSM・blocker|値補完、netconvert、幾何修正|H `network/execute_three_tier_completion_streaming.py`、`network/repair_network_geometry_lengths.py`|SUMO1.24・保存規則|three_tier.net.xml|端点・OD|H2|RECONSTRUCTED／再生成UNKNOWN|
+|建物候補|PLATEAU|2025大田区ZIP|用途・形状・町丁目対応|直接生成器未回復|使用全属性・中間設定未回復|候補CSV・中間parquet|世帯割当|H3・H4|CSV CONFIRMED／上流UNKNOWN|
+|基準需要|国勢・人口・宅配便統計|人口メッシュ・全国量|面積按分・人口比例・最大剰余|H `demand/prepare_baseline_demand.py`|baseline_demand.yml|期待82,023/日|世帯期待値|H4・H5|CONFIRMED|
+|世帯・頻度|国勢・住宅統計・ss521|世帯集計・条件付き週頻度|世帯展開・住宅型割当・相対強度|元世帯生成器未回復|384,353世帯・seed記録|lambda_h|Poisson需要|H4・H6|記録CONFIRMED／全生成UNKNOWN|
+|需要と地点|合成世帯・建物|lambda・候補・割当|Poisson、一様割当、建物別集約|元生成器未回復|20260829／20260830|81,859量・39,956地点|道路対応|H4・H7|保存出力CONFIRMED|
+|固定割当|研究需要|地点・需要q|Morton next-fit|H 固定割当protocol参照|Q216・182group|465 roster|nested部分問題|H8|CONFIRMED|
+|経路計算|固定OD・割当|n=3/4/5/25/99/125|厳密／heuristic・PUBO/QAOA|P [Routing](../src/kmd_quantitative/routing/solver.py)、[Quantum](../src/kmd_quantitative/quantum/formal.py)|最終Protocol V2|訪問順・取得状態|SUMO|H9・P1|CONFIRMED|
+|走行|保存道路網|取得訪問順・端点|leg接続・native走行|H generate.py・native fork|1秒・seed20260930|時刻・速度軌跡|DC入力|H10|CONFIRMED|
+|Battery・DC|モデルfreeze|保存軌跡・B0/B1/B2|質量反映・DC積算|P [Battery](../src/kmd_quantitative/battery/mass.py)、[Energy](../src/kmd_quantitative/energy/controlled_dc.py)|20/18kWh・Crr二条件|DC Wh・残量|比較|P2|CONFIRMED|
+|分析・凍結|保存結果|共通64・古典6規模|対応比較・保存値照合|P [Analysis読込み](../src/kmd_quantitative/analysis/result_io.py)、H 最終分析器|D・T・母数定義|最終freeze|解釈・再利用|P1・P3|CONFIRMED|
+
+Hコードの`network/`・`demand/`は`05_src/traffic_simulation/`以下である。根拠資料は次である（Hは公開リンクではない）。
+
+- **H1**：`03_data/metadata/acquisition/20260717_osm_ota_ward_acquisition.md`、`03_data/metadata/traffic_simulation_sources.csv`、`05_src/traffic_simulation/implementation_plan.md`。
+- **H2**：`reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/`のrun_2／run_3記録、および上記repairコード。道路再生成の不足は第13節にも保持する。
+- **H3**：`03_data/raw/external_statistics/plateau_ota_2025/`の保存ZIP・カタログとZIP内README。
+- **H4**：`reproducibility/outputs/traffic_simulation/pipeline_authority_and_r24_capacity_plan/20260914_v1/CURRENT_PIPELINE_STAGES.csv`。工程名・式・採用値と未回復処理を区別する台帳である。
+- **H5**：`reproducibility/config/traffic_simulation/baseline_demand.yml`、`05_src/traffic_simulation/demand/prepare_baseline_demand.py`。
+- **H6**：`03_data/raw/traffic_simulation/demand_proxy/mlit_tokyo_metropolitan_goods_movement_survey_2024_20260823/manifest.json`、`03_data/processed/traffic_simulation/demand/household_parcel_v1/pipelines_v1/relative_parcel_propensity.csv`。
+- **H7**：同`pipelines_v1/`の`pipeline_run_summary.json`、`stop_generation_run_summary.json`、`daily_requests.csv`、`household_building_assignment_scoped.csv`、`building_delivery_stops_scoped.csv`。初期と後段の状態を区別する。
+- **H8**：`01_research_design/scenario_evaluation/baseline_capacity_fleet_assignment_20260930/`の`CAPACITY_FREEZE_MANIFEST.json`・`FIXED_ASSIGNMENT_PROTOCOL.md`。
+- **H9**：`01_research_design/methodology/PREPARED_ROUTE_SCALE_EXPERIMENT_PROTOCOL.md`。事前計画の状態と後続結果を混同しない。
+- **H10**：`01_research_design/scenario_evaluation/matched_classical_trajectories_20261007/GENERATION_PLAN.json`、同`generate.py`、共有`05_src/literature_analysis/generate_canonical_delivery_trajectories.py`。完了の追跡は[P1のauthority](../01_research_design/scenario_evaluation/final_quantitative_study_20261008/FINAL_FREEZE_AUTHORITY_CHAIN.csv)を用いる。
+- **P1**：[最終結果freeze](../01_research_design/scenario_evaluation/final_quantitative_study_20261008/FINAL_QUANTITATIVE_RESULT_FREEZE.json)。
+- **P2**：[Controlled-DCモデルfreeze](../01_research_design/methodology/CONTROLLED_MASS_TO_DC_MODEL_FREEZE.json)。
+- **P3**：[保存結果Index](../results/indexes/CANONICAL_RESULTS.json)。
 
 ## 1. Research Scope
 
@@ -388,7 +554,7 @@ python3.12 -m venv .venv
 
 第10節の1コマンドで既存45 API/契約テスト＋原本一致1テスト、Notebook6冊を実行します。`-O`はassertを無効化するため禁止。全量SUMO/OD、正式QAOA最適化、旧互換リンクの検証は含めません。CIも同じ入口を使います。
 
-公開基準commit 2efe70f854c4871547db6fac9c169db8cd06e706では実clone検証・GitHub Actions成功の記録があります。[基準CI](https://github.com/tkm-sano/kmd-analysis/actions/runs/37904061464)。その後の構造再編・今回の文書統合はローカル検証対象で、未commit・未pushです。新しいリモートCI成功を主張しません。
+公開基準commit 2efe70f854c4871547db6fac9c169db8cd06e706では実clone検証・GitHub Actions成功の記録があります。[基準CI](https://github.com/tkm-sano/kmd-analysis/actions/runs/37904061464)。その後の構造再編はcommit `84bb501`で公開済みであり、研究基準文書追加commit `1376dc5`でも実clone・46テスト・Notebook6冊および[リモートCI成功](https://github.com/tkm-sano/kmd-analysis/actions/runs/37911349043)を確認しています。この履歴は全量科学実験の再現を意味しません。
 
 Distribution Manifestは配布hashを管理し、科学的Release Manifestとは別です。歴史的rights/publicationフィールドは準備時点の記録であり、後続の公開実施記録と区別してください。元のsource freeze・authority・結果は変更しません。Notebook01〜05は基準出力との完全一致を検査し、00の依存表示差を別扱いにします。
 
@@ -428,7 +594,7 @@ Hayate原位置で保持することと、独立した永続バックアップ�
 
 PLATEAUの利用条件は[サイトポリシー](https://www.mlit.go.jp/plateau/site-policy/)および各配布データの個別条件によります。出典と研究者による加工を明示し、各地方公共団体等の権利を保持します。上表の年度・ファイル名は保存資料に基づく確認であり、失われた中間parquetの同一性を保証しません。
 
-e-Statの[利用規約](https://www.e-stat.go.jp/terms-of-use)では数値データ等の利用と著作物の条件を区別しています。ここでは数値表を加工した合成需要の出典を示しています。需要工程記録には日量期待値82,023、世帯数384,353、Poisson seed 20260829、建物割当seed 20260830があり、生成件数82,246、建物へ割当済み81,859、39,956地点です。母数の違いを維持します。生成プログラム・全採用統計セルの完全な復元は未確認です。
+e-Statの[利用規約](https://www.e-stat.go.jp/terms-of-use)では数値データ等の利用と著作物の条件を区別しています。ここでは数値表を加工した合成需要の出典を示しています。需要工程記録には日量期待値82,023、世帯数384,353、Poisson seed 20260829、建物割当seed 20260830があり、正の需要record73,547件・生成需要量82,246 parcel-equivalent、建物へ割当済み需要量81,859 parcel-equivalent、39,956地点です。母数の違いを維持します。生成プログラム・全採用統計セルの完全な復元は未確認です。
 
 行政界等の補助入力には国土数値情報N03（2026年）等の記録もあります。全量再現にはこれらの入力と加工履歴が必要です。ここに元データの再配布許諾や復元可能な外部アーカイブの存在を追加で認定するものではありません。
 
