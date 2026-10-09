@@ -32,12 +32,12 @@ def instance():
 
 def candidate_functions():
  # Public src API delegates to unchanged V2 function ASTs, not a second PUBO.
- verified_path(Q+'matched_quantum_protocol_v2_shared/science.py')
+ verified_path('src/kmd_quantitative/quantum/protocol_v2/science.py')
  module=load_module('src/kmd_quantitative/quantum/builder.py','nb_candidate_builder')
  return {name:getattr(module,name) for name in module.__all__}
 
 def formal_quantum_api():
- verified_path(Q+'matched_quantum_protocol_v2_shared/science.py')
+ verified_path('src/kmd_quantitative/quantum/protocol_v2/science.py')
  for path in ['src/kmd_quantitative/quantum/formal.py','src/kmd_quantitative/quantum/builder.py','src/kmd_quantitative/routing/independent.py']:
   verified_path(path)
  sys.path.insert(0,str(ROOT/'src'))
@@ -48,7 +48,7 @@ def canonical_final_selection(routes):
  return formal_quantum_api().select_final_route(routes)
 
 def battery_api():
- for p in ['src/kmd_quantitative/battery/mass.py','src/kmd_quantitative/battery/scenarios.py',L+'review_pack_specific_energy.py','01_research_design/methodology/CONTROLLED_MASS_TO_DC_MODEL_FREEZE.json']:
+ for p in ['src/kmd_quantitative/battery/mass.py','src/kmd_quantitative/battery/scenarios.py','src/kmd_quantitative/battery/frozen_sources/review_pack_specific_energy.py','01_research_design/methodology/CONTROLLED_MASS_TO_DC_MODEL_FREEZE.json']:
   verified_path(p)
  sys.path.insert(0,str(ROOT/'src'))
  from kmd_quantitative.battery import mass, scenarios
@@ -61,7 +61,7 @@ def mass_at_specific_energy(selected):
  return battery_api()[0].mass_at_specific_energy(selected)
 
 def energy_api():
- for p in ['src/kmd_quantitative/energy/controlled_dc.py',L+'run_full_controlled_dc.py']:
+ for p in ['src/kmd_quantitative/energy/controlled_dc.py','src/kmd_quantitative/energy/frozen_sources/run_full_controlled_dc.py']:
   verified_path(p)
  sys.path.insert(0,str(ROOT/'src'))
  from kmd_quantitative.energy import controlled_dc
@@ -70,7 +70,7 @@ def energy_api():
 
 def simulation_api():
  # I/O only: leave mass and Controlled-DC calculations at their original sources.
- for p in ['src/kmd_quantitative/simulation/trajectory_io.py', L+'apply_r0_method_battery.py']:
+ for p in ['src/kmd_quantitative/simulation/trajectory_io.py', 'src/kmd_quantitative/simulation/frozen_sources/apply_r0_method_battery.py']:
   verified_path(p)
  sys.path.insert(0,str(ROOT/'src'))
  from kmd_quantitative.simulation import trajectory_io

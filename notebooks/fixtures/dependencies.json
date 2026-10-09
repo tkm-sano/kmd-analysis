@@ -1,28 +1,4 @@
 {
-  "05_src/traffic_simulation/matched_quantum_protocol_v2_shared/science.py": {
-    "sha256": "76fc2f979b30d7938df3ec4fcaff158c108652aee37f3d225a298df5c3bb679d",
-    "size_bytes": 15385,
-    "authority": "release register",
-    "purpose": "Notebook runtime source or unchanged saved aggregate; not full artifact closure"
-  },
-  "05_src/traffic_simulation/matched_quantum_r1_c_protocol_v2/protocol.py": {
-    "sha256": "868f970de600f2a655c87e77aee08abdcec591de9f61f908816b19b2f9201ce1",
-    "size_bytes": 5632,
-    "authority": "release register",
-    "purpose": "Notebook runtime source or unchanged saved aggregate; not full artifact closure"
-  },
-  "05_src/literature_analysis/review_pack_specific_energy.py": {
-    "sha256": "b8fb03a45ebc738c4b9a1e1cc283449bbb63e48f4bac416d30d111ec56f9bca8",
-    "size_bytes": 12769,
-    "authority": "Existing canonical documentary source/current fingerprint; not a new freeze",
-    "purpose": "Notebook runtime source or unchanged saved aggregate; not full artifact closure"
-  },
-  "05_src/literature_analysis/run_full_controlled_dc.py": {
-    "sha256": "4ece8782fc6c4a5fd2731ea310d2042973d2f0f996f016c148ca29c6b935e39b",
-    "size_bytes": 17969,
-    "authority": "release register",
-    "purpose": "Notebook runtime source or unchanged saved aggregate; not full artifact closure"
-  },
   "01_research_design/methodology/CONTROLLED_MASS_TO_DC_MODEL_FREEZE.json": {
     "sha256": "b37fd532a5a7daf84f07924d954d6f8e2584f51d218506eeb14e70c53538cf78",
     "size_bytes": 8893,
@@ -94,8 +70,8 @@
     "migration_from": "05_src/traffic_simulation/matched_quantum_qualification/decoder.py"
   },
   "src/kmd_quantitative/quantum/builder.py": {
-    "sha256": "55ff76a7c041f27b1e411db2c2d0492cc9a90d552fb20ebca1da39eaa53ecb30",
-    "size_bytes": 1421,
+    "sha256": "0c2c4006ca10f60f9983d38eec034143f1724ce40f5127cd740a6983e7156425",
+    "size_bytes": 1458,
     "authority": "Phase 2 import-only API; scientific source retained in original V2 file",
     "purpose": "No duplicated formula; hash-pinned source dependency is explicit"
   },
@@ -105,13 +81,8 @@
     "size_bytes": 4958
   },
   "src/kmd_quantitative/simulation/trajectory_io.py": {
-    "sha256": "15026a208f18d464ed83dd84d4a07a0c5774e5a13743ae684748ebcce5173bde",
-    "size_bytes": 3307,
-    "purpose": "Phase4 saved input projection; speed.csv is SYNTHETIC_NOT_SUMO_OUTPUT"
-  },
-  "05_src/literature_analysis/apply_r0_method_battery.py": {
-    "sha256": "cf048dc63ba8715c499fcdf1e165c846c99c114de976113b4d200cfeeefc0eb6",
-    "size_bytes": 17770,
+    "sha256": "bc7dd941de3d33c7444757bf3e080474e7e665a0afdd831e1813412868001267",
+    "size_bytes": 3327,
     "purpose": "Phase4 saved input projection; speed.csv is SYNTHETIC_NOT_SUMO_OUTPUT"
   },
   "notebooks/fixtures/speed.csv": {
@@ -120,8 +91,8 @@
     "purpose": "Phase4 saved input projection; speed.csv is SYNTHETIC_NOT_SUMO_OUTPUT"
   },
   "src/kmd_quantitative/battery/mass.py": {
-    "sha256": "fbc410f99e24a0b7dd232bc1c5fe58948f535ac4844a42d6205df68b435aceef",
-    "size_bytes": 2265,
+    "sha256": "9e82f1460bd4555b0e7317c569365dd6c489ed1ab1c9d9c5e3fb062a07966866",
+    "size_bytes": 2282,
     "purpose": "Phase5 adapter to unchanged mass/kernel/freeze"
   },
   "src/kmd_quantitative/battery/scenarios.py": {
@@ -130,8 +101,8 @@
     "purpose": "Phase5 adapter to unchanged mass/kernel/freeze"
   },
   "src/kmd_quantitative/energy/controlled_dc.py": {
-    "sha256": "08cdc6c93ac387a89e31cb5bff7b249f91b9b21384db80d01e18c2bab91e0c66",
-    "size_bytes": 1095,
+    "sha256": "fec5cd6d31f76efde7ed0b4b56ea169ef7e67a9246d7c2df784a12806942df71",
+    "size_bytes": 1111,
     "purpose": "Phase5 adapter to unchanged mass/kernel/freeze"
   },
   "01_research_design/scenario_evaluation/matched_r0_r1_common_protocol_scale_method_battery_20261008/COMMON_MATCHED_POPULATION.csv": {
@@ -223,5 +194,39 @@
     "size_bytes": 13803,
     "authority": "Phase7 reference index or byte-identical synthetic fixture copy",
     "purpose": "Notebook input / saved result reference; not new science"
+  },
+  "src/kmd_quantitative/quantum/protocol_v2/science.py": {
+    "sha256": "76fc2f979b30d7938df3ec4fcaff158c108652aee37f3d225a298df5c3bb679d",
+    "size_bytes": 15385,
+    "authority": "release register",
+    "purpose": "Byte-identical frozen runtime snapshot; original retained as historical evidence",
+    "migration_from": "05_src/traffic_simulation/matched_quantum_protocol_v2_shared/science.py"
+  },
+  "src/kmd_quantitative/quantum/protocol_v2/protocol.py": {
+    "sha256": "868f970de600f2a655c87e77aee08abdcec591de9f61f908816b19b2f9201ce1",
+    "size_bytes": 5632,
+    "authority": "release register",
+    "purpose": "Byte-identical frozen runtime snapshot; original retained as historical evidence",
+    "migration_from": "05_src/traffic_simulation/matched_quantum_r1_c_protocol_v2/protocol.py"
+  },
+  "src/kmd_quantitative/battery/frozen_sources/review_pack_specific_energy.py": {
+    "sha256": "b8fb03a45ebc738c4b9a1e1cc283449bbb63e48f4bac416d30d111ec56f9bca8",
+    "size_bytes": 12769,
+    "authority": "Existing canonical documentary source/current fingerprint; not a new freeze",
+    "purpose": "Byte-identical frozen runtime snapshot; original retained as historical evidence",
+    "migration_from": "05_src/literature_analysis/review_pack_specific_energy.py"
+  },
+  "src/kmd_quantitative/energy/frozen_sources/run_full_controlled_dc.py": {
+    "sha256": "4ece8782fc6c4a5fd2731ea310d2042973d2f0f996f016c148ca29c6b935e39b",
+    "size_bytes": 17969,
+    "authority": "release register",
+    "purpose": "Byte-identical frozen runtime snapshot; original retained as historical evidence",
+    "migration_from": "05_src/literature_analysis/run_full_controlled_dc.py"
+  },
+  "src/kmd_quantitative/simulation/frozen_sources/apply_r0_method_battery.py": {
+    "sha256": "cf048dc63ba8715c499fcdf1e165c846c99c114de976113b4d200cfeeefc0eb6",
+    "size_bytes": 17770,
+    "purpose": "Byte-identical frozen runtime snapshot; original retained as historical evidence",
+    "migration_from": "05_src/literature_analysis/apply_r0_method_battery.py"
   }
 }

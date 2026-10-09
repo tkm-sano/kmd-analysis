@@ -7,7 +7,7 @@ that kernel. Use Simulation's reader for CSV validation. Do not use python -O.
 from pathlib import Path
 import hashlib
 import importlib.util
-SOURCE_RELATIVE = '05_src/literature_analysis/run_full_controlled_dc.py'
+SOURCE_RELATIVE = 'src/kmd_quantitative/energy/frozen_sources/run_full_controlled_dc.py'
 EXPECTED_SHA256 = '4ece8782fc6c4a5fd2731ea310d2042973d2f0f996f016c148ca29c6b935e39b'
 _source = Path(__file__).resolve().parents[3] / SOURCE_RELATIVE
 if hashlib.sha256(_source.read_bytes()).hexdigest() != EXPECTED_SHA256:

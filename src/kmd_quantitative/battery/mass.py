@@ -7,7 +7,7 @@ from pathlib import Path
 import ast
 import hashlib
 import math
-SOURCE_RELATIVE = '05_src/literature_analysis/review_pack_specific_energy.py'
+SOURCE_RELATIVE = 'src/kmd_quantitative/battery/frozen_sources/review_pack_specific_energy.py'
 EXPECTED_SHA256 = 'b8fb03a45ebc738c4b9a1e1cc283449bbb63e48f4bac416d30d111ec56f9bca8'
 _source = Path(__file__).resolve().parents[3] / SOURCE_RELATIVE
 _data = _source.read_bytes()

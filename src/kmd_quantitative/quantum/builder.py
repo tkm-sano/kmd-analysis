@@ -2,7 +2,7 @@
 
 Only the four pure function definitions are loaded. No worker, optimizer, circuit,
 or mathematical expression is copied here. The scientific body remains at
-SCIENTIFIC_SOURCE_RELATIVE; physical migration of that body is deferred.
+SCIENTIFIC_SOURCE_RELATIVE; this is a byte-identical runtime snapshot. The original source remains frozen at its historical path.
 """
 from pathlib import Path
 import ast
@@ -10,7 +10,7 @@ import hashlib
 from decimal import Decimal as D, getcontext
 from itertools import combinations
 
-SCIENTIFIC_SOURCE_RELATIVE = "05_src/traffic_simulation/matched_quantum_protocol_v2_shared/science.py"
+SCIENTIFIC_SOURCE_RELATIVE = "src/kmd_quantitative/quantum/protocol_v2/science.py"
 EXPECTED_SOURCE_SHA256 = "76fc2f979b30d7938df3ec4fcaff158c108652aee37f3d225a298df5c3bb679d"
 __all__ = ["add", "square_onehot", "build_C", "route_code"]
 _source = Path(__file__).resolve().parents[3] / SCIENTIFIC_SOURCE_RELATIVE

@@ -1,0 +1,41 @@
+{
+  "policy": "Runtime snapshots are immutable byte-identical copies, not independently maintained implementations. Historical source freeze paths and hashes are unchanged. Do not import or execute snapshot experiment entrypoints.",
+  "baseline_commit": "2efe70f854c4871547db6fac9c169db8cd06e706",
+  "sources": [
+    {
+      "original_path": "05_src/traffic_simulation/matched_quantum_protocol_v2_shared/science.py",
+      "runtime_path": "src/kmd_quantitative/quantum/protocol_v2/science.py",
+      "sha256": "76fc2f979b30d7938df3ec4fcaff158c108652aee37f3d225a298df5c3bb679d",
+      "size_bytes": 15385,
+      "load_policy": "Only existing selected AST statements/functions through the public adapter"
+    },
+    {
+      "original_path": "05_src/traffic_simulation/matched_quantum_r1_c_protocol_v2/protocol.py",
+      "runtime_path": "src/kmd_quantitative/quantum/protocol_v2/protocol.py",
+      "sha256": "868f970de600f2a655c87e77aee08abdcec591de9f61f908816b19b2f9201ce1",
+      "size_bytes": 5632,
+      "load_policy": "Pure protocol definitions"
+    },
+    {
+      "original_path": "05_src/literature_analysis/review_pack_specific_energy.py",
+      "runtime_path": "src/kmd_quantitative/battery/frozen_sources/review_pack_specific_energy.py",
+      "sha256": "b8fb03a45ebc738c4b9a1e1cc283449bbb63e48f4bac416d30d111ec56f9bca8",
+      "size_bytes": 12769,
+      "load_policy": "Only existing selected AST statements/functions through the public adapter"
+    },
+    {
+      "original_path": "05_src/literature_analysis/run_full_controlled_dc.py",
+      "runtime_path": "src/kmd_quantitative/energy/frozen_sources/run_full_controlled_dc.py",
+      "sha256": "4ece8782fc6c4a5fd2731ea310d2042973d2f0f996f016c148ca29c6b935e39b",
+      "size_bytes": 17969,
+      "load_policy": "Definitions only; no main/preflight"
+    },
+    {
+      "original_path": "05_src/literature_analysis/apply_r0_method_battery.py",
+      "runtime_path": "src/kmd_quantitative/simulation/frozen_sources/apply_r0_method_battery.py",
+      "sha256": "cf048dc63ba8715c499fcdf1e165c846c99c114de976113b4d200cfeeefc0eb6",
+      "size_bytes": 17770,
+      "load_policy": "Only existing selected AST statements/functions through the public adapter"
+    }
+  ]
+}

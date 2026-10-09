@@ -20,6 +20,7 @@ def main():
     ]
     commands = [
         ["tests/test_distribution_layout.py"],
+        ["tests/test_frozen_runtime_sources.py"],
         ["tests/test_routing_migration.py", *["RoutingMigrationTests." + n for n in routing_cases]],
         ["tests/test_quantum_migration.py", "QuantumCoreTests"],
         ["tests/test_formal_quantum_api.py"],
@@ -31,7 +32,7 @@ def main():
     for args in commands:
         print("RUN", " ".join(args), flush=True)
         subprocess.run([sys.executable, "-B", *args], cwd=ROOT, env=env, check=True, timeout=240)
-    print("PASS: 45 API/contract tests and six default notebooks. Full research and legacy aliases excluded.")
+    print("PASS: 45 API/contract tests + 1 frozen-runtime integrity test and six default notebooks. Full research and legacy aliases excluded.")
 
 if __name__ == "__main__":
     main()

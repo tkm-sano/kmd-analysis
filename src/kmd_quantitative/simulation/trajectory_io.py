@@ -11,7 +11,7 @@ from types import SimpleNamespace
 import numpy as np
 import pandas as pd
 
-SOURCE_RELATIVE = '05_src/literature_analysis/apply_r0_method_battery.py'
+SOURCE_RELATIVE = 'src/kmd_quantitative/simulation/frozen_sources/apply_r0_method_battery.py'
 EXPECTED_SHA256 = 'cf048dc63ba8715c499fcdf1e165c846c99c114de976113b4d200cfeeefc0eb6'
 _source = Path(__file__).resolve().parents[3] / SOURCE_RELATIVE
 _data = _source.read_bytes()
