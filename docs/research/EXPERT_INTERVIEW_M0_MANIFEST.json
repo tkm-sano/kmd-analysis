@@ -1,0 +1,260 @@
+{
+  "manifest_schema_version": "1.0.0",
+  "protocol_version": "1.0.1",
+  "m0_identifier": "EXPERT_INTERVIEW_M0_1.0.1",
+  "created_at": "2026-10-21T01:12:25+09:00",
+  "timezone": "Asia/Tokyo",
+  "timestamp_meaning": "用語修正版1.0.1のmanifestを作成・登録した実時刻。初回登録日時はinitial_registration_created_at、変更前の文書・登録情報はprevious_registrationに保持する。設計の由来日・倫理承認日・面接日を表さない。",
+  "design_origin": {
+    "source": "本作業で受領した研究者の採用済み設計指示",
+    "title": "専門家インタビュー最終版の実装と研究方法記述の統一",
+    "prior_adoption_date": null,
+    "prior_adoption_date_status": "NOT_SPECIFIED; 遡及推定しない"
+  },
+  "repository": "tkm-sano/kmd-analysis",
+  "start_branch": "main",
+  "start_head": "c790e49a447d82320caf9430b13b26dc1860a046",
+  "start_worktree_clean": false,
+  "start_worktree_note": "用語改訂開始時は1.0.0の文書登録済み・未コミットである。開始時の対象5文書とmanifestを版保全アーカイブへ完全保存してから編集した。他の既存変更・未追跡資料を保持し、開始時HEADと作業ツリーを区別する。",
+  "protocol": {
+    "path": "docs/research/EXPERT_INTERVIEW_PROTOCOL.md",
+    "version": "1.0.1",
+    "sha256": "71274f2ebedda6eca4d80fe30baa2e40d3316420e8eff349e98ef97ee57f47e2"
+  },
+  "fixed_artifacts": [
+    {
+      "path": "docs/research/EXPERT_INTERVIEW_PROTOCOL.md",
+      "version": "1.0.1",
+      "role": "M0正本：図・質問・前提・境界・面接運用",
+      "sha256": "71274f2ebedda6eca4d80fe30baa2e40d3316420e8eff349e98ef97ee57f47e2"
+    },
+    {
+      "path": "docs/research/EXPERT_INTERVIEW_RESPONSE_TEMPLATE.md",
+      "version": "1.0.1",
+      "role": "6区分の空の回答票",
+      "sha256": "0e0cd547efd59326674651abab790c17c56aacf898e4f00c6a28aea32082e95a"
+    },
+    {
+      "path": "docs/research/EXPERT_INTERVIEW_ANALYSIS_GUIDE.md",
+      "version": "1.0.1",
+      "role": "RIQ適用範囲・分析表・改訂規則・変更履歴テンプレート",
+      "sha256": "4aa96deb9bf5693e12c1ab99c3e0dffb9d4294bf1b15de622fa78e5e4c1357c2"
+    }
+  ],
+  "fixed_scope": [
+    "4図",
+    "質問",
+    "提示する前提",
+    "評価境界",
+    "M0–M1改訂規則"
+  ],
+  "routes_count": 3,
+  "figure_names": [
+    "図①-A",
+    "図①-B",
+    "図②",
+    "図③"
+  ],
+  "response_sections_count": 6,
+  "status": {
+    "design_documentation": "COMPLETED",
+    "m0_registration": "DOCUMENT_BASELINE_REGISTERED",
+    "expert_interviews": "NOT_CONDUCTED",
+    "pilot_interviews": "NOT_CONDUCTED",
+    "m1": "NOT_CREATED",
+    "ethics_approval": "NOT_CONFIRMED",
+    "scientific_experiments_rerun": false,
+    "expert_validation": "NOT_CONDUCTED",
+    "saturation": "NOT_ASSESSED"
+  },
+  "formal_text_preservation": {
+    "source_paths": [
+      "README.md",
+      "docs/research/RESEARCH_DESIGN_SUMMARY.md"
+    ],
+    "source_phase": "START_WORKTREE",
+    "scope": "研究目的・RQ・H1〜H3の見出し、本文、付随説明を含む連続ブロック",
+    "sha256_utf8": "f35a18ccdd2b34cd82997b47b84b1c52aa651c0b671bb79099d41fee9382a941",
+    "start_block_preserved_verbatim": true,
+    "original_freeze_file_obtained_in_repository": false
+  },
+  "repository_references": [
+    {
+      "path": "README.md",
+      "version_information": "用語改訂開始時1.0.0／2026-10-21。変更前の全文はprevious_registrationのアーカイブで識別する。",
+      "locator": "第1節",
+      "role": "正式目的・RQ・H1〜H3の開始時本文を保持",
+      "observation_phase": "START_WORKTREE",
+      "sha256_at_start": "c5a505250d2ae054fcc5bdd0b6eb2e601e19178644aafd646109a39a59a1783e",
+      "sha256_at_registration": "3c2bebd3ed15eb8a00446a0911a68e81a2a27996ed7b7eec8be3c5485260c1b4",
+      "tracked_at_start": true
+    },
+    {
+      "path": "docs/research/RESEARCH_DESIGN_SUMMARY.md",
+      "version_information": "用語改訂開始時1.0.0／2026-10-21。変更前の全文はprevious_registrationのアーカイブで識別する。",
+      "locator": "第1・3・5節",
+      "role": "正式本文、構造基準の記載、既存実験の位置付け",
+      "observation_phase": "START_WORKTREE",
+      "sha256_at_start": "96b7b018f9b7386241085034c221ccc6edd0b3ad710ca4a13d7c47faea0c0182",
+      "sha256_at_registration": "dd76d03499395e09aa382338f006458d6ba5065d3f7adff5afa384cd191c3173",
+      "tracked_at_start": true
+    },
+    {
+      "path": "docs/QUANTITATIVE_GUIDE.md",
+      "version_information": "2026-10-19構成改訂",
+      "locator": "計算問題の定義と評価範囲、第0.9〜0.12・4・6・7・15.3節",
+      "role": "既存の旅行時間定義・実験条件・保存結果・主張限界",
+      "observation_phase": "UNCHANGED",
+      "sha256_at_start": "9f011dcd1a03f0520d5257992d17434b1a456a32eb6de58c1cde7b33306dbdeb",
+      "sha256_at_registration": "9f011dcd1a03f0520d5257992d17434b1a456a32eb6de58c1cde7b33306dbdeb",
+      "tracked_at_start": true
+    },
+    {
+      "path": "docs/research/CPX01_D10_PROVISIONAL_20261017.md",
+      "version_information": "2026-10-17仮採用時記録",
+      "locator": "第1節D01〜D09、第4・5節",
+      "role": "固定タスク・完了期限の評価設計。D10状態は後発決定を参照",
+      "observation_phase": "UNCHANGED",
+      "sha256_at_start": "d20f8138eabc978b59a4f3ba03003e3005196b0a0bbac3e2d39ff61ef6ccddbb",
+      "sha256_at_registration": "d20f8138eabc978b59a4f3ba03003e3005196b0a0bbac3e2d39ff61ef6ccddbb",
+      "tracked_at_start": true
+    },
+    {
+      "path": "docs/research/CPX01_D10_ADOPTION_DECISION_20261017.md",
+      "version_information": "2026-10-17後発採用決定",
+      "locator": "第1・2・4節",
+      "role": "D10正式採用、サービス完了再構成の技術検証は未完了",
+      "observation_phase": "UNCHANGED",
+      "sha256_at_start": "87731d8c211fcc0968a58198cd28447f011be1376fec32d3edf79a6268769ea2",
+      "sha256_at_registration": "87731d8c211fcc0968a58198cd28447f011be1376fec32d3edf79a6268769ea2",
+      "tracked_at_start": false
+    },
+    {
+      "path": "01_research_design/methodology/CONTROLLED_MASS_TO_DC_MODEL_FREEZE.json",
+      "version_information": "CONTROLLED_MASS_TO_DC_V1／2026-10-06",
+      "locator": "stage_inputs; running_mass_definition; grade_model; regen_model; auxiliary_scope; eta_prop; energy_boundary; equations",
+      "role": "電池容量・仮定性能・空荷・固定質量・限定電力量境界",
+      "observation_phase": "UNCHANGED",
+      "sha256_at_start": "b37fd532a5a7daf84f07924d954d6f8e2584f51d218506eeb14e70c53538cf78",
+      "sha256_at_registration": "b37fd532a5a7daf84f07924d954d6f8e2584f51d218506eeb14e70c53538cf78",
+      "tracked_at_start": true
+    },
+    {
+      "path": "01_research_design/scenario_evaluation/final_quantitative_study_20261008/FINAL_QUANTITATIVE_STUDY_REPORT.md",
+      "version_information": "2026-10-08の固定結果",
+      "locator": "実験事実、共通64の中心結果、識別判定と主張限界",
+      "role": "経路取得件数と取得条件付き比較の限界",
+      "observation_phase": "UNCHANGED",
+      "sha256_at_start": "078caba58733577bed13d42645950d060de1dad66e59c88f0450d51f8ecce125",
+      "sha256_at_registration": "078caba58733577bed13d42645950d060de1dad66e59c88f0450d51f8ecce125",
+      "tracked_at_start": true
+    },
+    {
+      "path": "docs/research/CAUSAL_STRUCTURE_RESEARCH_DECISIONS_20261017.md",
+      "version_information": "2026-10-17採用決定記録",
+      "locator": "第2節・第3.2節",
+      "role": "既存決定の範囲確認。現行面接設計は本作業指示に従う",
+      "observation_phase": "UNCHANGED",
+      "sha256_at_start": "5c4fdaec43ddb46f77c32dbf67ae15d531a8882655145d4346761cf3e3fee883",
+      "sha256_at_registration": "5c4fdaec43ddb46f77c32dbf67ae15d531a8882655145d4346761cf3e3fee883",
+      "tracked_at_start": false
+    }
+  ],
+  "unconfirmed_items": [
+    {
+      "item": "倫理手続・承認状態、対象者、人数、日程、時間、募集、保管期間・場所、アクセス権、撤回条件、予備面接条件",
+      "status": "NOT_FINALIZED"
+    },
+    {
+      "item": "参加・録音・図への書込み・引用の個別同意",
+      "status": "NOT_OBTAINED_IN_THIS_TASK"
+    },
+    {
+      "item": "RESEARCH_OBJECTIVE_RQ_HYPOTHESES_FREEZE_20261014_v1_0_1.md",
+      "status": "NOT_OBTAINED_IN_REPOSITORY",
+      "handling": "開始時README・SUMMARYの正式本文を保持。外部の原本を確認済みとはしない。"
+    },
+    {
+      "item": "Version 0.2原本、13主変数・13接続・2効果修飾の個別定義・ID対応・出典台帳",
+      "status": "NOT_OBTAINED_IN_REPOSITORY",
+      "handling": "開始時文書の構造基準を保持。4図の箱・矢印と件数を同一視せず、IDを補作しない。"
+    },
+    {
+      "item": "Andersen et al. (2012)本文の詳細",
+      "status": "BIBLIOGRAPHY_AND_ABSTRACT_ONLY",
+      "handling": "出版社の書誌・要旨を確認。全文確認済みとしない。"
+    },
+    {
+      "item": "RIQ原著の本文全体",
+      "status": "SELECTED_SECTIONS_REVIEWED",
+      "handling": "書誌・要旨と学会サイト原著PDFの該当節・Table 2を確認。全文精読済みとしない。"
+    },
+    {
+      "item": "実配送における量子技術の追加的効果、定時配達率、最終計量境界全体の電力量",
+      "status": "NOT_ESTABLISHED_BY_EXISTING_EXPERIMENTS"
+    }
+  ],
+  "external_method_references": [
+    {
+      "doi": "10.1002/sdr.1479",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1002/sdr.1479",
+      "checked_on": "2026-10-21",
+      "scope": "書誌・要旨"
+    },
+    {
+      "doi": "10.1002/sdr.1701",
+      "url": "https://doi.org/10.1002/sdr.1701",
+      "full_text_url": "https://proceedings.systemdynamics.org/2024/supp/S1524.pdf",
+      "checked_on": "2026-10-21",
+      "scope": "書誌・要旨、What is the rigorously interpreted quotation method?、Table 2、How implicit structures are identified"
+    }
+  ],
+  "out_of_scope_document_differences": [
+    {
+      "path": "docs/QUANTITATIVE_GUIDE.md",
+      "locator": "第15.3.2節、主要パス表・直後の需要量(PE)割合の候補（登録時1747〜1750行付近）",
+      "difference": "周辺条件を出発余裕・走行条件とする記述、需要量PEで重み付けする候補がある。現行面接は交通条件を補足対象とし、固定した評価タスクの期限内完了割合を用いる。",
+      "handling": "読取りのみ。科学的記録・式・過去の提案を変更しない。現行面接の定義はプロトコルを参照する。"
+    },
+    {
+      "path": "docs/research/CPX01_D10_PROVISIONAL_20261017.md",
+      "locator": "冒頭のPROVISIONALLY_ADOPTED",
+      "difference": "D10は後発決定でADOPTED。旧記録の状態表示は当時のもの。",
+      "handling": "原文を保持し、CPX01_D10_ADOPTION_DECISION_20261017.mdを併せて参照する。"
+    },
+    {
+      "path": "docs/research/idef0_expert_validation/INITIAL_FRAMEWORK_SOURCE_20261019.md",
+      "locator": "冒頭・第1節",
+      "difference": "別の方法による既存設計資料が残る。",
+      "handling": "今回の現行正本には採用・リンクしない。既存未追跡資料を保護し、変更対象外とする。"
+    }
+  ],
+  "version_change_rule": "図・質問・前提・境界・改訂規則の変更時は版を更新し、変更前の登録内容を参照可能なGit版または上書きしない登録ファイルで保持してから更新する。未コミット登録も無記録で上書きしない。各面接の使用版・ハッシュ・提示順を回答票へ記録する。",
+  "self_hash_included": false,
+  "commit_push_pr_performed": false,
+  "initial_registration_created_at": "2026-10-21T00:59:21+09:00",
+  "previous_registration": {
+    "protocol_version": "1.0.0",
+    "registered_at": "2026-10-21T00:59:21+09:00",
+    "protocol_sha256": "2557b5827854db6d04a47965fe22df848f00928422fd8c95ad1310dc4d8e41af",
+    "manifest_sha256": "d8e7fce00ebaf04d323d312121915771dd6ecedc21419b880d35ba3784ca6342",
+    "archive_path": "docs/research/interview_versions/EXPERT_INTERVIEW_M0_1.0.0.zip",
+    "archive_sha256": "c59ffa6afc996f37da4f0f2b8eae5a87f79b58f19f71296dbda43bc6825d78bc",
+    "archive_contents": "変更前の対象5文書・manifestの完全な内容と内部のSHA-256一覧。上書きしない。"
+  },
+  "revision": {
+    "source": "研究者の追加指示「研究文書・因果図・インタビュー質問の用語統一」",
+    "started_at": "2026-10-21T01:02:47+09:00",
+    "scope": "表示名称・自然な日本語・既存の概念区分の明示。研究設計の再検討ではない。",
+    "preserved": [
+      "正式目的・RQ・H1〜H3の原文",
+      "3経路・4図の構造と接続",
+      "成果指標の定義・評価境界",
+      "既存変数ID・式・凍結済み条件と結果・計算コード",
+      "反証志向型インタビュー・RIQ・改訂判定規則",
+      "面接未実施・M1未作成"
+    ],
+    "external_literature_rechecked": false,
+    "external_reference_note": "外部文献の確認情報は初回登録から継承する。本改訂で新しい文献確認を実施したとはしない。"
+  }
+}
