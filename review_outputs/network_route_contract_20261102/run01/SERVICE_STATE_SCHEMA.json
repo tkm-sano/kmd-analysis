@@ -1,0 +1,26 @@
+{
+  "version": "SERVICE102_V1",
+  "interpretation": "MODEL_NOT_PHYSICAL_HANDOVER",
+  "required_evidence": [
+    "task_binding",
+    "native_stop_started",
+    "native_lane_position",
+    "continuous_stopped_coverage",
+    "observation_horizon",
+    "run_abnormality_log"
+  ],
+  "nullable_physical_arrival": true,
+  "service_s": 102,
+  "completion_rule": "max(started,ready_A_or_zero_B)+102 only if bound continuous stopped coverage proves service",
+  "A_deadline": "original_due_start+102",
+  "B_customer_deadline": null,
+  "outcomes": [
+    "ON_TIME",
+    "LATE",
+    "NOT_COMPLETED",
+    "INDETERMINATE",
+    "COMPLETED_NO_CUSTOMER_DEADLINE"
+  ],
+  "missing_stop_row": "HOLD unless live ledger or complete non-service proof",
+  "native_integration_status": "HOLD"
+}

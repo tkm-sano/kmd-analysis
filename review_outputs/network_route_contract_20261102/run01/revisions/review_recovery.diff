@@ -1,0 +1,13 @@
+--- /home/takuma/kmd-analysis/review_outputs/network_route_contract_20261102/run01/revisions/review_recovery_before_missing_control.py
++++ /home/takuma/kmd-analysis/review_outputs/network_route_contract_20261102/run01/review_recovery.py
+@@ -45,6 +45,10 @@
+    witness=raw.get('R'+str(x['row_index']));value=float(witness[0]['routeLength']) if witness else None
+    checks.append({'partition_index':pi,'row_index':x['row_index'],'from_node':k[1],'to_node':k[2],'OD_distance_m':x['OD_distance_m'],'raw_tripinfo_routeLength_m':value,'difference_m':value-float(x['OD_distance_m']) if value is not None else None,'status':'PASS' if value==float(x['OD_distance_m']) else 'HOLD_RAW_NATIVE_NOT_LOCATED' if value is None else 'FAIL','source_path':witness[1] if witness else '', 'source_sha256':witness[2] if witness else ''})
+  table('KNOWN37_RAW_NATIVE_DISTANCE_CHECKS.csv',checks)
++ # Retain the control whose original edge sequence was not stored: no silent denominator drop.
++ for pi,aa,bb in sorted(needed-set(found)):
++  checks.append({'partition_index':pi,'row_index':None,'from_node':aa,'to_node':bb,'OD_distance_m':None,'raw_tripinfo_routeLength_m':None,'difference_m':None,'status':'HOLD_ORIGINAL_EDGE_SEQUENCE_NOT_RETAINED','source_path':cp[pi]['output_path'],'source_sha256':cp[pi]['output_hash']})
++ table('KNOWN37_RAW_NATIVE_DISTANCE_CHECKS.csv',checks)
+  final=[]
+  for x in status:
+   y=dict(x);cid=x['candidate_id']

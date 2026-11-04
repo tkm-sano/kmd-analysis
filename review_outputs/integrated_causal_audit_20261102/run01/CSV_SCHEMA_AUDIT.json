@@ -1,0 +1,1987 @@
+{
+  "/home/takuma/kmd-analysis-pre-clean-20261102-112222/untracked/review_outputs/cpx01_d11_validation_20261017/operations_2808.csv": {
+    "rows": 2808,
+    "columns": [
+      "scenario_id",
+      "PID",
+      "physical_instance_id",
+      "parent_id",
+      "replicate_id",
+      "quantum_run_id",
+      "quantum_acquired",
+      "route_identity",
+      "visit_order",
+      "source_route_identity",
+      "L",
+      "T_C",
+      "T_Q",
+      "T_other_C",
+      "T_other_Q",
+      "T_switch",
+      "T_dispatch",
+      "B",
+      "t_request",
+      "t_C",
+      "t_Q",
+      "t_cut",
+      "adopted_method",
+      "fallback_reason",
+      "t_fallback",
+      "t_adopt",
+      "t_depart",
+      "departure_delay_s",
+      "t_depart_C",
+      "population_source",
+      "population_record",
+      "binding_source",
+      "binding_record",
+      "classical_source",
+      "quantum_source",
+      "quantum_summary_source"
+    ],
+    "types": {
+      "scenario_id": "string/structured",
+      "PID": "string/structured",
+      "physical_instance_id": "string/structured",
+      "parent_id": "string/structured",
+      "replicate_id": "number/string-encoded",
+      "quantum_run_id": "string/structured",
+      "quantum_acquired": "string/structured",
+      "route_identity": "string/structured",
+      "visit_order": "string/structured",
+      "source_route_identity": "string/structured",
+      "L": "number/string-encoded",
+      "T_C": "number/string-encoded",
+      "T_Q": "number/string-encoded",
+      "T_other_C": "number/string-encoded",
+      "T_other_Q": "number/string-encoded",
+      "T_switch": "number/string-encoded",
+      "T_dispatch": "number/string-encoded",
+      "B": "number/string-encoded",
+      "t_request": "number/string-encoded",
+      "t_C": "number/string-encoded",
+      "t_Q": "number/string-encoded",
+      "t_cut": "number/string-encoded",
+      "adopted_method": "string/structured",
+      "fallback_reason": "string/structured",
+      "t_fallback": "number/string-encoded",
+      "t_adopt": "number/string-encoded",
+      "t_depart": "number/string-encoded",
+      "departure_delay_s": "number/string-encoded",
+      "t_depart_C": "number/string-encoded",
+      "population_source": "string/structured",
+      "population_record": "string/structured",
+      "binding_source": "string/structured",
+      "binding_record": "string/structured",
+      "classical_source": "string/structured",
+      "quantum_source": "string/structured",
+      "quantum_summary_source": "string/structured"
+    },
+    "nulls": {
+      "scenario_id": 0,
+      "PID": 0,
+      "physical_instance_id": 0,
+      "parent_id": 0,
+      "replicate_id": 0,
+      "quantum_run_id": 0,
+      "quantum_acquired": 0,
+      "route_identity": 0,
+      "visit_order": 0,
+      "source_route_identity": 504,
+      "L": 0,
+      "T_C": 0,
+      "T_Q": 0,
+      "T_other_C": 0,
+      "T_other_Q": 0,
+      "T_switch": 0,
+      "T_dispatch": 0,
+      "B": 0,
+      "t_request": 0,
+      "t_C": 0,
+      "t_Q": 0,
+      "t_cut": 0,
+      "adopted_method": 0,
+      "fallback_reason": 1344,
+      "t_fallback": 1344,
+      "t_adopt": 0,
+      "t_depart": 0,
+      "departure_delay_s": 0,
+      "t_depart_C": 0,
+      "population_source": 0,
+      "population_record": 0,
+      "binding_source": 0,
+      "binding_record": 0,
+      "classical_source": 0,
+      "quantum_source": 0,
+      "quantum_summary_source": 0
+    },
+    "numeric_ranges": {
+      "replicate_id": [
+        0.0,
+        2.0
+      ],
+      "L": [
+        900.0,
+        7200.0
+      ],
+      "T_C": [
+        120.0,
+        120.0
+      ],
+      "T_Q": [
+        60.0,
+        7200.0
+      ],
+      "T_other_C": [
+        0.0,
+        0.0
+      ],
+      "T_other_Q": [
+        0.0,
+        0.0
+      ],
+      "T_switch": [
+        600.0,
+        600.0
+      ],
+      "T_dispatch": [
+        120.0,
+        120.0
+      ],
+      "B": [
+        0.0,
+        720.0
+      ],
+      "t_request": [
+        -7200.0,
+        -900.0
+      ],
+      "t_C": [
+        -7080.0,
+        -780.0
+      ],
+      "t_Q": [
+        -7140.0,
+        6300.0
+      ],
+      "t_cut": [
+        -720.0,
+        0.0
+      ],
+      "t_fallback": [
+        -7140.0,
+        0.0
+      ],
+      "t_adopt": [
+        -7140.0,
+        0.0
+      ],
+      "t_depart": [
+        0.0,
+        720.0
+      ],
+      "departure_delay_s": [
+        0.0,
+        720.0
+      ],
+      "t_depart_C": [
+        0.0,
+        0.0
+      ]
+    },
+    "duplicate_full_rows": 0,
+    "primary_key": [
+      "scenario_id",
+      "PID"
+    ],
+    "duplicate_keys": 0
+  },
+  "/home/takuma/kmd-analysis-pre-clean-20261102-112222/untracked/review_outputs/cpx01_d11_validation_20261017/conditions_36.csv": {
+    "rows": 36,
+    "columns": [
+      "scenario_id",
+      "L",
+      "T_C",
+      "T_Q",
+      "B",
+      "t_request",
+      "t_C",
+      "t_Q",
+      "t_cut",
+      "t_depart_C",
+      "acquired_method",
+      "acquired_fallback",
+      "acquired_departure",
+      "acquired_reason",
+      "unavailable_method",
+      "unavailable_fallback",
+      "unavailable_departure",
+      "unavailable_reason",
+      "acquired_quantum_count",
+      "acquired_classical_count",
+      "unavailable_classical_count"
+    ],
+    "types": {
+      "scenario_id": "string/structured",
+      "L": "number/string-encoded",
+      "T_C": "number/string-encoded",
+      "T_Q": "number/string-encoded",
+      "B": "number/string-encoded",
+      "t_request": "number/string-encoded",
+      "t_C": "number/string-encoded",
+      "t_Q": "number/string-encoded",
+      "t_cut": "number/string-encoded",
+      "t_depart_C": "number/string-encoded",
+      "acquired_method": "string/structured",
+      "acquired_fallback": "number/string-encoded",
+      "acquired_departure": "number/string-encoded",
+      "acquired_reason": "string/structured",
+      "unavailable_method": "string/structured",
+      "unavailable_fallback": "number/string-encoded",
+      "unavailable_departure": "number/string-encoded",
+      "unavailable_reason": "string/structured",
+      "acquired_quantum_count": "number/string-encoded",
+      "acquired_classical_count": "number/string-encoded",
+      "unavailable_classical_count": "number/string-encoded"
+    },
+    "nulls": {
+      "scenario_id": 0,
+      "L": 0,
+      "T_C": 0,
+      "T_Q": 0,
+      "B": 0,
+      "t_request": 0,
+      "t_C": 0,
+      "t_Q": 0,
+      "t_cut": 0,
+      "t_depart_C": 0,
+      "acquired_method": 0,
+      "acquired_fallback": 21,
+      "acquired_departure": 0,
+      "acquired_reason": 21,
+      "unavailable_method": 0,
+      "unavailable_fallback": 0,
+      "unavailable_departure": 0,
+      "unavailable_reason": 0,
+      "acquired_quantum_count": 0,
+      "acquired_classical_count": 0,
+      "unavailable_classical_count": 0
+    },
+    "numeric_ranges": {
+      "L": [
+        900.0,
+        7200.0
+      ],
+      "T_C": [
+        120.0,
+        120.0
+      ],
+      "T_Q": [
+        60.0,
+        7200.0
+      ],
+      "B": [
+        0.0,
+        720.0
+      ],
+      "t_request": [
+        -7200.0,
+        -900.0
+      ],
+      "t_C": [
+        -7080.0,
+        -780.0
+      ],
+      "t_Q": [
+        -7140.0,
+        6300.0
+      ],
+      "t_cut": [
+        -720.0,
+        0.0
+      ],
+      "t_depart_C": [
+        0.0,
+        0.0
+      ],
+      "acquired_fallback": [
+        -720.0,
+        0.0
+      ],
+      "acquired_departure": [
+        0.0,
+        720.0
+      ],
+      "unavailable_fallback": [
+        -7140.0,
+        0.0
+      ],
+      "unavailable_departure": [
+        0.0,
+        720.0
+      ],
+      "acquired_quantum_count": [
+        0.0,
+        64.0
+      ],
+      "acquired_classical_count": [
+        0.0,
+        64.0
+      ],
+      "unavailable_classical_count": [
+        14.0,
+        14.0
+      ]
+    },
+    "duplicate_full_rows": 0,
+    "primary_key": [
+      "scenario_id"
+    ],
+    "duplicate_keys": 0
+  },
+  "/home/takuma/kmd-analysis-pre-clean-20261102-112222/untracked/review_outputs/cpx01_d11_validation_20261017/logical_candidates.csv": {
+    "rows": 303,
+    "columns": [
+      "PID",
+      "route_identity",
+      "visit_order",
+      "t_depart",
+      "operation_count",
+      "scenario_ids",
+      "methods",
+      "input_identity_status"
+    ],
+    "types": {
+      "PID": "string/structured",
+      "route_identity": "string/structured",
+      "visit_order": "string/structured",
+      "t_depart": "number/string-encoded",
+      "operation_count": "number/string-encoded",
+      "scenario_ids": "string/structured",
+      "methods": "string/structured",
+      "input_identity_status": "string/structured"
+    },
+    "nulls": {
+      "PID": 0,
+      "route_identity": 0,
+      "visit_order": 0,
+      "t_depart": 0,
+      "operation_count": 0,
+      "scenario_ids": 0,
+      "methods": 0,
+      "input_identity_status": 0
+    },
+    "numeric_ranges": {
+      "t_depart": [
+        0.0,
+        720.0
+      ],
+      "operation_count": [
+        3.0,
+        24.0
+      ]
+    },
+    "duplicate_full_rows": 0,
+    "primary_key": [
+      "PID",
+      "route_identity",
+      "t_depart"
+    ],
+    "duplicate_keys": 0
+  },
+  "/home/takuma/kmd-analysis-pre-clean-20261102-112222/untracked/review_outputs/causal_engineering_audit_20261027/run01/A_NATIVE_TASK_COMPLETION.csv": {
+    "rows": 332,
+    "columns": [
+      "run_id",
+      "PID",
+      "parent_id",
+      "replicate_id",
+      "task_id",
+      "stop_order",
+      "q_PE",
+      "native_stop_reached_s",
+      "physical_arrival_time",
+      "arrival_note",
+      "native_stop_end_s",
+      "ready_s",
+      "due_service_start_s",
+      "service_duration_s",
+      "model_service_start_s",
+      "model_completion_s",
+      "D03_completion_deadline_s",
+      "model_complete_on_D03",
+      "candidate_complete_on_due",
+      "model_service_start_on_due",
+      "deadline_slack_s",
+      "extra_native_hold_s",
+      "run_technical_status",
+      "outcome_use",
+      "real_service_observed",
+      "task_source",
+      "stop_source"
+    ],
+    "types": {
+      "run_id": "string/structured",
+      "PID": "string/structured",
+      "parent_id": "string/structured",
+      "replicate_id": "number/string-encoded",
+      "task_id": "string/structured",
+      "stop_order": "number/string-encoded",
+      "q_PE": "number/string-encoded",
+      "native_stop_reached_s": "number/string-encoded",
+      "physical_arrival_time": "number/string-encoded",
+      "arrival_note": "string/structured",
+      "native_stop_end_s": "number/string-encoded",
+      "ready_s": "number/string-encoded",
+      "due_service_start_s": "number/string-encoded",
+      "service_duration_s": "number/string-encoded",
+      "model_service_start_s": "number/string-encoded",
+      "model_completion_s": "number/string-encoded",
+      "D03_completion_deadline_s": "number/string-encoded",
+      "model_complete_on_D03": "string/structured",
+      "candidate_complete_on_due": "string/structured",
+      "model_service_start_on_due": "string/structured",
+      "deadline_slack_s": "number/string-encoded",
+      "extra_native_hold_s": "number/string-encoded",
+      "run_technical_status": "string/structured",
+      "outcome_use": "string/structured",
+      "real_service_observed": "string/structured",
+      "task_source": "string/structured",
+      "stop_source": "string/structured"
+    },
+    "nulls": {
+      "run_id": 0,
+      "PID": 0,
+      "parent_id": 0,
+      "replicate_id": 0,
+      "task_id": 0,
+      "stop_order": 0,
+      "q_PE": 0,
+      "native_stop_reached_s": 0,
+      "physical_arrival_time": 332,
+      "arrival_note": 0,
+      "native_stop_end_s": 0,
+      "ready_s": 0,
+      "due_service_start_s": 0,
+      "service_duration_s": 0,
+      "model_service_start_s": 0,
+      "model_completion_s": 0,
+      "D03_completion_deadline_s": 0,
+      "model_complete_on_D03": 0,
+      "candidate_complete_on_due": 0,
+      "model_service_start_on_due": 0,
+      "deadline_slack_s": 0,
+      "extra_native_hold_s": 0,
+      "run_technical_status": 0,
+      "outcome_use": 0,
+      "real_service_observed": 0,
+      "task_source": 0,
+      "stop_source": 0
+    },
+    "numeric_ranges": {
+      "replicate_id": [
+        0.0,
+        2.0
+      ],
+      "stop_order": [
+        1.0,
+        4.0
+      ],
+      "q_PE": [
+        1.0,
+        8.0
+      ],
+      "native_stop_reached_s": [
+        367.0,
+        25701.0
+      ],
+      "physical_arrival_time": null,
+      "native_stop_end_s": [
+        469.0,
+        25803.0
+      ],
+      "ready_s": [
+        0.0,
+        25200.0
+      ],
+      "due_service_start_s": [
+        7200.0,
+        32400.0
+      ],
+      "service_duration_s": [
+        102.0,
+        102.0
+      ],
+      "model_service_start_s": [
+        367.0,
+        25701.0
+      ],
+      "model_completion_s": [
+        469.0,
+        25803.0
+      ],
+      "D03_completion_deadline_s": [
+        7302.0,
+        32502.0
+      ],
+      "deadline_slack_s": [
+        3099.0,
+        7200.0
+      ],
+      "extra_native_hold_s": [
+        0.0,
+        4.0
+      ]
+    },
+    "duplicate_full_rows": 0,
+    "primary_key": [
+      "run_id",
+      "task_id"
+    ],
+    "duplicate_keys": 0
+  },
+  "/home/takuma/kmd-analysis-pre-clean-20261102-112222/untracked/review_outputs/causal_engineering_audit_20261027/run01/A_BASELINE_METRICS.csv": {
+    "rows": 83,
+    "columns": [
+      "run_id",
+      "PID",
+      "methods",
+      "tasks",
+      "demand_PE",
+      "on_time_PE_D03",
+      "F_PE_D03_diagnostic",
+      "F_count_D03_diagnostic",
+      "candidate_due_F_PE",
+      "native_depart_s",
+      "native_return_s",
+      "return_deadline_s",
+      "return_on_time",
+      "native_stop_complete_count",
+      "saved_execution_returncode",
+      "saved_teleport",
+      "rerouteNo",
+      "run_technical_status",
+      "outcome_use"
+    ],
+    "types": {
+      "run_id": "string/structured",
+      "PID": "string/structured",
+      "methods": "string/structured",
+      "tasks": "number/string-encoded",
+      "demand_PE": "number/string-encoded",
+      "on_time_PE_D03": "number/string-encoded",
+      "F_PE_D03_diagnostic": "number/string-encoded",
+      "F_count_D03_diagnostic": "number/string-encoded",
+      "candidate_due_F_PE": "number/string-encoded",
+      "native_depart_s": "number/string-encoded",
+      "native_return_s": "number/string-encoded",
+      "return_deadline_s": "number/string-encoded",
+      "return_on_time": "string/structured",
+      "native_stop_complete_count": "number/string-encoded",
+      "saved_execution_returncode": "number/string-encoded",
+      "saved_teleport": "string/structured",
+      "rerouteNo": "number/string-encoded",
+      "run_technical_status": "string/structured",
+      "outcome_use": "string/structured"
+    },
+    "nulls": {
+      "run_id": 0,
+      "PID": 0,
+      "methods": 0,
+      "tasks": 0,
+      "demand_PE": 0,
+      "on_time_PE_D03": 0,
+      "F_PE_D03_diagnostic": 0,
+      "F_count_D03_diagnostic": 0,
+      "candidate_due_F_PE": 0,
+      "native_depart_s": 0,
+      "native_return_s": 0,
+      "return_deadline_s": 0,
+      "return_on_time": 0,
+      "native_stop_complete_count": 0,
+      "saved_execution_returncode": 0,
+      "saved_teleport": 0,
+      "rerouteNo": 0,
+      "run_technical_status": 0,
+      "outcome_use": 0
+    },
+    "numeric_ranges": {
+      "tasks": [
+        4.0,
+        4.0
+      ],
+      "demand_PE": [
+        4.0,
+        14.0
+      ],
+      "on_time_PE_D03": [
+        4.0,
+        14.0
+      ],
+      "F_PE_D03_diagnostic": [
+        1.0,
+        1.0
+      ],
+      "F_count_D03_diagnostic": [
+        1.0,
+        1.0
+      ],
+      "candidate_due_F_PE": [
+        1.0,
+        1.0
+      ],
+      "native_depart_s": [
+        0.0,
+        0.0
+      ],
+      "native_return_s": [
+        8430.0,
+        26879.0
+      ],
+      "return_deadline_s": [
+        32400.0,
+        32400.0
+      ],
+      "native_stop_complete_count": [
+        4.0,
+        4.0
+      ],
+      "saved_execution_returncode": [
+        0.0,
+        0.0
+      ],
+      "rerouteNo": [
+        0.0,
+        0.0
+      ]
+    },
+    "duplicate_full_rows": 0,
+    "primary_key": [
+      "run_id"
+    ],
+    "duplicate_keys": 0
+  },
+  "/home/takuma/kmd-analysis-pre-clean-20261102-112222/untracked/review_outputs/staged_qaoa_validation_20261102/mirror_family/ALL_SEEDS.csv": {
+    "rows": 69000,
+    "columns": [
+      "run_id",
+      "variant",
+      "mode",
+      "rep",
+      "training_mode",
+      "sampled_best_seconds",
+      "best_including_initial_seconds",
+      "initial_seconds",
+      "orbit_optimum_seconds",
+      "global_optimum_seconds",
+      "sampled_gap_global_percent",
+      "sampled_gap_orbit_percent",
+      "improves_initial",
+      "improves_at_least_one_second",
+      "changed_shots",
+      "mean_road_seconds",
+      "scale",
+      "parent_id",
+      "n"
+    ],
+    "types": {
+      "run_id": "string/structured",
+      "variant": "string/structured",
+      "mode": "string/structured",
+      "rep": "number/string-encoded",
+      "training_mode": "number/string-encoded",
+      "sampled_best_seconds": "number/string-encoded",
+      "best_including_initial_seconds": "number/string-encoded",
+      "initial_seconds": "number/string-encoded",
+      "orbit_optimum_seconds": "number/string-encoded",
+      "global_optimum_seconds": "number/string-encoded",
+      "sampled_gap_global_percent": "number/string-encoded",
+      "sampled_gap_orbit_percent": "number/string-encoded",
+      "improves_initial": "string/structured",
+      "improves_at_least_one_second": "string/structured",
+      "changed_shots": "number/string-encoded",
+      "mean_road_seconds": "number/string-encoded",
+      "scale": "string/structured",
+      "parent_id": "string/structured",
+      "n": "number/string-encoded"
+    },
+    "nulls": {
+      "run_id": 0,
+      "variant": 0,
+      "mode": 0,
+      "rep": 0,
+      "training_mode": 0,
+      "sampled_best_seconds": 0,
+      "best_including_initial_seconds": 0,
+      "initial_seconds": 0,
+      "orbit_optimum_seconds": 0,
+      "global_optimum_seconds": 7950,
+      "sampled_gap_global_percent": 7950,
+      "sampled_gap_orbit_percent": 0,
+      "improves_initial": 0,
+      "improves_at_least_one_second": 0,
+      "changed_shots": 0,
+      "mean_road_seconds": 0,
+      "scale": 0,
+      "parent_id": 0,
+      "n": 0
+    },
+    "numeric_ranges": {
+      "rep": [
+        0.0,
+        9.0
+      ],
+      "training_mode": [
+        99.0,
+        99.0
+      ],
+      "sampled_best_seconds": [
+        695.513413883,
+        4024.258268855
+      ],
+      "best_including_initial_seconds": [
+        695.513413883,
+        3093.094568292
+      ],
+      "initial_seconds": [
+        695.513413883,
+        3093.094568292
+      ],
+      "orbit_optimum_seconds": [
+        695.513413883,
+        3093.094568292
+      ],
+      "global_optimum_seconds": [
+        695.513413883,
+        2949.771221384
+      ],
+      "sampled_gap_global_percent": [
+        0.0,
+        82.12848833300808
+      ],
+      "sampled_gap_orbit_percent": [
+        0.0,
+        89.44985659795
+      ],
+      "changed_shots": [
+        0.0,
+        8192.0
+      ],
+      "mean_road_seconds": [
+        695.513413883,
+        7012.695185276742
+      ],
+      "n": [
+        3.0,
+        125.0
+      ]
+    },
+    "duplicate_full_rows": 0,
+    "primary_key": [
+      "run_id",
+      "variant",
+      "mode",
+      "rep"
+    ],
+    "duplicate_keys": 0
+  },
+  "/home/takuma/kmd-analysis-pre-clean-20261102-112222/untracked/review_outputs/staged_qaoa_validation_20261102/grover_depth/ALL_SEEDS.csv": {
+    "rows": 9200,
+    "columns": [
+      "run_id",
+      "scale",
+      "parent_id",
+      "n",
+      "variant",
+      "mode",
+      "rep",
+      "sampled_best_seconds",
+      "initial_seconds",
+      "global_optimum_seconds",
+      "sampled_gap_global_percent",
+      "improves_initial",
+      "state_trace_distance_upper",
+      "validation_method",
+      "certificate_source"
+    ],
+    "types": {
+      "run_id": "string/structured",
+      "scale": "string/structured",
+      "parent_id": "string/structured",
+      "n": "number/string-encoded",
+      "variant": "string/structured",
+      "mode": "string/structured",
+      "rep": "number/string-encoded",
+      "sampled_best_seconds": "number/string-encoded",
+      "initial_seconds": "number/string-encoded",
+      "global_optimum_seconds": "number/string-encoded",
+      "sampled_gap_global_percent": "number/string-encoded",
+      "improves_initial": "string/structured",
+      "state_trace_distance_upper": "number/string-encoded",
+      "validation_method": "string/structured",
+      "certificate_source": "string/structured"
+    },
+    "nulls": {
+      "run_id": 0,
+      "scale": 0,
+      "parent_id": 0,
+      "n": 0,
+      "variant": 0,
+      "mode": 0,
+      "rep": 0,
+      "sampled_best_seconds": 0,
+      "initial_seconds": 0,
+      "global_optimum_seconds": 1060,
+      "sampled_gap_global_percent": 1060,
+      "improves_initial": 0,
+      "state_trace_distance_upper": 0,
+      "validation_method": 0,
+      "certificate_source": 0
+    },
+    "numeric_ranges": {
+      "n": [
+        3.0,
+        125.0
+      ],
+      "rep": [
+        0.0,
+        9.0
+      ],
+      "sampled_best_seconds": [
+        695.513413883,
+        12214.252297087
+      ],
+      "initial_seconds": [
+        695.513413883,
+        3093.094568292
+      ],
+      "global_optimum_seconds": [
+        695.513413883,
+        2949.771221384
+      ],
+      "sampled_gap_global_percent": [
+        0.0,
+        402.5922189281015
+      ],
+      "state_trace_distance_upper": [
+        2.307280652025931e-11,
+        0.009942097291562807
+      ]
+    },
+    "duplicate_full_rows": 0,
+    "primary_key": [
+      "run_id",
+      "variant",
+      "mode",
+      "rep"
+    ],
+    "duplicate_keys": 0
+  },
+  "/home/takuma/kmd-analysis-pre-clean-20261102-112222/untracked/review_outputs/staged_qaoa_validation_20261102/active_adjacent_p3/ALL_SEEDS.csv": {
+    "rows": 9200,
+    "columns": [
+      "run_id",
+      "scale",
+      "parent_id",
+      "variant",
+      "mode",
+      "rep",
+      "sampled_best_seconds",
+      "initial_seconds",
+      "improves_initial",
+      "improves_one_second",
+      "invalid_raw_samples",
+      "trace_distance_upper",
+      "samples_sha256"
+    ],
+    "types": {
+      "run_id": "string/structured",
+      "scale": "string/structured",
+      "parent_id": "string/structured",
+      "variant": "string/structured",
+      "mode": "string/structured",
+      "rep": "number/string-encoded",
+      "sampled_best_seconds": "number/string-encoded",
+      "initial_seconds": "number/string-encoded",
+      "improves_initial": "string/structured",
+      "improves_one_second": "string/structured",
+      "invalid_raw_samples": "number/string-encoded",
+      "trace_distance_upper": "number/string-encoded",
+      "samples_sha256": "string/structured"
+    },
+    "nulls": {
+      "run_id": 0,
+      "scale": 0,
+      "parent_id": 0,
+      "variant": 0,
+      "mode": 0,
+      "rep": 0,
+      "sampled_best_seconds": 0,
+      "initial_seconds": 0,
+      "improves_initial": 0,
+      "improves_one_second": 0,
+      "invalid_raw_samples": 0,
+      "trace_distance_upper": 0,
+      "samples_sha256": 0
+    },
+    "numeric_ranges": {
+      "rep": [
+        0.0,
+        9.0
+      ],
+      "sampled_best_seconds": [
+        695.513413883,
+        3093.094568292
+      ],
+      "initial_seconds": [
+        695.513413883,
+        3093.094568292
+      ],
+      "invalid_raw_samples": [
+        0.0,
+        0.0
+      ],
+      "trace_distance_upper": [
+        0.0,
+        6.125908661449253e-05
+      ]
+    },
+    "duplicate_full_rows": 0,
+    "primary_key": [
+      "run_id",
+      "variant",
+      "mode",
+      "rep"
+    ],
+    "duplicate_keys": 0
+  },
+  "/home/takuma/kmd-analysis-pre-clean-20261102-112222/untracked/review_outputs/t09_open_data_model_20261029/run01/PACK_20KWH_SENSITIVITY.csv": {
+    "rows": 183,
+    "columns": [
+      "series",
+      "material",
+      "q_reference_Ah_kg",
+      "positive_utilization",
+      "mean_voltage_design_V",
+      "gross_design_Wh",
+      "usable_design_Wh",
+      "area_policy",
+      "positive_active_loading_input_kg_m2",
+      "actual_positive_active_loading_kg_m2",
+      "negative_active_loading_kg_m2",
+      "positive_porosity",
+      "negative_porosity",
+      "NP_after_formation",
+      "negative_q_Ah_kg",
+      "negative_unavailable_fraction",
+      "negative_area_factor",
+      "independent_negative_loading_probe_kg_m2",
+      "overlap_condition",
+      "Al_thickness_m",
+      "Cu_thickness_m",
+      "separator_areal_mass_kg_m2",
+      "extra_liquid_volume_m3",
+      "positive_active_kg",
+      "positive_coating_kg",
+      "negative_active_kg",
+      "negative_coating_kg",
+      "positive_face_area_m2",
+      "negative_face_area_m2",
+      "positive_coating_thickness_um",
+      "negative_coating_thickness_um",
+      "Al_mass_kg",
+      "Cu_mass_kg",
+      "separator_dry_mass_kg",
+      "liquid_mass_kg",
+      "known_cell_components_sum_kg",
+      "complete_pack_mass_kg",
+      "casing_tabs_pack_structure_mass_kg",
+      "missing_reason",
+      "physical_cell_count_design",
+      "per_cell_capacity_design_Ah",
+      "pack_terminal_capacity_Ah",
+      "all_cells_capacity_sum_Ah",
+      "status"
+    ],
+    "types": {
+      "series": "string/structured",
+      "material": "string/structured",
+      "q_reference_Ah_kg": "number/string-encoded",
+      "positive_utilization": "number/string-encoded",
+      "mean_voltage_design_V": "number/string-encoded",
+      "gross_design_Wh": "number/string-encoded",
+      "usable_design_Wh": "number/string-encoded",
+      "area_policy": "string/structured",
+      "positive_active_loading_input_kg_m2": "number/string-encoded",
+      "actual_positive_active_loading_kg_m2": "number/string-encoded",
+      "negative_active_loading_kg_m2": "number/string-encoded",
+      "positive_porosity": "number/string-encoded",
+      "negative_porosity": "number/string-encoded",
+      "NP_after_formation": "number/string-encoded",
+      "negative_q_Ah_kg": "number/string-encoded",
+      "negative_unavailable_fraction": "number/string-encoded",
+      "negative_area_factor": "number/string-encoded",
+      "independent_negative_loading_probe_kg_m2": "number/string-encoded",
+      "overlap_condition": "string/structured",
+      "Al_thickness_m": "number/string-encoded",
+      "Cu_thickness_m": "number/string-encoded",
+      "separator_areal_mass_kg_m2": "number/string-encoded",
+      "extra_liquid_volume_m3": "number/string-encoded",
+      "positive_active_kg": "number/string-encoded",
+      "positive_coating_kg": "number/string-encoded",
+      "negative_active_kg": "number/string-encoded",
+      "negative_coating_kg": "number/string-encoded",
+      "positive_face_area_m2": "number/string-encoded",
+      "negative_face_area_m2": "number/string-encoded",
+      "positive_coating_thickness_um": "number/string-encoded",
+      "negative_coating_thickness_um": "number/string-encoded",
+      "Al_mass_kg": "number/string-encoded",
+      "Cu_mass_kg": "number/string-encoded",
+      "separator_dry_mass_kg": "number/string-encoded",
+      "liquid_mass_kg": "number/string-encoded",
+      "known_cell_components_sum_kg": "number/string-encoded",
+      "complete_pack_mass_kg": "number/string-encoded",
+      "casing_tabs_pack_structure_mass_kg": "number/string-encoded",
+      "missing_reason": "string/structured",
+      "physical_cell_count_design": "number/string-encoded",
+      "per_cell_capacity_design_Ah": "number/string-encoded",
+      "pack_terminal_capacity_Ah": "number/string-encoded",
+      "all_cells_capacity_sum_Ah": "number/string-encoded",
+      "status": "string/structured"
+    },
+    "nulls": {
+      "series": 0,
+      "material": 0,
+      "q_reference_Ah_kg": 0,
+      "positive_utilization": 0,
+      "mean_voltage_design_V": 0,
+      "gross_design_Wh": 0,
+      "usable_design_Wh": 0,
+      "area_policy": 0,
+      "positive_active_loading_input_kg_m2": 0,
+      "actual_positive_active_loading_kg_m2": 0,
+      "negative_active_loading_kg_m2": 0,
+      "positive_porosity": 0,
+      "negative_porosity": 0,
+      "NP_after_formation": 0,
+      "negative_q_Ah_kg": 0,
+      "negative_unavailable_fraction": 0,
+      "negative_area_factor": 0,
+      "independent_negative_loading_probe_kg_m2": 180,
+      "overlap_condition": 0,
+      "Al_thickness_m": 0,
+      "Cu_thickness_m": 0,
+      "separator_areal_mass_kg_m2": 0,
+      "extra_liquid_volume_m3": 0,
+      "positive_active_kg": 0,
+      "positive_coating_kg": 0,
+      "negative_active_kg": 0,
+      "negative_coating_kg": 0,
+      "positive_face_area_m2": 0,
+      "negative_face_area_m2": 0,
+      "positive_coating_thickness_um": 0,
+      "negative_coating_thickness_um": 0,
+      "Al_mass_kg": 0,
+      "Cu_mass_kg": 0,
+      "separator_dry_mass_kg": 0,
+      "liquid_mass_kg": 0,
+      "known_cell_components_sum_kg": 0,
+      "complete_pack_mass_kg": 183,
+      "casing_tabs_pack_structure_mass_kg": 183,
+      "missing_reason": 0,
+      "physical_cell_count_design": 0,
+      "per_cell_capacity_design_Ah": 0,
+      "pack_terminal_capacity_Ah": 0,
+      "all_cells_capacity_sum_Ah": 0,
+      "status": 0
+    },
+    "numeric_ranges": {
+      "q_reference_Ah_kg": [
+        165.0,
+        195.959596
+      ],
+      "positive_utilization": [
+        0.8,
+        1.0
+      ],
+      "mean_voltage_design_V": [
+        3.5,
+        3.5
+      ],
+      "gross_design_Wh": [
+        20000.0,
+        20000.0
+      ],
+      "usable_design_Wh": [
+        18000.0,
+        18000.0
+      ],
+      "positive_active_loading_input_kg_m2": [
+        0.02,
+        0.2
+      ],
+      "actual_positive_active_loading_kg_m2": [
+        0.017541881439682085,
+        0.2192735179960261
+      ],
+      "negative_active_loading_kg_m2": [
+        0.009580246915555556,
+        0.11975308644444445
+      ],
+      "positive_porosity": [
+        0.25,
+        0.45
+      ],
+      "negative_porosity": [
+        0.25,
+        0.45
+      ],
+      "NP_after_formation": [
+        1.0,
+        1.2
+      ],
+      "negative_q_Ah_kg": [
+        300.0,
+        360.0
+      ],
+      "negative_unavailable_fraction": [
+        0.0,
+        0.05
+      ],
+      "negative_area_factor": [
+        1.0,
+        1.1
+      ],
+      "independent_negative_loading_probe_kg_m2": [
+        0.02,
+        0.1
+      ],
+      "Al_thickness_m": [
+        1e-05,
+        2e-05
+      ],
+      "Cu_thickness_m": [
+        8e-06,
+        1.5e-05
+      ],
+      "separator_areal_mass_kg_m2": [
+        0.008,
+        0.02
+      ],
+      "extra_liquid_volume_m3": [
+        0.0,
+        0.005
+      ],
+      "positive_active_kg": [
+        29.16053018544555,
+        36.450662731806936
+      ],
+      "positive_coating_kg": [
+        36.075036075036074,
+        48.60088364240925
+      ],
+      "negative_active_kg": [
+        15.873015873015875,
+        20.952380952380956
+      ],
+      "negative_coating_kg": [
+        16.19695497246518,
+        21.379980563654037
+      ],
+      "positive_face_area_m2": [
+        145.80265092722775,
+        1822.5331365903469
+      ],
+      "negative_face_area_m2": [
+        145.80265092722775,
+        1822.5331365903469
+      ],
+      "positive_coating_thickness_um": [
+        6.995416555378927,
+        100.89543108719609
+      ],
+      "negative_coating_thickness_um": [
+        5.9247043386243385,
+        85.45246642246643
+      ],
+      "Al_mass_kg": [
+        2.9514101613944077,
+        36.8926270174301
+      ],
+      "Cu_mass_kg": [
+        6.531958761539804,
+        81.64948451924755
+      ],
+      "separator_dry_mass_kg": [
+        1.9355301910589484,
+        24.194127388236854
+      ],
+      "liquid_mass_kg": [
+        9.231502498857138,
+        37.58555180038802
+      ],
+      "known_cell_components_sum_kg": [
+        77.34775899648939,
+        246.73932483742348
+      ],
+      "complete_pack_mass_kg": null,
+      "casing_tabs_pack_structure_mass_kg": null,
+      "physical_cell_count_design": [
+        100.0,
+        100.0
+      ],
+      "per_cell_capacity_design_Ah": [
+        57.142857142857146,
+        57.142857142857146
+      ],
+      "pack_terminal_capacity_Ah": [
+        57.142857142857146,
+        57.142857142857146
+      ],
+      "all_cells_capacity_sum_Ah": [
+        5714.285714285715,
+        5714.285714285715
+      ]
+    },
+    "duplicate_full_rows": 59,
+    "primary_key": null,
+    "duplicate_keys": "NOT_ASSERTED"
+  },
+  "/home/takuma/kmd-analysis-pre-clean-20261102-112222/untracked/review_outputs/t08_t09_conditional_bridge_20261030/run01/T09_MASS_BOUNDARIES.csv": {
+    "rows": 183,
+    "columns": [
+      "scenario_id",
+      "material_condition",
+      "design_policy",
+      "input_conditions",
+      "known_component_mass",
+      "unknown_component_mass",
+      "known_LP_minus_S_mass",
+      "unknown_mass_boundary",
+      "condition_for_saving",
+      "condition_for_cancellation",
+      "condition_for_reversal",
+      "complete_pack_mass_kg",
+      "completeness_status",
+      "evidence_grade",
+      "pair_id",
+      "comparison_scope",
+      "varied_variable",
+      "physical_signature",
+      "first_equivalent_row",
+      "logical_duplicate",
+      "units",
+      "series",
+      "denominator",
+      "source_file",
+      "evaluation_status"
+    ],
+    "types": {
+      "scenario_id": "string/structured",
+      "material_condition": "string/structured",
+      "design_policy": "string/structured",
+      "input_conditions": "string/structured",
+      "known_component_mass": "number/string-encoded",
+      "unknown_component_mass": "number/string-encoded",
+      "known_LP_minus_S_mass": "number/string-encoded",
+      "unknown_mass_boundary": "number/string-encoded",
+      "condition_for_saving": "string/structured",
+      "condition_for_cancellation": "string/structured",
+      "condition_for_reversal": "string/structured",
+      "complete_pack_mass_kg": "number/string-encoded",
+      "completeness_status": "string/structured",
+      "evidence_grade": "string/structured",
+      "pair_id": "string/structured",
+      "comparison_scope": "string/structured",
+      "varied_variable": "string/structured",
+      "physical_signature": "string/structured",
+      "first_equivalent_row": "number/string-encoded",
+      "logical_duplicate": "string/structured",
+      "units": "string/structured",
+      "series": "string/structured",
+      "denominator": "string/structured",
+      "source_file": "string/structured",
+      "evaluation_status": "string/structured"
+    },
+    "nulls": {
+      "scenario_id": 0,
+      "material_condition": 0,
+      "design_policy": 0,
+      "input_conditions": 0,
+      "known_component_mass": 0,
+      "unknown_component_mass": 183,
+      "known_LP_minus_S_mass": 2,
+      "unknown_mass_boundary": 2,
+      "condition_for_saving": 2,
+      "condition_for_cancellation": 2,
+      "condition_for_reversal": 2,
+      "complete_pack_mass_kg": 183,
+      "completeness_status": 0,
+      "evidence_grade": 0,
+      "pair_id": 2,
+      "comparison_scope": 0,
+      "varied_variable": 146,
+      "physical_signature": 0,
+      "first_equivalent_row": 0,
+      "logical_duplicate": 0,
+      "units": 0,
+      "series": 0,
+      "denominator": 0,
+      "source_file": 0,
+      "evaluation_status": 0
+    },
+    "numeric_ranges": {
+      "known_component_mass": [
+        77.34775899648939,
+        246.73932483742348
+      ],
+      "unknown_component_mass": null,
+      "known_LP_minus_S_mass": [
+        -97.17114737967998,
+        25.027379835141545
+      ],
+      "unknown_mass_boundary": [
+        -97.17114737967998,
+        25.027379835141545
+      ],
+      "complete_pack_mass_kg": null,
+      "first_equivalent_row": [
+        1.0,
+        183.0
+      ]
+    },
+    "duplicate_full_rows": 0,
+    "primary_key": [
+      "scenario_id"
+    ],
+    "duplicate_keys": 0
+  },
+  "/home/takuma/kmd-analysis-pre-clean-20261102-112222/untracked/review_outputs/t08_t09_conditional_bridge_20261030/run01/DC_MASS_RESPONSE.csv": {
+    "rows": 25760,
+    "columns": [
+      "series",
+      "pair_id",
+      "design_policy",
+      "probe_id",
+      "physical_instance_id",
+      "trajectory_sha256",
+      "scale_id",
+      "n_customers",
+      "rolling_case",
+      "pressure_bar",
+      "reference_running_mass_kg",
+      "known_mass_boundary_kg",
+      "unknown_mass_difference_probe_kg",
+      "net_mass_saving_probe_kg",
+      "vehicle_mass_difference_probe_kg",
+      "S_running_mass_probe_kg",
+      "actual_LP_pack_mass_kg",
+      "actual_S_pack_mass_kg",
+      "reference_equivalent_LP_pack_mass_probe_kg",
+      "LP_unknown_mass_probe_kg",
+      "S_unknown_mass_probe_kg",
+      "baseline_DC_Wh",
+      "S_DC_Wh",
+      "DC_saving_Wh",
+      "individual_saving_percent",
+      "W1_signed_mechanical_LP_minus_S_Wh",
+      "W3_signed_mechanical_LP_minus_S_Wh",
+      "W1_baseline_mask_DC_saving_Wh",
+      "W2_baseline_mask_DC_saving_Wh",
+      "W3_baseline_mask_DC_saving_Wh",
+      "W4_baseline_mask_DC_saving_Wh",
+      "branch_correction_Wh",
+      "branch_switch_count",
+      "accounting_residual_Wh",
+      "linear_tangent_error_Wh",
+      "stock_integrity",
+      "distance_km",
+      "restart_count",
+      "mean_speed_moving_m_s",
+      "unit",
+      "denominator",
+      "source_file",
+      "evaluation_status"
+    ],
+    "types": {
+      "series": "string/structured",
+      "pair_id": "string/structured",
+      "design_policy": "string/structured",
+      "probe_id": "string/structured",
+      "physical_instance_id": "string/structured",
+      "trajectory_sha256": "string/structured",
+      "scale_id": "string/structured",
+      "n_customers": "number/string-encoded",
+      "rolling_case": "string/structured",
+      "pressure_bar": "number/string-encoded",
+      "reference_running_mass_kg": "number/string-encoded",
+      "known_mass_boundary_kg": "number/string-encoded",
+      "unknown_mass_difference_probe_kg": "number/string-encoded",
+      "net_mass_saving_probe_kg": "number/string-encoded",
+      "vehicle_mass_difference_probe_kg": "number/string-encoded",
+      "S_running_mass_probe_kg": "number/string-encoded",
+      "actual_LP_pack_mass_kg": "number/string-encoded",
+      "actual_S_pack_mass_kg": "number/string-encoded",
+      "reference_equivalent_LP_pack_mass_probe_kg": "number/string-encoded",
+      "LP_unknown_mass_probe_kg": "number/string-encoded",
+      "S_unknown_mass_probe_kg": "number/string-encoded",
+      "baseline_DC_Wh": "number/string-encoded",
+      "S_DC_Wh": "number/string-encoded",
+      "DC_saving_Wh": "number/string-encoded",
+      "individual_saving_percent": "number/string-encoded",
+      "W1_signed_mechanical_LP_minus_S_Wh": "number/string-encoded",
+      "W3_signed_mechanical_LP_minus_S_Wh": "number/string-encoded",
+      "W1_baseline_mask_DC_saving_Wh": "number/string-encoded",
+      "W2_baseline_mask_DC_saving_Wh": "number/string-encoded",
+      "W3_baseline_mask_DC_saving_Wh": "number/string-encoded",
+      "W4_baseline_mask_DC_saving_Wh": "number/string-encoded",
+      "branch_correction_Wh": "number/string-encoded",
+      "branch_switch_count": "number/string-encoded",
+      "accounting_residual_Wh": "number/string-encoded",
+      "linear_tangent_error_Wh": "number/string-encoded",
+      "stock_integrity": "string/structured",
+      "distance_km": "number/string-encoded",
+      "restart_count": "number/string-encoded",
+      "mean_speed_moving_m_s": "number/string-encoded",
+      "unit": "string/structured",
+      "denominator": "string/structured",
+      "source_file": "string/structured",
+      "evaluation_status": "string/structured"
+    },
+    "nulls": {
+      "series": 0,
+      "pair_id": 0,
+      "design_policy": 0,
+      "probe_id": 0,
+      "physical_instance_id": 0,
+      "trajectory_sha256": 0,
+      "scale_id": 0,
+      "n_customers": 0,
+      "rolling_case": 0,
+      "pressure_bar": 0,
+      "reference_running_mass_kg": 0,
+      "known_mass_boundary_kg": 0,
+      "unknown_mass_difference_probe_kg": 0,
+      "net_mass_saving_probe_kg": 0,
+      "vehicle_mass_difference_probe_kg": 0,
+      "S_running_mass_probe_kg": 0,
+      "actual_LP_pack_mass_kg": 25760,
+      "actual_S_pack_mass_kg": 25760,
+      "reference_equivalent_LP_pack_mass_probe_kg": 0,
+      "LP_unknown_mass_probe_kg": 0,
+      "S_unknown_mass_probe_kg": 0,
+      "baseline_DC_Wh": 0,
+      "S_DC_Wh": 0,
+      "DC_saving_Wh": 0,
+      "individual_saving_percent": 0,
+      "W1_signed_mechanical_LP_minus_S_Wh": 0,
+      "W3_signed_mechanical_LP_minus_S_Wh": 0,
+      "W1_baseline_mask_DC_saving_Wh": 0,
+      "W2_baseline_mask_DC_saving_Wh": 0,
+      "W3_baseline_mask_DC_saving_Wh": 0,
+      "W4_baseline_mask_DC_saving_Wh": 0,
+      "branch_correction_Wh": 0,
+      "branch_switch_count": 0,
+      "accounting_residual_Wh": 0,
+      "linear_tangent_error_Wh": 0,
+      "stock_integrity": 0,
+      "distance_km": 0,
+      "restart_count": 0,
+      "mean_speed_moving_m_s": 0,
+      "unit": 0,
+      "denominator": 0,
+      "source_file": 0,
+      "evaluation_status": 0
+    },
+    "numeric_ranges": {
+      "n_customers": [
+        3.0,
+        125.0
+      ],
+      "pressure_bar": [
+        2.6,
+        4.5
+      ],
+      "reference_running_mass_kg": [
+        1200.0,
+        1400.0
+      ],
+      "known_mass_boundary_kg": [
+        5.977891152148871,
+        9.722608121107783
+      ],
+      "unknown_mass_difference_probe_kg": [
+        -5.0,
+        20.0
+      ],
+      "net_mass_saving_probe_kg": [
+        -14.022108847851129,
+        14.722608121107783
+      ],
+      "vehicle_mass_difference_probe_kg": [
+        -14.022108847851129,
+        14.722608121107783
+      ],
+      "S_running_mass_probe_kg": [
+        1185.277391878892,
+        1414.022108847851
+      ],
+      "actual_LP_pack_mass_kg": null,
+      "actual_S_pack_mass_kg": null,
+      "reference_equivalent_LP_pack_mass_probe_kg": [
+        156.1111111111111,
+        356.1111111111111
+      ],
+      "LP_unknown_mass_probe_kg": [
+        55.67902455591545,
+        255.67902455591545
+      ],
+      "S_unknown_mass_probe_kg": [
+        50.67902455591545,
+        275.6790245559155
+      ],
+      "baseline_DC_Wh": [
+        1157.664845757485,
+        8625.22061068978
+      ],
+      "S_DC_Wh": [
+        1145.4719638084093,
+        8703.802183896754
+      ],
+      "DC_saving_Wh": [
+        -78.58157320697501,
+        82.50685321568744
+      ],
+      "individual_saving_percent": [
+        -1.0602139199263652,
+        1.1131745198638237
+      ],
+      "W1_signed_mechanical_LP_minus_S_Wh": [
+        -14.386925304700455,
+        15.105649629957
+      ],
+      "W3_signed_mechanical_LP_minus_S_Wh": [
+        -0.05344013615527811,
+        0.056109832771221474
+      ],
+      "W1_baseline_mask_DC_saving_Wh": [
+        -10.020800129230059,
+        10.521406941240027
+      ],
+      "W2_baseline_mask_DC_saving_Wh": [
+        0.0,
+        0.0
+      ],
+      "W3_baseline_mask_DC_saving_Wh": [
+        -68.93015813066772,
+        72.37368621905576
+      ],
+      "W4_baseline_mask_DC_saving_Wh": [
+        0.0,
+        0.0
+      ],
+      "branch_correction_Wh": [
+        -0.0160133411058034,
+        0.0
+      ],
+      "branch_switch_count": [
+        0.0,
+        4.0
+      ],
+      "accounting_residual_Wh": [
+        -2.5295321393059567e-12,
+        2.982472423326485e-12
+      ],
+      "linear_tangent_error_Wh": [
+        -0.016013341105256984,
+        3.168426888145229e-12
+      ],
+      "distance_km": [
+        6.758759303886,
+        41.005835736843004
+      ],
+      "restart_count": [
+        6.0,
+        187.0
+      ],
+      "mean_speed_moving_m_s": [
+        5.561052101432875,
+        10.546374825226167
+      ]
+    },
+    "duplicate_full_rows": 0,
+    "primary_key": [
+      "pair_id",
+      "probe_id",
+      "physical_instance_id",
+      "rolling_case",
+      "reference_running_mass_kg"
+    ],
+    "duplicate_keys": 0
+  },
+  "/home/takuma/kmd-analysis-pre-clean-20261102-112222/untracked/review_outputs/material_ev_stage2_20261026/run02/MATERIAL_ENERGY.csv": {
+    "rows": 4464,
+    "columns": [
+      "dataset",
+      "physical_instance_id",
+      "scale_id",
+      "method",
+      "route_identity",
+      "rolling_case",
+      "trajectory_sha256",
+      "scenario_id",
+      "scenario_sha256",
+      "series",
+      "pack_mass_kg",
+      "running_mass_kg",
+      "observed_interval_count",
+      "observed_distance_m",
+      "rolling_Wh",
+      "translational_signed_Wh",
+      "translational_positive_Wh",
+      "translational_negative_Wh",
+      "rotational_signed_Wh",
+      "aero_Wh",
+      "grade_Wh",
+      "turn_Wh",
+      "turn_scope",
+      "auxiliary_Wh",
+      "auxiliary_scope",
+      "wheel_positive_Wh",
+      "wheel_negative_Wh",
+      "traction_DC_Wh",
+      "accepted_regen_Wh",
+      "net_DC_Wh",
+      "Wh_per_observed_km",
+      "initial_stock_Wh",
+      "minimum_stock_Wh",
+      "terminal_stock_Wh",
+      "cumulative_DC_Wh",
+      "stock_integrity",
+      "boundary",
+      "terminal_gap_energy_Wh",
+      "terminal_gap_status",
+      "numerical_status",
+      "scientific_adoption",
+      "practical_qualification"
+    ],
+    "types": {
+      "dataset": "string/structured",
+      "physical_instance_id": "string/structured",
+      "scale_id": "string/structured",
+      "method": "string/structured",
+      "route_identity": "string/structured",
+      "rolling_case": "string/structured",
+      "trajectory_sha256": "string/structured",
+      "scenario_id": "string/structured",
+      "scenario_sha256": "string/structured",
+      "series": "string/structured",
+      "pack_mass_kg": "number/string-encoded",
+      "running_mass_kg": "number/string-encoded",
+      "observed_interval_count": "number/string-encoded",
+      "observed_distance_m": "number/string-encoded",
+      "rolling_Wh": "number/string-encoded",
+      "translational_signed_Wh": "number/string-encoded",
+      "translational_positive_Wh": "number/string-encoded",
+      "translational_negative_Wh": "number/string-encoded",
+      "rotational_signed_Wh": "number/string-encoded",
+      "aero_Wh": "number/string-encoded",
+      "grade_Wh": "number/string-encoded",
+      "turn_Wh": "number/string-encoded",
+      "turn_scope": "string/structured",
+      "auxiliary_Wh": "number/string-encoded",
+      "auxiliary_scope": "string/structured",
+      "wheel_positive_Wh": "number/string-encoded",
+      "wheel_negative_Wh": "number/string-encoded",
+      "traction_DC_Wh": "number/string-encoded",
+      "accepted_regen_Wh": "number/string-encoded",
+      "net_DC_Wh": "number/string-encoded",
+      "Wh_per_observed_km": "number/string-encoded",
+      "initial_stock_Wh": "number/string-encoded",
+      "minimum_stock_Wh": "number/string-encoded",
+      "terminal_stock_Wh": "number/string-encoded",
+      "cumulative_DC_Wh": "number/string-encoded",
+      "stock_integrity": "string/structured",
+      "boundary": "string/structured",
+      "terminal_gap_energy_Wh": "number/string-encoded",
+      "terminal_gap_status": "string/structured",
+      "numerical_status": "string/structured",
+      "scientific_adoption": "string/structured",
+      "practical_qualification": "string/structured"
+    },
+    "nulls": {
+      "dataset": 0,
+      "physical_instance_id": 0,
+      "scale_id": 0,
+      "method": 0,
+      "route_identity": 0,
+      "rolling_case": 0,
+      "trajectory_sha256": 0,
+      "scenario_id": 0,
+      "scenario_sha256": 0,
+      "series": 0,
+      "pack_mass_kg": 0,
+      "running_mass_kg": 0,
+      "observed_interval_count": 0,
+      "observed_distance_m": 0,
+      "rolling_Wh": 0,
+      "translational_signed_Wh": 0,
+      "translational_positive_Wh": 0,
+      "translational_negative_Wh": 0,
+      "rotational_signed_Wh": 0,
+      "aero_Wh": 0,
+      "grade_Wh": 0,
+      "turn_Wh": 4464,
+      "turn_scope": 0,
+      "auxiliary_Wh": 4464,
+      "auxiliary_scope": 0,
+      "wheel_positive_Wh": 0,
+      "wheel_negative_Wh": 0,
+      "traction_DC_Wh": 0,
+      "accepted_regen_Wh": 0,
+      "net_DC_Wh": 0,
+      "Wh_per_observed_km": 0,
+      "initial_stock_Wh": 0,
+      "minimum_stock_Wh": 0,
+      "terminal_stock_Wh": 0,
+      "cumulative_DC_Wh": 0,
+      "stock_integrity": 0,
+      "boundary": 0,
+      "terminal_gap_energy_Wh": 4464,
+      "terminal_gap_status": 0,
+      "numerical_status": 0,
+      "scientific_adoption": 0,
+      "practical_qualification": 0
+    },
+    "numeric_ranges": {
+      "pack_mass_kg": [
+        90.6973573836391,
+        96.14565479871602
+      ],
+      "running_mass_kg": [
+        1134.586246272528,
+        1140.0345436876048
+      ],
+      "observed_interval_count": [
+        1318.0,
+        32548.0
+      ],
+      "observed_distance_m": [
+        6758.759303886,
+        41005.835736843
+      ],
+      "rolling_Wh": [
+        157.7594906854993,
+        1169.6950867219603
+      ],
+      "translational_signed_Wh": [
+        0.002319501689449933,
+        4.344824440991013
+      ],
+      "translational_positive_Wh": [
+        741.567447092633,
+        5085.6952163230335
+      ],
+      "translational_negative_Wh": [
+        741.5532603604107,
+        5085.543426166903
+      ],
+      "rotational_signed_Wh": [
+        0.0001247059036034099,
+        0.23247917562494352
+      ],
+      "aero_Wh": [
+        160.1726909357834,
+        811.6183698257149
+      ],
+      "grade_Wh": [
+        0.0,
+        0.0
+      ],
+      "turn_Wh": null,
+      "auxiliary_Wh": null,
+      "wheel_positive_Wh": [
+        993.1581605938588,
+        6451.678306072972
+      ],
+      "wheel_negative_Wh": [
+        612.0134154492423,
+        4722.151831331329
+      ],
+      "traction_DC_Wh": [
+        1103.50906732651,
+        7168.5314511921915
+      ],
+      "accepted_regen_Wh": [
+        0.0,
+        0.0
+      ],
+      "net_DC_Wh": [
+        1103.50906732651,
+        7168.5314511921915
+      ],
+      "Wh_per_observed_km": [
+        130.09815737051338,
+        197.66434909181174
+      ],
+      "initial_stock_Wh": [
+        18000.0,
+        18000.0
+      ],
+      "minimum_stock_Wh": [
+        10831.46854880781,
+        16896.490932673492
+      ],
+      "terminal_stock_Wh": [
+        10831.46854880781,
+        16896.490932673492
+      ],
+      "cumulative_DC_Wh": [
+        1103.5090673265095,
+        7168.531451192191
+      ],
+      "terminal_gap_energy_Wh": null
+    },
+    "duplicate_full_rows": 0,
+    "primary_key": [
+      "dataset",
+      "physical_instance_id",
+      "method",
+      "rolling_case",
+      "scenario_id"
+    ],
+    "duplicate_keys": 0
+  },
+  "/home/takuma/kmd-analysis-pre-clean-20261102-112222/untracked/review_outputs/t08_t09_conditional_bridge_20261030/run01/T08_T09_DC_COMPARISON.csv": {
+    "rows": 406,
+    "columns": [
+      "series",
+      "design_policy",
+      "probe_id",
+      "rolling_case",
+      "scale_id",
+      "reference_running_mass_kg",
+      "known_mass_boundary_kg",
+      "unknown_mass_difference_probe_kg",
+      "net_mass_saving_probe_kg",
+      "unique_physical_trajectory_count",
+      "baseline_DC_sum_Wh",
+      "DC_saving_sum_Wh",
+      "energy_weighted_saving_percent",
+      "individual_saving_percent_mean",
+      "W1_DC_saving_sum_Wh",
+      "W3_DC_saving_sum_Wh",
+      "branch_correction_sum_Wh",
+      "units",
+      "denominator",
+      "source_file",
+      "evaluation_status"
+    ],
+    "types": {
+      "series": "string/structured",
+      "design_policy": "string/structured",
+      "probe_id": "string/structured",
+      "rolling_case": "string/structured",
+      "scale_id": "string/structured",
+      "reference_running_mass_kg": "number/string-encoded",
+      "known_mass_boundary_kg": "number/string-encoded",
+      "unknown_mass_difference_probe_kg": "number/string-encoded",
+      "net_mass_saving_probe_kg": "number/string-encoded",
+      "unique_physical_trajectory_count": "number/string-encoded",
+      "baseline_DC_sum_Wh": "number/string-encoded",
+      "DC_saving_sum_Wh": "number/string-encoded",
+      "energy_weighted_saving_percent": "number/string-encoded",
+      "individual_saving_percent_mean": "number/string-encoded",
+      "W1_DC_saving_sum_Wh": "number/string-encoded",
+      "W3_DC_saving_sum_Wh": "number/string-encoded",
+      "branch_correction_sum_Wh": "number/string-encoded",
+      "units": "string/structured",
+      "denominator": "string/structured",
+      "source_file": "string/structured",
+      "evaluation_status": "string/structured"
+    },
+    "nulls": {
+      "series": 0,
+      "design_policy": 0,
+      "probe_id": 0,
+      "rolling_case": 0,
+      "scale_id": 0,
+      "reference_running_mass_kg": 0,
+      "known_mass_boundary_kg": 0,
+      "unknown_mass_difference_probe_kg": 14,
+      "net_mass_saving_probe_kg": 0,
+      "unique_physical_trajectory_count": 0,
+      "baseline_DC_sum_Wh": 0,
+      "DC_saving_sum_Wh": 0,
+      "energy_weighted_saving_percent": 0,
+      "individual_saving_percent_mean": 0,
+      "W1_DC_saving_sum_Wh": 0,
+      "W3_DC_saving_sum_Wh": 0,
+      "branch_correction_sum_Wh": 0,
+      "units": 0,
+      "denominator": 0,
+      "source_file": 0,
+      "evaluation_status": 0
+    },
+    "numeric_ranges": {
+      "reference_running_mass_kg": [
+        1140.0345436876048,
+        1400.0
+      ],
+      "known_mass_boundary_kg": [
+        5.448297415076922,
+        9.722608121107783
+      ],
+      "unknown_mass_difference_probe_kg": [
+        -5.0,
+        20.0
+      ],
+      "net_mass_saving_probe_kg": [
+        -14.022108847851129,
+        14.722608121107783
+      ],
+      "unique_physical_trajectory_count": [
+        70.0,
+        460.0
+      ],
+      "baseline_DC_sum_Wh": [
+        158046.51160527917,
+        1766698.3538769402
+      ],
+      "DC_saving_sum_Wh": [
+        -15721.016686841002,
+        16505.30950613723
+      ],
+      "energy_weighted_saving_percent": [
+        -1.042759247148575,
+        1.0948252721603169
+      ],
+      "individual_saving_percent_mean": [
+        -1.0436767578236736,
+        1.0957891294136841
+      ],
+      "W1_DC_saving_sum_Wh": [
+        -2207.5895034591585,
+        2317.8735455816786
+      ],
+      "W3_DC_saving_sum_Wh": [
+        -13572.50835522726,
+        14250.547039869594
+      ],
+      "branch_correction_sum_Wh": [
+        -1.6783128110503736,
+        0.0
+      ]
+    },
+    "duplicate_full_rows": 0,
+    "primary_key": [
+      "series",
+      "design_policy",
+      "probe_id",
+      "rolling_case",
+      "scale_id",
+      "reference_running_mass_kg"
+    ],
+    "duplicate_keys": 0
+  }
+}

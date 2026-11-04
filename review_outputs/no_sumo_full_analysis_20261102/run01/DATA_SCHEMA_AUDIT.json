@@ -1,0 +1,4367 @@
+[
+  {
+    "file": "A_BATCH_CHECKS.csv",
+    "row_count": 66,
+    "columns": [
+      "check",
+      "expected",
+      "actual",
+      "tolerance",
+      "status",
+      "location"
+    ],
+    "csv_value_classes": {
+      "check": [
+        "identifier_or_structured_text"
+      ],
+      "expected": [
+        "boolean_text",
+        "identifier_or_structured_text",
+        "numeric_text"
+      ],
+      "actual": [
+        "boolean_text",
+        "identifier_or_structured_text",
+        "numeric_text"
+      ],
+      "tolerance": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "location": []
+    },
+    "nulls": {
+      "location": 66
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "A_CLASSICAL_BASELINE_2808.csv",
+    "row_count": 2808,
+    "columns": [
+      "comparison_scope",
+      "condition_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "input_sha256",
+      "arm",
+      "source_path",
+      "source_sha256",
+      "quantum_source_path",
+      "quantum_source_sha256",
+      "departure_s",
+      "route",
+      "denominator_PE",
+      "on_time_PE",
+      "denominator_count",
+      "on_time_count",
+      "F_PE",
+      "F_count",
+      "mean_completion_s",
+      "PE_mean_completion_s",
+      "return_s",
+      "return_deadline_s",
+      "return_on_time",
+      "not_completed",
+      "indeterminate",
+      "min_slack_s",
+      "first_late_departure_boundary_s",
+      "status",
+      "missing_reason",
+      "units",
+      "acquired",
+      "adopted_method"
+    ],
+    "csv_value_classes": {
+      "comparison_scope": [
+        "identifier_or_structured_text"
+      ],
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "arm": [
+        "identifier_or_structured_text"
+      ],
+      "source_path": [
+        "identifier_or_structured_text"
+      ],
+      "source_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "quantum_source_path": [
+        "identifier_or_structured_text"
+      ],
+      "quantum_source_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "departure_s": [
+        "numeric_text"
+      ],
+      "route": [
+        "identifier_or_structured_text"
+      ],
+      "denominator_PE": [
+        "numeric_text"
+      ],
+      "on_time_PE": [
+        "numeric_text"
+      ],
+      "denominator_count": [
+        "numeric_text"
+      ],
+      "on_time_count": [
+        "numeric_text"
+      ],
+      "F_PE": [
+        "numeric_text"
+      ],
+      "F_count": [
+        "numeric_text"
+      ],
+      "mean_completion_s": [
+        "numeric_text"
+      ],
+      "PE_mean_completion_s": [
+        "numeric_text"
+      ],
+      "return_s": [
+        "numeric_text"
+      ],
+      "return_deadline_s": [
+        "numeric_text"
+      ],
+      "return_on_time": [
+        "boolean_text"
+      ],
+      "not_completed": [
+        "numeric_text"
+      ],
+      "indeterminate": [
+        "numeric_text"
+      ],
+      "min_slack_s": [
+        "numeric_text"
+      ],
+      "first_late_departure_boundary_s": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "missing_reason": [],
+      "units": [
+        "identifier_or_structured_text"
+      ],
+      "acquired": [
+        "boolean_text"
+      ],
+      "adopted_method": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {
+      "missing_reason": 2808
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "A_DELIVERY_COMPLETION_BY_STOP.csv",
+    "row_count": 59328,
+    "columns": [
+      "comparison_scope",
+      "condition_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "input_sha256",
+      "arm",
+      "source_path",
+      "source_sha256",
+      "quantum_source_path",
+      "quantum_source_sha256",
+      "task_id",
+      "stop_order",
+      "previous_departure_s",
+      "OD_travel_s",
+      "arrival_s",
+      "ready_s",
+      "waiting_s",
+      "service_start_s",
+      "service_s",
+      "complete_s",
+      "due_start_s",
+      "deadline_s",
+      "slack_s",
+      "late_s",
+      "q_PE",
+      "on_time",
+      "outcome",
+      "status",
+      "missing_reason",
+      "units"
+    ],
+    "csv_value_classes": {
+      "comparison_scope": [
+        "identifier_or_structured_text"
+      ],
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "arm": [
+        "identifier_or_structured_text"
+      ],
+      "source_path": [
+        "identifier_or_structured_text"
+      ],
+      "source_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "quantum_source_path": [
+        "identifier_or_structured_text"
+      ],
+      "quantum_source_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "task_id": [
+        "identifier_or_structured_text"
+      ],
+      "stop_order": [
+        "numeric_text"
+      ],
+      "previous_departure_s": [
+        "numeric_text"
+      ],
+      "OD_travel_s": [
+        "numeric_text"
+      ],
+      "arrival_s": [
+        "numeric_text"
+      ],
+      "ready_s": [
+        "numeric_text"
+      ],
+      "waiting_s": [
+        "numeric_text"
+      ],
+      "service_start_s": [
+        "numeric_text"
+      ],
+      "service_s": [
+        "numeric_text"
+      ],
+      "complete_s": [
+        "numeric_text"
+      ],
+      "due_start_s": [
+        "numeric_text"
+      ],
+      "deadline_s": [
+        "numeric_text"
+      ],
+      "slack_s": [
+        "numeric_text"
+      ],
+      "late_s": [
+        "numeric_text"
+      ],
+      "q_PE": [
+        "numeric_text"
+      ],
+      "on_time": [
+        "boolean_text"
+      ],
+      "outcome": [
+        "identifier_or_structured_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "missing_reason": [],
+      "units": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {
+      "missing_reason": 59328
+    },
+    "primary_key": [
+      "comparison_scope",
+      "condition_id",
+      "problem_id",
+      "arm",
+      "task_id"
+    ],
+    "duplicate_primary_key": 0
+  },
+  {
+    "file": "A_DEPARTURE_BOUNDARIES.csv",
+    "row_count": 83,
+    "columns": [
+      "problem_id",
+      "parent_id",
+      "input_sha256",
+      "route",
+      "first_late_departure_boundary_s",
+      "status"
+    ],
+    "csv_value_classes": {
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "route": [
+        "identifier_or_structured_text"
+      ],
+      "first_late_departure_boundary_s": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "A_FULL_CHECKS.csv",
+    "row_count": 13762,
+    "columns": [
+      "check",
+      "expected",
+      "actual",
+      "tolerance",
+      "status",
+      "location"
+    ],
+    "csv_value_classes": {
+      "check": [
+        "identifier_or_structured_text"
+      ],
+      "expected": [
+        "boolean_text",
+        "identifier_or_structured_text",
+        "numeric_text"
+      ],
+      "actual": [
+        "boolean_text",
+        "identifier_or_structured_text",
+        "numeric_text"
+      ],
+      "tolerance": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "location": []
+    },
+    "nulls": {
+      "location": 13762
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "A_MECHANISM_COMPARISON.csv",
+    "row_count": 9216,
+    "columns": [
+      "comparison_scope",
+      "condition_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "input_sha256",
+      "arm",
+      "source_path",
+      "source_sha256",
+      "quantum_source_path",
+      "quantum_source_sha256",
+      "departure_s",
+      "route",
+      "denominator_PE",
+      "on_time_PE",
+      "denominator_count",
+      "on_time_count",
+      "F_PE",
+      "F_count",
+      "mean_completion_s",
+      "PE_mean_completion_s",
+      "return_s",
+      "return_deadline_s",
+      "return_on_time",
+      "not_completed",
+      "indeterminate",
+      "min_slack_s",
+      "first_late_departure_boundary_s",
+      "status",
+      "missing_reason",
+      "units",
+      "acquired",
+      "route_changed_vs_C",
+      "plan_available_s",
+      "departure_before_plan_available",
+      "availability_feasible",
+      "counterfactual_scope"
+    ],
+    "csv_value_classes": {
+      "comparison_scope": [
+        "identifier_or_structured_text"
+      ],
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "arm": [
+        "identifier_or_structured_text"
+      ],
+      "source_path": [
+        "identifier_or_structured_text"
+      ],
+      "source_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "quantum_source_path": [
+        "identifier_or_structured_text"
+      ],
+      "quantum_source_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "departure_s": [
+        "numeric_text"
+      ],
+      "route": [
+        "identifier_or_structured_text"
+      ],
+      "denominator_PE": [
+        "numeric_text"
+      ],
+      "on_time_PE": [
+        "numeric_text"
+      ],
+      "denominator_count": [
+        "numeric_text"
+      ],
+      "on_time_count": [
+        "numeric_text"
+      ],
+      "F_PE": [
+        "numeric_text"
+      ],
+      "F_count": [
+        "numeric_text"
+      ],
+      "mean_completion_s": [
+        "numeric_text"
+      ],
+      "PE_mean_completion_s": [
+        "numeric_text"
+      ],
+      "return_s": [
+        "numeric_text"
+      ],
+      "return_deadline_s": [
+        "numeric_text"
+      ],
+      "return_on_time": [
+        "boolean_text"
+      ],
+      "not_completed": [
+        "numeric_text"
+      ],
+      "indeterminate": [
+        "numeric_text"
+      ],
+      "min_slack_s": [
+        "numeric_text"
+      ],
+      "first_late_departure_boundary_s": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "missing_reason": [],
+      "units": [
+        "identifier_or_structured_text"
+      ],
+      "acquired": [
+        "boolean_text"
+      ],
+      "route_changed_vs_C": [
+        "boolean_text"
+      ],
+      "plan_available_s": [
+        "numeric_text"
+      ],
+      "departure_before_plan_available": [
+        "boolean_text"
+      ],
+      "availability_feasible": [
+        "boolean_text"
+      ],
+      "counterfactual_scope": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {
+      "missing_reason": 9216
+    },
+    "primary_key": [
+      "condition_id",
+      "problem_id",
+      "arm"
+    ],
+    "duplicate_primary_key": 0
+  },
+  {
+    "file": "A_MECHANISM_SUMMARY.csv",
+    "row_count": 144,
+    "columns": [
+      "condition_id",
+      "arm",
+      "physical_inputs",
+      "F_PE_percent",
+      "mean_completion_s",
+      "mean_return_s",
+      "unavailable_before_preparation_count",
+      "status"
+    ],
+    "csv_value_classes": {
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "arm": [
+        "identifier_or_structured_text"
+      ],
+      "physical_inputs": [
+        "numeric_text"
+      ],
+      "F_PE_percent": [
+        "numeric_text"
+      ],
+      "mean_completion_s": [
+        "numeric_text"
+      ],
+      "mean_return_s": [
+        "numeric_text"
+      ],
+      "unavailable_before_preparation_count": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "A_PAIRED_PER_PROBLEM.csv",
+    "row_count": 12024,
+    "columns": [
+      "series_id",
+      "comparison_id",
+      "condition_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "input_sha256",
+      "acquired",
+      "route_changed",
+      "delta_F_PE_pp",
+      "delta_F_count_pp",
+      "delta_mean_completion_s",
+      "delta_return_s",
+      "delta_departure_s",
+      "status",
+      "missing_reason",
+      "effect"
+    ],
+    "csv_value_classes": {
+      "series_id": [
+        "identifier_or_structured_text"
+      ],
+      "comparison_id": [
+        "identifier_or_structured_text"
+      ],
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "acquired": [
+        "boolean_text"
+      ],
+      "route_changed": [
+        "boolean_text"
+      ],
+      "delta_F_PE_pp": [
+        "numeric_text"
+      ],
+      "delta_F_count_pp": [
+        "numeric_text"
+      ],
+      "delta_mean_completion_s": [
+        "numeric_text"
+      ],
+      "delta_return_s": [
+        "numeric_text"
+      ],
+      "delta_departure_s": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "missing_reason": [],
+      "effect": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {
+      "missing_reason": 12024,
+      "effect": 2808,
+      "delta_departure_s": 9216
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "A_POLICY_DECISIONS_2808.csv",
+    "row_count": 2808,
+    "columns": [
+      "comparison_scope",
+      "condition_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "input_sha256",
+      "arm",
+      "source_path",
+      "source_sha256",
+      "quantum_source_path",
+      "quantum_source_sha256",
+      "departure_s",
+      "route",
+      "denominator_PE",
+      "on_time_PE",
+      "denominator_count",
+      "on_time_count",
+      "F_PE",
+      "F_count",
+      "mean_completion_s",
+      "PE_mean_completion_s",
+      "return_s",
+      "return_deadline_s",
+      "return_on_time",
+      "not_completed",
+      "indeterminate",
+      "min_slack_s",
+      "first_late_departure_boundary_s",
+      "status",
+      "missing_reason",
+      "units",
+      "acquired",
+      "adopted_method",
+      "fallback_reason",
+      "C_available_s",
+      "Q_available_s",
+      "adoption_deadline_s",
+      "adopt_s",
+      "switch_s",
+      "L_s",
+      "T_Q_s",
+      "B_s",
+      "route_changed_vs_C",
+      "Q_route_differs_from_C",
+      "timing_scope"
+    ],
+    "csv_value_classes": {
+      "comparison_scope": [
+        "identifier_or_structured_text"
+      ],
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "arm": [
+        "identifier_or_structured_text"
+      ],
+      "source_path": [
+        "identifier_or_structured_text"
+      ],
+      "source_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "quantum_source_path": [
+        "identifier_or_structured_text"
+      ],
+      "quantum_source_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "departure_s": [
+        "numeric_text"
+      ],
+      "route": [
+        "identifier_or_structured_text"
+      ],
+      "denominator_PE": [
+        "numeric_text"
+      ],
+      "on_time_PE": [
+        "numeric_text"
+      ],
+      "denominator_count": [
+        "numeric_text"
+      ],
+      "on_time_count": [
+        "numeric_text"
+      ],
+      "F_PE": [
+        "numeric_text"
+      ],
+      "F_count": [
+        "numeric_text"
+      ],
+      "mean_completion_s": [
+        "numeric_text"
+      ],
+      "PE_mean_completion_s": [
+        "numeric_text"
+      ],
+      "return_s": [
+        "numeric_text"
+      ],
+      "return_deadline_s": [
+        "numeric_text"
+      ],
+      "return_on_time": [
+        "boolean_text"
+      ],
+      "not_completed": [
+        "numeric_text"
+      ],
+      "indeterminate": [
+        "numeric_text"
+      ],
+      "min_slack_s": [
+        "numeric_text"
+      ],
+      "first_late_departure_boundary_s": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "missing_reason": [],
+      "units": [
+        "identifier_or_structured_text"
+      ],
+      "acquired": [
+        "boolean_text"
+      ],
+      "adopted_method": [
+        "identifier_or_structured_text"
+      ],
+      "fallback_reason": [
+        "identifier_or_structured_text"
+      ],
+      "C_available_s": [
+        "numeric_text"
+      ],
+      "Q_available_s": [
+        "numeric_text"
+      ],
+      "adoption_deadline_s": [
+        "numeric_text"
+      ],
+      "adopt_s": [
+        "numeric_text"
+      ],
+      "switch_s": [
+        "numeric_text"
+      ],
+      "L_s": [
+        "numeric_text"
+      ],
+      "T_Q_s": [
+        "numeric_text"
+      ],
+      "B_s": [
+        "numeric_text"
+      ],
+      "route_changed_vs_C": [
+        "boolean_text"
+      ],
+      "Q_route_differs_from_C": [
+        "boolean_text"
+      ],
+      "timing_scope": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {
+      "missing_reason": 2808,
+      "fallback_reason": 1344,
+      "switch_s": 1344
+    },
+    "primary_key": [
+      "condition_id",
+      "problem_id"
+    ],
+    "duplicate_primary_key": 0
+  },
+  {
+    "file": "A_RAW_COMPUTATION_RESOURCES_78.csv",
+    "row_count": 78,
+    "columns": [
+      "problem_id",
+      "parent_id",
+      "input_sha256",
+      "classical_search_s",
+      "classical_worker_wall_s",
+      "classical_worker_CPU_s",
+      "classical_peak_RSS_KiB",
+      "QAOA_simulator_wall_s",
+      "QAOA_sampling_wall_s",
+      "QAOA_CPU_s",
+      "QAOA_max_RSS_bytes",
+      "QAOA_final_shots",
+      "QAOA_total_shots",
+      "QAOA_optimizer_evaluations",
+      "QAOA_final_feasible_count",
+      "QAOA_acquired",
+      "classical_source",
+      "classical_source_sha256",
+      "quantum_source",
+      "quantum_source_sha256",
+      "condition_id",
+      "status",
+      "missing_reason",
+      "units"
+    ],
+    "csv_value_classes": {
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "classical_search_s": [
+        "numeric_text"
+      ],
+      "classical_worker_wall_s": [
+        "numeric_text"
+      ],
+      "classical_worker_CPU_s": [
+        "numeric_text"
+      ],
+      "classical_peak_RSS_KiB": [
+        "numeric_text"
+      ],
+      "QAOA_simulator_wall_s": [
+        "numeric_text"
+      ],
+      "QAOA_sampling_wall_s": [
+        "numeric_text"
+      ],
+      "QAOA_CPU_s": [],
+      "QAOA_max_RSS_bytes": [
+        "numeric_text"
+      ],
+      "QAOA_final_shots": [
+        "numeric_text"
+      ],
+      "QAOA_total_shots": [
+        "numeric_text"
+      ],
+      "QAOA_optimizer_evaluations": [
+        "numeric_text"
+      ],
+      "QAOA_final_feasible_count": [
+        "numeric_text"
+      ],
+      "QAOA_acquired": [
+        "boolean_text"
+      ],
+      "classical_source": [
+        "identifier_or_structured_text"
+      ],
+      "classical_source_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "quantum_source": [
+        "identifier_or_structured_text"
+      ],
+      "quantum_source_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "missing_reason": [
+        "identifier_or_structured_text"
+      ],
+      "units": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {
+      "QAOA_CPU_s": 78
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "A_REPLAY_CHECKS.csv",
+    "row_count": 13762,
+    "columns": [
+      "check",
+      "expected",
+      "actual",
+      "tolerance",
+      "status",
+      "location"
+    ],
+    "csv_value_classes": {
+      "check": [
+        "identifier_or_structured_text"
+      ],
+      "expected": [
+        "boolean_text",
+        "identifier_or_structured_text",
+        "numeric_text"
+      ],
+      "actual": [
+        "boolean_text",
+        "identifier_or_structured_text",
+        "numeric_text"
+      ],
+      "tolerance": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "location": []
+    },
+    "nulls": {
+      "location": 13762
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "A_ROUTE_CHANGE_STRATA.csv",
+    "row_count": 57,
+    "columns": [
+      "condition_id",
+      "route_changed",
+      "physical_inputs",
+      "delta_F_PE_pp",
+      "delta_mean_completion_s",
+      "delta_return_s",
+      "status"
+    ],
+    "csv_value_classes": {
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "route_changed": [
+        "boolean_text"
+      ],
+      "physical_inputs": [
+        "numeric_text"
+      ],
+      "delta_F_PE_pp": [
+        "numeric_text"
+      ],
+      "delta_mean_completion_s": [
+        "numeric_text"
+      ],
+      "delta_return_s": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "A_SUMMARY_BY_CONDITION.csv",
+    "row_count": 36,
+    "columns": [
+      "series_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "input_sha256",
+      "input_sha_scope",
+      "missing_reason",
+      "condition_id",
+      "L_s",
+      "T_Q_s",
+      "B_s",
+      "physical_inputs",
+      "parent_count",
+      "group_count",
+      "acquired_inputs",
+      "unacquired_inputs",
+      "quantum_adopted",
+      "classical_switched",
+      "adoption_percent_all_inputs",
+      "adoption_percent_acquired",
+      "switch_percent",
+      "acquisition_failure_percent",
+      "denominator_PE",
+      "on_time_PE",
+      "baseline_on_time_PE",
+      "PE_on_time_percent",
+      "baseline_PE_on_time_percent",
+      "delta_F_PE_pp",
+      "count_on_time_percent",
+      "delta_mean_completion_s",
+      "delta_return_s",
+      "route_changed_inputs",
+      "positive_departure_inputs",
+      "return_late_inputs",
+      "not_completed",
+      "indeterminate",
+      "status",
+      "units"
+    ],
+    "csv_value_classes": {
+      "series_id": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha_scope": [
+        "identifier_or_structured_text"
+      ],
+      "missing_reason": [],
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "L_s": [
+        "numeric_text"
+      ],
+      "T_Q_s": [
+        "numeric_text"
+      ],
+      "B_s": [
+        "numeric_text"
+      ],
+      "physical_inputs": [
+        "numeric_text"
+      ],
+      "parent_count": [
+        "numeric_text"
+      ],
+      "group_count": [
+        "numeric_text"
+      ],
+      "acquired_inputs": [
+        "numeric_text"
+      ],
+      "unacquired_inputs": [
+        "numeric_text"
+      ],
+      "quantum_adopted": [
+        "numeric_text"
+      ],
+      "classical_switched": [
+        "numeric_text"
+      ],
+      "adoption_percent_all_inputs": [
+        "numeric_text"
+      ],
+      "adoption_percent_acquired": [
+        "numeric_text"
+      ],
+      "switch_percent": [
+        "numeric_text"
+      ],
+      "acquisition_failure_percent": [
+        "numeric_text"
+      ],
+      "denominator_PE": [
+        "numeric_text"
+      ],
+      "on_time_PE": [
+        "numeric_text"
+      ],
+      "baseline_on_time_PE": [
+        "numeric_text"
+      ],
+      "PE_on_time_percent": [
+        "numeric_text"
+      ],
+      "baseline_PE_on_time_percent": [
+        "numeric_text"
+      ],
+      "delta_F_PE_pp": [
+        "numeric_text"
+      ],
+      "count_on_time_percent": [
+        "numeric_text"
+      ],
+      "delta_mean_completion_s": [
+        "numeric_text"
+      ],
+      "delta_return_s": [
+        "numeric_text"
+      ],
+      "route_changed_inputs": [
+        "numeric_text"
+      ],
+      "positive_departure_inputs": [
+        "numeric_text"
+      ],
+      "return_late_inputs": [
+        "numeric_text"
+      ],
+      "not_completed": [
+        "numeric_text"
+      ],
+      "indeterminate": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "units": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {
+      "missing_reason": 36
+    },
+    "primary_key": [
+      "condition_id"
+    ],
+    "duplicate_primary_key": 0
+  },
+  {
+    "file": "B_ACTIVE_GRID_SELECTION.csv",
+    "row_count": 460,
+    "columns": [
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "scale",
+      "input_sha256",
+      "selected_t",
+      "grid_points",
+      "source_path",
+      "source_sha256",
+      "status"
+    ],
+    "csv_value_classes": {
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "scale": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "selected_t": [
+        "numeric_text"
+      ],
+      "grid_points": [
+        "identifier_or_structured_text"
+      ],
+      "source_path": [
+        "identifier_or_structured_text"
+      ],
+      "source_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "B_AUXILIARY_CLASSICAL_IMPROVEMENTS.csv",
+    "row_count": 920,
+    "columns": [
+      "run_id",
+      "parent_id",
+      "scale",
+      "method",
+      "initial_road_seconds",
+      "classical_best_seconds",
+      "optimized_swap_seconds",
+      "fixed_nonzero_swap_seconds",
+      "exact_optimum_seconds",
+      "exact_gap_percent",
+      "improvement_percent",
+      "improves_initial",
+      "target_CPU_seconds",
+      "actual_CPU_seconds",
+      "evaluations",
+      "timing_qualified",
+      "improvement_seconds",
+      "improvement_at_least_one_second",
+      "evaluation_kind",
+      "problem_id",
+      "input_sha256",
+      "source_path",
+      "source_sha256",
+      "budget_scope",
+      "status",
+      "missing_reason",
+      "units"
+    ],
+    "csv_value_classes": {
+      "run_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "scale": [
+        "identifier_or_structured_text"
+      ],
+      "method": [
+        "identifier_or_structured_text"
+      ],
+      "initial_road_seconds": [
+        "identifier_or_structured_text"
+      ],
+      "classical_best_seconds": [
+        "identifier_or_structured_text"
+      ],
+      "optimized_swap_seconds": [
+        "numeric_text"
+      ],
+      "fixed_nonzero_swap_seconds": [
+        "numeric_text"
+      ],
+      "exact_optimum_seconds": [
+        "identifier_or_structured_text"
+      ],
+      "exact_gap_percent": [
+        "numeric_text"
+      ],
+      "improvement_percent": [
+        "numeric_text"
+      ],
+      "improves_initial": [
+        "boolean_text"
+      ],
+      "target_CPU_seconds": [
+        "numeric_text"
+      ],
+      "actual_CPU_seconds": [
+        "numeric_text"
+      ],
+      "evaluations": [
+        "numeric_text"
+      ],
+      "timing_qualified": [
+        "boolean_text"
+      ],
+      "improvement_seconds": [
+        "identifier_or_structured_text",
+        "numeric_text"
+      ],
+      "improvement_at_least_one_second": [
+        "boolean_text"
+      ],
+      "evaluation_kind": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "source_path": [
+        "identifier_or_structured_text"
+      ],
+      "source_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "budget_scope": [
+        "identifier_or_structured_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "missing_reason": [
+        "identifier_or_structured_text"
+      ],
+      "units": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {
+      "exact_optimum_seconds": 106,
+      "exact_gap_percent": 106
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "B_BATCH_CHECKS.csv",
+    "row_count": 2247,
+    "columns": [
+      "check",
+      "expected",
+      "actual",
+      "tolerance",
+      "status",
+      "location"
+    ],
+    "csv_value_classes": {
+      "check": [
+        "identifier_or_structured_text"
+      ],
+      "expected": [
+        "boolean_text",
+        "numeric_text"
+      ],
+      "actual": [
+        "boolean_text",
+        "numeric_text"
+      ],
+      "tolerance": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "location": []
+    },
+    "nulls": {
+      "location": 2247
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "B_CLASSICAL_INITIAL_BASELINES.csv",
+    "row_count": 460,
+    "columns": [
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "input_sha256",
+      "scale",
+      "initial_route",
+      "initial_seconds",
+      "initial_distance_m",
+      "wall_seconds",
+      "CPU_seconds",
+      "resource_scope",
+      "source_path",
+      "status"
+    ],
+    "csv_value_classes": {
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "scale": [
+        "identifier_or_structured_text"
+      ],
+      "initial_route": [
+        "identifier_or_structured_text"
+      ],
+      "initial_seconds": [
+        "numeric_text"
+      ],
+      "initial_distance_m": [
+        "numeric_text"
+      ],
+      "wall_seconds": [
+        "numeric_text"
+      ],
+      "CPU_seconds": [
+        "numeric_text"
+      ],
+      "resource_scope": [
+        "identifier_or_structured_text"
+      ],
+      "source_path": [
+        "identifier_or_structured_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "B_CLASSICAL_ORBIT_COMPARISON.csv",
+    "row_count": 30,
+    "columns": [
+      "scale",
+      "config_id",
+      "references",
+      "physical_inputs",
+      "mean_sample_minus_exact_orbit_s",
+      "mean_orbit_gap_percent",
+      "mean_initial_minus_orbit_s",
+      "status",
+      "units"
+    ],
+    "csv_value_classes": {
+      "scale": [
+        "identifier_or_structured_text"
+      ],
+      "config_id": [
+        "identifier_or_structured_text"
+      ],
+      "references": [
+        "numeric_text"
+      ],
+      "physical_inputs": [
+        "numeric_text"
+      ],
+      "mean_sample_minus_exact_orbit_s": [
+        "numeric_text"
+      ],
+      "mean_orbit_gap_percent": [
+        "numeric_text"
+      ],
+      "mean_initial_minus_orbit_s": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "units": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "B_EXACT_REFERENCE_COVERAGE.csv",
+    "row_count": 460,
+    "columns": [
+      "series_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "scale",
+      "input_sha256",
+      "exact_reference_available",
+      "exact_optimum_s",
+      "exact_optimum_fraction",
+      "certificate_path",
+      "certificate_sha256",
+      "certificate_kind",
+      "status",
+      "missing_reason",
+      "units"
+    ],
+    "csv_value_classes": {
+      "series_id": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "scale": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "exact_reference_available": [
+        "boolean_text"
+      ],
+      "exact_optimum_s": [
+        "numeric_text"
+      ],
+      "exact_optimum_fraction": [
+        "identifier_or_structured_text"
+      ],
+      "certificate_path": [
+        "identifier_or_structured_text"
+      ],
+      "certificate_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "certificate_kind": [
+        "identifier_or_structured_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "missing_reason": [
+        "identifier_or_structured_text"
+      ],
+      "units": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {
+      "missing_reason": 407,
+      "exact_optimum_s": 53,
+      "exact_optimum_fraction": 53,
+      "certificate_kind": 53
+    },
+    "primary_key": [
+      "problem_id"
+    ],
+    "duplicate_primary_key": 0
+  },
+  {
+    "file": "B_FULL_CHECKS.csv",
+    "row_count": 100000,
+    "columns": [
+      "check",
+      "expected",
+      "actual",
+      "tolerance",
+      "status",
+      "location"
+    ],
+    "csv_value_classes": {
+      "check": [
+        "identifier_or_structured_text"
+      ],
+      "expected": [
+        "boolean_text",
+        "numeric_text"
+      ],
+      "actual": [
+        "boolean_text",
+        "numeric_text"
+      ],
+      "tolerance": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "location": []
+    },
+    "nulls": {
+      "location": 100000
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "B_INPUT_SEED_AGGREGATES.csv",
+    "row_count": 3680,
+    "columns": [
+      "series_id",
+      "condition_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "input_sha256",
+      "config_id",
+      "scale",
+      "measurement_reps",
+      "mean_objective_s",
+      "mean_delta_objective_s",
+      "mean_delta_distance_m",
+      "mean_global_gap_percent",
+      "optimal_match_fraction",
+      "improve_fraction",
+      "worsen_fraction",
+      "equal_fraction",
+      "plan_acquisition_fraction",
+      "feasible_fraction",
+      "seed_objective_sd_s",
+      "seed_objective_min_s",
+      "seed_objective_max_s",
+      "status",
+      "missing_reason"
+    ],
+    "csv_value_classes": {
+      "series_id": [
+        "identifier_or_structured_text"
+      ],
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "config_id": [
+        "identifier_or_structured_text"
+      ],
+      "scale": [
+        "identifier_or_structured_text"
+      ],
+      "measurement_reps": [
+        "numeric_text"
+      ],
+      "mean_objective_s": [
+        "numeric_text"
+      ],
+      "mean_delta_objective_s": [
+        "numeric_text"
+      ],
+      "mean_delta_distance_m": [
+        "numeric_text"
+      ],
+      "mean_global_gap_percent": [
+        "numeric_text"
+      ],
+      "optimal_match_fraction": [
+        "numeric_text"
+      ],
+      "improve_fraction": [
+        "numeric_text"
+      ],
+      "worsen_fraction": [
+        "numeric_text"
+      ],
+      "equal_fraction": [
+        "numeric_text"
+      ],
+      "plan_acquisition_fraction": [
+        "numeric_text"
+      ],
+      "feasible_fraction": [
+        "numeric_text"
+      ],
+      "seed_objective_sd_s": [
+        "numeric_text"
+      ],
+      "seed_objective_min_s": [
+        "numeric_text"
+      ],
+      "seed_objective_max_s": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "missing_reason": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {
+      "missing_reason": 3256,
+      "mean_global_gap_percent": 424,
+      "optimal_match_fraction": 424
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "B_PLAN_REFERENCES_36800.csv",
+    "row_count": 36800,
+    "columns": [
+      "series_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "condition_id",
+      "scale",
+      "n_customers",
+      "input_sha256",
+      "config_id",
+      "family",
+      "measurement_rep",
+      "measurement_seed_entropy",
+      "PCG64_seed_state4",
+      "seed_rule_source_sha256",
+      "plan_acquired",
+      "raw_execution_status",
+      "feasible",
+      "route_indices",
+      "objective_s",
+      "objective_fraction",
+      "OD_time_s",
+      "OD_distance_m",
+      "classical_initial_s",
+      "classical_initial_fraction",
+      "delta_objective_vs_initial_s",
+      "delta_distance_vs_initial_m",
+      "improves_initial",
+      "worsens_initial",
+      "equal_initial",
+      "exact_reference_available",
+      "exact_optimum_s",
+      "exact_optimum_fraction",
+      "global_gap_percent",
+      "optimal_match",
+      "orbit_optimum_s",
+      "orbit_gap_percent",
+      "classical_orbit_delta_s",
+      "raw_invalid_samples",
+      "raw_invalid_status",
+      "model_return_s",
+      "fit_id",
+      "fit_wall_s",
+      "fit_CPU_s",
+      "fit_peak_RSS_bytes",
+      "resource_scope",
+      "shots",
+      "source_path",
+      "source_sha256",
+      "status",
+      "missing_reason",
+      "units",
+      "B_DC_status"
+    ],
+    "csv_value_classes": {
+      "series_id": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "scale": [
+        "identifier_or_structured_text"
+      ],
+      "n_customers": [
+        "numeric_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "config_id": [
+        "identifier_or_structured_text"
+      ],
+      "family": [
+        "identifier_or_structured_text"
+      ],
+      "measurement_rep": [
+        "numeric_text"
+      ],
+      "measurement_seed_entropy": [
+        "identifier_or_structured_text"
+      ],
+      "PCG64_seed_state4": [
+        "identifier_or_structured_text"
+      ],
+      "seed_rule_source_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "plan_acquired": [
+        "boolean_text"
+      ],
+      "raw_execution_status": [
+        "identifier_or_structured_text"
+      ],
+      "feasible": [
+        "boolean_text"
+      ],
+      "route_indices": [
+        "identifier_or_structured_text"
+      ],
+      "objective_s": [
+        "numeric_text"
+      ],
+      "objective_fraction": [
+        "identifier_or_structured_text"
+      ],
+      "OD_time_s": [
+        "numeric_text"
+      ],
+      "OD_distance_m": [
+        "numeric_text"
+      ],
+      "classical_initial_s": [
+        "numeric_text"
+      ],
+      "classical_initial_fraction": [
+        "identifier_or_structured_text"
+      ],
+      "delta_objective_vs_initial_s": [
+        "numeric_text"
+      ],
+      "delta_distance_vs_initial_m": [
+        "numeric_text"
+      ],
+      "improves_initial": [
+        "boolean_text"
+      ],
+      "worsens_initial": [
+        "boolean_text"
+      ],
+      "equal_initial": [
+        "boolean_text"
+      ],
+      "exact_reference_available": [
+        "boolean_text"
+      ],
+      "exact_optimum_s": [
+        "numeric_text"
+      ],
+      "exact_optimum_fraction": [
+        "identifier_or_structured_text"
+      ],
+      "global_gap_percent": [
+        "numeric_text"
+      ],
+      "optimal_match": [
+        "boolean_text"
+      ],
+      "orbit_optimum_s": [
+        "numeric_text"
+      ],
+      "orbit_gap_percent": [
+        "numeric_text"
+      ],
+      "classical_orbit_delta_s": [
+        "numeric_text"
+      ],
+      "raw_invalid_samples": [
+        "numeric_text"
+      ],
+      "raw_invalid_status": [
+        "identifier_or_structured_text"
+      ],
+      "model_return_s": [
+        "numeric_text"
+      ],
+      "fit_id": [
+        "identifier_or_structured_text"
+      ],
+      "fit_wall_s": [
+        "numeric_text"
+      ],
+      "fit_CPU_s": [
+        "numeric_text"
+      ],
+      "fit_peak_RSS_bytes": [
+        "numeric_text"
+      ],
+      "resource_scope": [
+        "identifier_or_structured_text"
+      ],
+      "shots": [
+        "numeric_text"
+      ],
+      "source_path": [
+        "identifier_or_structured_text"
+      ],
+      "source_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "missing_reason": [
+        "identifier_or_structured_text"
+      ],
+      "units": [
+        "identifier_or_structured_text"
+      ],
+      "B_DC_status": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {
+      "raw_invalid_samples": 32200,
+      "missing_reason": 32560,
+      "exact_optimum_s": 4240,
+      "exact_optimum_fraction": 4240,
+      "global_gap_percent": 4240,
+      "optimal_match": 4240,
+      "orbit_optimum_s": 13800,
+      "orbit_gap_percent": 13800,
+      "classical_orbit_delta_s": 13800,
+      "fit_peak_RSS_bytes": 9200
+    },
+    "primary_key": [
+      "problem_id",
+      "config_id",
+      "measurement_rep"
+    ],
+    "duplicate_primary_key": 0
+  },
+  {
+    "file": "B_REPLAY_CHECKS.csv",
+    "row_count": 100000,
+    "columns": [
+      "check",
+      "expected",
+      "actual",
+      "tolerance",
+      "status",
+      "location"
+    ],
+    "csv_value_classes": {
+      "check": [
+        "identifier_or_structured_text"
+      ],
+      "expected": [
+        "boolean_text",
+        "numeric_text"
+      ],
+      "actual": [
+        "boolean_text",
+        "numeric_text"
+      ],
+      "tolerance": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "location": []
+    },
+    "nulls": {
+      "location": 100000
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "B_RESOURCES_PER_FIT.csv",
+    "row_count": 3680,
+    "columns": [
+      "fit_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "scale",
+      "n",
+      "input_sha256",
+      "config_id",
+      "family",
+      "fit_wall_s",
+      "fit_CPU_s",
+      "peak_RSS_bytes",
+      "fit_evaluation_records",
+      "optimizer_iterations",
+      "nominal_layers",
+      "hardware_qubits",
+      "compiled_gate_count",
+      "compiled_depth",
+      "shots_per_measurement_rep",
+      "simulation_backend",
+      "algorithm_scope",
+      "resource_scope",
+      "fit_source_path",
+      "fit_source_sha256",
+      "backend_stats_saved",
+      "environment_status",
+      "missing_reason",
+      "status"
+    ],
+    "csv_value_classes": {
+      "fit_id": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "scale": [
+        "identifier_or_structured_text"
+      ],
+      "n": [
+        "numeric_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "config_id": [
+        "identifier_or_structured_text"
+      ],
+      "family": [
+        "identifier_or_structured_text"
+      ],
+      "fit_wall_s": [
+        "numeric_text"
+      ],
+      "fit_CPU_s": [
+        "numeric_text"
+      ],
+      "peak_RSS_bytes": [
+        "numeric_text"
+      ],
+      "fit_evaluation_records": [
+        "numeric_text"
+      ],
+      "optimizer_iterations": [],
+      "nominal_layers": [
+        "numeric_text"
+      ],
+      "hardware_qubits": [],
+      "compiled_gate_count": [],
+      "compiled_depth": [],
+      "shots_per_measurement_rep": [
+        "numeric_text"
+      ],
+      "simulation_backend": [
+        "identifier_or_structured_text"
+      ],
+      "algorithm_scope": [
+        "identifier_or_structured_text"
+      ],
+      "resource_scope": [
+        "identifier_or_structured_text"
+      ],
+      "fit_source_path": [
+        "identifier_or_structured_text"
+      ],
+      "fit_source_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "backend_stats_saved": [
+        "identifier_or_structured_text"
+      ],
+      "environment_status": [
+        "identifier_or_structured_text"
+      ],
+      "missing_reason": [
+        "identifier_or_structured_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {
+      "optimizer_iterations": 3680,
+      "hardware_qubits": 3680,
+      "compiled_gate_count": 3680,
+      "compiled_depth": 3680,
+      "peak_RSS_bytes": 920
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "B_RESOURCE_SCOPE_SUMMARY.csv",
+    "row_count": 426,
+    "columns": [
+      "config_id",
+      "scale",
+      "resource_scope",
+      "resource_field",
+      "units",
+      "records",
+      "unique_fits",
+      "sum_value",
+      "mean_value",
+      "max_value",
+      "source_table_sha256",
+      "status"
+    ],
+    "csv_value_classes": {
+      "config_id": [
+        "identifier_or_structured_text"
+      ],
+      "scale": [
+        "identifier_or_structured_text"
+      ],
+      "resource_scope": [
+        "identifier_or_structured_text"
+      ],
+      "resource_field": [
+        "identifier_or_structured_text"
+      ],
+      "units": [
+        "identifier_or_structured_text"
+      ],
+      "records": [
+        "numeric_text"
+      ],
+      "unique_fits": [
+        "numeric_text"
+      ],
+      "sum_value": [
+        "numeric_text"
+      ],
+      "mean_value": [
+        "numeric_text"
+      ],
+      "max_value": [
+        "numeric_text"
+      ],
+      "source_table_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "B_SAVED_RESOURCES_LONG.csv",
+    "row_count": 41860,
+    "columns": [
+      "fit_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "config_id",
+      "scale",
+      "input_sha256",
+      "source_kind",
+      "source_path",
+      "source_sha256",
+      "json_pointer",
+      "resource_field",
+      "value",
+      "units",
+      "scope",
+      "status"
+    ],
+    "csv_value_classes": {
+      "fit_id": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "config_id": [
+        "identifier_or_structured_text"
+      ],
+      "scale": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "source_kind": [
+        "identifier_or_structured_text"
+      ],
+      "source_path": [
+        "identifier_or_structured_text"
+      ],
+      "source_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "json_pointer": [
+        "identifier_or_structured_text"
+      ],
+      "resource_field": [
+        "identifier_or_structured_text"
+      ],
+      "value": [
+        "numeric_text"
+      ],
+      "units": [
+        "identifier_or_structured_text"
+      ],
+      "scope": [
+        "identifier_or_structured_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "B_SUMMARY_BY_SCALE_AND_METHOD.csv",
+    "row_count": 56,
+    "columns": [
+      "series_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "input_sha256",
+      "input_sha_scope",
+      "missing_reason",
+      "condition_id",
+      "scale",
+      "config_id",
+      "physical_inputs",
+      "plan_references",
+      "parents",
+      "groups",
+      "exact_reference_inputs",
+      "exact_missing_inputs",
+      "mean_objective_s",
+      "mean_delta_objective_s",
+      "mean_delta_distance_m",
+      "mean_global_gap_percent",
+      "optimal_match_percent",
+      "improve_percent",
+      "worsen_percent",
+      "equal_percent",
+      "plan_acquisition_percent",
+      "feasible_percent",
+      "mean_seed_objective_sd_s",
+      "fit_wall_available",
+      "mean_fit_wall_s",
+      "sum_fit_wall_s_unique_fits",
+      "peak_RSS_max_bytes",
+      "status",
+      "units"
+    ],
+    "csv_value_classes": {
+      "series_id": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha_scope": [
+        "identifier_or_structured_text"
+      ],
+      "missing_reason": [],
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "scale": [
+        "identifier_or_structured_text"
+      ],
+      "config_id": [
+        "identifier_or_structured_text"
+      ],
+      "physical_inputs": [
+        "numeric_text"
+      ],
+      "plan_references": [
+        "numeric_text"
+      ],
+      "parents": [
+        "numeric_text"
+      ],
+      "groups": [
+        "numeric_text"
+      ],
+      "exact_reference_inputs": [
+        "numeric_text"
+      ],
+      "exact_missing_inputs": [
+        "numeric_text"
+      ],
+      "mean_objective_s": [
+        "numeric_text"
+      ],
+      "mean_delta_objective_s": [
+        "numeric_text"
+      ],
+      "mean_delta_distance_m": [
+        "numeric_text"
+      ],
+      "mean_global_gap_percent": [
+        "numeric_text"
+      ],
+      "optimal_match_percent": [
+        "numeric_text"
+      ],
+      "improve_percent": [
+        "numeric_text"
+      ],
+      "worsen_percent": [
+        "numeric_text"
+      ],
+      "equal_percent": [
+        "numeric_text"
+      ],
+      "plan_acquisition_percent": [
+        "numeric_text"
+      ],
+      "feasible_percent": [
+        "numeric_text"
+      ],
+      "mean_seed_objective_sd_s": [
+        "numeric_text"
+      ],
+      "fit_wall_available": [
+        "numeric_text"
+      ],
+      "mean_fit_wall_s": [
+        "numeric_text"
+      ],
+      "sum_fit_wall_s_unique_fits": [
+        "numeric_text"
+      ],
+      "peak_RSS_max_bytes": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "units": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {
+      "missing_reason": 56,
+      "peak_RSS_max_bytes": 14
+    },
+    "primary_key": [
+      "scale",
+      "config_id"
+    ],
+    "duplicate_primary_key": 0
+  },
+  {
+    "file": "CAUSAL_PATH_EVIDENCE_RESULTS.csv",
+    "row_count": 13,
+    "columns": [
+      "edge_id",
+      "from",
+      "to",
+      "variables_or_formula",
+      "input",
+      "output",
+      "implementation_or_evidence",
+      "evidence_class",
+      "audit_status",
+      "claim",
+      "unverified",
+      "current_output_paths",
+      "quantitative_result",
+      "current_implementation"
+    ],
+    "csv_value_classes": {
+      "edge_id": [
+        "identifier_or_structured_text"
+      ],
+      "from": [
+        "identifier_or_structured_text"
+      ],
+      "to": [
+        "identifier_or_structured_text"
+      ],
+      "variables_or_formula": [
+        "identifier_or_structured_text"
+      ],
+      "input": [
+        "identifier_or_structured_text"
+      ],
+      "output": [
+        "identifier_or_structured_text"
+      ],
+      "implementation_or_evidence": [
+        "identifier_or_structured_text"
+      ],
+      "evidence_class": [
+        "identifier_or_structured_text"
+      ],
+      "audit_status": [
+        "identifier_or_structured_text"
+      ],
+      "claim": [
+        "identifier_or_structured_text"
+      ],
+      "unverified": [
+        "identifier_or_structured_text"
+      ],
+      "current_output_paths": [
+        "identifier_or_structured_text"
+      ],
+      "quantitative_result": [
+        "identifier_or_structured_text"
+      ],
+      "current_implementation": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "CLUSTER_SENSITIVITY_INTERVALS.csv",
+    "row_count": 1176,
+    "columns": [
+      "series_id",
+      "condition_id",
+      "metric",
+      "scale",
+      "unit",
+      "point",
+      "analysis_units",
+      "clusters_present",
+      "lower95",
+      "upper95",
+      "resamples",
+      "undefined_resamples",
+      "cluster_unit",
+      "bootstrap_seed",
+      "interpretation",
+      "test_count",
+      "status"
+    ],
+    "csv_value_classes": {
+      "series_id": [
+        "identifier_or_structured_text"
+      ],
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "metric": [
+        "identifier_or_structured_text"
+      ],
+      "scale": [
+        "identifier_or_structured_text"
+      ],
+      "unit": [
+        "identifier_or_structured_text"
+      ],
+      "point": [
+        "numeric_text"
+      ],
+      "analysis_units": [
+        "numeric_text"
+      ],
+      "clusters_present": [
+        "numeric_text"
+      ],
+      "lower95": [
+        "numeric_text"
+      ],
+      "upper95": [
+        "numeric_text"
+      ],
+      "resamples": [
+        "numeric_text"
+      ],
+      "undefined_resamples": [
+        "numeric_text"
+      ],
+      "cluster_unit": [
+        "identifier_or_structured_text"
+      ],
+      "bootstrap_seed": [
+        "numeric_text"
+      ],
+      "interpretation": [
+        "identifier_or_structured_text"
+      ],
+      "test_count": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "C_BATCH_CHECKS.csv",
+    "row_count": 1058,
+    "columns": [
+      "check",
+      "expected",
+      "actual",
+      "tolerance",
+      "status",
+      "location"
+    ],
+    "csv_value_classes": {
+      "check": [
+        "identifier_or_structured_text"
+      ],
+      "expected": [
+        "boolean_text",
+        "numeric_text"
+      ],
+      "actual": [
+        "boolean_text",
+        "numeric_text"
+      ],
+      "tolerance": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "location": []
+    },
+    "nulls": {
+      "location": 1058,
+      "expected": 5,
+      "actual": 5
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "C_BOUNDARY_SIGN_VALIDATION.csv",
+    "row_count": 25760,
+    "columns": [
+      "condition_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "input_sha256",
+      "design_policy",
+      "known_boundary_kg",
+      "unknown_difference_kg",
+      "net_mass_saving_kg",
+      "DC_saving_Wh",
+      "mass_DC_state",
+      "status",
+      "missing_reason",
+      "units"
+    ],
+    "csv_value_classes": {
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "design_policy": [
+        "identifier_or_structured_text"
+      ],
+      "known_boundary_kg": [
+        "numeric_text"
+      ],
+      "unknown_difference_kg": [
+        "numeric_text"
+      ],
+      "net_mass_saving_kg": [
+        "numeric_text"
+      ],
+      "DC_saving_Wh": [
+        "numeric_text"
+      ],
+      "mass_DC_state": [
+        "identifier_or_structured_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "missing_reason": [
+        "identifier_or_structured_text"
+      ],
+      "units": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "C_BRIDGE_MASS_DC_FULL.csv",
+    "row_count": 25760,
+    "columns": [
+      "series",
+      "pair_id",
+      "design_policy",
+      "probe_id",
+      "physical_instance_id",
+      "trajectory_sha256",
+      "scale_id",
+      "n_customers",
+      "rolling_case",
+      "pressure_bar",
+      "reference_running_mass_kg",
+      "known_mass_boundary_kg",
+      "unknown_mass_difference_probe_kg",
+      "net_mass_saving_probe_kg",
+      "vehicle_mass_difference_probe_kg",
+      "S_running_mass_probe_kg",
+      "actual_LP_pack_mass_kg",
+      "actual_S_pack_mass_kg",
+      "reference_equivalent_LP_pack_mass_probe_kg",
+      "LP_unknown_mass_probe_kg",
+      "S_unknown_mass_probe_kg",
+      "baseline_DC_Wh",
+      "S_DC_Wh",
+      "DC_saving_Wh",
+      "individual_saving_percent",
+      "W1_signed_mechanical_LP_minus_S_Wh",
+      "W3_signed_mechanical_LP_minus_S_Wh",
+      "W1_baseline_mask_DC_saving_Wh",
+      "W2_baseline_mask_DC_saving_Wh",
+      "W3_baseline_mask_DC_saving_Wh",
+      "W4_baseline_mask_DC_saving_Wh",
+      "branch_correction_Wh",
+      "branch_switch_count",
+      "accounting_residual_Wh",
+      "linear_tangent_error_Wh",
+      "stock_integrity",
+      "distance_km",
+      "restart_count",
+      "mean_speed_moving_m_s",
+      "unit",
+      "denominator",
+      "source_file",
+      "evaluation_status",
+      "series_id",
+      "condition_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "input_sha256",
+      "trajectory_path",
+      "freeze_sha256",
+      "status",
+      "missing_reason",
+      "units",
+      "recomputed_baseline_DC_Wh",
+      "recomputed_S_DC_Wh",
+      "recomputed_saving_Wh",
+      "source_path",
+      "source_sha256",
+      "source_row"
+    ],
+    "csv_value_classes": {
+      "series": [
+        "identifier_or_structured_text"
+      ],
+      "pair_id": [
+        "identifier_or_structured_text"
+      ],
+      "design_policy": [
+        "identifier_or_structured_text"
+      ],
+      "probe_id": [
+        "identifier_or_structured_text"
+      ],
+      "physical_instance_id": [
+        "identifier_or_structured_text"
+      ],
+      "trajectory_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "scale_id": [
+        "identifier_or_structured_text"
+      ],
+      "n_customers": [
+        "numeric_text"
+      ],
+      "rolling_case": [
+        "identifier_or_structured_text"
+      ],
+      "pressure_bar": [
+        "numeric_text"
+      ],
+      "reference_running_mass_kg": [
+        "numeric_text"
+      ],
+      "known_mass_boundary_kg": [
+        "numeric_text"
+      ],
+      "unknown_mass_difference_probe_kg": [
+        "numeric_text"
+      ],
+      "net_mass_saving_probe_kg": [
+        "numeric_text"
+      ],
+      "vehicle_mass_difference_probe_kg": [
+        "numeric_text"
+      ],
+      "S_running_mass_probe_kg": [
+        "numeric_text"
+      ],
+      "actual_LP_pack_mass_kg": [],
+      "actual_S_pack_mass_kg": [],
+      "reference_equivalent_LP_pack_mass_probe_kg": [
+        "numeric_text"
+      ],
+      "LP_unknown_mass_probe_kg": [
+        "numeric_text"
+      ],
+      "S_unknown_mass_probe_kg": [
+        "numeric_text"
+      ],
+      "baseline_DC_Wh": [
+        "numeric_text"
+      ],
+      "S_DC_Wh": [
+        "numeric_text"
+      ],
+      "DC_saving_Wh": [
+        "numeric_text"
+      ],
+      "individual_saving_percent": [
+        "numeric_text"
+      ],
+      "W1_signed_mechanical_LP_minus_S_Wh": [
+        "numeric_text"
+      ],
+      "W3_signed_mechanical_LP_minus_S_Wh": [
+        "numeric_text"
+      ],
+      "W1_baseline_mask_DC_saving_Wh": [
+        "numeric_text"
+      ],
+      "W2_baseline_mask_DC_saving_Wh": [
+        "numeric_text"
+      ],
+      "W3_baseline_mask_DC_saving_Wh": [
+        "numeric_text"
+      ],
+      "W4_baseline_mask_DC_saving_Wh": [
+        "numeric_text"
+      ],
+      "branch_correction_Wh": [
+        "numeric_text"
+      ],
+      "branch_switch_count": [
+        "numeric_text"
+      ],
+      "accounting_residual_Wh": [
+        "numeric_text"
+      ],
+      "linear_tangent_error_Wh": [
+        "numeric_text"
+      ],
+      "stock_integrity": [
+        "identifier_or_structured_text"
+      ],
+      "distance_km": [
+        "numeric_text"
+      ],
+      "restart_count": [
+        "numeric_text"
+      ],
+      "mean_speed_moving_m_s": [
+        "numeric_text"
+      ],
+      "unit": [
+        "identifier_or_structured_text"
+      ],
+      "denominator": [
+        "identifier_or_structured_text"
+      ],
+      "source_file": [
+        "identifier_or_structured_text"
+      ],
+      "evaluation_status": [
+        "identifier_or_structured_text"
+      ],
+      "series_id": [
+        "identifier_or_structured_text"
+      ],
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "trajectory_path": [
+        "identifier_or_structured_text"
+      ],
+      "freeze_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "missing_reason": [
+        "identifier_or_structured_text"
+      ],
+      "units": [
+        "identifier_or_structured_text"
+      ],
+      "recomputed_baseline_DC_Wh": [
+        "numeric_text"
+      ],
+      "recomputed_S_DC_Wh": [
+        "numeric_text"
+      ],
+      "recomputed_saving_Wh": [
+        "numeric_text"
+      ],
+      "source_path": [
+        "identifier_or_structured_text"
+      ],
+      "source_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "source_row": [
+        "numeric_text"
+      ]
+    },
+    "nulls": {
+      "actual_LP_pack_mass_kg": 25760,
+      "actual_S_pack_mass_kg": 25760
+    },
+    "primary_key": [
+      "condition_id"
+    ],
+    "duplicate_primary_key": 0
+  },
+  {
+    "file": "C_COMPONENT_MASS_BRIDGE.csv",
+    "row_count": 26,
+    "columns": [
+      "component",
+      "design_policy",
+      "T08_LP_kg",
+      "T08_S_kg",
+      "T08_LP_minus_S_kg",
+      "T09_LP_kg",
+      "T09_S_kg",
+      "T09_LP_minus_S_kg",
+      "difference_of_differences_kg",
+      "scope_match",
+      "unit",
+      "series",
+      "denominator",
+      "source_file",
+      "evaluation_status"
+    ],
+    "csv_value_classes": {
+      "component": [
+        "identifier_or_structured_text"
+      ],
+      "design_policy": [
+        "identifier_or_structured_text"
+      ],
+      "T08_LP_kg": [
+        "numeric_text"
+      ],
+      "T08_S_kg": [
+        "numeric_text"
+      ],
+      "T08_LP_minus_S_kg": [
+        "numeric_text"
+      ],
+      "T09_LP_kg": [
+        "numeric_text"
+      ],
+      "T09_S_kg": [
+        "numeric_text"
+      ],
+      "T09_LP_minus_S_kg": [
+        "numeric_text"
+      ],
+      "difference_of_differences_kg": [
+        "numeric_text"
+      ],
+      "scope_match": [
+        "identifier_or_structured_text"
+      ],
+      "unit": [
+        "identifier_or_structured_text"
+      ],
+      "series": [
+        "identifier_or_structured_text"
+      ],
+      "denominator": [
+        "identifier_or_structured_text"
+      ],
+      "source_file": [
+        "identifier_or_structured_text"
+      ],
+      "evaluation_status": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {
+      "T08_LP_kg": 10,
+      "T08_S_kg": 10,
+      "T08_LP_minus_S_kg": 10,
+      "difference_of_differences_kg": 18,
+      "T09_LP_kg": 8,
+      "T09_S_kg": 8,
+      "T09_LP_minus_S_kg": 8
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "C_CONDITIONAL_MASS_DC_SUMMARY.csv",
+    "row_count": 116,
+    "columns": [
+      "series_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "input_sha256",
+      "input_sha_scope",
+      "missing_reason",
+      "condition_id",
+      "scale",
+      "dataset",
+      "scenario_id",
+      "rolling_case",
+      "trajectories",
+      "mass_saving_kg",
+      "baseline_sum_Wh",
+      "saving_sum_Wh",
+      "weighted_saving_percent",
+      "individual_mean_percent",
+      "status",
+      "units",
+      "method",
+      "trajectory_count_scope",
+      "design_policy",
+      "probe_id",
+      "reference_running_mass_kg",
+      "unknown_mass_difference_kg",
+      "known_mass_boundary_kg"
+    ],
+    "csv_value_classes": {
+      "series_id": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha_scope": [
+        "identifier_or_structured_text"
+      ],
+      "missing_reason": [
+        "identifier_or_structured_text"
+      ],
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "scale": [
+        "identifier_or_structured_text"
+      ],
+      "dataset": [
+        "identifier_or_structured_text"
+      ],
+      "scenario_id": [
+        "identifier_or_structured_text"
+      ],
+      "rolling_case": [
+        "identifier_or_structured_text"
+      ],
+      "trajectories": [
+        "numeric_text"
+      ],
+      "mass_saving_kg": [
+        "numeric_text"
+      ],
+      "baseline_sum_Wh": [
+        "numeric_text"
+      ],
+      "saving_sum_Wh": [
+        "numeric_text"
+      ],
+      "weighted_saving_percent": [
+        "numeric_text"
+      ],
+      "individual_mean_percent": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "units": [
+        "identifier_or_structured_text"
+      ],
+      "method": [
+        "identifier_or_structured_text"
+      ],
+      "trajectory_count_scope": [
+        "identifier_or_structured_text"
+      ],
+      "design_policy": [
+        "identifier_or_structured_text"
+      ],
+      "probe_id": [
+        "identifier_or_structured_text"
+      ],
+      "reference_running_mass_kg": [
+        "numeric_text"
+      ],
+      "unknown_mass_difference_kg": [
+        "numeric_text"
+      ],
+      "known_mass_boundary_kg": [
+        "numeric_text"
+      ]
+    },
+    "nulls": {
+      "design_policy": 60,
+      "probe_id": 60,
+      "reference_running_mass_kg": 60,
+      "unknown_mass_difference_kg": 60,
+      "known_mass_boundary_kg": 60,
+      "dataset": 56,
+      "scenario_id": 56,
+      "method": 56,
+      "trajectory_count_scope": 56
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "C_DRIVING_CONDITION_SENSITIVITY.csv",
+    "row_count": 336,
+    "columns": [
+      "pair_id",
+      "probe_id",
+      "rolling_case",
+      "reference_running_mass_kg",
+      "scale",
+      "trajectory_count",
+      "mean_DC_saving_Wh",
+      "mean_individual_percent",
+      "min_individual_percent",
+      "max_individual_percent",
+      "correlation_DC_saving_distance",
+      "correlation_DC_saving_restarts",
+      "status",
+      "units"
+    ],
+    "csv_value_classes": {
+      "pair_id": [
+        "identifier_or_structured_text"
+      ],
+      "probe_id": [
+        "identifier_or_structured_text"
+      ],
+      "rolling_case": [
+        "identifier_or_structured_text"
+      ],
+      "reference_running_mass_kg": [
+        "numeric_text"
+      ],
+      "scale": [
+        "identifier_or_structured_text"
+      ],
+      "trajectory_count": [
+        "numeric_text"
+      ],
+      "mean_DC_saving_Wh": [
+        "numeric_text"
+      ],
+      "mean_individual_percent": [
+        "numeric_text"
+      ],
+      "min_individual_percent": [
+        "numeric_text"
+      ],
+      "max_individual_percent": [
+        "numeric_text"
+      ],
+      "correlation_DC_saving_distance": [
+        "numeric_text"
+      ],
+      "correlation_DC_saving_restarts": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "units": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {
+      "correlation_DC_saving_distance": 48,
+      "correlation_DC_saving_restarts": 48
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "C_FULL_CHECKS.csv",
+    "row_count": 100000,
+    "columns": [
+      "check",
+      "expected",
+      "actual",
+      "tolerance",
+      "status",
+      "location"
+    ],
+    "csv_value_classes": {
+      "check": [
+        "identifier_or_structured_text"
+      ],
+      "expected": [
+        "boolean_text",
+        "numeric_text"
+      ],
+      "actual": [
+        "boolean_text",
+        "numeric_text"
+      ],
+      "tolerance": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "location": []
+    },
+    "nulls": {
+      "location": 100000
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "C_REPLAY_CHECKS.csv",
+    "row_count": 100000,
+    "columns": [
+      "check",
+      "expected",
+      "actual",
+      "tolerance",
+      "status",
+      "location"
+    ],
+    "csv_value_classes": {
+      "check": [
+        "identifier_or_structured_text"
+      ],
+      "expected": [
+        "boolean_text",
+        "numeric_text"
+      ],
+      "actual": [
+        "boolean_text",
+        "numeric_text"
+      ],
+      "tolerance": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "location": []
+    },
+    "nulls": {
+      "location": 100000
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "C_T08_ENERGY_FULL.csv",
+    "row_count": 4464,
+    "columns": [
+      "dataset",
+      "physical_instance_id",
+      "scale_id",
+      "method",
+      "route_identity",
+      "rolling_case",
+      "trajectory_sha256",
+      "scenario_id",
+      "scenario_sha256",
+      "series",
+      "pack_mass_kg",
+      "running_mass_kg",
+      "observed_interval_count",
+      "observed_distance_m",
+      "rolling_Wh",
+      "translational_signed_Wh",
+      "translational_positive_Wh",
+      "translational_negative_Wh",
+      "rotational_signed_Wh",
+      "aero_Wh",
+      "grade_Wh",
+      "turn_Wh",
+      "turn_scope",
+      "auxiliary_Wh",
+      "auxiliary_scope",
+      "wheel_positive_Wh",
+      "wheel_negative_Wh",
+      "traction_DC_Wh",
+      "accepted_regen_Wh",
+      "net_DC_Wh",
+      "Wh_per_observed_km",
+      "initial_stock_Wh",
+      "minimum_stock_Wh",
+      "terminal_stock_Wh",
+      "cumulative_DC_Wh",
+      "stock_integrity",
+      "boundary",
+      "terminal_gap_energy_Wh",
+      "terminal_gap_status",
+      "numerical_status",
+      "scientific_adoption",
+      "practical_qualification",
+      "series_id",
+      "condition_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "input_sha256",
+      "trajectory_path",
+      "freeze_sha256",
+      "status",
+      "missing_reason",
+      "units",
+      "recomputed_DC_Wh",
+      "DC_recompute_error_Wh",
+      "source_path",
+      "source_sha256",
+      "source_row",
+      "DC_status"
+    ],
+    "csv_value_classes": {
+      "dataset": [
+        "identifier_or_structured_text"
+      ],
+      "physical_instance_id": [
+        "identifier_or_structured_text"
+      ],
+      "scale_id": [
+        "identifier_or_structured_text"
+      ],
+      "method": [
+        "identifier_or_structured_text"
+      ],
+      "route_identity": [
+        "identifier_or_structured_text"
+      ],
+      "rolling_case": [
+        "identifier_or_structured_text"
+      ],
+      "trajectory_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "scenario_id": [
+        "identifier_or_structured_text"
+      ],
+      "scenario_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "series": [
+        "identifier_or_structured_text"
+      ],
+      "pack_mass_kg": [
+        "numeric_text"
+      ],
+      "running_mass_kg": [
+        "numeric_text"
+      ],
+      "observed_interval_count": [
+        "numeric_text"
+      ],
+      "observed_distance_m": [
+        "numeric_text"
+      ],
+      "rolling_Wh": [
+        "numeric_text"
+      ],
+      "translational_signed_Wh": [
+        "numeric_text"
+      ],
+      "translational_positive_Wh": [
+        "numeric_text"
+      ],
+      "translational_negative_Wh": [
+        "numeric_text"
+      ],
+      "rotational_signed_Wh": [
+        "numeric_text"
+      ],
+      "aero_Wh": [
+        "numeric_text"
+      ],
+      "grade_Wh": [
+        "numeric_text"
+      ],
+      "turn_Wh": [],
+      "turn_scope": [
+        "identifier_or_structured_text"
+      ],
+      "auxiliary_Wh": [],
+      "auxiliary_scope": [
+        "identifier_or_structured_text"
+      ],
+      "wheel_positive_Wh": [
+        "numeric_text"
+      ],
+      "wheel_negative_Wh": [
+        "numeric_text"
+      ],
+      "traction_DC_Wh": [
+        "numeric_text"
+      ],
+      "accepted_regen_Wh": [
+        "numeric_text"
+      ],
+      "net_DC_Wh": [
+        "numeric_text"
+      ],
+      "Wh_per_observed_km": [
+        "numeric_text"
+      ],
+      "initial_stock_Wh": [
+        "numeric_text"
+      ],
+      "minimum_stock_Wh": [
+        "numeric_text"
+      ],
+      "terminal_stock_Wh": [
+        "numeric_text"
+      ],
+      "cumulative_DC_Wh": [
+        "numeric_text"
+      ],
+      "stock_integrity": [
+        "identifier_or_structured_text"
+      ],
+      "boundary": [
+        "identifier_or_structured_text"
+      ],
+      "terminal_gap_energy_Wh": [],
+      "terminal_gap_status": [
+        "identifier_or_structured_text"
+      ],
+      "numerical_status": [
+        "identifier_or_structured_text"
+      ],
+      "scientific_adoption": [
+        "identifier_or_structured_text"
+      ],
+      "practical_qualification": [
+        "identifier_or_structured_text"
+      ],
+      "series_id": [
+        "identifier_or_structured_text"
+      ],
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "trajectory_path": [
+        "identifier_or_structured_text"
+      ],
+      "freeze_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "missing_reason": [
+        "identifier_or_structured_text"
+      ],
+      "units": [
+        "identifier_or_structured_text"
+      ],
+      "recomputed_DC_Wh": [
+        "numeric_text"
+      ],
+      "DC_recompute_error_Wh": [
+        "numeric_text"
+      ],
+      "source_path": [
+        "identifier_or_structured_text"
+      ],
+      "source_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "source_row": [
+        "numeric_text"
+      ],
+      "DC_status": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {
+      "turn_Wh": 4464,
+      "auxiliary_Wh": 4464,
+      "terminal_gap_energy_Wh": 4464
+    },
+    "primary_key": [
+      "condition_id"
+    ],
+    "duplicate_primary_key": 0
+  },
+  {
+    "file": "C_T08_PAIRED_DIFFERENCES.csv",
+    "row_count": 2976,
+    "columns": [
+      "series_id",
+      "condition_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "input_sha256",
+      "dataset",
+      "method",
+      "scale",
+      "scenario_id",
+      "rolling_case",
+      "mass_saving_kg",
+      "baseline_DC_Wh",
+      "saving_DC_Wh",
+      "individual_saving_percent",
+      "status",
+      "missing_reason",
+      "units"
+    ],
+    "csv_value_classes": {
+      "series_id": [
+        "identifier_or_structured_text"
+      ],
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "dataset": [
+        "identifier_or_structured_text"
+      ],
+      "method": [
+        "identifier_or_structured_text"
+      ],
+      "scale": [
+        "identifier_or_structured_text"
+      ],
+      "scenario_id": [
+        "identifier_or_structured_text"
+      ],
+      "rolling_case": [
+        "identifier_or_structured_text"
+      ],
+      "mass_saving_kg": [
+        "numeric_text"
+      ],
+      "baseline_DC_Wh": [
+        "numeric_text"
+      ],
+      "saving_DC_Wh": [
+        "numeric_text"
+      ],
+      "individual_saving_percent": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "missing_reason": [
+        "identifier_or_structured_text"
+      ],
+      "units": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "C_T09_COMPONENTS_183.csv",
+    "row_count": 183,
+    "columns": [
+      "series",
+      "material",
+      "q_reference_Ah_kg",
+      "positive_utilization",
+      "mean_voltage_design_V",
+      "gross_design_Wh",
+      "usable_design_Wh",
+      "area_policy",
+      "positive_active_loading_input_kg_m2",
+      "actual_positive_active_loading_kg_m2",
+      "negative_active_loading_kg_m2",
+      "positive_porosity",
+      "negative_porosity",
+      "NP_after_formation",
+      "negative_q_Ah_kg",
+      "negative_unavailable_fraction",
+      "negative_area_factor",
+      "independent_negative_loading_probe_kg_m2",
+      "overlap_condition",
+      "Al_thickness_m",
+      "Cu_thickness_m",
+      "separator_areal_mass_kg_m2",
+      "extra_liquid_volume_m3",
+      "positive_active_kg",
+      "positive_coating_kg",
+      "negative_active_kg",
+      "negative_coating_kg",
+      "positive_face_area_m2",
+      "negative_face_area_m2",
+      "positive_coating_thickness_um",
+      "negative_coating_thickness_um",
+      "Al_mass_kg",
+      "Cu_mass_kg",
+      "separator_dry_mass_kg",
+      "liquid_mass_kg",
+      "known_cell_components_sum_kg",
+      "complete_pack_mass_kg",
+      "casing_tabs_pack_structure_mass_kg",
+      "missing_reason",
+      "physical_cell_count_design",
+      "per_cell_capacity_design_Ah",
+      "pack_terminal_capacity_Ah",
+      "all_cells_capacity_sum_Ah",
+      "status",
+      "series_id",
+      "condition_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "input_sha256",
+      "known_sum_recalculated_kg",
+      "unknown_mass_boundary_kg",
+      "known_LP_minus_S_mass_kg",
+      "units",
+      "source_row"
+    ],
+    "csv_value_classes": {
+      "series": [
+        "identifier_or_structured_text"
+      ],
+      "material": [
+        "identifier_or_structured_text"
+      ],
+      "q_reference_Ah_kg": [
+        "numeric_text"
+      ],
+      "positive_utilization": [
+        "numeric_text"
+      ],
+      "mean_voltage_design_V": [
+        "numeric_text"
+      ],
+      "gross_design_Wh": [
+        "numeric_text"
+      ],
+      "usable_design_Wh": [
+        "numeric_text"
+      ],
+      "area_policy": [
+        "identifier_or_structured_text"
+      ],
+      "positive_active_loading_input_kg_m2": [
+        "numeric_text"
+      ],
+      "actual_positive_active_loading_kg_m2": [
+        "numeric_text"
+      ],
+      "negative_active_loading_kg_m2": [
+        "numeric_text"
+      ],
+      "positive_porosity": [
+        "numeric_text"
+      ],
+      "negative_porosity": [
+        "numeric_text"
+      ],
+      "NP_after_formation": [
+        "numeric_text"
+      ],
+      "negative_q_Ah_kg": [
+        "numeric_text"
+      ],
+      "negative_unavailable_fraction": [
+        "numeric_text"
+      ],
+      "negative_area_factor": [
+        "numeric_text"
+      ],
+      "independent_negative_loading_probe_kg_m2": [
+        "numeric_text"
+      ],
+      "overlap_condition": [
+        "identifier_or_structured_text"
+      ],
+      "Al_thickness_m": [
+        "numeric_text"
+      ],
+      "Cu_thickness_m": [
+        "numeric_text"
+      ],
+      "separator_areal_mass_kg_m2": [
+        "numeric_text"
+      ],
+      "extra_liquid_volume_m3": [
+        "numeric_text"
+      ],
+      "positive_active_kg": [
+        "numeric_text"
+      ],
+      "positive_coating_kg": [
+        "numeric_text"
+      ],
+      "negative_active_kg": [
+        "numeric_text"
+      ],
+      "negative_coating_kg": [
+        "numeric_text"
+      ],
+      "positive_face_area_m2": [
+        "numeric_text"
+      ],
+      "negative_face_area_m2": [
+        "numeric_text"
+      ],
+      "positive_coating_thickness_um": [
+        "numeric_text"
+      ],
+      "negative_coating_thickness_um": [
+        "numeric_text"
+      ],
+      "Al_mass_kg": [
+        "numeric_text"
+      ],
+      "Cu_mass_kg": [
+        "numeric_text"
+      ],
+      "separator_dry_mass_kg": [
+        "numeric_text"
+      ],
+      "liquid_mass_kg": [
+        "numeric_text"
+      ],
+      "known_cell_components_sum_kg": [
+        "numeric_text"
+      ],
+      "complete_pack_mass_kg": [],
+      "casing_tabs_pack_structure_mass_kg": [],
+      "missing_reason": [
+        "identifier_or_structured_text"
+      ],
+      "physical_cell_count_design": [
+        "numeric_text"
+      ],
+      "per_cell_capacity_design_Ah": [
+        "numeric_text"
+      ],
+      "pack_terminal_capacity_Ah": [
+        "numeric_text"
+      ],
+      "all_cells_capacity_sum_Ah": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "series_id": [
+        "identifier_or_structured_text"
+      ],
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "known_sum_recalculated_kg": [
+        "numeric_text"
+      ],
+      "unknown_mass_boundary_kg": [
+        "numeric_text"
+      ],
+      "known_LP_minus_S_mass_kg": [
+        "numeric_text"
+      ],
+      "units": [
+        "identifier_or_structured_text"
+      ],
+      "source_row": [
+        "numeric_text"
+      ]
+    },
+    "nulls": {
+      "independent_negative_loading_probe_kg_m2": 180,
+      "complete_pack_mass_kg": 183,
+      "casing_tabs_pack_structure_mass_kg": 183,
+      "unknown_mass_boundary_kg": 2,
+      "known_LP_minus_S_mass_kg": 2
+    },
+    "primary_key": [
+      "condition_id"
+    ],
+    "duplicate_primary_key": 0
+  },
+  {
+    "file": "C_TRAJECTORY_READBACK.csv",
+    "row_count": 465,
+    "columns": [
+      "trajectory_sha256",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "scale",
+      "source_path",
+      "source_sha256",
+      "sample_count",
+      "first_sample_s",
+      "last_sample_s",
+      "terminal_gap_s",
+      "energy_evaluations",
+      "native_arrival_s",
+      "status"
+    ],
+    "csv_value_classes": {
+      "trajectory_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "scale": [
+        "identifier_or_structured_text"
+      ],
+      "source_path": [
+        "identifier_or_structured_text"
+      ],
+      "source_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "sample_count": [
+        "numeric_text"
+      ],
+      "first_sample_s": [
+        "numeric_text"
+      ],
+      "last_sample_s": [
+        "numeric_text"
+      ],
+      "terminal_gap_s": [
+        "numeric_text"
+      ],
+      "energy_evaluations": [
+        "numeric_text"
+      ],
+      "native_arrival_s": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "INPUT_LEDGER.csv",
+    "row_count": 538,
+    "columns": [
+      "series_id",
+      "PID",
+      "parent_id",
+      "group_id",
+      "replicate_id",
+      "acquired",
+      "same_order",
+      "input_path",
+      "input_sha256",
+      "problem_id",
+      "scale",
+      "n"
+    ],
+    "csv_value_classes": {
+      "series_id": [
+        "identifier_or_structured_text"
+      ],
+      "PID": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "replicate_id": [
+        "numeric_text"
+      ],
+      "acquired": [
+        "boolean_text"
+      ],
+      "same_order": [
+        "boolean_text"
+      ],
+      "input_path": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "scale": [
+        "identifier_or_structured_text"
+      ],
+      "n": [
+        "numeric_text"
+      ]
+    },
+    "nulls": {
+      "problem_id": 78,
+      "scale": 78,
+      "n": 78,
+      "PID": 460,
+      "replicate_id": 460,
+      "acquired": 460,
+      "same_order": 460
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "PAIRED_COMPARISONS.csv",
+    "row_count": 90416,
+    "columns": [
+      "series_id",
+      "condition_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "input_sha256",
+      "measurement_rep",
+      "metric",
+      "paired_difference",
+      "units",
+      "status",
+      "missing_reason"
+    ],
+    "csv_value_classes": {
+      "series_id": [
+        "identifier_or_structured_text"
+      ],
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "problem_id": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "input_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "measurement_rep": [
+        "identifier_or_structured_text"
+      ],
+      "metric": [
+        "identifier_or_structured_text"
+      ],
+      "paired_difference": [
+        "numeric_text"
+      ],
+      "units": [
+        "identifier_or_structured_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "missing_reason": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {
+      "missing_reason": 58712,
+      "paired_difference": 424
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "PARENT_GROUP_MAPPING.csv",
+    "row_count": 26,
+    "columns": [
+      "parent_id",
+      "group_id"
+    ],
+    "csv_value_classes": {
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "PARENT_PAIRED_SUMMARIES.csv",
+    "row_count": 21112,
+    "columns": [
+      "series_id",
+      "condition_id",
+      "metric",
+      "parent_id",
+      "group_id",
+      "physical_input_count",
+      "rows",
+      "nonmissing",
+      "mean_paired_difference",
+      "units",
+      "status"
+    ],
+    "csv_value_classes": {
+      "series_id": [
+        "identifier_or_structured_text"
+      ],
+      "condition_id": [
+        "identifier_or_structured_text"
+      ],
+      "metric": [
+        "identifier_or_structured_text"
+      ],
+      "parent_id": [
+        "identifier_or_structured_text"
+      ],
+      "group_id": [
+        "identifier_or_structured_text"
+      ],
+      "physical_input_count": [
+        "numeric_text"
+      ],
+      "rows": [
+        "numeric_text"
+      ],
+      "nonmissing": [
+        "numeric_text"
+      ],
+      "mean_paired_difference": [
+        "numeric_text"
+      ],
+      "units": [
+        "identifier_or_structured_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "PRIOR_ARTIFACTS_PINNED.csv",
+    "row_count": 1047,
+    "columns": [
+      "path",
+      "sha256"
+    ],
+    "csv_value_classes": {
+      "path": [
+        "identifier_or_structured_text"
+      ],
+      "sha256": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "REPLAY_OUTPUT_HASH_CHECK.csv",
+    "row_count": 14,
+    "columns": [
+      "file",
+      "original_sha256",
+      "replay_sha256",
+      "status"
+    ],
+    "csv_value_classes": {
+      "file": [
+        "identifier_or_structured_text"
+      ],
+      "original_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "replay_sha256": [
+        "identifier_or_structured_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "STAGE0_CHECKS.csv",
+    "row_count": 0,
+    "columns": [
+      "status"
+    ],
+    "csv_value_classes": {
+      "status": []
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "STATISTICS_CHECKS.csv",
+    "row_count": 1,
+    "columns": [
+      "check",
+      "expected",
+      "actual",
+      "tolerance",
+      "status",
+      "location"
+    ],
+    "csv_value_classes": {
+      "check": [
+        "identifier_or_structured_text"
+      ],
+      "expected": [
+        "numeric_text"
+      ],
+      "actual": [
+        "numeric_text"
+      ],
+      "tolerance": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "location": []
+    },
+    "nulls": {
+      "location": 1
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "STATISTICS_VERIFICATION_ERRORS.csv",
+    "row_count": 0,
+    "columns": [
+      "status"
+    ],
+    "csv_value_classes": {
+      "status": []
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "SUPPLEMENT_CHECKS.csv",
+    "row_count": 26680,
+    "columns": [
+      "check",
+      "expected",
+      "actual",
+      "tolerance",
+      "status",
+      "location"
+    ],
+    "csv_value_classes": {
+      "check": [
+        "identifier_or_structured_text"
+      ],
+      "expected": [
+        "boolean_text",
+        "identifier_or_structured_text"
+      ],
+      "actual": [
+        "boolean_text",
+        "identifier_or_structured_text"
+      ],
+      "tolerance": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ],
+      "location": []
+    },
+    "nulls": {
+      "location": 26680
+    },
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "VERIFY_BATCH_BY_SERIES.csv",
+    "row_count": 3,
+    "columns": [
+      "series",
+      "rows",
+      "checks_through",
+      "status"
+    ],
+    "csv_value_classes": {
+      "series": [
+        "identifier_or_structured_text"
+      ],
+      "rows": [
+        "numeric_text"
+      ],
+      "checks_through": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "VERIFY_BATCH_ERRORS.csv",
+    "row_count": 0,
+    "columns": [
+      "status"
+    ],
+    "csv_value_classes": {
+      "status": []
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "VERIFY_FULL_BY_SERIES.csv",
+    "row_count": 3,
+    "columns": [
+      "series",
+      "rows",
+      "checks_through",
+      "status"
+    ],
+    "csv_value_classes": {
+      "series": [
+        "identifier_or_structured_text"
+      ],
+      "rows": [
+        "numeric_text"
+      ],
+      "checks_through": [
+        "numeric_text"
+      ],
+      "status": [
+        "identifier_or_structured_text"
+      ]
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  },
+  {
+    "file": "VERIFY_FULL_ERRORS.csv",
+    "row_count": 0,
+    "columns": [
+      "status"
+    ],
+    "csv_value_classes": {
+      "status": []
+    },
+    "nulls": {},
+    "primary_key": null,
+    "duplicate_primary_key": null
+  }
+]

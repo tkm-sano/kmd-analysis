@@ -1,0 +1,110 @@
+{
+  "frozen_stages": [
+    {
+      "stage_id": "B0",
+      "e_pack_Wh_kg": 180.0,
+      "E_pack_fixed_Wh": 20000,
+      "E_vehicle_usable_assumed_Wh": 18000,
+      "m_pack_kg": 111.11111111111111,
+      "vehicle_mass_kg": 1100.0,
+      "running_mass_kg": 1155.0
+    },
+    {
+      "stage_id": "B1",
+      "e_pack_Wh_kg": 220.0,
+      "E_pack_fixed_Wh": 20000,
+      "E_vehicle_usable_assumed_Wh": 18000,
+      "m_pack_kg": 90.9090909090909,
+      "vehicle_mass_kg": 1079.79797979798,
+      "running_mass_kg": 1134.79797979798
+    },
+    {
+      "stage_id": "B2",
+      "e_pack_Wh_kg": 250.0,
+      "E_pack_fixed_Wh": 20000,
+      "E_vehicle_usable_assumed_Wh": 18000,
+      "m_pack_kg": 80.0,
+      "vehicle_mass_kg": 1068.888888888889,
+      "running_mass_kg": 1123.888888888889
+    }
+  ],
+  "frozen_mass_definition": {
+    "formula": "vehicle_mass_kg+55",
+    "driver_common_kg": 55,
+    "cargo_kg": 0,
+    "additional_equipment_kg": 0,
+    "status": "P1_EMPTY_LOAD_CONTROLLED_NOT_ACTUAL_PAYLOAD"
+  },
+  "original_mass_accounting_rows": [
+    {
+      "stage_id": "B0",
+      "e_pack_Wh_kg": "180",
+      "E_pack_fixed_kWh": "20",
+      "E_pack_fixed_Wh": "20000",
+      "m_pack_model_kg": "111.11111111111111",
+      "m_vehicle_reference_B0_kg": "1100",
+      "m_nonpack_model_residual_kg": "988.8888888888889",
+      "m_vehicle_model_kg": "1100.0",
+      "delta_pack_mass_vs_B0_kg": "0.0",
+      "delta_vehicle_mass_vs_B0_kg": "0.0",
+      "vehicle_mass_reduction_pct": "0.0",
+      "E_vehicle_usable_fixed_assumed_kWh": "18",
+      "mass_status": "MODEL_IDENTITY_NOT_MEASURED_MINICAB_PACK",
+      "vehicle_energy_reduction": ""
+    },
+    {
+      "stage_id": "B1",
+      "e_pack_Wh_kg": "220",
+      "E_pack_fixed_kWh": "20",
+      "E_pack_fixed_Wh": "20000",
+      "m_pack_model_kg": "90.9090909090909",
+      "m_vehicle_reference_B0_kg": "1100",
+      "m_nonpack_model_residual_kg": "988.8888888888889",
+      "m_vehicle_model_kg": "1079.79797979798",
+      "delta_pack_mass_vs_B0_kg": "-20.202020202020208",
+      "delta_vehicle_mass_vs_B0_kg": "-20.202020202020208",
+      "vehicle_mass_reduction_pct": "1.8365472910927463",
+      "E_vehicle_usable_fixed_assumed_kWh": "18",
+      "mass_status": "MODEL_IDENTITY_NOT_MEASURED_MINICAB_PACK",
+      "vehicle_energy_reduction": ""
+    },
+    {
+      "stage_id": "B2",
+      "e_pack_Wh_kg": "250",
+      "E_pack_fixed_kWh": "20",
+      "E_pack_fixed_Wh": "20000",
+      "m_pack_model_kg": "80.0",
+      "m_vehicle_reference_B0_kg": "1100",
+      "m_nonpack_model_residual_kg": "988.8888888888889",
+      "m_vehicle_model_kg": "1068.888888888889",
+      "delta_pack_mass_vs_B0_kg": "-31.111111111111114",
+      "delta_vehicle_mass_vs_B0_kg": "-31.111111111111114",
+      "vehicle_mass_reduction_pct": "2.8282828282828283",
+      "E_vehicle_usable_fixed_assumed_kWh": "18",
+      "mass_status": "MODEL_IDENTITY_NOT_MEASURED_MINICAB_PACK",
+      "vehicle_energy_reduction": ""
+    }
+  ],
+  "B_main_mass_kg": null,
+  "adoption": "HOLD_NO_UNIQUE_CURRENT_B_MASS_ADOPTION",
+  "candidates": [
+    {
+      "mass_kg": 1155,
+      "basis": "Legacy B0 vehicle1100+driver55; pack20kWh/180Whkg included; cargo0; conditional reference, not current B adoption"
+    },
+    {
+      "mass_kg": 1134.79797979798,
+      "basis": "Legacy B1 sensitivity only"
+    },
+    {
+      "mass_kg": 1123.888888888889,
+      "basis": "Legacy B2 sensitivity only"
+    }
+  ],
+  "PE_to_kg_conversion": null,
+  "capacity_PE": 216,
+  "cargo_evolution": "Not modeled in frozen empty-load control; no parcel mass data",
+  "SOC": "Cumulative stock18000Wh bookkeeping/negative flag only; no route/speed SOC constraint",
+  "C_T08_T09": "Separate conditional design/trajectory sensitivity, not B mass adoption",
+  "synthetic_1200kg": "Unit input only"
+}

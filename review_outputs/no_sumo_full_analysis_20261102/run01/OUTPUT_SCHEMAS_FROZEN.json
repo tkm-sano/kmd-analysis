@@ -1,0 +1,101 @@
+{
+  "A_POLICY_DECISIONS_2808.csv": {
+    "PK": [
+      "condition_id",
+      "problem_id"
+    ],
+    "required": [
+      "input_sha256",
+      "parent_id",
+      "group_id",
+      "acquired",
+      "adopted_method",
+      "fallback_reason",
+      "departure_s",
+      "route",
+      "F_PE",
+      "F_count",
+      "denominator_PE",
+      "return_s",
+      "return_deadline_s",
+      "status"
+    ]
+  },
+  "A_DELIVERY_COMPLETION_BY_STOP.csv": {
+    "PK": [
+      "comparison_scope",
+      "condition_id",
+      "problem_id",
+      "arm",
+      "task_id"
+    ],
+    "required": [
+      "input_sha256",
+      "parent_id",
+      "arrival_s",
+      "service_start_s",
+      "complete_s",
+      "deadline_s",
+      "slack_s",
+      "late_s",
+      "q_PE",
+      "on_time",
+      "status"
+    ]
+  },
+  "A_MECHANISM_COMPARISON.csv": {
+    "PK": [
+      "condition_id",
+      "problem_id",
+      "arm"
+    ],
+    "required": [
+      "input_sha256",
+      "parent_id",
+      "departure_s",
+      "route",
+      "availability_feasible",
+      "F_PE",
+      "return_s",
+      "status"
+    ]
+  },
+  "B_PLAN_REFERENCES_36800.csv": {
+    "PK": [
+      "problem_id",
+      "config_id",
+      "measurement_rep"
+    ],
+    "required": [
+      "input_sha256",
+      "parent_id",
+      "group_id",
+      "measurement_seed_entropy",
+      "route_indices",
+      "objective_s",
+      "classical_initial_s",
+      "exact_optimum_s",
+      "global_gap_percent",
+      "optimal_match",
+      "OD_distance_m",
+      "fit_id",
+      "missing_reason",
+      "status"
+    ]
+  },
+  "C_CONDITIONAL_MASS_DC_SUMMARY.csv": {
+    "PK": [
+      "condition_id"
+    ],
+    "required": [
+      "series_id",
+      "problem_id",
+      "parent_id",
+      "group_id",
+      "input_sha256",
+      "status",
+      "missing_reason",
+      "units"
+    ]
+  }
+}

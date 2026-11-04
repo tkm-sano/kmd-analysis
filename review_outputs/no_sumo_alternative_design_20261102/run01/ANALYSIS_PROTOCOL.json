@@ -1,0 +1,72 @@
+{
+  "version": "NO_SUMO_ALTERNATIVE_V1",
+  "status": "AUDIT_AND_DESIGN_COMPLETE_FULL_ANALYSIS_NOT_RUN",
+  "road_repair": "STOP_FOR_PRIMARY_THESIS_SCOPE",
+  "A": {
+    "physical": 78,
+    "success_subset": 64,
+    "parents": 26,
+    "demand_groups": 25,
+    "policies": 36,
+    "A2_operations": 2808,
+    "A1_four_condition_refs": 9216,
+    "deadline": "original_due_start+102",
+    "model": "A_FIXED_OD_NO_SUMO_V1",
+    "primary": "F_PE",
+    "secondary": [
+      "F_count",
+      "completion_time",
+      "return_time",
+      "slack",
+      "departure_boundary"
+    ],
+    "missing": "fixed denominator;unknown point null with bounds"
+  },
+  "B": {
+    "physical": 460,
+    "parents": 26,
+    "demand_groups": 25,
+    "settings": 8,
+    "measurement_reps": 10,
+    "references": 36800,
+    "primary": "sampled_best_OD_seconds_minus_fixed_classical_initial",
+    "exact_reference_available": 407,
+    "exact_reference_missing": 53,
+    "energy": "B-E3_PRIMARY_NO_ENERGY_EFFECT_CLAIM",
+    "customer_deadline": null,
+    "gap_denominator": "407 inputs, not route-recovery subset"
+  },
+  "C": {
+    "scope": "conditional saved-trajectory mass sensitivity",
+    "T09_complete_mass_missing": 183,
+    "footprint_FAIL": 1,
+    "quantum_material_improvement": "UNTESTED"
+  },
+  "statistics": {
+    "primary": "fixed finite roster descriptive paired contrasts",
+    "seed_reduce": "mean within physical problem/config, preserve seed distribution separately",
+    "cluster": "25 demand groups, all 26 parents nested, all scales/policies/reps carried together",
+    "optional_CI": "10000 whole-group percentile bootstrap95%; sensitivity to hypothetical group population, not deterministic measurement error",
+    "bootstrap_seed": 20261102,
+    "no_posthoc_sampling": true
+  },
+  "sensitivity": {
+    "A_primary": "analytic departure boundary at unchanged original deadlines",
+    "A_optional_OD_multipliers": [
+      0.8,
+      1.0,
+      1.2
+    ],
+    "OD_multiplier_interpretation": "illustrative model stress; not calibrated traffic distribution",
+    "C_unknown_mass": "delta relative to b, no physical prior inferred",
+    "B_primary": "all460, exact407 subset separately, preserve unsupported53"
+  },
+  "prohibited_in_this_run": [
+    "full_A_evaluation",
+    "full_B_evaluation",
+    "regional_SUMO",
+    "road_repair",
+    "QAOA",
+    "thesis_edit"
+  ]
+}

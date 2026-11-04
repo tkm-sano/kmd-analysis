@@ -1,0 +1,62 @@
+{
+  "mass_T08": {
+    "COND_LP_REF": 96.14565479871602,
+    "COND_S200_REF": 90.69735738363909,
+    "COND_LP_IDENTICAL_CONTROL": 96.14565479871602
+  },
+  "delta_T08_kg": 5.4482974150769365,
+  "T08_DC": [
+    {
+      "rolling_case": "CRR_LOWER_BOUND",
+      "n": 460,
+      "base_sum_Wh": 1440101.3697978756,
+      "saving_sum_Wh": 5941.5559753816215,
+      "weighted_percent": 0.4125790100606282,
+      "individual_mean_percent": 0.40932941937700895
+    },
+    {
+      "rolling_case": "CRR_UPPER_BOUND",
+      "n": 460,
+      "base_sum_Wh": 1475380.7429788818,
+      "saving_sum_Wh": 6102.0332889916235,
+      "weighted_percent": 0.413590411697475,
+      "individual_mean_percent": 0.4104350424002861
+    }
+  ],
+  "T09_rows": 183,
+  "T09_complete_pack_missing": 183,
+  "T09_overlap_states": {
+    "NECESSARY_AREA_CONDITION_ONLY": 182,
+    "FAIL_IF_SAME_STACK_FOOTPRINT": 1
+  },
+  "T09_component_max_error": {
+    "positive_active_kg": 7.105427357601002e-15,
+    "negative_active_kg": 3.552713678800501e-15,
+    "positive_coating_kg": 7.105427357601002e-15,
+    "negative_coating_kg": 7.105427357601002e-15,
+    "Al_mass_kg": 7.105427357601002e-15,
+    "Cu_mass_kg": 1.4210854715202004e-14,
+    "separator_dry_mass_kg": 8.881784197001252e-16,
+    "liquid_mass_kg": 7.105427357601002e-15,
+    "known_cell_components_sum_kg": 2.842170943040401e-14
+  },
+  "bridge_rows": 25760,
+  "bridge_unique_trajectory_hashes": 460,
+  "bridge_max_residual": {
+    "DC_subtraction": 0.0,
+    "mass_boundary": 0.0,
+    "rate": 2.220446049250313e-16,
+    "component_sum": 2.9842794901924208e-12
+  },
+  "known_boundaries": [
+    [
+      "fixed_area_LP",
+      "5.977891152148871"
+    ],
+    [
+      "fixed_loading",
+      "9.722608121107783"
+    ]
+  ],
+  "aggregate_residual": 2.220446049250313e-16
+}

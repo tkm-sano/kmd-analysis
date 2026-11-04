@@ -1,0 +1,60 @@
+{
+  "version": "NO_SUMO_FULL_ANALYSIS_V1",
+  "authorization": "Current user authorizes complete existing-data analysis; prior task-local full-analysis prohibition is retained historically, superseded for A/B/C arithmetic only",
+  "base_protocol_sha256": "c1c7519fe7d40e2b539c83c84ae0cdd98468726b876df94a91831faef6190ab8",
+  "A_primary": "PE on-time rate; policy-prioritized minus classical-only in percentage points",
+  "B_primary": "raw sampled-best OD_seconds minus fixed classical initial, lower better; reduce measurement reps within input first",
+  "C_primary_scope": "Frozen trajectory controlled sensitivity; weighted DC saving and known mass boundaries; no unique universal material-effect estimand beyond existing separate designs",
+  "A_populations": {
+    "policy": 78,
+    "acquired_mechanism": 64,
+    "conditions": 36,
+    "policy_rows": 2808,
+    "mechanism_arm_rows": 9216
+  },
+  "B_populations": {
+    "inputs": 460,
+    "settings": 8,
+    "reps": 10,
+    "references": 36800,
+    "exact_inputs": 407,
+    "missing_exact_inputs": 53
+  },
+  "groups": {
+    "parents": 26,
+    "demand_clusters": 25,
+    "unit": "physical input, nested within parent and source demand group"
+  },
+  "C_roster": "All saved T08 MATERIAL_ENERGY rows; all183 T09 rows; all25760 bridge rows; historical trajectories not current B",
+  "statistics": {
+    "primary": "finite-cohort paired descriptive results",
+    "uncertainty": "predefined supplementary demand-group bootstrap; not calibrated sampling CI for real fleet",
+    "resamples": 10000,
+    "seed": 20261102,
+    "interval": "percentile95",
+    "tests": 0,
+    "multiplicity": "no significance tests; list all predeclared contrasts, no best-condition selection"
+  },
+  "sensitivity": {
+    "A": "four arms and analytic departure thresholds; no new OD multiplier in main run",
+    "C": "all existing delta probes and two frozen Crr envelopes",
+    "B": "all460 and exact407 separately; recovery strata descriptive"
+  },
+  "missing": "null plus explicit reason; unacquired policy fallback; no imputation or denominator deletion",
+  "signs": {
+    "A_rates": "policy-Qpriority minus C-only, percentage points",
+    "B": "sampled minus Cinitial, seconds or metres; positive worse",
+    "C": "LP minus S, Wh or kg; positive saving"
+  },
+  "batch_ceiling": {
+    "max_projected_full_wall_s": 1800,
+    "max_process_RSS_bytes": 4294967296
+  },
+  "restrictions": [
+    "NO_SUMO",
+    "NO_ROUTING",
+    "NO_QAOA",
+    "NO_ROAD_OR_INPUT_MODIFICATIONS",
+    "NO_THESIS_EDITS"
+  ]
+}

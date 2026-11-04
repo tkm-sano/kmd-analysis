@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/home/takuma/kmd-analysis/review_outputs/network_route_contract_20261102/run01/recover_routes.py", line 122, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/network_route_contract_20261102/run01/recover_routes.py", line 81, in main
+    if good:recovered[key]=dict(record,edges=es,route_source=path,route_sha256=sha(use(path)),route_source_kind=kind,route_cost_string=cost)
+                                                                               ^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/network_route_contract_20261102/run01/evidence.py", line 12, in sha
+    with Path(p).open('rb') as h:return hashlib.file_digest(h,'sha256').hexdigest()
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/hashlib.py", line 295, in file_digest
+    size = fileobj.readinto(buf)
+           ^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

@@ -1,0 +1,18 @@
+--- /home/takuma/kmd-analysis/review_outputs/no_sumo_full_analysis_20261102/run01/revisions/before_metric_name_fix_verify_statistics.py
++++ /home/takuma/kmd-analysis/review_outputs/no_sumo_full_analysis_20261102/run01/verify_statistics.py
+@@ -2,6 +2,7 @@
+ import os
+ os.environ['OPENBLAS_NUM_THREADS']='1'
+ from common import *
++import common as audit_io
+ import numpy as np
+ def grouped(xx,keys):
+  z=collections.defaultdict(list)
+@@ -47,6 +48,6 @@
+  replays=[]
+  for p in sorted((O/'replay').glob('*.csv')):
+   target=O/p.name;equal=target.is_file() and sha(target)==sha(p);replays.append({'file':p.name,'original_sha256':sha(target) if target.is_file() else None,'replay_sha256':sha(p),'status':'PASS_BYTE_IDENTICAL' if equal else 'FAIL'});ck('replay hash '+p.name,1,int(equal),0)
+- table('REPLAY_OUTPUT_HASH_CHECK.csv',replays);table('STATISTICS_VERIFICATION_ERRORS.csv',errors);summary={'checks':count,'errors':len(errors),'bootstrap_contrasts_recalculated':len(ci),'replay_primary_files':len(replays),'replay_mismatches':sum(x['status']=='FAIL' for x in replays),'metrics':metric(start),'scope':'Independent summaries/10k cluster intervals; primary CSV byte replay'};dump('STATISTICS_VERIFICATION.json',summary);dump('STAT_VERIFY_SOURCES.json',list(SRC.values()));print(json.dumps(summary))
++ table('REPLAY_OUTPUT_HASH_CHECK.csv',replays);table('STATISTICS_VERIFICATION_ERRORS.csv',errors);summary={'checks':count,'errors':len(errors),'bootstrap_contrasts_recalculated':len(ci),'replay_primary_files':len(replays),'replay_mismatches':sum(x['status']=='FAIL' for x in replays),'metrics':audit_io.metric(start),'scope':'Independent summaries/10k cluster intervals; primary CSV byte replay'};dump('STATISTICS_VERIFICATION.json',summary);dump('STAT_VERIFY_SOURCES.json',list(SRC.values()));print(json.dumps(summary))
+  if errors:raise RuntimeError('Statistics independent mismatch')
+ if __name__=='__main__':main()

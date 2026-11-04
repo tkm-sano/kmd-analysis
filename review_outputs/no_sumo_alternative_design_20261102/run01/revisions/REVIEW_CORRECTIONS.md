@@ -1,0 +1,5 @@
+# 監査実装の修正と再検証
+
+初回B監査は参照最適値が全件存在すると仮定し、NULL53入力で停止した。attempt01コードとログを保存。元CSV/JSONは変更せず、exact未確定を明示的に保持し、既存gapのNULLを保存したまま分布を照合するコードへ修正した。差分はB_AUDIT_FIX.diff、再検証はB_CHECKS.csvとFINAL_REVIEW_CHECKS.csv。不整合を0gapで埋めていない。
+
+group推定は親IDの文字列切取りだけでなく、古典元JSONのgroup_idへ対応付け、26親・25需要groupを確認した。道路版表は同名grouped候補のrun01/run02を明記した。いずれも科学入力・既存成果の修正なし。

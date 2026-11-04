@@ -1,0 +1,7 @@
+# レビュー中の修正
+
+統計検証初回は、変数metricによる関数名遮蔽のため資源記録で停止。数値不一致0の検算CSV・修正前コード・ログを保存し、audit_io.metricへ修正。VERIFY_STATISTICS_FIX.diffと修正後STATISTICS_VERIFICATION.json参照。科学入力・評価条件を変更していない。
+
+集計CSVへ親・条件・入力ledger/table hashのscopeを追加した。T08補助R0/R1集計はdatasetだけで混ぜずmethodをcondition IDに保持し、重複軌跡参照を独立標本として読めないよう明示した。主CLASSICAL460の数値は不変。変更後に全区間・集計検証を再実行した。
+
+資源fieldはFIT/selected state/final validation/active RESULTの範囲を区別した。Noneを0秒やhardware値で補完せず、旧CPU-matched資料は補助としてscopeを明示した。

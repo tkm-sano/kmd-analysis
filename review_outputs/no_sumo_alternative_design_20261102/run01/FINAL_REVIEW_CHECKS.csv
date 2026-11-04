@@ -1,0 +1,55 @@
+check,expected,actual,status
+required documents,8,8,PASS
+A few route cases,10,10,PASS
+A task rows,40,40,PASS
+A no full evaluation,0,0,PASS
+same_order fixed PE denominator,5,5,PASS
+same_order numerator,5,5,PASS
+same_order rate,1,1,PASS
+different_order fixed PE denominator,5,5,PASS
+different_order numerator,5,5,PASS
+different_order rate,1,1,PASS
+unacquired_switch fixed PE denominator,4,4,PASS
+unacquired_switch numerator,4,4,PASS
+unacquired_switch rate,1,1,PASS
+positive_delay fixed PE denominator,5,5,PASS
+positive_delay numerator,5,5,PASS
+positive_delay rate,1,1,PASS
+mechanism_CC fixed PE denominator,5,5,PASS
+mechanism_CC numerator,5,5,PASS
+mechanism_CC rate,1,1,PASS
+mechanism_QC fixed PE denominator,5,5,PASS
+mechanism_QC numerator,5,5,PASS
+mechanism_QC rate,1,1,PASS
+mechanism_CQ fixed PE denominator,5,5,PASS
+mechanism_CQ numerator,5,5,PASS
+mechanism_CQ rate,1,1,PASS
+mechanism_QQ fixed PE denominator,5,5,PASS
+mechanism_QQ numerator,5,5,PASS
+mechanism_QQ rate,1,1,PASS
+exact_deadline_fixture fixed PE denominator,5,5,PASS
+exact_deadline_fixture numerator,5,5,PASS
+exact_deadline_fixture rate,1,1,PASS
+late_plus1_fixture fixed PE denominator,5,5,PASS
+late_plus1_fixture numerator,4,4,PASS
+late_plus1_fixture rate,4/5,4/5,PASS
+boundary equality,0,0,PASS
+late fixture negative,-1,-1,PASS
+B reference PK,460,460,PASS
+B exact missing explicit,53,53,PASS
+B few route cost checks,18,18,PASS
+B no full evaluation,0,0,PASS
+B bias all refs retained,36800,36800,PASS
+B recovered coverage,24333,24333,PASS
+B no added deadline,None,None,PASS
+B primary no energy claim,B-E3_PRIMARY_NO_ENERGY_EFFECT_CLAIM,B-E3_PRIMARY_NO_ENERGY_EFFECT_CLAIM,PASS
+C pack unknown,183,183,PASS
+C failure retained,1,1,PASS
+causal edges explicit,13,13,PASS
+evidence categories,"{'UNTESTED', 'CONDITIONAL', 'DERIVED', 'OBSERVED', 'INVALID'}","{'CONDITIONAL', 'UNTESTED', 'DERIVED', 'OBSERVED', 'INVALID'}",PASS
+quantum material untested,UNTESTED,UNTESTED,PASS
+component independent check failures,0,0,PASS
+source hash differences,0,0,PASS
+tracked diff unchanged,,,PASS
+HEAD unchanged,1b00bd7927fa1e7688e4772ac1da9db46d9bac11,1b00bd7927fa1e7688e4772ac1da9db46d9bac11,PASS
+only new review added to status,"{'?? review_outputs/no_sumo_alternative_design_20261102/', '?? tmp_RsrchMstrDc_1026_revised.docx', '?? docs/research/THESIS_REVISION_AUDIT.md', '?? review_outputs/network_route_contract_20261102/', '?? review_outputs/complete_run_validation_20261102/', '?? review_outputs/integrated_causal_audit_20261102/'}","{'?? review_outputs/no_sumo_alternative_design_20261102/', '?? tmp_RsrchMstrDc_1026_revised.docx', '?? docs/research/THESIS_REVISION_AUDIT.md', '?? review_outputs/network_route_contract_20261102/', '?? review_outputs/complete_run_validation_20261102/', '?? review_outputs/integrated_causal_audit_20261102/'}",PASS
