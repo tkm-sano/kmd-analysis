@@ -1,0 +1,4 @@
+# 作成済み図表と論文配置
+図1二経路、図2経路1条件、図3経路2条件、図4共通枠組み、図5保存B品質差、図6条件付き参考境界、図7材料非依存DC質量応答をPNG/PDFで作成した。FIGURE_INDEX.csvに元CSVとChen依存を記録した。図6は参考例の表示をタイトル・captionに含む。
+表1は経路1の条件、表2は経路2の主分析/参考例、表3は未検証事項である。詳細台帳はdata/TABLE1_CONDITIONS.csv、TABLE2_CONDITIONS.csv、TABLE3_LIMITATIONS.csvであり、Word内は読みやすい要約版である。Word図の挿入幅は16.2cm、行内配置、caption付きである。
+数値グラフは保存CSVを用い、構造図はscripts/figures.pyとdata/FIGURE_NODES.csvから再現できる。完成pack/実車への未検証接続を破線/別色で区別した。大学様式の最終図表番号はStep4へ引き継ぐ。

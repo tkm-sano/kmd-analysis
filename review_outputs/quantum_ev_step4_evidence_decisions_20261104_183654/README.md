@@ -1,0 +1,11 @@
+# Step4 科学的採用判断の確定
+
+保存先：/home/takuma/kmd-analysis/review_outputs/quantum_ev_step4_evidence_decisions_20261104_183654。
+
+要求成果物はSTEP4_EVIDENCE_DECISIONS.md、CLAIM_EVIDENCE_MATRIX.csv、MATERIAL_INPUT_PROVENANCE_AUDIT.md、UNRESOLVED_ISSUES.md、STEP4_FINAL_REPORT.mdである。
+
+最初にSTEP4_FINAL_REPORT.md、次に材料来歴監査と主張CSVを参照する。CSVは数値検算、科学的入力根拠、最終4区分、主分析/参考の採用役割、論文使用可能文を分けている。HOLDを解除せず参考例を保持したことを、確定入力の採用と読まない。
+
+一次証拠のパス/ハッシュはevidence/SOURCE_LEDGER.csv、依存グラフはevidence/MATERIAL_DEPENDENCY_GRAPH.csv、検算はevidence/VERIFICATION_RESULT.jsonとVERIFICATION_CHECKS.csv、2版のStep3差はevidence/STEP3_VERSION_CONFLICTS.mdへ記録した。原著PDFのbyte同一コピーと再抽出本文もevidence内へ保存した。アクセス制限による今回のオンライン取得不成功と、既存保全原著の確認を区別する。
+
+本Step4で科学的採否を確定した。Wordの追加編集、既存成果物への書込み、commit/push/公開/外部送信は行わない。HOLDの解消や次段階の原稿編集へ継続せず、本Step4で終了する。

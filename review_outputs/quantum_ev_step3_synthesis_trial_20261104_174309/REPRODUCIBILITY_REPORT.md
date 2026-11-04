@@ -1,0 +1,6 @@
+# 再現方法と実行環境
+Pythonはリポジトリの.conda/bin/python（3.11.15）を使用した。numpy/pandas/matplotlib/python-docxの版とplatformはevidence/ENVIRONMENT.jsonに記録した。PYTHONDONTWRITEBYTECODEおよび-Bを用い、入力先へのpycache生成を避けた。新規大規模QAOA/SUMO/厳密求解は行っていない。
+同じ入力版を用いた処理順は scripts/initialize_replay.py（新trialだけ） → audit_inputs.py → synthesize.py → correct_path2.py → dc_independent.py → refine_text.py → figures.py → finish_content.py → build_docx.py → render_docx.py → close_trial.py → final_audit.py である。初期synthesizeだけの出力は採用しない。Chen採用修正を必須として最後まで実行する。重複追記を避けるため、再実行時はscripts/dataと元入力を別の新規ディレクトリへ複製してから一巡させる。既存Step3の再実行・上書きを再現方法とはしない。表示目視は新出力で再実施し、render/VISUAL_QA.mdを新規記録する。
+実行コマンドはリポジトリrootから .conda/bin/python -B <trial>/scripts/<name>.py である。スクリプトは自分の親ディレクトリをtrialとする。現状はS1/S2の実在ローカルパスを参照し、単一trialだけで全上流実験を再実行できる意味ではない。
+DCの追加検算は材料入力を使用せず、既存宣言質量範囲で保存460速度入力を読み、凍結evaluateと区分線形表現を両端で照合した。詳細時間はevidence/DC_INDEPENDENT_RUN.json。図の数値源はFIGURE_INDEX.csv、図形ソースはscripts/figures.pyとdata/FIGURE_NODES.csvに保存した。Wordは同じ草稿とCSV/PNGから生成し、LibreOffice read-only binaryを新profileで起動してPDF/ページPNGへ変換した。Word実機表示はHOLDである。
+入力ハッシュはSTEP3_SOURCE_MANIFEST.csv、出力ハッシュはOUTPUT_SHA256_MANIFEST.csvである。源ファイルと追跡100ファイルの保全再照合はevidence/PRESERVATION_RESULTS.csvを参照する。脚注や浮動図の最終体裁はStep4で大学様式に合わせる。

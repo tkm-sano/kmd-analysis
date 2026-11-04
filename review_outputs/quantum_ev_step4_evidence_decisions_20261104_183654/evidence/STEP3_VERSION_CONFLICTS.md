@@ -1,0 +1,9 @@
+# 先行Step3の解釈差と優先根拠
+
+参照した版は二つある。Word統合版は/home/takuma/kmd-analysis/review_outputs/quantum_ev_thesis_step3_integration_20261104_173959、補正済み統合考察版は/home/takuma/kmd-analysis/review_outputs/quantum_ev_step3_synthesis_trial_20261104_174309である。単に時刻で選ばず、前者のCLAIM_EVIDENCE_LEDGER/ADOPTION_REVIEW/要旨/5.5–5.6/結論と、後者のCHEN_2020_ADOPTION_CORRECTION/PATH2_MAIN_VS_REFERENCE_RESULTSを比較した。
+
+両版とも数値の条件付き性や完成pack未確定を述べているが、Word版ではChen逆算入力の主分析採否HOLDと、具体値を参考例に後置する序列が十分には反映されていない。Word版の「数値監査PASS」「条件付き候補B」は確定材料入力の承認とは解釈しない。原稿一括の無修正科学採用はD-01 HOLDとした。
+
+本Step4では10月23日レビュー、Stage1最終run03 T06、10月26日run02 SCENARIOS/T07/T08、10月29日T09受入記録を優先する。補正済みStep3の主/参考区分はこれら一次成果物と整合するため、その区分を採用判断に採り入れた。過去の会話全件の独立復元を行ったとは主張しない。
+
+補正済みStep3のSTEP4_HANDOFFにはWordコピーへの編集手順が含まれているが、今回の研究者指示はWord追加編集を禁止している。本Step4は科学的採否の確定のみを実施し、旧handoffの編集工程は実行しない。既存成果物はいずれも変更しない。

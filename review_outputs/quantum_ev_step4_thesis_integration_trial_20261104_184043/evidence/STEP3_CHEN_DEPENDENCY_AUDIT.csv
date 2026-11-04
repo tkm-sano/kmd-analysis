@@ -1,0 +1,60 @@
+object_type,object_id,dependency,role,reason,status
+claim,S3-P1-D01,NO,主分析/証拠境界,DeltaJ>0 iff JC>JQ,PASS
+claim,S3-P1-N01,NO,主分析/証拠境界,positive probability of sampling some feasible route with J<JC is necessary for finite-shot improvement,CONDITIONAL
+claim,S3-P1-O01,NO,主分析/証拠境界,no positive improvement vs preregistered greedy in saved B cohort,PASS
+claim,S3-P1-O02,NO,主分析/証拠境界,GROVER_P2 large-scale worsening,CONDITIONAL
+claim,S3-P1-O03,NO,主分析/証拠境界,GROVER_P3 large-scale worsening,CONDITIONAL
+claim,S3-P1-S01,NO,主分析/証拠境界,mirror orbit optimum equals initial and JC<=initial => DeltaJ<=0 for any output within this orbit,CONDITIONAL
+claim,S3-P1-S02,NO,主分析/証拠境界,active three-point grid selected initial t=0 in all460 inputs,CONDITIONAL
+claim,S3-P1-C01,NO,主分析/証拠境界,R1_020 full-support basis graph p1 optimal attainment,CONDITIONAL
+claim,S3-P1-C02,NO,主分析/証拠境界,R1_020 full-support basis graph p2 optimal attainment,CONDITIONAL
+claim,S3-P1-C03,NO,主分析/証拠境界,full support does not ensure acquisition; basis-projector p1 vs uniform-projector,CONDITIONAL
+claim,S3-P1-C04,NO,主分析/証拠境界,same-angle dephasing changes expected cost but need not improve sampled-best vs greedy,CONDITIONAL
+claim,S3-P1-T01,NO,主分析/証拠境界,tau_total<=H_plan required for deadline adoption,HOLD
+claim,S3-P1-H01,NO,主分析/証拠境界,remaining exact references unavailable,HOLD
+claim,S3-P2-D01,NO,主分析/証拠境界,DeltaM=b-delta; within verified positive-slope interval DeltaE>0 iff delta<b,CONDITIONAL
+claim,S3-P2-B01,YES,条件付き参考例,逆算q171.875/195.959596は主分析未採用HOLD；T08 default added S-minus-LP mass cancels at b,CONDITIONAL
+claim,S3-P2-B02,YES,条件付き参考例,逆算q171.875/195.959596は主分析未採用HOLD；same V/common components/no added mass: qS*u>qLP iff positive mass saving,CONDITIONAL
+claim,S3-P2-B03,YES,条件付き参考例,逆算q171.875/195.959596は主分析未採用HOLD；S full-cell voltage threshold with LP baseline held at3.5V,CONDITIONAL
+claim,S3-P2-E01,YES,条件付き参考例,逆算q171.875/195.959596は主分析未採用HOLD；default T08 transmission CRR_LOWER_BOUND,CONDITIONAL
+claim,S3-P2-E02,YES,条件付き参考例,逆算q171.875/195.959596は主分析未採用HOLD；default T08 transmission CRR_UPPER_BOUND,CONDITIONAL
+claim,S3-P2-S01,YES,条件付き参考例,逆算q171.875/195.959596は主分析未採用HOLD；known-component boundary depends on area/loading accounting,CONDITIONAL
+claim,S3-P2-O01,YES,条件付き参考例,逆算q171.875/195.959596は主分析未採用HOLD；mass-DC transmission varies across saved motion profiles and Crr,CONDITIONAL
+claim,S3-P2-A01,NO,主分析/証拠境界,Controlled-DC excludes regen/aux/grade/turn/payload variation,CONDITIONAL
+claim,S3-P2-H01,NO,主分析/証拠境界,quantum material improvement to practical pack and real-road service,HOLD
+claim,S3-I01,MIXED_FRAMEWORK,主分析/証拠境界,今回の異質な二経路の分析的統合。共通効果量や一般法則ではない。,CONDITIONAL
+claim,S3-I02,MIXED_FRAMEWORK,主分析/証拠境界,本事例からの方法的示唆。組織・制度・市場効果の実証ではない。,CONDITIONAL
+claim,S3-L01,MIXED_FRAMEWORK,主分析/証拠境界,Geels2002/Schot&Steinmueller2018の限定的書誌・主旨確認。理論全体の検証ではない。,CONDITIONAL
+claim,S3-H01,MIXED_FRAMEWORK,主分析/証拠境界,B→実運行の未接続,HOLD
+claim,S3-H02,MIXED_FRAMEWORK,主分析/証拠境界,材料探索/合成/電極/full-cell適格性が必要,HOLD
+claim,S3-P2-A02,NO,主分析,正の定義域/同一部材境界,CONDITIONAL
+claim,S3-P2-A03,NO,主分析,正の定義域/同一部材境界,CONDITIONAL
+claim,S3-P2-H02,YES,入力採用HOLD,正の定義域/同一部材境界,HOLD
+analysis/figure,49点q連続走査,YES,条件付き参考：端点と基準が逆算q,入力依存を遡及分類,CONDITIONAL
+analysis/figure,81点u/V格子,YES,条件付き参考：q固定値が逆算,入力依存を遡及分類,CONDITIONAL
+analysis/figure,T09共通162条件,YES,条件付き参考：両容量が逆算,入力依存を遡及分類,CONDITIONAL
+analysis/figure,約0.413%と運転条件層別,YES,条件付き参考：質量差が逆算由来,入力依存を遡及分類,CONDITIONAL
+analysis/figure,DC1000–1250kgkernel再検算,NO,主分析：軌跡と物理条件だけ,入力依存を遡及分類,CONDITIONAL
+analysis/figure,T08偏微分,NO,主分析：記号式/正の定義域,入力依存を遡及分類,CONDITIONAL
+analysis/figure,δ=b,NO,主分析：収支式,入力依存を遡及分類,CONDITIONAL
+analysis/figure,図1–4,STRUCTURE_NO;REFERENCE_LABELLED,構造図；数値参考は別ラベル,入力依存を遡及分類,CONDITIONAL
+analysis/figure,図5_B品質,NO,経路1,入力依存を遡及分類,CONDITIONAL
+analysis/figure,図6_参考境界,YES,条件付き参考明記,入力依存を遡及分類,CONDITIONAL
+numeric_reference,171.875/195.959596 Ah/kg,YES,主分析確定値として未採用；条件付き参考例,保持試験からの逆算入力；PATH2_INPUT_PROVENANCE.csv,CONDITIONAL;INPUT_ADOPTION_HOLD
+numeric_reference,96.145655/90.697357 kg,YES,主分析確定値として未採用；条件付き参考例,T08条件付き参考質量；data/PATH2_SENSITIVITY_SUMMARY.csv,CONDITIONAL;INPUT_ADOPTION_HOLD
+numeric_reference,5.448297 kg,YES,主分析確定値として未採用；条件付き参考例,参考質量相殺境界；data/PATH2_BOUNDARY_ANALYSIS.csv,CONDITIONAL;INPUT_ADOPTION_HOLD
+numeric_reference,0.877094,YES,主分析確定値として未採用；条件付き参考例,参考利用率境界；data/PATH2_BOUNDARY_ANALYSIS.csv,CONDITIONAL;INPUT_ADOPTION_HOLD
+numeric_reference,3.193156 V,YES,主分析確定値として未採用；条件付き参考例,参考電圧境界；data/PATH2_BOUNDARY_ANALYSIS.csv,CONDITIONAL;INPUT_ADOPTION_HOLD
+numeric_reference,0.412579/0.413590 %,YES,主分析確定値として未採用；条件付き参考例,参考DC総和比；data/DC_ENDPOINT_RECHECK.csv,CONDITIONAL;INPUT_ADOPTION_HOLD
+numeric_reference,9.722608/5.977891 kg,YES,主分析確定値として未採用；条件付き参考例,T09設計方針別既知差；data/PATH2_T09_COMMON_INPUT_SENSITIVITY.csv,CONDITIONAL;INPUT_ADOPTION_HOLD
+final_artifact,PATH2_CONTRIBUTION_CONDITIONS.md,MIXED_EXPLICIT,主分析と条件付き参考例を分離,Chen主材料入力未採用、完成pack/実EV未実証を保持,CONDITIONAL
+final_artifact,PATH2_CONDITION_CLASSIFICATION.csv,MIXED_EXPLICIT,主分析と条件付き参考例を分離,Chen主材料入力未採用、完成pack/実EV未実証を保持,CONDITIONAL
+final_artifact,PATH2_MODEL_DEPENDENCE.md,MIXED_EXPLICIT,主分析と条件付き参考例を分離,Chen主材料入力未採用、完成pack/実EV未実証を保持,CONDITIONAL
+final_artifact,PATH2_LIMITATIONS.md,MIXED_EXPLICIT,主分析と条件付き参考例を分離,Chen主材料入力未採用、完成pack/実EV未実証を保持,CONDITIONAL
+final_artifact,CROSS_PATH_CONDITION_MATRIX.csv,MIXED_EXPLICIT,主分析と条件付き参考例を分離,Chen主材料入力未採用、完成pack/実EV未実証を保持,CONDITIONAL
+final_artifact,SYNTHESIZED_RESEARCH_FINDINGS.md,MIXED_EXPLICIT,主分析と条件付き参考例を分離,Chen主材料入力未採用、完成pack/実EV未実証を保持,CONDITIONAL
+final_artifact,RESEARCH_CONTRIBUTION_STATEMENT.md,MIXED_EXPLICIT,主分析と条件付き参考例を分離,Chen主材料入力未採用、完成pack/実EV未実証を保持,CONDITIONAL
+final_artifact,THESIS_RESULTS_DRAFT.md,MIXED_EXPLICIT,主分析と条件付き参考例を分離,Chen主材料入力未採用、完成pack/実EV未実証を保持,CONDITIONAL
+final_artifact,THESIS_DISCUSSION_DRAFT.md,MIXED_EXPLICIT,主分析と条件付き参考例を分離,Chen主材料入力未採用、完成pack/実EV未実証を保持,CONDITIONAL
+final_artifact,THESIS_CONCLUSION_DRAFT.md,MIXED_EXPLICIT,主分析と条件付き参考例を分離,Chen主材料入力未採用、完成pack/実EV未実証を保持,CONDITIONAL
+final_artifact,THESIS_STEP3_TRIAL.docx,MIXED_EXPLICIT,主分析と条件付き参考例を分離,Chen主材料入力未採用、完成pack/実EV未実証を保持,CONDITIONAL

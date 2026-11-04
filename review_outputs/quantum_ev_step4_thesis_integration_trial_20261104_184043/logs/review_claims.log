@@ -1,0 +1,3 @@
+/home/takuma/kmd-analysis/review_outputs/quantum_ev_step4_thesis_integration_trial_20261104_184043/scripts/review_claims.py:15: DtypeWarning: Columns (36) have mixed types. Specify dtype option on import or set low_memory=False.
+  p=pd.read_csv(S2/'PATH1_PAIRED_COMPARISONS.csv',keep_default_na=False);p=p[p.primary_comparison];ck('460×8×10=36800',len(p)==36800 and p.problem_id.nunique()==460 and p.config_id.nunique()==8 and p.groupby(['problem_id','config_id']).size().eq(10).all(),S2/'PATH1_PAIRED_COMPARISONS.csv','旧Aと区別')
+Claims 31 recommendations {'B': 23, 'C': 6, 'A': 2} numerical checks 18

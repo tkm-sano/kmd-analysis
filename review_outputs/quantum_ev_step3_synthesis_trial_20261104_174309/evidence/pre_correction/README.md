@@ -1,0 +1,2 @@
+# 修正前草稿の履歴
+実行中のChen採用修正前に生成したStep3草稿の保存である。最終主張・原稿・研究成果の採用対象ではない。現在有効な分類はtrial rootの主張台帳、CHEN_2020_ADOPTION_CORRECTION.md、CHEN_DEPENDENCY_AUDIT.csvを参照する。元Step1/2を改変したファイルではない。

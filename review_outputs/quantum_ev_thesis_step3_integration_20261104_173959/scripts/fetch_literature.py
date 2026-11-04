@@ -1,0 +1,17 @@
+from pathlib import Path
+import requests,json,csv,datetime,concurrent.futures,time
+O=Path(__file__).resolve().parents[1];D=O/'sources/literature';D.mkdir(exist_ok=True)
+items=[
+('L01','theory','10.1016/S0048-7333(02)00062-8'),('L02','theory','10.1016/j.respol.2007.12.003'),('L03','theory','10.1016/j.techfore.2006.03.002'),('L04','theory','10.1016/j.respol.2015.06.006'),('L05','theory','10.1016/j.respol.2018.08.011'),('L06','theory','10.1016/j.futures.2014.07.004'),('L07','energy','10.1039/C8EE01157E'),('L08','energy','10.1038/nclimate3231'),('L09','energy','10.1016/j.joule.2018.08.006'),('L10','energy','10.1038/nenergy.2017.110'),('L11','mobility','10.1016/j.jtrangeo.2012.01.021'),('L12','mobility','10.1016/j.enpol.2014.01.043'),('L13','mobility','10.1016/j.trc.2012.06.007'),('L14','mobility','10.1016/j.tre.2012.07.003'),('L15','mobility','10.1016/j.rtbm.2014.03.004'),('L16','theory','10.1111/jiec.12690'),
+('T01','technical','10.48550/arXiv.1411.4028'),('T02','technical','10.3390/a12020034'),('T03','technical','10.1109/QCE49297.2020.00020'),('T04','technical','10.1103/PhysRevA.106.032428'),('T05','technical','10.1038/s41467-020-17126-3'),('T06','technical','10.1016/j.dib.2023.109798'),('T07','technical','10.1287/trsc.2013.0490'),('T08','technical','10.1111/j.1467-9868.2007.00593.x'),('T09','technical','10.48550/arXiv.2304.09629'),('T10','technical','10.1080/01621459.1927.10502953')]
+def get(item):
+ id,domain,doi=item;url='https://api.openalex.org/works/https://doi.org/'+doi;when=datetime.datetime.now(datetime.timezone.utc).isoformat()
+ try:
+  r=requests.get(url,timeout=30);(D/(id+'_openalex.json')).write_text(json.dumps({'requested_url':url,'retrieved_utc':when,'http_status':r.status_code,'response':r.json()},ensure_ascii=False,indent=2));r.raise_for_status();d=r.json();year=d.get('publication_year');count=d.get('cited_by_count');threshold=100 if year and year<=2024 else 50 if year==2025 else 0 if year==2026 else None
+  decision='TECHNICAL_METHOD_SOURCE_EXEMPT' if domain=='technical' else 'ELIGIBLE_PRIMARY_READING_PENDING' if count is not None and threshold is not None and count>=threshold else 'HOLD_CITATION_THRESHOLD' if count is None else 'EXCLUDE_BELOW_CITATION_THRESHOLD'
+  return {'literature_id':id,'domain':domain,'authors':'; '.join(a['author']['display_name'] for a in d.get('authorships',[])),'year':year,'title':d.get('display_name'),'DOI':d.get('doi'),'URL':d.get('doi'),'OpenAlex_id':d.get('id'),'citation_count':count,'citation_database':'OpenAlex','citation_checked_utc':when,'required_citations':threshold,'selection_decision':decision,'primary_source_status':'PENDING','primary_pdf_url':(d.get('best_oa_location') or {}).get('pdf_url'),'primary_landing_page':(d.get('best_oa_location') or {}).get('landing_page_url'),'source_json':str((D/(id+'_openalex.json')).relative_to(O))}
+ except Exception as e:return {'literature_id':id,'domain':domain,'DOI':doi,'citation_database':'OpenAlex','citation_checked_utc':when,'selection_decision':'HOLD_CITATION_LOOKUP','lookup_error':str(e)}
+with concurrent.futures.ThreadPoolExecutor(max_workers=1) as ex:out=list(ex.map(get,items))
+fields=list(dict.fromkeys(k for r in out for k in r))
+with (O/'LITERATURE_SELECTION_LEDGER.csv').open('w',newline='') as f:w=csv.DictWriter(f,fieldnames=fields);w.writeheader();w.writerows(out)
+for r in out:print(r['literature_id'],r.get('year'),r.get('citation_count'),r['selection_decision'],r.get('title'),r.get('primary_pdf_url'),flush=True)

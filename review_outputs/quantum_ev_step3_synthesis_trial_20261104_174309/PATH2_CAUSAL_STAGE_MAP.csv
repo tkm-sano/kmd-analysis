@@ -1,0 +1,7 @@
+stage,inputs,formula,assumption,source_locator,unknown,verification_scope
+材料性能,"q,u,V",有効容量・平均電圧,実験条件/容量分母の整合,Chen直接報告と逆算を分離,実用適格性,材料予測→実材料HOLD
+電極・セル設計,"E,V,q,u,r,f_p,f_n,q_n",Q=E/V;mp=Q/(qu);mn=rQ/q_n,gross設計、活物質割合の定義,T08 SCENARIOSと数式,設計変数の同時実現,A;E
+構成部材質量,塗工材・面積・空隙,mp/f_p+mn/f_n+箔+膜+液,T09幾何・密度移用,path2_analysis.py t09(),case/tabs等,既知subtotalのみ
+電池パック質量,既知subtotal+未知部材,M_complete=known+unknown,部材境界非重複,T08簡略会計/T09 NULL,未知BOM/安全寿命,完成pack確定HOLD
+車両質量,非pack車体+pack+driver/cargo,m=m_nonpack+M+55,比較時に他要因一定,凍結モデル,実積載/実車設計,条件付き
+走行DC,"m,固定速度,物理条件","sum max(W1+W2+W3+W4,0)/(3600η)",同軌跡/平坦/回生補機除外,frozen_sources/run_full_controlled_dc.py,モデル誤差/実車,1000–1250kg検算

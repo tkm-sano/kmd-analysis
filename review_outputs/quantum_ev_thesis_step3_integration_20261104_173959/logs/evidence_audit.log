@@ -1,0 +1,71 @@
+{
+  "checks": 461450,
+  "failures": 0,
+  "wall_s": 22.301758704939857,
+  "B_primary_rows": 36800,
+  "B_primary_improvements": 0,
+  "R5_Grover_p2_mean_DeltaJ_s": -5983.70645268941,
+  "R5_Grover_p2_input_SD_s": 1314.364536777092,
+  "R5_group_lower": -6516.668691742253,
+  "R5_group_upper": -5515.460175676927,
+  "reference_classes": {
+    "RECHECKED_ENUMERATION": 234,
+    "SAVED_EXACT_INTEGER_HELD_KARP_DP": 78,
+    "INDEPENDENT_RATIONAL_DUAL": 61,
+    "UNPROVED_VALID_BOUNDS": 46,
+    "SAVED_EXACT_MIP_EQUALITY_NO_EXTERNAL_VIPR": 41
+  },
+  "new7": [
+    "R4_021",
+    "R4_030",
+    "R5_019",
+    "R5_024",
+    "R5_052",
+    "R5_062",
+    "R5_063"
+  ],
+  "controlled_fits": 9312,
+  "controlled_measurements": 93120,
+  "runtime_records": 9603,
+  "timing_fixed_example": [
+    {
+      "problem_id": "R1_001",
+      "config_id": "FULL_PERMUTATION/UNIFORM_SUPPORT/PROJECTOR/p2",
+      "method": "QAOA",
+      "n": 97,
+      "median_wall_ms": 34.643215010873895,
+      "median_CPU_ms": 34.588607000017596
+    },
+    {
+      "problem_id": "R1_001",
+      "config_id": "FULL_PERMUTATION/UNIFORM_SUPPORT/PROJECTOR/p2",
+      "method": "DEPHASED",
+      "n": 97,
+      "median_wall_ms": 35.0138270296156,
+      "median_CPU_ms": 34.9665319999985
+    }
+  ],
+  "T08_mass_boundary_kg": 5.448297415076934,
+  "T08_utilization_boundary": 0.8770940719841043,
+  "T08_voltage_boundary_V": 3.193155683779789,
+  "C_endpoint": [
+    {
+      "rolling_case": "CRR_LOWER_BOUND",
+      "trajectories": 460,
+      "total_weighted_percent": 0.41257901006062697,
+      "mean_percent": 0.4093294193770075,
+      "sd_percentage_points": 0.0121723918771587,
+      "saving_Wh": 5941.555975381605
+    },
+    {
+      "rolling_case": "CRR_UPPER_BOUND",
+      "trajectories": 460,
+      "total_weighted_percent": 0.4135904116974739,
+      "mean_percent": 0.410435042400285,
+      "sd_percentage_points": 0.012017831075000655,
+      "saving_Wh": 6102.033288991608
+    }
+  ],
+  "new_scientific_experiments": 0,
+  "source_count": 5587
+}

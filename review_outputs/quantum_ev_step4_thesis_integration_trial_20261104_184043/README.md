@@ -1,0 +1,7 @@
+# KMD修士研究 Step4：独立全文統合trial
+最初にEXECUTIVE_SUMMARY.md、SOURCE_THESIS_AUTHORITY.md、FINAL_AUDIT_REPORT.mdを参照する。原稿はTHESIS_STEP4_INTEGRATED_TRIAL.docx、表示PDFは同名.pdf、全文はTHESIS_FULL_TEXT.mdである。
+原稿は現行主論証、確認範囲付き参考文献、現行根拠付録A、元原稿保全付録Bを区別する。旧記述を現行採用と読まない。採用審査はCLAIM_ADOPTION_REVIEW.csvとTHESIS_CHANGE_ADOPTION_MATRIX.csv、原稿の全位置対応はORIGINAL_THESIS_STRUCTURE.csv/THESIS_PRESERVED_CONTENT_AUDIT.csv、主張の元データ対応はSECTION_CLAIM_EVIDENCE_MAP.csvに保存する。
+文献の確認範囲はLITERATURE_EVIDENCE_MATRIX.csv/BIBLIOGRAPHY_VERIFICATION.csv/CITATION_AUDIT.csv、数値・統計・図表・表示は各AUDITに記録した。すべての成果物とスクリプトはOUTPUT_SHA256_MANIFEST.csvを参照する。再現入力の版と保全はSOURCE_BASELINE_SHA256.csv、evidence内の台帳を参照する。
+既存ファイルを変更せず、新規大規模計算を行わない。正式採用、元原稿への反映、commit/push/公開は未実施である。Step5の優先事項はSTEP5_HANDOFF.mdに記録した。
+
+入口：[統合Word](THESIS_STEP4_INTEGRATED_TRIAL.docx)、[表示PDF](THESIS_STEP4_INTEGRATED_TRIAL.pdf)、[最終監査](FINAL_AUDIT_REPORT.md)、[31主張の採用推奨](CLAIM_ADOPTION_REVIEW.csv)、[Step5引継ぎ](STEP5_HANDOFF.md)。PDF114頁のうち、現行本文・参考文献・現行付録は27頁まで、元内容の保存付録Bは28頁以降である。

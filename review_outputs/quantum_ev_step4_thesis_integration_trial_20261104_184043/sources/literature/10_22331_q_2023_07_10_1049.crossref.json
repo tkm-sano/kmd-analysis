@@ -1,0 +1,898 @@
+{
+  "status": "ok",
+  "message-type": "work",
+  "message-version": "1.0.0",
+  "message": {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          9,
+          30
+        ]
+      ],
+      "date-time": "2026-09-30T23:41:52Z",
+      "timestamp": 1790811712695,
+      "version": "4.1.0"
+    },
+    "reference-count": 106,
+    "publisher": "Verein zur Forderung des Open Access Publizierens in den Quantenwissenschaften",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2023,
+              7,
+              10
+            ]
+          ],
+          "date-time": "2023-07-10T00:00:00Z",
+          "timestamp": 1688947200000
+        },
+        "content-version": "unspecified",
+        "delay-in-days": 0,
+        "URL": "https://creativecommons.org/licenses/by/4.0/"
+      }
+    ],
+    "content-domain": {
+      "domain": [
+        "quantum-journal.org"
+      ],
+      "crossmark-restriction": false
+    },
+    "short-container-title": [
+      "Quantum"
+    ],
+    "abstract": "<jats:p>Ionic pseudopotentials are widely used in classical simulations of materials to model the effective potential due to the nucleus and the core electrons. Modeling fewer electrons explicitly results in a reduction in the number of plane waves needed to accurately represent the states of a system. In this work, we introduce a quantum algorithm that uses pseudopotentials to reduce the cost of simulating periodic materials on a quantum computer. We use a qubitization-based quantum phase estimation algorithm that employs a first-quantization representation of the Hamiltonian in a plane-wave basis. We address the challenge of incorporating the complexity of pseudopotentials into quantum simulations by developing highly-optimized compilation strategies for the qubitization of the Hamiltonian. This includes a linear combination of unitaries decomposition that leverages the form of separable pseudopotentials. Our strategies make use of quantum read-only memory subroutines as a more efficient alternative to quantum arithmetic. We estimate the computational cost of applying our algorithm to simulating lithium-excess cathode materials for batteries, where more accurate simulations are needed to inform strategies for gaining reversible access to the excess capacity they offer. We estimate the number of qubits and Toffoli gates required to perform sufficiently accurate simulations with our algorithm for three materials: lithium manganese oxide, lithium nickel-manganese oxide, and lithium manganese oxyfluoride. Our optimized compilation strategies result in a pseudopotential-based quantum algorithm with a total Toffoli cost four orders of magnitude lower than the previous state of the art for a fixed target accuracy.</jats:p>",
+    "DOI": "10.22331/q-2023-07-10-1049",
+    "type": "journal-article",
+    "created": {
+      "date-parts": [
+        [
+          2023,
+          7,
+          10
+        ]
+      ],
+      "date-time": "2023-07-10T13:44:40Z",
+      "timestamp": 1688996680000
+    },
+    "page": "1049",
+    "update-policy": "https://doi.org/10.22331/q-crossmark-policy-page",
+    "source": "Crossref",
+    "is-referenced-by-count": 22,
+    "title": [
+      "Quantum simulation of battery materials using ionic pseudopotentials"
+    ],
+    "prefix": "10.22331",
+    "volume": "7",
+    "author": [
+      {
+        "given": "Modjtaba",
+        "family": "Shokrian Zini",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "Xanadu, Toronto, ON, M5G 2C8, Canada"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Alain",
+        "family": "Delgado",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Xanadu, Toronto, ON, M5G 2C8, Canada"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Roberto",
+        "family": "dos Reis",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Xanadu, Toronto, ON, M5G 2C8, Canada"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Pablo Antonio",
+        "family": "Moreno Casares",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Xanadu, Toronto, ON, M5G 2C8, Canada"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Jonathan E.",
+        "family": "Mueller",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Volkswagen AG, Berliner Ring 2, 38440 Wolfsburg, Germany"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Arne-Christian",
+        "family": "Voigt",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Volkswagen AG, Berliner Ring 2, 38440 Wolfsburg, Germany"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Juan Miguel",
+        "family": "Arrazola",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Xanadu, Toronto, ON, M5G 2C8, Canada"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "member": "9598",
+    "published-online": {
+      "date-parts": [
+        [
+          2023,
+          7,
+          10
+        ]
+      ]
+    },
+    "reference": [
+      {
+        "key": "0",
+        "unstructured": "[Abramowitz and Stegun(1974. abramowitz1964handbook Milton Abramowitz and Irene A. Stegun. Handbook of mathematical functions with formulas, graphs, and mathematical tables, volume 55. Dover Publications, 1974."
+      },
+      {
+        "key": "1",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Gian-Luca R Anselmetti, David Wierichs, Christian Gogolin, and Robert M Parrish. Local, expressive, quantum-number-preserving VQE ansätze for fermionic systems. New Journal of Physics, 23 (11): 113010, 2021. 10.1088/1367-2630/ac2cb3.",
+        "DOI": "10.1088/1367-2630/ac2cb3"
+      },
+      {
+        "key": "2",
+        "doi-asserted-by": "publisher",
+        "unstructured": "E. Antončík. Approximate formulation of the orthogonalized plane-wave method. Journal of Physics and Chemistry of Solids, 10 (4): 314–320, 1959. 10.1016/0022-3697(59)90007-1.",
+        "DOI": "10.1016/0022-3697(59)90007-1"
+      },
+      {
+        "key": "3",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Juan Miguel Arrazola, Olivia Di Matteo, Nicolás Quesada, Soran Jahangiri, Alain Delgado, and Nathan Killoran. Universal quantum circuits for quantum chemistry. Quantum, 6: 742, 2022. 10.22331/q-2022-06-20-742.",
+        "DOI": "10.22331/q-2022-06-20-742"
+      },
+      {
+        "key": "4",
+        "doi-asserted-by": "publisher",
+        "unstructured": "N.W. Ashcroft and N.D. Mermin. Solid State Physics. Saunders College Publishing, 1976. 10.1002/piuz.19780090109.",
+        "DOI": "10.1002/piuz.19780090109"
+      },
+      {
+        "key": "5",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Ryan Babbush, Dominic W Berry, Ian D Kivlichan, Annie Y Wei, Peter J Love, and Alán Aspuru-Guzik. Exponentially more precise quantum simulation of fermions in second quantization. New Journal of Physics, 18 (3): 033032, 2016. 10.1088/1367-2630/18/3/033032.",
+        "DOI": "10.1088/1367-2630/18/3/033032"
+      },
+      {
+        "key": "6",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Ryan Babbush, Craig Gidney, Dominic W Berry, Nathan Wiebe, Jarrod R McClean, Alexandru Paler, Austin Fowler, and Hartmut Neven. Encoding electronic spectra in quantum circuits with linear T complexity. Physical Review X, 8 (4): 041015, 2018a. 10.1103/PhysRevX.8.041015.",
+        "DOI": "10.1103/PhysRevX.8.041015"
+      },
+      {
+        "key": "7",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Ryan Babbush, Nathan Wiebe, Jarrod R McClean, James McClain, Hartmut Neven, and Garnet Kin-Lic Chan. Low-depth quantum simulation of materials. Physical Review X, 8 (1): 011044, 2018b. 10.1103/PhysRevX.8.011044.",
+        "DOI": "10.1103/PhysRevX.8.011044"
+      },
+      {
+        "key": "8",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Ryan Babbush, Dominic W. Berry, Jarrod R. McClean, and Hartmut Neven. Quantum simulation of chemistry with sublinear scaling in basis size. npj Quantum Information, 5 (1): 1–7, 2019. 10.1038/s41534-019-0199-y.",
+        "DOI": "10.1038/s41534-019-0199-y"
+      },
+      {
+        "key": "9",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Giovanni B. Bachelet, Don R. Hamann, and Michael Schlüter. Pseudopotentials that work: From H to Pu. Physical Review B, 26 (8): 4199, 1982. 10.1103/PhysRevB.26.4199.",
+        "DOI": "10.1103/PhysRevB.26.4199"
+      },
+      {
+        "key": "10",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Joseph W Bennett. Discovery and design of functional materials: integration of database searching and first principles calculations. Physics Procedia, 34: 14–23, 2012. 10.1016/j.phpro.2012.05.003.",
+        "DOI": "10.1016/j.phpro.2012.05.003"
+      },
+      {
+        "key": "11",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Dominic W Berry, Craig Gidney, Mario Motta, Jarrod R McClean, and Ryan Babbush. Qubitization of arbitrary basis quantum chemistry leveraging sparsity and low rank factorization. Quantum, 3: 208, 2019. 10.22331/q-2019-12-02-208.",
+        "DOI": "10.22331/q-2019-12-02-208"
+      },
+      {
+        "key": "12",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Peter Blaha, Karlheinz Schwarz, Fabien Tran, Robert Laskowski, Georg KH Madsen, and Laurence D Marks. WIEN2k: An APW+ lo program for calculating the properties of solids. The Journal of chemical physics, 152 (7), 2020. 10.1063/1.5143061.",
+        "DOI": "10.1063/1.5143061"
+      },
+      {
+        "key": "13",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Peter E. Blöchl. Generalized separable potentials for electronic-structure calculations. Physical Review B, 41 (8): 5414, 1990. 10.1103/PhysRevB.41.5414.",
+        "DOI": "10.1103/PhysRevB.41.5414"
+      },
+      {
+        "key": "14",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Max Born and J. Robert Oppenheimer. On the quantum theory of molecules. Annalen der Physik, 84: 457–484, 1927. 10.1002/andp.19273892002.",
+        "DOI": "10.1002/andp.19273892002"
+      },
+      {
+        "key": "15",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Benoı̂t Denis Louis Campéon and Naoaki Yabuuchi. Fundamentals of metal oxide/oxyfluoride electrodes for Li-/Na-ion batteries. Chemical Physics Reviews, 2 (4): 041306, 2021. 10.1063/5.0052741.",
+        "DOI": "10.1063/5.0052741"
+      },
+      {
+        "key": "16",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Hungru Chen and M Saiful Islam. Lithium extraction mechanism in Li-rich $\\text{Li}_2\\text{MnO}_3$ involving oxygen hole formation and dimerization. Chemistry of Materials, 28 (18): 6656–6663, 2016. 10.1021/acs.chemmater.6b02870.",
+        "DOI": "10.1021/acs.chemmater.6b02870"
+      },
+      {
+        "key": "17",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Qing Chen, Yi Pei, Houwen Chen, Yan Song, Liang Zhen, Cheng-Yan Xu, Penghao Xiao, and Graeme Henkelman. Highly reversible oxygen redox in layered compounds enabled by surface polyanions. Nature Communications, 11 (1): 1–12, 2020. 10.1038/s41467-020-17126-3.",
+        "DOI": "10.1038/s41467-020-17126-3"
+      },
+      {
+        "key": "18",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Andrew M Childs, Yuan Su, Minh C Tran, Nathan Wiebe, and Shuchen Zhu. Theory of trotter error with commutator scaling. Physical Review X, 11 (1): 011020, 2021. 10.1103/PhysRevX.11.011020.",
+        "DOI": "10.1103/PhysRevX.11.011020"
+      },
+      {
+        "key": "19",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Laura Clinton, Toby Cubitt, Brian Flynn, Filippo Maria Gambetta, Joel Klassen, Ashley Montanaro, Stephen Piddock, Raul A Santos, and Evan Sheridan. Towards near-term quantum simulation of materials. arXiv:2205.15256, 2022. 10.48550/arXiv.2205.15256.",
+        "DOI": "10.48550/arXiv.2205.15256"
+      },
+      {
+        "key": "20",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Alain Delgado, Pablo A. M. Casares, Roberto dos Reis, Modjtaba Shokrian Zini, Roberto Campos, Norge Cruz-Hernández, Arne-Christian Voigt, Angus Lowe, Soran Jahangiri, M. A. Martin-Delgado, Jonathan E. Mueller, and Juan Miguel Arrazola. Simulating key properties of lithium-ion batteries with a fault-tolerant quantum computer. Physical Review A, 106: 032428, Sep 2022. 10.1103/PhysRevA.106.032428.",
+        "DOI": "10.1103/PhysRevA.106.032428"
+      },
+      {
+        "key": "21",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Zhiyan Ding and Lin Lin. Even shorter quantum circuit for phase estimation on early fault-tolerant quantum computers with applications to ground-state energy estimation. PRX Quantum, 4 (2): 020331, 2023. 10.1103/PRXQuantum.4.020331.",
+        "DOI": "10.1103/PRXQuantum.4.020331"
+      },
+      {
+        "key": "22",
+        "doi-asserted-by": "publisher",
+        "unstructured": "E. Engel, A Höck, RN Schmid, R.M. Dreizler, and N. Chetty. Role of the core-valence interaction for pseudopotential calculations with exact exchange. Physical Review B, 64 (12): 125111, 2001. 10.1103/PhysRevB.64.125111.",
+        "DOI": "10.1103/PhysRevB.64.125111"
+      },
+      {
+        "key": "23",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Donggun Eum, Byunghoon Kim, Sung Joo Kim, Hyeokjun Park, Jinpeng Wu, Sung-Pyo Cho, Gabin Yoon, Myeong Hwan Lee, Sung-Kyun Jung, Wanli Yang, et al. Voltage decay and redox asymmetry mitigation by reversible cation migration in lithium-rich layered oxide electrodes. Nature Materials, 19 (4): 419–427, 2020. 10.1038/s41563-019-0572-4.",
+        "DOI": "10.1038/s41563-019-0572-4"
+      },
+      {
+        "key": "24",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Kevin F Garrity, Joseph W Bennett, Karin M Rabe, and David Vanderbilt. Pseudopotentials for high-throughput DFT calculations. Computational Materials Science, 81: 446–452, 2014. 10.1016/j.commatsci.2013.08.053.",
+        "DOI": "10.1016/j.commatsci.2013.08.053"
+      },
+      {
+        "key": "25",
+        "doi-asserted-by": "publisher",
+        "unstructured": "William E Gent, Kipil Lim, Yufeng Liang, Qinghao Li, Taylor Barnes, Sung-Jin Ahn, Kevin H Stone, Mitchell McIntire, Jihyun Hong, Jay Hyok Song, et al. Coupling between oxygen redox and cation migration explains unusual electrochemistry in lithium-rich layered oxides. Nature communications, 8 (1): 1–12, 2017. 10.1038/s41467-017-02041-x.",
+        "DOI": "10.1038/s41467-017-02041-x"
+      },
+      {
+        "key": "26",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Paolo Giannozzi, Stefano Baroni, Nicola Bonini, Matteo Calandra, Roberto Car, Carlo Cavazzoni, Davide Ceresoli, Guido L Chiarotti, Matteo Cococcioni, Ismaila Dabo, et al. QUANTUM ESPRESSO: a modular and open-source software project for quantum simulations of materials. Journal of Physics: Condensed Matter, 21 (39): 395502, 2009. 10.1088/0953-8984/21/39/395502.",
+        "DOI": "10.1088/0953-8984/21/39/395502"
+      },
+      {
+        "key": "27",
+        "doi-asserted-by": "publisher",
+        "unstructured": "D.R. Hamann, M. Schlüter, and C. Chiang. Norm-conserving pseudopotentials. Physical Review Letters, 43 (20): 1494, 1979. 10.1103/PhysRevLett.43.1494.",
+        "DOI": "10.1103/PhysRevLett.43.1494"
+      },
+      {
+        "key": "28",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Christian Hartwigsen, Sephen Gœdecker, and Jürg Hutter. Relativistic separable dual-space gaussian pseudopotentials from H to Rn. Physical Review B, 58 (7): 3641, 1998. 10.1103/PhysRevB.58.3641.",
+        "DOI": "10.1103/PhysRevB.58.3641"
+      },
+      {
+        "key": "29",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Graeme Henkelman, Blas P. Uberuaga, and Hannes Jónsson. A climbing image nudged elastic band method for finding saddle points and minimum energy paths. Journal of Chemical Physics, 113 (22): 9901–9904, 2000. 10.1063/1.1329672.",
+        "DOI": "10.1063/1.1329672"
+      },
+      {
+        "key": "30",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Conyers Herring. A new method for calculating wave functions in crystals. Physical Review, 57 (12): 1169, 1940. 10.1103/PhysRev.57.1169.",
+        "DOI": "10.1103/PhysRev.57.1169"
+      },
+      {
+        "key": "31",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Jochen Heyd and Gustavo E Scuseria. Efficient hybrid density functional calculations in solids: Assessment of the Heyd–Scuseria–Ernzerhof screened coulomb hybrid functional. The Journal of chemical physics, 121 (3): 1187–1192, 2004. 10.1063/1.1760074.",
+        "DOI": "10.1063/1.1760074"
+      },
+      {
+        "key": "32",
+        "doi-asserted-by": "publisher",
+        "unstructured": "NDM Hine, K Frensch, WMC Foulkes, and MW Finnis. Supercell size scaling of density functional theory formation energies of charged defects. Physical Review B, 79 (2): 024112, 2009. 10.1103/PhysRevB.79.024112.",
+        "DOI": "10.1103/PhysRevB.79.024112"
+      },
+      {
+        "key": "33",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Alan Ho, Jarrod R McClean, and Shyue Ping Ong. The promise and challenges of quantum computing for energy storage. Joule, 2 (5): 810–813, 2018. 10.1016/j.joule.2018.04.021.",
+        "DOI": "10.1016/j.joule.2018.04.021"
+      },
+      {
+        "key": "34",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Anubhav Jain, Geoffroy Hautier, Shyue Ping Ong, Charles J. Moore, Christopher C. Fischer, Kristin A. Persson, and Gerbrand Ceder. Formation enthalpies by mixing GGA and GGA $+$ $U}$ calculations. Physical Review B, 84 (4): 045115, 2011. 10.1103/PhysRevB.84.045115.",
+        "DOI": "10.1103/PhysRevB.84.045115"
+      },
+      {
+        "key": "35",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Anubhav Jain, Shyue Ping Ong, Geoffroy Hautier, Wei Chen, William Davidson Richards, Stephen Dacek, Shreyas Cholia, Dan Gunter, David Skinner, Gerbrand Ceder, et al. Commentary: The Materials Project: A materials genome approach to accelerating materials innovation. APL materials, 1 (1): 011002, 2013. 10.1063/1.4812323.",
+        "DOI": "10.1063/1.4812323"
+      },
+      {
+        "key": "36",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Sichen Jiao, Quan Li, Xinyun Xiong, Xiqian Yu, Hong Li, Liquan Chen, and Xuejie Huang. Achieving high-energy-density lithium-ion batteries through oxygen redox of cathode: From fundamentals to applications. Applied Physics Letters, 121 (7): 070501, 2022. 10.1063/5.0096578.",
+        "DOI": "10.1063/5.0096578"
+      },
+      {
+        "key": "37",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Abhinav Kandala, Antonio Mezzacapo, Kristan Temme, Maika Takita, Markus Brink, Jerry M. Chow, and Jay M. Gambetta. Hardware-efficient variational quantum eigensolver for small molecules and quantum magnets. Nature, 549 (7671): 242–246, 2017. 10.1038/nature23879.",
+        "DOI": "10.1038/nature23879"
+      },
+      {
+        "key": "38",
+        "doi-asserted-by": "publisher",
+        "unstructured": "G.P. Kerker. Non-singular atomic pseudopotentials for solid state applications. Journal of Physics C: Solid State Physics, 13 (9): L189, 1980. 10.1088/0022-3719/13/9/004.",
+        "DOI": "10.1088/0022-3719/13/9/004"
+      },
+      {
+        "key": "39",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Mária Kieferová, Artur Scherer, and Dominic W Berry. Simulating the dynamics of time-dependent hamiltonians with a truncated dyson series. Physical Review A, 99 (4): 042314, 2019. 10.1103/PhysRevA.99.042314.",
+        "DOI": "10.1103/PhysRevA.99.042314"
+      },
+      {
+        "key": "40",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Isaac H Kim, Ye-Hua Liu, Sam Pallister, William Pol, Sam Roberts, and Eunseok Lee. Fault-tolerant resource estimate for quantum chemical simulations: Case study on Li-ion battery electrolyte molecules. Physical Review Research, 4 (2): 023019, 2022. 10.1103/PhysRevResearch.4.023019.",
+        "DOI": "10.1103/PhysRevResearch.4.023019"
+      },
+      {
+        "key": "41",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Alexei Kitaev and William A Webb. Wavefunction preparation and resampling using a quantum computer. arXiv:0801.0342, 2008. 10.48550/arXiv.0801.0342.",
+        "DOI": "10.48550/arXiv.0801.0342"
+      },
+      {
+        "key": "42",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Ian D Kivlichan, Jarrod R McClean, Nathan Wiebe, Craig Gidney, Alán Aspuru-Guzik, Garnet Kin-Lic Chan, and Ryan Babbush. Quantum simulation of electronic structure with linear depth and connectivity. Physical Review Letters, 120 (11): 110501, 2018. 10.1103/PhysRevLett.120.110501.",
+        "DOI": "10.1103/PhysRevLett.120.110501"
+      },
+      {
+        "key": "43",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Karin Kleiner, Benjamin Strehle, Annabelle R Baker, Sarah J Day, Chiu C Tang, Irmgard Buchberger, Frederick-Francois Chesneau, Hubert A Gasteiger, and Michele Piana. Origin of high capacity and poor cycling stability of Li-rich layered oxides: a long-duration in situ synchrotron powder diffraction study. Chemistry of Materials, 30 (11): 3656–3667, 2018. 10.1021/acs.chemmater.8b00163.",
+        "DOI": "10.1021/acs.chemmater.8b00163"
+      },
+      {
+        "key": "44",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Leonard Kleinman and D.M. Bylander. Efficacious form for model pseudopotentials. Physical Review Letters, 48 (20): 1425, 1982. 10.1103/PhysRevLett.48.1425.",
+        "DOI": "10.1103/PhysRevLett.48.1425"
+      },
+      {
+        "key": "45",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Jorge Kohanoff. Electronic structure calculations for solids and molecules: theory and computational methods. Cambridge university press, 2006. 10.1017/CBO9780511755613.",
+        "DOI": "10.1017/CBO9780511755613"
+      },
+      {
+        "key": "46",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Kyojin Ku, Jihyun Hong, Hyungsub Kim, Hyeokjun Park, Won Mo Seong, Sung-Kyun Jung, Gabin Yoon, Kyu-Young Park, Haegyeom Kim, and Kisuk Kang. Suppression of voltage decay through manganese deactivation and nickel redox buffering in high-energy layered lithium-rich electrodes. Advanced Energy Materials, 8 (21): 1800606, 2018. 10.1002/aenm.201800606.",
+        "DOI": "10.1002/aenm.201800606"
+      },
+      {
+        "key": "47",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Eunseok Lee and Kristin A. Persson. Structural and chemical evolution of the layered Li-excess $\\text{Li}_x\\text{MnO}_3$ as a function of Li content from first-principles calculations. Advanced Energy Materials, 4 (15): 1400498, 2014. 10.1002/aenm.201400498.",
+        "DOI": "10.1002/aenm.201400498"
+      },
+      {
+        "key": "48",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Joonho Lee, Dominic W Berry, Craig Gidney, William J Huggins, Jarrod R McClean, Nathan Wiebe, and Ryan Babbush. Even more efficient quantum computations of chemistry through tensor hypercontraction. PRX Quantum, 2 (3): 030305, 2021. 10.1103/PRXQuantum.2.030305.",
+        "DOI": "10.1103/PRXQuantum.2.030305"
+      },
+      {
+        "key": "49",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Seunghoon Lee, Joonho Lee, Huanchen Zhai, Yu Tong, Alexander M Dalzell, Ashutosh Kumar, Phillip Helms, Johnnie Gray, Zhi-Hao Cui, Wenyuan Liu, et al. Evaluating the evidence for exponential quantum advantage in ground-state quantum chemistry. Nature Communications, 14 (1): 1952, 2023. 10.1038/s41467-023-37587-6.",
+        "DOI": "10.1038/s41467-023-37587-6"
+      },
+      {
+        "key": "50",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Kurt Lejaeghere, Gustav Bihlmayer, Torbjörn Björkman, Peter Blaha, Stefan Blügel, Volker Blum, Damien Caliste, Ivano E Castelli, Stewart J Clark, Andrea Dal Corso, et al. Reproducibility in density functional theory calculations of solids. Science, 351 (6280): aad3000, 2016. 10.1126/science.aad3000.",
+        "DOI": "10.1126/science.aad3000"
+      },
+      {
+        "key": "51",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Qi Li, Guangshe Li, Chaochao Fu, Dong Luo, Jianming Fan, and Liping Li. $\\text{K}^+$-doped $\\text{Li}_{1.2}\\text{Mn}_{0.54}\\text{Co}_{0.13}\\text{Ni}_{0.13}\\text{O}_2$: a novel cathode material with an enhanced cycling stability for lithium-ion batteries. ACS Applied Materials & Interfaces, 6 (13): 10330–10341, 2014. 10.1021/am5017649.",
+        "DOI": "10.1021/am5017649"
+      },
+      {
+        "key": "52",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Wangda Li, Evan M Erickson, and Arumugam Manthiram. High-nickel layered oxide cathodes for lithium-based automotive batteries. Nature Energy, 5 (1): 26–34, 2020. 10.1038/s41560-019-0513-0.",
+        "DOI": "10.1038/s41560-019-0513-0"
+      },
+      {
+        "key": "53",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Jin-Myoung Lim, Duho Kim, Young-Geun Lim, Min-Sik Park, Young-Jun Kim, Maenghyo Cho, and Kyeongjae Cho. The origins and mechanism of phase transformation in bulk $\\text{Li}_2\\text{MnO}_3$: first-principles calculations and experimental studies. Journal of Materials Chemistry A, 3 (13): 7066–7076, 2015. 10.1039/C5TA00944H.",
+        "DOI": "10.1039/C5TA00944H"
+      },
+      {
+        "key": "54",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Lin Lin and Yu Tong. Heisenberg-limited ground-state energy estimation for early fault-tolerant quantum computers. PRX Quantum, 3 (1): 010318, 2022. 10.1103/PRXQuantum.3.010318.",
+        "DOI": "10.1103/PRXQuantum.3.010318"
+      },
+      {
+        "key": "55",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Daniel Litinski. A game of surface codes: Large-scale quantum computing with lattice surgery. Quantum, 3: 128, 2019. 10.22331/q-2019-03-05-128.",
+        "DOI": "10.22331/q-2019-03-05-128"
+      },
+      {
+        "key": "56",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Daniel Litinski and Felix von Oppen. Lattice surgery with a twist: simplifying clifford gates of surface codes. Quantum, 2: 62, 2018. 10.22331/q-2018-05-04-62.",
+        "DOI": "10.22331/q-2018-05-04-62"
+      },
+      {
+        "key": "57",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Ignacio Loaiza, Alireza Marefat Khah, Nathan Wiebe, and Artur F Izmaylov. Reducing molecular electronic hamiltonian simulation cost for linear combination of unitaries approaches. Quantum Science and Technology, 2022. 10.1088/2058-9565/acd577.",
+        "DOI": "10.1088/2058-9565/acd577"
+      },
+      {
+        "key": "58",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Steven G. Louie, Sverre Froyen, and Marvin L. Cohen. Nonlinear ionic pseudopotentials in spin-density-functional calculations. Physical Review B, 26 (4): 1738, 1982. 10.1103/PhysRevB.26.1738.",
+        "DOI": "10.1103/PhysRevB.26.1738"
+      },
+      {
+        "key": "59",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Guang Hao Low and Isaac L Chuang. Optimal hamiltonian simulation by quantum signal processing. Physical Review Letters, 118 (1): 010501, 2017. 10.1103/PhysRevLett.118.010501.",
+        "DOI": "10.1103/PhysRevLett.118.010501"
+      },
+      {
+        "key": "60",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Guang Hao Low and Isaac L Chuang. Hamiltonian simulation by qubitization. Quantum, 3: 163, 2019. 10.22331/q-2019-07-12-163.",
+        "DOI": "10.22331/q-2019-07-12-163"
+      },
+      {
+        "key": "61",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Guang Hao Low and Nathan Wiebe. Hamiltonian simulation in the interaction picture. arXiv:1805.00675, 2018. 10.48550/arXiv.1805.00675.",
+        "DOI": "10.48550/arXiv.1805.00675"
+      },
+      {
+        "key": "62",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Guang Hao Low, Vadym Kliuchnikov, and Luke Schaeffer. Trading T-gates for dirty qubits in state preparation and unitary synthesis. arXiv:1812.00954, 2018. 10.48550/arXiv.1812.00954.",
+        "DOI": "10.48550/arXiv.1812.00954"
+      },
+      {
+        "key": "63",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Richard M. Martin. Electronic structure: basic theory and practical methods. Cambridge university press, 2020. 10.1017/CBO9780511805769.",
+        "DOI": "10.1017/CBO9780511805769"
+      },
+      {
+        "key": "64",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Sam McArdle, Suguru Endo, Alán Aspuru-Guzik, Simon C Benjamin, and Xiao Yuan. Quantum computational chemistry. Reviews of Modern Physics, 92 (1): 015003, 2020. 10.1103/RevModPhys.92.015003.",
+        "DOI": "10.1103/RevModPhys.92.015003"
+      },
+      {
+        "key": "65",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Sam McArdle, András Gilyén, and Mario Berta. Quantum state preparation without coherent arithmetic. arXiv:2210.14892, 2022. 10.48550/arXiv.2210.14892.",
+        "DOI": "10.48550/arXiv.2210.14892"
+      },
+      {
+        "key": "66",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Kit McColl, Robert A House, Gregory J Rees, Alexander G Squires, Samuel W Coles, Peter G Bruce, Benjamin J Morgan, and M Saiful Islam. Transition metal migration and $\\text{O}_2$ formation underpin voltage hysteresis in oxygen-redox disordered rocksalt cathodes. Nature communications, 13 (1): 1–8, 2022. 10.1038/s41467-022-32983-w.",
+        "DOI": "10.1038/s41467-022-32983-w"
+      },
+      {
+        "key": "67",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Debasish Mohanty, Jianlin Li, Daniel P Abraham, Ashfia Huq, E Andrew Payzant, David L Wood III, and Claus Daniel. Unraveling the voltage-fade mechanism in high-energy-density lithium-ion batteries: origin of the tetrahedral cations for spinel conversion. Chemistry of Materials, 26 (21): 6272–6280, 2014. 10.1021/cm5031415.",
+        "DOI": "10.1021/cm5031415"
+      },
+      {
+        "key": "68",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Koichi Momma and Fujio Izumi. VESTA 3 for three-dimensional visualization of crystal, volumetric and morphology data. Journal of Applied Crystallography, 44 (6): 1272–1276, 2011. 10.1107/S0021889811038970.",
+        "DOI": "10.1107/S0021889811038970"
+      },
+      {
+        "key": "69",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Mario Motta, Erika Ye, Jarrod R McClean, Zhendong Li, Austin J Minnich, Ryan Babbush, and Garnet Kin Chan. Low rank representations for quantum simulation of electronic structure. npj Quantum Information, 7 (1): 1–7, 2021. 10.1038/s41534-021-00416-z.",
+        "DOI": "10.1038/s41534-021-00416-z"
+      },
+      {
+        "key": "70",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Mike C Payne, Michael P Teter, Douglas C Allan, TA Arias, and ad JD Joannopoulos. Iterative minimization techniques for $ab initio}$ total-energy calculations: molecular dynamics and conjugate gradients. Reviews of modern physics, 64 (4): 1045, 1992. 10.1103/RevModPhys.64.1045.",
+        "DOI": "10.1103/RevModPhys.64.1045"
+      },
+      {
+        "key": "71",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Yi Pei, Qing Chen, Meiyu Wang, Bin Li, Peng Wang, Graeme Henkelman, Liang Zhen, Guozhong Cao, and Cheng-Yan Xu. Reviving reversible anion redox in 3$d$-transition-metal Li rich oxides by introducing surface defects. Nano Energy, 71: 104644, 2020. 10.1016/j.nanoen.2020.104644.",
+        "DOI": "10.1016/j.nanoen.2020.104644"
+      },
+      {
+        "key": "72",
+        "doi-asserted-by": "publisher",
+        "unstructured": "John P Perdew, John A Chevary, Sy H Vosko, Koblar A Jackson, Mark R Pederson, Dig J Singh, and Carlos Fiolhais. Atoms, molecules, solids, and surfaces: Applications of the generalized gradient approximation for exchange and correlation. Physical Review B, 46 (11): 6671, 1992. 10.1103/PhysRevB.46.6671.",
+        "DOI": "10.1103/PhysRevB.46.6671"
+      },
+      {
+        "key": "73",
+        "doi-asserted-by": "publisher",
+        "unstructured": "John P. Perdew, Kieron Burke, and Matthias Ernzerhof. Generalized gradient approximation made simple. Physical Review Letters, 77 (18): 3865, 1996. 10.1103/PhysRevLett.77.3865.",
+        "DOI": "10.1103/PhysRevLett.77.3865"
+      },
+      {
+        "key": "74",
+        "doi-asserted-by": "publisher",
+        "unstructured": "James C. Phillips and Leonard Kleinman. New method for calculating wave functions in crystals and molecules. Physical Review, 116 (2): 287, 1959. 10.1103/PhysRev.116.287.",
+        "DOI": "10.1103/PhysRev.116.287"
+      },
+      {
+        "key": "75",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Bao Qiu, Minghao Zhang, Lijun Wu, Jun Wang, Yonggao Xia, Danna Qian, Haodong Liu, Sunny Hy, Yan Chen, Ke An, et al. Gas–solid interfacial modification of oxygen activity in layered oxide cathodes for lithium-ion batteries. Nature Communications, 7 (1): 1–10, 2016. 10.1038/ncomms12108.",
+        "DOI": "10.1038/ncomms12108"
+      },
+      {
+        "key": "76",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Abhishek Rajput, Alessandro Roggero, and Nathan Wiebe. Hybridized methods for quantum simulation in the interaction picture. Quantum, 6: 780, 2022. 10.22331/q-2022-08-17-780.",
+        "DOI": "10.22331/q-2022-08-17-780"
+      },
+      {
+        "key": "77",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Markus Reiher, Nathan Wiebe, Krysta M Svore, Dave Wecker, and Matthias Troyer. Elucidating reaction mechanisms on quantum computers. Proceedings of the national academy of sciences, 114 (29): 7555–7560, 2017. 10.1073/pnas.1619152114.",
+        "DOI": "10.1073/pnas.1619152114"
+      },
+      {
+        "key": "78",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Julia E. Rice, Tanvi P. Gujarati, Mario Motta, Tyler Y. Takeshita, Eunseok Lee, Joseph A. Latone, and Jeannette M. Garcia. Quantum computation of dominant products in lithium–sulfur batteries. The Journal of Chemical Physics, 154 (13): 134115, 2021. 10.1063/5.0044068.",
+        "DOI": "10.1063/5.0044068"
+      },
+      {
+        "key": "79",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Nicholas C. Rubin, Dominic W. Berry, Fionn D. Malone, Alec F. White, Tanuj Khattar, A. Eugene DePrince III, Sabrina Sicolo, Michael Kühn, Michael Kaicher, Joonho Lee, and Ryan Babbush. Fault-tolerant quantum simulation of materials using bloch orbitals. arXiv:2302.05531, 2023. 10.48550/arXiv.2302.05531.",
+        "DOI": "10.48550/arXiv.2302.05531"
+      },
+      {
+        "key": "80",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Peter Schwerdtfeger. The pseudopotential approximation in electronic structure theory. ChemPhysChem, 12 (17): 3143–3155, 2011. 10.1002/cphc.201100387.",
+        "DOI": "10.1002/cphc.201100387"
+      },
+      {
+        "key": "81",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Dong-Hwa Seo, Jinhyuk Lee, Alexander Urban, Rahul Malik, ShinYoung Kang, and Gerbrand Ceder. The structural and chemical origin of the oxygen redox activity in layered and cation-disordered Li-excess cathode materials. Nature Chemistry, 8 (7): 692–697, 2016. 10.1038/nchem.2524.",
+        "DOI": "10.1038/nchem.2524"
+      },
+      {
+        "key": "82",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Ryan Sharpe, Robert A House, Matt J Clarke, Dominic Förstermann, John-Joseph Marie, Giannantonio Cibin, Ke-Jin Zhou, Helen Y Playford, Peter G Bruce, and M Saiful Islam. Redox chemistry and the role of trapped molecular $\\text{O}_2$ in Li-rich disordered rocksalt oxyfluoride cathodes. Journal of the American Chemical Society, 142 (52): 21799–21809, 2020. 10.1021/jacs.0c10270.",
+        "DOI": "10.1021/jacs.0c10270"
+      },
+      {
+        "key": "83",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Ji-Lei Shi, Jie-Nan Zhang, Min He, Xu-Dong Zhang, Ya-Xia Yin, Hong Li, Yu-Guo Guo, Lin Gu, and Li-Jun Wan. Mitigating voltage decay of Li-rich cathode material via increasing Ni content for lithium-ion batteries. ACS Applied Materials & Interfaces, 8 (31): 20138–20146, 2016. 10.1021/acsami.6b06733.",
+        "DOI": "10.1021/acsami.6b06733"
+      },
+      {
+        "key": "84",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Yongwoo Shin, Wang Hay Kan, Muratahan Aykol, Joseph K Papp, Bryan D McCloskey, Guoying Chen, and Kristin A Persson. Alleviating oxygen evolution from Li-excess oxide materials through theory-guided surface protection. Nature Communications, 9 (1): 1–8, 2018. 10.1038/s41467-018-07080-6.",
+        "DOI": "10.1038/s41467-018-07080-6"
+      },
+      {
+        "key": "85",
+        "doi-asserted-by": "publisher",
+        "unstructured": "John C. Slater. Wave functions in a periodic potential. Physical Review, 51 (10): 846, 1937. 10.1103/PhysRev.51.846.",
+        "DOI": "10.1103/PhysRev.51.846"
+      },
+      {
+        "key": "86",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Yuan Su, Dominic W. Berry, Nathan Wiebe, Nicholas Rubin, and Ryan Babbush. Fault-tolerant quantum simulations of chemistry in first quantization. PRX Quantum, 2 (4): 040332, 2021. 10.1103/PRXQuantum.2.040332.",
+        "DOI": "10.1103/PRXQuantum.2.040332"
+      },
+      {
+        "key": "87",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Kenji Sugisaki, Satoru Yamamoto, Shigeaki Nakazawa, Kazuo Toyota, Kazunobu Sato, Daisuke Shiomi, and Takeji Takui. Quantum chemistry on quantum computers: A polynomial-time quantum algorithm for constructing the wave functions of open-shell molecules. The Journal of Physical Chemistry A, 120 (32): 6459–6466, 2016. 10.1021/acs.jpca.6b04932.",
+        "DOI": "10.1021/acs.jpca.6b04932"
+      },
+      {
+        "key": "88",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Christoph Sünderhauf, Aleksei Ivanov, Nicole Holzmann, Tom Ellaby, Rachel Kerber, Glenn Jones, and Joan Camps. Quantum computation for periodic solids in second quantization. Bulletin of the American Physical Society, 2023. 10.1103/PhysRevResearch.5.013200.",
+        "DOI": "10.1103/PhysRevResearch.5.013200"
+      },
+      {
+        "key": "89",
+        "doi-asserted-by": "publisher",
+        "unstructured": "N. Troullier and JoséLuís Martins. A straightforward method for generating soft transferable pseudopotentials. Solid State Communications, 74 (7): 613–616, 1990. 10.1016/0038-1098(90)90686-6.",
+        "DOI": "10.1016/0038-1098(90)90686-6"
+      },
+      {
+        "key": "90",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Norman Troullier and José Luís Martins. Efficient pseudopotentials for plane-wave calculations. Physical Review B, 43 (3): 1993, 1991. 10.1103/physrevb.43.1993.",
+        "DOI": "10.1103/physrevb.43.1993"
+      },
+      {
+        "key": "91",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Norm M Tubman, Carlos Mejuto-Zaera, Jeffrey M Epstein, Diptarka Hait, Daniel S Levine, William Huggins, Zhang Jiang, Jarrod R McClean, Ryan Babbush, Martin Head-Gordon, et al. Postponing the orthogonality catastrophe: efficient state preparation for electronic structure simulations on quantum devices. arXiv:1809.05523, 2018. 10.48550/arXiv.1809.05523.",
+        "DOI": "10.48550/arXiv.1809.05523"
+      },
+      {
+        "key": "92",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Alexander Urban, Dong-Hwa Seo, and Gerbrand Ceder. Computational understanding of Li-ion batteries. npj Computational Materials, 2 (1): 1–13, 2016. 10.1038/npjcompumats.2016.2.",
+        "DOI": "10.1038/npjcompumats.2016.2"
+      },
+      {
+        "key": "93",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Anton Van der Ven, M.K. Aydinol, G. Ceder, Georg Kresse, and Jurgen Hafner. First-principles investigation of phase stability in $\\text{Li}_x\\text{CoO}_2$. Physical Review B, 58 (6): 2975, 1998. 10.1103/PhysRevB.58.2975.",
+        "DOI": "10.1103/PhysRevB.58.2975"
+      },
+      {
+        "key": "94",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Anton Van der Ven, Zhi Deng, Swastika Banerjee, and Shyue Ping Ong. Rechargeable alkali-ion battery materials: theory and computation. Chemical Reviews, 120 (14): 6977–7019, 2020. 10.1021/acs.chemrev.9b00601.",
+        "DOI": "10.1021/acs.chemrev.9b00601"
+      },
+      {
+        "key": "95",
+        "doi-asserted-by": "publisher",
+        "unstructured": "David Vanderbilt. Soft self-consistent pseudopotentials in a generalized eigenvalue formalism. Physical Review B, 41 (11): 7892, 1990. 10.1103/PhysRevB.41.7892.",
+        "DOI": "10.1103/PhysRevB.41.7892"
+      },
+      {
+        "key": "96",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Vera von Burg, Guang Hao Low, Thomas Häner, Damian S Steiger, Markus Reiher, Martin Roetteler, and Matthias Troyer. Quantum computing enhanced computational catalysis. Physical Review Research, 3 (3): 033055, 2021. 10.1103/PhysRevResearch.3.033055.",
+        "DOI": "10.1103/PhysRevResearch.3.033055"
+      },
+      {
+        "key": "97",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Kianna Wan, Mario Berta, and Earl T Campbell. Randomized quantum algorithm for statistical phase estimation. Physical Review Letters, 129 (3): 030503, 2022. 10.1103/PhysRevLett.129.030503.",
+        "DOI": "10.1103/PhysRevLett.129.030503"
+      },
+      {
+        "key": "98",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Aiping Wang, Sanket Kadam, Hong Li, Siqi Shi, and Yue Qi. Review on modeling of the anode solid electrolyte interphase (SEI) for lithium-ion batteries. npj Computational Materials, 4 (1): 1–26, 2018. 10.1038/s41524-018-0064-0.",
+        "DOI": "10.1038/s41524-018-0064-0"
+      },
+      {
+        "key": "99",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Guoming Wang, Daniel Stilck-França, Ruizhe Zhang, Shuchen Zhu, and Peter D Johnson. Quantum algorithm for ground state energy estimation using circuit depth with exponentially improved dependence on precision. arXiv:2209.06811, 2022. 10.48550/arXiv.2209.06811.",
+        "DOI": "10.48550/arXiv.2209.06811"
+      },
+      {
+        "key": "100",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Rui Wang, Xiaoqing He, Lunhua He, Fangwei Wang, Ruijuan Xiao, Lin Gu, Hong Li, and Liquan Chen. Atomic structure of $\\text{Li}_2\\text{MnO}_3$ after partial delithiation and re-lithiation. Advanced Energy Materials, 3 (10): 1358–1367, 2013. 10.1002/aenm.201200842.",
+        "DOI": "10.1002/aenm.201200842"
+      },
+      {
+        "key": "101",
+        "doi-asserted-by": "publisher",
+        "unstructured": "John M. Wills, Mebarek Alouani, Per Andersson, Anna Delin, Olle Eriksson, and Oleksiy Grechnyev. Full-Potential Electronic Structure Method: energy and force calculations with density functional and dynamical mean field theory, volume 167. Springer Science & Business Media, 2010. 10.1007/978-3-642-15144-6.",
+        "DOI": "10.1007/978-3-642-15144-6"
+      },
+      {
+        "key": "102",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Naoaki Yabuuchi. Material design concept of lithium-excess electrode materials with rocksalt-related structures for rechargeable non-aqueous batteries. The Chemical Record, 19 (4): 690–707, 2019. 10.1002/tcr.201800089.",
+        "DOI": "10.1002/tcr.201800089"
+      },
+      {
+        "key": "103",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Naoaki Yabuuchi, Kazuhiro Yoshii, Seung-Taek Myung, Izumi Nakai, and Shinichi Komaba. Detailed studies of a high-capacity electrode material for rechargeable batteries, $\\text{Li}_2\\text{MnO}_3$- $\\text{LiCo}_{1/3}\\text{Ni}_{1/3}\\text{Mn}_{1/3}\\text{O}_2$. Journal of the American Chemical Society, 133 (12): 4404–4419, 2011. 10.1021/ja108588y.",
+        "DOI": "10.1021/ja108588y"
+      },
+      {
+        "key": "104",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Nobuyuki Yoshioka, Takeshi Sato, Yuya O. Nakagawa, Yu-ya Ohnishi, and Wataru Mizukami. Variational quantum simulation for periodic materials. Phys. Rev. Res., 4: 013052, Jan 2022. 10.1103/PhysRevResearch.4.013052.",
+        "DOI": "10.1103/PhysRevResearch.4.013052"
+      },
+      {
+        "key": "105",
+        "doi-asserted-by": "publisher",
+        "unstructured": "Minghao Zhang, Daniil A Kitchaev, Zachary Lebens-Higgins, Julija Vinckeviciute, Mateusz Zuba, Philip J. Reeves, Clare P. Grey, M Stanley Whittingham, Louis F.J. Piper, Anton Van der Ven, and Y. Shirley Meng. Pushing the limit of 3$d$ transition metal-based layered oxides that use both cation and anion redox for energy storage. Nature Reviews Materials, 7: 522–540, 2022. 10.1038/s41578-022-00416-1.",
+        "DOI": "10.1038/s41578-022-00416-1"
+      }
+    ],
+    "container-title": [
+      "Quantum"
+    ],
+    "original-title": [],
+    "language": "en",
+    "link": [
+      {
+        "URL": "https://quantum-journal.org/papers/q-2023-07-10-1049/pdf/",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2023,
+          7,
+          10
+        ]
+      ],
+      "date-time": "2023-07-10T13:46:01Z",
+      "timestamp": 1688996761000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://quantum-journal.org/papers/q-2023-07-10-1049/"
+      }
+    },
+    "subtitle": [],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          2023,
+          7,
+          10
+        ]
+      ]
+    },
+    "references-count": 106,
+    "URL": "https://doi.org/10.22331/q-2023-07-10-1049",
+    "archive": [
+      "CLOCKSS"
+    ],
+    "relation": {},
+    "ISSN": [
+      "2521-327X"
+    ],
+    "issn-type": [
+      {
+        "value": "2521-327X",
+        "type": "electronic"
+      }
+    ],
+    "subject": [],
+    "published": {
+      "date-parts": [
+        [
+          2023,
+          7,
+          10
+        ]
+      ]
+    },
+    "article-number": "1049"
+  }
+}

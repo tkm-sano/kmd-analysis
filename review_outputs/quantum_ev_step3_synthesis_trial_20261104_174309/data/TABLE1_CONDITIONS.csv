@@ -1,0 +1,14 @@
+claim_id,claim_text,numeric_evidence,generalization_scope,audit_status,evidence_types,Chen_dependency,result_role
+S3-P1-D01,ΔJ=J_C−J_Qの正値を古典近似に対する改善と定義する。,Definition; unit seconds; exact Fraction epsilon0,same input/objective/constraints,PASS,A,NO,主分析/証拠境界
+S3-P1-N01,支持内に古典対照より良い可行解があり、その解へ正の測定確率があることは、有限shotsで正改善を得るための必要条件である。,P(improve at least once)=1-(1-p)^shots,"fixed input, fitted state, shot budget",CONDITIONAL,A;E,NO,主分析/証拠境界
+S3-P1-O01,"保存B系列では主greedy対照に対する正改善は36,800計画中0件であり、全保存bestは可行であった。",0/36800; all460x8x10 saved-best plans feasible,"B no windows, R4=100; finite input+fit cohort",PASS,B;C,NO,主分析/証拠境界
+S3-P1-O02,"R5のGrover p2は70入力の入力内平均差の平均が−5,983.706秒であった。","N70,700 measurement reps; meanDeltaJ=-5983.70645269s; inputSD=1314.36453678s; IQR=1628.05593623s","125 customers, saved CPU simulator and original budget",CONDITIONAL,B;C,NO,主分析/証拠境界
+S3-P1-O03,R5のGrover p3も同じ保存比較条件で平均目的値がgreedyより悪かった。,"N70,700 measurement reps; meanDeltaJ=-5975.53783942s; inputSD=1316.11038968s; IQR=1603.51234522s","125 customers, saved CPU simulator and original budget",CONDITIONAL,B;C,NO,主分析/証拠境界
+S3-P1-S01,mirror支持最良値は全460入力で初期解に一致し、greedyが初期以下であるため、その支持内で正改善は不可能である。,460/460 support minima equal initial; five saved mirror configurations,"specified mirror matching orbit, all B inputs",CONDITIONAL,A;B;E,NO,主分析/証拠境界
+S3-P1-S02,activeの保存3点gridでは全460入力でt=0の初期状態が選択された。,460/460 selected_t0; six total configs including mirror show initial output,"fixed t={0,.5,1} grid",CONDITIONAL,B;C,NO,主分析/証拠境界
+S3-P1-C01,R1_020の全支持・基底初期・graph p1では独立学習97回のprimary測定で最適解を58回取得した。,58/97 primary independent-fit reps; meanDeltaInitial=7.46853344699s,"one diagnostic 4-customer input,64 COByLA eval cap,8192shots",CONDITIONAL,B;C,NO,主分析/証拠境界
+S3-P1-C02,同じ診断条件のgraph p2では最適解を78/97回取得した。区間の比較だけで有意差を認定しない。,78/97 primary independent-fit reps; meanDeltaInitial=10.1855344079s,"one diagnostic 4-customer input,64 COByLA eval cap,8192shots",CONDITIONAL,B;C,NO,主分析/証拠境界
+S3-P1-C03,全支持でも基底初期projector p1は0/97、一様初期projector p1は97/97であり、支持の存在だけでは取得を保証しない。,basis projector p1=0/97; uniform projector p1=97/97 optimal rep0,"same full support, projector, layer1, eval/shot budgets",CONDITIONAL,B;C,NO,主分析/証拠境界
+S3-P1-C04,同角度の脱位相操作は期待目的値を変える条件があるが、最終sampled-bestの古典greedy超えとは異なる。,4656 same-angle Q states; new greedy improvements0/46560 Q measurement reps,"chosen3 inputs,exact feasible-subspace CPU simulation",CONDITIONAL,B;C,NO,主分析/証拠境界
+S3-P1-T01,計画採用にはτ_total≤H_planが必要であるが、H_plan未設定のため今回数値達成を判定できない。,9603 new pipeline timing records; H_plan=NULL,common provided initialization; CPU only,HOLD,F,NO,主分析/証拠境界
+S3-P1-H01,最適参照は414入力に拡張されたが、46は未証明であり、41の保存MIP証拠は外部検証未実施である。,"46 unproved; audited references414,including41 conditional saved MIP equality",B n100/125 missing references,HOLD,F,NO,主分析/証拠境界

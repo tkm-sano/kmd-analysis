@@ -1,0 +1,11 @@
+variable,derivative,sign,domain,held_fixed,numerical_range,Chen_dependency,evidence,status
+q,−E/(V f_p u q²),負,"q>0,u>0,V>0,f_p>0",他の設計変数固定,49点171.875–195.959596はChen依存参考；独立した実用範囲なし,NO_SYMBOLIC,A;E,CONDITIONAL
+u,−E/(V f_p q u²),負,0<u≤1,他固定、保持率/ICEとの重複を避ける,既存0.8–1はChen q固定の参考範囲,NO_SYMBOLIC,A;E,CONDITIONAL
+V,−E/V² [1/(q u f_p)+r/(q_n f_n)],負,"V>0,E>0",gross E固定；正負両極が変化,既存3.0–3.8Vは参考設定,NO_SYMBOLIC,A;E,CONDITIONAL
+f_p,−E/(V q u f_p²),負,0<f_p≤1,他固定；乾燥塗工材中の活物質割合,独立数値範囲未設定HOLD,NO_SYMBOLIC,A;E,CONDITIONAL
+r=N/P,E/(V q_n f_n),正,r>0,他固定；設計上の実用下限は未検証,独立数値範囲未設定HOLD,NO_SYMBOLIC,A;E,CONDITIONAL
+q_n,−E r/(V f_n q_n²),負,q_n>0,他固定；同じ容量基準,独立数値範囲未設定HOLD,NO_SYMBOLIC,A;E,CONDITIONAL
+f_n,−E r/(V q_n f_n²),負,0<f_n≤1,他固定；負極塗工材分母,独立数値範囲未設定HOLD,NO_SYMBOLIC,A;E,CONDITIONAL
+F,1,正,F≥0,固定部材の会計範囲一定,既存17/34/51kgは共通部材の参考probe,NO_SYMBOLIC,A;E,CONDITIONAL
+"D(q,u,V,geometry)",∂D/∂x を上記に加算,未定,Dの設計式が必要,T09箔/膜/液は幾何式で整理,材料から独立の数値走査なしHOLD,NO_SYMBOLIC,A;E,CONDITIONAL
+δ,1（scenario質量）、−1（ΔM）,正／負,追加部材差は符号付き実数,bと部材範囲を重複させない,δ=bは一般条件；b値は入力依存,NO_SYMBOLIC,A;E,CONDITIONAL

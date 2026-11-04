@@ -1,0 +1,32 @@
+claim_id,claim_text,evidence_types,audit_status,generalization_scope,Chen_dependency,result_role,counterexample,falsifier,response
+S3-P1-D01,ΔJ=J_C−J_Qの正値を古典近似に対する改善と定義する。,A,PASS,same input/objective/constraints,NO,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P1-N01,支持内に古典対照より良い可行解があり、その解へ正の測定確率があることは、有限shotsで正改善を得るための必要条件である。,A;E,CONDITIONAL,"fixed input, fitted state, shot budget",NO,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P1-O01,"保存B系列では主greedy対照に対する正改善は36,800計画中0件であり、全保存bestは可行であった。",B;C,PASS,"B no windows, R4=100; finite input+fit cohort",NO,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P1-O02,"R5のGrover p2は70入力の入力内平均差の平均が−5,983.706秒であった。",B;C,CONDITIONAL,"125 customers, saved CPU simulator and original budget",NO,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P1-O03,R5のGrover p3も同じ保存比較条件で平均目的値がgreedyより悪かった。,B;C,CONDITIONAL,"125 customers, saved CPU simulator and original budget",NO,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P1-S01,mirror支持最良値は全460入力で初期解に一致し、greedyが初期以下であるため、その支持内で正改善は不可能である。,A;B;E,CONDITIONAL,"specified mirror matching orbit, all B inputs",NO,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P1-S02,activeの保存3点gridでは全460入力でt=0の初期状態が選択された。,B;C,CONDITIONAL,"fixed t={0,.5,1} grid",NO,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P1-C01,R1_020の全支持・基底初期・graph p1では独立学習97回のprimary測定で最適解を58回取得した。,B;C,CONDITIONAL,"one diagnostic 4-customer input,64 COByLA eval cap,8192shots",NO,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P1-C02,同じ診断条件のgraph p2では最適解を78/97回取得した。区間の比較だけで有意差を認定しない。,B;C,CONDITIONAL,"one diagnostic 4-customer input,64 COByLA eval cap,8192shots",NO,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P1-C03,全支持でも基底初期projector p1は0/97、一様初期projector p1は97/97であり、支持の存在だけでは取得を保証しない。,B;C,CONDITIONAL,"same full support, projector, layer1, eval/shot budgets",NO,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P1-C04,同角度の脱位相操作は期待目的値を変える条件があるが、最終sampled-bestの古典greedy超えとは異なる。,B;C,CONDITIONAL,"chosen3 inputs,exact feasible-subspace CPU simulation",NO,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P1-T01,計画採用にはτ_total≤H_planが必要であるが、H_plan未設定のため今回数値達成を判定できない。,F,HOLD,common provided initialization; CPU only,NO,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P1-H01,最適参照は414入力に拡張されたが、46は未証明であり、41の保存MIP証拠は外部検証未実施である。,F,HOLD,B n100/125 missing references,NO,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P2-D01,同一軌跡・同一物理条件と検証質量区間では、ΔM=b−δの正負とDC差の正負が一致する。,A;B;E,CONDITIONAL,mass substitution only; same trajectory/Crr/eta/other physics,NO,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P2-B01,【未採用の条件付き参考例】T08既定条件では追加質量差δが約5.448297kgに達すると質量削減とDC差が消失する。,A;B;E,CONDITIONAL,"Chen依存・設計仮定限定。主要実証や一般代表値にしない。gross20kWh,V3.5,u1,common34kg,NP1.1,fp.75,fn.98,qn360",YES,条件付き参考例,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P2-B02,【未採用の条件付き参考例】同電圧・共通部材・追加質量なしではq_S u>q_LPが質量削減の条件であり、利用率境界は約0.877094である。,A;B;E,CONDITIONAL,Chen依存・設計仮定限定。主要実証や一般代表値にしない。T08 same average full-cell voltage and all common negative/fixed inputs,YES,条件付き参考例,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P2-B03,【未採用の条件付き参考例】LP側3.5Vを固定しS側電圧のみを変える既定条件の電圧境界は約3.193156Vである。,A;B;E,CONDITIONAL,Chen依存・設計仮定限定。主要実証や一般代表値にしない。T08 fixed34kg and original controls,YES,条件付き参考例,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P2-E01,【未採用の条件付き参考例】下側Crr条件の460保存軌跡でDC総和比削減率は0.412579%、個別率平均は0.409329%であった。,B;C,CONDITIONAL,Chen依存・設計仮定限定。主要実証や一般代表値にしない。old C saved trajectories; no regen/aux/grade/payload changes,YES,条件付き参考例,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P2-E02,【未採用の条件付き参考例】上側Crr条件では総和比0.413590%、個別率平均0.410435%であった。,B;C,CONDITIONAL,Chen依存・設計仮定限定。主要実証や一般代表値にしない。old C saved trajectories; no regen/aux/grade/payload changes,YES,条件付き参考例,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P2-S01,【未採用の条件付き参考例】T09既知部材差は面積方針により約9.722608kgと5.977891kgに変わり、会計構造に依存する。,B;C,CONDITIONAL,"Chen依存・設計仮定限定。主要実証や一般代表値にしない。same gross,V,u,q,NP/fractions; known components only",YES,条件付き参考例,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P2-O01,【未採用の条件付き参考例】同一質量差のDC伝達量は保存軌跡とCrr条件で異なるが、運転介入の因果効果を示すものではない。,B;C,CONDITIONAL,Chen依存・設計仮定限定。主要実証や一般代表値にしない。observed saved windows; old C distinct from B,YES,条件付き参考例,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P2-A01,Controlled-DCは平坦・回生なし・補機等除外・固定軌跡を仮定する。,E,CONDITIONAL,only specified energy boundary,NO,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P2-H01,量子計算の物性予測から実材料性能改善、完成pack、実道路成果への接続は未検証である。,F,HOLD,upstream and downstream causal links outside current quantitative evidence,NO,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-I01,両経路は、比較対象に対する差が中間の選択・会計・伝達条件によって消失し得るという比較枠組みで整理できる。,E,CONDITIONAL,今回の異質な二経路の分析的統合。共通効果量や一般法則ではない。,MIXED_FRAMEWORK,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-I02,技術性能から社会技術システム上の成果を直接推定せず、接続ごとの証拠と未検証部分を示すことが評価上有用である。,E,CONDITIONAL,本事例からの方法的示唆。組織・制度・市場効果の実証ではない。,MIXED_FRAMEWORK,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-L01,社会技術的変化を視野に入れる既存の観点へ、本研究の限定的な接続条件の評価を位置付ける。,D;E,CONDITIONAL,Geels2002/Schot&Steinmueller2018の限定的書誌・主旨確認。理論全体の検証ではない。,MIXED_FRAMEWORK,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-H01,配送計画の改善が実道路での運用改善へ伝達することは今回実証していない。,F,HOLD,B→実運行の未接続,MIXED_FRAMEWORK,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-H02,量子物性予測が現実の材料性能改善へつながることは今回実証していない。,F,HOLD,材料探索/合成/電極/full-cell適格性が必要,MIXED_FRAMEWORK,主分析/証拠境界,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P2-A02,T08の正の定義域で、他の入力と設計部材を固定すると、正極容量/利用率/電圧/活物質割合/負極性能の増加は質量を減らし、N/Pと固定/追加部材の増加は質量を増やす。,A;E,CONDITIONAL,T08の固定仮定内,NO,主分析,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P2-A03,同じ会計で定義した削減bと追加差δについてΔM=b−δであり、δ=bが一般の質量相殺条件である。,A;E,CONDITIONAL,T08の固定仮定内,NO,主分析,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記
+S3-P2-H02,Chen保持試験の分母容量逆算値を実用full-cellの確定材料入力として主分析採用する根拠は不足する。,F,HOLD,T08の固定仮定内,YES,入力採用HOLD,固定条件/会計/支持/入力根拠を変えた場合に再検証,数式誤り・同条件の反例・独立したBOM/参照証明,限定条件と未検証接続を明記

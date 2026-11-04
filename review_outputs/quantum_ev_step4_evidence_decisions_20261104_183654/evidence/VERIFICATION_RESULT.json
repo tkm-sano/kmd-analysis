@@ -1,0 +1,72 @@
+{
+  "checks": 43276,
+  "failures": 0,
+  "wall_s": 25.204750386066735,
+  "LP_q_inverse": 171.875,
+  "S_q_exact_inverse": 195.95959595959596,
+  "S_q_executed": 195.959596,
+  "LP_mass": 96.14565479871602,
+  "S_mass": 90.69735738363909,
+  "T08_b_kg": 5.448297415076934,
+  "u_boundary": 0.8770940719841043,
+  "V_boundary": 3.193155683779789,
+  "T09_known_b": {
+    "fixed_loading": 9.722608121107776,
+    "fixed_area_LP": 5.977891152148866
+  },
+  "R5": {
+    "mean_s": -5983.70645268941,
+    "sd_s": 1314.364536777092,
+    "n": 70
+  },
+  "reference_classes": {
+    "RECHECKED_ENUMERATION": 234,
+    "SAVED_EXACT_INTEGER_HELD_KARP_DP": 78,
+    "INDEPENDENT_RATIONAL_DUAL": 61,
+    "UNPROVED_VALID_BOUNDS": 46,
+    "SAVED_EXACT_MIP_EQUALITY_NO_EXTERNAL_VIPR": 41
+  },
+  "controlled_Wilson": [
+    {
+      "layer": 1,
+      "k": 58,
+      "n": 97,
+      "lower": 0.4984365350063288,
+      "upper": 0.6899780339834339
+    },
+    {
+      "layer": 2,
+      "k": 78,
+      "n": 97,
+      "lower": 0.7142162230627421,
+      "upper": 0.8708605964317845
+    }
+  ],
+  "C_endpoint": [
+    {
+      "rolling_case": "CRR_LOWER_BOUND",
+      "n": 460,
+      "sum_ratio_percent": 0.41257901006062697,
+      "mean_rate_percent": 0.4093294193770075,
+      "sd_pp": 0.012172391877158703
+    },
+    {
+      "rolling_case": "CRR_UPPER_BOUND",
+      "n": 460,
+      "sum_ratio_percent": 0.4135904116974739,
+      "mean_rate_percent": 0.410435042400285,
+      "sd_pp": 0.012017831075000658
+    }
+  ],
+  "DC_material_free": {
+    "CRR_LOWER_BOUND": {
+      "n": 460,
+      "min_slope_Wh_kg": 0.8275726479583239
+    },
+    "CRR_UPPER_BOUND": {
+      "n": 460,
+      "min_slope_Wh_kg": 0.8541950723640128
+    }
+  },
+  "new_scientific_experiments": 0
+}

@@ -1,0 +1,12 @@
+# KMD修士研究 Step3 独立trial
+入口はEXECUTIVE_SUMMARY、MAIN_RESEARCH_FINDINGS、STEP3_FINAL_AUDITである。Task3-1〜3-6の対応はSTEP3_COMPLETION_MATRIXに記録する。目的Bを固定し、Step1/2を元CSV・コード・ログへ追跡して最小再集計を行い、条件統合と原稿化を実施した。新規大規模実験は行っていない。
+STEP3_CLAIM_REGISTERとEVIDENCE_TRACEABILITYが主張/数値/証拠種類/判定の入口である。PATH1/PATH2の条件・分類・限界、CROSS_PATHの比較/一般化/貢献、THESIS_*の三草稿・図表計画・引用監査・独立Word、学術レビュー/訂正/代替説明を併置する。図表のsourceはscriptsとdata、表示確認はrenderである。全成果物一覧はOUTPUT_SHA256_MANIFEST.csvである。
+STEP3_SOURCE_MANIFESTには実在パス・版hash、evidenceには再検算とGit/保全台帳を保存する。一部上流は外部preservationにあり、このtrialだけで旧全実験を再実行できるという意味ではない。元データ・旧trial・正式原稿を変更せず、commit/push/公開/正式統合は行わない。
+
+実行判定はTRIAL COMPLETE。図7件・表3件・独立Wordを生成し、PDF/ページPNGで確認した。経路2の主分析とChen依存参考例の再分類が本trialの実質的修正である。scripts/synthesize.py単体およびevidence/pre_correctionは修正前段階で、最終採用対象ではない。再現はREPRODUCIBILITY_REPORTの全順序を参照する。
+
+論文草稿：[独立Word](THESIS_STEP3_TRIAL.docx)、[表示PDF](render/THESIS_STEP3_TRIAL.pdf)、[結果](THESIS_RESULTS_DRAFT.md)、[考察](THESIS_DISCUSSION_DRAFT.md)、[結論](THESIS_CONCLUSION_DRAFT.md)。Chen修正の入口はCHEN_2020_ADOPTION_CORRECTION.md、主分析/参考区分はPATH2_MAIN_VS_REFERENCE_RESULTS.mdである。data内の旧Step2複製CSVはdata/SOURCE_COPY_INTERPRETATION.mdに従って解釈する。
+
+実行判定はTRIAL COMPLETE。図7件・表3件・独立Wordを生成し、PDF/ページPNGで確認した。経路2の主分析とChen依存参考例の再分類が本trialの実質的修正である。scripts/synthesize.py単体およびevidence/pre_correctionは修正前段階で、最終採用対象ではない。再現はREPRODUCIBILITY_REPORTの全順序を参照する。
+
+実行判定はTRIAL COMPLETE。図7件・表3件・独立Wordを生成し、PDF/ページPNGで確認した。経路2の主分析とChen依存参考例の再分類が本trialの実質的修正である。scripts/synthesize.py単体およびevidence/pre_correctionは修正前段階で、最終採用対象ではない。再現はREPRODUCIBILITY_REPORTの全順序を参照する。
