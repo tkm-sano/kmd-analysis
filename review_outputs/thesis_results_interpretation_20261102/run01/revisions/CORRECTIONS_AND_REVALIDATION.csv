@@ -1,0 +1,7 @@
+id,target,before,after,verification,before_hashes
+R01,make_figures.py font.family,Droid Sans Fallback only: missing Latin and digits warning,DejaVu Sans plus Droid Sans Fallback: no glyph warning,FIGURES.stderr.log empty; all10 final PNG actually viewed,revisions/FONT_REPAIR_BEFORE_HASHES.json
+R02,F5-2 legend / coverage labels,"ylim105, legend overlapped57/78 annotation",ylim135 separates legend from bar annotations,F5_2 PNG re-viewed,revisions/LAYOUT_BEFORE_HASHES.json
+R03,F5-4 ticks and F5-5 annotation,adjacent12/13 and24/25 ticks; histogram text overlapped bars,ticks1/6/13/18/25/30/36; remove redundant histogram annotation,F5_4 and F5_5 re-viewed,revisions/LAYOUT_BEFORE_HASHES.json
+R04,SVG/PDF regeneration,default random SVG ids and date metadata,fixed svg.hashsalt; remove date metadata,30/30 figure files byte-identical on replay; final PNG10 unchanged,revisions/RENDER_BEFORE_DETERMINISM_HASHES.json
+R05,DOCX mapping claim count,editorial typo:29 claims,26 actual claim rows,CLAIM_EVIDENCE_MAPPING.csv count26; numerical findings unchanged,not scientific data
+R06,PRIMARY_REFERENCES_FOR_INSERTION.md Hadfield author order,Draft had Biswas before Venturelli,"Venturelli before Biswas, matching arXiv1709.03489v2 author order",Primary arXiv metadata checked; journal reference2019/12(2)/34 and DOI confirmed,editorial bibliography only; no original file altered

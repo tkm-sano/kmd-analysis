@@ -1,0 +1,8 @@
+from evidence import *
+t=time.monotonic();t8=U/'review_outputs/material_ev_stage2_20261026/run02';t9=U/'review_outputs/t09_open_data_model_20261029/run01';br=U/'review_outputs/t08_t09_conditional_bridge_20261030/run01';items=[]
+for p in [t8/'SCENARIOS.json',t8/'MATERIAL_COMPONENTS.csv',t8/'MATERIAL_ENERGY.csv',t8/'SOURCE_SNAPSHOT/src/kmd_quantitative/material_ev/stage2/battery.py',t9/'model.py',t9/'PACK_20KWH_SENSITIVITY.csv',t9/'PARAMETER_SOURCES.csv',t9/'DATA_PROVENANCE.csv',t9/'CELL_MASS_ACCOUNTING_MODEL.md',t9/'ELECTRODE_GEOMETRY_MODEL.md',br/'T09_MASS_BOUNDARIES.csv',br/'DC_MASS_RESPONSE.csv',R/'src/kmd_quantitative/energy/controlled_dc.py',R/'src/kmd_quantitative/energy/frozen_sources/run_full_controlled_dc.py']:
+ p=use(p)
+ # Reading text only; source code is never imported or executed.
+ data=p.read_text();items.append({'path':str(p),'sha256':sha(p),'bytes':p.stat().st_size,'role':'MATERIAL_OR_DC_ORIGINAL_READ_ONLY','lines':len(data.splitlines())})
+loc=js(D/'C_LITERATURE_LOCATORS.json');use(loc['pdf_path'],loc['pdf_sha256']);txt=use(loc['text_path'],loc['text_sha256']).read_text().splitlines();table('MATERIAL_PRIMARY_SOURCES.csv',items);doc('MATERIAL_LITERATURE_LOCATORS.md',f"# 材料原著の照合箇所\n\nPDF `{loc['pdf_path']}` SHA256 `{loc['pdf_sha256']}`。抽出text `{loc['text_path']}` SHA256 `{loc['text_sha256']}`。\n\n{loc['retention_locator']}。LP121mAh/g、保持70.4%、S-200194mAh/g、保持99.0%を照合した。\n\n{loc['calculation_locator']}。古典DFT/VASPと対象量子計算機の改善を区別する。\n\n出典 https://doi.org/10.1038/s41467-020-17126-3 。本文の長文転載は行わない。モデルの原コード・BOM・元CSVの実パスとhashはMATERIAL_PRIMARY_SOURCES.csvに示す。\n")
+finish('MATERIAL_PROVENANCE',t,{'original_material_model_files':len(items),'primary_pdf_hash_checked':True,'literature_text_lines_read':len(txt),'models_executed':0})

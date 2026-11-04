@@ -1,0 +1,11 @@
+# 再生成と検証
+
+作業ディレクトリは/home/takuma/kmd-analysisである。既存の利用者ファイルを上書きしないため、新規review runへscripts/とREFERENCE_UPDATES.jsonを複製し、common.pyのOUTを別の新しい出力名へ設定する。元DOCXはSRCのまま読み取り専用にする。audit_before.pyは既存出力があると停止する。
+
+1. audit_before.pyで元317資料と32アンカーを固定する。
+2. ローカルレンダラーはrendering_tools/APT_URIS.txtとPACKAGES.jsonのhashを使いsetup_renderer.pyで展開する。RCとregistryの修正はローカル展開先に限る。補助Pythonライブラリはrendering_tools/pythonへ配置する。
+3. integrate_docx.pyで新しい別名DOCXを作成する。元XMLの要素を本文または履歴付録へ保持する。
+4. verify_integrity.pyで原数式・表・リンク・bookmark・OPC関係・source hashを照合する。
+5. render_docx.pyとqa_pages.pyでPDFと全ページを生成し、実際に画像を確認する。write_reports.pyの受入記録は別途実施した目視の結果であり、コードを回すだけで新しい目視確認を主張しない。
+
+原分析runnerは実行しない。DOCXのZIPタイムスタンプ等により全体のbyte hashが異なる場合もあるため、入力hashに加え、文書構造・元要素保全・転記値・描画結果を照合する。今回の実出力hashは各台帳に固定した。

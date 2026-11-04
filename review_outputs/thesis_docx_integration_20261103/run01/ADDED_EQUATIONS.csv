@@ -1,0 +1,20 @@
+latex,OMML_text
+"a_k=e_{k-1}+T_{\pi_{k-1},\pi_k}","ak=ek−1+Tπk−1,πk"
+"s_k=\max(a_k,r_{\pi_k})","sk=max(ak,rπk)"
+c_k=s_k+102,ck=sk+102
+e_k=c_k.,ek=ck.
+F_{PE}=100\frac{\sum_i q_i I(c_i\leq K_i)}{\sum_i q_i},FPE=100iqiI(ci≤Ki)iqi
+F_N=100\frac{\sum_i I(c_i\leq K_i)}{N},FN=100iI(ci≤Ki)N
+M_{Al}=A_{+}t_{Al}\rho_{Al}/2,MAl=A+tAlρAl/2
+M_{Cu}=A_{-}t_{Cu}\rho_{Cu}/2,MCu=A−tCuρCu/2
+"M_{sep}=\max(A_{+},A_{-})\sigma_s","Msep=max(A+,A−)σs"
+V_{+}=\frac{c_{+}}{\rho_{+}}\frac{\epsilon_{+}}{1-\epsilon_{+}},V+=c+ρ+ϵ+1−ϵ+
+V_{-}=\frac{c_{-}}{\rho_{-}}\frac{\epsilon_{-}}{1-\epsilon_{-}},V−=c−ρ−ϵ−1−ϵ−
+"V_{sep}=\max(A_{+},A_{-})t_s\epsilon_s","Vsep=max(A+,A−)tsϵs"
+M_{liq}=\rho_{liq}(V_{+}+V_{-}+V_{sep}+V_{extra}),Mliq=ρliq(V++V−+Vsep+Vextra)
+"C_{rr}(v,p)=0.005+\frac{0.01+0.0095(3.6v/100)^2}{p}","Crr(v,p)=0.005+0.01+0.0095(3.6v/100)2p"
+"W_{1,t}=mgC_{rr}(v_t,p)ds","W1,t=mgCrr(vt,p)ds"
+"W_{2,t}=\tfrac12\rho C_dA v_t^2ds","W2,t=12ρCdAvt2ds"
+"W_{3,t}=\tfrac12m(v_t^2-v_{t-1}^2)","W3,t=12m(vt2−vt−12)"
+"W_{4,t}=\tfrac12\times61(v_t^2-v_{t-1}^2)","W4,t=12×61(vt2−vt−12)"
+"E_{DC}=\sum_t\frac{\max(W_{1,t}+W_{2,t}+W_{3,t}+W_{4,t},0)}{0.90\times3600}\quad[Wh].","EDC=tmax(W1,t+W2,t+W3,t+W4,t,0)0.90×3600[Wh]."

@@ -1,0 +1,105 @@
+Traceback (most recent call last):
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/scripts/integrate_docx.py", line 200, in <module>
+    replace(234,247,'3.9　材料参照値と質量会計',get(methods,'3.9'));figure('F3-2','本文3.9')
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/scripts/integrate_docx.py", line 178, in replace
+    archive(a,b,title);head(title);blocks(content)
+                                   ^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/scripts/integrate_docx.py", line 99, in blocks
+    for part in parts:math(part.rstrip(','))
+                      ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/scripts/integrate_docx.py", line 75, in math
+    math(expression)
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/scripts/integrate_docx.py", line 75, in math
+    math(expression)
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/scripts/integrate_docx.py", line 75, in math
+    math(expression)
+  [Previous line repeated 950 more times]
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/scripts/integrate_docx.py", line 77, in math
+    omml=mathml2omml.convert(latex2mathml.converter.convert(latex));el=E.fromstring(('<root xmlns:m="'+NS['m']+'">'+omml+'</root>').encode())[0]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 1108, in convert
+    return handler.result()
+           ^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 1084, in result
+    return str(self._stack[-1][0])
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 298, in __str__
+    return self.to_str()
+           ^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 419, in to_str
+    xml_text = ''.join(to_box(c) for c in self.mrow.children)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 419, in <genexpr>
+    xml_text = ''.join(to_box(c) for c in self.mrow.children)
+                       ^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 21, in to_box
+    return str(elem)
+           ^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 440, in __str__
+    return '<m:box>%s</m:box>' % Element(*self.children)
+           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 41, in __str__
+    return '<m:e>%s</m:e>' % ''.join(to_box(c) for c in self.children)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 41, in <genexpr>
+    return '<m:e>%s</m:e>' % ''.join(to_box(c) for c in self.children)
+                                     ^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 21, in to_box
+    return str(elem)
+           ^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 225, in __str__
+    return self.to_str()
+           ^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 515, in to_str
+    num = to_math_arg(self.children[0])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 31, in to_math_arg
+    return str(elem)
+           ^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 440, in __str__
+    return '<m:box>%s</m:box>' % Element(*self.children)
+           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 41, in __str__
+    return '<m:e>%s</m:e>' % ''.join(to_box(c) for c in self.children)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 41, in <genexpr>
+    return '<m:e>%s</m:e>' % ''.join(to_box(c) for c in self.children)
+                                     ^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 21, in to_box
+    return str(elem)
+           ^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 245, in __str__
+    return self.to_str()
+           ^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 662, in to_str
+    sub = to_math_arg(self.children[1])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 31, in to_math_arg
+    return str(elem)
+           ^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 440, in __str__
+    return '<m:box>%s</m:box>' % Element(*self.children)
+           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 41, in __str__
+    return '<m:e>%s</m:e>' % ''.join(to_box(c) for c in self.children)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 41, in <genexpr>
+    return '<m:e>%s</m:e>' % ''.join(to_box(c) for c in self.children)
+                                     ^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 21, in to_box
+    return str(elem)
+           ^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 198, in __str__
+    text = self.escape_text()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python/mathml2omml/__init__.py", line 195, in escape_text
+    re.sub(INVISIBLE_CHAR_PATTERN, '', self.text()))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/re/__init__.py", line 185, in sub
+    return _compile(pattern, flags).sub(repl, string, count)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/re/__init__.py", line 274, in _compile
+    if isinstance(flags, RegexFlag):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded while calling a Python object

@@ -1,0 +1,76 @@
+{
+  "checks": 32269,
+  "failures": 0,
+  "A_positive_mechanism_cases": 768,
+  "A_wait_stages": [
+    {
+      "stop_order": 1,
+      "positive_departure_cases": 768,
+      "fully_absorbed_cases": 372,
+      "partly_or_unabsorbed_cases": 396,
+      "mean_retained_delay_s": 262.96875,
+      "mean_cumulative_absorbed_s": 247.03125,
+      "mean_original_departure_change_s": 510.0
+    },
+    {
+      "stop_order": 2,
+      "positive_departure_cases": 768,
+      "fully_absorbed_cases": 684,
+      "partly_or_unabsorbed_cases": 84,
+      "mean_retained_delay_s": 55.78125,
+      "mean_cumulative_absorbed_s": 454.21875,
+      "mean_original_departure_change_s": 510.0
+    },
+    {
+      "stop_order": 3,
+      "positive_departure_cases": 768,
+      "fully_absorbed_cases": 744,
+      "partly_or_unabsorbed_cases": 24,
+      "mean_retained_delay_s": 15.9375,
+      "mean_cumulative_absorbed_s": 494.0625,
+      "mean_original_departure_change_s": 510.0
+    },
+    {
+      "stop_order": 4,
+      "positive_departure_cases": 768,
+      "fully_absorbed_cases": 768,
+      "partly_or_unabsorbed_cases": 0,
+      "mean_retained_delay_s": 0.0,
+      "mean_cumulative_absorbed_s": 510.0,
+      "mean_original_departure_change_s": 510.0
+    }
+  ],
+  "B_equal_settings": [
+    "ACTIVE_ADJACENT_P3_GRID",
+    "COHERENT2_P2",
+    "COHERENT4_P2",
+    "CVAR01_P2",
+    "CVAR10_P2",
+    "MEAN_P2"
+  ],
+  "B_equal_objective_but_different_route_refs": 0,
+  "C_review": [
+    {
+      "rolling_case": "CRR_LOWER_BOUND",
+      "trajectories": 460,
+      "mass_reduction_kg": 5.448297415076922,
+      "baseline_Wh": 1440101.3697978756,
+      "saving_Wh": 5941.5559753816215,
+      "weighted_percent": 0.4125790100606282
+    },
+    {
+      "rolling_case": "CRR_UPPER_BOUND",
+      "trajectories": 460,
+      "mass_reduction_kg": 5.448297415076922,
+      "baseline_Wh": 1475380.7429788818,
+      "saving_Wh": 6102.0332889916235,
+      "weighted_percent": 0.41359041169747507
+    }
+  ],
+  "new_scientific_runs": 0,
+  "metrics": {
+    "wall_s": 4.651891049928963,
+    "CPU_s": 3.827795,
+    "max_RSS_bytes": 588251136
+  }
+}
