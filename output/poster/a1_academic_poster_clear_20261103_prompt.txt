@@ -1,0 +1,64 @@
+Use case: scientific-educational.
+Create a JAPANESE ACADEMIC CONFERENCE POSTER, A1 portrait ratio 594:841, highest readable resolution. Flat full-page artwork. Revise the prior approach: substantially less text, ordinary unambiguous Japanese, results communicated through scientifically precise figures. A serious conference poster with generous white space, large informative figures, concise finding-based headings. Not a marketing infographic. White background, black regular-weight Japanese sans serif text, dark navy headings with thin horizontal rules. Muted blue and muted rust only in figures. No colored panels, no rounded cards, no gradients, no pictorial decoration, no logos, no fake citations or QR codes. No huge hero numbers. No dense paragraphs. All text below verbatim, do not add prose. Use readable text with adequate line spacing. Moderate title, author placeholder. Three main vertical sections but two wide result columns across middle; generous figure space. Scientific captions short. Approximately 650 Japanese characters. Exact math on plot. Conceptual diagram marked 模式図. Do NOT invent empirical data.
+
+TOP 15% full width:
+Title「量子技術に関連する計算・電池性能の変化は」
+second line「EV配送の結果を変えるか」
+Subtitle「配送の遅れと走行電力量を、二つのモデルで調べた」
+Small「氏名・所属：記入欄」
+
+NEXT full width 13%:
+Heading「調べたこと」
+Two horizontal simple outlined flow diagrams, one above other, easy to scan:
+blue lane「配送計画・出発時刻を変える」→「期限内に配達できる割合を比較」
+rust lane「電池の重量を変える」→「同じ速度で走る電力量を比較」
+Small note「量子技術による性能改善そのものは、今回の実証対象に含まない。」
+
+MIDDLE 55%, two equally wide result columns separated by thin vertical gray rule. Each begins numbered section heading, result sentence, large figure, one factual line and one interpretation sentence. No more than prescribed text.
+
+LEFT heading「1　配送計画」
+Finding heading on 2 lines「出発が遅れても、」「待ち時間が減れば配達は遅れない」
+Small study scope「78問題 × 36条件／道路の移動時間を固定」
+
+LARGE rigorous conceptual timing figure spanning full column width, occupying most of column height:
+Title「出発後の時刻の比較（模式図）」
+Horizontal time axis with arrow right, no numeric ticks.
+Two rows labelled「基準」「出発を遅らせた場合」.
+Need clear semantic correctness: compare identical route with driving equal durations, lower start later than upper. BOTH driving intervals have equal widths. Upper then has longer waiting interval, lower shorter waiting interval, BOTH waiting end at same service start vertical dotted line. After waiting BOTH have same-length service interval and finish at exact same vertical line.
+Choose diagram geometry x=0..100 conceptual coordinates: top drive 5..35, wait35..75, service75..90; bottom drive25..55,wait55..75, service75..90. Show muted blue driving, light gray waiting, dark outlined service. Label「走行」「配達開始まで待つ」「配達作業」 with compact legend below if too tight. Show labels above common service start「配達開始」 and common completion「配達完了」, two vertical fine dotted lines. A double headed arrow between the two start positions labelled「出発の遅れ」. Under waiting interval label「待ち時間が短くなる」. No text overlap. Exactly one shared completion time.
+Caption「図1　同じ経路で出発だけを遅らせた比較。」
+
+Below two plain short result lines, normal text with bold numeric phrase but not giant:
+「出発を遅らせた768条件すべてで、」
+「最終配送先までに時刻の遅れがなくなった。」
+Then with space:
+「全政策条件で期限内配達率100%。」
+「古典計画だけを使う場合との差は0ポイント。」
+Small qualification「期限に余裕がある今回の条件での結果。」
+
+RIGHT heading「2　電池重量」
+Finding heading on 2 lines「一部の部材が軽くなっても、」「電池全体が軽くなるとは限らない」
+Study scope「二つの代表設計／未確定部材の重量を変えて比較」
+
+Large conventional clean scientific Cartesian line plot. axes thin black. x from0 to12 kg with ticks0,2,4,6,8,10,12 label「未確定部材が重くなる分（kg）」. y from−6 to10 with ticks−6,−4,−2,0,2,4,6,8,10 label「電池全体が軽くなる分（kg）」. two accurate descending straight lines y=9.72−x muted rust and y=5.98−x muted blue. legend plain「設計A」「設計B」. Clearly mark zero crossings with open circles at x9.72 and5.98, numeric labels at x crossings using leader lines if needed. horizontal y0 line black slightly heavier. annotate positive region right「軽くなる」 and negative region「重くなる」 in neutral small type without obscuring lines. Do not put any colored plot background. y=9.72 line must cross at9.72, y=5.98 at5.98.
+Caption「図2　確認済み部材の軽量化と、未確定部材の重量増加。」
+Below sentence:
+「未確定部材が約5.98 kgまたは約9.72 kg重くなると、」
+「確認済み部材による軽量化が打ち消される。」
+Then separate compact note ruled above:
+「重量差から電力量への影響」
+「別の簡略モデルでは、約5.45 kgの軽量化に対して」
+「走行電力量は約0.413%少なくなった。」
+Small qualification「保存した460速度軌跡で比較。下側の転がり抵抗条件。」
+「回生・補機の電力は含まない。」
+
+BOTTOM17% full width separated by thin navy rule:
+Heading「この研究で分かったこと」
+Two concise numbered findings in normal readable font:
+「① 出発時刻の差が、期限内配達率の差になるとは限らない。」
+「② 部材の軽量化が、電池全体の軽量化になるとは限らない。」
+Next short line「配送では待ち時間と期限、電池では未確定部材の重量を確認する必要がある。」
+Bottom limitation line, small but fully legible:
+「適用範囲：固定条件のモデル計算。実車の省電力、完成電池の軽量化、量子計算の優位性は未実証。」
+Footer tiny「研究内の保存結果に基づく／2026年11月」
+No other text. Consistency: no claim that real quantum computer improved real batteries; no claim all delivery effects vanish universally. These are conditional model findings. ACADEMIC conference poster first, clear charts and whitespace, succinct everyday Japanese second, no long technical paragraphs. All chart labels must fit, no broken Japanese glyphs.

@@ -1,0 +1,94 @@
+Edit supplied Japanese ACADEMIC CONFERENCE POSTER. Preserve exact main title and general A1 portrait three-column white/navy scholarly layout. Revise FIGURE2 to compare battery as PART of WHOLE VEHICLE, then relate mass reductions to WHOLE running energy. Remove slogan-like headings and prose throughout. Use factual neutral Japanese section titles and explicit numeric comparisons. No rhetorical statements such as「保証しない」「どこで効果が制限されるか」「手法を変えるだけでは」. No decorative claim banners; use normal section/subsection headings and tables. High resolution readable Japanese, no tiny labels. Preserve current study NO customer time windows. All customers visited once is a constraint, not percentage result. No p=2-versus3 emphasis. No old time-window results, no100% result or on-time evaluation commentary. Keep strict baseline definitions and quantities.
+
+EXACT MAIN TITLE unchanged:
+量子技術がEV配送の定時配達率と
+走行時のバッテリー消費電力量に影響を及ぼす
+仕組みと成立条件
+Subtitle「配送計画と電池材料を介した二つの経路の定量分析」
+「氏名・所属：記入欄」
+
+TOP full-width proposed-pathway diagram retain, change heading「分析対象と評価範囲」:
+「量子技術」dashed to「計算手法」and dashed to「材料特性」;
+top「計算手法」→「配送計画」→「総移動時間」dashed→「走行消費電力量」
+bottom「材料特性」→「電池設計」→「電池質量」→「車両全体の質量」→「走行消費電力量」. Add vehicle mass stage without crowding, labels wrap if needed.
+Legend「実線：モデル内の比較・計算／破線：未検証」
+Fit diagram about11% page.
+
+LEFT column:
+「1．研究目的・問題設定」
+「配送計画手法と電池材料の違いについて、総移動時間および走行消費電力量に至る各段階の変化量を評価する。」
+「全配送先を各1回訪問し、デポに戻る訪問順を対象とする。顧客の時間窓は設定しない。」
+Equation「J(π)=Σₖ₌₀ⁿ T_{πₖ,πₖ₊₁}」
+「π₀・πₙ₊₁：デポ／Tᵢⱼ：固定移動時間」
+「制約：需要容量、総稼働時間9時間以内。」
+「2．比較方法」
+Table「配送計画」
+「問題例」「460」
+「配送先数」「3・4・5・25・100・125」
+「設定・反復」「8設定・各10測定反復」
+「比較基準」「古典初期解」
+「1問題例は、配送先集合・需要量・移動時間行列などを定めた一つの入力。」
+「総移動時間差 ΔJ=J−J₀。負値は改善、正値は悪化。厳密最適値のある407問題例では最適性ギャップも評価。」
+Subheading「電池質量・電力量」
+「基準材料LPと比較材料S-200の簡略質量モデルを比較。同一の保存速度軌跡で走行消費電力量を計算する。」
+「容量20 kWh／460速度軌跡」
+「1速度軌跡は、一つの走行の速度時系列。」
+「速度軌跡と現行の配送計画問題は別資料。」
+
+MIDDLE column:
+「3．配送計画の比較結果」
+Plain subheading「配送先数別の総移動時間差」
+「8設定中6設定は、全問題例で古典初期解と一致した。」
+Table「表1　Grover型2設定の平均総移動時間差」
+columns「配送先数」「古典初期解との差［秒］」
+rows「3」「0.00」
+「4」「−0.16」
+「5」「−1.10」
+「25」「+564.57〜+571.45」
+「100」「+4459.77〜+4469.22」
+「125」「+5975.10〜+5983.27」
+Caption「各問題例の10反復を平均した後、規模別に集計。範囲は2設定の平均値の最小〜最大。」
+「Grover型では4・5配送先で平均値が減少し、25・100・125配送先で増加した。」
+Subheading「探索範囲内の最適値の検証」
+Simple scholarly schematic with plain thin outlined boxes (not slogan banners):
+「制限された探索範囲」
+down arrow
+「範囲内の厳密最小値＝古典初期値」
+Below「5設定・全2,300学習記録で一致」
+Caption「図1　探索範囲内の厳密最小値と初期値の比較。」
+「この5設定では、設定した探索範囲内に古典初期解より総移動時間の短い解は存在しなかった。」
+Small scope「計算時間は学習・最終検証を分離。配送計画と実走行電力量の接続は未検証。」
+
+RIGHT column completely replace old sensitivity line plot:
+「4．電池質量と走行電力量」
+「基準材料：LP／比較材料：S-200」
+Figure2 is TWO VERTICALLY STACKED scientific panels, enough width and labels. Remove all old delta, b, threshold straight lines from main figure.
+Panel(a) title「車両全体の質量と電池の内訳」
+Two VERTICAL STACKED BARS start at y0, yaxis「走行質量［kg］」ticks0,400,800,1200, range0..1250.
+x categories「LP」「S-200」
+Both bottom segments nonbattery gray1043.888888889kg. Top battery segment rust96.145654799kg forLP and blue90.697357384kg forS-200. Bar heights1140.034543688 and1134.586246273. Legend「電池」「電池以外」 can battery same rust color both instead of conflictinglegend; use rust batteryboth,grayotherboth.
+Total labels above bars「1140.03」「1134.59」.
+Leader labels on battery segments「電池96.15 kg」「電池90.70 kg」 outside bars with thin lines, avoid crowding. Nonbattery label shared「電池以外1043.89 kg（共通）」 below or legend. This mass includes driver; no cargo in model. No cropped bar axis, no exaggerated battery change.
+
+Panel(b) title「基準LPに対する削減率」
+Three horizontal scientific bars, common x scale0..6 percent. y CATEGORY labels (not numeric):「電池質量」「車両全体の質量」「総走行消費電力量」. All start0. Bar endpoints actual5.666712%,0.477906%,0.412579%. Label ends「5.67%」「0.478%」「0.413%」. xaxis「削減率［%］」 ticks0,2,4,6. Make small bars accurately small, DO NOT use different scales or broken axis to exaggerate. No comparison of p-settings.
+Caption「図2　簡略モデルの電池質量差と、車両全体・電力量の変化。」
+Note「削減率の分母は各項目の基準LP値。電力量は460速度軌跡の総量加重。」
+Below short numeric line「電池質量差：約5.45 kg（96.15→90.70 kg）」
+Condition「固定速度・空荷・平坦路・回生なし・補機除外。下側の転がり抵抗条件。」
+Caveat「簡略モデルの推計値。完成パック性能・実車電力量は未検証。」
+Tiny table or text after figure only if room:
+「未計上部材差によって軽量化が消える閾値：代表設計で5.98 kg／9.72 kg。」
+No threshold plot needed. This is separate detailed component analysis, do not imply these threshold figures determine plotted simplified-model masses.
+
+BOTTOM full width:
+Heading simply「考察」
+Replace slogans with two concise explicit factual paragraphs:
+「配送計画：5設定では探索範囲内の厳密最小値が古典初期値と一致した。これらの設定で改善がなかったことは、探索範囲の制限と整合する。」
+「電池材料：電池質量の5.67%減少は車両全体では0.478%の減少となり、総走行消費電力量は0.413%減少した。各段階の変化率は異なる分母で算出している。」
+Small note「固定入力・指定モデルの条件下の結果。量子計算による材料改善は未実証。」
+References footer preserve Solomon1987 and Schneider2014 plus「数値：研究内の保存計算結果。」
+Ensure diagram boxes and all numeric labels are legible with generous line spacing. Remove slogan-style highlighted claim rectangles, use normal neutral typography. The entire new figure2 must make explicit PART(battery) and WHOLE(vehicle and total energy), no inference that percent changes are equal or directly proportional.
+
+PRECISION EDIT
+Edit supplied academic poster ONLY to fix unnecessary decimal precision inside the two stacked bars of figure2(a). Replace both long numeric labels「1043.888888889 kg」(or any similarly long1043.888... text) INSIDE gray battery-excluded segments with EXACT short label「1043.89 kg」. Both gray segments must show1043.89 kg clearly. All other content unchanged: title, text, all numbers, graph values, axis labels, tables, three-column academic layout, references. Preserve scientific values and graph proportions. Do not introduce any new wording or decorative elements. Highest readable resolution, same A1 portrait.

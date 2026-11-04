@@ -1,0 +1,11 @@
+生成と検証の記録
+
+1. scripts/audit_inputs.py：保存CSVの算術・分母・集計範囲を照合する。科学実験は実行しない。
+2. scripts/build_poster.py：poster_primitives.pyで編集可能PPTXとレイアウト参照PDFを生成する。
+3. scripts/render_poster.py：独立配置したLibreOffice ImpressでPPTXをPDFへ変換する。poster.pdfはこの実描画結果である。レイアウト参照PDFはrender/layout_reference.pdfへ保存する。
+4. scripts/validate_final.py：A1寸法、全段落の抽出、図形範囲、印刷余白、列間侵入を照合する。visual_reviewは人による画像確認の後に記録した。再生成時は再確認が必要である。
+5. scripts/build_causal_svg.py、scripts/build_reports.py：補足図・HTML・CSVを生成し、原本164ファイルのSHA256を再照合する。
+
+編集環境のPython依存：/tmp/kmd-poster-authoring-deps（python-pptx、ReportLab）。PDF検証は既存の読み取り専用PyMuPDF環境を使用した。レンダラはtools/lo_rootへ複製・補完したものであり、旧ツール環境を変更していない。レンダラのパッケージ・取得元はtools内のJSON/TXTに記録した。フォントはDroid Sans Fallback／DejaVu Sansである。Microsoft PowerPointによる確認は実施していない。
+
+最終画像はposter_preview.png（確認用）とposter.png（150 dpi）である。印刷用はベクターPDFを使用する。

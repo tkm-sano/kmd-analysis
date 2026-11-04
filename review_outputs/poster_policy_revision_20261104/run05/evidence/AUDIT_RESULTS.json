@@ -1,0 +1,272 @@
+{
+  "status": "PASS",
+  "scientific_runners_invoked": 0,
+  "checks": 41,
+  "failed_checks": 0,
+  "planning": {
+    "inputs": 460,
+    "measurement_references": 36800,
+    "unique_fits": 3680,
+    "exact_inputs": 407,
+    "missing_exact": 53,
+    "backends": {
+      "BINARY_MATCHING_MPS": 2300,
+      "PERMUTATION_DP_OR_CERTIFIED_MC": 920,
+      "ACTIVE_LABEL_MPS_GRID": 460
+    },
+    "hardware_saved_counts": {
+      "hardware_qubits": 0,
+      "compiled_depth": 0,
+      "compiled_gate_count": 0
+    },
+    "scale_results": [
+      {
+        "scale": "R0",
+        "delivery_stops": 3,
+        "physical_inputs": 78,
+        "delta_min_s": 0.0,
+        "delta_max_s": 0.0,
+        "description": "mean over 10 measurements within input, then equal-weight mean over inputs; range across p2/p3"
+      },
+      {
+        "scale": "R1",
+        "delivery_stops": 4,
+        "physical_inputs": 78,
+        "delta_min_s": -0.16013433783333403,
+        "delta_max_s": -0.16013433783333403,
+        "description": "mean over 10 measurements within input, then equal-weight mean over inputs; range across p2/p3"
+      },
+      {
+        "scale": "R2",
+        "delivery_stops": 5,
+        "physical_inputs": 78,
+        "delta_min_s": -1.0988454164743569,
+        "delta_max_s": -1.0988454164743569,
+        "description": "mean over 10 measurements within input, then equal-weight mean over inputs; range across p2/p3"
+      },
+      {
+        "scale": "R3",
+        "delivery_stops": 25,
+        "physical_inputs": 78,
+        "delta_min_s": 564.5719273918795,
+        "delta_max_s": 571.4508238582782,
+        "description": "mean over 10 measurements within input, then equal-weight mean over inputs; range across p2/p3"
+      },
+      {
+        "scale": "R4",
+        "delivery_stops": 100,
+        "physical_inputs": 78,
+        "delta_min_s": 4459.7720200512495,
+        "delta_max_s": 4469.216905897764,
+        "description": "mean over 10 measurements within input, then equal-weight mean over inputs; range across p2/p3"
+      },
+      {
+        "scale": "R5",
+        "delivery_stops": 125,
+        "physical_inputs": 70,
+        "delta_min_s": 5975.1015748295185,
+        "delta_max_s": 5983.270188094924,
+        "description": "mean over 10 measurements within input, then equal-weight mean over inputs; range across p2/p3"
+      }
+    ],
+    "configuration_results": [
+      {
+        "config_id": "ACTIVE_ADJACENT_P3_GRID",
+        "inputs": 460,
+        "references": 4600,
+        "mean_delta_s": 0.0,
+        "mean_gap_percent": 1.6172432488755497,
+        "improving_inputs": 0,
+        "equal_inputs": 460,
+        "worse_inputs": 0,
+        "all_route_equal_initial": true,
+        "optimal_reference_matches": 2300,
+        "exact_reference_rows": 4070
+      },
+      {
+        "config_id": "COHERENT2_P2",
+        "inputs": 460,
+        "references": 4600,
+        "mean_delta_s": 0.0,
+        "mean_gap_percent": 1.6172432488755497,
+        "improving_inputs": 0,
+        "equal_inputs": 460,
+        "worse_inputs": 0,
+        "all_route_equal_initial": true,
+        "optimal_reference_matches": 2300,
+        "exact_reference_rows": 4070
+      },
+      {
+        "config_id": "COHERENT4_P2",
+        "inputs": 460,
+        "references": 4600,
+        "mean_delta_s": 0.0,
+        "mean_gap_percent": 1.6172432488755497,
+        "improving_inputs": 0,
+        "equal_inputs": 460,
+        "worse_inputs": 0,
+        "all_route_equal_initial": true,
+        "optimal_reference_matches": 2300,
+        "exact_reference_rows": 4070
+      },
+      {
+        "config_id": "CVAR01_P2",
+        "inputs": 460,
+        "references": 4600,
+        "mean_delta_s": 0.0,
+        "mean_gap_percent": 1.6172432488755497,
+        "improving_inputs": 0,
+        "equal_inputs": 460,
+        "worse_inputs": 0,
+        "all_route_equal_initial": true,
+        "optimal_reference_matches": 2300,
+        "exact_reference_rows": 4070
+      },
+      {
+        "config_id": "CVAR10_P2",
+        "inputs": 460,
+        "references": 4600,
+        "mean_delta_s": 0.0,
+        "mean_gap_percent": 1.6172432488755497,
+        "improving_inputs": 0,
+        "equal_inputs": 460,
+        "worse_inputs": 0,
+        "all_route_equal_initial": true,
+        "optimal_reference_matches": 2300,
+        "exact_reference_rows": 4070
+      },
+      {
+        "config_id": "GROVER_P2",
+        "inputs": 460,
+        "references": 4600,
+        "mean_delta_s": 1765.0060775364782,
+        "mean_gap_percent": 67.42886180273915,
+        "improving_inputs": 7,
+        "equal_inputs": 227,
+        "worse_inputs": 226,
+        "all_route_equal_initial": false,
+        "optimal_reference_matches": 2340,
+        "exact_reference_rows": 4070
+      },
+      {
+        "config_id": "GROVER_P3",
+        "inputs": 460,
+        "references": 4600,
+        "mean_delta_s": 1760.995081995205,
+        "mean_gap_percent": 67.25276298316662,
+        "improving_inputs": 7,
+        "equal_inputs": 227,
+        "worse_inputs": 226,
+        "all_route_equal_initial": false,
+        "optimal_reference_matches": 2340,
+        "exact_reference_rows": 4070
+      },
+      {
+        "config_id": "MEAN_P2",
+        "inputs": 460,
+        "references": 4600,
+        "mean_delta_s": 0.0,
+        "mean_gap_percent": 1.6172432488755497,
+        "improving_inputs": 0,
+        "equal_inputs": 460,
+        "worse_inputs": 0,
+        "all_route_equal_initial": true,
+        "optimal_reference_matches": 2300,
+        "exact_reference_rows": 4070
+      }
+    ],
+    "cpu_time_example": [
+      {
+        "config_id": "GROVER_P3",
+        "delivery_stops": 25,
+        "scope": "FIT",
+        "mean_seconds": 0.8884206184003955,
+        "unique_fits": 78,
+        "meaning": "CPU工程別壁時計時間; 量子実機時間・総求解時間ではない"
+      },
+      {
+        "config_id": "GROVER_P3",
+        "delivery_stops": 25,
+        "scope": "FINAL_VALIDATION",
+        "mean_seconds": 168.7453417102687,
+        "unique_fits": 78,
+        "meaning": "CPU工程別壁時計時間; 量子実機時間・総求解時間ではない"
+      }
+    ]
+  },
+  "material": {
+    "main_trajectories": 460,
+    "energy_full_rows": 4464,
+    "pair_rows": 2976,
+    "mass_DC": [
+      {
+        "case": "CRR_LOWER_BOUND",
+        "trajectories": 460,
+        "LP_pack_kg": 96.14565479871602,
+        "S_pack_kg": 90.6973573836391,
+        "mass_difference_kg": 5.448297415076922,
+        "LP_running_kg": 1140.0345436876048,
+        "S_running_kg": 1134.586246272528,
+        "LP_DC_sum_Wh": 1440101.3697978756,
+        "S_DC_sum_Wh": 1434159.8138224941,
+        "DC_difference_Wh": 5941.555975381518,
+        "battery_reduction_percent": 5.666712059409347,
+        "running_reduction_percent": 0.47790634461422765,
+        "DC_reduction_percent": 0.412579010060621,
+        "q_reference_LP_Ah_kg": 171.875,
+        "q_reference_S_Ah_kg": 195.95959595959596,
+        "ratio_battery_to_running": 0.08433573818537037,
+        "ratio_running_to_DC": 0.863305153217123,
+        "ratio_battery_to_DC": 0.07280747737580033,
+        "ratio_q_to_DC": 0.029442892657668168
+      },
+      {
+        "case": "CRR_UPPER_BOUND",
+        "trajectories": 460,
+        "LP_pack_kg": 96.14565479871602,
+        "S_pack_kg": 90.6973573836391,
+        "mass_difference_kg": 5.448297415076922,
+        "LP_running_kg": 1140.0345436876048,
+        "S_running_kg": 1134.586246272528,
+        "LP_DC_sum_Wh": 1475380.7429788818,
+        "S_DC_sum_Wh": 1469278.7096898903,
+        "DC_difference_Wh": 6102.033288991544,
+        "battery_reduction_percent": 5.666712059409347,
+        "running_reduction_percent": 0.47790634461422765,
+        "DC_reduction_percent": 0.4135904116974697,
+        "q_reference_LP_Ah_kg": 171.875,
+        "q_reference_S_Ah_kg": 195.95959595959596,
+        "ratio_battery_to_running": 0.08433573818537037,
+        "ratio_running_to_DC": 0.8654214708769463,
+        "ratio_battery_to_DC": 0.07298595858787628,
+        "ratio_q_to_DC": 0.029515069353770934
+      }
+    ],
+    "component_rows": 183,
+    "component_status_counts": {
+      "HOLD_COMPLETE_PACK_MASS": 182,
+      "FAIL_FULL_OPPOSING_FOOTPRINT": 1
+    },
+    "all_complete_pack_values_missing": true,
+    "component_boundaries": [
+      {
+        "condition_id": "T09_ROW_031",
+        "policy": "fixed_loading",
+        "known_mass_difference_kg": 9.722608121107783,
+        "condition": "DeltaM=b-delta; delta=b gives zero; NOT a measured full-pack feasibility threshold"
+      },
+      {
+        "condition_id": "T09_ROW_079",
+        "policy": "fixed_area_LP",
+        "known_mass_difference_kg": 5.977891152148885,
+        "condition": "DeltaM=b-delta; delta=b gives zero; NOT a measured full-pack feasibility threshold"
+      }
+    ],
+    "bridge_rows": 25760
+  },
+  "interpretation": {
+    "transmission_ratios": "Finite relative-change ratios under specified model inputs; not derivatives, empirical mediation coefficients, or quantum-effect sizes",
+    "hardware": "No hardware-qubit/compiled-depth/gate records; ideal model layers are not compiled circuit depth",
+    "computation": "CPU numerical evaluation of Grover-mixer QAOA cost-phase/rank-one mixing; not marked-item Grover search"
+  }
+}

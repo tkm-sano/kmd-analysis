@@ -1,0 +1,57 @@
+Create a JAPANESE SCIENTIFIC CONFERENCE RESEARCH POSTER. A1 portrait ratio 594:841. Flat full-page printable poster artwork. This must look like an actual graduate research poster at an academic conference: restrained, text-and-figure based, clear scholarly organization. NOT an infographic, NOT a marketing poster, NOT a magazine cover. High resolution and accurate readable Japanese text.
+
+DESIGN:
+White background only, black body text, minimal thin gray dividers, plain dark navy section headings with thin rules, no colored heading backgrounds, no rounded cards, no oversized numbers, no icons, no decorative illustrations, no maps, no gradients, no slogans, no shadows. Thin muted blue and rust colors ONLY within scientific diagrams and plots. Japanese sans-serif with regular body weight, restrained bold headings. Title at top about 7% of page height, normal research title font. Small author placeholder line「発表者氏名・所属：記入欄」. Three balanced academic columns separated by wide white gutters. Header spans all columns. Bottom conclusion spans all columns. Approximately 45% text, 40% figures, 15% whitespace. Scientific figure captions, axis labels, condition notes. No fake QR, no invented authors or references. Render all text given below accurately, prioritize readable proper Japanese. Use a deliberately understated typical Japanese scientific conference poster aesthetic. Make scientific information main visual feature, no hero illustration.
+
+HEADER
+Title two lines:
+「量子技術がEV配送の成果に及ぼす」
+「影響の成立条件に関する定量的検討」
+Subtitle「配送計画と電池材料を介した二つの経路の分析」
+「発表者氏名・所属：記入欄」
+
+LEFT COLUMN:
+Heading「1．研究背景・目的」
+Paragraph「量子技術による計算性能や材料特性の変化が、配送需要の充足と運用電力量にどのようにつながるかは明確でない。本研究は、配送計画と電池材料の二つの経路について、技術的な差が成果へ伝達される条件と、効果が消失・相殺・逆転する条件を検討する。」
+Heading「2．評価する経路」
+A simple two-row scientific flow diagram in thin outlined boxes, white fill, small text:
+「計算方法」→「計画取得・採用」→「配送完了」→「定時率」
+「材料特性」→「電池設計」→「車両質量」→「走行電力量」
+Use dashed upstream arrows for unverified quantum technology links. Caption「図1　評価経路と証拠の到達範囲。量子技術の寄与とモデル内の感度を区別する。」
+Heading「3．研究方法」
+Three paragraphs:
+「配送評価：78問題×36政策条件を対象に、QAOA計画の採用と古典計画への切替を集計した。固定OD・サービス時間102秒の下で、配送完了時刻と定時率を比較した。」
+「計画比較：460入力・8設定について保存計画を比較した。計算時間は学習と最終検証を分けて扱った。」
+「材料評価：既知部材と未知部材の質量差を分け、旧460速度軌跡を固定して走行電力量への感度を評価した。」
+At bottom small plain table with header「評価系列｜主な対象｜評価範囲」 and rows「配送｜78問題×36条件｜固定OD」「計画｜460入力・8設定｜保存計画」「材料｜旧460軌跡｜固定速度」
+
+MIDDLE COLUMN:
+Heading「4．結果：配送計画」
+Paragraph「2,808判断のうちQAOA採用は1,344、古典切替は1,464であった。訪問順や出発時刻は配送完了時刻を変化させたが、全政策条件の定時率は100%、古典単独との差は0 ppであった。」
+Small plain scientific bar plot horizontal with two labeled bars「QAOA採用 1,344」「古典切替 1,464」 with axis counts 0 to1600. Caption「図2　政策条件における計画採用の内訳。」
+Subheading「早着待機による出発遅延の吸収」
+Two modest thin timeline rows clearly drawn as conceptual, label「模式図」:
+top「基準」 with drive then longer early waiting to common completion marker; bottom「出発遅延」 starts later drive same duration then shorter wait and aligned completion marker. Label segments「走行」「早着待機」「配達完了」. Horizontal axis「時刻」. NO made-up measured values.
+Caption「図3　出発遅延が早着待機に吸収される機構。」
+Paragraph「同一経路で出発のみを遅らせた正の遅延768条件では、最終配送先までに遅延がすべて吸収された。全政策の最小期限余裕は3,133.462秒（約52.2分）であった。」
+Subheading「計画比較の補足」
+Paragraph「時間窓なしの比較では6設定が保存古典初期解と一致した。Grover方式には小規模の改善例があった一方、大規模側では平均目的値が悪化した。支持・予算・CPU実装が異なるため、一般的な量子優位性は結論しない。」
+Bottom interpretation as plain text, no card:
+「解釈：待機と期限余裕が大きい条件では、技術的な差が定時率差として現れない。」
+
+RIGHT COLUMN:
+Heading「5．結果：電池材料」
+Paragraph「簡略質量モデルでは約5.45 kgの質量差が、下側の転がり抵抗係数条件で総量加重約0.413%の走行電力量差に対応した。速度固定・回生なし・補機なしの条件付き結果である。」
+Subheading「未知部材による相殺・逆転」
+A conventional academic Cartesian plot white background thin black axes and light gray horizontal grid. x axis label「未知部材の追加質量差 δ（kg）」 ticks 0,2,4,6,8,10,12. y axis label「正味軽量化（kg）」 ticks -6,-4,-2,0,2,4,6,8,10. Plot two correctly descending straight lines y=9.72−δ (muted rust), y=5.98−δ (muted blue). Legend「固定担持」「固定面積」. Horizontal zero reference line. Intercepts marked at 9.72 and 5.98. No colored background areas. Below caption「図4　代表設計の既知部材差と未知部材差の関係。正値は軽量化、負値は重量増加を示す。」
+Paragraph「代表設計の既知部材差は固定担持で約9.72 kg、固定面積で約5.98 kgであった。未知部材の追加質量差がこの値に達すると正味軽量化は相殺され、超えると重量増加へ逆転する。」
+Heading「6．考察・限界」
+Paragraph「配送では計画の採用、早着待機、期限余裕が成果への伝達を左右した。材料では設計方針と未知部材が軽量化の符号を左右した。」
+Paragraph「結果は固定入力・指定モデルに条件付けられる。完成パック性能、実交通、実車電力量は未検証であり、材料参照値は量子計算による材料改善の実証値ではない。」
+
+BOTTOM full width, plain top horizontal navy rule, around 13% page:
+Heading「7．結論」
+Paragraph「技術的な差が存在しても、運用・設計条件によって配送成果への効果は消失・相殺・逆転し得る。本研究は、その境界を保存証拠と条件付き分析に対応付けた。量子優位性や実配送の改善を実証したものではない。」
+Small next-step line「今後の課題：実交通・サービス条件の校正、比較可能な計算予算の保存、実用電池の全部材情報の整備。」
+Very small footer「出典：研究内の固定OD評価・保存計画比較・材料質量感度分析（2026年11月2日集計）。」
+No other text. Ensure a serious scholarly poster with moderate academic text density, not a colorful explanatory infographic.

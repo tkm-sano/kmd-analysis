@@ -1,0 +1,595 @@
+{
+  "status": "PASS",
+  "checks": 13,
+  "failed_checks": 0,
+  "global_reference_coverage": [
+    {
+      "n": 3,
+      "scale": "R0",
+      "inputs": 78,
+      "global_exact": 78,
+      "not_proven": 0,
+      "reason": "",
+      "not_proven_configs": "全8設定で同じ入力が参照欠測"
+    },
+    {
+      "n": 4,
+      "scale": "R1",
+      "inputs": 78,
+      "global_exact": 78,
+      "not_proven": 0,
+      "reason": "",
+      "not_proven_configs": "全8設定で同じ入力が参照欠測"
+    },
+    {
+      "n": 5,
+      "scale": "R2",
+      "inputs": 78,
+      "global_exact": 78,
+      "not_proven": 0,
+      "reason": "",
+      "not_proven_configs": "全8設定で同じ入力が参照欠測"
+    },
+    {
+      "n": 25,
+      "scale": "R3",
+      "inputs": 78,
+      "global_exact": 78,
+      "not_proven": 0,
+      "reason": "",
+      "not_proven_configs": "全8設定で同じ入力が参照欠測"
+    },
+    {
+      "n": 100,
+      "scale": "R4",
+      "inputs": 78,
+      "global_exact": 57,
+      "not_proven": 21,
+      "reason": "EXACT_BOUND_WITNESS_MISMATCH",
+      "not_proven_configs": "全8設定で同じ入力が参照欠測"
+    },
+    {
+      "n": 125,
+      "scale": "R5",
+      "inputs": 70,
+      "global_exact": 38,
+      "not_proven": 32,
+      "reason": "EXACT_BOUND_WITNESS_MISMATCH",
+      "not_proven_configs": "全8設定で同じ入力が参照欠測"
+    }
+  ],
+  "normalized_scale_results": [
+    {
+      "scale": "R0",
+      "n": 3,
+      "config_id": "ACTIVE_ADJACENT_P3_GRID",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R0",
+      "n": 3,
+      "config_id": "COHERENT2_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R0",
+      "n": 3,
+      "config_id": "COHERENT4_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R0",
+      "n": 3,
+      "config_id": "CVAR01_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R0",
+      "n": 3,
+      "config_id": "CVAR10_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R0",
+      "n": 3,
+      "config_id": "GROVER_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R0",
+      "n": 3,
+      "config_id": "GROVER_P3",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R0",
+      "n": 3,
+      "config_id": "MEAN_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R1",
+      "n": 4,
+      "config_id": "ACTIVE_ADJACENT_P3_GRID",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R1",
+      "n": 4,
+      "config_id": "COHERENT2_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R1",
+      "n": 4,
+      "config_id": "COHERENT4_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R1",
+      "n": 4,
+      "config_id": "CVAR01_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R1",
+      "n": 4,
+      "config_id": "CVAR10_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R1",
+      "n": 4,
+      "config_id": "GROVER_P2",
+      "inputs": 78,
+      "mean_delta_s": -0.16013433783333403,
+      "mean_relative_delta_percent": -0.018801019092304035,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R1",
+      "n": 4,
+      "config_id": "GROVER_P3",
+      "inputs": 78,
+      "mean_delta_s": -0.16013433783333403,
+      "mean_relative_delta_percent": -0.018801019092304035,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R1",
+      "n": 4,
+      "config_id": "MEAN_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R2",
+      "n": 5,
+      "config_id": "ACTIVE_ADJACENT_P3_GRID",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R2",
+      "n": 5,
+      "config_id": "COHERENT2_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R2",
+      "n": 5,
+      "config_id": "COHERENT4_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R2",
+      "n": 5,
+      "config_id": "CVAR01_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R2",
+      "n": 5,
+      "config_id": "CVAR10_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R2",
+      "n": 5,
+      "config_id": "GROVER_P2",
+      "inputs": 78,
+      "mean_delta_s": -1.0988454164743569,
+      "mean_relative_delta_percent": -0.10142126140448128,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R2",
+      "n": 5,
+      "config_id": "GROVER_P3",
+      "inputs": 78,
+      "mean_delta_s": -1.0988454164743569,
+      "mean_relative_delta_percent": -0.10142126140448128,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R2",
+      "n": 5,
+      "config_id": "MEAN_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R3",
+      "n": 25,
+      "config_id": "ACTIVE_ADJACENT_P3_GRID",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R3",
+      "n": 25,
+      "config_id": "COHERENT2_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R3",
+      "n": 25,
+      "config_id": "COHERENT4_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R3",
+      "n": 25,
+      "config_id": "CVAR01_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R3",
+      "n": 25,
+      "config_id": "CVAR10_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R3",
+      "n": 25,
+      "config_id": "GROVER_P2",
+      "inputs": 78,
+      "mean_delta_s": 571.4508238582782,
+      "mean_relative_delta_percent": 37.32304058604148,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R3",
+      "n": 25,
+      "config_id": "GROVER_P3",
+      "inputs": 78,
+      "mean_delta_s": 564.5719273918795,
+      "mean_relative_delta_percent": 36.87687634842981,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R3",
+      "n": 25,
+      "config_id": "MEAN_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R4",
+      "n": 100,
+      "config_id": "ACTIVE_ADJACENT_P3_GRID",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R4",
+      "n": 100,
+      "config_id": "COHERENT2_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R4",
+      "n": 100,
+      "config_id": "COHERENT4_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R4",
+      "n": 100,
+      "config_id": "CVAR01_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R4",
+      "n": 100,
+      "config_id": "CVAR10_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R4",
+      "n": 100,
+      "config_id": "GROVER_P2",
+      "inputs": 78,
+      "mean_delta_s": 4469.216905897764,
+      "mean_relative_delta_percent": 224.40004821763353,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R4",
+      "n": 100,
+      "config_id": "GROVER_P3",
+      "inputs": 78,
+      "mean_delta_s": 4459.7720200512495,
+      "mean_relative_delta_percent": 223.9297987798728,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R4",
+      "n": 100,
+      "config_id": "MEAN_P2",
+      "inputs": 78,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R5",
+      "n": 125,
+      "config_id": "ACTIVE_ADJACENT_P3_GRID",
+      "inputs": 70,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R5",
+      "n": 125,
+      "config_id": "COHERENT2_P2",
+      "inputs": 70,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R5",
+      "n": 125,
+      "config_id": "COHERENT4_P2",
+      "inputs": 70,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R5",
+      "n": 125,
+      "config_id": "CVAR01_P2",
+      "inputs": 70,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R5",
+      "n": 125,
+      "config_id": "CVAR10_P2",
+      "inputs": 70,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R5",
+      "n": 125,
+      "config_id": "GROVER_P2",
+      "inputs": 70,
+      "mean_delta_s": 5983.270188094924,
+      "mean_relative_delta_percent": 292.01388669678244,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R5",
+      "n": 125,
+      "config_id": "GROVER_P3",
+      "inputs": 70,
+      "mean_delta_s": 5975.1015748295185,
+      "mean_relative_delta_percent": 291.59794368852965,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    },
+    {
+      "scale": "R5",
+      "n": 125,
+      "config_id": "MEAN_P2",
+      "inputs": 70,
+      "mean_delta_s": 0.0,
+      "mean_relative_delta_percent": 0.0,
+      "aggregation": "mean_i(mean_rep(100*(J_best-J_initial)/J_initial)); not ratio of scale means",
+      "interpretation": "保存データからの派生算術。新しい実験ではない。"
+    }
+  ],
+  "improving_input_ids": [
+    "R1_020",
+    "R2_027",
+    "R2_030",
+    "R2_032",
+    "R2_033",
+    "R2_051",
+    "R2_078"
+  ],
+  "time_scopes": [
+    {
+      "stage": "学習",
+      "scope": "FIT",
+      "records": 78,
+      "mean_wall_s": 0.8884206184003955,
+      "status": "A 保存工程時間",
+      "meaning": "CPU工程の壁時計時間。25配送先、GM-QAOA層数3。10測定反復へ重複させない。"
+    },
+    {
+      "stage": "最終状態・精度検証",
+      "scope": "FINAL_VALIDATION",
+      "records": 78,
+      "mean_wall_s": 168.7453417102687,
+      "status": "A 保存工程時間",
+      "meaning": "CPU工程の壁時計時間。25配送先、GM-QAOA層数3。10測定反復へ重複させない。"
+    },
+    {
+      "stage": "候補生成・8192標本の取得",
+      "scope": "HOLD",
+      "records": 0,
+      "mean_wall_s": "",
+      "status": "C 比較可能な工程値未確認",
+      "meaning": "統一した工程の範囲・実験当時環境・共通予算が未確認。欠けた工程を推定で合算しない。"
+    },
+    {
+      "stage": "前処理",
+      "scope": "HOLD",
+      "records": 0,
+      "mean_wall_s": "",
+      "status": "C 比較可能な工程値未確認",
+      "meaning": "統一した工程の範囲・実験当時環境・共通予算が未確認。欠けた工程を推定で合算しない。"
+    },
+    {
+      "stage": "全工程",
+      "scope": "HOLD",
+      "records": 0,
+      "mean_wall_s": "",
+      "status": "C 比較可能な工程値未確認",
+      "meaning": "統一した工程の範囲・実験当時環境・共通予算が未確認。欠けた工程を推定で合算しない。"
+    }
+  ],
+  "scientific_runners_invoked": 0
+}

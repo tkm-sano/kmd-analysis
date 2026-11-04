@@ -1,0 +1,1119 @@
+                                            An Advanced Hybrid Quantum Tabu Search
+                                              Approach to Vehicle Routing Problems
+                                                James B. Holliday1,2*, Eneko Osaba3 and Khoa Luu1*
+                                          1* EECS Department, University of Arkansas,            Fayetteville, AR, USA.
+                                                              2 J. B. Hunt Inc., Lowell, AR, USA.
+                                         3 TECNALIA, Basque Research and Technology Alliance (BRTA), 48160
+arXiv:2501.12652v2 [cs.ET] 17 Dec 2025
+
+
+
+
+                                                                           Derio, Spain.
+
+
+                                                 *Corresponding author(s). E-mail(s): jbhollid@uark.edu;
+                                                                  khoaluu@uark.edu;
+                                                    Contributing authors: eneko.osaba@tecnalia.com;
+
+
+                                                                             Abstract
+                                           Quantum computing (QC) is expected to solve incredibly difficult problems,
+                                           including finding optimal solutions to combinatorial optimization problems. How-
+                                           ever, to date, QC alone has still not been able to demonstrate this capability
+                                           except for small-sized problems. Hybrid approaches, where QC and classical com-
+                                           puting work together, have shown the most potential for solving real-world-scale
+                                           problems. This work aims to show that we can enhance a classical optimiza-
+                                           tion algorithm with QC so that it can overcome this limitation. We present
+                                           a new Hybrid Quantum-classical Tabu Search (HQTS) algorithm to solve the
+                                           Capacitated Vehicle Routing Problem (CVRP). Based on our prior work, HQTS
+                                           leverages QC for routing within a classical tabu search framework. The quantum
+                                           component formulates the Traveling Salesman Problem (TSP) for each route as a
+                                           Quadratic Unconstrained Binary Optimization (QUBO), solved using D-Wave’s
+                                           Advantage system. Experiments investigate the impact of quantum routing fre-
+                                           quency and starting solution methods. While different starting solution methods,
+                                           including quantum-based and classical heuristics methods, it shows minimal over-
+                                           all impact. HQTS achieved optimal or near-optimal solutions for several CVRP
+                                           problems, outperforming other hybrid CVRP algorithms and significantly reduc-
+                                           ing the optimality gap compared to preliminary research. The experimental
+                                           results demonstrate that more frequent quantum routing improves solution qual-
+                                           ity and runtime. The findings highlight the potential of integrating QC within
+                                           meta-heuristic frameworks for complex optimization in vehicle routing problems.
+
+
+
+
+                                                                                  1
+     Keywords: quantum optimization, hybrid quantum/classical algorithms,
+     meta-heuristic, vehicle routing, tabu search
+
+
+
+
+1 Introduction
+The current era of Quantum Computing (QC) has brought significant attention. Even
+outside the immediately related fields, many industries are interested in QC. Indus-
+tries where quantum could create significant disruption if the quantum advantage is
+achievable, and the transportation industry is one of them. Many transportation indus-
+try problems are considered some of the hardest known problems to solve, including
+NP-hard problems such as the Traveling Salesman Problem (TSP) and the Vehicle
+Routing Problem (VRP). QC boasts that it will be able to solve problems like these
+much better and faster than classical approaches [1].
+     Although TSPs and VRPs have been extensively studied for many years, they
+remain an interesting problem due to their direct connection to the transportation
+industry. Transportation companies like J.B. Hunt Inc. must address these issues daily
+as part of their standard operations, and QC research is already focusing on these
+problems [2]. In simple terms, the TSP aims to find a tour or route for a salesperson to
+visit a distinct set of locations while traveling the shortest distance possible. The main
+difference between the TSP and the VRP is that while the TSP creates a single route
+to visit all the locations, the VRP allows multiple routes to be used to visit all the
+locations. These different routes are represented as distinct vehicles. There are many
+ways to find reasonable solutions to these problems, and achieving near-optimality is
+still valuable for many industry use cases. However, in this work, we aim to discover
+whether we can find optimal solutions using a hybrid QC algorithm.
+     This era of QC is most commonly known as the Noisy Intermediate-Scale Quantum
+(NISQ) era. It is called noisy because the quantum computers of this era produce high
+error rates. Intermediate-Scale means these same computers do not yet contain many
+qubits. Most research around solving industry problems relies on toy versions, so the
+limited number of qubits is sufficient to map the complete problem onto quantum
+computers. A full CVRP formulation would demand O(n2 ) variables, exceeding 10,000
+qubits for a problem with just one hundred locations. Other research points to a
+different direction, where hybrid quantum/classical algorithms are used so that the
+problems can scale larger. Hybrid algorithms allow portions of the problem to be
+solved classically, while other portions can be solved using the quantum computer. It
+can be done so that only some of a given problem needs to be mapped at any given
+time, reducing the number of qubits required for the quantum computation.
+     Our Contributions in this Work: In this article, we explore ways to enhance a
+hybrid quantum/classical algorithm by strengthening its quantum components. The
+proposed algorithm will be further extended from our preliminary research work [3],
+where we introduced a hybrid algorithm to solve the CVRP. The main refinements
+made over the previous version of the method include the alternative starting solutions
+and the frequency of quantum routing. Our refined algorithm significantly improves
+the preliminary results and outperforms other hybrid quantum algorithms, achieving a
+
+
+                                            2
+lower overall deviation from optimal solutions. Notably, the optimal and near-optimal
+solutions are found for several problems, with one case being only 0.03% away from
+the optimum. To achieve these results, we investigate the impact of varying the fre-
+quency of quantum routing within a tabu search (TS) algorithm. New results show
+that more frequent use of QC leads to faster convergence to better solutions. We also
+examine the effect of different starting solutions, including classical heuristics, cluster-
+ing techniques, and quantum-generated solutions. While results suggest that simpler
+classical heuristics can be effective starting points, our study does not conclusively
+demonstrate superiority over quantum-generated solutions. We provide runtime data
+for the algorithm on various problem sizes, offering insights into the computational
+cost of the hybrid approach. We highlight the limitations of other hybrid approaches
+for the VRP, particularly when dealing with realistic datasets where optimal routes
+do not conform to simple cluster structures. Our proposed algorithm demonstrates
+better performance in these scenarios.
+    The remainder of this article is organized as follows. Section 2 will review the back-
+ground related to this research, including formal definitions. Section 3 will introduce
+our algorithm and explain how it was enhanced based on our preliminary research.
+Section 4 will focus on our experimental setup and results. Finally, Section 5 will
+contain the conclusions.
+
+2 Background
+In this section, we provide definitions, including the capacitated vehicle routing prob-
+lem and adiabatic quantum computing. We then discuss ways to solve optimization
+problems classically and using QC. Lastly, we explore hybrid approaches to solving
+the CVRP that use both classical and QC methods.
+
+2.1 Definitions
+2.1.1 Vehicle Routing Problem (VRP)
+The VRP is formally defined as an NP-hard combinatorial optimization problem with
+a directed graph G = (V, E), where V = {0, 1, ..., n} is the set of locations and
+E = {(vi , vj ) : vi , vj ∈ V, i ̸= j)} is the set of edges between the locations. Location v0
+is not a delivery location but is the depot where the routes begin and end. The set or
+fleet of vehicles is K. We will discuss constraints around vehicles in the next section.
+There is also a cost matrix over the edges C = (cij )n×n . The cost is defined as the
+distance between two locations in the graph.
+    In order to solve the VRP, we must create at most |K| routes that start and end
+at the depot location and minimize total cost. For simplicity, we will say the set N
+is equal to V , except that it does not contain the depot, v0 . xijk is defined as the
+binary variable x for an edge between location i and location j on vehicle k. Let uik
+be an integer variable representing the visit position of location i on vehicle k ′ s route.
+We can mathematically represent this problem as a minimization problem with the
+
+
+
+
+                                              3
+constraints as follows,
+                                            X XX
+                                      min                 cij xijk                   (1)
+                                            k∈K i∈V j∈V
+
+
+s. t.
+                  XX
+                           xijk = 1         ∀i ∈ V                                   (2)
+                 k∈K j∈V
+                  X
+                       x0jk = 1       ∀k ∈ K                                         (3)
+                 j∈N
+                 X
+                       xi0k = 1       ∀k ∈ K                                         (4)
+                 i∈N
+                 X              X
+                       xijk −         xjik = 0       ∀j ∈ N, k ∈ K                   (5)
+                 i∈N            i∈N
+                 2 ≤ uik ≤ N          ∀i ∈ N, k ∈ K                                  (6)
+                 uik − ujk + 1 ≤ (N − 1)(1 − xijk )             ∀i, j ∈ N, k ∈ K     (7)
+                 xijk ∈ {0, 1}                                                       (8)
+
+In this equation, (1) is the minimization function subject to additional constraints.
+Constraint (2) ensures that each location is visited by only one vehicle. Constraints (3)
+and (4) ensure that each route on each vehicle starts and ends at the depot. Constraint
+(5) ensures that the number of entries into a location equals the number of exits.
+Constraints (6) and (7) prevent sub-tours using the Miller-Tucker-Zemlin formulation
+[4], ensuring routes are connected to the depot without disconnected cycles. Constraint
+(8) defines the primary binary decision variable.
+
+2.1.2 Variants of the Vehicle Routing Problem
+The CVRP is the VRP variant we focus on in this research. The CVRP introduces a
+constraint, such that each vehicle’s assigned route must adhere to a capacity constraint
+Q. Therefore, the sum of each location on the route’s demand q must be less than or
+equal to the vehicle’s value for Q. Homogeneous fleet and heterogeneous fleet variations
+exist for a fixed value of Q or a dynamic value of Q per vehicle. In this research, Q is
+a fixed value for each vehicle.
+                               X X
+                                   qi    xijk ≤ Q ∀k ∈ K                             (9)
+                                i∈V     j∈V
+
+
+The constraint in Eqn. (9) limits the customers on each vehicle k so that the capacity
+of the vehicle is not exceeded. This constraint is added to the list of constraints from
+the previous section to fully define the CVRP.
+
+
+
+
+                                                     4
+2.1.3 Adiabatic Quantum Computing
+Today, we can distinguish between two types of real quantum devices, including
+gate-based quantum systems and quantum annealers. On the one hand, a gate-based
+computer uses qubits to perform simple quantum circuit operations, similar to the
+classical operations on regular bits. It may be joined in any order to form algorithms.
+A common term for this form is universal quantum computer.
+    On the other hand, a quantum annealer operates on the principle of adiabatic com-
+putation, where an initially simple Hamiltonian is gradually evolved from its ground
+state to the ground state of a final, problem-specific Hamiltonian. If the Hamilto-
+nian evolves slowly enough, the adiabatic theorem ensures that the system stays in
+the ground state throughout the entire computation. A quantum annealing process
+starts by representing the problem as an energy landscape. At the outset, the quan-
+tum system is set up in a superposition of all potential solutions, corresponding to a
+high-energy state. As the system progresses, the Hamiltonian is modified, enabling the
+system to navigate the energy landscape. The objective is to steer the system towards
+the lowest energy state, representing the optimal solution to the problem.
+    In quantum annealers, the adiabatic theorem is deliberately relaxed, permitting the
+system to evolve faster than the adiabatic limit would typically allow. Consequently,
+transitions to high-energy states often happen along the evolution. To address this
+situation, innovative methods for reaching adiabaticity have been introduced in the
+literature [5, 6].
+    Finally, although this computational model is also universal [7], the D-Wave quan-
+tum annealer, employed in this research work, relies on an Ising Hamiltonian, which
+limits the types of problems that can be executed on the device. Nevertheless, this type
+of device is particularly suited for solving combinatorial optimization problems [8].
+
+2.2 Classical Optimization
+Route planning is a prominent topic in artificial intelligence due to its significant
+scientific and social implications. First, these problems are of great scientific inter-
+est because they often involve high computational complexity. As NP-Hard problems,
+solving them presents a significant challenge for the scientific community. Secondly,
+routing problems are typically designed to address real-world scenarios in logistics
+and transportation, making their efficient resolution beneficial both socially and
+commercially.
+     Numerous methods have been proposed in the literature to tackle these problems
+efficiently. The most successful methods include exact, heuristic, and meta-heuristic
+methods [9]. Among them, arguably, meta-heuristics are the most popular methods
+[10]. Meta-heuristics explore the solution space to obtain effective optimization results
+without depending on the specifics of the problem. It makes them especially well-
+suited for addressing real-world problems with complex formulations, as they do not
+require detailed problem-specific information to explore the feasible solution space.
+     Furthermore, meta-heuristics can also be categorized into search-based algorithms
+and constructive algorithms. Search-based techniques begin with an initial complete
+solution or a set of complete solutions, then are modified until a final solution is
+
+
+                                           5
+reached. In contrast, constructive algorithms begin with a partial solution or a set of
+partial solutions, incrementally built until a complete solution is achieved.
+    Literature features a wide variety of meta-heuristics. As the primary aim of this
+research is not to provide an in-depth description of these kinds of algorithms, we
+recommend readers refer to [11] for a comprehensive list of over 100 meta-heuristic
+approaches.
+
+2.3 Quantum Optimization
+QC signifies a groundbreaking advancement in computation, leveraging principles from
+quantum physics to handle information in entirely new ways. Currently, the field is
+highly anticipated because of its potential to address problems that classical computers
+find insurmountable, particularly in cryptography, drug discovery, and optimization.
+This paper concentrates explicitly on the optimization aspect.
+    Today, several approaches are being investigated in quantum optimization, with
+quantum annealing (QA) [12] and variational quantum algorithms, such as the quan-
+tum approximate optimization algorithm (QAOA) [13], being among the most notable.
+Despite significant progress, quantum computers are still in their early stages com-
+pared to classical computers. They face challenges in efficiently solving problems due
+to their capacity and inherent instability. As a result, we are in the noisy intermediate-
+scale quantum (NISQ) era [14], characterized by the limitations of these devices in
+effectively handling complex problems.
+    Despite these challenges, recent studies have increased in number over the past few
+years, focusing on solving real-world problems using QC. This increase in publications
+highlights the community’s growing interest in exploring the applications of quantum
+devices. Several factors have contributed to this intriguing development. Two of these
+factors have likely had the most influence, including the advancements in QC democra-
+tization [15] and the development of increasingly larger and better-connected devices.
+A primary example of the latter is D-Wave Systems’ Advantage System, which com-
+prises 5,616 qubits arranged in a Pegasus topology [16]. This system is currently the
+most widely used for solving optimization problems.
+    Turning our attention to the topic addressed in this paper, research focused on
+routing problems using QC has been highly prolific, with academic problems such as
+the Vehicle Routing Problem (VRP) [17] and the Traveling Salesman Problem (TSP)
+[18] being the most extensively studied cases. Notably, the survey by Osaba et al. [2]
+highlights that this new paradigm has inspired 53 research publications as of 2022.
+According to the authors of that study, “it is noticeable that the TSP engages most of
+the researchers (60,37% - 32 out of 53 papers), while the VRP amounts to 25,52% of
+the contributions (13 out of 53). The rest of the papers deal with other routing problems,
+such as the Shortest Path Problem or the Hamiltonian Cycle”. The trend continues
+similarly, with VRP and TSP remaining the predominant focus of scientific research
+in the years following 2022. These problems account for the majority of publications,
+as evidenced by studies such as [19–25].
+    Analyzing the current body of work reveals two conclusions. First, many studies
+aim to uncover the potential of quantum technologies or evaluate the efficiency of
+
+
+
+                                            6
+specific methods, often using academic problems, such as the TSP or VRP, for bench-
+marking. Second, numerous studies explore the application of QC to real-world routing
+problems. The latter research category seeks to maximize the capabilities of current
+NISQ-era devices by implementing efficient and advanced hybrid resolution methods.
+Representative examples of this trend can be found in [26, 27].
+
+2.4 Quantum/Classical Hybrid Algorithms for the VRP
+As of today, the most recognized article in this field is [28]. They focused on solving the
+CVRP with a two-phase approach. They experimented with quantum in both phases
+but found the best results when only using it in the second phase. They presented
+results for problems from the same dataset we experimented with, and we show the
+difference between their results and ours in Section 4.
+    As [28] is an inspirational work, we will describe their algorithm in detail. For the
+first assignment phase, they implemented a classical clustering algorithm where each
+cluster represents a vehicle route. They demonstrated two methods for selecting the
+starting location for a cluster core, either a location with very high demand or one far
+from the depot. A cluster is built out from the starting location by adding the closest
+location to the geometric center of the cluster and then recalculating the geometric
+center after the location is added. They continue to add the nearest locations to the
+geometric center until the vehicle capacity is exceeded if another location is added.
+They then repeat this process with a new starting location until all locations are in a
+cluster. They then perform cluster improvement where they move locations between
+clusters if the distance from a location to a cluster center can be decreased by moving
+it to a different cluster and the capacity of the vehicle is not exceeded. This concludes
+the first phase of the algorithm.
+    The second phase, or routing phase, of the heuristic involves formulating the clus-
+ters as a QUBO, allowing the TSP to be solved for each one. The TSP QUBO is
+formulated as defined in [29]. We present the mathematical formulation for the QUBO
+because we utilize this same QUBO in our algorithm. Here we alter the notation from
+[29] and continue with i, j defined as before as the edge from location i to location j,
+and u is the position in the visit sequence on the route. Thus xi,u is the binary vari-
+able indicating location i is visited at position u. N contains all the locations being
+routed and n is the number of locations in N . E is defined as before as the set of edges
+between the locations.
+
+          N          n
+                                  !2        N          n
+                                                                    !2           n
+          X          X                      X          X                       X X
+ HA = A         1−         xj,u        +A         1−         xj,u        +A                xi,u xj,u+1 (10)
+          j=1        u=1                    u=1        j=1                         / u=1
+                                                                              (i,j)∈E
+
+
+Here HA in Eqn. (10) is the QUBO formulation for the Hamiltonian Cycle Problem.
+The first term ensures that every location appears in the cycle. The second term
+ensures a uth node in the cycle for each u. The third term ensures that an edge must
+
+
+
+
+                                                  7
+exist from i to j. The summation over (i, j) ∈
+                                             / E denotes pairs (i, j) not in E.
+
+                                     X              n
+                                                    X
+                           HB = B             cij         xi,u xj,u+1             (11)
+                                    (i,j)∈E         u=1
+
+
+HB in Eqn. (11) ensures the cost of the Hamiltonian Cycle is minimized. cij again is
+the cost to travel from location i to location j.
+
+                                    H = HA + HB                                   (12)
+
+Adding HA and HB together in Eqn. (12) provides the complete Hamiltonian H, which
+is the QUBO that will solve the TSP, or what is commonly referred to as the routing
+phase of the problem. The penalty coefficients are set with A being higher than the
+most significant cost in C and B being set to 1.
+    Reference [30] presents a more recent approach to solving the CVRP, introducing
+multiple hybrid algorithms. The two most performative algorithms were the DBScan
+Solver (DBSS) and the Solution Partitioning Solver (SPS). DBSS operates very much
+like [28]. SPS can use DBSS as a starting solution, where it creates a single TSP
+solution for all the locations, and then SPS divides the TSP into routes to solve
+the CVRP. They provided their source code, allowing us to recreate their results in
+our preliminary research. We also experimented with DBSS and SPS to generate the
+starting solution for our algorithm. It is explained in Section 3.
+    Even more recent QC approaches to solving the CVRP include [31] and [32], where
+hybrid quantum-classical algorithms, QAOA, and variational quantum eigensolver
+(VQE) are used to solve the problem. [31] struggled with QAOA, as it was unable
+to find feasible solutions to toy CVRP problems; however, using VQE was successful.
+[32] added constraint-preserving mixers to their QAOA and found feasible solutions,
+but only on toy problems. [33] implemented a full CVRP QUBO formulation that
+they solved on the quantum-inspired Fujitsu Digital Annealer [34]. They demonstrated
+results on CVRPs with up to 50 locations and achieved an optimality gap of 3.89% on
+a 34-location problem. [35] presented the most promising recent result, employing a
+hybrid approach that combines two phases: quantum clustering and classical routing.
+They also presented results on some of the problems from the same dataset used in our
+experiments. The result we highlighted was for problem CMT 5, where they outper-
+formed all other hybrid algorithms with an optimality gap of 4.12%. Otherwise, their
+results were inferior to ours on all other problems. However, their experiments show
+the potential of quantum clustering in a two-phase approach, essentially the opposite
+of what the highly cited [28] used in their approach.
+
+3 Our Proposed Method
+Since NISQ-era quantum optimization is only possible for small-sized problems, we
+decided to pursue a hybrid approach. We analyzed the experimental results of other
+hybrid algorithms and noticed none achieved optimal results for the CVRP. Those
+hybrid algorithms all utilized a two-phase approach to solving the problem. This
+
+
+                                              8
+approach is discussed in [36]. We determined that we should explore ways to improve
+the existing two-phase approaches. We decided a meta-heuristic hybrid approach might
+be better suited since our goal is to find optimal solutions.
+   Meta-heuristics have a mechanism to avoid getting stuck in a local optimum. In our
+approach, we selected TS [37] as the meta-heuristic because it enabled us to effectively
+incorporate some of the concepts that other hybrid approaches have utilized. Primarily,
+our approach solves the TSP for each route by utilizing QC. The primary trade-off
+associated with using a meta-heuristic, in our case, is the algorithm’s runtime. The
+hybrid algorithms we tried and the one heuristic we tried ran much faster, but always
+found sub-optimal solutions.
+   The hybrid design is critical under NISQ limitations to scale our solution to real-
+world-sized problems. By solving only individual TSP subproblems (≤ 25 nodes), our
+approach requires ≤ 625 logical qubits per QUBO [29], easily embedded on D-Wave
+Advantage. Annealing time remains fixed at 20 µs per call, independent of global scale.
+
+3.1 Hybrid Quantum Tabu Search (HQTS)
+The research described in [38] states that TS has historically performed well on the
+CVRP, reinforcing our decision to create a hybrid quantum/classical TS algorithm.
+TS has been widely studied for solving optimization problems, and different ways exist
+to implement it [39] [40] [41]. We can break our algorithm into classical and quantum
+parts at the highest level. The classical part is our implementation of a TS algorithm.
+The quantum part is a QUBO formulation of the TSP that is solved for each route in
+a given solution on D-Wave’s quantum annealer. We originally named this algorithm
+Hybrid Quantum Tabu Search. Fig. 1 shows a high-level flowchart for HQTS.
+
+3.2 Classical Components
+TS is a local search optimization technique, with the primary objective of the classical
+portion of the algorithm to discover the most appropriate assignment of locations
+to routes. Based on a starting solution, the TS runs in a main loop and performs
+a local search, making minor changes to that solution and creating a neighborhood
+of solutions that are all only slightly different from the starting solution. Once the
+neighborhood is generated, each neighbor solution is evaluated, and the neighbor that
+leads to the best improvement in the objective function cost is chosen. The chosen
+solution replaces the starting solution, and the TS returns to the beginning of the
+main loop, starting the local search again and creating another new neighborhood.
+It continues until a stopping criterion is met and the best solution found during the
+search is returned. The name ”tabu” is derived from the fact that once a solution is
+chosen, it is added to a recency memory called the tabu list. While that solution is
+tabu, meaning it is in the tabu list, it cannot be selected as the next starting solution,
+except in a specific case we will describe below.
+    The tabu list is used to keep track of all recently selected solutions. For our case,
+the tabu list is considered short-term memory because only recently selected solutions
+need to stay on the list, and in our implementation, they only stay on the list for some
+small number of main loop iterations. For our algorithm, we allowed a solution to
+
+
+                                            9
+Fig. 1 The proposed flow of HQTS
+
+
+remain in the tabu list for a random number of iterations, ranging from 0.4N to 0.6N ,
+where N is the number of locations in the problem. This idea of a random length of
+time came from [39]. The tabu list serves to prevent the TS from behaving like a greedy
+search algorithm. It now forces the TS to make less optimal choices at different points
+in the search, thus driving the search into new parts of the global solution landscape.
+    The local search is the most time-consuming part of the algorithm because it
+must generate solutions and then pick one of them. The neighborhood of solutions is
+constructed by performing either a (1,0), (0,1), or (1,1) change to the current starting
+
+
+
+                                          10
+solution. For our method, we define the (0,1) change as swapping a location with
+another location on the same route. We also define the (1,0) change as moving a
+location from one route to another. However, the location sequence in the new route
+is determined by evaluating which spot in the sequence leads to the lowest cost route,
+as was used in [39]. A (1, 1) change is swapping two locations from two different
+routes. Once all possible solutions have been generated by performing all possible
+changes, each is evaluated by calculating the total cost of each neighbor solution. As
+we described earlier, the selected solution from the neighborhood is used to create a
+new starting solution, and the local search is restarted.
+     There is a condition that can occur, allowing a chosen solution to be selected even
+if it already exists in the tabu list. This concept is called aspiration [37]. We define
+aspiration as the point at which the local search discovers a solution that provides
+the best value yet discovered for the objective function. It then makes the solution
+the next starting solution, even if it is in the tabu list. The search does not discard a
+potentially global optimum solution.
+     There are other classical components of TS that we implemented. Intensifica-
+tion and diversification are important components [37]. Intensification is the idea of
+allowing TS to revisit solutions that can search around them more thoroughly. Diver-
+sification enables TS to explore previously unseen solutions in the hope of discovering
+new areas to search. When X number of main loop iterations happen without find-
+ing a new global best solution, we trigger intensification or diversification. X was
+selected uniformly between 0.6 and 1.1 times the number of locations in the problem.
+These values were determined by experimentation. A diversification trigger changes
+the number of locations to consider when creating new solutions. An intensification
+trigger resets the tabu list to an empty list. We also extended our intensification with
+a quantum component, defined in the next section.
+     Another interesting TS concept we implemented is strategic oscillation (OS) [42].
+It is added because [42] showed that when TS is forced to search only inside feasible
+solutions, it can limit its effectiveness. Without OS, the algorithm chooses the best
+solution that maintains feasibility, but with OS, if the current starting solution is
+feasible, the algorithm can choose solutions that lead to infeasibility. Once in infeasible
+territory, the algorithm prioritizes solutions that reduce infeasibility (or worsen it the
+least) until a feasible solution is found again. This process allows the exploration of a
+wider solution space. Alg. 1 shows how the next starting solution is selected.
+     Lastly, we have the stopping criteria. In our preliminary study, we had a hard
+limit of one hour of wall clock time, or if the main loop had not found a new global
+best solution in the last 5000 main loop iterations. In the extension of this work, we
+determined to revisit the stopping criteria and allow for longer searches. It has been
+accomplished by changing the stopping criteria from stopping after 5000 main loop
+iterations without an improvement to the global best solution to now run for N ∗ 100
+main loop iterations without improvement where N is again the number of locations in
+the problem. We have also removed the one-hour time limit for the wall clock. Section
+4 contains details on the run time for our algorithm.
+
+
+
+
+                                            11
+Algorithm 1 Solution evaluation with strategic oscillation
+Require: cbs can only be assigned a feasible solution so that it can be evaluated as
+    a global best solution
+ 1: Inf easibilty(Ni ) returns the total capacity violation for a given candidate solution
+ 2: p ← previously selected solution
+ 3: N ← candidate solutions from local search
+ 4: n ← number of candidate solutions
+ 5: cbs ← unassigned                                               ▷ current best solution
+ 6: sbf s ← unassigned                                    ▷ selected best feasible solution
+ 7: sbis ← unassigned                                   ▷ selected best infeasible solution
+ 8: ss ← unassigned                                                     ▷ selected solution
+ 9: if IsF easible(p) then
+10:     for i ← 1 to n do
+11:         if Cost(Ni ) < Cost(sbf s) and IsF easible(Ni ) then
+12:             if Cost(Ni ) < Cost(cbs) then
+13:                 cbs ← Ni
+14:             end if
+15:             if !IsT abu(Ni ) then
+16:                 sbf s ← Ni
+17:             end if
+18:         else if Cost(Ni ) < Cost(sbis) and !IsF easible(Ni ) then
+19:             if !IsT abu(Ni ) then
+20:                 sbis ← Ni
+21:             end if
+22:         end if
+23:     end for
+24:     if Cost(sbis) < Cost(sbf s) then
+25:         ss ← sbis
+26:     else
+27:         ss ← sbf s
+28:     end if
+29: else
+30:     for i ← 1 to n do
+31:         if Inf easibilty(Ni ) < Inf easibilty(sbf s) and IsF easible(Ni ) then
+32:             if Cost(Ni ) < Cost(cbs) then
+33:                 cbs ← Ni
+34:             end if
+35:             if !IsT abu(Ni ) then
+36:                 sbf s ← Ni
+37:             end if
+38:         else if Inf easibilty(Ni ) < Inf easibilty(sbis) and !IsF easible(Ni ) then
+39:             if !IsT abu(Ni ) then
+40:                 sbis ← Ni
+41:             end if
+42:         end if
+43:     end for
+44:     if Inf easibilty(sbis) < Inf easibilty(sbf s) then
+45:         ss ← sbis                       12
+46:     else
+47:         ss ← sbf s
+48:     end if
+49: end if
+3.3 Quantum Components
+The quantum components have two different objectives, i.e., one to initialize the TS
+with a starting solution to build from and the other to set the best sequence of locations
+on the routes. When a TS starts, a solution must be provided to perform a local
+search. In our experiments, we explored various methods for generating the initial
+starting solution, including utilizing other quantum hybrid algorithms to create the
+starting solution. In our preliminary research, we created a naive clustering approach
+to generate the starting solution. We have developed a more advanced system for
+generating initial solutions. The most famous heuristic for solving the CVRP is the
+Clarke-Wright savings heuristic (CW) [43]. In our preliminary research, we compared
+our results to CW and determined that CW produces an average optimality gap of
+9.97% on the dataset we tested. That was better than some of the hybrid algorithms
+we tested. We tested hybrid algorithms from [30] in our preliminary research, and the
+best of those was only able to produce an average optimality gap of 18.68%. Still,
+with the motivation to incorporate more quantum components into our algorithm, we
+determined that we should test two of the hybrid algorithms and the CW heuristic
+as methods for generating starting solutions. Section 4 contains the results of our
+experimentation with these different methods.
+    The other quantum component in our algorithm was in the intensification process.
+Following [39], we considered calculating the routes (solving the TSP for one route)
+from the best-known solution at certain points during the search. To do it, we save the
+best solution found throughout the search. When the quantum routing is triggered,
+we build a QUBO formulation as described in Eqn. (10), Eqn. (11) and Eqn. (12)
+for the TSP of each route in the best-known solution and then send the QUBO to
+the quantum computer for optimization. It is done one by one for each route in the
+solution. The processing time for the quantum computer to solve these TSP QUBO’s
+is in the order of milliseconds. After the quantum computer is finished, we reformat
+the results in our classical framework. The classical formulation becomes the next
+starting solution for the next iteration of the main loop. In [39], they would perform
+the routing step every twenty main loop iterations.
+    This quantum component is not employed to outperform classical TSP solvers in
+isolation, but to generate high-quality route segments. This allows us to still utilize QA
+to solve harder CVRPs at a scale unattainable by quantum means alone. Currently,
+access to QC is not free and involves cost, so the fewer calls to QC, the lower the cost
+for our algorithm. Additionally, accessing QC is done using a cloud service, so more
+calls can increase the probability of an access error. Our preliminary algorithm would
+trigger this process if TS had not found a new global best solution in the last 2000
+iterations of the main loop. In our new approach, we attempted to trigger this form
+of intensification at varying intervals. Section 4 will show how changing that interval
+impacted our results.
+
+
+
+
+                                           13
+Fig. 2 Visualization of CMT 1 (Red = Depot, Gray = Delivery Location)
+
+
+4 Experiments and Results
+4.1 Datasets and Setup
+The extensive research focused on the VRP and CVRP has yielded significant
+resources, including solutions and benchmarks for evaluating solutions. For our study,
+we sought a dataset that would provide a solution the industry could find interest-
+ing. A dataset with problems that are representative of real-world routing problems.
+Typically, when routing vehicles around a metropolitan area, you will likely find a
+depot centrally located among the points it serves. In this scenario, the routes often
+resemble flower petals in shape, as a route would leave the depot, making deliveries as
+it makes an arc away and back to its starting location. In some cases, deliveries will
+be very clustered, but that is not the rule. With that in mind, there exists a dataset
+that serves very well for this type of routing evaluation, and it is the dataset from
+Christofides, Mingozzi, and Toth (CMT) [44]. When visualizing the optimal routes for
+this dataset, you can often see that flower shape. A visual representation of Problem
+1 and a visualization of the optimal solution found from HQTS can be seen in Figs.
+2 and 3. Optimal route visualizations for all of the CMT datasets are available at
+http://vrp.galgos.inf.puc-rio.br/index.php/en/.
+    The CMT dataset was chosen for additional reasons. This kind of dataset provides
+a substantial benchmark to compare against because of its history, so you can imme-
+diately see how your algorithm ranks with other research. We discovered other hybrid
+algorithms [28] [30] [45] that have shown results with this dataset. Another important
+aspect of this dataset is that the optimal solution to each problem has been found and
+proven. The dataset consists of 14 problems, with problems 1-5 having varying num-
+bers of locations, ranging from 50 to 199. Table 1 presents the details of each problem.
+Additionally, the locations are randomly located around a central depot. Problems 11
+
+
+                                            14
+Fig. 3 CMT 1 Optimal Result using HQTS
+
+
+and 12 have more clustered locations, in 11 the depot is centrally located, but in 12
+the depot is shifted to one side. Problems 6-10 have the same layout as problems 1-5
+but contain an additional time window detail for each location. This applies to prob-
+lems 13 and 14 as well. We only solved problems 1-5, 11, and 12 because they were
+explicitly designed as CVRP problems. The other problems are similar but designed
+for the CVRPTW, which we did not attempt to solve with our algorithm. Although
+the locations appear to be randomly placed, they effectively represent a real-world
+problem.
+
+Table 1 CMT Dataset
+                   Problem No.   No. of Locations   Location Distribution
+                   1             50                 Random
+                   2             75                 Random
+                   3             100                Random
+                   4             150                Random
+                   5             199                Random
+                   6             50                 Random
+                   7             75                 Random
+                   8             100                Random
+                   9             150                Random
+                   10            199                Random
+                   11            120                Cluster
+                   12            100                Cluster
+                   13            120                Cluster
+                   14            100                Cluster
+
+
+    All of our experiments were run on a GitHub Codespace [46]. The Codespace had
+a four-core processor with 16 GB of RAM that was used for the classical computation
+
+
+                                           15
+of our algorithm. The quantum part of the algorithm was performed on D-Wave’s
+Advantage System 4.1 device. We accessed this system via D-Wave’s cloud API [47].
+The num reads parameter was set to 1000 for all calls to the QC.
+
+4.2 Preliminary Results Examined
+In our preliminary work [3], we compared our solution against other hybrid solutions.
+Specifically, we compared our results against those reported by the hybrid algorithm
+in [28] and the DBSS and SPS algorithms in [30], which we recreated using their
+provided code. For this problem, CMT 1, our algorithm found the BKS, which, as
+stated above, is also the optimal solution to the problem. That is the only problem
+where we achieved optimality. Still, our algorithm outperformed the other hybrid
+solutions on four of the seven problems we tested in the CMT dataset, resulting in
+an overall lower percentage deviation from the optimal solution than the other hybrid
+algorithms. We also compared our results to some classical, well-known heuristics and
+outperformed them in three of six problems. The heuristics were Clarke-Wright [43],
+Fisher-Jaikumar [48], and Sweep [49]. The heuristic’s results were reported in [28].
+While one result was encouraging when we found an optimal solution, performance
+fell short of expectations in that our algorithm was unable to outperform the other
+hybrid algorithms on each problem.
+
+4.3 Ablation Study on HQTS Configurations
+We compare the refined HQTS against a baseline configuration from [3], treating prior
+results as an earlier parameter setting. In this study, we compared our new results with
+our preliminary results and the results reported from [28] hybrid algorithm because
+it was the second highest performing hybrid algorithm from our preliminary work.
+This comparison is illustrated in Table 5 and Fig. 7. For reference, we also present a
+comparison of our new results with those of the same classical heuristics we reported
+in our preliminary research. This comparison is illustrated in Table 6.
+    For this new research, three main questions drove our experimentation. Could we
+use more QC in our process, and would doing so improve our results? Could we use
+QC to generate an initial solution, and how would that compare to using a heuristic
+approach or clustered approaches for the starting solution? Thereafter, answering the
+previous two questions, would that guide us to finding better solutions than before?
+
+4.3.1 Question 1: Quantum Routing Delay
+To answer the first question, we set up a test in which we varied the frequency of run-
+ning the quantum routing part of the algorithm. In our preliminary research, we chose
+a delay of 2000 iterations of the search without any improvement before performing
+the quantum routing. The number 2000 was chosen arbitrarily and mostly related to
+limiting our usage of the quantum computer because we had very limited QC time.
+We decided to try different values for the delay. The experiments ranged from 3000 to
+250 (3000, 2500, 2000, 1500, 1000, 500, 250). To experiment, we ran the algorithm on
+CMT 1. If the result was equal to the BKS or within a 2% deviation from optimal,
+we considered it a good run. Specifically for CMT 1, the allowed solution range was
+
+
+                                          16
+Fig. 4 Average No. of Iterations to Best Solution Found with Different Quantum Routing Delays
+on CMT1
+
+
+
+
+Fig. 5 Average Run Time to Best Solution Found with Different Quantum Routing Delays on CMT1
+
+
+524.61 to 532.8. We cumulated ten good runs for each of the different values for the
+delay. We cataloged the average number of iterations to the best solution found and
+the average wall clock time (run time) in seconds for the ten good runs at each delay
+value in Table 2.
+   The results show that the best results for both metrics were achieved with a quan-
+tum routing delay of 250. This means allowing the quantum routing to trigger more
+
+
+
+                                             17
+frequently and more quickly when non-improving iterations occur, causing the algo-
+rithm to find a better solution faster in terms of both the number of iterations and
+wall-clock time. Fig. 4 shows, on average, the decreasing number of iterations needed
+to find the best solution, and Fig. 5 shows, on average, the decreasing run time in
+seconds to find the best solution.
+
+Table 2 Average Results For Different Quantum Routing Delays On Problem CMT 1
+         Quantum Routing Delay   Iterations To Best Solution Found   Run Time (seconds)
+         3000                    8899                                433
+         2500                    7153                                411
+         2000                    7510                                400
+         1500                    5458                                365
+         1000                    4336                                322
+         500                     2926                                290
+         250                     1811                                255
+
+
+
+
+4.3.2 Question 2: Starting Solution
+For the second question, we initially used different starting solutions, with a quan-
+tum routing delay of 2000. The first option for the starting solution was the clustered
+approach we used in our preliminary research (refer to that work for an explanation of
+this approach). The next was using the Clarke-Wright savings heuristic (CW) [43]. For
+the remaining two, we used hybrid quantum approaches. These approaches were intro-
+duced in [30], and we recreated them in our preliminary research, specifically in the
+Solution Partitioning Solver with DBSCAN (SPSDBSCAN) and Solution Partitioning
+Solver without DBSCAN (SPSFULLQ).
+    SPSFULLQ was the best-performing hybrid approach we were able to re-create.
+However, it is limited to only being able to run on CMT 1 because on more significant
+problems, that algorithm produces a QUBO that is too large to solve on the DWAVE
+quantum annealer. The hybrid solutions are noisy, producing different results each
+time they are run, while clustered and CW produce the same solution every time. We
+again used CMT 1 for these tests with the same requirements of ten good runs per
+test. A good run is defined the same as in the previous experiment. Table 3 shows the
+average results for this experiment. The results here were somewhat surprising in that
+a more minimal starting solution did not lead to finding a good solution faster.
+
+Table 3 Average Performance Comparison For Different Starting Solutions on CMT 1 (Quantum
+Routing Delay 2000)
+         Algorithm       Starting Solution   Iterations To Best Solution Found   Distance
+         SPS (DBSCAN)    662.09              3120                                527.83
+         SPS (FULLQ)     714.53              5857                                524.61
+         Cluster         1108.65             7885                                526.44
+         CW              584.41              7510                                526.54
+
+
+    We then decided to try using the results from the quantum routing experiment in
+this experiment, so we changed the delay from 2000 to 250, and then repeated the
+
+
+                                              18
+Fig. 6 Average No. of Iterations to Best Solution Found with Different Starting Solutions
+
+
+experiment for just SPSDBSCAN and CW. We also extended this experiment into
+CMT 1, CMT 2, and CMT 3. The results here did not show that either starting
+solution was consistently better in terms of the time it took to find a better solution.
+Fig. 6 shows that SPSDBSCAN was faster on CMT 1 and CMT 3, but CW was faster
+on CMT 2. For CMT 2 and CMT 3, we were unable to find the optimal solution. Our
+best runs used CW, but on average, the results are very close, as shown in Table 4.
+
+Table 4 Performance Comparison For Different Starting Solutions (Quantum Routing Delay 250)
+                          SPS (DBSCAN)                                       CW
+
+ Problem    Avg. Result   Best Result   Avg. Iterations   Avg. Result   Best Result   Avg. Iterations
+ CMT 1      525.43        524.61        1183              526.54        524.61        1811
+ CMT 2      851.76        851.58        6401              855.7         848.9         4018
+ CMT 3      835.36        831.37        9020              836.62        830.99        9556
+
+
+
+
+4.3.3 Question 3: Overall Improvement
+To answer the third question, we applied the answers to questions one and two to the
+same experiment we conducted in our preliminary research. We ran the tests the same
+way as before, keeping the best solution from running our algorithm three times. We
+then adjusted aspects of the algorithm based on the results generated from questions
+one and two. We used a routing delay of 250 for each experiment and used the CW
+heuristic to generate the starting solution. We decided to use CW because we found
+better solutions with the heuristic, even if only slightly, and it would allow us to use
+less QC in our tests. We wanted to maximize our available QC resources to complete
+
+
+
+                                                 19
+Fig. 7 Percent Deviation from BKS on CMT dataset
+
+
+our experiments, and question two’s results showed little difference in the starting
+solution for our algorithm.
+    In Table 5, you can see that we matched our results for CMT 1 and improved our
+results for all the remaining problems. Again, our results show we could only find one
+optimal solution out of the seven problems. However, for problem CMT 12, our new
+result was 0.03% away from the optimal solution. On the five remaining problems,
+we documented improved results. We found better solutions for each problem, out-
+performing the hybrid algorithm of [28]. Overall, we reduced our optimality gap from
+4.72% to 2.15%. Refer to Fig. 7. Table 6 is also included to demonstrate how these
+results compare with those of well-known heuristics on the same problems.
+
+Table 5 Performance Comparison of HQTS on the CMT Dataset
+                              Feld at el Ref. [28]   Preliminary Ref.[3]    New Research
+ Problem    Size   BKS        Distance Dev.          Distance Dev.         Distance Dev.
+ CMT 1      50     524.61     556        5.98%       524.61    0.0%        524.61   0.0%
+ CMT 2      75     835.26     926        10.86%      856       2.52%       848.95   1.64%
+ CMT 3      100    826.14     905        9.55%       876       6.06%       830.99   0.59%
+ CMT 4      150    1,028.42   1,148      11.63%      1,094     6.4%        1,076.56 4.68%
+ CMT 5      199    1,291.29   1,429      10.66%      1,442     11.72%      1,359.08 5.25%
+ CMT 11     120    1,042.12   1,084      4.02%       1,096     5.19%       1,071.9  2.86%
+ CMT 12     100    819.56     828        1.03%       829       1.16%       819.77   0.03%
+
+
+   In our preliminary results, we did not report the runtime of the algorithm, so we
+have decided to include those results as well. Run time was not limited at all in these
+
+
+                                               20
+Table 6 Performance Comparison of well-known heuristics and HQTS on the CMT Dataset
+                                 Clarke-Wright    Fisher-Jaikumar          Sweep         New Research
+   Problem   Size   BKS        Distance Dev.      Distance Dev.      Distance Dev.      Distance Dev.
+   CMT 1     50     524.61     585       11.5%    524        0.12%   532       1.41%    524.61   0.0%
+   CMT 2     75     835.26     900       7.75%    857        2.6%    874       4.64%    848.95   1.64%
+   CMT 3     100    826.14     886       7.25%    833        0.83%   851       3.01%    830.99   0.59%
+   CMT 4     150    1,028.42   1,204     17.07%   -          -       1,079     4.92%    1,076.56 4.68%
+   CMT 5     199    1,291.29   1,540     19.26%   1,420      9.97%   1,389     7.57%    1,359.08 2.86%
+   CMT 12    100    819.56     877       7.01%    848        3.47%   949       15.79%   819.77   0.03%
+
+
+results. Those run times range from 255 seconds on average for the smallest problem
+of CMT 1 to 37868 seconds on average for the largest problem CMT 5. The average
+run time for each problem is reported in Table 7.
+
+Table 7 Average Run Times on the CMT Dataset
+                                 Problem   Size   Run Time (Seconds)
+                                 CMT 1     50     255
+                                 CMT 2     75     1534
+                                 CMT 3     100    3807
+                                 CMT 4     150    17687
+                                 CMT 5     199    37868
+                                 CMT 11    120    1886
+                                 CMT 12    100    1169
+
+
+
+
+5 Conclusions
+We aimed to show that a hybrid quantum algorithm can find optimal solutions to
+a real-world optimization problem. While our research identified only one optimal
+solution and nearly one more, we still demonstrated that QC aids in finding optimal
+solutions. To date, this is the best-performing hybrid algorithm for the CVRP on the
+CMT dataset.
+    We were able to outperform our previous results in every problem, primarily using
+QC more often during the experiments. Additionally, using better starting solutions led
+to improved results. However, we could not demonstrate that a quantum computing-
+derived starting solution was always superior to a classical heuristic algorithm-derived
+starting solution. Our average run time was slightly faster, and we found slightly more
+optimal solutions on average using the quantum starting solutions. However, using the
+classical heuristic as the starting solution actually found the most optimal solutions
+for CMT 2 and CMT 3. Finding more ways to use the quantum computer was the
+main focus of our research, and our new results showed that more QC was usually
+beneficial.
+    Results from Section 4.3.1 indicate a trend toward improved convergence with
+reduced routing delay. Although further reductions below 250 iterations may yield
+additional gains, experimental constraints prevented confirmation of this. Access
+to QC resources was governed by a fixed quota that could not be adjusted dur-
+ing execution. Exceeding this quota by invoking the quantum solver too frequently
+
+
+
+                                                  21
+would terminate the entire run. Future work will require expanded quantum resource
+allocation to enable systematic evaluation of delays below 250.
+    While the two-phase approach to solving the CVRP has been well studied and the
+compared hybrid quantum algorithms utilized those ideas [28] [30], our results showed
+they do not always do well with a dataset like CMT. They show fairly good results
+on CMT 11 and CMT 12 problems, which is to be expected because the locations are
+more clustered. They fall behind our results on the randomized CMT 1-5 problems.
+The shape of the optimal routes was a significant decision point in our algorithm
+design. Analysis suggests the clustering approach for route generation does not do a
+good job of finding the correct clusters to base the routes on. Because the visualization
+of the route shape resembles a flower petal, with some stops closer to the depot and
+others farther away, a clustering algorithm may overlook potentially good locations to
+add to the route, as they might be closer to the depot and not near other locations in
+the cluster.
+    The complexity of the large CVRP problems limited the algorithm’s ability to find
+optimal solutions. Analysis indicates the local search part of the algorithm was the
+main contributor to not finding more optimal solutions. The assignment of locations
+to routes was more consequential to the suboptimal results than the quantum routing.
+The neighborhood generation relied exclusively on basic relocation and swap operators.
+The operations included only two types of moves: relocating a single customer from one
+route to another, or swapping two customers across different routes. More sophisticated
+operators, such as those introduced in [50], were not implemented. Future work will
+focus on developing a quantum-enhanced local search mechanism to generate higher-
+quality neighbor solutions with greater efficiency.
+
+References
+ [1] Abbas, A., Ambainis, A., Augustino, B., Bärtschi, A., Buhrman, H., Coffrin,
+     C., Cortiana, G., Dunjko, V., Egger, D.J., Elmegreen, B.G., et al.: Quan-
+     tum optimization: Potential, challenges, and the path forward. arXiv preprint
+     arXiv:2312.02279 (2023)
+
+ [2] Osaba, E., Villar-Rodriguez, E., Oregi, I.: A systematic literature review of
+     quantum computing for routing problems. IEEE Access 10, 55805–55817 (2022)
+
+ [3] Holliday, J.B., Morgan, B., Churchill, H., Luu, K.: Hybrid quantum tabu search
+     for solving the vehicle routing problem. In: 2024 IEEE International Conference
+     on Quantum Computing and Engineering (QCE), pp. 353–358 (2024). IEEE
+
+ [4] Miller, C.E., Tucker, A.W., Zemlin, R.A.: Integer programming formulation of
+     traveling salesman problems. Journal of the ACM (JACM) 7(4), 326–329 (1960)
+
+ [5] Takahashi, K.: Shortcuts to adiabaticity for quantum annealing. Physical Review
+     A 95(1) (2017) https://doi.org/10.1103/physreva.95.012309
+
+ [6] Ferreiro-Vélez, J., Iriarte-Zendoia, I., Ban, Y., Chen, X.: Shortcuts for Adiabatic
+
+
+                                           22
+    and Variational Algorithms in Molecular Simulation (2024). https://arxiv.org/
+    abs/2407.20957
+
+ [7] Mizel, A., Lidar, D.A., Mitchell, M.: Simple proof of equivalence between adia-
+     batic quantum computation and the circuit model. Phys. Rev. Lett. 99, 070502
+     (2007) https://doi.org/10.1103/PhysRevLett.99.070502
+
+ [8] Yang, Z., Zolanvari, M., Jain, R.: A survey of important issues in quantum com-
+     puting and communications. IEEE Communications Surveys & Tutorials 25(2),
+     1059–1094 (2023)
+
+ [9] Salhi, S., Thompson, J.: An overview of heuristics and metaheuristics. The
+     Palgrave Handbook of Operations Research, 353–403 (2022)
+
+[10] Hussain, K., Mohd Salleh, M.N., Cheng, S., Shi, Y.: Metaheuristic research: a
+     comprehensive survey. Artificial intelligence review 52, 2191–2233 (2019)
+
+[11] Campelo, F., Aranha, C.: Evolutionary Computation Bestiary. Accessed on
+     November 1 2025 (2025). https://https://fcampelo.github.io/EC-Bestiary/
+
+[12] Morita, S., Nishimori, H.: Mathematical foundation of quantum annealing.
+     Journal of Mathematical Physics 49(12) (2008)
+
+[13] Farhi, E., Goldstone, J., Gutmann, S.: A quantum approximate optimization
+     algorithm. arXiv preprint arXiv:1411.4028 (2014)
+
+[14] Preskill, J.: Quantum computing in the nisq era and beyond. Quantum 2, 79
+     (2018)
+
+[15] Seskir, Z.C., Umbrello, S., Coenen, C., Vermaas, P.E.: Democratization of
+     quantum technologies. Quantum Science and Technology 8(2), 024005 (2023)
+
+[16] Boothby, K., Bunyk, P., Raymond, J., Roy, A.: Next-generation topology of d-
+     wave quantum processors. arXiv preprint arXiv:2003.00133 (2020)
+
+[17] Golden, B.L., Raghavan, S., Wasil, E.A.: The Vehicle Routing Problem: Latest
+     Advances and New Challenges vol. 43. Springer, ??? (2008)
+
+[18] Matai, R., Singh, S.P., Mittal, M.L.: Traveling salesman problem: an overview of
+     applications, formulations, and solution approaches. Traveling salesman problem,
+     theory and applications 1(1), 1–25 (2010)
+
+[19] Le, T.V., Nguyen, M.V., Khandavilli, S., Dinh, T.N., Nguyen, T.N.: Quantum
+     annealing approach for selective traveling salesman problem. In: ICC 2023-IEEE
+     International Conference on Communications, pp. 2686–2691 (2023). IEEE
+
+[20] Spyridis, Y., Gkelias, A., Argyriou, V.: Variational quantum approach for the
+     multiple traveling salesman problem optimisation. In: 2023 19th International
+
+
+                                         23
+    Conference on Distributed Computing in Smart Systems and the Internet of
+    Things (DCOSS-IoT), pp. 354–358 (2023). IEEE
+
+[21] Qian, W., Basili, R.A., Eshaghian-Wilner, M.M., Khokhar, A., Luecke, G., Vary,
+     J.P.: Comparative study of variations in quantum approximate optimization
+     algorithms for the traveling salesman problem. Entropy 25(8), 1238 (2023)
+
+[22] Leonidas, I.D., Dukakis, A., Tan, B., Angelakis, D.G.: Qubit efficient quantum
+     algorithms for the vehicle routing problem on quantum computers of the nisq era.
+     arXiv preprint arXiv:2306.08507 (2023)
+
+[23] Mohanty, N., Behera, B.K., Ferrie, C.: Analysis of the vehicle routing problem
+     solved via hybrid quantum algorithms in the presence of noisy channels. IEEE
+     Transactions on Quantum Engineering (2023)
+
+[24] Sinno, S., Groß, T., Mott, A., Sahoo, A., Honnalli, D., Thuravakkath, S.,
+     Bhalgamiya, B.: Performance of commercial quantum annealing solvers for the
+     capacitated vehicle routing problem. arXiv preprint arXiv:2309.05564 (2023)
+
+[25] Tambunan, T.D., Suksmono, A.B., Edward, I.J.M., Mulyawan, R.: Quantum
+     annealing for vehicle routing problem with weighted segment. In: AIP Conference
+     Proceedings, vol. 2906 (2023). AIP Publishing
+
+[26] Osaba, E., Villar-Rodriguez, E., Asla, A.: Solving a real-world package delivery
+     routing problem using quantum annealers. Scientific Reports 14(1), 24791 (2024)
+
+[27] Weinberg, S.J., Sanches, F., Ide, T., Kamiya, K., Correll, R.: Supply chain logis-
+     tics with quantum and classical annealing algorithms. Scientific Reports 13(1),
+     4770 (2023)
+
+[28] Feld, S., Roch, C., Gabor, T., Seidel, C., Neukart, F., Galter, I., Mauerer, W.,
+     Linnhoff-Popien, C.: A hybrid solution method for the capacitated vehicle routing
+     problem using a quantum annealer. Frontiers in ICT 6, 13 (2019)
+
+[29] Lucas, A.: Ising formulations of many np problems. Frontiers in physics 2, 74887
+     (2014)
+
+[30] Borowski, M., Gora, P., Karnas, K., Blajda, M., Król, K., Matyjasek, A., Burczyk,
+     D., Szewczyk, M., Kutwin, M.: New hybrid quantum annealing algorithms for
+     solving vehicle routing problem. In: International Conference on Computational
+     Science, pp. 546–561 (2020). Springer
+
+[31] Palackal, L., Poggel, B., Wulff, M., Ehm, H., Lorenz, J.M., Mendl, C.B.:
+     Quantum-assisted solution paths for the capacitated vehicle routing problem. In:
+     2023 IEEE International Conference on Quantum Computing and Engineering
+     (QCE), vol. 1, pp. 648–658 (2023). IEEE
+
+
+
+
+                                          24
+[32] Xie, N., Lee, X., Cai, D., Saito, Y., Asai, N., Lau, H.C.: A feasibility-preserved
+     quantum approximate solver for the capacitated vehicle routing problem. Quan-
+     tum Information Processing 23(8), 291 (2024)
+
+[33] Suen, W.Y., Parizy, M., Lau, H.C.: Enhancing a qubo solver via data driven
+     multi-start and its application to vehicle routing problem. In: Proceedings of the
+     Genetic and Evolutionary Computation Conference Companion, pp. 2251–2257
+     (2022)
+
+[34] Nakayama, H., Koyama, J., Yoneoka, N., Miyazawa, T.: Description: Third
+     generation digital annealer technology. Fujitsu Limited: Tokyo, Japan (2021)
+
+[35] Ariño Sales, J.F., Palacios Araos, R.A.: Adiabatic quantum computing impact on
+     transport optimization in the last-mile scenario. Frontiers in Computer Science
+     5, 1294564 (2023)
+
+[36] Laporte, G., Gendreau, M., Potvin, J.-Y., Semet, F.: Classical heuristics for the
+     vehicle routing problem. International Transactions in Operational Research 7,
+     285–300 (2000) https://doi.org/10.1111/j.1475-3995.2000.tb00200.x
+
+[37] Glover, F., Laguna, M.: Tabu Search. Springer, New York (1998)
+
+[38] Cordeau, J.-F., Gendreau, M., Laporte, G., Potvin, J.-Y., Semet, F.: A guide
+     to vehicle routing heuristics. Journal of the Operational Research society 53,
+     512–522 (2002)
+
+[39] Taillard, É.: Parallel iterative search methods for vehicle routing problems.
+     Networks 23(8), 661–673 (1993)
+
+[40] Gendreau, M., Hertz, A., Laporte, G.: A tabu search heuristic for the vehicle
+     routing problem. Management science 40(10), 1276–1290 (1994)
+
+[41] Osman, I.H.: Metastrategy simulated annealing and tabu search algorithms for
+     the vehicle routing problem. Annals of operations research 41, 421–451 (1993)
+
+[42] Glover, F., Hao, J.-K.: The case for strategic oscillation. Annals of Operations
+     Research 183, 163–173 (2011)
+
+[43] Clarke, G., Wright, J.W.: Scheduling of vehicles from a central depot to a number
+     of delivery points. Operations research 12(4), 568–581 (1964)
+
+[44] Christofides, N., Mingozzi, A., Toth, P.: Combinatorial Optimization. Wiley,
+     Chichester, West Sussex (1979)
+
+[45] Sales, J.F.A., Araos, R.A.P.: Adiabatic quantum computing for logistic transport
+     optimization. arXiv preprint arXiv:2301.07691 (2023)
+
+[46] GitHub, I.: GitHub Codespaces. Accessed on October 02 2024 (2024). https://
+
+
+                                          25
+    github.com/features/codespaces
+
+[47] Inc, D.-W.S.: D-Wave Leap Log In — D-Wave Leap™. Accessed on September 25
+     2024 (2024). https://cloud.dwavesys.com/leap/login/?next=/leap/
+
+[48] Fisher, M.L., Jaikumar, R.: A generalized assignment heuristic for vehicle routing.
+     Networks 11(2), 109–124 (1981)
+
+[49] Gillett, B.E., Miller, L.R.: A heuristic algorithm for the vehicle-dispatch problem.
+     Operations research 22(2), 340–349 (1974)
+
+[50] Lin, S., Kernighan, B.W.: An effective heuristic algorithm for the traveling-
+     salesman problem. Operations research 21(2), 498–516 (1973)
+
+
+
+
+                                           26
+

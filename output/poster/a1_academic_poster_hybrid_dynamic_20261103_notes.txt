@@ -1,0 +1,16 @@
+修正要点
+図1は古典・量子の役割分担を示す構成案であり、動的実験の結果ではない。
+古典部：現状把握、部分問題選択、制約検証、全体計画との比較、採用・維持。
+量子部：選択された部分問題の候補解生成。
+需要・交通・車両位置の更新後に再計画する構成は設計仮説として提示する。
+配送全体の規模と量子部の部分問題の規模を区別する。
+計画更新に使える時間と、前処理・待機・計算・検証等を含む総処理時間を対応付ける。
+現行実験は時間窓なし・静的・固定入力。量子実機の速度優位・動的運用効果は未検証。
+電池質量・走行時総質量・電力量の部分と全体の比較を維持。
+
+構成案の参考文献
+Holliday, Osaba, Luu (2026), An advanced hybrid quantum tabu search approach to vehicle routing problems, Quantum Machine Intelligence 8:37.
+https://doi.org/10.1007/s42484-026-00375-8
+Bertsimas, Jaillet, Martin, Online Vehicle Routing: The Edge of Optimization in Large-Scale Applications, 著者公開稿 March2018.
+https://www.mit.edu/~jaillet/general/online-routing-18.pdf
+補足：量子部への問題分解は先行研究の設計例であり、今回の実験で構成案の性能を実証したとは扱わない。

@@ -1,0 +1,11 @@
+run02の採用方針と生成手順
+
+最新の明示的決定により、反証志向型インタビュー・RIQ分析・M1作成は棄却した。二経路の既存定量分析と、寄与条件候補・制約・未検証接続の整理を方法とする。履歴に残る旧面接設計を現行の方法として扱わない。
+Chenらは保存材料入力の出典として保持し、方法説明は材料特性・部材・質量・DCの変換と設計条件の分析として記した。
+
+生成：scripts/build_poster.py（PYTHONPATH=/tmp/kmd-poster-authoring-deps）。scripts/audit_inputs.pyで保存CSVの数値・分母・集計範囲を照合した。新たな科学実験は実施していない。
+描画：scripts/render_poster.pyでPPTXをLibreOffice Impress 24.2.7.2によりPDF化した。run01のレンダラ本体を読み取り、run02内の独立プロファイルを使用した。poster.pdfは実PPTX描画、render/layout_reference.pdfはレイアウト参照である。
+検証：scripts/validate_final.pyでA1寸法、全段落抽出、図形範囲、余白、列間侵入を照合した。全体画像を確認後visual_reviewを記録した。再生成時は再確認が必要である。
+補足：scripts/build_reports.pyとbuild_causal_svg.pyで報告・CSV・図を生成した。原本・run01・研究設計資料を含む239ファイルのSHA256を保全した。棄却した作業中のコードはbaseline/REJECTED_で区別し、生成に用いていない。
+
+フォント：Droid Sans Fallback／DejaVu Sans。Microsoft PowerPoint固有の描画確認は未実施である。印刷にはベクターPDFを使用する。commit・push・PR作成は行っていない。

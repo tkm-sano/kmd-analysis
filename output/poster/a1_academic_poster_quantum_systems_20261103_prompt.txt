@@ -1,0 +1,114 @@
+Revise this JAPANESE SCIENTIFIC CONFERENCE POSTER to connect quantum-technology research papers with future contributions to the EV delivery system. This is a substantive revision of sections3,4 and discussion. Preserve exact title, author, A1 portrait white/navy academic style, no subtitle, no-customer-time-window current experiment, valid numerical results, and role of RRI/socio-technical analysis. Prioritize clear system structure and explicit evidence; absolute battery numbers are a supplementary example, not the central result. Neutral scholarly Japanese, no slogans, no overstatement of quantum superiority or realized materials improvement. Distinguish (A) findings of cited quantum-technology studies, (B) current model results, (C) untested future design implications.
+
+TITLE exact:
+量子技術がEV配送の定時配達率と
+走行時のバッテリー消費電力量に影響を及ぼす
+仕組みと成立条件
+Author exact「佐野巧馬　Q/est」
+NO subtitle.
+
+Top fullwidth strip header「分析する二つの経路」
+Two clean rows:
+「量子探索」→「古典部による検証・統合」→「配送計画の更新」→「運用結果」
+「量子材料計算」→「材料評価・設計判断」→「実用電池性能」→「運用条件・消費電力量」
+Label these diagrams「想定する作用経路」. Do not imply empirical proof of fullpaths. Slim strip to save readable body space.
+
+Three equal main columns, around25..80% page:
+
+LEFT:
+「1．目的・問題設定」
+「量子技術が配送計画と電池開発のどの機能を支え得るかを、技術論文と固定条件の計算結果から検討する。」
+「技術と運用・設計判断の関係を捉え、期待効果と不成立条件を検討する[3,4]。」
+「全配送先を各1回訪問し、デポに戻る。顧客の時間窓は設定しない。」
+Formula「J(π)=Σₖ₌₀ⁿ T_{πₖ,πₖ₊₁}」
+「Tᵢⱼ：固定移動時間。π₀・πₙ₊₁：デポ。」
+「制約：需要容量、総稼働時間9時間以内。」
+「2．比較方法」
+Compacttable:
+「配送先数」「3・4・5・25・100・125」
+「問題例」「460」
+「計算条件」「探索法・層数等の8条件」
+「測定反復」「各条件10反復」
+「比較基準」「古典初期解」
+「1問題例：配送先集合・需要量・移動時間行列を定めた入力。」
+「総移動時間差 ΔJ=J−J₀。負値は改善。厳密参照値がある407問題例では最適性ギャップを評価。」
+Subheading「材料特性から電力量への換算」
+「容量20 kWh・平均電圧を固定し、比容量から電極材料量を推計。その他部材を固定し、推計質量と保存速度から走行電力量を計算。」
+「460速度軌跡／空荷・平坦路・回生なし・補機除外」
+「1速度軌跡：一つの走行の速度時系列。現行の配送計画問題とは別資料。」
+「材料参照値は古典DFT・電極試験の文献[5]に基づく。」
+
+MIDDLE:
+「3．量子探索と動的再計画」
+Subheading「量子技術段階の知見」
+「Grover型ミキサーは、実行可能解の重ね合わせを準備して探索する方式[1]。古典探索内で経路の訪問順を量子計算に渡す構成例がある[6]。」
+Subheading「今回の静的比較」
+Table caption「表1　古典初期解からの平均総移動時間差」
+columns「配送先数」「差［秒］」
+rows3 0.00;4 −0.16;5 −1.10;25 +564.57〜+571.45;100 +4459.77〜+4469.22;125 +5975.10〜+5983.27.
+「範囲は層数の異なる条件の平均値。探索範囲を制限した5条件では、範囲内の最良値が古典初期値と一致。」
+Subheading「動的再計画への組込み」
+A readable vertical workflow figure:
+「古典：現状把握・部分問題の選択」
+↓
+「量子：候補解の生成」
+↓
+「古典：制約検証・全体計画への統合」
+↓
+「更新計画を採用／現計画を維持」
+Dashed feedback arrow bottomtotop label「需要・交通・車両位置の更新」.
+Caption「図1　古典・量子ハイブリッドの構成案[6]。」
+Smallqualification「構成案は未検証。配送全体と量子部の部分問題の規模を区別する。」
+Small important criterion「評価対象：更新までの総処理時間と、更新後の計画品質。」
+
+RIGHT:
+「4．量子材料計算と電池設計」
+Subheading「量子技術段階の知見」
+Two short paragraphs with specific work, not generic hype:
+「Delgadoら[2]：量子位相推定による材料エネルギー計算から、電圧・イオン移動・熱安定性を評価する手順と必要資源を推計。」
+「Shokrian Ziniら[7]：電池正極材料を対象に、指定精度での量子シミュレーションの計算資源を削減する方式を提案。」
+Qualification「誤り耐性量子計算を想定した方法・資源の研究。実用電池の性能改善の実証ではない。」
+Subheading「配送要求と材料評価の対応」
+Replace large absolute battery charts with LARGE structural DIAGRAM, heading「将来の利用構成（仮説）」:
+topbox「配送要求から電池要件を設定」
+small sublabel「走行距離・需要・充電可能性」
+downarrow
+box「量子材料計算：候補材料の評価」
+small sublabel「電圧・安定性など[2,7]」
+DASHED downarrow
+box「実験確認・セル／パック設計」
+split into two sidebyside branches with clear arrows:
+LEFT「容量固定で軽量化」 ↓「走行消費電力量」
+RIGHT「質量固定で容量増加」 ↓「航続距離・充電条件」
+Mark leftbranch「今回の下流計算」; rightbranch「未計算」. Ensure legible text, not crowded.
+Caption「図2　配送要求に対応した材料評価と設計選択。」
+«No fake empirical link upstream. Diagram is conceptual future design.»
+
+Below SMALL supplementary table, do NOT make large headline:
+Subheading「下流の換算例：LP→S-200[5]」
+Rows「電池質量削減率」「5.67%」
+「走行時総質量削減率」「0.478%」
+「走行電力量削減率」「0.413%」
+Note「各LP値を分母。電力量は460軌跡の総量加重。容量固定・下側転がり抵抗条件。」
+Small scope「量子計算の効果量ではない。完成パック性能への換算は未確定。」
+The table is an illustrative conditional downstream calculation, not main result of quantum materials research.
+
+BOTTOM fullwidth substantive discussion, enough space:
+Heading「考察：将来のシステムへの寄与と成立条件」
+Three concise numbered neutral paragraphs:
+「① 配送計画：量子部の候補探索は、古典部による部分問題選択・検証・統合を介して運用に反映される。動的更新では、解品質に加えて総処理時間が利用可能な更新時間内に収まることが条件となる。」
+「② 電池開発：量子材料計算は、配送に必要な電池要件に対応する候補評価を支え得る。計算対象は材料評価の困難さと、車両・配送条件への影響の両方から選ぶ必要がある。」
+「③ 設計判断：材料評価情報が試験・設計に採用され、軽量化または容量増加として実装されて初めて運用条件が変わる。量子材料計算の資源削減を、配送の省電力効果と同一視しない。」
+Smallscope「今回の実験は静的・固定入力。図1・図2の将来構成による運用効果は未検証。」
+
+Footer reference section2columns standard compact citations, seven entries. Use author year journal volumes pages, no crammed fulltitles.
+「主な参考文献」
+[1] Bärtschi & Eidenbenz (2020), IEEE QCE, 72–82.
+[2] Delgado et al. (2022), Phys. Rev. A 106, 032428.
+[3] Stilgoe, Owen & Macnaghten (2013), Research Policy 42, 1568–1580.
+[4] Geels (2004), Research Policy 33, 897–920.
+[5] Chen et al. (2020), Nature Communications 11, 3411.
+[6] Holliday et al. (2026), Quantum Machine Intelligence 8, 37.
+[7] Shokrian Zini et al. (2023), Quantum 7, 1049.
+Footnote「文献の技術的知見、本研究の計算結果、将来の構成案を区別して記載。」
+Maintain clear reader hierarchy: specific quantum literature first, current evidence second, structural future implications third. Academic poster not a wall of prose. Do not create slogan-like banners or oversized absolute-value numbers. Exact original author/title preserved.

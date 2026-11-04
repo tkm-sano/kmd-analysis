@@ -1,0 +1,92 @@
+Edit the supplied Japanese scientific conference poster to correct a fundamental scope error. The user's CURRENT STUDY HAS NO CUSTOMER TIME WINDOWS. The earlier time-window study was superseded. Remove ALL obsolete time-window results from this poster. Preserve exact user title, subtitle, white/navy academic three-column design, right battery sensitivity findings with their baseline definitions, bottom references, and readable Japanese typography. Flat A1 portrait artwork, highest resolution. Reflow middle and left sections to a coherent TIME-WINDOW-FREE computational study, do not leave deleted text or confuse old78-case data with current460-case data.
+
+EXACT TITLE remains:
+量子技術がEV配送の定時配達率と
+走行時のバッテリー消費電力量に影響を及ぼす
+仕組みと成立条件
+Subtitle remains「総移動時間・定時配達率・走行消費電力量の比較分析」
+「氏名・所属：記入欄」
+
+CRITICAL DELETE obsolete time-window study:
+NO 78 time-window delivery cases, NO 36 operational policies, NO 64/78 QAOA acquisition success, NO 768 delayed departure cases, NO waiting absorption, NO100% on-time delivery, NO claim that time-window outcomes were computed for current study. Customer time windows are NOT imposed. Total route working-time limit still exists, not customer windows. Do not delete valid current plan results3,4,5,25,100,125 customers and460 instances. The battery old460 trajectories are a distinct dataset from current460 plan instances, clearly note that, no fabricated integrated outcome.
+
+LEFT COLUMN:
+「1．研究目的」
+「時間窓なしの配送計画について、古典初期解に対する総移動時間の差を比較する。別途、電池質量が走行消費電力量に与える影響を感度分析する。」
+「2．問題設定」
+「顧客ごとの時間窓は設定しない。」
+「固定された配送先集合の訪問順を対象とする。目的関数はデポ出発・帰庫を含む総移動時間。」
+Accurate formula「J(π) = Σₖ T_{πₖ,πₖ₊₁}」 use nice mathematical typesetting with π0 andπn+1 depot explained if space. Do NOT use unqualified sum over ALL pairs. Definition「Tᵢⱼ：出発時刻によらない移動時間」
+Constraints short list「各配送先1回訪問／需要容量／総稼働時間9時間以内」
+Modest thin-outline depot and4-node closed tour illustration, caption「訪問順の例」
+Small note「顧客の時間窓と、総稼働時間の上限は異なる。」
+「3．計算実験」
+Table rows:
+「配送先数」「3・4・5・25・100・125」
+「問題例数」「計460」
+「比較設定」「8設定」
+「測定反復」「各問題例・設定で10反復」
+「比較基準」「保存された古典初期解」
+Then concise metric lines:
+「解の品質：総移動時間差 ΔJ = J − J₀」
+「J₀は古典初期解。負値は改善、正値は悪化。」
+「厳密最適値とのギャップは、参照値のある407問題例のみで算出する。」
+Small caveat「定時配達率・実走行電力量は、現行の計画比較では未評価。」
+
+MIDDLE COLUMN:
+「4．総移動時間の比較結果」
+「8設定中6設定は、全問題例で古典初期解と一致した。Grover型2設定の結果を示す。」
+Table caption「表1　古典初期解に対する平均総移動時間差［秒］」
+columns「配送先数」「p=2」「p=3」
+rows3 0.00 0.00
+4 −0.16 −0.16
+5 −1.10 −1.10
+25 +571.45 +564.57
+100 +4469.22 +4459.77
+125 +5983.27 +5975.10
+note「p：モデル層数。問題例内で10反復を平均。」
+「5．問題規模別の比較」
+REPLACE obsolete delay plot with a large clean scientific comparison plot:
+x axis「配送先数」 with categorical equal-spaced positions labelled3,4,5,25,100,125. NO numeric uniform spacing pretending25 and100 same intervals; say small caption「横軸は問題規模のカテゴリ表示」. y axis「古典初期解に対する平均総移動時間差［秒］」. y range−200..6500, ticks0,2000,4000,6000. Dashed black horizontal0 line, visible above bottom axis; legend「基準：古典初期解（差0秒）」.
+Muted blue solid circles curve p2 values0,-0.160134,-1.098845,571.450824,4469.216906,5983.270188.
+Muted rust dashed triangle curve p3 values0,-0.160134,-1.098845,564.571927,4459.772020,5975.101575.
+Both near-overlap correctly, do not artificially separate. Legend「Grover型 p=2」「Grover型 p=3」 plus baseline. NOTE avoid legend overlap baseline graph bottom. Highlight graph above caption. Small note below「2曲線は近接。正確な数値は表1に示す。」
+Caption「図1　問題規模別の平均総移動時間差。」
+Interpretation「4・5配送先では平均値がわずかに改善し、25配送先以上では増加した。」
+「計算時間は学習・最終検証を分けて集計。探索範囲・計算予算が異なるため、速度の優劣は判定しない。」
+
+RIGHT COLUMN:
+「6．電池質量の感度分析」
+Subheading「基準材料LPとの比較」
+「基準材料：LP／比較材料：S-200」
+table:
+「簡略モデルの軽量化量」「5.45 kg」
+「総量加重電力量削減率」「0.413%」
+note「保存460速度軌跡／下側の転がり抵抗条件。」
+Important sentence「この速度軌跡は現行の460計画問題とは別資料。」
+Subheading「未計上部材の質量差に対する感度」
+「b：計上済み部材の質量差（LP−S-200）」
+「δ：未計上部材の質量差（S-200−LP）」
+Equation「ΔM = M_LP − M_S-200 = b − δ」
+Sign「ΔM > 0：軽量化／ΔM < 0：重量増加」
+Retain scientific mass plot accurate two lines y9.72−x rust and5.98−x blue; x ticks0,2,4,6,8,10,12; y ticks−6,−4,−2,0,2,4,6,8,10.
+x label「未計上部材の質量差 δ［kg］」
+y「推計質量差 ΔM［kg］」
+legend「担持量固定 b=9.72」「正極面積固定 b=5.98」
+Black dashed zero line, note「0：基準LPと同じ推計質量」
+Zero threshold open circles and annotations5.98,9.72 accurately.
+Caption「図2　基準LPに対する条件付き質量推計。」
+「δ=0：未計上部材の質量が両材料で等しい。」
+「δ=bで差ゼロ、δ>bで重量増加。」
+「7．評価範囲と限界」
+「顧客の時間窓は設定していない。現行の計画比較では定時配達率を算出していない。」
+「電力量は固定速度・平坦路・回生なし・補機除外の推計。完成パック質量は未確定。」
+「配送計画から実走行電力量への接続、量子計算による材料改善は未検証。」
+
+BOTTOM full width:
+「結論」
+「① 時間窓なしの比較では6設定が古典初期解と一致。Grover型は規模によって総移動時間差が変化した。」
+「② 電池軽量化による電力量差は条件付き推計であり、現行の配送計画の電力量削減を示すものではない。」
+「今後：比較可能な計算予算の整備、配送計画と走行電力量の接続、実用電池の全部材情報による検証。」
+References small preserve two references as「関連研究」 with Solomon1987 Operations Research35(2)254–265; Schneider etal2014 Transportation Science48(4)500–520. Footnote「時間窓を扱う先行研究であり、今回の実験条件とは異なる。」
+No claim current study uses time windows anywhere. Do not reintroduce old delay diagram or on-time100%. Clear restrained academic poster with exact title and corrected current research scope.

@@ -1,0 +1,15 @@
+﻿No.,要件,確認内容,成果物・根拠
+1,対象資料・生成原本の確認,現行run03のPPTX・生成コード・本文、配送と材料のCSV、方法・結果・考察原稿、一次資料を確認した。,00_SOURCE_INVENTORY.csv; baseline; sources
+2,原本保全・指示,祖先・repo内でAGENTS.mdは未確認である。原本1940ファイルのhashを再照合する。,evidence/ORIGINAL_PRESERVATION.csv
+3,タイトル・問い・目的,指定タイトルと問いを採用した。目的・方法は条件候補・制約・未検証接続の特定として統合した。,poster.pptx; 03_RESEARCH_STRUCTURE
+4,配送指標,ΔJ、相対差、実行可能性、最適性参照、工程時間、探索支持を区別した。未保存の実機資源はHOLDである。,09_NUMERIC_AUDIT; TIME_SCOPE_AUDIT; GLOBAL_REFERENCE_COVERAGE
+5,配送の結果・方式,3群8設定と、GM2設定だけの結果表、7改善入力と規模別結果を区別した。実機ではない。,SETTING_SCOPE_AUDIT; B_IMPROVING_INPUTS
+6,材料の入力・二モデル,Chenは入力出典、R2/R7は量子評価の先行研究として扱う。①簡略推計と②部材別183設計を分離した。,08_REFERENCES; C_COMPONENT_BOUNDARIES; 06_REVIEW_REPORT
+7,削減率・伝達比,5.67%・0.478%・0.413%と各LP分母、有限差分の比、走行条件を確認した。普遍係数や量子効果としない。,C_MASS_DC_RECONCILIATION; 09_NUMERIC_AUDIT
+8,成立・消失条件,支持内改善解の必要条件とb−δの代数的符号境界だけに強い論理用語を用い、適用範囲を限定した。,04_CONDITIONS; 06_REVIEW_REPORT
+9,考察・統合,配送の計画品質と材料の固定速度DCは異なる到達段階である。共通の適用判断の枠組みにABC接続を整理した。,07_CONNECTIONS_ABC; 07_COMMON_FRAMEWORK
+10,因果モデル,旧指標・出発余裕を復活させず、許容計算時間と走行条件の修飾を再検討した。,10_CAUSAL_MODEL_REVIEW
+11,理論の使用範囲,STSは技術・判断の区別、RRIは予見・前提の省察に限定した。,poster_text.txt; 08_REFERENCES
+12,デザイン・表示,二段組・青茶色を維持し、A/B/C・二モデル・境界を表示した。実PPTX描画と文字・余白を確認する。,render/FINAL_VALIDATION.json; poster_preview.png
+13,未実証性能,対象量子材料改善、完成パックの出力・寿命・安全性、実車性能は未実証として示した。,poster_text.txt; 05_UNVERIFIED_CONNECTIONS
+14,作業範囲,新しい科学実験、commit・push・PR作成は行わない。棄却済みの方法は再導入しない。,BUILD_AND_REVIEW.txt; FINAL_GIT_STATUS.txt

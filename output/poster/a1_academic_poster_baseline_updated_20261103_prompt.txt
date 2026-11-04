@@ -1,0 +1,61 @@
+Edit the provided JAPANESE academic research poster. Preserve its exact user-specified three-line title, subtitle, author placeholder, A1 portrait aspect ratio, navy headings, white background, three-column scientific layout, entire left column, entire section 4 table and text, and bottom conclusion/references. Change ONLY the specified result labels, the two scientific graphs and their explanatory text, plus the comparison table in section5. Make the revision precise and scientifically accurate, preserving actual numerical data. Keep all edited labels readable without tiny fonts. You may rearrange space within middle-column section5 and right-column section6 to fit, but do not compress other text. Highest resolution available. No decorative elements.
+
+TITLE MUST REMAIN EXACTLY:
+量子技術がEV配送の定時配達率と
+走行時のバッテリー消費電力量に影響を及ぼす
+仕組みと成立条件
+
+CHANGE 1, middle column section5「時間窓あり配送評価」:
+Replace existing table with explicit baseline comparison. A short sentence above table「QAOA解取得：64 / 78問題」
+Table columns「比較条件」「定時配達率」
+row「古典手法のみ（基準）」「100%」
+row「QAOA優先・未採用時は古典」「100%」
+row「基準との差」「0ポイント」
+Keep legible using two lines for long second-row label. This is a policy comparison; do not imply QAOA always used or solved78 problems.
+Graph title「出発時刻変更による配送完了時刻差」
+Graph x axis「訪問順序」, discrete ticks1,2,3,4 only.
+Graph y axis concise「基準からの平均完了時刻差［秒］」.
+Data blue markers joined at exactly(1,262.96875),(2,55.78125),(3,15.9375),(4,0). Mark values263.0,55.8,15.9,0.0 near respective points. y ticks0,100,200,300. Leave a small negative visual margin under0 so the zero line can be distinct from bottom axis, no need negative tick.
+Add explicit black dashed horizontal line y=0 spanning whole graph and a readable legend「破線：基準出発時刻（差0秒）」. Keep blue data line visually distinguishable, do not invent error bars.
+Below chart caption EXACT:
+「図1　同一の古典経路で出発時刻のみ変更。」
+「出発を遅らせた条件−基準条件の差。」
+「正の出発遅延を持つ768条件の平均。」
+Then concise result「時間窓開始までの待機が減少し、」
+「最終配送先の完了時刻差は0秒となった。」
+Small note「定時配達率は需要量加重・件数とも100%。」
+All lines should fit. Do not describe the time plot as direct quantum-versus-classical performance comparison.
+
+CHANGE2, right section6 top energy table:
+Keep mass5.45 kg and0.413%. Table rows:
+「基準LPに対する軽量化量」「5.45 kg」
+「基準LPに対する電力量削減率」「0.413%」
+Immediately above/below table add material definition「基準材料：LP／比較材料：S-200」
+Retain「保存460速度軌跡／下側の転がり抵抗条件。」
+No claim real full-pack measured results.
+
+CHANGE3, right section6 mass sensitivity:
+Subheading「未計上部材の質量差に対する感度」
+Definitions above graph:
+「b：計上済み部材の質量差（LP−S-200）」
+「δ：未計上部材の質量差（S-200−LP）」
+Equation「ΔM = M_LP − M_S-200 = b − δ」
+Redraw correct clean scientific Cartesian plot:
+x-axis「未計上部材の質量差 δ［kg］」
+x ticks0,2,4,6,8,10,12, plotting range0..12.
+y-axis「推計質量差 ΔM［kg］」
+y ticks−6,−4,−2,0,2,4,6,8,10, range−6..10.
+Two accurate straight lines: rust y=9.72−x; blue y=5.98−x. Rust starts9.72 atx0, crossesx9.72. Blue starts5.98 atx0, crosses5.98. Draw full lines clipped to plot.
+Legend「担持量固定 b=9.72」「正極面積固定 b=5.98」.
+Add distinct BLACK DASHED HORIZONTAL reference line y0 labelled「0：基準LPと同じ推計質量」 in a legible note just above or below plot, avoid overlap with data/crossings.
+Open circles at correct zero crossings x5.98 andx9.72, leader labels「5.98」「9.72」 away from lines. These are threshold annotations, not extra ordinary tick marks.
+Above or below plot concise sign interpretation「ΔM > 0：軽量化／ΔM < 0：重量増加」
+Caption:
+「図2　基準材料LPに対する条件付き質量推計。」
+「δ=0：未計上部材の質量が両材料で等しい。」
+「δ=bで質量差ゼロ、δ>bで重量増加。」
+Small qualification「未計上部材の質量差は未実測。完成パック質量は未確定。」
+Retain short definition「担持量：正極の単位面積当たり活物質量。」
+Could make captions fewer lines by adjusting white space, not by microscopic font.
+
+Preserve section7 discussion and conclusion content. No other edits. Ensure scientific labels make baseline, direction of subtraction, and zero-line meaning immediately unambiguous. Output complete revised poster image.

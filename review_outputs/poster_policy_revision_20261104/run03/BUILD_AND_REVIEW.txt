@@ -1,0 +1,19 @@
+run03 生成・監査・表示確認
+
+方針：二経路の保存定量結果と文献から寄与条件・制約を検討する。面接・RIQ・M1は採用しない。
+
+入力：run02のポスター・編集コード・本文、保存結果CSV、固定モデル、方法・結果・考察原稿、実装snapshot、460件の厳密参照証明、460元入力行列等である。元ファイルを変更していない。
+
+監査：scripts/audit_inputs.py（41項目）、audit_extended.py（13項目）、audit_saved_routes.py（36800保存経路の目的値と制約の元行列による算術検証）。新しい経路探索・モデル実行・量子回路・速度再積分は行っていない。audit_saved_routes.pyは既存.conda/bin/pythonとNumPyを使用した。
+
+生成：PYTHONPATH=/tmp/kmd-poster-authoring-deps python scripts/build_poster.py。ReportLabとpython-pptxによる文字・図形のネイティブ作成である。
+
+描画：scripts/render_poster.py。run01の独立配置レンダラを読み取り専用で参照し、run03の独立プロファイルでLibreOffice Impress 24.2.7.2を使用した。poster.pdfは実PPTX描画結果、render/layout_reference.pdfはコード上のレイアウト参照である。
+
+確認：scripts/validate_final.pyで寸法、全段落抽出、図形範囲、余白、列間侵入を照合した。全体画像の確認後visual_reviewを記録した。再生成時は再確認が必要である。PDF検証は既存読み取り専用PyMuPDF環境を使用した。
+
+補足：scripts/build_causal_svg.pyとbuild_reports.pyでSVG、HTML、CSVを生成する。原本1848ファイルのhashは保存manifestまたは作業開始時と一致した。
+
+表示：A1縦594×841mm。本文22–26pt、表21pt、詳細18–20pt、文献18pt。フォントDroid Sans Fallback／DejaVu Sans。Microsoft PowerPoint固有の描画と紙への試し刷りは未実施である。印刷にはベクターPDFを使用する。
+
+commit・push・PR作成は行っていない。

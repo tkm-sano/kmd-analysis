@@ -1,0 +1,92 @@
+Use case: scientific-educational.
+Create a professional JAPANESE ACADEMIC CONFERENCE POSTER, A1 portrait ratio 594:841. Highest resolution legible Japanese. Flat full-page printable artwork. This is a quantitative vehicle-routing research poster, following conventional scientific paper organization: objective, problem definition, computational experiments, objective values, time-window evaluation, sensitivity analysis, conclusion and references. Scholarly restrained design, pure white background, black regular Japanese sans serif body text, dark navy section headers with thin rules, thin light gray vertical separators. Three equal columns below full-width title. Clear spacing, concise sentences, informative scientific figures and compact results tables. No decorative icons, no maps, no big hero numbers, no colored cards, no gradients. Muted blue and rust only for data plots. Body must be comfortable to read, not dense wall of prose. Do not enlarge title at expense of results. No invented data, authors or affiliations. Use all the exact content below, no extra paragraphs. Three columns need balanced height. Footer full width. Numerical accuracy and semantic precision critical.
+
+HEADER approx13%:
+Title on two balanced lines:
+「EV配送における配送計画手法と」
+「電池質量の影響評価」
+Subtitle「総移動時間・定時配達率・走行消費電力量の比較分析」
+Small line「氏名・所属：記入欄」
+
+LEFT COLUMN approx71%:
+Heading「1．研究目的」
+「配送計画手法と電池質量の違いが、配送時間・定時配達率・走行消費電力量に与える影響を数値モデルで評価する。」
+
+Heading「2．問題設定」
+「固定された配送先集合の訪問順を対象とする。計画比較の目的関数は、デポ出発・帰庫を含む総移動時間。」
+Centered simple equation「J(π) = Σ Tᵢⱼ」
+Small definition「Tᵢⱼ：出発時刻によらない移動時間」
+「制約：各配送先1回訪問、需要容量、総稼働時間。」
+Thin outlined small conceptual route graph with depot and 4 numbered customers, arrows closed tour, label「訪問順の例」. Keep modest, no geography or icons.
+「時間窓ありの配送評価と、時間窓なしの計画比較を別実験とする。」
+
+Heading「3．計算実験」
+Compact clean table columns「実験」「対象・比較条件」
+row「計画比較」「460問題例／8設定／各10測定反復」
+row「配送評価」「4配送先・78問題例／36運用条件」
+row「電力量感度」「容量20 kWh／保存460速度軌跡」
+Three short labelled entries:
+「解の品質：古典初期解からの総移動時間の増減。407問題例では厳密最適値とのギャップも評価。」
+「配送評価：QAOA解の採用・古典解への切替と出発時刻を変更。配送作業時間は102秒。」
+「電力量：同一速度軌跡で電池質量だけを変更。平坦路・回生なし・補機除外。」
+
+MIDDLE COLUMN:
+Heading「4．計画比較の結果」
+「8設定中6設定は古典初期解と一致。Grover型2設定の結果を表1に示す。」
+Make compact scientific table with header 2 lines and grid only horizontal rules:
+Caption「表1　古典初期解に対する平均総移動時間差（秒）」
+columns「配送先数」「p=2」「p=3」
+rows:
+「3」「0.00」「0.00」
+「4」「−0.16」「−0.16」
+「5」「−1.10」「−1.10」
+「25」「+571.45」「+564.57」
+「100」「+4469.22」「+4459.77」
+「125」「+5983.27」「+5975.10」
+Note「負値：改善／正値：悪化。pはモデル層数。」
+「計算時間は学習・最終検証を区別。探索範囲・計算予算が異なるため、速度の優劣は判定しない。」
+
+Heading「5．時間窓あり配送評価」
+Small concise table with columns「指標」「結果」
+rows「QAOA解取得」「64 / 78問題」
+「定時配達率」「全36条件で100%」
+「古典手法のみとの差」「0パーセントポイント」
+Below large clean scientific LINE plot:
+title「出発の遅れが配達完了時刻に残る量」
+x-axis「配送順」 ticks1,2,3,4. y-axis「平均完了時刻差（秒）」 ticks0,100,200,300. Blue line and circular dots at exactly (1,262.97),(2,55.78),(3,15.94),(4,0). label values near points 263.0,55.8,15.9,0.0. Thin gray grid. No uncertainty bars invented.
+Caption「図1　同一経路で出発だけを遅らせた768条件の平均。」
+One interpretation sentence「時間窓の開始までの待機が減少し、最終配送先では出発遅延がすべて吸収された。」
+Small note「定時配達率は需要量加重・件数とも100%。」
+
+RIGHT COLUMN:
+Heading「6．電池質量の感度分析」
+Subheading「走行消費電力量の変化」
+Concise two-row scientific table:
+「簡略モデルの軽量化量」「5.45 kg」
+「総量加重電力量削減率」「0.413%」
+Note「保存460速度軌跡／下側の転がり抵抗条件。」
+
+Subheading「未計上部材の質量差の影響」
+Definition text「b：計上済み部材の軽量化量」
+「δ：未計上部材の追加質量差」
+Equation「正味軽量化量 = b − δ」
+Conventional scientific Cartesian plot x label「未計上部材の追加質量差 δ（kg）」 ticks0,2,4,6,8,10,12, y label「正味軽量化量（kg）」 ticks−6,−4,−2,0,2,4,6,8,10. Two descending straight lines y=9.72−x rust and y=5.98−x blue, black horizontal zero line and light gray grid. Legend「担持量固定」「正極面積固定」. Need zero crossing open circles at9.72 and5.98, annotate numeric values using small leader lines. No shaded areas. Caption「図2　代表設計における正味質量差の感度。」
+「δが約9.72 kgまたは約5.98 kgに達すると、部材の軽量化による質量差はゼロになる。」
+Small definition「担持量：正極の単位面積当たり活物質量。」
+
+Heading「7．考察・限界」
+「配送時間の差は、待機時間と期限の余裕によって定時配達率に表れなかった。」
+「完成パック質量は未確定。電力量差は固定速度モデルの結果であり、実車試験値ではない。」
+「充電計画・車両割当は最適化対象外。量子計算による材料改善は未検証。」
+
+BOTTOM full-width approx16% separated by thin navy line:
+Heading「結論」
+Two concise numbered findings:
+「① 本条件では、配送計画の違いによる定時配達率の改善は認められなかった。」
+「② 電池の軽量化・電力量削減の推計は、未計上部材と車両モデルの条件に依存した。」
+Small line「今後：時間窓の厳しさ・交通条件の変更、実用電池の全部材情報による検証。」
+References footer readable small:
+「方法記述の参考文献：[1] Solomon (1987), Operations Research 35(2), 254–265.」
+「[2] Schneider et al. (2014), Transportation Science 48(4), 500–520.」
+Very small footer「数値出典：研究内の保存計算結果（2026年11月2日集計）。上記文献の実験結果ではない。」
+Keep content within page with comfortable margins, prioritize plot legibility and concise conventional scientific prose. Do not invent benchmark usage or simultaneous routing-and-charging optimization. Three-column research poster visual style, not promotional infographic.

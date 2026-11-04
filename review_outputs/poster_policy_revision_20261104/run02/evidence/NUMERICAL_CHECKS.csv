@@ -1,0 +1,42 @@
+id,actual,expected,tolerance,status,source
+B_reference_rows,36800,36800,,PASS,B_PLAN_REFERENCES_36800.csv
+B_physical_inputs,460,460,,PASS,B_CLASSICAL_INITIAL_BASELINES.csv
+B_inputs_match_initial,True,True,,PASS,B_PLAN_REFERENCES_36800.csv + B_CLASSICAL_INITIAL_BASELINES.csv
+B_all_best_plans_acquired,36800,36800,,PASS,B_PLAN_REFERENCES_36800.csv
+B_all_best_plans_feasible,36800,36800,,PASS,"B_PLAN_REFERENCES_36800.csv; best of8192 shots, not individual-shot success"
+B_arithmetic_route_gap_mismatches,0,0,,PASS,"36800 saved references; Fraction objective differences, visit sets, conditional gap"
+B_exact_inputs,407,407,,PASS,B_PLAN_REFERENCES_36800.csv
+B_missing_exact_inputs,53,53,,PASS,B_PLAN_REFERENCES_36800.csv
+B_repetitions_per_input,True,True,,PASS,B_PLAN_REFERENCES_36800.csv
+B_configs_equal_initial,6,6,,PASS,B_BY_CONFIGURATION.csv; objective and serialized route checked
+B_scale_summary_mismatches,0,0,,PASS,48 configuration/scale means compared to saved summary
+B_improving_inputs_GROVER_P2,7,7,,PASS,B_BY_CONFIGURATION.csv
+B_improving_inputs_GROVER_P3,7,7,,PASS,B_BY_CONFIGURATION.csv
+B_mirror_orbit_equals_initial,23000,23000,,PASS,B_PLAN_REFERENCES_36800.csv; matching support exact DP
+B_mirror_unique_fits,2300,2300,,PASS,B_PLAN_REFERENCES_36800.csv
+B_active_t_zero,460,460,,PASS,"B_ACTIVE_GRID_SELECTION.csv; grid only, not continuous optimum"
+B_unique_fits,3680,3680,,PASS,B_RESOURCES_PER_FIT.csv
+B_hardware_qubits_saved_count,0,0,,PASS,B_RESOURCES_PER_FIT.csv
+B_compiled_depth_saved_count,0,0,,PASS,B_RESOURCES_PER_FIT.csv
+B_compiled_gate_count_saved_count,0,0,,PASS,B_RESOURCES_PER_FIT.csv
+C_CRR_LOWER_BOUND_trajectory_count,460,460,,PASS,C_T08_ENERGY_FULL.csv
+C_CRR_LOWER_BOUND_paired_ids,True,True,,PASS,C_T08_ENERGY_FULL.csv
+C_CRR_LOWER_BOUND_same_trajectory_hash,True,True,,PASS,C_T08_ENERGY_FULL.csv
+C_CRR_LOWER_BOUND_control_zero,True,True,,PASS,C_T08_ENERGY_FULL.csv
+C_CRR_LOWER_BOUND_pair_arithmetic,5941.5559753816215,5941.555975381518,1e-07,PASS,C_T08_PAIRED_DIFFERENCES.csv versus C_T08_ENERGY_FULL.csv
+C_CRR_LOWER_BOUND_running_mass_definition,1043.8888888888887,1043.888888889,1e-07,PASS,CONTROLLED_MASS_TO_DC_MODEL_FREEZE.json + methods draft
+C_CRR_UPPER_BOUND_trajectory_count,460,460,,PASS,C_T08_ENERGY_FULL.csv
+C_CRR_UPPER_BOUND_paired_ids,True,True,,PASS,C_T08_ENERGY_FULL.csv
+C_CRR_UPPER_BOUND_same_trajectory_hash,True,True,,PASS,C_T08_ENERGY_FULL.csv
+C_CRR_UPPER_BOUND_control_zero,True,True,,PASS,C_T08_ENERGY_FULL.csv
+C_CRR_UPPER_BOUND_pair_arithmetic,6102.0332889916235,6102.033288991544,1e-07,PASS,C_T08_PAIRED_DIFFERENCES.csv versus C_T08_ENERGY_FULL.csv
+C_CRR_UPPER_BOUND_running_mass_definition,1043.8888888888887,1043.888888889,1e-07,PASS,CONTROLLED_MASS_TO_DC_MODEL_FREEZE.json + methods draft
+C_poster_rounding_battery,5.67,5.67,,PASS,C_MASS_DC_RECONCILIATION.csv
+C_poster_rounding_running,0.478,0.478,,PASS,C_MASS_DC_RECONCILIATION.csv
+C_poster_rounding_DC,0.413,0.413,,PASS,C_MASS_DC_RECONCILIATION.csv
+C_component_rows,183,183,,PASS,C_T09_COMPONENTS_183.csv
+C_all_complete_pack_missing,183,183,,PASS,C_T09_COMPONENTS_183.csv
+C_component_hold_status,182,182,,PASS,C_T09_COMPONENTS_183.csv
+C_component_incompatible_status,1,1,,PASS,C_T09_COMPONENTS_183.csv
+C_bridge_rows,25760,25760,,PASS,C_BRIDGE_MASS_DC_FULL.csv
+C_bridge_mass_identity,0,0,,PASS,C_BRIDGE_MASS_DC_FULL.csv; DeltaM=b-delta

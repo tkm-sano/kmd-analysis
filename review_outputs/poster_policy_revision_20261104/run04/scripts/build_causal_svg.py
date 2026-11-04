@@ -1,0 +1,30 @@
+from pathlib import Path
+from html import escape
+R=Path(__file__).resolve().parents[1]
+s=['<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="850" viewBox="0 0 1400 850"><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#455765"/></marker></defs><rect width="1400" height="850" fill="white"/><g font-family="sans-serif" fill="#17232d">']
+def text(x,y,t,pt=20):s.append(f'<text x="{x}" y="{y}" font-size="{pt}">{escape(t)}</text>')
+def box(x,y,w,h,lines,col):
+ s.append(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="#f4f7f9" stroke="{col}" stroke-width="2"/>')
+ for i,t in enumerate(lines):text(x+12,y+28+i*28,t,19)
+def arrow(x,y,xx,yy,c=False):s.append(f'<path d="M{x} {y} L{xx} {yy}" stroke="#455765" stroke-width="2" fill="none" marker-end="url(#arrow)"'+(' stroke-dasharray="8 5"' if c else '')+'/>')
+text(30,40,'二経路の確認範囲と未検証の接続',30)
+text(30,76,'A：固定条件の保存結果で確認　B：文献・モデルに基づく条件付き推論　C：未検証（破線）')
+text(30,122,'配送計画：Aの到達点は採用前の計画品質である。',23)
+box(30,145,285,112,['A 古典初期解と支持','matching／隣接交換／GM','同じ入力・目的値・制約'],'#286a96')
+box(365,145,310,112,['A CPU状態評価・標本候補','候補のJと制約を検証','実機の状態準備はC'],'#286a96')
+box(725,145,295,112,['C 実運用の採用判断','部分問題の選択・全体統合','許容時間と全工程の照合'],'#286a96')
+box(1070,145,300,112,['C 実運用成果','実際の配送実行・走行DC','現在Bからの接続は未評価'],'#286a96')
+arrow(315,201,363,201);arrow(675,201,723,201,True);arrow(1020,201,1068,201,True)
+box(30,290,645,92,['A 限定matching支持の最小＝初期値、GMの規模別結果','B 改善解の範囲内存在が厳密改善の必要条件である。','広い支持も取得品質・採用の十分条件ではない。'],'#286a96')
+text(30,430,'電池材料：①簡略推計の保存変換と、量子情報からの実用化を分離する。',23)
+box(30,452,285,112,['B 量子材料評価の文献','対象・精度・資源の推計','対象LP/Sでの利用はC'],'#a6522c')
+box(365,452,310,112,['C 情報の利用・電池設計','試験・選択・設計採用','出力・寿命・安全性'],'#a6522c')
+box(725,452,295,112,['C 完成パック・実車成果','完成質量・実車校正は未確認','①の計算値を流用しない'],'#a6522c')
+arrow(315,508,363,508,True);arrow(675,508,723,508,True)
+box(30,610,400,114,['A 文献参照入力 [Chen]','保持率逆算LP/S比容量','古典DFT・電極実験由来','量子材料改善の結果ではない。'],'#a6522c')
+box(480,610,430,114,['A ①塗工層＋固定34kg→質量→DC','5.67%→0.478%→0.413%','固定容量・同一旧速度・平坦','回生・補機・荷重変化を除外'],'#a6522c')
+box(960,610,410,114,['A ②既知部材差・完成質量未確定','B ΔM=b−δ、δ=bで相殺','担持量／面積固定でbが異なる。','実用電池の成立境界ではない。'],'#a6522c')
+arrow(430,667,478,667)
+text(30,787,'B 共通の枠組み：技術的能力→適用判断→システム成果。各接続の実証状態は同一ではない。',21)
+text(30,821,'Aは実機・実車の因果効果ではない。面接・RIQ・M1や新規実験は今回の工程に含めない。',19)
+s.append('</g></svg>');(R/'reports/causal_model_ABC.svg').write_text(''.join(s))

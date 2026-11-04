@@ -1,0 +1,112 @@
+Revise the supplied Japanese ACADEMIC CONFERENCE POSTER to focus the delivery-planning DISCUSSION on classical–quantum hybrid architecture, computational subproblem size, and dynamic replanning. Preserve exact user main title, no-customer-time-window current research, baseline objective comparison data, and the battery PART/WHOLE comparison of figure2. Maintain white/navy A1 portrait three-column scientific style, neutral factual wording, legible labels, no slogan banners. Explicitly distinguish current results from architecture proposal and dynamic hypotheses. No p=2-versus3 display; no unexplained「8設定中6設定」「Grover型2設定」claims as headlines. No100% delivery result, no old time-window experiments. No claims of quantum advantage or tested dynamic improvement.
+
+EXACT title3 lines:
+量子技術がEV配送の定時配達率と
+走行時のバッテリー消費電力量に影響を及ぼす
+仕組みと成立条件
+Subtitle「配送計画と電池材料を介した二つの経路の定量分析」
+「氏名・所属：記入欄」
+
+Top pathway strip preserved but concise about10%:
+Heading「分析対象と評価範囲」
+「量子技術」dashed→「計算手法」→「候補計画」→「検証・採用」→「配送計画」dashed→「運用結果」
+second「量子技術」dashed→「材料特性」→「電池質量」→「走行時総質量」→「走行消費電力量」
+Small note「実線：本研究のモデル内比較／破線：効果の接続が未検証」
+Do not imply adoption/dynamic experiment actually performed. If needed label top row「検討する構造」, bottom「固定条件で計算」.
+
+Three columns below around26..80% page:
+
+LEFT:
+「1．研究目的・問題設定」
+「計算手法と電池材料の違いが、配送計画・車両質量を介して配送の指標へ影響する条件を検討する。」
+「全配送先を各1回訪問し、デポに戻る。顧客の時間窓は設定しない。」
+Equation「J(π)=Σₖ₌₀ⁿ T_{πₖ,πₖ₊₁}」
+「π₀・πₙ₊₁：デポ／Tᵢⱼ：固定移動時間」
+「制約：需要容量、総稼働時間9時間以内。」
+「2．比較方法」
+Table:
+「問題例」「460」
+「配送先数」「3・4・5・25・100・125」
+「計算条件」「探索法・層数等の8条件」
+「測定反復」「各条件10反復」
+「比較基準」「古典初期解」
+「1問題例：配送先集合・需要量・移動時間行列を定めた入力。」
+「ΔJ=J−J₀。負値は改善、正値は悪化。厳密最適値のある407問題例では最適性ギャップも評価。」
+Subheading「電池質量・電力量」
+「基準材料LPとS-200の簡略質量モデルを比較し、同一速度軌跡で電力量差を計算。」
+「容量20 kWh／460保存速度軌跡」
+「1速度軌跡：一つの走行の速度時系列。」
+「固定速度・空荷・平坦路・回生なし・補機除外。」
+「速度軌跡と現行の配送計画問題は別資料。」
+
+MIDDLE:
+「3．配送計画の結果と構成案」
+Subheading「静的問題での計算結果」
+「複数の計算条件で古典初期解と同じ訪問順となった。Grover型探索の規模別結果を表1に示す。」
+Table caption「表1　古典初期解からの平均総移動時間差」
+columns「配送先数」「差［秒］」
+rows3 0.00;4 −0.16;5 −1.10;25 +564.57〜+571.45;100 +4459.77〜+4469.22;125 +5975.10〜+5983.27.
+Note「範囲は層数の異なる条件の平均値。4・5配送先で減少、25・100・125配送先で増加。」
+「探索範囲を制限した5条件では、範囲内の厳密最小値が古典初期値と一致した。」
+
+REPLACE old trivial restricted-support two-box figure with an actual STRUCTURAL ARCHITECTURE DIAGRAM titled「古典・量子の役割分担（構成案）」
+Vertical workflow with thin outlined boxes:
+「古典：現状把握・部分問題の選択」
+downarrow
+「量子：部分問題の候補解生成」
+downarrow
+「古典：制約検証・全体計画との比較」
+downarrow
+「改善候補を採用／改善なしは現計画を維持」
+Use fine dashed feedback arrow from bottom to top, label「需要・交通・車両位置の更新」.
+Clearly mark figure「構成案・未検証」.
+Caption「図1　部分問題探索を用いた動的再計画の構成案。」
+Small text「配送全体の規模と量子部へ渡す部分問題の規模を分けて設計する。」
+NO evidence this architecture was tested in current experiments, no new simulations. Diagram is discussion proposal.
+
+RIGHT:
+「4．電池質量と走行電力量」
+「基準：LP／比較：S-200」
+Retain figure2 PART(a) battery part within WHOLE running mass, but neutral precise labels:
+title「(a) 走行時総質量の内訳」
+yaxis「走行時総質量［kg］」ticks0,400,800,1200; max1250 but no extra1250tick crowded nextto1200.
+Two accurate vertical stackedbarsLP total1140.03, S-200total1134.59.
+graysegment1043.89kg COMMON includes driver55kg; rustbattery96.15and90.70. Labels above total, callouts battery96.15kgand90.70kg. Legend「電池」「電池以外・運転者」. labelinsidegray1043.89kg. Note「運転者55 kgを含む。貨物0 kg。」
+PART(b) horizontalbars same scale0..6%:
+title「(b) 基準LPに対する削減率」
+category「電池質量」value5.67%;
+「走行時総質量」value0.478%;
+「総走行消費電力量」value0.413%.
+All same xscale0,2,4,6 axis「削減率［%］」accuratebarlengths. Do not enlarge small effects with different scales.
+Caption「図2　電池質量差と走行時総質量・電力量の比較。」
+「削減率の分母は各項目の基準LP値。電力量は460速度軌跡の総量加重。」
+「電池質量差：約5.45 kg」
+「下側の転がり抵抗条件。簡略モデルの推計値。」
+「実車・完成パック性能への一般化は未検証。」
+Remove threshold5.98/9.72extra boxed note to free space.
+
+BOTTOM fullwidth20%, larger than previous to accommodate structural discussion:
+Heading「考察」
+Use THREE concise numbered paragraphs, no slogans:
+「1．古典・量子の役割分担：探索範囲内に改善解がなかった結果は、量子部の探索性能だけでなく、古典部による部分問題・探索範囲の選択が計画改善の条件になることを示唆する。」
+「2．計算規模と動的更新：4・5配送先での改善は、25・100・125配送先では維持されなかった。部分問題の分解・統合と、前処理・待機・計算・検証を含む総処理時間を、計画更新に使える時間と対応付けて評価する必要がある。」
+「3．電池材料：電池質量の5.67%減少に対し、走行時総質量は0.478%、総走行消費電力量は0.413%減少した。電池単体と車両全体で変化率の分母を区別する。」
+Small scope note「今回の実験は静的・固定入力。図1の動的構成の効果と量子実機の速度優位は未検証。」
+References bottom small but readable:
+「構成案の参考：[1] Holliday et al. (2026), Quantum Machine Intelligence 8, 37.」
+「[2] Bertsimas et al., Online Vehicle Routing（著者公開稿, 2018）.」
+「数値：本研究の保存計算結果。」
+Keep dynamic update distinct from customer time windows; do not reintroduce time windows in current experiment. No empty discussion such as mere need for more testing. Discuss architecture choices tied to actual diagnosed restrictions and scale results, conditional reasoning clearly named. High-quality restrained scientific poster.
+
+DIAGRAM ACCURACY EDIT
+Correct ONLY the TOP full-width pathway diagram of the supplied Japanese academic poster, under「分析対象と評価範囲」. Keep ALL other content and the title exactly unchanged. The current top diagram incorrectly turned explanatory labels「検討する構造」and「固定条件で計算」into causal nodes. REMOVE those two boxes entirely. They must NOT be nodes or arrow destinations.
+
+Rebuild the top strip as exactly TWO clean horizontal rows of boxes:
+Row1, seven boxes connected left to right:
+「量子技術」 --dashed--> 「計算手法」 --> 「候補計画」 --> 「検証・採用」 --dashed--> 「配送計画」 --dashed--> 「運用結果」
+Actually six boxes; use exactly the six quoted labels, no extra box. First arrow dashed, two middle calculation arrows solid, last two dashed to mark unverified effect connections.
+Row2, five boxes:
+「量子技術」 --dashed--> 「材料特性」 --> 「電池質量」 --> 「走行時総質量」 --> 「走行消費電力量」
+Keep row2 solid arrows after first dashed. Use same navy/rust subtle outlines, readable text and generous spacing. No explanatory phrases inside boxes beyond the quoted labels.
+Bottom legend remains「実線：本研究のモデル内比較／破線：効果の接続が未検証」
+Do not change body paragraphs, architecture diagram figure1, battery/vehicle figure2, results, title, labels or numerical data anywhere else. A1 portrait scholarly poster, same style and resolution.

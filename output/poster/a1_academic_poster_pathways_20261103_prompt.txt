@@ -1,0 +1,113 @@
+Revise supplied JAPANESE ACADEMIC CONFERENCE POSTER fundamentally in narrative, while preserving exact main title, A1 portrait, white/navy three-column scholarly appearance. Focus on OVERALL FINDINGS and the EVIDENCE ALONG TWO PROPOSED CAUSAL PATHWAYS. Remove p=2 versus p=3 detailed table and overlapping plot entirely. No trivial discussion of merely needing comparable conditions. Concise Japanese, ample whitespace, readable labels. No marketing cards, slogans, decorative icons, gradients. Use navy headings, muted blue computational pathway, muted rust material pathway. Distinguish model calculations from empirically established causal effects. No invented data. No on-time percentages, no unevaluated-rate warning, no old time-window results.
+
+TITLE EXACT, three lines:
+量子技術がEV配送の定時配達率と
+走行時のバッテリー消費電力量に影響を及ぼす
+仕組みと成立条件
+Subtitle「配送計画と電池材料を介した二つの経路の定量分析」
+「氏名・所属：記入欄」
+
+TOP FULL-WIDTH STRIP below title around11% page, compact clean scientific pathway diagram:
+Header「評価した経路」
+Two thin-outlined flow rows, horizontal:
+「計算手法」→「配送計画」→「総移動時間」⇢「走行消費電力量」
+second「材料特性」→「電池設計」→「電池質量」→「走行消費電力量」
+Use dotted arrow ONLY last top route→energy segment, and also upstream arrow from small「量子技術」label into material properties dotted. Solid arrows denote modeled/compared link, not universally empirically proven causality.
+Legend small「実線：モデル内で評価／破線：未検証の接続」
+Do not claim quantum computers actually improve material properties.
+
+THREE COLUMNS from about26% page to86%:
+LEFT COLUMN METHODS:
+Heading「1．目的と問題設定」
+「技術の違いが配送計画や電池質量を介して、どこまで配送の指標に反映されるかを調べる。」
+「全配送先を各1回訪問し、デポに戻る訪問順を対象とする。顧客の時間窓は設定しない。」
+Equation with proper sum「J(π)=Σₖ₌₀ⁿ T_{πₖ,πₖ₊₁}」
+Definition「π₀・πₙ₊₁：デポ／Tᵢⱼ：固定移動時間」
+「制約：需要容量、総稼働時間9時間以内。」
+
+Heading「2．比較方法」
+Short table「配送計画の比較」
+rows「問題例」「460」
+「配送先数」「3・4・5・25・100・125」
+「設定・反復」「8設定・各10測定反復」
+「比較基準」「古典初期解」
+「総移動時間差 ΔJ=J−J₀。負値は改善、正値は悪化。厳密最適値がある407問題例では最適性ギャップも評価。」
+
+Subheading「電池質量と電力量」
+「基準材料LPと比較材料S-200の部材質量を推計。同一速度軌跡で電池質量を変え、電力量差を算出。」
+「容量20 kWh／保存460速度軌跡」
+「平坦路・回生なし・補機除外」
+Small scope note「電池感度の速度軌跡と現行の配送計画問題は別資料。」
+
+MIDDLE COLUMN, results and mechanism:
+Heading「3．配送計画経路の結果」
+Bold but not huge finding「手法の変更だけでは、計画は改善しなかった」
+「8設定中6設定は、全問題例で古典初期解と一致した。」
+Compact table caption「表1　Grover型2設定の規模別傾向」
+columns「配送先数」「平均総移動時間差［秒］」
+rows「3〜5」「−1.10〜0.00」
+「25」「+564.57〜+571.45」
+「100」「+4459.77〜+4469.22」
+「125」「+5975.10〜+5983.27」
+Note「範囲は各規模・設定の平均値の最小〜最大。」
+「小規模での改善は一部に限られ、25配送先以上では平均総移動時間が増加した。」
+
+Subheading「改善を制限した段階」
+A LARGE simple scientific two-box relation diagram vertical, sufficient whitespace, no decorative cards:
+top box「制限された探索範囲」
+arrow downward
+bottom box「範囲内の最良値＝古典初期値」
+label below「5設定・全2,300学習記録で一致」
+Caption「図1　初期解から改善しなかった設定の分析。」
+Below clear interpretation:
+「この5設定では、探索範囲内に初期解より良い解が存在しなかった。」
+「したがって、同じ範囲内で探索しても総移動時間は改善しない。」
+Do NOT generalize to other3 settings. Do NOT state global optimum found for all problems. End line「配送計画の改善から実走行電力量への接続は未検証。」
+
+RIGHT COLUMN:
+Heading「4．電池材料経路の結果」
+Finding「材料の差は、電池全体の軽量化を保証しない」
+Definitions:
+「b：計上済み部材の軽量化量（LP−S-200）」
+「δ：未計上部材の質量差（S-200−LP）」
+Equation「正味軽量化量 ΔM = b−δ」
+Scientific Cartesian plot correct and legible:
+x label「未計上部材の質量差 δ［kg］」, ticks0,2,4,6,8,10,12.
+y label「正味軽量化量 ΔM［kg］」, ticks−6,−4,−2,0,2,4,6,8,10.
+line rust y9.72−x and line blue y5.98−x. Legend「担持量固定 b=9.72」「正極面積固定 b=5.98」. Accurate zero intercept open circles5.98and9.72; labels with leader arrows. Black dashed zero baseline. Small note「差0：基準LPと同じ推計質量」.
+Caption「図2　未計上部材の質量差に対する条件付き感度。」
+Interpretation「未計上部材の追加質量差が約5.98 kgまたは約9.72 kgに達すると、計上済み部材の軽量化は打ち消される。」
+
+Subheading「質量差から電力量への変化」
+small plain table:
+「簡略モデルの軽量化量」「約5.45 kg」
+「基準LPに対する電力量削減率」「約0.413%」
+Note「下側転がり抵抗条件・総量加重。」
+Conclusion sentence「質量差は電力量差につながったが、削減率は小さかった。」
+Qualification「完成パックの質量・実車電力量は未検証。材料参照値は量子計算による改善の実証値ではない。」
+
+BOTTOM FULL WIDTH approx14%, substantive DISCUSSION not empty future work:
+Heading「考察：どの段階で効果が制限されるか」
+Two numbered plain findings:
+「① 配送計画経路では、探索範囲が改善を制限した。計算手法を変えるだけでは、配送時間の短縮につながらなかった。」
+「② 電池材料経路では、設計と未計上部材が軽量化を左右し、得られた質量差に対する電力量削減も限定的だった。」
+Small precision note「①の探索範囲に関する説明は上記5設定に限定。結果は固定入力・指定モデルの条件下で解釈する。」
+References footer:
+「関連研究：[1] Solomon (1987), Operations Research 35(2), 254–265.」
+「[2] Schneider et al. (2014), Transportation Science 48(4), 500–520.」
+Tiny numerical provenance「数値：研究内の保存計算結果。先行研究の実験値ではない。」
+No p=2/p=3 columns or legends anywhere. No claims of generalized quantum inferiority. No time-window experiments, no100% result. Clear academic presentation of whole trends, particular diagnosed cause of non-improvement, and quantified conditional material-mass-energy connection.
+
+FINAL ACCURACY EDIT
+Make ONLY the following precise corrections to the supplied Japanese academic poster; preserve exact title and all layout, tables, graphs, numbers, axis definitions, fonts, references, and other text.
+
+1. In middle column section3, replace the blue highlighted finding heading「手法の変更だけでは、計画は改善しなかった」with:
+「計画の改善は、一部の小規模問題に限られた」
+Use clear two-line wrapping, same font size. This matters because there WERE small improvement cases; do not deny them.
+2. Bottom discussion item① replace with:
+「① 改善しなかった5設定では、探索範囲内の最良値が古典初期値と一致しており、同じ範囲内での改善余地がなかった。」
+Keep it readable using two lines if needed.
+3. At bottom precision note replace with:
+「探索範囲の分析は上記5設定に限定。結果は固定入力・指定モデルの条件下で解釈する。」
+4. In top pathway figure, add a fine dashed arrow from the existing left「量子技術」box to the existing「計算手法」box. Preserve existing dashed arrow to material properties. Do not add new boxes or otherwise change diagram.
+Everything else unchanged. This is a narrow accuracy correction; do not regenerate any data or alter scientific plots. A1 portrait conference poster, highest readable resolution.

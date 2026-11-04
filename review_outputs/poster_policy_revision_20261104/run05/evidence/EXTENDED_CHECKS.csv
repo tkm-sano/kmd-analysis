@@ -1,0 +1,14 @@
+id,actual,expected,status,source
+all_reference_certificates_hash_and_values,460,460,PASS,B_EXACT_REFERENCE_COVERAGE.csv + 460 saved certificates
+missing_global_exact_n100,21,21,PASS,global certificate table
+missing_global_exact_n125,32,32,PASS,global certificate table
+improvements_GROVER_P2_n4,1,1,PASS,B_PLAN_REFERENCES_36800.csv
+improvements_GROVER_P2_n5,6,6,PASS,B_PLAN_REFERENCES_36800.csv
+improvements_GROVER_P3_n4,1,1,PASS,B_PLAN_REFERENCES_36800.csv
+improvements_GROVER_P3_n5,6,6,PASS,B_PLAN_REFERENCES_36800.csv
+same_7_improving_physical_inputs,True,True,PASS,per-input 10 rep means
+all_8_configs_large_scales,True,True,PASS,B_RESOURCES_PER_FIT.csv
+time_FIT,0.8884206184003955,0.8884206184003955,PASS,78 saved source JSON files per stage
+time_FINAL_VALIDATION,168.7453417102687,168.7453417102687,PASS,78 saved source JSON files per stage
+algorithm_snapshot_hashes,26,26,PASS,ALGORITHM_SOURCE_SNAPSHOTS.csv
+initial_route_binding_all,460,460,PASS,initial routes reused from unified no-windows saved deterministic heuristic
