@@ -1,0 +1,82 @@
+SoPlex version 8.0.3 [mode: optimized] [precision: 8 byte] [rational: GMP 6.1.2] [PaPILO  3.0.1 {ac69e19d}]
+ [githash: 13e2ab24]
+Copyright (c) 1996-2026 Zuse Institute Berlin (ZIB)
+
+int:simplifier = 0
+int:syncmode = 1
+int:readmode = 1
+int:solvemode = 2
+real:feastol = 0.00000000e+00
+real:opttol = 0.00000000e+00
+real:timelimit = 3.00000000e+01
+
+Reading (rational) LP file </home/takuma/kmd-analysis/review_outputs/quantum_ev_step2_analysis_trial_20261104_155535/experiments/exact_recheck/R4_040/model.lp> . . .
+Reading took 4.49 seconds.
+
+LP has 208 rows 10100 columns and 32678 nonzeros.
+
+Initial floating-point solve . . .
+Equilibrium scaling LP
+
+type |   time |   iters | facts |    shift | viol sum | viol num | obj value 
+  L  |    0.0 |       0 |     1 | 0.00e+00 | 4.04e+03 |      202 | 0.00000000e+00
+  L  |    0.0 |     181 |     2 | 0.00e+00 | 0.00e+00 |        0 | 2.22159398e+03
+
+Store basis as old basis (from solver)
+Floating-point optimal.
+Max. bound violation = 0, ofm = 1e0
+Max. row violation = 0, ofm = 1e0
+Max. reduced cost violation = 8589383711268173/8589934592000000000000000, ofm = 1e-9
+Max. dual violation = 0, ofm = 1e0
+Performing rational reconstruction . . .
+Reconstructed solution dual infeasible (3).
+Refined floating-point solve . . .
+
+  L  |    0.0 |       0 |     1 | 2.15e+00 | 0.00e+00 |        0 | 0.00000000e+00
+  E  |    0.0 |       0 |     1 | 0.00e+00 | 2.15e+00 |       10 | 0.00000000e+00
+  E  |    0.0 |       7 |     2 | 0.00e+00 | 0.00e+00 |        0 | -1.15293073e+09
+
+Store basis as old basis (from solver)
+Floating-point optimal.
+Max. bound violation = 0, ofm = 1e0
+Max. row violation = 0, ofm = 1e0
+Max. reduced cost violation = 37052408624973479/154742504910672534362390528000000000000000, ofm = 1e-25
+Max. dual violation = 0, ofm = 1e0
+Performing rational reconstruction . . .
+Reconstructed solution dual infeasible (4).
+Refined floating-point solve . . .
+
+  L  |    0.0 |       0 |     0 | 0.00e+00 | 0.00e+00 |        0 | 0.00000000e+00
+  L  |    0.0 |       0 |     0 | 0.00e+00 | 0.00e+00 |        0 | 0.00000000e+00
+
+Floating-point optimal.
+Max. bound violation = 0, ofm = 1e0
+Max. row violation = 0, ofm = 1e0
+Max. reduced cost violation = 60494241717/1329227995784915872903807060280344576000000000000000, ofm = 1e-41
+Max. dual violation = 0, ofm = 1e0
+Performing rational reconstruction . . .
+Reconstructed solution dual infeasible (3).
+Refined floating-point solve . . .
+
+  L  |    0.0 |       0 |     0 | 0.00e+00 | 0.00e+00 |        0 | 0.00000000e+00
+  L  |    0.0 |       0 |     0 | 0.00e+00 | 0.00e+00 |        0 | 0.00000000e+00
+
+Floating-point optimal.
+Max. bound violation = 0, ofm = 1e0
+Max. row violation = 0, ofm = 1e0
+Max. reduced cost violation = 16020878801/2993155353253689176481146537402947624255349848014848000000000000000, ofm = 1e-56
+Max. dual violation = 0, ofm = 1e0
+Performing rational reconstruction . . .
+Reconstructed solution dual infeasible (3).
+Performing rational factorization . . .
+Tolerances reached.
+Solved to optimality.
+
+SoPlex status       : problem is solved [optimal]
+Solving time (sec)  : 0.16
+Iterations          : 188
+Objective value     : 2.22159398e+03
+
+Primal solution feasible in original problem (max. violation = 0).
+Dual solution feasible in original problem (max. violation = 0).
+

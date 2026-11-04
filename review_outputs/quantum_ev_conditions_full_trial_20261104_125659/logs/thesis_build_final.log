@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "/home/takuma/kmd-analysis/review_outputs/quantum_ev_conditions_full_trial_20261104_125659/scripts/build_thesis.py", line 309, in <module>
+    table=d.add_table(rows=1,cols=len(rows[0]));table.style='Table Grid'
+                                                ^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/docx/table.py", line 137, in style
+    style_id = self.part.get_style_id(style_or_name, WD_STYLE_TYPE.TABLE)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/docx/parts/document.py", line 87, in get_style_id
+    return self.styles.get_style_id(style_or_name, style_type)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/docx/styles/styles.py", line 98, in get_style_id
+    return self._get_style_id_from_name(style_or_name, style_type)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/docx/styles/styles.py", line 125, in _get_style_id_from_name
+    return self._get_style_id_from_style(self[style_name], style_type)
+                                         ~~~~^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/docx/styles/styles.py", line 47, in __getitem__
+    raise KeyError("no style with name '%s'" % key)
+KeyError: "no style with name 'Table Grid'"

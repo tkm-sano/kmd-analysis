@@ -1,0 +1,11 @@
+# 時間scopeの比較
+
+既存3680fit、初期460、古典近似920をPATH1_EXISTING_RUNTIME_BY_SCOPE.csvでscope別に集計。mirror fitはload/model構築を除くが最適化後precision検査・state保存を含む。Grover fitは旧学習pool再利用を含み、final validation/measurementを除く。active RESULTはload・grid・2測定モード・検証・NPZ保存まで含む。これらを同じ求解時間として差し引かない。
+
+新規9312fitと古典291反復のraw時間はPATH1_RUNTIME_RESULTS.csv。CPUモデル/software/affinity/threadsはevidence/ENVIRONMENT.json。preprocessing、parameter optimization、simulation内数、sampling、verification、postprocessing、total wall/CPUを区別した。simulation列は目的評価中に直接計測した内数で、最終状態再評価等はoptimization残差に含む。optimizer overheadとsimulationを別の総時間へ二重加算しない。
+
+新QAOAとDEPHASEDは同じinput/support/initial/mixer/p/64評価/10measurementの工程比較ができる。通常の新greedyは64route評価・1計画、QAOAはexact期待値評価・10計画で作業量が異なる。同環境の記述値として示すが、総時間差を公平な1計画の速度優位へ読み替えない。小規模QAOAの状態空間列挙と固有分解は前処理に含み、greedyへ不要な列挙を課していない。
+
+既存共通初期経路の生成、import/起動、外部転送/QPU queueは新pipeline totalに含まれない。古典初期生成は旧scopeで別記、転送等はNULL。warmupとpilotは別ファイル、主97反復に混ぜていない。QAOA各fitはCPU affinity=maxの1thread逐次、古典はQAOA終了後同じcoreで測定。経路2計算は別coreで実行。ホスト他負荷と時刻差は残るため交互実行による厳密なspeedup試験ではない。
+
+tau_total<=H_planは保持。H_plan数値は未確定、帰庫32400秒を代入しない。ここで得た秒数はCPUシミュレータ/古典パイプラインの実測でありQPU時間ではない。compiled depth/gates、物理qubit、実機noise、通信時間はHOLD。

@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/takuma/kmd-analysis/review_outputs/quantum_ev_conditions_full_trial_20261104_125659/scripts/verify_final.py", line 112, in <module>
+    if para.strip():ck('PDF paragraph coverage',norm(para) in norm(pdf),para[:50])
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/quantum_ev_conditions_full_trial_20261104_125659/scripts/verify_final.py", line 27, in ck
+    if not ok:raise AssertionError((name,scope,error))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('PDF paragraph coverage', 'fitと最終検証を別scopeとして保存した。Grover P3の大規模側の最終検証はfitと異なる', None)

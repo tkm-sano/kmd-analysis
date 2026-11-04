@@ -1,0 +1,14 @@
+/home/takuma/kmd-analysis/review_outputs/quantum_ev_step2_analysis_trial_20261104_155535/scripts/runtime_analysis.py:30: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  raw=pd.concat([allnew,pd.DataFrame(new)],ignore_index=True);table('PATH1_RUNTIME_RESULTS.csv',raw)
+{
+  "stage": "RUNTIME",
+  "wall_s": 7.5752709350781515,
+  "CPU_s": 8.422161,
+  "peak_RSS_bytes": 281387008,
+  "checks": 19206,
+  "failures": 0,
+  "new_greedy_repetitions": 291,
+  "new_controlled_fit_times": 9312,
+  "old_unique_fits": 3680,
+  "runtime_records": 9603
+}

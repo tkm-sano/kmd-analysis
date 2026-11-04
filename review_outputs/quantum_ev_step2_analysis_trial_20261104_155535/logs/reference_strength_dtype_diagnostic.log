@@ -1,0 +1,85 @@
+Traceback (most recent call last):
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/groupby/groupby.py", line 1942, in _agg_py_fallback
+    res_values = self._grouper.agg_series(ser, alt, preserve_dtype=True)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/groupby/ops.py", line 864, in agg_series
+    result = self._aggregate_series_pure_python(obj, func)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/groupby/ops.py", line 885, in _aggregate_series_pure_python
+    res = func(group)
+          ^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/groupby/groupby.py", line 2454, in <lambda>
+    alt=lambda x: Series(x, copy=False).mean(numeric_only=numeric_only),
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/series.py", line 6549, in mean
+    return NDFrame.mean(self, axis, skipna, numeric_only, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/generic.py", line 12420, in mean
+    return self._stat_function(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/generic.py", line 12377, in _stat_function
+    return self._reduce(
+           ^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/series.py", line 6457, in _reduce
+    return op(delegate, skipna=skipna, **kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/nanops.py", line 147, in f
+    result = alt(values, axis=axis, skipna=skipna, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/nanops.py", line 404, in new_func
+    result = func(values, axis=axis, skipna=skipna, mask=mask, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/nanops.py", line 720, in nanmean
+    the_sum = _ensure_numeric(the_sum)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/nanops.py", line 1701, in _ensure_numeric
+    raise TypeError(f"Could not convert string '{x}' to numeric")
+TypeError: Could not convert string '0.00.00.00.00.00.00.00.00.00.0' to numeric
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/takuma/kmd-analysis/review_outputs/quantum_ev_step2_analysis_trial_20261104_155535/scripts/reference_strength_sensitivity.py", line 11, in <module>
+    ii=subset.groupby('problem_id').agg(gap=('quantum_gap_percent','mean'),optimal=('optimal_match','mean'));rows.append(dict(scale=scale,config_id=cfg,reference_scope=label,reference_inputs=len(ii),reference_measurement_reps=len(subset),input_equal_weight_gap_percent=ii.gap.mean(),optimal_match_percent=100*ii.optimal.mean(),scope='reference-evidence sensitivity; selected subsets, not independent samples',excluded_evidence='41 saved MIP equality without external certificate' if label=='EXCLUDE_SAVED_MIP_ONLY' else 'none among accepted414'))
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/groupby/generic.py", line 1432, in aggregate
+    result = op.agg()
+             ^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/apply.py", line 190, in agg
+    return self.agg_dict_like()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/apply.py", line 423, in agg_dict_like
+    return self.agg_or_apply_dict_like(op_name="agg")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/apply.py", line 1608, in agg_or_apply_dict_like
+    result_index, result_data = self.compute_dict_like(
+                                ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/apply.py", line 496, in compute_dict_like
+    results = [
+              ^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/apply.py", line 497, in <listcomp>
+    getattr(obj._gotitem(key, ndim=1), op_name)(how, **kwargs)
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/groupby/generic.py", line 257, in aggregate
+    ret = self._aggregate_multiple_funcs(func, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/groupby/generic.py", line 362, in _aggregate_multiple_funcs
+    results[key] = self.aggregate(func, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/groupby/generic.py", line 249, in aggregate
+    return getattr(self, func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/groupby/groupby.py", line 2452, in mean
+    result = self._cython_agg_general(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/groupby/groupby.py", line 1998, in _cython_agg_general
+    new_mgr = data.grouped_reduce(array_func)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/internals/base.py", line 367, in grouped_reduce
+    res = func(arr)
+          ^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/groupby/groupby.py", line 1995, in array_func
+    result = self._agg_py_fallback(how, values, ndim=data.ndim, alt=alt)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/pandas/core/groupby/groupby.py", line 1946, in _agg_py_fallback
+    raise type(err)(msg) from err
+TypeError: agg function failed [how->mean,dtype->object]

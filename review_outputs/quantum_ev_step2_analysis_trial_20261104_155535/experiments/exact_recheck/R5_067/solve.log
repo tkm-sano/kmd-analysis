@@ -1,0 +1,123 @@
+SoPlex version 8.0.3 [mode: optimized] [precision: 8 byte] [rational: GMP 6.1.2] [PaPILO  3.0.1 {ac69e19d}]
+ [githash: 13e2ab24]
+Copyright (c) 1996-2026 Zuse Institute Berlin (ZIB)
+
+int:simplifier = 0
+int:syncmode = 1
+int:readmode = 1
+int:solvemode = 2
+real:feastol = 0.00000000e+00
+real:opttol = 0.00000000e+00
+real:timelimit = 3.00000000e+01
+
+Reading (rational) LP file </home/takuma/kmd-analysis/review_outputs/quantum_ev_step2_analysis_trial_20261104_155535/experiments/exact_recheck/R5_067/model.lp> . . .
+Reading took 11.08 seconds.
+
+LP has 270 rows 15750 columns and 61228 nonzeros.
+
+Initial floating-point solve . . .
+Equilibrium scaling LP
+
+type |   time |   iters | facts |    shift | viol sum | viol num | obj value 
+  L  |    0.0 |       0 |     1 | 0.00e+00 | 3.00e+03 |      252 | 0.00000000e+00
+  L  |    0.0 |     199 |     1 | 0.00e+00 | 2.89e+02 |      252 | 1.63427412e+03
+  L  |    0.0 |     266 |     3 | 0.00e+00 | 0.00e+00 |        0 | 1.72239193e+03
+
+Store basis as old basis (from solver)
+Floating-point optimal.
+Max. bound violation = 0, ofm = 1e0
+Max. row violation = 3/9007199254740992, ofm = 1e-15
+Max. reduced cost violation = 3435987271787009/3435973836800000000000000, ofm = 1e-9
+Max. dual violation = 0, ofm = 1e0
+Performing rational reconstruction . . .
+Reconstructed solution dual infeasible (3).
+Refined floating-point solve . . .
+
+  L  |    0.0 |       0 |     1 | 1.61e+01 | 0.00e+00 |        0 | 3.40773573e+02
+  E  |    0.0 |       0 |     1 | 0.00e+00 | 1.61e+01 |       57 | -3.40773573e+02
+  L  |    0.0 |      29 |     2 | 0.00e+00 | 2.32e-06 |       17 | -1.92156202e+09
+  L  |    0.0 |      81 |     3 | 0.00e+00 | 3.58e-07 |        4 | -1.92155827e+09
+
+Store basis as old basis (from solver)
+Floating-point infeasible.
+Setting up LP to test for feasibility.
+Initial floating-point solve . . .
+
+  L  |    0.0 |       0 |     1 | 0.00e+00 | 0.00e+00 |        0 | -1.00000000e+00
+  L  |    0.0 |       0 |     1 | 0.00e+00 | 0.00e+00 |        0 | -1.00000000e+00
+
+Store basis as old basis (from solver - testing feasibility)
+Floating-point optimal.
+Max. bound violation = 1/9007199254740992, ofm = 1e-15
+Max. row violation = 3/9007199254740992, ofm = 1e-15
+Max. reduced cost violation = 0, ofm = 1e0
+Max. dual violation = 0, ofm = 1e0
+Performing rational reconstruction . . .
+Tolerances reached.
+Primal feasible.  Optimizing again.
+Numerical troubles with initial precision solver. Disabling it and switching to multiprecision.
+Load basis from old basis (in boosted solver)
+Current precision = 1e-57, Initial floating-point boosted solve . . .
+Boosted iteration 1
+
+type |   time |   iters | facts |    shift | viol sum | viol num | obj value  | basis metric
+  L  |    0.0 |       0 |     2 | 0.00e+00 | 0.00e+00 |        0 | 1.72239193e+03 | 6.00e+00
+  L  |    0.0 |       0 |     2 | 0.00e+00 | 0.00e+00 |        0 | 1.72239193e+03 | 6.00e+00
+
+Floating-point optimal.
+Max. bound violation = 1/3138550867693340381917894711603833208051177722232017256448, ofm = 1e-57
+Max. row violation = 3/3138550867693340381917894711603833208051177722232017256448, ofm = 1e-57
+Max. reduced cost violation = 1197262141301475670592458614961179049702137732097113/598631070650737835296229307480589524851069969602969600000000000000, ofm = 1e-14
+Max. dual violation = 0, ofm = 1e0
+Performing rational reconstruction . . .
+Reconstructed solution dual infeasible (4).
+Refined floating-point solve . . .
+
+  L  |    0.0 |       0 |     2 | 8.11e+00 | 0.00e+00 |        0 | 1.68372643e-28 | 6.00e+00
+  E  |    0.0 |       0 |     2 | 0.00e+00 | 8.11e+00 |       27 | -1.68372643e-28 | 6.00e+00
+  E  |    0.1 |      12 |     3 | 0.00e+00 | 0.00e+00 |        0 | -1.68372643e-28 | 6.00e+00
+
+Store basis as old basis (from boosted solver)
+Floating-point optimal.
+Max. bound violation = 1/4925250774549309901534880012517951725634967408808180833493536675530715221437151326426783281860614455100828498788352, ofm = 1e-114
+Max. row violation = 5/19701003098197239606139520050071806902539869635232723333974146702122860885748605305707133127442457820403313995153408, ofm = 1e-115
+Max. reduced cost violation = 12266038427/13479973333575319897333507543509815336818572211270286240551805124608000000000000000, ofm = 1e-72
+Max. dual violation = 0, ofm = 1e0
+Performing rational reconstruction . . .
+Reconstructed solution dual infeasible (3).
+Refined floating-point solve . . .
+
+  L  |    0.0 |       0 |     3 | 0.00e+00 | 0.00e+00 |        0 | 1.00357916e-35 | 6.00e+00
+  L  |    0.0 |       0 |     3 | 0.00e+00 | 0.00e+00 |        0 | 1.00357916e-35 | 6.00e+00
+
+Floating-point optimal.
+Max. bound violation = 1/15458150092069033378781407563727949377195709318825739994628941005806076569158241698144775066327690311849854464126008708709460314644171950622971634693868322994787923259293696, ofm = 1e-172
+Max. row violation = 1/15458150092069033378781407563727949377195709318825739994628941005806076569158241698144775066327690311849854464126008708709460314644171950622971634693868322994787923259293696, ofm = 1e-172
+Max. reduced cost violation = 188036436123/423075820025759103329225797140973465490178997097139980342175228975619706391239261328121094681417782302458375696014949314723840000000000000000, ofm = 1e-129
+Max. dual violation = 0, ofm = 1e0
+Performing rational reconstruction . . .
+Reconstructed solution dual infeasible (3).
+Refined floating-point solve . . .
+
+  L  |    0.0 |       0 |     3 | 0.00e+00 | 0.00e+00 |        0 | 5.98179791e-43 | 6.00e+00
+  L  |    0.0 |       0 |     3 | 0.00e+00 | 0.00e+00 |        0 | 5.98179791e-43 | 6.00e+00
+
+Floating-point optimal.
+Max. bound violation = 1/48516190384397154223405609014453204851777688034896769098095376188314092271449277697839950275895202435952741584285346037692861876378587949732633977345036910600139218000651559548445790175987451400789468724803639648465401464181751808, ofm = 1e-229
+Max. row violation = 1/48516190384397154223405609014453204851777688034896769098095376188314092271449277697839950275895202435952741584285346037692861876378587949732633977345036910600139218000651559548445790175987451400789468724803639648465401464181751808, ofm = 1e-229
+Max. reduced cost violation = 242823910787/1062275985633534197379176413104937254659186235454063846398888276400807119721704485478325004530458571337778658972493002030693158675305414478819039957533174703887662541670786438063456256000000000000000, ofm = 1e-187
+Max. dual violation = 0, ofm = 1e0
+Performing rational reconstruction . . .
+Reconstructed solution dual infeasible (3).
+Performing rational factorization . . .
+Tolerances reached.
+Solved to optimality.
+
+SoPlex status       : problem is solved [optimal]
+Solving time (sec)  : 0.75
+Iterations          : 359
+Objective value     : 1.72239193e+03
+
+Primal solution feasible in original problem (max. violation = 0).
+Dual solution feasible in original problem (max. violation = 0).
+

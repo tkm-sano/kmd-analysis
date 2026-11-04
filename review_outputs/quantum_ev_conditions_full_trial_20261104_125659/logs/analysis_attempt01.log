@@ -1,0 +1,9 @@
+/home/takuma/kmd-analysis/review_outputs/quantum_ev_conditions_full_trial_20261104_125659/scripts/analyze.py:35: DtypeWarning: Columns (34,35,36,37,43) have mixed types. Specify dtype option on import or set low_memory=False.
+  def df(p):return pd.read_csv(use(p),keep_default_na=False)
+Traceback (most recent call last):
+  File "/home/takuma/kmd-analysis/review_outputs/quantum_ev_conditions_full_trial_20261104_125659/scripts/analyze.py", line 82, in <module>
+    near('B raw measurement cost',cost,rec.get('sampled_best_seconds',rec.get('road_seconds')),scope=row['problem_id'])
+  File "/home/takuma/kmd-analysis/review_outputs/quantum_ev_conditions_full_trial_20261104_125659/scripts/analyze.py", line 45, in near
+    def near(name,a,b,tol=1e-7,scope=''):ck(name,abs(float(a)-float(b))<=tol,scope,float(a)-float(b))
+                                                              ^^^^^^^^
+ValueError: could not convert string to float: '77356144282499997/100000000000000'

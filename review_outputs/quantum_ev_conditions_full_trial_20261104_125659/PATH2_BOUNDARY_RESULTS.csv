@@ -1,0 +1,14 @@
+boundary,input_variable,value,unit,condition,kind,status
+T08 zero mass / same V components,utilization_at_qS,0.8770940719841043,fraction,"qS*u > qLP; equal common V, N/P and fixed masses",ZERO_EFFECT_NOT_TARGET,CONDITIONAL
+T08 zero mass / qS u1,additional_mass_S_minus_LP,5.448297415076922,kg,additional mass < value for positive saving,ZERO_EFFECT_NOT_TARGET,CONDITIONAL
+T08 zero mass / qS u1,mean_full_cell_voltage,3.1931556837797896,V,other mass34kg; changing V also changes negative active mass,ZERO_EFFECT_NOT_TARGET,CONDITIONAL
+B015 known mass cancellation,unknown_S_minus_LP,9.722608121107784,kg,"delta < b, =b, >b gives mass saving, equality, reversal; complete pack unknown",ZERO_EFFECT_NOT_TARGET,CONDITIONAL
+B051 known mass cancellation,unknown_S_minus_LP,5.977891152148871,kg,"delta < b, =b, >b gives mass saving, equality, reversal; complete pack unknown",ZERO_EFFECT_NOT_TARGET,CONDITIONAL
+T08 CRR_LOWER_BOUND,q_for_0.1pct_DC_target,177.15217571257404,Ah/kg,"u=1,V=3.5,common components; 460-trajectory total-weighted target; deterministic bisection",ARBITRARY_ILLUSTRATIVE_TARGET,CONDITIONAL
+T08 CRR_LOWER_BOUND,q_for_0.25pct_DC_target,185.70504469476776,Ah/kg,"u=1,V=3.5,common components; 460-trajectory total-weighted target; deterministic bisection",ARBITRARY_ILLUSTRATIVE_TARGET,CONDITIONAL
+T08 CRR_LOWER_BOUND,q_for_0.4pct_DC_target,195.1259268072847,Ah/kg,"u=1,V=3.5,common components; 460-trajectory total-weighted target; deterministic bisection",ARBITRARY_ILLUSTRATIVE_TARGET,CONDITIONAL
+T08 CRR_LOWER_BOUND,q_for_0.5pct_DC_target,,Ah/kg,Target exceeds endpoint reduction; no extrapolation,ARBITRARY_ILLUSTRATIVE_TARGET,HOLD_OUTSIDE_ANALYZED_RANGE
+T08 CRR_UPPER_BOUND,q_for_0.1pct_DC_target,177.13898744337894,Ah/kg,"u=1,V=3.5,common components; 460-trajectory total-weighted target; deterministic bisection",ARBITRARY_ILLUSTRATIVE_TARGET,CONDITIONAL
+T08 CRR_UPPER_BOUND,q_for_0.25pct_DC_target,185.66866894719624,Ah/kg,"u=1,V=3.5,common components; 460-trajectory total-weighted target; deterministic bisection",ARBITRARY_ILLUSTRATIVE_TARGET,CONDITIONAL
+T08 CRR_UPPER_BOUND,q_for_0.4pct_DC_target,195.0614174024277,Ah/kg,"u=1,V=3.5,common components; 460-trajectory total-weighted target; deterministic bisection",ARBITRARY_ILLUSTRATIVE_TARGET,CONDITIONAL
+T08 CRR_UPPER_BOUND,q_for_0.5pct_DC_target,,Ah/kg,Target exceeds endpoint reduction; no extrapolation,ARBITRARY_ILLUSTRATIVE_TARGET,HOLD_OUTSIDE_ANALYZED_RANGE

@@ -1,0 +1,28 @@
+claim_id,claim,status,scope,evidence,change_category,basis_and_limit
+CL01,Bは460入力・8設定・10測定rep、36800保存best計画である,PASS,B cohort,EXPERIMENT_INVENTORY.csv;PATH1_QUALITY_COMPARISON.csv,既存成果の再確認,原NPZ460と保存JSON、検算NUMERICAL_CHECKS
+CL02,保存best計画は順列・容量・帰還条件を満たす,PASS,B no windows only,NUMERICAL_CHECKS.csv,既存成果の再確認,raw shot成功率・現実配送成功率は主張しない
+CL03,厳密参照は407で53未確定である,PASS,B certificate metadata/hash,PATH1_QUALITY_COMPARISON.csv;SOURCE_BASELINE.csv,既存成果の再確認,solver再求解ではない
+CL04,mirror5の目的値は全入力で初期解と同じである,PASS,B saved output objective,PATH1_QUALITY_COMPARISON.csv,既存成果の再分析,raw bestの初期解による置換なし
+CL05,mirrorの同支持内で初期解を上回る目的値改善余地がない,CONDITIONAL,保存matching orbitと古典DP,PATH1_METHOD_AUDIT.md;sources/verified_original_tables/B_CLASSICAL_ORBIT_COMPARISON.csv,既存成果の再確認,全順列・量子一般の不能ではない
+CL06,activeは460入力の保存3点gridでt=0選択,PASS,限定grid,SOURCE_BASELINE.csv;sources/verified_original_tables/B_ACTIVE_GRID_SELECTION.csv,既存成果の再確認,全角探索ではない
+CL07,Groverは3–5顧客で厳密参照一致、大規模側で平均初期差が正,CONDITIONAL,固定ODと保存CPU simulation,PATH1_QUALITY_COMPARISON.csv,既存成果の再分析,最強古典との優劣・規模単独の因果効果ではない
+CL08,量子方式は古典よりend-to-endで速い,HOLD,公平な求解時間,PATH1_RUNTIME_COMPARISON.csv,未解決事項,scope・環境・QPU未記録
+CL09,8192shots、p2/p3と保存scope別資源が確認できる,PASS,B protocol and fit records,PATH1_RESOURCE_REQUIREMENTS.md;SOURCE_BASELINE.csv,既存成果の再確認,compiled depth/gatesではない
+CL10,実機論理／物理資源を確定できる,HOLD,B hardware,PATH1_RESOURCE_REQUIREMENTS.md,未解決事項,encoding・gate・error model不足
+CL11,T08の条件付き簡略質量差は5.448297415kg,PASS,specified T08 arithmetic only,ANALYSIS_RUN.json;PATH2_MODEL_VALIDATION.md,既存成果の再確認,実用packの測定差ではない
+CL12,上記mass差は実用完成packの軽量化を証明する,HOLD,engineering transfer,HOLD_REGISTER.md,未解決事項,全電池・部材・安全条件不足
+CL13,T09は完成mass NULL183、全面対向1件FAIL,PASS,original T09 records,T09_INDEPENDENT_COMPONENT_CHECKS.csv;SOURCE_BASELINE.csv,既存成果の再確認,failureを消去しない
+CL14,T09_ROW_183の全面対向条件を満たす,FAIL,same-stack footprint condition,PATH2_MODEL_VALIDATION.md;sources/verified_original_tables/C_T09_COMPONENTS_183.csv,既存成果との不一致,元モデル内FAILを保持。修正案は面積/設計再考であり未採用
+CL15,T09未知質量差δ=bで相殺する,CONDITIONAL,separate B015/B051 mass bookkeeping,PATH2_BOUNDARY_RESULTS.csv,既存成果の再分析,δの現実値は未測定
+CL16,T08の利用率・電圧・追加質量のゼロ境界を算定した,CONDITIONAL,other parameters common,PATH2_BOUNDARY_RESULTS.csv,既存成果の再分析,条件付きモデルの閾値であり実証値ではない
+CL17,T08連続49点のDC差を共通古典460速度で計算した,PASS,deterministic arithmetic,PATH2_SENSITIVITY_RESULTS.csv;ANALYSIS_RUN.json,新規の条件付き分析,45080行は独立試料ではない
+CL18,終点のDC削減総量比は0.412579/0.413590%,CONDITIONAL,fixed observed trajectory and Controlled-DC,PATH2_SENSITIVITY_SUMMARY.csv,既存成果の再確認,実EV削減・全trip正味DCではない
+CL19,0.25%目標にはq約185.705/185.669が必要,CONDITIONAL,"u1,V3.5,common components,finite cohort",PATH2_BOUNDARY_RESULTS.csv,新規の条件付き分析,任意説明目標であり必要性能の普遍値ではない
+CL20,0.5%目標の交点を今回範囲で算定できる,HOLD,q endpoint interval,PATH2_BOUNDARY_RESULTS.csv,未解決事項,区間内非到達。範囲外で不可能という意味ではない
+CL21,指定mass区間でDCのmass傾きが正,CONDITIONAL,920 fixed windows / same physics,PATH2_OPERATION_INTERACTIONS.csv;NUMERICAL_CHECKS.csv,新規の条件付き分析,異なる速度応答・回生・補機へ一般化しない
+CL22,量子計算がLP/S200性能改善と実EV削減を達成した,FAIL,causal attribution of existing evidence,PATH2_MATERIAL_BRIDGE_AUDIT.md;LITERATURE_EVIDENCE_MATRIX.csv,新たな解釈の提案,この断定は資料と不一致。量子に潜在価値がないという否定ではない
+CL23,量子材料予測→対象実用材料改善の追加価値,HOLD,quantum attribution,PATH2_MATERIAL_BRIDGE_AUDIT.md,未解決事項,対象精度・古典比較・設計採用・実験がない
+CL24,三層で条件と未接続を整理できる,CONDITIONAL,conceptual trial synthesis,CROSS_PATH_CONDITIONS_MATRIX.csv;DISCUSSION_TRIAL.md,新たな解釈の提案,実証因果モデル・制度評価ではない
+CL25,道路N0/N1の地域妥当性が受入済み,FAIL,existing geographical/dynamic acceptance,HOLD_REGISTER.md;SOURCE_AUTHORITY_AND_CONFLICTS.md,既存成果との不一致,旧FAILを保持、新規道路修正なし
+CL26,定時配達率を主RQの評価から外した,PASS,trial editorial scope only,RQ_REDESIGN_TRIAL.md;THESIS_CHANGELOG.md,新たな解釈の提案,旧Aは保存。正式目的の変更は未実施
+CL27,Papachristos2018の引用意図を同定できる,HOLD,source manuscript citation,LITERATURE_CLASSIFICATION.csv,未解決事項,候補を自動採用しない

@@ -1,0 +1,27 @@
+{
+  "command": [
+    "/usr/bin/time",
+    "-v",
+    "-o",
+    "/home/takuma/kmd-analysis/review_outputs/quantum_ev_step2_analysis_trial_20261104_155535/experiments/exact_recheck/R5_026/usage.txt",
+    "taskset",
+    "-c",
+    "2",
+    "/home/takuma/kmd-analysis-pre-clean-20261102-112222/untracked/review_outputs/runtime/scip_exact_cli_20261022/scipoptsuite-10.0.3/bin/soplex",
+    "--readmode=1",
+    "--solvemode=2",
+    "-f0",
+    "-o0",
+    "-s0",
+    "-t30",
+    "-c",
+    "-X=/home/takuma/kmd-analysis/review_outputs/quantum_ev_step2_analysis_trial_20261104_155535/experiments/exact_recheck/R5_026/primal.sol",
+    "-Y=/home/takuma/kmd-analysis/review_outputs/quantum_ev_step2_analysis_trial_20261104_155535/experiments/exact_recheck/R5_026/dual.sol",
+    "/home/takuma/kmd-analysis/review_outputs/quantum_ev_step2_analysis_trial_20261104_155535/experiments/exact_recheck/R5_026/model.lp"
+  ],
+  "wall_s": 12.821019113063812,
+  "exitcode": 0,
+  "source_model": "/home/takuma/kmd-analysis-pre-clean-20261102-112222/untracked/review_outputs/unified_no_windows_r0_r8_20261022/REFERENCE/R5_026/model_005.lp",
+  "CPU_affinity": 2,
+  "threads": 1
+}

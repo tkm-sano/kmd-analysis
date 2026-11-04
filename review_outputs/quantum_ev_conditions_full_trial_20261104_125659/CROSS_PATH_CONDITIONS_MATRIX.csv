@@ -1,0 +1,8 @@
+condition_id,layer,path1,path2,depends_on,logic_kind,path1_evidence,path2_evidence,status
+A1,技術能力,解品質・探索支持,対象物性の予測精度,アルゴリズム・計算仕様,必要条件候補,B同支持改善余地0、Grover規模差,対象物性精度HOLD,CONDITIONAL
+A2,技術能力,全求解時間・資源,物性計算の時間・資源,計算アーキテクチャ,未検証条件,CPU工程のみ、QPU不明,文献候補、対象未達成,HOLD
+B1,適用,同需要・制約・採用締切,同容量・実用セル・pack設計,システム設計,仮定／必要条件候補,固定割当・単一車両、予算不明,20/18kWh、完成pack不明,CONDITIONAL
+B2,適用,実行可能な道路・計画採用,未知部材・電力熱寿命安全,対象システム,未検証条件,道路N0/N1 FAIL、B_DC未接続,未知mass183・対向1FAIL,HOLD
+C1,効果成立,T_Q<T_Cかつ採用,b−δ>0かつEの正のmass傾き,運用・モデル,指定モデル内条件,旅行時間目的のみ,920条件の正傾き／相殺式,CONDITIONAL
+C2,不成立,支持内改善余地0／時間超過／未採用,δ=b相殺、δ>b逆転,伝達過程,観測／仮定を区別,mirror目的値同一、時間超過は未観測,boundary算定、未知δは未測定,CONDITIONAL
+D1,一般化,実機・実配送の優位,量子由来完成pack・実車削減,外的妥当性,未判定,end-to-end未測定,量子→材料未検証,HOLD

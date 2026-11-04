@@ -1,0 +1,13 @@
+# 新規時間評価の事前仕様
+
+既存3680fitと古典初期460・近似920の実測CPU/wallをscope別に再集計し、測定範囲の違う値を差し引かない。新規QAOA/DEPHASEDは追加統制実験の全fitでpreprocess/optimizer/simulation内数/sampling/verification/postprocess/totalを記録する。1thread・同一CPU affinity・逐次fit、pilotとwarmupは本集計から分離。
+
+通常の古典近似として、同じ3入力・共通初期経路・同じ目的/制約で、初期incumbent保持付きiterated adjacent greedyをtrial内コードで97反復再計測する。97はQAOAの学習・測定取得率精度設計と対応させた回数で、時間の母集団CIを保証する数ではない。64 route-score evaluationsの有限予算、local optimal時はseed固定のadjacent perturbation、seedはQAOAとは別stream。全反復のraw時間を保存し平均・中央値・SD/IQR/min/maxを示す。exact expectation1評価と1route評価は作業量が違うため、評価数が同じという理由で同一計算資源とは呼ばない。
+
+入力読込/必要前処理は各方式のパイプラインに含める。既存共通初期経路の生成費、import、プロセス起動、QPU queue/転送は含まれず、未計測を0秒で埋めない。古典初期生成は既存scope表で別記。新規totalは「保存初期経路が与えられたCPU pipeline elapsed」で、実運用tau_totalではない。
+
+QAOA最適化時間はoptimizerとシミュレーションの合成で、simulationは内数。graph/eigen前処理を別記、sampling10rep×8192と検証は全て含める。wallとprocess CPUは別。CPUモデル/software版/affinity/スレッド/同時実行条件はENVIRONMENTとraw行に記録する。
+
+各方式最初のwarmupと古典pilot3回は別保存し、主97反復へ混ぜない。新規古典測定はQAOA本実験終了後に同じCPU affinityで実施する。負荷の時刻差は残るため、厳密な交互実行による速度比較ではなく、同一環境で工程を揃えた記述比較と明示する。
+
+tau_total<=H_planは維持するが、運用締切H_planの根拠がないため数値合否を付けない。CPUシミュレータの比をQPU speedupに読み替えない。

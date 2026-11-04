@@ -1,0 +1,17 @@
+# Step 2引継ぎ仕様（未実行）
+
+このファイルは開始可能な具体仕様であり実行指示の自動発火ではない。今回の実行範囲はStep1まで。
+
+開始時に新しい一意のStep2 trialを作り、SOURCE_PROVENANCE.csvとevidence/START.jsonの版を再検証する。元参照の旧絶対パスはevidence/PATH_RELOCATION_MAP.csvから実在ファイルを解決しhash一致を必須とする。外部preservationが利用できない環境では元NPZ/測定/コードの取得までHOLD、CSVだけで再現完了としない。
+
+経路1の準備：PATH1_REFERENCE_COVERAGE.csvの460行にinput/parent/group/scale/n、近似2法、初期、厳密証明をjoinする。主JC=ITERATED_GREEDY_ADJACENT_SWAP、第二対照=DEPHASED_RANDOM_SWAP。元古典近似分数はB_AUXILIARY_CLASSICAL_IMPROVEMENTS/上流MATCHED_COMPARISONにあり、元rawのinputと同じ目的・制約・初期化を確認する。予算非統制の限定を維持し、時間比較を付けない。measurement rep=10の3680fit階層を固定し、品質はraw sampled-best、初期とのminで置換しない。
+
+PATH1_STATISTICAL_ANALYSIS_PLAN.mdの手順1〜7とPATH1_METRIC_SPECIFICATION.mdを実装する。分布・中央値/IQR・二対照対応差・exact欠測層を追加し、旧初期差と主ΔJを別列にする。数式テストは異なる目的/誤join/未知値のゼロ補完を検出する最小fixtureと、元算術の標本照合で行う。既存集計を再現したことと新JC統計を完了したことを分けて記録する。
+
+経路2の準備：T08 scenario、T09 row/pair、trajectory SHAを固定。PATH2_INPUT_PARAMETER_DICTIONARY.csvは値/単位/根拠を保存している。境界はPATH2_BOUNDARY_DEFINITION_TABLE.csv、PAIR_LINKAGEでbとdeltaを確認。T08主の49点・u感度とCrr対応を再利用し、PATH2_UNCERTAINTY_ANALYSIS_PLAN.mdの分布/パラメータ/未知BOM/統計感度を別表にする。C古典460とB新460の同数を対応の証拠にしない。
+
+追加実験はSTEP2_ADDITIONAL_EXPERIMENT_CANDIDATES.csvの優先1(E1支持統制)、2(E3時間)、3(E2厳密)、4(E4共通感度)、5(E5軌跡条件)。軽量な既存再集計はこの順位を待たず実施できる。新規重計算はpilot→資源/精度/回数の事前固定→段階実行とし、全量投入を先に約束しない。pilotの3seed/3回は探索的診断で、妥当な最終標本数が確定したという意味ではない。
+
+実験前に固定する項目：対象inputリスト・hash、目的/制約、古典方式、支持/初期状態、学習評価数とshots、学習/測定seedの独立stream、cold/warm工程境界、CPU affinity/threadsとメモリ上限、数値精度gate、停止条件、欠測・failを記録するschema。改善を採否gateにしない。Hplanや実QPU資源の未確認値は作らない。
+
+進行条件：本Step1設計を利用するという研究者の採用判断は未実施。Step2を別途実施する際は出力範囲と新規計算の段階を明示する。H01〜H12を全解除する必要はないが、各出力の主張範囲に関わるHOLDを保持する。新規CPU統制比較なしでも条件付き品質統計は開始可能。Hplanなしでは運用時間合格、53未証明では全460gap、未知BOMでは完成pack効果、実機なしではQPU優位を判定しない。

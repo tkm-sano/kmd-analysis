@@ -1,0 +1,17 @@
+indicator,unit,calculation,RQ,data,comparator,limitation
+OD道路旅行時間,s,"Σ travel[πk,πk+1]。待機・サービスを除く",RQ1,"B36,800全行",同一NPZ・古典初期,実走行時間・電力量とは異なる
+最適性ギャップ,%,100*(T−T*)/T*,RQ1,407入力、53未確定,保存厳密参照,未知53を除く明示分母。下界gapと混同しない
+最適値一致率,%,exact objective fraction一致数/厳密参照測定数,RQ1,407×8×10,同一問題のT*,同じ訪問順の率ではない
+古典初期との差,s,Tsample−Tinitial。負が改善,RQ1,460×8×10,固定初期解,最強古典対照・同一予算の保証なし
+保存best実行可能率,%,独立検査可行計画数/保存計画参照数,RQ1,"36,800","順列・216PE・帰還32,400s",shots単位・現実配送成功率ではない
+求解工程時間,s,FIT/selected/final validation/initial をscope別保存,RQ1,保存CPU wall/CPU。一部工程未保存,同scopeのみ,QPU時間・end-to-end speedup算定不能
+量子計算資源,count,符号化、層、shots、反復、ゲート等を別項目,RQ1,shots8192、p2/p3等,同一符号化・同一回路条件,compiled回路・誤り訂正物理資源HOLD
+正極参照比容量,Ah/kg,T08:保持率からの逆算参照。q_eff=q*u,RQ2,171.875〜195.959596,同一試験系列の条件付き参照,実用全電池・量子計算結果ではない
+平均全電池電圧,V,gross Wh/セル容量総和Ah,RQ2,3.5仮定,同電圧比較,Li対極の試験窓と別
+セル質量,kg/cell,両極塗工材/100+0.19,RQ2,T08簡略モデル,同固定部材,T09未測定外装を補完しない
+パック質量,kg,100*mcell+15+additional,RQ2,T08算術、T09完成品NULL183,同会計境界,既知部材合計を完成packとしない
+車両・走行質量,kg,共通非pack+新pack。走行質量=vehicle+55,RQ2,T08非pack走行質量1043.888888889,同一軌跡・同積載0,車両総質量は本研究の空荷＋運転者条件に限定
+Controlled-DC,Wh,"Σ max(W1+W2+W3+W4,0)/0.9",RQ2,保存観測窓460×2Crr×入力,同軌跡・同Crr,回生なし・補機範囲外・末端1s未知
+DC削減率,%,100*(ΣEref−ΣEalt)/ΣEref。個別率平均を別報告,RQ2,PATH2_SENSITIVITY_SUMMARY,同cohort LP,総量比と個別率平均を混同しない
+ゼロ効果境界,kg/fraction/V,mass saving=0 または Eref−Ealt=0,RQ2,T08/T09設計別,共通対照,任意の目標0.1/0.25/0.4/0.5%と区別
+定時配達率（補足）,%,旧Aの期限内需要PE/総需要PE,主RQ非対応,旧A2808等を保存,旧固定OD政策,今回の主指標から除外。取得率で代用しない

@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/home/takuma/kmd-analysis/review_outputs/quantum_ev_conditions_full_trial_20261104_125659/scripts/build_thesis.py", line 289, in <module>
+    st=d.styles[name];st.font.name='Droid Sans Fallback';st.font.size=Pt(10.5)
+       ~~~~~~~~^^^^^^
+  File "/home/takuma/kmd-analysis/.conda/lib/python3.11/site-packages/docx/styles/styles.py", line 47, in __getitem__
+    raise KeyError("no style with name '%s'" % key)
+KeyError: "no style with name 'Caption'"

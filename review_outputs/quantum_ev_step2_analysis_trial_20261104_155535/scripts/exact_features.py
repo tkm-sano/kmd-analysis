@@ -1,0 +1,10 @@
+from common import *
+from decimal import Decimal
+
+t=time.perf_counter();d=frame(O/'EXACT_REFERENCE_STATUS.csv');meta={x['run_id']:x for x in js(S/'mirror_family/MANIFEST.json')};rows=[]
+for x in d.to_dict('records'):
+ a=arr(meta[x['problem_id']]['instance_path']);v=a['travel'];off=v[~np.eye(len(v),dtype=bool)];pos=off[off>0];rows.append(dict(problem_id=x['problem_id'],scale=x['scale'],n_customers=x['n_customers'],old_exact_available=x['old_exact_available'],audited_exact_available=x['exact_fraction']!='',reference_evidence_class=x['reference_evidence_class'],min_positive_arc_s=float(pos.min()),positive_arcs_below_1e_12=int(((off>0)&(off<1e-12)).sum()),zero_off_diagonal_arcs=int((off==0).sum()),max_decimal_places=max(-Decimal(str(z)).as_tuple().exponent for z in off),initial_upper_s=x['witness_upper_s'],final_reference_status=x['status']))
+table('evidence/EXACT_INPUT_FEATURES.csv',rows);fe=pd.DataFrame(rows);table('evidence/EXACT_FEATURE_COMPARISON.csv',fe[fe.n_customers>=100].groupby(['scale','old_exact_available']).agg(inputs=('problem_id','size'),median_tiny_arcs=('positive_arcs_below_1e_12','median'),min_positive_arc_s=('min_positive_arc_s','min'),max_decimal_places=('max_decimal_places','max')).reset_index())
+# Report how tight unproved certificates are, without calling them optima.
+res=frame(O/'evidence/EXACT_FULL_RESULTS.csv');rr=d[(d.old_exact_available==False)&d.exact_fraction.eq('')].merge(res[['problem_id','certified_lower_fraction','feasible_upper_fraction','gap_upper_s']],on='problem_id');rr['relative_gap_upper_percent']=[100*float((F(ub)-F(lb))/F(lb)) for lb,ub in zip(rr.certified_lower_fraction,rr.feasible_upper_fraction)];table('evidence/EXACT_REMAINING_BOUND_WIDTHS.csv',rr[['problem_id','scale','certified_lower_fraction','feasible_upper_fraction','gap_upper_s','relative_gap_upper_percent']])
+finish('EXACT_FEATURES',t,dict(remaining_unproved=len(rr),max_gap_upper_s=float(rr.gap_upper_s.max()),max_gap_upper_percent=float(rr.relative_gap_upper_percent.max())))

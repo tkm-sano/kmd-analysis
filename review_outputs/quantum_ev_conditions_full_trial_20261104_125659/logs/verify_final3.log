@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/takuma/kmd-analysis/review_outputs/quantum_ev_conditions_full_trial_20261104_125659/scripts/verify_final.py", line 133, in <module>
+    status=subprocess.check_output(['git','status','--porcelain=v1','--untracked-files=all'],cwd=R).decode();(O/'GIT_STATUS_FINAL.txt').write_text(status);(O/'GIT_DIFF_FINAL.patch').write_bytes(subprocess.check_output(['git','diff','HEAD','--binary'],cwd=R));initial=(O/'GIT_STATUS_START.txt').read_text().splitlines();filtered=[line for line in status.splitlines() if str(O.relative_to(R))+'/' not in line];ck('Git status outside trial unchanged',initial==filtered)
+                                                                                                                                                                                                                                                                                                                                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/quantum_ev_conditions_full_trial_20261104_125659/scripts/verify_final.py", line 27, in ck
+    if not ok:raise AssertionError((name,scope,error))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('Git status outside trial unchanged', '', None)
