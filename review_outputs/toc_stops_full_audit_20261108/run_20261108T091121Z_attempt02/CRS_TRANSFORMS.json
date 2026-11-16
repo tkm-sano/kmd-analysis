@@ -1,0 +1,26 @@
+[
+  {
+    "from": 4326,
+    "to": 6677,
+    "always_xy": true,
+    "description": "axis order change (2D) + Inverse of JGD2011 to WGS 84 (1) + Japan Plane Rectangular CS zone IX + axis order change (2D)",
+    "declared_accuracy_m": 1.0,
+    "definition": "proj=pipeline step proj=unitconvert xy_in=deg xy_out=rad step proj=tmerc lat_0=36 lon_0=139.833333333333 k=0.9999 x_0=0 y_0=0 ellps=GRS80"
+  },
+  {
+    "from": 6668,
+    "to": 6677,
+    "always_xy": true,
+    "description": "axis order change (2D) + Japan Plane Rectangular CS zone IX + axis order change (2D)",
+    "declared_accuracy_m": 0.0,
+    "definition": "proj=pipeline step proj=unitconvert xy_in=deg xy_out=rad step proj=tmerc lat_0=36 lon_0=139.833333333333 k=0.9999 x_0=0 y_0=0 ellps=GRS80"
+  },
+  {
+    "from": 4612,
+    "to": 6677,
+    "always_xy": true,
+    "description": "axis order change (2D) + JGD2000 to JGD2011 (2) + Japan Plane Rectangular CS zone IX + axis order change (2D)",
+    "declared_accuracy_m": 1.0,
+    "definition": "proj=pipeline step proj=unitconvert xy_in=deg xy_out=rad step proj=tmerc lat_0=36 lon_0=139.833333333333 k=0.9999 x_0=0 y_0=0 ellps=GRS80"
+  }
+]

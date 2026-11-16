@@ -1,0 +1,54 @@
+{
+  "version": "toc-stops-audit-v1",
+  "created_utc": "2026-11-08T09:12:12.983638+00:00",
+  "expected_rows": 39956,
+  "scope": "all rows; read original inputs; write only this new output directory",
+  "status_precedence": [
+    "FAIL",
+    "HOLD",
+    "CONDITIONAL",
+    "PASS"
+  ],
+  "coordinate_crs": "EPSG:4326 only if matching historical frozen source SHA and explicit CRS declaration; CityGML EPSG:6697 horizontal EPSG:6668",
+  "administrative_boundary": "N03 2026-01-01 N03_007=13111; strict contains / boundary covers; metric distance EPSG:6677",
+  "town_boundary": "2020 Census local file CRS EPSG:4612; KEY_CODE=13111+chocho_code, allow polygon fragments of same code",
+  "boundary_review_distance_m": 2.0,
+  "boundary_review_note": "audit screening tolerance; not asserted source accuracy; no coordinate correction",
+  "building_point_rules": "raw lod0 roof/footprint polygon covers PASS; outside within 50m CONDITIONAL; outside over 50m FAIL; unavailable/invalid raw geometry HOLD; no geometry repair",
+  "building_usage": "local original ZIP codelists/Building_usage.xml; 411-415 include housing; 461 unknown; 401-404,421,422,431,441,451,452,453,454 confirmed nonresidential according to codelist",
+  "road_numeric_tolerances": {
+    "coordinate_degrees": 1e-10,
+    "projected_xy_m": 0.02,
+    "position_m": 1e-06
+  },
+  "road_model": "frozen delivery-permitted lane graph with explicit connections, via/internal lanes, declared lateral restrictions; two BFS from depot (not OD generation, simulation or route optimization)",
+  "road_interpretation": "graph reachability and source consistency are checked separately from real entrance/stopping feasibility; no claim of real access",
+  "road_review_flags": [
+    "LARGE_PROJECTION_DISTANCE",
+    "MULTIPLE_NEAR_EQUAL_CANDIDATES",
+    "DETERMINISTIC_ID_TIE_BREAK"
+  ],
+  "old_demand": "old parcel_equivalent used only for source aggregation conservation, never converted to new parcel_count",
+  "sampling": "no S1-S3 demand sets generated; quota sufficiency evaluated from audited counts only",
+  "forbidden_actions": [
+    "source modification",
+    "source repairs",
+    "simulation",
+    "optimization",
+    "all-pairs OD generation",
+    "git commit/push"
+  ],
+  "planned_outputs": [
+    "ALL_STOPS_AUDIT.csv",
+    "AUDIT_SUMMARY.json",
+    "REGIONAL_COVERAGE.csv",
+    "AUDIT_EXCEPTIONS.csv",
+    "FINAL_AUDIT_REPORT_JA.md",
+    "INPUT_MANIFEST.json",
+    "COLUMN_PROFILE.json",
+    "SOURCE_LINEAGE_CHECK.json",
+    "GEOMETRY_RAW_CHECK.csv",
+    "ENVIRONMENT.json",
+    "PROTECTION_CHECK.json"
+  ]
+}

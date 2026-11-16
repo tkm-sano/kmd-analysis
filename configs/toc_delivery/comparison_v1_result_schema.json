@@ -1,0 +1,378 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "whole-method-A_rule_v1-20261115-comparison-v1/result-schema",
+  "title": "Whole-method comparison trial result v1",
+  "type": "object",
+  "required": [
+    "D",
+    "W",
+    "W_first",
+    "W_reload",
+    "T_program",
+    "T_attempt",
+    "T_input",
+    "T_planning",
+    "T_validation",
+    "T_adapter",
+    "T_setup",
+    "T_export",
+    "J",
+    "run_id",
+    "case_id",
+    "pair_id",
+    "scenario_id",
+    "scale",
+    "implementation_id",
+    "algorithm_version",
+    "input_hash",
+    "OD_hash",
+    "physical_hash",
+    "method_config_hash",
+    "resource_contract_hash",
+    "A_frozen_hash",
+    "contract_id",
+    "T_kind",
+    "phase",
+    "method",
+    "adoptable",
+    "budget_wall_s",
+    "input_state",
+    "termination_reason",
+    "validation_state",
+    "J_reason",
+    "attempt_id",
+    "repeat_id",
+    "retry_of",
+    "reference_group_id",
+    "source_hashes",
+    "resource_contract",
+    "code_version"
+  ],
+  "properties": {
+    "D": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "W": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "W_first": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "W_reload": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "T_program": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "T_attempt": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "T_input": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "T_planning": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "T_validation": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "T_adapter": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "T_setup": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "T_export": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "J": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "case_id": {
+      "type": "string"
+    },
+    "pair_id": {
+      "type": "string"
+    },
+    "scenario_id": {
+      "type": "string"
+    },
+    "scale": {
+      "type": "string"
+    },
+    "implementation_id": {
+      "type": "string"
+    },
+    "algorithm_version": {
+      "type": "string"
+    },
+    "input_hash": {
+      "type": "string"
+    },
+    "OD_hash": {
+      "type": "string"
+    },
+    "physical_hash": {
+      "type": "string"
+    },
+    "method_config_hash": {
+      "type": "string"
+    },
+    "resource_contract_hash": {
+      "type": "string"
+    },
+    "A_frozen_hash": {
+      "type": "string"
+    },
+    "contract_id": {
+      "const": "whole-method-A_rule_v1-20261115-comparison-v1"
+    },
+    "T_kind": {
+      "const": "comparison_parent_wall_including_process_setup_v1"
+    },
+    "phase": {
+      "enum": [
+        "contract_check",
+        "formal",
+        "selection_pilot",
+        "variance_pilot",
+        "confirmation"
+      ]
+    },
+    "method": {
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "D_CLASSICAL_REPLACEMENT"
+      ]
+    },
+    "adoptable": {
+      "type": "boolean"
+    },
+    "budget_wall_s": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "input_state": {
+      "enum": [
+        "NOT_CHECKED",
+        "VALID",
+        "INVALID"
+      ]
+    },
+    "termination_reason": {
+      "enum": [
+        "NOT_STARTED",
+        "NORMAL",
+        "A_MOVE_LIMIT",
+        "OUTER_WALL_LIMIT",
+        "INPUT_INVALID",
+        "RUNTIME_ERROR",
+        "CHILD_PROCESS_ERROR",
+        "CLEANUP_ERROR"
+      ]
+    },
+    "validation_state": {
+      "enum": [
+        "NOT_RUN",
+        "NO_PLAN",
+        "NO_FEASIBLE_PLAN",
+        "INVALID_PLAN",
+        "VALIDATED",
+        "NATIVE_DEADLINE_REJECTED"
+      ]
+    },
+    "J_reason": {
+      "enum": [
+        "DEFINED",
+        "A_REFERENCE_PLAN_MISSING",
+        "A_TIME_REFERENCE_INCOMPLETE",
+        "REFERENCE_TRIAL_FAILED",
+        "A_REFERENCE_PLAN_MISMATCH",
+        "ZERO_REFERENCE_DENOMINATOR",
+        "NONFINITE_VALUE",
+        "TARGET_PLAN_INVALID",
+        "INPUT_CONDITIONS_MISMATCH",
+        "TIME_SCOPE_MISMATCH",
+        "RESOURCE_CONTRACT_MISMATCH",
+        "LEGACY_METHOD_OR_CONTRACT"
+      ]
+    },
+    "attempt_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "repeat_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "retry_of": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "reference_group_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_hashes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      }
+    },
+    "resource_contract": {
+      "type": "object"
+    },
+    "code_version": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": true,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "adoptable": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "D": {
+            "type": "number",
+            "minimum": 0
+          },
+          "W": {
+            "type": "number",
+            "minimum": 0
+          },
+          "W_first": {
+            "type": "number",
+            "minimum": 0
+          },
+          "W_reload": {
+            "type": "number",
+            "minimum": 0
+          },
+          "T_program": {
+            "type": "number",
+            "minimum": 0
+          },
+          "input_state": {
+            "const": "VALID"
+          },
+          "validation_state": {
+            "const": "VALIDATED"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "D": {
+            "type": "null"
+          },
+          "W": {
+            "type": "null"
+          },
+          "W_first": {
+            "type": "null"
+          },
+          "W_reload": {
+            "type": "null"
+          },
+          "T_program": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ],
+  "x-units": {
+    "D": "km",
+    "W": "min",
+    "W_first": "min",
+    "W_reload": "min",
+    "T_program": "s",
+    "T_attempt": "s",
+    "clock": "integer seconds since midnight Asia/Tokyo",
+    "L_s": "s",
+    "RSS": "KiB"
+  },
+  "x-null-policy": "No imputation. J_reason explains undefined J; all failed/unexecuted trials retained. JSON nonfinite literals rejected.",
+  "x-reference-group": {
+    "required": [
+      "group_id",
+      "purpose",
+      "required_count",
+      "run_ids"
+    ],
+    "rule": "exact prespecified A run IDs; median of all members; no failed/uncompleted member removal"
+  },
+  "x-statistical-unit": "scenario vs scale vs repeat_id vs attempt_id vs internal branches kept distinct; no independence inferred"
+}

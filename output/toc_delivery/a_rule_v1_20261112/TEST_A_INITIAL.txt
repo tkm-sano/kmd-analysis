@@ -1,0 +1,21 @@
+......................................F.............                     [100%]
+=================================== FAILURES ===================================
+_________ test_assignment_and_order_both_change_and_are_input_derived __________
+
+    def test_assignment_and_order_both_change_and_are_input_derived():
+        p=artificial_problem(20,3,1)
+        a,b,c=(create_plan(p,x) for x in ['A1','A2','A3'])
+        assignment=lambda q:{s.stop_id:t.vehicle_id for t in q.trips for s in t.visits}
+        order=lambda q:[tuple(s.stop_id for s in t.visits) for t in q.trips]
+        assert assignment(a)!=assignment(b)!=assignment(c)
+        assert order(a)!=order(b)!=order(c)
+>       assert assignment(a)!=assignment(create_plan(p,'A1',120))
+E       AssertionError: assert {'c0001': 'v0', 'c0002': 'v0', 'c0003': 'v0', 'c0004': 'v0', ...} != {'c0001': 'v0', 'c0002': 'v0', 'c0003': 'v0', 'c0004': 'v0', ...}
+E        +  where {'c0001': 'v0', 'c0002': 'v0', 'c0003': 'v0', 'c0004': 'v0', ...} = <function test_assignment_and_order_both_change_and_are_input_derived.<locals>.<lambda> at 0x70f45db37e20>(Plan(schema_version='1.0', plan_id='ART_N20-A1-angle0', method_id='A', problem_hash='03a804f17ec2de3d9ccf21032c570c1fd...rule': 'global_ready_FCFS_then_vehicle_index_then_trip_number', 'automatic_repair': False}, execution_kind='classical'))
+E        +  and   {'c0001': 'v0', 'c0002': 'v0', 'c0003': 'v0', 'c0004': 'v0', ...} = <function test_assignment_and_order_both_change_and_are_input_derived.<locals>.<lambda> at 0x70f45db37e20>(Plan(schema_version='1.0', plan_id='ART_N20-A1-angle120', method_id='A', problem_hash='03a804f17ec2de3d9ccf21032c570c1...rule': 'global_ready_FCFS_then_vehicle_index_then_trip_number', 'automatic_repair': False}, execution_kind='classical'))
+E        +    where Plan(schema_version='1.0', plan_id='ART_N20-A1-angle120', method_id='A', problem_hash='03a804f17ec2de3d9ccf21032c570c1...rule': 'global_ready_FCFS_then_vehicle_index_then_trip_number', 'automatic_repair': False}, execution_kind='classical') = create_plan(Problem(stops=(Stop(stop_id='c0001', longitude=139.7001, latitude=35.58, demand=1, snap=Snap(longitude=139.7001, latit...76b4bdc3d9b930ef293606a6719678af168'}, environment={'fixture': True}, method_settings={}, kind='synthetic_validation')), 'A1', 120)
+
+tests/toc_baseline_a/test_baseline_a.py:65: AssertionError
+=========================== short test summary info ============================
+FAILED tests/toc_baseline_a/test_baseline_a.py::test_assignment_and_order_both_change_and_are_input_derived
+1 failed, 51 passed in 2.29s

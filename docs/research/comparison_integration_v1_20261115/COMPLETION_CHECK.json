@@ -1,0 +1,105 @@
+{
+  "complete": true,
+  "HEAD": "8605d5412f6af62229a83095c35ab04c8c7dd9b1",
+  "required_artifacts": [
+    "INTEGRATION_AUDIT.md",
+    "COMPARISON_CONTRACT.md",
+    "A_INTEGRATION_SPEC.md",
+    "RESULT_SCHEMA.json",
+    "REFERENCE_AND_AGGREGATION_SPEC.md",
+    "VALIDATION_RECORD.md",
+    "REPRODUCE.md",
+    "FINAL_REPORT_JA.md",
+    "COMPLETION_STATUS.json",
+    "A_IDENTITY_VALIDATION.json",
+    "ACTUAL_PATH_VALIDATION.json",
+    "ALL_EXECUTION_HISTORY.json"
+  ],
+  "links": [
+    {
+      "source": "COMPARISON_CONTRACT.md",
+      "target": "REFERENCE_AND_AGGREGATION_SPEC.md",
+      "exists": true
+    },
+    {
+      "source": "FINAL_REPORT_JA.md",
+      "target": "COMPLETION_STATUS.json",
+      "exists": true
+    },
+    {
+      "source": "FINAL_REPORT_JA.md",
+      "target": "FINAL_AUDIT.json",
+      "exists": true
+    },
+    {
+      "source": "FINAL_REPORT_JA.md",
+      "target": "A_IDENTITY_VALIDATION.json",
+      "exists": true
+    },
+    {
+      "source": "FINAL_REPORT_JA.md",
+      "target": "ACTUAL_PATH_VALIDATION.json",
+      "exists": true
+    },
+    {
+      "source": "FINAL_REPORT_JA.md",
+      "target": "ALL_EXECUTION_HISTORY.json",
+      "exists": true
+    },
+    {
+      "source": "FINAL_REPORT_JA.md",
+      "target": "COMPARISON_CONTRACT.md",
+      "exists": true
+    },
+    {
+      "source": "FINAL_REPORT_JA.md",
+      "target": "A_INTEGRATION_SPEC.md",
+      "exists": true
+    },
+    {
+      "source": "FINAL_REPORT_JA.md",
+      "target": "INTEGRATION_AUDIT.md",
+      "exists": true
+    },
+    {
+      "source": "FINAL_REPORT_JA.md",
+      "target": "REFERENCE_AND_AGGREGATION_SPEC.md",
+      "exists": true
+    },
+    {
+      "source": "FINAL_REPORT_JA.md",
+      "target": "RESULT_SCHEMA.json",
+      "exists": true
+    },
+    {
+      "source": "FINAL_REPORT_JA.md",
+      "target": "VALIDATION_RECORD.md",
+      "exists": true
+    },
+    {
+      "source": "FINAL_REPORT_JA.md",
+      "target": "REPRODUCE.md",
+      "exists": true
+    }
+  ],
+  "current_implementation_source_hashes": {
+    "src/kmd_toc/comparison_v1/__init__.py": "b50556fbf17c2166064a18d6dc534b34fdaa6659b28a5a1c33eb9cdbb9506ee4",
+    "src/kmd_toc/comparison_v1/contract.py": "d06dc90fa5dd1fb2de3a491fca05743d011db2ba4282093c0ee94f280462a8bb",
+    "src/kmd_toc/comparison_v1/worker.py": "1a47b0ff6cb3a95e9a0f7af4ec66c68f6b5d3d5e25728cc653536e0c34b01f61",
+    "src/kmd_toc/comparison_v1/execution.py": "3283568cba77224fe2211270a72718a49846f0ef30ce714068a0e92f1ce5ae64",
+    "src/kmd_toc/comparison_v1/evaluation.py": "826031d43f16173404f1b2eb711d0de2c3c6015552d4c51c3ba8aa266a848c63",
+    "scripts/run_comparison_v1.py": "44b78bfd6edb56b6c345f64b58715f51716e84f820ba2b7a161a8fc8e129487e",
+    "tests/toc_comparison_v1/test_contract_and_evaluation.py": "065005af181cb1f33cd45e210da8417b3c828027c54c9c18a345cb82ae3f9f07",
+    "tests/toc_comparison_v1/test_process_control.py": "3155b6a94ba4a5e528009bca26b8eca7550fea904d932dc8af1848de371c89f6",
+    "configs/toc_delivery/comparison_a_rule_v1_freeze_20261115.json": "dfab7d8dcde73777f2767a0b1bf208237d9552fff9a66c49c4793c32327c4f9a",
+    "configs/toc_delivery/comparison_v1_20261115_A_identity_checks.json": "b9c3cbf69528c267f27aa71e6c0d63b0c72be83a30b38d7b54b7496bd87d5df3",
+    "configs/toc_delivery/comparison_v1_20261115_small_paths.json": "537c3f84ec4271de2e5c97c21f0c109fb2ce02de9ff4dfd7460f7ad85cbca129",
+    "configs/toc_delivery/comparison_v1_future_manifest_template.json": "1de1a397e9ce8e3e52997021eae4ab8c7e83b6cb16f7dc1bf89cc563240098df",
+    "configs/toc_delivery/comparison_v1_result_schema.json": "ba0b3308597f94e231d89da0e90c9e7425e48392a16a04cfa3eef30042fdc6a8",
+    "configs/toc_delivery/comparison_v1_20261115_A_identity_checks_r2.json": "0cf0b23e9c80a2b5e5e444c6c4eb55626fd81841a31eeb419d782b309f01f88c",
+    "configs/toc_delivery/comparison_v1_20261115_small_paths_r2.json": "a1f7521ebdc2721d72ee9abf0ff2517a91d2283fbe09e5b68bd78c7f8340290d",
+    "configs/toc_delivery/comparison_v1_20261115_small_paths_r3.json": "c8a7231b7862d7554cafeb2cec58708f00bd8a65b55dd032b99b19fa73233449"
+  },
+  "frozen_files_unchanged": 328,
+  "formal_experiment_started": false
+}

@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "adoption_version": "A-human-time-numeric-adoption-20261113-v1.0",
+  "adopted_date": "2026-11-13",
+  "kind": "external_reference_with_explicit_representative_point",
+  "status": "CONDITIONAL GO",
+  "primary_reference": {
+    "metric": "T_dispatch_external_reference",
+    "operator": "協栄流通",
+    "publisher": "国土交通省",
+    "evidence_id": "G06",
+    "url": "https://www.mlit.go.jp/jidosha/content/001311692.pdf#page=7",
+    "printed_page": 11,
+    "pdf_page": 7,
+    "scope": "導入前の配車作業、1センター当たり毎日",
+    "unit": "seconds per center-day of reported dispatch work",
+    "published_range_s": [25200, 28800],
+    "adopted_reference_point_s": 27000,
+    "point_rule": "arithmetic_midpoint_of_published_range",
+    "point_value_kind": "research_selection_derived_from_published_range",
+    "point_is_observed_mean_or_median": false,
+    "point_is_measured_S1_time": false,
+    "definition_matched_human_wall_time_verified": false,
+    "target_stops": null,
+    "target_vehicles": null,
+    "target_planners": null,
+    "includes_all_common_preparation_and_final_checks": null
+  },
+  "individual_route_reference": {
+    "source_config": "configs/toc_delivery/a_human_route_time_reference_v1.json",
+    "url": "https://loogia.jp/cases/nihonyubin/",
+    "unit": "seconds per human route-creation episode",
+    "experienced_range_s": [300, 600],
+    "novice_range_s": [1800, 3600],
+    "use": "separate_process_reference_only",
+    "add_to_primary_reference": false,
+    "map_experience_to_A1_A2_A3": false
+  },
+  "full_A_human_T_s": {
+    "S1": null,
+    "S2": null,
+    "S3": null
+  },
+  "full_A_human_T_status": "HOLD:not_calibrated_to_common_problem_or_wall_time_boundary",
+  "scaling_by_stops_or_vehicles": null,
+  "allowed_use": [
+    "source_labelled_external_reference_table",
+    "external_reference_line_labelled_with_source_unit_and_scope",
+    "research_selected_representative_point_with_published_range"
+  ],
+  "prohibited_use": [
+    "substitution_for_S1_S2_S3_full_human_wall_time",
+    "claiming_the_midpoint_is_an_observed_average_or_median",
+    "direct_performance_ranking_or_speedup_ratio_against_B_C_D",
+    "adding_individual_route_times_to_already_aggregated_dispatch_reference",
+    "scaling_without_observed_source_workload_and_explicit_assumptions"
+  ],
+  "existing_human_workflow_coefficients_replaced": false,
+  "existing_experiment_results_modified": false,
+  "automatically_used_by_existing_solvers": false,
+  "evidence_register": "docs/research/toc_delivery_a/A_GOVERNMENT_EVIDENCE_REGISTER.csv",
+  "documentation": "docs/research/toc_delivery_a/A_HUMAN_T_NUMERIC_ADOPTION.md"
+}

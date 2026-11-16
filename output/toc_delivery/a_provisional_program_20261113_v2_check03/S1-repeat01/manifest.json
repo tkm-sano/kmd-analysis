@@ -1,0 +1,62 @@
+{
+  "version": "A-provisional-rule-program-v2-20261113",
+  "status": "VALIDATED",
+  "input_directory": "/home/takuma/kmd-analysis/output/toc_delivery/ad_pipeline_20261112_route_v2/roads/inputs/S1",
+  "input_files_sha256": {
+    "input.json": "29c2d6e416ae53b858db669bfa474d6e82d1018fe1bd5e4bd8638508f1b38b21",
+    "od/distance_m.npy": "55916fecf4c375ce588dee885abffc484fb294e905577386dc21102ce9af4c94",
+    "od/duration_s.npy": "5834e98c884f9a9b4e2017482d3394bdd5cb482f11546ad84adc7bfb50b217aa",
+    "od/manifest.json": "c508951f20035a93dce8eadc7965442fb60dfeff0cea6ed4d61962ba0b137c30",
+    "od/reachable.npy": "4261218ad086f530f9846ebb81907d38776f397a31dd3d8c60da2a0fc8cbe22d"
+  },
+  "config_sha256": "358e99dfbe78e5790b137b0fa32d70395b322e17a10c0cf4060a794f4cb7bb9e",
+  "source_files_sha256": {
+    "src/kmd_toc/baseline_a/__init__.py": "6873a440a32cf381898315b4643f7b520a0b58a5596598c91101bd76e3e7d3fd",
+    "src/kmd_toc/baseline_a/config.py": "afd293d3e22d24b241aec3ae2d4e4785407dcfa97679f5245079cf0099535fc8",
+    "src/kmd_toc/baseline_a/construction.py": "720946795615c3d45e289261f348e31928bd4beb985de7ce1136d70f51cce105",
+    "src/kmd_toc/baseline_a/fixtures.py": "59878ce17c8a10907132ae6c2be70b8e6ec74535f8a75b7dfe0cdfb8faf14a23",
+    "src/kmd_toc/baseline_a/human_time.py": "df38a903bd6ea10f035c030e0247ec70be9310d0f5b1c2a59fdd19f386ff4419",
+    "src/kmd_toc/baseline_a/independent.py": "d48830c0a40c124768aa13f704feb467cb32c6dc5de4c40bfddfbd3c38856d0f",
+    "src/kmd_toc/baseline_a/program.py": "d8db38de0e4e989263e03c2c39c4a21d33dc87f2e0cf3dcf13e8e2de7ae23310",
+    "src/kmd_toc/baseline_a/program_validation.py": "d1df269301c27eba06e906836faf1e25e7827474a46a303d13c1f564c6b3e525",
+    "src/kmd_toc/baseline_a/runner.py": "fb37e48bf587bc9f88e27ee789363bbecfaf2a7c31d7d4c5d1d49fbe319a0bb8",
+    "src/kmd_toc/common/__init__.py": "04eef8da0e50cda279ef978313db6f76ac8693ad400b54470589fa580f0e627c",
+    "src/kmd_toc/common/adapters.py": "cf6327ce47e90d918f672e9ee7587b68cf6ed93db1417cbf554a5ac9a4015646",
+    "src/kmd_toc/common/config.py": "0dc26074b494caab0774efad39266ac387d9de243a951d9762b2ec592b881e17",
+    "src/kmd_toc/common/models.py": "0728fd830be92a967b13c8f0d987a4ef9ad0520d604e20893192ddb4d41f2245",
+    "src/kmd_toc/common/od.py": "7c4674802728c68e6ca482b803259557ab6f10caaa99b9e10bbd88ad0a02164b",
+    "src/kmd_toc/common/runtime.py": "1e5880c525748656790971a156e221e792e5a6cf198476c425268498067645a6",
+    "src/kmd_toc/common/validation.py": "04da39c20c69efba786f0d25f8d58da1e08db400007080b64b9bc1efc13e4ef9",
+    "src/kmd_toc/frozen_demand.py": "4aedb07b137fe37851f8f5f8c161799e7cc756056d339ff1fc954d28412616ad",
+    "scripts/run_baseline_a.py": "c1e8e064ed87745f7ec43f4e9d771af4fc6d1734fd926234e5ca24c4db7ba2ab"
+  },
+  "products_sha256": {
+    "config.json": "358e99dfbe78e5790b137b0fa32d70395b322e17a10c0cf4060a794f4cb7bb9e",
+    "common_conditions_v1_1.json": "bbb15417a4eee5072f8118056c90ab422d792b4cedc35a6a06bf6bc0497fe8d2",
+    "a_rule_baseline_v1.json": "24060d8be817cf8e09c096d1e1717d35c0e3e666870b34bfc8c2f70995d27bf1",
+    "plan.json": "a03dbb563c39c67577264b429767cf1509146fedb6c0b58a5c41d4632bb39d4f",
+    "validation.json": "5434e0638daf1cfbea48ad3b1b98231965b09c30a4a80b787fdb303f05237263",
+    "trips.csv": "82b85094c1faca8a0bb1a5efcfdab91063e8d3a7a48a23fe5c82e0a107ac1776",
+    "metrics.json": "b9a615054c02fe69a6e38576f7333689764c69da7bc0934dacef8e8257222863"
+  },
+  "T_scope": [
+    "input_files_and_hashes",
+    "common_input_and_OD_load",
+    "preprocessing",
+    "territories_and_boundary_balance",
+    "nearest_neighbor_and_trip_split",
+    "FCFS_berths_and_timestamps",
+    "common_validation",
+    "independent_recalculation",
+    "validation_agreement"
+  ],
+  "T_excludes": [
+    "dependency_import",
+    "process_start",
+    "output",
+    "OD_generation"
+  ],
+  "export_scope": "full output wall time also recorded by CLI parent",
+  "operator_D_W_T_calibration": null,
+  "main_experiment_eligible": false
+}

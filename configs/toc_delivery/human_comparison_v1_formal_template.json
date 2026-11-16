@@ -1,0 +1,126 @@
+{
+  "experiment_id": null,
+  "mode": "human_inclusive",
+  "measurement_contract": "human-inclusive-AD-v1-20261116",
+  "phase": "formal",
+  "preparation_policy": "no_case_view_or_case_specific_tuning_before_start",
+  "tuning_policy": "frozen_existing_BCD_no_case_tuning",
+  "stopping": "fixed_registered_runs",
+  "cases": [
+    {
+      "case_id": "S1",
+      "scenario_id": "ota-toc-frozen-demand-v1:S1",
+      "scale": "S1",
+      "kind": "frozen",
+      "input_dir": "output/toc_delivery/ad_pipeline_20261112_route_v2/roads/inputs/S1",
+      "files": {
+        "input.json": "29c2d6e416ae53b858db669bfa474d6e82d1018fe1bd5e4bd8638508f1b38b21",
+        "od/distance_m.npy": "55916fecf4c375ce588dee885abffc484fb294e905577386dc21102ce9af4c94",
+        "od/duration_s.npy": "5834e98c884f9a9b4e2017482d3394bdd5cb482f11546ad84adc7bfb50b217aa",
+        "od/manifest.json": "c508951f20035a93dce8eadc7965442fb60dfeff0cea6ed4d61962ba0b137c30",
+        "od/reachable.npy": "4261218ad086f530f9846ebb81907d38776f397a31dd3d8c60da2a0fc8cbe22d"
+      },
+      "family_id": "ota-toc-frozen-demand-v1-nested",
+      "independent_draw": false,
+      "demand_seed": null,
+      "total_limit_s": null,
+      "machine_limit_s": null,
+      "native_limit_s": null
+    },
+    {
+      "case_id": "S2",
+      "scenario_id": "ota-toc-frozen-demand-v1:S2",
+      "scale": "S2",
+      "kind": "frozen",
+      "input_dir": "output/toc_delivery/ad_pipeline_20261112_route_v2/roads/inputs/S2",
+      "files": {
+        "input.json": "1eabfcf46843a18d60e3b8e247d4d009cd6140df81d3a4154e9da830775c2013",
+        "od/distance_m.npy": "d8d8beb9e84f749c032f3358bbfc5c792f5a339589b4174b3e984198177ea72a",
+        "od/duration_s.npy": "ec44e5a124d644e3eb8c045db200484d744ea62c433fe5662679574b68037c6d",
+        "od/manifest.json": "3de697376510522dab96a7dad8db6bb7e273e5c0b10eba62f5789d4fc0f1db77",
+        "od/reachable.npy": "d0dcceed299ccf90f178613fcdfd7826680d8d697e7cc8d2ca77f959a6bdfe29"
+      },
+      "family_id": "ota-toc-frozen-demand-v1-nested",
+      "independent_draw": false,
+      "demand_seed": null,
+      "total_limit_s": null,
+      "machine_limit_s": null,
+      "native_limit_s": null
+    },
+    {
+      "case_id": "S3",
+      "scenario_id": "ota-toc-frozen-demand-v1:S3",
+      "scale": "S3",
+      "kind": "frozen",
+      "input_dir": "output/toc_delivery/ad_pipeline_20261112_route_v2/roads/inputs/S3",
+      "files": {
+        "input.json": "d5ee004609850c8fac6da3860986c349ee5c25e4fe6e1e4b1f0645b378e9c844",
+        "od/distance_m.npy": "008346e7cf4ce9c8e28e57a95248e259c23a2cdae207911940a5be6654072c9d",
+        "od/duration_s.npy": "9f0a262a5a33dedcce7859b009d5d50902d81b1cb2017af9133c88aabd771be0",
+        "od/manifest.json": "57a0e40037cb15baf1da2e284d8399f89f0ebe20ff506c58ee20a1391dbca2f5",
+        "od/reachable.npy": "5319e9145200b7da4817ab5d1043d1ea609a8e54540a99470596076779591755"
+      },
+      "family_id": "ota-toc-frozen-demand-v1-nested",
+      "independent_draw": false,
+      "demand_seed": null,
+      "total_limit_s": null,
+      "machine_limit_s": null,
+      "native_limit_s": null
+    }
+  ],
+  "participants": null,
+  "runs": null,
+  "memory_limit_MiB": null,
+  "python": null,
+  "dependency_prefix": null,
+  "study_budget_s": null,
+  "precision_goal": null,
+  "execution_authorization": {
+    "approved": false,
+    "evidence": null
+  },
+  "rq_approval": {
+    "decision": "approved_total_time_v1",
+    "approved_by": "user_in_this_conversation",
+    "approved_answer": "案1：T_totalを主指標とする改訂案を承認",
+    "proposal": "RQ_OPTIONS.md",
+    "proposal_sha256": "838cc19e73a1d2a123a028436514d7413b602eed82a728198ea54a5ece934b74",
+    "old_RQ_and_hypothesis_file": "docs/research/BASELINE_A_DESIGN.md",
+    "old_file_sha256": "78c1b500efc32d931fcdc099cc18e8d6c0950243fdf6965495c1821e07ad747a",
+    "original_files_modified": false,
+    "new_primary_time": "T_total",
+    "J": "not calculated until a separate complete normalization preregistration",
+    "approved_recorded_utc": "2026-11-16T07:47:51.886416+00:00"
+  },
+  "statistics": {
+    "scope": null,
+    "ci_method": null,
+    "confidence": null,
+    "pairs": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "A",
+        "C"
+      ],
+      [
+        "A",
+        "D"
+      ],
+      [
+        "C",
+        "D"
+      ]
+    ],
+    "rationale": null,
+    "multiplicity": null,
+    "inferential_metrics": [
+      "D_km",
+      "W_min",
+      "T_total_sec"
+    ]
+  },
+  "template_status": "NOT_EXECUTABLE_UNTIL_ALL_REQUIRED_DESIGN_AND_PARTICIPANT_FIELDS_ARE_REGISTERED"
+}

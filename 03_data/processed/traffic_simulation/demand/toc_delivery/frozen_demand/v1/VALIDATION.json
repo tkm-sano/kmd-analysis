@@ -1,0 +1,46 @@
+{
+  "checks": {
+    "all_buildings_unique": true,
+    "all_ids_unique": true,
+    "capacity_of_candidate_pools": true,
+    "historical_quota_match": true,
+    "integer_allocation_totals": true,
+    "monotone_regional_quotas": true,
+    "one_parcel_per_stop": true,
+    "pass_only": true,
+    "regional_counts_match_audit": true,
+    "source_audit_identity": true,
+    "source_coordinate_tokens_unchanged": true,
+    "strict_nested_stop_sets": true
+  },
+  "full_input_identity_coordinate_checks": 39956,
+  "original_stops": 39956,
+  "pass_stops": 34912,
+  "regions": 182,
+  "road_od_adoption": "HOLD",
+  "scenarios": {
+    "S1": {
+      "N": 1000,
+      "berths": 2,
+      "stop_set_sha256": "b896a924af1707aa5192d3e047cf4302036c64639b60e4ffe1118f184151cb19",
+      "total_parcels": 1000,
+      "vehicles": 10
+    },
+    "S2": {
+      "N": 2000,
+      "berths": 4,
+      "stop_set_sha256": "4d214dc90ea9cc33df81dd6ccce110143fa3f10331d411341d7057d8c7323166",
+      "total_parcels": 2000,
+      "vehicles": 20
+    },
+    "S3": {
+      "N": 4000,
+      "berths": 8,
+      "stop_set_sha256": "37d3782221964ee914a28a5ca3ae0ee887d4e2ded709e09336185f6e70921111",
+      "total_parcels": 4000,
+      "vehicles": 40
+    }
+  },
+  "status": "PASS",
+  "vrp_feasibility": "NOT_ASSESSED"
+}

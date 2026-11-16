@@ -1,0 +1,42 @@
+{
+  "status": "fixed settings used for pilots; main adoption HOLD after confirmation native cap failure",
+  "tau_s": 240,
+  "BCD_native_cap_s": 150,
+  "D": {
+    "pricing_rounds": 2,
+    "max_evaluations": 80,
+    "restarts": 1,
+    "p": 2,
+    "macro_groups": 3,
+    "train_shots": 1000,
+    "final_shots": 4096
+  },
+  "C_routing_fraction": 0.5,
+  "M_per_scale": 1,
+  "scales": [
+    "S1",
+    "S2",
+    "S3"
+  ],
+  "variance_batch_R_a": 3,
+  "confirmation_R_a": 1,
+  "internal_parallel_starts_per_BCD_trial": 4,
+  "selection_counts": {
+    "lean": {
+      "adopted": 9,
+      "attempted": 15
+    },
+    "retained": {
+      "adopted": 15,
+      "attempted": 15
+    }
+  },
+  "selection_attempt_wall_cost_s": 2559.376388907898,
+  "reason": "smallest prespecified candidate satisfying all scales/methods with completed D quantum calls",
+  "settings_identity": "db86b1c551bd6a6c56b3f0590cd890238b1c4fcc5a5347129db61766a244f620",
+  "A_changed": false,
+  "main_started": false,
+  "main_settings_adopted": false,
+  "confirmation_adopted": 14,
+  "confirmation_attempts": 15
+}

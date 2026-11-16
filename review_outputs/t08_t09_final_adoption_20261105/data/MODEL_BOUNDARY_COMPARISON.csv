@@ -1,0 +1,12 @@
+item,T08,T09,code
+gross/usable,20000Wh mass;18000Wh stock,same,battery.pack_budget; frozen evaluate
+Q,gross/V; per-cell Q/100,same,battery.pack_budget; analyze.py
+positive,Q/(q*u*fp),same coating,battery.pack_budget; model.geometry
+negative,Q*NP/(qn*fn),Q*NP/[qn*(1-loss)*fn],battery.pack_budget; model.negative_mass
+area,not resolved,active/loading; fixed LP area alternative,model.geometry
+foil,within19kg,faceArea/2*t*rho; margins unknown,model.foil_mass
+separator,within19kg,max(faceAreas)*areal mass,analyze.py
+liquid,within19kg,"(electrode pores+separator pores)*wet*sat+excess, then density",model.liquid_mass
+other,19kg+15kg assumed,casing/tabs/structure NULL; do not add34kg,model.account_cell
+vehicle,1155-20000/180+new pack,1043.888889+known+unknown,controlled_dc.evaluate
+DC,"sum(max(total interval wheel work,0))/.9",same; unknown absolute mass prevents unique DC,frozen evaluate

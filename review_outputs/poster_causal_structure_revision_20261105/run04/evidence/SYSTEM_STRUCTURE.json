@@ -1,0 +1,174 @@
+{
+  "nodes": [
+    {
+      "id": "actors",
+      "x": 205,
+      "y": 180,
+      "w": 145,
+      "h": 53,
+      "title": "利用主体",
+      "body": "役割として置く計画担当・設計担当\n構成の選択・評価・利用を担う",
+      "status": "B"
+    },
+    {
+      "id": "rules",
+      "x": 415,
+      "y": 180,
+      "w": 150,
+      "h": 53,
+      "title": "規則・判断基準・慣行",
+      "body": "目的・評価の基準・作業手順\n現場での具体的な内容は未調査",
+      "status": "B"
+    },
+    {
+      "id": "configuration",
+      "x": 280,
+      "y": 275,
+      "w": 210,
+      "h": 53,
+      "title": "技術・運用の構成",
+      "body": "計画システム・車両・電池\n計算の分担と設計・運行の組合せ",
+      "status": "B"
+    },
+    {
+      "id": "scope",
+      "x": 20,
+      "y": 529,
+      "w": 78,
+      "h": 25,
+      "body": "探索範囲 S",
+      "status": "B"
+    },
+    {
+      "id": "candidate",
+      "x": 108,
+      "y": 529,
+      "w": 78,
+      "h": 25,
+      "body": "CPU理想計算\nで候補取得",
+      "status": "A"
+    },
+    {
+      "id": "adopt",
+      "x": 196,
+      "y": 529,
+      "w": 78,
+      "h": 25,
+      "body": "古典側の検証\n採用は未確認",
+      "status": "C"
+    },
+    {
+      "id": "design",
+      "x": 315,
+      "y": 529,
+      "w": 78,
+      "h": 25,
+      "body": "設計への利用\n（未検証）",
+      "status": "C"
+    },
+    {
+      "id": "mass",
+      "x": 403,
+      "y": 529,
+      "w": 78,
+      "h": 25,
+      "body": "設計仮定と\n部材質量収支",
+      "status": "B"
+    },
+    {
+      "id": "DC",
+      "x": 491,
+      "y": 529,
+      "w": 78,
+      "h": 25,
+      "body": "走行総質量\n→ DC応答",
+      "status": "A"
+    }
+  ],
+  "edges": [
+    {
+      "id": "rules_actors",
+      "source": "rules",
+      "target": "actors",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "actors_rules",
+      "source": "actors",
+      "target": "rules",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "actors_config",
+      "source": "actors",
+      "target": "configuration",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "config_actors",
+      "source": "configuration",
+      "target": "actors",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "rules_config",
+      "source": "rules",
+      "target": "configuration",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "config_rules",
+      "source": "configuration",
+      "target": "rules",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "quantum_config",
+      "source": "quantum_candidate",
+      "target": "configuration",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "route_search",
+      "source": "scope",
+      "target": "candidate",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "route_check",
+      "source": "candidate",
+      "target": "adopt",
+      "status": "A",
+      "label": ""
+    },
+    {
+      "id": "material_use",
+      "source": "design",
+      "target": "mass",
+      "status": "C",
+      "label": ""
+    },
+    {
+      "id": "material_DC",
+      "source": "mass",
+      "target": "DC",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "model_entry",
+      "source": "symbolic_inputs",
+      "target": "mass",
+      "status": "B",
+      "label": ""
+    }
+  ]
+}

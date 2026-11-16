@@ -1,0 +1,356 @@
+{
+  "checks": 3235,
+  "failures": 0,
+  "sources": 493,
+  "B": {
+    "n": 36800,
+    "mean": 441.7906090195713,
+    "median": 0.0,
+    "sd": 1459.3790510507872,
+    "min": 0.0,
+    "max": 9483.990487384,
+    "q25": 0.0,
+    "q75": 0.0
+  },
+  "C": {
+    "CRR_LOWER_BOUND": {
+      "DC_1000_Wh": {
+        "n": 460,
+        "mean": 2798.8705070893957,
+        "median": 2419.8502981159913,
+        "sd": 1286.1467441062016,
+        "min": 992.1206220754773,
+        "max": 6247.564091197362,
+        "q25": 1798.0608663004034,
+        "q75": 3825.3050935887
+      },
+      "distance_km": {
+        "n": 460,
+        "mean": 19.043286964927642,
+        "median": 16.7577965225755,
+        "sd": 8.296097733222064,
+        "min": 6.758759303886,
+        "max": 41.005835736843004,
+        "q25": 12.1293568646125,
+        "q75": 25.13841041463375
+      },
+      "moving_duration_s": {
+        "n": 460,
+        "mean": 2501.0021739130434,
+        "median": 1851.0,
+        "sd": 1369.4784839777703,
+        "min": 822.0,
+        "max": 6150.0,
+        "q25": 1433.75,
+        "q75": 3741.5
+      },
+      "observed_duration_s": {
+        "n": 460,
+        "mean": 26390.854347826087,
+        "median": 26652.5,
+        "sd": 4805.581763480155,
+        "min": 1318.0,
+        "max": 32548.0,
+        "q25": 25799.75,
+        "q75": 30501.25
+      },
+      "stop_fraction": {
+        "n": 460,
+        "mean": 0.9072197776298039,
+        "median": 0.9189207835690685,
+        "sd": 0.04645215269187071,
+        "min": 0.37680060652009095,
+        "max": 0.9662031672460409,
+        "q25": 0.8729649310178629,
+        "q75": 0.9386878056559914
+      },
+      "restarts": {
+        "n": 460,
+        "mean": 59.60434782608696,
+        "median": 30.5,
+        "sd": 51.955611842901604,
+        "min": 6.0,
+        "max": 186.0,
+        "q25": 18.0,
+        "q75": 115.0
+      },
+      "positive_dv2": {
+        "n": 460,
+        "mean": 13839.131169492372,
+        "median": 11445.725665772883,
+        "sd": 6711.999243984095,
+        "min": 4705.931908312998,
+        "max": 32119.20705409759,
+        "q25": 8610.803413231633,
+        "q75": 19349.914778330258
+      },
+      "delta_100kg_Wh": {
+        "n": 460,
+        "mean": 236.89060096753067,
+        "median": 195.71812616619877,
+        "sd": 114.055759095737,
+        "min": 82.76097532270751,
+        "max": 546.909785443695,
+        "q25": 147.07241938417263,
+        "q75": 331.2900602665985
+      },
+      "delta_100kg_percent": {
+        "n": 460,
+        "mean": 8.389545473504802,
+        "median": 8.355402874556642,
+        "sd": 0.28340493006115397,
+        "min": 7.391928036511116,
+        "max": 8.88660170396754,
+        "q25": 8.196518044235907,
+        "q75": 8.63311680415988
+      },
+      "dE_dm_1000_Wh_kg": {
+        "n": 460,
+        "mean": 2.368077359895257,
+        "median": 1.9566344281244779,
+        "sd": 1.1403339926592613,
+        "min": 0.8275726479583239,
+        "max": 5.468172124192583,
+        "q25": 1.4703507791847854,
+        "q75": 3.312605833615088
+      },
+      "component_sum_share_percent": {
+        "rolling_positive_mask_DC_Wh": 9.764266628007531,
+        "aero_positive_mask_DC_Wh": 10.826191043315296,
+        "translation_positive_mask_DC_Wh": 74.84405497519055,
+        "rotation_positive_mask_DC_Wh": 4.565487353486623
+      }
+    },
+    "CRR_UPPER_BOUND": {
+      "DC_1000_Wh": {
+        "n": 460,
+        "mean": 2866.6017782227486,
+        "median": 2481.2656308601063,
+        "sd": 1313.9141102963504,
+        "min": 1020.8628922576249,
+        "max": 6384.146634050981,
+        "q25": 1841.6644811254841,
+        "q75": 3910.4002827842505
+      },
+      "distance_km": {
+        "n": 460,
+        "mean": 19.043286964927642,
+        "median": 16.7577965225755,
+        "sd": 8.296097733222064,
+        "min": 6.758759303886,
+        "max": 41.005835736843004,
+        "q25": 12.1293568646125,
+        "q75": 25.13841041463375
+      },
+      "moving_duration_s": {
+        "n": 460,
+        "mean": 2501.0021739130434,
+        "median": 1851.0,
+        "sd": 1369.4784839777703,
+        "min": 822.0,
+        "max": 6150.0,
+        "q25": 1433.75,
+        "q75": 3741.5
+      },
+      "observed_duration_s": {
+        "n": 460,
+        "mean": 26390.854347826087,
+        "median": 26652.5,
+        "sd": 4805.581763480155,
+        "min": 1318.0,
+        "max": 32548.0,
+        "q25": 25799.75,
+        "q75": 30501.25
+      },
+      "stop_fraction": {
+        "n": 460,
+        "mean": 0.9072197776298039,
+        "median": 0.9189207835690685,
+        "sd": 0.04645215269187071,
+        "min": 0.37680060652009095,
+        "max": 0.9662031672460409,
+        "q25": 0.8729649310178629,
+        "q75": 0.9386878056559914
+      },
+      "restarts": {
+        "n": 460,
+        "mean": 59.60434782608696,
+        "median": 30.5,
+        "sd": 51.955611842901604,
+        "min": 6.0,
+        "max": 186.0,
+        "q25": 18.0,
+        "q75": 115.0
+      },
+      "positive_dv2": {
+        "n": 460,
+        "mean": 13839.131169492372,
+        "median": 11445.725665772883,
+        "sd": 6711.999243984095,
+        "min": 4705.931908312998,
+        "max": 32119.20705409759,
+        "q25": 8610.803413231633,
+        "q75": 19349.914778330258
+      },
+      "delta_100kg_Wh": {
+        "n": 460,
+        "mean": 243.28770996659514,
+        "median": 201.0177591337615,
+        "sd": 116.72715443442102,
+        "min": 85.47191630455063,
+        "max": 560.0970118805044,
+        "q25": 151.3285829396952,
+        "q75": 339.6622328435469
+      },
+      "delta_100kg_percent": {
+        "n": 460,
+        "mean": 8.414471474304262,
+        "median": 8.380721916528021,
+        "sd": 0.27926380065430284,
+        "min": 7.426844125781819,
+        "max": 8.903947939659089,
+        "q25": 8.228329658843597,
+        "q75": 8.650261713788963
+      },
+      "dE_dm_1000_Wh_kg": {
+        "n": 460,
+        "mean": 2.4317800881623914,
+        "median": 2.009599292360901,
+        "sd": 1.1670813661948507,
+        "min": 0.8541950723640128,
+        "max": 5.600056252692848,
+        "q25": 1.5124607334106064,
+        "q75": 3.39590125658912
+      },
+      "component_sum_share_percent": {
+        "rolling_positive_mask_DC_Wh": 12.050590676028435,
+        "aero_positive_mask_DC_Wh": 10.728908921421914,
+        "translation_positive_mask_DC_Wh": 72.7808674859092,
+        "rotation_positive_mask_DC_Wh": 4.439632916640462
+      }
+    },
+    "Crr_paired_absolute_Wh": {
+      "n": 460,
+      "mean": 67.73127113335272,
+      "median": 63.86233004853716,
+      "sd": 28.03625997334604,
+      "min": 23.91202997946334,
+      "max": 138.9833517800662,
+      "q25": 43.336687667464844,
+      "q75": 85.26000022827054
+    },
+    "Crr_paired_relative_percent": {
+      "n": 460,
+      "mean": 2.4755181928480017,
+      "median": 2.4565364820267117,
+      "sd": 0.194450040063876,
+      "min": 1.9781042166509544,
+      "max": 2.9776389479064513,
+      "q25": 2.314422287209017,
+      "q75": 2.63079848640226
+    },
+    "correlations": [
+      {
+        "rolling_case": "CRR_LOWER_BOUND",
+        "factor": "distance_km",
+        "outcome": "DC_1000_Wh",
+        "spearman": 0.9927619449175493,
+        "interpretation": "fixed-cohort descriptive; no independence or causal inference"
+      },
+      {
+        "rolling_case": "CRR_LOWER_BOUND",
+        "factor": "moving_duration_s",
+        "outcome": "DC_1000_Wh",
+        "spearman": 0.9627691407240697,
+        "interpretation": "fixed-cohort descriptive; no independence or causal inference"
+      },
+      {
+        "rolling_case": "CRR_LOWER_BOUND",
+        "factor": "observed_duration_s",
+        "outcome": "DC_1000_Wh",
+        "spearman": 0.8391799917617502,
+        "interpretation": "fixed-cohort descriptive; no independence or causal inference"
+      },
+      {
+        "rolling_case": "CRR_LOWER_BOUND",
+        "factor": "stop_fraction",
+        "outcome": "DC_1000_Wh",
+        "spearman": -0.8981822538257546,
+        "interpretation": "fixed-cohort descriptive; no independence or causal inference"
+      },
+      {
+        "rolling_case": "CRR_LOWER_BOUND",
+        "factor": "restarts",
+        "outcome": "DC_1000_Wh",
+        "spearman": 0.9319019885230599,
+        "interpretation": "fixed-cohort descriptive; no independence or causal inference"
+      },
+      {
+        "rolling_case": "CRR_LOWER_BOUND",
+        "factor": "positive_dv2",
+        "outcome": "DC_1000_Wh",
+        "spearman": 0.9975590827358644,
+        "interpretation": "fixed-cohort descriptive; no independence or causal inference"
+      },
+      {
+        "rolling_case": "CRR_LOWER_BOUND",
+        "factor": "rms_acceleration",
+        "outcome": "DC_1000_Wh",
+        "spearman": 0.9268892328536932,
+        "interpretation": "fixed-cohort descriptive; no independence or causal inference"
+      },
+      {
+        "rolling_case": "CRR_UPPER_BOUND",
+        "factor": "distance_km",
+        "outcome": "DC_1000_Wh",
+        "spearman": 0.9930282402501692,
+        "interpretation": "fixed-cohort descriptive; no independence or causal inference"
+      },
+      {
+        "rolling_case": "CRR_UPPER_BOUND",
+        "factor": "moving_duration_s",
+        "outcome": "DC_1000_Wh",
+        "spearman": 0.9626430201985235,
+        "interpretation": "fixed-cohort descriptive; no independence or causal inference"
+      },
+      {
+        "rolling_case": "CRR_UPPER_BOUND",
+        "factor": "observed_duration_s",
+        "outcome": "DC_1000_Wh",
+        "spearman": 0.8385476473770985,
+        "interpretation": "fixed-cohort descriptive; no independence or causal inference"
+      },
+      {
+        "rolling_case": "CRR_UPPER_BOUND",
+        "factor": "stop_fraction",
+        "outcome": "DC_1000_Wh",
+        "spearman": -0.8984084199381368,
+        "interpretation": "fixed-cohort descriptive; no independence or causal inference"
+      },
+      {
+        "rolling_case": "CRR_UPPER_BOUND",
+        "factor": "restarts",
+        "outcome": "DC_1000_Wh",
+        "spearman": 0.9312325742979318,
+        "interpretation": "fixed-cohort descriptive; no independence or causal inference"
+      },
+      {
+        "rolling_case": "CRR_UPPER_BOUND",
+        "factor": "positive_dv2",
+        "outcome": "DC_1000_Wh",
+        "spearman": 0.9973308824299941,
+        "interpretation": "fixed-cohort descriptive; no independence or causal inference"
+      },
+      {
+        "rolling_case": "CRR_UPPER_BOUND",
+        "factor": "rms_acceleration",
+        "outcome": "DC_1000_Wh",
+        "spearman": 0.926596677842441,
+        "interpretation": "fixed-cohort descriptive; no independence or causal inference"
+      }
+    ],
+    "interpretation": "NEW_DESCRIPTIVE_REANALYSIS_ADOPTED_FROZEN_MODEL; no new SUMO or material experiment; observed windows; independent samples not assumed"
+  },
+  "source_files_unchanged": true,
+  "new_analysis": "descriptive aggregation and frozen DC evaluation at 1000,1100,1250kg only"
+}

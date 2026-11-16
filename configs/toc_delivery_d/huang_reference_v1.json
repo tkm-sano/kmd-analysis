@@ -1,0 +1,30 @@
+{
+  "experiment_id": "huang-independent-reference-v1",
+  "paper": "https://arxiv.org/html/2503.17051v1",
+  "scope": "artificial_small_CVRP_only",
+  "method": "Huang column generation plus AOA; independent Qiskit implementation",
+  "customer_counts": [4, 5, 6],
+  "master_variant": "cover",
+  "final_integer_master": "partition",
+  "capacity_artificial_only": 25,
+  "slots": 4,
+  "p": 2,
+  "max_evaluations": 200,
+  "restarts": 3,
+  "train_shots": 1000,
+  "final_shots": 4096,
+  "solver_seeds": [1101, 1102],
+  "lambda_capacity": 1.0,
+  "lambda_visit": 1.0,
+  "optimizer": "COBYLA",
+  "tolerance": 0.001,
+  "max_cg_rounds": 20,
+  "cg_batch_size": 5,
+  "aoa_no_improvement_stall_rounds": 1,
+  "main_stop_is_wall_time": false,
+  "study_data_access": false,
+  "settings_not_published_in_paper": [
+    "fixture_coordinates_and_demands", "solver_seeds", "initial_angles", "max_evaluations",
+    "restarts", "tolerance", "final_shots", "max_cg_rounds", "aoa_no_improvement_stall_rounds"
+  ]
+}

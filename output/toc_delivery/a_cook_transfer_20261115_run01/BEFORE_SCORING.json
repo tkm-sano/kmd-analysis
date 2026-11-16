@@ -1,0 +1,37 @@
+{
+  "proposals_sha256": "3b08b0d92983cd33566fe4b4c71b648ea5a1110b7b538548731db07aa8a047ba",
+  "model_sha256": "fcafbb333846bb460faff7de0f9db6fd423c6716c95c5f6ec083127f3de3b8d1",
+  "repeats": {
+    "same_station_future": {
+      "route_id": "RouteID_55b86e61-77f2-4f87-958b-c10ffbd9a831",
+      "error": "AUTHOR_PROCESS_FAILED:Cook_public_zones_author_path_prepare"
+    },
+    "unknown_station": {
+      "route_id": "RouteID_dd8d5fa3-8616-439b-b119-ec88901859e5",
+      "error": "AUTHOR_PROCESS_FAILED:Cook_public_zones_author_path_prepare"
+    }
+  },
+  "errors": [
+    {
+      "method": "Cook_public_zones",
+      "type": "RuntimeError",
+      "error": "AUTHOR_PROCESS_FAILED:Cook_public_zones_author_path_prepare"
+    },
+    {
+      "method": "Cook_no_station_history",
+      "type": "RuntimeError",
+      "error": "AUTHOR_PROCESS_FAILED:Cook_no_station_history_author_path_prepare"
+    },
+    {
+      "method": "Cook_auto_zones",
+      "type": "RuntimeError",
+      "error": "AUTHOR_PROCESS_FAILED:Cook_auto_zones_author_path_prepare"
+    },
+    {
+      "method": "Cook_no_zones",
+      "type": "RuntimeError",
+      "error": "AUTHOR_PROCESS_FAILED:Cook_no_zones_author_path_prepare"
+    }
+  ],
+  "selected_evaluation_actual_orders_loaded_by_run": false
+}

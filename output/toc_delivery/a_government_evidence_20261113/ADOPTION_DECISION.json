@@ -1,0 +1,45 @@
+{
+  "version": "A-government-evidence-20261113-v1",
+  "date_jst": "2026-11-13",
+  "source_priority": [
+    "ministry_published_case_or_measurement",
+    "operator_published_case_or_measurement",
+    "official_case_with_operator_interview",
+    "academic_observation",
+    "research_assumption"
+  ],
+  "priority_requires_scope_match": true,
+  "planning_method_support": [
+    "G01",
+    "G02",
+    "G04",
+    "O01"
+  ],
+  "preferred_government_fleet_planning_external_reference": {
+    "evidence_id": "G06",
+    "before_time_s": [
+      25200,
+      28800
+    ],
+    "unit": "reported planning work time / center / day",
+    "wall_time_vs_person_time_verified": false,
+    "target_center_N_V_P": null,
+    "status": "CONDITIONAL GO:external_reference_only"
+  },
+  "adjacent_dispatch_external_reference": {
+    "evidence_id": "G08",
+    "before_time_s": 1200,
+    "status": "CONDITIONAL GO:adjacent_process_only"
+  },
+  "individual_route_reference_config": "configs/toc_delivery/a_human_route_time_reference_v1.json",
+  "individual_route_reference_replaced": false,
+  "full_A_human_T_s": {
+    "S1": null,
+    "S2": null,
+    "S3": null
+  },
+  "full_A_human_T_status": "HOLD:unmeasured_and_not_empirically_calibrated",
+  "miura_conflicting_values_merged": false,
+  "research_rules_or_coefficients_modified": false,
+  "applied_to_existing_experiments": false
+}

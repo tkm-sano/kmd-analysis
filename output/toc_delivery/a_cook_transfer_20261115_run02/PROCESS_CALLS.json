@@ -1,0 +1,1599 @@
+[
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/venvs/cook-reproduction-v1/bin/python",
+      "-c",
+      "import sys,natsort; print(sys.executable); print(natsort.__version__)"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02",
+    "label": "author_python_preflight",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/000_author_python_preflight.log",
+    "pid": 3156400,
+    "returncode": 0,
+    "wall_s": 1.0217984849587083
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/venvs/cook-reproduction-v1/bin/python",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/analyze_zone_id_order_main.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/training_routes.json",
+      "--s_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_plan04/training_actual.json",
+      "--out_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/model.json"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02",
+    "label": "model_training",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/001_model_training.log",
+    "pid": 3156477,
+    "returncode": 0,
+    "wall_s": 0.6245646658353508
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/venvs/cook-reproduction-v1/bin/python",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/build_TSPLIB.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/route_data.json",
+      "--t_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/travel_times.json",
+      "--p_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/package_stop_order.json",
+      "--z_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/model.json",
+      "--br_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/training_routes.json",
+      "-noPrune",
+      "-noPruneFailed",
+      "-zoneNeighborTrans",
+      "-superNeighborTrans",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/author_path"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones",
+    "label": "Cook_public_zones_author_path_prepare",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/002_Cook_public_zones_author_path_prepare.log",
+    "pid": 3156513,
+    "returncode": 0,
+    "wall_s": 2.180506985867396
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/author_path/amz0000.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones",
+    "label": "Cook_public_zones_author_path_amz0000",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/003_Cook_public_zones_author_path_amz0000.log",
+    "pid": 3156578,
+    "returncode": 0,
+    "wall_s": 2.271973374998197
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/author_path/amz0001.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones",
+    "label": "Cook_public_zones_author_path_amz0001",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/004_Cook_public_zones_author_path_amz0001.log",
+    "pid": 3156710,
+    "returncode": 0,
+    "wall_s": 2.220741755096242
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/author_path/amz0002.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones",
+    "label": "Cook_public_zones_author_path_amz0002",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/005_Cook_public_zones_author_path_amz0002.log",
+    "pid": 3156751,
+    "returncode": 0,
+    "wall_s": 2.2201083060353994
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/author_path/amz0003.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones",
+    "label": "Cook_public_zones_author_path_amz0003",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/006_Cook_public_zones_author_path_amz0003.log",
+    "pid": 3156844,
+    "returncode": 0,
+    "wall_s": 2.2200190171133727
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/author_path/amz0004.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones",
+    "label": "Cook_public_zones_author_path_amz0004",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/007_Cook_public_zones_author_path_amz0004.log",
+    "pid": 3156874,
+    "returncode": 0,
+    "wall_s": 2.2270274269394577
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/author_path/amz0005.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones",
+    "label": "Cook_public_zones_author_path_amz0005",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/008_Cook_public_zones_author_path_amz0005.log",
+    "pid": 3156956,
+    "returncode": 0,
+    "wall_s": 2.221174180973321
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/author_path/amz0006.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones",
+    "label": "Cook_public_zones_author_path_amz0006",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/009_Cook_public_zones_author_path_amz0006.log",
+    "pid": 3156992,
+    "returncode": 0,
+    "wall_s": 2.2721200401429087
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/author_path/amz0007.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones",
+    "label": "Cook_public_zones_author_path_amz0007",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/010_Cook_public_zones_author_path_amz0007.log",
+    "pid": 3157108,
+    "returncode": 0,
+    "wall_s": 2.2237256090156734
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/venvs/cook-reproduction-v1/bin/python",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/build_TSPLIB.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/route_data.json",
+      "--t_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/travel_times.json",
+      "--p_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/package_stop_order.json",
+      "--z_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/model.json",
+      "--br_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/training_routes.json",
+      "-noPrune",
+      "-noPruneFailed",
+      "-zoneNeighborTrans",
+      "-superNeighborTrans",
+      "-superPred",
+      "-trans",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/author_precedence_transitive"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones",
+    "label": "Cook_public_zones_author_precedence_transitive_prepare",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/011_Cook_public_zones_author_precedence_transitive_prepare.log",
+    "pid": 3157137,
+    "returncode": 0,
+    "wall_s": 1.928995663067326
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/author_precedence_transitive/amz0000.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones",
+    "label": "Cook_public_zones_author_precedence_transitive_amz0000",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/012_Cook_public_zones_author_precedence_transitive_amz0000.log",
+    "pid": 3157204,
+    "returncode": 0,
+    "wall_s": 2.3757178720552474
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/author_precedence_transitive/amz0001.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones",
+    "label": "Cook_public_zones_author_precedence_transitive_amz0001",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/013_Cook_public_zones_author_precedence_transitive_amz0001.log",
+    "pid": 3157323,
+    "returncode": 0,
+    "wall_s": 2.473121351096779
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/author_precedence_transitive/amz0002.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones",
+    "label": "Cook_public_zones_author_precedence_transitive_amz0002",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/014_Cook_public_zones_author_precedence_transitive_amz0002.log",
+    "pid": 3157429,
+    "returncode": 0,
+    "wall_s": 2.2753185271285474
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/author_precedence_transitive/amz0003.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones",
+    "label": "Cook_public_zones_author_precedence_transitive_amz0003",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/015_Cook_public_zones_author_precedence_transitive_amz0003.log",
+    "pid": 3157467,
+    "returncode": 0,
+    "wall_s": 2.274996137013659
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/author_precedence_transitive/amz0004.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones",
+    "label": "Cook_public_zones_author_precedence_transitive_amz0004",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/016_Cook_public_zones_author_precedence_transitive_amz0004.log",
+    "pid": 3158392,
+    "returncode": 0,
+    "wall_s": 2.269650023896247
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/author_precedence_transitive/amz0005.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones",
+    "label": "Cook_public_zones_author_precedence_transitive_amz0005",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/017_Cook_public_zones_author_precedence_transitive_amz0005.log",
+    "pid": 3159611,
+    "returncode": 0,
+    "wall_s": 2.2247513059992343
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/author_precedence_transitive/amz0006.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones",
+    "label": "Cook_public_zones_author_precedence_transitive_amz0006",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/018_Cook_public_zones_author_precedence_transitive_amz0006.log",
+    "pid": 3159695,
+    "returncode": 0,
+    "wall_s": 2.324503321899101
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones/author_precedence_transitive/amz0007.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_public_zones",
+    "label": "Cook_public_zones_author_precedence_transitive_amz0007",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/019_Cook_public_zones_author_precedence_transitive_amz0007.log",
+    "pid": 3159730,
+    "returncode": 0,
+    "wall_s": 2.2294645770452917
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/venvs/cook-reproduction-v1/bin/python",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/build_TSPLIB.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/route_data.json",
+      "--t_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/travel_times.json",
+      "--p_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/package_stop_order.json",
+      "--z_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/model_no_station_history.json",
+      "--br_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/training_routes.json",
+      "-noPrune",
+      "-noPruneFailed",
+      "-zoneNeighborTrans",
+      "-superNeighborTrans",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/author_path"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history",
+    "label": "Cook_no_station_history_author_path_prepare",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/020_Cook_no_station_history_author_path_prepare.log",
+    "pid": 3159841,
+    "returncode": 0,
+    "wall_s": 1.8585685160942376
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/author_path/amz0000.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history",
+    "label": "Cook_no_station_history_author_path_amz0000",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/021_Cook_no_station_history_author_path_amz0000.log",
+    "pid": 3159888,
+    "returncode": 0,
+    "wall_s": 2.278058568947017
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/author_path/amz0001.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history",
+    "label": "Cook_no_station_history_author_path_amz0001",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/022_Cook_no_station_history_author_path_amz0001.log",
+    "pid": 3159972,
+    "returncode": 0,
+    "wall_s": 2.3265932640060782
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/author_path/amz0002.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history",
+    "label": "Cook_no_station_history_author_path_amz0002",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/023_Cook_no_station_history_author_path_amz0002.log",
+    "pid": 3160016,
+    "returncode": 0,
+    "wall_s": 2.281424838118255
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/author_path/amz0003.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history",
+    "label": "Cook_no_station_history_author_path_amz0003",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/024_Cook_no_station_history_author_path_amz0003.log",
+    "pid": 3160086,
+    "returncode": 0,
+    "wall_s": 2.2765838778577745
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/author_path/amz0004.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history",
+    "label": "Cook_no_station_history_author_path_amz0004",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/025_Cook_no_station_history_author_path_amz0004.log",
+    "pid": 3160141,
+    "returncode": 0,
+    "wall_s": 2.3284528111107647
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/author_path/amz0005.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history",
+    "label": "Cook_no_station_history_author_path_amz0005",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/026_Cook_no_station_history_author_path_amz0005.log",
+    "pid": 3160190,
+    "returncode": 0,
+    "wall_s": 2.2261018278077245
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/author_path/amz0006.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history",
+    "label": "Cook_no_station_history_author_path_amz0006",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/027_Cook_no_station_history_author_path_amz0006.log",
+    "pid": 3160289,
+    "returncode": 0,
+    "wall_s": 2.2283012771513313
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/author_path/amz0007.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history",
+    "label": "Cook_no_station_history_author_path_amz0007",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/028_Cook_no_station_history_author_path_amz0007.log",
+    "pid": 3160429,
+    "returncode": 0,
+    "wall_s": 2.2358941028360277
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/venvs/cook-reproduction-v1/bin/python",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/build_TSPLIB.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/route_data.json",
+      "--t_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/travel_times.json",
+      "--p_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/package_stop_order.json",
+      "--z_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/model_no_station_history.json",
+      "--br_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/training_routes.json",
+      "-noPrune",
+      "-noPruneFailed",
+      "-zoneNeighborTrans",
+      "-superNeighborTrans",
+      "-superPred",
+      "-trans",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/author_precedence_transitive"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history",
+    "label": "Cook_no_station_history_author_precedence_transitive_prepare",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/029_Cook_no_station_history_author_precedence_transitive_prepare.log",
+    "pid": 3160530,
+    "returncode": 0,
+    "wall_s": 0.9569151890464127
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/author_precedence_transitive/amz0000.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history",
+    "label": "Cook_no_station_history_author_precedence_transitive_amz0000",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/030_Cook_no_station_history_author_precedence_transitive_amz0000.log",
+    "pid": 3160559,
+    "returncode": 0,
+    "wall_s": 2.188052122015506
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/author_precedence_transitive/amz0001.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history",
+    "label": "Cook_no_station_history_author_precedence_transitive_amz0001",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/031_Cook_no_station_history_author_precedence_transitive_amz0001.log",
+    "pid": 3160652,
+    "returncode": 0,
+    "wall_s": 2.193798738066107
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/author_precedence_transitive/amz0002.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history",
+    "label": "Cook_no_station_history_author_precedence_transitive_amz0002",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/032_Cook_no_station_history_author_precedence_transitive_amz0002.log",
+    "pid": 3160692,
+    "returncode": 0,
+    "wall_s": 2.188936818158254
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/author_precedence_transitive/amz0003.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history",
+    "label": "Cook_no_station_history_author_precedence_transitive_amz0003",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/033_Cook_no_station_history_author_precedence_transitive_amz0003.log",
+    "pid": 3160733,
+    "returncode": 0,
+    "wall_s": 2.190853964071721
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/author_precedence_transitive/amz0004.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history",
+    "label": "Cook_no_station_history_author_precedence_transitive_amz0004",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/034_Cook_no_station_history_author_precedence_transitive_amz0004.log",
+    "pid": 3160809,
+    "returncode": 0,
+    "wall_s": 2.2382655709516257
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/author_precedence_transitive/amz0005.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history",
+    "label": "Cook_no_station_history_author_precedence_transitive_amz0005",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/035_Cook_no_station_history_author_precedence_transitive_amz0005.log",
+    "pid": 3160861,
+    "returncode": 0,
+    "wall_s": 2.1909788709599525
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/author_precedence_transitive/amz0006.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history",
+    "label": "Cook_no_station_history_author_precedence_transitive_amz0006",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/036_Cook_no_station_history_author_precedence_transitive_amz0006.log",
+    "pid": 3160946,
+    "returncode": 0,
+    "wall_s": 2.189061634009704
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history/author_precedence_transitive/amz0007.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_station_history",
+    "label": "Cook_no_station_history_author_precedence_transitive_amz0007",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/037_Cook_no_station_history_author_precedence_transitive_amz0007.log",
+    "pid": 3160984,
+    "returncode": 0,
+    "wall_s": 2.2447265251539648
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/venvs/cook-reproduction-v1/bin/python",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/build_TSPLIB.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/route_data.json",
+      "--t_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/travel_times.json",
+      "--p_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/package_stop_order.json",
+      "--z_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/model_no_station_history.json",
+      "--br_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/training_routes.json",
+      "-noPrune",
+      "-noPruneFailed",
+      "-zoneNeighborTrans",
+      "-superNeighborTrans",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/author_path"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones",
+    "label": "Cook_auto_zones_author_path_prepare",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/038_Cook_auto_zones_author_path_prepare.log",
+    "pid": 3161076,
+    "returncode": 0,
+    "wall_s": 1.5631325740832835
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/author_path/amz0000.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones",
+    "label": "Cook_auto_zones_author_path_amz0000",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/039_Cook_auto_zones_author_path_amz0000.log",
+    "pid": 3161123,
+    "returncode": 0,
+    "wall_s": 2.294890654971823
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/author_path/amz0001.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones",
+    "label": "Cook_auto_zones_author_path_amz0001",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/040_Cook_auto_zones_author_path_amz0001.log",
+    "pid": 3161205,
+    "returncode": 0,
+    "wall_s": 2.1915760468691587
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/author_path/amz0002.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones",
+    "label": "Cook_auto_zones_author_path_amz0002",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/041_Cook_auto_zones_author_path_amz0002.log",
+    "pid": 3161240,
+    "returncode": 0,
+    "wall_s": 2.211173975840211
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/author_path/amz0003.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones",
+    "label": "Cook_auto_zones_author_path_amz0003",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/042_Cook_auto_zones_author_path_amz0003.log",
+    "pid": 3161337,
+    "returncode": 0,
+    "wall_s": 2.1944541251286864
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/author_path/amz0004.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones",
+    "label": "Cook_auto_zones_author_path_amz0004",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/043_Cook_auto_zones_author_path_amz0004.log",
+    "pid": 3161421,
+    "returncode": 0,
+    "wall_s": 2.247101532993838
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/author_path/amz0005.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones",
+    "label": "Cook_auto_zones_author_path_amz0005",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/044_Cook_auto_zones_author_path_amz0005.log",
+    "pid": 3161540,
+    "returncode": 0,
+    "wall_s": 2.2132713270839304
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/author_path/amz0006.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones",
+    "label": "Cook_auto_zones_author_path_amz0006",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/045_Cook_auto_zones_author_path_amz0006.log",
+    "pid": 3161574,
+    "returncode": 0,
+    "wall_s": 2.2686672180425376
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/author_path/amz0007.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones",
+    "label": "Cook_auto_zones_author_path_amz0007",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/046_Cook_auto_zones_author_path_amz0007.log",
+    "pid": 3161642,
+    "returncode": 0,
+    "wall_s": 2.2243256920482963
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/venvs/cook-reproduction-v1/bin/python",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/build_TSPLIB.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/route_data.json",
+      "--t_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/travel_times.json",
+      "--p_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/package_stop_order.json",
+      "--z_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/model_no_station_history.json",
+      "--br_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/training_routes.json",
+      "-noPrune",
+      "-noPruneFailed",
+      "-zoneNeighborTrans",
+      "-superNeighborTrans",
+      "-superPred",
+      "-trans",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/author_precedence_transitive"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones",
+    "label": "Cook_auto_zones_author_precedence_transitive_prepare",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/047_Cook_auto_zones_author_precedence_transitive_prepare.log",
+    "pid": 3161692,
+    "returncode": 0,
+    "wall_s": 0.9124515680596232
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/author_precedence_transitive/amz0000.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones",
+    "label": "Cook_auto_zones_author_precedence_transitive_amz0000",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/048_Cook_auto_zones_author_precedence_transitive_amz0000.log",
+    "pid": 3161723,
+    "returncode": 0,
+    "wall_s": 2.247493756003678
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/author_precedence_transitive/amz0001.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones",
+    "label": "Cook_auto_zones_author_precedence_transitive_amz0001",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/049_Cook_auto_zones_author_precedence_transitive_amz0001.log",
+    "pid": 3161810,
+    "returncode": 0,
+    "wall_s": 2.2466997948940843
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/author_precedence_transitive/amz0002.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones",
+    "label": "Cook_auto_zones_author_precedence_transitive_amz0002",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/050_Cook_auto_zones_author_precedence_transitive_amz0002.log",
+    "pid": 3161846,
+    "returncode": 0,
+    "wall_s": 2.1908179339952767
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/author_precedence_transitive/amz0003.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones",
+    "label": "Cook_auto_zones_author_precedence_transitive_amz0003",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/051_Cook_auto_zones_author_precedence_transitive_amz0003.log",
+    "pid": 3161940,
+    "returncode": 0,
+    "wall_s": 2.1999099738895893
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/author_precedence_transitive/amz0004.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones",
+    "label": "Cook_auto_zones_author_precedence_transitive_amz0004",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/052_Cook_auto_zones_author_precedence_transitive_amz0004.log",
+    "pid": 3161974,
+    "returncode": 0,
+    "wall_s": 2.2481374139897525
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/author_precedence_transitive/amz0005.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones",
+    "label": "Cook_auto_zones_author_precedence_transitive_amz0005",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/053_Cook_auto_zones_author_precedence_transitive_amz0005.log",
+    "pid": 3162066,
+    "returncode": 0,
+    "wall_s": 2.2544124629348516
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/author_precedence_transitive/amz0006.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones",
+    "label": "Cook_auto_zones_author_precedence_transitive_amz0006",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/054_Cook_auto_zones_author_precedence_transitive_amz0006.log",
+    "pid": 3162140,
+    "returncode": 0,
+    "wall_s": 2.197946257889271
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones/author_precedence_transitive/amz0007.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_auto_zones",
+    "label": "Cook_auto_zones_author_precedence_transitive_amz0007",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/055_Cook_auto_zones_author_precedence_transitive_amz0007.log",
+    "pid": 3162239,
+    "returncode": 0,
+    "wall_s": 2.2100349320098758
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/venvs/cook-reproduction-v1/bin/python",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/build_TSPLIB.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/route_data.json",
+      "--t_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/travel_times.json",
+      "--p_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/package_stop_order.json",
+      "--z_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/model.json",
+      "--br_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/training_routes.json",
+      "-noPrune",
+      "-noPruneFailed",
+      "-zoneNeighborTrans",
+      "-superNeighborTrans",
+      "-noZone",
+      "-noZonePred",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/author_path"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones",
+    "label": "Cook_no_zones_author_path_prepare",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/056_Cook_no_zones_author_path_prepare.log",
+    "pid": 3162323,
+    "returncode": 0,
+    "wall_s": 1.3060691349674016
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/author_path/amz0000.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones",
+    "label": "Cook_no_zones_author_path_amz0000",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/057_Cook_no_zones_author_path_amz0000.log",
+    "pid": 3162357,
+    "returncode": 0,
+    "wall_s": 2.2374843729194254
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/author_path/amz0001.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones",
+    "label": "Cook_no_zones_author_path_amz0001",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/058_Cook_no_zones_author_path_amz0001.log",
+    "pid": 3162472,
+    "returncode": 0,
+    "wall_s": 2.289042803226039
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/author_path/amz0002.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones",
+    "label": "Cook_no_zones_author_path_amz0002",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/059_Cook_no_zones_author_path_amz0002.log",
+    "pid": 3162563,
+    "returncode": 0,
+    "wall_s": 2.187930733896792
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/author_path/amz0003.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones",
+    "label": "Cook_no_zones_author_path_amz0003",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/060_Cook_no_zones_author_path_amz0003.log",
+    "pid": 3162667,
+    "returncode": 0,
+    "wall_s": 2.19179520313628
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/author_path/amz0004.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones",
+    "label": "Cook_no_zones_author_path_amz0004",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/061_Cook_no_zones_author_path_amz0004.log",
+    "pid": 3162692,
+    "returncode": 0,
+    "wall_s": 2.194547203136608
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/author_path/amz0005.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones",
+    "label": "Cook_no_zones_author_path_amz0005",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/062_Cook_no_zones_author_path_amz0005.log",
+    "pid": 3162779,
+    "returncode": 0,
+    "wall_s": 2.2395164237823337
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/author_path/amz0006.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones",
+    "label": "Cook_no_zones_author_path_amz0006",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/063_Cook_no_zones_author_path_amz0006.log",
+    "pid": 3162819,
+    "returncode": 0,
+    "wall_s": 2.2425791160203516
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/author_path/amz0007.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones",
+    "label": "Cook_no_zones_author_path_amz0007",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/064_Cook_no_zones_author_path_amz0007.log",
+    "pid": 3162900,
+    "returncode": 0,
+    "wall_s": 2.191983026918024
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/venvs/cook-reproduction-v1/bin/python",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/build_TSPLIB.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/route_data.json",
+      "--t_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/travel_times.json",
+      "--p_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/package_stop_order.json",
+      "--z_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/model.json",
+      "--br_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/training_routes.json",
+      "-noPrune",
+      "-noPruneFailed",
+      "-zoneNeighborTrans",
+      "-superNeighborTrans",
+      "-superPred",
+      "-trans",
+      "-noZone",
+      "-noZonePred",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/author_precedence_transitive"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones",
+    "label": "Cook_no_zones_author_precedence_transitive_prepare",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/065_Cook_no_zones_author_precedence_transitive_prepare.log",
+    "pid": 3162939,
+    "returncode": 0,
+    "wall_s": 1.3140229969285429
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/author_precedence_transitive/amz0000.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones",
+    "label": "Cook_no_zones_author_precedence_transitive_amz0000",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/066_Cook_no_zones_author_precedence_transitive_amz0000.log",
+    "pid": 3162980,
+    "returncode": 0,
+    "wall_s": 2.2712164469994605
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/author_precedence_transitive/amz0001.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones",
+    "label": "Cook_no_zones_author_precedence_transitive_amz0001",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/067_Cook_no_zones_author_precedence_transitive_amz0001.log",
+    "pid": 3163096,
+    "returncode": 0,
+    "wall_s": 2.3120145809371024
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/author_precedence_transitive/amz0002.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones",
+    "label": "Cook_no_zones_author_precedence_transitive_amz0002",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/068_Cook_no_zones_author_precedence_transitive_amz0002.log",
+    "pid": 3163125,
+    "returncode": 0,
+    "wall_s": 2.2420428399927914
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/author_precedence_transitive/amz0003.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones",
+    "label": "Cook_no_zones_author_precedence_transitive_amz0003",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/069_Cook_no_zones_author_precedence_transitive_amz0003.log",
+    "pid": 3163216,
+    "returncode": 0,
+    "wall_s": 2.1937908849213272
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/author_precedence_transitive/amz0004.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones",
+    "label": "Cook_no_zones_author_precedence_transitive_amz0004",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/070_Cook_no_zones_author_precedence_transitive_amz0004.log",
+    "pid": 3163251,
+    "returncode": 0,
+    "wall_s": 2.241154338931665
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/author_precedence_transitive/amz0005.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones",
+    "label": "Cook_no_zones_author_precedence_transitive_amz0005",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/071_Cook_no_zones_author_precedence_transitive_amz0005.log",
+    "pid": 3163344,
+    "returncode": 0,
+    "wall_s": 2.243884128984064
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/author_precedence_transitive/amz0006.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones",
+    "label": "Cook_no_zones_author_precedence_transitive_amz0006",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/072_Cook_no_zones_author_precedence_transitive_amz0006.log",
+    "pid": 3163381,
+    "returncode": 0,
+    "wall_s": 2.2433821628801525
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones/author_precedence_transitive/amz0007.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/Cook_no_zones",
+    "label": "Cook_no_zones_author_precedence_transitive_amz0007",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/073_Cook_no_zones_author_precedence_transitive_amz0007.log",
+    "pid": 3163490,
+    "returncode": 0,
+    "wall_s": 2.2439894860144705
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/venvs/cook-reproduction-v1/bin/python",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/build_TSPLIB.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_same_station_future/route_data.json",
+      "--t_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_same_station_future/travel_times.json",
+      "--p_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_same_station_future/package_stop_order.json",
+      "--z_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/model.json",
+      "--br_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/training_routes.json",
+      "-noPrune",
+      "-noPruneFailed",
+      "-zoneNeighborTrans",
+      "-superNeighborTrans",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_same_station_future/author_path"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_same_station_future",
+    "label": "Cook_public_zones_author_path_prepare",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/074_Cook_public_zones_author_path_prepare.log",
+    "pid": 3163575,
+    "returncode": 0,
+    "wall_s": 0.9030279680155218
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_same_station_future/author_path/amz0000.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_same_station_future",
+    "label": "Cook_public_zones_author_path_amz0000",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/075_Cook_public_zones_author_path_amz0000.log",
+    "pid": 3163620,
+    "returncode": 0,
+    "wall_s": 2.2482478090096265
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/venvs/cook-reproduction-v1/bin/python",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/build_TSPLIB.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_same_station_future/route_data.json",
+      "--t_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_same_station_future/travel_times.json",
+      "--p_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_same_station_future/package_stop_order.json",
+      "--z_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/model.json",
+      "--br_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/training_routes.json",
+      "-noPrune",
+      "-noPruneFailed",
+      "-zoneNeighborTrans",
+      "-superNeighborTrans",
+      "-superPred",
+      "-trans",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_same_station_future/author_precedence_transitive"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_same_station_future",
+    "label": "Cook_public_zones_author_precedence_transitive_prepare",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/076_Cook_public_zones_author_precedence_transitive_prepare.log",
+    "pid": 3163709,
+    "returncode": 0,
+    "wall_s": 0.6028640700969845
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_same_station_future/author_precedence_transitive/amz0000.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_same_station_future",
+    "label": "Cook_public_zones_author_precedence_transitive_amz0000",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/077_Cook_public_zones_author_precedence_transitive_amz0000.log",
+    "pid": 3163735,
+    "returncode": 0,
+    "wall_s": 2.296869889833033
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/venvs/cook-reproduction-v1/bin/python",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/build_TSPLIB.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_unknown_station/route_data.json",
+      "--t_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_unknown_station/travel_times.json",
+      "--p_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_unknown_station/package_stop_order.json",
+      "--z_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/model.json",
+      "--br_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/training_routes.json",
+      "-noPrune",
+      "-noPruneFailed",
+      "-zoneNeighborTrans",
+      "-superNeighborTrans",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_unknown_station/author_path"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_unknown_station",
+    "label": "Cook_public_zones_author_path_prepare",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/078_Cook_public_zones_author_path_prepare.log",
+    "pid": 3163774,
+    "returncode": 0,
+    "wall_s": 0.8575048751663417
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_unknown_station/author_path/amz0000.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_unknown_station",
+    "label": "Cook_public_zones_author_path_amz0000",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/079_Cook_public_zones_author_path_amz0000.log",
+    "pid": 3163845,
+    "returncode": 0,
+    "wall_s": 2.193303276086226
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/venvs/cook-reproduction-v1/bin/python",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/build_TSPLIB.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_unknown_station/route_data.json",
+      "--t_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_unknown_station/travel_times.json",
+      "--p_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_unknown_station/package_stop_order.json",
+      "--z_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/model.json",
+      "--br_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/training_routes.json",
+      "-noPrune",
+      "-noPruneFailed",
+      "-zoneNeighborTrans",
+      "-superNeighborTrans",
+      "-superPred",
+      "-trans",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_unknown_station/author_precedence_transitive"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_unknown_station",
+    "label": "Cook_public_zones_author_precedence_transitive_prepare",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/080_Cook_public_zones_author_precedence_transitive_prepare.log",
+    "pid": 3163877,
+    "returncode": 0,
+    "wall_s": 0.6066391658969223
+  },
+  {
+    "command": [
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/LKH-AMZ/LKH",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_unknown_station/author_precedence_transitive/amz0000.par"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run02/repeat_unknown_station",
+    "label": "Cook_public_zones_author_precedence_transitive_amz0000",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 15,
+    "log": "logs/081_Cook_public_zones_author_precedence_transitive_amz0000.log",
+    "pid": 3163908,
+    "returncode": 0,
+    "wall_s": 2.2477273030672222
+  }
+]

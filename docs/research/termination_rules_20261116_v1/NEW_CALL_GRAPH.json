@@ -1,0 +1,28 @@
+{
+  "entry": "scripts/run_termination_rules.py -> termination_v1.runner",
+  "reused": [
+    "comparison_v1.contract: input_inventory/digest/read/fingerprint/check_freeze/check_profile/TIME_KIND",
+    "comparison_v1.execution: physical_checks/auxiliary only",
+    "comparison_v1.telemetry: tree_sample only",
+    "dwt.parallel: cpu_profile/branch_seeds only",
+    "dwt.worker: dump serialization only",
+    "pipeline.classical: directed_cw only",
+    "pipeline.completion: assemble/greedy_assignment/route_distance/route_duration only",
+    "pipeline.hybrid: EventDayMaster constructor/arrays + column_generation; lp/ip overridden",
+    "baseline_a.rule_v1.generate without deadline",
+    "column_generation.aoa.PricingAOA circuit/state/decode; run overridden"
+  ],
+  "not_called": [
+    "comparison_v1.execution.execute/supervise/cleanup",
+    "comparison_v1.worker.execute",
+    "dwt.experiment.execute",
+    "dwt.parallel.execute/_branch_entry",
+    "dwt.worker.execute",
+    "dwt.methods.generate/hybrid",
+    "dwt.budget.Budget",
+    "pipeline.classical.routing_pool",
+    "pipeline.completion.complete_routes",
+    "pipeline.hybrid.EventDayMaster.lp/ip",
+    "pipeline.roads/route_pairs"
+  ]
+}

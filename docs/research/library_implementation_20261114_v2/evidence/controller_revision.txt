@@ -1,0 +1,13 @@
+A main_N6_1101_legacy_qamomile_quri attempt exceeded the initial outer120s watchdog.
+parallel_setup.json recorded59.598s of preparation; parent and branches had begun
+input/solver work, but no timing_finished/result was saved. No owned worker PID
+remained when inspected. Exact host/runtime stall cause is unconfirmed.
+Preserve the incomplete trial under failed_trials/ and its execution/log entry.
+The outer watchdog is increased to300s to accommodate the existing240s dependency
+setup allowance plus the unchanged20s planning budget and exports. The T_program
+boundary, core allocation, all algorithms/seeds and solver deadlines are unchanged.
+Fresh job process groups are used so a future external watchdog kills all owned
+workers as a group. Existing successful trials are reused; no result is overwritten.
+Freeze files preceding this controller-only revision are retained; new revision
+hashes are stored separately. This is a completion/cleanup correction, not an
+algorithm or library-performance change. Report the incomplete attempt separately.

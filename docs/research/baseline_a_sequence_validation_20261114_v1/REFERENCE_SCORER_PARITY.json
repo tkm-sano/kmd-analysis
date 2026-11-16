@@ -1,0 +1,80 @@
+{
+  "status": "PASS",
+  "official_source_sha256": "4ab51620391b3b5d131720518d2ce4c346f0eedb3d68afcf1ae9174b9e6b1540",
+  "checks": [
+    {
+      "split": "pilot",
+      "route_id": "RouteID_bcc07fea-86d2-41e4-9a58-cfc78956dcc7",
+      "method": "NN_time",
+      "reference": 0.07044596528524706,
+      "calculated": 0.07044596528524706,
+      "absolute_error": 0.0,
+      "passed": true
+    },
+    {
+      "split": "pilot",
+      "route_id": "RouteID_bcc07fea-86d2-41e4-9a58-cfc78956dcc7",
+      "method": "NN_geodesic",
+      "reference": 0.04271275374874883,
+      "calculated": 0.04271275374874883,
+      "absolute_error": 0.0,
+      "passed": true
+    },
+    {
+      "split": "pilot",
+      "route_id": "RouteID_d1a8c3dd-fa67-455c-a68d-af2fd6aa5d91",
+      "method": "NN_time",
+      "reference": 0.17453288163882902,
+      "calculated": 0.17453288163882902,
+      "absolute_error": 0.0,
+      "passed": true
+    },
+    {
+      "split": "pilot",
+      "route_id": "RouteID_d1a8c3dd-fa67-455c-a68d-af2fd6aa5d91",
+      "method": "NN_geodesic",
+      "reference": 0.17316639935539146,
+      "calculated": 0.17316639935539146,
+      "absolute_error": 0.0,
+      "passed": true
+    },
+    {
+      "split": "eval",
+      "route_id": "RouteID_155cc872-8581-4883-a0bf-e71d0814d355",
+      "method": "NN_time",
+      "reference": 0.061408283082975725,
+      "calculated": 0.061408283082975725,
+      "absolute_error": 0.0,
+      "passed": true
+    },
+    {
+      "split": "eval",
+      "route_id": "RouteID_155cc872-8581-4883-a0bf-e71d0814d355",
+      "method": "NN_geodesic",
+      "reference": 0.06974742071759568,
+      "calculated": 0.06974742071759567,
+      "absolute_error": 1.3877787807814457e-17,
+      "passed": true
+    },
+    {
+      "split": "eval",
+      "route_id": "RouteID_f3993196-5432-4643-9532-23db30a24f91",
+      "method": "NN_time",
+      "reference": 0.1371232571420809,
+      "calculated": 0.1371232571420809,
+      "absolute_error": 0.0,
+      "passed": true
+    },
+    {
+      "split": "eval",
+      "route_id": "RouteID_f3993196-5432-4643-9532-23db30a24f91",
+      "method": "NN_geodesic",
+      "reference": 0.15450514777405314,
+      "calculated": 0.15450514777405314,
+      "absolute_error": 0.0,
+      "passed": true
+    }
+  ],
+  "elapsed_s": 13.305670743109658,
+  "note": "comparison uses deep-copy to avoid official normalizer mutation"
+}

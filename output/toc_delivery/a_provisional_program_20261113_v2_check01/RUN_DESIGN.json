@@ -1,0 +1,91 @@
+{
+  "registered_at": "2026-11-13T09:41:14.814337+00:00",
+  "config": {
+    "version": "A-provisional-rule-program-v2-20261113",
+    "representativeness": "NOT_VALIDATED",
+    "rule": "A2",
+    "offset_deg": 0,
+    "completion": "FCFS_only",
+    "legacy_rule_sha256": "24060d8be817cf8e09c096d1e1717d35c0e3e666870b34bfc8c2f70995d27bf1",
+    "common_conditions_sha256": "bbb15417a4eee5072f8118056c90ab422d792b4cedc35a6a06bf6bc0497fe8d2",
+    "input_root": "output/toc_delivery/ad_pipeline_20261112_route_v2/roads/inputs",
+    "scenarios": {
+      "S1": {
+        "files": {
+          "input.json": "29c2d6e416ae53b858db669bfa474d6e82d1018fe1bd5e4bd8638508f1b38b21",
+          "od/distance_m.npy": "55916fecf4c375ce588dee885abffc484fb294e905577386dc21102ce9af4c94",
+          "od/duration_s.npy": "5834e98c884f9a9b4e2017482d3394bdd5cb482f11546ad84adc7bfb50b217aa",
+          "od/manifest.json": "c508951f20035a93dce8eadc7965442fb60dfeff0cea6ed4d61962ba0b137c30",
+          "od/reachable.npy": "4261218ad086f530f9846ebb81907d38776f397a31dd3d8c60da2a0fc8cbe22d"
+        },
+        "counts": [
+          1000,
+          10,
+          2
+        ]
+      },
+      "S2": {
+        "files": {
+          "input.json": "1eabfcf46843a18d60e3b8e247d4d009cd6140df81d3a4154e9da830775c2013",
+          "od/distance_m.npy": "d8d8beb9e84f749c032f3358bbfc5c792f5a339589b4174b3e984198177ea72a",
+          "od/duration_s.npy": "ec44e5a124d644e3eb8c045db200484d744ea62c433fe5662679574b68037c6d",
+          "od/manifest.json": "3de697376510522dab96a7dad8db6bb7e273e5c0b10eba62f5789d4fc0f1db77",
+          "od/reachable.npy": "d0dcceed299ccf90f178613fcdfd7826680d8d697e7cc8d2ca77f959a6bdfe29"
+        },
+        "counts": [
+          2000,
+          20,
+          4
+        ]
+      },
+      "S3": {
+        "files": {
+          "input.json": "d5ee004609850c8fac6da3860986c349ee5c25e4fe6e1e4b1f0645b378e9c844",
+          "od/distance_m.npy": "008346e7cf4ce9c8e28e57a95248e259c23a2cdae207911940a5be6654072c9d",
+          "od/duration_s.npy": "9f0a262a5a33dedcce7859b009d5d50902d81b1cb2017af9133c88aabd771be0",
+          "od/manifest.json": "57a0e40037cb15baf1da2e284d8399f89f0ebe20ff506c58ee20a1391dbca2f5",
+          "od/reachable.npy": "5319e9145200b7da4817ab5d1043d1ea609a8e54540a99470596076779591755"
+        },
+        "counts": [
+          4000,
+          40,
+          8
+        ]
+      }
+    },
+    "timing_check": {
+      "purpose": "bounded_functional_and_repeatability_check_NOT_main_experiment",
+      "repetitions": 2,
+      "representative": "median_descriptive_only_NOT_frozen_T_reference",
+      "program_limit_s": 180,
+      "process_timeout_s": 300,
+      "cache_state": "uncontrolled_OS_page_cache_no_cold_cache_claim",
+      "execution": "sequential_fresh_process"
+    },
+    "resource": {
+      "available_physical_cores": 4,
+      "A_processes": 1,
+      "native_threads": 1
+    },
+    "calibration": {
+      "D": null,
+      "W": null,
+      "T_human": null,
+      "independent_quantitative_validation": false
+    }
+  },
+  "scenarios": [
+    "S1",
+    "S2",
+    "S3"
+  ],
+  "allocated_cpu_ids": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "source_selection": "provisional; NOT blinded; no result-dependent selection",
+  "python": "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+  "main_experiment": false
+}

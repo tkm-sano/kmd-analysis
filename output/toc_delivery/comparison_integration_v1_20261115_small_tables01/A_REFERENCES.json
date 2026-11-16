@@ -1,0 +1,47 @@
+{
+  "metadata": {
+    "contract_id": "whole-method-A_rule_v1-20261115-comparison-v1",
+    "phase": "contract_check",
+    "units": {
+      "D": "km",
+      "W": "min",
+      "T_program": "s"
+    },
+    "independent_sample_count": null,
+    "p_values": null,
+    "confidence_intervals": null
+  },
+  "groups": {
+    "small_contract_check_A": {
+      "group_id": "small_contract_check_A",
+      "purpose": "contract_check",
+      "run_ids": [
+        "small_A_r1"
+      ],
+      "required_count": 1,
+      "established": true,
+      "reason": "DEFINED",
+      "D_A": 2.947,
+      "W_A": 90.0,
+      "T_A_ref": 3.1144854018930346,
+      "identity": {
+        "contract_id": "whole-method-A_rule_v1-20261115-comparison-v1",
+        "phase": "contract_check",
+        "scenario_id": "comparison-contract-artificial-directed-12-v1",
+        "scale": "ART_N12",
+        "input_hash": "d5cc88bcf354a7c945075629970484dbb62020fccf0c094fac4f1f924a72371a",
+        "OD_hash": "99527788c0e47a087921e72eddcc1dd915af518857f15145e983029ee0b15fc8",
+        "physical_hash": "bbb15417a4eee5072f8118056c90ab422d792b4cedc35a6a06bf6bc0497fe8d2",
+        "resource_contract_hash": "a05480aba5c7765e841744e6d4d2e742868bcdb6b4a48360ee8ccfcc0b5146e8",
+        "T_kind": "comparison_parent_wall_including_process_setup_v1",
+        "budget_wall_s": 90,
+        "case_parameters_hash": "aa86ea1e736e00070d5fc09ae4a3daecea5115d8c4a77866ff9e1190f3fa034d",
+        "A_frozen_hash": "b9d2c973cba432f5bff00b9315e7a1c6baf4e0fc7d91edb5e925f2e07cb73164"
+      },
+      "plan_semantic_hash": "7018764f601f588b4cedb817d2b7f4ca307442a71a8122215839c91528253742",
+      "T_rule": "median of every prespecified member; no success-only reduction",
+      "formal_reference": false
+    }
+  },
+  "formal_T_A_ref_registered": false
+}

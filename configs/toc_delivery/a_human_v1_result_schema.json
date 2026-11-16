@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "human-planned-A-human-v1-20261116/result",
+  "title": "Human-authored assignment/order and human-inclusive elapsed time",
+  "type": "object",
+  "required": ["contract_id", "implementation_id", "method_version", "method", "operator_id", "staff_count", "run_id", "synthetic", "input_hash", "OD_hash", "physical_hash", "source_hashes", "T", "T_operational", "T_human", "T_program", "T_other", "T_attempt", "T_kind", "T_reason", "operational_adoptable", "human_authorship_attested", "plan_validated", "D", "W", "W_first", "W_reload", "J", "J_reason"],
+  "properties": {
+    "contract_id": {"const": "human-planned-A-human-v1-20261116"},
+    "implementation_id": {"const": "human_assignment_order_capacity_split_FCFS_v1"},
+    "method_version": {"const": "A_human_v1-20261116"},
+    "method": {"const": "A"},
+    "operator_id": {"type": "string", "minLength": 1},
+    "staff_count": {"const": 1},
+    "synthetic": {"type": "boolean"},
+    "T": {"type": ["number", "null"], "minimum": 0, "description": "Human planning + tool + review elapsed seconds; null without eligible measurement"},
+    "T_operational": {"type": ["number", "null"], "minimum": 0},
+    "T_human": {"type": ["number", "null"], "minimum": 0, "description": "Declared planning/review stage elapsed; not independently observed attention"},
+    "T_program": {"type": "number", "minimum": 0, "description": "Sum of tool stages, including failed attempts; distinct from legacy per-run T_program"},
+    "T_other": {"type": "number", "minimum": 0},
+    "T_attempt": {"type": "number", "minimum": 0},
+    "T_kind": {"const": "human_planning_tool_review_elapsed_v1"},
+    "T_reason": {"enum": ["MEASURED_DECLARED_WORKFLOW", "ABANDONED", "INVALID_PLAN", "HUMAN_AUTHORSHIP_NOT_ATTESTED", "MISSING_HUMAN_PLANNING_STAGE", "MISSING_HUMAN_REVIEW_STAGE", "SYNTHETIC_AUTOMATION_NOT_HUMAN_MEASUREMENT"]},
+    "operational_adoptable": {"type": "boolean"},
+    "human_authorship_attested": {"type": "boolean"},
+    "plan_validated": {"type": "boolean"},
+    "D": {"type": ["number", "null"], "minimum": 0, "description": "km"},
+    "W": {"type": ["number", "null"], "minimum": 0, "description": "sum of loading wait, minutes"},
+    "W_first": {"type": ["number", "null"], "minimum": 0},
+    "W_reload": {"type": ["number", "null"], "minimum": 0},
+    "J": {"type": "null"},
+    "J_reason": {"const": "HUMAN_INCLUSIVE_REFERENCE_NOT_ESTABLISHED"}
+  },
+  "allOf": [
+    {"if": {"properties": {"synthetic": {"const": true}}}, "then": {"properties": {"T": {"type": "null"}, "T_operational": {"type": "null"}, "T_human": {"type": "null"}, "operational_adoptable": {"const": false}}}},
+    {"if": {"properties": {"operational_adoptable": {"const": true}}}, "then": {"properties": {"synthetic": {"const": false}, "human_authorship_attested": {"const": true}, "plan_validated": {"const": true}, "T": {"type": "number"}, "T_operational": {"type": "number"}, "T_human": {"type": "number"}, "T_reason": {"const": "MEASURED_DECLARED_WORKFLOW"}}}}
+  ]
+}

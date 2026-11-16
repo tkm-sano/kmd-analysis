@@ -1,0 +1,540 @@
+{
+  "pilot": {
+    "attempted_rows": 26,
+    "failed_rows": 0,
+    "methods": {
+      "Actual": {
+        "rows": 2,
+        "unique_routes": 2,
+        "amazon_score": {
+          "n": 2,
+          "mean": 0.0,
+          "median": 0.0,
+          "p10": 0.0,
+          "p90": 0.0
+        },
+        "sequence_deviation": {
+          "n": 2,
+          "mean": 0.0,
+          "median": 0.0,
+          "p10": 0.0,
+          "p90": 0.0
+        },
+        "directed_edge_agreement": {
+          "n": 2,
+          "mean": 1.0,
+          "median": 1.0,
+          "p10": 1.0,
+          "p90": 1.0
+        },
+        "zone_reentries": {
+          "n": 2,
+          "mean": 1.5,
+          "median": 1.5,
+          "p10": 0.30000000000000004,
+          "p90": 2.7
+        },
+        "zone_reentries_per_dropoff": {
+          "n": 2,
+          "mean": 0.00980392156862745,
+          "median": 0.00980392156862745,
+          "p10": 0.00196078431372549,
+          "p90": 0.01764705882352941
+        },
+        "matrix_travel_time_ratio_to_actual": {
+          "n": 2,
+          "mean": 1.0,
+          "median": 1.0,
+          "p10": 1.0,
+          "p90": 1.0
+        },
+        "normalized_Kendall_inversions": {
+          "n": 2,
+          "mean": 0.0,
+          "median": 0.0,
+          "p10": 0.0,
+          "p90": 0.0
+        }
+      },
+      "NN_geodesic": {
+        "rows": 2,
+        "unique_routes": 2,
+        "amazon_score": {
+          "n": 2,
+          "mean": 0.10793957655207015,
+          "median": 0.10793957655207015,
+          "p10": 0.055758118309413095,
+          "p90": 0.1601210347947272
+        },
+        "sequence_deviation": {
+          "n": 2,
+          "mean": 0.0779758209854246,
+          "median": 0.0779758209854246,
+          "p10": 0.05738434155085408,
+          "p90": 0.09856730041999515
+        },
+        "directed_edge_agreement": {
+          "n": 2,
+          "mean": 0.2512987012987013,
+          "median": 0.2512987012987013,
+          "p10": 0.24454545454545454,
+          "p90": 0.25805194805194803
+        },
+        "zone_reentries": {
+          "n": 2,
+          "mean": 25.0,
+          "median": 25.0,
+          "p10": 22.6,
+          "p90": 27.4
+        },
+        "zone_reentries_per_dropoff": {
+          "n": 2,
+          "mean": 0.1706399586213382,
+          "median": 0.1706399586213382,
+          "p10": 0.16074669676023887,
+          "p90": 0.18053322048243756
+        },
+        "matrix_travel_time_ratio_to_actual": {
+          "n": 2,
+          "mean": 1.1289267330021717,
+          "median": 1.1289267330021717,
+          "p10": 1.1215539352738644,
+          "p90": 1.1362995307304793
+        },
+        "normalized_Kendall_inversions": {
+          "n": 2,
+          "mean": 0.2594825472237636,
+          "median": 0.2594825472237636,
+          "p10": 0.1982003359487669,
+          "p90": 0.3207647584987603
+        }
+      },
+      "NN_time": {
+        "rows": 2,
+        "unique_routes": 2,
+        "amazon_score": {
+          "n": 2,
+          "mean": 0.12248942346203803,
+          "median": 0.12248942346203803,
+          "p10": 0.08085465692060526,
+          "p90": 0.16412419000347084
+        },
+        "sequence_deviation": {
+          "n": 2,
+          "mean": 0.08939432112944723,
+          "median": 0.08939432112944723,
+          "p10": 0.0606689799593896,
+          "p90": 0.11811966229950485
+        },
+        "directed_edge_agreement": {
+          "n": 2,
+          "mean": 0.30746753246753245,
+          "median": 0.30746753246753245,
+          "p10": 0.28487012987012983,
+          "p90": 0.33006493506493506
+        },
+        "zone_reentries": {
+          "n": 2,
+          "mean": 22.5,
+          "median": 22.5,
+          "p10": 14.9,
+          "p90": 30.1
+        },
+        "zone_reentries_per_dropoff": {
+          "n": 2,
+          "mean": 0.15133775332675037,
+          "median": 0.15133775332675037,
+          "p10": 0.10508769455024217,
+          "p90": 0.19758781210325857
+        },
+        "matrix_travel_time_ratio_to_actual": {
+          "n": 2,
+          "mean": 1.0014467602809074,
+          "median": 1.0014467602809074,
+          "p10": 0.9744257332042487,
+          "p90": 1.028467787357566
+        },
+        "normalized_Kendall_inversions": {
+          "n": 2,
+          "mean": 0.3793732277605026,
+          "median": 0.3793732277605026,
+          "p10": 0.29025373051942077,
+          "p90": 0.4684927250015844
+        }
+      },
+      "Random": {
+        "rows": 20,
+        "unique_routes": 2,
+        "amazon_score": {
+          "n": 20,
+          "mean": 1.0220601375135283,
+          "median": 1.025900905486699,
+          "p10": 0.8562978816972688,
+          "p90": 1.2038052805805075
+        },
+        "sequence_deviation": {
+          "n": 20,
+          "mean": 0.6395694885739006,
+          "median": 0.6394083414114045,
+          "p10": 0.5925721934230782,
+          "p90": 0.687740565388583
+        },
+        "directed_edge_agreement": {
+          "n": 20,
+          "mean": 0.008246753246753249,
+          "median": 0.007142857142857143,
+          "p10": 0.0,
+          "p90": 0.014285714285714285
+        },
+        "zone_reentries": {
+          "n": 20,
+          "mean": 115.2,
+          "median": 114.0,
+          "p10": 109.9,
+          "p90": 120.0
+        },
+        "zone_reentries_per_dropoff": {
+          "n": 20,
+          "mean": 0.7897728875722951,
+          "median": 0.7843137254901961,
+          "p10": 0.7686274509803922,
+          "p90": 0.8201438848920863
+        },
+        "matrix_travel_time_ratio_to_actual": {
+          "n": 20,
+          "mean": 4.123196638177312,
+          "median": 4.100727661690043,
+          "p10": 3.9217366725663276,
+          "p90": 4.357193078207268
+        },
+        "normalized_Kendall_inversions": {
+          "n": 20,
+          "mean": 0.5028397970814357,
+          "median": 0.5076634344698154,
+          "p10": 0.4773735810113519,
+          "p90": 0.5306367908768961
+        }
+      }
+    },
+    "contrasts": {
+      "NN_time": {
+        "clusters": 2,
+        "routes": 2,
+        "mean_cluster_effect": -0.8995707140514906,
+        "bootstrap_95_interval": [
+          -0.9779121779935205,
+          -0.8212292501094608
+        ],
+        "better_than_random_on_sample": true,
+        "equivalent_to_drivers": null,
+        "equivalence_margin": null,
+        "primary": true
+      },
+      "NN_geodesic": {
+        "clusters": 2,
+        "routes": 2,
+        "mean_cluster_effect": -0.9141205609614584,
+        "bootstrap_95_interval": [
+          -0.979278660276958,
+          -0.848962461645959
+        ],
+        "better_than_random_on_sample": true,
+        "equivalent_to_drivers": null,
+        "equivalence_margin": null,
+        "primary": false
+      }
+    },
+    "attempts_by_method": {
+      "NN_time": {
+        "attempted": 2,
+        "failed": 0
+      },
+      "Actual": {
+        "attempted": 2,
+        "failed": 0
+      },
+      "Random": {
+        "attempted": 20,
+        "failed": 0
+      },
+      "NN_geodesic": {
+        "attempted": 2,
+        "failed": 0
+      }
+    },
+    "full_A_representativeness": "NOT_ESTABLISHED",
+    "original_A2_distance_validation": "NOT_TESTED",
+    "D_km": null,
+    "W_min": null,
+    "T_A_human_reference": null
+  },
+  "eval": {
+    "attempted_rows": 390,
+    "failed_rows": 0,
+    "methods": {
+      "Actual": {
+        "rows": 30,
+        "unique_routes": 30,
+        "amazon_score": {
+          "n": 30,
+          "mean": 0.0,
+          "median": 0.0,
+          "p10": 0.0,
+          "p90": 0.0
+        },
+        "sequence_deviation": {
+          "n": 30,
+          "mean": 0.0,
+          "median": 0.0,
+          "p10": 0.0,
+          "p90": 0.0
+        },
+        "directed_edge_agreement": {
+          "n": 30,
+          "mean": 1.0,
+          "median": 1.0,
+          "p10": 1.0,
+          "p90": 1.0
+        },
+        "zone_reentries": {
+          "n": 30,
+          "mean": 0.8,
+          "median": 0.0,
+          "p10": 0.0,
+          "p90": 2.0
+        },
+        "zone_reentries_per_dropoff": {
+          "n": 30,
+          "mean": 0.006085826795904553,
+          "median": 0.0,
+          "p10": 0.0,
+          "p90": 0.014456426697755766
+        },
+        "matrix_travel_time_ratio_to_actual": {
+          "n": 30,
+          "mean": 1.0,
+          "median": 1.0,
+          "p10": 1.0,
+          "p90": 1.0
+        },
+        "normalized_Kendall_inversions": {
+          "n": 30,
+          "mean": 0.0,
+          "median": 0.0,
+          "p10": 0.0,
+          "p90": 0.0
+        }
+      },
+      "NN_geodesic": {
+        "rows": 30,
+        "unique_routes": 30,
+        "amazon_score": {
+          "n": 30,
+          "mean": 0.11672564860395815,
+          "median": 0.10791030090546563,
+          "p10": 0.05908460878382315,
+          "p90": 0.18710074569377974
+        },
+        "sequence_deviation": {
+          "n": 30,
+          "mean": 0.09970464327982458,
+          "median": 0.08535390397367586,
+          "p10": 0.059887638493238735,
+          "p90": 0.1604834133003147
+        },
+        "directed_edge_agreement": {
+          "n": 30,
+          "mean": 0.2469012984621971,
+          "median": 0.24503714529289977,
+          "p10": 0.18436578171091444,
+          "p90": 0.3057927427263812
+        },
+        "zone_reentries": {
+          "n": 30,
+          "mean": 23.0,
+          "median": 22.5,
+          "p10": 14.9,
+          "p90": 29.1
+        },
+        "zone_reentries_per_dropoff": {
+          "n": 30,
+          "mean": 0.1769518648394276,
+          "median": 0.16962955077709174,
+          "p10": 0.11338241856314145,
+          "p90": 0.25
+        },
+        "matrix_travel_time_ratio_to_actual": {
+          "n": 30,
+          "mean": 1.2051938815908652,
+          "median": 1.1783944376633295,
+          "p10": 1.0557506141784918,
+          "p90": 1.3630310221813444
+        },
+        "normalized_Kendall_inversions": {
+          "n": 30,
+          "mean": 0.49166602725103464,
+          "median": 0.5469534327971821,
+          "p10": 0.19657310120919294,
+          "p90": 0.730570530098832
+        }
+      },
+      "NN_time": {
+        "rows": 30,
+        "unique_routes": 30,
+        "amazon_score": {
+          "n": 30,
+          "mean": 0.11405200645575046,
+          "median": 0.11259046283032335,
+          "p10": 0.042397140913052876,
+          "p90": 0.1627464696825123
+        },
+        "sequence_deviation": {
+          "n": 30,
+          "mean": 0.09859229660707677,
+          "median": 0.08586893483215305,
+          "p10": 0.05422405271788387,
+          "p90": 0.171995487519278
+        },
+        "directed_edge_agreement": {
+          "n": 30,
+          "mean": 0.307148657090303,
+          "median": 0.3033165104542177,
+          "p10": 0.21640973088576013,
+          "p90": 0.37824074074074077
+        },
+        "zone_reentries": {
+          "n": 30,
+          "mean": 21.666666666666668,
+          "median": 20.5,
+          "p10": 12.9,
+          "p90": 34.0
+        },
+        "zone_reentries_per_dropoff": {
+          "n": 30,
+          "mean": 0.16596241649418478,
+          "median": 0.1469559851912793,
+          "p10": 0.09582697201017812,
+          "p90": 0.26444392359076524
+        },
+        "matrix_travel_time_ratio_to_actual": {
+          "n": 30,
+          "mean": 1.020437806990584,
+          "median": 1.0174015762115196,
+          "p10": 0.9538752117635574,
+          "p90": 1.0808524665716843
+        },
+        "normalized_Kendall_inversions": {
+          "n": 30,
+          "mean": 0.4708596921550303,
+          "median": 0.4905980478085392,
+          "p10": 0.23507735653463943,
+          "p90": 0.6715052048562173
+        }
+      },
+      "Random": {
+        "rows": 300,
+        "unique_routes": 30,
+        "amazon_score": {
+          "n": 300,
+          "mean": 0.872052477550526,
+          "median": 0.8133874357038113,
+          "p10": 0.44662914860816805,
+          "p90": 1.3158769942891464
+        },
+        "sequence_deviation": {
+          "n": 300,
+          "mean": 0.6553170222499503,
+          "median": 0.6555205159949498,
+          "p10": 0.6082270417525454,
+          "p90": 0.7037001009300555
+        },
+        "directed_edge_agreement": {
+          "n": 300,
+          "mean": 0.007945955381248001,
+          "median": 0.006756756756756757,
+          "p10": 0.0,
+          "p90": 0.018691588785046728
+        },
+        "zone_reentries": {
+          "n": 300,
+          "mean": 106.38666666666667,
+          "median": 109.0,
+          "p10": 66.30000000000001,
+          "p90": 147.30000000000007
+        },
+        "zone_reentries_per_dropoff": {
+          "n": 300,
+          "mean": 0.7833011147116431,
+          "median": 0.7954747116237799,
+          "p10": 0.7083333333333334,
+          "p90": 0.8437905844155844
+        },
+        "matrix_travel_time_ratio_to_actual": {
+          "n": 300,
+          "mean": 3.893509033546058,
+          "median": 3.8114828297252323,
+          "p10": 2.7805666697357596,
+          "p90": 5.1191189128940975
+        },
+        "normalized_Kendall_inversions": {
+          "n": 300,
+          "mean": 0.49998320240274313,
+          "median": 0.5024230506891749,
+          "p10": 0.4622873365972127,
+          "p90": 0.5384351949420442
+        }
+      }
+    },
+    "contrasts": {
+      "NN_time": {
+        "clusters": 19,
+        "routes": 30,
+        "mean_cluster_effect": -0.7596657213443254,
+        "bootstrap_95_interval": [
+          -0.8771969048940859,
+          -0.6475853839177578
+        ],
+        "better_than_random_on_sample": true,
+        "equivalent_to_drivers": null,
+        "equivalence_margin": null,
+        "primary": true
+      },
+      "NN_geodesic": {
+        "clusters": 19,
+        "routes": 30,
+        "mean_cluster_effect": -0.7579699552957236,
+        "bootstrap_95_interval": [
+          -0.8675009885873011,
+          -0.651185212786994
+        ],
+        "better_than_random_on_sample": true,
+        "equivalent_to_drivers": null,
+        "equivalence_margin": null,
+        "primary": false
+      }
+    },
+    "attempts_by_method": {
+      "NN_time": {
+        "attempted": 30,
+        "failed": 0
+      },
+      "Actual": {
+        "attempted": 30,
+        "failed": 0
+      },
+      "Random": {
+        "attempted": 300,
+        "failed": 0
+      },
+      "NN_geodesic": {
+        "attempted": 30,
+        "failed": 0
+      }
+    },
+    "full_A_representativeness": "NOT_ESTABLISHED",
+    "original_A2_distance_validation": "NOT_TESTED",
+    "D_km": null,
+    "W_min": null,
+    "T_A_human_reference": null
+  }
+}

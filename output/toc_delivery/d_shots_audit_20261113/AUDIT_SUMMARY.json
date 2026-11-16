@@ -1,0 +1,125 @@
+{
+  "S1_main": {
+    "condition": "D_primaryD_epsW_1",
+    "primary": "D",
+    "other_limit": 422.45,
+    "input_hash": "fb5164ccbacb6159475c0d941cf7adab056447dd58dd455627dffa11e4077880",
+    "OD_hash": "9b90a13dc3bfd1a5e50afb3c6eaf5070a043b79695da8b4643a2eed5332b0280",
+    "AOA_calls": 34,
+    "actual_Qiskit_state_preparations": 34,
+    "tensor_objective_evaluations": 1084,
+    "training_simulated_shots": 1084000,
+    "final_sampled_shots": 139264,
+    "total_measurement_equivalent_draws": 1223264,
+    "hardware_measurements": 0,
+    "raw_decode_valid_shots": 1063,
+    "proxy_negative_reduced_cost_shots": 97,
+    "quantum_complete_macro_routes": 70,
+    "finite_macro_route_domain": 102,
+    "new_quantum_routes": 58,
+    "classical_seed_routes": 17,
+    "seed_routes_not_sampled_by_quantum": 5,
+    "union_route_pool": 75,
+    "base_day_catalogue": 1242,
+    "hybrid_day_catalogue": 13218,
+    "base_zero_RC_added": 1133,
+    "hybrid_zero_RC_added": 1128,
+    "D_km": 444.1768,
+    "W_min": 285.75,
+    "T_program_s": 82.38590661413036,
+    "training_wall_s": 0.5929192325565964,
+    "qiskit_final_decode_wall_s": 0.6026329486630857,
+    "AOA_total_wall_s": 1.2117763068526983,
+    "selected_new_AOA_routes": 0,
+    "final_D_improvement_from_AOA_candidate_pool_km": 5.684341886080802e-14,
+    "final_W_improvement_from_AOA_candidate_pool_min": 0.0
+  },
+  "kernel_count": 34,
+  "logical_depth_range": [
+    33,
+    33
+  ],
+  "qubit_range": [
+    12,
+    12
+  ],
+  "nfev_range": [
+    27,
+    39
+  ],
+  "complete_macro_shots": 884,
+  "new_complete_macro_shots": 772,
+  "shorter_parent_shots": 0,
+  "shorter_parent_macro_routes_in_exact_domain": 0,
+  "equal_parent_macro_routes_in_exact_domain": 17,
+  "minimum_positive_parent_distance_delta_km": 2.047199999999993,
+  "minimum_original_route_duration_s": 7118,
+  "minimum_all_macro_route_duration_s": 7118,
+  "exact_domain_count": 102,
+  "observed_complete_macro_routes": 70,
+  "minimum_macro_candidate_probability": 3.685053970123992e-10,
+  "max_macro_candidate_probability": 0.0071931072324424965,
+  "all_saved_counts_reproduced": true,
+  "analytic_projections": [
+    {
+      "shots_per_kernel": 1024,
+      "kernels": 34,
+      "final_draws_one_bank": 34816,
+      "expected_unique_complete_macro_routes": 55.75542245684412,
+      "expected_missing_macro_routes": 46.24457754315588,
+      "data_kind": "exact_ideal_fixed_parameter_prediction_NOT_shots_experiment"
+    },
+    {
+      "shots_per_kernel": 4096,
+      "kernels": 34,
+      "final_draws_one_bank": 139264,
+      "expected_unique_complete_macro_routes": 69.60753545217116,
+      "expected_missing_macro_routes": 32.39246454782884,
+      "data_kind": "exact_ideal_fixed_parameter_prediction_NOT_shots_experiment"
+    },
+    {
+      "shots_per_kernel": 8192,
+      "kernels": 34,
+      "final_draws_one_bank": 278528,
+      "expected_unique_complete_macro_routes": 72.08280499886126,
+      "expected_missing_macro_routes": 29.917195001138737,
+      "data_kind": "exact_ideal_fixed_parameter_prediction_NOT_shots_experiment"
+    },
+    {
+      "shots_per_kernel": 10000,
+      "kernels": 34,
+      "final_draws_one_bank": 340000,
+      "expected_unique_complete_macro_routes": 72.42106246474795,
+      "expected_missing_macro_routes": 29.578937535252052,
+      "data_kind": "exact_ideal_fixed_parameter_prediction_NOT_shots_experiment"
+    },
+    {
+      "shots_per_kernel": 16384,
+      "kernels": 34,
+      "final_draws_one_bank": 557056,
+      "expected_unique_complete_macro_routes": 73.0037460104304,
+      "expected_missing_macro_routes": 28.996253989569595,
+      "data_kind": "exact_ideal_fixed_parameter_prediction_NOT_shots_experiment"
+    },
+    {
+      "shots_per_kernel": 32768,
+      "kernels": 34,
+      "final_draws_one_bank": 1114112,
+      "expected_unique_complete_macro_routes": 73.97389613164677,
+      "expected_missing_macro_routes": 28.026103868353232,
+      "data_kind": "exact_ideal_fixed_parameter_prediction_NOT_shots_experiment"
+    }
+  ],
+  "new_D_W_T_sensitivity_experiment_executed": false,
+  "environment": {
+    "python": "3.12.11 | packaged by Anaconda, Inc. | (main, Jun  5 2025, 13:09:17) [GCC 11.2.0]",
+    "executable": "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+    "numpy": "2.3.1",
+    "scipy": "1.16.0",
+    "qiskit": "2.1.1",
+    "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+    "generator": "NumPy PCG64 / SeedSequence; Qiskit Statevector local RNG"
+  },
+  "audit_wall_s": 1.8602140618022531,
+  "audit_max_rss_KiB": 212252
+}

@@ -1,0 +1,72 @@
+{
+  "model": [
+    {
+      "source": "depot",
+      "target": "customer_a"
+    },
+    {
+      "source": "customer_a",
+      "target": "customer_b"
+    },
+    {
+      "source": "customer_b",
+      "target": "customer_c"
+    },
+    {
+      "source": "customer_c",
+      "target": "depot"
+    }
+  ],
+  "pipeline": [
+    {
+      "source": "input",
+      "target": "classical"
+    },
+    {
+      "source": "input",
+      "target": "quantum"
+    },
+    {
+      "source": "classical",
+      "target": "compare"
+    },
+    {
+      "source": "quantum",
+      "target": "compare"
+    },
+    {
+      "source": "compare",
+      "target": "decision"
+    },
+    {
+      "source": "decision",
+      "target": "adopt_candidate"
+    },
+    {
+      "source": "decision",
+      "target": "fallback"
+    },
+    {
+      "source": "adopt_candidate",
+      "target": "outcome"
+    },
+    {
+      "source": "fallback",
+      "target": "outcome"
+    }
+  ],
+  "multi": [
+    {
+      "source": "multi_0",
+      "target": "multi_1"
+    },
+    {
+      "source": "multi_1",
+      "target": "multi_2"
+    },
+    {
+      "source": "multi_2",
+      "target": "multi_3"
+    }
+  ]
+}

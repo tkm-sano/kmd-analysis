@@ -1,0 +1,94 @@
+{
+  "files": {
+    "03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/S1.csv": "e3c2040766636b2cbd6de670f93a5356ba893dfbb8417bf1c136a5f785172398",
+    "03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/S2.csv": "7c8fcecabf34545d3021d53cf774e99df9d33967fcffdf324cd07f53e95a3cb2",
+    "03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/S3.csv": "b8b5b041e724c8337d697a538e9340e45c9cac8e10a55bb088321011913d253d",
+    "03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/REGIONAL_ALLOCATION.csv": "317299aab117a0de99e0fc6127a1c060d115e15ff7acabd209ac9e4bad46b881",
+    "03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/VALIDATION.json": "9215b84dc696c56e1789f2600044649a4bd996a7b4eecc730a0a671fc574a931",
+    "03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/READING_CONTRACT.md": "b1cddc9395ab717a2197f7d0f39b8a716f8064321a7f66d94320fc101ba115a8",
+    "03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/MANIFEST.json": "9e1b0ba8afed05f9fbae6ff725489a3e0d602bf8b1e9f19e5b9e8a6a8eada776",
+    "03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/SHA256SUMS": "b1460b059cbe986d989406903d2802e51b64cf86217b2207d207a14fc07387e4",
+    "scripts/build_toc_demand_map.py": "c18982babf5a92df2bf929bcf49a3b6747cec74c1fa945f4592d69174844e0fd",
+    "output/toc_delivery/demand_map/v1/toc_demand_S1_S3_map.html": "0cc8cfd01f5796a39149eb81bb7c8df0fca2b5e5faf2058c77c2058a05dd22e1",
+    "/home/takuma/kmd-analysis-preservation-20261014-173544-a64e484c/relocated/01_research_design/scenario_evaluation/sumo_facility_routing_baseline_20260930/DEPOT_ROUTING_DEFINITION.json": "8ff3b791ae1028e645938a8259d359f85242a29b51050b667f62dfd1ede3d079",
+    "/home/takuma/kmd-analysis-preservation-20261014-173544-a64e484c/relocated/01_research_design/scenario_evaluation/sumo_facility_routing_baseline_20260930/SUMO_FACILITY_MAPPING_FREEZE_MANIFEST.json": "868d3bfdaade90e53e248489299be3bb6e5c98060cb2f204cb1502858757dab8"
+  },
+  "depot_sources": {
+    "DEPOT_ROUTING_DEFINITION.json": {
+      "path": "/home/takuma/kmd-analysis-preservation-20261014-173544-a64e484c/relocated/01_research_design/scenario_evaluation/sumo_facility_routing_baseline_20260930/DEPOT_ROUTING_DEFINITION.json",
+      "sha256": "8ff3b791ae1028e645938a8259d359f85242a29b51050b667f62dfd1ede3d079",
+      "record": {
+        "source": "reproducibility/outputs/traffic_simulation/demand/evrp_r09_depot/20260909_r09_depot_fixture_n10_v18_geometry_reaccepted/depot_definition.csv",
+        "source_sha256": "fd38e10752236652b825e2e25665b4189bcf4cb57fd92918a315fd3b41018822",
+        "depot_id": "DEP_006",
+        "longitude": "139.745306",
+        "latitude": "35.586971",
+        "edge_id": "617631294",
+        "lane_id": "617631294_0",
+        "lane_basis": "ONLY_DELIVERY_ALLOWED_LANE_ON_FROZEN_DEPOT_EDGE",
+        "departure_position": 12.507432581420328,
+        "arrival_position": 12.507432581420328,
+        "position_basis": "EXISTING_EDGE_OFFSET_USED_FOR_BOTH_DIRECTIONS"
+      }
+    },
+    "SUMO_FACILITY_MAPPING_FREEZE_MANIFEST.json": {
+      "path": "/home/takuma/kmd-analysis-preservation-20261014-173544-a64e484c/relocated/01_research_design/scenario_evaluation/sumo_facility_routing_baseline_20260930/SUMO_FACILITY_MAPPING_FREEZE_MANIFEST.json",
+      "sha256": "868d3bfdaade90e53e248489299be3bb6e5c98060cb2f204cb1502858757dab8",
+      "record": {
+        "facilities": 47,
+        "access_points": 94,
+        "source_mapping_file": "/home/takuma/kmd-analysis/01_research_design/scenario_evaluation/visual_access_evidence_resolution/sumo_service_point_mapping_20260930/FACILITY_SUMO_ACCESS_MAPPING_V2.csv",
+        "source_mapping_sha256": "01eced00d8837bfab8b13dce51375900b7c4d14c7d74931748f434dc6df1fa0c",
+        "model_service_point_file": "/home/takuma/kmd-analysis/01_research_design/scenario_evaluation/visual_access_evidence_resolution/sumo_service_point_mapping_20260930/FACILITY_MODEL_SERVICE_POINTS.csv",
+        "model_service_point_sha256": "2f92fad7a1c99b549c9bc22f0a4fe0f3882f9d7575597899d8925ab09672e752",
+        "sumo_network_file": "reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_3_geometry_reacceptance/three_tier.net.xml",
+        "sumo_network_sha256": "460554c7716fe5e3e1410bbee790e69745a2c423146bac88e51e3a2b95f051b2",
+        "network_version": "three_tier phase13_20260903 run_3_geometry_reacceptance SUMO 1.24.0",
+        "vType": "delivery",
+        "vClass": "delivery",
+        "vehicle_class_status": "VEHICLE_CLASS_SUPPORTED",
+        "mapping_status_counts": {
+          "ASSUMED_MODEL_MAPPING": 91,
+          "MODEL_MAPPING_CONFIRMED": 3
+        },
+        "execution_timestamp": "2026-09-30T09:26:55.141932+00:00",
+        "git_commit": "1c92f5157e2c6ab0979a39040300c7dab06f6c68",
+        "router": "/home/takuma/kmd-analysis/.local/sumo-1.24.0/bin/duarouter",
+        "router_sha256": "4cd36df8ebf9454e3ad62a268025b5d1bc75f8bf414d5d5ea992898cc861218e",
+        "router_version": "Eclipse SUMO duarouter Version 1.24.0\n Build features: Linux-6.8.0-136-generic x86_64 GNU 13.3.0 Release FMI FMT Intl\n Copyright (C) 2001-2025 German Aerospace Center (DLR) and others; https://sumo.dlr.de\n\nEclipse SUMO duarouter Version 1.24.0 is part of SUMO.\nThis program and the accompanying materials\nare made available under the terms of the Eclipse Public License v2.0\nwhich accompanies this distribution, and is available at\nhttp://www.eclipse.org/legal/epl-v20.html\nThis program may also be made available under the following Secondary\nLicenses when the conditions for such availability set forth in the Eclipse\nPublic License 2.0 are satisfied: GNU General Public License, version 2\nor later which is available at\nhttps://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html\nSPDX-License-Identifier: EPL-2.0 OR GPL-2.0-or-later\n",
+        "existing_pipeline_reference": "05_src/traffic_simulation/evrp_r11_charging/investigate_ota_primary_station.py",
+        "protected_hashes": {
+          "/home/takuma/kmd-analysis/01_research_design/scenario_evaluation/visual_access_evidence_resolution/sumo_service_point_mapping_20260930/FACILITY_SUMO_ACCESS_MAPPING_V2.csv": "01eced00d8837bfab8b13dce51375900b7c4d14c7d74931748f434dc6df1fa0c",
+          "/home/takuma/kmd-analysis/01_research_design/scenario_evaluation/visual_access_evidence_resolution/sumo_service_point_mapping_20260930/FACILITY_MODEL_SERVICE_POINTS.csv": "2f92fad7a1c99b549c9bc22f0a4fe0f3882f9d7575597899d8925ab09672e752",
+          "reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_3_geometry_reacceptance/three_tier.net.xml": "460554c7716fe5e3e1410bbee790e69745a2c423146bac88e51e3a2b95f051b2",
+          "reproducibility/outputs/traffic_simulation/demand/evrp_r09_depot/20260909_r09_depot_fixture_n10_v18_geometry_reaccepted/depot_definition.csv": "fd38e10752236652b825e2e25665b4189bcf4cb57fd92918a315fd3b41018822",
+          "/home/takuma/kmd-analysis/01_research_design/scenario_evaluation/visual_access_evidence_resolution/STATION_VISUAL_REVIEW.csv": "5c51069e1d791ba2d2e54e0f38856f4935f31d9e37b5ca2192f54a048887002b",
+          "01_research_design/scenario_evaluation/charging_station_completeness/dmm_manual_app_observation/resolved_stations_v5.csv": "b22dd394041e5d74466b8caec1ac68c4802851b2cd9d71fd438e3f3353fb1f22"
+        },
+        "depot": {
+          "depot_id": "DEP_006",
+          "hub_id": "P31_13_0424",
+          "facility_name": "京浜トラックターミナル",
+          "longitude": "139.745306",
+          "latitude": "35.586971",
+          "source": "MLIT P31 logistics facility proxy snapshot",
+          "classification": "PROXY",
+          "proxy_or_observed": "proxy",
+          "mapped_sumo_edge_id": "617631294",
+          "edge_offset_m": "12.507432581420328",
+          "edge_length_m": "38.346827",
+          "mapping_distance_m": "1.4616751655855091",
+          "vehicle_class": "delivery",
+          "vehicle_access": "accepted SUMO lane permission includes delivery",
+          "from_node": "2440398112",
+          "to_node": "5838326499",
+          "network_hash": "460554c7716fe5e3e1410bbee790e69745a2c423146bac88e51e3a2b95f051b2",
+          "network_acceptance_hash": "078bc16ccef865ba18e3f6c8010c7929b3b9e77f3740ee992a62de15c716cbc4",
+          "selection_rule": "priority rank 1; truck terminal/parcel operator terminal; Ota-ku proxy; not observed operator depot"
+        },
+        "depot_source": "reproducibility/outputs/traffic_simulation/demand/evrp_r09_depot/20260909_r09_depot_fixture_n10_v18_geometry_reaccepted/depot_definition.csv"
+      }
+    }
+  },
+  "git_status_sha256": "56a6331bec52eccca77df0ce0c39ef8a84b86971a7dedec42d8bd4e7a57ebc2c"
+}

@@ -1,0 +1,11 @@
+﻿数値,定義,出典,算出,前提,限界
+460入力：78×5＋70,配送入力の数。入力1つは拠点・配送先・固定有向OD時間,Step5/data/B_INPUT_CONDITIONS_460.csv,n=3/4/5/25/100各78、125のみ70を数えた,単一拠点・1巡回、顧客時間窓なし,実物流母集団からの独立確率標本でない
+216荷物相当・102秒/先・9時間,需要上限、作業時間、帰庫上限,B_INPUT_CONDITIONS_460.csv; THESIS_FULL_TEXT.md§3.5,capacity_PE=216、service=102、horizon=32400秒を照合,出発0、各先1回訪問・帰庫,顧客の実契約期限ではなく、PEを貨物kgへ換算していない
+"36,800保存候補",各測定で8192試行中から取得した最良候補,IMPROVED_EQUAL_WORSENED.csv; Step5§3.4,460入力×8設定×10測定,同じ学習状態からの10測定,"36,800独立学習ではない"
+図2の18平均±SD,古典比較解を分母とする相対総移動時間差,SCALE_METHOD_STATISTICS.csv; INPUT_UNIT_STATISTICS.csv,各入力の10測定平均→規模/方式別平均と入力間SD,各方式と規模を分離、正=悪化,信頼区間・最適値に対するgap・規模だけの因果効果ではない
+改善0／一致28200／悪化8600,保存候補と古典比較解の目的値の大小,IMPROVED_EQUAL_WORSENED.csv all_plans,厳密有理数目的値の分類を合計,同一の入力・目的関数,統計的同等性や一般的な改善確率0を意味しない
+135／41／238／46,全順列内改善参照の確証／条件付き／古典=参照／未証明,FULL_SUPPORT_EXISTENCE_BY_INPUT.csv,A_full_support_statusとreference_classで分類,強い証拠135と保存MIP41を分離,未証明46を不存在にしない
+20kWh,モデルのgross設計電力量,最新材料報告FINAL_REPORT_JA.mdとRUN_CONFIG.json,入力E=20000Wh固定,走行stockの研究仮定usable18kWhとは別,対象完成パックで実測した容量でない
+2.368±1.140／2.432±1.167Wh/kg,1000kg右微分の軌跡間平均±標本SD,DC_MASS_KERNEL_SUMMARY.csvとINDEPENDENT.csv,各抵抗設定460保存軌跡のdE/dmを集計,材料入力なし、同一速度・平坦・回生/補機なし・積載0・η=.9,平均値1本で全軌跡を代表せず、独立実走行やCIでない
+1000〜1250kg,材料入力なしのDC核の検証走行質量区間,DC_MASS_KERNEL_INDEPENDENT.csv,正枝の区分線形モデルで微分符号を検算した保存記録,質量以外の条件固定,全車種・全運行条件へ一般化しない
+ΔM=b−δ、δ=b,同一会計の既知差から会計外追加差を引く軽量化量と消失条件,T08_T09_COMPARABILITY.md; BOUNDARY_SURFACES.csv,M基準−M変更＝既知差−未知差、単位kg,比較する電力量・部材会計・基準を一致させる,数学的条件であり完成電池の性能適格性を証明しない

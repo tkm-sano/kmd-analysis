@@ -1,0 +1,393 @@
+{
+  "schema_version": "1.0",
+  "decision_version": "Sagawa-manual-A-20261112-v1.0",
+  "checked_on": "2026-11-12",
+  "A_definition": "佐川急便のLoogia導入前の人手による配送計画",
+  "latest_instruction": "manual_before_only",
+  "outbound_contact_executed": false,
+  "nonpublic_data_acquired": false,
+  "large_scale_experiment_executed": false,
+  "alternative_baseline_adopted": false,
+  "current_A_performance": {
+    "D_km": null,
+    "W_min": null,
+    "T_s": null
+  },
+  "A_numeric_performance_judgment": "HOLD",
+  "A_definition_judgment": "GO",
+  "A_qualitative_reference_judgment": "CONDITIONAL GO",
+  "same_condition_A_to_D_judgment": "HOLD",
+  "target_conditions": {
+    "id": "AD-common-20261111-v1.1",
+    "config": "configs/toc_delivery/common_conditions_v1_1.json",
+    "sha256": "bbb15417a4eee5072f8118056c90ab422d792b4cedc35a6a06bf6bc0497fe8d2"
+  },
+  "records": [
+    {
+      "id": "LOOGIA202008_D_担当",
+      "metric": "D",
+      "driver_group": "担当",
+      "cohort_id": "Sagawa_Loogia_field_202008",
+      "operator": "佐川急便",
+      "planning_method": "manual_before_Loogia",
+      "before_absolute": null,
+      "after_absolute": null,
+      "unit": "km",
+      "normalized_before": null,
+      "normalized_after": null,
+      "improvement_percent": null,
+      "adopted_as_A_performance": false,
+      "judgment": "HOLD",
+      "access_status": "UNVERIFIED",
+      "unavailable_not_proven": true,
+      "reason": "差分表のみ。改善前の距離・訪問順・全車両ログが未取得。",
+      "source_ids": [
+        "OPTIMIND_RELEASE",
+        "OPTIMIND_CHART",
+        "PRTIMES_RELEASE",
+        "PRTIMES_CHART"
+      ],
+      "locator": "これまでの取組実績1・検証内容及び条件・検証結果",
+      "urls": [
+        "https://www.optimind.tech/news/ルート最適化システム「loogia」を佐川急便で導入を/",
+        "https://www.optimind.tech/wp-content/uploads/cms/png2.jpg"
+      ],
+      "value_kind": "missing_target_value"
+    },
+    {
+      "id": "LOOGIA202008_D_代走",
+      "metric": "D",
+      "driver_group": "代走",
+      "cohort_id": "Sagawa_Loogia_field_202008",
+      "operator": "佐川急便",
+      "planning_method": "manual_before_Loogia",
+      "before_absolute": null,
+      "after_absolute": null,
+      "unit": "km",
+      "normalized_before": null,
+      "normalized_after": null,
+      "improvement_percent": null,
+      "adopted_as_A_performance": false,
+      "judgment": "HOLD",
+      "access_status": "UNVERIFIED",
+      "unavailable_not_proven": true,
+      "reason": "差分表のみ。改善前の距離・訪問順・全車両ログが未取得。",
+      "source_ids": [
+        "OPTIMIND_RELEASE",
+        "OPTIMIND_CHART",
+        "PRTIMES_RELEASE",
+        "PRTIMES_CHART"
+      ],
+      "locator": "これまでの取組実績1・検証内容及び条件・検証結果",
+      "urls": [
+        "https://www.optimind.tech/news/ルート最適化システム「loogia」を佐川急便で導入を/",
+        "https://www.optimind.tech/wp-content/uploads/cms/png2.jpg"
+      ],
+      "value_kind": "missing_target_value"
+    },
+    {
+      "id": "LOOGIA202008_D_新人・応援",
+      "metric": "D",
+      "driver_group": "新人・応援",
+      "cohort_id": "Sagawa_Loogia_field_202008",
+      "operator": "佐川急便",
+      "planning_method": "manual_before_Loogia",
+      "before_absolute": null,
+      "after_absolute": null,
+      "unit": "km",
+      "normalized_before": null,
+      "normalized_after": null,
+      "improvement_percent": null,
+      "adopted_as_A_performance": false,
+      "judgment": "HOLD",
+      "access_status": "UNVERIFIED",
+      "unavailable_not_proven": true,
+      "reason": "差分表のみ。改善前の距離・訪問順・全車両ログが未取得。",
+      "source_ids": [
+        "OPTIMIND_RELEASE",
+        "OPTIMIND_CHART",
+        "PRTIMES_RELEASE",
+        "PRTIMES_CHART"
+      ],
+      "locator": "これまでの取組実績1・検証内容及び条件・検証結果",
+      "urls": [
+        "https://www.optimind.tech/news/ルート最適化システム「loogia」を佐川急便で導入を/",
+        "https://www.optimind.tech/wp-content/uploads/cms/png2.jpg"
+      ],
+      "value_kind": "missing_target_value"
+    },
+    {
+      "id": "LOOGIA202008_W_未報告",
+      "metric": "W",
+      "driver_group": "未報告",
+      "cohort_id": "Sagawa_Loogia_field_202008",
+      "operator": "佐川急便",
+      "planning_method": "manual_before_Loogia",
+      "before_absolute": null,
+      "after_absolute": null,
+      "unit": "min",
+      "normalized_before": null,
+      "normalized_after": null,
+      "improvement_percent": null,
+      "adopted_as_A_performance": false,
+      "judgment": "HOLD",
+      "access_status": "UNVERIFIED",
+      "unavailable_not_proven": true,
+      "reason": "検証項目に含まれず、積込ready/start/バース記録が未取得。",
+      "source_ids": [
+        "OPTIMIND_RELEASE",
+        "OPTIMIND_CHART",
+        "PRTIMES_RELEASE",
+        "PRTIMES_CHART"
+      ],
+      "locator": "これまでの取組実績1・検証内容及び条件・検証結果",
+      "urls": [
+        "https://www.optimind.tech/news/ルート最適化システム「loogia」を佐川急便で導入を/",
+        "https://www.optimind.tech/wp-content/uploads/cms/png2.jpg"
+      ],
+      "value_kind": "missing_target_value"
+    },
+    {
+      "id": "LOOGIA202008_T_担当",
+      "metric": "T",
+      "driver_group": "担当",
+      "cohort_id": "Sagawa_Loogia_field_202008",
+      "operator": "佐川急便",
+      "planning_method": "manual_before_Loogia",
+      "before_absolute": null,
+      "after_absolute": null,
+      "unit": "s",
+      "normalized_before": null,
+      "normalized_after": null,
+      "improvement_percent": null,
+      "adopted_as_A_performance": false,
+      "judgment": "HOLD",
+      "access_status": "UNVERIFIED",
+      "unavailable_not_proven": true,
+      "reason": "短縮量のみ。改善前のルート組み開始/終了と共通T境界が未取得。",
+      "source_ids": [
+        "OPTIMIND_RELEASE",
+        "OPTIMIND_CHART",
+        "PRTIMES_RELEASE",
+        "PRTIMES_CHART"
+      ],
+      "locator": "これまでの取組実績1・検証内容及び条件・検証結果",
+      "urls": [
+        "https://www.optimind.tech/news/ルート最適化システム「loogia」を佐川急便で導入を/",
+        "https://www.optimind.tech/wp-content/uploads/cms/png2.jpg"
+      ],
+      "value_kind": "missing_target_value"
+    },
+    {
+      "id": "LOOGIA202008_T_代走",
+      "metric": "T",
+      "driver_group": "代走",
+      "cohort_id": "Sagawa_Loogia_field_202008",
+      "operator": "佐川急便",
+      "planning_method": "manual_before_Loogia",
+      "before_absolute": null,
+      "after_absolute": null,
+      "unit": "s",
+      "normalized_before": null,
+      "normalized_after": null,
+      "improvement_percent": null,
+      "adopted_as_A_performance": false,
+      "judgment": "HOLD",
+      "access_status": "UNVERIFIED",
+      "unavailable_not_proven": true,
+      "reason": "短縮量のみ。改善前のルート組み開始/終了と共通T境界が未取得。",
+      "source_ids": [
+        "OPTIMIND_RELEASE",
+        "OPTIMIND_CHART",
+        "PRTIMES_RELEASE",
+        "PRTIMES_CHART"
+      ],
+      "locator": "これまでの取組実績1・検証内容及び条件・検証結果",
+      "urls": [
+        "https://www.optimind.tech/news/ルート最適化システム「loogia」を佐川急便で導入を/",
+        "https://www.optimind.tech/wp-content/uploads/cms/png2.jpg"
+      ],
+      "value_kind": "missing_target_value"
+    },
+    {
+      "id": "LOOGIA202008_T_新人・応援",
+      "metric": "T",
+      "driver_group": "新人・応援",
+      "cohort_id": "Sagawa_Loogia_field_202008",
+      "operator": "佐川急便",
+      "planning_method": "manual_before_Loogia",
+      "before_absolute": null,
+      "after_absolute": null,
+      "unit": "s",
+      "normalized_before": null,
+      "normalized_after": null,
+      "improvement_percent": null,
+      "adopted_as_A_performance": false,
+      "judgment": "HOLD",
+      "access_status": "UNVERIFIED",
+      "unavailable_not_proven": true,
+      "reason": "短縮量のみ。改善前のルート組み開始/終了と共通T境界が未取得。",
+      "source_ids": [
+        "OPTIMIND_RELEASE",
+        "OPTIMIND_CHART",
+        "PRTIMES_RELEASE",
+        "PRTIMES_CHART"
+      ],
+      "locator": "これまでの取組実績1・検証内容及び条件・検証結果",
+      "urls": [
+        "https://www.optimind.tech/news/ルート最適化システム「loogia」を佐川急便で導入を/",
+        "https://www.optimind.tech/wp-content/uploads/cms/png2.jpg"
+      ],
+      "value_kind": "missing_target_value"
+    }
+  ],
+  "cohort": {
+    "id": "Sagawa_Loogia_field_202008",
+    "month": "2020-08",
+    "trial_days_reported": 14,
+    "parcels_reported": 80,
+    "unique_stops": null,
+    "parcels_per_day_confirmed": false,
+    "vehicle_count": null,
+    "trip_count": null,
+    "berth_count": null,
+    "exact_dates": null,
+    "region": null,
+    "customer_time_windows": true,
+    "paired_demand_and_vehicle_conditions_confirmed": false,
+    "later_500_driver_trial_is_same_cohort": false,
+    "observed_routes": null,
+    "planned_manual_visit_sequences": null,
+    "customer_service_event_logs": null,
+    "loading_event_logs": null,
+    "manual_planning_event_logs": null
+  },
+  "nonadopted_difference_evidence": {
+    "adopted_as_A_performance": false,
+    "source_kind": "published_image_label_not_before_value",
+    "transcription_file": "TRANSCRIPTION_OPTIMIND.json",
+    "independent_copy_check": "TRANSCRIPTION_PRTIMES.json",
+    "D_reduction_km": [
+      10,
+      9,
+      11
+    ],
+    "T_route_reduction_min": [
+      10,
+      15,
+      30
+    ],
+    "delivery_operations_reduction_min": [
+      30,
+      60,
+      60
+    ],
+    "unknown_before_and_after": true,
+    "infer_after_zero_allowed": false
+  },
+  "operation_illustration": {
+    "source_id": "OPTIMIND_OPERATION_IMAGE",
+    "kind": "illustration",
+    "clock_in": "08:30",
+    "depot_departure": "09:30",
+    "clock_in_to_departure_min": 60,
+    "manual_T_s": null,
+    "manual_T_3600_s_adopted": false,
+    "reason": "clock-in/departure are not planning start/end; not identified as before-only event log"
+  },
+  "separate_urban_distance_observation": {
+    "source_id": "SAGAWA_DISTANCE",
+    "observation_date": "2025-01-10",
+    "published_date": "2025-02-06",
+    "truck_km": 13,
+    "walking_approx_km": 14,
+    "scope": "one urban driver one day",
+    "planning_method": "UNVERIFIED",
+    "pre_Loogia_manual_confirmed": false,
+    "adopted_as_A_performance": false,
+    "reason": "different 2025 cohort, after national rollout announcement, method unknown"
+  },
+  "separate_interdepot_case": {
+    "source_ids": [
+      "KANTO_CASE",
+      "MLIT_CASE_REPRINT"
+    ],
+    "KANTO_pdf_pages_1_based": [
+      60,
+      61
+    ],
+    "KANTO_outer_printed_pages": [
+      59,
+      60
+    ],
+    "case_inner_printed_pages": [
+      5,
+      6
+    ],
+    "MLIT_reprint_pdf_pages_1_based": [
+      338,
+      339
+    ],
+    "MLIT_reprint_printed_pages": [
+      314,
+      315
+    ],
+    "shipper": "佐川急便",
+    "carrier": "匿名X社",
+    "business": "interdepot_transport_not_ToC_last_mile",
+    "exact_measurement_period": null,
+    "sample_size": null,
+    "route_node_sequence": [
+      "X社車庫",
+      "木更津営業所",
+      "STLC",
+      "東京C",
+      "木更津営業所",
+      "鴨川営業所",
+      "X社車庫"
+    ],
+    "road_link_sequence": null,
+    "distance_km": null,
+    "T_s": null,
+    "loading_wait_min_by_displayed_stage": [
+      26,
+      26
+    ],
+    "unloading_wait_min_by_displayed_stage": [
+      72,
+      20
+    ],
+    "loading_work_min_by_displayed_stage": [
+      180,
+      229
+    ],
+    "unloading_work_min_by_displayed_stage": [
+      55,
+      37
+    ],
+    "driving_min_by_displayed_stage": [
+      25,
+      140,
+      105,
+      70
+    ],
+    "duty_min_before_reported": 940,
+    "departure_clock": "16:35",
+    "return_clock_next_day": "08:15",
+    "sum_displayed_components_min": 985,
+    "unresolved_difference_min": 45,
+    "ready_definition_matches_common_W": null,
+    "W_after_loading_wait_min": null,
+    "W_improvement_percent": null,
+    "adopted_as_A_performance": false,
+    "reason": "different business and cohort; loading ready undefined; averaged stages not consistent event logs"
+  },
+  "proposals": {
+    "recommended_now": "A qualitative reference with missing numeric values; same-condition quantitative B-C-D comparison",
+    "four_way_human_option": "A_human_new_research_observation_NOT_Sagawa_actual",
+    "four_way_rule_option": "A_rule_research_model_NOT_Sagawa_actual_or_human_time",
+    "proposal_adopted": false,
+    "future_relative_denominator_candidate": "feasible B plan on same common problem",
+    "baseline_W_zero_policy": "ratio null; absolute difference only"
+  }
+}

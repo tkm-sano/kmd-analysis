@@ -1,0 +1,31 @@
+{
+  "checks": {
+    "all_39956_rows_unique_audit_record": true,
+    "all_original_ids_unique": true,
+    "source_row_order_preserved": true,
+    "all_building_id_formats_valid": true,
+    "all_stop_id_formats_valid": true,
+    "status_counts_from_csv_match_json": true,
+    "overall_status_is_worst_domain": true,
+    "all_reason_codes_have_exception_evidence": true,
+    "regional_counts_recomputed": true,
+    "no_row_has_missing_verdict": true,
+    "quota_sums_equal_N": true,
+    "quota_shortages_recomputed": true,
+    "all_consumed_inputs_unchanged": true
+  },
+  "all_checks_pass": true,
+  "rows_read": 39956,
+  "exception_records": 5184,
+  "unique_stop_reason_counts": {
+    "NEAR_CHOCHO_BOUNDARY": 12,
+    "OUTSIDE_OTA_BOUNDARY": 88,
+    "ROAD_MULTIPLE_NEAR_EQUAL_CANDIDATES": 4866,
+    "NEAR_OTA_BOUNDARY": 40,
+    "REPRESENTATIVE_OUTSIDE_FOOTPRINT": 54,
+    "ROAD_DETERMINISTIC_ID_TIE_BREAK": 109,
+    "ROAD_LARGE_PROJECTION_DISTANCE": 15
+  },
+  "code_sha256": "b332744311bed3fdf3d8c7abb644eda1b4f17b9319b2504c6b01169963ef7b1c",
+  "not_a_simulation_or_solver_test": true
+}

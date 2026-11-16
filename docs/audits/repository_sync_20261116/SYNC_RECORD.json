@@ -1,0 +1,55 @@
+{
+  "purpose": "Commit and push existing code, configuration, research documents and summarized results at user request.",
+  "date": "2026-11-16",
+  "branch": "main",
+  "remote": "https://github.com/tkm-sano/kmd-analysis.git",
+  "starting_head": "8605d5412f6af62229a83095c35ab04c8c7dd9b1",
+  "starting_origin_main": "1b00bd7927fa1e7688e4772ac1da9db46d9bac11",
+  "existing_unpushed_commits": 7,
+  "user_storage_choice": "Code, documents and summarized results; retain large data and previously distribution-pending thesis/literature locally.",
+  "selected_files_before_this_audit": 7010,
+  "local_only_visible_files": 107869,
+  "local_only_bytes": 11957904527,
+  "local_only_reasons": {
+    "local_conversation_export": 1,
+    "external_source_or_render_evidence": 1545,
+    "large_artifact_over_10_MiB": 52,
+    "downloaded_external_source": 4,
+    "detailed_runtime_data": 3343,
+    "binary_or_bulk_runtime_data": 12,
+    "generated_test_products": 3142,
+    "local_symbolic_link": 230,
+    "detailed_runtime_data_or_source_copy": 98302,
+    "previously_pending_storage_or_distribution": 1230,
+    "manuscript_or_literature_body": 8
+  },
+  "selection_policy": [
+    "Preserve original tracked edits to .gitignore and README.md unchanged; do not rewrite research conditions, algorithms, inputs, existing results or evidence.",
+    "Include new code, configurations, tests, reviewed frozen-demand v1 inputs, research protocols and audit records.",
+    "Retain files in the prior PENDING_DECISIONS.csv, external source/full-text or page-render evidence, conversation export, symbolic links and artifacts over 10 MiB locally.",
+    "Include poster/slide assets and ToC run-root summaries; nested ToC summaries are limited to depth six, selected by summary/report/validation/registration/manifest/result/adoption naming or figure/plot/table directories.",
+    "Retain test products, detailed per-run data, roads/inputs/matrices, runtime branches/trials, and source snapshots in ToC output locally.",
+    "No new ignore rules hide excluded files; excluded files remain visible and in place. The gzip inventory is metadata, not a backup."
+  ],
+  "validation": {
+    "regression_command": "PYTHONPATH=src PYTHONDONTWRITEBYTECODE=1 .conda/bin/python -m pytest -q -p no:cacheprovider tests/toc_dwt/test_cpu_parallel.py tests/toc_comparison_v1/test_contract_and_evaluation.py tests/toc_common/test_common.py",
+    "regression_result": "118 passed in 77.92s",
+    "syntax": {
+      "files_checked": 188,
+      "errors": []
+    },
+    "selected_credential_pattern_scan": {
+      "selected_files": 7018,
+      "credential_pattern_hits": []
+    },
+    "existing_unpushed_credential_pattern_scan": {
+      "text_blobs_scanned": 3479,
+      "credential_pattern_hits": []
+    },
+    "credential_scan_limits": "Known high-confidence private-key and token patterns in text-like files; not a guarantee that every possible secret is absent.",
+    "scope": "Small regression and syntax checks only. No full experiment, demand generation, frozen-input edits or historical result regeneration."
+  },
+  "local_data_deleted_or_moved": false,
+  "new_ignore_rules_added": false,
+  "push_status_at_record_creation": "Pending commit and normal fast-forward push; verify remote SHA after push."
+}

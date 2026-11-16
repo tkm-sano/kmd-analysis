@@ -1,0 +1,50 @@
+{
+  "checked_on": "2026-11-13",
+  "sources": [
+    {
+      "title": "NIST 7.2.2.2 Sample sizes required",
+      "url": "https://itl.nist.gov/div898/handbook/prc/section2/prc222.htm",
+      "checked_scope": "原ページ本文・式・未知分散時のt反復",
+      "use": "精度/power設計の基本。階層分散への拡張は本研究で定義",
+      "not_claimed": "配送研究のn/r、h、deltaをNISTが与えたとはしない"
+    },
+    {
+      "title": "NIST 7.2.4.1 Confidence intervals",
+      "url": "https://itl.nist.gov/div898/handbook/prc/section2/prc241.htm",
+      "checked_scope": "原ページWilson式と適用説明",
+      "use": "独立Bernoulli単位での比率CI",
+      "not_claimed": "同一需要のr試行を独立と扱う根拠にはしない"
+    },
+    {
+      "title": "Arcuri & Briand, A Hitchhiker’s guide to statistical tests for assessing randomized algorithms in software engineering (2014), STVR24(3):219–250",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1002/stvr.1486",
+      "doi": "10.1002/stvr.1486",
+      "checked_scope": "出版社の書誌・SUMMARY。DOI直接取得は初回失敗、出版社ページを確認",
+      "use": "確率的アルゴリズム評価に統計設計が必要という一般的裏付け",
+      "not_claimed": "未取得の全文の具体的反復数や検定細則を引用しない"
+    },
+    {
+      "title": "Demšar (2006), Statistical Comparisons of Classifiers over Multiple Data Sets, JMLR7:1–30",
+      "url": "https://www.jmlr.org/papers/v7/demsar06a.html",
+      "original_pdf": "https://www.jmlr.org/papers/volume7/demsar06a/demsar06a.pdf",
+      "checked_scope": "原著概要と30ページPDF",
+      "use": "複数問題の対応比較・順位検定の適用境界",
+      "not_claimed": "分類器の順位検定を配送の平均km差/階層分散へ無条件転用しない"
+    },
+    {
+      "title": "Grunert da Fonseca, Fonseca & Hall (2001), Inferential performance assessment of stochastic optimisers and the attainment function, EMO pp.213–225",
+      "url": "https://eden.dei.uc.pt/~cmfonsec/grunert-emo2001-reprint.pdf",
+      "checked_scope": "著者公開13ページ原著、概要と集合/到達関数の定義",
+      "use": "集合としての確率的最適化結果と到達関数",
+      "not_claimed": "本研究の需要階層CIやTの被覆率を原著が保証したとはしない"
+    },
+    {
+      "title": "Fonseca, Guerreiro, López-Ibáñez & Paquete (2011), On the Computation of the Empirical Attainment Function, EMO pp.106–120",
+      "url": "https://lopez-ibanez.eu/doc/FonGueLopPaq2011emo.pdf",
+      "checked_scope": "著者公開15ページ原著、EAFの説明と2D/3D計算の位置付け",
+      "use": "3目的集合の記述・EAF採用",
+      "not_claimed": "未実装のEAF図や同時95%信頼面が完成したとはしない"
+    }
+  ],
+  "experiments_run": false
+}

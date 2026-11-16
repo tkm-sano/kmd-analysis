@@ -1,0 +1,1022 @@
+{
+  "cells": [
+    {
+      "table": "conditions",
+      "row": 0,
+      "column": 0,
+      "before": "項目",
+      "after": "項目",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 0,
+      "column": 1,
+      "before": "1台の保存実験の設定 [1,2]",
+      "after": "1台の計画を作り評価する条件 [1,2]",
+      "before_numbers": [
+        "1",
+        "1",
+        "2"
+      ],
+      "after_numbers": [
+        "1",
+        "1",
+        "2"
+      ],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 1,
+      "column": 0,
+      "before": "対象地域・拠点",
+      "after": "対象地域・拠点",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 1,
+      "column": 1,
+      "before": "大田区・京浜トラックターミナルの\n位置を想定した単一拠点 [3]",
+      "after": "大田区・京浜トラックターミナルの\n位置を想定した単一拠点 [3]",
+      "before_numbers": [
+        "3"
+      ],
+      "after_numbers": [
+        "3"
+      ],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 2,
+      "column": 0,
+      "before": "配送全体の先数",
+      "after": "配送先数（計画全体）",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 2,
+      "column": 1,
+      "before": "3／4／5／25／100／125先",
+      "after": "3／4／5／25／100／125先",
+      "before_numbers": [
+        "3",
+        "4",
+        "5",
+        "25",
+        "100",
+        "125"
+      ],
+      "after_numbers": [
+        "3",
+        "4",
+        "5",
+        "25",
+        "100",
+        "125"
+      ],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 3,
+      "column": 0,
+      "before": "量子側が扱う先数",
+      "after": "QAOAの対象先数",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 3,
+      "column": 1,
+      "before": "全体と同じ3～125先の訪問順全体\n小さな顧客群への分割ではない＊",
+      "after": "全体と同じ3～125先の訪問順を対象\n設定により交換できる順序を制限",
+      "before_numbers": [
+        "3",
+        "125"
+      ],
+      "after_numbers": [
+        "3",
+        "125"
+      ],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 4,
+      "column": 0,
+      "before": "車両・巡回数",
+      "after": "車両・巡回数",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 4,
+      "column": 1,
+      "before": "1台・1巡回・拠点発着",
+      "after": "1台・1巡回・拠点発着",
+      "before_numbers": [
+        "1",
+        "1"
+      ],
+      "after_numbers": [
+        "1",
+        "1"
+      ],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 5,
+      "column": 0,
+      "before": "車両容量",
+      "after": "積載容量（モデル）",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 5,
+      "column": 1,
+      "before": "216荷物相当／台（重量kgではない）",
+      "after": "216荷物相当／台（重量kgではない）",
+      "before_numbers": [
+        "216"
+      ],
+      "after_numbers": [
+        "216"
+      ],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 6,
+      "column": 0,
+      "before": "配達作業の時間",
+      "after": "配達作業の時間",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 6,
+      "column": 1,
+      "before": "102秒／先（拠点は0秒）",
+      "after": "102秒／先（拠点は0秒）",
+      "before_numbers": [
+        "102",
+        "0"
+      ],
+      "after_numbers": [
+        "102",
+        "0"
+      ],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 7,
+      "column": 0,
+      "before": "拠点へ戻る期限",
+      "after": "拠点へ戻る期限",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 7,
+      "column": 1,
+      "before": "モデル開始から9時間（32,400秒）",
+      "after": "計算上の開始時刻から9時間（32,400秒）",
+      "before_numbers": [
+        "9",
+        "32,400"
+      ],
+      "after_numbers": [
+        "9",
+        "32,400"
+      ],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 8,
+      "column": 0,
+      "before": "顧客ごとの時間枠",
+      "after": "配送先の指定時間帯",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 8,
+      "column": 1,
+      "before": "設定なし（拠点へ戻る期限とは別）",
+      "after": "設定なし（拠点へ戻る期限とは別）",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 9,
+      "column": 0,
+      "before": "道路の移動時間",
+      "after": "道路の移動時間",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 9,
+      "column": 1,
+      "before": "方向別の固定値。時間帯では変えない。",
+      "after": "移動する向きごとに固定。時間帯では変えない。",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 10,
+      "column": 0,
+      "before": "古典対照の手法",
+      "after": "基準計画の作り方",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "conditions",
+      "row": 10,
+      "column": 1,
+      "before": "訪問順の交換を繰り返し、\n行き詰まると順序を崩して再探索",
+      "after": "訪問順の交換を繰り返し、\n改善が止まると順序を崩して探し直す",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 0,
+      "column": 0,
+      "before": "項目",
+      "after": "実行・集計項目",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 0,
+      "column": 1,
+      "before": "現状の実行内容",
+      "after": "確認できた内容",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 0,
+      "column": 2,
+      "before": "項目",
+      "after": "対象・評価項目",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 0,
+      "column": 3,
+      "before": "現状の実行内容",
+      "after": "確認範囲・未評価事項",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 1,
+      "column": 0,
+      "before": "実行方法",
+      "after": "実行方法",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 1,
+      "column": 1,
+      "before": "通常の計算機でQAOAを模擬\n量子実機は未実行",
+      "after": "QAOAの動作を通常の計算機で再現\n量子コンピュータ実機は未使用",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 1,
+      "column": 2,
+      "before": "対象",
+      "after": "対象と設定",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 1,
+      "column": 3,
+      "before": "1台・1巡回・460入力\n8設定を同じ入力で比較",
+      "after": "1台・1巡回・460組の配送データ\n8設定を同じデータで比較",
+      "before_numbers": [
+        "1",
+        "1",
+        "460",
+        "8"
+      ],
+      "after_numbers": [
+        "1",
+        "1",
+        "460",
+        "8"
+      ],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 2,
+      "column": 0,
+      "before": "係数調整",
+      "after": "調整結果の件数",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 2,
+      "column": 1,
+      "before": "3,680件（460入力×8設定）",
+      "after": "3,680件（460組のデータ×8設定）",
+      "before_numbers": [
+        "3,680",
+        "460",
+        "8"
+      ],
+      "after_numbers": [
+        "3,680",
+        "460",
+        "8"
+      ],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 2,
+      "column": 2,
+      "before": "抽出反復",
+      "after": "調整後の候補生成",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 2,
+      "column": 3,
+      "before": "8,192回抽出から最良1件を保存×10反復",
+      "after": "8,192回取り出して最良1件を保存、10回繰返す",
+      "before_numbers": [
+        "8,192",
+        "1",
+        "10"
+      ],
+      "after_numbers": [
+        "8,192",
+        "1",
+        "10"
+      ],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 3,
+      "column": 0,
+      "before": "保存候補",
+      "after": "保存した計画数",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 3,
+      "column": 1,
+      "before": "36,800件（反復は調整結果を共用）",
+      "after": "36,800件（繰返しは同じ調整結果を使う）",
+      "before_numbers": [
+        "36,800"
+      ],
+      "after_numbers": [
+        "36,800"
+      ],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 3,
+      "column": 2,
+      "before": "検証済み",
+      "after": "保存計画の確認",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 3,
+      "column": 3,
+      "before": "保存候補の容量・帰庫条件を確認",
+      "after": "保存した最良案の積載量と拠点に戻る期限を確認",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 4,
+      "column": 0,
+      "before": "比較の限界",
+      "after": "比較条件の差",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 4,
+      "column": 1,
+      "before": "計算予算・初期解の保持規則は未統一",
+      "after": "計算に使える時間と、開始時の計画を残す規則が異なる",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 4,
+      "column": 2,
+      "before": "未検証",
+      "after": "未計測・未評価",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "execution",
+      "row": 4,
+      "column": 3,
+      "before": "全工程の計画取得時間・実際の採用効果・\n実配送成果と顧客別期限内配達率",
+      "after": "計画を得るまでの全工程時間・実際の採用効果・\n実際の配送結果・配送先ごとの期限内配達率",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 0,
+      "column": 0,
+      "before": "設定",
+      "after": "手法・集計範囲",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 0,
+      "column": 1,
+      "before": "比較件数",
+      "after": "保存計画数［件］",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 0,
+      "column": 2,
+      "before": "古典 J 平均［秒］",
+      "after": "比較基準の平均J［秒］",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 0,
+      "column": 3,
+      "before": "QAOA J 平均［秒］",
+      "after": "QAOA候補の平均J［秒］",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 0,
+      "column": 4,
+      "before": "平均 ΔJ［秒］",
+      "after": "平均 ΔJ［秒］",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 0,
+      "column": 5,
+      "before": "平均絶対差［秒］",
+      "after": "差の絶対値の平均［秒］",
+      "before_numbers": [],
+      "after_numbers": [],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 1,
+      "column": 0,
+      "before": "位置交換型・6設定",
+      "after": "訪問順を一部交換・6設定",
+      "before_numbers": [
+        "6"
+      ],
+      "after_numbers": [
+        "6"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 1,
+      "column": 1,
+      "before": "27,600",
+      "after": "27,600",
+      "before_numbers": [
+        "27,600"
+      ],
+      "after_numbers": [
+        "27,600"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 1,
+      "column": 2,
+      "before": "1,551.674",
+      "after": "1,551.674",
+      "before_numbers": [
+        "1,551.674"
+      ],
+      "after_numbers": [
+        "1,551.674"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 1,
+      "column": 3,
+      "before": "1,552.714",
+      "after": "1,552.714",
+      "before_numbers": [
+        "1,552.714"
+      ],
+      "after_numbers": [
+        "1,552.714"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 1,
+      "column": 4,
+      "before": "+1.040",
+      "after": "+1.040",
+      "before_numbers": [
+        "+1.040"
+      ],
+      "after_numbers": [
+        "+1.040"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 1,
+      "column": 5,
+      "before": "1.040",
+      "after": "1.040",
+      "before_numbers": [
+        "1.040"
+      ],
+      "after_numbers": [
+        "1.040"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 2,
+      "column": 0,
+      "before": "全訪問順型・p=2",
+      "after": "全訪問順型・p=2",
+      "before_numbers": [
+        "2"
+      ],
+      "after_numbers": [
+        "2"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 2,
+      "column": 1,
+      "before": "4,600",
+      "after": "4,600",
+      "before_numbers": [
+        "4,600"
+      ],
+      "after_numbers": [
+        "4,600"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 2,
+      "column": 2,
+      "before": "1,551.674",
+      "after": "1,551.674",
+      "before_numbers": [
+        "1,551.674"
+      ],
+      "after_numbers": [
+        "1,551.674"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 2,
+      "column": 3,
+      "before": "3,317.720",
+      "after": "3,317.720",
+      "before_numbers": [
+        "3,317.720"
+      ],
+      "after_numbers": [
+        "3,317.720"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 2,
+      "column": 4,
+      "before": "+1,766.047",
+      "after": "+1,766.047",
+      "before_numbers": [
+        "+1,766.047"
+      ],
+      "after_numbers": [
+        "+1,766.047"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 2,
+      "column": 5,
+      "before": "1,766.047",
+      "after": "1,766.047",
+      "before_numbers": [
+        "1,766.047"
+      ],
+      "after_numbers": [
+        "1,766.047"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 3,
+      "column": 0,
+      "before": "全訪問順型・p=3",
+      "after": "全訪問順型・p=3",
+      "before_numbers": [
+        "3"
+      ],
+      "after_numbers": [
+        "3"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 3,
+      "column": 1,
+      "before": "4,600",
+      "after": "4,600",
+      "before_numbers": [
+        "4,600"
+      ],
+      "after_numbers": [
+        "4,600"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 3,
+      "column": 2,
+      "before": "1,551.674",
+      "after": "1,551.674",
+      "before_numbers": [
+        "1,551.674"
+      ],
+      "after_numbers": [
+        "1,551.674"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 3,
+      "column": 3,
+      "before": "3,313.709",
+      "after": "3,313.709",
+      "before_numbers": [
+        "3,313.709"
+      ],
+      "after_numbers": [
+        "3,313.709"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 3,
+      "column": 4,
+      "before": "+1,762.036",
+      "after": "+1,762.036",
+      "before_numbers": [
+        "+1,762.036"
+      ],
+      "after_numbers": [
+        "+1,762.036"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 3,
+      "column": 5,
+      "before": "1,762.036",
+      "after": "1,762.036",
+      "before_numbers": [
+        "1,762.036"
+      ],
+      "after_numbers": [
+        "1,762.036"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 4,
+      "column": 0,
+      "before": "全8設定の混合",
+      "after": "全8設定をまとめた平均",
+      "before_numbers": [
+        "8"
+      ],
+      "after_numbers": [
+        "8"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 4,
+      "column": 1,
+      "before": "36,800",
+      "after": "36,800",
+      "before_numbers": [
+        "36,800"
+      ],
+      "after_numbers": [
+        "36,800"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 4,
+      "column": 2,
+      "before": "1,551.674",
+      "after": "1,551.674",
+      "before_numbers": [
+        "1,551.674"
+      ],
+      "after_numbers": [
+        "1,551.674"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 4,
+      "column": 3,
+      "before": "1,993.464",
+      "after": "1,993.464",
+      "before_numbers": [
+        "1,993.464"
+      ],
+      "after_numbers": [
+        "1,993.464"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 4,
+      "column": 4,
+      "before": "+441.791",
+      "after": "+441.791",
+      "before_numbers": [
+        "+441.791"
+      ],
+      "after_numbers": [
+        "+441.791"
+      ],
+      "passed": true
+    },
+    {
+      "table": "results",
+      "row": 4,
+      "column": 5,
+      "before": "441.791",
+      "after": "441.791",
+      "before_numbers": [
+        "441.791"
+      ],
+      "after_numbers": [
+        "441.791"
+      ],
+      "passed": true
+    }
+  ],
+  "poster_before": {
+    "2": 7,
+    "01": 1,
+    "1": 14,
+    "02": 1,
+    "03": 1,
+    "4": 3,
+    "6": 4,
+    "04": 1,
+    "0": 3,
+    "+9,483.990": 1,
+    "28,200": 1,
+    "8,600": 1,
+    "8": 4,
+    "05": 1,
+    "5": 3,
+    "2026": 2,
+    "-11": 2,
+    "-05": 1,
+    "36800": 2,
+    "460": 3,
+    "-02": 1,
+    "3": 5,
+    "2014": 1,
+    "1411.4028": 1,
+    "2019": 1,
+    "12": 1,
+    "34": 1,
+    "2020": 1,
+    "72": 1,
+    "82": 1,
+    "25": 1,
+    "100": 1,
+    "125": 2,
+    "216": 1,
+    "102": 1,
+    "9": 1,
+    "32,400": 1,
+    "3,680": 1,
+    "8,192": 1,
+    "10": 1,
+    "36,800": 2,
+    "27,600": 1,
+    "1,551.674": 4,
+    "1,552.714": 1,
+    "+1.040": 1,
+    "1.040": 1,
+    "4,600": 2,
+    "3,317.720": 1,
+    "+1,766.047": 1,
+    "1,766.047": 1,
+    "3,313.709": 1,
+    "+1,762.036": 1,
+    "1,762.036": 1,
+    "1,993.464": 1,
+    "+441.791": 1,
+    "441.791": 1
+  },
+  "poster_after": {
+    "2": 7,
+    "01": 1,
+    "1": 14,
+    "02": 1,
+    "03": 1,
+    "4": 3,
+    "6": 4,
+    "04": 1,
+    "0": 3,
+    "+9,483.990": 1,
+    "28,200": 1,
+    "8,600": 1,
+    "8": 4,
+    "05": 1,
+    "5": 3,
+    "2026": 2,
+    "-11": 2,
+    "-05": 1,
+    "36800": 2,
+    "460": 3,
+    "-02": 1,
+    "3": 5,
+    "2014": 1,
+    "1411.4028": 1,
+    "2019": 1,
+    "12": 1,
+    "34": 1,
+    "2020": 1,
+    "72": 1,
+    "82": 1,
+    "25": 1,
+    "100": 1,
+    "125": 2,
+    "216": 1,
+    "102": 1,
+    "9": 1,
+    "32,400": 1,
+    "3,680": 1,
+    "8,192": 1,
+    "10": 1,
+    "36,800": 2,
+    "27,600": 1,
+    "1,551.674": 4,
+    "1,552.714": 1,
+    "+1.040": 1,
+    "1.040": 1,
+    "4,600": 2,
+    "3,317.720": 1,
+    "+1,766.047": 1,
+    "1,766.047": 1,
+    "3,313.709": 1,
+    "+1,762.036": 1,
+    "1,762.036": 1,
+    "1,993.464": 1,
+    "+441.791": 1,
+    "441.791": 1
+  },
+  "all_cells_pass": true,
+  "all_poster_tokens_pass": true
+}

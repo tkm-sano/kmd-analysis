@@ -1,0 +1,18 @@
+{
+  "runs": [
+    "run02",
+    "run03"
+  ],
+  "byte_identical_scientific_files": {
+    "DATA_LINEAGE_CHECKS.json": true,
+    "INPUT_PROFILES.json": true,
+    "INPUT_HASHES.json": true
+  },
+  "first_attempt": {
+    "directory": "run01",
+    "status": "failed",
+    "cause": "国勢調査の件数なし記号-を整数変換しようとした。記号-を0、秘匿Xは変換しない読み取り処理へ修正した。入力データや数値採用規則を変更していない。"
+  },
+  "route_optimization_executed": false,
+  "demand_generation_executed": false
+}

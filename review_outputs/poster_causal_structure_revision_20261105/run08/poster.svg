@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 594 841" width="594mm" height="841mm"><rect width="594" height="841" fill="white"/>
+<rect x="0" y="0" width="594" height="62" fill="#EDF3F7" stroke="none" stroke-width=".25"/>
+<text x="15" y="18.520083333333332" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="13.758333333333331" font-weight="700" fill="#143653">量子計算がEV配送システムに寄与し得る条件：</text>
+<text x="15" y="38.272888888888886" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="11.288888888888888" font-weight="700" fill="#143653">配送計画と電池材料評価を介した影響経路の検討</text>
+<text x="15" y="56.06261111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.76111111111111" font-weight="400" fill="#143653">佐野巧馬 ｜ Q/est</text>
+<text x="15" y="78.02569444444444" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="8.819444444444443" font-weight="700" fill="#143653">1 背景・目的：個別の計算能力は、配送での成果へどう伝わるか</text>
+<line x1="15" y1="83" x2="579" y2="83" stroke="#143653" stroke-width="0.35277777777777775" stroke-dasharray=""/>
+<text x="15" y="96.06261111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.76111111111111" font-weight="400" fill="#17232D">都市内のEV配送では、荷物を運ぶ計画と走行電力量の両方を検討する必要がある [5]。量子計算には、訪問順を探す用途と材料の電子状態を</text>
+<text x="15" y="105.91922222222222" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.76111111111111" font-weight="400" fill="#17232D">評価する用途がある [1–3]。本研究は、単一拠点のEV配送を対象に、二つの用途から総移動時間または走行電力量へ影響が伝わる条件と、伝</text>
+<text x="15" y="115.77583333333332" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.76111111111111" font-weight="400" fill="#17232D">達を妨げる制約を、保存計算と文献から検討する。</text>
+<rect x="15" y="130" width="564" height="17" fill="#F7FAFC" stroke="none" stroke-width=".25"/>
+<text x="19" y="138.26004166666667" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="6.8791666666666655" font-weight="400" fill="#17232D">対象：1台・1巡回・拠点発着・顧客時間窓なし。計画は総移動時間、車両は走行時の駆動電力量を評価する。</text>
+<text x="15" y="160.70466666666667" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="8.466666666666665" font-weight="700" fill="#143653">図1 研究全体の構造：量子計算の用途と、二経路の分析対象</text>
+<rect x="15" y="174" width="129" height="27" fill="#FFFFFF" stroke="#286A96" stroke-width=".25"/>
+<text x="18" y="183.42055555555555" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#286A96">① 訪問順の探索 [1]</text>
+<rect x="160" y="174" width="129" height="27" fill="#FFFFFF" stroke="#286A96" stroke-width=".25"/>
+<text x="163" y="183.42055555555555" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#286A96">通常計算機（CPU）</text>
+<text x="163" y="192.3811111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#286A96">上の模擬計算</text>
+<rect x="305" y="174" width="129" height="27" fill="#FFFFFF" stroke="#286A96" stroke-width=".25"/>
+<text x="308" y="183.42055555555555" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#286A96">訪問順を入替えた</text>
+<text x="308" y="192.3811111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#286A96">古典解と比較</text>
+<rect x="450" y="174" width="129" height="27" fill="#FFFFFF" stroke="#455765" stroke-width=".25"/>
+<text x="453" y="183.42055555555555" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#286A96">実配送への反映</text>
+<line x1="144" y1="187.5" x2="160" y2="187.5" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="160" y1="187.5" x2="157.63052708289598" y2="188.79444895423134" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="160" y1="187.5" x2="157.63052708289598" y2="186.20555104576866" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="289" y1="187.5" x2="305" y2="187.5" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="305" y1="187.5" x2="302.630527082896" y2="188.79444895423134" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="305" y1="187.5" x2="302.630527082896" y2="186.20555104576866" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="434" y1="187.5" x2="450" y2="187.5" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=".42 .99"/>
+<line x1="450" y1="187.5" x2="447.630527082896" y2="188.79444895423134" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="450" y1="187.5" x2="447.630527082896" y2="186.20555104576866" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<text x="20" y="209.61798611111112" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="6.173611111111111" font-weight="400" fill="#286A96">比較する対象は候補の総移動時間と実行可能性である。量子実機の性能や、現場の採用・実行を実証するものではない。</text>
+<rect x="15" y="222" width="129" height="27" fill="#FFFFFF" stroke="#455765" stroke-width=".25"/>
+<text x="18" y="231.42055555555555" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#A6522C">② 電子のエネルギー</text>
+<text x="18" y="240.3811111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#A6522C">評価 [2,3]</text>
+<rect x="160" y="222" width="129" height="27" fill="#FFFFFF" stroke="#A6522C" stroke-width=".25"/>
+<text x="163" y="231.42055555555555" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#A6522C">材料値・設計を仮定</text>
+<rect x="305" y="222" width="129" height="27" fill="#FFFFFF" stroke="#A6522C" stroke-width=".25"/>
+<text x="308" y="231.42055555555555" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#A6522C">部材・車両質量</text>
+<rect x="450" y="222" width="129" height="27" fill="#FFFFFF" stroke="#A6522C" stroke-width=".25"/>
+<text x="453" y="231.42055555555555" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#A6522C">走行時の電力量</text>
+<line x1="144" y1="235.5" x2="160" y2="235.5" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray=".42 .99"/>
+<line x1="160" y1="235.5" x2="157.63052708289598" y2="236.79444895423134" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="160" y1="235.5" x2="157.63052708289598" y2="234.20555104576866" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="289" y1="235.5" x2="305" y2="235.5" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray="1.76 1.06"/>
+<line x1="305" y1="235.5" x2="302.630527082896" y2="236.79444895423134" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="305" y1="235.5" x2="302.630527082896" y2="234.20555104576866" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="434" y1="235.5" x2="450" y2="235.5" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray="1.76 1.06"/>
+<line x1="450" y1="235.5" x2="447.630527082896" y2="236.79444895423134" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="450" y1="235.5" x2="447.630527082896" y2="234.20555104576866" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<text x="20" y="257.6179861111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="6.173611111111111" font-weight="400" fill="#A6522C">電圧・安定性を量子計算で評価する用途は文献上の提案である。本研究は材料計算・合成をせず、設計入力以降を分析対象とする。</text>
+<line x1="15" y1="271" x2="35" y2="271" stroke="#143653" stroke-width="0.35277777777777775" stroke-dasharray=""/>
+<text x="39" y="271.45747222222224" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="5.997222222222222" font-weight="400" fill="#455765">実線：比較の手順</text>
+<line x1="203" y1="271" x2="223" y2="271" stroke="#143653" stroke-width="0.35277777777777775" stroke-dasharray="1.76 1.06"/>
+<text x="227" y="271.45747222222224" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="5.997222222222222" font-weight="400" fill="#455765">破線：仮定を置くモデル計算</text>
+<line x1="410" y1="271" x2="430" y2="271" stroke="#143653" stroke-width="0.35277777777777775" stroke-dasharray=".42 .99"/>
+<text x="434" y="271.45747222222224" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="5.997222222222222" font-weight="400" fill="#455765">点線：本分析の対象外</text>
+<text x="15" y="291.02569444444447" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="8.819444444444443" font-weight="700" fill="#286A96">2 経路1：配送計画の分析方法</text>
+<line x1="15" y1="296" x2="284" y2="296" stroke="#286A96" stroke-width="0.35277777777777775" stroke-dasharray=""/>
+<text x="310" y="291.02569444444447" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="8.819444444444443" font-weight="700" fill="#A6522C">3 経路2：材料・車両の分析方法</text>
+<line x1="310" y1="296" x2="579" y2="296" stroke="#A6522C" stroke-width="0.35277777777777775" stroke-dasharray=""/>
+<rect x="15" y="307" width="269" height="346" fill="#F1F6FA" stroke="none" stroke-width=".25"/>
+<rect x="310" y="307" width="269" height="346" fill="#FAF3ED" stroke="none" stroke-width=".25"/>
+<text x="20" y="318.0626111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.76111111111111" font-weight="700" fill="#286A96">方法：同じ配送入力で訪問順を比較する</text>
+<text x="20" y="334.42055555555555" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">1入力は拠点・配送先・固定道路移動時間の組である。3/4/5/25/100先</text>
+<text x="20" y="343.3811111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">を各78入力、125先を70入力、計460入力を対象とする。各先を1回訪</text>
+<text x="20" y="352.34166666666664" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">問し帰庫する。需要216荷物相当以下、作業102秒/先、帰庫9時間以内</text>
+<text x="20" y="361.3022222222222" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">の条件を置く。</text>
+<text x="20" y="385.0626111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.76111111111111" font-weight="700" fill="#286A96">図2 同じ入力に対する二つの計算手順</text>
+<rect x="65" y="398" width="170" height="27" fill="#FFFFFF" stroke="#286A96" stroke-width=".25"/>
+<text x="68" y="407.42055555555555" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#286A96">共通入力：拠点・配送先・移動時間</text>
+<line x1="150" y1="425" x2="150" y2="432" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="77" y1="432" x2="211" y2="432" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="77" y1="432" x2="77" y2="442" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="77" y1="442" x2="75.70555104576866" y2="439.630527082896" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="77" y1="442" x2="78.29444895423134" y2="439.630527082896" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="211" y1="432" x2="211" y2="442" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="211" y1="442" x2="209.70555104576866" y2="439.630527082896" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="211" y1="442" x2="212.29444895423134" y2="439.630527082896" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<rect x="20" y="442" width="116" height="52" fill="#FFFFFF" stroke="#286A96" stroke-width=".25"/>
+<text x="23" y="451.42055555555555" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#286A96">通常計算の局所探索</text>
+<text x="23" y="460.3811111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#286A96">訪問順を入れ替え、</text>
+<text x="23" y="469.34166666666664" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#286A96">比較用の古典解を作る</text>
+<rect x="158" y="442" width="116" height="52" fill="#FFFFFF" stroke="#286A96" stroke-width=".25"/>
+<text x="161" y="451.42055555555555" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#286A96">量子近似最適化 [1]</text>
+<text x="161" y="460.3811111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#286A96">候補の重みを調整し、</text>
+<text x="161" y="469.34166666666664" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#286A96">CPU模擬で探索する</text>
+<line x1="77" y1="494" x2="77" y2="504" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="211" y1="494" x2="211" y2="504" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="77" y1="504" x2="211" y2="504" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="150" y1="504" x2="150" y2="514" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="150" y1="514" x2="148.70555104576866" y2="511.630527082896" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="150" y1="514" x2="151.29444895423134" y2="511.630527082896" stroke="#286A96" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<rect x="20" y="514" width="254" height="33" fill="#FFFFFF" stroke="#286A96" stroke-width=".25"/>
+<text x="23" y="523.4205555555556" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#286A96">同じ目的関数・制約で比較する</text>
+<text x="23" y="532.3811111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#286A96">総移動時間／実行可能性／工程時間</text>
+<text x="20" y="568.4205555555556" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">比較条件：一部の位置を交換する5条件、隣接位置を交換する1条件、全</text>
+<text x="20" y="577.3811111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">訪問順を対象とするGrover型混合方式の層数2・3の計8設定である。</text>
+<text x="20" y="586.3416666666667" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">量子近似最適化（QAOA）は候補の重みを調整して訪問順を探す方法で</text>
+<text x="20" y="595.3022222222222" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">ある。</text>
+<text x="20" y="619.4205555555556" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">各入力・設定で、学習状態から8192試行中の最良候補を10回測定す</text>
+<text x="20" y="628.3811111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">る。学習・候補生成・検証などの一部工程と全工程の時間を区別し、未</text>
+<text x="20" y="637.3416666666667" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">記録の時間を補完しない。</text>
+<text x="315" y="318.0626111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.76111111111111" font-weight="700" fill="#A6522C">方法：材料入力と設計・走行条件を分ける</text>
+<text x="315" y="334.42055555555555" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">蓄える電力量20 kWhを固定し、比容量（活物質1 kgが蓄える電荷量</text>
+<text x="315" y="343.3811111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">）、電圧、利用率（使える容量の割合）を入力とする。電池の質量会計</text>
+<text x="315" y="352.34166666666664" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">と、走行質量に対する電力量応答を分けて扱う。</text>
+<text x="315" y="385.0626111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.76111111111111" font-weight="700" fill="#A6522C">図3 材料入力から電力量までの計算手順</text>
+<rect x="322" y="398" width="250" height="27" fill="#FFFFFF" stroke="#A6522C" stroke-width=".25"/>
+<text x="325" y="407.42055555555555" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#A6522C">材料入力：比容量・電圧・利用率</text>
+<text x="325" y="416.3811111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#A6522C">文献値と設計上の仮定を区別する</text>
+<line x1="447" y1="425" x2="447" y2="439" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray="1.76 1.06"/>
+<line x1="447" y1="439" x2="445.70555104576863" y2="436.630527082896" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="447" y1="439" x2="448.29444895423137" y2="436.630527082896" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<rect x="322" y="439" width="250" height="42" fill="#FFFFFF" stroke="#A6522C" stroke-width=".25"/>
+<text x="325" y="448.42055555555555" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#A6522C">電池質量を二つの会計で推計する</text>
+<text x="325" y="457.3811111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#A6522C">簡略式：正負極と一括したその他部材</text>
+<text x="325" y="466.34166666666664" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#A6522C">部材別式：面積・箔・膜・電解液</text>
+<line x1="447" y1="481" x2="447" y2="495" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray="1.76 1.06"/>
+<line x1="447" y1="495" x2="445.70555104576863" y2="492.630527082896" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="447" y1="495" x2="448.29444895423137" y2="492.630527082896" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<rect x="322" y="495" width="250" height="27" fill="#FFFFFF" stroke="#A6522C" stroke-width=".25"/>
+<text x="325" y="504.42055555555555" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#A6522C">車両の走行質量へ換算する</text>
+<text x="325" y="513.3811111111112" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#A6522C">車体等の他質量・積載を固定する</text>
+<line x1="447" y1="522" x2="447" y2="536" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray="1.76 1.06"/>
+<line x1="447" y1="536" x2="445.70555104576863" y2="533.630527082896" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="447" y1="536" x2="448.29444895423137" y2="533.630527082896" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<rect x="322" y="536" width="250" height="27" fill="#FFFFFF" stroke="#A6522C" stroke-width=".25"/>
+<text x="325" y="545.4205555555556" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#A6522C">同じ保存速度軌跡を用いる</text>
+<text x="325" y="554.3811111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#A6522C">質量を変え、駆動の物理モデルで計算する</text>
+<line x1="447" y1="563" x2="447" y2="577" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray="1.76 1.06"/>
+<line x1="447" y1="577" x2="445.70555104576863" y2="574.630527082896" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<line x1="447" y1="577" x2="448.29444895423137" y2="574.630527082896" stroke="#A6522C" stroke-width="0.4233333333333333" stroke-dasharray=""/>
+<rect x="322" y="577" width="250" height="27" fill="#FFFFFF" stroke="#A6522C" stroke-width=".25"/>
+<text x="325" y="586.4205555555556" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#A6522C">評価量：走行時の駆動電力量［Wh］</text>
+<text x="315" y="625.4205555555556" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">材料入力は文献報告・逆算参照・設計仮定を区別し、未知部材を0で補</text>
+<text x="315" y="634.3811111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">完しない。材料の出力・寿命・安全性、完成パックと実車の性能は、モ</text>
+<text x="315" y="643.3416666666667" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">デルの計算とは別の検証対象である。</text>
+<text x="15" y="671.0256944444444" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="8.819444444444443" font-weight="700" fill="#143653">4 評価項目：比較基準・集計単位・適用範囲を揃える</text>
+<line x1="15" y1="676" x2="579" y2="676" stroke="#143653" stroke-width="0.35277777777777775" stroke-dasharray=""/>
+<text x="15" y="687.5810694444444" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.231944444444443" font-weight="400" fill="#17232D">配送計画では、候補と古典解の総移動時間差、実行可能性、計算時間、探索範囲を区別する。時間差は「候補−古典解」と定義する。10測定を入力内で</text>
+<text x="15" y="696.7656388888889" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.231944444444443" font-weight="400" fill="#17232D">まとめ、方式・規模別に分布を評価する。電池側では、設計条件・既知部材・未知部材を区分し、質量と電力量への伝達を調べる。走行計算は同一速度</text>
+<text x="15" y="705.9502083333333" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.231944444444443" font-weight="400" fill="#17232D">・平坦・回生/補機なし・積載0・効率0.9に限定する。</text>
+<text x="15" y="731.0256944444444" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="8.819444444444443" font-weight="700" fill="#143653">5 議論：現段階で示せること・今後の作業・限界と課題</text>
+<line x1="15" y1="736" x2="579" y2="736" stroke="#143653" stroke-width="0.35277777777777775" stroke-dasharray=""/>
+<rect x="15" y="741" width="176" height="59" fill="#F7FAFC" stroke="#B9C6CF" stroke-width=".25"/>
+<text x="18" y="749.7415833333333" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.408333333333332" font-weight="700" fill="#143653">現時点で記載できる内容</text>
+<text x="18" y="764.4205555555556" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">配送計画のCPU模擬出力と、質量・電力量モデ</text>
+<text x="18" y="773.3811111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">ルの保存計算を分析資料として確保している。</text>
+<text x="18" y="782.3416666666667" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">二経路の計算対象、比較指標、仮定と検証範囲</text>
+<text x="18" y="791.3022222222222" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">を示せる段階である。</text>
+<rect x="209" y="741" width="176" height="59" fill="#F7FAFC" stroke="#B9C6CF" stroke-width=".25"/>
+<text x="212" y="749.7415833333333" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.408333333333332" font-weight="700" fill="#143653">今後の作業（優先案）</text>
+<text x="212" y="764.4205555555556" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">まず既存の統計・感度解析を本文へ統合する。</text>
+<text x="212" y="773.3811111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">計算予算・出力数・工程時間の比較条件と、材</text>
+<text x="212" y="782.3416666666667" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">料入力・未知部材の根拠を整理し、必要な追加</text>
+<text x="212" y="791.3022222222222" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">検証を絞る。</text>
+<rect x="403" y="741" width="176" height="59" fill="#F7FAFC" stroke="#B9C6CF" stroke-width=".25"/>
+<text x="406" y="749.7415833333333" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.408333333333332" font-weight="700" fill="#143653">限界と課題</text>
+<text x="406" y="764.4205555555556" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">CPU模擬から実機性能は判断できない。材料値</text>
+<text x="406" y="773.3811111111111" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">の差だけでは完成電池・実車効果は定まらな</text>
+<text x="406" y="782.3416666666667" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">い。比較の公平性、実用材料入力、未知部材・</text>
+<text x="406" y="791.3022222222222" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="7.0555555555555545" font-weight="400" fill="#17232D">走行条件の妥当性が課題である。</text>
+<text x="15" y="809.1364444444445" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="5.644444444444444" font-weight="400" fill="#455765">位置づけ：EV配送を社会技術システムの一部と捉えるが [4]、主体・制度・採用行動の分析は行っていない。</text>
+<text x="15" y="819.4943888888889" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="4.938888888888888" font-weight="400" fill="#455765">[1] Bärtschi &amp; Eidenbenz (2020). QCE, 72–82.</text>
+<text x="15" y="826.4943888888889" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="4.938888888888888" font-weight="400" fill="#455765">[2] Delgado et al. (2022). Phys. Rev. A 106, 032428.</text>
+<text x="310" y="819.4943888888889" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="4.938888888888888" font-weight="400" fill="#455765">[3] Shokrian Zini et al. (2023). Quantum 7, 1049.</text>
+<text x="310" y="826.4943888888889" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="4.938888888888888" font-weight="400" fill="#455765">[4] Geels (2004). Res. Policy 33, 897–920.</text>
+<text x="15" y="833.4943888888889" font-family="DejaVu Sans,Droid Sans Fallback,sans-serif" font-size="4.938888888888888" font-weight="400" fill="#455765">[5] Schneider et al. (2014). Transp. Sci. 48, 500–520.</text>
+</svg>

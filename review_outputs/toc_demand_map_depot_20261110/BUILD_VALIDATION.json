@@ -1,0 +1,80 @@
+{
+  "status": "PASS",
+  "html": "output/toc_delivery/demand_map/v1/toc_demand_S1_S3_map.html",
+  "html_sha256": "baba58797382aeace441fab020d0de11daa0a5985c98db954b5b8ce866a5257f",
+  "data_input": "fixed S1.csv/S2.csv/S3.csv only; manifest/pin used only for validation",
+  "scenario_counts": {
+    "S1": 1000,
+    "S2": 2000,
+    "S3": 4000
+  },
+  "incremental_counts": {
+    "S1": 1000,
+    "S2_added": 1000,
+    "S3_added": 2000
+  },
+  "embedded_unique_stops": 4000,
+  "all_ids_and_original_strings_match": true,
+  "frozen_bundle_before": {
+    "S1.csv": "e3c2040766636b2cbd6de670f93a5356ba893dfbb8417bf1c136a5f785172398",
+    "S2.csv": "7c8fcecabf34545d3021d53cf774e99df9d33967fcffdf324cd07f53e95a3cb2",
+    "S3.csv": "b8b5b041e724c8337d697a538e9340e45c9cac8e10a55bb088321011913d253d",
+    "REGIONAL_ALLOCATION.csv": "317299aab117a0de99e0fc6127a1c060d115e15ff7acabd209ac9e4bad46b881",
+    "VALIDATION.json": "9215b84dc696c56e1789f2600044649a4bd996a7b4eecc730a0a671fc574a931",
+    "READING_CONTRACT.md": "b1cddc9395ab717a2197f7d0f39b8a716f8064321a7f66d94320fc101ba115a8",
+    "MANIFEST.json": "9e1b0ba8afed05f9fbae6ff725489a3e0d602bf8b1e9f19e5b9e8a6a8eada776",
+    "SHA256SUMS": "b1460b059cbe986d989406903d2802e51b64cf86217b2207d207a14fc07387e4"
+  },
+  "frozen_bundle_after": {
+    "S1.csv": "e3c2040766636b2cbd6de670f93a5356ba893dfbb8417bf1c136a5f785172398",
+    "S2.csv": "7c8fcecabf34545d3021d53cf774e99df9d33967fcffdf324cd07f53e95a3cb2",
+    "S3.csv": "b8b5b041e724c8337d697a538e9340e45c9cac8e10a55bb088321011913d253d",
+    "REGIONAL_ALLOCATION.csv": "317299aab117a0de99e0fc6127a1c060d115e15ff7acabd209ac9e4bad46b881",
+    "VALIDATION.json": "9215b84dc696c56e1789f2600044649a4bd996a7b4eecc730a0a671fc574a931",
+    "READING_CONTRACT.md": "b1cddc9395ab717a2197f7d0f39b8a716f8064321a7f66d94320fc101ba115a8",
+    "MANIFEST.json": "9e1b0ba8afed05f9fbae6ff725489a3e0d602bf8b1e9f19e5b9e8a6a8eada776",
+    "SHA256SUMS": "b1460b059cbe986d989406903d2802e51b64cf86217b2207d207a14fc07387e4"
+  },
+  "resources": {
+    "leaflet.js": {
+      "url": "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
+      "sha256": "db49d009c841f5ca34a888c96511ae936fd9f5533e90d8b2c4d57596f4e5641a",
+      "bytes": 147552
+    },
+    "leaflet.css": {
+      "url": "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+      "sha256": "a7837102824184820dfa198d1ebcd109ff6d0ff9a2672a074b9a1b4d147d04c6",
+      "bytes": 14806
+    },
+    "LICENSE": {
+      "url": "https://unpkg.com/leaflet@1.9.4/LICENSE",
+      "sha256": "53e8dc25862014e4324741ca18fbe3611e11d42ef69f59f86ea8c5389647d4cb",
+      "bytes": 1395
+    }
+  },
+  "embedded_leaflet_version": "1.9.4",
+  "csv_fetch_required": false,
+  "javascript_cdn_required": false,
+  "background": "GSI pale tiles; network required only for background",
+  "depot_marker": true,
+  "depot": {
+    "depot_id": "DEP_006",
+    "facility_name": "京浜トラックターミナル",
+    "longitude": "139.745306",
+    "latitude": "35.586971",
+    "proxy_or_observed": "proxy"
+  },
+  "depot_sources": {
+    "DEPOT_ROUTING_DEFINITION.json": {
+      "path": "/home/takuma/kmd-analysis-preservation-20261014-173544-a64e484c/relocated/01_research_design/scenario_evaluation/sumo_facility_routing_baseline_20260930/DEPOT_ROUTING_DEFINITION.json",
+      "sha256": "8ff3b791ae1028e645938a8259d359f85242a29b51050b667f62dfd1ede3d079"
+    },
+    "SUMO_FACILITY_MAPPING_FREEZE_MANIFEST.json": {
+      "path": "/home/takuma/kmd-analysis-preservation-20261014-173544-a64e484c/relocated/01_research_design/scenario_evaluation/sumo_facility_routing_baseline_20260930/SUMO_FACILITY_MAPPING_FREEZE_MANIFEST.json",
+      "sha256": "868d3bfdaade90e53e248489299be3bb6e5c98060cb2f204cb1502858757dab8"
+    }
+  },
+  "depot_use": "visualization of historical proxy depot; not confirmation of an observed entrance",
+  "administrative_boundary_overlay": false,
+  "routing_performed": false
+}

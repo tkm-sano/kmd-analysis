@@ -1,0 +1,708 @@
+{
+  "definition": "DeltaJ=JQ-JC (positive=worsening)",
+  "counts": {
+    "improved": 0,
+    "equal": 28200,
+    "worsened": 8600
+  },
+  "existence": {
+    "strong_better": 135,
+    "conditional_better": 41,
+    "greedy_equal": 238,
+    "unproved": 46
+  },
+  "materials": {
+    "trajectories": 460,
+    "original_T09_rows": 183,
+    "mass_cases": 239,
+    "dc_rows": 105800,
+    "checks": 4799,
+    "failures": 0,
+    "T08_LP_kg": 96.14565479871604,
+    "T08_S_kg": 90.69735738363909,
+    "delta_kg": 5.448297415076951,
+    "u_boundary": 0.8770940719841043,
+    "V_boundary": 3.1931556837797883,
+    "source_preservation": "PASS",
+    "scientific_practical_adoption": "HOLD",
+    "T09_complete_pack": "HOLD",
+    "min_dc_slope": 0.8275726479583239
+  },
+  "statistical_units": "input first;25 demand groups/26 parents;10 measurements per fixed input/config fit",
+  "interval_note": "saved group-resampling sensitivity and fixed-fit measurement sensitivity; no new bootstrap; not real-fleet confidence intervals",
+  "checks": [
+    {
+      "item": "saved sample hierarchy",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R0/MEAN_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R0/CVAR01_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R0/CVAR10_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R0/COHERENT2_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R0/COHERENT4_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R0/ACTIVE_ADJACENT_P3_GRID",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R1/MEAN_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R1/CVAR01_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R1/CVAR10_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R1/COHERENT2_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R1/COHERENT4_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R1/ACTIVE_ADJACENT_P3_GRID",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R2/MEAN_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R2/CVAR01_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R2/CVAR10_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R2/COHERENT2_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R2/COHERENT4_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R2/ACTIVE_ADJACENT_P3_GRID",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R3/MEAN_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R3/CVAR01_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R3/CVAR10_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R3/COHERENT2_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R3/COHERENT4_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R3/ACTIVE_ADJACENT_P3_GRID",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R4/MEAN_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R4/CVAR01_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R4/CVAR10_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R4/COHERENT2_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R4/COHERENT4_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R4/ACTIVE_ADJACENT_P3_GRID",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R5/MEAN_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R5/CVAR01_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R5/CVAR10_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R5/COHERENT2_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R5/COHERENT4_P2",
+      "status": "PASS"
+    },
+    {
+      "item": "local identical R5/ACTIVE_ADJACENT_P3_GRID",
+      "status": "PASS"
+    },
+    {
+      "item": "all config median zero MEAN_P2/delta_s",
+      "status": "PASS"
+    },
+    {
+      "item": "all config median zero MEAN_P2/relative_gap_percent",
+      "status": "PASS"
+    },
+    {
+      "item": "all config median zero CVAR01_P2/delta_s",
+      "status": "PASS"
+    },
+    {
+      "item": "all config median zero CVAR01_P2/relative_gap_percent",
+      "status": "PASS"
+    },
+    {
+      "item": "all config median zero CVAR10_P2/delta_s",
+      "status": "PASS"
+    },
+    {
+      "item": "all config median zero CVAR10_P2/relative_gap_percent",
+      "status": "PASS"
+    },
+    {
+      "item": "all config median zero COHERENT2_P2/delta_s",
+      "status": "PASS"
+    },
+    {
+      "item": "all config median zero COHERENT2_P2/relative_gap_percent",
+      "status": "PASS"
+    },
+    {
+      "item": "all config median zero COHERENT4_P2/delta_s",
+      "status": "PASS"
+    },
+    {
+      "item": "all config median zero COHERENT4_P2/relative_gap_percent",
+      "status": "PASS"
+    },
+    {
+      "item": "all config median zero ACTIVE_ADJACENT_P3_GRID/delta_s",
+      "status": "PASS"
+    },
+    {
+      "item": "all config median zero ACTIVE_ADJACENT_P3_GRID/relative_gap_percent",
+      "status": "PASS"
+    },
+    {
+      "item": "all config median zero GROVER_P2/delta_s",
+      "status": "PASS"
+    },
+    {
+      "item": "all config median zero GROVER_P2/relative_gap_percent",
+      "status": "PASS"
+    },
+    {
+      "item": "all config median zero GROVER_P3/delta_s",
+      "status": "PASS"
+    },
+    {
+      "item": "all config median zero GROVER_P3/relative_gap_percent",
+      "status": "PASS"
+    },
+    {
+      "item": "classification counts",
+      "status": "PASS"
+    },
+    {
+      "item": "existence tiers",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R0/ACTIVE_ADJACENT_P3_GRID/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R0/ACTIVE_ADJACENT_P3_GRID/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R0/COHERENT2_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R0/COHERENT2_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R0/COHERENT4_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R0/COHERENT4_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R0/CVAR01_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R0/CVAR01_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R0/CVAR10_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R0/CVAR10_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R0/GROVER_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R0/GROVER_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R0/GROVER_P3/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R0/GROVER_P3/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R0/MEAN_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R0/MEAN_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R1/ACTIVE_ADJACENT_P3_GRID/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R1/ACTIVE_ADJACENT_P3_GRID/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R1/COHERENT2_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R1/COHERENT2_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R1/COHERENT4_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R1/COHERENT4_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R1/CVAR01_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R1/CVAR01_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R1/CVAR10_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R1/CVAR10_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R1/GROVER_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R1/GROVER_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R1/GROVER_P3/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R1/GROVER_P3/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R1/MEAN_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R1/MEAN_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R2/ACTIVE_ADJACENT_P3_GRID/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R2/ACTIVE_ADJACENT_P3_GRID/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R2/COHERENT2_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R2/COHERENT2_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R2/COHERENT4_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R2/COHERENT4_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R2/CVAR01_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R2/CVAR01_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R2/CVAR10_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R2/CVAR10_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R2/GROVER_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R2/GROVER_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R2/GROVER_P3/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R2/GROVER_P3/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R2/MEAN_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R2/MEAN_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R3/ACTIVE_ADJACENT_P3_GRID/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R3/ACTIVE_ADJACENT_P3_GRID/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R3/COHERENT2_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R3/COHERENT2_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R3/COHERENT4_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R3/COHERENT4_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R3/CVAR01_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R3/CVAR01_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R3/CVAR10_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R3/CVAR10_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R3/GROVER_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R3/GROVER_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R3/GROVER_P3/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R3/GROVER_P3/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R3/MEAN_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R3/MEAN_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R4/ACTIVE_ADJACENT_P3_GRID/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R4/ACTIVE_ADJACENT_P3_GRID/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R4/COHERENT2_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R4/COHERENT2_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R4/COHERENT4_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R4/COHERENT4_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R4/CVAR01_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R4/CVAR01_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R4/CVAR10_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R4/CVAR10_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R4/GROVER_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R4/GROVER_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R4/GROVER_P3/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R4/GROVER_P3/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R4/MEAN_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R4/MEAN_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R5/ACTIVE_ADJACENT_P3_GRID/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R5/ACTIVE_ADJACENT_P3_GRID/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R5/COHERENT2_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R5/COHERENT2_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R5/COHERENT4_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R5/COHERENT4_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R5/CVAR01_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R5/CVAR01_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R5/CVAR10_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R5/CVAR10_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R5/GROVER_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R5/GROVER_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R5/GROVER_P3/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R5/GROVER_P3/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R5/MEAN_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign R5/MEAN_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign ALL/ACTIVE_ADJACENT_P3_GRID/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign ALL/ACTIVE_ADJACENT_P3_GRID/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign ALL/COHERENT2_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign ALL/COHERENT2_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign ALL/COHERENT4_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign ALL/COHERENT4_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign ALL/CVAR01_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign ALL/CVAR01_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign ALL/CVAR10_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign ALL/CVAR10_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign ALL/GROVER_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign ALL/GROVER_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign ALL/GROVER_P3/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign ALL/GROVER_P3/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign ALL/MEAN_P2/GROUP_RESAMPLING_SENSITIVITY_NOT_REAL_FLEET_CI",
+      "status": "PASS"
+    },
+    {
+      "item": "interval point sign ALL/MEAN_P2/MEASUREMENT_RESAMPLING_FIXED_INPUT_FIT",
+      "status": "PASS"
+    },
+    {
+      "item": "material calculation and practical scope",
+      "status": "PASS"
+    }
+  ],
+  "experiments_run": 0
+}

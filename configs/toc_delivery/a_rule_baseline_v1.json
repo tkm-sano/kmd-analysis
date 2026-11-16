@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "baseline_version": "A-rule-estimate-20261112-v1.0",
+  "definition": "佐川急便の従来人手業務を参考にした規則ベース推計。実測・実アルゴリズムの再現ではない。",
+  "value_kind": "research_assumption",
+  "common_conditions_version": "AD-common-20261111-v1.1",
+  "common_conditions_sha256": "bbb15417a4eee5072f8118056c90ab422d792b4cedc35a6a06bf6bc0497fe8d2",
+  "random_seed": null,
+  "angle_offsets_deg": [0, 120, 240],
+  "tie_break": "stop_id_then_vehicle_index",
+  "methods": {
+    "A1": {"assignment": "contiguous_equal_count_angular_sectors", "order": "angular_sweep", "balance_moves_per_vehicle": 0, "relocation_passes": 0, "two_opt_passes": 0},
+    "A2": {"assignment": "sector_boundary_work_balance", "order": "directed_nearest_neighbor", "balance_moves_per_vehicle": 1, "relocation_passes": 0, "two_opt_passes": 0},
+    "A3": {"assignment": "sector_boundary_work_balance_then_distance_relocation", "order": "directed_nearest_neighbor_then_directed_two_opt", "balance_moves_per_vehicle": 1, "relocation_passes": 2, "two_opt_passes": 2}
+  },
+  "relocation": {"candidate_endpoints_per_vehicle": 2, "nearest_other_centroids": 2, "acceptance": "strict_total_route_distance_decrease", "distance_tolerance_m": 0.000001},
+  "trip_split": "successive_capacity_chunks_max_two",
+  "loading": {"rule": "global_ready_FCFS_then_vehicle_index_then_trip_number", "berth_choice": "earliest_available_then_berth_id", "repair_infeasible": false},
+  "human_time": {
+    "model_version": "workflow-assumptions-v1",
+    "evidence_level": "priority_3_explicit_workflow_sensitivity_NOT_observed_or_calibrated",
+    "staff_rules": ["one", "half_vehicles_ceil", "all_vehicles"],
+    "parallel_assignment": "LPT_greedy_vehicle_jobs_then_worker_index",
+    "profiles": {
+      "low": {"setup_s": 300, "assignment_s_per_stop": 2, "vehicle_setup_s": 60, "lookup_s_per_stop": 5, "ordering_s_per_stop": 5, "review_s_per_stop": 2, "coordination_s_per_used_vehicle": 30},
+      "central": {"setup_s": 600, "assignment_s_per_stop": 4, "vehicle_setup_s": 120, "lookup_s_per_stop": 10, "ordering_s_per_stop": 10, "review_s_per_stop": 4, "coordination_s_per_used_vehicle": 60},
+      "high": {"setup_s": 900, "assignment_s_per_stop": 8, "vehicle_setup_s": 240, "lookup_s_per_stop": 20, "ordering_s_per_stop": 20, "review_s_per_stop": 8, "coordination_s_per_used_vehicle": 120}
+    },
+    "serial_pipeline": ["setup", "central_vehicle_assignment", "parallel_vehicle_route_planning", "final_coordination"],
+    "include_observed_common_io_and_validation_overhead": true,
+    "public_Japan_Post_minutes_context_only": {"experienced": [5, 10], "novice": [30, 60], "reference_stop_count": null, "used_for_scaling": false},
+    "interpretation": "条件付き感度集合。人手実測や信頼区間・妥当な上下限ではない。"
+  },
+  "validation_cases": [
+    {"id": "ART_N6", "stops": 6, "vehicles": 2, "berths": 1},
+    {"id": "ART_N20", "stops": 20, "vehicles": 3, "berths": 1},
+    {"id": "ART_N120", "stops": 120, "vehicles": 2, "berths": 1},
+    {"id": "ART_N240", "stops": 240, "vehicles": 3, "berths": 1}
+  ],
+  "research_input_bundles": {"S1": null, "S2": null, "S3": null},
+  "range_policy": {"only_independently_feasible_plans": true, "unrun_is_null_not_zero": true, "interval_kind": "observed_scenario_set_min_max_median_not_confidence_interval", "same_plan_pairing_required": true},
+  "sources": [
+    {"url": "https://www.optimind.tech/news/ルート最適化システム「loogia」を佐川急便で導入を/", "use": "人手位置確認・順序決定という業務のみ。規則・秒数の根拠にはしない"},
+    {"url": "https://loogia.jp/cases/nihonyubin/", "use": "他社人手時間の外部文脈のみ。N不明なので換算・校正しない"}
+  ]
+}

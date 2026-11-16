@@ -1,0 +1,51 @@
+{
+  "experiment_id": "comparison_design_20261116_v1",
+  "run_id": "confirmation_retained_S3_D_r1",
+  "case_id": "S3",
+  "input_state": "VALID",
+  "termination_reason": "NORMAL",
+  "validation_state": "NATIVE_DEADLINE_REJECTED",
+  "adoptable": false,
+  "outer_tau_s": 240,
+  "outer_T_attempt_s": 177.8643861738965,
+  "native_cap_s": 150,
+  "native_T_program_s": 153.58415081095882,
+  "native_overrun_s": 3.5841508109588176,
+  "branches": [
+    {
+      "branch_id": 0,
+      "status": "VALIDATED",
+      "T_program_s": 109.3848020748701,
+      "quantum_calls": 79
+    },
+    {
+      "branch_id": 1,
+      "status": "VALIDATED",
+      "T_program_s": 109.51702509913594,
+      "quantum_calls": 80
+    },
+    {
+      "branch_id": 2,
+      "status": "VALIDATED",
+      "T_program_s": 109.38778611691669,
+      "quantum_calls": 80
+    },
+    {
+      "branch_id": 3,
+      "status": "VALIDATED",
+      "T_program_s": 109.5205249201972,
+      "quantum_calls": 81
+    }
+  ],
+  "result_sha256": "e662da8b02b48c63f1177badceb1a8c0465e105ac42f0f6a07297e904807c576",
+  "native_result_sha256": "1863205189bf7eeaf991d6e659865f1f2062afa78d27925dd7aacac5a09f1c44",
+  "interpretation": "all internal branches validated; native aggregate/selection/validation/transport exceeded cap; not an input-invalid or physical-infeasibility proof",
+  "decision": "main HOLD; current tau/internal profile is not finally adopted for main",
+  "performed_changes": false,
+  "retry_or_seed_replacement": false,
+  "required_before_main": [
+    "register a revised timing/allocation or budget candidate with sufficient aggregate/validation/transfer reserve",
+    "remeasure variance under revised settings with fresh seeds; no reuse of old variance as the new setting variance",
+    "select primary precision, rate precision, total main budget and treatment of observed zero variance"
+  ]
+}

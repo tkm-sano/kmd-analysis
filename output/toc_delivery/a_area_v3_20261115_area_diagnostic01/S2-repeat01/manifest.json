@@ -1,0 +1,37 @@
+{
+  "version": "A-area-v3-20261115-research-candidate",
+  "status": "VALIDATED",
+  "model_sha256": "30206923f994a46ab38eb724521ef54bdb9f5ade6f4273e02e4ca5e14c7c79f6",
+  "input_files_sha256": {
+    "input.json": "1eabfcf46843a18d60e3b8e247d4d009cd6140df81d3a4154e9da830775c2013",
+    "od/distance_m.npy": "d8d8beb9e84f749c032f3358bbfc5c792f5a339589b4174b3e984198177ea72a",
+    "od/duration_s.npy": "ec44e5a124d644e3eb8c045db200484d744ea62c433fe5662679574b68037c6d",
+    "od/manifest.json": "3de697376510522dab96a7dad8db6bb7e273e5c0b10eba62f5789d4fc0f1db77",
+    "od/reachable.npy": "d0dcceed299ccf90f178613fcdfd7826680d8d697e7cc8d2ca77f959a6bdfe29"
+  },
+  "T_scope": [
+    "model_read_and_hash",
+    "input_read_and_hash",
+    "assignment",
+    "order",
+    "trip_split",
+    "FCFS",
+    "all_timestamps",
+    "common_validation",
+    "independent_recalculation",
+    "agreement"
+  ],
+  "products_sha256": {
+    "config.json": "70080f36a2404a5e7533a31d8bd81cd8e8260368da721d937b9aa180a36e6f94",
+    "selected_model.json": "30206923f994a46ab38eb724521ef54bdb9f5ade6f4273e02e4ca5e14c7c79f6",
+    "plan.json": "3862fdabfa2f90d9012648461774a833c19d038c09d056b69ae606e7f894b56a",
+    "trips.csv": "94e76abf9babde2b167f27180288b14e53444f75ebf8351c3f91fada80fd4def",
+    "validation.json": "b18a2b7ebe91c523c4ad5d787d0dd5aa6ec9bca0d3368c24cda8471f6cdaec96",
+    "metrics.json": "e6bce42dc0b047b37423cabf26af3c4539732639b98b03d0d89daf4c3219e32e"
+  },
+  "source_sha256": {
+    "src/kmd_toc/baseline_a/area_program.py": "05288b2429c728f705ddfe00f299b3f7809ba8da14b7f4e18c7228594a236ea6",
+    "src/kmd_toc/baseline_a/area.py": "518c51de849db834661925f79170f46ca2b24647daa16438a6715f88dd4aeda3"
+  },
+  "main_experiment_eligible": false
+}

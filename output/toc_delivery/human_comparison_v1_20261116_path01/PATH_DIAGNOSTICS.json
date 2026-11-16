@@ -1,0 +1,524 @@
+{
+  "A": {
+    "status": "success",
+    "observed": false,
+    "D_km": 2.951,
+    "W_min": 90.0,
+    "W_first_min": 90.0,
+    "W_reload_min": 0.0,
+    "diagnostic_elapsed": {
+      "T_total_sec": 67.997910091,
+      "T_human_sec": 1.851336899,
+      "T_machine_sec": 59.764897207,
+      "T_other_sec": 6.381675985,
+      "partition_complete": true,
+      "partition_rounding_tolerance_sec": 1e-08,
+      "T_compute_sec": null
+    },
+    "adopted_T_total": null,
+    "hash": "007c1ba2c5aae2665d8f54228f7c276abe74343899013f1492f041e7a90b4300",
+    "cleanup": true
+  },
+  "B": {
+    "status": "success",
+    "observed": false,
+    "D_km": 1.66,
+    "W_min": 0.0,
+    "W_first_min": 0.0,
+    "W_reload_min": 0.0,
+    "diagnostic_elapsed": {
+      "T_total_sec": 82.614645886,
+      "T_human_sec": 0.0,
+      "T_machine_sec": 72.3677144,
+      "T_other_sec": 10.246931486,
+      "partition_complete": true,
+      "partition_rounding_tolerance_sec": 1e-08,
+      "T_compute_sec": 2.25436898
+    },
+    "adopted_T_total": null,
+    "hash": "ffd2867b60473f0170086574c72a20fed9770232761fdada1c46520d1c508ef1",
+    "cleanup": true,
+    "compute_spans": [
+      [
+        1901281344650368,
+        1901283598999038
+      ],
+      [
+        1901281344645338,
+        1901283597924603
+      ],
+      [
+        1901281344630658,
+        1901283598999638
+      ],
+      [
+        1901281344637198,
+        1901283598201924
+      ]
+    ],
+    "quantum": {
+      "backend": {
+        "statevector_backend": "qiskit",
+        "statevector_version": "2.1.1",
+        "sampling_backend": "qiskit.quantum_info.Statevector.sample_counts",
+        "sampling_version": "2.1.1"
+      },
+      "observed_quantum_timing_s": {
+        "circuit_build_s": 0,
+        "statevector_s": 0,
+        "state_validation_s": 0,
+        "sampling_only_s": 0,
+        "decode_s": 0,
+        "training_s": 0,
+        "final_processing_s": 0
+      },
+      "quantum_timing_scope": "native per-call/branch sums; overlapping components, never substitute for parent wall",
+      "parameter_optimization_spans": [],
+      "parameter_optimization_includes_objective_simulation": true,
+      "classical_and_simulator_component_spans": [
+        {
+          "event": "classical_CP_SAT_completion",
+          "start_ns": 1901282678514228,
+          "end_ns": 1901282800667277,
+          "pid": 1813528
+        },
+        {
+          "event": "classical_CP_SAT_completion",
+          "start_ns": 1901282677879505,
+          "end_ns": 1901282800666827,
+          "pid": 1813529
+        },
+        {
+          "event": "classical_CP_SAT_completion",
+          "start_ns": 1901282678512838,
+          "end_ns": 1901282800666977,
+          "pid": 1813530
+        },
+        {
+          "event": "classical_CP_SAT_completion",
+          "start_ns": 1901282678514388,
+          "end_ns": 1901282800667967,
+          "pid": 1813531
+        }
+      ],
+      "complete_quantum_accounting": true,
+      "real_quantum_hardware_used": false
+    },
+    "attempt_path": "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path01/B/attempts/0001_evaluate"
+  },
+  "C": {
+    "status": "success",
+    "observed": false,
+    "D_km": 1.309,
+    "W_min": 0.0,
+    "W_first_min": 0.0,
+    "W_reload_min": 0.0,
+    "diagnostic_elapsed": {
+      "T_total_sec": 84.982471764,
+      "T_human_sec": 0.0,
+      "T_machine_sec": 71.93093838,
+      "T_other_sec": 13.051533384,
+      "partition_complete": true,
+      "partition_rounding_tolerance_sec": 1e-08,
+      "T_compute_sec": 21.291179272
+    },
+    "adopted_T_total": null,
+    "hash": "98a319d88be769408d4dde395d749019e81addd2732536bf69d585c3e846cb31",
+    "cleanup": true,
+    "compute_spans": [
+      [
+        1901355498209644,
+        1901376788538252
+      ],
+      [
+        1901355497358980,
+        1901376788306291
+      ],
+      [
+        1901355497400800,
+        1901376788537582
+      ],
+      [
+        1901355497404230,
+        1901376788306271
+      ]
+    ],
+    "quantum": {
+      "backend": {
+        "statevector_backend": "qiskit",
+        "statevector_version": "2.1.1",
+        "sampling_backend": "qiskit.quantum_info.Statevector.sample_counts",
+        "sampling_version": "2.1.1"
+      },
+      "observed_quantum_timing_s": {
+        "circuit_build_s": 0,
+        "statevector_s": 0,
+        "state_validation_s": 0,
+        "sampling_only_s": 0,
+        "decode_s": 0,
+        "training_s": 0,
+        "final_processing_s": 0
+      },
+      "quantum_timing_scope": "native per-call/branch sums; overlapping components, never substitute for parent wall",
+      "parameter_optimization_spans": [],
+      "parameter_optimization_includes_objective_simulation": true,
+      "classical_and_simulator_component_spans": [
+        {
+          "event": "classical_OR_Routing",
+          "start_ns": 1901356753709062,
+          "end_ns": 1901374764598145,
+          "pid": 1817646
+        },
+        {
+          "event": "classical_CP_SAT_completion",
+          "start_ns": 1901375687913284,
+          "end_ns": 1901375832302595,
+          "pid": 1817646
+        },
+        {
+          "event": "classical_OR_Routing",
+          "start_ns": 1901356753698762,
+          "end_ns": 1901374764088433,
+          "pid": 1817647
+        },
+        {
+          "event": "classical_CP_SAT_completion",
+          "start_ns": 1901375686923209,
+          "end_ns": 1901375832304725,
+          "pid": 1817647
+        },
+        {
+          "event": "classical_OR_Routing",
+          "start_ns": 1901356753948433,
+          "end_ns": 1901374763882462,
+          "pid": 1817648
+        },
+        {
+          "event": "classical_CP_SAT_completion",
+          "start_ns": 1901375687882254,
+          "end_ns": 1901375832302745,
+          "pid": 1817648
+        },
+        {
+          "event": "classical_OR_Routing",
+          "start_ns": 1901356754238954,
+          "end_ns": 1901374764099573,
+          "pid": 1817649
+        },
+        {
+          "event": "classical_CP_SAT_completion",
+          "start_ns": 1901375687242280,
+          "end_ns": 1901375833555081,
+          "pid": 1817649
+        }
+      ],
+      "complete_quantum_accounting": true,
+      "real_quantum_hardware_used": false
+    },
+    "attempt_path": "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path01/C/attempts/0001_evaluate"
+  },
+  "D": {
+    "status": "success",
+    "observed": false,
+    "D_km": 1.66,
+    "W_min": 0.0,
+    "W_first_min": 0.0,
+    "W_reload_min": 0.0,
+    "diagnostic_elapsed": {
+      "T_total_sec": 75.363156251,
+      "T_human_sec": 0.0,
+      "T_machine_sec": 67.257933334,
+      "T_other_sec": 8.105222917,
+      "partition_complete": true,
+      "partition_rounding_tolerance_sec": 1e-08,
+      "T_compute_sec": 7.156869975
+    },
+    "adopted_T_total": null,
+    "hash": "9a412d53c1922ad384030e766caba234a77ad7b43b9f0491fdedc578b7af5563",
+    "cleanup": true,
+    "compute_spans": [
+      [
+        1901452549560650,
+        1901459602899625
+      ],
+      [
+        1901452549552780,
+        1901459603099886
+      ],
+      [
+        1901452549558420,
+        1901459603228056
+      ],
+      [
+        1901452549556820,
+        1901459706422755
+      ]
+    ],
+    "quantum": {
+      "backend": {
+        "statevector_backend": "qiskit",
+        "statevector_version": "2.1.1",
+        "sampling_backend": "qiskit.quantum_info.Statevector.sample_counts",
+        "sampling_version": "2.1.1"
+      },
+      "observed_quantum_timing_s": {
+        "circuit_build_s": 0.012922876980155706,
+        "statevector_s": 0.04406116483733058,
+        "state_validation_s": 0.0017172491643577814,
+        "sampling_only_s": 0.20017081405967474,
+        "decode_s": 0.0006650332361459732,
+        "training_s": 1.9156302271876484,
+        "final_processing_s": 1.9600148100871593
+      },
+      "quantum_timing_scope": "native per-call/branch sums; overlapping components, never substitute for parent wall",
+      "parameter_optimization_spans": [
+        {
+          "event": "parameter_optimization_including_objective_simulation",
+          "start_ns": 1901455404177613,
+          "end_ns": 1901455530015797,
+          "pid": 1820427
+        },
+        {
+          "event": "parameter_optimization_including_objective_simulation",
+          "start_ns": 1901456272138046,
+          "end_ns": 1901456397774629,
+          "pid": 1820427
+        },
+        {
+          "event": "parameter_optimization_including_objective_simulation",
+          "start_ns": 1901455404365034,
+          "end_ns": 1901455534851562,
+          "pid": 1820428
+        },
+        {
+          "event": "parameter_optimization_including_objective_simulation",
+          "start_ns": 1901456272277667,
+          "end_ns": 1901456405947011,
+          "pid": 1820428
+        },
+        {
+          "event": "parameter_optimization_including_objective_simulation",
+          "start_ns": 1901455404424444,
+          "end_ns": 1901455529644185,
+          "pid": 1820429
+        },
+        {
+          "event": "parameter_optimization_including_objective_simulation",
+          "start_ns": 1901456272197576,
+          "end_ns": 1901456403633379,
+          "pid": 1820429
+        },
+        {
+          "event": "parameter_optimization_including_objective_simulation",
+          "start_ns": 1901455508645258,
+          "end_ns": 1901455689740005,
+          "pid": 1820430
+        },
+        {
+          "event": "parameter_optimization_including_objective_simulation",
+          "start_ns": 1901456382649372,
+          "end_ns": 1901456506189084,
+          "pid": 1820430
+        }
+      ],
+      "parameter_optimization_includes_objective_simulation": true,
+      "classical_and_simulator_component_spans": [
+        {
+          "event": "classical_CP_SAT_completion",
+          "start_ns": 1901453500743589,
+          "end_ns": 1901453610897653,
+          "pid": 1820427
+        },
+        {
+          "event": "classical_master_IP",
+          "start_ns": 1901454543223956,
+          "end_ns": 1901454757280042,
+          "pid": 1820427
+        },
+        {
+          "event": "classical_master_IP",
+          "start_ns": 1901454882197191,
+          "end_ns": 1901454988932987,
+          "pid": 1820427
+        },
+        {
+          "event": "simulator_final_circuit_build_and_evolution",
+          "start_ns": 1901455665893913,
+          "end_ns": 1901455776498079,
+          "pid": 1820427
+        },
+        {
+          "event": "simulator_final_circuit_build_and_evolution",
+          "start_ns": 1901456491262647,
+          "end_ns": 1901456603106770,
+          "pid": 1820427
+        },
+        {
+          "event": "classical_master_IP",
+          "start_ns": 1901456922670666,
+          "end_ns": 1901457030045216,
+          "pid": 1820427
+        },
+        {
+          "event": "classical_master_IP",
+          "start_ns": 1901457171664940,
+          "end_ns": 1901457281509233,
+          "pid": 1820427
+        },
+        {
+          "event": "classical_CP_SAT_completion",
+          "start_ns": 1901458242846713,
+          "end_ns": 1901458355443210,
+          "pid": 1820427
+        },
+        {
+          "event": "classical_CP_SAT_completion",
+          "start_ns": 1901453500741969,
+          "end_ns": 1901453610890743,
+          "pid": 1820428
+        },
+        {
+          "event": "classical_master_IP",
+          "start_ns": 1901454543175966,
+          "end_ns": 1901454757280022,
+          "pid": 1820428
+        },
+        {
+          "event": "classical_master_IP",
+          "start_ns": 1901454882007810,
+          "end_ns": 1901454988932447,
+          "pid": 1820428
+        },
+        {
+          "event": "simulator_final_circuit_build_and_evolution",
+          "start_ns": 1901455665890553,
+          "end_ns": 1901455776655520,
+          "pid": 1820428
+        },
+        {
+          "event": "simulator_final_circuit_build_and_evolution",
+          "start_ns": 1901456491261358,
+          "end_ns": 1901456603073880,
+          "pid": 1820428
+        },
+        {
+          "event": "classical_master_IP",
+          "start_ns": 1901456922574945,
+          "end_ns": 1901457043461564,
+          "pid": 1820428
+        },
+        {
+          "event": "classical_master_IP",
+          "start_ns": 1901457171876811,
+          "end_ns": 1901457281507693,
+          "pid": 1820428
+        },
+        {
+          "event": "classical_CP_SAT_completion",
+          "start_ns": 1901458242844913,
+          "end_ns": 1901458355055338,
+          "pid": 1820428
+        },
+        {
+          "event": "classical_CP_SAT_completion",
+          "start_ns": 1901453500739949,
+          "end_ns": 1901453610895433,
+          "pid": 1820429
+        },
+        {
+          "event": "classical_master_IP",
+          "start_ns": 1901454543339446,
+          "end_ns": 1901454757283831,
+          "pid": 1820429
+        },
+        {
+          "event": "classical_master_IP",
+          "start_ns": 1901454882200511,
+          "end_ns": 1901454988933667,
+          "pid": 1820429
+        },
+        {
+          "event": "simulator_final_circuit_build_and_evolution",
+          "start_ns": 1901455665676512,
+          "end_ns": 1901455776667260,
+          "pid": 1820429
+        },
+        {
+          "event": "simulator_final_circuit_build_and_evolution",
+          "start_ns": 1901456491148027,
+          "end_ns": 1901456603046630,
+          "pid": 1820429
+        },
+        {
+          "event": "classical_master_IP",
+          "start_ns": 1901456923044738,
+          "end_ns": 1901457030064516,
+          "pid": 1820429
+        },
+        {
+          "event": "classical_master_IP",
+          "start_ns": 1901457171830401,
+          "end_ns": 1901457281511773,
+          "pid": 1820429
+        },
+        {
+          "event": "classical_CP_SAT_completion",
+          "start_ns": 1901458242672572,
+          "end_ns": 1901458355533410,
+          "pid": 1820429
+        },
+        {
+          "event": "classical_CP_SAT_completion",
+          "start_ns": 1901453500434517,
+          "end_ns": 1901453610890303,
+          "pid": 1820430
+        },
+        {
+          "event": "classical_master_IP",
+          "start_ns": 1901454656457855,
+          "end_ns": 1901454882099801,
+          "pid": 1820430
+        },
+        {
+          "event": "classical_master_IP",
+          "start_ns": 1901454986522985,
+          "end_ns": 1901455102621369,
+          "pid": 1820430
+        },
+        {
+          "event": "simulator_final_circuit_build_and_evolution",
+          "start_ns": 1901455768478678,
+          "end_ns": 1901455881644577,
+          "pid": 1820430
+        },
+        {
+          "event": "simulator_final_circuit_build_and_evolution",
+          "start_ns": 1901456596928648,
+          "end_ns": 1901456708654420,
+          "pid": 1820430
+        },
+        {
+          "event": "classical_master_IP",
+          "start_ns": 1901457031457143,
+          "end_ns": 1901457174030913,
+          "pid": 1820430
+        },
+        {
+          "event": "classical_master_IP",
+          "start_ns": 1901457279190411,
+          "end_ns": 1901457391634156,
+          "pid": 1820430
+        },
+        {
+          "event": "classical_CP_SAT_completion",
+          "start_ns": 1901458349406109,
+          "end_ns": 1901458502554773,
+          "pid": 1820430
+        }
+      ],
+      "complete_quantum_accounting": true,
+      "real_quantum_hardware_used": false
+    },
+    "attempt_path": "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path01/D/attempts/0001_evaluate"
+  }
+}

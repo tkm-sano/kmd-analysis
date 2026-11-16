@@ -1,0 +1,51 @@
+diff --git a/.gitignore b/.gitignore
+index 3eb33c6..daddd46 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -264,6 +264,16 @@ docker-compose.override.yml
+ !03_data/processed/traffic_simulation/README.md
+ !03_data/processed/traffic_simulation/**/.gitkeep
+ 
++# The reviewed ToC common-input v1 is versioned; raw/historical datasets stay ignored.
++!03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/S1.csv
++!03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/S2.csv
++!03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/S3.csv
++!03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/REGIONAL_ALLOCATION.csv
++!03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/MANIFEST.json
++!03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/SHA256SUMS
++!03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/VALIDATION.json
++!03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/READING_CONTRACT.md
++
+ # Third-party source material is fetched locally; version only registries and
+ # directory documentation.  Keep the traffic-simulation skeleton so every
+ # environment uses the same source-specific paths without tracking downloads.
+diff --git a/README.md b/README.md
+index 1aa49ff..88a6b60 100644
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,25 @@
++# 大田区ToC配送の三目的比較
++
++2026-11-08からの新研究は、京浜トラックターミナルを起点とする仮想拠点、動力方式を特定しない**配送車両**、単一拠点・複数車両・各車1日2便を対象とする。個別顧客の時間窓は設定しない。総走行距離D［km］、積込待機時間W［分］、計画取得時間T［秒］を、同じ需要・共通制約で比較する。
++
++**RQ：** 京浜トラックターミナルを起点とする大田区内のToC配送において、量子計算は、配送実績を想定するベースライン、従来的な手法、古典最適化計算と比較して、全車両の総走行距離、積込待機時間、配送計画の計算時間という三目的について、どのような性能差とトレードオフを示すか。
++
++現状は**仕様更新済み・運行値と需要定義にHOLDあり・新研究の本実験未実施**。S1＝1,000／10台／2バース、S2＝2,000／20台／4バース、S3＝4,000／40台／8バースは研究仮定であり、施設の実績ではない。Nの顧客数／一意訪問地点数の解釈もHOLDとして管理する。想定実績ベースラインは代理計画である。
++
++|入口|内容|
++|---|---|
++|[更新した研究計画DOCX](research_plan_toc_three_objectives_faceted_20261108.docx)|既存の計画を改訂。模式図は結果として使用しない|
++|[実装仕様・HOLD・開発順序](docs/research/TOC_DELIVERY_SPEC.md)|需要整数配分、2便とバースの連動、比較・指標・図の契約|
++|[新研究の設定](configs/toc_delivery/study.json)|未決定値はnull、候補値は未採択として分離|
++|[独立した契約コード](src/kmd_toc/)|設定検査・整数配分・三目的比較。全体ソルバーは未実装|
++|[監査・再利用可否・検証記録](docs/audits/toc_scope_20261108/REPORT.md)|旧成果保全、A〜D分類、実施内容と既存検証の問題|
++
++新研究の契約検査は `python -B tests/test_toc_contracts.py`。これは科学実験を実行しない。過去研究の数値を新研究の結果へ転用しない。
++
++---
++
++以下は過去研究の説明である。従来の仕様・コード・凍結成果・再現手順を履歴として保持し、新研究の採用条件や結果とは区別する。
++
+ # 量子技術がEV配送の定時配達率と走行時のバッテリー消費電力量に影響を及ぼす仕組みと成立条件
+ 
+ **反証志向型インタビューとRIQによる成立条件の検討**

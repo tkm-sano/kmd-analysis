@@ -1,0 +1,80 @@
+{
+  "timestamp": "2026-11-15T03:53:20.889220+00:00",
+  "config": {
+    "version": "A-area-v3-20261115-research-candidate",
+    "seed": 20261115,
+    "data_root": "/home/takuma/.cache/kmd-analysis/external/amazon_sequence_validation_20261114_v1",
+    "prior_selection": "output/toc_delivery/a_sequence_external_20261114_v1_check04_final/SELECTION.json",
+    "split": {
+      "calibration_stations": 6,
+      "validation_stations": 6,
+      "dates_per_station": 3,
+      "routes_per_date": 2,
+      "calibration_pool": "previously scored stations, excluding every previously scored station-day",
+      "validation_pool": "stations never scored in prior study",
+      "ranking": "SHA256(seed|split|station), SHA256(seed|split|station|date), SHA256(seed|split|route_id)",
+      "max_routes_each": 36
+    },
+    "candidates": {
+      "leaf_capacities": [
+        6,
+        12,
+        24
+      ],
+      "stay_factors": [
+        1.5,
+        3.0,
+        null
+      ],
+      "include_unmodified_NN_control_as_selectable": true,
+      "None_stay_factor": "strict same-area priority until exhausted; exploratory extreme"
+    },
+    "partition": "recursive median split along longest depot-centered metric-coordinate extent; stop-ID ties; maximum leaf capacity",
+    "ordering": "prefer nearest remaining stop in current area if its directed cost <=stay_factor*globally nearest cost; otherwise globally nearest; start globally nearest from depot",
+    "calibration_loss": "mean over station-day clusters of (Amazon score + abs(known-zone reentry rate minus actual) + abs(log(matrix travel-time ratio to actual)))/3",
+    "selection": "minimum calibration_loss; tie within1e-12 prefer NN then smaller leaf capacity and weaker stay factor",
+    "validation_primary": "cluster mean selected_model_loss minus NN_loss; bootstrap descriptive95 interval; negative improvement",
+    "equivalence_margin": null,
+    "full_representativeness_PASS_allowed": false,
+    "supplied_zone_diagnostic": "same selected preference with native zone IDs; no actual order as feature; not deployable Ota rule",
+    "geographic_sensitivity": "selected automatic model with coordinate-distance ordering, evaluated on native time matrix; not road-distance validation",
+    "bootstrap_repetitions": 5000,
+    "limits": {
+      "analysis_wall_s": 300,
+      "native_threads": 1,
+      "main_experiment": false,
+      "S1_S3_repetitions": 2,
+      "program_limit_s": 180,
+      "process_limit_s": 300
+    },
+    "adoption": "only limited candidate under assumed common conditions; final target-operations evidence assessed separately",
+    "protected": [
+      "RQ",
+      "hypothesis",
+      "README",
+      "frozen demand",
+      "Route OD",
+      "A2",
+      "B/C/D algorithms",
+      "past outputs"
+    ],
+    "bootstrap_unit": "station",
+    "diagnostics": [
+      "NN_time",
+      "selected_auto_time",
+      "best_area_auto_time",
+      "best_area_supplied_time",
+      "best_area_auto_geodesic",
+      "NN_geodesic",
+      "Actual"
+    ],
+    "diagnostic_parameter_rule": "best_area minimizes the same calibration loss among area candidates, even if NN wins overall; never chosen on holdout"
+  },
+  "config_sha256": "70080f36a2404a5e7533a31d8bd81cd8e8260368da721d937b9aa180a36e6f94",
+  "source_hashes": {
+    "src/kmd_toc/baseline_a/area_study.py": "52a75c19f6a3aaf21576faab5b9cffa2c208496b17b37bfd041e39ecfb4d8fc6",
+    "src/kmd_toc/baseline_a/area.py": "518c51de849db834661925f79170f46ca2b24647daa16438a6715f88dd4aeda3",
+    "configs/toc_delivery/a_area_v3.json": "70080f36a2404a5e7533a31d8bd81cd8e8260368da721d937b9aa180a36e6f94"
+  },
+  "validation_outcomes_used": false
+}

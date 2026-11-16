@@ -1,0 +1,98 @@
+{
+  "checks": [
+    {
+      "項目": "A1横・全1ページ",
+      "状態": "PASS",
+      "確認内容": "841×594mm"
+    },
+    {
+      "項目": "全テキストのPDF内存在",
+      "状態": "PASS",
+      "確認内容": "72ブロック。欠落0"
+    },
+    {
+      "項目": "文字矩形の重なりなし",
+      "状態": "PASS",
+      "確認内容": "[]"
+    },
+    {
+      "項目": "全ブロックが用紙内",
+      "状態": "PASS",
+      "確認内容": "座標・高さガード"
+    },
+    {
+      "項目": "編集可能な図・本文",
+      "状態": "PASS",
+      "確認内容": "画像化せず、ネイティブ図形・コネクタ・テキストを使用"
+    },
+    {
+      "項目": "破線・点線のネイティブ線種",
+      "状態": "PASS",
+      "確認内容": "PPTXとPDFの線種を対応させた"
+    },
+    {
+      "項目": "2経路・段階・接続の登録",
+      "状態": "PASS",
+      "確認内容": "主要10段階、21接続。外生条件と内部往復も別登録"
+    },
+    {
+      "項目": "図の全端点が登録済み",
+      "状態": "PASS",
+      "確認内容": "内部計算・外生条件・入力合流点を含む"
+    },
+    {
+      "項目": "前版と研究根拠の保全",
+      "状態": "PASS",
+      "確認内容": "8対象を開始時hashと照合"
+    },
+    {
+      "項目": "数値来歴の維持",
+      "状態": "PASS",
+      "確認内容": "前版92行をそのまま参照。新規計算結果は追加していない"
+    }
+  ],
+  "missing": [],
+  "overlaps": [],
+  "preserved": [
+    {
+      "path": "/home/takuma/kmd-analysis/review_outputs/poster_policy_revision_20261104/run06/poster.pptx",
+      "sha256": "6706597122b0be5cd7aecb62ca189aaf4da034ba92d685b349a7fc51e2a8bd0c",
+      "unchanged": true
+    },
+    {
+      "path": "/home/takuma/kmd-analysis/review_outputs/poster_policy_revision_20261104/run06/poster.pdf",
+      "sha256": "32db6efac18ca8b46bb957e87149b9b4ca713fec43642ccedd143e3120b96b54",
+      "unchanged": true
+    },
+    {
+      "path": "/home/takuma/kmd-analysis/review_outputs/poster_policy_revision_20261104/run06/poster_text.txt",
+      "sha256": "313dfae821b685ca402aa9e905df106054187fe783ad330c840e8dbe0c876458",
+      "unchanged": true
+    },
+    {
+      "path": "/home/takuma/kmd-analysis/review_outputs/poster_policy_revision_20261104/run06/evidence/CURRENT_AUDIT.json",
+      "sha256": "645084dbdea7ebfd997cd163fc6cf76637063259af8581a0553f2c145e8bdd5b",
+      "unchanged": true
+    },
+    {
+      "path": "/home/takuma/kmd-analysis/review_outputs/poster_policy_revision_20261104/run06/reports/03_NUMERIC_PROVENANCE.csv",
+      "sha256": "9f416564ff55638a1abf1e41dbc76f4b362615e8187de984c12f232cf3822b89",
+      "unchanged": true
+    },
+    {
+      "path": "/home/takuma/kmd-analysis/review_outputs/poster_policy_revision_20261104/run06/reports/05_CONDITIONS.csv",
+      "sha256": "307eaf215b336bc922a94f040223a55aaf4769383bdd1e8db29c8d213a0e9030",
+      "unchanged": true
+    },
+    {
+      "path": "/home/takuma/kmd-analysis/review_outputs/quantum_ev_step4_evidence_decisions_20261104_183654/CLAIM_EVIDENCE_MATRIX.csv",
+      "sha256": "85dcc49b07ec59056275175e339b30eb0dfc5abf5d6ff5acce1a2b02a0fce5fe",
+      "unchanged": true
+    },
+    {
+      "path": "/home/takuma/kmd-analysis/review_outputs/quantum_ev_step4_evidence_decisions_20261104_183654/STEP4_EVIDENCE_DECISIONS.md",
+      "sha256": "cc64227d2e4422406703fd333123ca4ba3609e9771b7773416bb5c9db62e4299",
+      "unchanged": true
+    }
+  ]
+}

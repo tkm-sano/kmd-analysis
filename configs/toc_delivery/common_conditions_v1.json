@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "conditions_version": "AD-common-20261111-v1.0",
+  "adopted_on": "2026-11-11",
+  "authority": "user_instruction_20261111",
+  "value_kind": "research_assumption",
+  "scope": {
+    "region": "東京都大田区",
+    "depot_name": "京浜トラックターミナル",
+    "delivery": "ToC",
+    "depots": 1,
+    "homogeneous_vehicles": true,
+    "customer_time_windows": false,
+    "fixed_customer_vehicle_assignment": false,
+    "unused_vehicles_allowed": true,
+    "ev_conditions": false
+  },
+  "units": {"distance": "m", "travel_time": "s", "clock": "s_since_midnight_Asia/Tokyo", "demand": "delivery_unit", "D": "km", "W": "min", "T": "s"},
+  "operations": {
+    "demand_per_stop": 1,
+    "capacity_per_trip": 60,
+    "max_trips_per_vehicle": 2,
+    "service_s": 120,
+    "loading_s": 1800,
+    "preparation_s": 900,
+    "opening_s": 28800,
+    "closing_s": 72000,
+    "first_ready_span_s": 3600
+  },
+  "first_ready_rule": "opening_s + (3600 * (2*v+1)) // (2*V)",
+  "scenarios": {"S1": {"stops": 1000, "vehicles": 10, "berths": 2}, "S2": {"stops": 2000, "vehicles": 20, "berths": 4}, "S3": {"stops": 4000, "vehicles": 40, "berths": 8}},
+  "timing_policy": {
+    "travel_rounding": "ceil_each_arc_to_seconds",
+    "departure": "loading_end",
+    "service_start": "arrival",
+    "arbitrary_route_waiting": false,
+    "berth_interval": "half_open",
+    "preparation_occupies_berth": false,
+    "loading_preemptive": false,
+    "T_start": "before_common_input_load",
+    "T_end": "after_final_independent_validation",
+    "AOA_time": "quantum_circuit_simulator_wall_time"
+  },
+  "road_policy": {
+    "source": "OpenStreetMap",
+    "router": "OSRM",
+    "directed": true,
+    "time_dependent_congestion": false,
+    "distance_definition": "distance_of_fastest_route",
+    "distance_and_duration": "same_table_response",
+    "fallback_speed_allowed": false,
+    "local_only": true,
+    "snap_review_required": true,
+    "snap_alert_m": 100,
+    "block_size": 100
+  },
+  "comparison": {"A": "sourced_actual_or_reference_levels", "B": "VeRyPy_Clarke_Wright", "C": "OR_Tools", "D": "Huang_CG_AOA", "multiobjective": "bidirectional_epsilon_constraint", "epsilon_W_min": null, "epsilon_D_km": null},
+  "provenance": {
+    "operational_values": {"kind": "research_assumption", "source": "user_instruction_20261111", "measured": false},
+    "scenario_sizes": {"kind": "research_assumption", "source": "frozen_demand_v1"},
+    "road_definition": {"kind": "documentation", "source": "https://project-osrm.org/docs/v26.5.0/http"},
+    "road_license": {"kind": "documentation", "source": "https://www.openstreetmap.org/copyright"},
+    "snap_alert_m": {"kind": "audit_policy", "source": "common_v1_implementation; alert only, never auto-approval"}
+  },
+  "unresolved": ["verified_vehicle_entrance", "reviewed_OSRM_snaps", "OSRM_graph_and_full_OD", "A_sourced_comparable_reference", "B_C_D_full_adapters", "shared_resource_budget_and_seeds", "epsilon_levels_after_feasible_reference"],
+  "legal_compliance_claim": false
+}

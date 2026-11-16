@@ -1,0 +1,258 @@
+{
+  "experiment_id": "comparison_design_20261116_v1",
+  "contract_id": "whole-method-A_rule_v1-20261115-comparison-v1",
+  "T_kind": "comparison_parent_wall_including_process_setup_v1",
+  "phase": "selection_pilot",
+  "cases": [
+    {
+      "case_id": "S1",
+      "scenario_id": "ota-toc-frozen-demand-v1:S1",
+      "scale": "S1",
+      "input_dir": "/home/takuma/kmd-analysis/output/toc_delivery/ad_pipeline_20261112_route_v2/roads/inputs/S1",
+      "budget_wall_s": 120,
+      "case_parameters": {
+        "BCD_epsilon_W_min": null,
+        "BCD_native_cap_s": 60
+      }
+    },
+    {
+      "case_id": "S2",
+      "scenario_id": "ota-toc-frozen-demand-v1:S2",
+      "scale": "S2",
+      "input_dir": "/home/takuma/kmd-analysis/output/toc_delivery/ad_pipeline_20261112_route_v2/roads/inputs/S2",
+      "budget_wall_s": 120,
+      "case_parameters": {
+        "BCD_epsilon_W_min": null,
+        "BCD_native_cap_s": 60
+      }
+    },
+    {
+      "case_id": "S3",
+      "scenario_id": "ota-toc-frozen-demand-v1:S3",
+      "scale": "S3",
+      "input_dir": "/home/takuma/kmd-analysis/output/toc_delivery/ad_pipeline_20261112_route_v2/roads/inputs/S3",
+      "budget_wall_s": 120,
+      "case_parameters": {
+        "BCD_epsilon_W_min": null,
+        "BCD_native_cap_s": 60
+      }
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "selection_pilot_lean_S1_D_CLASSICAL_REPLACEMENT_r1",
+      "case_id": "S1",
+      "method": "D_CLASSICAL_REPLACEMENT",
+      "attempt_id": 1,
+      "repeat_id": 1,
+      "pair_id": "S1_r1",
+      "retry_of": null,
+      "solver_seed": 126373517,
+      "quantum_seed": null,
+      "reference_group_id": "selection_pilot_S1_A"
+    },
+    {
+      "run_id": "selection_pilot_lean_S2_A_r1",
+      "case_id": "S2",
+      "method": "A",
+      "attempt_id": 1,
+      "repeat_id": 1,
+      "pair_id": "S2_r1",
+      "retry_of": null,
+      "solver_seed": null,
+      "quantum_seed": null,
+      "reference_group_id": "selection_pilot_S2_A"
+    },
+    {
+      "run_id": "selection_pilot_lean_S3_D_CLASSICAL_REPLACEMENT_r1",
+      "case_id": "S3",
+      "method": "D_CLASSICAL_REPLACEMENT",
+      "attempt_id": 1,
+      "repeat_id": 1,
+      "pair_id": "S3_r1",
+      "retry_of": null,
+      "solver_seed": 1651767149,
+      "quantum_seed": null,
+      "reference_group_id": "selection_pilot_S3_A"
+    },
+    {
+      "run_id": "selection_pilot_lean_S1_D_r1",
+      "case_id": "S1",
+      "method": "D",
+      "attempt_id": 1,
+      "repeat_id": 1,
+      "pair_id": "S1_r1",
+      "retry_of": null,
+      "solver_seed": 1105262808,
+      "quantum_seed": 2035870092,
+      "reference_group_id": "selection_pilot_S1_A"
+    },
+    {
+      "run_id": "selection_pilot_lean_S3_D_r1",
+      "case_id": "S3",
+      "method": "D",
+      "attempt_id": 1,
+      "repeat_id": 1,
+      "pair_id": "S3_r1",
+      "retry_of": null,
+      "solver_seed": 245368288,
+      "quantum_seed": 1322518272,
+      "reference_group_id": "selection_pilot_S3_A"
+    },
+    {
+      "run_id": "selection_pilot_lean_S1_C_r1",
+      "case_id": "S1",
+      "method": "C",
+      "attempt_id": 1,
+      "repeat_id": 1,
+      "pair_id": "S1_r1",
+      "retry_of": null,
+      "solver_seed": 545635727,
+      "quantum_seed": null,
+      "reference_group_id": "selection_pilot_S1_A"
+    },
+    {
+      "run_id": "selection_pilot_lean_S2_D_CLASSICAL_REPLACEMENT_r1",
+      "case_id": "S2",
+      "method": "D_CLASSICAL_REPLACEMENT",
+      "attempt_id": 1,
+      "repeat_id": 1,
+      "pair_id": "S2_r1",
+      "retry_of": null,
+      "solver_seed": 1505049540,
+      "quantum_seed": null,
+      "reference_group_id": "selection_pilot_S2_A"
+    },
+    {
+      "run_id": "selection_pilot_lean_S3_C_r1",
+      "case_id": "S3",
+      "method": "C",
+      "attempt_id": 1,
+      "repeat_id": 1,
+      "pair_id": "S3_r1",
+      "retry_of": null,
+      "solver_seed": 814275028,
+      "quantum_seed": null,
+      "reference_group_id": "selection_pilot_S3_A"
+    },
+    {
+      "run_id": "selection_pilot_lean_S2_B_r1",
+      "case_id": "S2",
+      "method": "B",
+      "attempt_id": 1,
+      "repeat_id": 1,
+      "pair_id": "S2_r1",
+      "retry_of": null,
+      "solver_seed": 1660492686,
+      "quantum_seed": null,
+      "reference_group_id": "selection_pilot_S2_A"
+    },
+    {
+      "run_id": "selection_pilot_lean_S1_B_r1",
+      "case_id": "S1",
+      "method": "B",
+      "attempt_id": 1,
+      "repeat_id": 1,
+      "pair_id": "S1_r1",
+      "retry_of": null,
+      "solver_seed": 1115404031,
+      "quantum_seed": null,
+      "reference_group_id": "selection_pilot_S1_A"
+    },
+    {
+      "run_id": "selection_pilot_lean_S3_B_r1",
+      "case_id": "S3",
+      "method": "B",
+      "attempt_id": 1,
+      "repeat_id": 1,
+      "pair_id": "S3_r1",
+      "retry_of": null,
+      "solver_seed": 645284898,
+      "quantum_seed": null,
+      "reference_group_id": "selection_pilot_S3_A"
+    },
+    {
+      "run_id": "selection_pilot_lean_S2_C_r1",
+      "case_id": "S2",
+      "method": "C",
+      "attempt_id": 1,
+      "repeat_id": 1,
+      "pair_id": "S2_r1",
+      "retry_of": null,
+      "solver_seed": 855447189,
+      "quantum_seed": null,
+      "reference_group_id": "selection_pilot_S2_A"
+    },
+    {
+      "run_id": "selection_pilot_lean_S1_A_r1",
+      "case_id": "S1",
+      "method": "A",
+      "attempt_id": 1,
+      "repeat_id": 1,
+      "pair_id": "S1_r1",
+      "retry_of": null,
+      "solver_seed": null,
+      "quantum_seed": null,
+      "reference_group_id": "selection_pilot_S1_A"
+    },
+    {
+      "run_id": "selection_pilot_lean_S2_D_r1",
+      "case_id": "S2",
+      "method": "D",
+      "attempt_id": 1,
+      "repeat_id": 1,
+      "pair_id": "S2_r1",
+      "retry_of": null,
+      "solver_seed": 714558757,
+      "quantum_seed": 2107294917,
+      "reference_group_id": "selection_pilot_S2_A"
+    },
+    {
+      "run_id": "selection_pilot_lean_S3_A_r1",
+      "case_id": "S3",
+      "method": "A",
+      "attempt_id": 1,
+      "repeat_id": 1,
+      "pair_id": "S3_r1",
+      "retry_of": null,
+      "solver_seed": null,
+      "quantum_seed": null,
+      "reference_group_id": "selection_pilot_S3_A"
+    }
+  ],
+  "reference_groups": [
+    {
+      "group_id": "selection_pilot_S1_A",
+      "purpose": "selection_pilot",
+      "required_count": 1,
+      "run_ids": [
+        "selection_pilot_lean_S1_A_r1"
+      ]
+    },
+    {
+      "group_id": "selection_pilot_S2_A",
+      "purpose": "selection_pilot",
+      "required_count": 1,
+      "run_ids": [
+        "selection_pilot_lean_S2_A_r1"
+      ]
+    },
+    {
+      "group_id": "selection_pilot_S3_A",
+      "purpose": "selection_pilot",
+      "required_count": 1,
+      "run_ids": [
+        "selection_pilot_lean_S3_A_r1"
+      ]
+    }
+  ],
+  "design_extension": {
+    "rules_path": "configs/toc_delivery/comparison_design_20261116_v1.json",
+    "rules_sha256": "4ad226e186b16c8d42fa3aa2fd448425575dc8cc202e5f78152c18abdc9f47e4",
+    "profile": "lean",
+    "settings_lock": null,
+    "dependency_prefix": "/opt/miniconda/envs/qgpu/lib/python3.12/site-packages",
+    "tree_memory_limit_MiB": 32768,
+    "pipeline_deadline_perf_counter": 1907781.804659955
+  }
+}

@@ -1,0 +1,668 @@
+{
+  "status": "PASS",
+  "phase": "contract_check",
+  "real_human_measurements": 0,
+  "common_input_and_OD": true,
+  "sequential_methods": true,
+  "all_group_cleanup": true,
+  "A_to_D_paths": [
+    {
+      "method": "A",
+      "method_version": "A_human_v1-20261116",
+      "observed": false,
+      "status": "success",
+      "D_km_fixture": 2.951,
+      "W_min_fixture": 90.0,
+      "W_first_min_fixture": 90.0,
+      "W_reload_min_fixture": 0.0,
+      "diagnostic_elapsed_sec": 22.634970878,
+      "diagnostic_algorithm_union_sec": null,
+      "adopted_T_total_sec": null,
+      "plan_sha256": "007c1ba2c5aae2665d8f54228f7c276abe74343899013f1492f041e7a90b4300",
+      "evidence_path": "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/A",
+      "route": "manual_identity_order_capacity_split_FCFS"
+    },
+    {
+      "method": "B",
+      "method_version": "DWT-v1.4-CPU-parallel-multistart-20261113",
+      "observed": false,
+      "status": "success",
+      "D_km_fixture": 1.66,
+      "W_min_fixture": 0.0,
+      "W_first_min_fixture": 0.0,
+      "W_reload_min_fixture": 0.0,
+      "diagnostic_elapsed_sec": 44.470270003,
+      "diagnostic_algorithm_union_sec": 1.580278799,
+      "adopted_T_total_sec": null,
+      "plan_sha256": "5aaf216100d351b4d0f83bcd450e42894d28f64dea9540a6158d939c35e9a12b",
+      "evidence_path": "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/B",
+      "route": "VeRyPy_savings_order_with_explicit_directed_tail_to_head_CW_extension",
+      "branches": [
+        {
+          "status": "VALIDATED",
+          "D_km": 1.66,
+          "W_min": 0.0,
+          "T_program_s": 2.521479905117303,
+          "T_attempt_wall_s": 2.521479905117303,
+          "process_cpu_s": 0.028968616999999995,
+          "max_rss_KiB": 103904,
+          "quantum_seed_used": false,
+          "error": null,
+          "input_hash": "d5cc88bcf354a7c945075629970484dbb62020fccf0c094fac4f1f924a72371a",
+          "OD_hash": "99527788c0e47a087921e72eddcc1dd915af518857f15145e983029ee0b15fc8",
+          "branch_id": 0,
+          "pid": 1864090,
+          "cpu_affinity": [
+            0
+          ],
+          "seeds": {
+            "solver_seed": 916571769,
+            "quantum_seed": 3195192707,
+            "validation_seed": null
+          },
+          "exitcode": 0,
+          "timed_out": false,
+          "children_joined": true,
+          "quantum_calls": 0,
+          "quantum_accounting_complete": true,
+          "quantum_backend_environment": {
+            "statevector_backend": "qiskit",
+            "statevector_version": "2.1.1",
+            "sampling_backend": "qiskit.quantum_info.Statevector.sample_counts",
+            "sampling_version": "2.1.1"
+          },
+          "statevector_backends_observed": [],
+          "observed_quantum_timing_s": {
+            "circuit_build_s": 0,
+            "statevector_s": 0,
+            "state_validation_s": 0,
+            "sampling_only_s": 0,
+            "decode_s": 0,
+            "training_s": 0,
+            "final_processing_s": 0
+          },
+          "training_shots": 0,
+          "final_shots": 0
+        },
+        {
+          "status": "VALIDATED",
+          "D_km": 1.66,
+          "W_min": 0.0,
+          "T_program_s": 2.335814638994634,
+          "T_attempt_wall_s": 2.335814638994634,
+          "process_cpu_s": 0.02200493,
+          "max_rss_KiB": 106976,
+          "quantum_seed_used": false,
+          "error": null,
+          "input_hash": "d5cc88bcf354a7c945075629970484dbb62020fccf0c094fac4f1f924a72371a",
+          "OD_hash": "99527788c0e47a087921e72eddcc1dd915af518857f15145e983029ee0b15fc8",
+          "branch_id": 1,
+          "pid": 1864091,
+          "cpu_affinity": [
+            1
+          ],
+          "seeds": {
+            "solver_seed": 1166061997,
+            "quantum_seed": 3241013822,
+            "validation_seed": null
+          },
+          "exitcode": 0,
+          "timed_out": false,
+          "children_joined": true,
+          "quantum_calls": 0,
+          "quantum_accounting_complete": true,
+          "quantum_backend_environment": {
+            "statevector_backend": "qiskit",
+            "statevector_version": "2.1.1",
+            "sampling_backend": "qiskit.quantum_info.Statevector.sample_counts",
+            "sampling_version": "2.1.1"
+          },
+          "statevector_backends_observed": [],
+          "observed_quantum_timing_s": {
+            "circuit_build_s": 0,
+            "statevector_s": 0,
+            "state_validation_s": 0,
+            "sampling_only_s": 0,
+            "decode_s": 0,
+            "training_s": 0,
+            "final_processing_s": 0
+          },
+          "training_shots": 0,
+          "final_shots": 0
+        },
+        {
+          "status": "VALIDATED",
+          "D_km": 1.66,
+          "W_min": 0.0,
+          "T_program_s": 2.429746256908402,
+          "T_attempt_wall_s": 2.429746256908402,
+          "process_cpu_s": 0.022406242,
+          "max_rss_KiB": 106976,
+          "quantum_seed_used": false,
+          "error": null,
+          "input_hash": "d5cc88bcf354a7c945075629970484dbb62020fccf0c094fac4f1f924a72371a",
+          "OD_hash": "99527788c0e47a087921e72eddcc1dd915af518857f15145e983029ee0b15fc8",
+          "branch_id": 2,
+          "pid": 1864092,
+          "cpu_affinity": [
+            2
+          ],
+          "seeds": {
+            "solver_seed": 1718075346,
+            "quantum_seed": 1871186812,
+            "validation_seed": null
+          },
+          "exitcode": 0,
+          "timed_out": false,
+          "children_joined": true,
+          "quantum_calls": 0,
+          "quantum_accounting_complete": true,
+          "quantum_backend_environment": {
+            "statevector_backend": "qiskit",
+            "statevector_version": "2.1.1",
+            "sampling_backend": "qiskit.quantum_info.Statevector.sample_counts",
+            "sampling_version": "2.1.1"
+          },
+          "statevector_backends_observed": [],
+          "observed_quantum_timing_s": {
+            "circuit_build_s": 0,
+            "statevector_s": 0,
+            "state_validation_s": 0,
+            "sampling_only_s": 0,
+            "decode_s": 0,
+            "training_s": 0,
+            "final_processing_s": 0
+          },
+          "training_shots": 0,
+          "final_shots": 0
+        },
+        {
+          "status": "VALIDATED",
+          "D_km": 1.66,
+          "W_min": 0.0,
+          "T_program_s": 2.3358058088924736,
+          "T_attempt_wall_s": 2.3358058088924736,
+          "process_cpu_s": 0.022460571,
+          "max_rss_KiB": 103904,
+          "quantum_seed_used": false,
+          "error": null,
+          "input_hash": "d5cc88bcf354a7c945075629970484dbb62020fccf0c094fac4f1f924a72371a",
+          "OD_hash": "99527788c0e47a087921e72eddcc1dd915af518857f15145e983029ee0b15fc8",
+          "branch_id": 3,
+          "pid": 1864093,
+          "cpu_affinity": [
+            3
+          ],
+          "seeds": {
+            "solver_seed": 628396976,
+            "quantum_seed": 1863168492,
+            "validation_seed": null
+          },
+          "exitcode": 0,
+          "timed_out": false,
+          "children_joined": true,
+          "quantum_calls": 0,
+          "quantum_accounting_complete": true,
+          "quantum_backend_environment": {
+            "statevector_backend": "qiskit",
+            "statevector_version": "2.1.1",
+            "sampling_backend": "qiskit.quantum_info.Statevector.sample_counts",
+            "sampling_version": "2.1.1"
+          },
+          "statevector_backends_observed": [],
+          "observed_quantum_timing_s": {
+            "circuit_build_s": 0,
+            "statevector_s": 0,
+            "state_validation_s": 0,
+            "sampling_only_s": 0,
+            "decode_s": 0,
+            "training_s": 0,
+            "final_processing_s": 0
+          },
+          "training_shots": 0,
+          "final_shots": 0
+        }
+      ],
+      "backend": {
+        "statevector_backend": "qiskit",
+        "statevector_version": "2.1.1",
+        "sampling_backend": "qiskit.quantum_info.Statevector.sample_counts",
+        "sampling_version": "2.1.1"
+      },
+      "quantum_calls": 0,
+      "all_training_shots": 0,
+      "all_final_shots": 0
+    },
+    {
+      "method": "C",
+      "method_version": "DWT-v1.4-CPU-parallel-multistart-20261113",
+      "observed": false,
+      "status": "success",
+      "D_km_fixture": 1.309,
+      "W_min_fixture": 0.0,
+      "W_first_min_fixture": 0.0,
+      "W_reload_min_fixture": 0.0,
+      "diagnostic_elapsed_sec": 45.973608654,
+      "diagnostic_algorithm_union_sec": 19.640254257,
+      "adopted_T_total_sec": null,
+      "plan_sha256": "f8fa9122103132726b3fefe77f5741dafbb641003854a1a2a685d9032829e438",
+      "evidence_path": "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/C",
+      "route": "VeRyPy_savings_order_with_explicit_directed_tail_to_head_CW_extension",
+      "branches": [
+        {
+          "status": "VALIDATED",
+          "D_km": 1.309,
+          "W_min": 0.0,
+          "T_program_s": 20.39449145994149,
+          "T_attempt_wall_s": 20.39449145994149,
+          "process_cpu_s": 17.005648499,
+          "max_rss_KiB": 109020,
+          "quantum_seed_used": false,
+          "error": null,
+          "input_hash": "d5cc88bcf354a7c945075629970484dbb62020fccf0c094fac4f1f924a72371a",
+          "OD_hash": "99527788c0e47a087921e72eddcc1dd915af518857f15145e983029ee0b15fc8",
+          "branch_id": 0,
+          "pid": 1865035,
+          "cpu_affinity": [
+            0
+          ],
+          "seeds": {
+            "solver_seed": 916571769,
+            "quantum_seed": 3195192707,
+            "validation_seed": null
+          },
+          "exitcode": 0,
+          "timed_out": false,
+          "children_joined": true,
+          "quantum_calls": 0,
+          "quantum_accounting_complete": true,
+          "quantum_backend_environment": {
+            "statevector_backend": "qiskit",
+            "statevector_version": "2.1.1",
+            "sampling_backend": "qiskit.quantum_info.Statevector.sample_counts",
+            "sampling_version": "2.1.1"
+          },
+          "statevector_backends_observed": [],
+          "observed_quantum_timing_s": {
+            "circuit_build_s": 0,
+            "statevector_s": 0,
+            "state_validation_s": 0,
+            "sampling_only_s": 0,
+            "decode_s": 0,
+            "training_s": 0,
+            "final_processing_s": 0
+          },
+          "training_shots": 0,
+          "final_shots": 0
+        },
+        {
+          "status": "VALIDATED",
+          "D_km": 1.309,
+          "W_min": 0.0,
+          "T_program_s": 20.15305472887121,
+          "T_attempt_wall_s": 20.15305472887121,
+          "process_cpu_s": 16.885695058,
+          "max_rss_KiB": 112092,
+          "quantum_seed_used": false,
+          "error": null,
+          "input_hash": "d5cc88bcf354a7c945075629970484dbb62020fccf0c094fac4f1f924a72371a",
+          "OD_hash": "99527788c0e47a087921e72eddcc1dd915af518857f15145e983029ee0b15fc8",
+          "branch_id": 1,
+          "pid": 1865036,
+          "cpu_affinity": [
+            1
+          ],
+          "seeds": {
+            "solver_seed": 1166061997,
+            "quantum_seed": 3241013822,
+            "validation_seed": null
+          },
+          "exitcode": 0,
+          "timed_out": false,
+          "children_joined": true,
+          "quantum_calls": 0,
+          "quantum_accounting_complete": true,
+          "quantum_backend_environment": {
+            "statevector_backend": "qiskit",
+            "statevector_version": "2.1.1",
+            "sampling_backend": "qiskit.quantum_info.Statevector.sample_counts",
+            "sampling_version": "2.1.1"
+          },
+          "statevector_backends_observed": [],
+          "observed_quantum_timing_s": {
+            "circuit_build_s": 0,
+            "statevector_s": 0,
+            "state_validation_s": 0,
+            "sampling_only_s": 0,
+            "decode_s": 0,
+            "training_s": 0,
+            "final_processing_s": 0
+          },
+          "training_shots": 0,
+          "final_shots": 0
+        },
+        {
+          "status": "VALIDATED",
+          "D_km": 1.309,
+          "W_min": 0.0,
+          "T_program_s": 20.15305588906631,
+          "T_attempt_wall_s": 20.15305588906631,
+          "process_cpu_s": 17.016807626000002,
+          "max_rss_KiB": 109028,
+          "quantum_seed_used": false,
+          "error": null,
+          "input_hash": "d5cc88bcf354a7c945075629970484dbb62020fccf0c094fac4f1f924a72371a",
+          "OD_hash": "99527788c0e47a087921e72eddcc1dd915af518857f15145e983029ee0b15fc8",
+          "branch_id": 2,
+          "pid": 1865037,
+          "cpu_affinity": [
+            2
+          ],
+          "seeds": {
+            "solver_seed": 1718075346,
+            "quantum_seed": 1871186812,
+            "validation_seed": null
+          },
+          "exitcode": 0,
+          "timed_out": false,
+          "children_joined": true,
+          "quantum_calls": 0,
+          "quantum_accounting_complete": true,
+          "quantum_backend_environment": {
+            "statevector_backend": "qiskit",
+            "statevector_version": "2.1.1",
+            "sampling_backend": "qiskit.quantum_info.Statevector.sample_counts",
+            "sampling_version": "2.1.1"
+          },
+          "statevector_backends_observed": [],
+          "observed_quantum_timing_s": {
+            "circuit_build_s": 0,
+            "statevector_s": 0,
+            "state_validation_s": 0,
+            "sampling_only_s": 0,
+            "decode_s": 0,
+            "training_s": 0,
+            "final_processing_s": 0
+          },
+          "training_shots": 0,
+          "final_shots": 0
+        },
+        {
+          "status": "VALIDATED",
+          "D_km": 1.309,
+          "W_min": 0.0,
+          "T_program_s": 20.153055128874257,
+          "T_attempt_wall_s": 20.153055128874257,
+          "process_cpu_s": 17.031795245,
+          "max_rss_KiB": 109028,
+          "quantum_seed_used": false,
+          "error": null,
+          "input_hash": "d5cc88bcf354a7c945075629970484dbb62020fccf0c094fac4f1f924a72371a",
+          "OD_hash": "99527788c0e47a087921e72eddcc1dd915af518857f15145e983029ee0b15fc8",
+          "branch_id": 3,
+          "pid": 1865038,
+          "cpu_affinity": [
+            3
+          ],
+          "seeds": {
+            "solver_seed": 628396976,
+            "quantum_seed": 1863168492,
+            "validation_seed": null
+          },
+          "exitcode": 0,
+          "timed_out": false,
+          "children_joined": true,
+          "quantum_calls": 0,
+          "quantum_accounting_complete": true,
+          "quantum_backend_environment": {
+            "statevector_backend": "qiskit",
+            "statevector_version": "2.1.1",
+            "sampling_backend": "qiskit.quantum_info.Statevector.sample_counts",
+            "sampling_version": "2.1.1"
+          },
+          "statevector_backends_observed": [],
+          "observed_quantum_timing_s": {
+            "circuit_build_s": 0,
+            "statevector_s": 0,
+            "state_validation_s": 0,
+            "sampling_only_s": 0,
+            "decode_s": 0,
+            "training_s": 0,
+            "final_processing_s": 0
+          },
+          "training_shots": 0,
+          "final_shots": 0
+        }
+      ],
+      "backend": {
+        "statevector_backend": "qiskit",
+        "statevector_version": "2.1.1",
+        "sampling_backend": "qiskit.quantum_info.Statevector.sample_counts",
+        "sampling_version": "2.1.1"
+      },
+      "quantum_calls": 0,
+      "all_training_shots": 0,
+      "all_final_shots": 0
+    },
+    {
+      "method": "D",
+      "method_version": "DWT-v1.4-CPU-parallel-multistart-20261113",
+      "observed": false,
+      "status": "success",
+      "D_km_fixture": 1.66,
+      "W_min_fixture": 0.0,
+      "W_first_min_fixture": 0.0,
+      "W_reload_min_fixture": 0.0,
+      "diagnostic_elapsed_sec": 50.578602916,
+      "diagnostic_algorithm_union_sec": 6.225875873,
+      "adopted_T_total_sec": null,
+      "plan_sha256": "0bdc667ced297d776e77d42f39a9dbb47382227f4eed226148d5dda555fe550e",
+      "evidence_path": "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/D",
+      "route": "bounded_Huang_AOA_event_day_master_then_shared_completion",
+      "branches": [
+        {
+          "status": "VALIDATED",
+          "D_km": 1.66,
+          "W_min": 0.0,
+          "T_program_s": 7.112867152085528,
+          "T_attempt_wall_s": 7.112867152085528,
+          "process_cpu_s": 0.29281887500000003,
+          "max_rss_KiB": 131644,
+          "quantum_seed_used": true,
+          "error": null,
+          "input_hash": "d5cc88bcf354a7c945075629970484dbb62020fccf0c094fac4f1f924a72371a",
+          "OD_hash": "99527788c0e47a087921e72eddcc1dd915af518857f15145e983029ee0b15fc8",
+          "branch_id": 0,
+          "pid": 1866756,
+          "cpu_affinity": [
+            0
+          ],
+          "seeds": {
+            "solver_seed": 1393101265,
+            "quantum_seed": 218332724,
+            "validation_seed": null
+          },
+          "exitcode": 0,
+          "timed_out": false,
+          "children_joined": true,
+          "quantum_calls": 2,
+          "quantum_accounting_complete": true,
+          "quantum_backend_environment": {
+            "statevector_backend": "qiskit",
+            "statevector_version": "2.1.1",
+            "sampling_backend": "qiskit.quantum_info.Statevector.sample_counts",
+            "sampling_version": "2.1.1"
+          },
+          "statevector_backends_observed": [
+            "qiskit"
+          ],
+          "observed_quantum_timing_s": {
+            "circuit_build_s": 0.005071283085271716,
+            "statevector_s": 0.019921936793252826,
+            "state_validation_s": 0.0006421401631087065,
+            "sampling_only_s": 0.07698301807977259,
+            "decode_s": 0.00032020010985434055,
+            "training_s": 0.3425364079885185,
+            "final_processing_s": 0.43487906199879944
+          },
+          "training_shots": 57000,
+          "final_shots": 8192
+        },
+        {
+          "status": "VALIDATED",
+          "D_km": 1.66,
+          "W_min": 0.0,
+          "T_program_s": 6.48530880198814,
+          "T_attempt_wall_s": 6.48530880198814,
+          "process_cpu_s": 0.189535078,
+          "max_rss_KiB": 131644,
+          "quantum_seed_used": true,
+          "error": null,
+          "input_hash": "d5cc88bcf354a7c945075629970484dbb62020fccf0c094fac4f1f924a72371a",
+          "OD_hash": "99527788c0e47a087921e72eddcc1dd915af518857f15145e983029ee0b15fc8",
+          "branch_id": 1,
+          "pid": 1866757,
+          "cpu_affinity": [
+            1
+          ],
+          "seeds": {
+            "solver_seed": 547239888,
+            "quantum_seed": 3794266619,
+            "validation_seed": null
+          },
+          "exitcode": 0,
+          "timed_out": false,
+          "children_joined": true,
+          "quantum_calls": 2,
+          "quantum_accounting_complete": true,
+          "quantum_backend_environment": {
+            "statevector_backend": "qiskit",
+            "statevector_version": "2.1.1",
+            "sampling_backend": "qiskit.quantum_info.Statevector.sample_counts",
+            "sampling_version": "2.1.1"
+          },
+          "statevector_backends_observed": [
+            "qiskit"
+          ],
+          "observed_quantum_timing_s": {
+            "circuit_build_s": 0.0031135808676481247,
+            "statevector_s": 0.011023263912647963,
+            "state_validation_s": 0.0003795700613409281,
+            "sampling_only_s": 0.050211128778755665,
+            "decode_s": 0.00013632001355290413,
+            "training_s": 0.38303755200468004,
+            "final_processing_s": 0.3939033979550004
+          },
+          "training_shots": 76000,
+          "final_shots": 8192
+        },
+        {
+          "status": "VALIDATED",
+          "D_km": 1.66,
+          "W_min": 0.0,
+          "T_program_s": 6.485309102106839,
+          "T_attempt_wall_s": 6.485309102106839,
+          "process_cpu_s": 0.181629309,
+          "max_rss_KiB": 131644,
+          "quantum_seed_used": true,
+          "error": null,
+          "input_hash": "d5cc88bcf354a7c945075629970484dbb62020fccf0c094fac4f1f924a72371a",
+          "OD_hash": "99527788c0e47a087921e72eddcc1dd915af518857f15145e983029ee0b15fc8",
+          "branch_id": 2,
+          "pid": 1866758,
+          "cpu_affinity": [
+            2
+          ],
+          "seeds": {
+            "solver_seed": 223917714,
+            "quantum_seed": 114612776,
+            "validation_seed": null
+          },
+          "exitcode": 0,
+          "timed_out": false,
+          "children_joined": true,
+          "quantum_calls": 2,
+          "quantum_accounting_complete": true,
+          "quantum_backend_environment": {
+            "statevector_backend": "qiskit",
+            "statevector_version": "2.1.1",
+            "sampling_backend": "qiskit.quantum_info.Statevector.sample_counts",
+            "sampling_version": "2.1.1"
+          },
+          "statevector_backends_observed": [
+            "qiskit"
+          ],
+          "observed_quantum_timing_s": {
+            "circuit_build_s": 0.00325654074549675,
+            "statevector_s": 0.010683343978598714,
+            "state_validation_s": 0.0004151200409978628,
+            "sampling_only_s": 0.05020835902541876,
+            "decode_s": 0.00014631985686719418,
+            "training_s": 0.3828302728943527,
+            "final_processing_s": 0.39415026688948274
+          },
+          "training_shots": 63000,
+          "final_shots": 8192
+        },
+        {
+          "status": "VALIDATED",
+          "D_km": 1.66,
+          "W_min": 0.0,
+          "T_program_s": 6.4849180621095,
+          "T_attempt_wall_s": 6.4849180621095,
+          "process_cpu_s": 0.18031065400000001,
+          "max_rss_KiB": 135104,
+          "quantum_seed_used": true,
+          "error": null,
+          "input_hash": "d5cc88bcf354a7c945075629970484dbb62020fccf0c094fac4f1f924a72371a",
+          "OD_hash": "99527788c0e47a087921e72eddcc1dd915af518857f15145e983029ee0b15fc8",
+          "branch_id": 3,
+          "pid": 1866759,
+          "cpu_affinity": [
+            3
+          ],
+          "seeds": {
+            "solver_seed": 866054230,
+            "quantum_seed": 667878033,
+            "validation_seed": null
+          },
+          "exitcode": 0,
+          "timed_out": false,
+          "children_joined": true,
+          "quantum_calls": 2,
+          "quantum_accounting_complete": true,
+          "quantum_backend_environment": {
+            "statevector_backend": "qiskit",
+            "statevector_version": "2.1.1",
+            "sampling_backend": "qiskit.quantum_info.Statevector.sample_counts",
+            "sampling_version": "2.1.1"
+          },
+          "statevector_backends_observed": [
+            "qiskit"
+          ],
+          "observed_quantum_timing_s": {
+            "circuit_build_s": 0.003073731204494834,
+            "statevector_s": 0.010754904244095087,
+            "state_validation_s": 0.00040740007534623146,
+            "sampling_only_s": 0.049999678740277886,
+            "decode_s": 0.00021033990196883678,
+            "training_s": 0.38343103183433414,
+            "final_processing_s": 0.39361428702250123
+          },
+          "training_shots": 62000,
+          "final_shots": 8192
+        }
+      ],
+      "backend": {
+        "statevector_backend": "qiskit",
+        "statevector_version": "2.1.1",
+        "sampling_backend": "qiskit.quantum_info.Statevector.sample_counts",
+        "sampling_version": "2.1.1"
+      },
+      "quantum_calls": 8,
+      "all_training_shots": 258000,
+      "all_final_shots": 32768
+    }
+  ],
+  "empirical_statistics_produced": false
+}

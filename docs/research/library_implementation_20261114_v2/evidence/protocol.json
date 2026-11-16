@@ -1,0 +1,12 @@
+{
+  "purpose": "exploratory small-fixture implementation validation, no S1/S2/S3",
+  "prior_results": "reuse library_applicability_20261114_v1; do not pool historical time values",
+  "backend_scaling": {"nodes":[3,4],"slots":[3,5],"p":[1,2,4],"backends":["qiskit","qulacs","quri"],"warmup":1,"measured_repetitions":7,"max_qubits":16,"max_raw_statevector_bytes":1048576,"angle_seed_base":20261114,"sampling_seed_base":1101,"shots":4096,"native_threads":1,"cores":1},
+  "tolerances":{"infidelity":1e-8,"phase_aligned_state_max_abs":1e-9,"probability_L1":1e-9,"expectation_abs":1e-8,"model_coefficients_abs":1e-10,"model_energy_abs":1e-9,"negative_RC":-1e-7},
+  "model":{"cases":[[3,3],[4,3],[4,4]],"penalties":["customer_unique","paper_literal"],"lambda_pairs":[[1,1],[0.7,2.3]],"all_binary_states":true,"ALiM":"explicit lambda*(h+h*h), no auto slack or auto penalty","warmup":1,"repetitions":7},
+  "pricing":{"fixture":"small_problem(6,1), capacity2, 2vehicles, max2trips","seeds":[1101,1102,1103],"p":2,"max_evaluations":80,"train_shots":1000,"final_shots":4096,"slots":3,"backends":["original","qiskit","qulacs","quri","qamomile_quri"],"sampler":"current Qiskit Statevector.sample_counts on all backend vectors"},
+  "full_D":{"fixtures":["ART_N6","ART_N8"],"roads":"baseline_a.fixtures.artificial_problem, synthetic directed graph only","seeds":[1101,1102,1103],"budget_seconds":20,"epsilon_W_min":30,"workers":4,"native_solver_threads_per_worker":1,"method_concurrency":1,"startup":"fresh spawn for all variants; imports/waiting outside T","legacy":"unchanged dwt methods.generate; backend-only process-local adapter","updated":"same independent CW seed, singleton domains, fresh RMP after additions, true event-day reduced costs, 4 rounds max, 20 columns/batch; separate algorithm variant"},
+  "memory":{"address_space_limit_GiB_per_process":4,"RSS":"ru_maxrss and /proc VmHWM; executor tree RSS sampled every10ms, approximate lower bound to true peak; no minimum-dependency memory claim"},
+  "timing":{"T_program":"existing execute_parallel: before parent common input load through all branches joined, candidate selection and final double validation","preparation":"common library union and child spawn excluded, recorded separately","final_exports":"outside T","stage_audit_IO":"existing in-T captures retained; instrumentation volume may affect cross-algorithm T"},
+  "statistics":"medians/min/max/IQR only; 4 internal branches are not independent statistical repetitions; no significance tests or quantum hardware speedup claims"
+}

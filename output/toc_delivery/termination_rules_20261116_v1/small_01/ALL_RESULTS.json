@@ -1,0 +1,746 @@
+[
+  {
+    "run_id": "tiny_A_check01",
+    "case_id": "tiny",
+    "method": "A",
+    "seeds": {
+      "solver_seed": null,
+      "quantum_seed": null
+    },
+    "branches": [
+      {
+        "branch_id": 0,
+        "pid": 1872855,
+        "cpu_affinity": [
+          0
+        ],
+        "seeds": {
+          "solver_seed": null,
+          "quantum_seed": null
+        },
+        "execution_state": "ERROR",
+        "algorithm_termination": null,
+        "plan_state": "NO_PLAN",
+        "adoptable": false,
+        "plan_sha256": null,
+        "error": {
+          "type": "AttributeError",
+          "message": "'tuple' object has no attribute 'method_settings'"
+        },
+        "proof": null,
+        "counts": {},
+        "wall_s": 1.73948534601368,
+        "cpu_s": 0.11642974700000001,
+        "max_rss_KiB": 30720,
+        "observed_threads": 1
+      }
+    ],
+    "contract_id": "whole-method-finite-work-v1",
+    "experiment_id": "termination_rules_20261116_v1",
+    "phase": "small_fixture",
+    "scale": "tiny",
+    "input_hash": "d5cc88bcf354a7c945075629970484dbb62020fccf0c094fac4f1f924a72371a",
+    "OD_hash": "99527788c0e47a087921e72eddcc1dd915af518857f15145e983029ee0b15fc8",
+    "config_hash": "230093e4e8f18846c315adae39fe1d22601c68de57603992a66e211475cfe906",
+    "T_kind": "comparison_parent_wall_including_process_setup_v1",
+    "physical_hash": "bbb15417a4eee5072f8118056c90ab422d792b4cedc35a6a06bf6bc0497fe8d2",
+    "input_state": "VALID",
+    "execution_state": "ERROR",
+    "algorithm_termination": null,
+    "plan_state": "NO_PLAN",
+    "validation_state": "NO_PLAN",
+    "adoptable": false,
+    "D": null,
+    "W": null,
+    "T_program": null,
+    "T_attempt": 3.5635512510780245,
+    "J": null,
+    "J_reason": "TARGET_PLAN_INVALID",
+    "error": null,
+    "target_definition": null,
+    "target_arrival_s": null,
+    "target_met_at_end": null,
+    "target_status": "NO_NEW_QUALITY_TARGET_REGISTERED",
+    "T_input": 0.3980873189866543,
+    "T_planning": 3.0412114320788532,
+    "T_final_processing": 0.12406063894741237,
+    "parent_cpu_s": 0.024209866999999996,
+    "parent_RSS_highwater_KiB": 1593492,
+    "sampled_tree_peak_RSS_KiB": 38924,
+    "CPU_s_branches": 0.11642974700000001,
+    "memory_measurement": "RSS sum sampled every 0.5s, branch and parent highwater separately; shared pages double counted; CPU partial if interrupted",
+    "J_reference": "single preregistered A functional-check run per scale; NOT a formal timing reference"
+  },
+  {
+    "run_id": "tiny_B_check01",
+    "case_id": "tiny",
+    "method": "B",
+    "seeds": {
+      "solver_seed": 442672044,
+      "quantum_seed": 3988315919
+    },
+    "branches": [
+      {
+        "branch_id": 0,
+        "pid": 1872993,
+        "cpu_affinity": [
+          0
+        ],
+        "seeds": {
+          "solver_seed": 1560891449,
+          "quantum_seed": 2718955872,
+          "validation_seed": null
+        },
+        "execution_state": "ERROR",
+        "algorithm_termination": null,
+        "plan_state": "NO_PLAN",
+        "adoptable": false,
+        "plan_sha256": null,
+        "error": {
+          "type": "AttributeError",
+          "message": "module 'ortools.sat.python.cp_model' has no attribute 'NO_RESTART'"
+        },
+        "proof": null,
+        "counts": {
+          "CW_directed_savings": 132,
+          "double_candidate_checks": 1
+        },
+        "wall_s": 15.07965830503963,
+        "cpu_s": 0.436367156,
+        "max_rss_KiB": 86016,
+        "observed_threads": 1
+      },
+      {
+        "branch_id": 1,
+        "pid": 1872996,
+        "cpu_affinity": [
+          1
+        ],
+        "seeds": {
+          "solver_seed": 2061526869,
+          "quantum_seed": 4199142062,
+          "validation_seed": null
+        },
+        "execution_state": "ERROR",
+        "algorithm_termination": null,
+        "plan_state": "NO_PLAN",
+        "adoptable": false,
+        "plan_sha256": null,
+        "error": {
+          "type": "AttributeError",
+          "message": "module 'ortools.sat.python.cp_model' has no attribute 'NO_RESTART'"
+        },
+        "proof": null,
+        "counts": {
+          "CW_directed_savings": 132,
+          "double_candidate_checks": 1
+        },
+        "wall_s": 14.866076035890728,
+        "cpu_s": 0.301135272,
+        "max_rss_KiB": 79872,
+        "observed_threads": 1
+      },
+      {
+        "branch_id": 2,
+        "pid": 1873000,
+        "cpu_affinity": [
+          2
+        ],
+        "seeds": {
+          "solver_seed": 1162344612,
+          "quantum_seed": 3285587119,
+          "validation_seed": null
+        },
+        "execution_state": "ERROR",
+        "algorithm_termination": null,
+        "plan_state": "NO_PLAN",
+        "adoptable": false,
+        "plan_sha256": null,
+        "error": {
+          "type": "AttributeError",
+          "message": "module 'ortools.sat.python.cp_model' has no attribute 'NO_RESTART'"
+        },
+        "proof": null,
+        "counts": {
+          "CW_directed_savings": 132,
+          "double_candidate_checks": 1
+        },
+        "wall_s": 14.719061003997922,
+        "cpu_s": 0.29184310399999996,
+        "max_rss_KiB": 79872,
+        "observed_threads": 1
+      },
+      {
+        "branch_id": 3,
+        "pid": 1873006,
+        "cpu_affinity": [
+          3
+        ],
+        "seeds": {
+          "solver_seed": 2087741267,
+          "quantum_seed": 3693633149,
+          "validation_seed": null
+        },
+        "execution_state": "ERROR",
+        "algorithm_termination": null,
+        "plan_state": "NO_PLAN",
+        "adoptable": false,
+        "plan_sha256": null,
+        "error": {
+          "type": "AttributeError",
+          "message": "module 'ortools.sat.python.cp_model' has no attribute 'NO_RESTART'"
+        },
+        "proof": null,
+        "counts": {
+          "CW_directed_savings": 132,
+          "double_candidate_checks": 1
+        },
+        "wall_s": 14.719031993998215,
+        "cpu_s": 0.292331353,
+        "max_rss_KiB": 86016,
+        "observed_threads": 1
+      }
+    ],
+    "contract_id": "whole-method-finite-work-v1",
+    "experiment_id": "termination_rules_20261116_v1",
+    "phase": "small_fixture",
+    "scale": "tiny",
+    "input_hash": "d5cc88bcf354a7c945075629970484dbb62020fccf0c094fac4f1f924a72371a",
+    "OD_hash": "99527788c0e47a087921e72eddcc1dd915af518857f15145e983029ee0b15fc8",
+    "config_hash": "230093e4e8f18846c315adae39fe1d22601c68de57603992a66e211475cfe906",
+    "T_kind": "comparison_parent_wall_including_process_setup_v1",
+    "physical_hash": "bbb15417a4eee5072f8118056c90ab422d792b4cedc35a6a06bf6bc0497fe8d2",
+    "input_state": "VALID",
+    "execution_state": "ERROR",
+    "algorithm_termination": null,
+    "plan_state": "NO_PLAN",
+    "validation_state": "NO_PLAN",
+    "adoptable": false,
+    "D": null,
+    "W": null,
+    "T_program": null,
+    "T_attempt": 17.398866606876254,
+    "J": null,
+    "J_reason": "TARGET_PLAN_INVALID",
+    "error": null,
+    "target_definition": null,
+    "target_arrival_s": null,
+    "target_met_at_end": null,
+    "target_status": "NO_NEW_QUALITY_TARGET_REGISTERED",
+    "T_input": 0.5245980648323894,
+    "T_planning": 16.41072001401335,
+    "T_final_processing": 0.4628975971136242,
+    "parent_cpu_s": 0.08916972699999998,
+    "parent_RSS_highwater_KiB": 1593492,
+    "sampled_tree_peak_RSS_KiB": 322992,
+    "CPU_s_branches": 1.321676885,
+    "memory_measurement": "RSS sum sampled every 0.5s, branch and parent highwater separately; shared pages double counted; CPU partial if interrupted",
+    "J_reference": "single preregistered A functional-check run per scale; NOT a formal timing reference"
+  },
+  {
+    "run_id": "tiny_C_check01",
+    "case_id": "tiny",
+    "method": "C",
+    "seeds": {
+      "solver_seed": 1288033763,
+      "quantum_seed": 3383794192
+    },
+    "branches": [
+      {
+        "branch_id": 0,
+        "pid": 1873572,
+        "cpu_affinity": [
+          0
+        ],
+        "seeds": {
+          "solver_seed": 1559126172,
+          "quantum_seed": 3984625188,
+          "validation_seed": null
+        },
+        "execution_state": "ERROR",
+        "algorithm_termination": null,
+        "plan_state": "NO_PLAN",
+        "adoptable": false,
+        "plan_sha256": null,
+        "error": {
+          "type": "AttributeError",
+          "message": "module 'ortools.sat.python.cp_model' has no attribute 'NO_RESTART'"
+        },
+        "proof": null,
+        "counts": {
+          "CW_directed_savings": 132,
+          "Routing_limit_checks": 256,
+          "Routing_limit_acknowledgements": 0,
+          "double_candidate_checks": 1
+        },
+        "wall_s": 6.484493327792734,
+        "cpu_s": 0.439743394,
+        "max_rss_KiB": 86016,
+        "observed_threads": 1
+      },
+      {
+        "branch_id": 1,
+        "pid": 1873577,
+        "cpu_affinity": [
+          1
+        ],
+        "seeds": {
+          "solver_seed": 1299684255,
+          "quantum_seed": 3113002526,
+          "validation_seed": null
+        },
+        "execution_state": "ERROR",
+        "algorithm_termination": null,
+        "plan_state": "NO_PLAN",
+        "adoptable": false,
+        "plan_sha256": null,
+        "error": {
+          "type": "AttributeError",
+          "message": "module 'ortools.sat.python.cp_model' has no attribute 'NO_RESTART'"
+        },
+        "proof": null,
+        "counts": {
+          "CW_directed_savings": 132,
+          "Routing_limit_checks": 256,
+          "Routing_limit_acknowledgements": 0,
+          "double_candidate_checks": 1
+        },
+        "wall_s": 6.05212337593548,
+        "cpu_s": 0.298780381,
+        "max_rss_KiB": 95232,
+        "observed_threads": 1
+      },
+      {
+        "branch_id": 2,
+        "pid": 1873582,
+        "cpu_affinity": [
+          2
+        ],
+        "seeds": {
+          "solver_seed": 1434370715,
+          "quantum_seed": 182062934,
+          "validation_seed": null
+        },
+        "execution_state": "ERROR",
+        "algorithm_termination": null,
+        "plan_state": "NO_PLAN",
+        "adoptable": false,
+        "plan_sha256": null,
+        "error": {
+          "type": "AttributeError",
+          "message": "module 'ortools.sat.python.cp_model' has no attribute 'NO_RESTART'"
+        },
+        "proof": null,
+        "counts": {
+          "CW_directed_savings": 132,
+          "Routing_limit_checks": 256,
+          "Routing_limit_acknowledgements": 0,
+          "double_candidate_checks": 1
+        },
+        "wall_s": 5.76603090018034,
+        "cpu_s": 0.29438486,
+        "max_rss_KiB": 95232,
+        "observed_threads": 1
+      },
+      {
+        "branch_id": 3,
+        "pid": 1873585,
+        "cpu_affinity": [
+          3
+        ],
+        "seeds": {
+          "solver_seed": 1136868739,
+          "quantum_seed": 3640173262,
+          "validation_seed": null
+        },
+        "execution_state": "ERROR",
+        "algorithm_termination": null,
+        "plan_state": "NO_PLAN",
+        "adoptable": false,
+        "plan_sha256": null,
+        "error": {
+          "type": "AttributeError",
+          "message": "module 'ortools.sat.python.cp_model' has no attribute 'NO_RESTART'"
+        },
+        "proof": null,
+        "counts": {
+          "CW_directed_savings": 132,
+          "Routing_limit_checks": 256,
+          "Routing_limit_acknowledgements": 0,
+          "double_candidate_checks": 1
+        },
+        "wall_s": 5.681157071143389,
+        "cpu_s": 0.29427265399999997,
+        "max_rss_KiB": 92160,
+        "observed_threads": 1
+      }
+    ],
+    "contract_id": "whole-method-finite-work-v1",
+    "experiment_id": "termination_rules_20261116_v1",
+    "phase": "small_fixture",
+    "scale": "tiny",
+    "input_hash": "d5cc88bcf354a7c945075629970484dbb62020fccf0c094fac4f1f924a72371a",
+    "OD_hash": "99527788c0e47a087921e72eddcc1dd915af518857f15145e983029ee0b15fc8",
+    "config_hash": "230093e4e8f18846c315adae39fe1d22601c68de57603992a66e211475cfe906",
+    "T_kind": "comparison_parent_wall_including_process_setup_v1",
+    "physical_hash": "bbb15417a4eee5072f8118056c90ab422d792b4cedc35a6a06bf6bc0497fe8d2",
+    "input_state": "VALID",
+    "execution_state": "ERROR",
+    "algorithm_termination": null,
+    "plan_state": "NO_PLAN",
+    "validation_state": "NO_PLAN",
+    "adoptable": false,
+    "D": null,
+    "W": null,
+    "T_program": null,
+    "T_attempt": 9.147695899941027,
+    "J": null,
+    "J_reason": "TARGET_PLAN_INVALID",
+    "error": null,
+    "target_definition": null,
+    "target_arrival_s": null,
+    "target_met_at_end": null,
+    "target_status": "NO_NEW_QUALITY_TARGET_REGISTERED",
+    "T_input": 0.6559568459633738,
+    "T_planning": 8.016337307868525,
+    "T_final_processing": 0.4744715162087232,
+    "parent_cpu_s": 0.05517920100000001,
+    "parent_RSS_highwater_KiB": 1593492,
+    "sampled_tree_peak_RSS_KiB": 364368,
+    "CPU_s_branches": 1.3271812889999999,
+    "memory_measurement": "RSS sum sampled every 0.5s, branch and parent highwater separately; shared pages double counted; CPU partial if interrupted",
+    "J_reference": "single preregistered A functional-check run per scale; NOT a formal timing reference"
+  },
+  {
+    "run_id": "tiny_D_check01",
+    "case_id": "tiny",
+    "method": "D",
+    "seeds": {
+      "solver_seed": 631073922,
+      "quantum_seed": 700510837
+    },
+    "branches": [
+      {
+        "branch_id": 0,
+        "pid": 1873866,
+        "cpu_affinity": [
+          0
+        ],
+        "seeds": {
+          "solver_seed": 962210419,
+          "quantum_seed": 3915760150,
+          "validation_seed": null
+        },
+        "execution_state": "ERROR",
+        "algorithm_termination": null,
+        "plan_state": "NO_PLAN",
+        "adoptable": false,
+        "plan_sha256": null,
+        "error": {
+          "type": "AttributeError",
+          "message": "module 'ortools.sat.python.cp_model' has no attribute 'NO_RESTART'"
+        },
+        "proof": null,
+        "counts": {
+          "CW_directed_savings": 132,
+          "double_candidate_checks": 1
+        },
+        "wall_s": 12.953932305099443,
+        "cpu_s": 0.440685523,
+        "max_rss_KiB": 86016,
+        "observed_threads": 1
+      },
+      {
+        "branch_id": 1,
+        "pid": 1873869,
+        "cpu_affinity": [
+          1
+        ],
+        "seeds": {
+          "solver_seed": 1138518593,
+          "quantum_seed": 419098024,
+          "validation_seed": null
+        },
+        "execution_state": "ERROR",
+        "algorithm_termination": null,
+        "plan_state": "NO_PLAN",
+        "adoptable": false,
+        "plan_sha256": null,
+        "error": {
+          "type": "AttributeError",
+          "message": "module 'ortools.sat.python.cp_model' has no attribute 'NO_RESTART'"
+        },
+        "proof": null,
+        "counts": {
+          "CW_directed_savings": 132,
+          "double_candidate_checks": 1
+        },
+        "wall_s": 10.363133566919714,
+        "cpu_s": 0.295491072,
+        "max_rss_KiB": 79872,
+        "observed_threads": 1
+      },
+      {
+        "branch_id": 2,
+        "pid": 1873872,
+        "cpu_affinity": [
+          2
+        ],
+        "seeds": {
+          "solver_seed": 694435520,
+          "quantum_seed": 2003141652,
+          "validation_seed": null
+        },
+        "execution_state": "ERROR",
+        "algorithm_termination": null,
+        "plan_state": "NO_PLAN",
+        "adoptable": false,
+        "plan_sha256": null,
+        "error": {
+          "type": "AttributeError",
+          "message": "module 'ortools.sat.python.cp_model' has no attribute 'NO_RESTART'"
+        },
+        "proof": null,
+        "counts": {
+          "CW_directed_savings": 132,
+          "double_candidate_checks": 1
+        },
+        "wall_s": 10.11146024800837,
+        "cpu_s": 0.290021987,
+        "max_rss_KiB": 86016,
+        "observed_threads": 1
+      },
+      {
+        "branch_id": 3,
+        "pid": 1873875,
+        "cpu_affinity": [
+          3
+        ],
+        "seeds": {
+          "solver_seed": 941257325,
+          "quantum_seed": 4032113241,
+          "validation_seed": null
+        },
+        "execution_state": "ERROR",
+        "algorithm_termination": null,
+        "plan_state": "NO_PLAN",
+        "adoptable": false,
+        "plan_sha256": null,
+        "error": {
+          "type": "AttributeError",
+          "message": "module 'ortools.sat.python.cp_model' has no attribute 'NO_RESTART'"
+        },
+        "proof": null,
+        "counts": {
+          "CW_directed_savings": 132,
+          "double_candidate_checks": 1
+        },
+        "wall_s": 10.018566829850897,
+        "cpu_s": 0.288885227,
+        "max_rss_KiB": 86016,
+        "observed_threads": 1
+      }
+    ],
+    "contract_id": "whole-method-finite-work-v1",
+    "experiment_id": "termination_rules_20261116_v1",
+    "phase": "small_fixture",
+    "scale": "tiny",
+    "input_hash": "d5cc88bcf354a7c945075629970484dbb62020fccf0c094fac4f1f924a72371a",
+    "OD_hash": "99527788c0e47a087921e72eddcc1dd915af518857f15145e983029ee0b15fc8",
+    "config_hash": "230093e4e8f18846c315adae39fe1d22601c68de57603992a66e211475cfe906",
+    "T_kind": "comparison_parent_wall_including_process_setup_v1",
+    "physical_hash": "bbb15417a4eee5072f8118056c90ab422d792b4cedc35a6a06bf6bc0497fe8d2",
+    "input_state": "VALID",
+    "execution_state": "ERROR",
+    "algorithm_termination": null,
+    "plan_state": "NO_PLAN",
+    "validation_state": "NO_PLAN",
+    "adoptable": false,
+    "D": null,
+    "W": null,
+    "T_program": null,
+    "T_attempt": 15.01301151397638,
+    "J": null,
+    "J_reason": "TARGET_PLAN_INVALID",
+    "error": null,
+    "target_definition": null,
+    "target_arrival_s": null,
+    "target_met_at_end": null,
+    "target_status": "NO_NEW_QUALITY_TARGET_REGISTERED",
+    "T_input": 0.21516222297213972,
+    "T_planning": 14.405860709957778,
+    "T_final_processing": 0.3912719199433923,
+    "parent_cpu_s": 0.08016079200000004,
+    "parent_RSS_highwater_KiB": 1593492,
+    "sampled_tree_peak_RSS_KiB": 352836,
+    "CPU_s_branches": 1.315083809,
+    "memory_measurement": "RSS sum sampled every 0.5s, branch and parent highwater separately; shared pages double counted; CPU partial if interrupted",
+    "J_reference": "single preregistered A functional-check run per scale; NOT a formal timing reference"
+  },
+  {
+    "run_id": "tiny_D_CLASSICAL_REPLACEMENT_check01",
+    "case_id": "tiny",
+    "method": "D_CLASSICAL_REPLACEMENT",
+    "seeds": {
+      "solver_seed": 411179383,
+      "quantum_seed": 2545497543
+    },
+    "branches": [
+      {
+        "branch_id": 0,
+        "pid": 1874504,
+        "cpu_affinity": [
+          0
+        ],
+        "seeds": {
+          "solver_seed": 1526710669,
+          "quantum_seed": 1717145592,
+          "validation_seed": null
+        },
+        "execution_state": "ERROR",
+        "algorithm_termination": null,
+        "plan_state": "NO_PLAN",
+        "adoptable": false,
+        "plan_sha256": null,
+        "error": {
+          "type": "AttributeError",
+          "message": "module 'ortools.sat.python.cp_model' has no attribute 'NO_RESTART'"
+        },
+        "proof": null,
+        "counts": {
+          "CW_directed_savings": 132,
+          "double_candidate_checks": 1
+        },
+        "wall_s": 9.324620990082622,
+        "cpu_s": 0.44845749599999996,
+        "max_rss_KiB": 89088,
+        "observed_threads": 1
+      },
+      {
+        "branch_id": 1,
+        "pid": 1874513,
+        "cpu_affinity": [
+          1
+        ],
+        "seeds": {
+          "solver_seed": 1933750495,
+          "quantum_seed": 3500338989,
+          "validation_seed": null
+        },
+        "execution_state": "ERROR",
+        "algorithm_termination": null,
+        "plan_state": "NO_PLAN",
+        "adoptable": false,
+        "plan_sha256": null,
+        "error": {
+          "type": "AttributeError",
+          "message": "module 'ortools.sat.python.cp_model' has no attribute 'NO_RESTART'"
+        },
+        "proof": null,
+        "counts": {
+          "CW_directed_savings": 132,
+          "double_candidate_checks": 1
+        },
+        "wall_s": 8.622464928077534,
+        "cpu_s": 0.294440727,
+        "max_rss_KiB": 73728,
+        "observed_threads": 1
+      },
+      {
+        "branch_id": 2,
+        "pid": 1874518,
+        "cpu_affinity": [
+          2
+        ],
+        "seeds": {
+          "solver_seed": 1820043140,
+          "quantum_seed": 1230737501,
+          "validation_seed": null
+        },
+        "execution_state": "ERROR",
+        "algorithm_termination": null,
+        "plan_state": "NO_PLAN",
+        "adoptable": false,
+        "plan_sha256": null,
+        "error": {
+          "type": "AttributeError",
+          "message": "module 'ortools.sat.python.cp_model' has no attribute 'NO_RESTART'"
+        },
+        "proof": null,
+        "counts": {
+          "CW_directed_savings": 132,
+          "double_candidate_checks": 1
+        },
+        "wall_s": 8.370909480843693,
+        "cpu_s": 0.29071741700000003,
+        "max_rss_KiB": 86016,
+        "observed_threads": 1
+      },
+      {
+        "branch_id": 3,
+        "pid": 1874521,
+        "cpu_affinity": [
+          3
+        ],
+        "seeds": {
+          "solver_seed": 834110494,
+          "quantum_seed": 3999902718,
+          "validation_seed": null
+        },
+        "execution_state": "ERROR",
+        "algorithm_termination": null,
+        "plan_state": "NO_PLAN",
+        "adoptable": false,
+        "plan_sha256": null,
+        "error": {
+          "type": "AttributeError",
+          "message": "module 'ortools.sat.python.cp_model' has no attribute 'NO_RESTART'"
+        },
+        "proof": null,
+        "counts": {
+          "CW_directed_savings": 132,
+          "double_candidate_checks": 1
+        },
+        "wall_s": 8.286509656812996,
+        "cpu_s": 0.289825715,
+        "max_rss_KiB": 79872,
+        "observed_threads": 1
+      }
+    ],
+    "contract_id": "whole-method-finite-work-v1",
+    "experiment_id": "termination_rules_20261116_v1",
+    "phase": "small_fixture",
+    "scale": "tiny",
+    "input_hash": "d5cc88bcf354a7c945075629970484dbb62020fccf0c094fac4f1f924a72371a",
+    "OD_hash": "99527788c0e47a087921e72eddcc1dd915af518857f15145e983029ee0b15fc8",
+    "config_hash": "230093e4e8f18846c315adae39fe1d22601c68de57603992a66e211475cfe906",
+    "T_kind": "comparison_parent_wall_including_process_setup_v1",
+    "physical_hash": "bbb15417a4eee5072f8118056c90ab422d792b4cedc35a6a06bf6bc0497fe8d2",
+    "input_state": "VALID",
+    "execution_state": "ERROR",
+    "algorithm_termination": null,
+    "plan_state": "NO_PLAN",
+    "validation_state": "NO_PLAN",
+    "adoptable": false,
+    "D": null,
+    "W": null,
+    "T_program": null,
+    "T_attempt": 14.895743716042489,
+    "J": null,
+    "J_reason": "TARGET_PLAN_INVALID",
+    "error": null,
+    "target_definition": null,
+    "target_arrival_s": null,
+    "target_met_at_end": null,
+    "target_status": "NO_NEW_QUALITY_TARGET_REGISTERED",
+    "T_input": 3.565982200205326,
+    "T_planning": 10.92524023191072,
+    "T_final_processing": 0.40378790395334363,
+    "parent_cpu_s": 0.07291292500000002,
+    "parent_RSS_highwater_KiB": 1593492,
+    "sampled_tree_peak_RSS_KiB": 355636,
+    "CPU_s_branches": 1.323441355,
+    "memory_measurement": "RSS sum sampled every 0.5s, branch and parent highwater separately; shared pages double counted; CPU partial if interrupted",
+    "J_reference": "single preregistered A functional-check run per scale; NOT a formal timing reference"
+  }
+]

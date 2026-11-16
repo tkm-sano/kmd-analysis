@@ -1,0 +1,195 @@
+{
+  "audit_version": "toc-stops-audit-v1",
+  "target_count": 39956,
+  "status_counts": {
+    "PASS": 34912,
+    "CONDITIONAL": 4956,
+    "FAIL": 88
+  },
+  "location_status_counts": {
+    "PASS": 39763,
+    "CONDITIONAL": 105,
+    "FAIL": 88
+  },
+  "road_status_counts": {
+    "PASS": 35077,
+    "CONDITIONAL": 4879
+  },
+  "per_domain_counts": {
+    "structure": {
+      "PASS": 39956
+    },
+    "source_lineage": {
+      "PASS": 39956
+    },
+    "building_join": {
+      "PASS": 39956
+    },
+    "residential_use": {
+      "PASS": 39956
+    },
+    "coordinates": {
+      "PASS": 39956
+    },
+    "ward_boundary": {
+      "PASS": 39828,
+      "FAIL": 88,
+      "CONDITIONAL": 40
+    },
+    "town_boundary": {
+      "PASS": 39944,
+      "CONDITIONAL": 12
+    },
+    "building_geometry": {
+      "PASS": 39902,
+      "CONDITIONAL": 54
+    },
+    "road_mapping": {
+      "PASS": 35077,
+      "CONDITIONAL": 4879
+    },
+    "road_reachability": {
+      "PASS": 39956
+    }
+  },
+  "reason_counts": {
+    "ROAD_MULTIPLE_NEAR_EQUAL_CANDIDATES": 4866,
+    "ROAD_DETERMINISTIC_ID_TIE_BREAK": 109,
+    "OUTSIDE_OTA_BOUNDARY": 88,
+    "REPRESENTATIVE_OUTSIDE_FOOTPRINT": 54,
+    "NEAR_OTA_BOUNDARY": 40,
+    "ROAD_LARGE_PROJECTION_DISTANCE": 15,
+    "NEAR_CHOCHO_BOUNDARY": 12
+  },
+  "unique_stops_with_issues": 5044,
+  "source_stats": {
+    "unique_stop_id": 39956,
+    "unique_building_id": 39956,
+    "unique_chocho_code": 182,
+    "duplicate_stop_rows": 0,
+    "duplicate_building_rows": 0,
+    "exact_duplicate_excess_rows": 0,
+    "rows_with_missing_fields": 0,
+    "rows_with_duplicate_coordinates": 0
+  },
+  "residential_usage_counts": {
+    "412": 23548,
+    "411": 13223,
+    "413": 2134,
+    "415": 1051
+  },
+  "ward_relation_counts": {
+    "INSIDE": 39850,
+    "OUTSIDE": 106
+  },
+  "town_relation_counts": {
+    "MATCH": 39956
+  },
+  "source_lineage_checks": {
+    "households_384353": true,
+    "positive_requests_73547": true,
+    "mapped_positive_73200": true,
+    "stops_39956": true,
+    "all_positive_mapped_buildings_present": true,
+    "saved_summary_counts": true
+  },
+  "road_historical_mapping_classes": {
+    "ASSUMED_MODEL_MAPPING": 39908,
+    "MODEL_MAPPING_CONFIRMED": 48
+  },
+  "real_access": "not verified; model service points, not observed gates",
+  "S1_S3": {
+    "S1": {
+      "PASS_ONLY": {
+        "available": 34912,
+        "enough_total": true,
+        "original_distribution_quota_feasible": true,
+        "shortage_regions": 0,
+        "shortage_total": 0,
+        "feasible_with_rebased_eligible_distribution": true,
+        "vrp_feasibility": "NOT_ASSESSED",
+        "od_completeness": "NOT_PROVEN",
+        "road_network_adoption": "HOLD"
+      },
+      "PASS_PLUS_CONDITIONAL": {
+        "available": 39868,
+        "enough_total": true,
+        "original_distribution_quota_feasible": true,
+        "shortage_regions": 0,
+        "shortage_total": 0,
+        "feasible_with_rebased_eligible_distribution": true,
+        "vrp_feasibility": "NOT_ASSESSED",
+        "od_completeness": "NOT_PROVEN",
+        "road_network_adoption": "HOLD"
+      }
+    },
+    "S2": {
+      "PASS_ONLY": {
+        "available": 34912,
+        "enough_total": true,
+        "original_distribution_quota_feasible": true,
+        "shortage_regions": 0,
+        "shortage_total": 0,
+        "feasible_with_rebased_eligible_distribution": true,
+        "vrp_feasibility": "NOT_ASSESSED",
+        "od_completeness": "NOT_PROVEN",
+        "road_network_adoption": "HOLD"
+      },
+      "PASS_PLUS_CONDITIONAL": {
+        "available": 39868,
+        "enough_total": true,
+        "original_distribution_quota_feasible": true,
+        "shortage_regions": 0,
+        "shortage_total": 0,
+        "feasible_with_rebased_eligible_distribution": true,
+        "vrp_feasibility": "NOT_ASSESSED",
+        "od_completeness": "NOT_PROVEN",
+        "road_network_adoption": "HOLD"
+      }
+    },
+    "S3": {
+      "PASS_ONLY": {
+        "available": 34912,
+        "enough_total": true,
+        "original_distribution_quota_feasible": true,
+        "shortage_regions": 0,
+        "shortage_total": 0,
+        "feasible_with_rebased_eligible_distribution": true,
+        "vrp_feasibility": "NOT_ASSESSED",
+        "od_completeness": "NOT_PROVEN",
+        "road_network_adoption": "HOLD"
+      },
+      "PASS_PLUS_CONDITIONAL": {
+        "available": 39868,
+        "enough_total": true,
+        "original_distribution_quota_feasible": true,
+        "shortage_regions": 0,
+        "shortage_total": 0,
+        "feasible_with_rebased_eligible_distribution": true,
+        "vrp_feasibility": "NOT_ASSESSED",
+        "od_completeness": "NOT_PROVEN",
+        "road_network_adoption": "HOLD"
+      }
+    }
+  },
+  "region_count": 182,
+  "regional_total_variation_from_original": {
+    "PASS_ONLY": 0.016721940192873937,
+    "PASS_PLUS_CONDITIONAL": 0.0020582940220898963
+  },
+  "unperformed": [
+    "complete regeneration from original statistics",
+    "dynamic simulation",
+    "route optimization",
+    "new OD calculations",
+    "new demand sampling",
+    "physical capacity or shift/berth feasibility",
+    "new-study road acceptance"
+  ],
+  "all_source_rows_retained": true,
+  "total_equals_status_sum": true,
+  "elapsed_seconds": 141.89069216209464,
+  "source_master_sha256": "fcfca5cb87bc482f1d98306c98823773e872f200c58ecb9090aa12985e3e80e0",
+  "output_ledger_sha256": "e785f8fe9e26e37a8a8ccc9b047d8eb04138034f7ec5a13bb2e3378ba1178b7b",
+  "audit_code_sha256": "fbbdda13ea7605032c8f594d53bb6087cacf6f73d942d2fa576a0dd08a9d3f1e"
+}

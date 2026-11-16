@@ -1,0 +1,119 @@
+{
+  "status": "FAIL",
+  "browser": "Chrome/156.0.8078.47",
+  "url": "file:///home/takuma/kmd-analysis/output/toc_delivery/demand_map/v1/toc_demand_S1_S3_map.html",
+  "scenario_checks": [
+    {
+      "scenario": "S1",
+      "count": 1000,
+      "unique": 1000,
+      "digest": "89fdf74516e10f5ff0c28375d21e461028f7a5bbeb7f9921b61f05eb404456f8",
+      "numericCoordinatesMatch": true,
+      "label": "1,000",
+      "legend": [
+        "true",
+        "false",
+        "false"
+      ],
+      "canvas": 1,
+      "offline": false,
+      "interaction_check_ms": 49
+    },
+    {
+      "scenario": "S2",
+      "count": 2000,
+      "unique": 2000,
+      "digest": "4539466b302cb93b4620069bd33021f41474afe3b70cf13dd9395dcdea703d20",
+      "numericCoordinatesMatch": true,
+      "label": "2,000",
+      "legend": [
+        "true",
+        "true",
+        "false"
+      ],
+      "canvas": 1,
+      "offline": false,
+      "interaction_check_ms": 41
+    },
+    {
+      "scenario": "S3",
+      "count": 4000,
+      "unique": 4000,
+      "digest": "4e0906e41bb37805e097a8859485a87313cb95614bd713965c07c1ad9d7ed375",
+      "numericCoordinatesMatch": true,
+      "label": "4,000",
+      "legend": [
+        "true",
+        "true",
+        "true"
+      ],
+      "canvas": 1,
+      "offline": false,
+      "interaction_check_ms": 54
+    },
+    {
+      "scenario": "S2",
+      "count": 2000,
+      "unique": 2000,
+      "digest": "4539466b302cb93b4620069bd33021f41474afe3b70cf13dd9395dcdea703d20",
+      "numericCoordinatesMatch": true,
+      "label": "2,000",
+      "legend": [
+        "true",
+        "true",
+        "false"
+      ],
+      "canvas": 1,
+      "offline": false,
+      "interaction_check_ms": 38
+    },
+    {
+      "scenario": "S1",
+      "count": 1000,
+      "unique": 1000,
+      "digest": "89fdf74516e10f5ff0c28375d21e461028f7a5bbeb7f9921b61f05eb404456f8",
+      "numericCoordinatesMatch": true,
+      "label": "1,000",
+      "legend": [
+        "true",
+        "false",
+        "false"
+      ],
+      "canvas": 1,
+      "offline": false,
+      "interaction_check_ms": 49
+    },
+    {
+      "scenario": "S3",
+      "count": 4000,
+      "unique": 4000,
+      "digest": "4e0906e41bb37805e097a8859485a87313cb95614bd713965c07c1ad9d7ed375",
+      "numericCoordinatesMatch": true,
+      "label": "4,000",
+      "legend": [
+        "true",
+        "true",
+        "true"
+      ],
+      "canvas": 1,
+      "offline": false,
+      "interaction_check_ms": 53
+    }
+  ],
+  "popup_checks": [
+    {
+      "minimum_group": 1,
+      "stop_id": "2026-01-01-13111-bldg-100040",
+      "offline": false,
+      "all_fields_match": true,
+      "physical_click": true
+    }
+  ],
+  "exceptions": [],
+  "online_tile_stats": {
+    "loaded": 0,
+    "errors": 0
+  },
+  "title": "大田区ToC配送研究：固定需要地点分布",
+  "error": "Error: Physical click opened wrong/no point\n    at assert (/home/takuma/kmd-analysis/review_outputs/toc_demand_map_20261110/browser_check.cjs:36:56)\n    at popupCheck (/home/takuma/kmd-analysis/review_outputs/toc_demand_map_20261110/browser_check.cjs:113:3)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async main (/home/takuma/kmd-analysis/review_outputs/toc_demand_map_20261110/browser_check.cjs:147:30)"
+}

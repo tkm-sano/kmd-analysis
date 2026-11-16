@@ -1,0 +1,80 @@
+{
+  "contract_id": "whole-method-A_rule_v1-20261115-comparison-v1",
+  "phase": "contract_check",
+  "T_kind": "comparison_parent_wall_including_process_setup_v1",
+  "reference_groups": [
+    {
+      "group_id": "small_contract_check_A",
+      "purpose": "contract_check",
+      "run_ids": [
+        "small_A_r1__adapter_r2"
+      ],
+      "required_count": 1
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "ART_N12",
+      "scenario_id": "comparison-contract-artificial-directed-12-v1",
+      "scale": "ART_N12",
+      "input_dir": "output/toc_delivery/comparison_integration_v1_20261115_inputs/ART_N12",
+      "budget_wall_s": 420,
+      "case_parameters": {
+        "BCD_epsilon_W_min": null,
+        "BCD_native_cap_s": 90
+      }
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "small_A_r1__adapter_r2",
+      "method": "A",
+      "case_id": "ART_N12",
+      "attempt_id": 1,
+      "repeat_id": 1,
+      "pair_id": "small_r1",
+      "retry_of": null,
+      "solver_seed": null,
+      "quantum_seed": null,
+      "reference_group_id": "small_contract_check_A"
+    },
+    {
+      "run_id": "small_B_r1__adapter_r2",
+      "method": "B",
+      "case_id": "ART_N12",
+      "attempt_id": 1,
+      "repeat_id": 1,
+      "pair_id": "small_r1",
+      "retry_of": null,
+      "solver_seed": 20261115,
+      "quantum_seed": null,
+      "reference_group_id": "small_contract_check_A"
+    },
+    {
+      "run_id": "small_C_r1__adapter_r2",
+      "method": "C",
+      "case_id": "ART_N12",
+      "attempt_id": 1,
+      "repeat_id": 1,
+      "pair_id": "small_r1",
+      "retry_of": null,
+      "solver_seed": 20261115,
+      "quantum_seed": null,
+      "reference_group_id": "small_contract_check_A"
+    },
+    {
+      "run_id": "small_D_r1__adapter_r2",
+      "method": "D",
+      "case_id": "ART_N12",
+      "attempt_id": 1,
+      "repeat_id": 1,
+      "pair_id": "small_r1",
+      "retry_of": null,
+      "solver_seed": 20261115,
+      "quantum_seed": 20261116,
+      "reference_group_id": "small_contract_check_A"
+    }
+  ],
+  "technical_revision_of": "comparison_v1_20261115_small_paths.json",
+  "revision_reason": "Initial 90s attempts stopped during dependency initialization before method entry. 420s = existing setup240 + internal90 + outer validation/startup reserve90. Method/search configuration unchanged."
+}

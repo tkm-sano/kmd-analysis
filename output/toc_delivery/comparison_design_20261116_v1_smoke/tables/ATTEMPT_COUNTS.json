@@ -1,0 +1,195 @@
+{
+  "metadata": {
+    "contract_id": "whole-method-A_rule_v1-20261115-comparison-v1",
+    "phase": "selection_pilot",
+    "units": {
+      "D": "km",
+      "W": "min",
+      "T_program": "s"
+    },
+    "independent_sample_count": null,
+    "p_values": null,
+    "confidence_intervals": null
+  },
+  "rows": [
+    {
+      "method": "A",
+      "planned": 1,
+      "target_case_ids": [
+        "S1"
+      ],
+      "target_case_count": 1,
+      "planned_run_ids": [
+        "selection_pilot_lean_S1_A_r1"
+      ],
+      "adopted_run_ids": [],
+      "excluded_from_adopted_values": [
+        {
+          "run_id": "selection_pilot_lean_S1_A_r1",
+          "input_state": "INVALID",
+          "termination_reason": "INPUT_INVALID",
+          "validation_state": "NOT_RUN"
+        }
+      ],
+      "executed": 1,
+      "valid_input_executed": 0,
+      "validated_plan_count": 0,
+      "no_plan_count": 0,
+      "invalid_plan_count": 0,
+      "limit_stop_count": 0,
+      "runtime_error_count": 0,
+      "input_invalid_count": 1,
+      "not_executed_count": 0,
+      "retry_count": 0,
+      "success_rate": null,
+      "success_rate_denominator": "all executions with valid common input, including runtime errors and timeouts",
+      "D_values": [],
+      "W_values": [],
+      "T_attempt_all_executed": [
+        0.7298237041104585
+      ]
+    },
+    {
+      "method": "B",
+      "planned": 1,
+      "target_case_ids": [
+        "S1"
+      ],
+      "target_case_count": 1,
+      "planned_run_ids": [
+        "selection_pilot_lean_S1_B_r1"
+      ],
+      "adopted_run_ids": [],
+      "excluded_from_adopted_values": [
+        {
+          "run_id": "selection_pilot_lean_S1_B_r1",
+          "input_state": "NOT_CHECKED",
+          "termination_reason": "NOT_STARTED",
+          "validation_state": "NOT_RUN"
+        }
+      ],
+      "executed": 0,
+      "valid_input_executed": 0,
+      "validated_plan_count": 0,
+      "no_plan_count": 0,
+      "invalid_plan_count": 0,
+      "limit_stop_count": 0,
+      "runtime_error_count": 0,
+      "input_invalid_count": 0,
+      "not_executed_count": 1,
+      "retry_count": 0,
+      "success_rate": null,
+      "success_rate_denominator": "all executions with valid common input, including runtime errors and timeouts",
+      "D_values": [],
+      "W_values": [],
+      "T_attempt_all_executed": []
+    },
+    {
+      "method": "C",
+      "planned": 1,
+      "target_case_ids": [
+        "S1"
+      ],
+      "target_case_count": 1,
+      "planned_run_ids": [
+        "selection_pilot_lean_S1_C_r1"
+      ],
+      "adopted_run_ids": [
+        "selection_pilot_lean_S1_C_r1"
+      ],
+      "excluded_from_adopted_values": [],
+      "executed": 1,
+      "valid_input_executed": 1,
+      "validated_plan_count": 1,
+      "no_plan_count": 0,
+      "invalid_plan_count": 0,
+      "limit_stop_count": 0,
+      "runtime_error_count": 0,
+      "input_invalid_count": 0,
+      "not_executed_count": 0,
+      "retry_count": 0,
+      "success_rate": 1.0,
+      "success_rate_denominator": "all executions with valid common input, including runtime errors and timeouts",
+      "D_values": [
+        1.309
+      ],
+      "W_values": [
+        0.0
+      ],
+      "T_attempt_all_executed": [
+        21.17520476412028
+      ]
+    },
+    {
+      "method": "D",
+      "planned": 1,
+      "target_case_ids": [
+        "S1"
+      ],
+      "target_case_count": 1,
+      "planned_run_ids": [
+        "selection_pilot_lean_S1_D_r1"
+      ],
+      "adopted_run_ids": [],
+      "excluded_from_adopted_values": [
+        {
+          "run_id": "selection_pilot_lean_S1_D_r1",
+          "input_state": "NOT_CHECKED",
+          "termination_reason": "NOT_STARTED",
+          "validation_state": "NOT_RUN"
+        }
+      ],
+      "executed": 0,
+      "valid_input_executed": 0,
+      "validated_plan_count": 0,
+      "no_plan_count": 0,
+      "invalid_plan_count": 0,
+      "limit_stop_count": 0,
+      "runtime_error_count": 0,
+      "input_invalid_count": 0,
+      "not_executed_count": 1,
+      "retry_count": 0,
+      "success_rate": null,
+      "success_rate_denominator": "all executions with valid common input, including runtime errors and timeouts",
+      "D_values": [],
+      "W_values": [],
+      "T_attempt_all_executed": []
+    },
+    {
+      "method": "D_CLASSICAL_REPLACEMENT",
+      "planned": 1,
+      "target_case_ids": [
+        "S1"
+      ],
+      "target_case_count": 1,
+      "planned_run_ids": [
+        "selection_pilot_lean_S1_D_CLASSICAL_REPLACEMENT_r1"
+      ],
+      "adopted_run_ids": [
+        "selection_pilot_lean_S1_D_CLASSICAL_REPLACEMENT_r1"
+      ],
+      "excluded_from_adopted_values": [],
+      "executed": 1,
+      "valid_input_executed": 1,
+      "validated_plan_count": 1,
+      "no_plan_count": 0,
+      "invalid_plan_count": 0,
+      "limit_stop_count": 0,
+      "runtime_error_count": 0,
+      "input_invalid_count": 0,
+      "not_executed_count": 0,
+      "retry_count": 0,
+      "success_rate": 1.0,
+      "success_rate_denominator": "all executions with valid common input, including runtime errors and timeouts",
+      "D_values": [
+        1.66
+      ],
+      "W_values": [
+        0.0
+      ],
+      "T_attempt_all_executed": [
+        14.96006289916113
+      ]
+    }
+  ]
+}

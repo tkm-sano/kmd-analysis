@@ -1,0 +1,11 @@
+{
+  "phase": "test_fixture_only",
+  "production_comparison_code_changed": false,
+  "production_budgets_changed": false,
+  "direct_watchdog_s": 1.5,
+  "input_timeout_s": 1.5,
+  "parent_plan_validation_fixture_s": 10,
+  "reason": "Final regression recorded no candidate delivery before1.5s for checkpoint and invalid-plan fixtures; implementation correctly rejected them. Separate interpreter/NFS/physical-check readiness allowance from short direct watchdog witness. Retain both failure records.",
+  "old_log": "TEST_REGRESSION_02.log",
+  "new_log": "TEST_REGRESSION_03.log"
+}

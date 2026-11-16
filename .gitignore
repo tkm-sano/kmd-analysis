@@ -264,6 +264,16 @@ docker-compose.override.yml
 !03_data/processed/traffic_simulation/README.md
 !03_data/processed/traffic_simulation/**/.gitkeep
 
+# The reviewed ToC common-input v1 is versioned; raw/historical datasets stay ignored.
+!03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/S1.csv
+!03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/S2.csv
+!03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/S3.csv
+!03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/REGIONAL_ALLOCATION.csv
+!03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/MANIFEST.json
+!03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/SHA256SUMS
+!03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/VALIDATION.json
+!03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/READING_CONTRACT.md
+
 # Third-party source material is fetched locally; version only registries and
 # directory documentation.  Keep the traffic-simulation skeleton so every
 # environment uses the same source-specific paths without tracking downloads.

@@ -1,0 +1,65 @@
+[
+  {
+    "scenario_id": "S1",
+    "stops": 1000,
+    "vehicles": 10,
+    "berths": 2,
+    "total_demand": 1000,
+    "total_capacity": 1200,
+    "min_trips": 17,
+    "max_trips": 20,
+    "loading_occupancy_lower_min": 255.0,
+    "service_per_vehicle_lower_s": 12000.0,
+    "OD_shape": [
+      1001,
+      1001
+    ],
+    "OD_payload_bytes": 17034017,
+    "OD_hash": "9b90a13dc3bfd1a5e50afb3c6eaf5070a043b79695da8b4643a2eed5332b0280",
+    "matrices_finite_nonnegative_reachable": true,
+    "run_status": "limited run in separate trials",
+    "scaling_risk": "CW O(N^2) Python savings; D O(V*R^2) finite days; no feasibility or memory-time proof"
+  },
+  {
+    "scenario_id": "S2",
+    "stops": 2000,
+    "vehicles": 20,
+    "berths": 4,
+    "total_demand": 2000,
+    "total_capacity": 2400,
+    "min_trips": 34,
+    "max_trips": 40,
+    "loading_occupancy_lower_min": 255.0,
+    "service_per_vehicle_lower_s": 12000.0,
+    "OD_shape": [
+      2001,
+      2001
+    ],
+    "OD_payload_bytes": 68068017,
+    "OD_hash": "81755ba57345f706182a13fc13e2a0f0d4df793064ca77bbf57f455b17c26345",
+    "matrices_finite_nonnegative_reachable": true,
+    "run_status": "NOT_RUN",
+    "scaling_risk": "CW O(N^2) Python savings; D O(V*R^2) finite days; no feasibility or memory-time proof"
+  },
+  {
+    "scenario_id": "S3",
+    "stops": 4000,
+    "vehicles": 40,
+    "berths": 8,
+    "total_demand": 4000,
+    "total_capacity": 4800,
+    "min_trips": 67,
+    "max_trips": 80,
+    "loading_occupancy_lower_min": 251.25,
+    "service_per_vehicle_lower_s": 12000.0,
+    "OD_shape": [
+      4001,
+      4001
+    ],
+    "OD_payload_bytes": 272136017,
+    "OD_hash": "254bb8f3fb28d86419f36ad6814efbad15d88822a3186952e79d53f40c864e81",
+    "matrices_finite_nonnegative_reachable": true,
+    "run_status": "NOT_RUN",
+    "scaling_risk": "CW O(N^2) Python savings; D O(V*R^2) finite days; no feasibility or memory-time proof"
+  }
+]

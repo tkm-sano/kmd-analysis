@@ -1,0 +1,421 @@
+diff --git a/docs/research/toc_delivery_a/A_BASELINE_DECISION.md b/docs/research/toc_delivery_a/A_BASELINE_DECISION.md
+new file mode 100644
+index 0000000..822b5e9
+--- /dev/null
++++ b/docs/research/toc_delivery_a/A_BASELINE_DECISION.md
+@@ -0,0 +1,48 @@
++# 比較対象Aの採用決定
++
++決定日：2026-11-11。版：A-external-reference-v1.0。最終判定：**CONDITIONAL GO（指標別の外部参照として採用）**。
++
++## 1. 採用する事業者・資料
++
++**Aは単一の配送計画を再現する方式ではなく、次の指標別の実事業者参照とする。**
++
++|区分|採用事業者・資料|採用する参照|採用範囲|
++|---|---|---|---|
++|A_D|佐川急便の公式コラム、2025-02-06公開、[セールスドライバーの歩数検証](https://www.sagawa-exp.co.jp/about-csr/column/article_33.html)|都内担当者のトラック走行距離13km/担当車両・日|都市部の1日観察例。全車両合計や大田区の代表値ではない|
++|A_T|日本郵便担当者への公式サービス導入事例インタビュー、[Loogiaの日本郵便事例](https://loogia.jp/cases/nihonyubin/)、記事注記は2021年時点|従来の紙地図によるルート作成時間：熟練者300〜600秒、初心者1800〜3600秒程度|習熟度別の業務時間参照。研究Tと同一の計測境界ではない|
++|A_W|採用できる資料なし|**未取得**|0分や全国トラック統計で補完しない|
++
++A_DとA_Tは**異なる事業者・年・観察単位**である。両者と未取得Wを結合して一組の(D,W,T)実績点を作らない。既定の比較表では資料・観察単位を併記し、研究と同一定義の値は別欄で管理する。正確な換算と未取得欄は[A_REFERENCE_VALUES.md](A_REFERENCE_VALUES.md)、全候補の採否は[A_EVIDENCE_REGISTER.md](A_EVIDENCE_REGISTER.md)を正本とする。
++
++## 2. 採用理由
++
++Dは、国内宅配事業者自身が日付を特定して公表したトラックの実測値を選んだ。都市部の建物への集配を含むため、幹線輸送や店舗配送だけの資料より本研究のラストマイルに近い。ただし商業施設への集配も含み、純粋ToCとの同一性まではない。郊外担当者の148kmは地域差を見る補足例に限り、13〜148kmを母集団の範囲や信頼区間としない。
++
++Tは、ゆうパック配達業務に関する事業者担当者の回答から、ルート作成だけを区別できる値を選んだ。サービス提供者の顧客インタビューであり、事業者の公表報告値として扱う。原ログを伴う独立追試済みのストップウォッチ実測値とは呼ばない。熟練者・初心者の両層を残し、有利な1点や平均値を作らない。システム導入後の初心者600〜900秒は補助情報で、従来人手のA_Tとは分ける。
++
++京浜トラックターミナルの運営主体・実在入居事業者とAmazon大田区DSは地域的には近いが、今回確認した資料からD/W/Tの適合値を採用できなかった。地域一致だけを理由に、施設へのアクセス距離・入出車両数・施設バース数を配送計画の実績へ置き換えない。ヤマトの集配研究も、対象作業と指標境界が異なるため数値採用しない。
++
++## 3. 研究計画との整合
++
++優先順は今回の指示、現行共通条件v1.1、11/10凍結需要追補、旧計画の順とする。旧DOCX・README・11/8仕様の「代理割当・近傍順・FCFSのA」は履歴であり、今回のAとしては採用しない。配送先の再抽出、事業者アルゴリズムの模倣、A専用の最適化を行わない。
++
++S1=1000/10/2、S2=2000/20/4、S3=4000/40/8、各車最大2便、顧客時間窓なしを維持する。運行仮定は積込1800秒、顧客作業120秒、帰着後準備0秒のv1.1のままであり、実績参照を使って上書きしない。固定需要・共通ODと実事業者の需要・道路条件を同じものと見なさない。
++
++## 4. 比較と判定の適用範囲
++
++- A_Dは別枠で表示し、必要ならB〜Dの`D/V_used`（実使用車両数が判明し正の場合）を参考として併記する。需要・日・地域・便数・集荷の差を明示する。13kmを10/20/40倍してS1〜S3のA_Dを作らない。
++- A_Tは人のルート作成業務の参照帯として表示する。B〜Dの全体計画作成時間との比率・高速化倍率・有意差を計算しない。研究Tには共通入力読込から独立検証まで含まれるが、資料にはその境界の保証がない。
++- A_Wは未取得のまま保持する。積込30分や準備0分からWを推定しない。
++- AのD/W/T点、Aを含む対応差・パレート優越、S1〜S3の同条件四手法比較を生成しない。B〜D同士の同条件比較と、Aの外部参照は図表上も分ける。
++
++|判定対象|判定|理由|
++|---|---|---|
++|採用事業者・資料・換算・採否の確定|GO|一次資料の本文・画像・日時・hashを確認し採用範囲を決めた|
++|実事業者の外部参照としてのA|CONDITIONAL GO|Dは単日1台相当、Tは習熟度別の報告範囲、Wは未取得|
++|S1〜S3と同条件・同定義のA数値|HOLD|全車両合計D、同一定義W、入力〜検証のTを得ていない|
++
++## 5. 残る不確実性と完了範囲
++
++Dの正確な担当エリア・配送先数・集配比率・便数、距離計測装置と原ログは未取得。Tの局名・対象日・サンプル数・配送先数・計測手順も未取得であり、2021年という記事時点から特定の測定期間を推定しない。Wにはready/load_startのイベント記録が必要である。これらが得られた場合だけ本決定を版更新する。
++
++今回は調査・採用判断・文書化で完了とする。一次資料を保存した証拠は`output/toc_delivery/a_baseline_20261111/`。既存のA〜Dコード・凍結需要・設定・過去の実験結果を変更せず、commit/pushは行わない。
+diff --git a/docs/research/toc_delivery_a/A_EVIDENCE_REGISTER.md b/docs/research/toc_delivery_a/A_EVIDENCE_REGISTER.md
+new file mode 100644
+index 0000000..6daba45
+--- /dev/null
++++ b/docs/research/toc_delivery_a/A_EVIDENCE_REGISTER.md
+@@ -0,0 +1,97 @@
++# A：候補・一次資料・採否台帳
++
++調査・取得日2026-11-11。採用決定は[A_BASELINE_DECISION.md](A_BASELINE_DECISION.md)。検索結果・ニュース記事は発見に利用し、採用数値は公式原文まで遡った。確認できない値は「未取得」とする。「公表されていない」と全資料へ一般化はしない。
++
++## 1. 候補比較
++
++|候補|ToC類似性|大田区・京浜との関連|配送実績の有無/指標対応|信頼性|数値の再検証可能性|採否|
++|---|---|---|---|---|---|---|
++|日本自動車ターミナル|運営施設、配送事業者とは役割が違う|研究想定拠点そのもの|施設量のみ。D/W/T未取得|運営主体の公式情報|施設量は確認可、配送原ログなし|地域・施設の背景のみ|
++|丸運・京浜ターミナル営業所|路線貨物/航空コンテナ等、純ToCは未確認|京浜内5号棟を公式確認|16台（関係会社含む）。D/W/T未取得|事業者公式|台数のみ、対象日・経路なし|A数値不採用|
++|ヤマト運輸|高い。集荷・配達を含む|関東の調査、採用できる大田区の実績なし|作業時間研究・最適化導入はある。D/W/Tの適合値未取得|企業著者の学会誌解説、公式サービス事例|作業調査手順は具体的、今回3指標は再計算不可|方法・境界の背景のみ|
++|佐川急便|高いが都市例は商業施設も混在|都内、区・営業所名は未取得|公表単日トラック距離あり。W/T絶対値なし|配送事業者自身の公式記事|掲載値の確認可、距離原ログなし|**A_D採用**|
++|日本郵便|ゆうパックで高い|試行局名・地域未取得。京浜との同一性なし|ルート作成の業務時間報告あり。D/Wなし|日本郵便担当者の公式顧客インタビュー、本人企業の試行発表で背景確認|単位換算可、標本・時計境界不明|**A_T採用**|
++|Amazon国内DS/DSP|顧客宅ラストマイルで高い|大田区DSの開設を公式確認。京浜そのものではない|対象業務・配送体制は確認。D/W/T未取得|Amazon自身の公式説明|今回の資料では指標を再計算不可|地域・配送形態の背景のみ|
++|ロンコ・ジャパン/OKI|店舗配送で低い|国内地域非開示|総距離差の推計あり、計算予算あり。宅配のD/W/Tではない|技術開発主体の実証報告|手順は具体的、個別原ログなし|ToC参照に不採用|
++
++## 2. 資料登録・確認箇所
++
++保存先は`output/toc_delivery/a_baseline_20261111/sources/`。原ファイル・抽出テキストのSHA256、取得時刻、HTTP結果はSOURCE_MANIFEST.jsonとDOWNLOAD_LOG_*.jsonへ記録した。HTMLはページ番号がないため節名とローカル抽出テキストの行位置を使う。画像は原画像を目視した。
++
++### E01：日本自動車ターミナル・施設情報
++
++- URL：[施設一覧](https://www.j-m-t.co.jp/terminal/)、[京浜詳細](https://www.j-m-t.co.jp/terminal/keihin.html)。HTML表「概要」「施設案内」。保存ID：JMT_TERMINALS、JMT_KEIHIN。
++- 運営主体と大田区平和島2-1-1を確認。382バース等の施設集計や出入車両数は、特定のToC計画の使用バース/配送台数ではない。
++- 配送先数、対象車両数、便数、計画方法、走行距離、積込待機、計画作成時間、当該計画の対象期間・計測方法：**未取得**。周辺ICからの0.5km等は施設へのアクセスでありD不採用。
++- 構内の大田平和島二郵便局の記載を、E07の試行局・データ源と結び付けない。採否：施設の背景のみ。
++
++### E02：丸運・京浜ターミナル営業所
++
++- URL：[丸運公式の営業所情報](https://www.maruwn.co.jp/corporate/network/keihin-terminal/)。HTML「詳細」。保存ID：MARUWN_BROWSER_READBACK（ブラウザ読取）。
++- 研究拠点内の5号棟、車両16台（関係会社含む）、路線貨物・航空コンテナ集配等を確認。
++- 配送先数、車両別便数、計画方法、D/W/T、計測期間・手順：**未取得**。16台は計画対象の同時稼働台数と同義でない。純ToCの比率も不明。
++- 直接ダウンロードはTLS handshake失敗、別のweb読取では本文を確認できた。原HTML保存済みとは記録しない。採否：地域関連の背景のみ。
++
++### E03：ヤマト運輸・集配作業時間調査
++
++- URL：[吉田・村上「宅配ドライバーの集配作業時間の分析」](https://orsj.org/wp-content/corsj/or64-12/or64_12_761.pdf)、2019年12月、pp.761–766。確認：p.762「調査」、pp.762–763の対象作業。保存ID：YAMATO_OR。
++- 関東の拠点数カ所、2018年4〜9月の断続調査、集配約4500件。社員がドライバーへ同行し、作業区分を観察・ストップウォッチ計測した資料である。
++- 約4500件は複数期間の集配イベントで、1計画の一意配送先数ではない。対象車両総数・車両別便数は今回**未取得**。
++- 集配拠点外の作業調査のため、拠点の積込ready→startというWを回復できない。顧客作業時間、運転時間、その他時間をTにしない。D/W/Tの適合値は**未取得**。
++- 採否：実務調査の背景。企業著者による学会誌解説であり、本台帳では独立査読の確認済み研究とは扱わない。
++
++### E04：ヤマト運輸・ルート最適化導入
++
++- URL：[Google Cloud公式のヤマト事例](https://cloud.google.com/blog/ja/products/maps-platform/yamato-transport-boosts-efficiency-and-work-life-balance-with-route-optimization-api?hl=ja)。2024-09-17（HTML datePublished）。確認：Route Optimization API導入と現場での試験に関する本文。保存ID：YAMATO_GOOGLE。
++- 配送担当エリア・割当・ルートをシステムで支援する。対象地域は一律でなく、同一のN/V/便数を伴う計画のD/W/T、計測日・手順は**未取得**。「瞬時」等を秒数へ換算しない。
++- [Hondaとの集配実用性検証発表](https://www.yamato-hd.co.jp/news/2023/newsrelease_20230414_1.html)（2023-04-14、保存ID YAMATO_HONDA）も確認。地域で距離条件が違うことは記載されるが、採用可能な距離数値は未取得。EVの性能・充電値を配送D/W/Tへ流用しない。
++- 採否：方法の背景のみ。将来導入予定と実際に計測された性能を分ける。
++
++### E05：佐川急便・都内/郊外の日走行
++
++- URL：[佐川公式・歩数検証記事](https://www.sagawa-exp.co.jp/about-csr/column/article_33.html)、2025-02-06。確認：HTML「内容」「検証結果：実測値」「Aさんの場合」。保存ID：SAGAWA_DISTANCE。抽出textの174〜180行付近。
++- 観察日2025-01-10、晴れ、1日、都内担当者と郊外担当者各1名の担当コース。ドライバーの歩数計携帯を明示。**トラック距離は都市13km、郊外148km**。歩行距離の約14km/約7kmとは別である。
++- 配送先数、営業所全車両数、便数、時間窓、積込待機、計画作成時間、距離取得装置と原ログ：**未取得**。固定担当コースという説明があり、配達に加え集荷・商業施設を含む。地域の正確な区名・局名も不明。
++- 採否：都市の距離だけをA_Dの主要外部参照、郊外は地域差の補足。母集団平均・研究の全車両Dにしない。
++
++### E06：佐川急便・Loogia実地検証
++
++- URL：[2021-10-04共同発表](https://www.optimind.tech/news/ルート最適化システム「loogia」を佐川急便で導入を/)。確認：「これまでの取組実績」1、指標定義、最後の検証結果画像。保存ID：SAGAWA_RELEASE、SAGAWA_CHART.jpg。
++- 2020年8月、14日間、時間帯指定を含む80個の配達で従来運用と比較。80個は一意配送先80地点を保証しない。対象エリア、検証の全車両数、便数は**未取得**。2020年11〜12月の約500名試験導入をこの実地検証の車両数にしない。
++- 画像の区分順は担当/代走/新人・応援。ルート組み短縮10/15/30分、配送業務短縮30/60/60分、距離削減10/9/11km。D/Tの**絶対値は未取得**、Wも未取得。
++- 距離は営業所出発から帰着まで（休憩時の移動除外）、ルート組みは配達位置確認から時間帯込みの訪問順決定まで、と定義されている。配送業務時間をTにしない。
++- 採否：差分資料として補足。E05と異なる年・観察であり、13kmへ削減差を加減しない。[SGのIR資料](https://www2.jpx.co.jp/disc/91430/140120211029420810.pdf)印刷p.13（保存ID SAGAWA_IR）は導入事実の補助で、数値の穴埋めには使わない。
++
++### E07：日本郵便・ルート作成業務時間（A_T採用）
++
++- URL：[Loogia公式顧客事例](https://loogia.jp/cases/nihonyubin/)。確認：インタビュー「導入前の課題」「現在はどのようにご利用」「導入してどんな効果」、末尾2021年時点の注記。保存ID：JP_CASE。抽出text49/51/53/60行付近。
++- 回答者は日本郵便の集配企画・集配基盤担当者。資料記載時点で22郵便局の一部地域に試行。ただし22は測定車両数でも標本数でもない。実績に対応する局名、対象日、N/V/便数、標本数、時計による計測手順は**未取得**。草加郵便局という二次報道の局名をこの事例へ移さない。
++- 計画方法：従来は各ドライバーが紙地図でルートを作成、試行ではタブレットへ配達先を入力して自動算出。
++- 採用は従来のルート作成だけの範囲：熟練者5〜10分、初心者30分〜1時間程度。導入後の初心者10〜15分は別条件の補足。D/W、研究と同一境界のTは**未取得**。
++- 67分→17分はルート作成と配達の合計における経験層間の差なのでT不採用。JP_CHART.jpgという取得ファイルは担当者写真であり、数値図表ではない。
++- 採否：人のルート作成業務の外部参照として採用。生データによる独立計測と同列にはしない。
++
++### E08：日本郵便・事業者自身の試行発表
++
++- URL：[公式発表](https://www.post.japanpost.jp/notification/pressrelease/2020/00_honsha/0615_02_01.pdf) p.1、[別紙](https://www.post.japanpost.jp/notification/pressrelease/2020/00_honsha/0615_02_02.pdf) p.1 §§1–2・p.2 §3。2020-06-15。保存ID：JP_PRESS、JP_PRESS_APPENDIX。
++- ゆうパック等、全国約200局、2020年6月〜2021年3月予定の試行、SmaRyu PostとLoogiaの連携を確認した。**予定**の局数・期間であり、実測された計画のN/V/便数・標本数にしない。
++- D/W/Tの実測値はこの発表では**未取得**。E07の事業形態・システム背景を確認するだけで、その22局と同一実験と断定しない。
++
++### E09：Amazon国内DS/DSP
++
++- URL：[Amazon公式・物流5年間の歩み](https://www.aboutamazon.jp/news/delivery-and-logistics/amazon-logistics-five-year-journey)、2023-12-25。確認：DSと配送プログラムの節。保存ID：AMAZON_DS。
++- 大田区に2018年開設した国内初DS、顧客までのラストマイル、DSP/Flex等の体制を確認した。京浜トラックターミナルと同じ施設とは記載されていない。
++- 計画方法の詳細、同一計画の配送先・車両・便数、D/W/T、対象日と計測方法は**未取得**。国内の公開原資料に限定し、海外Amazonデータセットや個人の配達体験談は代用しない。採否：背景のみ。
++
++### E10：ロンコ・ジャパン/OKI・店舗配送実証
++
++- URL：[OKI技術報告PDF](https://www.oki.com/global/ja/technologies/otr/assets_c/uploads/otr241_r05.pdf)、2023年5月、印刷pp.32–34、特にp.34実証条件・図3。保存ID：OKI_RONCO。
++- 地域名非開示、約50固定店舗、15台前後、1日1回の配送業務（各車の便数は未取得）。定形容器の個数を需要量とする。配車担当者がPython/Gurobiのツールを利用し、走行軌跡から距離を算出。従来運用は別の日に実施した。
++- 計算は最長10分という**予算**で、実測Tではない。代表的な948個は容器数で配送先数ではない。距離差224km・5.1%は代表荷量による推計で、同一需要の生の総距離ではない。Wは未取得。実証対象日・個別原ログも未取得。
++- 採否：ToCでなく店舗への分割配送のためAには不採用。配送先を重複訪問しない研究条件とも異なる。ソフトウェアの計算上限をTの実績としない。
++
++## 3. 採用しなかった数値と検索範囲
++
++匿名の元ドライバー投稿、配送所要時間、求人上の勤務時間、商品を届けるまでのリードタイム、読み物の「読了○分」は採用しない。全国の荷待ち/荷役の合計統計や目標値は、今回の拠点・ToC・ready定義のWを満たさないため補完に使わない。
++
++調査は指定候補の公式発表・企業サイト・事例・行政/学会資料を対象に行った。全社内資料や有償データベースを網羅したという主張はしない。主なクエリ・取得失敗は証拠SEARCH_LOG.md、DOWNLOAD_LOG_*.jsonに残す。採用2資料は原HTMLを保存し、佐川差分の図も画像で検査した。採用値の出典依存性・換算・未取得の検査はREFERENCE_VALIDATION.jsonを参照する。
+diff --git a/docs/research/toc_delivery_a/A_REFERENCE_VALUES.json b/docs/research/toc_delivery_a/A_REFERENCE_VALUES.json
+new file mode 100644
+index 0000000..64ecd3c
+--- /dev/null
++++ b/docs/research/toc_delivery_a/A_REFERENCE_VALUES.json
+@@ -0,0 +1,199 @@
++{
++  "schema_version": "1.0",
++  "decision_version": "A-external-reference-v1.0",
++  "decided_on": "2026-11-11",
++  "status": "CONDITIONAL GO",
++  "role": "external_references_by_metric",
++  "common_conditions_version": "AD-common-20261111-v1.1",
++  "method_A_optimization_required": false,
++  "joint_observation": false,
++  "sources": {
++    "E05": {
++      "url": "https://www.sagawa-exp.co.jp/about-csr/column/article_33.html",
++      "archive": "output/toc_delivery/a_baseline_20261111/sources/SAGAWA_DISTANCE.html",
++      "sha256": "29de36b90aeaab6e2e778f44348c8bb18c1fb94a5a466b065b7630fd0a5b8a92",
++      "text": "output/toc_delivery/a_baseline_20261111/sources/SAGAWA_DISTANCE.txt"
++    },
++    "E07": {
++      "url": "https://loogia.jp/cases/nihonyubin/",
++      "archive": "output/toc_delivery/a_baseline_20261111/sources/JP_CASE.html",
++      "sha256": "11b2d52144e4449e33f92a6553df26e17c3f898b7e332619e2f38985d45843fd",
++      "text": "output/toc_delivery/a_baseline_20261111/sources/JP_CASE.txt"
++    }
++  },
++  "external_references": [
++    {
++      "id": "A_D_urban",
++      "metric": "D_observed_vehicle_day_km",
++      "operator": "佐川急便",
++      "evidence_id": "E05",
++      "value": 13,
++      "unit": "km/observed_vehicle_day",
++      "value_kind": "operator_published_measured_example",
++      "observation_date": "2025-01-10",
++      "observation_days": 1,
++      "scope": "one Tokyo driver course, deliveries and collections, commercial and residential",
++      "unique_stops": null,
++      "fleet_size": null,
++      "trip_count": null,
++      "distance_instrument": null,
++      "raw_logs_available": false,
++      "comparable_to_S1_S3_total": false
++    },
++    {
++      "id": "A_T_experienced",
++      "metric": "T_route_preparation_s",
++      "operator": "日本郵便",
++      "evidence_id": "E07",
++      "range": [
++        300,
++        600
++      ],
++      "original_range_minutes": [
++        5,
++        10
++      ],
++      "unit": "s/driver_route_preparation",
++      "conversion": "minutes * 60",
++      "value_kind": "operator_reported_range_unit_conversion",
++      "planning_method": "paper_map",
++      "experience": "experienced",
++      "article_as_of_year": 2021,
++      "measurement_period": null,
++      "measurement_protocol": null,
++      "raw_logs_available": false,
++      "common_T_boundary_matched": false
++    },
++    {
++      "id": "A_T_novice",
++      "metric": "T_route_preparation_s",
++      "operator": "日本郵便",
++      "evidence_id": "E07",
++      "range": [
++        1800,
++        3600
++      ],
++      "original_range_minutes": [
++        30,
++        60
++      ],
++      "unit": "s/driver_route_preparation",
++      "conversion": "minutes * 60; 1 hour = 60 minutes",
++      "value_kind": "operator_reported_approximate_range_unit_conversion",
++      "planning_method": "paper_map",
++      "experience": "novice",
++      "article_as_of_year": 2021,
++      "measurement_period": null,
++      "measurement_protocol": null,
++      "raw_logs_available": false,
++      "common_T_boundary_matched": false
++    }
++  ],
++  "missing_metrics": {
++    "D_total_km": {
++      "value": null,
++      "status": "not_obtained_at_common_plan_scope"
++    },
++    "W_min": {
++      "value": null,
++      "status": "not_obtained"
++    },
++    "T_common_s": {
++      "value": null,
++      "status": "not_obtained_at_common_timing_boundary"
++    }
++  },
++  "auxiliary_references": [
++    {
++      "id": "D_rural",
++      "evidence_id": "E05",
++      "value": 148,
++      "unit": "km/observed_vehicle_day",
++      "use": "regional_context_only_not_a_range_with_urban"
++    },
++    {
++      "id": "T_novice_with_Loogia",
++      "evidence_id": "E07",
++      "range_s": [
++        600,
++        900
++      ],
++      "original_range_minutes": [
++        10,
++        15
++      ],
++      "use": "separate_system_assisted_condition_not_conventional_A"
++    },
++    {
++      "id": "Sagawa_reductions",
++      "evidence_id": "E06",
++      "driver_order": [
++        "regular",
++        "substitute",
++        "new_or_support"
++      ],
++      "D_reduction_km": [
++        10,
++        9,
++        11
++      ],
++      "route_preparation_reduction_min": [
++        10,
++        15,
++        30
++      ],
++      "use": "differences_only_not_absolute_baseline"
++    },
++    {
++      "id": "JP_combined_work_gap",
++      "evidence_id": "E07",
++      "before_min": 67,
++      "after_min": 17,
++      "use": "route_creation_plus_delivery_between_experience_groups_NOT_T"
++    }
++  ],
++  "scenarios": {
++    "S1": {
++      "stops": 1000,
++      "vehicles": 10,
++      "berths": 2,
++      "D_km": null,
++      "W_min": null,
++      "T_s": null,
++      "status": "NO_SAME_CONDITION_A_RESULT"
++    },
++    "S2": {
++      "stops": 2000,
++      "vehicles": 20,
++      "berths": 4,
++      "D_km": null,
++      "W_min": null,
++      "T_s": null,
++      "status": "NO_SAME_CONDITION_A_RESULT"
++    },
++    "S3": {
++      "stops": 4000,
++      "vehicles": 40,
++      "berths": 8,
++      "D_km": null,
++      "W_min": null,
++      "T_s": null,
++      "status": "NO_SAME_CONDITION_A_RESULT"
++    }
++  },
++  "prohibited_uses": [
++    "joint_D_W_T_point",
++    "linear_scaling_to_S1_S3",
++    "same_condition_performance_ratio",
++    "A_pareto_dominance",
++    "epsilon_calibration_from_external_values",
++    "impute_missing_W_with_zero"
++  ],
++  "uncertainties": [
++    "D_delivery_counts_fleet_trips_and_collection_share_unknown",
++    "D_single_day_not_population_average",
++    "T_stops_fleet_trips_dates_samples_and_clock_boundaries_unknown",
++    "T_reported_not_independently_timed",
++    "different_operators_periods_and_scopes"
++  ]
++}
+diff --git a/docs/research/toc_delivery_a/A_REFERENCE_VALUES.md b/docs/research/toc_delivery_a/A_REFERENCE_VALUES.md
+new file mode 100644
+index 0000000..0601898
+--- /dev/null
++++ b/docs/research/toc_delivery_a/A_REFERENCE_VALUES.md
+@@ -0,0 +1,53 @@
++# A：指標別の参照水準
++
++2026-11-11、A-external-reference-v1.0。[採用決定](A_BASELINE_DECISION.md)に基づく。以下は**外部の個別観察・業務報告**であり、S1〜S3の実験結果ではない。
++
++## 1. 採用値と欠測
++
++|指標|取得した値・範囲|単位|出典・箇所|S1〜S3との比較可能性|
++|---|---|---|---|---|
++|Dの外部参照|**13**|km/担当車両・日|[佐川公式](https://www.sagawa-exp.co.jp/about-csr/column/article_33.html)、2025-01-10の「検証結果：実測値」都市担当者|同一指標の全車両合計ではない。個別車両の日走行としてのみ参考|
++|D（研究定義：全車両総距離）|**未取得**|km/対象計画|対象計画全体の台数・走行記録なし|S1/S2/S3のA_Dはnull|
++|W（研究定義：Σ積込start−ready）|**未取得**|分/対象計画|対応するready/startの公表値なし|S1/S2/S3のA_Wはnull|
++|Tの外部参照・熟練者|**300〜600**|秒/当該ドライバーのルート作成業務|[日本郵便担当者インタビュー](https://loogia.jp/cases/nihonyubin/)、「導入前の課題」回答|従来紙地図の業務報告。CPU秒や全車両の計画Tではない|
++|Tの外部参照・初心者|**1800〜3600程度**|同上|同上|熟練者と別層。範囲は信頼区間ではない|
++|T（研究定義：共通入力読込開始〜最終検証完了）|**未取得**|秒/対象計画|同一境界の計測なし|S1/S2/S3のA_Tはnull|
++
++Wがないため、上記のDとTを一組の三目的観察として出力しない。別事業者由来であることを隠さず、出典IDとscopeを必ず保持する。機械可読版は[A_REFERENCE_VALUES.json](A_REFERENCE_VALUES.json)。
++
++## 2. 換算・分類
++
++**時間の単位換算のみ**を行った。1分=60秒として、熟練者は`[5,10]×60=[300,600]`、初心者は`[30,60]×60=[1800,3600]`秒。1時間は60分に換算した。値の大小・時間幅は原文に由来し、データの内挿・外挿・統計推定ではない。中点450秒、2700秒を平均実績として作らない。
++
++Dの13kmは原文のトラックの値をそのまま保存し、約14kmの徒歩移動と混同しない。参考としてのkm/担当車両・日は、掲載された1担当者の1日観察というscopeの表示であり、稼働台数や日数を仮定して総距離から割った値ではない。原文が営業所全体の計画を与えていないため、総距離への復元はできない。
++
++|値の性質|対象|扱い|
++|---|---|---|
++|事業者公表の実測値|佐川の都市13km・郊外148km|単日事例。距離原ログ・計測器は未確認|
++|事業者担当者の公表報告範囲|日本郵便の紙地図・導入後ルート作成業務|人の作業時間。標本・時計ログがないため、独立に実測確認したとは主張しない|
++|単位換算値|分→秒|上記の算術だけ。範囲の意味を保持|
++|研究上の仮定値|積込1800秒、顧客作業120秒、準備0秒|A実績から採った数値ではない。共通条件v1.1を保持|
++
++## 3. 補足値と不採用値
++
++- 同じ佐川公式記事の郊外148kmは別の担当者・地域の参考例。13kmと合計161kmを一拠点の総距離にしたり、平均80.5kmを代表値にしたりしない。本文の一般的な「平均20kmほど」等も集計法不明のため主要値へ採用しない。
++- 日本郵便の導入後初心者10〜15分（600〜900秒）はツール利用後の別条件。従来紙地図のA_Tと混ぜず、純粋なアルゴリズム実行時間にも読み替えない。入力、操作、確認のどこまでを含むかは未確定。
++- 日本郵便事例の67分→17分は「ルート作成＋配達」の習熟度間の差。Tの絶対値・短縮値として使わない。
++- 佐川2021年のLoogia実地検証にある距離9/10/11km削減とルート組み10/15/30分短縮は差分であり、D/Tの絶対水準に変換しない。資料・ドライバー区分を結び付けずに足し引きしない。
++- 店舗配送の計算予算最長10分や一般的なソフトウェアの速度宣伝値を、宅配事業者のT実績として採用しない。
++
++## 4. S1〜S3で許す表示・禁止する換算
++
++|項目|方法|
++|---|---|
++|Dの参考表示|B〜Dで実使用車両数V_used>0が記録される場合に`D/V_used`を併記し、13kmの個別観察を別枠で示す。集荷・徒歩・地域差を注記する|
++|登録台数での単純除算|`D/10, D/20, D/40`は未使用車両を含み得る。1実働車両の日走行とは等価でない|
++|Tの参考表示|ルート作成という業務の長さを示す独立表・参考帯。入力〜検証のwall秒とは計測境界が異なることを表記する|
++|W|未取得と表示。0、積込30分、全国物流の荷待ち平均を代入しない|
++|S1〜S3のA値|D_km/W_min/T_sすべてnull。正式な同条件比較点を作らない|
++
++`13×10/20/40`、荷物個数や配送先数での比例外挿、`T×車両数`、`T/配送先数`はいずれも行わない。資料にはそれを正当化する仕事量、稼働便数、固定費と変動費の分解がない。同じ需要でないため、B〜DとAの削減率・高速化倍率・パレート優越を算出しない。両方向ε制約の水準にも今回のA値を使用しない。
++
++## 5. 未取得を埋めるために必要な情報
++
++同条件Aの取得には、計画対象の全車両・全便・訪問先数・期間と走行ログ、各便ready/load_start、入力受付から計画確認・検証完了までの工程別時刻が必要である。事業者との連絡・データ提供依頼は今回実施していない。現状のAは外部参照としてCONDITIONAL GOであり、Wや同条件Tの取得を意味しない。

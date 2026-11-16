@@ -1,0 +1,113 @@
+{
+  "status": "FAIL",
+  "browser": "Chrome/156.0.8078.47",
+  "url": "file:///home/takuma/kmd-analysis/output/toc_delivery/demand_map/v1/toc_demand_S1_S3_map.html",
+  "scenario_checks": [
+    {
+      "scenario": "S1",
+      "count": 1000,
+      "unique": 1000,
+      "digest": "89fdf74516e10f5ff0c28375d21e461028f7a5bbeb7f9921b61f05eb404456f8",
+      "numericCoordinatesMatch": true,
+      "label": "1,000",
+      "legend": [
+        "true",
+        "false",
+        "false"
+      ],
+      "canvas": 1,
+      "offline": false,
+      "interaction_check_ms": 46
+    },
+    {
+      "scenario": "S2",
+      "count": 2000,
+      "unique": 2000,
+      "digest": "4539466b302cb93b4620069bd33021f41474afe3b70cf13dd9395dcdea703d20",
+      "numericCoordinatesMatch": true,
+      "label": "2,000",
+      "legend": [
+        "true",
+        "true",
+        "false"
+      ],
+      "canvas": 1,
+      "offline": false,
+      "interaction_check_ms": 42
+    },
+    {
+      "scenario": "S3",
+      "count": 4000,
+      "unique": 4000,
+      "digest": "4e0906e41bb37805e097a8859485a87313cb95614bd713965c07c1ad9d7ed375",
+      "numericCoordinatesMatch": true,
+      "label": "4,000",
+      "legend": [
+        "true",
+        "true",
+        "true"
+      ],
+      "canvas": 1,
+      "offline": false,
+      "interaction_check_ms": 45
+    },
+    {
+      "scenario": "S2",
+      "count": 2000,
+      "unique": 2000,
+      "digest": "4539466b302cb93b4620069bd33021f41474afe3b70cf13dd9395dcdea703d20",
+      "numericCoordinatesMatch": true,
+      "label": "2,000",
+      "legend": [
+        "true",
+        "true",
+        "false"
+      ],
+      "canvas": 1,
+      "offline": false,
+      "interaction_check_ms": 38
+    },
+    {
+      "scenario": "S1",
+      "count": 1000,
+      "unique": 1000,
+      "digest": "89fdf74516e10f5ff0c28375d21e461028f7a5bbeb7f9921b61f05eb404456f8",
+      "numericCoordinatesMatch": true,
+      "label": "1,000",
+      "legend": [
+        "true",
+        "false",
+        "false"
+      ],
+      "canvas": 1,
+      "offline": false,
+      "interaction_check_ms": 49
+    },
+    {
+      "scenario": "S3",
+      "count": 4000,
+      "unique": 4000,
+      "digest": "4e0906e41bb37805e097a8859485a87313cb95614bd713965c07c1ad9d7ed375",
+      "numericCoordinatesMatch": true,
+      "label": "4,000",
+      "legend": [
+        "true",
+        "true",
+        "true"
+      ],
+      "canvas": 1,
+      "offline": false,
+      "interaction_check_ms": 52
+    }
+  ],
+  "popup_checks": [],
+  "exceptions": [],
+  "network_failures": [],
+  "tile_requests": 30,
+  "online_tile_stats": {
+    "loaded": 0,
+    "errors": 0
+  },
+  "title": "大田区ToC配送研究：固定需要地点分布",
+  "error": "Error: {\"code\":-32000,\"message\":\"Object reference chain is too long\"}\n    at WebSocket.<anonymous> (/home/takuma/kmd-analysis/review_outputs/toc_demand_map_20261110/browser_check.cjs:137:117)\n    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:786:20)\n    at WebSocket.dispatchEvent (node:internal/event_target:721:26)\n    at fireEvent (/usr/share/nodejs/undici/lib/websocket/util.js:55:10)\n    at websocketMessageReceived (/usr/share/nodejs/undici/lib/websocket/util.js:99:3)\n    at ByteParser.run (/usr/share/nodejs/undici/lib/websocket/receiver.js:233:13)\n    at ByteParser._write (/usr/share/nodejs/undici/lib/websocket/receiver.js:42:10)\n    at writeOrBuffer (node:internal/streams/writable:392:12)\n    at _write (node:internal/streams/writable:333:10)\n    at Writable.write (node:internal/streams/writable:337:10)"
+}

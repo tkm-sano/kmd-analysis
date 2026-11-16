@@ -1,0 +1,48 @@
+{
+  "phase": "contract_check",
+  "statistical_experiment": false,
+  "frozen_A_changes_allowed": false,
+  "A_identity": {
+    "cases": [
+      "S1",
+      "S2",
+      "S3"
+    ],
+    "executions_each": 1,
+    "common_wall_s_each": 240
+  },
+  "new_standalone_S2": {
+    "count": 1,
+    "native_program_s": 180,
+    "native_planning_s": 150,
+    "process_wall_s": 300,
+    "entry": "unchanged scripts/run_a_rule_v1.py --worker with registered standalone manifest"
+  },
+  "small_actual_methods": {
+    "fixture": "ART_N12",
+    "N": 12,
+    "vehicles": 4,
+    "berths": 1,
+    "physical_conditions": "unchanged common v1.1",
+    "methods": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "external_wall_s_each": 90,
+    "BCD_config": "unchanged dwt_balance_v1_4_cpu_parallel.json"
+  },
+  "timeout_fixtures": {
+    "external_wall_s": 1.5,
+    "grandchild_cleanup": true,
+    "synthetic": true
+  },
+  "reference_groups": "contract_check only; explicit singleton small_A; no formal T_A_ref",
+  "regression": [
+    "tests/toc_baseline_a",
+    "tests/toc_dwt",
+    "tests/toc_comparison_v1"
+  ],
+  "retries": "bugs require new output/run_id; retain all prior attempts; no performance tuning"
+}

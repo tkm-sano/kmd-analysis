@@ -1,0 +1,101 @@
+{
+  "status": "VALIDATED",
+  "D_km": 1722.4391,
+  "W_min": 1588.4666666666667,
+  "T_program_s": 6.654763172147796,
+  "T_A_program": 6.654763172147796,
+  "T_A_human_reference": null,
+  "physical_feasible": true,
+  "T_kind": "program_wall",
+  "T_scope": [
+    "model_read_and_hash",
+    "input_read_and_hash",
+    "assignment",
+    "order",
+    "trip_split",
+    "FCFS",
+    "all_timestamps",
+    "common_validation",
+    "independent_recalculation",
+    "agreement"
+  ],
+  "error": null,
+  "J": null,
+  "reference_status": "NOT_FROZEN",
+  "full_representativeness": "NOT_ESTABLISHED",
+  "main_experiment_eligible": false,
+  "T_attempt_wall_s": 6.654763172147796,
+  "cpu_time_s": 3.961804741,
+  "timing_events": [
+    {
+      "name": "input_and_model_load_start",
+      "elapsed_s": 0.0
+    },
+    {
+      "name": "input_and_model_load_end",
+      "elapsed_s": 3.7576006911695004
+    },
+    {
+      "name": "area_assignment_order_and_trip_split_end",
+      "elapsed_s": 4.558014871086925
+    },
+    {
+      "name": "area_FCFS_and_timestamps_end",
+      "elapsed_s": 4.564498970052227
+    },
+    {
+      "name": "generation_end",
+      "elapsed_s": 4.984807477099821
+    },
+    {
+      "name": "common_validation_end",
+      "elapsed_s": 6.155522851040587
+    },
+    {
+      "name": "independent_recalculation_end",
+      "elapsed_s": 6.65473882202059
+    },
+    {
+      "name": "agreement_end",
+      "elapsed_s": 6.654763172147796
+    }
+  ],
+  "max_rss_KiB": 445440,
+  "budget_met": true,
+  "scenario_id": "S3",
+  "input_hash": "46c274abfd6a98811a4100286eca05086ba470ab4782403adf1a964a6980bfe2",
+  "OD_hash": "254bb8f3fb28d86419f36ad6814efbad15d88822a3186952e79d53f40c864e81",
+  "visited_count": 4000,
+  "method": "A",
+  "version": "A-area-v3-20261115-research-candidate",
+  "selected_model_sha256": "30206923f994a46ab38eb724521ef54bdb9f5ade6f4273e02e4ca5e14c7c79f6",
+  "setup": {
+    "dependency_setup_wall_s": 122.24463673494756,
+    "allocated_cpu_ids": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "active_cpu_ids": [
+      0
+    ],
+    "python": "3.12.11 | packaged by Anaconda, Inc. | (main, Jun  5 2025, 13:09:17) [GCC 11.2.0]",
+    "executable": "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+    "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+    "native_threads_environment": {
+      "OPENBLAS_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1"
+    }
+  },
+  "pid": 2846849,
+  "cpu_affinity": [
+    0
+  ],
+  "execution_role": "calibration_selected",
+  "returncode": 0,
+  "repetition": 2,
+  "process_wall_including_setup_export_s": 133.95309448218904
+}

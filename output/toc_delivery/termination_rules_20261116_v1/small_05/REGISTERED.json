@@ -1,0 +1,442 @@
+{
+  "experiment_id": "termination_rules_20261116_v1",
+  "phase": "small_fixture",
+  "executable": true,
+  "statistical_trial_count_note": "one operational check per scale and method; internal branches are NOT independent repeats",
+  "contract_id": "whole-method-finite-work-v1",
+  "config": {
+    "experiment_id": "termination_rules_20261116_v1",
+    "version": "finite-work-whole-method-v1",
+    "mode": "finite_work",
+    "scales": [
+      "S1",
+      "S2",
+      "S3"
+    ],
+    "methods": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "D_CLASSICAL_REPLACEMENT"
+    ],
+    "resource": {
+      "physical_cores": 4,
+      "BCD_branches": 4,
+      "native_threads": 1,
+      "tree_RSS_limit_MiB": 32768,
+      "A_address_space_MiB": 4096
+    },
+    "A": {
+      "candidate_evaluations": 10000,
+      "rule": "frozen A_rule_v1, at most V accepted moves, no time guard"
+    },
+    "C": {
+      "search_limit_checks_per_stop": 16,
+      "minimum_search_limit_checks": 256,
+      "strategy": "GUIDED_LOCAL_SEARCH"
+    },
+    "completion": {
+      "max_conflicts_per_internal_solve": 256,
+      "max_improving_solutions": 8,
+      "search": "FIXED_SEARCH",
+      "restarts": "NO_RESTART",
+      "presolve": false,
+      "probing": false,
+      "linearization_level": 0,
+      "absolute_gap_limit": 0,
+      "relative_gap_limit": 0,
+      "sat_inprocessing": false,
+      "symmetry_level": 0,
+      "rins_lns": false,
+      "feasibility_pump": false
+    },
+    "D": {
+      "train_shots": 10000,
+      "final_shots": 10000,
+      "p": 2,
+      "macro_groups": 3,
+      "max_evaluations": 80,
+      "restarts": 1,
+      "pricing_rounds": 2,
+      "tolerance": 0.001,
+      "statevector_backend": "qiskit"
+    },
+    "catalogue": {
+      "partner_coverage_offsets": [
+        1,
+        -1
+      ],
+      "column_generation_rounds": 40,
+      "new_columns_per_round": 20,
+      "LP_min_iterations": 1000,
+      "LP_iterations_per_row_column": 4,
+      "IP_nodes_per_vehicle": 4
+    },
+    "selection": "validated min rounded physical D(0.1m), then W(seconds), then logical branch ID; never arrival order",
+    "validation_trials_per_scale_method": 1,
+    "root_seed": 2026111617,
+    "dependency_prefix": "/opt/miniconda/envs/qgpu/lib/python3.12/site-packages",
+    "main_manifest_executable": false,
+    "main_R_a": null,
+    "h_D_km": null
+  },
+  "config_hash": "07bea5d2419f23c2d6fa063ba65341e7347cfe911c10bc6c171daef5cc6c8773",
+  "T_kind": "comparison_parent_wall_including_process_setup_v1",
+  "cpu_profile": {
+    "mode": "parallel_multistart",
+    "workers": 4,
+    "cpu_ids": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "native_threads_per_branch": 1,
+    "coordinator_reserve_fraction": 0.2,
+    "method_concurrency": 1,
+    "statistical_trial_count": 1
+  },
+  "cases": [
+    {
+      "case_id": "tiny",
+      "scale": "tiny",
+      "input": {
+        "directory": "/home/takuma/kmd-analysis/output/toc_delivery/termination_rules_20261116_v1/small_05/fixture",
+        "input_hash": "d5cc88bcf354a7c945075629970484dbb62020fccf0c094fac4f1f924a72371a",
+        "OD_hash": "99527788c0e47a087921e72eddcc1dd915af518857f15145e983029ee0b15fc8",
+        "files": {
+          "input.json": "7e21799e69cc4df91303353ceaaa1c1c73c678d5ff2ce466ebd21918ec52d7c9",
+          "od/manifest.json": "f1de1dc326a4900121d1c1c6b1b8a5757f4e788972ac22a42318b52d00a3c2f2",
+          "od/distance_m.npy": "787d2bf8e5815e75c19a9c22274874c9544737de95965634fde1a21a54fa7322",
+          "od/duration_s.npy": "d76a59dae6105332fdfdc151057e964ac61e21dbf83f89eab2947f9bbfdbe8de",
+          "od/reachable.npy": "3368d8e38a73058aff2893bdcd65b1afc7842f56a9a90cc605ddf068000a1a9d"
+        },
+        "kind": "synthetic_validation",
+        "counts": [
+          12,
+          4,
+          1
+        ]
+      }
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "tiny_A_check01",
+      "case_id": "tiny",
+      "method": "A",
+      "seeds": {
+        "solver_seed": null,
+        "quantum_seed": null
+      },
+      "branches": [
+        {
+          "solver_seed": null,
+          "quantum_seed": null
+        }
+      ]
+    },
+    {
+      "run_id": "tiny_B_check01",
+      "case_id": "tiny",
+      "method": "B",
+      "seeds": {
+        "solver_seed": 442672044,
+        "quantum_seed": 3988315919
+      },
+      "branches": [
+        {
+          "solver_seed": 1560891449,
+          "quantum_seed": 2718955872,
+          "validation_seed": null
+        },
+        {
+          "solver_seed": 2061526869,
+          "quantum_seed": 4199142062,
+          "validation_seed": null
+        },
+        {
+          "solver_seed": 1162344612,
+          "quantum_seed": 3285587119,
+          "validation_seed": null
+        },
+        {
+          "solver_seed": 2087741267,
+          "quantum_seed": 3693633149,
+          "validation_seed": null
+        }
+      ]
+    },
+    {
+      "run_id": "tiny_C_check01",
+      "case_id": "tiny",
+      "method": "C",
+      "seeds": {
+        "solver_seed": 1288033763,
+        "quantum_seed": 3383794192
+      },
+      "branches": [
+        {
+          "solver_seed": 1559126172,
+          "quantum_seed": 3984625188,
+          "validation_seed": null
+        },
+        {
+          "solver_seed": 1299684255,
+          "quantum_seed": 3113002526,
+          "validation_seed": null
+        },
+        {
+          "solver_seed": 1434370715,
+          "quantum_seed": 182062934,
+          "validation_seed": null
+        },
+        {
+          "solver_seed": 1136868739,
+          "quantum_seed": 3640173262,
+          "validation_seed": null
+        }
+      ]
+    },
+    {
+      "run_id": "tiny_D_check01",
+      "case_id": "tiny",
+      "method": "D",
+      "seeds": {
+        "solver_seed": 631073922,
+        "quantum_seed": 700510837
+      },
+      "branches": [
+        {
+          "solver_seed": 962210419,
+          "quantum_seed": 3915760150,
+          "validation_seed": null
+        },
+        {
+          "solver_seed": 1138518593,
+          "quantum_seed": 419098024,
+          "validation_seed": null
+        },
+        {
+          "solver_seed": 694435520,
+          "quantum_seed": 2003141652,
+          "validation_seed": null
+        },
+        {
+          "solver_seed": 941257325,
+          "quantum_seed": 4032113241,
+          "validation_seed": null
+        }
+      ]
+    },
+    {
+      "run_id": "tiny_D_CLASSICAL_REPLACEMENT_check01",
+      "case_id": "tiny",
+      "method": "D_CLASSICAL_REPLACEMENT",
+      "seeds": {
+        "solver_seed": 411179383,
+        "quantum_seed": 2545497543
+      },
+      "branches": [
+        {
+          "solver_seed": 1526710669,
+          "quantum_seed": 1717145592,
+          "validation_seed": null
+        },
+        {
+          "solver_seed": 1933750495,
+          "quantum_seed": 3500338989,
+          "validation_seed": null
+        },
+        {
+          "solver_seed": 1820043140,
+          "quantum_seed": 1230737501,
+          "validation_seed": null
+        },
+        {
+          "solver_seed": 834110494,
+          "quantum_seed": 3999902718,
+          "validation_seed": null
+        }
+      ]
+    }
+  ],
+  "source_hashes": {
+    "scripts/acquire_amazon_sequence_data.py": "5fa064a5499d50bd1dbfae6d2c5e8893bbd990e895b70a9ebf562144b528b5e4",
+    "scripts/audit_ad_full_routes.py": "39ce60af7437afd5c08a89f76a6515981a0c2fb85b6d30269bc6b0e7f84c03bc",
+    "scripts/audit_ad_preservation.py": "4ff045cff2dba158da69fe377e121504cb86c5bb439d4aaaadacce18d36d64f2",
+    "scripts/audit_ad_results.py": "c7e07a3aae9be9632bb5003ec3cf405dde20995732009b4c3a5a6759a16b9a05",
+    "scripts/audit_d_attribution.py": "8cd5fe099999a1204637337e1b3b7616840d7f5139d196cbe923824835c959c0",
+    "scripts/audit_d_improvement_results.py": "d0f847be2a0f8347351a87418549be3287aa85b50398bac8939a0f40abb39c19",
+    "scripts/audit_d_macro_scope.py": "b9961bc7e6e52c537c4a357c928ec3e6c0708820f4e4fdeda1f1f70cf073964a",
+    "scripts/audit_dwt_standard_geometry.py": "54bf96d5e56578d2d1844cb8af64da5d81ab6d5821fb9b00b44c1105eb13a7d6",
+    "scripts/audit_route_data.py": "188396f03c01f8bc85dac4156b1e16eb254db0f38362a55c319cb4275359b845",
+    "scripts/audit_termination_rules.py": "097b8ac2d9e6ef1fdd7242a7192e8728f74e50e917d5dd9c91e69544c397ac67",
+    "scripts/audit_toc_common.py": "631bafdd3c289b8552885a15209574ec51133184a6a8888ce2ddd5dff61089d9",
+    "scripts/audit_vehicle_day_provenance.py": "ba2bf596dd77505784e9d2f001d61596cdc2e9be8d35082e7c74437a8e62703a",
+    "scripts/audit_vehicle_day_results.py": "238a0e161696be6a4fa74086a05896feb87269f0ab9e9d0e62d3004d3d8747c4",
+    "scripts/benchmark_d_pricing_snapshots.py": "014f003aa4f4b04b50d5118614d80e4732fd7a748e0915c7f064b7b714d705e4",
+    "scripts/bootstrap_local_osrm.py": "27f33a48a6a670a5a70d321503dc916d6b4d38365632851f93112fa1422ad19d",
+    "scripts/build_common_road_od.py": "53c3e1a089642d11bd41d2853a79b9f7eb3193fb8e3e45e374657d812ff0147e",
+    "scripts/build_dwt_data_manifest.py": "128eaf8a95d83e227898d47067d1a9be91265df2b1c1c7bbed8ec714187c4e44",
+    "scripts/build_route_pair_od.py": "a64b9588897e38962219a4be2b5c952ff2c9a80d46d58732c876dc83f18b9cca",
+    "scripts/build_toc_demand_map.py": "c2c42ac79aa95d3c91414930cbb8ab89e6c30d21d5914f6017e517ef18aa4374",
+    "scripts/check_dwt_dashboard.py": "bcd8da1780d24d749f034678f9d00cf0898101d9d0057898801204407802c723",
+    "scripts/check_huang_reduction_counterexample.py": "a11e3249512330ded7b67ce732c5ee26930e24a063a06405fe6a5238e743d054",
+    "scripts/check_vehicle_day_edge_cases.py": "e71d26c044442a9a82115a2f5ee8b9312f3f55a677534e0ab7be1e7ad445122a",
+    "scripts/complete_ad_validation.py": "c37514fb6ebfff3d017effd483a954ce058f9f82bc96b5c124bfcee139b5b037",
+    "scripts/finalize_dwt.py": "e200bf8ad9e67729dbc2357b98e415c84f276ffc1a91fe9e6b8620d5a35b6e82",
+    "scripts/finish_d_lex_revision.py": "64f9a4893b0aa906d858a96555f40d037cbc9d8d7695231d71c8df0fcebeee17",
+    "scripts/migrate_reviewed_od_cache.py": "1f38d3668c9aea939123fb73491ffda46a29b59db66845dd4f89aede2747158a",
+    "scripts/monitor_dwt_resources.py": "4d53822a7d60d03a3cfd6b02ed3cac512917a6f16a7599a50838bc1ec4a175ff",
+    "scripts/normalize_dwt_seed_metadata.py": "86bb3e3152f1c20b53be802a76aa9c947e41d657f5e770a0b6bc605e6c4ea3d9",
+    "scripts/plot_ad_tradeoffs.py": "3b47d4c18c8878e13e9c2f1a2ebabb023827bdc145b239111998d4b67fdb6c66",
+    "scripts/register_dwt_controls.py": "f9d72174cf62092b46750a07b0aee834d951f75e863a22fa678519267b51ba87",
+    "scripts/render_dwt.py": "b844c2290bae97467ac5eb45fd11d74dae408016e3db3f76f19de8ee078b3366",
+    "scripts/review_road_connectivity.py": "463865b0b685b0e4a1192e293701b58c108a99b488b44d5c85a2b928311d8077",
+    "scripts/run_a_area_program.py": "9eaf2dd66a28e36b80541ff9419623c844870cf5d0619900d5f5fe8853ad1928",
+    "scripts/run_a_area_study.py": "c41ad207089be6004bc5b2ee900e9c06caa0cd2ee78a42ebf690cb9084b4498c",
+    "scripts/run_a_human_v1.py": "0139c11476fd4a0a9d71d081da21c61b7bdca3d512e696978cbd1226ed51aa98",
+    "scripts/run_a_rule_baseline.py": "587bd34ab759269cddeba61165876821324ab9d974a9b068a735434d5103e74e",
+    "scripts/run_a_rule_v1.py": "57784cf187bfa09076e6953b3dd4905953c8435d3389847df0a735089f840fc6",
+    "scripts/run_ad_experiments.py": "6012c0673b3d4f8834ec9a03c41fec8c68da440decdb9e7440cc862bbc31b2f3",
+    "scripts/run_ad_method.py": "7ea5e8b1d3963abc500721263d82cceb3842b8579c4bc4b689b154c0b579b665",
+    "scripts/run_ad_reproducibility.py": "ade0cf5e4e3392cbbe983ca199de7830fe2c2d161c9b25c3251878448727df4f",
+    "scripts/run_baseline_a.py": "c1e8e064ed87745f7ec43f4e9d771af4fc6d1734fd926234e5ca24c4db7ba2ab",
+    "scripts/run_comparison_design.py": "ea9db3f45884d8832088cae205865ab20f1b51427c493502eb00abddd4a7ef3e",
+    "scripts/run_comparison_design_supplement.py": "8864ed3f19a6abea849d589c1a7c77e2bc436d2f857275204405098e7c97e170",
+    "scripts/run_comparison_v1.py": "44b78bfd6edb56b6c345f64b58715f51716e84f820ba2b7a161a8fc8e129487e",
+    "scripts/run_cook_transfer_study.py": "92dd31f0b00bca2d220b1614110621e82799f2ea5207a3396b0a767e0b95e231",
+    "scripts/run_d_pricing_improvement.py": "c1e8e093e39bb47e4727b69c61c993b5d55236f5ab536c5be5fd241f8bdab02a",
+    "scripts/run_dwt.py": "3b152c7be2df427e6e8bcc4a1afb9e04a377df6881747e9133c94a0e590677da",
+    "scripts/run_dwt_bundle.py": "ac0b293a7c1b87dd00ad9532900fcf20c3f0ad71da70ae3e8f38b1fe616c072d",
+    "scripts/run_huang_reference.py": "f1eab499e43e98e0b67732a68673f7434600a363a77e328269b981d7a734d9f4",
+    "scripts/run_human_comparison_v1.py": "49169cfe5027c1035b87c43a3a17fcb01f2181eae43cc7da35fab20fb286bbdb",
+    "scripts/run_termination_rules.py": "023e5e58dfd74aaa085b21a262537b8310548921fd285700426afa9f553674e4",
+    "scripts/run_vehicle_day_validation.py": "9e328ddf03ccf2aaaf0ba3de3b87e56d78c16b9ec1a6c9574ddf9bbdacb3950c",
+    "scripts/summarize_ad_reproducibility.py": "3b40f7451e9ccc41c861428ee0a7d353a86c55fcbba217941df342400e2656db",
+    "scripts/validate_a_sequences.py": "dcb8cf54f5d15ab3f60755594baab27e280b8f8e0e34566d4daa3763d3e1f1cb",
+    "scripts/verify_cpu_parallel.py": "b8dc2dba0aa7d43ef92cb7154057c7b30a5fb32ddfd6de5ab434050d62fac259",
+    "scripts/verify_dwt_statevector_backends.py": "86a8da903b0957401d614d42afba52d9f1d4440cdcb2ebed5b7158a9a521ece6",
+    "scripts/verify_huang_results.py": "04d3130cd886661aed070e98a8cb3ff672a9a6dc885c977fdf2112c1af285062",
+    "scripts/verify_quickstart.py": "1983b70c80a0d2ae785113994bd86d68689ef6e73b8c645f8629802171519d94",
+    "scripts/wait_route_inputs_and_run.py": "dc3f902f9c5a3687442da5e247d092894a7eb4e7e3c2017ed1f147807e4a8bdf",
+    "scripts/watchdog_d_improvement.py": "83909c406042bc4cb7bf98213a0bb87c468405bb197ab2c5b10fdd2105b16873",
+    "scripts/write_ad_reports.py": "531a6b7099fca022ae26ce8138be2964a53cebba051f8110f9dbbb3f83ed79ff",
+    "src/kmd_toc/__init__.py": "013436e9b3e741b9f5eb81e26562de92772d66acc9126614f828f6f9069c5fd2",
+    "src/kmd_toc/baseline_a/__init__.py": "6873a440a32cf381898315b4643f7b520a0b58a5596598c91101bd76e3e7d3fd",
+    "src/kmd_toc/baseline_a/area.py": "518c51de849db834661925f79170f46ca2b24647daa16438a6715f88dd4aeda3",
+    "src/kmd_toc/baseline_a/area_program.py": "05288b2429c728f705ddfe00f299b3f7809ba8da14b7f4e18c7228594a236ea6",
+    "src/kmd_toc/baseline_a/area_study.py": "52a75c19f6a3aaf21576faab5b9cffa2c208496b17b37bfd041e39ecfb4d8fc6",
+    "src/kmd_toc/baseline_a/config.py": "afd293d3e22d24b241aec3ae2d4e4785407dcfa97679f5245079cf0099535fc8",
+    "src/kmd_toc/baseline_a/construction.py": "720946795615c3d45e289261f348e31928bd4beb985de7ce1136d70f51cce105",
+    "src/kmd_toc/baseline_a/fixtures.py": "59878ce17c8a10907132ae6c2be70b8e6ec74535f8a75b7dfe0cdfb8faf14a23",
+    "src/kmd_toc/baseline_a/human_time.py": "df38a903bd6ea10f035c030e0247ec70be9310d0f5b1c2a59fdd19f386ff4419",
+    "src/kmd_toc/baseline_a/human_v1.py": "fce0143c264c42c281a0e86c3c25320d28de99b7b1a15758c6c569c99fd20018",
+    "src/kmd_toc/baseline_a/independent.py": "d48830c0a40c124768aa13f704feb467cb32c6dc5de4c40bfddfbd3c38856d0f",
+    "src/kmd_toc/baseline_a/program.py": "d8db38de0e4e989263e03c2c39c4a21d33dc87f2e0cf3dcf13e8e2de7ae23310",
+    "src/kmd_toc/baseline_a/program_validation.py": "d1df269301c27eba06e906836faf1e25e7827474a46a303d13c1f564c6b3e525",
+    "src/kmd_toc/baseline_a/rule_inputs.py": "d39d8009afe185d62ff29dc158611c193817aaa72a807788077b607d8d68da7b",
+    "src/kmd_toc/baseline_a/rule_v1.py": "1ed48568fddc42dd612f5efaf59f3dcad5d44b61c3eede9447e7551b671e4bd9",
+    "src/kmd_toc/baseline_a/rule_validation.py": "33aedab1ca614c7b33f57bed1aae094fa265017e50644a4b5ff2a2e98665986b",
+    "src/kmd_toc/baseline_a/runner.py": "fb37e48bf587bc9f88e27ee789363bbecfaf2a7c31d7d4c5d1d49fbe319a0bb8",
+    "src/kmd_toc/baseline_a/sequence_validation.py": "f13a1fc30a5d61451494c13ca4facf2a3359ca1af5fec6a326ef134b12a018b6",
+    "src/kmd_toc/column_generation/__init__.py": "52182a465859e8d3a1d7849978f5e8b1e0f776470bd5cfc5e2cc413f7f9b65ba",
+    "src/kmd_toc/column_generation/aoa.py": "37b6016908a86192ef913203c2445ecd660116412d74ab1878ee403b1b468e42",
+    "src/kmd_toc/column_generation/backends.py": "318a6b6b187a81a447fe56a515211dcf997733963c4530d839d04f03ce59f414",
+    "src/kmd_toc/column_generation/experiment.py": "1e760066d6491d5d8fcbc1b988502cb5beaddec251e9b680f2b6977dd529f538",
+    "src/kmd_toc/column_generation/master.py": "d158402e21fc83cdac486fd379f3d115288e8b0243f278ef6e21c24272cac205",
+    "src/kmd_toc/column_generation/models.py": "a5288f2243964d13001a250b458a08a14ba81cdb8292708eda03eddc58a4e859",
+    "src/kmd_toc/column_generation/reduction.py": "e5d4d60c4db4b93b3e578ccb36d17938c3fd1534fbf2e48f3c243d5e9f75678b",
+    "src/kmd_toc/column_generation/runner.py": "8ef9173cb214fd76c044e19d2f62136a8a68ec8ce9c88d6fa8b37689a73a1e9d",
+    "src/kmd_toc/common/__init__.py": "04eef8da0e50cda279ef978313db6f76ac8693ad400b54470589fa580f0e627c",
+    "src/kmd_toc/common/adapters.py": "cf6327ce47e90d918f672e9ee7587b68cf6ed93db1417cbf554a5ac9a4015646",
+    "src/kmd_toc/common/config.py": "0dc26074b494caab0774efad39266ac387d9de243a951d9762b2ec592b881e17",
+    "src/kmd_toc/common/models.py": "0728fd830be92a967b13c8f0d987a4ef9ad0520d604e20893192ddb4d41f2245",
+    "src/kmd_toc/common/od.py": "7c4674802728c68e6ca482b803259557ab6f10caaa99b9e10bbd88ad0a02164b",
+    "src/kmd_toc/common/runtime.py": "1e5880c525748656790971a156e221e792e5a6cf198476c425268498067645a6",
+    "src/kmd_toc/common/validation.py": "04da39c20c69efba786f0d25f8d58da1e08db400007080b64b9bc1efc13e4ef9",
+    "src/kmd_toc/comparison_v1/__init__.py": "b50556fbf17c2166064a18d6dc534b34fdaa6659b28a5a1c33eb9cdbb9506ee4",
+    "src/kmd_toc/comparison_v1/contract.py": "99e09228e3477925c054b53baf31bf9fd367643b8b1fe85604c3e8cee4f633e4",
+    "src/kmd_toc/comparison_v1/design.py": "b5d10c2d2cacfaf1a2bf7e1d5a2b28357e77f101a1e84301bf959b19024a152c",
+    "src/kmd_toc/comparison_v1/design_report.py": "3659cda5c77a21a23860de5f0bfe8d694869eb770358891ff5882b50f7aedd9c",
+    "src/kmd_toc/comparison_v1/evaluation.py": "826031d43f16173404f1b2eb711d0de2c3c6015552d4c51c3ba8aa266a848c63",
+    "src/kmd_toc/comparison_v1/execution.py": "a271e5baae8a479dc373fd4b268257667539e1801ac8c200b52e7534e8130c25",
+    "src/kmd_toc/comparison_v1/telemetry.py": "e0ba58c9a30f12e449f4bd9be73a5ac3ef9ddf52f268557985d48c415ce259f8",
+    "src/kmd_toc/comparison_v1/worker.py": "1f389f5ac8102f26e0573511a31d24dc3e86766d014ead782d1ed18b4e392d0e",
+    "src/kmd_toc/contracts.py": "60788b1a1e778ee377cd8a3a657ded820bae8a9bd62d8f82bd08d9f9807f5d8a",
+    "src/kmd_toc/dwt/__init__.py": "a549333b5b16250d83937215db1046b35470cb160ab8dbe58a790264d4736645",
+    "src/kmd_toc/dwt/analysis.py": "4b87d9d403d48cf16b5c4f559117e932d02956cc3988647bb3234b6b6db50c06",
+    "src/kmd_toc/dwt/audit.py": "e0a72f29c0595b19083a92ea984c52db848325800008245f38ff6ec3bacc30ea",
+    "src/kmd_toc/dwt/budget.py": "9ab1f311855477139575acd4d23149f28896c65750f9fd063dd75069fc2b2f1e",
+    "src/kmd_toc/dwt/evaluation.py": "532e677b30fc1ade4e761c83869388c70293ce7a14a2c0db92503b59f4450294",
+    "src/kmd_toc/dwt/experiment.py": "f732d7468d6c9e1ae076506d9e7af7526c764183c600900f6f10a3e0ae5776e3",
+    "src/kmd_toc/dwt/methods.py": "dec8205b90c8d99592edc4cc621fe7b79ec9c9ef8f76061ffdc8007a8508e945",
+    "src/kmd_toc/dwt/parallel.py": "c6998388238d35b6bd31e3c0018fa1331838ade23cbdb62d6c589defe5436f3d",
+    "src/kmd_toc/dwt/setup.py": "264de41c8c574ed7d5db6deca147ac7b8f4ae1359b3c7acfaa0efa033d29b5fc",
+    "src/kmd_toc/dwt/standard.py": "9c4404582a26d0f836f6810b6c03d2ffccf3d4f2b9fbb9f9d5ec95bf041b1095",
+    "src/kmd_toc/dwt/worker.py": "9866e0a19ae900187b2d8a3c58683fea9854684878997a501dfad222c9ad9422",
+    "src/kmd_toc/freeze_demand.py": "a4c07d8228607d0a6e82c439b819f727eaa94aab9192addb9b4dac16982c6c9c",
+    "src/kmd_toc/frozen_demand.py": "4aedb07b137fe37851f8f5f8c161799e7cc756056d339ff1fc954d28412616ad",
+    "src/kmd_toc/frozen_demand_pin.py": "5bd223e0d7b0b930dff7d4cd0c6785c7b522822ba0d8b1e0172db9a496a8281f",
+    "src/kmd_toc/human_comparison_v1/__init__.py": "4c6f94682daba9a7185bd14c69b987c652ceae3a35aac724289de67ac8fc791d",
+    "src/kmd_toc/human_comparison_v1/analysis.py": "5b1b3c1ad0e6ffc0c6afbf8cf95a5338f374f01e82482a1211a373f3ac353769",
+    "src/kmd_toc/human_comparison_v1/contract.py": "3d94c5fe92649b708f10758e297275f5dd47ecb01f34a3b17e4cc7e73300ca34",
+    "src/kmd_toc/human_comparison_v1/evaluation.py": "997c9ac34434a8bc523e5fc829099abb0a80d2e6a03d01a904325f0d771c2e8e",
+    "src/kmd_toc/human_comparison_v1/inputs.py": "c14700df0e130b4341583dfdbbf3948d9b1d1bee6825ee7ea7a385d0a2b45694",
+    "src/kmd_toc/human_comparison_v1/machine.py": "0021af17e424a1e2feddd2866d5662557d3f78f0dca0a2565dcab671ea758146",
+    "src/kmd_toc/human_comparison_v1/session.py": "c42ee95bf6dc605dc3f7ed36abe8792b512f161e8f66124c56bf1d8c82d6502b",
+    "src/kmd_toc/pipeline/__init__.py": "c0e159e3780d784ed9411616564140aba2ab00777f5ebed7c85367dec7819e07",
+    "src/kmd_toc/pipeline/classical.py": "1af176efb47887958ce42d8cc754ca7a1d4872be98de1a5678eb48105a97a9c6",
+    "src/kmd_toc/pipeline/completion.py": "62fb8009636cc2c4f7f6cd572daad33ffbb8658b1ef303a1b49e34dd6668550c",
+    "src/kmd_toc/pipeline/execution.py": "97b02a0b56691e7a22eb6e82faff652d2c61b3ed3d6cb431b33b96180ef20286",
+    "src/kmd_toc/pipeline/hybrid.py": "de522a0d7d4dc800e3ce0250153741aa00ebac39867e4cfb5bab3e8cdac7cc30",
+    "src/kmd_toc/pipeline/roads.py": "f1f6cd32d7358b7e3ae44b15a1c095e6ac0dff8260faaf6c0eff25d245b8b27c",
+    "src/kmd_toc/pipeline/route_pairs.py": "2aeab756ac4fb9cbe8b9a59cb9d74e355d89c141baede9bf118a102ed12c8461",
+    "src/kmd_toc/search_improvement/__init__.py": "c59d74d212b379fbd1200a84d43c565f3f54e1b5b7daa82256452b255a9a3939",
+    "src/kmd_toc/search_improvement/catalogue.py": "76152263985b3ed451f7ea1a26866827bf225098c18cb890bcdc27a8ce9e1ee9",
+    "src/kmd_toc/search_improvement/master.py": "35e68c06e524894d9279502dcc63b34732e8e9752d79f782b4b571384fe59624",
+    "src/kmd_toc/search_improvement/regions.py": "e0d09e97bf64f71a069df852e64fc8d6adf1db91f24bd9acd6236302ce464cae",
+    "src/kmd_toc/search_improvement/study.py": "ebe9280e33fbc708bfd77ca6cb5144346900791afae3c459bbad3bc44bcffd3e",
+    "src/kmd_toc/termination_v1/__init__.py": "2e849d76105ebb5095a29c00c4bb810fa896e79d912846652272a75611b64896",
+    "src/kmd_toc/termination_v1/master.py": "406d8f7ba1c73c69b9b8b0a7615f66104da4483049b92198c015d459a637f2a7",
+    "src/kmd_toc/termination_v1/methods.py": "f6b4a8a544e2f0034ee9a57aba0abd784f46b5e9542e15a22311934e1b8582b9",
+    "src/kmd_toc/termination_v1/quantum.py": "3268a0a35eb827f21a9c72574450b553d5e525623691854e57747ba0467975fa",
+    "src/kmd_toc/termination_v1/runner.py": "00e1d411cb4cb30a64af8cd2e170c3c3a0219bfdd224b3255b6fe40e38bf1f4f",
+    "src/kmd_toc/termination_v1/solvers.py": "7c82981bb53b49d7a305cabfbdbd1421064f2c74c9fec4b4ed739f4070731891",
+    "src/kmd_toc/termination_v1/work.py": "bf69175bacb9de4e09545a31678ee1d90e851c49b8949ceecdd2bda82254e8e4",
+    "src/kmd_toc/vehicle_day/__init__.py": "38153fe5d63fcecc4b64aedc048621bb47570149b5a179579ab138078b20e8ff",
+    "src/kmd_toc/vehicle_day/fixtures.py": "e6612272a45e40b127fdc5346576aad76e4077d98358eead2133bf8e235d8ce8",
+    "src/kmd_toc/vehicle_day/generation.py": "41f02583b07da09f6754840065e75559fb77e986978f997b45dd146665e8656e",
+    "src/kmd_toc/vehicle_day/master.py": "c73f7992e9f4e3795eea047d298148e4ec9bcf18331e02db31ae8cb38579f437",
+    "src/kmd_toc/vehicle_day/model.py": "0f76a90a40d1832febd123f32aa0bc8bad19ac1a84836c63a0b8ec9287321fa2",
+    "src/kmd_toc/vehicle_day/pricing.py": "57beed9f3eb97a6b47330d402f5ac6d75cc041c91839dc1f63703489fea53392",
+    "src/kmd_toc/vehicle_day/runner.py": "26f5e1925b2419b78920a207df4d39b2c2fd447f067efc93a8c6aa4e796490cc",
+    "src/kmd_toc/vehicle_day/validation.py": "60872bda8c7ffe3228c11ab58cbdf69cba981bd2be0d4edf48842f685b5aeb7e",
+    "tests/toc_termination_v1/test_termination.py": "5e4e1a5c23f06880d20694bb3df5db20bd0b1c67187f3433fa7c7a328457653f",
+    "docs/research/termination_rules_20261116_v1/STOPPING_RULES.md": "ac944197318bb2772e47a1a9a078ef53c603471970b5e3bf55e8b80d4475e23d",
+    "configs/toc_delivery/termination_rules_20261116_v1.json": "07bea5d2419f23c2d6fa063ba65341e7347cfe911c10bc6c171daef5cc6c8773",
+    "configs/toc_delivery/common_conditions_v1_1.json": "bbb15417a4eee5072f8118056c90ab422d792b4cedc35a6a06bf6bc0497fe8d2",
+    "configs/toc_delivery/comparison_a_rule_v1_freeze_20261115.json": "dfab7d8dcde73777f2767a0b1bf208237d9552fff9a66c49c4793c32327c4f9a",
+    "configs/toc_delivery/a_rule_v1_20261115.json": "b83288eb3feb5dd322c848341a5c17237b261812cafffc2d73a47c86bd40870d",
+    "configs/toc_delivery/dwt_balance_v1_4_cpu_parallel.json": "778bc92e28617464a05a56167c01c73756e663a3cd30ec3208a0fdfb32ff032d"
+  },
+  "snapshot_sha256": "21919a6d67ab1b141e67790ac08c9489aa8c2beda7a30de74603dfe85d6373ce",
+  "physical_hash": "bbb15417a4eee5072f8118056c90ab422d792b4cedc35a6a06bf6bc0497fe8d2",
+  "termination_rules": "docs/research/termination_rules_20261116_v1/STOPPING_RULES.md",
+  "stopping": "execute each registered run once, all registered branch procedures; never significance or elapsed-time stopping",
+  "selection": "validated rounded D(0.1m), W(seconds), branch_id; all branch outcomes recovered",
+  "main_experiment": {
+    "executable": false,
+    "R_a": null,
+    "h_D": null,
+    "reason": "new-setting variance and research precision remain outside this task"
+  },
+  "environment": {
+    "python": "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+    "python_version": "3.12.11 | packaged by Anaconda, Inc. | (main, Jun  5 2025, 13:09:17) [GCC 11.2.0]",
+    "dependency_prefix": "/opt/miniconda/envs/qgpu/lib/python3.12/site-packages"
+  },
+  "registered_utc": "2026-11-16T09:09:23.574619+00:00"
+}

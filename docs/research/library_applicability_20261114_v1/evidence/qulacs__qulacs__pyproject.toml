@@ -1,0 +1,132 @@
+[build-system]
+requires = ["wheel", "setuptools >= 77", "setuptools_scm[toml]"]
+build-backend = "setuptools.build_meta"
+
+[project]
+dynamic = ["version"]
+name = "qulacs"
+description = "Quantum circuit simulator for research"
+authors = [
+    { name = "QunaSys", email = "qulacs@qunasys.com" }
+]
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = [
+    "numpy",
+    "scipy"
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX",
+    "Programming Language :: Python",
+    "Topic :: Communications :: Email"
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "qulacs._version.__version__"}
+
+[tool.setuptools_scm]
+write_to = "pysrc/qulacs/_version.py"
+
+[project.urls]
+homepage = "http://docs.qulacs.org"
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "flake8",
+    "isort",
+    "mypy",
+    "pybind11-stubgen",
+    "openfermion",
+    "pytest"
+]
+
+test = [
+    "openfermion"
+]
+
+ci = [
+    "black",
+    "flake8",
+    "isort",
+    "mypy",
+    "pybind11-stubgen",
+    "openfermion",
+    "pytest"
+]
+
+doc = [
+    "mypy",
+    "pybind11-stubgen",
+    "sphinx==9.*",
+    "sphinx-rtd-theme",
+    "breathe",
+    "exhale",
+    "nbsphinx",
+    "myst-parser",
+    "sphinx-copybutton",
+    "ipykernel",
+    "sphinx-autoapi==3.6.*"
+]
+
+[tool.setuptools]
+include-package-data = true
+zip-safe = false
+
+[tool.cibuildwheel]
+build-verbosity = "1"
+test-command = "pytest -v -s {project}/python/tests"
+test-requires = "pytest numpy scipy openfermion"
+
+[tool.cibuildwheel.linux]
+environment = { QULACS_OPT_FLAGS = "-mtune=haswell -mfpmath=both" }
+before-build = """\
+yum install wget -y && \
+wget -q https://archives.boost.io/release/1.76.0/source/boost_1_76_0.tar.gz && \
+tar -zxf boost_1_76_0.tar.gz && \
+cd boost_1_76_0 && ./bootstrap.sh && ./b2 headers && \
+cp -r boost /usr/local/include && rm -rf {project}/build \
+"""
+
+[[tool.cibuildwheel.overrides]]
+select = "*-manylinux_aarch64"
+environment = { QULACS_OPT_FLAGS = "-march=armv8-a" }
+
+[tool.cibuildwheel.windows]
+environment = { QULACS_OPT_FLAGS = "-mtune=haswell -mfpmath=both" }
+before-test = "rm -rf {project}/build"
+
+[tool.cibuildwheel.macos]
+before-build = """\
+rm -rf /usr/local/bin/2to3 && \
+rm -rf /usr/local/bin/2to3-3.* && \
+rm -rf /usr/local/bin/idle3 && \
+rm -rf /usr/local/bin/idle3.* && \
+rm -rf /usr/local/bin/pydoc3 && \
+rm -rf /usr/local/bin/pydoc3.* && \
+rm -rf /usr/local/bin/python3 && \
+rm -rf /usr/local/bin/python3-config && \
+rm -rf /usr/local/bin/python3.* && \
+rm -rf /usr/local/bin/python3.*-config && \
+brew update && \
+brew install boost && \
+brew link boost && \
+rm -rf {project}/build\
+"""
+archs = ["x86_64", "arm64"]
+repair-wheel-command = "delocate-listdeps {wheel} && script/fix_wheel_osx.sh {wheel} {dest_dir} && delocate-listdeps {wheel}"
+
+[tool.isort]
+default_section = "THIRDPARTY"
+ensure_newline_before_comments = true
+force_grid_wrap = 0
+force_single_line = false
+include_trailing_comma = true
+multi_line_output = 3
+use_parentheses = true

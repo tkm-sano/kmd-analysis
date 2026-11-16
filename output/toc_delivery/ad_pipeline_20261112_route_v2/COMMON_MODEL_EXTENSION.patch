@@ -1,0 +1,31 @@
+--- output/toc_delivery/ad_pipeline_20261112_route_v2/SOURCE_BEFORE/common_models.py	2026-11-12 14:38:20.503203459 +0900
++++ src/kmd_toc/common/models.py	2026-11-12 14:40:06.798200595 +0900
+@@ -99,7 +99,7 @@
+     data_hashes: dict
+     environment: dict
+     method_settings: dict
+-    kind: str  # synthetic_validation or frozen_research
++    kind: str  # synthetic_validation, road_validation, or frozen_research
+ 
+ 
+ @dataclass(frozen=True)
+@@ -125,7 +125,7 @@
+         c = load_conditions()
+         o, e = c['operations'], self.experiment
+         if (e.conditions_version != c['conditions_version'] or e.conditions_sha256 != CONFIG_SHA256 or
+-                e.kind not in ('synthetic_validation', 'frozen_research') or
++                e.kind not in ('synthetic_validation', 'road_validation', 'frozen_research') or
+                 (e.random_seed is not None and not integer(e.random_seed)) or
+                 not isinstance(e.environment, dict) or not e.environment or
+                 not isinstance(e.method_settings, dict) or not isinstance(e.data_hashes, dict)):
+@@ -169,6 +169,10 @@
+                 raise ValueError('BERTH_CONDITIONS')
+         if e.kind == 'frozen_research':
+             self._validate_frozen(c)
++        elif e.kind == 'road_validation':
++            if (self.od.metadata['kind'] != 'osm_osrm' or not e.scenario_id.startswith('ROAD_') or
++                    e.scenario_id in c['scenarios']):
++                raise ValueError('ROAD_VALIDATION_LABEL_REQUIRED')
+         elif (self.od.metadata['kind'] != 'synthetic' or e.scenario_id in c['scenarios']):
+             raise ValueError('SYNTHETIC_LABEL_REQUIRED')
+         return self

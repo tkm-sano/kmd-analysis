@@ -1,0 +1,343 @@
+{
+  "version": "JP-A-acquisition-v1.0",
+  "date": "2026-11-11",
+  "allowed_statuses": [
+    "PUBLIC",
+    "REQUESTABLE",
+    "NEGOTIATION_REQUIRED",
+    "UNVERIFIED",
+    "UNAVAILABLE"
+  ],
+  "records": [
+    {
+      "id": "J01",
+      "data_name": "従来人手ルート作成時間の公表範囲",
+      "holder_or_publisher": "日本郵便担当者・オプティマインド",
+      "source_ids": [
+        "JP_LOOGIA"
+      ],
+      "urls": [
+        "https://loogia.jp/cases/nihonyubin/"
+      ],
+      "acquisition_method": "HTMLの公開本文を実取得。熟練者/新人の報告範囲を秒へ換算。",
+      "license_and_conditions": "限定的な出典付き引用・数値換算。原ログのオープンライセンス未確認。",
+      "privacy_and_commercial_constraints": "原ログなし。記載範囲に個人住所はない。標本・N/V不明。",
+      "region": "ゆうパック試行地域。個別拠点未記載。",
+      "period": "記事は2021年時点、測定期間未記載。",
+      "unit": "秒/当該担当者のルート作成業務",
+      "metric_computability_now": {
+        "D": false,
+        "W": false,
+        "T_external": true,
+        "T_common": false
+      },
+      "lead_time_and_basis": "既取得。詳細な原記録の提供期間は不明。",
+      "provider_promised_days": null,
+      "final_status": "PUBLIC",
+      "raw_target_access_status": "PUBLIC",
+      "general_contact_is_not_permission": true
+    },
+    {
+      "id": "J02",
+      "data_name": "従来人手対照群・便別距離/訪問順/計画時刻の元記録",
+      "holder_or_publisher": "日本郵便・オプティマインド・CBcloud。実際の保管/承認主体は要確認。",
+      "source_ids": [
+        "JP_2020_RELEASE",
+        "JP_2020_APPENDIX",
+        "JP_2019_OPTIMIND",
+        "OPTIMIND_2020",
+        "OPTIMIND_2021",
+        "CB_2021_RELEASE"
+      ],
+      "urls": [
+        "https://www.post.japanpost.jp/notification/pressrelease/2020/00_honsha/0615_02_01.pdf",
+        "https://www.post.japanpost.jp/notification/pressrelease/2020/00_honsha/0615_02_02.pdf",
+        "https://www.post.japanpost.jp/notification/pressrelease/2019/00_honsha/0205_01_03.pdf",
+        "https://www.optimind.tech/news/%E9%85%8D%E9%81%94%E7%8A%B6%E6%B3%81%E3%81%AB%E5%BF%9C%E3%81%98%E3%81%9F%E3%83%AA%E3%82%A2%E3%83%AB%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%AB%E3%83%BC%E3%83%88%E5%86%8D%E8%A8%88%E7%AE%97%E3%81%AE%E5%A4%A7/",
+        "https://prtimes.jp/main/html/rd/p/000000010.000034529.html",
+        "https://prtimes.jp/main/html/rd/p/000000081.000016726.html"
+      ],
+      "acquisition_method": "日本郵便で担当・保管・集計可否を照会、オプティマインドで事例条件を確認。未送信。",
+      "license_and_conditions": "研究利用・再提供・掲載・費用・契約の要否は未確認。",
+      "privacy_and_commercial_constraints": "元データは顧客/車両/営業情報を含み得る。最初は住所/GPSなしの提供側集計。",
+      "region": "全国の一部試行地域。特定データの地域は未確認。",
+      "period": "2018〜2021年の実証文脈。対象原記録の期間/現存は未確認。",
+      "unit": "車両日/便/計画セッションを希望。現存単位は未確認。",
+      "metric_computability_now": {
+        "D": null,
+        "W": null,
+        "T_external": null,
+        "T_common": null
+      },
+      "lead_time_and_basis": "研究側の依頼準備1〜2営業日見積。回答・許諾・抽出は不明。",
+      "provider_promised_days": null,
+      "final_status": "UNVERIFIED",
+      "raw_target_access_status": "UNVERIFIED",
+      "general_contact_is_not_permission": true
+    },
+    {
+      "id": "J03",
+      "data_name": "新東京郵便局の入退場・荷待ち/荷役実証原記録",
+      "holder_or_publisher": "日本郵便・Hacobu・Safie/Kix。保管/承認主体は要確認。",
+      "source_ids": [
+        "SAFIE_JP_2024",
+        "HACOBU_JP_2024"
+      ],
+      "urls": [
+        "https://safie.co.jp/news/3661/",
+        "https://hacobu.jp/news/12571/"
+      ],
+      "acquisition_method": "日本郵便へ取次/許可主体、Hacobuへ記録辞書・出庫区分・保管・集計可否を照会。",
+      "license_and_conditions": "研究提供条件・契約要否・ライセンスは未確認。",
+      "privacy_and_commercial_constraints": "車番/映像は初回依頼から除く。到着バースの入庫待ちを出庫Wにしない。",
+      "region": "新東京郵便局。大田区/京浜・ToC出庫との一致を確認していない。",
+      "period": "公表実証期間2024-10-01〜2024-12-31。現在の保管未確認。",
+      "unit": "車両入退場/荷待ち/荷役イベント。研究readyイベントは未確認。",
+      "metric_computability_now": {
+        "D": false,
+        "W": null,
+        "T_external": false,
+        "T_common": false
+      },
+      "lead_time_and_basis": "実証説明は既取得。原記録提供までの日数は不明。",
+      "provider_promised_days": null,
+      "final_status": "UNVERIFIED",
+      "raw_target_access_status": "UNVERIFIED",
+      "general_contact_is_not_permission": true
+    },
+    {
+      "id": "J04",
+      "data_name": "P-DX配達経歴/再配達率の限定用途提供データ",
+      "holder_or_publisher": "日本郵便。公表された協力企業向け。",
+      "source_ids": [
+        "JP_PDX_DATA"
+      ],
+      "urls": [
+        "https://www.post.japanpost.jp/about/other/pdxdata.html"
+      ],
+      "acquisition_method": "公開ページの列/加工/用途限定を取得。研究の別用途提供は新たに確認が必要。",
+      "license_and_conditions": "公表された提供は特定の取り組みのみ。研究者への提供・転用許可は未確認。",
+      "privacy_and_commercial_constraints": "元の追跡番号/住所は要求せず、少数地域秘匿の集計を原記録へ戻さない。",
+      "region": "世田谷局・柏局・板橋西局の担当地域。",
+      "period": "元の観測期間は対象ページで未確定。月単位集計。",
+      "unit": "丁目/月の再配達多寡。原配達経歴とは別。",
+      "metric_computability_now": {
+        "D": false,
+        "W": false,
+        "T_external": false,
+        "T_common": false
+      },
+      "lead_time_and_basis": "説明は既取得。別目的の研究利用の期間は不明。",
+      "provider_promised_days": null,
+      "final_status": "UNVERIFIED",
+      "raw_target_access_status": "UNVERIFIED",
+      "general_contact_is_not_permission": true
+    },
+    {
+      "id": "J05",
+      "data_name": "日本郵便の全国走行規模推計の公開スライド",
+      "holder_or_publisher": "日本郵便が説明、東京都TDPFが公開。",
+      "source_ids": [
+        "TOKYO_JP_DATA"
+      ],
+      "urls": [
+        "https://www.tdpf-hp.metro.tokyo.lg.jp/wp-content/uploads/2024/03/TDPF%E3%82%AD%E3%83%83%E3%82%AF%E3%82%AA%E3%83%95%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88.pdf"
+      ],
+      "acquisition_method": "PDF全体と該当p.164を取得、図を目視。",
+      "license_and_conditions": "スライドは日本郵便の著作権表示あり。公開閲覧を原記録のオープンライセンスとしない。",
+      "privacy_and_commercial_constraints": "集計規模のみ。人手/AI、ToC/他業務、拠点別の分離なし。",
+      "region": "日本全国、2輪/軽4輪等。",
+      "period": "2024年3月の掲載URL。推計の対象年度は未確認。",
+      "unit": "km/年という推計規模。",
+      "metric_computability_now": {
+        "D": false,
+        "W": false,
+        "T_external": false,
+        "T_common": false
+      },
+      "lead_time_and_basis": "公開資料は今回取得済み。元データの追加提供期間は不明。",
+      "provider_promised_days": null,
+      "final_status": "PUBLIC",
+      "raw_target_access_status": "UNVERIFIED",
+      "general_contact_is_not_permission": true
+    },
+    {
+      "id": "J06",
+      "data_name": "日本郵政ESG環境の会社/年度集計",
+      "holder_or_publisher": "日本郵政グループ",
+      "source_ids": [
+        "JP_GROUP_ENV"
+      ],
+      "urls": [
+        "https://www.japanpost.jp/sustainability/librarydata/environment/"
+      ],
+      "acquisition_method": "公式HTML表を取得。CO2/km原単位等を確認。",
+      "license_and_conditions": "出典付き背景参照。原データの研究利用/再配布条件は未確認。",
+      "privacy_and_commercial_constraints": "拠点/日/便/計画方式の特定不可。排出量の割算で対象外Dを作らない。",
+      "region": "会社/グループ全体。",
+      "period": "2019・2021〜2025年度等の掲載表。",
+      "unit": "t-CO2/km等。配送計画のkmではない。",
+      "metric_computability_now": {
+        "D": false,
+        "W": false,
+        "T_external": false,
+        "T_common": false
+      },
+      "lead_time_and_basis": "公開表は取得済み。対象運行原記録への提供経路は不明。",
+      "provider_promised_days": null,
+      "final_status": "PUBLIC",
+      "raw_target_access_status": "UNVERIFIED",
+      "general_contact_is_not_permission": true
+    },
+    {
+      "id": "J07",
+      "data_name": "西米良村共同集配の原著論文",
+      "holder_or_publisher": "日本工営・西米良村・九州工業大学等",
+      "source_ids": [
+        "NISHIMERA_PAPER",
+        "NISHIMERA_LANDING",
+        "NISHIMERA_AUTHOR"
+      ],
+      "urls": [
+        "https://www.jstage.jst.go.jp/article/jste/5/1/5_11/_pdf/-char/ja",
+        "https://www.jstage.jst.go.jp/article/jste/5/1/5_11/_article/-char/ja",
+        "https://hyokadb02.jimu.kyutech.ac.jp/html/100000644_ja.html"
+      ],
+      "acquisition_method": "原著PDF・書誌・電子付録0件を確認。元データ申請要項未確認。",
+      "license_and_conditions": "©交通工学研究会。フリー閲覧と原データ二次利用を区別。",
+      "privacy_and_commercial_constraints": "3社・貨客混載。A/B/C社の日本郵便への同定と元調査の再利用未確認。",
+      "region": "宮崎県西米良村、小川地区等。",
+      "period": "原著2019年、2015〜2016年等の実証文脈。",
+      "unit": "共同集配の調査/調整/コスト積算。",
+      "metric_computability_now": {
+        "D": false,
+        "W": false,
+        "T_external": false,
+        "T_common": false
+      },
+      "lead_time_and_basis": "論文は取得済み。元調査記録の提供までの期間は不明。",
+      "provider_promised_days": null,
+      "final_status": "PUBLIC",
+      "raw_target_access_status": "UNVERIFIED",
+      "general_contact_is_not_permission": true
+    },
+    {
+      "id": "J08",
+      "data_name": "集配用バイク・インフラ管理実証の画像/位置原記録",
+      "holder_or_publisher": "日本郵政・日本郵便・NTT東日本/NTT ME",
+      "source_ids": [
+        "NTT_JP_2026"
+      ],
+      "urls": [
+        "https://www.ntt-east.co.jp/release/detail/20261028_02.html"
+      ],
+      "acquisition_method": "実証の公式発表を取得。原記録の公開/研究申請は未確認。",
+      "license_and_conditions": "第三者研究利用・提供条件は未確認。",
+      "privacy_and_commercial_constraints": "画像/位置を含む。2輪距離を一般配送車のDにしない。",
+      "region": "実証地域の位置情報。一般配送車ToCとは別。",
+      "period": "2026-11-04〜11-10予定。終了/成果の確認はない。",
+      "unit": "バイク画像/位置の観測。",
+      "metric_computability_now": {
+        "D": false,
+        "W": false,
+        "T_external": false,
+        "T_common": false
+      },
+      "lead_time_and_basis": "発表は取得済み。原記録取得の期間は不明。",
+      "provider_promised_days": null,
+      "final_status": "UNVERIFIED",
+      "raw_target_access_status": "UNVERIFIED",
+      "general_contact_is_not_permission": true
+    },
+    {
+      "id": "J09",
+      "data_name": "国交省の荷待ち・物流統計公開資料",
+      "holder_or_publisher": "国土交通省",
+      "source_ids": [
+        "MLIT_WAIT_SURVEY",
+        "MLIT_WAIT_DX",
+        "MLIT_CENSUS"
+      ],
+      "urls": [
+        "https://www.mlit.go.jp/report/press/content/002011131.pdf",
+        "https://www.mlit.go.jp/jidosha/content/001993650.pdf",
+        "https://www.mlit.go.jp/statistics/details/t-other-2_tk_000196.html"
+      ],
+      "acquisition_method": "PDF/統計ページを取得。対象・定義を確認。",
+      "license_and_conditions": "出典を示して背景資料として参照。個票の提供制度を目的原記録の取得制度としない。",
+      "privacy_and_commercial_constraints": "集計/匿名事例。日本郵便D/W/Tの対応不能。",
+      "region": "一般貨物・全国等。日本郵便単独の手動ToCではない。",
+      "period": "2025年度調査、2025年3月DX報告、2021年センサス等。",
+      "unit": "一般貨物の運行/集計統計。",
+      "metric_computability_now": {
+        "D": false,
+        "W": false,
+        "T_external": false,
+        "T_common": false
+      },
+      "lead_time_and_basis": "公開資料は取得済み。日本郵便対象原記録の経路・期間は不明。",
+      "provider_promised_days": null,
+      "final_status": "PUBLIC",
+      "raw_target_access_status": "UNVERIFIED",
+      "general_contact_is_not_permission": true
+    },
+    {
+      "id": "J10",
+      "data_name": "JP Innovation Program募集・地理空間テーマ",
+      "holder_or_publisher": "日本郵便",
+      "source_ids": [
+        "JP_INNOVATION",
+        "JP_INNOVATION_THEME",
+        "JP_INNOVATION_CONTACT"
+      ],
+      "urls": [
+        "https://www.post.japanpost.jp/about/open-innovation/",
+        "https://www.post.japanpost.jp/assets/docs/about/open-innovation/theme03.pdf",
+        "https://www.post.japanpost.jp/about/open-innovation/contact/"
+      ],
+      "acquisition_method": "募集・資格・公式問い合わせを取得。研究データの申請は行わない。",
+      "license_and_conditions": "法人・2名以上・既存主力サービス等の応募要件。研究者のデータ申請資格は未確認。",
+      "privacy_and_commercial_constraints": "データ加工・収益化のテーマであり、誰でも利用できる研究原記録ではない。",
+      "region": "日本郵便データ等を利用したスタートアップ共創。",
+      "period": "現行公開募集条件。選考時期はデータ提供時期と別。",
+      "unit": "事業提案/共創。D/W/Tデータ一覧はない。",
+      "metric_computability_now": {
+        "D": false,
+        "W": false,
+        "T_external": false,
+        "T_common": false
+      },
+      "lead_time_and_basis": "要項は取得済み。選考翌月末目途を研究用データのSLAにしない。",
+      "provider_promised_days": null,
+      "final_status": "PUBLIC",
+      "raw_target_access_status": "UNVERIFIED",
+      "general_contact_is_not_permission": true
+    }
+  ],
+  "human_T_references_s": {
+    "experienced": [
+      300,
+      600
+    ],
+    "novice": [
+      1800,
+      3600
+    ]
+  },
+  "Japan_Post_human_plan_D_km": null,
+  "Japan_Post_loading_W_min": null,
+  "Japan_Post_common_T_s": null,
+  "level_1_all_three": "HOLD",
+  "level_1_T_only": "CONDITIONAL GO",
+  "level_2": "HOLD",
+  "level_3": "HOLD",
+  "outbound_contact_executed": false,
+  "form_submission_executed": false,
+  "alternative_adopted": false,
+  "researcher_followup_business_days": [
+    5,
+    10,
+    20
+  ],
+  "followup_days_are_provider_SLA": false
+}

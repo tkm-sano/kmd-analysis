@@ -1,0 +1,36 @@
+Traceback (most recent call last):
+  File "/home/takuma/kmd-analysis/scripts/build_common_road_od.py", line 6, in <module>
+    build_inputs(a.output,a.graph_dir,a.rootfs)
+  File "/home/takuma/kmd-analysis/src/kmd_toc/pipeline/roads.py", line 210, in build_inputs
+    od=resumable_od(ids,snaps,meta,out/'full_S3',client=client)
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/src/kmd_toc/pipeline/roads.py", line 181, in resumable_od
+    od=OD(tuple(ids),*arrays,metadata);audit=od.audit()
+                                             ^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/src/kmd_toc/common/od.py", line 68, in audit
+    raise ValueError('OD_MISSING_OR_INVALID_REACHABLE_VALUE')
+ValueError: OD_MISSING_OR_INVALID_REACHABLE_VALUE
+Command exited with non-zero status 1
+	Command being timed: "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python scripts/build_common_road_od.py --output output/toc_delivery/ad_pipeline_20261112/roads"
+	User time (seconds): 7.73
+	System time (seconds): 1.88
+	Percent of CPU this job got: 122%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:07.85
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 330980
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 202760
+	Voluntary context switches: 121459
+	Involuntary context switches: 20
+	Swaps: 0
+	File system inputs: 70344
+	File system outputs: 721888
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1

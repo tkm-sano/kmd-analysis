@@ -1,0 +1,45 @@
+{
+  "completed_at": "2026-11-14T11:46:53.998800+00:00",
+  "HEAD": "8605d5412f6af62229a83095c35ab04c8c7dd9b1",
+  "initial_existing_files_checked": 60,
+  "changed_existing_files": [],
+  "new_code_and_settings_sha256": {
+    "configs/toc_delivery/a_sequence_external_v1.json": "cede2761a8bf75e19e30a4c49a8d48543303993c630125e6733bcbc81305dd6d",
+    "scripts/acquire_amazon_sequence_data.py": "5fa064a5499d50bd1dbfae6d2c5e8893bbd990e895b70a9ebf562144b528b5e4",
+    "scripts/validate_a_sequences.py": "dcb8cf54f5d15ab3f60755594baab27e280b8f8e0e34566d4daa3763d3e1f1cb",
+    "src/kmd_toc/baseline_a/sequence_validation.py": "f13a1fc30a5d61451494c13ca4facf2a3359ca1af5fec6a326ef134b12a018b6",
+    "tests/toc_baseline_a/test_sequence_validation.py": "5f24047bbf9007b9db8e11e4bd2810719d03ce99173e88a53af2469093aea1ee"
+  },
+  "output_runs": {
+    "a_sequence_external_20261114_v1_check01": {
+      "verified_products": 5,
+      "status": "FAILED_BEFORE_SCORING"
+    },
+    "a_sequence_external_20261114_v1_check02": {
+      "verified_products": 10,
+      "status": "COMPLETE"
+    },
+    "a_sequence_external_20261114_v1_check03_reproduce": {
+      "verified_products": 10,
+      "status": "COMPLETE"
+    },
+    "a_sequence_external_20261114_v1_check04_final": {
+      "verified_products": 10,
+      "status": "COMPLETE"
+    }
+  },
+  "evaluation_routes": 30,
+  "station_day_clusters": 19,
+  "pilot_routes": 2,
+  "random_controls_per_evaluation_route": 10,
+  "tests": "94 passed including 23 new tests",
+  "real_reference_comparisons": 8,
+  "reproduction": "same proposed sequences and all route metrics bytes",
+  "full_A_representativeness": "NOT_ESTABLISHED",
+  "original_A2_distance_ordering": "NOT_TESTED",
+  "main_experiment_executed": false,
+  "B_C_D_modified_or_executed": false,
+  "external_contacts": false,
+  "commit_push": false,
+  "README_modified": false
+}

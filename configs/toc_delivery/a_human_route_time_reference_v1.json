@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "reference_version": "A-human-route-time-reference-v1.0",
+  "adopted_date": "2026-11-13",
+  "kind": "external_literature_reference_only",
+  "adoption_status": "CONDITIONAL GO",
+  "source_anchor": {
+    "client": "Japan Post",
+    "publisher": "OPTIMIND/Loogia",
+    "case_as_of_year": 2021,
+    "url": "https://loogia.jp/cases/nihonyubin/"
+  },
+  "metric": "T_human_route_creation",
+  "unit": "seconds per human route-creation episode",
+  "experience_conditions": {
+    "experienced": {
+      "min_s": 300,
+      "max_s": 600
+    },
+    "novice": {
+      "min_s": 1800,
+      "max_s": 3600
+    }
+  },
+  "distribution": null,
+  "default_midpoint": null,
+  "mapping": {
+    "stops_per_episode": null,
+    "trips_per_episode": null,
+    "episodes_per_vehicle_day": null,
+    "planning_workers": null,
+    "full_A_T_s": null
+  },
+  "allowed_use": [
+    "source-labelled external reference",
+    "experience-dependent route-creation sensitivity after episode/workload mapping is explicitly fixed"
+  ],
+  "not_established": [
+    "Sagawa measured time",
+    "S1 full-plan human wall time",
+    "time per delivery stop",
+    "human ability to reproduce A1-A3 output plans"
+  ],
+  "automatically_used_in_existing_experiments": false,
+  "replaces_a_rule_baseline_v1_coefficients": false,
+  "scopes_not_included_or_unconfirmed": [
+    "shared input preparation",
+    "joint vehicle/trip allocation",
+    "berth coordination",
+    "global feasibility checking and correction"
+  ],
+  "do_not_map_experience_to_A1_A2_A3": true,
+  "corroboration_counts": {
+    "anchor_cases": 1,
+    "additional_paired_experience_cases": 1,
+    "additional_individual_duration_cases": 2,
+    "additional_aggregate_duration_cases": 3,
+    "additional_adjacent_task_cases": 1,
+    "additional_supporting_case_reports": 7,
+    "scope_counterexample_cases": 1,
+    "non_observational_vendor_examples": 1,
+    "duplicate_pages_not_counted": 3,
+    "directly_read_additional_supporting_primary_pages": 6,
+    "indexed_original_body_only_additional_cases": 1,
+    "interpretation": "Distinct client reports, not independent instrumented datasets; same supplier may publish several cases."
+  },
+  "evidence_csv": "docs/research/toc_delivery_a/A_JAPAN_POST_T_CORROBORATION_EVIDENCE.csv"
+}

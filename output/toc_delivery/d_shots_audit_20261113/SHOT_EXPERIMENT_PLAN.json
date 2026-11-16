@@ -1,0 +1,57 @@
+{
+  "version": "D-shots-validation-plan-20261113-v1",
+  "scope": "audit plan; no large sensitivity or full delivery experiment executed",
+  "production_final_shots": null,
+  "production_adoption_status": "HOLD:measurement_and_total_time_evidence_required",
+  "pilot_reference_candidate_final_shots": 8192,
+  "current_effective_train_shots": 1000,
+  "current_effective_final_shots": 4096,
+  "final_sampling_conditions": [
+    1024,
+    4096,
+    8192,
+    10000,
+    16384,
+    32768
+  ],
+  "initial_independent_repetitions_per_condition": 30,
+  "post_selection_confirmatory_repetitions_proposal": 60,
+  "frozen_parameter_bank_sha256": "a6c716775707f1d4bc7de3180b6552b33a65f902f7eac8bb2b81809cdbb7b9ea",
+  "parameter_bank_kernels": 34,
+  "pilot_sampling_calls": 6120,
+  "pilot_total_final_shots": 73913280,
+  "pilot_additional_training_shots": 0,
+  "random_generator": "NumPy 2.3.1 SeedSequence; Qiskit 2.1.1 Statevector sampling RNG",
+  "root_entropy": 202611130900,
+  "seed_bits": 128,
+  "seed_encoding": "hex string; convert to Python int(seed_hex,16)",
+  "seed_axes": [
+    "series_id",
+    "shots_condition",
+    "repetition",
+    "kernel",
+    "role"
+  ],
+  "all_final_sampling_streams_independent_by_design": true,
+  "independence_is_mathematical_proof": false,
+  "shots_conditions_use_nested_same_seed_prefixes": false,
+  "primary_value_events": [
+    "new_feasible_day_column_with_true_negative_reduced_cost_at_frozen_dual",
+    "improved_complete_plan_against_matched_classical_control"
+  ],
+  "raw_partial_route_negative_proxy_cost_is_primary_value_event": false,
+  "observed_or_computed_current_S1_macro_shorter_route_count": 0,
+  "current_S1_distance_improvement_trial_gate": "STOP:finite_domain_has_no_shorter_route; diagnostic_only",
+  "train_shots_series_separate": true,
+  "required_before_full_run": [
+    "effective_config_injection",
+    "explicit_final_measurement_seed",
+    "stage_shot_and_time_ledger",
+    "improvable_positive_control",
+    "matched_classical_completion_control",
+    "authorization_for_experiments"
+  ],
+  "no_full_delivery_experiment_authorized_by_this_plan": true,
+  "all_unmeasured_D_W_and_T_by_shots": null,
+  "empirical_wall_time_budget_estimate": null
+}

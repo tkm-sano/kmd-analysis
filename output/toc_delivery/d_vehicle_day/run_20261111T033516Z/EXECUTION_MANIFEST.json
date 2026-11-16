@@ -1,0 +1,84 @@
+{
+  "started_utc": "2026-11-11T03:52:10.877499+00:00",
+  "python": "3.12.11 | packaged by Anaconda, Inc. | (main, Jun  5 2025, 13:09:17) [GCC 11.2.0]",
+  "executable": "/home/takuma/.cache/kmd-analysis/venvs/vehicle-day-v1/bin/python",
+  "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+  "packages": {
+    "typing_extensions": "4.16.0",
+    "stevedore": "5.9.1",
+    "Pygments": "2.21.0",
+    "pluggy": "1.7.0",
+    "pip": "25.1.1",
+    "packaging": "26.3",
+    "numpy": "2.3.1",
+    "iniconfig": "2.3.1",
+    "dill": "0.4.1",
+    "scipy": "1.16.0",
+    "rustworkx": "0.18.1",
+    "pytest": "8.4.2",
+    "qiskit": "2.1.1"
+  },
+  "config": {
+    "experiment_id": "huang_vehicle_day_grid_reference_v1",
+    "scope": "artificial_only_not_S1_S2_S3",
+    "customer_counts": [
+      4,
+      5,
+      6
+    ],
+    "berths": [
+      2,
+      1
+    ],
+    "vehicle_count": 2,
+    "max_trips_per_vehicle": 2,
+    "parcel_count_per_customer": 1,
+    "artificial_capacity_per_trip": 2,
+    "artificial_loading_s": 120,
+    "artificial_preparation_s": 120,
+    "artificial_service_s": 120,
+    "artificial_travel_s_per_arc": 120,
+    "artificial_shift_start_s": 0,
+    "artificial_first_ready_s": 0,
+    "artificial_shift_end_s": 1680,
+    "time_grid_delta_s": 120,
+    "objective_profiles": [
+      "D",
+      "W"
+    ],
+    "max_cg_rounds": 80,
+    "batch_size": 20,
+    "solver_seed": 2101,
+    "aoa": {
+      "candidate_customers": 3,
+      "slots": 3,
+      "p": 2,
+      "max_evaluations": 80,
+      "restarts": 1,
+      "train_shots": 1000,
+      "final_shots": 4096,
+      "lambda_capacity": 1.0,
+      "lambda_visit": 1.0
+    },
+    "main_stop_is_wall_time": false,
+    "external_implementations_executed": false,
+    "study_demand_or_OD_used": false
+  },
+  "config_sha256": "0ed721d28166a11111fbe7bd9e4843f311d5478fe4ff776d50ae190c81a898dd",
+  "source_hashes": {
+    "src/kmd_toc/vehicle_day/__init__.py": "38153fe5d63fcecc4b64aedc048621bb47570149b5a179579ab138078b20e8ff",
+    "src/kmd_toc/vehicle_day/fixtures.py": "e6612272a45e40b127fdc5346576aad76e4077d98358eead2133bf8e235d8ce8",
+    "src/kmd_toc/vehicle_day/generation.py": "41f02583b07da09f6754840065e75559fb77e986978f997b45dd146665e8656e",
+    "src/kmd_toc/vehicle_day/master.py": "c73f7992e9f4e3795eea047d298148e4ec9bcf18331e02db31ae8cb38579f437",
+    "src/kmd_toc/vehicle_day/model.py": "0f76a90a40d1832febd123f32aa0bc8bad19ac1a84836c63a0b8ec9287321fa2",
+    "src/kmd_toc/vehicle_day/pricing.py": "57beed9f3eb97a6b47330d402f5ac6d75cc041c91839dc1f63703489fea53392",
+    "src/kmd_toc/vehicle_day/runner.py": "26f5e1925b2419b78920a207df4d39b2c2fd447f067efc93a8c6aa4e796490cc",
+    "src/kmd_toc/vehicle_day/validation.py": "60872bda8c7ffe3228c11ab58cbdf69cba981bd2be0d4edf48842f685b5aeb7e",
+    "src/kmd_toc/column_generation/aoa.py": "6409aa17ea67cd37a9e5e6b6d79b72fc6abfd4652293d2426e5688197dbfe182",
+    "src/kmd_toc/column_generation/models.py": "a5288f2243964d13001a250b458a08a14ba81cdb8292708eda03eddc58a4e859",
+    "src/kmd_toc/column_generation/reduction.py": "e5d4d60c4db4b93b3e578ccb36d17938c3fd1534fbf2e48f3c243d5e9f75678b",
+    "/home/takuma/kmd-analysis/scripts/run_vehicle_day_validation.py": "9e328ddf03ccf2aaaf0ba3de3b87e56d78c16b9ec1a6c9574ddf9bbdacb3950c"
+  },
+  "external_implementations_executed": false,
+  "study_runs": 0
+}

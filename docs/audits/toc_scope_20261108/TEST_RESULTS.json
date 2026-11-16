@@ -1,0 +1,99 @@
+[
+  {
+    "command": [
+      "/home/takuma/kmd-analysis-public-preview-env-20261009/bin/python",
+      "-B",
+      "tests/test_toc_contracts.py"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.09736502193845809,
+    "output": ".........\n----------------------------------------------------------------------\nRan 9 tests in 0.039s\n\nOK\n"
+  },
+  {
+    "command": [
+      "/home/takuma/kmd-analysis-public-preview-env-20261009/bin/python",
+      "-B",
+      "tests/test_frozen_runtime_sources.py"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.050893712090328336,
+    "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.005s\n\nOK\n"
+  },
+  {
+    "command": [
+      "/home/takuma/kmd-analysis-public-preview-env-20261009/bin/python",
+      "-B",
+      "tests/test_routing_migration.py",
+      "RoutingMigrationTests.test_exact_and_independent_schedule",
+      "RoutingMigrationTests.test_changed_time_window",
+      "RoutingMigrationTests.test_unavailable_route",
+      "RoutingMigrationTests.test_capacity_is_independently_checked",
+      "RoutingMigrationTests.test_dual_certificate_validation",
+      "RoutingMigrationTests.test_equal_cost_tie_break"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.240627801977098,
+    "output": "test_exact_and_independent_schedule (__main__.RoutingMigrationTests.test_exact_and_independent_schedule) ... ok\ntest_changed_time_window (__main__.RoutingMigrationTests.test_changed_time_window) ... ok\ntest_unavailable_route (__main__.RoutingMigrationTests.test_unavailable_route) ... ok\ntest_capacity_is_independently_checked (__main__.RoutingMigrationTests.test_capacity_is_independently_checked) ... ok\ntest_dual_certificate_validation (__main__.RoutingMigrationTests.test_dual_certificate_validation) ... ok\ntest_equal_cost_tie_break (__main__.RoutingMigrationTests.test_equal_cost_tie_break) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.002s\n\nOK\n"
+  },
+  {
+    "command": [
+      "/home/takuma/kmd-analysis-public-preview-env-20261009/bin/python",
+      "-B",
+      "tests/test_quantum_migration.py",
+      "QuantumCoreTests"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.1352509781718254,
+    "output": "test_full_pre_migration_snapshot (__main__.QuantumCoreTests.test_full_pre_migration_snapshot) ... ok\ntest_invalid_bit_inputs (__main__.QuantumCoreTests.test_invalid_bit_inputs) ... ok\ntest_little_endian_mapping (__main__.QuantumCoreTests.test_little_endian_mapping) ... ok\ntest_routing_import_unaffected (__main__.QuantumCoreTests.test_routing_import_unaffected) ... ok\ntest_service_and_ancilla_rejection (__main__.QuantumCoreTests.test_service_and_ancilla_rejection) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.012s\n\nOK\n"
+  },
+  {
+    "command": [
+      "/home/takuma/kmd-analysis-public-preview-env-20261009/bin/python",
+      "-B",
+      "tests/test_formal_quantum_api.py"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.3784205268602818,
+    "output": ".......\n----------------------------------------------------------------------\nRan 7 tests in 0.238s\n\nOK\n"
+  },
+  {
+    "command": [
+      "/home/takuma/kmd-analysis-public-preview-env-20261009/bin/python",
+      "-B",
+      "tests/test_simulation_api.py"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 1.6345789551269263,
+    "output": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.069s\n\nOK\n"
+  },
+  {
+    "command": [
+      "/home/takuma/kmd-analysis-public-preview-env-20261009/bin/python",
+      "-B",
+      "tests/test_battery_energy_api.py"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.34246826684102416,
+    "output": ".......\n----------------------------------------------------------------------\nRan 7 tests in 0.045s\n\nOK\n"
+  },
+  {
+    "command": [
+      "/home/takuma/kmd-analysis-public-preview-env-20261009/bin/python",
+      "-B",
+      "tests/test_analysis_api.py"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.3988575639668852,
+    "output": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.284s\n\nOK\n"
+  },
+  {
+    "command": [
+      "/home/takuma/kmd-analysis-public-preview-env-20261009/bin/python",
+      "-B",
+      "notebooks/test_notebooks.py"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 9.360027197981253,
+    "output": "{\n  \"results\": [\n    {\n      \"notebook\": \"00_start_here.ipynb\",\n      \"status\": \"PASS\",\n      \"cells\": 6,\n      \"seconds\": 1.723,\n      \"code_cells\": 3\n    },\n    {\n      \"notebook\": \"01_classical_routing.ipynb\",\n      \"status\": \"PASS\",\n      \"cells\": 7,\n      \"seconds\": 1.099,\n      \"code_cells\": 4\n    },\n    {\n      \"notebook\": \"02_pubo_qaoa.ipynb\",\n      \"status\": \"PASS\",\n      \"cells\": 9,\n      \"seconds\": 2.384,\n      \"code_cells\": 4\n    },\n    {\n      \"notebook\": \"03_battery_energy.ipynb\",\n      \"status\": \"PASS\",\n      \"cells\": 8,\n      \"seconds\": 0.945,\n      \"code_cells\": 4\n    },\n    {\n      \"notebook\": \"04_quantitative_results.ipynb\",\n      \"status\": \"PASS\",\n      \"cells\": 6,\n      \"seconds\": 1.117,\n      \"code_cells\": 4\n    },\n    {\n      \"notebook\": \"05_scale_analysis.ipynb\",\n      \"status\": \"PASS\",\n      \"cells\": 5,\n      \"seconds\": 1.201,\n      \"code_cells\": 3\n    }\n  ],\n  \"dependency_hashes_unchanged\": true,\n  \"dependency_count\": 38,\n  \"scope\": \"Default cells only; optional optimizer false; not whole-model validation\",\n  \"python\": \"3.12.3\"\n}\n"
+  }
+]

@@ -1,0 +1,93 @@
+from pathlib import Path
+import csv,json,hashlib,re,html,sys,unicodedata,statistics,collections
+from zipfile import ZipFile
+import xml.etree.ElementTree as ET
+sys.path.insert(0,'/home/takuma/kmd-analysis/review_outputs/thesis_docx_integration_20261103/run01/rendering_tools/python')
+import fitz
+R=Path(__file__).resolve().parents[1];ROOT=R.parents[2];E=R/'evidence';P=R/'reports';S=ROOT/'review_outputs/quantum_ev_step5_20261105';M=ROOT/'review_outputs/t08_t09_interaction_boundaries_20261105/run01';checks=[]
+def read(p):return list(csv.DictReader(p.open(encoding='utf-8-sig')))
+def norm(s):return re.sub(r'\s+','',unicodedata.normalize('NFKC',s)).replace('−','-').replace('–','-')
+def ck(n,ok,d=''):checks.append(dict(item=n,status='PASS' if ok else 'FAIL',detail=d))
+def writecsv(name,rows):
+ with (E/name).open('w',encoding='utf-8-sig',newline='') as f:
+  w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
+blocks=json.loads((R/'poster_layout.json').read_text());text=(R/'poster_text.txt').read_text();doc=fitz.open(R/'poster.pdf');pg=doc[0];mm=72/25.4
+ck('A1縦・全1ページ',len(doc)==1 and abs(pg.rect.width/mm-594)<.1 and abs(pg.rect.height/mm-841)<.1,f'{pg.rect.width/mm:.3f} × {pg.rect.height/mm:.3f} mm')
+missing=[]
+for b in blocks:
+ x,y,w,h=[b[k] for k in ['x_mm','y_mm','w_mm','h_mm']]
+ v=pg.get_text('text',clip=fitz.Rect((x-.6)*mm,(y-.6)*mm,(x+w+.6)*mm,(y+h+1)*mm))
+ if norm(b['text']) not in norm(v):missing.append(dict(text=b['text'],actual=v))
+ck('PDFの全文章を元レイアウトと照合',not missing,f'{len(blocks)} blocks; missing={len(missing)}')
+ov=[]
+for i,a in enumerate(blocks):
+ for j,b in enumerate(blocks[i+1:],i+1):
+  dx=min(a['x_mm']+a['w_mm'],b['x_mm']+b['w_mm'])-max(a['x_mm'],b['x_mm']);dy=min(a['y_mm']+a['h_mm'],b['y_mm']+b['h_mm'])-max(a['y_mm'],b['y_mm'])
+  if dx>.5 and dy>.8:ov.append([i,j,dx,dy])
+ck('文章ボックスの重なり',not ov,str(ov))
+ck('全文章がA1紙面内',all(b['x_mm']>=0 and b['y_mm']>=0 and b['x_mm']+b['w_mm']<=594.01 and b['y_mm']+b['h_mm']<=841.01 for b in blocks))
+ns={'p':'http://schemas.openxmlformats.org/presentationml/2006/main'}
+with ZipFile(R/'poster.pptx') as z:
+ root=ET.fromstring(z.read('ppt/slides/slide1.xml'));pres=ET.fromstring(z.read('ppt/presentation.xml'));sz=pres.find('p:sldSz',ns)
+ ck('PPTX実寸A1縦',int(sz.get('cx'))==594*36000 and int(sz.get('cy'))==841*36000,str(sz.attrib))
+ ck('編集可能な文章・図・グラフ',len(root.findall('.//p:pic',ns))==0 and len(root.findall('.//p:cxnSp',ns))>50,'図と棒・マーカー・誤差棒はネイティブ要素、画像への一枚化なし')
+for v in read(E/'SOURCE_SHA256.csv'):ck('原本保全 '+str(Path(v['path']).relative_to(ROOT)),hashlib.sha256(Path(v['path']).read_bytes()).hexdigest()==v['sha256'])
+ck('目的・方法・結果・評価・議論を文章で説明',all(s in text for s in ['背景・目的','方法：同じ配送入力','方法：材料入力','全36,800保存候補','平均±軌跡間標準偏差','4 評価','5 議論・結論']))
+ck('旧指標と内部記号の再導入なし',all(s not in text for s in ['定時配達率','T08','T09','Controlled-DC','HOLD','支持集合','技術能力境界','RIQ']))
+ck('未検証の社会関係図を削除','判断を方向付ける' not in text and '主体・制度・採用行動の分析は行っていない' in text)
+ck('実機状態準備を断定しない','理想状態の準備を実機で実証したものではない' in text)
+ck('主要図3種類以上',all(x in text for x in ['図1 二経路','図2 古典解','図3a 部材','図3b 材料値']))
+ck('主本文18.5pt以上、図内15.5pt以上、参考文献14pt',min(b['font_pt'] for b in blocks)>=14,'主本文18.5〜22pt、見出し21〜39pt、図15.5〜26pt。実寸の試し刷りは未実施')
+rows=read(S/'data/B_INPUT_CONDITIONS_460.csv');c=collections.Counter(int(r['n_customers']) for r in rows)
+ck('460入力・配送先別件数',dict(c)=={3:78,4:78,5:78,25:78,100:78,125:70},str(dict(c)))
+ck('需要・作業・帰庫条件',all(float(r['capacity_PE'])==216 and float(r['service_per_customer_s'])==102 and float(r['common_horizon_s'])==32400 for r in rows))
+u=read(S/'data/INPUT_UNIT_STATISTICS.csv');table=read(E/'SCALE_METHOD_STATISTICS.csv');configs=['MEAN_P2','CVAR01_P2','COHERENT2_P2','COHERENT4_P2','RANK_P2','ACTIVE_ADJACENT_P3_GRID']
+# Infer source local names; no assumptions about names beyond excluding saved Grover.
+allcfg={r['config_id'] for r in u if r['config_id']};local=sorted(allcfg-{'GROVER_P2','GROVER_P3'});ck('局所方式は6設定',len(local)==6,str(local))
+for r in table:
+ matches=[a for a in u if a['scale']==r['scale'] and a['config_id']==r['config'] and a['metric']=='relative_gap_percent']
+ ck('図2平均・SD '+r['scale']+'/'+r['config'],len(matches)==1 and abs(float(matches[0]['mean'])-float(r['mean_relative_percent']))<1e-10 and abs(float(matches[0]['sd'])-float(r['SD_relative_points']))<1e-10)
+for n in ['R0','R1','R2','R3','R4','R5']:
+ rr=[a for a in u if a['scale']==n and a['config_id'] in local and a['metric']=='relative_gap_percent'];ck('局所6条件の同値 '+n,len(rr)==6 and len({(a['mean'],a['sd']) for a in rr})==1)
+allc={r['classification']:int(r['count']) for r in read(E/'IMPROVED_EQUAL_WORSENED.csv') if r['level']=='all_plans'};ck('保存候補内訳',allc==dict(improved=0,equal=28200,worsened=8600),str(allc))
+f=read(E/'FULL_SUPPORT_EXISTENCE_BY_INPUT.csv');ct=collections.Counter(r['A_full_support_status'] for r in f)
+ck('全順列の存在判定',ct['REFERENCE_BETTER_IN_FULL_SUPPORT']==176 and ct['GREEDY_EQUALS_REFERENCE']==238 and ct['UNPROVED_JSTAR']==46,str(ct))
+strong=sum(r['A_full_support_status']=='REFERENCE_BETTER_IN_FULL_SUPPORT' and 'SAVED_EXACT_MIP' not in r['reference_class'] for r in f);ck('135確証と41条件付きの分離',strong==135 and 176-strong==41)
+hist=read(E/'MASS_RESPONSE_HISTOGRAM.csv');der=read(S/'data/DC_MASS_KERNEL_INDEPENDENT.csv');sm=read(E/'DC_MASS_KERNEL_SUMMARY.csv')
+for s in sm:
+ rr=[r for r in der if r['rolling_case']==s['rolling_case']];vals=[float(r['right_derivative_lo_Wh_kg']) for r in rr]
+ ck('図3b平均・SD '+s['rolling_case'],len(vals)==460 and abs(statistics.mean(vals)-float(s['slope_mean']))<1e-10 and abs(statistics.stdev(vals)-float(s['slope_SD']))<1e-10)
+ hh=[r for r in hist if r['rolling_case']==s['rolling_case']];ck('図3b全ビン '+s['rolling_case'],sum(int(r['count']) for r in hh)==460 and all(int(r['count'])==sum(float(r['bin_lower_Wh_kg'])<=v<float(r['bin_upper_Wh_kg']) for v in vals) for r in hh))
+ck('最新材料解析は数値監査済み・実用パック未確定',json.loads((M/'evidence/RUN_RESULT.json').read_text())['failures']==0 and json.loads((M/'evidence/RUN_RESULT.json').read_text())['T09_complete_pack']=='HOLD')
+edges=json.loads((E/'FIGURE_EDGES.json').read_text());ck('未検証接続と条件付き接続の線種',all(e['status']=='C' for e in edges if e['target'] in ['delivery','material_input']) and all(e['status']=='B' for e in edges if e['target'] in ['mass','energy']))
+ET.parse(R/'poster.svg');ck('SVG整形式',True)
+(E/'VALIDATION.json').write_text(json.dumps(dict(checks=checks,missing=missing,overlaps=ov),ensure_ascii=False,indent=2));writecsv('VALIDATION.csv',checks)
+for name,clip in [('overall_diagram',(10,150,584,278)),('path1_detail',(15,307,284,672)),('path2_detail',(310,307,579,672)),('footer_detail',(10,680,584,840))]:pg.get_pixmap(matrix=fitz.Matrix(1.4,1.4),clip=fitz.Rect(*(v*mm for v in clip))).save(R/'render'/f'{name}.png')
+style='body{font-family:sans-serif;max-width:1400px;margin:30px auto;padding:0 25px;line-height:1.8;color:#17232d}h1,h2{color:#143653}table{border-collapse:collapse;width:100%;font-size:14px;margin:18px 0}th,td{border:1px solid #bac6cf;padding:9px;text-align:left;vertical-align:top;overflow-wrap:anywhere}th{background:#edf3f7}.scroll{overflow-x:auto}a{color:#286a96}'
+def tab(rows):return '<div class="scroll"><table><tr>'+''.join('<th>'+html.escape(str(k))+'</th>' for k in rows[0])+'</tr>'+''.join('<tr>'+''.join('<td>'+html.escape(str(v))+'</td>' for v in r.values())+'</tr>' for r in rows)+'</table></div>'
+def page(name,title,body):
+ (P/f'{name}.html').write_text('<!doctype html><html lang="ja"><meta charset="utf-8"><title>'+title+'</title><style>'+style+'</style><body><a href="../index.html">成果物一覧</a><h1>'+title+'</h1>'+body+'</body></html>')
+changes=[dict(修正前='主体・規則・技術構成の相互作用を紙面上部の大図で示した',修正後='計画探索と材料評価の二経路の範囲図へ置換した',理由='主体・制度・採用過程は未分析であり、図の面積と証拠範囲が釣り合っていなかった'),dict(修正前='CPU理想計算・GM・探索範囲Sを定義前に提示した',修正後='通常計算機、訪問順を入れ替えた古典解、量子近似最適化を説明した',理由='非専門読者が入力・処理・比較対象を追えるようにする'),dict(修正前='平均±SDの表が中心であった',修正後='全6規模の平均と入力間SDをネイティブグラフ化した',理由='悪化が大規模Grover設定へ集中する傾向を可視化し、ばらつきも残す'),dict(修正前='T08/T09、HOLD、183設計行等が説明の中心であった',修正後='簡略式と部材別会計を説明し、質量収支と材料非依存の電力量感度を図示した',理由='内部記号や行数でなく、何を計算したかと条件を伝える'),dict(修正前='材料評価への利用からDC応答までの単純な小フローであった',修正後='量子材料評価未実施と、仮定以降のモデル評価を点線/破線で区別した',理由='量子による実材料改善や実車実証と誤認させない'),dict(修正前='材料追加解析は旧完了報告の進捗説明であった',修正後='最新の交互作用・相殺報告を照合し、比容量×利用率・電圧・追加部材の条件を追加した',理由='新しい保存結果を反映しつつ、逆算材料値を実用採用しない'),dict(修正前='実用入力はHOLDと表記した',修正後='実用入力・完成パックは未確定と表記した',理由='内部審査ラベルを読者が解釈できる文章にする'),dict(修正前='理論と結果の境界は図の注記に集中していた',修正後='図1の線種、各方法・結果・評価・議論に範囲を分散して示した',理由='各図だけ読んだ場合にも証拠の性質を誤読しない')]
+writecsv('CHANGE_LOG.csv',changes)
+page('01_CHANGES','主な修正と構成',tab(changes)+'<h2>構成</h2><p>背景・目的で研究の必要性を説明し、対象境界を明記した。図1で二経路と検証範囲を示す。左右の経路欄には方法、数値結果、条件を配置した。評価では比較単位と非対称な証拠範囲を、議論では探索範囲と設計・質量変換が成果を制約する点を述べた。</p><p>本改訂はrun05を編集原本とし、Step5全文改訂稿の第1〜7章・付録Aを主論証の基準とした。付録Bの旧分析と棄却済み面接・RIQは採用しない。材料については、Step5の後に別途完了した追加境界解析を明示して用いた。新しい量子計算・材料実験・走行シミュレーションは本作業では行っていない。</p>')
+figs=[dict(図='図1 経路1',根拠=str(S/'THESIS_FULL_TEXT.md')+' §3.4–3.8, §4',対応='CPU模擬・比較解・全工程/実運用未検証',区分='計算出力の比較A／実配送への接続C',線の意味='Aは実機実証や現実因果効果ではない'),dict(図='図1 経路2',根拠=str(S/'STEP5_PATHWAY2_EVIDENCE.md')+'; '+str(M/'FINAL_REPORT_JA.md'),対応='上流量子材料は未実行、設計/質量/DCはモデル',区分='量子から入力C／入力以降B',線の意味='破線は計算が未完という意味でなく、前提を置く決定論的関係'),dict(図='図2 平均・標準偏差',根拠=str(S/'data/INPUT_UNIT_STATISTICS.csv'),対応='relative_gap_percent、scale×configの18行。限定5+隣接1は6条件すべて同値を照合',区分='保存CPU出力の記述統計A',線の意味='棒は入力間SDであり信頼区間ではない。横軸は規模のカテゴリ'),dict(図='図2 保存候補内訳',根拠=str(S/'data/IMPROVED_EQUAL_WORSENED.csv'),対応='all_plansのimproved/equal/worsened。全件可行性はStep5の保存NPZ照合',区分='保存候補数A',線の意味='36,800は独立実験標本数でない。0改善は一般の改善確率0を意味しない'),dict(図='図2下 探索範囲の条件',根拠=str(S/'STEP5_PATHWAY1_CONDITIONS.md')+'; '+str(S/'data/FULL_SUPPORT_EXISTENCE_BY_INPUT.csv'),対応='指定mirrorの支持内最小と、全順列の参照状況を別に評価',区分='指定範囲の検算A／保存MIP41は条件付き',線の意味='全問題の最適値未証明46を不存在として数えない。active隣接全支持の不存在を主張しない'),dict(図='図3a 質量収支',根拠=str(M/'T08_T09_COMPARABILITY.md')+'; '+str(M/'BOUNDARY_SURFACES.csv'),対応='既知部材差bと未知追加差δ。ΔM=b−δ、正/ゼロ/負',区分='会計モデルの条件付き関係B',線の意味='数式の条件であり実材料・完成電池の性能実証ではない'),dict(図='図3b 質量感度分布',根拠=str(S/'data/DC_MASS_KERNEL_INDEPENDENT.csv')+'; DC_MASS_KERNEL_SUMMARY.csv',対応='1000kg右微分920行を抵抗条件別に幅1Wh/kgのヒストグラムへ記述集計',区分='材料値を使用しない凍結物理モデルB',線の意味='460本の同じ軌跡の対応比較。抵抗2条件は信頼限界や確率分布でない'),dict(図='経路2下の条件説明',根拠=str(M/'FINAL_REPORT_JA.md')+'; '+str(M/'INTERACTION_RESULTS.csv'),対応='q×u、q×Vと未知部材差。共通条件下のqu閾値と条件変更による逆転',区分='解析式と保存感度B',線の意味='探索域は数学的仮定で、材料で独立に実現できる範囲の証明ではない')]
+writecsv('FIGURE_EVIDENCE.csv',figs)
+page('02_FIGURE_EVIDENCE','各図と根拠の対応',tab(figs)+'<h2>精度を保つ補足統計</h2>'+tab(table)+'<h2>ヒストグラムの全ビン</h2>'+tab(hist)+'<p>相対差は各入力の100(J候補−J古典)/J古典を10測定で平均した後、規模・方式内で入力等重みに平均した値である。平均Jの比からの変化率ではない。標準偏差は入力間の標本SD（分母N−1）である。入力は25需要群・26親の依存を持つため、SDを母集団推論の誤差に読み替えない。GM2/3の線は別設定の結果で、6設定と混ぜた単一性能にしない。</p>')
+excluded=[dict(除外した記述='主体が技術を選択し、規則が判断を方向づけ、実践で制度を維持する図',理由='当研究では主体の意思決定・制度・組織行動を観測・分析していない',代替='社会技術システムは位置づけの1文に限定した'),dict(除外した記述='定時配達率を評価対象とする目的文・図の終点',理由='最新論文§1.3で主指標から除外。顧客時間窓なし、実契約期限・実採用は未同定',代替='計画側は総移動時間差・実行可能性と未検証の実配送接続を表示した'),dict(除外した記述='量子計算から材料性能向上へつなぐ実線',理由='量子材料計算、材料合成、実用全電池での性能改善は未実施',代替='文献にある用途を点線、下流モデルを破線で示した'),dict(除外した記述='Chen逆算比容量を初回実測・実用全電池の容量として採用する説明',理由='保持率分母やcycle/activationと全電池への移用適格性が未確定',代替='主紙面の具体的材料効果率を削除。参考入力の扱いを残した'),dict(除外した記述='完成パック96.15→90.70kg、実車電力量0.413%削減という実績表現',理由='簡略会計と未適格材料入力の参考例である。部材会計と完成パックも異なる',代替='同一会計の収支と材料非依存のDC感度を主結果にした'),dict(除外した記述='T08/T09、183設計、HOLD等を説明なしで列挙',理由='内部記号・出力行数だけでは研究方法や発見が伝わらない',代替='簡略式/部材別会計、入力・完成パック未確定という日本語に変更した'),dict(除外した記述='CPU学習時間のみを全求解時間または量子高速化とする比較',理由='前処理・候補生成・検証・実機転送等の共通全工程記録が不足する',代替='全工程時間と計画に許容される時間の照合は未検証と明記した'),dict(除外した記述='量子優位性・社会全体の改善・実用成立の断定',理由='本研究の保存比較とモデル計算からは検証できない',代替='探索範囲と中間変換による寄与の制約を結論とした')]
+writecsv('EXCLUDED_SCOPE.csv',excluded)
+page('03_EXCLUDED_SCOPE','研究範囲から除外した記述',tab(excluded)+'<p>利用者の依頼文にある定時配達率は、同依頼の「一次資料を優先する」という指定に従い再導入しなかった。実際の計算で確認された帰庫上限遵守を実契約上の定時率に置換していない。旧記録は保全されている。</p>')
+nums=[dict(数値='460入力：78×5＋70',定義='配送入力の数。入力1つは拠点・配送先・固定有向OD時間',出典='Step5/data/B_INPUT_CONDITIONS_460.csv',算出='n=3/4/5/25/100各78、125のみ70を数えた',前提='単一拠点・1巡回、顧客時間窓なし',限界='実物流母集団からの独立確率標本でない'),dict(数値='216荷物相当・102秒/先・9時間',定義='需要上限、作業時間、帰庫上限',出典='B_INPUT_CONDITIONS_460.csv; THESIS_FULL_TEXT.md§3.5',算出='capacity_PE=216、service=102、horizon=32400秒を照合',前提='出発0、各先1回訪問・帰庫',限界='顧客の実契約期限ではなく、PEを貨物kgへ換算していない'),dict(数値='36,800保存候補',定義='各測定で8192試行中から取得した最良候補',出典='IMPROVED_EQUAL_WORSENED.csv; Step5§3.4',算出='460入力×8設定×10測定',前提='同じ学習状態からの10測定',限界='36,800独立学習ではない'),dict(数値='図2の18平均±SD',定義='古典比較解を分母とする相対総移動時間差',出典='SCALE_METHOD_STATISTICS.csv; INPUT_UNIT_STATISTICS.csv',算出='各入力の10測定平均→規模/方式別平均と入力間SD',前提='各方式と規模を分離、正=悪化',限界='信頼区間・最適値に対するgap・規模だけの因果効果ではない'),dict(数値='改善0／一致28200／悪化8600',定義='保存候補と古典比較解の目的値の大小',出典='IMPROVED_EQUAL_WORSENED.csv all_plans',算出='厳密有理数目的値の分類を合計',前提='同一の入力・目的関数',限界='統計的同等性や一般的な改善確率0を意味しない'),dict(数値='135／41／238／46',定義='全順列内改善参照の確証／条件付き／古典=参照／未証明',出典='FULL_SUPPORT_EXISTENCE_BY_INPUT.csv',算出='A_full_support_statusとreference_classで分類',前提='強い証拠135と保存MIP41を分離',限界='未証明46を不存在にしない'),dict(数値='20kWh',定義='モデルのgross設計電力量',出典='最新材料報告FINAL_REPORT_JA.mdとRUN_CONFIG.json',算出='入力E=20000Wh固定',前提='走行stockの研究仮定usable18kWhとは別',限界='対象完成パックで実測した容量でない'),dict(数値='2.368±1.140／2.432±1.167Wh/kg',定義='1000kg右微分の軌跡間平均±標本SD',出典='DC_MASS_KERNEL_SUMMARY.csvとINDEPENDENT.csv',算出='各抵抗設定460保存軌跡のdE/dmを集計',前提='材料入力なし、同一速度・平坦・回生/補機なし・積載0・η=.9',限界='平均値1本で全軌跡を代表せず、独立実走行やCIでない'),dict(数値='1000〜1250kg',定義='材料入力なしのDC核の検証走行質量区間',出典='DC_MASS_KERNEL_INDEPENDENT.csv',算出='正枝の区分線形モデルで微分符号を検算した保存記録',前提='質量以外の条件固定',限界='全車種・全運行条件へ一般化しない'),dict(数値='ΔM=b−δ、δ=b',定義='同一会計の既知差から会計外追加差を引く軽量化量と消失条件',出典='T08_T09_COMPARABILITY.md; BOUNDARY_SURFACES.csv',算出='M基準−M変更＝既知差−未知差、単位kg',前提='比較する電力量・部材会計・基準を一致させる',限界='数学的条件であり完成電池の性能適格性を証明しない')]
+writecsv('NUMBER_PROVENANCE.csv',nums)
+page('04_NUMBERS','主要数値の定義・導出・限界',tab(nums)+'<h2>最新材料解析の条件付き参考例</h2><p>既存の20kWh、平均電圧3.5V、逆算参照比容量171.875/195.959596Ah/kgは対象全電池の初回実測値ではない。簡略会計の96.145655/90.697357kg、5.448297kg差や0.413%前後は参考例であり、本ポスターの主効果へ戻していない。</p><p>固定担持と基準面積固定の部材会計で既知差9.722608/5.977891kgが得られたが、対象とする部材・面積方針が異なる。未知外装・タブ・構造・熱管理等はNULLのままである。両者を完成パックの軽量化率として比較しない。最新437条件×460軌跡×2抵抗の402,040行は決定論的計算行である。</p><p>最新の追加解析ではq×uやq×Vの非加算関係、未知追加質量による消失・逆転を保存した。共通V・配合・負極・その他質量かつ追加差0なら、quが基準q₀u₀より大きいことがモデル内の軽量化条件となる。電圧を変えると必要Ahが変わり正負極双方に作用する。この数学的関係を、実物で各因子を独立に達成できる証拠にはしない。</p>')
+f=P/'04_NUMBERS.html'
+extra='<h2>質量・電力量の計算式と単位</h2><p>簡略式では、必要な電荷量Q=E/V [Ah]、正極活物質mₚ=E/(Vqu) [kg]、正極塗工材mₚ/fₚ、負極活物質mₙ=En/(Vqₙ) [kg]、負極塗工材mₙ/fₙとする。EはWh、VはV、qとqₙはAh/kg、uは正極の利用率、fₚ/fₙは活物質の質量割合、nは負極/正極の容量比である。完成質量を仮定する簡略式は M=E/V × [1/(qufₚ)+n/(qₙfₙ)]+C+δ となる。固定したその他部材C=34kgは100×0.19kg+15kgの一括仮定であり、検証済みの完成部材表ではない。</p><p>部材別モデルでは面積・厚さ・密度・空隙率からAl/Cu集電箔、セパレータ、電解液を個別に算定する。未知の外装・タブ・構造・冷却・BMS等を0にしない。一括モデルのその他34kgと部材別小計をそのまま足すと二重計上になる。両モデルの絶対質量を同一水準の実測値として比較しない。</p><p>車両の他質量と積載を固定すると、電池の正味質量差は走行質量差へ1対1で伝わる。保存速度軌跡の区間ごとに転がり仕事W₁、空力仕事W₂、並進エネルギー差W₃、回転エネルギー差W₄を合計し、E_DC=Σ max(W₁+W₂+W₃+W₄,0)/(3600η) [Wh] とする。η=.9であり、負の仕事は回生せず、補機・勾配・旋回損失・荷重変化を除外する。成分ごとを先に正値化してはいない。図3bはこの凍結核の1000kgでの右微分を保存表から描いたものである。</p>'
+f.write_text(f.read_text().replace('</body>',extra+'</body>'))
+refs=[dict(番号='[1]',書誌='Bärtschi & Eidenbenz (2020). Grover Mixers for QAOA: Shifting Complexity from Mixer Design to State Preparation. IEEE QCE,72–82.',URL='https://arxiv.org/abs/2006.00354',対応='量子近似最適化・Grover混合と可行重ね合わせの準備',確認='2026-11-05 原著公開要旨・書誌を照合',限界='通常Grover探索の速度保証を配送へ移植しない'),dict(番号='[2]',書誌='Delgado et al. (2022). Simulating key properties of lithium-ion batteries with a fault-tolerant quantum computer. Physical Review A106,032428.',URL='https://arxiv.org/abs/2204.11890',対応='電子のエネルギーから平衡電圧・移動度・安定性を評価する用途',確認='2026-11-05 原著公開要旨・書誌を照合',限界='本研究の材料改善・LP/Sへの量子帰属を裏づけない'),dict(番号='[3]',書誌='Shokrian Zini et al. (2023). Quantum simulation of battery materials using ionic pseudopotentials. Quantum7,1049.',URL='https://quantum-journal.org/papers/q-2023-07-10-1049/',対応='量子材料シミュレーションと量子資源推計の研究例',確認='2026-11-05 原著公開要旨・書誌を照合',限界='計算コスト推計を実車効果に置換しない'),dict(番号='[4]',書誌='Geels (2004). From sectoral systems of innovation to socio-technical systems. Research Policy33,897–920.',URL='https://doi.org/10.1016/j.respol.2004.01.015',対応='EV配送の位置づけの1文のみ',確認='既存文献台帳と要旨確認範囲を継承',限界='主体・規則・制度の作用分析は本研究でしていない'),dict(番号='[5]',書誌='Schneider, Stenger & Goeke (2014). The Electric Vehicle-Routing Problem with Time Windows and Recharging Stations. Transportation Science48,500–520.',URL='https://doi.org/10.1287/trsc.2013.0490',対応='EV配送で計画と車両・電池条件が関係する背景',確認='保存文献台帳・Step5§2.2',限界='原著の時間窓・充電最適化を本研究で再現したとしない')]
+writecsv('REFERENCE_CLAIMS.csv',refs)
+page('05_REFERENCES','文献と主張の対応',tab(refs)+'<p>Chen et al. (2020), DOI:10.1038/s41467-020-17126-3は古典DFT・電極実験であり、量子材料計算の文献とは役割が異なる。本改訂で原著図を新規抽出して値を作らず、最新保存監査の逆算参照・実用採用保留を維持した。主紙面の文献は読解に必要な5件へ絞り、RRIの実践や未分析の理論名の列挙は行っていない。</p>')
+audit=[dict(観点='1 主要主張の根拠',判定='対応表で確認',残存='参考材料入力の実用適格性は未確定'),dict(観点='2 未実施検証の非表示',判定='CPU・モデル・実機を区別',残存='実機・全工程・実配送未検証'),dict(観点='3 社会技術の範囲',判定='位置づけの1文に限定',残存='社会要素の因果分析を行ったとはしない'),dict(観点='4 寄与の過大評価',判定='優位性/量子による材料改善を主張しない',残存='両経路の証拠強度は非対称'),dict(観点='5 古典・量子・材料感度の分離',判定='各方法と凡例で区別',残存='古典/量子側の予算・出力規則は公平統制未完'),dict(観点='6 矢印の根拠',判定='実線/破線/点線と根拠表',残存='実線も現実の因果効果ではなく保存出力比較'),dict(観点='7 結果と考察',判定='図2/3の計算値と末尾議論を分離',残存='計算の一般化は記載条件に限定'),dict(観点='8 初見の理解',判定='語の説明・二経路・方法・指標を具体化した',残存='研究を知らない読者による実測テストは未実施'),dict(観点='9 成果',判定='指定探索の改善候補不存在と部材/走行変換の制約を結論にした',残存='探索範囲・中間変換という一般論そのものの優先権は主張しない'),dict(観点='10 不確実性',判定='SD、未証明46、条件付き41、未知部材を明示',残存='46最適値・41外部証明、材料実現範囲・部材実測・完成pack・実車DCは未検証')]
+page('06_FINAL_REVIEW','最終自己監査と残存事項',tab(audit)+'<h2>表示・保全検査</h2>'+tab(checks)+'<p>全1ページを実際のPPTXからPDF化し、全体と各図を拡大表示して確認する。本文18.5〜22pt、図内15.5pt以上、参考文献14ptである。実寸の印刷確認と第三者読者テストは行っていない。画面での確認を実寸印刷の実証としない。</p><p>元論文・データ・前版の読取対象はSHA256で保全した。commit・push・PR作成は行っていない。原需要の全再生成、道路の動的受入、既存T09_ROW183対向FAILは本改訂の算術整合によって解除しない。</p>')
+links=[('poster.pptx','編集可能なA1縦ポスター'),('poster.pdf','PPTXから出力したPDF'),('poster_preview.png','全体プレビュー'),('reports/01_CHANGES.html','主な修正箇所・構成・理由'),('reports/02_FIGURE_EVIDENCE.html','各図の実験・分析ファイル対応'),('reports/03_EXCLUDED_SCOPE.html','除外した記述と理由'),('reports/04_NUMBERS.html','数値・計算条件の照合'),('reports/05_REFERENCES.html','参考文献と主張の対応'),('reports/06_FINAL_REVIEW.html','最終自己監査・未検証事項'),('poster.svg','編集補助用SVG'),('evidence/VALIDATION.csv','表示・数値・原本保全検査CSV')]
+(R/'index.html').write_text('<!doctype html><html lang="ja"><meta charset="utf-8"><title>A1縦・研究範囲に基づく全面改訂</title><style>'+style+'</style><body><h1>A1縦・研究範囲に基づく全面改訂</h1><p>594×841mm、全1ページ。run05を保全し、保存研究結果・最新論文・追加材料解析からrun06を別途作成した。方法と結果を図示し、未分析の社会関係図を削除した。定時配達率は最新研究に従い主指標へ戻していない。</p><ul>'+''.join('<li><a href="'+a+'">'+html.escape(b)+'</a></li>' for a,b in links)+'</ul><p>文章・図・グラフはPPTX内の要素として編集可能である。再生成コードは元作業環境と保存データを参照する。数値表はevidence内に全精度で同梱する。</p></body></html>')
+print(json.dumps(dict(checks=len(checks),failed=sum(c['status']=='FAIL' for c in checks),missing=missing,overlaps=ov),ensure_ascii=False,indent=2))
+if any(c['status']=='FAIL' for c in checks):sys.exit(1)

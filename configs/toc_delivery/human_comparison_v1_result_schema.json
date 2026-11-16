@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "human-inclusive-AD-v1-20261116/result",
+  "type": "object",
+  "required": ["experiment_id", "run_id", "session_id", "scenario_id", "case_id", "scale", "method", "method_version", "implementation_id", "measurement_contract", "T_kind", "mode", "phase", "seed", "repetition", "participant_id", "D_km", "W_min", "T_total_sec", "T_compute_sec", "T_human_sec", "T_machine_sec", "T_other_sec", "feasibility", "status", "observed", "evidence_path", "input_hash", "physical_hash", "source_hashes", "registration_hash", "J"],
+  "properties": {
+    "mode": {"const": "human_inclusive"},
+    "measurement_contract": {"const": "human-inclusive-AD-v1-20261116"},
+    "T_kind": {"const": "input_before_to_common_adoption_total_v1"},
+    "method": {"enum": ["A", "B", "C", "D"]},
+    "phase": {"enum": ["contract_check", "human_pilot", "formal"]},
+    "observed": {"type": "boolean"},
+    "feasibility": {"type": "boolean"},
+    "D_km": {"type": ["number", "null"], "minimum": 0},
+    "W_min": {"type": ["number", "null"], "minimum": 0},
+    "T_total_sec": {"type": ["number", "null"], "minimum": 0},
+    "T_compute_sec": {"type": ["number", "null"], "minimum": 0},
+    "T_human_sec": {"type": ["number", "null"], "minimum": 0},
+    "T_machine_sec": {"type": ["number", "null"], "minimum": 0},
+    "T_other_sec": {"type": ["number", "null"], "minimum": 0},
+    "J": {"type": "null"}
+  },
+  "allOf": [
+    {"if": {"properties": {"phase": {"const": "contract_check"}}}, "then": {"properties": {"observed": {"const": false}}}},
+    {"if": {"properties": {"observed": {"const": false}}}, "then": {"properties": {"T_total_sec": {"type": "null"}, "T_human_sec": {"type": "null"}, "T_machine_sec": {"type": "null"}, "T_other_sec": {"type": "null"}, "T_compute_sec": {"type": "null"}}}},
+    {"if": {"properties": {"method": {"const": "A"}}}, "then": {"properties": {"T_compute_sec": {"type": "null"}}}}
+  ],
+  "description": "Times in seconds; D in km; W in minutes. Unobserved or failed adopted metrics are null; diagnostic timing is separate. Cross-field evidence is checked by verify_session."
+}

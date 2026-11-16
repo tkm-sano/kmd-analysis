@@ -1,0 +1,13 @@
+{
+  "phase": "contract_check",
+  "old_runs_preserved": true,
+  "old_small_outer_s": 90,
+  "new_small_outer_s": 420,
+  "BCD_native_cap_s": 90,
+  "new_scale_or_demand": false,
+  "same_N": 12,
+  "algorithm_tuning": false,
+  "reason": "No B/C/D method entry was reached before first outer deadline; library setup includes NFS metadata waits. Keep startup inside T; separately cap internal algorithm wall at90. Add registration input audit so input-stage timeouts on hash-pinned valid cases remain in the denominator.",
+  "additional_A_identity_runs": "technical rerun after adapter state/preflight change, not independent samples",
+  "native_standalone_S2_repeated_again": false
+}

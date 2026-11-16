@@ -1,0 +1,15 @@
+hold_id,hold_name,status,scope,evidence_data_ids,resolved_scope,remaining_hold,target_practical_adoption,release_criterion
+H01,Chen逆算容量の初回容量への適用,UNRESOLVED,PRIMARY_TARGET_HOLD,C01–C04;C22–C24;C29–C30,初回FCEの図中数値と0.5C/1Cの区別を確認した,保持率分母cycle・activation/formationと初回1Cの対応は未確定である,HOLD,著者原系列と試験手順から保持率分母・各レートのcycle番号を一意に対応させる
+H02,LP/S–黒鉛全電池の利用可能容量,UNRESOLVED,PRIMARY_TARGET_HOLD,F01–F08;T01–T06;P01–P09,近縁全電池の実例と公開Q-Vを取得した,同じLP/Sの黒鉛全電池対照測定がない,HOLD,同一温度/窓/レート/担持/N/P/formationでLP/S対を測定する
+H03,平均全電池電圧,PARTIALLY_RESOLVED,PRIMARY_TARGET_HOLD,P01V–P09V,近縁全電池の平均電圧を公開Q-Vから算定できた,LP/S別の平均全電池電圧は未確定である,HOLD,LP/S各放電枝で積分E/Qし、容量と同一条件を確認する
+H04,容量利用率,UNRESOLVED,PRIMARY_TARGET_HOLD,C02;C04;F08;R11–R12,FCEとformation後利用率が別指標であることを整理した,T08参照qに対応する同条件全電池q/uがない,HOLD,qの分母・サイクル・可逆容量・Li損失を揃え、損失の二重適用を排除する
+H05,正極・負極の混合密度,UNRESOLVED,PRIMARY_TARGET_HOLD,C26;B04–B05;B35,別設計の黒鉛/結着材密度と混合則を確認した,LP/S実配合の固相密度、calendering後bulk密度と空隙率はない,HOLD,対象成分真密度と乾燥配合、または質量・面積・厚さ・空隙の整合測定を取得する
+H06,高担持条件での容量維持,PARTIALLY_RESOLVED,PRIMARY_TARGET_HOLD,BO01–BO03;R01–R07;X01–X03,近縁黒鉛全電池11mg/cm2と別近縁14mg/cm2、厚半電池9mg/cm2を確認した,LP/Sの10/20mg/cm2探索点での輸送・出力・容量適格性は未確定である,HOLD,同じLP/Sで担持/厚さ/空隙/電流密度/寿命の対応を測定する
+H07,実際の電解液量,UNRESOLVED,PRIMARY_TARGET_HOLD,C27;BO05–BO06;R08–R09;L08,近縁セルの50/100/500uL、Li-metal pouch6uL/mgを取得した,対象LP/Sの実投入量・飽和度・余剰液はない,HOLD,対象電極/膜空隙と実注液・残留液を対応させる
+H08,外装・タブ・構造部材,PARTIALLY_RESOLVED,PRIMARY_TARGET_HOLD,B08–B41,寸法・個数依存の公開積算則とBMS/冷却のモデル値を取得した,対象LP/Sセル形式・材質・寸法・modules・電流・熱負荷がない,HOLD,一致するarchitectureを宣言した条件付きBOMまたは対象実測BOMを作る
+H09,T09完成パック質量,UNRESOLVED,PRIMARY_TARGET_HOLD,H05–H08;B38;B41,未知部材を制約するための変数と式を列挙した,K+UのU絶対量と差が未確定である,HOLD,会計範囲・全BOM・単位・部材和を閉じる。未知が残れば絶対値をNULL維持する
+H10,実車の走行時DC電力量,RESEARCH_LIMITATION,PRIMARY_TARGET_HOLD,既存402040行;H02–H09,凍結DCの条件付き観測軌跡応答は既存検証済みである,回生/補機/勾配/実積載等を含む実車実証は本研究の検証範囲外である,HOLD,Level3で実車端子DC・質量・速度・環境・SOCを同期測定する。現核の意味を拡張しない
+H11,出力・寿命・安全性,PARTIALLY_RESOLVED,PRIMARY_TARGET_HOLD,C07–C12;F03;BO07;R06–R07;L07–L09,半電池/近縁全電池の寿命、formation、ガス問題の資料を取得した,LP/S黒鉛完成セルの出力・長期寿命・熱/濫用安全は未実証である,HOLD,対象セルのpulse/DCIR/温度・寿命・ガス・安全試験を実施する。近縁値を合格証としない
+S01,Chen補足資料未取得,RESOLVED,SOURCE_ACCESS_SUBHOLD,C_SI,19頁PDF全体を取得・読取り・保存した,分母cycle定義は別の未解決事項である,not a target performance adoption,source hashとpublisherリンクを保存済み
+S02,S-200初回FCE未確認,RESOLVED,SOURCE_ACCESS_SUBHOLD,C04,Fig5b印字82.0%・0.5C・Li対極を確認した,初回放電容量の確定数値・黒鉛全電池容量は別問題である,not a target performance adoption,PDFp8と図を保存済み
+S03,黒鉛360の参照出典不明,RESOLVED,SOURCE_TRACEABILITY_SUBHOLD,B01–B03,Fig3.14 PDFp46 NMC811/graphiteの360・N/P1.10・98%activeを視認した,LP/S対象負極としての実用採用は別問題である,not a target performance adoption,実測値ではなく公開設計既定値と分類済み

@@ -1,0 +1,105 @@
+{
+  "inputs": [
+    {
+      "path": "/home/takuma/kmd-analysis-preservation-20261014-173544-a64e484c/relocated/01_research_design/scenario_evaluation/baseline_capacity_fleet_assignment_20260930/OD_DOMAIN_METADATA.json",
+      "sha256": "b3ea6de5dd4dd8e1de1b137e944269b564f580dde28b1e437dd4b3716131a81d",
+      "bytes": 1488
+    },
+    {
+      "path": "/home/takuma/kmd-analysis-preservation-20261014-173544-a64e484c/relocated/01_research_design/scenario_evaluation/sumo_od_final_validation_20261005/PARTITION_MANIFEST.csv",
+      "sha256": "24dea3a8f59d25e9734938e3dace87937637914ccfae510504a5379d182fead5",
+      "bytes": 1905505
+    },
+    {
+      "path": "/home/takuma/kmd-analysis-preservation-20261014-173544-a64e484c/relocated/01_research_design/scenario_evaluation/classical_vrptw_baseline_20261005/prepare.py",
+      "sha256": "9ca80353fa992607711b59bf898064a953fff57292f2f69b4e41edaf617fba65",
+      "bytes": 9635
+    }
+  ],
+  "readback": {
+    "od_domain": {
+      "node_counts": {
+        "D": 1,
+        "C": 39956,
+        "F": 47
+      },
+      "instance_groups": 182,
+      "fixed_assignment_sha256": "db45231403278ebfb21bcbf5776ce4eb317a46ddb162d2e719ba1766357719e3",
+      "customer_customer_cost_input_count": 9988862,
+      "customer_customer_physically_allowed_same_vehicle_count": 3928116,
+      "cross_vehicle_cost_rows_not_permitted_transitions": 6060746,
+      "input_contract_source": "05_src/traffic_simulation/r24_classical_reference/r24_cvrp_model.py: validate_instance all node pairs; build_highs_model constructs all x[i,j,k]",
+      "legacy_solver_not_ready_for_this_domain": "legacy solver assumes Q14 and free y assignment; cannot execute Q216 fixed assignments unmodified. This is not EVRP_IMPLEMENTATION_READY.",
+      "required_road_costs_are_not_C_g": "Road-cost candidate envelope includes all47; physical charging compatibility and action eligibility remain separate.",
+      "primary_key": [
+        "design_hash",
+        "origin_type",
+        "origin_id",
+        "destination_type",
+        "destination_id"
+      ],
+      "total_unique_input_pairs": 13826894,
+      "routing_authority": "sumo_facility_routing_baseline_laneaware_20260930; native tripinfo distance and native endpoint-corrected static cost",
+      "origin_destination_rule": "facility DEPARTURE origin / ARRIVAL destination; customer single saved lane/position both; frozen DEP_006",
+      "preflight_requirement": "regenerate domain-compatible small pairs and validate before any production OD; no preflight or production executed here"
+    },
+    "partition_manifest": {
+      "rows": 1665,
+      "columns": [
+        "partition_id",
+        "relation",
+        "source_path",
+        "source_rows",
+        "source_sha256",
+        "output_path",
+        "output_rows",
+        "output_sha256",
+        "checkpoint_status",
+        "provenance_root",
+        "correction_provenance",
+        "certification_artifact",
+        "certification_result",
+        "result",
+        "errors",
+        "historical_certification_artifact",
+        "historical_certification_result",
+        "certification_sha256"
+      ],
+      "first_row": {
+        "partition_id": "C_C_PROPOSED-OTA-B2C-2026-01-01-001001_0000",
+        "relation": "C_C",
+        "source_path": "/home/takuma/kmd-analysis/01_research_design/scenario_evaluation/sumo_od_baseline_20260930/OD_REQUIRED_PAIR_INDEX/relation=C_C/group=PROPOSED-OTA-B2C-2026-01-01-001001/C_C_PROPOSED-OTA-B2C-2026-01-01-001001_0000.parquet",
+        "source_rows": "10000",
+        "source_sha256": "8afa52681d0f00ff0f1c0d2a84acc275835323a6402181ff0879ac124e02596c",
+        "output_path": "/home/takuma/kmd-analysis/01_research_design/scenario_evaluation/sumo_od_selective_routing_resume_v2_20261002/EXECUTION/OD_BASELINE/relation=C_C/C_C_PROPOSED-OTA-B2C-2026-01-01-001001_0000.parquet",
+        "output_rows": "10000",
+        "output_sha256": "42b992ff992e6d6ab631d13a497d5d93859fdd683b32e31fc6281d851c80a882",
+        "checkpoint_status": "COMPLETE",
+        "provenance_root": "/home/takuma/kmd-analysis/01_research_design/scenario_evaluation/sumo_od_selective_routing_resume_v2_20261002/EXECUTION",
+        "correction_provenance": "",
+        "certification_artifact": "/home/takuma/kmd-analysis/01_research_design/scenario_evaluation/sumo_od_final_validation_20261005/partition_certificates/C_C_PROPOSED-OTA-B2C-2026-01-01-001001_0000.json",
+        "certification_result": "PASS",
+        "result": "PASS",
+        "errors": "",
+        "historical_certification_artifact": "/home/takuma/kmd-analysis/01_research_design/scenario_evaluation/sumo_od_selective_routing_resume_v2_20261002/EXECUTION/execution/C_C_PROPOSED-OTA-B2C-2026-01-01-001001_0000/production_certification.json",
+        "historical_certification_result": "PASS",
+        "certification_sha256": "79e38c35570a051f7ad85195248201f22d7422a0237c18237bd9cd3909d0c7c3"
+      }
+    },
+    "single_vehicle_input_binding_evidence": [
+      "pop=R/'03_data/processed/traffic_simulation/demand/household_parcel_v1/pipelines_v1'; master=read(pop/'building_delivery_stops_scoped.csv');raw=read(pop/'daily_requests.csv');dem=read(B/'vehicle_capacity_assignment_20260930/CUSTOMER_DEMAND_39956.csv');ass=read(A/'CUSTOMER_VEHICLE_ASSIGNMENT_39956.csv')",
+      "requests=[]; vehicles=collections.defaultdict(list)",
+      " assert a['group_id']==d['group_id'];vehicles[a['vehicle_id']].append(cid)",
+      "assert len(requests)==len(set(requests))==73200;assert sum(int(x['q_i']) for x in dem)==81859 and len(vehicles)==465",
+      "put('CLASSICAL_POPULATION_AUDIT.json',dict(result='PASS',customers=39956,requests=73200,total_demand=81859,groups=len({x['group_id'] for x in dem}),vehicles=465,CUSTOMER_MISSING=0,REQUEST_MISSING=0,ASSIGNMENT_MISSING=0,UNKNOWN_SCOPE_ROWS=0,fixed_assignment='VEHICLE_AND_GROUP_SPECIFIC',capacity=216))",
+      "inputs=[pop/'building_delivery_stops_scoped.csv',pop/'daily_requests.csv',B/'vehicle_capacity_assignment_20260930/CUSTOMER_DEMAND_39956.csv',A/'CUSTOMER_VEHICLE_ASSIGNMENT_39956.csv',A/'CAPACITY_FREEZE_MANIFEST.json',B/'sumo_facility_routing_baseline_20260930/DEPOT_ROUTING_DEFINITION.json',T/'CLASSICAL_TEMPORAL_INPUT.parquet',T/'TEMPORAL_ASSUMPTION_FREEZE.json',B/'sumo_od_baseline_20260930/FROZEN_ENDPOINTS.parquet']",
+      "for vid,cs in sorted(vehicles.items()):",
+      " manifest.append(dict(instance_id=vid,group_id=di[cs[0]]['group_id'],vehicle_id=vid,customer_count=len(cs),request_count=sum(int(di[c]['request_count']) for c in cs),total_demand=load,capacity=216,capacity_slack=216-load,TW_class_counts=json.dumps(dict(collections.Counter(ti[c]['temporal_class'] for c in cs)),sort_keys=True),required_OD=len(cs)*(len(cs)-1)+2*len(cs),depot='DEP_006',assignment_sha256=sha(A/'CUSTOMER_VEHICLE_ASSIGNMENT_39956.csv'),temporal_sha256=sha(T/'CLASSICAL_TEMPORAL_INPUT.parquet')))",
+      "sizes=[len(v) for v in vehicles.values()];put('INSTANCE_SIZE_DISTRIBUTION.json',dict(zip(['min','median','mean','p90','p95','p99','max'],[min(sizes),statistics.median(sizes),statistics.mean(sizes),*np.percentile(sizes,[90,95,99]).tolist(),max(sizes)])))",
+      " if p['relation'] not in ['D_C','C_C','C_D']:continue",
+      "  if rel=='C_C':",
+      "put('DELIVERY_OD_BINDING_AUDIT.json',dict(status='PASS',required_solver_OD=sum(x['required_OD'] for x in manifest),bound_rows=bound,MISSING_SOLVER_OD=0,AMBIGUOUS_SOLVER_OD=0,duplicate=0,endpoint_mismatch=0,all_adopted_output_hashes_checked=True,rows_source='frozen partition manifest; within fixed vehicle plus depot legs',no_sumo_execution=True))"
+    ]
+  },
+  "conclusion": "Old C-C domain is group restricted; per-vehicle NPZ binding additionally fixed-roster restricted. New arbitrary reassignment complete OD not proven. No OD computed."
+}

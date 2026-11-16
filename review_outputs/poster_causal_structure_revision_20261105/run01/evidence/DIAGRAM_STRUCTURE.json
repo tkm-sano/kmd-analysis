@@ -1,0 +1,298 @@
+{
+  "nodes": [
+    {
+      "id": "P1_existence",
+      "x": 15,
+      "y": 183,
+      "w": 140,
+      "h": 59,
+      "title": "B 改善候補の存在",
+      "body": "指定した範囲 S に\nJCより短い候補が\n含まれているか",
+      "status": "B"
+    },
+    {
+      "id": "P1_acquire",
+      "x": 190,
+      "y": 183,
+      "w": 140,
+      "h": 59,
+      "title": "A 候補の取得",
+      "body": "",
+      "status": "A"
+    },
+    {
+      "id": "P1_adopt",
+      "x": 365,
+      "y": 183,
+      "w": 140,
+      "h": 59,
+      "title": "A 検証／C 運用採用",
+      "body": "候補の移動時間 JQ を検証\n制約・JCとの差を確認\n締切Hの充足は未確認",
+      "status": "B"
+    },
+    {
+      "id": "P1_integrate",
+      "x": 540,
+      "y": 183,
+      "w": 140,
+      "h": 59,
+      "title": "C 全体計画への統合",
+      "body": "運用中の計画へ反映\n動的更新・部分問題選択\nは今回未検証",
+      "status": "C"
+    },
+    {
+      "id": "P1_real",
+      "x": 715,
+      "y": 183,
+      "w": 111,
+      "h": 59,
+      "title": "C 実際の配送",
+      "body": "実道路での\n移動時間・運行\nを評価する",
+      "status": "C"
+    },
+    {
+      "id": "P2_qmat",
+      "x": 15,
+      "y": 392,
+      "w": 140,
+      "h": 59,
+      "title": "C 量子材料評価",
+      "body": "電子状態・エネルギー\n出力：物性評価の情報\n本研究で未実行 [3,4]",
+      "status": "C"
+    },
+    {
+      "id": "P2_design",
+      "x": 190,
+      "y": 392,
+      "w": 140,
+      "h": 59,
+      "title": "C 情報の設計利用",
+      "body": "物性情報を設計者が採用\n実用性能との整合を判断\n→ 設計条件 q,u,V 等",
+      "status": "C"
+    },
+    {
+      "id": "P2_mass",
+      "x": 365,
+      "y": 392,
+      "w": 140,
+      "h": 59,
+      "title": "B 電池の質量収支",
+      "body": "正負極の塗膜・集電体\nセパレータ・電解液＋U\n→ 電池質量 M",
+      "status": "B"
+    },
+    {
+      "id": "P2_dc",
+      "x": 540,
+      "y": 392,
+      "w": 140,
+      "h": 59,
+      "title": "A/B 車両・走行計算",
+      "body": "走行総質量m=共通質量+M\n転がり・加速の仕事が変化\n出力：DC電力量 E_DC",
+      "status": "A"
+    },
+    {
+      "id": "P2_real",
+      "x": 715,
+      "y": 392,
+      "w": 111,
+      "h": 59,
+      "title": "C 実車の電力量",
+      "body": "実パックの質量と\n実際の運行条件で\n効果を評価する",
+      "status": "C"
+    }
+  ],
+  "modifiers": [
+    {
+      "id": "P1_S"
+    },
+    {
+      "id": "P1_resources"
+    },
+    {
+      "id": "P1_H"
+    },
+    {
+      "id": "P1_dynamic"
+    },
+    {
+      "id": "P1_road"
+    },
+    {
+      "id": "P2_quantum_resource"
+    },
+    {
+      "id": "P2_driving"
+    },
+    {
+      "id": "P2_real_conditions"
+    },
+    {
+      "id": "symbolic_assumptions"
+    },
+    {
+      "id": "model_input"
+    },
+    {
+      "id": "component_design_and_extra_mass"
+    }
+  ],
+  "internal_nodes": [
+    {
+      "id": "classical_tuning",
+      "parent": "P1_acquire"
+    },
+    {
+      "id": "ideal_model",
+      "parent": "P1_acquire"
+    }
+  ],
+  "edges": [
+    {
+      "id": "P1_S_influence",
+      "source": "P1_S",
+      "target": "P1_existence",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "P1_resources_influence",
+      "source": "P1_resources",
+      "target": "P1_acquire",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "P1_H_influence",
+      "source": "P1_H",
+      "target": "P1_adopt",
+      "status": "C",
+      "label": ""
+    },
+    {
+      "id": "P1_dynamic_influence",
+      "source": "P1_dynamic",
+      "target": "P1_integrate",
+      "status": "C",
+      "label": ""
+    },
+    {
+      "id": "P1_road_influence",
+      "source": "P1_road",
+      "target": "P1_real",
+      "status": "C",
+      "label": ""
+    },
+    {
+      "id": "P1_angles",
+      "source": "classical_tuning",
+      "target": "ideal_model",
+      "status": "A",
+      "label": ""
+    },
+    {
+      "id": "P1_evaluation",
+      "source": "ideal_model",
+      "target": "classical_tuning",
+      "status": "A",
+      "label": ""
+    },
+    {
+      "id": "P1_main_0",
+      "source": "P1_existence",
+      "target": "P1_acquire",
+      "status": "B",
+      "label": "探索"
+    },
+    {
+      "id": "P1_main_1",
+      "source": "P1_acquire",
+      "target": "P1_adopt",
+      "status": "A",
+      "label": "検証"
+    },
+    {
+      "id": "P1_main_2",
+      "source": "P1_adopt",
+      "target": "P1_integrate",
+      "status": "C",
+      "label": "統合"
+    },
+    {
+      "id": "P1_main_3",
+      "source": "P1_integrate",
+      "target": "P1_real",
+      "status": "C",
+      "label": "実行"
+    },
+    {
+      "id": "P2_quantum_resource_influence",
+      "source": "P2_quantum_resource",
+      "target": "P2_qmat",
+      "status": "C",
+      "label": ""
+    },
+    {
+      "id": "P2_symbolic_entry",
+      "source": "symbolic_assumptions",
+      "target": "model_input",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "P2_driving_influence",
+      "source": "P2_driving",
+      "target": "P2_dc",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "P2_real_conditions_influence",
+      "source": "P2_real_conditions",
+      "target": "P2_real",
+      "status": "C",
+      "label": ""
+    },
+    {
+      "id": "P2_use",
+      "source": "P2_qmat",
+      "target": "P2_design",
+      "status": "C",
+      "label": "利用"
+    },
+    {
+      "id": "P2_adoption_unverified",
+      "source": "P2_design",
+      "target": "model_input",
+      "status": "C",
+      "label": ""
+    },
+    {
+      "id": "P2_mass_from_input",
+      "source": "model_input",
+      "target": "P2_mass",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "P2_mass_dc",
+      "source": "P2_mass",
+      "target": "P2_dc",
+      "status": "B",
+      "label": "換算"
+    },
+    {
+      "id": "P2_real_link",
+      "source": "P2_dc",
+      "target": "P2_real",
+      "status": "C",
+      "label": "適用"
+    },
+    {
+      "id": "P2_component_modifier",
+      "source": "component_design_and_extra_mass",
+      "target": "P2_mass",
+      "status": "B",
+      "label": ""
+    }
+  ]
+}

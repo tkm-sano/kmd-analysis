@@ -1,0 +1,23 @@
+[
+  {
+    "commit": "84bb50141240da5f53055c3008bdaa4a5b6e5977",
+    "path": "docs/QUANTITATIVE_GUIDE.md",
+    "excerpts": [
+      {
+        "line": 234,
+        "text": "`conditions()`はデポDEP_006、容量216 parcel-equivalent（kgではない）、静的departure=0 s、return deadline=32400 s、TW幅7200 s、顧客service=102 s等の保存条件を返します。実業務の条件を実測したことは意味しません。",
+        "extraction_note": "日本語の102秒だけを抽出する初回フィルタでは空だったため、同commitのservice=102 sという原文を追加確認した。"
+      }
+    ]
+  },
+  {
+    "commit": "1376dc50265557abeb37abe396774177fc8f39b2",
+    "path": "docs/research/RESEARCH_BASELINE_20261009.md",
+    "excerpts": [
+      {
+        "line": 51,
+        "text": "**VERIFIED：** matched設計は単一車両、デポDEP_006、容量216 parcel-equivalent、顧客サービス102秒、出発0秒、帰還期限32,400秒、時間窓幅7,200秒を基礎とする。parcel-equivalentをkgと解釈しない。固定割当を継承し、各部分問題の全顧客を一度ずつ訪問して帰着する。目的関数はデポとの両端legを含む道路旅行時間（秒）の最小化であり、待機・サービスは可行性と運行所要時間に関係するが、電力量を目的関数へ追加していない。[G](../../docs/QUANTITATIVE_GUIDE.md)[S](../../01_research_design/methodology/MATCHED_CLASSICAL_ROUTE_SCALE_SUMMARY.csv)"
+      }
+    ]
+  }
+]

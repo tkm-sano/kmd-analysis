@@ -1,0 +1,64 @@
+{
+  "version": "1.8.0",
+  "checks": [
+    {
+      "name": "threads",
+      "requested": 1,
+      "set_status": "HighsStatus.kOk",
+      "get_status": "HighsStatus.kOk",
+      "actual": 1
+    },
+    {
+      "name": "mip_max_nodes",
+      "requested": 160,
+      "set_status": "HighsStatus.kOk",
+      "get_status": "HighsStatus.kOk",
+      "actual": 160
+    },
+    {
+      "name": "mip_max_stall_nodes",
+      "requested": 160,
+      "set_status": "HighsStatus.kOk",
+      "get_status": "HighsStatus.kOk",
+      "actual": 160
+    },
+    {
+      "name": "mip_rel_gap",
+      "requested": 0.0,
+      "set_status": "HighsStatus.kOk",
+      "get_status": "HighsStatus.kOk",
+      "actual": 0.0
+    },
+    {
+      "name": "mip_abs_gap",
+      "requested": 0.0,
+      "set_status": "HighsStatus.kOk",
+      "get_status": "HighsStatus.kOk",
+      "actual": 0.0
+    },
+    {
+      "name": "simplex_iteration_limit",
+      "requested": 1000,
+      "set_status": "HighsStatus.kOk",
+      "get_status": "HighsStatus.kOk",
+      "actual": 1000
+    },
+    {
+      "name": "presolve",
+      "requested": "off",
+      "set_status": "HighsStatus.kOk",
+      "get_status": "HighsStatus.kOk",
+      "actual": "off"
+    }
+  ],
+  "time_limit": {
+    "status": "HighsStatus.kOk",
+    "value": "inf",
+    "scope": "library default; no trial time limit explicitly set"
+  },
+  "random_seed": {
+    "status": "HighsStatus.kOk",
+    "value": "0",
+    "scope": "library default; no trial time limit explicitly set"
+  }
+}

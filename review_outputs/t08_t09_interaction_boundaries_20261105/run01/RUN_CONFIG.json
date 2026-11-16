@@ -1,0 +1,65 @@
+{
+  "task": "T08 T09 additional interaction and boundary evaluation",
+  "date": "2026-11-05",
+  "root": "/home/takuma/kmd-analysis",
+  "output": "/home/takuma/kmd-analysis/review_outputs/t08_t09_interaction_boundaries_20261105/run01",
+  "archive_root": "/home/takuma/kmd-analysis-pre-clean-20261102-112222/untracked",
+  "base_reference": {
+    "q_LP": 171.875,
+    "q_S": 195.959596,
+    "V": 3.5,
+    "u": 1,
+    "fp": 0.75,
+    "fn": 0.98,
+    "qn": 360,
+    "NP": 1.1,
+    "E_Wh": 20000,
+    "usable_Wh": 18000
+  },
+  "trajectories": 460,
+  "Crr_cases": [
+    "CRR_LOWER_BOUND",
+    "CRR_UPPER_BOUND"
+  ],
+  "execution": "analyze.py then audit_and_report.py; T08_T09_OUTPUT overrides output",
+  "numerical_tolerance": {
+    "original_mass_kg": 1e-08,
+    "direct_DC_Wh": 1e-07,
+    "boundary_kg": 1e-09
+  },
+  "statistical_inference": "none; dependent deterministic finite trajectories",
+  "range_interpretation": "mathematical exploration; practical adoption HOLD",
+  "run_result": {
+    "DC_rows": 402040,
+    "T08_cases": 437,
+    "unique_masses": 411,
+    "mass_interval": [
+      1122.5387277718105,
+      1172.2494063784968
+    ],
+    "deep_checked_trajectories": [
+      "9df0e7cb47be7c287a70eac8c92382a02336d1cd9959cebb22b1280d516cc6bc",
+      "d46cc9c29b0ac7dcb6e880f492c55aa851192f1172023ded1c6d1c06a7e3dc01",
+      "f01d150334d8acd3a306ba591048639b3aaf232fd10a3fafe704c30bd484d68a"
+    ],
+    "mass_cases": 527,
+    "old_rows": 239,
+    "old_unique_inputs": 180,
+    "old_unique_T08": 98,
+    "new_inputs": 491,
+    "reused_inputs": 36,
+    "checks": 12374,
+    "failures": 0,
+    "source_count": 589,
+    "python": "3.11.15 (main, Jun 11 2026, 15:20:16) [GCC 14.3.0]",
+    "numpy": "2.4.6",
+    "pandas": "2.2.3",
+    "matplotlib": "3.11.0",
+    "M0": 96.14565479871604,
+    "MS": 90.69735738363909,
+    "b": 5.448297415076951,
+    "scientific_verdict": "CONDITIONAL GO",
+    "practical_pack": "HOLD",
+    "T09_complete_pack": "HOLD"
+  }
+}

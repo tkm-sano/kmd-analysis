@@ -1,0 +1,35 @@
+{
+  "network_path": "/home/takuma/kmd-analysis/reproducibility/outputs/traffic_simulation/attribute_resolution_v17/phase13_20260903_three_tier_completion/run_3_geometry_reacceptance/three_tier.net.xml",
+  "network_sha256": "460554c7716fe5e3e1410bbee790e69745a2c423146bac88e51e3a2b95f051b2",
+  "frozen_hash_matches": true,
+  "nodes": 416176,
+  "arcs": 579011,
+  "lateral_transition_attempts": 14876,
+  "depot": {
+    "source": "reproducibility/outputs/traffic_simulation/demand/evrp_r09_depot/20260909_r09_depot_fixture_n10_v18_geometry_reaccepted/depot_definition.csv",
+    "source_sha256": "fd38e10752236652b825e2e25665b4189bcf4cb57fd92918a315fd3b41018822",
+    "depot_id": "DEP_006",
+    "longitude": "139.745306",
+    "latitude": "35.586971",
+    "edge_id": "617631294",
+    "lane_id": "617631294_0",
+    "lane_basis": "ONLY_DELIVERY_ALLOWED_LANE_ON_FROZEN_DEPOT_EDGE",
+    "departure_position": 12.507432581420328,
+    "arrival_position": 12.507432581420328,
+    "position_basis": "EXISTING_EDGE_OFFSET_USED_FOR_BOTH_DIRECTIONS"
+  },
+  "depot_lane_length_m": 38.346827,
+  "depot_offset_in_range": true,
+  "forward_lanes": 414635,
+  "reverse_lanes": 413281,
+  "projection": "+proj=utm +zone=54 +datum=WGS84 +units=m +no_defs",
+  "netOffset": [
+    -373734.98,
+    -3927703.51
+  ],
+  "semantics": "delivery lane graph including explicit via/internal connections and permitted adjacent lane transitions; zero-time lane changes are topology approximation, not dynamic feasibility",
+  "all_pairs_od_generated": false,
+  "simulator_run": false,
+  "real_entrance_or_stopping_verified": false,
+  "new_study_network_adoption": "HOLD; historical topology consistency is not acceptance of all road geometry/access assumptions"
+}

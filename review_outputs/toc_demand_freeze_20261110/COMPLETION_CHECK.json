@@ -1,0 +1,64 @@
+{
+  "status": "GO",
+  "checks": {
+    "csv_files_exist": true,
+    "counts_allocation_pass_and_source_attributes": true,
+    "strict_nested_sets": true,
+    "one_parcel_per_stop": true,
+    "input_output_hashes_recorded": true,
+    "regeneration_matches": true,
+    "all_A_to_D_pinned_loaders": true,
+    "tamper_detection_tests_pass": true,
+    "source_audit_old_results_unchanged": true
+  },
+  "scenarios": {
+    "S1": {
+      "stops": 1000,
+      "parcels": 1000,
+      "vehicles": 10,
+      "berths": 2,
+      "strata": 182,
+      "represented_regions": 180,
+      "zero_allocation_regions": [
+        "009002",
+        "009005"
+      ],
+      "csv_sha256": "e3c2040766636b2cbd6de670f93a5356ba893dfbb8417bf1c136a5f785172398",
+      "stop_set_sha256": "b896a924af1707aa5192d3e047cf4302036c64639b60e4ffe1118f184151cb19",
+      "A_to_D_identical": true
+    },
+    "S2": {
+      "stops": 2000,
+      "parcels": 2000,
+      "vehicles": 20,
+      "berths": 4,
+      "strata": 182,
+      "represented_regions": 180,
+      "zero_allocation_regions": [
+        "009002",
+        "009005"
+      ],
+      "csv_sha256": "7c8fcecabf34545d3021d53cf774e99df9d33967fcffdf324cd07f53e95a3cb2",
+      "stop_set_sha256": "4d214dc90ea9cc33df81dd6ccce110143fa3f10331d411341d7057d8c7323166",
+      "A_to_D_identical": true
+    },
+    "S3": {
+      "stops": 4000,
+      "parcels": 4000,
+      "vehicles": 40,
+      "berths": 8,
+      "strata": 182,
+      "represented_regions": 180,
+      "zero_allocation_regions": [
+        "009002",
+        "009005"
+      ],
+      "csv_sha256": "b8b5b041e724c8337d697a538e9340e45c9cac8e10a55bb088321011913d253d",
+      "stop_set_sha256": "37d3782221964ee914a28a5ca3ae0ee887d4e2ded709e09336185f6e70921111",
+      "A_to_D_identical": true
+    }
+  },
+  "all_182_regional_quotas_monotone": true,
+  "vrp_feasibility": "NOT_ASSESSED",
+  "road_od_adoption": "HOLD"
+}

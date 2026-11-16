@@ -1,0 +1,190 @@
+{
+  "synthetic_households": 384353,
+  "household_size_counts": {
+    "1人": 206561,
+    "2人": 84156,
+    "3～4人": 84044,
+    "5人以上": 9592
+  },
+  "cited_census_row_category_groups": 724,
+  "cited_census_rows": 182,
+  "census_cited_category_count_mismatches": [],
+  "receipt_weekly_frequency_cells": {
+    "1人": {
+      "cell": "E7",
+      "value": "0.65148273000000001"
+    },
+    "2人": {
+      "cell": "E15",
+      "value": "0.93035232000000001"
+    },
+    "3～4人": {
+      "cell": "E22",
+      "value": "1.1881349400000001"
+    },
+    "5人以上": {
+      "cell": "E29",
+      "value": "1.4529867299999999"
+    }
+  },
+  "receipt_note_cells": {
+    "A41": "注：居住地が東京都市圏内かつ過去１年間に宅配の受取をした世帯に属する個人を対象に調査しています。",
+    "A42": "　：地域別・性別・年齢階層別に構成比を考慮して抽出した10,000人を対象に調査しています。",
+    "A43": "　：個人に対して世帯の宅配受取頻度（回数）、再配達頻度（割合）を調査した結果を集計しています。",
+    "A44": "　：小計・総計はサンプル数による重み付け平均をしているため、小計・総計と層別集計値の単純平均は一致しません。"
+  },
+  "reference_weighted_by_synthetic_households": 0.8498914166013274,
+  "raw_receipt_total_E39": "1.0011625",
+  "housing_source_cells": {
+    "E4989": "397700",
+    "E4990": "95600",
+    "E4993": "4920",
+    "E4996": "295320",
+    "E5001": "1870"
+  },
+  "housing_source_unit": "住宅数, not observed households",
+  "synthetic_housing_type_counts": {
+    "detached": 92040,
+    "apartment": 285782,
+    "row_house": 4753,
+    "other": 1778
+  },
+  "upstream_unique_stops": 39956,
+  "original_generator_recovered": false,
+  "common_conditions_read_only": {
+    "schema_version": "1.0",
+    "conditions_version": "AD-common-20261111-v1.1",
+    "adopted_on": "2026-11-11",
+    "authority": "user_instruction_20261111_preparation_zero_revision",
+    "value_kind": "research_assumption",
+    "scope": {
+      "region": "東京都大田区",
+      "depot_name": "京浜トラックターミナル",
+      "delivery": "ToC",
+      "depots": 1,
+      "homogeneous_vehicles": true,
+      "customer_time_windows": false,
+      "fixed_customer_vehicle_assignment": false,
+      "unused_vehicles_allowed": true,
+      "ev_conditions": false
+    },
+    "units": {
+      "distance": "m",
+      "travel_time": "s",
+      "clock": "s_since_midnight_Asia/Tokyo",
+      "demand": "delivery_unit",
+      "D": "km",
+      "W": "min",
+      "T": "s"
+    },
+    "operations": {
+      "demand_per_stop": 1,
+      "capacity_per_trip": 60,
+      "max_trips_per_vehicle": 2,
+      "service_s": 120,
+      "loading_s": 1800,
+      "preparation_s": 0,
+      "opening_s": 28800,
+      "closing_s": 72000,
+      "first_ready_span_s": 3600
+    },
+    "first_ready_rule": "opening_s + (3600 * (2*v+1)) // (2*V)",
+    "scenarios": {
+      "S1": {
+        "stops": 1000,
+        "vehicles": 10,
+        "berths": 2
+      },
+      "S2": {
+        "stops": 2000,
+        "vehicles": 20,
+        "berths": 4
+      },
+      "S3": {
+        "stops": 4000,
+        "vehicles": 40,
+        "berths": 8
+      }
+    },
+    "timing_policy": {
+      "travel_rounding": "ceil_each_arc_to_seconds",
+      "departure": "loading_end",
+      "service_start": "arrival",
+      "arbitrary_route_waiting": false,
+      "berth_interval": "half_open",
+      "preparation_occupies_berth": false,
+      "loading_preemptive": false,
+      "T_start": "before_common_input_load",
+      "T_end": "after_final_independent_validation",
+      "AOA_time": "quantum_circuit_simulator_wall_time"
+    },
+    "road_policy": {
+      "source": "OpenStreetMap",
+      "router": "OSRM",
+      "directed": true,
+      "time_dependent_congestion": false,
+      "distance_definition": "distance_of_fastest_route",
+      "distance_and_duration": "same_table_response",
+      "fallback_speed_allowed": false,
+      "local_only": true,
+      "snap_review_required": true,
+      "snap_alert_m": 100,
+      "block_size": 100
+    },
+    "comparison": {
+      "A": "sourced_actual_or_reference_levels",
+      "B": "VeRyPy_Clarke_Wright",
+      "C": "OR_Tools",
+      "D": "Huang_CG_AOA",
+      "multiobjective": "bidirectional_epsilon_constraint",
+      "epsilon_W_min": null,
+      "epsilon_D_km": null
+    },
+    "provenance": {
+      "operational_values": {
+        "kind": "research_assumption",
+        "source": "user_instruction_20261111_preparation_zero_revision",
+        "measured": false
+      },
+      "scenario_sizes": {
+        "kind": "research_assumption",
+        "source": "frozen_demand_v1"
+      },
+      "road_definition": {
+        "kind": "documentation",
+        "source": "https://project-osrm.org/docs/v26.5.0/http"
+      },
+      "road_license": {
+        "kind": "documentation",
+        "source": "https://www.openstreetmap.org/copyright"
+      },
+      "snap_alert_m": {
+        "kind": "audit_policy",
+        "source": "common_v1_implementation; alert only, never auto-approval"
+      }
+    },
+    "unresolved": [
+      "verified_vehicle_entrance",
+      "reviewed_OSRM_snaps",
+      "OSRM_graph_and_full_OD",
+      "A_sourced_comparable_reference",
+      "B_C_D_full_adapters",
+      "shared_resource_budget_and_seeds",
+      "epsilon_levels_after_feasible_reference"
+    ],
+    "legal_compliance_claim": false,
+    "revision": {
+      "supersedes": "AD-common-20261111-v1.0",
+      "changed_operations": [
+        "preparation_s"
+      ],
+      "scope": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "reason": "帰着後準備時間を0秒へ変更。積込1800秒/便・顧客先作業120秒/地点は研究上の固定仮定として維持。変動モデルは導入しない。"
+    }
+  }
+}

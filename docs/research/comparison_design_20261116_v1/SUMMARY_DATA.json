@@ -1,0 +1,545 @@
+{
+  "phase_costs": [
+    {
+      "stage": "selection_lean",
+      "attempts": 15,
+      "adopted": 9,
+      "wall_s": 796.96600079583,
+      "coordinator_setup_s": 0.30464074201881886,
+      "measured_partial_export_s": 2.7384682048577815
+    },
+    {
+      "stage": "selection_retained",
+      "attempts": 15,
+      "adopted": 15,
+      "wall_s": 1762.4103881120682,
+      "coordinator_setup_s": 0.2968559470027685,
+      "measured_partial_export_s": 2.5071515617892146
+    },
+    {
+      "stage": "variance",
+      "attempts": 45,
+      "adopted": 45,
+      "wall_s": 5410.861826327164,
+      "coordinator_setup_s": 1.919013448059559e-05,
+      "measured_partial_export_s": 8.563112269155681
+    },
+    {
+      "stage": "confirmation",
+      "attempts": 15,
+      "adopted": 14,
+      "wall_s": 1833.2565253465436,
+      "coordinator_setup_s": 1.4930032193660736e-05,
+      "measured_partial_export_s": 3.256332887103781
+    }
+  ],
+  "memory_by_scale": [
+    {
+      "scale": "S1",
+      "sampled_worker_tree_peak_GiB": 1.2803421020507812,
+      "native_tree_HWM_sum_GiB": 1.4082069396972656,
+      "parent_HWM_GiB": 0.3333549499511719,
+      "conservative_memory_proxy_GiB": 1.7415618896484375
+    },
+    {
+      "scale": "S2",
+      "sampled_worker_tree_peak_GiB": 3.4581947326660156,
+      "native_tree_HWM_sum_GiB": 3.558940887451172,
+      "parent_HWM_GiB": 0.3333549499511719,
+      "conservative_memory_proxy_GiB": 3.8922958374023438
+    },
+    {
+      "scale": "S3",
+      "sampled_worker_tree_peak_GiB": 12.2498779296875,
+      "native_tree_HWM_sum_GiB": 12.24776840209961,
+      "parent_HWM_GiB": 0.3333549499511719,
+      "conservative_memory_proxy_GiB": 12.583232879638672
+    }
+  ],
+  "primary": {
+    "case_id": "S2",
+    "methods": {
+      "A": {
+        "planned": 3,
+        "valid_input_executed": 3,
+        "adopted": 3,
+        "not_started": 0,
+        "invalid_input": 0,
+        "failed_run_ids": [],
+        "success_wilson": [
+          0.4385029682449546,
+          1.0
+        ],
+        "success_exact": [
+          0.2924017738212866,
+          1.0
+        ],
+        "metrics": {
+          "D": {
+            "n": 3,
+            "mean": 936.6191,
+            "variance": 0.0
+          },
+          "W": {
+            "n": 3,
+            "mean": 806.7666666666667,
+            "variance": 0.0
+          },
+          "T_program": {
+            "n": 3,
+            "mean": 13.133771269349381,
+            "variance": 62.67595821930863
+          },
+          "J": {
+            "n": 3,
+            "mean": 1.0597324290199697,
+            "variance": 0.056137428958829276
+          }
+        },
+        "T_attempt_all": {
+          "n": 3,
+          "mean": 13.133771269349381,
+          "variance": 62.67595821930863
+        },
+        "success_run_ids": [
+          "variance_pilot_retained_S2_A_r1",
+          "variance_pilot_retained_S2_A_r2",
+          "variance_pilot_retained_S2_A_r3"
+        ]
+      },
+      "B": {
+        "planned": 3,
+        "valid_input_executed": 3,
+        "adopted": 3,
+        "not_started": 0,
+        "invalid_input": 0,
+        "failed_run_ids": [],
+        "success_wilson": [
+          0.4385029682449546,
+          1.0
+        ],
+        "success_exact": [
+          0.2924017738212866,
+          1.0
+        ],
+        "metrics": {
+          "D": {
+            "n": 3,
+            "mean": 759.6125,
+            "variance": 0.0
+          },
+          "W": {
+            "n": 3,
+            "mean": 561.0611111111111,
+            "variance": 3632.635092592593
+          },
+          "T_program": {
+            "n": 3,
+            "mean": 139.0976342969419,
+            "variance": 17.7998004708837
+          },
+          "J": {
+            "n": 3,
+            "mean": 4.665048685401502,
+            "variance": 0.010275778508468725
+          }
+        },
+        "T_attempt_all": {
+          "n": 3,
+          "mean": 139.0976342969419,
+          "variance": 17.7998004708837
+        },
+        "success_run_ids": [
+          "variance_pilot_retained_S2_B_r1",
+          "variance_pilot_retained_S2_B_r2",
+          "variance_pilot_retained_S2_B_r3"
+        ]
+      },
+      "C": {
+        "planned": 3,
+        "valid_input_executed": 3,
+        "adopted": 3,
+        "not_started": 0,
+        "invalid_input": 0,
+        "failed_run_ids": [],
+        "success_wilson": [
+          0.4385029682449546,
+          1.0
+        ],
+        "success_exact": [
+          0.2924017738212866,
+          1.0
+        ],
+        "metrics": {
+          "D": {
+            "n": 3,
+            "mean": 709.2558,
+            "variance": 0.0
+          },
+          "W": {
+            "n": 3,
+            "mean": 546.1055555555555,
+            "variance": 2013.2834259259243
+          },
+          "T_program": {
+            "n": 3,
+            "mean": 138.62870910973288,
+            "variance": 109.91332704886027
+          },
+          "J": {
+            "n": 3,
+            "mean": 4.626914095145971,
+            "variance": 0.10802354229868953
+          }
+        },
+        "T_attempt_all": {
+          "n": 3,
+          "mean": 138.62870910973288,
+          "variance": 109.91332704886027
+        },
+        "success_run_ids": [
+          "variance_pilot_retained_S2_C_r1",
+          "variance_pilot_retained_S2_C_r2",
+          "variance_pilot_retained_S2_C_r3"
+        ]
+      },
+      "D": {
+        "planned": 3,
+        "valid_input_executed": 3,
+        "adopted": 3,
+        "not_started": 0,
+        "invalid_input": 0,
+        "failed_run_ids": [],
+        "success_wilson": [
+          0.4385029682449546,
+          1.0
+        ],
+        "success_exact": [
+          0.2924017738212866,
+          1.0
+        ],
+        "metrics": {
+          "D": {
+            "n": 3,
+            "mean": 759.6125,
+            "variance": 0.0
+          },
+          "W": {
+            "n": 3,
+            "mean": 505.2944444444444,
+            "variance": 548.1517592592593
+          },
+          "T_program": {
+            "n": 3,
+            "mean": 159.60276709667718,
+            "variance": 52.03413216828485
+          },
+          "J": {
+            "n": 3,
+            "mean": 5.255682355916704,
+            "variance": 0.04522701115804508
+          }
+        },
+        "T_attempt_all": {
+          "n": 3,
+          "mean": 159.60276709667718,
+          "variance": 52.03413216828485
+        },
+        "success_run_ids": [
+          "variance_pilot_retained_S2_D_r1",
+          "variance_pilot_retained_S2_D_r2",
+          "variance_pilot_retained_S2_D_r3"
+        ]
+      },
+      "D_CLASSICAL_REPLACEMENT": {
+        "planned": 3,
+        "valid_input_executed": 3,
+        "adopted": 3,
+        "not_started": 0,
+        "invalid_input": 0,
+        "failed_run_ids": [],
+        "success_wilson": [
+          0.4385029682449546,
+          1.0
+        ],
+        "success_exact": [
+          0.2924017738212866,
+          1.0
+        ],
+        "metrics": {
+          "D": {
+            "n": 3,
+            "mean": 759.6125,
+            "variance": 0.0
+          },
+          "W": {
+            "n": 3,
+            "mean": 550.8,
+            "variance": 2767.194444444443
+          },
+          "T_program": {
+            "n": 3,
+            "mean": 140.5078118336387,
+            "variance": 68.8532516649438
+          },
+          "J": {
+            "n": 3,
+            "mean": 4.703012688457171,
+            "variance": 0.07248937914916193
+          }
+        },
+        "T_attempt_all": {
+          "n": 3,
+          "mean": 140.5078118336387,
+          "variance": 68.8532516649438
+        },
+        "success_run_ids": [
+          "variance_pilot_retained_S2_D_CLASSICAL_REPLACEMENT_r1",
+          "variance_pilot_retained_S2_D_CLASSICAL_REPLACEMENT_r2",
+          "variance_pilot_retained_S2_D_CLASSICAL_REPLACEMENT_r3"
+        ]
+      }
+    },
+    "comparisons": [
+      {
+        "left": "C",
+        "right": "D",
+        "metric": "D",
+        "difference_right_minus_left": 50.35669999999993,
+        "CI": [
+          50.35669999999993,
+          50.35669999999993
+        ],
+        "analysis": "independent Welch; method-specific successful-trial means",
+        "n_left": 3,
+        "n_right": 3,
+        "zero_sample_variance_warning": true
+      },
+      {
+        "left": "C",
+        "right": "D",
+        "metric": "W",
+        "difference_right_minus_left": -40.811111111111074,
+        "CI": [
+          -133.5600570141916,
+          51.937834791969465
+        ],
+        "analysis": "independent Welch; method-specific successful-trial means",
+        "n_left": 3,
+        "n_right": 3,
+        "zero_sample_variance_warning": false
+      },
+      {
+        "left": "C",
+        "right": "D",
+        "metric": "T_program",
+        "difference_right_minus_left": 20.974057986944302,
+        "CI": [
+          -0.495120576787766,
+          42.443236550676374
+        ],
+        "analysis": "independent Welch; method-specific successful-trial means",
+        "n_left": 3,
+        "n_right": 3,
+        "zero_sample_variance_warning": false
+      },
+      {
+        "left": "C",
+        "right": "D",
+        "metric": "J",
+        "difference_right_minus_left": 0.628768260770733,
+        "CI": [
+          -0.04257477934135323,
+          1.3001113008828193
+        ],
+        "analysis": "independent Welch; method-specific successful-trial means",
+        "n_left": 3,
+        "n_right": 3,
+        "zero_sample_variance_warning": false
+      },
+      {
+        "left": "A",
+        "right": "D",
+        "metric": "D",
+        "difference_right_minus_left": -177.00660000000005,
+        "CI": [
+          -177.00660000000005,
+          -177.00660000000005
+        ],
+        "analysis": "independent Welch; method-specific successful-trial means",
+        "n_left": 3,
+        "n_right": 3,
+        "zero_sample_variance_warning": true
+      },
+      {
+        "left": "A",
+        "right": "D",
+        "metric": "W",
+        "difference_right_minus_left": -301.47222222222223,
+        "CI": [
+          -359.63244669651954,
+          -243.31199774792495
+        ],
+        "analysis": "independent Welch; method-specific successful-trial means",
+        "n_left": 3,
+        "n_right": 3,
+        "zero_sample_variance_warning": true
+      },
+      {
+        "left": "A",
+        "right": "D",
+        "metric": "T_program",
+        "difference_right_minus_left": 146.4689958273278,
+        "CI": [
+          129.24218640478398,
+          163.69580524987163
+        ],
+        "analysis": "independent Welch; method-specific successful-trial means",
+        "n_left": 3,
+        "n_right": 3,
+        "zero_sample_variance_warning": false
+      },
+      {
+        "left": "A",
+        "right": "D",
+        "metric": "J",
+        "difference_right_minus_left": 4.195949926896734,
+        "CI": [
+          3.6832559028486984,
+          4.70864395094477
+        ],
+        "analysis": "independent Welch; method-specific successful-trial means",
+        "n_left": 3,
+        "n_right": 3,
+        "zero_sample_variance_warning": false
+      },
+      {
+        "left": "B",
+        "right": "D",
+        "metric": "D",
+        "difference_right_minus_left": 0.0,
+        "CI": [
+          0.0,
+          0.0
+        ],
+        "analysis": "independent Welch; method-specific successful-trial means",
+        "n_left": 3,
+        "n_right": 3,
+        "zero_sample_variance_warning": true
+      },
+      {
+        "left": "B",
+        "right": "D",
+        "metric": "W",
+        "difference_right_minus_left": -55.76666666666671,
+        "CI": [
+          -185.94676375150362,
+          74.41343041817021
+        ],
+        "analysis": "independent Welch; method-specific successful-trial means",
+        "n_left": 3,
+        "n_right": 3,
+        "zero_sample_variance_warning": false
+      },
+      {
+        "left": "B",
+        "right": "D",
+        "metric": "T_program",
+        "difference_right_minus_left": 20.505132799735293,
+        "CI": [
+          5.739225942083509,
+          35.27103965738708
+        ],
+        "analysis": "independent Welch; method-specific successful-trial means",
+        "n_left": 3,
+        "n_right": 3,
+        "zero_sample_variance_warning": false
+      },
+      {
+        "left": "B",
+        "right": "D",
+        "metric": "J",
+        "difference_right_minus_left": 0.590633670515202,
+        "CI": [
+          0.14591835860429464,
+          1.0353489824261093
+        ],
+        "analysis": "independent Welch; method-specific successful-trial means",
+        "n_left": 3,
+        "n_right": 3,
+        "zero_sample_variance_warning": false
+      },
+      {
+        "left": "D_CLASSICAL_REPLACEMENT",
+        "right": "D",
+        "metric": "D",
+        "difference_right_minus_left": 0.0,
+        "CI": [
+          0.0,
+          0.0
+        ],
+        "analysis": "independent Welch; method-specific successful-trial means",
+        "n_left": 3,
+        "n_right": 3,
+        "zero_sample_variance_warning": true
+      },
+      {
+        "left": "D_CLASSICAL_REPLACEMENT",
+        "right": "D",
+        "metric": "W",
+        "difference_right_minus_left": -45.50555555555553,
+        "CI": [
+          -156.63838300748182,
+          65.62727189637076
+        ],
+        "analysis": "independent Welch; method-specific successful-trial means",
+        "n_left": 3,
+        "n_right": 3,
+        "zero_sample_variance_warning": false
+      },
+      {
+        "left": "D_CLASSICAL_REPLACEMENT",
+        "right": "D",
+        "metric": "T_program",
+        "difference_right_minus_left": 19.094955263038486,
+        "CI": [
+          1.335000904440168,
+          36.85490962163681
+        ],
+        "analysis": "independent Welch; method-specific successful-trial means",
+        "n_left": 3,
+        "n_right": 3,
+        "zero_sample_variance_warning": false
+      },
+      {
+        "left": "D_CLASSICAL_REPLACEMENT",
+        "right": "D",
+        "metric": "J",
+        "difference_right_minus_left": 0.5526696674595337,
+        "CI": [
+          -0.009141646918703783,
+          1.1144809818377712
+        ],
+        "analysis": "independent Welch; method-specific successful-trial means",
+        "n_left": 3,
+        "n_right": 3,
+        "zero_sample_variance_warning": false
+      }
+    ]
+  },
+  "quantum_observations": {
+    "started_calls": 3868,
+    "completed_calls": 3868,
+    "observed_training_shots": 118963500,
+    "observed_final_shots": 15425536,
+    "incomplete_calls": 0,
+    "native_accounting_flag_incomplete_trials": 6,
+    "qubits": [
+      12
+    ],
+    "scope": "completed-call observations include unselected branches; native completeness flags separately retained"
+  },
+  "planned_trial_caps_s": 19800,
+  "T_attempt_sum_s": 9803.494740581606,
+  "summary_source_sha256": "b1c29190411e5a558848c934d5520371b096acf767e4df158002787efa66c6e7"
+}

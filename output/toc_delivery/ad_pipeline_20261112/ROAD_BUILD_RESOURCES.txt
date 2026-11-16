@@ -1,0 +1,34 @@
+Traceback (most recent call last):
+  File "/home/takuma/kmd-analysis/scripts/build_common_road_od.py", line 6, in <module>
+    build_inputs(a.output,a.graph_dir,a.rootfs)
+  File "/home/takuma/kmd-analysis/src/kmd_toc/pipeline/roads.py", line 170, in build_inputs
+    nearest=nearest_all(points,out);ways=road_nodes_for_candidates(nearest,out);snaps=review_snaps(points,nearest,ways,meta,out)
+                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/src/kmd_toc/pipeline/roads.py", line 106, in review_snaps
+    if blocked:raise ValueError('SNAP_REVIEW_HOLD:'+str(blocked[:20])+f'; total={len(blocked)}')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: SNAP_REVIEW_HOLD:['2026-01-01-13111-bldg-42585']; total=1
+Command exited with non-zero status 1
+	Command being timed: "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python scripts/build_common_road_od.py --output output/toc_delivery/ad_pipeline_20261112/roads"
+	User time (seconds): 42.62
+	System time (seconds): 2.36
+	Percent of CPU this job got: 117%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:38.38
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 314196
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 247513
+	Voluntary context switches: 102985
+	Involuntary context switches: 345
+	Swaps: 0
+	File system inputs: 24
+	File system outputs: 106664
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1

@@ -1,0 +1,40 @@
+{
+  "stopped_utc": "2026-11-12T08:18:27.860624+00:00",
+  "services": [
+    {
+      "pid": 121080,
+      "port": 5002,
+      "command": [
+        "/tmp/kmd-osrm527/usr/local/bin/osrm-routed",
+        "--algorithm",
+        "mld",
+        "--port",
+        "5002",
+        "--threads",
+        "8",
+        "--verbosity",
+        "ERROR",
+        "--max-table-size",
+        "1000",
+        "/tmp/kmd-osrm-graph/kanto.osrm"
+      ]
+    },
+    {
+      "pid": 4149388,
+      "port": 5000,
+      "command": [
+        "/tmp/kmd-osrm527/usr/local/bin/osrm-routed",
+        "--algorithm",
+        "mld",
+        "--port",
+        "5000",
+        "--threads",
+        "4",
+        "--max-table-size",
+        "1000",
+        "/tmp/kmd-osrm-graph/kanto.osrm"
+      ]
+    }
+  ],
+  "diagnostic_26_11_port5001_previously_stopped": true
+}

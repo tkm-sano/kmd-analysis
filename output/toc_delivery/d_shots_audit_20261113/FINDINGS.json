@@ -1,0 +1,98 @@
+[
+  {
+    "id": "S09-01",
+    "severity": "High",
+    "method": "D",
+    "file": "src/kmd_toc/pipeline/hybrid.py",
+    "line_start": 151,
+    "line_end": 157,
+    "evidence": "Effective shots/p/round settings are literals, not injected from the JSON.",
+    "impact": "Editing final_shots in the registered JSON alone does not alter executed sampling.",
+    "required_change_NOT_executed": "Pass effective settings explicitly; record executed settings and hashes.",
+    "verification_after_change": "Test two N values and check per-call count totals and unchanged frozen parameters."
+  },
+  {
+    "id": "S09-02",
+    "severity": "High",
+    "method": "D",
+    "file": "src/kmd_toc/column_generation/aoa.py",
+    "line_start": 202,
+    "line_end": 279,
+    "evidence": "VALID and improving_shots include partial routes; true day-column resources are absent.",
+    "impact": "The 97 negative-proxy shots are not 97 improvements to the full plan.",
+    "required_change_NOT_executed": "Separate raw/partial/full/new/day-feasible/true-RC/selected events.",
+    "verification_after_change": "Independently decode counts and compare true day-master reduced costs at a fixed dual."
+  },
+  {
+    "id": "S09-03",
+    "severity": "High",
+    "method": "D",
+    "file": "src/kmd_toc/pipeline/hybrid.py",
+    "line_start": 149,
+    "line_end": 162,
+    "evidence": "Finite fixed fragments have no shorter route than their CW parent in this S1.",
+    "impact": "More shots cannot improve the mathematical best D in the declared 102-route domain.",
+    "required_change_NOT_executed": "Treat as structural scope limitation; register any expanded domain as a separate version.",
+    "verification_after_change": "Independent full finite-domain costs and positive-control instances before sensitivity runs."
+  },
+  {
+    "id": "S09-04",
+    "severity": "High",
+    "method": "D",
+    "file": "src/kmd_toc/column_generation/aoa.py",
+    "line_start": 226,
+    "line_end": 265,
+    "evidence": "Final measurement seed is derived after training RNG consumption; no independent quantum_seed API.",
+    "impact": "Same-seed run repetitions are debugging repeats, not independent sampling trials.",
+    "required_change_NOT_executed": "Separate initialization/training/final streams; persist final seed, role, and repetition.",
+    "verification_after_change": "Frozen-parameter debug replay and distinct SeedSequence child streams for all planned cells."
+  },
+  {
+    "id": "S09-05",
+    "severity": "Medium",
+    "method": "D",
+    "file": "src/kmd_toc/column_generation/aoa.py",
+    "line_start": 281,
+    "line_end": 305,
+    "evidence": "measured_shots reports final counts only; no explicit total training/final shot ledger.",
+    "impact": "Using 139264 as total cost omits 1084000 training measurement-equivalent draws.",
+    "required_change_NOT_executed": "Record per-evaluation stage/shots/seed/parameter hash and total each stage independently.",
+    "verification_after_change": "Compare nfev times train_shots, saved evaluation length, and final count sums."
+  },
+  {
+    "id": "S09-06",
+    "severity": "Medium",
+    "method": "D/B/C",
+    "file": "src/kmd_toc/pipeline/execution.py",
+    "line_start": 35,
+    "line_end": 52,
+    "evidence": "The final sample timer bundles preparation and decoding; extra second validation is outside saved T.",
+    "impact": "Pure sampling cost and a complete final-check boundary cannot be inferred from one aggregate timer.",
+    "required_change_NOT_executed": "Add exclusive stage clocks and explicitly version the same T end point for all methods.",
+    "verification_after_change": "Clock-boundary checks and full pipeline wall-time accounting including classical completion."
+  },
+  {
+    "id": "S09-07",
+    "severity": "Medium",
+    "method": "D",
+    "file": "src/kmd_toc/pipeline/hybrid.py",
+    "line_start": 169,
+    "line_end": 175,
+    "evidence": "Larger sampled route pools increase classical catalogue/LP/IP work under finite time budgets.",
+    "impact": "More shots need not improve D/W or preserve finite-budget success probability.",
+    "required_change_NOT_executed": "Record and retain baseline incumbent and failures; compare matched budgets.",
+    "verification_after_change": "Per-condition candidate/column counts, full wall time, and all failures with no seed replacement."
+  },
+  {
+    "id": "S09-08",
+    "severity": "Low",
+    "method": "reproduction",
+    "file": "docs/research/REPRODUCE.md",
+    "line_start": 15,
+    "line_end": 15,
+    "evidence": "The existing environment required PYTHONPATH=src for the documented test invocation.",
+    "impact": "Initial test collection failed although dependencies were installed.",
+    "required_change_NOT_executed": "Document/import the repository source path explicitly in future reproducibility instructions.",
+    "verification_after_change": "Fresh shell command with PYTHONPATH=src; the audit rerun passed 21 selected tests."
+  }
+]

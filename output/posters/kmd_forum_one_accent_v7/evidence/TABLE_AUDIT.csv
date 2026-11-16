@@ -1,0 +1,18 @@
+対象,変更前,変更後,理由,根拠
+条件表,1台の保存実験の設定,1台の計画生成・評価条件,生成・評価に使うモデル条件であることを明示,WEB-JAPANESE; Step5 条件整理
+条件表,配送全体の先数,配送先数（計画全体）,何を数えるかを明確化,WEB-TABLE; B_INPUT_CONDITIONS_460.csv
+条件表,訪問順全体／分割ではない＊,訪問順を対象／設定により交換できる順序を制限,参照先のない＊を削除。全配送先を扱うことと設定ごとの探索範囲を区別,STEP5_OBJECTIVE_GAP_ANALYSIS.md 7行目
+条件表,車両容量,積載容量（モデル）,実車の重量容量と混同させない,WEB-JAPANESE; STEP5_OPERATIONAL_IMPACT.md
+実行表,項目／現状の実行内容（左右同名）,実行・集計項目／確認できた内容／対象・評価項目／確認範囲・未評価事項,左右の列の役割を見出しで示す,WEB-TABLE; WEB-JAPANESE
+実行表,係数調整,調整結果の件数,調整の内部更新回数ではなく入力×設定ごとの調整結果数と区別,STEP5_OBJECTIVE_GAP_ANALYSIS.md 5–7行目; B_RESOURCES_PER_FIT.csv
+実行表,抽出反復／保存候補,各調整結果の抽出／保存出力数,同じ調整結果を使う測定反復と保存出力を区別,STEP5_OBJECTIVE_GAP_ANALYSIS.md 5–7行目
+実行表,検証済み／保存候補,モデル内の確認／保存した最良候補,確認した対象は保存bestであり全抽出候補ではないことを示す,STEP5_OBJECTIVE_GAP_ANALYSIS.md 5行目
+実行表,比較の限界／未統一,比較条件の差／条件が異なる,予算と出力保持規則の差が実際に存在することを明示,STEP5_OBJECTIVE_GAP_ANALYSIS.md 9行目
+実行表,未検証,未計測・未評価,全工程時間と配送成果の未確認の種類を表す,STEP5_OPERATIONAL_IMPACT.md
+結果表,設定,手法・集計範囲,個別設定・複数設定群・混合平均の違いを示す,WEB-TABLE; STEP5_OBJECTIVE_GAP_ANALYSIS.md 37–48行目
+結果表,比較件数,保存出力数［件］,入力数や独立試行数と混同させない。各出力は同一入力の古典対照に対応,WEB-TABLE; STEP5_OBJECTIVE_GAP_ANALYSIS.md 5–9行目
+結果表,古典 J 平均／QAOA J 平均,古典対照の平均J／QAOA候補の平均J,何の平均かを明示。秒の単位、数値の右揃えと精度は維持,WEB-TABLE
+結果表,平均絶対差,差の絶対値の平均,各対応差の絶対値を取ってから平均する指標であることを明示,STEP5_OBJECTIVE_GAP_ANALYSIS.md 11・21行目
+結果表の注記,8設定の混合平均,8設定の等重み平均,全体行は単一設定の結果でも最良設定の結果でもないことを説明,STEP5_OBJECTIVE_GAP_ANALYSIS.md 48行目
+結果表の注記,重複・丸めの説明なし,同じ訪問順の重複を含む／丸め前に集計,保存出力の解釈と表示平均同士の引き算が末尾で一致しない理由を示す,WEB-TABLE; WEB-ROUNDING; B_PLAN_GAPS_36800.csv
+数値監査,v5の全表・ポスター全体の数値,v6とセル単位・トークン単位で一致確認,数値の修正、再丸め、精度変更を行わない,V5_NUMERIC_SNAPSHOT.json; NUMERIC_PRESERVATION.json

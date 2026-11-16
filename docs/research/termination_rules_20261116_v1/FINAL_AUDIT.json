@@ -1,0 +1,31 @@
+{
+  "pass": true,
+  "checks": {
+    "registered_trial_audit": true,
+    "registered_current_source_matches": true,
+    "snapshot_hash_matches": true,
+    "schema_checked": true,
+    "preservation": true,
+    "new_unit_tests": true,
+    "all_15_procedures_completed": true,
+    "main_stays_nonexecutable": true
+  },
+  "actual_trials": 15,
+  "adoptable": 15,
+  "strict_all_baseline_files_unchanged": false,
+  "pretrial_unrelated_change_preserved": true,
+  "old_regression_all_passed": false,
+  "old_regression_evidence": "REGRESSION_01:127 passed/2 failed; isolated:1 passed/1 legacy15s timeout reproduced; legacy source hashes unchanged",
+  "stage_termination_counts": {
+    "A_complete:MOVE_LIMIT": 3,
+    "CP_end:WORK_BUDGET_REACHED": 72,
+    "Routing_end:WORK_BUDGET_REACHED": 12,
+    "catalogue_complete:CONSTRUCTION_COMPLETE": 48,
+    "LP_end:Optimization terminated successfully. (HiGHS Status 7: Optimal)": 1187,
+    "IP_end:Optimization terminated successfully. (HiGHS Status 7: Optimal)": 192
+  },
+  "CP_client_calls": 72,
+  "max_CP_client_conflicts": 256,
+  "max_process_threads_observed": 1,
+  "analysis_code_sha256": "89c0ab7c3828506171e9265b199a3013418fdc559144075405469a2d8b10dd0b"
+}

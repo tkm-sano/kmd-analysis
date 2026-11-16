@@ -1,0 +1,58 @@
+{
+  "phase": "contract_check",
+  "step1": {
+    "complete": true,
+    "frozen_A_preserved": true,
+    "A_identity_scales": [
+      "S1",
+      "S2",
+      "S3"
+    ],
+    "new_standalone_S2": true,
+    "actual_method_path_evidence": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  "step2": {
+    "complete": true,
+    "contract_and_schema_implemented": true,
+    "all_attempt_and_paired_tables": true,
+    "reference_median_and_J_reason_codes": true,
+    "missing_values_rejected_before_execution": true
+  },
+  "formal_experiment_started": false,
+  "formal_reference_registered": false,
+  "future_manifest_inputs": {
+    "formal_scenario_set": null,
+    "independent_demand_sample_count": null,
+    "compute_repeats": null,
+    "formal_reference_group_size_and_run_ids": null,
+    "scale_specific_common_wall_budgets": null,
+    "precision_power_statistical_method": null,
+    "formal_T_A_ref": null,
+    "main_experiment_results": null
+  },
+  "unresolved_blockers": [],
+  "not_executed": [
+    "optional Qulacs tests without dependency",
+    "300s/full memory-limit stress tests",
+    "B/C/D S1-S3 full experiments",
+    "common-FCFS diagnostic",
+    "quantum causal attribution control",
+    "target operator actual-fit validation"
+  ],
+  "source_revisions": "r1/r2/r3 logs and snapshots retained; cleanup-only r3 does not change A plans or BCD search",
+  "all_executed_comparison_trials": 14,
+  "validation_summary": {
+    "full_regression_passed": 240,
+    "optional_qulacs_skipped": 2,
+    "final_new_tests_passed": 42,
+    "real_Route_input_guard_cases": 3,
+    "postrun_artifact_checks": 130
+  },
+  "registered_not_executed": 4,
+  "native_standalone_trials": 1
+}

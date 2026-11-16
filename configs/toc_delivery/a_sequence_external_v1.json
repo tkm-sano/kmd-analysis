@@ -1,0 +1,68 @@
+{
+  "version": "A-sequence-external-check-20261114-v1",
+  "root_seed": 20261114,
+  "scope": "visit-order component only; NOT full A2 or Ota D/W/T validation",
+  "cost_projections": {
+    "NN_time": "same deterministic NN rule with observed travel-time matrix; NOT original road-distance NN",
+    "NN_geodesic": "same NN rule with coordinate geodesic distance; diagnostic only, not research road D"
+  },
+  "pilot": {
+    "dataset": "official training model_apply/model_score sample",
+    "routes": 2,
+    "purpose": "implementation check only; no parameter or rule tuning"
+  },
+  "evaluation": {
+    "dataset": "official evaluation",
+    "max_stations": 10,
+    "dates_per_station": 2,
+    "routes_per_station_date": 2,
+    "selection": "SHA256(seed|station), SHA256(seed|station|date), SHA256(seed|route_id); metadata only; no outcome filtering"
+  },
+  "controls": {
+    "random_permutations_per_route": 10,
+    "station_first": true,
+    "reference": "actual driver sequence; no actual order supplied to generators"
+  },
+  "metrics": {
+    "primary": "official Amazon sequence score, lower is more similar",
+    "secondary": [
+      "sequence_deviation",
+      "directed_edge_agreement",
+      "zone_reentries",
+      "zone_reentries_per_dropoff",
+      "matrix_travel_time_s_closed_route",
+      "matrix_travel_time_ratio_to_actual",
+      "normalized_Kendall_inversions"
+    ]
+  },
+  "inference": {
+    "unit": "station-day cluster",
+    "bootstrap_repetitions": 5000,
+    "confidence": 0.95,
+    "primary_effect": "NN score minus per-route mean random score; negative is improvement over random",
+    "primary_test": "only NN_time contrast is primary; NN_geodesic exploratory",
+    "interpretation": "conditional descriptive cluster-bootstrap uncertainty; improvement over random is NOT equivalence to drivers"
+  },
+  "representativeness_acceptance": {
+    "equivalence_margin": null,
+    "full_A_PASS_allowed": false,
+    "original_A2_distance_ordering_PASS_allowed": false,
+    "reason": "no justified equivalence margin or target-depot transfer data; no road-distance matrix in Amazon schema"
+  },
+  "limits": {
+    "download_total_bytes": 1000000000,
+    "download_wall_s_per_file": 600,
+    "analysis_wall_s": 300,
+    "native_threads": 1,
+    "no_paid_services": true,
+    "no_B_C_D_or_S1_S3_execution": true,
+    "max_selected_routes": 42
+  },
+  "frozen_rules": [
+    "do not tune A2",
+    "do not feed actual order to generators",
+    "do not discard failed candidates",
+    "do not use lower travel time alone as behavioral validity",
+    "no km or loading-wait or human-T inferred from these files"
+  ]
+}

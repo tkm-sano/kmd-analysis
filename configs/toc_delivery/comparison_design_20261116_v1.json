@@ -1,0 +1,183 @@
+{
+  "experiment_id": "comparison_design_20261116_v1",
+  "authority": "2026-11-16 user: implement and execute bounded pilots; main only after design gates",
+  "definitions": {
+    "N": "delivery stops per saved problem",
+    "M": "distinct demand instances; nested scales are not independent families",
+    "R_a": "fresh independently initialized whole-plan attempts of method a; failures count",
+    "tau": "comparison parent wall including input, initialization, assignment, routing, trip connections, loading, all branch collection and final dual validation",
+    "internal": "shots, optimizer evaluations, pricing rounds, restarts and four parallel multistarts belong inside one attempt"
+  },
+  "primary": {
+    "scope": "fixed frozen S2 demand; method-specific successful-attempt mean difference D minus C, feasibility co-reported",
+    "contrast": [
+      "C",
+      "D"
+    ],
+    "metric": "D",
+    "scale": "S2",
+    "design": "precision",
+    "confidence": 0.95,
+    "alpha": 0.05,
+    "h_km": null,
+    "h_candidates_km": [
+      1,
+      5,
+      10
+    ],
+    "delta_km": null,
+    "power": "not a required input to precision design; prior 0.80 retained only for possible future power design",
+    "multiplicity": "one primary contrast/metric/scale; auxiliary pointwise 95% intervals are exploratory; promote only with new preregistration and Holm family"
+  },
+  "auxiliary": {
+    "scales": [
+      "S1",
+      "S3"
+    ],
+    "methods": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "D_CLASSICAL_REPLACEMENT"
+    ],
+    "metrics": [
+      "D",
+      "W",
+      "T_program",
+      "T_attempt",
+      "J",
+      "feasible_rate",
+      "target_rate"
+    ],
+    "h_candidates": {
+      "D": [
+        1,
+        5,
+        10
+      ],
+      "W": [
+        5,
+        15,
+        30
+      ],
+      "T_program": [
+        1,
+        5,
+        10
+      ]
+    },
+    "rate_halfwidth_candidates": [
+      0.05,
+      0.1,
+      0.15
+    ],
+    "rate_halfwidth": null,
+    "target": "accepted plan D<=frozen A D and W<=frozen A W; computational research target, not operational requirement",
+    "target_values": {
+      "S1": {
+        "D": 518.4218,
+        "W": 396.1
+      },
+      "S2": {
+        "D": 936.6191,
+        "W": 806.7666666666667
+      },
+      "S3": {
+        "D": 1658.9498,
+        "W": 1575.2833333333333
+      }
+    },
+    "target_source": "pre-existing comparison_integration_v1_20261115_A_checks02/ALL_RESULTS.json; frozen A, not fitted to new outcomes",
+    "J": "unchanged (D/D_A + W/W_A + T/T_A_ref)/3; all preregistered A time members median, all must succeed and agree; zero denominator -> null reason"
+  },
+  "profiles": [
+    {
+      "id": "lean",
+      "tau_s": 120,
+      "native_cap_s": 60,
+      "C_routing_fraction": 0.25,
+      "D": {
+        "pricing_rounds": 1,
+        "max_evaluations": 40,
+        "restarts": 1,
+        "p": 2,
+        "macro_groups": 3,
+        "train_shots": 500,
+        "final_shots": 2048
+      }
+    },
+    {
+      "id": "retained",
+      "tau_s": 240,
+      "native_cap_s": 150,
+      "C_routing_fraction": 0.5,
+      "D": {
+        "pricing_rounds": 2,
+        "max_evaluations": 80,
+        "restarts": 1,
+        "p": 2,
+        "macro_groups": 3,
+        "train_shots": 1000,
+        "final_shots": 4096
+      }
+    }
+  ],
+  "selection": {
+    "rule": "first (smallest common wall budget) profile with every scale/method attempt adoptable and at least one completed D quantum call per scale; otherwise largest is provisional and main HOLD",
+    "basis": "qualification and lower computational ceiling, not observed winning method or difference size",
+    "tuning_opportunities": "same two whole-method candidate budgets for all methods; A frozen; B has no exposed internal search parameter; C and D each receive two preset internal effort levels",
+    "quality_tradeoff": "both candidates measured independently; this rule does not certify best quality or convergence",
+    "trajectory_reuse": false,
+    "reason": "routing fractions, stage allocations, validation reserves and pricing stopping depend on the initially supplied budget"
+  },
+  "pilot": {
+    "scales": [
+      "S1",
+      "S2",
+      "S3"
+    ],
+    "selection_repetitions": 1,
+    "variance_repetitions": 3,
+    "confirmation_repetitions": 1,
+    "maximum_attempts": 90,
+    "maximum_sum_attempt_caps_s": 19800,
+    "maximum_pipeline_wall_s": 21600,
+    "tree_memory_limit_MiB": 32768,
+    "memory_enforcement": "sampled process-tree RSS sum at 0.5s; conservative shared-page sum; transient peaks may be missed; frozen A intrinsic 4096MiB remains",
+    "addition_rule": "no additional batches in this experiment ID; missing variance/qualification -> HOLD; new registered pilot required",
+    "seed_root": 2026111601,
+    "confirmation_seed_root": 2026111691,
+    "execution": "one method attempt at a time; B/C/D/control four distinct physical cores, one native thread per branch; A one worker; randomized order per batch",
+    "environment": "existing ad-pipeline-v1 interpreter, existing local /opt/qgpu dependency directory searched first; numpy2.3.1 scipy1.16.0 qiskit2.1.1 ortools9.14.6206 unchanged; path ordering and import file hashes saved; all fresh child imports remain inside T",
+    "budget_meaning": "research comparison computational ceiling; no evidence of an operational deadline",
+    "dependency_prefix": "/opt/miniconda/envs/qgpu/lib/python3.12/site-packages"
+  },
+  "main": {
+    "M_per_scale": 1,
+    "independent_family_count": 1,
+    "generalization": "not adopted; additional M scenarios are sensitivity assumptions only, no demand generation",
+    "R_a": null,
+    "R_A_quality": 1,
+    "R_A_timing": null,
+    "wall_budget_s": null,
+    "budget_candidates_s": [
+      3600,
+      14400,
+      86400
+    ],
+    "stopping": "fixed preregistered attempt list including failures; no significance or CI-width dependent extension",
+    "safety_stop": "resource violation, code/input/config mismatch, owned child cleanup failure -> abort remaining runs, preserve NOT_STARTED; no replacement",
+    "decision_required": [
+      "primary h_D in km",
+      "required feasible/target probability precision",
+      "total main wall-cost ceiling; auxiliary scales/precision requirements"
+    ],
+    "allow_pilot_rows_in_main": false,
+    "seed_reuse": false,
+    "inference": "independent Welch per fixed input; same repeat/seed index is not a pair; demand analysis uses per-demand method means paired by independent family",
+    "variance_sensitivity": "point estimate plus normal-model chi-square upper variance; observed zero stochastic variance remains unidentified; conditional-quality cost is optimistic under failures",
+    "rate_design": "worst-case Wilson precision, even with all-success pilot; report exact Clopper-Pearson failure upper bounds",
+    "future_generalization": "subtract within-mean sampling variance once for between-demand moment estimate; demand-level t CI uses observed demand mean differences without adding within noise twice"
+  }
+}

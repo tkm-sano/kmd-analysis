@@ -1,0 +1,26 @@
+Input manifest complete
+Source lineage all-row checks complete {'households_384353': True, 'positive_requests_73547': True, 'mapped_positive_73200': True, 'stops_39956': True, 'all_positive_mapped_buildings_present': True, 'saved_summary_counts': True}
+Boundary all-row joins complete {'INSIDE': 39850, 'OUTSIDE': 106} {'MATCH': 39956}
+CityGML 1 / 91 matched 0
+CityGML 11 / 91 matched 6037
+CityGML 21 / 91 matched 17449
+CityGML 31 / 91 matched 28809
+CityGML 41 / 91 matched 29030
+CityGML 51 / 91 matched 29182
+CityGML 61 / 91 matched 29189
+CityGML 71 / 91 matched 33914
+CityGML 81 / 91 matched 39622
+CityGML 91 / 91 matched 39956
+Raw building all-target comparison complete {'412': 23548, '411': 13223, '413': 2134, '415': 1051}
+Traceback (most recent call last):
+  File "/home/takuma/kmd-analysis/review_outputs/toc_stops_full_audit_20261108/run_20261108T091121Z/audit_stops.py", line 509, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/toc_stops_full_audit_20261108/run_20261108T091121Z/audit_stops.py", line 442, in main
+    if flag in flags:mark([i],'road_mapping','CONDITIONAL','ROAD_'+flag)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takuma/kmd-analysis/review_outputs/toc_stops_full_audit_20261108/run_20261108T091121Z/audit_stops.py", line 113, in mark
+    if SEVERITY[status]>SEVERITY[old]:a.at[i,domain+'_status']=status
+                        ~~~~~~~~^^^^^
+KeyError: 'ASSUMED_MODEL_MAPPING'
+

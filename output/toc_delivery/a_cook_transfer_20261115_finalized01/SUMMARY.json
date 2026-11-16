@@ -1,0 +1,357 @@
+{
+  "by_split": {
+    "same_station_future": {
+      "Cook_public_zones": {
+        "attempts": 4,
+        "failures": 0,
+        "amazon_score": 0.04364569214703726,
+        "directed_edge_agreement": 0.36108981321519595,
+        "zone_reentries": 0.0,
+        "normalized_Kendall_inversions": 0.659901906090404,
+        "matrix_travel_time_ratio_to_actual": 1.050417342397355
+      },
+      "Cook_no_station_history": {
+        "attempts": 4,
+        "failures": 0,
+        "amazon_score": 0.04365330044340876,
+        "directed_edge_agreement": 0.3500400894582899,
+        "zone_reentries": 0.0,
+        "normalized_Kendall_inversions": 0.6600415708948733,
+        "matrix_travel_time_ratio_to_actual": 1.050417342397355
+      },
+      "Cook_auto_zones": {
+        "attempts": 4,
+        "failures": 0,
+        "amazon_score": 0.11091440222691071,
+        "directed_edge_agreement": 0.27559303550828107,
+        "zone_reentries": 28.25,
+        "normalized_Kendall_inversions": 0.6315893225422597,
+        "matrix_travel_time_ratio_to_actual": 1.1827998868667335
+      },
+      "Cook_no_zones": {
+        "attempts": 4,
+        "failures": 0,
+        "amazon_score": 0.05874323420810218,
+        "directed_edge_agreement": 0.37143973369128597,
+        "zone_reentries": 15.5,
+        "normalized_Kendall_inversions": 0.5534616198870678,
+        "matrix_travel_time_ratio_to_actual": 0.8951747298474471
+      },
+      "NN_time": {
+        "attempts": 4,
+        "failures": 0,
+        "amazon_score": 0.07677568248915013,
+        "directed_edge_agreement": 0.28273326074638444,
+        "zone_reentries": 20.75,
+        "normalized_Kendall_inversions": 0.44155150131821314,
+        "matrix_travel_time_ratio_to_actual": 1.0773779632209488
+      },
+      "Actual_reference": {
+        "attempts": 4,
+        "failures": 0,
+        "amazon_score": 0.0,
+        "directed_edge_agreement": 1.0,
+        "zone_reentries": 1.0,
+        "normalized_Kendall_inversions": 0.0,
+        "matrix_travel_time_ratio_to_actual": 1.0
+      }
+    },
+    "unknown_station": {
+      "Cook_public_zones": {
+        "attempts": 4,
+        "failures": 0,
+        "amazon_score": 0.02367169594682044,
+        "directed_edge_agreement": 0.5425220886730622,
+        "zone_reentries": 0.0,
+        "normalized_Kendall_inversions": 0.1478473161397525,
+        "matrix_travel_time_ratio_to_actual": 0.9603672131520362
+      },
+      "Cook_no_station_history": {
+        "attempts": 4,
+        "failures": 0,
+        "amazon_score": 0.02367169594682044,
+        "directed_edge_agreement": 0.5425220886730622,
+        "zone_reentries": 0.0,
+        "normalized_Kendall_inversions": 0.1478473161397525,
+        "matrix_travel_time_ratio_to_actual": 0.9603672131520362
+      },
+      "Cook_auto_zones": {
+        "attempts": 4,
+        "failures": 0,
+        "amazon_score": 0.14748352265818698,
+        "directed_edge_agreement": 0.29232217667336924,
+        "zone_reentries": 30.5,
+        "normalized_Kendall_inversions": 0.5610972102158496,
+        "matrix_travel_time_ratio_to_actual": 1.0570200256265272
+      },
+      "Cook_no_zones": {
+        "attempts": 4,
+        "failures": 0,
+        "amazon_score": 0.08689000936922724,
+        "directed_edge_agreement": 0.3524525691834485,
+        "zone_reentries": 20.25,
+        "normalized_Kendall_inversions": 0.48183764067884166,
+        "matrix_travel_time_ratio_to_actual": 0.8616130856109165
+      },
+      "NN_time": {
+        "attempts": 4,
+        "failures": 0,
+        "amazon_score": 0.11147665485555656,
+        "directed_edge_agreement": 0.24861315165614822,
+        "zone_reentries": 23.5,
+        "normalized_Kendall_inversions": 0.5190628356882963,
+        "matrix_travel_time_ratio_to_actual": 0.9747422506285616
+      },
+      "Actual_reference": {
+        "attempts": 4,
+        "failures": 0,
+        "amazon_score": 0.0,
+        "directed_edge_agreement": 1.0,
+        "zone_reentries": 1.5,
+        "normalized_Kendall_inversions": 0.0,
+        "matrix_travel_time_ratio_to_actual": 1.0
+      }
+    }
+  },
+  "failures": [],
+  "repeats": {
+    "same_station_future": {
+      "route_id": "RouteID_55b86e61-77f2-4f87-958b-c10ffbd9a831",
+      "identical_order": true
+    },
+    "unknown_station": {
+      "route_id": "RouteID_dd8d5fa3-8616-439b-b119-ec88901859e5",
+      "identical_order": true
+    }
+  },
+  "all_order_checks_passed": true,
+  "ota_representativeness": "NOT_ESTABLISHED",
+  "original_full_challenge_result_reproduced": false,
+  "paired_score_differences": [
+    {
+      "split": "same_station_future",
+      "method": "Cook_public_zones",
+      "values": [
+        {
+          "route_id": "RouteID_55b86e61-77f2-4f87-958b-c10ffbd9a831",
+          "station": "DLA9",
+          "difference_vs_NN": 0.09032760704116563
+        },
+        {
+          "route_id": "RouteID_0f49e5a8-962d-4cb5-878a-a2fcb3e90e28",
+          "station": "DLA9",
+          "difference_vs_NN": -0.11322731124212075
+        },
+        {
+          "route_id": "RouteID_1113c713-26f5-47ef-abb3-38aafac8f78b",
+          "station": "DBO3",
+          "difference_vs_NN": -0.07272120828217882
+        },
+        {
+          "route_id": "RouteID_d7116f16-950c-44de-b1ed-3610f8fd76a4",
+          "station": "DBO3",
+          "difference_vs_NN": -0.03689904888531759
+        }
+      ],
+      "mean": -0.03312999034211288,
+      "inference": "descriptive only; two stations per split; no equivalence or population significance claim"
+    },
+    {
+      "split": "same_station_future",
+      "method": "Cook_no_station_history",
+      "values": [
+        {
+          "route_id": "RouteID_55b86e61-77f2-4f87-958b-c10ffbd9a831",
+          "station": "DLA9",
+          "difference_vs_NN": 0.09032760704116563
+        },
+        {
+          "route_id": "RouteID_0f49e5a8-962d-4cb5-878a-a2fcb3e90e28",
+          "station": "DLA9",
+          "difference_vs_NN": -0.11322731124212075
+        },
+        {
+          "route_id": "RouteID_1113c713-26f5-47ef-abb3-38aafac8f78b",
+          "station": "DBO3",
+          "difference_vs_NN": -0.07272120828217882
+        },
+        {
+          "route_id": "RouteID_d7116f16-950c-44de-b1ed-3610f8fd76a4",
+          "station": "DBO3",
+          "difference_vs_NN": -0.03686861569983158
+        }
+      ],
+      "mean": -0.03312238204574138,
+      "inference": "descriptive only; two stations per split; no equivalence or population significance claim"
+    },
+    {
+      "split": "same_station_future",
+      "method": "Cook_auto_zones",
+      "values": [
+        {
+          "route_id": "RouteID_55b86e61-77f2-4f87-958b-c10ffbd9a831",
+          "station": "DLA9",
+          "difference_vs_NN": 0.09503825627247497
+        },
+        {
+          "route_id": "RouteID_0f49e5a8-962d-4cb5-878a-a2fcb3e90e28",
+          "station": "DLA9",
+          "difference_vs_NN": -0.07224142597687594
+        },
+        {
+          "route_id": "RouteID_1113c713-26f5-47ef-abb3-38aafac8f78b",
+          "station": "DBO3",
+          "difference_vs_NN": 0.06115943533967745
+        },
+        {
+          "route_id": "RouteID_d7116f16-950c-44de-b1ed-3610f8fd76a4",
+          "station": "DBO3",
+          "difference_vs_NN": 0.0525986133157658
+        }
+      ],
+      "mean": 0.03413871973776057,
+      "inference": "descriptive only; two stations per split; no equivalence or population significance claim"
+    },
+    {
+      "split": "same_station_future",
+      "method": "Cook_no_zones",
+      "values": [
+        {
+          "route_id": "RouteID_55b86e61-77f2-4f87-958b-c10ffbd9a831",
+          "station": "DLA9",
+          "difference_vs_NN": 0.023513575239490048
+        },
+        {
+          "route_id": "RouteID_0f49e5a8-962d-4cb5-878a-a2fcb3e90e28",
+          "station": "DLA9",
+          "difference_vs_NN": -0.04077793423491556
+        },
+        {
+          "route_id": "RouteID_1113c713-26f5-47ef-abb3-38aafac8f78b",
+          "station": "DBO3",
+          "difference_vs_NN": -0.03697789432287869
+        },
+        {
+          "route_id": "RouteID_d7116f16-950c-44de-b1ed-3610f8fd76a4",
+          "station": "DBO3",
+          "difference_vs_NN": -0.017887539805887625
+        }
+      ],
+      "mean": -0.01803244828104796,
+      "inference": "descriptive only; two stations per split; no equivalence or population significance claim"
+    },
+    {
+      "split": "unknown_station",
+      "method": "Cook_public_zones",
+      "values": [
+        {
+          "route_id": "RouteID_dd8d5fa3-8616-439b-b119-ec88901859e5",
+          "station": "DLA7",
+          "difference_vs_NN": -0.10747808392956658
+        },
+        {
+          "route_id": "RouteID_b5686ae2-be1f-4645-947a-53506c16df6f",
+          "station": "DLA7",
+          "difference_vs_NN": -0.08594011921615807
+        },
+        {
+          "route_id": "RouteID_a3861c4e-a179-4dbc-a105-6b59175ad74a",
+          "station": "DLA8",
+          "difference_vs_NN": -0.11595415650607296
+        },
+        {
+          "route_id": "RouteID_6d1b6ce7-9c83-41e0-bd2b-e9a2201d24cf",
+          "station": "DLA8",
+          "difference_vs_NN": -0.041847475983146885
+        }
+      ],
+      "mean": -0.08780495890873613,
+      "inference": "descriptive only; two stations per split; no equivalence or population significance claim"
+    },
+    {
+      "split": "unknown_station",
+      "method": "Cook_no_station_history",
+      "values": [
+        {
+          "route_id": "RouteID_dd8d5fa3-8616-439b-b119-ec88901859e5",
+          "station": "DLA7",
+          "difference_vs_NN": -0.10747808392956658
+        },
+        {
+          "route_id": "RouteID_b5686ae2-be1f-4645-947a-53506c16df6f",
+          "station": "DLA7",
+          "difference_vs_NN": -0.08594011921615807
+        },
+        {
+          "route_id": "RouteID_a3861c4e-a179-4dbc-a105-6b59175ad74a",
+          "station": "DLA8",
+          "difference_vs_NN": -0.11595415650607296
+        },
+        {
+          "route_id": "RouteID_6d1b6ce7-9c83-41e0-bd2b-e9a2201d24cf",
+          "station": "DLA8",
+          "difference_vs_NN": -0.041847475983146885
+        }
+      ],
+      "mean": -0.08780495890873613,
+      "inference": "descriptive only; two stations per split; no equivalence or population significance claim"
+    },
+    {
+      "split": "unknown_station",
+      "method": "Cook_auto_zones",
+      "values": [
+        {
+          "route_id": "RouteID_dd8d5fa3-8616-439b-b119-ec88901859e5",
+          "station": "DLA7",
+          "difference_vs_NN": 0.14971674959372994
+        },
+        {
+          "route_id": "RouteID_b5686ae2-be1f-4645-947a-53506c16df6f",
+          "station": "DLA7",
+          "difference_vs_NN": -0.0010912999868041562
+        },
+        {
+          "route_id": "RouteID_a3861c4e-a179-4dbc-a105-6b59175ad74a",
+          "station": "DLA8",
+          "difference_vs_NN": -0.04744139516249299
+        },
+        {
+          "route_id": "RouteID_6d1b6ce7-9c83-41e0-bd2b-e9a2201d24cf",
+          "station": "DLA8",
+          "difference_vs_NN": 0.04284341676608893
+        }
+      ],
+      "mean": 0.03600686780263043,
+      "inference": "descriptive only; two stations per split; no equivalence or population significance claim"
+    },
+    {
+      "split": "unknown_station",
+      "method": "Cook_no_zones",
+      "values": [
+        {
+          "route_id": "RouteID_dd8d5fa3-8616-439b-b119-ec88901859e5",
+          "station": "DLA7",
+          "difference_vs_NN": -0.024826512917901986
+        },
+        {
+          "route_id": "RouteID_b5686ae2-be1f-4645-947a-53506c16df6f",
+          "station": "DLA7",
+          "difference_vs_NN": -0.08458031486956054
+        },
+        {
+          "route_id": "RouteID_a3861c4e-a179-4dbc-a105-6b59175ad74a",
+          "station": "DLA8",
+          "difference_vs_NN": 0.0019264995298090698
+        },
+        {
+          "route_id": "RouteID_6d1b6ce7-9c83-41e0-bd2b-e9a2201d24cf",
+          "station": "DLA8",
+          "difference_vs_NN": 0.009133746312336148
+        }
+      ],
+      "mean": -0.024586645486329328,
+      "inference": "descriptive only; two stations per split; no equivalence or population significance claim"
+    }
+  ],
+  "unknown_public_vs_no_history_identical_orders": true
+}

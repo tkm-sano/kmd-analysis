@@ -1,0 +1,25 @@
+input_id,quantity,value,unit,evidence_kind,material,measurement_or_design_conditions,source,source_location,applicability,evidence_grade,target_status
+I01,正極活物質真密度,,kg/m³,対象値未取得,Chen LP/S200,表面処理・相組成・SOC・試料に対応が必要,https://doi.org/10.1038/s41467-020-17126-3,本文/Methods、取得XML。補足本体は未取得,結晶真密度・tap密度・塗工かさ密度を相互代用しない,INSUFFICIENT,HOLD
+I02,正極乾燥塗工層密度,,kg/m³,対象値未取得,LP/S200+SuperP+PVDF75:15:10,calendering後、電極面積/実厚さ/塗工質量を同じ試料で取得,https://doi.org/10.1038/s41467-020-17126-3,Methods,ρbulk=mcoat/(A*t)、対象ρsolid/ε不明で数値確定不可,INSUFFICIENT,HOLD
+I03,対象電極空隙率,,1,対象値未取得,Chen LP/S200および仮想黒鉛負極,電極状態/加圧条件/測定法が必要,https://doi.org/10.1038/s41467-020-17126-3,本文/Methods,BatPaC既定値を対象実測として採用しない,INSUFFICIENT,HOLD
+I04,対象正極塗工厚さ,,µm,対象値未取得,LP/S200 composite,片面塗工厚さと箔込み厚さを区別,https://doi.org/10.1038/s41467-020-17126-3,Methods,粒子径、2–3nm表面再構成層は電極厚さでない,INSUFFICIENT,HOLD
+I05,対象負極厚さ,,µm,対象構成なし/未取得,ChenはLi対極、研究モデルは黒鉛,ChenのLi foil厚さも対象黒鉛厚さへ使えない,https://doi.org/10.1038/s41467-020-17126-3,Methods,黒鉛負極への変更は条件付き再設計,INSUFFICIENT,HOLD
+I06,正極活物質担持量,1–2,mg/cm²,対象電極実験の記載範囲,Chen LP/S200,Li対極CR2025、室温、2.0–4.8V、active basis,https://doi.org/10.1038/s41467-020-17126-3,Methods Electrochemical characterization,各LP/S試料の個別loadingが同じとは確認していない,DIRECT_REPORTED_RANGE,CONDITIONAL
+I07,正極乾燥配合,0.75/0.15/0.10,kg/kg,対象電極実験の配合,active/SuperP/PVDF,箔・液を除く乾燥塗工材,https://doi.org/10.1038/s41467-020-17126-3,Methods,大型全電池の製造性・密度を保証しない,DIRECT_REPORTED,CONDITIONAL
+I08,正極参照比容量,171.875/195.959596,Ah/kg,既存条件付き逆算参照,LP/S200,1C100cycleの保持率基準を逆算、初回実測ではない,configs/material_ev_stage2/conditional_scenarios.json,q_ref,旧値を維持。1–2mg範囲と組み合わせる診断で、試料別測定対を新造しない,CONDITIONAL_DERIVED,HOLD
+I09,正極面積容量,0.171875–0.343750 / 0.195959596–0.391919192,mAh/cm²,参照q×loadingの算術,LP/S200,q_ref*L/1000,I06+I08,derived,対象全電池の直接測定ではない,CONDITIONAL_DERIVED,HOLD
+I10,負極参照材料密度,2.24,g/cm³,別化学系設計参照,BatPaC NMC811/graphite,負極活物質G、after-formation N/P1.10,https://publications.anl.gov/anlpubs/2022/07/176234.pdf,Fig3.14 printed p27/PDF page46,対象黒鉛の実測ではない。参照負極の厚さ算術に限定,REFERENCE_DIRECT_TARGET_TRANSFER,HOLD
+I11,負極結着材密度,1.10,g/cm³,別化学系設計参照,BatPaC aqueous binder,負極98%active/2%binder、carbon0,https://publications.anl.gov/anlpubs/2022/07/176234.pdf,Fig3.14 printed p27/PDF page46,正極PVDF密度ではない。負極参照式だけに使用,REFERENCE_DIRECT_TARGET_TRANSFER,HOLD
+I12,負極炭素添加剤密度,1.95,g/cm³,別化学系設計参照,BatPaC carbon additive,Fig3.14配合carbon0%,https://publications.anl.gov/anlpubs/2022/07/176234.pdf,Fig3.14,SuperP当該gradeの真密度と同一視しない。今回の負極式への寄与0,REFERENCE_ONLY,HOLD
+I13,電極空隙率参照,0.25/0.35,1,別化学系設計参照,BatPaC,Fig3.14 screenshot=.25、Table3.1 power=.25/energy=.35,https://publications.anl.gov/anlpubs/2022/07/176234.pdf,Fig3.14;Table3.1 printed p16,二つの参照点。対象の達成範囲・信頼区間ではない。配合と空隙の組合せは条件付き,REFERENCE_DIRECT_TARGET_TRANSFER,HOLD
+I14,負極比容量/配合,360;0.98/0/0.02,Ah/kg;kg/kg,既存仮定/設計参照,黒鉛/炭素/aqueous binder,N/P1.10、u=1、E20kWh、V3.5,https://publications.anl.gov/anlpubs/2022/07/176234.pdf,Fig3.14 and existing SCENARIOS,対象LP/S黒鉛全電池でformation後に達成した値ではない,CONDITIONAL,HOLD
+I15,集電体厚さ参照,Al15/Cu10;Al20/Cu15,µm,別化学系設計参照,BatPaC energy/power,両面塗工、余白を除く下限,https://publications.anl.gov/anlpubs/2022/07/176234.pdf,Table3.1,ChenはAl箔使用を記載するが実厚さ未取得,REFERENCE_DIRECT_TARGET_TRANSFER,HOLD
+I16,箔密度,Al2699/Cu8960,kg/m³,公称元素密度参照,Al/Cu,bulk elemental density,https://physics.nist.gov/PhysRefData/XrayMassCoef/tab1.html,Table1,多孔電極のbulk densityへ代用しない,NOMINAL_REFERENCE,CONDITIONAL
+I17,膜厚さ/空隙率,25;0.41,µm;1,メーカー典型製品値,Celgard2400 PP membrane,2026 datasheet typical/calculated porosity,https://www.celgard.com/storage/components/2400_com_data_2026-01.pdf,page1,Chen使用銘柄と対応するが2020batch保証ではない,MANUFACTURER_TYPICAL_TRANSFER,HOLD
+I18,PP固相密度参照,0.90,g/cm³,別gradeのメーカー典型値,SCGC PP P405F film resin,ASTM D1505。packing用BOPP grade,https://www.scgchemicals.com/en/products-grade/p405f,Properties table,Celgard膜grade固相密度ではない。膜面積質量感度のみ,MANUFACTURER_OTHER_GRADE,HOLD
+I19,膜面積/面積質量,Asep>=Aface;13.275,m²;g/m²,下限面積/参照値組合せ算術,Celgard/PP transfer proxy,25µm*.59*900kg/m³,I17+I18,derived,13.275g/m²は測定値でなく参照計算。余白・折返し・実面積未確定,CONDITIONAL_DERIVED,HOLD
+I20,電解液密度,1.30,g/mL,同種組成・別製品のメーカー掲載文献値,Sigma746711,1M LiPF6 EC/DMC50/50 v/v、25°C lit.,https://www.sigmaaldrich.com/US/en/product/aldrich/746711,Properties density,ChenのCAPCHEM製品/batchと同一ではない,MANUFACTURER_OTHER_PRODUCT,HOLD
+I21,電解液の投入/含浸量,,mL/cell;kg,対象値未取得,CAPCHEM Chen electrolyte,全電極/膜の空隙、飽和度、過剰液を要する,https://doi.org/10.1038/s41467-020-17126-3,Methods,密度だけで量は決まらない。今回saturation=1は条件付き感度,INSUFFICIENT,HOLD
+I22,正極PVDFの比重参照,1.78,1,メーカー別grade代表値,Kureha Extron unfilled PVDF,D792、製品保証値ではない,https://www.kureha-extron.co.jp/products/resin/pvdf.html,物性表,Chen binder grade不明。bulk電極密度として使わない。今回は入力候補登録のみ,MANUFACTURER_OTHER_GRADE,HOLD
+I23,セル外装/タブ/パック部材,,kg,対象BOM未取得,対象57Ah級cell/20kWhpack,寸法・層数・面積・熱/電気定格に依存,https://publications.anl.gov/anlpubs/2022/07/176234.pdf,"§5.2.5,§5.3–5.6",19kg/15kgを詳細積算へ重ねない。実部材質量を確定不可,INSUFFICIENT,HOLD
+I24,面積/overhang参照,negative +2mm width/length;separator excess length4mm,mm,別化学系設計既定,BatPaC pouch design,aspect ratio3;whole layer count and dimensions also needed,https://publications.anl.gov/anlpubs/2022/07/176234.pdf,§5.2.5 printed pp58–60,層数と寸法不明のまま余白面積を単一値で代入しない,REFERENCE_ONLY,HOLD

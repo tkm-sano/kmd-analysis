@@ -1,0 +1,113 @@
+src/kmd_toc/baseline_a/rule_v1.py:45:    remaining, current, result = set(nodes), 0, []
+src/kmd_toc/baseline_a/rule_v1.py:46:    if len(remaining) != len(nodes):
+src/kmd_toc/baseline_a/rule_v1.py:48:    while remaining:
+src/kmd_toc/baseline_a/rule_v1.py:49:        chosen = min(remaining, key=lambda j: (float(problem.od.distance_m[current,j]), ids[j]))
+src/kmd_toc/baseline_a/rule_v1.py:51:        remaining.remove(chosen)
+src/kmd_toc/baseline_a/rule_v1.py:111:    overtime = sum(max(0,r-v.return_deadline_s) for r,v in zip(final,p.vehicles) if r is not None)
+src/kmd_toc/baseline_a/rule_v1.py:157:def generate(p, *, deadline=math.inf, max_evaluations=10000, clock=time.perf_counter,
+src/kmd_toc/baseline_a/rule_v1.py:176:        if clock() >= deadline:
+src/kmd_toc/baseline_a/rule_v1.py:182:            if clock() >= deadline or len(trace)>=max_evaluations:
+src/kmd_toc/baseline_a/rule_v1.py:183:                stop = 'PLANNING_TIME_LIMIT' if clock()>=deadline else 'EVALUATION_LIMIT'
+scripts/run_comparison_design.py:53:def stage(root,name,plan,*,resume=False,deadline=None):
+scripts/run_comparison_design.py:63:    plan['design_extension']['pipeline_deadline_perf_counter']=deadline
+scripts/run_comparison_design.py:103:                origin=min(j['deadline_perf_counter']-j['case']['budget_wall_s'] for j in jobs)-300
+scripts/run_comparison_design.py:109:    deadline=started+max(0.,rules['pilot']['maximum_pipeline_wall_s']-previous_elapsed)-300
+scripts/run_comparison_design.py:123:            rules['pilot']['selection_repetitions'],rules['pilot']['seed_root']+index),resume=resume,deadline=deadline)
+scripts/run_comparison_design.py:140:        rules['pilot']['variance_repetitions'],rules['pilot']['seed_root']+100,lock),resume=resume,deadline=deadline)
+scripts/run_comparison_design.py:143:        rules['pilot']['confirmation_repetitions'],rules['pilot']['confirmation_seed_root'],lock),resume=resume,deadline=deadline)
+src/kmd_toc/dwt/budget.py:1:"""An end-to-end deadline; budget is never substituted for measured wall time."""
+src/kmd_toc/dwt/budget.py:11:    def __init__(self, seconds, reserve_fraction=0.08, clock=time.perf_counter, capture_sink=None,
+src/kmd_toc/dwt/budget.py:12:                 adaptive_validation=False, verification_passes=2, jitter_fraction=0.02):
+src/kmd_toc/dwt/budget.py:14:                or not math.isfinite(reserve_fraction) or not 0 <= reserve_fraction < 1):
+src/kmd_toc/dwt/budget.py:19:        self.deadline = self.start + seconds
+src/kmd_toc/dwt/budget.py:20:        self.reserve = seconds * reserve_fraction
+src/kmd_toc/dwt/budget.py:26:        self.jitter_fraction = jitter_fraction
+src/kmd_toc/dwt/budget.py:34:                               + self.seconds * self.jitter_fraction)
+src/kmd_toc/dwt/budget.py:45:        remaining = self.deadline - self.clock() - (0 if validation else self.reserve)
+src/kmd_toc/dwt/budget.py:46:        if remaining <= 0:
+src/kmd_toc/dwt/budget.py:48:        return remaining if cap is None else min(remaining, cap)
+src/kmd_toc/dwt/parallel.py:1:"""Bounded CPU-parallel multi-start, one external trial and one wall deadline.
+src/kmd_toc/dwt/parallel.py:54:    fraction = policy['coordinator_reserve_fraction']
+src/kmd_toc/dwt/parallel.py:55:    if type(fraction) not in (int, float) or not math.isfinite(fraction) or not 0 < fraction < 1:
+src/kmd_toc/dwt/parallel.py:58:            'native_threads_per_branch': 1, 'coordinator_reserve_fraction': fraction,
+src/kmd_toc/dwt/parallel.py:85:def _branch_entry(spec, out, cpu, go, deadline, ready):
+src/kmd_toc/dwt/parallel.py:104:            remaining = deadline.value - time.perf_counter()
+src/kmd_toc/dwt/parallel.py:105:            if remaining <= 0:
+src/kmd_toc/dwt/parallel.py:108:            local = {**spec, 'tau_s': remaining}
+src/kmd_toc/dwt/parallel.py:126:        process.join(timeout=.3)
+src/kmd_toc/dwt/parallel.py:129:            process.join(timeout=.3)
+src/kmd_toc/dwt/parallel.py:197:    go, deadline = context.Event(), context.Value('d', 0.)
+src/kmd_toc/dwt/parallel.py:211:            process = context.Process(target=_branch_entry, args=(branch_spec, str(branch_out), cpu, go, deadline, send))
+src/kmd_toc/dwt/parallel.py:217:        setup_deadline = setup_begin + spec['config'].get('dependency_setup_limit_s', 240)
+src/kmd_toc/dwt/parallel.py:219:            if not recv.poll(max(0., setup_deadline - time.perf_counter())):
+src/kmd_toc/dwt/parallel.py:234:        dump(out / 'progress.json', {'start_perf_counter': start, 'deadline': start + spec['tau_s'],
+src/kmd_toc/dwt/parallel.py:241:        deadline.value = start + spec['tau_s'] * (1 - profile['coordinator_reserve_fraction'])
+src/kmd_toc/dwt/parallel.py:246:            if time.perf_counter() >= deadline.value:
+src/kmd_toc/dwt/parallel.py:343:        dump(out / 'progress.json', {'start_perf_counter': start, 'deadline': start + spec['tau_s'],
+src/kmd_toc/dwt/worker.py:34:    budget = Budget(spec['tau_s'], spec['config']['allocation']['validation_reserve_fraction'],
+src/kmd_toc/dwt/worker.py:37:                    verification_passes=spec['config']['allocation'].get('remaining_verification_passes', 2),
+src/kmd_toc/dwt/worker.py:38:                    jitter_fraction=spec['config']['allocation'].get('validation_jitter_fraction', .02))
+src/kmd_toc/dwt/worker.py:43:    dump(out / 'progress.json', {'start_perf_counter': budget.start, 'deadline': budget.deadline, 'timing_finished': False,
+src/kmd_toc/dwt/worker.py:81:                        'hybrid': budget.evidence.get('D_hybrid_master', {}).get('outcome', {'catalogue_construction': {'truncated_at_time_limit': None, 'not_executed': True}}),
+src/kmd_toc/dwt/worker.py:102:    dump(out / 'progress.json', {'start_perf_counter': budget.start, 'deadline': budget.deadline,
+src/kmd_toc/dwt/experiment.py:51:    def wait(self, timeout=None):
+src/kmd_toc/dwt/experiment.py:52:        self.process.join(timeout)
+src/kmd_toc/dwt/experiment.py:54:            raise subprocess.TimeoutExpired('preloaded worker', timeout)
+src/kmd_toc/dwt/experiment.py:133:            # An independent process enforces the actual shared wall deadline.
+src/kmd_toc/dwt/experiment.py:134:            expired = (current and not current.get('timing_finished') and now > current['deadline'])
+src/kmd_toc/dwt/experiment.py:135:            startup_timeout = not current and now - started > spec['config'].get('dependency_setup_limit_s', 240)
+src/kmd_toc/dwt/experiment.py:136:            output_timeout = current.get('timing_finished') and now - current['deadline'] > 30
+src/kmd_toc/dwt/experiment.py:137:            if expired or startup_timeout or output_timeout:
+src/kmd_toc/dwt/experiment.py:141:                    process.wait(timeout=2)
+src/kmd_toc/comparison_v1/design_report.py:25:    parent_start=job['deadline_perf_counter']-row['budget_wall_s'] if job else None
+src/kmd_toc/comparison_v1/design_report.py:53:        'target_censored':not hit,'censor_deadline_s':row['budget_wall_s'],
+src/kmd_toc/comparison_v1/design_report.py:225:        'remaining_research_decisions':rules['main']['decision_required'],
+src/kmd_toc/pipeline/route_pairs.py:53:            records=[];connection=http.client.HTTPConnection('127.0.0.1',port,timeout=60)
+src/kmd_toc/pipeline/route_pairs.py:109:                try:result=results.get(timeout=90)
+src/kmd_toc/pipeline/route_pairs.py:115:                child.join(timeout=2)
+src/kmd_toc/pipeline/route_pairs.py:147:            for case in ['ROAD_N6','ROAD_N20','ROAD_N120','ROAD_N240']:
+src/kmd_toc/pipeline/hybrid.py:57:        r=milp(cost,integrality=np.ones(len(indices)),bounds=Bounds(0,1),constraints=[LinearConstraint(a,1,1),LinearConstraint(b,-np.inf,rhs)],options={'time_limit':seconds,'mip_rel_gap':0.0,**native})
+src/kmd_toc/pipeline/hybrid.py:59:        remaining=max(0.,seconds-(time.perf_counter()-begin))
+src/kmd_toc/pipeline/hybrid.py:60:        if r.x is not None and remaining>0.001:
+src/kmd_toc/pipeline/hybrid.py:65:                options={'time_limit':remaining,'mip_rel_gap':0.0,**native})
+src/kmd_toc/comparison_v1/evaluation.py:124:            'success_rate_denominator':'all executions with valid common input, including runtime errors and timeouts',
+src/kmd_toc/dwt/audit.py:65:            check(label + ':return_and_shift', clock == trip['return_s'] <= vehicles[v]['return_deadline_s'])
+src/kmd_toc/comparison_v1/contract.py:206:                        'cpu_ids':None,'coordinator_reserve_fraction':.2}})
+src/kmd_toc/comparison_v1/design.py:16:        config['allocation']['C_routing_fraction'] = .25
+src/kmd_toc/pipeline/roads.py:25:    with urlopen(url,timeout=120) as r:return json.load(r)
+src/kmd_toc/pipeline/classical.py:48:    params.time_limit.seconds=seconds;params.sat_parameters.num_search_workers=1;params.sat_parameters.random_seed=seed;routing.solver().ReSeed(seed)
+src/kmd_toc/comparison_v1/execution.py:44:    try:process.wait(timeout=.2)
+src/kmd_toc/comparison_v1/execution.py:48:    process.wait(timeout=2)
+src/kmd_toc/comparison_v1/execution.py:65:def supervise(command,out,deadline,on_message,*,memory_limit_MiB=None,dependency_prefix=None):
+src/kmd_toc/comparison_v1/execution.py:66:    # Linux subreaper prevents orphaned fork grandchildren/zombies after timeout.
+src/kmd_toc/comparison_v1/execution.py:77:                if time.perf_counter()>=deadline:raise OuterDeadline('COMMON_OUTER_WALL_LIMIT')
+src/kmd_toc/comparison_v1/execution.py:136:            'O_s':max(0,returned-v.return_deadline_s) if own else 0})
+src/kmd_toc/comparison_v1/execution.py:155:    start=time.perf_counter();deadline=start+case['budget_wall_s'];cpu=time.process_time()
+src/kmd_toc/comparison_v1/execution.py:177:        atomic(out/'job.json',{'manifest':manifest,'case':case,'run':run,'deadline_perf_counter':deadline})
+src/kmd_toc/comparison_v1/execution.py:204:            if valid and time.perf_counter()<deadline:
+src/kmd_toc/comparison_v1/execution.py:213:                if time.perf_counter()<deadline:
+src/kmd_toc/comparison_v1/execution.py:220:        process_info=supervise([sys.executable,'-B','-m','kmd_toc.comparison_v1.worker',str(out)],out,deadline,receive,**control_options)
+src/kmd_toc/comparison_v1/execution.py:303:        pipeline_deadline=manifest.get('design_extension',{}).get('pipeline_deadline_perf_counter')
+src/kmd_toc/comparison_v1/execution.py:305:        if pipeline_deadline and time.perf_counter()+case['budget_wall_s']+10>pipeline_deadline:
+src/kmd_toc/comparison_v1/execution.py:307:                'remaining':'NOT_STARTED; no shortened trials or replacement'})
+src/kmd_toc/comparison_v1/execution.py:316:                'remaining':'preserve as NOT_STARTED; no replacement'})
+src/kmd_toc/dwt/methods.py:99:        seconds = int(budget.left(config['allocation']['C_routing_fraction'] * budget.seconds))
+src/kmd_toc/dwt/methods.py:123:                         cap=budget.seconds * a['D_seed_fraction'])
+src/kmd_toc/dwt/methods.py:150:            # HiGHS deadline. Native inability to stop is caught by watchdog.
+src/kmd_toc/dwt/methods.py:156:                        bounds=(0, None), method='highs', options={'time_limit': seconds, **native})
+src/kmd_toc/dwt/methods.py:175:    def solve(pool, fraction):
+src/kmd_toc/dwt/methods.py:177:        window = budget.left(budget.seconds * fraction)
+src/kmd_toc/dwt/methods.py:179:        construction_end = begin + window * config['D'].get('column_construction_fraction_of_stage', .35)
+src/kmd_toc/dwt/methods.py:214:            outcome = {'stage_timeout': str(error), 'IP': {'success': False}, 'LP': {'success': False}}
+src/kmd_toc/dwt/methods.py:215:        outcome['catalogue_construction'] = {'truncated_at_time_limit': stop, 'attempted_patterns': attempted,
+src/kmd_toc/dwt/methods.py:216:                                              'validated_columns': len(columns), 'construction_window_s': window * config['D'].get('column_construction_fraction_of_stage', .35),
+src/kmd_toc/dwt/methods.py:220:    columns, base, base_calls = solve(routes, a['D_base_fraction'])
+src/kmd_toc/dwt/methods.py:228:    quantum_end = time.perf_counter() + budget.left(budget.seconds * a['D_quantum_fraction'])
+src/kmd_toc/dwt/methods.py:289:    cols, solved, calls = solve(pool, a['D_hybrid_fraction'])
+src/kmd_toc/comparison_v1/worker.py:55:        def native_timeout(*_):raise TimeoutError('FROZEN_A_NATIVE_180S_LIMIT')
+src/kmd_toc/comparison_v1/worker.py:56:        signal.signal(signal.SIGALRM,native_timeout)
+src/kmd_toc/comparison_v1/worker.py:61:        plan,diagnostic=generate(p,deadline=native_start+cfg['limits']['planning_absolute_wall_s'],
+src/kmd_toc/comparison_v1/worker.py:81:        # Reserve 10% of remaining outer wall for transfer and final parent checks.
+src/kmd_toc/comparison_v1/worker.py:82:        remaining=job['deadline_perf_counter']-time.perf_counter()
+src/kmd_toc/comparison_v1/worker.py:83:        if remaining<=0:raise TimeoutError('NO_REMAINING_COMMON_BUDGET')
+src/kmd_toc/comparison_v1/worker.py:84:        native_seconds=min(remaining*.9,case['case_parameters'].get('BCD_native_cap_s') or remaining*.9)

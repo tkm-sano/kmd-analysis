@@ -1,0 +1,97 @@
+{
+  "synthetic_household_rows": 384353,
+  "unique_household_ids": 384353,
+  "positive_request_rows": 73547,
+  "unique_positive_households": 73547,
+  "mapped_positive_request_references": 73200,
+  "mapped_positive_households": 73200,
+  "positive_mapped_buildings": 39956,
+  "stops": 39956,
+  "missing_stop_buildings": [],
+  "extra_stop_buildings": [],
+  "duplicate_request_ids": 0,
+  "duplicate_assignment_households": 0,
+  "unmapped_request_rows": 347,
+  "historical_amount_request_total": 82246,
+  "historical_amount_stop_total": 81859,
+  "historical_amount_is_not_new_parcel_count": true,
+  "generation_seeds": {
+    "20260829": 73547
+  },
+  "generation_models": {
+    "household-parcel-propensity-v1": 73547
+  },
+  "distribution": {
+    "poisson": 73547
+  },
+  "evaluation_dates": {
+    "2026-01-01": 73547
+  },
+  "assignment_seeds": {
+    "20260830": 384353
+  },
+  "saved_summary": {
+    "schema_version": "household-parcel-stop-v1-scoped-accepted-mapping",
+    "evaluation_date": "2026-01-01",
+    "housing_assignment_seed": 20260830,
+    "synthetic_households": 384353,
+    "assigned_households": 382369,
+    "no_candidate_households": 206,
+    "unsupported_housing_type_households": 1778,
+    "unresolved_upstream_mapping_households": 0,
+    "unique_assigned_buildings": 85690,
+    "households_per_assigned_building": {
+      "count": 85690,
+      "min": 1.0,
+      "median": 2.0,
+      "max": 44.0
+    },
+    "active_requests": 73547,
+    "mapped_requests": 73200,
+    "active_households": 73200,
+    "active_buildings": 39956,
+    "stop_count": 39956,
+    "requests_per_stop": {
+      "count": 39956,
+      "min": 1.0,
+      "median": 1.0,
+      "max": 12.0
+    },
+    "parcel_equivalent_per_stop": {
+      "count": 39956,
+      "min": 1.0,
+      "median": 2.0,
+      "max": 14.0
+    },
+    "daily_request_parcel_equivalent": 82246,
+    "request_building_parcel_equivalent": 81859,
+    "stop_parcel_equivalent": 81859,
+    "full_request_parcel_conservation": false,
+    "assigned_scope_parcel_conservation": true,
+    "same_chocho_violations": 0,
+    "sumo_mapping_executed": false,
+    "sumo_status": "blocked_by_unresolved_snap_rule",
+    "dwelling_units_used": false,
+    "entrances_used": false,
+    "capacity_constraint_used": false,
+    "nearest_fallback_used": false,
+    "formal_mapping_scope": "mapping_status in {matched, matched_cross_boundary}; ambiguous/outside/internal excluded",
+    "config_sha256": "a9c8cb4bff2b087db7e5848efafe24acfa39a2ce974722ffbfdb13a7599cd68a",
+    "input_artifact_sha256": {
+      "synthetic_households.csv": "fbb7ace4fa84e927898088885db727576cf3b33490562ca43928fbd1470f69be",
+      "daily_requests.csv": "4bb78cf27b2a3e9a0648cca39266cb06de4dee0789febed9cd74b61a8e4c2f99",
+      "residential_building_candidates.parquet": "d8381d02f57f502d44eeb19ed0126caa96f6f1ec5604eeae470b8a452a234f6f",
+      "plateau_buildings_all_with_chocho_points.geo.parquet": "6779656a0719bb91b9bf97513e23498d88f5bc9eacdebccfcc7d5b1b5e161fa0"
+    },
+    "regeneration_check": "housing assignment compared in-memory with same seed; materialized assignment/stop artifacts are deterministic for fixed inputs and seed"
+  },
+  "full_original_regeneration": "NOT_PERFORMED_OR_PROVEN; original household/building generator unrecovered",
+  "checks": {
+    "households_384353": true,
+    "positive_requests_73547": true,
+    "mapped_positive_73200": true,
+    "stops_39956": true,
+    "all_positive_mapped_buildings_present": true,
+    "saved_summary_counts": true
+  }
+}

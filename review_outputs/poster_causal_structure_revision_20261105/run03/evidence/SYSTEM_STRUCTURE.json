@@ -1,0 +1,180 @@
+{
+  "nodes": [
+    {
+      "id": "actors",
+      "x": 205,
+      "y": 174,
+      "w": 145,
+      "h": 62,
+      "title": "利用主体",
+      "body": "役割として置く計画担当・設計担当\n構成の選択・評価・利用を担う",
+      "status": "B"
+    },
+    {
+      "id": "rules",
+      "x": 415,
+      "y": 174,
+      "w": 150,
+      "h": 62,
+      "title": "規則・判断基準・慣行",
+      "body": "目的・評価の基準・作業手順\n現場での具体的な内容は未調査",
+      "status": "B"
+    },
+    {
+      "id": "configuration",
+      "x": 280,
+      "y": 292,
+      "w": 210,
+      "h": 62,
+      "title": "技術・運用の構成",
+      "body": "計画システム・車両・電池\n計算の分担と設計・運行の組合せ",
+      "status": "B"
+    },
+    {
+      "id": "route_scope",
+      "x": 15,
+      "y": 468,
+      "w": 160,
+      "h": 49,
+      "title": "A 範囲・主対照",
+      "body": "古典側が範囲 S と\n主対照 JC を設定",
+      "status": "A"
+    },
+    {
+      "id": "route_candidate",
+      "x": 208,
+      "y": 468,
+      "w": 160,
+      "h": 49,
+      "title": "A 候補の取得",
+      "body": "理想量子モデルで\n候補経路を得る\n（CPU数値計算）",
+      "status": "A"
+    },
+    {
+      "id": "route_adoption",
+      "x": 401,
+      "y": 468,
+      "w": 178,
+      "h": 49,
+      "title": "A 検証／C 採用",
+      "body": "JCとの差・制約を検証\n締切 H 内での採用\nは未確認",
+      "status": "B"
+    },
+    {
+      "id": "material_adoption",
+      "x": 15,
+      "y": 627,
+      "w": 160,
+      "h": 49,
+      "title": "C 設計への利用",
+      "body": "物性情報を設計に\n採用する接続は\n今回は未検証",
+      "status": "C"
+    },
+    {
+      "id": "material_balance",
+      "x": 208,
+      "y": 627,
+      "w": 160,
+      "h": 49,
+      "title": "B 設計・部材",
+      "body": "容量一定の設計仮定\n部材の質量収支\n正味軽量化 b−δ",
+      "status": "B"
+    },
+    {
+      "id": "material_DC",
+      "x": 401,
+      "y": 627,
+      "w": 178,
+      "h": 49,
+      "title": "A/B 走行応答",
+      "body": "走行総質量 m\n固定の速度軌跡\n→ DC電力量",
+      "status": "A"
+    }
+  ],
+  "edges": [
+    {
+      "id": "rules_actors",
+      "source": "rules",
+      "target": "actors",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "actors_rules",
+      "source": "actors",
+      "target": "rules",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "actors_config",
+      "source": "actors",
+      "target": "configuration",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "config_actors",
+      "source": "configuration",
+      "target": "actors",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "rules_config",
+      "source": "rules",
+      "target": "configuration",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "config_rules",
+      "source": "configuration",
+      "target": "rules",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "quantum_config",
+      "source": "quantum_candidate",
+      "target": "configuration",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "route_search",
+      "source": "route_scope",
+      "target": "route_candidate",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "route_verification",
+      "source": "route_candidate",
+      "target": "route_adoption",
+      "status": "A",
+      "label": ""
+    },
+    {
+      "id": "material_use",
+      "source": "material_adoption",
+      "target": "material_balance",
+      "status": "C",
+      "label": ""
+    },
+    {
+      "id": "material_mass_DC",
+      "source": "material_balance",
+      "target": "material_DC",
+      "status": "B",
+      "label": ""
+    },
+    {
+      "id": "symbolic_entry",
+      "source": "symbolic_assumptions",
+      "target": "material_balance",
+      "status": "B",
+      "label": ""
+    }
+  ]
+}

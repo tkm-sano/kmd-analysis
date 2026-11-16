@@ -1,0 +1,230 @@
+{
+  "schema_version": "1.0",
+  "decision_version": "A-external-reference-v1.1",
+  "decided_on": "2026-11-11",
+  "status": "CONDITIONAL GO",
+  "role": "external_references_by_metric",
+  "common_conditions_version": "AD-common-20261111-v1.1",
+  "method_A_optimization_required": false,
+  "joint_observation": false,
+  "sources": {
+    "E05": {
+      "url": "https://www.sagawa-exp.co.jp/about-csr/column/article_33.html",
+      "archive": "output/toc_delivery/a_baseline_20261111/sources/SAGAWA_DISTANCE.html",
+      "sha256": "29de36b90aeaab6e2e778f44348c8bb18c1fb94a5a466b065b7630fd0a5b8a92",
+      "text": "output/toc_delivery/a_baseline_20261111/sources/SAGAWA_DISTANCE.txt"
+    },
+    "E07": {
+      "url": "https://loogia.jp/cases/nihonyubin/",
+      "archive": "output/toc_delivery/a_baseline_20261111/sources/JP_CASE.html",
+      "sha256": "11b2d52144e4449e33f92a6553df26e17c3f898b7e332619e2f38985d45843fd",
+      "text": "output/toc_delivery/a_baseline_20261111/sources/JP_CASE.txt"
+    },
+    "E11": {
+      "url": "https://www.mlit.go.jp/report/press/content/002011131.pdf",
+      "archive": "output/toc_delivery/a_applicability_20261111/sources/MLIT_SURVEY_2026.pdf",
+      "sha256": "2e22e8c3c29e1e8e098494a776d9ade3296d8d813e48bb877f68357d4baba3a1",
+      "text": "output/toc_delivery/a_applicability_20261111/sources/MLIT_SURVEY_2026.txt",
+      "locator": "PDF p.2, 2025年度 graph; visual inspection archived as MLIT_SURVEY_2026_p2.png"
+    }
+  },
+  "external_references": [
+    {
+      "id": "A_D_urban",
+      "metric": "D_observed_vehicle_day_km",
+      "operator": "佐川急便",
+      "evidence_id": "E05",
+      "value": 13,
+      "unit": "km/observed_vehicle_day",
+      "value_kind": "operator_published_measured_example",
+      "observation_date": "2025-01-10",
+      "observation_days": 1,
+      "scope": "one Tokyo driver course, deliveries and collections, commercial and residential",
+      "unique_stops": null,
+      "fleet_size": null,
+      "trip_count": null,
+      "distance_instrument": null,
+      "raw_logs_available": false,
+      "comparable_to_S1_S3_total": false
+    },
+    {
+      "id": "A_T_experienced",
+      "metric": "T_route_preparation_s",
+      "operator": "日本郵便",
+      "evidence_id": "E07",
+      "range": [
+        300,
+        600
+      ],
+      "original_range_minutes": [
+        5,
+        10
+      ],
+      "unit": "s/driver_route_preparation",
+      "conversion": "minutes * 60",
+      "value_kind": "operator_reported_range_unit_conversion",
+      "planning_method": "paper_map",
+      "experience": "experienced",
+      "article_as_of_year": 2021,
+      "measurement_period": null,
+      "measurement_protocol": null,
+      "raw_logs_available": false,
+      "common_T_boundary_matched": false
+    },
+    {
+      "id": "A_T_novice",
+      "metric": "T_route_preparation_s",
+      "operator": "日本郵便",
+      "evidence_id": "E07",
+      "range": [
+        1800,
+        3600
+      ],
+      "original_range_minutes": [
+        30,
+        60
+      ],
+      "unit": "s/driver_route_preparation",
+      "conversion": "minutes * 60; 1 hour = 60 minutes",
+      "value_kind": "operator_reported_approximate_range_unit_conversion",
+      "planning_method": "paper_map",
+      "experience": "novice",
+      "article_as_of_year": 2021,
+      "measurement_period": null,
+      "measurement_protocol": null,
+      "raw_logs_available": false,
+      "common_T_boundary_matched": false
+    }
+  ],
+  "missing_metrics": {
+    "D_total_km": {
+      "value": null,
+      "status": "not_obtained_at_common_plan_scope"
+    },
+    "W_min": {
+      "value": null,
+      "status": "not_obtained_at_common_ready_to_loading_boundary"
+    },
+    "T_common_s": {
+      "value": null,
+      "status": "not_obtained_at_common_timing_boundary"
+    }
+  },
+  "auxiliary_references": [
+    {
+      "id": "D_rural",
+      "evidence_id": "E05",
+      "value": 148,
+      "unit": "km/observed_vehicle_day",
+      "use": "regional_context_only_not_a_range_with_urban"
+    },
+    {
+      "id": "T_novice_with_Loogia",
+      "evidence_id": "E07",
+      "range_s": [
+        600,
+        900
+      ],
+      "original_range_minutes": [
+        10,
+        15
+      ],
+      "use": "separate_system_assisted_condition_not_conventional_A"
+    },
+    {
+      "id": "Sagawa_reductions",
+      "evidence_id": "E06",
+      "driver_order": [
+        "regular",
+        "substitute",
+        "new_or_support"
+      ],
+      "D_reduction_km": [
+        10,
+        9,
+        11
+      ],
+      "route_preparation_reduction_min": [
+        10,
+        15,
+        30
+      ],
+      "use": "differences_only_not_absolute_baseline"
+    },
+    {
+      "id": "JP_combined_work_gap",
+      "evidence_id": "E07",
+      "before_min": 67,
+      "after_min": 17,
+      "use": "route_creation_plus_delivery_between_experience_groups_NOT_T"
+    },
+    {
+      "id": "general_freight_waiting_context",
+      "evidence_id": "E11",
+      "metric": "general_freight_operation_waiting_min",
+      "value": 60,
+      "unit": "min/general_freight_operation",
+      "value_kind": "government_survey_reported_average",
+      "survey_fiscal_year": 2025,
+      "published_on": "2026-07-10",
+      "reported_n": 1032,
+      "survey_collection_period": [
+        "2025-11-25",
+        "2025-12-24"
+      ],
+      "reported_operation_period": "representative day in April-August 2025",
+      "common_W_boundary_matched": false,
+      "comparable_to_S1_S3_total": false,
+      "use": "general_freight_context_only_NOT_A_W",
+      "not_loading_or_ancillary_time": true
+    }
+  ],
+  "scenarios": {
+    "S1": {
+      "stops": 1000,
+      "vehicles": 10,
+      "berths": 2,
+      "D_km": null,
+      "W_min": null,
+      "T_s": null,
+      "status": "NO_SAME_CONDITION_A_RESULT"
+    },
+    "S2": {
+      "stops": 2000,
+      "vehicles": 20,
+      "berths": 4,
+      "D_km": null,
+      "W_min": null,
+      "T_s": null,
+      "status": "NO_SAME_CONDITION_A_RESULT"
+    },
+    "S3": {
+      "stops": 4000,
+      "vehicles": 40,
+      "berths": 8,
+      "D_km": null,
+      "W_min": null,
+      "T_s": null,
+      "status": "NO_SAME_CONDITION_A_RESULT"
+    }
+  },
+  "prohibited_uses": [
+    "joint_D_W_T_point",
+    "linear_scaling_to_S1_S3",
+    "same_condition_performance_ratio",
+    "A_pareto_dominance",
+    "epsilon_calibration_from_external_values",
+    "impute_missing_W_with_zero"
+  ],
+  "uncertainties": [
+    "D_delivery_counts_fleet_trips_and_collection_share_unknown",
+    "D_single_day_not_population_average",
+    "T_stops_fleet_trips_dates_samples_and_clock_boundaries_unknown",
+    "T_reported_not_independently_timed",
+    "different_operators_periods_and_scopes",
+    "W_general_freight_60min_not_depot_loading_ready_boundary",
+    "foreign_reconstruction_materials_not_observed_D_T_W",
+    "scale_transfer_not_validated_for_any_candidate"
+  ],
+  "applicability_assessment": "docs/research/toc_delivery_a/A_APPLICABILITY_ASSESSMENT.json"
+}

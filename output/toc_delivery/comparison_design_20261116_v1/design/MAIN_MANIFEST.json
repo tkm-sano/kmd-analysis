@@ -1,0 +1,441 @@
+{
+  "experiment_id": "comparison_design_20261116_v1_main_pending",
+  "phase": "formal",
+  "executable": false,
+  "start_gate": {
+    "pilot_pipeline_complete": true,
+    "variance_estimation_available": true,
+    "settings_qualification_passed": true,
+    "confirmation_all_adoptable": false,
+    "main_start_allowed": false,
+    "main_started": false,
+    "main_decision": "HOLD",
+    "remaining_research_decisions": [
+      "primary h_D in km",
+      "required feasible/target probability precision",
+      "total main wall-cost ceiling; auxiliary scales/precision requirements"
+    ],
+    "engineering_blockers": [
+      "confirmation contains failures"
+    ],
+    "attempts_executed": 90,
+    "accepted_plans": 83,
+    "measured_total_attempt_wall_s": 9803.494740581606,
+    "selected_profile": {
+      "id": "retained",
+      "tau_s": 240,
+      "native_cap_s": 150,
+      "C_routing_fraction": 0.5,
+      "D": {
+        "pricing_rounds": 2,
+        "max_evaluations": 80,
+        "restarts": 1,
+        "p": 2,
+        "macro_groups": 3,
+        "train_shots": 1000,
+        "final_shots": 4096
+      }
+    },
+    "setting_identity": "db86b1c551bd6a6c56b3f0590cd890238b1c4fcc5a5347129db61766a244f620",
+    "M_per_scale": 1,
+    "independent_demand_families": 1,
+    "formal_A_reference_registered": false,
+    "main_R_a": null
+  },
+  "comparison_contract": "whole-method-A_rule_v1-20261115-comparison-v1",
+  "code_version": {
+    "HEAD": "8605d5412f6af62229a83095c35ab04c8c7dd9b1",
+    "workspace": "dirty; source_hashes and SOURCE_SNAPSHOT are authoritative"
+  },
+  "source_hashes": {
+    "src/kmd_toc/__init__.py": "013436e9b3e741b9f5eb81e26562de92772d66acc9126614f828f6f9069c5fd2",
+    "src/kmd_toc/baseline_a/__init__.py": "6873a440a32cf381898315b4643f7b520a0b58a5596598c91101bd76e3e7d3fd",
+    "src/kmd_toc/baseline_a/area.py": "518c51de849db834661925f79170f46ca2b24647daa16438a6715f88dd4aeda3",
+    "src/kmd_toc/baseline_a/area_program.py": "05288b2429c728f705ddfe00f299b3f7809ba8da14b7f4e18c7228594a236ea6",
+    "src/kmd_toc/baseline_a/area_study.py": "52a75c19f6a3aaf21576faab5b9cffa2c208496b17b37bfd041e39ecfb4d8fc6",
+    "src/kmd_toc/baseline_a/config.py": "afd293d3e22d24b241aec3ae2d4e4785407dcfa97679f5245079cf0099535fc8",
+    "src/kmd_toc/baseline_a/construction.py": "720946795615c3d45e289261f348e31928bd4beb985de7ce1136d70f51cce105",
+    "src/kmd_toc/baseline_a/fixtures.py": "59878ce17c8a10907132ae6c2be70b8e6ec74535f8a75b7dfe0cdfb8faf14a23",
+    "src/kmd_toc/baseline_a/human_time.py": "df38a903bd6ea10f035c030e0247ec70be9310d0f5b1c2a59fdd19f386ff4419",
+    "src/kmd_toc/baseline_a/independent.py": "d48830c0a40c124768aa13f704feb467cb32c6dc5de4c40bfddfbd3c38856d0f",
+    "src/kmd_toc/baseline_a/program.py": "d8db38de0e4e989263e03c2c39c4a21d33dc87f2e0cf3dcf13e8e2de7ae23310",
+    "src/kmd_toc/baseline_a/program_validation.py": "d1df269301c27eba06e906836faf1e25e7827474a46a303d13c1f564c6b3e525",
+    "src/kmd_toc/baseline_a/rule_inputs.py": "d39d8009afe185d62ff29dc158611c193817aaa72a807788077b607d8d68da7b",
+    "src/kmd_toc/baseline_a/rule_v1.py": "1ed48568fddc42dd612f5efaf59f3dcad5d44b61c3eede9447e7551b671e4bd9",
+    "src/kmd_toc/baseline_a/rule_validation.py": "33aedab1ca614c7b33f57bed1aae094fa265017e50644a4b5ff2a2e98665986b",
+    "src/kmd_toc/baseline_a/runner.py": "fb37e48bf587bc9f88e27ee789363bbecfaf2a7c31d7d4c5d1d49fbe319a0bb8",
+    "src/kmd_toc/baseline_a/sequence_validation.py": "f13a1fc30a5d61451494c13ca4facf2a3359ca1af5fec6a326ef134b12a018b6",
+    "src/kmd_toc/column_generation/__init__.py": "52182a465859e8d3a1d7849978f5e8b1e0f776470bd5cfc5e2cc413f7f9b65ba",
+    "src/kmd_toc/column_generation/aoa.py": "37b6016908a86192ef913203c2445ecd660116412d74ab1878ee403b1b468e42",
+    "src/kmd_toc/column_generation/backends.py": "318a6b6b187a81a447fe56a515211dcf997733963c4530d839d04f03ce59f414",
+    "src/kmd_toc/column_generation/experiment.py": "1e760066d6491d5d8fcbc1b988502cb5beaddec251e9b680f2b6977dd529f538",
+    "src/kmd_toc/column_generation/master.py": "d158402e21fc83cdac486fd379f3d115288e8b0243f278ef6e21c24272cac205",
+    "src/kmd_toc/column_generation/models.py": "a5288f2243964d13001a250b458a08a14ba81cdb8292708eda03eddc58a4e859",
+    "src/kmd_toc/column_generation/reduction.py": "e5d4d60c4db4b93b3e578ccb36d17938c3fd1534fbf2e48f3c243d5e9f75678b",
+    "src/kmd_toc/column_generation/runner.py": "8ef9173cb214fd76c044e19d2f62136a8a68ec8ce9c88d6fa8b37689a73a1e9d",
+    "src/kmd_toc/common/__init__.py": "04eef8da0e50cda279ef978313db6f76ac8693ad400b54470589fa580f0e627c",
+    "src/kmd_toc/common/adapters.py": "cf6327ce47e90d918f672e9ee7587b68cf6ed93db1417cbf554a5ac9a4015646",
+    "src/kmd_toc/common/config.py": "0dc26074b494caab0774efad39266ac387d9de243a951d9762b2ec592b881e17",
+    "src/kmd_toc/common/models.py": "0728fd830be92a967b13c8f0d987a4ef9ad0520d604e20893192ddb4d41f2245",
+    "src/kmd_toc/common/od.py": "7c4674802728c68e6ca482b803259557ab6f10caaa99b9e10bbd88ad0a02164b",
+    "src/kmd_toc/common/runtime.py": "1e5880c525748656790971a156e221e792e5a6cf198476c425268498067645a6",
+    "src/kmd_toc/common/validation.py": "04da39c20c69efba786f0d25f8d58da1e08db400007080b64b9bc1efc13e4ef9",
+    "src/kmd_toc/comparison_v1/__init__.py": "b50556fbf17c2166064a18d6dc534b34fdaa6659b28a5a1c33eb9cdbb9506ee4",
+    "src/kmd_toc/comparison_v1/contract.py": "99e09228e3477925c054b53baf31bf9fd367643b8b1fe85604c3e8cee4f633e4",
+    "src/kmd_toc/comparison_v1/design.py": "b5d10c2d2cacfaf1a2bf7e1d5a2b28357e77f101a1e84301bf959b19024a152c",
+    "src/kmd_toc/comparison_v1/design_report.py": "3659cda5c77a21a23860de5f0bfe8d694869eb770358891ff5882b50f7aedd9c",
+    "src/kmd_toc/comparison_v1/evaluation.py": "826031d43f16173404f1b2eb711d0de2c3c6015552d4c51c3ba8aa266a848c63",
+    "src/kmd_toc/comparison_v1/execution.py": "a271e5baae8a479dc373fd4b268257667539e1801ac8c200b52e7534e8130c25",
+    "src/kmd_toc/comparison_v1/telemetry.py": "e0ba58c9a30f12e449f4bd9be73a5ac3ef9ddf52f268557985d48c415ce259f8",
+    "src/kmd_toc/comparison_v1/worker.py": "1f389f5ac8102f26e0573511a31d24dc3e86766d014ead782d1ed18b4e392d0e",
+    "src/kmd_toc/contracts.py": "60788b1a1e778ee377cd8a3a657ded820bae8a9bd62d8f82bd08d9f9807f5d8a",
+    "src/kmd_toc/dwt/__init__.py": "a549333b5b16250d83937215db1046b35470cb160ab8dbe58a790264d4736645",
+    "src/kmd_toc/dwt/analysis.py": "4b87d9d403d48cf16b5c4f559117e932d02956cc3988647bb3234b6b6db50c06",
+    "src/kmd_toc/dwt/audit.py": "e0a72f29c0595b19083a92ea984c52db848325800008245f38ff6ec3bacc30ea",
+    "src/kmd_toc/dwt/budget.py": "9ab1f311855477139575acd4d23149f28896c65750f9fd063dd75069fc2b2f1e",
+    "src/kmd_toc/dwt/evaluation.py": "532e677b30fc1ade4e761c83869388c70293ce7a14a2c0db92503b59f4450294",
+    "src/kmd_toc/dwt/experiment.py": "f732d7468d6c9e1ae076506d9e7af7526c764183c600900f6f10a3e0ae5776e3",
+    "src/kmd_toc/dwt/methods.py": "dec8205b90c8d99592edc4cc621fe7b79ec9c9ef8f76061ffdc8007a8508e945",
+    "src/kmd_toc/dwt/parallel.py": "c6998388238d35b6bd31e3c0018fa1331838ade23cbdb62d6c589defe5436f3d",
+    "src/kmd_toc/dwt/setup.py": "264de41c8c574ed7d5db6deca147ac7b8f4ae1359b3c7acfaa0efa033d29b5fc",
+    "src/kmd_toc/dwt/standard.py": "9c4404582a26d0f836f6810b6c03d2ffccf3d4f2b9fbb9f9d5ec95bf041b1095",
+    "src/kmd_toc/dwt/worker.py": "9866e0a19ae900187b2d8a3c58683fea9854684878997a501dfad222c9ad9422",
+    "src/kmd_toc/freeze_demand.py": "a4c07d8228607d0a6e82c439b819f727eaa94aab9192addb9b4dac16982c6c9c",
+    "src/kmd_toc/frozen_demand.py": "4aedb07b137fe37851f8f5f8c161799e7cc756056d339ff1fc954d28412616ad",
+    "src/kmd_toc/frozen_demand_pin.py": "5bd223e0d7b0b930dff7d4cd0c6785c7b522822ba0d8b1e0172db9a496a8281f",
+    "src/kmd_toc/pipeline/__init__.py": "c0e159e3780d784ed9411616564140aba2ab00777f5ebed7c85367dec7819e07",
+    "src/kmd_toc/pipeline/classical.py": "1af176efb47887958ce42d8cc754ca7a1d4872be98de1a5678eb48105a97a9c6",
+    "src/kmd_toc/pipeline/completion.py": "62fb8009636cc2c4f7f6cd572daad33ffbb8658b1ef303a1b49e34dd6668550c",
+    "src/kmd_toc/pipeline/execution.py": "97b02a0b56691e7a22eb6e82faff652d2c61b3ed3d6cb431b33b96180ef20286",
+    "src/kmd_toc/pipeline/hybrid.py": "de522a0d7d4dc800e3ce0250153741aa00ebac39867e4cfb5bab3e8cdac7cc30",
+    "src/kmd_toc/pipeline/roads.py": "f1f6cd32d7358b7e3ae44b15a1c095e6ac0dff8260faaf6c0eff25d245b8b27c",
+    "src/kmd_toc/pipeline/route_pairs.py": "2aeab756ac4fb9cbe8b9a59cb9d74e355d89c141baede9bf118a102ed12c8461",
+    "src/kmd_toc/search_improvement/__init__.py": "c59d74d212b379fbd1200a84d43c565f3f54e1b5b7daa82256452b255a9a3939",
+    "src/kmd_toc/search_improvement/catalogue.py": "76152263985b3ed451f7ea1a26866827bf225098c18cb890bcdc27a8ce9e1ee9",
+    "src/kmd_toc/search_improvement/master.py": "35e68c06e524894d9279502dcc63b34732e8e9752d79f782b4b571384fe59624",
+    "src/kmd_toc/search_improvement/regions.py": "e0d09e97bf64f71a069df852e64fc8d6adf1db91f24bd9acd6236302ce464cae",
+    "src/kmd_toc/search_improvement/study.py": "ebe9280e33fbc708bfd77ca6cb5144346900791afae3c459bbad3bc44bcffd3e",
+    "src/kmd_toc/vehicle_day/__init__.py": "38153fe5d63fcecc4b64aedc048621bb47570149b5a179579ab138078b20e8ff",
+    "src/kmd_toc/vehicle_day/fixtures.py": "e6612272a45e40b127fdc5346576aad76e4077d98358eead2133bf8e235d8ce8",
+    "src/kmd_toc/vehicle_day/generation.py": "41f02583b07da09f6754840065e75559fb77e986978f997b45dd146665e8656e",
+    "src/kmd_toc/vehicle_day/master.py": "c73f7992e9f4e3795eea047d298148e4ec9bcf18331e02db31ae8cb38579f437",
+    "src/kmd_toc/vehicle_day/model.py": "0f76a90a40d1832febd123f32aa0bc8bad19ac1a84836c63a0b8ec9287321fa2",
+    "src/kmd_toc/vehicle_day/pricing.py": "57beed9f3eb97a6b47330d402f5ac6d75cc041c91839dc1f63703489fea53392",
+    "src/kmd_toc/vehicle_day/runner.py": "26f5e1925b2419b78920a207df4d39b2c2fd447f067efc93a8c6aa4e796490cc",
+    "src/kmd_toc/vehicle_day/validation.py": "60872bda8c7ffe3228c11ab58cbdf69cba981bd2be0d4edf48842f685b5aeb7e",
+    "scripts/run_comparison_v1.py": "44b78bfd6edb56b6c345f64b58715f51716e84f820ba2b7a161a8fc8e129487e",
+    "configs/toc_delivery/comparison_a_rule_v1_freeze_20261115.json": "dfab7d8dcde73777f2767a0b1bf208237d9552fff9a66c49c4793c32327c4f9a",
+    "configs/toc_delivery/a_rule_v1_20261115.json": "b83288eb3feb5dd322c848341a5c17237b261812cafffc2d73a47c86bd40870d",
+    "configs/toc_delivery/dwt_balance_v1_4_cpu_parallel.json": "778bc92e28617464a05a56167c01c73756e663a3cd30ec3208a0fdfb32ff032d",
+    "configs/toc_delivery/common_conditions_v1_1.json": "bbb15417a4eee5072f8118056c90ab422d792b4cedc35a6a06bf6bc0497fe8d2",
+    "configs/toc_delivery/frozen_demand_v1.json": "b1ecef5eab3831adda931eae6138f82efa6d23af00af6fcafdff537141a95b0e",
+    "configs/toc_delivery/comparison_v1_result_schema.json": "adc58b2dffc7539971d2efb2031410c72b23620981d1cf49fab3e7061dbab9e0",
+    "scripts/run_comparison_design.py": "ea9db3f45884d8832088cae205865ab20f1b51427c493502eb00abddd4a7ef3e",
+    "configs/toc_delivery/comparison_design_20261116_v1.json": "4ad226e186b16c8d42fa3aa2fd448425575dc8cc202e5f78152c18abdc9f47e4"
+  },
+  "cases": [
+    {
+      "case_id": "S1",
+      "scenario_id": "ota-toc-frozen-demand-v1:S1",
+      "scale": "S1",
+      "input_dir": "/home/takuma/kmd-analysis/output/toc_delivery/ad_pipeline_20261112_route_v2/roads/inputs/S1",
+      "budget_wall_s": 240,
+      "case_parameters": {
+        "BCD_epsilon_W_min": null,
+        "BCD_native_cap_s": 150
+      },
+      "physical_hash": "bbb15417a4eee5072f8118056c90ab422d792b4cedc35a6a06bf6bc0497fe8d2",
+      "input": {
+        "directory": "/home/takuma/kmd-analysis/output/toc_delivery/ad_pipeline_20261112_route_v2/roads/inputs/S1",
+        "input_hash": "fb5164ccbacb6159475c0d941cf7adab056447dd58dd455627dffa11e4077880",
+        "OD_hash": "9b90a13dc3bfd1a5e50afb3c6eaf5070a043b79695da8b4643a2eed5332b0280",
+        "files": {
+          "input.json": "29c2d6e416ae53b858db669bfa474d6e82d1018fe1bd5e4bd8638508f1b38b21",
+          "od/manifest.json": "c508951f20035a93dce8eadc7965442fb60dfeff0cea6ed4d61962ba0b137c30",
+          "od/distance_m.npy": "55916fecf4c375ce588dee885abffc484fb294e905577386dc21102ce9af4c94",
+          "od/duration_s.npy": "5834e98c884f9a9b4e2017482d3394bdd5cb482f11546ad84adc7bfb50b217aa",
+          "od/reachable.npy": "4261218ad086f530f9846ebb81907d38776f397a31dd3d8c60da2a0fc8cbe22d"
+        },
+        "kind": "frozen_research",
+        "counts": [
+          1000,
+          10,
+          2
+        ],
+        "preflight_physical_validation": "VALID"
+      }
+    },
+    {
+      "case_id": "S2",
+      "scenario_id": "ota-toc-frozen-demand-v1:S2",
+      "scale": "S2",
+      "input_dir": "/home/takuma/kmd-analysis/output/toc_delivery/ad_pipeline_20261112_route_v2/roads/inputs/S2",
+      "budget_wall_s": 240,
+      "case_parameters": {
+        "BCD_epsilon_W_min": null,
+        "BCD_native_cap_s": 150
+      },
+      "physical_hash": "bbb15417a4eee5072f8118056c90ab422d792b4cedc35a6a06bf6bc0497fe8d2",
+      "input": {
+        "directory": "/home/takuma/kmd-analysis/output/toc_delivery/ad_pipeline_20261112_route_v2/roads/inputs/S2",
+        "input_hash": "152e5c83429ccf24a6a681c32e6d8d8e13957162b070ae746df7f0c9d5d9c798",
+        "OD_hash": "81755ba57345f706182a13fc13e2a0f0d4df793064ca77bbf57f455b17c26345",
+        "files": {
+          "input.json": "1eabfcf46843a18d60e3b8e247d4d009cd6140df81d3a4154e9da830775c2013",
+          "od/manifest.json": "3de697376510522dab96a7dad8db6bb7e273e5c0b10eba62f5789d4fc0f1db77",
+          "od/distance_m.npy": "d8d8beb9e84f749c032f3358bbfc5c792f5a339589b4174b3e984198177ea72a",
+          "od/duration_s.npy": "ec44e5a124d644e3eb8c045db200484d744ea62c433fe5662679574b68037c6d",
+          "od/reachable.npy": "d0dcceed299ccf90f178613fcdfd7826680d8d697e7cc8d2ca77f959a6bdfe29"
+        },
+        "kind": "frozen_research",
+        "counts": [
+          2000,
+          20,
+          4
+        ],
+        "preflight_physical_validation": "VALID"
+      }
+    },
+    {
+      "case_id": "S3",
+      "scenario_id": "ota-toc-frozen-demand-v1:S3",
+      "scale": "S3",
+      "input_dir": "/home/takuma/kmd-analysis/output/toc_delivery/ad_pipeline_20261112_route_v2/roads/inputs/S3",
+      "budget_wall_s": 240,
+      "case_parameters": {
+        "BCD_epsilon_W_min": null,
+        "BCD_native_cap_s": 150
+      },
+      "physical_hash": "bbb15417a4eee5072f8118056c90ab422d792b4cedc35a6a06bf6bc0497fe8d2",
+      "input": {
+        "directory": "/home/takuma/kmd-analysis/output/toc_delivery/ad_pipeline_20261112_route_v2/roads/inputs/S3",
+        "input_hash": "46c274abfd6a98811a4100286eca05086ba470ab4782403adf1a964a6980bfe2",
+        "OD_hash": "254bb8f3fb28d86419f36ad6814efbad15d88822a3186952e79d53f40c864e81",
+        "files": {
+          "input.json": "d5ee004609850c8fac6da3860986c349ee5c25e4fe6e1e4b1f0645b378e9c844",
+          "od/manifest.json": "57a0e40037cb15baf1da2e284d8399f89f0ebe20ff506c58ee20a1391dbca2f5",
+          "od/distance_m.npy": "008346e7cf4ce9c8e28e57a95248e259c23a2cdae207911940a5be6654072c9d",
+          "od/duration_s.npy": "9f0a262a5a33dedcce7859b009d5d50902d81b1cb2017af9133c88aabd771be0",
+          "od/reachable.npy": "5319e9145200b7da4817ab5d1043d1ea609a8e54540a99470596076779591755"
+        },
+        "kind": "frozen_research",
+        "counts": [
+          4000,
+          40,
+          8
+        ],
+        "preflight_physical_validation": "VALID"
+      }
+    }
+  ],
+  "method_registry": {
+    "A": {
+      "implementation_id": "frozen_A_rule_v1_direct_FCFS",
+      "algorithm_version": "A_rule_v1-20261115"
+    },
+    "B": {
+      "implementation_id": "existing_dwt_directed_CW_shared_completion_parallel4",
+      "algorithm_version": "DWT-v1.4-CPU-parallel-multistart-20261113"
+    },
+    "C": {
+      "implementation_id": "existing_dwt_OR_Routing_shared_completion_parallel4",
+      "algorithm_version": "DWT-v1.4-CPU-parallel-multistart-20261113"
+    },
+    "D": {
+      "implementation_id": "existing_dwt_Huang_AOA_shared_completion_parallel4",
+      "algorithm_version": "DWT-v1.4-CPU-parallel-multistart-20261113"
+    },
+    "D_CLASSICAL_REPLACEMENT": {
+      "implementation_id": "dwt_Huang_macro_exact_permutations_parallel4",
+      "algorithm_version": "macro-replacement-v1-20261116"
+    }
+  },
+  "internal_config": {
+    "version": "DWT-v1.4-CPU-parallel-multistart-20261113",
+    "output_root": "output/toc_delivery/dwt_balance_cpu_parallel_v1_4",
+    "input_root": "output/toc_delivery/ad_pipeline_20261112_route_v2/roads/inputs",
+    "root_seed": 20261113,
+    "threads": 4,
+    "A": {
+      "rule": "A2",
+      "offset_deg": 0,
+      "selection": "fixed geographic/boundary-balanced rule; no selection using B/C/D results",
+      "human_T": "reference only; full comparable human elapsed T uncalibrated; exclude A from program-T Pareto/J"
+    },
+    "pilot": {
+      "scenarios": [
+        "ROAD_N6",
+        "ROAD_N20"
+      ],
+      "W_limits_min": [
+        0,
+        30
+      ],
+      "budgets_s": [
+        10,
+        30
+      ],
+      "repetitions": 1
+    },
+    "limited": {
+      "scenarios": [
+        "S1"
+      ],
+      "W_limits_min": [
+        316.8375,
+        422.45
+      ],
+      "budgets_s": [
+        30,
+        90
+      ],
+      "repetitions": 1
+    },
+    "reference": {
+      "S1": {
+        "D_km": 551.1398,
+        "W_min": 422.45,
+        "T_program_s": 60,
+        "source": "pre-existing EPSILON_REFERENCES.json A2 angle0; Tref60s is a research normalization scale, not human observation"
+      },
+      "S2": null,
+      "S3": null
+    },
+    "weights": {
+      "equal": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "distance": [
+        0.6,
+        0.2,
+        0.2
+      ],
+      "waiting": [
+        0.2,
+        0.6,
+        0.2
+      ],
+      "time": [
+        0.2,
+        0.2,
+        0.6
+      ]
+    },
+    "T_reference_multipliers": [
+      0.5,
+      1,
+      2
+    ],
+    "objective_quantization": {
+      "D_km": "0.0000001",
+      "W_min": "0.0000001",
+      "T_program_s": "0.000001"
+    },
+    "allocation": {
+      "validation_reserve_fraction": 0.08,
+      "C_routing_fraction": 0.5,
+      "D_seed_fraction": 0.12,
+      "D_base_fraction": 0.12,
+      "D_quantum_fraction": 0.35,
+      "D_hybrid_fraction": 0.12,
+      "adaptive_validation_reserve": true,
+      "remaining_verification_passes": 2,
+      "validation_jitter_fraction": 0.02
+    },
+    "D": {
+      "pricing_rounds": 2,
+      "macro_groups": 3,
+      "p": 2,
+      "max_evaluations": 80,
+      "restarts": 1,
+      "train_shots": 1000,
+      "final_shots": 4096,
+      "shots_policy": "retain existing audited setting; not statistically certified optimal shots",
+      "classical_control": true,
+      "column_construction_fraction_of_stage": 0.35
+    },
+    "statistics": {
+      "phase": "feasibility/budget pilot only; not confirmatory",
+      "limited_repetitions": 1,
+      "main_repetitions": null,
+      "main_stop_rule": "HOLD: formal research/statistical protocol and parallel-condition pilot require separate authorization; this configuration is not main-experiment approval",
+      "target_mean_CI_relative_halfwidth": null,
+      "target_power": 0.8,
+      "alpha": 0.05,
+      "planning_pilot_repetitions": null
+    },
+    "precommit_reason": "W levels are 0.75 and 1.0 times pre-existing A2 reference422.45, not tuned to new results; 30/90s span completion-only and old C total scale. Verify on small cases before registering S1 run list.",
+    "limitations": [
+      "finite route pool only; CP-SAT distance objective uses existing 0.1m integer resolution",
+      "T budget is measured end-to-end, not equal to solver time limit",
+      "S2/S3 not run in this limited study",
+      "parallel branches are internal restarts, not independent demand instances or external statistical repetitions",
+      "same root seed does not reproduce old serial search; all derived branch seeds retained",
+      "no S1/S2/S3 experiment executed by CPU parallel implementation tests"
+    ],
+    "completion_incumbent_policy": "shared validated greedy/previous feasible incumbent; never replace a better incumbent by a worse CP candidate; no hidden saved external fallback",
+    "revision_reason": "user requires CPU parallelism for B/C/D now and going forward; same four-process internal multi-start for each method, one native solver thread per branch; historical configurations/results preserved",
+    "compute_affinity": {
+      "cpu_ids": "resolved at registration from available distinct physical cores",
+      "policy": "one branch per core; coordinator shares same four-core allocation",
+      "external_process_scan_monitor": false
+    },
+    "validation_IO": "one hash-verified common conditions read per Problem.validate, same policy passed to all Snap checks; no constraint value change",
+    "dependency_setup_limit_s": 240,
+    "dependency_initialization": {
+      "scope": "same library union for all methods before common input read; no circuit or solver execution",
+      "time": "record separately; waiting-process startup is not claimed as quantum speedup",
+      "worker_mode": "four import-only waiting processes before any delivery input read; problem/solver work after shared parent clock start",
+      "input": "complete common input loaded and validated anew in each child inside T"
+    },
+    "cpu_parallel": {
+      "enabled": true,
+      "workers": 4,
+      "cpu_ids": null,
+      "native_threads_per_branch": 1,
+      "coordinator_reserve_fraction": 0.2,
+      "mode": "parallel_multistart_of_complete_method",
+      "branch_seed_domain": "CPU4 / SeedSequence spawn",
+      "trial_concurrency": 1,
+      "selection": "independently validated min D then W then branch ID",
+      "statistical_replications_per_trial": 1,
+      "resource_fallback": "fail if four allocated cores unavailable; no silent serial fallback"
+    }
+  },
+  "resource_contract": {
+    "available_physical_cores": 4,
+    "cpu_ids": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "A_processes": 1,
+    "BCD_internal_branches": 4,
+    "native_threads_per_process": 1,
+    "method_concurrency": 1,
+    "cache": "new processes; uncontrolled shared OS page cache",
+    "memory": "frozen A RLIMIT_AS 4096MiB; BCD existing memory behavior; no new BCD memory cap",
+    "design_process_tree_memory_limit_MiB": 32768
+  },
+  "T_kind": "comparison_parent_wall_including_process_setup_v1",
+  "M_per_scale": 1,
+  "R_a": null,
+  "seed_list": null,
+  "execution_order": null,
+  "seed_rule": "fresh domain 2026111701, enumerate method-specific solver/quantum streams after fixed R_a",
+  "main_stop_rule": "fixed preregistered attempt list including failures; no significance or CI-width dependent extension",
+  "analysis": "independent Welch per fixed input; same repeat/seed index is not a pair; demand analysis uses per-demand method means paired by independent family",
+  "selection": "existing verified min D then W then branch ID; no best across independent attempts",
+  "failure_policy": "all attempted rows retained, no null quality replaced by zero; no retry substitution",
+  "references": "new formal A groups with all exact timing run IDs required; pilot references never reused",
+  "unresolved": [
+    "h_D",
+    "required rate precision",
+    "main resource ceiling",
+    "R_a",
+    "main seed list/order after R_a"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "version": "A-v2-public-evidence-eligibility-20261113",
+  "calibration_observations_eligible": 0,
+  "independent_validation_observations_eligible": 0,
+  "calibration_performed": false,
+  "reason": "同じ配送業務・単位・工程境界に対応する定量資料を取得できていない",
+  "D_operator_reference": null,
+  "W_operator_reference": null,
+  "T_human_reference": null,
+  "parameters_fitted": [],
+  "datasets": [
+    {
+      "source": "S06",
+      "metric": "vehicle_distance_km_per_day",
+      "observed": {"urban_driver_one_day": 13, "rural_driver_one_day": 148},
+      "context_statement_not_same_day_measurement": {"urban_typical_about": 20},
+      "calibration_eligible": false,
+      "validation_eligible": false,
+      "reason": "集荷を含む各1名1日、N・便数・区域・拠点が不明。車両距離を全車両Dへ変換できない"
+    },
+    {
+      "source": "S07",
+      "metric": "individual_human_route_planning_minutes",
+      "reference_ranges": {"experienced": [5, 10], "novice": [30, 60]},
+      "calibration_eligible": false,
+      "validation_eligible": false,
+      "reason": "配送先割当・バース・全体検証を含む工程ではなく、N/V/作成人数が未確認。プログラムTとは別量"
+    },
+    {
+      "source": "S10",
+      "metric": "loading_wait_minutes",
+      "reported_means": {"before": 140, "after": 97},
+      "calibration_eligible": false,
+      "validation_eligible": false,
+      "reason": "製紙工場・倉庫の横持ち等の運行であり、末端ToC積込readyと計測境界が異なる"
+    },
+    {
+      "source": "S11",
+      "metric": "distance_km_per_day_and_parcels",
+      "illustrative_assumption_not_observed": {"km": 100, "parcels": 50},
+      "calibration_eligible": false,
+      "validation_eligible": false,
+      "reason": "CO2削減の算定例の想定値であり、事業者運行の実測標本ではない"
+    }
+  ],
+  "future_split_policy": "適格資料が得られた時点で日付・区域等による校正集合/独立保留集合を分離し、適合基準・推定対象を登録する。同じ値への一致を独立検証としない。",
+  "quantitative_representativeness": "FAIL"
+}

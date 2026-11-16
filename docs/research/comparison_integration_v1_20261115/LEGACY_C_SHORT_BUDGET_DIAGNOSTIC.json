@@ -1,0 +1,40 @@
+{
+  "source": "output/toc_delivery/comparison_integration_v1_20261115_regression02/test_C_budget_actually_reaches0/result/worker_result.json",
+  "old_source_modified": false,
+  "configured_native_budget_s": 3,
+  "status": "VALIDATED",
+  "error": {
+    "type": "BudgetExceeded",
+    "message": "INSUFFICIENT_ROUTING_BUDGET",
+    "scheduled_budget_stop": true
+  },
+  "events": [
+    {
+      "name": "input_load_start",
+      "elapsed_s": 0.0
+    },
+    {
+      "name": "input_load_end",
+      "elapsed_s": 1.1392702439334244
+    },
+    {
+      "name": "directed_CW_end",
+      "elapsed_s": 1.257144806906581
+    },
+    {
+      "name": "final_validation_start",
+      "elapsed_s": 1.4855624600313604
+    },
+    {
+      "name": "final_validation_end",
+      "elapsed_s": 1.4864848139695823
+    }
+  ],
+  "returned_incumbent_is_physically_valid": true,
+  "returned_settings": {
+    "completion_selected_source": "verified_incumbent_after_cooperative_stop",
+    "algorithm_path_incomplete": true,
+    "requested_routing_seconds": null
+  },
+  "interpretation": "Retained existing C behavior cooperatively stopped before Routing and returned a verified incumbent. The old test assumes a 3s budget reaches Routing, which NFS input/validation latency did not permit. New primary C case records actual OR_Routing calls with native90s; no C algorithm change."
+}

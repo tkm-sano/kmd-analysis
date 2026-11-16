@@ -1,0 +1,47 @@
+表の監査・改善記録（v5 → v6）
+調査日：2026年11月6日（日本時間）
+
+数値は変更していない。全3表の全72セルについて、変更前後の数値トークンをセル単位で照合した。結果表の20数値セルは、符号・桁区切り・小数点以下の桁数を含む文字列が完全一致する。ポスター全体の数値トークンも102個すべて一致する。元のv5ファイルのSHA-256も保持した。
+
+主な改善
+・入力数、係数調整結果の件数、反復して保存した出力数を区別した。「比較件数」は「保存出力数［件］」とした。同じ調整結果を共有する反復であり、保存出力は同じ訪問順の重複を含む。
+・古典対照とQAOA候補の平均Jを明示した。Jは往復の総旅行時間［秒］で、配達作業時間と計算時間は含まない。
+・ΔJはQAOA候補−古典対照である。負が改善、正が悪化である。「差の絶対値の平均」は各対応差の絶対値を取ってから平均する指標である。
+・全体行は8設定の等重み混合平均である。単一手法の代表効果や最良設定の結果とは扱わない。
+・各統計値は丸め前に集計した旨を付記した。表示済みの平均J同士の引き算では最終桁が一致しない場合がある。元値や表示値を修正して辻褄を合わせていない。
+・容量・帰庫の確認は保存した最良候補を対象とする。量子実機、顧客別期限内配達率、全工程の時間、実際の採用・配送成果を実証済みとは記載しない。
+・設定表の参照先のない＊を取り除き、全配送先の訪問順を対象とすることと、設定による探索範囲の制限を説明した。
+
+公開資料をどう使ったか
+・UK Government Analysis Function『Data visualisation: tables』
+  https://analysisfunction.civilservice.gov.uk/policy-store/data-visualisation-tables/
+  参照箇所：Comparing numbers; Rounding; Column headers, row labels and merged cells; Source
+  適用：列見出しと単位を明示し、結果の数値列と見出しを右揃えにする。数値の精度と桁区切りは維持する。丸めた表示値で再計算した結果と元値による集計の違いを説明する。
+・文化庁『文化審議会建議「公用文作成の考え方」について』
+  https://www.bunka.go.jp/koho_hodo_oshirase/hodohappyo/93650001.html
+  参照箇所：2. 内容：読み手に合わせた書き表し方、専門用語や外来語の扱い
+  適用：一般来場者が区別しやすい項目名と具体的な説明にする。公用文の法的義務として適用するものではない。
+・Office for National Statistics『Rounding』
+  https://service-manual.ons.gov.uk/content/numbers/rounding
+  参照箇所：Rounding: intended use, loss of precision, consistency
+  適用：数値精度の一貫性を確認した。依頼に従い数値と丸め精度は変更しない。
+
+これらは表の表現・レイアウトの参考であり、本研究に義務付けられた規格ではない。公開資料の数値を実験値へ転記していない。実験の数値や集計単位はリポジトリの一次記録に照合した。
+
+実験結果の出典
+・review_outputs/quantum_ev_step5_20261105/data/B_PLAN_GAPS_36800.csv
+・review_outputs/quantum_ev_step5_20261105/data/B_INPUT_CONDITIONS_460.csv
+・review_outputs/quantum_ev_step5_20261105/STEP5_OBJECTIVE_GAP_ANALYSIS.md
+・review_outputs/quantum_ev_step5_20261105/STEP5_OPERATIONAL_IMPACT.md
+・review_outputs/no_sumo_full_analysis_20261102/run01/B_PLAN_REFERENCES_36800.csv
+・review_outputs/no_sumo_full_analysis_20261102/run01/B_RESOURCES_PER_FIT.csv
+表示用の固定集計は evidence/POSTER_RESULT_TABLE.csv、POSTER_DATA.json に保存した。
+
+今後の計画として残した項目
+05の箇条書き6項目を維持した。公開資料による運用条件の調査、現行仮定の根拠確認、同一時間条件と最良計画保持規則での再比較、探索条件を分けた再検証、複数台への局所改善導入、顧客別期限・採用規則を置いた配送成果評価である。未定の台数・配送先数・部分問題規模の表は入れていない。
+
+検証
+・40項目の自動検査が合格。PPTX・PDFはA1縦594×841mm・1ページである。
+・全表は編集可能なPowerPointの表である。白地・黒文字、図のラベルは1行を維持した。文字欠落・重なり・ページ外へのはみ出しを検出しなかった。
+・PDFをレンダリングし、条件表と結果表の改行、右揃え、脚注と読み順を目視確認した。
+・詳細は TABLE_AUDIT.csv、NUMERIC_PRESERVATION.csv、VALIDATION.csv を参照。

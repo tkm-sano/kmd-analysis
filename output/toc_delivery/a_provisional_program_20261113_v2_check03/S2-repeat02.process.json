@@ -1,0 +1,110 @@
+{
+  "method": "A",
+  "rule": "A2",
+  "offset_deg": 0,
+  "completion": "FCFS_only",
+  "status": "VALIDATED",
+  "physical_feasible": true,
+  "D_km": 965.1498,
+  "W_min": 883.8166666666667,
+  "T_A_program": 3.92613822594285,
+  "T_program_s": 3.92613822594285,
+  "T_A_human_reference": null,
+  "T_kind": "program_wall",
+  "T_scope": [
+    "input_files_and_hashes",
+    "common_input_and_OD_load",
+    "preprocessing",
+    "territories_and_boundary_balance",
+    "nearest_neighbor_and_trip_split",
+    "FCFS_berths_and_timestamps",
+    "common_validation",
+    "independent_recalculation",
+    "validation_agreement"
+  ],
+  "human_reference_status": "未取得",
+  "quantitative_representativeness": "FAIL",
+  "calibrated": false,
+  "random_seed": null,
+  "error": null,
+  "T_attempt_wall_s": 3.92613822594285,
+  "cpu_time_s": 1.2121070119999997,
+  "timing_events": [
+    {
+      "name": "input_load_start",
+      "elapsed_s": 0.0
+    },
+    {
+      "name": "input_load_end",
+      "elapsed_s": 2.235011661890894
+    },
+    {
+      "name": "A_assignment_and_order_end",
+      "elapsed_s": 2.7962246460374445
+    },
+    {
+      "name": "A_loading_and_timestamps_end",
+      "elapsed_s": 2.799380019074306
+    },
+    {
+      "name": "generation_end",
+      "elapsed_s": 2.925565591081977
+    },
+    {
+      "name": "common_validation_end",
+      "elapsed_s": 3.711122215958312
+    },
+    {
+      "name": "independent_recalculation_end",
+      "elapsed_s": 3.926128586055711
+    },
+    {
+      "name": "validation_agreement_end",
+      "elapsed_s": 3.92613822594285
+    }
+  ],
+  "budget_met": true,
+  "max_rss_KiB": 239616,
+  "scenario_id": "S2",
+  "input_hash": "152e5c83429ccf24a6a681c32e6d8d8e13957162b070ae746df7f0c9d5d9c798",
+  "OD_hash": "81755ba57345f706182a13fc13e2a0f0d4df793064ca77bbf57f455b17c26345",
+  "visited_count": 2000,
+  "spec_version": "A-provisional-rule-program-v2-20261113",
+  "setup": {
+    "dependency_and_affinity_setup_s": 122.64791694097221,
+    "allocated_cpu_ids": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "active_cpu_ids": [
+      0
+    ],
+    "native_thread_environment": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1"
+    },
+    "native_solver_execution": false,
+    "python": "3.12.11 | packaged by Anaconda, Inc. | (main, Jun  5 2025, 13:09:17) [GCC 11.2.0]",
+    "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+    "executable": "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python"
+  },
+  "pid": 2669694,
+  "cpu_affinity": [
+    0
+  ],
+  "native_threads": 1,
+  "experiment_kind": "bounded_functional_check",
+  "comparison_contract_id": "common-v1.1_Route_CPU4_program_double_validation_v2",
+  "J": {
+    "status": "REFERENCE_UNDEFINED",
+    "J": null
+  },
+  "export_work_before_metrics_s": 0.5214675089810044,
+  "returncode": 0,
+  "repetition": 2,
+  "process_wall_including_setup_export_s": 131.74439528095536
+}

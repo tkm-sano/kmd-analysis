@@ -1,0 +1,143 @@
+{
+  "started_utc": "2026-11-11T06:36:45.804790+00:00",
+  "python": "3.12.11 | packaged by Anaconda, Inc. | (main, Jun  5 2025, 13:09:17) [GCC 11.2.0]",
+  "executable": "/home/takuma/.cache/kmd-analysis/venvs/vehicle-day-v1/bin/python",
+  "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+  "packages": {
+    "typing_extensions": "4.16.0",
+    "stevedore": "5.9.1",
+    "Pygments": "2.21.0",
+    "pluggy": "1.7.0",
+    "pip": "25.1.1",
+    "packaging": "26.3",
+    "numpy": "2.3.1",
+    "iniconfig": "2.3.1",
+    "dill": "0.4.1",
+    "scipy": "1.16.0",
+    "rustworkx": "0.18.1",
+    "pytest": "8.4.2",
+    "qiskit": "2.1.1"
+  },
+  "config": {
+    "version": "d-pricing-improvement-v1",
+    "study_scope": "ARTIFICIAL_ONLY_NO_S1_EXECUTION",
+    "regression": "unchanged day_artificial_6_B1; saved final and initial dual snapshots",
+    "holdout": "new artificial_6_holdout and artificial_8/10 instances; no parameter tuning",
+    "aoa": {
+      "slots": 3,
+      "p": 2,
+      "max_evaluations": 80,
+      "restarts": 1,
+      "train_shots": 1000,
+      "final_shots": 4096,
+      "tolerance": 0.001,
+      "solver_seed": 2101
+    },
+    "snapshot_seeds": [
+      2101,
+      2102,
+      2103
+    ],
+    "region_update": "old top-dual/nearest domains then deterministic greedy uncovered-pair triples; all scheduled domains at each snapshot; no oracle-guided update",
+    "completion": "one generated trip required; partner is singleton, RMP trip, or generated trip; same finite catalogue for both controls",
+    "cg": {
+      "max_rounds": 40,
+      "batch_size": 20,
+      "negative_tolerance": 1e-07
+    },
+    "integer_extensions": [
+      "zero_reduced_cost_face",
+      "one_or_two_incumbent_vehicle_repair"
+    ],
+    "epsilon_D_subject_to_W": [
+      0,
+      2,
+      4,
+      8,
+      16
+    ],
+    "epsilon_W_subject_to_D": [
+      3.6,
+      3.9,
+      4.2,
+      4.5
+    ],
+    "safety": {
+      "max_catalogue_columns": 120000,
+      "catalogue_estimated_bytes_per_column": 4096,
+      "max_rss_mib": 1536,
+      "max_child_wall_seconds": 300,
+      "max_qubits": 16,
+      "max_aoa_calls_per_case": 800,
+      "mip_node_limit": 50000
+    },
+    "scale_candidates": [
+      [
+        8,
+        2,
+        1
+      ],
+      [
+        8,
+        2,
+        2
+      ],
+      [
+        10,
+        3,
+        2
+      ],
+      [
+        12,
+        3,
+        2
+      ],
+      [
+        15,
+        4,
+        2
+      ],
+      [
+        25,
+        5,
+        2
+      ]
+    ],
+    "stops": [
+      "FULL_GLOBAL_PRICING_CERTIFIED_classical_only",
+      "DEFINED_DOMAINS_EXHAUSTED_NO_NEW_NEGATIVE",
+      "CG_ROUND_SAFETY_LIMIT",
+      "AOA_CALL_SAFETY_LIMIT",
+      "RESOURCE_SAFETY_LIMIT"
+    ],
+    "attribution": "zero-face enrichment and incumbent repair are classical work, never credited to quantum sampling",
+    "timing": "cold method requires catalogue construction; warm search measured separately; full oracle diagnostics excluded and separately reported"
+  },
+  "source_hashes": {
+    "src/kmd_toc/search_improvement/__init__.py": "c59d74d212b379fbd1200a84d43c565f3f54e1b5b7daa82256452b255a9a3939",
+    "src/kmd_toc/search_improvement/catalogue.py": "4b9c8583e21b5b4fed361782d2acc34caa174f77920b7397aa2accd2a7168f9a",
+    "src/kmd_toc/search_improvement/master.py": "35e68c06e524894d9279502dcc63b34732e8e9752d79f782b4b571384fe59624",
+    "src/kmd_toc/search_improvement/regions.py": "b7542351f4db453722de92fb02a770f5350ef42c5c2ba4b633845ab3a9a59aca",
+    "src/kmd_toc/search_improvement/study.py": "ebe9280e33fbc708bfd77ca6cb5144346900791afae3c459bbad3bc44bcffd3e",
+    "src/kmd_toc/vehicle_day/__init__.py": "38153fe5d63fcecc4b64aedc048621bb47570149b5a179579ab138078b20e8ff",
+    "src/kmd_toc/vehicle_day/model.py": "0f76a90a40d1832febd123f32aa0bc8bad19ac1a84836c63a0b8ec9287321fa2",
+    "src/kmd_toc/vehicle_day/generation.py": "41f02583b07da09f6754840065e75559fb77e986978f997b45dd146665e8656e",
+    "src/kmd_toc/vehicle_day/validation.py": "60872bda8c7ffe3228c11ab58cbdf69cba981bd2be0d4edf48842f685b5aeb7e",
+    "src/kmd_toc/vehicle_day/master.py": "c73f7992e9f4e3795eea047d298148e4ec9bcf18331e02db31ae8cb38579f437",
+    "src/kmd_toc/vehicle_day/pricing.py": "57beed9f3eb97a6b47330d402f5ac6d75cc041c91839dc1f63703489fea53392",
+    "src/kmd_toc/vehicle_day/runner.py": "26f5e1925b2419b78920a207df4d39b2c2fd447f067efc93a8c6aa4e796490cc",
+    "src/kmd_toc/vehicle_day/fixtures.py": "e6612272a45e40b127fdc5346576aad76e4077d98358eead2133bf8e235d8ce8",
+    "src/kmd_toc/column_generation/__init__.py": "52182a465859e8d3a1d7849978f5e8b1e0f776470bd5cfc5e2cc413f7f9b65ba",
+    "src/kmd_toc/column_generation/models.py": "a5288f2243964d13001a250b458a08a14ba81cdb8292708eda03eddc58a4e859",
+    "src/kmd_toc/column_generation/master.py": "d158402e21fc83cdac486fd379f3d115288e8b0243f278ef6e21c24272cac205",
+    "src/kmd_toc/column_generation/reduction.py": "e5d4d60c4db4b93b3e578ccb36d17938c3fd1534fbf2e48f3c243d5e9f75678b",
+    "src/kmd_toc/column_generation/aoa.py": "6409aa17ea67cd37a9e5e6b6d79b72fc6abfd4652293d2426e5688197dbfe182",
+    "src/kmd_toc/column_generation/runner.py": "8ef9173cb214fd76c044e19d2f62136a8a68ec8ce9c88d6fa8b37689a73a1e9d",
+    "src/kmd_toc/column_generation/experiment.py": "1e760066d6491d5d8fcbc1b988502cb5beaddec251e9b680f2b6977dd529f538",
+    "/home/takuma/kmd-analysis/scripts/run_d_pricing_improvement.py": "c1e8e093e39bb47e4727b69c61c993b5d55236f5ab536c5be5fd241f8bdab02a",
+    "configs/toc_delivery_d_pricing_improvement_v1.json": "c762c847586ecac9dfa364aed8e5506dc1308667903d8eecba34a43226c1d9fe"
+  },
+  "stage": "scaling",
+  "S1_executions": 0,
+  "no_parameter_search": true
+}

@@ -1,0 +1,396 @@
+--- before/src/kmd_toc/column_generation/aoa.py
++++ src/kmd_toc/column_generation/aoa.py
+@@ -3,7 +3,8 @@
+ Input: small Instance, LP dual, AOAConfig. Output: samples, validated routes,
+ true reduced costs, circuit/training/time evidence. Only solver_seed is random.
+ literal penalty and t=0 mixer are separately selectable audit variants.
+-Training uses an exact one-hot tensor simulator; final states/sampling use Qiskit.
++Training uses an exact one-hot tensor simulator. Final states use the selected
++CPU backend; finite-shot sampling always uses the existing Qiskit sampler.
+ No X mixer, capacity repair, or classical negative-column fallback is used.
+ Tests compare the tensor evolution, Qiskit circuit, polynomial and direct formulas.
+ """
+@@ -18,6 +19,9 @@
+ from qiskit.circuit.library import UnitaryGate
+ from qiskit.quantum_info import Statevector
+ from .models import Route, reduced_cost
++from .backends import (validate_backend, require_backend, build_qulacs_circuit,
++                       qulacs_statevector, circuit_metadata)
++from importlib.metadata import version
+ 
+ 
+ @dataclass(frozen=True)
+@@ -34,8 +38,10 @@
+     lambda_capacity: float = 1.0
+     lambda_visit: float = 1.0
+     tolerance: float = 1e-3
++    statevector_backend: str = 'qiskit'
+ 
+     def __post_init__(self):
++        validate_backend(self.statevector_backend)
+         if self.penalty not in ('customer_unique', 'paper_literal'):
+             raise ValueError('Unknown penalty version')
+         if any(type(getattr(self, k)) is not int or getattr(self, k) <= 0 for k in
+@@ -90,6 +96,7 @@
+ class PricingAOA:
+     def __init__(self, instance, dual, config):
+         self.instance, self.config = instance, config
++        require_backend(config.statevector_backend)
+         self.dual = np.r_[0.0, np.asarray(dual, dtype=float)]
+         self.n = len(instance.demand)
+         if len(self.dual) != self.n or not np.isfinite(self.dual).all():
+@@ -181,6 +188,7 @@
+         return expm(-1j * beta * h)
+ 
+     def circuit(self, angles):
++        """Qiskit reference circuit, also used for optional native-depth diagnostics."""
+         qc = QuantumCircuit(self.q)
+         for t in self.positions:
+             qc.x(self.bit[0, t])
+@@ -198,6 +206,17 @@
+             for t in self.positions:
+                 qc.append(gate, [self.bit[i, t] for i in range(self.n)])
+         return qc
++
++    def execution_state(self, angles):
++        """Build/evolve the selected circuit without running a second simulator."""
++        backend = self.config.statevector_backend
++        started = perf_counter()
++        qc = self.circuit(angles) if backend == 'qiskit' else build_qulacs_circuit(self, angles)
++        construction = perf_counter() - started
++        started = perf_counter()
++        state = (Statevector.from_instruction(qc) if backend == 'qiskit'
++                 else Statevector(qulacs_statevector(qc, self.q)))
++        return state, qc, construction, perf_counter() - started
+ 
+     def decode(self, sequence):
+         if sequence[0] != 0:
+@@ -228,7 +247,8 @@
+         feasible = improving = measured = 0
+         reasons = Counter()
+         max_infidelity = max_leakage = 0.0
+-        training_seconds = qiskit_seconds = 0.0
++        training_seconds = final_seconds = 0.0
++        circuit_seconds = statevector_seconds = validation_seconds = sampling_seconds = decode_seconds = 0.0
+         for restart, seed in enumerate(seed_stream):
+             rng = np.random.default_rng(seed)
+             initial = np.array([a for layer in range(1, c.p + 1)
+@@ -251,18 +271,24 @@
+             training_seconds += perf_counter() - started
+             angles = optimization.x
+             started = perf_counter()
+-            qc = self.circuit(angles)
+-            state = Statevector.from_instruction(qc)
++            state, qc, construction, evolution = self.execution_state(angles)
++            circuit_seconds += construction
++            statevector_seconds += evolution
++            phase_start = perf_counter()
+             tensor = self.tensor_state(angles)
+             embedded = state.data[self.indices]
+             fidelity = float(abs(np.vdot(tensor, embedded)) ** 2)
+             leakage = max(0.0, float(1 - np.vdot(embedded, embedded).real))
+             if abs(1 - fidelity) > 1e-8 or leakage > 1e-8:
+-                raise RuntimeError('Qiskit / one-hot tensor evolution mismatch')
++                raise RuntimeError(f'{c.statevector_backend} / one-hot tensor evolution mismatch')
+             max_infidelity = max(max_infidelity, abs(1 - fidelity))
+             max_leakage = max(max_leakage, leakage)
++            validation_seconds += perf_counter() - phase_start
++            phase_start = perf_counter()
+             state.seed(int(rng.integers(0, 2 ** 31)))
+             counts = state.sample_counts(c.final_shots)
++            sampling_seconds += perf_counter() - phase_start
++            phase_start = perf_counter()
+             for bits, count in counts.items():
+                 mask = int(bits, 2)
+                 all_counts[bits] += int(count)
+@@ -277,22 +303,29 @@
+                     if any(reduced_cost(self.instance, r, self.dual[1:]) < -1e-7 for r in candidates):
+                         improving += int(count)
+                     routes.update(candidates)
+-            qiskit_seconds += perf_counter() - started
++            decode_seconds += perf_counter() - phase_start
++            final_seconds += perf_counter() - started
+             histories.append({'restart': restart, 'initial_angles': initial.tolist(),
+                               'optimized_angles': angles.tolist(), 'nfev': int(optimization.nfev),
+                               'optimizer_success': bool(optimization.success),
+                               'optimizer_message': str(optimization.message),
+                               'evaluations': evaluations, 'qiskit_counts': dict(counts)})
+-        depth = qc.depth()
++        depth, gates = circuit_metadata(qc, c.statevector_backend)
+         native = None
++        diagnostic_seconds = 0.0
+         if native_depth:
+-            native_qc = transpile(qc, basis_gates=['rz', 'sx', 'x', 'cx'],
++            diagnostic_start = perf_counter()
++            reference = qc if c.statevector_backend == 'qiskit' else self.circuit(angles)
++            native_qc = transpile(reference, basis_gates=['rz', 'sx', 'x', 'cx'],
+                                   optimization_level=0, seed_transpiler=c.solver_seed)
+             native = {'depth': native_qc.depth(), 'gates': dict(native_qc.count_ops()),
+                       'basis': ['rz', 'sx', 'x', 'cx'], 'connectivity': 'all_to_all_no_hardware'}
++            diagnostic_seconds = perf_counter() - diagnostic_start
+         return {'routes': [list(r.customers) for r in sorted(routes)],
+                 'config': asdict(c), 'qubits': self.q, 'logical_depth': depth,
+-                'logical_gates': dict(qc.count_ops()), 'native_circuit': native,
++                'logical_gates': gates, 'logical_gate_names_backend': c.statevector_backend,
++                'logical_depth_scope': 'exact dense XY block counts as one logical gate',
++                'native_circuit': native, 'native_depth_diagnostic_seconds': diagnostic_seconds,
+                 'raw_statevector_bytes': 16 * (1 << self.q),
+                 'one_hot_basis_states': len(self.assignments),
+                 'measured_shots': measured, 'feasible_shots': feasible,
+@@ -300,7 +333,18 @@
+                 'improving_rate': improving / measured, 'reason_counts': dict(reasons),
+                 'qiskit_tensor_max_infidelity': max_infidelity,
+                 'qiskit_one_hot_max_leakage': max_leakage,
+-                'training_seconds': training_seconds, 'qiskit_seconds': qiskit_seconds,
++                'training_seconds': training_seconds, 'final_processing_seconds': final_seconds,
++                'circuit_build_seconds': circuit_seconds, 'statevector_seconds': statevector_seconds,
++                'state_validation_seconds': validation_seconds, 'sampling_seconds': sampling_seconds,
++                'decode_seconds': decode_seconds,
++                'qiskit_seconds': final_seconds,
++                'qiskit_seconds_scope': 'legacy alias of final_processing_seconds; see statevector_backend',
+                 'total_seconds': perf_counter() - begin, 'history': histories,
+-                'backend': 'Qiskit Statevector final; exact one-hot tensor + finite-shot training',
++                'statevector_backend': c.statevector_backend,
++                'statevector_backend_version': version(c.statevector_backend),
++                'sampling_backend': 'qiskit.quantum_info.Statevector.sample_counts',
++                'sampling_backend_version': version('qiskit'),
++                'backend': ('Qiskit Statevector final; exact one-hot tensor + finite-shot training'
++                            if c.statevector_backend == 'qiskit' else
++                            'Qulacs Statevector final; Qiskit sampling; exact one-hot tensor + finite-shot training'),
+                 'internal_depot_handling': 'split at depot; free-fleet reference only'}
+--- before/src/kmd_toc/dwt/setup.py
++++ src/kmd_toc/dwt/setup.py
+@@ -2,8 +2,10 @@
+ import time
+ 
+ 
+-def preload_dependencies():
++def preload_dependencies(config=None):
+     started = time.perf_counter()
++    from kmd_toc.column_generation.backends import configured_backend, require_backend
++    require_backend(configured_backend(config))
+     # The same union is initialized for A/B/C/D and quantum-off controls.
+     # No circuit, objective evaluation, route, optimizer or input is created.
+     from ortools.constraint_solver import pywrapcp, routing_enums_pb2
+--- before/src/kmd_toc/dwt/methods.py
++++ src/kmd_toc/dwt/methods.py
+@@ -227,13 +227,6 @@
+     stopped = False
+     quantum_end = time.perf_counter() + budget.left(budget.seconds * a['D_quantum_fraction'])
+ 
+-    class TimedAOA(PricingAOA):
+-        def circuit(self, angles):
+-            started = time.perf_counter()
+-            qc = super().circuit(angles)
+-            self.circuit_seconds = time.perf_counter() - started
+-            return qc
+-
+     if method == 'D':
+         for iteration in range(config['D']['pricing_rounds']):
+             for ri, route in enumerate(routes):
+@@ -247,8 +240,9 @@
+                 qseed = int(np.random.SeedSequence([seeds['quantum_seed'], iteration, ri]).generate_state(1)[0])
+                 cfg = AOAConfig(slots=len(groups) + 1,
+                                 **{k: config['D'][k] for k in ['p', 'max_evaluations', 'restarts', 'train_shots', 'final_shots']},
+-                                solver_seed=qseed)
+-                engine = TimedAOA(sub.pricing, sub.dual, cfg)
++                                solver_seed=qseed,
++                                statevector_backend=config['D'].get('statevector_backend', 'qiskit'))
++                engine = PricingAOA(sub.pricing, sub.dual, cfg)
+                 result = engine.run()
+                 accepted = []
+                 for small in result['routes']:
+@@ -260,12 +254,20 @@
+                 domain.update(exact)
+                 quantum.append({'iteration': iteration, 'route_index': ri, 'quantum_seed': qseed,
+                                 'fragment_groups': groups, 'full_routes': accepted,
+-                                'circuit_build_s': engine.circuit_seconds,
++                                'statevector_backend': result['statevector_backend'],
++                                'statevector_backend_version': result['statevector_backend_version'],
++                                'circuit_build_s': result['circuit_build_seconds'],
++                                'statevector_s': result['statevector_seconds'],
++                                'state_validation_s': result['state_validation_seconds'],
++                                'training_s': result['training_seconds'],
++                                'decode_s': result['decode_seconds'],
++                                'final_processing_s': result['final_processing_seconds'],
+                                 'training_evaluations': sum(h['nfev'] for h in result['history']),
+                                 'training_total_shots': sum(h['nfev'] for h in result['history']) * cfg.train_shots,
+                                 'final_total_shots': result['measured_shots'],
+-                                'simulation_sampling_decode_s': result['qiskit_seconds'] - engine.circuit_seconds,
+-                                'sampling_only_s': None, 'sampling_scope': 'combined statevector evolution, finite-shot sampling and decoding',
++                                'simulation_sampling_decode_s': result['final_processing_seconds'] - result['circuit_build_seconds'],
++                                'sampling_only_s': result['sampling_seconds'],
++                                'sampling_scope': 'Qiskit Statevector.sample_counts only; evolution and validation reported separately',
+                                 'result': result})
+                 budget.capture(f'D_AOA_{iteration}_{ri}', quantum[-1])
+             if stopped:
+--- before/src/kmd_toc/dwt/experiment.py
++++ src/kmd_toc/dwt/experiment.py
+@@ -58,6 +58,8 @@
+ def register(config_path, phase, methods=None):
+     path = Path(config_path)
+     config = json.loads(path.read_text())
++    from kmd_toc.column_generation.backends import backend_environment
++    quantum_environment = backend_environment(config)
+     root = Path(config['output_root'])
+     target = root / (phase + '_REGISTERED.json')
+     if target.exists():
+@@ -69,6 +71,8 @@
+     if Path('scripts/run_dwt_bundle.py').exists():
+         source_hashes['scripts/run_dwt_bundle.py'] = hashlib.sha256(Path('scripts/run_dwt_bundle.py').read_bytes()).hexdigest()
+     versions = {p: importlib.metadata.version(p) for p in ['numpy', 'scipy', 'ortools', 'qiskit']}
++    if quantum_environment['statevector_backend'] == 'qulacs':
++        versions['qulacs'] = quantum_environment['statevector_version']
+     specs = []
+     methods = methods or ['B', 'C', 'D']
+     serial = 0
+@@ -89,14 +93,17 @@
+                                       'epsilon_W_min': epsilon, 'tau_s': tau, 'seeds': seeds,
+                                       'input_dir': str(Path(config['input_root']) / scenario),
+                                       'code_hashes': source_hashes, 'environment_version': versions,
++                                      'quantum_backend_environment': quantum_environment,
+                                       'registered_input_hash': registered_input['problem_hash'],
+                                       'registered_OD_hash': registered_input['od_hash'],
+                                       'config': config, 'config_sha256': hashlib.sha256(path.read_bytes()).hexdigest()})
+                         if config.get('cpu_parallel', {}).get('enabled') and method in ('B', 'C', 'D', 'D_CLASSICAL_CONTROL'):
+                             from .parallel import cpu_profile
+                             specs[-1]['execution_cpu_profile'] = cpu_profile(config)
++    root.mkdir(parents=True, exist_ok=True)
+     dump(target, {'phase': phase, 'registered_unix_s': time.time(), 'config_path': str(path),
+                   'code_hashes': source_hashes, 'environment_version': versions,
++                  'quantum_backend_environment': quantum_environment,
+                   'config_sha256': hashlib.sha256(path.read_bytes()).hexdigest(), 'specs': specs,
+                   'kind': 'limited feasibility/budget experiment; not confirmatory main experiment'})
+     return target
+@@ -148,6 +155,9 @@
+                    failure_elapsed_s=time.perf_counter() - current.get('start_perf_counter', started),
+                    error={'returncode': process.returncode, 'watchdog': killed}, **spec['seeds'])
+     row['fresh_process_wall_s'] = time.perf_counter() - started
++    from kmd_toc.column_generation.backends import configured_backend
++    row['configured_statevector_backend'] = configured_backend(spec['config'])
++    row['registered_quantum_backend_environment'] = spec.get('quantum_backend_environment')
+     row['worker_launch_mode'] = 'single-thread import-only fork' if safe_fork else 'fresh exec'
+     row['trial_directory'] = str(out)
+     row = export_standard(row, spec, out, geometry)
+@@ -161,8 +171,22 @@
+     registration = json.loads(register_path.read_text())
+     root = register_path.parent
+     from .setup import preload_dependencies
++    from kmd_toc.column_generation.backends import backend_environment
++    # Check and prepare selected dependencies before reading any delivery input.
++    # Old Qiskit registrations without this new metadata remain readable.
++    for spec in registration['specs']:
++        actual = backend_environment(spec['config'])
++        expected = spec.get('quantum_backend_environment')
++        if expected is not None and actual != expected:
++            raise ValueError('REGISTERED_QUANTUM_BACKEND_ENVIRONMENT_CHANGED')
+     dump(root / (registration['phase'] + '_SETUP_PROGRESS.json'), {'state': 'uniform dependency import; no input read', 'started_unix_s': time.time()})
+-    setup_seconds = preload_dependencies()
++    setup_seconds = 0.0
++    prepared_backends = set()
++    for spec in registration['specs']:
++        name = backend_environment(spec['config'])['statevector_backend']
++        if name not in prepared_backends:
++            setup_seconds += preload_dependencies(spec['config'])
++            prepared_backends.add(name)
+     # Native thread count matters: Python active_count alone cannot detect
+     # BLAS/HiGHS threads. No parent solver is executed anywhere in this loop.
+     native_threads = len(list(Path('/proc/self/task').iterdir())) if Path('/proc/self/task').exists() else None
+--- before/src/kmd_toc/dwt/worker.py
++++ src/kmd_toc/dwt/worker.py
+@@ -26,7 +26,9 @@
+ def execute(spec, out):
+     out = Path(out)
+     from .setup import preload_dependencies
+-    dependency_setup_s = preload_dependencies()
++    from kmd_toc.column_generation.backends import backend_environment
++    dependency_setup_s = preload_dependencies(spec['config'])
++    quantum_environment = backend_environment(spec['config'])
+     stages = out / 'stages'
+     stages.mkdir(exist_ok=True)
+     budget = Budget(spec['tau_s'], spec['config']['allocation']['validation_reserve_fraction'],
+@@ -123,6 +125,7 @@
+                D_HiGHS_seed=None,
+                random_generator='NumPy SeedSequence PCG64 / Qiskit Statevector; versions in environment',
+                environment_version=spec.get('environment_version'),
++               quantum_backend_environment=quantum_environment,
+                max_rss_KiB=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
+                process_cpu_s=process_cpu_s,
+                worker_pid=os.getpid(), cpu_affinity=sorted(os.sched_getaffinity(0)),
+--- before/src/kmd_toc/dwt/parallel.py
++++ src/kmd_toc/dwt/parallel.py
+@@ -94,9 +94,11 @@
+             os.environ.update(OPENBLAS_NUM_THREADS='1', OMP_NUM_THREADS='1', MKL_NUM_THREADS='1',
+                               NUMEXPR_NUM_THREADS='1')
+             os.sched_setaffinity(0, {cpu})
+-            setup_s = preload_dependencies()  # code only, never a problem/solver/circuit
++            from kmd_toc.column_generation.backends import backend_environment
++            setup_s = preload_dependencies(spec['config'])  # imports only
+             ready.send({'ok': True, 'pid': os.getpid(), 'cpu_affinity': sorted(os.sched_getaffinity(0)),
+-                        'dependency_setup_s': setup_s})
++                        'dependency_setup_s': setup_s,
++                        'quantum_backend_environment': backend_environment(spec['config'])})
+             ready.close()
+             go.wait()
+             remaining = deadline.value - time.perf_counter()
+@@ -175,6 +177,7 @@
+     from kmd_toc.common.models import load_problem
+     from kmd_toc.common.validation import validate_plan
+     from kmd_toc.baseline_a.independent import recompute
++    from kmd_toc.column_generation.backends import backend_environment, observed_quantum_timings
+ 
+     out = Path(out)
+     setup_begin = time.perf_counter()
+@@ -186,7 +189,8 @@
+             raise ValueError('REGISTERED_PARALLEL_CPU_PROFILE_UNAVAILABLE')
+         profile = registered
+     os.sched_setaffinity(0, set(profile['cpu_ids']))
+-    preload_dependencies()
++    preload_dependencies(spec['config'])
++    quantum_environment = backend_environment(spec['config'])
+     native_threads = len(list(Path('/proc/self/task').iterdir()))
+     mode = 'fork' if allow_import_only_fork and native_threads == 1 and 'fork' in mp.get_all_start_methods() else 'spawn'
+     context = mp.get_context(mode)
+@@ -260,6 +264,9 @@
+                            seeds=seeds[index], exitcode=process.exitcode, timed_out=index in timed_out,
+                            children_joined=not process.is_alive(), quantum_calls=len(quantum),
+                            quantum_accounting_complete=quantum_complete,
++                           quantum_backend_environment=ready_records[index]['quantum_backend_environment'],
++                           statevector_backends_observed=sorted({q.get('statevector_backend', 'unknown') for q in quantum}),
++                           observed_quantum_timing_s=observed_quantum_timings(quantum),
+                            training_shots=sum(q['training_total_shots'] for q in quantum),
+                            final_shots=sum(q['final_total_shots'] for q in quantum))
+             summaries.append(summary)
+@@ -300,6 +307,7 @@
+             solver_seed_scope='root branches to explicitly logged per-branch seeds; CP-SAT/OR ReSeed; HiGHS native threads=1',
+             quantum_seed_used=quantum_use_state(spec['method'], summaries),
+             environment_version=spec.get('environment_version'),
++            quantum_backend_environment=quantum_environment,
+             max_rss_KiB=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
+             process_cpu_s=parent_cpu_s,
+             total_process_cpu_s=(parent_cpu_s + sum(s['process_cpu_s'] for s in summaries)
+@@ -322,6 +330,13 @@
+             total_final_shots=sum(s['final_shots'] for s in summaries) if all(s['quantum_accounting_complete'] for s in summaries) else None,
+             completed_quantum_call_observations=sum(s['quantum_calls'] for s in summaries),
+             stage_evidence_files=['stages/parallel_candidates.json'])
++        timing_keys = summaries[0]['observed_quantum_timing_s']
++        row['observed_quantum_timing_s'] = {
++            key: (sum(s['observed_quantum_timing_s'][key] for s in summaries)
++                  if all(s['observed_quantum_timing_s'][key] is not None for s in summaries) else None)
++            for key in timing_keys}
++        row['total_quantum_timing_s'] = (row['observed_quantum_timing_s']
++                                         if row['quantum_accounting_complete'] else None)
+         row['aggregate_RSS_upper_bound_KiB'] = (row['max_rss_KiB'] + sum(s['max_rss_KiB'] for s in summaries)
+                                                 if all(s.get('max_rss_KiB') is not None for s in summaries) else None)
+         row['aggregate_RSS_scope'] = 'sum of process high-water marks including shared pages; not measured simultaneous physical RSS; incomplete if a branch was killed'
+--- before/tests/toc_dwt/test_dwt.py
++++ tests/toc_dwt/test_dwt.py
+@@ -292,7 +292,7 @@
+     spec = spec_for(tmp_path)
+     target = tmp_path / 'registration.json'
+     target.write_text(json.dumps({'phase': 'test', 'specs': [spec]}))
+-    monkeypatch.setattr(setup, 'preload_dependencies', lambda: 0.)
++    monkeypatch.setattr(setup, 'preload_dependencies', lambda config=None: 0.)
+     original = Path.iterdir
+     def iterdir(path):
+         return iter([Path('/proc/self/task/1')]) if str(path) == '/proc/self/task' else original(path)

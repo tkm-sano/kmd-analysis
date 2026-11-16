@@ -1,0 +1,2402 @@
+[
+  {
+    "repo": "romain-montagne/vrpy",
+    "sha": "ff325cbe64c08d53969fc54b7ff9f7a9b2fa1d63",
+    "date": "2022-04-16T08:07:49Z",
+    "branch": "master",
+    "license": "MIT",
+    "files": [
+      {
+        "path": ".circleci/config.yml",
+        "git_blob_sha": "6956e9cd4993f3c0e8a6e8e2a57cd1953686c469"
+      },
+      {
+        "path": ".gitattributes",
+        "git_blob_sha": "273c43f0f2c1ca04d38fb38f3ea4cc77f9d86336"
+      },
+      {
+        "path": ".gitignore",
+        "git_blob_sha": "9566f328ad5ed73335608eb82e77cbcb4caa3bc1"
+      },
+      {
+        "path": ".readthedocs.yml",
+        "git_blob_sha": "6f00923bd538c999de6717f7427a591867ccaeae"
+      },
+      {
+        "path": "CHANGELOG.md",
+        "git_blob_sha": "312e2435ee3aed92ec9783f5b04d6be00ac63ffb"
+      },
+      {
+        "path": "CONTRIBUTING.md",
+        "git_blob_sha": "47b224e4c7a0559fcf754a35cd4b809f78b8a136"
+      },
+      {
+        "path": "LICENSE",
+        "git_blob_sha": "92ebd6a6009099f29e6e3070d4a21734ace9321f"
+      },
+      {
+        "path": "README.md",
+        "git_blob_sha": "4ce0c2cabbcef5acf60b700b8326b95531754403"
+      },
+      {
+        "path": "benchmarks/README.md",
+        "git_blob_sha": "f99021f0818a876b4f2c81e18caebcb2911d737f"
+      },
+      {
+        "path": "benchmarks/augerat_dataset.py",
+        "git_blob_sha": "1431ca6de68975e975f559d210bb6f5c1b077743"
+      },
+      {
+        "path": "benchmarks/data/cvrp/P-n16-k8.vrp",
+        "git_blob_sha": "d010253f9893a363ca73da9a4564d70d911ed01d"
+      },
+      {
+        "path": "benchmarks/data/cvrptw/C101.txt",
+        "git_blob_sha": "ed6b1d7f186f9b8829f01e8973736cff316bdef1"
+      },
+      {
+        "path": "benchmarks/data/p01",
+        "git_blob_sha": "7a382f166bd956dd7fec8ad0ab3340d66e7b1007"
+      },
+      {
+        "path": "benchmarks/performance_profiles/benchmarks.ipynb",
+        "git_blob_sha": "7ad7405304ef9206027629c8929bf1628ef79f6a"
+      },
+      {
+        "path": "benchmarks/performance_profiles/clarke_wright_cvrp.csv",
+        "git_blob_sha": "e8f5a7fff19522962ff7eee42b3182727c97048c"
+      },
+      {
+        "path": "benchmarks/performance_profiles/ortools_cvrp.csv",
+        "git_blob_sha": "5c758d080ffabaf12f62d8c0939bbe3626a53fb8"
+      },
+      {
+        "path": "benchmarks/performance_profiles/vrpy_cvrp.csv",
+        "git_blob_sha": "9afee98178bd766700309045b28d175c468d07e1"
+      },
+      {
+        "path": "benchmarks/run.py",
+        "git_blob_sha": "907c2b68abf0d80f3700d9b46aa4e6c6666109d9"
+      },
+      {
+        "path": "benchmarks/solomon_dataset.py",
+        "git_blob_sha": "929ca0651f7fb4a6b9e2a946b2e5ba8a0863e9f2"
+      },
+      {
+        "path": "benchmarks/tests/graph_issue101",
+        "git_blob_sha": "de81fb8054d82cb174291bc9bee9f5834343beb2"
+      },
+      {
+        "path": "benchmarks/tests/pytest.ini",
+        "git_blob_sha": "ad1f99070f06118f844f3f26bcadd4b892c1209a"
+      },
+      {
+        "path": "benchmarks/tests/test_cvrp_augerat.py",
+        "git_blob_sha": "1bd6153b4fdbca6dbbd56b8c7fb4b4b8daf9d9db"
+      },
+      {
+        "path": "benchmarks/tests/test_cvrptw_solomon.py",
+        "git_blob_sha": "5c05acd7310dd77681cefcf27fd2b67e91dff524"
+      },
+      {
+        "path": "benchmarks/tests/test_cvrptw_solomon_range.py",
+        "git_blob_sha": "f1bd9d3da8f60808a747a96c772fcc3135a6766f"
+      },
+      {
+        "path": "benchmarks/tests/test_examples.py",
+        "git_blob_sha": "dec16a62708a8490084bd6c0bf3e809f86ffdabf"
+      },
+      {
+        "path": "benchmarks/tests/test_issue101.py",
+        "git_blob_sha": "7a27ebf906eb0b842c8cedffa0eec341895e7ccf"
+      },
+      {
+        "path": "benchmarks/utils/csv_table.py",
+        "git_blob_sha": "7e81767bef3f935fc854c05a76726bbf8499fcfe"
+      },
+      {
+        "path": "benchmarks/utils/distance.py",
+        "git_blob_sha": "e5726d3f20240420d9d043c0c822a638eb6237b1"
+      },
+      {
+        "path": "docs/api.rst",
+        "git_blob_sha": "410bb13515f1563babe952cfa3fa01c621ef6dc3"
+      },
+      {
+        "path": "docs/benchmarks.rst",
+        "git_blob_sha": "30b139e51dc6d023bbb5f9d7d7a8557710bd503e"
+      },
+      {
+        "path": "docs/bibliography.rst",
+        "git_blob_sha": "8ee8538f74cbec89563a5d47de3a4042040b2141"
+      },
+      {
+        "path": "docs/conf.py",
+        "git_blob_sha": "f324095c88e42820e8b7ac303170760a511493a0"
+      },
+      {
+        "path": "docs/examples.rst",
+        "git_blob_sha": "f79c825bc1fddb072080af0d952a47bafad8dc6b"
+      },
+      {
+        "path": "docs/getting_started.rst",
+        "git_blob_sha": "280c33167bd230cab3e40f34fd7e0b3bbb54ecc6"
+      },
+      {
+        "path": "docs/how_to.rst",
+        "git_blob_sha": "7625024ea18a1c13be6cbe7307c38c1cae0a834b"
+      },
+      {
+        "path": "docs/images/capacity.png",
+        "git_blob_sha": "43360ff80deca3c5a19e2699519013b24e0adafe"
+      },
+      {
+        "path": "docs/images/cvrp_performance_profile.png",
+        "git_blob_sha": "912562b3351f538ab3e313d5e8269801e2b89c66"
+      },
+      {
+        "path": "docs/images/drop.png",
+        "git_blob_sha": "62881dea6ad4b4ca9a899c05d3c3023ed2fb9740"
+      },
+      {
+        "path": "docs/images/network.png",
+        "git_blob_sha": "082d1e2f71970ad84799e8e15e4093f1c22a484e"
+      },
+      {
+        "path": "docs/images/nodes.png",
+        "git_blob_sha": "d2b5f63e009f0f3a760daee0ed8957b97ddce82a"
+      },
+      {
+        "path": "docs/images/nodes_capacity.png",
+        "git_blob_sha": "37da7f135f82b3c2a2f5fafb19f35d5210bf7b8a"
+      },
+      {
+        "path": "docs/images/nodes_time_windows.png",
+        "git_blob_sha": "5ed078ef5eaa510995751d344fa32d1be5b5eba1"
+      },
+      {
+        "path": "docs/images/pdp.png",
+        "git_blob_sha": "23114d498e4782d28e24ea6c8b59fec88c45d9af"
+      },
+      {
+        "path": "docs/images/requests.png",
+        "git_blob_sha": "617d5d39e6512c4a57f3d82d8bd465ea570513d8"
+      },
+      {
+        "path": "docs/images/sol.png",
+        "git_blob_sha": "e9c44e9b1dcd841e5ca02d5aeac244eb1c3bc5f1"
+      },
+      {
+        "path": "docs/images/stops.png",
+        "git_blob_sha": "0adc9db212b9a82090003db4c7945428e126087a"
+      },
+      {
+        "path": "docs/images/time.png",
+        "git_blob_sha": "b54514b005bd28b832aef8cd0e41a344a73fd89c"
+      },
+      {
+        "path": "docs/images/time_windows.png",
+        "git_blob_sha": "274370abf4aa26d3457533816204576efe77af21"
+      },
+      {
+        "path": "docs/index.rst",
+        "git_blob_sha": "f55144a32f5cf881021f20d97398e3dc417bcb85"
+      },
+      {
+        "path": "docs/mathematical_background.rst",
+        "git_blob_sha": "9be937d19b6312880352ac2e181d692d67f7299c"
+      },
+      {
+        "path": "docs/refs.bib",
+        "git_blob_sha": "ebcde1cecf7f4489d9293ac41c97916280596552"
+      },
+      {
+        "path": "docs/requirements.txt",
+        "git_blob_sha": "2b6758d12a5e346d537d2602683e2726fe55a694"
+      },
+      {
+        "path": "docs/solving_options.rst",
+        "git_blob_sha": "46218eeb0771207b3b3183177c9db3a69a1fe1c3"
+      },
+      {
+        "path": "docs/vrp_variants.rst",
+        "git_blob_sha": "92a23f9084019a7ba6d255834acaeedd241fed76"
+      },
+      {
+        "path": "examples/README.md",
+        "git_blob_sha": "99f1cd5f3ab53c4ea22710050a0e3794ac99fc4e"
+      },
+      {
+        "path": "examples/__init__.py",
+        "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+      },
+      {
+        "path": "examples/cvrp.py",
+        "git_blob_sha": "4348900c4b432580551fbd6d8962e7fe0b83c022"
+      },
+      {
+        "path": "examples/cvrp_drop.py",
+        "git_blob_sha": "7e732d203bef2388fc923773661382bde68ed8d7"
+      },
+      {
+        "path": "examples/cvrpsdc.py",
+        "git_blob_sha": "542c37f06c6cb1b543687900997e6ec2914365ad"
+      },
+      {
+        "path": "examples/data.py",
+        "git_blob_sha": "f00ebf527604c7536c217070efed76be8be5ff8c"
+      },
+      {
+        "path": "examples/pdp.py",
+        "git_blob_sha": "6591557dcd1ff2117acdad876794982adf1ac25a"
+      },
+      {
+        "path": "examples/vrptw.py",
+        "git_blob_sha": "def7811120195721bc9fbfdc5ecb0dab4abb4bc8"
+      },
+      {
+        "path": "paper/colgen.png",
+        "git_blob_sha": "4dd530369754cddf0a447fc62fd7cb0f75aa0d26"
+      },
+      {
+        "path": "paper/cvrp_performance_profile.png",
+        "git_blob_sha": "912562b3351f538ab3e313d5e8269801e2b89c66"
+      },
+      {
+        "path": "paper/paper.bib",
+        "git_blob_sha": "3da4850c854ddd18aaa9c3add1da74f0dd49a0a1"
+      },
+      {
+        "path": "paper/paper.md",
+        "git_blob_sha": "18e8458b57344696c396476500e7536acdf0b086"
+      },
+      {
+        "path": "requirements.txt",
+        "git_blob_sha": "dcc2fd394bf84cdc36d612d0d98c979fe8959732"
+      },
+      {
+        "path": "setup.py",
+        "git_blob_sha": "503db87a2f3713e7e520592da322f39796029abe"
+      },
+      {
+        "path": "tests/pytest.ini",
+        "git_blob_sha": "a18e67ec36192790132ebb8804c6c31a3b24f96e"
+      },
+      {
+        "path": "tests/test_consistency.py",
+        "git_blob_sha": "0bbdc089de9c3e38e1220cc86566d0b7533c70da"
+      },
+      {
+        "path": "tests/test_initial_solution.py",
+        "git_blob_sha": "89743a39a72c5a60f6b0c3bd17289b3f0d3cf63e"
+      },
+      {
+        "path": "tests/test_issue101.py",
+        "git_blob_sha": "eaf3d14b9d2ff58712359f3291ae87cf6401da65"
+      },
+      {
+        "path": "tests/test_issue110.py",
+        "git_blob_sha": "e57723a95c58fc669e12ae682726e8929da0b976"
+      },
+      {
+        "path": "tests/test_issue79.py",
+        "git_blob_sha": "bcbbd58690a50b6802563cbaf5ac4725762b84c3"
+      },
+      {
+        "path": "tests/test_issue86.py",
+        "git_blob_sha": "31106eeaeb4891fcf4205727f7a409f54d6923b8"
+      },
+      {
+        "path": "tests/test_issue99.py",
+        "git_blob_sha": "0ee874549f13bb0747188dff89c016f7a62cfc37"
+      },
+      {
+        "path": "tests/test_subproblem_greedy.py",
+        "git_blob_sha": "e7f582a9240b68ef13c32da428961e222a9dd96d"
+      },
+      {
+        "path": "tests/test_toy.py",
+        "git_blob_sha": "5d7da966c0e546100914a9b92388fafeb9cdc284"
+      },
+      {
+        "path": "vrpy/__init__.py",
+        "git_blob_sha": "fba1a3e920df21e95a191bfac660d7b164b35fb3"
+      },
+      {
+        "path": "vrpy/checks.py",
+        "git_blob_sha": "e4fbf6d111ede7d267243dab94f3bb18c74f81a2"
+      },
+      {
+        "path": "vrpy/clarke_wright.py",
+        "git_blob_sha": "911b6838a9d1412ce8e95210ce3b695c4629ee5a"
+      },
+      {
+        "path": "vrpy/greedy.py",
+        "git_blob_sha": "705f11c61375d9e525605f2ed6f4b810b17cfbd0"
+      },
+      {
+        "path": "vrpy/hyper_heuristic.py",
+        "git_blob_sha": "7350c4913071dc36f65987793b6973ab16a49f1d"
+      },
+      {
+        "path": "vrpy/master_solve_pulp.py",
+        "git_blob_sha": "3bcbe97e468e02f535c03856845c9005eb44af83"
+      },
+      {
+        "path": "vrpy/masterproblem.py",
+        "git_blob_sha": "1ddde88f4981804b58572d19a437343c126d7218"
+      },
+      {
+        "path": "vrpy/preprocessing.py",
+        "git_blob_sha": "11f43dc370033c973cc14ae3650bdae9b1a80a44"
+      },
+      {
+        "path": "vrpy/restricted_master_heuristics.py",
+        "git_blob_sha": "1ce25ed165b0c60f150f587530d01dcfeee2a12c"
+      },
+      {
+        "path": "vrpy/schedule.py",
+        "git_blob_sha": "d25bef5c4cb0c3b1725e27c09b96a30d27562ac6"
+      },
+      {
+        "path": "vrpy/subproblem.py",
+        "git_blob_sha": "308609e63a570ea51497dbd267361845c4eea159"
+      },
+      {
+        "path": "vrpy/subproblem_cspy.py",
+        "git_blob_sha": "789f044c6786d93312e6098c1942d668003b3f0f"
+      },
+      {
+        "path": "vrpy/subproblem_greedy.py",
+        "git_blob_sha": "70e29e11d3fb99c6113011875666d71e623cb7b8"
+      },
+      {
+        "path": "vrpy/subproblem_lp.py",
+        "git_blob_sha": "73a38a37e4836b16723e315f3a39d75642bdc96f"
+      },
+      {
+        "path": "vrpy/vrp.py",
+        "git_blob_sha": "11a0690248b32050264d2194ddca909810944a7d"
+      }
+    ],
+    "tree_truncated": false
+  },
+  {
+    "repo": "PyVRP/PyVRP",
+    "sha": "1e07f972d437d6ebad8e1e241d2d807c209998c3",
+    "date": "2026-11-10T12:23:58Z",
+    "branch": "main",
+    "license": "MIT",
+    "files": [
+      {
+        "path": ".clang-format",
+        "git_blob_sha": "06f850a9af66249c8ea34396fecd84511a0b961e"
+      },
+      {
+        "path": ".github/CODE_OF_CONDUCT.md",
+        "git_blob_sha": "5a59ff99e969349eae89f3218a6699d0bfbe3144"
+      },
+      {
+        "path": ".github/DISCUSSION_TEMPLATE/q-a.yml",
+        "git_blob_sha": "37306acf08b1ab470cd5ae1b01962369c80a5224"
+      },
+      {
+        "path": ".github/FUNDING.yml",
+        "git_blob_sha": "b6cf17577215dbb882bcc3554eca67fe99b8bc4e"
+      },
+      {
+        "path": ".github/ISSUE_TEMPLATE/BUG_REPORT.md",
+        "git_blob_sha": "0d0604d623f79fef83e0ce49a4edc190f277a0e5"
+      },
+      {
+        "path": ".github/ISSUE_TEMPLATE/FEATURE_REQUEST.md",
+        "git_blob_sha": "a6c28adb880c3cceb732696cecffb817a2130a7c"
+      },
+      {
+        "path": ".github/PULL_REQUEST_TEMPLATE.md",
+        "git_blob_sha": "92824ad6bb2e0e7241521b4deed01c5870879ed5"
+      },
+      {
+        "path": ".github/codecov.yml",
+        "git_blob_sha": "223387bd619f2bb0ad71572434b4549683c11438"
+      },
+      {
+        "path": ".github/workflows/CD.yml",
+        "git_blob_sha": "565ad410476121ad6f65ad8320ecd98d849bf9ea"
+      },
+      {
+        "path": ".github/workflows/CI.yml",
+        "git_blob_sha": "2043050859376d4a2599fa2de793316102a6c565"
+      },
+      {
+        "path": ".github/workflows/CodSpeed.yml",
+        "git_blob_sha": "119e910f25a7520672a232dedcdfeb80054eff69"
+      },
+      {
+        "path": ".github/workflows/DOC.yml",
+        "git_blob_sha": "afb3a06279d1738d38d72e3157c561eac283f074"
+      },
+      {
+        "path": ".gitignore",
+        "git_blob_sha": "02e580fc0b964653430b3381b8a06a1ff8f4d65b"
+      },
+      {
+        "path": ".gitmodules",
+        "git_blob_sha": "dbbc41c79cd59d356779ecef6af8ace8a100d297"
+      },
+      {
+        "path": ".pre-commit-config.yaml",
+        "git_blob_sha": "b11b9d1d30b733561d5216d0022deff6af561ffa"
+      },
+      {
+        "path": ".readthedocs.yaml",
+        "git_blob_sha": "866f0fe71f199580ca6ac884533ad0174b557714"
+      },
+      {
+        "path": "CITATION.cff",
+        "git_blob_sha": "6e25aa711d9d63132c17aafd32d6372141de0d8c"
+      },
+      {
+        "path": "LICENSE.md",
+        "git_blob_sha": "b6ca35fd2dec7135a7448ccd2316b698da7d6af2"
+      },
+      {
+        "path": "README.md",
+        "git_blob_sha": "8e04430f54b477d2324f760258e39ae2cd3a4761"
+      },
+      {
+        "path": "benchmarks/README.md",
+        "git_blob_sha": "adc9aa9427bedaa58b2cfc9849a8d58137840ef4"
+      },
+      {
+        "path": "benchmarks/__init__.py",
+        "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+      },
+      {
+        "path": "benchmarks/conftest.py",
+        "git_blob_sha": "4876e22ae469f3824ea6a79a422bc2543c3b4ff6"
+      },
+      {
+        "path": "benchmarks/search/__init__.py",
+        "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+      },
+      {
+        "path": "benchmarks/search/test_LocalSearch.py",
+        "git_blob_sha": "1d16ce8615729e081fa90d167614448aa08b23a8"
+      },
+      {
+        "path": "benchmarks/test_solve.py",
+        "git_blob_sha": "cc8179b0d7e57f5c7735dacbc211d6fe0451717a"
+      },
+      {
+        "path": "buildtools/README.md",
+        "git_blob_sha": "908881cd720a07822a444e1d321b8415fc58745e"
+      },
+      {
+        "path": "buildtools/__init__.py",
+        "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+      },
+      {
+        "path": "buildtools/build_extensions.py",
+        "git_blob_sha": "46f3f50d52cb644377e501f5db256e4cbe127095"
+      },
+      {
+        "path": "buildtools/build_wrapper.py",
+        "git_blob_sha": "0b68e133f7e646935dd056ec9f6ac83a6505fbe2"
+      },
+      {
+        "path": "buildtools/extract_docstrings.py",
+        "git_blob_sha": "a93047329766643d35fbdd94baf6b3739b1a7b74"
+      },
+      {
+        "path": "docs/Makefile",
+        "git_blob_sha": "d0c3cbf1020d5c292abdedf27627c6abe25e2293"
+      },
+      {
+        "path": "docs/README.md",
+        "git_blob_sha": "5a68dce6c0286bf4d0ab02821bc45a33d4d4926d"
+      },
+      {
+        "path": "docs/__init__.py",
+        "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+      },
+      {
+        "path": "docs/source/__init__.py",
+        "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+      },
+      {
+        "path": "docs/source/about/about.rst",
+        "git_blob_sha": "beae520b36dd773084fbcd007c3165d310f3375a"
+      },
+      {
+        "path": "docs/source/about/citing.rst",
+        "git_blob_sha": "a069d750aae245e4c9a383f104b33873c5f83652"
+      },
+      {
+        "path": "docs/source/about/funding.rst",
+        "git_blob_sha": "62ba3523eb472c885b7b9a8328d81b069f6f403a"
+      },
+      {
+        "path": "docs/source/about/licenses.rst",
+        "git_blob_sha": "38e242317265c8a8d6ab8f2c015a359f7a6afb7e"
+      },
+      {
+        "path": "docs/source/api/plotting.rst",
+        "git_blob_sha": "ab24e245fa6fb300d55541977b3dd5b1d75f4eae"
+      },
+      {
+        "path": "docs/source/api/pyvrp.rst",
+        "git_blob_sha": "3472f6f926929a69a6e0d9b015a097954785fc67"
+      },
+      {
+        "path": "docs/source/api/search.rst",
+        "git_blob_sha": "481b01c083af8f53cce914fad84da9f4345e2066"
+      },
+      {
+        "path": "docs/source/api/stop.rst",
+        "git_blob_sha": "3ff05918a21f534be7f02ea3d3beaf42f7b95c01"
+      },
+      {
+        "path": "docs/source/assets/images/duration-client.excalidraw",
+        "git_blob_sha": "397d7901d6ed1be76ec8b358192a771da4529de3"
+      },
+      {
+        "path": "docs/source/assets/images/duration-client.svg",
+        "git_blob_sha": "bdddc3a479e19cd91f9c2947034491ab018aa54e"
+      },
+      {
+        "path": "docs/source/assets/images/duration-shipment.excalidraw",
+        "git_blob_sha": "bc8ca14995255a18efd983f951a79c30f68b6a0e"
+      },
+      {
+        "path": "docs/source/assets/images/duration-shipment.svg",
+        "git_blob_sha": "eaf08c49d3a23ba647a28b42c2053bfd9da2f314"
+      },
+      {
+        "path": "docs/source/assets/images/duration-vehicletype.excalidraw",
+        "git_blob_sha": "a51b96d2a62584acca629cf2c6f90e4be79bcc3e"
+      },
+      {
+        "path": "docs/source/assets/images/duration-vehicletype.svg",
+        "git_blob_sha": "9c7babf29faced89deb49b47ef566fb94f46641f"
+      },
+      {
+        "path": "docs/source/assets/images/favicon.ico",
+        "git_blob_sha": "6606dcb836b16ef4c1e08f21a2743c21024ad0fd"
+      },
+      {
+        "path": "docs/source/assets/images/icon.svg",
+        "git_blob_sha": "1707403ae81206c228762387d964d47cd568a2f8"
+      },
+      {
+        "path": "docs/source/assets/images/introduction-to-vrp.svg",
+        "git_blob_sha": "903994efcad71495f088592528fe40c2a8b8fa48"
+      },
+      {
+        "path": "docs/source/assets/images/logo.svg",
+        "git_blob_sha": "22aed95e2e090ae9c96b4b8671e98dbee0830fc2"
+      },
+      {
+        "path": "docs/source/conf.py",
+        "git_blob_sha": "a4ab38e8cfb1c6b0af1716b7dd5a7f28eba8bde6"
+      },
+      {
+        "path": "docs/source/dev/algorithm.rst",
+        "git_blob_sha": "3ee71edf356074533b57988ec81f1577ae3944e5"
+      },
+      {
+        "path": "docs/source/dev/benchmarking.rst",
+        "git_blob_sha": "d139abb197462d0c6450073166ae133dbc003595"
+      },
+      {
+        "path": "docs/source/dev/contributing.rst",
+        "git_blob_sha": "0a605062c8d40907a8452e7e1238ab8ef3ab4ded"
+      },
+      {
+        "path": "docs/source/dev/glossary.rst",
+        "git_blob_sha": "c09d7339483e8f3de12d30cf03313c228f3e3a13"
+      },
+      {
+        "path": "docs/source/dev/new_vrp_variants.rst",
+        "git_blob_sha": "a50eb2bb135903992e4509b9afa5859aebc51f41"
+      },
+      {
+        "path": "docs/source/dev/releasing.rst",
+        "git_blob_sha": "32b2112eeb808521751501348c0579672a0b1555"
+      },
+      {
+        "path": "docs/source/dev/supported_vrplib_fields.rst",
+        "git_blob_sha": "14d7224665e62ca0b51ceb052611ced5ea1222e6"
+      },
+      {
+        "path": "docs/source/index.rst",
+        "git_blob_sha": "953a77cfb0529f323d2678b5cee6bb058abf2753"
+      },
+      {
+        "path": "docs/source/setup/benchmarks.rst",
+        "git_blob_sha": "e7c3a5c818688b9afdd14ec1bc29ad0bfc1ef562"
+      },
+      {
+        "path": "docs/source/setup/concepts.rst",
+        "git_blob_sha": "53b2b78f7c646620ec614ae8de0b71d7fdfc05ac"
+      },
+      {
+        "path": "docs/source/setup/faq.rst",
+        "git_blob_sha": "021ced04a62a4ec4349215b2c7fda3e3d370055e"
+      },
+      {
+        "path": "docs/source/setup/getting_help.rst",
+        "git_blob_sha": "84aa7c6c75e0d0ef46bebdd0ffab27777379c084"
+      },
+      {
+        "path": "docs/source/setup/installation.rst",
+        "git_blob_sha": "2749685a75c9f5efdb37bf77f77e52bd1e5acdaa"
+      },
+      {
+        "path": "docs/source/setup/why_pyvrp.rst",
+        "git_blob_sha": "796fd22fc884362bf1d0d824ce1c9ed01ab85ddf"
+      },
+      {
+        "path": "docs/source/versions.json",
+        "git_blob_sha": "e41c3de1dae3fda584fa550c49c54e4d22966af7"
+      },
+      {
+        "path": "gcovr.cfg",
+        "git_blob_sha": "790c94b71426e3845688f92353f4dc48575ed8c1"
+      },
+      {
+        "path": "meson.build",
+        "git_blob_sha": "d6b8460000e7aed1e98a4fb82c2d4ee21a1d3409"
+      },
+      {
+        "path": "notebooks/.clang-format",
+        "git_blob_sha": "47a38a93f2dbdd6d944f9dddc3465e3fb65aec29"
+      },
+      {
+        "path": "notebooks/README.md",
+        "git_blob_sha": "b146aebffdf1c5c0d08158bc02e45b4b5ac94d2a"
+      },
+      {
+        "path": "notebooks/data/RC208.sol",
+        "git_blob_sha": "7de821680e908a80b292dadddc0309afee6ece99"
+      },
+      {
+        "path": "notebooks/data/RC208.vrp",
+        "git_blob_sha": "ee77b8ecfc9d8f6a930cf0b793973c5cdd30b748"
+      },
+      {
+        "path": "notebooks/duration_constraints.ipynb",
+        "git_blob_sha": "4dc34f8adc2e804afa413e763d17b87ed91d930e"
+      },
+      {
+        "path": "notebooks/load.ipynb",
+        "git_blob_sha": "426d848043c32f12699d7921ca455e5a8fc0450f"
+      },
+      {
+        "path": "notebooks/mutually_exclusive_groups.ipynb",
+        "git_blob_sha": "e49a594a473dee65ef870e663ff58985a3f34944"
+      },
+      {
+        "path": "notebooks/optional_clients.ipynb",
+        "git_blob_sha": "7c52ab45f2be5e058099925736ce805c17bf8b69"
+      },
+      {
+        "path": "notebooks/profiles.ipynb",
+        "git_blob_sha": "af67271df177a27878e1c29795a36c5b0f560092"
+      },
+      {
+        "path": "notebooks/pyvrp_implementation.ipynb",
+        "git_blob_sha": "abc394ab22cd2533910218ccb3541174c9b2a2dd"
+      },
+      {
+        "path": "notebooks/quick_start.ipynb",
+        "git_blob_sha": "8ed4cb898b26be395744cfea2e55dded70dd5de4"
+      },
+      {
+        "path": "notebooks/reloading.ipynb",
+        "git_blob_sha": "cdd559c04395f22883183de01e7376e5ca28df23"
+      },
+      {
+        "path": "notebooks/shipments.ipynb",
+        "git_blob_sha": "4255b78629ae5cfddbd0c912db849b1f5f43db9f"
+      },
+      {
+        "path": "pyproject.toml",
+        "git_blob_sha": "1e0f7d9cf0dd47578af73f3dae183b7d19695e2f"
+      },
+      {
+        "path": "pyvrp/IteratedLocalSearch.py",
+        "git_blob_sha": "99593bca94ffc6262818aeff8b814eeaaf72562d"
+      },
+      {
+        "path": "pyvrp/Model.py",
+        "git_blob_sha": "68151740279f88182305df5219a468a8c0b8fbb7"
+      },
+      {
+        "path": "pyvrp/PenaltyManager.py",
+        "git_blob_sha": "b53921d203855651db2c0e4d5f3701f477ccbb71"
+      },
+      {
+        "path": "pyvrp/ProgressPrinter.py",
+        "git_blob_sha": "7f072524232f62d9162388352ba385aa6aa87b57"
+      },
+      {
+        "path": "pyvrp/Result.py",
+        "git_blob_sha": "74d4a285e6c0bc6439540611399555b7b575009b"
+      },
+      {
+        "path": "pyvrp/RingBuffer.py",
+        "git_blob_sha": "7c5e5afc20bc1ee73c567cd26828ee8109a85cce"
+      },
+      {
+        "path": "pyvrp/Statistics.py",
+        "git_blob_sha": "accb7eec51e7f931e89b1e1bf357ded87007770c"
+      },
+      {
+        "path": "pyvrp/__init__.py",
+        "git_blob_sha": "97103eaa90646f3f580db38d0d8e6f0cb701302b"
+      },
+      {
+        "path": "pyvrp/_pyvrp.pyi",
+        "git_blob_sha": "46f25484cdf408541da4a3ae29ba68b0b7dd724d"
+      },
+      {
+        "path": "pyvrp/cli.py",
+        "git_blob_sha": "2d28556f341a8d6127a6708e4612fa26e39d84fa"
+      },
+      {
+        "path": "pyvrp/constants.py",
+        "git_blob_sha": "f33f74d83a066a0d946e3b93c624ff67b82824c9"
+      },
+      {
+        "path": "pyvrp/cpp/Activity.cpp",
+        "git_blob_sha": "22ca8fd9df258a64de39afd0efc1adc23f4697d4"
+      },
+      {
+        "path": "pyvrp/cpp/Activity.h",
+        "git_blob_sha": "a45d7002efc62cf487491bdfde02c39d0b12c833"
+      },
+      {
+        "path": "pyvrp/cpp/Client.cpp",
+        "git_blob_sha": "9113bdc56a6522bf89d500a075a5dc2317559bf1"
+      },
+      {
+        "path": "pyvrp/cpp/Client.h",
+        "git_blob_sha": "83533346f2bcef3893ddf4627339ba387882e2e4"
+      },
+      {
+        "path": "pyvrp/cpp/CostEvaluator.cpp",
+        "git_blob_sha": "ba524d9c7f53ec8b0f6ea437b8d8a27d9638929b"
+      },
+      {
+        "path": "pyvrp/cpp/CostEvaluator.h",
+        "git_blob_sha": "ac49b513235f28ec6bd6ad21dfd123e010a205c2"
+      },
+      {
+        "path": "pyvrp/cpp/Depot.cpp",
+        "git_blob_sha": "17d06287aec94d16d95bbdfea387621576ef45df"
+      },
+      {
+        "path": "pyvrp/cpp/Depot.h",
+        "git_blob_sha": "f6889d97d91980acbb79f3c9607845764e074147"
+      },
+      {
+        "path": "pyvrp/cpp/DurationSegment.cpp",
+        "git_blob_sha": "da0902d957cb0417cbbf20297607fdbd4ce51754"
+      },
+      {
+        "path": "pyvrp/cpp/DurationSegment.h",
+        "git_blob_sha": "8853bdfb8a9ce79da2164d6db60820b3c8d5ae8a"
+      },
+      {
+        "path": "pyvrp/cpp/DynamicBitset.cpp",
+        "git_blob_sha": "2f65278086cf20faaa80a3488d21c55f3bf8ada9"
+      },
+      {
+        "path": "pyvrp/cpp/DynamicBitset.h",
+        "git_blob_sha": "3f494c9907c9a5b1cd00af4fc68196011904b369"
+      },
+      {
+        "path": "pyvrp/cpp/LoadSegment.cpp",
+        "git_blob_sha": "42eaa659701979fc5b14653d642a46de9521b7d2"
+      },
+      {
+        "path": "pyvrp/cpp/LoadSegment.h",
+        "git_blob_sha": "54412d6bb20cdeba40ef55c98618393a493baabf"
+      },
+      {
+        "path": "pyvrp/cpp/Location.cpp",
+        "git_blob_sha": "6d4a9449c88c31e6bbf5ad9a8614732c8c390988"
+      },
+      {
+        "path": "pyvrp/cpp/Location.h",
+        "git_blob_sha": "fa414a47ed9928316c06459c75463b3cab1094c0"
+      },
+      {
+        "path": "pyvrp/cpp/Matrix.h",
+        "git_blob_sha": "173df2676651ed9992b8d6bddf0918bac8203080"
+      },
+      {
+        "path": "pyvrp/cpp/Measure.h",
+        "git_blob_sha": "01681c4b1d89033d41e5a8892ad41f7fca4ae14e"
+      },
+      {
+        "path": "pyvrp/cpp/MutuallyExclusiveGroup.cpp",
+        "git_blob_sha": "2fa58214a45b287a8c4a8b55f46167c4c94c2185"
+      },
+      {
+        "path": "pyvrp/cpp/MutuallyExclusiveGroup.h",
+        "git_blob_sha": "b7fca05330f1147ca7c9e62755c18674b32e70e8"
+      },
+      {
+        "path": "pyvrp/cpp/PiecewiseLinearFunction.h",
+        "git_blob_sha": "a568c8d056d3bd2e22457bdd15ba33cfa73dde65"
+      },
+      {
+        "path": "pyvrp/cpp/ProblemData.cpp",
+        "git_blob_sha": "996cfafb87301d16bffb1d5a34c6ec6ce9bb62eb"
+      },
+      {
+        "path": "pyvrp/cpp/ProblemData.h",
+        "git_blob_sha": "b95cd7945ff7a7e659c83f9c74473fa63abf337f"
+      },
+      {
+        "path": "pyvrp/cpp/README.md",
+        "git_blob_sha": "5fc82b02fa499a7828040b6d2d8c0b4b0c6c5619"
+      },
+      {
+        "path": "pyvrp/cpp/RandomNumberGenerator.cpp",
+        "git_blob_sha": "344b4221118775c8737e142363287be1bdf609ff"
+      },
+      {
+        "path": "pyvrp/cpp/RandomNumberGenerator.h",
+        "git_blob_sha": "f6e05653a4d853b2d3b24dd93cd5a1187082e20a"
+      },
+      {
+        "path": "pyvrp/cpp/Route.cpp",
+        "git_blob_sha": "341435196bd16d4a0c619d17473a6967f4d038e0"
+      },
+      {
+        "path": "pyvrp/cpp/Route.h",
+        "git_blob_sha": "ea296502418dec971c3c17352a6c3261ba1da7c1"
+      },
+      {
+        "path": "pyvrp/cpp/Shipment.cpp",
+        "git_blob_sha": "9bf18f0adf03caa1e351923dfc3c9200da41ab32"
+      },
+      {
+        "path": "pyvrp/cpp/Shipment.h",
+        "git_blob_sha": "9331f05c391ce43b0f4f61ab463d980304f3dde2"
+      },
+      {
+        "path": "pyvrp/cpp/Solution.cpp",
+        "git_blob_sha": "8c5dc0ac700b4d28d1ded035c9cb0e8a6aadcafe"
+      },
+      {
+        "path": "pyvrp/cpp/Solution.h",
+        "git_blob_sha": "8327d1bb13373cc24de8a90498fec863dad3ecf9"
+      },
+      {
+        "path": "pyvrp/cpp/VehicleType.cpp",
+        "git_blob_sha": "e5deceb6b2d4f7953fa5023158cdfcd3f8ca2519"
+      },
+      {
+        "path": "pyvrp/cpp/VehicleType.h",
+        "git_blob_sha": "ae29d0b245a1c1608d1e143943a092acf76fcdb6"
+      },
+      {
+        "path": "pyvrp/cpp/bindings.cpp",
+        "git_blob_sha": "355a0848acca334352a80921c6ac60ce8d9f7531"
+      },
+      {
+        "path": "pyvrp/cpp/bindings.h",
+        "git_blob_sha": "14838daa47cd4cedc5d6033b103ceee42f8f38e8"
+      },
+      {
+        "path": "pyvrp/cpp/constants.h",
+        "git_blob_sha": "56b7c461adf1cd11bd20fe6489d020e4bac6ee79"
+      },
+      {
+        "path": "pyvrp/cpp/logging.h",
+        "git_blob_sha": "41a88e43dcf8340c2a2fb19779dd6db499cd6b18"
+      },
+      {
+        "path": "pyvrp/cpp/search/ClientSegment.h",
+        "git_blob_sha": "5e3cd2ba8aeeeb92079b20ff5894eb90a69765ed"
+      },
+      {
+        "path": "pyvrp/cpp/search/DeliverySegment.h",
+        "git_blob_sha": "ff3124c400fa5a00c67c1b501c5559a07f4c9926"
+      },
+      {
+        "path": "pyvrp/cpp/search/DepotSegment.h",
+        "git_blob_sha": "2a407d8297277955de774fc25a8ae545bb044a29"
+      },
+      {
+        "path": "pyvrp/cpp/search/InsertOptionalClient.cpp",
+        "git_blob_sha": "6cd424e4d740d82187f4218ba94f5c7b2474ca85"
+      },
+      {
+        "path": "pyvrp/cpp/search/InsertOptionalClient.h",
+        "git_blob_sha": "8d8370a138fc836d5e497f13b526e94b996c40c2"
+      },
+      {
+        "path": "pyvrp/cpp/search/InsertOptionalShipment.cpp",
+        "git_blob_sha": "54692b4c29e1f09302486af767741a4db1c39c34"
+      },
+      {
+        "path": "pyvrp/cpp/search/InsertOptionalShipment.h",
+        "git_blob_sha": "03b639caa75538d704d924dfc50f4985d054d27a"
+      },
+      {
+        "path": "pyvrp/cpp/search/LocalSearch.cpp",
+        "git_blob_sha": "4497f93d269c73c14edde75c2e84efd5554b0e27"
+      },
+      {
+        "path": "pyvrp/cpp/search/LocalSearch.h",
+        "git_blob_sha": "d8ba8f124581e84d8e1996031e8fedf2c6c07330"
+      },
+      {
+        "path": "pyvrp/cpp/search/LocalSearchOperator.h",
+        "git_blob_sha": "3392887f187e17b0ce245099741e8137e4d3b6b0"
+      },
+      {
+        "path": "pyvrp/cpp/search/PerturbationManager.cpp",
+        "git_blob_sha": "594d24d47cfe7d22733727f517459647c8d62b26"
+      },
+      {
+        "path": "pyvrp/cpp/search/PerturbationManager.h",
+        "git_blob_sha": "d463973b0131f6afe6aac543cad942aecf9e1e4f"
+      },
+      {
+        "path": "pyvrp/cpp/search/PickupSegment.h",
+        "git_blob_sha": "e6339eb92755aa709143b45ebcacd6ad747aaa69"
+      },
+      {
+        "path": "pyvrp/cpp/search/Relocate.h",
+        "git_blob_sha": "66449e97cfe4ac7dc1a61e4ae32f7ff596df4038"
+      },
+      {
+        "path": "pyvrp/cpp/search/RelocateAlternative.cpp",
+        "git_blob_sha": "e228957e4b6e9b4a5205c838337140336acb977c"
+      },
+      {
+        "path": "pyvrp/cpp/search/RelocateAlternative.h",
+        "git_blob_sha": "16fe0941274d27c1c981acf00991938b584cc0f8"
+      },
+      {
+        "path": "pyvrp/cpp/search/RelocateDelivery.cpp",
+        "git_blob_sha": "d9391d9fae729340047b02457cabd52e778e4bd6"
+      },
+      {
+        "path": "pyvrp/cpp/search/RelocateDelivery.h",
+        "git_blob_sha": "af9b614e2c328563fa126e1bba82b96c1ce047b5"
+      },
+      {
+        "path": "pyvrp/cpp/search/RelocatePickup.cpp",
+        "git_blob_sha": "3576d30a84b5fe24d3039dd5d2066a5979987c37"
+      },
+      {
+        "path": "pyvrp/cpp/search/RelocatePickup.h",
+        "git_blob_sha": "9870a9cc6e313342aa2122d5432f4b70091472fe"
+      },
+      {
+        "path": "pyvrp/cpp/search/RelocateShipment.cpp",
+        "git_blob_sha": "91bf442850178e1ae9995cf9a596ad343245577d"
+      },
+      {
+        "path": "pyvrp/cpp/search/RelocateShipment.h",
+        "git_blob_sha": "88b5a35d9a923100e6ee3692baef7bd80a17dfba"
+      },
+      {
+        "path": "pyvrp/cpp/search/RelocateWithDepot.cpp",
+        "git_blob_sha": "9d423d13c923e4885325cf463c8180aac656e234"
+      },
+      {
+        "path": "pyvrp/cpp/search/RelocateWithDepot.h",
+        "git_blob_sha": "aab61baf75e004d1bcc2d9c3c05165f6c2c600cc"
+      },
+      {
+        "path": "pyvrp/cpp/search/RemoveAdjacentDepot.cpp",
+        "git_blob_sha": "d0f31924da804d44bb7c7e6f441e94fa5f1e8411"
+      },
+      {
+        "path": "pyvrp/cpp/search/RemoveAdjacentDepot.h",
+        "git_blob_sha": "12f615abb04dc2f2e54aa0bdeb52e5750d8b3c47"
+      },
+      {
+        "path": "pyvrp/cpp/search/RemoveOptionalClient.cpp",
+        "git_blob_sha": "31c2823efc81058785742ba1970f59df7100cf97"
+      },
+      {
+        "path": "pyvrp/cpp/search/RemoveOptionalClient.h",
+        "git_blob_sha": "727d7398433c7e284752ab4f4b3e50e74d1d07bc"
+      },
+      {
+        "path": "pyvrp/cpp/search/RemoveOptionalShipment.cpp",
+        "git_blob_sha": "177b041ea740802adefc09b8830c9b35daab8a9c"
+      },
+      {
+        "path": "pyvrp/cpp/search/RemoveOptionalShipment.h",
+        "git_blob_sha": "21f3f4746f8c602efe4ebd3446908294d8be74e6"
+      },
+      {
+        "path": "pyvrp/cpp/search/ReplaceGroup.cpp",
+        "git_blob_sha": "ea78275755aab22d377b5fc1c5ab88f64db63ec5"
+      },
+      {
+        "path": "pyvrp/cpp/search/ReplaceGroup.h",
+        "git_blob_sha": "469ff3d52299b820e89bca60c600810d5f5bad16"
+      },
+      {
+        "path": "pyvrp/cpp/search/ReplaceOptionalClient.cpp",
+        "git_blob_sha": "8752ac66aa206b3708c8ba362b30c38b3e757384"
+      },
+      {
+        "path": "pyvrp/cpp/search/ReplaceOptionalClient.h",
+        "git_blob_sha": "c147b718456d149479686e815129dd474dba88b7"
+      },
+      {
+        "path": "pyvrp/cpp/search/ReplaceOptionalShipment.cpp",
+        "git_blob_sha": "093dfc89c5252f180963134049a8548e0158d22c"
+      },
+      {
+        "path": "pyvrp/cpp/search/ReplaceOptionalShipment.h",
+        "git_blob_sha": "da848a78830a06b962da99d06eefa338f9663517"
+      },
+      {
+        "path": "pyvrp/cpp/search/Route.cpp",
+        "git_blob_sha": "a5e992ef37dc1aa8b3bb9b636a264308e81556a5"
+      },
+      {
+        "path": "pyvrp/cpp/search/Route.h",
+        "git_blob_sha": "058d654ee710a12766fc8ba540de580ceb43895b"
+      },
+      {
+        "path": "pyvrp/cpp/search/SearchSpace.cpp",
+        "git_blob_sha": "9d47f59c5ab703c28623fe5d5a63e3f2eac6edce"
+      },
+      {
+        "path": "pyvrp/cpp/search/SearchSpace.h",
+        "git_blob_sha": "adff0d30689c94c9f8310a625b44286caf74c874"
+      },
+      {
+        "path": "pyvrp/cpp/search/Solution.cpp",
+        "git_blob_sha": "f44b8e76fdbdf5109be83f5a70039255c860ec52"
+      },
+      {
+        "path": "pyvrp/cpp/search/Solution.h",
+        "git_blob_sha": "5cc3d97832dbe1856841c9513edf56432d305cb0"
+      },
+      {
+        "path": "pyvrp/cpp/search/Swap.h",
+        "git_blob_sha": "c08a42aaf9ebc25db186d5477f4c4121d18beb24"
+      },
+      {
+        "path": "pyvrp/cpp/search/SwapTails.cpp",
+        "git_blob_sha": "db6338cd4b5d93fb63e480edcdb22a2da8891d82"
+      },
+      {
+        "path": "pyvrp/cpp/search/SwapTails.h",
+        "git_blob_sha": "3ce9e8283b7c12ef17c0834e2793fc38eeac4ca5"
+      },
+      {
+        "path": "pyvrp/cpp/search/bindings.cpp",
+        "git_blob_sha": "72c532a65c0a467ce16bda5ac84821cd0e229380"
+      },
+      {
+        "path": "pyvrp/cpp/search/neighbourhood.cpp",
+        "git_blob_sha": "8c80de950b4d73fa11e77cf39e4a1f7088e43d0e"
+      },
+      {
+        "path": "pyvrp/cpp/search/neighbourhood.h",
+        "git_blob_sha": "aed6ba22d30db874663607d8e739530c6917b0a6"
+      },
+      {
+        "path": "pyvrp/exceptions.py",
+        "git_blob_sha": "eb7c5a949fd980c7c282cf688de792f9127a5a31"
+      },
+      {
+        "path": "pyvrp/minimise_fleet.py",
+        "git_blob_sha": "143a84e4a17a38f5498aa6b1edbfb46093580639"
+      },
+      {
+        "path": "pyvrp/plotting/__init__.py",
+        "git_blob_sha": "a3008458e72027be04f106f4f2ececa3c88b2d14"
+      },
+      {
+        "path": "pyvrp/plotting/plot_coordinates.py",
+        "git_blob_sha": "47ba17dc815cea17ab234ddd64aa1dd79ed10c82"
+      },
+      {
+        "path": "pyvrp/plotting/plot_demands.py",
+        "git_blob_sha": "b521d08b2028d1340a091b380f8e6e231cc05612"
+      },
+      {
+        "path": "pyvrp/plotting/plot_instance.py",
+        "git_blob_sha": "6ed010e4d306d368688bafadfc3a1147c20a1fd0"
+      },
+      {
+        "path": "pyvrp/plotting/plot_objectives.py",
+        "git_blob_sha": "fac2967bbc97754cddd832e9d327b61789348ee0"
+      },
+      {
+        "path": "pyvrp/plotting/plot_result.py",
+        "git_blob_sha": "2984a69bab7c804486392c1148dd4c64460fe873"
+      },
+      {
+        "path": "pyvrp/plotting/plot_route_schedule.py",
+        "git_blob_sha": "fabb7328ae07778cd2443aa3e7e3849635242811"
+      },
+      {
+        "path": "pyvrp/plotting/plot_runtimes.py",
+        "git_blob_sha": "d572ef17bbd59b45a92d4e19b527c3dcfd76f827"
+      },
+      {
+        "path": "pyvrp/plotting/plot_solution.py",
+        "git_blob_sha": "6da08895a03dd816bc88607b0099282ca405be44"
+      },
+      {
+        "path": "pyvrp/plotting/plot_time_windows.py",
+        "git_blob_sha": "7ec4bb90cefd4e88227504d498ec9f73809ad03f"
+      },
+      {
+        "path": "pyvrp/py.typed",
+        "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+      },
+      {
+        "path": "pyvrp/read.py",
+        "git_blob_sha": "6847c38996c59836d643154f3c73aa27486f9a19"
+      },
+      {
+        "path": "pyvrp/search/LocalSearch.py",
+        "git_blob_sha": "1e3a2021851b0f954db61dfdaeec47d2652f30dc"
+      },
+      {
+        "path": "pyvrp/search/SearchMethod.py",
+        "git_blob_sha": "039e8914a8a768e7704ef211aee0d8cbf8710909"
+      },
+      {
+        "path": "pyvrp/search/__init__.py",
+        "git_blob_sha": "6e2e93121a03e064a617ec08c748d74322443aa9"
+      },
+      {
+        "path": "pyvrp/search/_search.pyi",
+        "git_blob_sha": "bf1479558a02af195f9c69755ef37dc66d6dc397"
+      },
+      {
+        "path": "pyvrp/search/neighbourhood.py",
+        "git_blob_sha": "34d629ff0ab53a1866f1474acf1bae266938b061"
+      },
+      {
+        "path": "pyvrp/show_versions.py",
+        "git_blob_sha": "7fbc3d56ba9ea59034e5248947c0e1da048f02dd"
+      },
+      {
+        "path": "pyvrp/solve.py",
+        "git_blob_sha": "761f0892514258c9ee4986636336ab6af76749d2"
+      },
+      {
+        "path": "pyvrp/stop/FirstFeasible.py",
+        "git_blob_sha": "f0c9b0a098b66ad7d5cbfb259bdc149509b31f56"
+      },
+      {
+        "path": "pyvrp/stop/MaxIterations.py",
+        "git_blob_sha": "55e6319437fe6a98c056379e20a53b6005633eb2"
+      },
+      {
+        "path": "pyvrp/stop/MaxRuntime.py",
+        "git_blob_sha": "906ba83169b9263c64ea12e7d7494e2348af30ad"
+      },
+      {
+        "path": "pyvrp/stop/MultipleCriteria.py",
+        "git_blob_sha": "f308c25aa458faa261aa61b7a25c8383973d977d"
+      },
+      {
+        "path": "pyvrp/stop/NoImprovement.py",
+        "git_blob_sha": "60872573e84f5a16b7d7aee4890fe9070db3dc55"
+      },
+      {
+        "path": "pyvrp/stop/StoppingCriterion.py",
+        "git_blob_sha": "6f252019da5840cc6bb8b5b19df1dbbe3ff71af5"
+      },
+      {
+        "path": "pyvrp/stop/__init__.py",
+        "git_blob_sha": "1869520180b71ae943ecf0901432eb6f8aaeecbf"
+      },
+      {
+        "path": "subprojects/.gitignore",
+        "git_blob_sha": "c39fea0e7a5a2ae779ed861115ea92aa26788e6d"
+      },
+      {
+        "path": "subprojects/pybind11.wrap",
+        "git_blob_sha": "7167cc33102f7de8f5b8262ee1cefb3e6bb5d6df"
+      },
+      {
+        "path": "subprojects/spdlog.wrap",
+        "git_blob_sha": "749276425550fffbf3e6fa7f165a80119d831b0b"
+      },
+      {
+        "path": "tests/__init__.py",
+        "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+      },
+      {
+        "path": "tests/conftest.py",
+        "git_blob_sha": "b127ec2162a3672443618ef077015354fa909803"
+      },
+      {
+        "path": "tests/data/50pr439.gtsp",
+        "git_blob_sha": "05eea1b4ddcab0783b82e6790841d0d7327175ad"
+      },
+      {
+        "path": "tests/data/C201R0.25.sol",
+        "git_blob_sha": "3acb5f97a70c9f563f761a1dbe298f2135a3c641"
+      },
+      {
+        "path": "tests/data/C201R0.25.vrp",
+        "git_blob_sha": "185b7e3f86fc2d49a51e04219284fe10b36f6aa7"
+      },
+      {
+        "path": "tests/data/CastDataSection2D.txt",
+        "git_blob_sha": "eb622c113f0b96316f20c1251b1b04f9921b4e09"
+      },
+      {
+        "path": "tests/data/DepotNotOne.txt",
+        "git_blob_sha": "7fe6189b918bd0868d4e9d3a402f683dff7d96e0"
+      },
+      {
+        "path": "tests/data/DepotsNotLowerIndices.txt",
+        "git_blob_sha": "c3a98c257157265fa8c4b52a1238e7974a1e7812"
+      },
+      {
+        "path": "tests/data/E-n22-k4.txt",
+        "git_blob_sha": "7618645e95dee712ee3d8cbb222788ca9082e4e9"
+      },
+      {
+        "path": "tests/data/EdgeWeightsNoExplicit.txt",
+        "git_blob_sha": "75c134b62bf8fee9e02c5188f8322cba86c68511"
+      },
+      {
+        "path": "tests/data/EdgeWeightsNotFullMatrix.txt",
+        "git_blob_sha": "4cd1691af1f1670907ac78059f6651b0a61ccc7a"
+      },
+      {
+        "path": "tests/data/MissingVehicleData.txt",
+        "git_blob_sha": "12ff0cc5ff252e4bac43e1d1d64d8b758b3ecb20"
+      },
+      {
+        "path": "tests/data/OkSmall.sol",
+        "git_blob_sha": "a8c4b60b25338f5f1991b04213f834dfbd4c0285"
+      },
+      {
+        "path": "tests/data/OkSmall.txt",
+        "git_blob_sha": "6fa29953b3797c99efa687feb575a5051d25f53c"
+      },
+      {
+        "path": "tests/data/OkSmallAllowedClients.txt",
+        "git_blob_sha": "f86e5c1a0d0ba3d857bd37230354a59ecaf72ff3"
+      },
+      {
+        "path": "tests/data/OkSmallMaxDistance.txt",
+        "git_blob_sha": "40e48f601e1d0609b715c94fff6898c26451918f"
+      },
+      {
+        "path": "tests/data/OkSmallMultipleDepots.sol",
+        "git_blob_sha": "e475b6860455f7b7476110628d903ea90d7c2562"
+      },
+      {
+        "path": "tests/data/OkSmallMultipleDepots.txt",
+        "git_blob_sha": "36bcd92757f38dad977955c7f2395a922e312768"
+      },
+      {
+        "path": "tests/data/OkSmallMultipleLoad.txt",
+        "git_blob_sha": "02d3c373ca39e04bfdfdfe04fcf3b6d9ff53d704"
+      },
+      {
+        "path": "tests/data/OkSmallMultipleReloadDepots.sol",
+        "git_blob_sha": "4f388cda66202e2213c072c5e155c13444bf6366"
+      },
+      {
+        "path": "tests/data/OkSmallMultipleReloadDepots.txt",
+        "git_blob_sha": "904fa5523ff329bd080f707291284f084530b619"
+      },
+      {
+        "path": "tests/data/OkSmallMultipleTrips.txt",
+        "git_blob_sha": "e144c7aa03e8d7950d7b2861b25cc4ca312057b7"
+      },
+      {
+        "path": "tests/data/OkSmallMutuallyExclusiveGroups.txt",
+        "git_blob_sha": "b8c503b7f2a6375b12e61e62aedf9ba1b2385911"
+      },
+      {
+        "path": "tests/data/OkSmallPrizes.txt",
+        "git_blob_sha": "8b7fd35733bfd0194bfae08b59deaf132b5e1f9f"
+      },
+      {
+        "path": "tests/data/OkSmallReleaseTimes.txt",
+        "git_blob_sha": "cc7f28bce8c53adc50995d48c4359ff093784d95"
+      },
+      {
+        "path": "tests/data/OkSmallUnitDistanceCost.txt",
+        "git_blob_sha": "f803886793803f9b1dd109332a5d9d4de4cde7b7"
+      },
+      {
+        "path": "tests/data/OkSmallWaitTime.txt",
+        "git_blob_sha": "9e9452a25e5b43ccd938da793dd869bf237a477d"
+      },
+      {
+        "path": "tests/data/PR01.vrp",
+        "git_blob_sha": "1496baa01319e031cef719f09046543331763152"
+      },
+      {
+        "path": "tests/data/PR11A.vrp",
+        "git_blob_sha": "f88675b288efc84dabc5bc8ab9d13cd5b58c8b96"
+      },
+      {
+        "path": "tests/data/RC208.sol",
+        "git_blob_sha": "7de821680e908a80b292dadddc0309afee6ece99"
+      },
+      {
+        "path": "tests/data/RC208.vrp",
+        "git_blob_sha": "ee77b8ecfc9d8f6a930cf0b793973c5cdd30b748"
+      },
+      {
+        "path": "tests/data/ReallyLargeDistance.txt",
+        "git_blob_sha": "d3e78b818f057c5eaba1238d754128941b9289b0"
+      },
+      {
+        "path": "tests/data/ServiceTimeSpecification.txt",
+        "git_blob_sha": "1366536313daffcb20097f63b8036ba4869e938f"
+      },
+      {
+        "path": "tests/data/SmallShipments.sol",
+        "git_blob_sha": "0fb787b3db52c4e58115349a23358316e864d7ee"
+      },
+      {
+        "path": "tests/data/SmallShipments.txt",
+        "git_blob_sha": "528e1b069a183df5579f35dc05881f9316ab9b39"
+      },
+      {
+        "path": "tests/data/SmallVRPSPD.vrp",
+        "git_blob_sha": "6cdc4b64ecb3d45e494e3eb202d4f5460a795aa5"
+      },
+      {
+        "path": "tests/data/TimeWindowOpenLargerThanClose.txt",
+        "git_blob_sha": "683b4063148a8f76a0ad655dd71596cd0a7340db"
+      },
+      {
+        "path": "tests/data/UnknownEdgeWeightFmt.txt",
+        "git_blob_sha": "f50799441449da93fb7b5223142cd5a64ba51e3b"
+      },
+      {
+        "path": "tests/data/UnknownEdgeWeightType.txt",
+        "git_blob_sha": "78ac96be7ef96bec4dd201edc17f926b70ab3093"
+      },
+      {
+        "path": "tests/data/X-n101-50-k13.vrp",
+        "git_blob_sha": "d1f5a65cc2e1de40af25ba85681a0bc57e19ad7b"
+      },
+      {
+        "path": "tests/data/X115-HVRP.sol",
+        "git_blob_sha": "89d9b7ef92cf8abf62724710fa2d162f9887c4ef"
+      },
+      {
+        "path": "tests/data/X115-HVRP.vrp",
+        "git_blob_sha": "5d37b46ae0682cf4c552d496e106965d7791326a"
+      },
+      {
+        "path": "tests/data/empty_config.toml",
+        "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+      },
+      {
+        "path": "tests/data/lrc206.vrp",
+        "git_blob_sha": "a4d75f261a2220f0be3b58dfdca8b5b6cc83ffb9"
+      },
+      {
+        "path": "tests/data/p06-2-50.vrp",
+        "git_blob_sha": "01a32630360c58ba3eeac8cd1c0681c0d84043cc"
+      },
+      {
+        "path": "tests/data/pr107.tsp",
+        "git_blob_sha": "ea647596d458fde87d8607d7e90fe391c1979d99"
+      },
+      {
+        "path": "tests/data/test_config.toml",
+        "git_blob_sha": "b8996850e388063a289e53aa2e6b1f435a171622"
+      },
+      {
+        "path": "tests/helpers.py",
+        "git_blob_sha": "4675f97f280d7cdb1c784b7fe97a6f14a6b20dc4"
+      },
+      {
+        "path": "tests/markers.py",
+        "git_blob_sha": "de327e3190b6ca8ccff02c183e51c457b29bfccf"
+      },
+      {
+        "path": "tests/plotting/__init__.py",
+        "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+      },
+      {
+        "path": "tests/plotting/baseline_images/test_plotting/plot_coordinates_shipments.png",
+        "git_blob_sha": "0d2f6a1c65cc0398e21915cbfa32c6045ff84216"
+      },
+      {
+        "path": "tests/plotting/baseline_images/test_plotting/plot_instance.png",
+        "git_blob_sha": "d69817986c912bc43a31ce9a7dba3ceddeec5c6c"
+      },
+      {
+        "path": "tests/plotting/baseline_images/test_plotting/plot_instance_multiple_depots.png",
+        "git_blob_sha": "964c18aae71594161ad675f560da5fe3d5d7ef77"
+      },
+      {
+        "path": "tests/plotting/baseline_images/test_plotting/plot_result.png",
+        "git_blob_sha": "ecb393e3cac32cc37cc535336e257352082b0c3f"
+      },
+      {
+        "path": "tests/plotting/baseline_images/test_plotting/plot_route_schedule.png",
+        "git_blob_sha": "44453c117ba1d6a6d3cf7699140d64b85a3eb7e1"
+      },
+      {
+        "path": "tests/plotting/baseline_images/test_plotting/plot_route_schedule_shipments.png",
+        "git_blob_sha": "66e867cab813ef6bbeda1665b80cea7aca33b527"
+      },
+      {
+        "path": "tests/plotting/baseline_images/test_plotting/plot_solution.png",
+        "git_blob_sha": "aa2d9fc9565fd759020299eaf1f2f70a17a5aa42"
+      },
+      {
+        "path": "tests/plotting/baseline_images/test_plotting/plot_solution_multiple_depots.png",
+        "git_blob_sha": "c0a7f1d3958748938057a6e469a2e02e7fe5cf58"
+      },
+      {
+        "path": "tests/plotting/baseline_images/test_plotting/plot_solution_multiple_trips.png",
+        "git_blob_sha": "0d1cc92b9101d45c476546365e26ebd9a4887f86"
+      },
+      {
+        "path": "tests/plotting/baseline_images/test_plotting/plot_solution_optional_clients.png",
+        "git_blob_sha": "39c422cc9438e8baaf65be45eef2b7ac30e88596"
+      },
+      {
+        "path": "tests/plotting/baseline_images/test_plotting/plot_solution_shipment_locations.png",
+        "git_blob_sha": "33aceee19001aaca4293ceb21819d5dc63ab2f72"
+      },
+      {
+        "path": "tests/plotting/baseline_images/test_plotting/plot_solution_shipments.png",
+        "git_blob_sha": "b423bd06a7ba3b2ec57b65655e1c42e552152fd8"
+      },
+      {
+        "path": "tests/plotting/baseline_images/test_plotting/plot_solution_unplanned_shipments.png",
+        "git_blob_sha": "8d1aa399416b365ab0158ea5a3abdfbe59bf572f"
+      },
+      {
+        "path": "tests/plotting/baseline_images/test_plotting/plot_solution_with_customers.png",
+        "git_blob_sha": "d4ee3519fe9bfbe2c726acd6ede05f52fd612e76"
+      },
+      {
+        "path": "tests/plotting/test_plotting.py",
+        "git_blob_sha": "fbc60183a8234fa095dbe213d29881230bf13aae"
+      },
+      {
+        "path": "tests/search/__init__.py",
+        "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+      },
+      {
+        "path": "tests/search/test_InsertOptionalClient.py",
+        "git_blob_sha": "cf37aa99b5e141f32e8adbacfd95e756d8c7d475"
+      },
+      {
+        "path": "tests/search/test_InsertOptionalShipment.py",
+        "git_blob_sha": "58400e23bbec51aabfa478c0836ef0d9ae035aeb"
+      },
+      {
+        "path": "tests/search/test_LocalSearch.py",
+        "git_blob_sha": "2afea7b19eae07e1f50fc0c1aeed2df3ae5a34f8"
+      },
+      {
+        "path": "tests/search/test_PerturbationManager.py",
+        "git_blob_sha": "f06d4037f1bbd97fb052b8617d5abc6a3b648757"
+      },
+      {
+        "path": "tests/search/test_Relocate.py",
+        "git_blob_sha": "67e3be79571b8d57247977ec6c572e15be67f68b"
+      },
+      {
+        "path": "tests/search/test_RelocateAlternative.py",
+        "git_blob_sha": "89007041a65416110cda4677aa5df6a0dedcb774"
+      },
+      {
+        "path": "tests/search/test_RelocateDelivery.py",
+        "git_blob_sha": "fb93698e64a066ef0adaa45445adbe51cb6e857b"
+      },
+      {
+        "path": "tests/search/test_RelocatePickup.py",
+        "git_blob_sha": "54b291fcb02b7503ec6ef249bcb03e2624c43a84"
+      },
+      {
+        "path": "tests/search/test_RelocateShipment.py",
+        "git_blob_sha": "f5784ba8cd0ef1ca05357eac42eeab42dd519695"
+      },
+      {
+        "path": "tests/search/test_RelocateWithDepot.py",
+        "git_blob_sha": "8cbfa8666686e75b2d88bb9f222657679ee56c23"
+      },
+      {
+        "path": "tests/search/test_RemoveAdjacentDepot.py",
+        "git_blob_sha": "476969a095fcac12bcfdd72652ebe00fca0a7dd9"
+      },
+      {
+        "path": "tests/search/test_RemoveOptionalClient.py",
+        "git_blob_sha": "be257b250e31aed1cf64c6f97f72b9429c858a0f"
+      },
+      {
+        "path": "tests/search/test_RemoveOptionalShipment.py",
+        "git_blob_sha": "9783dfffeb5c4de9b3345522ad7905584b660892"
+      },
+      {
+        "path": "tests/search/test_ReplaceGroup.py",
+        "git_blob_sha": "fe9655c989a0b85990a89fd706b1d344cb34168d"
+      },
+      {
+        "path": "tests/search/test_ReplaceOptionalClient.py",
+        "git_blob_sha": "80b835a303f0db1afe083edf4aba47eb8fe77218"
+      },
+      {
+        "path": "tests/search/test_ReplaceOptionalShipment.py",
+        "git_blob_sha": "c97071034a0cf1e9bd7b13db16f2b00a483461c6"
+      },
+      {
+        "path": "tests/search/test_Route.py",
+        "git_blob_sha": "5b4a10869742fe17aa7d632c6e6404c2997fa1cb"
+      },
+      {
+        "path": "tests/search/test_SearchSpace.py",
+        "git_blob_sha": "6c4598d7c9145f25f4b8d2d9858638bd01ac17de"
+      },
+      {
+        "path": "tests/search/test_Solution.py",
+        "git_blob_sha": "2f9044bfba2e18353fda2d3a40b7a0839acb02e4"
+      },
+      {
+        "path": "tests/search/test_Swap.py",
+        "git_blob_sha": "84d9fdfa1ffcbbb86624e588df8548cb3d1ae895"
+      },
+      {
+        "path": "tests/search/test_SwapTails.py",
+        "git_blob_sha": "f0a8da050d848d4f663975c2b04b14d761db130d"
+      },
+      {
+        "path": "tests/search/test_neighbourhood.py",
+        "git_blob_sha": "5d3908b6ea943ea045730b70cb5276cca2909597"
+      },
+      {
+        "path": "tests/stop/__init__.py",
+        "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+      },
+      {
+        "path": "tests/stop/test_FirstFeasible.py",
+        "git_blob_sha": "6546a1915749162e770b976cf21098c4de35f35e"
+      },
+      {
+        "path": "tests/stop/test_MaxIterations.py",
+        "git_blob_sha": "eaed0ba04a294fb108d675c7a4f988b9821284ea"
+      },
+      {
+        "path": "tests/stop/test_MaxRuntime.py",
+        "git_blob_sha": "510fe358102837da3460024fb562aa475c7a73d5"
+      },
+      {
+        "path": "tests/stop/test_MultipleCriteria.py",
+        "git_blob_sha": "b1990bd83550e20958cf1c67ac12690f1de55079"
+      },
+      {
+        "path": "tests/stop/test_NoImprovement.py",
+        "git_blob_sha": "304277513845b7c1b5ff90852a26330eeec1bf9e"
+      },
+      {
+        "path": "tests/test_Activity.py",
+        "git_blob_sha": "c4e534d32ef6a271bd2b61bfa2bd4bbc281d1e7d"
+      },
+      {
+        "path": "tests/test_Client.py",
+        "git_blob_sha": "a1525c756f8519aab62597035cd23cdad3dad8cc"
+      },
+      {
+        "path": "tests/test_CostEvaluator.py",
+        "git_blob_sha": "66c7ce041dd9de72167aa3fad600220811ccd5d7"
+      },
+      {
+        "path": "tests/test_Depot.py",
+        "git_blob_sha": "cd49bd59a2c18f852eeb1c60c26de8b03ae65181"
+      },
+      {
+        "path": "tests/test_DurationSegment.py",
+        "git_blob_sha": "83fc11b6f123a34f5f0388917189bf06fe6fc774"
+      },
+      {
+        "path": "tests/test_DynamicBitset.py",
+        "git_blob_sha": "cbe8f745ce739f1bb32cf0064b3cde9ec43c380f"
+      },
+      {
+        "path": "tests/test_IteratedLocalSearch.py",
+        "git_blob_sha": "10303276be6fe839bba9d24dbb3b15f1e538be14"
+      },
+      {
+        "path": "tests/test_LoadSegment.py",
+        "git_blob_sha": "0572b65c0c540aabb50bb93ce628fd92584ff73b"
+      },
+      {
+        "path": "tests/test_Location.py",
+        "git_blob_sha": "a93f391357fbfbd863a0bf7a8f4f7156cb180a3c"
+      },
+      {
+        "path": "tests/test_Model.py",
+        "git_blob_sha": "880131a7adc87b9d0d9449539daa66c4bcc6f385"
+      },
+      {
+        "path": "tests/test_MutuallyExclusiveGroup.py",
+        "git_blob_sha": "37a7e0e11f79ee8c623b829d8ffb59d1c983b599"
+      },
+      {
+        "path": "tests/test_PenaltyManager.py",
+        "git_blob_sha": "6f8c8069940691b3c4611ac6193788f9120dbe57"
+      },
+      {
+        "path": "tests/test_PiecewiseLinearFunction.py",
+        "git_blob_sha": "a265395075601e3962e04ea5f70876db8d53e8df"
+      },
+      {
+        "path": "tests/test_ProblemData.py",
+        "git_blob_sha": "e89da1f908aa96a2cac5deca87673a154149941f"
+      },
+      {
+        "path": "tests/test_ProgressPrinter.py",
+        "git_blob_sha": "436694f6e6669a12b5a1801e14758575dc7981b3"
+      },
+      {
+        "path": "tests/test_RandomNumberGenerator.py",
+        "git_blob_sha": "8d6081e5fd089896935ca12319a5510defbdd4ea"
+      },
+      {
+        "path": "tests/test_Result.py",
+        "git_blob_sha": "77b0926b0b035529be43675bc5a3632fbd4c38bd"
+      },
+      {
+        "path": "tests/test_RingBuffer.py",
+        "git_blob_sha": "8de16a386c18b3c5dd21de899d09a43e1c84cc5d"
+      },
+      {
+        "path": "tests/test_Route.py",
+        "git_blob_sha": "dccfbd9a60a517a53bc29c6d0d26dbbd88fb42e0"
+      },
+      {
+        "path": "tests/test_Shipment.py",
+        "git_blob_sha": "2a0a208e7694bc29bf8458646dd79be716caabe1"
+      },
+      {
+        "path": "tests/test_Solution.py",
+        "git_blob_sha": "538591d5cc9ef21afcc9bb9fb0f4ef3f91ab0c2a"
+      },
+      {
+        "path": "tests/test_Statistics.py",
+        "git_blob_sha": "a6c8d0f28071d9a4e1641e20633d5d7e1752a97b"
+      },
+      {
+        "path": "tests/test_VehicleType.py",
+        "git_blob_sha": "0bc682740fd78dc5f377d2906b5e32650133aec4"
+      },
+      {
+        "path": "tests/test_minimise_fleet.py",
+        "git_blob_sha": "2b8e04937b8b01dd364ecf3c3564c49cfed83c3d"
+      },
+      {
+        "path": "tests/test_read.py",
+        "git_blob_sha": "52c42883f3c36fe4328e033a7a660e0ee82a6783"
+      },
+      {
+        "path": "tests/test_solve.py",
+        "git_blob_sha": "9b2fec9e430a135a1e10ca6d3fc05a302fb01aaa"
+      },
+      {
+        "path": "tests/test_type_conversions.py",
+        "git_blob_sha": "6f15e4d08fd73060133babd948da9b8f1057a4e8"
+      }
+    ],
+    "tree_truncated": false
+  },
+  {
+    "repo": "spkelle2/vehicle_routing_column_generation",
+    "sha": "e331c4dc7c8000fb71d93f6445c2cfeb59d9fd6c",
+    "date": "2023-01-24T01:58:10Z",
+    "branch": "master",
+    "license": "UNCONFIRMED_NO_LICENSE_FILE_IN_TREE",
+    "files": [
+      {
+        "path": ".gitignore",
+        "git_blob_sha": "cb1642cad1ba22a684670684a9d00527d9a4b63a"
+      },
+      {
+        "path": "README.md",
+        "git_blob_sha": "fa6d3b44d1c3435c68676bfacb2fe6e5506b5854"
+      },
+      {
+        "path": "environment.yml",
+        "git_blob_sha": "9086c33a1581f2baab6099364dd26b99210e580d"
+      },
+      {
+        "path": "gists/VRPTW Pricing Problem.ipynb",
+        "git_blob_sha": "98135ca8ea7155c45f7a9a570775a5312ea34f3a"
+      },
+      {
+        "path": "gists/VRPTW Restricted Set Covering Formulation.ipynb",
+        "git_blob_sha": "2bfbe6323f302f248baf7a5557366161202df9b6"
+      },
+      {
+        "path": "gists/VRPTW Set Covering Dual.ipynb",
+        "git_blob_sha": "d89ac4e7cf16bb1582900c8ab463dbab2bfc93a9"
+      },
+      {
+        "path": "gists/VRPTW Set Covering Formulation.ipynb",
+        "git_blob_sha": "55384dcb2a8f398923ff4837a65a24a735ef7165"
+      },
+      {
+        "path": "gists/Vehicle Routing Problem with Time Windows Formulation.ipynb",
+        "git_blob_sha": "d2b6455d9d8451d849e14b4dd7d911f7654350ff"
+      },
+      {
+        "path": "gists/heuristic_vrp.py",
+        "git_blob_sha": "71a1d136cc1728c534a523c0bf04f4cae9883445"
+      },
+      {
+        "path": "slides/col_gen_vs_direct.png",
+        "git_blob_sha": "7bd37dd84d3b0e3fbbdab7ba7301408bdbdbf418"
+      },
+      {
+        "path": "slides/solution.png",
+        "git_blob_sha": "250989b1176884a779b3bbc2c67c2e3cf3cad04e"
+      },
+      {
+        "path": "slides/vrp_column_generation.pdf",
+        "git_blob_sha": "fe219a244b50a0cf36b92c071db2674a6bf87e27"
+      },
+      {
+        "path": "slides/vrp_column_generation.tex",
+        "git_blob_sha": "5782913e82c89015293eed77242012a81d163c96"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/__init__.py",
+        "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_algorithms.py",
+        "git_blob_sha": "d54ae34b3aa78c2724b2c930d8ab90bb30b07df6"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_1/arc.csv",
+        "git_blob_sha": "e44e8d3b406a906f98c2bdf3a2c8761ffa57ba68"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_1/node.csv",
+        "git_blob_sha": "db31b4421f7cc8862286c744dcfbe1fa848bd569"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_1/order.csv",
+        "git_blob_sha": "70bf214c4530c84c5666f3e0901372769fe73b80"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_1/parameters.csv",
+        "git_blob_sha": "35be02dbaa468be5a2b66a7c4f403202e1039b77"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_2/arc.csv",
+        "git_blob_sha": "9fa88bcde31d615ec933fe82265c53b6383c80a1"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_2/node.csv",
+        "git_blob_sha": "d74f401fde909ccb224a5f3789501307bcbc94a7"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_2/order.csv",
+        "git_blob_sha": "70bf214c4530c84c5666f3e0901372769fe73b80"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_2/parameters.csv",
+        "git_blob_sha": "35be02dbaa468be5a2b66a7c4f403202e1039b77"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_3/arc.csv",
+        "git_blob_sha": "9fa88bcde31d615ec933fe82265c53b6383c80a1"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_3/node.csv",
+        "git_blob_sha": "aefc00b24cd112034de6aadaa3ff0e1107c8d28f"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_3/order.csv",
+        "git_blob_sha": "e52180d1384264ce700d54296285ced6ae8b2132"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_3/parameters.csv",
+        "git_blob_sha": "35be02dbaa468be5a2b66a7c4f403202e1039b77"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_4/arc.csv",
+        "git_blob_sha": "9fa88bcde31d615ec933fe82265c53b6383c80a1"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_4/node.csv",
+        "git_blob_sha": "aefc00b24cd112034de6aadaa3ff0e1107c8d28f"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_4/order.csv",
+        "git_blob_sha": "e78160cd90aeaeffed9651120f7d3fead0e84440"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_4/parameters.csv",
+        "git_blob_sha": "35be02dbaa468be5a2b66a7c4f403202e1039b77"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_to_clean/arc.csv",
+        "git_blob_sha": "9fa88bcde31d615ec933fe82265c53b6383c80a1"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_to_clean/node.csv",
+        "git_blob_sha": "75cf78248a47f23575e658b225530dd0f2cb5a92"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_to_clean/order.csv",
+        "git_blob_sha": "902fabb53827e1b1e01ebfb4fda78721249f2107"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/dirty_input_to_clean/parameters.csv",
+        "git_blob_sha": "35be02dbaa468be5a2b66a7c4f403202e1039b77"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/medium_input/arc.csv",
+        "git_blob_sha": "ecd4969d2efa8735c78c1aa3b3c00283c17db681"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/medium_input/node.csv",
+        "git_blob_sha": "4d2fed5e44062a476fcf31e6bf0c92e309b4d60d"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/medium_input/order.csv",
+        "git_blob_sha": "5711aaebe3ef5a16d2f57b28e00a9be981532d18"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/medium_input/parameters.csv",
+        "git_blob_sha": "1873095f10ea6409425aa65213e0bca990884f9d"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/small_input/arc.csv",
+        "git_blob_sha": "11d2af92adee2ffa4aaafe2c58e5332d4256dbeb"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/small_input/node.csv",
+        "git_blob_sha": "0c0538217382b76cc72a8872586aed788d736d75"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/small_input/order.csv",
+        "git_blob_sha": "64d7033e407b7cda207f947179fd9779418302ff"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/small_input/parameters.csv",
+        "git_blob_sha": "6c9401bc03cde27087560cb48c8c150ace2cd6d4"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/toy_input/arc.csv",
+        "git_blob_sha": "9fa88bcde31d615ec933fe82265c53b6383c80a1"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/toy_input/node.csv",
+        "git_blob_sha": "aefc00b24cd112034de6aadaa3ff0e1107c8d28f"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/toy_input/order.csv",
+        "git_blob_sha": "70bf214c4530c84c5666f3e0901372769fe73b80"
+      },
+      {
+        "path": "test_vehicle_routing_column_generation/test_inputs/toy_input/parameters.csv",
+        "git_blob_sha": "35be02dbaa468be5a2b66a7c4f403202e1039b77"
+      },
+      {
+        "path": "tutorial/__init__.py",
+        "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+      },
+      {
+        "path": "tutorial/csv_example.py",
+        "git_blob_sha": "a312ad90f38fd29804613e1fcb4f441d3304ec53"
+      },
+      {
+        "path": "tutorial/experiment_handler.py",
+        "git_blob_sha": "f142c2fc24da1d9125ac3db039785a21b85eb05f"
+      },
+      {
+        "path": "tutorial/graphs.ipynb",
+        "git_blob_sha": "f2eea45ecf6a4c43681a5240d84d597b87ce643c"
+      },
+      {
+        "path": "tutorial/make_input.py",
+        "git_blob_sha": "b0c96380af649984d264dbc67c37e923e5d98ec9"
+      },
+      {
+        "path": "tutorial/run_one_experiment.py",
+        "git_blob_sha": "aae315f2dff491f4d845181d25376b498a32aa14"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_10/arc.csv",
+        "git_blob_sha": "cf0d04c1f131e8eeff22115d7cfbd151044496fb"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_10/node.csv",
+        "git_blob_sha": "013baac1561cc6ddbdadaca9eb1e54967c5156f4"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_10/order.csv",
+        "git_blob_sha": "d1e3c46e5e62d3b31e4bb8c270e02705ae961662"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_10/parameters.csv",
+        "git_blob_sha": "2782cba893cb8c72201ea98b7c85c13ec6324cc6"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_100/arc.csv",
+        "git_blob_sha": "b1565649dfb3736d3c183a103de43460558a3371"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_100/node.csv",
+        "git_blob_sha": "232b4d4038986f60b90ec19128eeccec5aa864dd"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_100/order.csv",
+        "git_blob_sha": "a4c663a6011dd2e82366227728ece7ea1764b5d0"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_100/parameters.csv",
+        "git_blob_sha": "eed4744399f93995d686f573431229fbfa3412f5"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_20/arc.csv",
+        "git_blob_sha": "2a376168f3a62bc9d281bf2c79525264e9b721d0"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_20/node.csv",
+        "git_blob_sha": "b0a1c37785b6629dcbd4aacd83b3d96b5506d395"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_20/order.csv",
+        "git_blob_sha": "60a549be41af753b1c5d5d0d398777af3091196a"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_20/parameters.csv",
+        "git_blob_sha": "352793ccf89309a1ce02da3fdb56a6735c4d4a6e"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_30/arc.csv",
+        "git_blob_sha": "38d740010663641f923d90d3eb5e53bda05efaee"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_30/node.csv",
+        "git_blob_sha": "3538024d3b4b7072333c66dff4c51efdc419a56f"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_30/order.csv",
+        "git_blob_sha": "a2b65e0f72519940a08f8792cd8deb4793d7989d"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_30/parameters.csv",
+        "git_blob_sha": "f2f65879378197221d96246f5e951855464d15fc"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_40/arc.csv",
+        "git_blob_sha": "63a80da0e6d621d2fb337603d94090d4f14f92f1"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_40/node.csv",
+        "git_blob_sha": "6ba842cff3d6bf110dea922a4ea1b65b9e2b09f5"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_40/order.csv",
+        "git_blob_sha": "a4cadbbdfb1ae1c504b221740f4805273b66a853"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_40/parameters.csv",
+        "git_blob_sha": "3838cc13a3f0c5d9ec47e0f75365ce48d139093a"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_50/arc.csv",
+        "git_blob_sha": "18af98b3cbb90aba18915371a2d684a19acba339"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_50/node.csv",
+        "git_blob_sha": "bfb6a5f14f8eaca2b141319fb1253a6746fe7c59"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_50/order.csv",
+        "git_blob_sha": "99dc7a3d7cacccb744c24b7492ab9b157ec18344"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_50/parameters.csv",
+        "git_blob_sha": "7125760a9d8909d985d050211cde22cf6a4dd7f7"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_60/arc.csv",
+        "git_blob_sha": "7f48c893c10d8da779dfdf7729c8fef989179fbc"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_60/node.csv",
+        "git_blob_sha": "3c6eff2cd441deb439e5cf68b406c46ae5603fe4"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_60/order.csv",
+        "git_blob_sha": "5cac8e8ad20e2275e5352ddc4ac560964d3d27d7"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_60/parameters.csv",
+        "git_blob_sha": "3b57afa077aa91887c5f497d68fd2569e9e11c40"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_70/arc.csv",
+        "git_blob_sha": "4507c2d7f9dc8bad2ffb108755481cad9e804e48"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_70/node.csv",
+        "git_blob_sha": "de7e0537c059e04f7141d43a53b89ea22997c13e"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_70/order.csv",
+        "git_blob_sha": "cb50cb6a3f2abba5939030db4651f2caa7f75a98"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_70/parameters.csv",
+        "git_blob_sha": "4b264b75b356d698587438904c96394817a27859"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_80/arc.csv",
+        "git_blob_sha": "3ccf85bda118fa1047fab2b03744c2da896e2856"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_80/node.csv",
+        "git_blob_sha": "74a2488f8715633d66a85caa502d0c6581aa4e9f"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_80/order.csv",
+        "git_blob_sha": "f11eab88971b1462a058cc989a24292dabe2f11c"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_80/parameters.csv",
+        "git_blob_sha": "c3582ac8c6f3d93082cb75a90f83a88f7219af8c"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_90/arc.csv",
+        "git_blob_sha": "c3243c1d29abc3389dd436f8b16ba12bcd9cd420"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_90/node.csv",
+        "git_blob_sha": "74cc53011c5469f56f0a682f915510364f6edfcb"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_90/order.csv",
+        "git_blob_sha": "c5ad4393dabc2a401f28d2d9f1a15836e4bf686b"
+      },
+      {
+        "path": "tutorial/sample_inputs/input_90/parameters.csv",
+        "git_blob_sha": "05fe7ec5679cba01bdd61a351fb3682593334e7d"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_100_heuristic/route.csv",
+        "git_blob_sha": "dab7a7f981a23e88b0c0b27d218b6fb5fbd75757"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_100_heuristic/summary.csv",
+        "git_blob_sha": "60a76c82771f40c58d4135993a993b04dcc9fc84"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_10_exact/route.csv",
+        "git_blob_sha": "ad11fde22dab7a6a724b775b3cb3064bcbbf6979"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_10_exact/summary.csv",
+        "git_blob_sha": "646ab18c0a662914e5864d1d5edf9e03fc765e55"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_10_heuristic/route.csv",
+        "git_blob_sha": "602be6ec22eabf2410db426c05baf272cf140693"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_10_heuristic/summary.csv",
+        "git_blob_sha": "7d316bccd6dfdac67aeabcc81d552806e1325a9c"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_20_exact/route.csv",
+        "git_blob_sha": "4f9cca542c0e446cc4a81c634e29921d1ddce071"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_20_exact/summary.csv",
+        "git_blob_sha": "c842ff9c1f3a2a42c173a36a93b5e043551be50f"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_20_heuristic/route.csv",
+        "git_blob_sha": "43f6f5666b0c6581d4fe9e4ca0999bf8e9d8bdef"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_20_heuristic/summary.csv",
+        "git_blob_sha": "57865385511ce7394f1a7fef2dc99cc042315177"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_30_heuristic/route.csv",
+        "git_blob_sha": "545e3046496e7700251de0c35e589e8b4148e557"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_30_heuristic/summary.csv",
+        "git_blob_sha": "2500fe573da5e0c4882f965f2c075340f295f11a"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_40_heuristic/route.csv",
+        "git_blob_sha": "0c3b0988bc82343e26c17c14e1e71938fca84164"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_40_heuristic/summary.csv",
+        "git_blob_sha": "eb648b7181e1a135bbab25222357ace546058627"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_50_heuristic/route.csv",
+        "git_blob_sha": "b5c1ec26a2b25ef7f6d5cb6ead650fd26acdca48"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_50_heuristic/summary.csv",
+        "git_blob_sha": "41c7a7d893cddbabe4f26218ef4512ae6f2e4fc0"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_60_heuristic/route.csv",
+        "git_blob_sha": "8383252f2411ea530da989b21b2cf5a997226274"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_60_heuristic/summary.csv",
+        "git_blob_sha": "80e9fc8bc83687e6e342d5479a4e6ea8e3073dc1"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_70_heuristic/route.csv",
+        "git_blob_sha": "eb907c1dd90e621745f244e58121ddfab5e739e6"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_70_heuristic/summary.csv",
+        "git_blob_sha": "3d0b29dbafa09096520ac847dadf4c8cbddd5f6a"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_80_heuristic/route.csv",
+        "git_blob_sha": "7c8357c27c243d69a606073907f6dbc4972a1319"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_80_heuristic/summary.csv",
+        "git_blob_sha": "bb65ecdbacc9158db78419606d61dfda031a2c53"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_90_heuristic/route.csv",
+        "git_blob_sha": "5d88e2ae6dd08e2102e65287e7e24ed367d3d404"
+      },
+      {
+        "path": "tutorial/sample_solutions_10/solution_90_heuristic/summary.csv",
+        "git_blob_sha": "a8c265671cf295f79c986ceac2c78e41d6ebe7c3"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_100_heuristic/route.csv",
+        "git_blob_sha": "b6e6bb7d387be971f3721a0e10bb54c17f5025cc"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_100_heuristic/summary.csv",
+        "git_blob_sha": "04ffd933e4a8da79d6ec43967f156edc67b4b5b4"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_10_exact/route.csv",
+        "git_blob_sha": "5f0a2825300abe8b4c70a86b14f029ff98128b6f"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_10_exact/summary.csv",
+        "git_blob_sha": "646ab18c0a662914e5864d1d5edf9e03fc765e55"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_10_heuristic/route.csv",
+        "git_blob_sha": "602be6ec22eabf2410db426c05baf272cf140693"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_10_heuristic/summary.csv",
+        "git_blob_sha": "7d316bccd6dfdac67aeabcc81d552806e1325a9c"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_20_exact/route.csv",
+        "git_blob_sha": "1cf08dc4f5c508c895da82926785a693cf0c3ced"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_20_exact/summary.csv",
+        "git_blob_sha": "9722980bee7ae31f286c0133da446f81d2449158"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_20_heuristic/route.csv",
+        "git_blob_sha": "062d0654110005a01f586250bc2a314d5d0837b1"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_20_heuristic/summary.csv",
+        "git_blob_sha": "c155766667b6298385ea47e9b0a43b662234a730"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_30_exact/route.csv",
+        "git_blob_sha": "005b145ef3a30ec4e9684945f499ed12acfc2f00"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_30_exact/summary.csv",
+        "git_blob_sha": "a1c0b099e02f06862fb83197ca8d23cad8b3aa3c"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_30_heuristic/route.csv",
+        "git_blob_sha": "301217cbb6252d751615a9e82a1bd273bf1727fd"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_30_heuristic/summary.csv",
+        "git_blob_sha": "470e867039043c2e54903f3c20350f591421c8ba"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_40_exact/route.csv",
+        "git_blob_sha": "ad68efca593e5d94c36b9a639f4a0970fca83514"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_40_exact/summary.csv",
+        "git_blob_sha": "f091b032d984314a6f5606a8beef40f9984620f4"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_40_heuristic/route.csv",
+        "git_blob_sha": "e92a4a88e899efc9ea5317964302064cc3c73fb6"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_40_heuristic/summary.csv",
+        "git_blob_sha": "5a6aeda54d3269914b9ea05dfeef11d6fae5066b"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_50_exact/route.csv",
+        "git_blob_sha": "4087554292b41210da37a2173388fc3229d6e062"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_50_exact/summary.csv",
+        "git_blob_sha": "d3de71f6d6541cca609455a12c64a44223c7c107"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_50_heuristic/route.csv",
+        "git_blob_sha": "958ac60c86380ef9b393bf855f3ccbe1b267024f"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_50_heuristic/summary.csv",
+        "git_blob_sha": "d950923af51b5e1e0cb0b983f9f34e2e1b47d9a6"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_60_exact/route.csv",
+        "git_blob_sha": "de92ff6b260b7a9609031d8bf2cfaed0b52dc01e"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_60_exact/summary.csv",
+        "git_blob_sha": "b70cdf704aaed83efc50b427f8123af4eac2c36d"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_60_heuristic/route.csv",
+        "git_blob_sha": "b51b0f2f6fe67ca78bf2890361c95b14ba115bab"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_60_heuristic/summary.csv",
+        "git_blob_sha": "e1a905b77b026ae9e6dadeee3a3674c457b76834"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_70_exact/route.csv",
+        "git_blob_sha": "dacdd2f5f27938fb3eba9cf54175a578c3449d64"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_70_exact/summary.csv",
+        "git_blob_sha": "48716c09fc345f9979df72d78e80417fb5419a05"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_70_heuristic/route.csv",
+        "git_blob_sha": "66135ec567e9a9fe352b1c2e1d935c79388b86de"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_70_heuristic/summary.csv",
+        "git_blob_sha": "4460be8e47e59d9341f34536a035b19a25d7e2e3"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_80_heuristic/route.csv",
+        "git_blob_sha": "8011e889a11bd86e82c9fbcc84bd18b3343b6ef9"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_80_heuristic/summary.csv",
+        "git_blob_sha": "e4c6d92d0230224df401ba70e02875cb1e243c46"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_90_heuristic/route.csv",
+        "git_blob_sha": "5d88e2ae6dd08e2102e65287e7e24ed367d3d404"
+      },
+      {
+        "path": "tutorial/sample_solutions_300/solution_90_heuristic/summary.csv",
+        "git_blob_sha": "a8c265671cf295f79c986ceac2c78e41d6ebe7c3"
+      },
+      {
+        "path": "vehicle_routing_column_generation/README.md",
+        "git_blob_sha": "c6cbcebe35f78eaae4333a835dd4ea4c42e16247"
+      },
+      {
+        "path": "vehicle_routing_column_generation/__init__.py",
+        "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+      },
+      {
+        "path": "vehicle_routing_column_generation/algorithms.py",
+        "git_blob_sha": "6bb8fbb78e5d078b2dab6ae8625c6d68639af554"
+      },
+      {
+        "path": "vehicle_routing_column_generation/schemas.py",
+        "git_blob_sha": "846c96c2222422d0250618229b71b0ab304cfea2"
+      }
+    ],
+    "tree_truncated": false
+  },
+  {
+    "repo": "onboarding92/Vrptw",
+    "sha": "a3000ce7ad083a978dee249e21dac4809df38f07",
+    "date": "2020-04-30T14:48:39Z",
+    "branch": "master",
+    "license": "MIT",
+    "files": [
+      {
+        "path": ".gitignore",
+        "git_blob_sha": "b6e47617de110dea7ca47e087ff1347cc2646eda"
+      },
+      {
+        "path": "LICENSE",
+        "git_blob_sha": "f23b525bd5957afd9c010029197de7e923bd6984"
+      },
+      {
+        "path": "README.md",
+        "git_blob_sha": "58a18417bb9e16b60ccf111b2ba4779279152da8"
+      },
+      {
+        "path": "src/BB.py",
+        "git_blob_sha": "c48da8bd035e8fb7a296cd41afbfbb749c5e8c5a"
+      },
+      {
+        "path": "src/DSSR_ESPPRC.py",
+        "git_blob_sha": "b8dc2c2af941b2a1c706af8f8d4d1587a2d1920e"
+      },
+      {
+        "path": "src/ESPPRC.py",
+        "git_blob_sha": "a6899e50b3a8a6df8e75af36beb7a8ce62b62160"
+      },
+      {
+        "path": "src/SSR_SPPRC.py",
+        "git_blob_sha": "d16086ae09446f37383ebfba33da6a877e13e458"
+      },
+      {
+        "path": "src/VRPTW.py",
+        "git_blob_sha": "33d823352a5976030dd8eb2a44d2429a778acd8e"
+      },
+      {
+        "path": "src/main.py",
+        "git_blob_sha": "cd50f2b00048f4eccc22dcf1806d6744601b67fa"
+      }
+    ],
+    "tree_truncated": false
+  }
+]

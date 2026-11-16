@@ -1,0 +1,77 @@
+{
+  "experiment_id": "termination_rules_20261116_v1",
+  "version": "finite-work-whole-method-v1",
+  "mode": "finite_work",
+  "scales": [
+    "S1",
+    "S2",
+    "S3"
+  ],
+  "methods": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "D_CLASSICAL_REPLACEMENT"
+  ],
+  "resource": {
+    "physical_cores": 4,
+    "BCD_branches": 4,
+    "native_threads": 1,
+    "tree_RSS_limit_MiB": 32768,
+    "A_address_space_MiB": 4096
+  },
+  "A": {
+    "candidate_evaluations": 10000,
+    "rule": "frozen A_rule_v1, at most V accepted moves, no time guard"
+  },
+  "C": {
+    "search_limit_checks_per_stop": 16,
+    "minimum_search_limit_checks": 256,
+    "strategy": "GUIDED_LOCAL_SEARCH"
+  },
+  "completion": {
+    "max_conflicts_per_internal_solve": 256,
+    "max_improving_solutions": 8,
+    "search": "FIXED_SEARCH",
+    "restarts": "NO_RESTART",
+    "presolve": false,
+    "probing": false,
+    "linearization_level": 0,
+    "absolute_gap_limit": 0,
+    "relative_gap_limit": 0,
+    "sat_inprocessing": false,
+    "symmetry_level": 0,
+    "rins_lns": false,
+    "feasibility_pump": false
+  },
+  "D": {
+    "train_shots": 10000,
+    "final_shots": 10000,
+    "p": 2,
+    "macro_groups": 3,
+    "max_evaluations": 80,
+    "restarts": 1,
+    "pricing_rounds": 2,
+    "tolerance": 0.001,
+    "statevector_backend": "qiskit"
+  },
+  "catalogue": {
+    "partner_coverage_offsets": [
+      1,
+      -1
+    ],
+    "column_generation_rounds": 40,
+    "new_columns_per_round": 20,
+    "LP_min_iterations": 1000,
+    "LP_iterations_per_row_column": 4,
+    "IP_nodes_per_vehicle": 4
+  },
+  "selection": "validated min rounded physical D(0.1m), then W(seconds), then logical branch ID; never arrival order",
+  "validation_trials_per_scale_method": 1,
+  "root_seed": 2026111617,
+  "dependency_prefix": "/opt/miniconda/envs/qgpu/lib/python3.12/site-packages",
+  "main_manifest_executable": false,
+  "main_R_a": null,
+  "h_D_km": null
+}

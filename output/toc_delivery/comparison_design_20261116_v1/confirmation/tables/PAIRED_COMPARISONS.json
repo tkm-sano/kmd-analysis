@@ -1,0 +1,829 @@
+{
+  "metadata": {
+    "contract_id": "whole-method-A_rule_v1-20261115-comparison-v1",
+    "phase": "confirmation",
+    "units": {
+      "D": "km",
+      "W": "min",
+      "T_program": "s"
+    },
+    "independent_sample_count": null,
+    "p_values": null,
+    "confidence_intervals": null
+  },
+  "pairs": [
+    {
+      "pair": [
+        "A",
+        "D"
+      ],
+      "target_cases": 3,
+      "raw_adopted_cases": 2,
+      "excluded_from_raw_count": 1,
+      "J_adopted_cases": 2,
+      "entries": [
+        {
+          "case_id": "S1",
+          "pair_id": "S1_r1",
+          "left_method": "A",
+          "right_method": "D",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "confirmation_retained_S1_A_r1",
+          "right_run_id": "confirmation_retained_S1_D_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "A_MOVE_LIMIT",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "A": 518.4218,
+              "D": 444.1768,
+              "right_minus_left": -74.24499999999995
+            },
+            "W": {
+              "A": 396.1,
+              "D": 246.0,
+              "right_minus_left": -150.10000000000002
+            },
+            "T_program": {
+              "A": 14.897081738803536,
+              "D": 141.09038863284513,
+              "right_minus_left": 126.1933068940416
+            }
+          },
+          "J": {
+            "A": 1.0,
+            "D": 3.6496167825455683
+          }
+        },
+        {
+          "case_id": "S2",
+          "pair_id": "S2_r1",
+          "left_method": "A",
+          "right_method": "D",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "confirmation_retained_S2_A_r1",
+          "right_run_id": "confirmation_retained_S2_D_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "A_MOVE_LIMIT",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "A": 936.6191,
+              "D": 759.6125,
+              "right_minus_left": -177.00660000000005
+            },
+            "W": {
+              "A": 806.7666666666667,
+              "D": 578.6666666666666,
+              "right_minus_left": -228.10000000000002
+            },
+            "T_program": {
+              "A": 13.900673816911876,
+              "D": 158.56805212190375,
+              "right_minus_left": 144.66737830499187
+            }
+          },
+          "J": {
+            "A": 1.0,
+            "D": 4.311834132231342
+          }
+        },
+        {
+          "case_id": "S3",
+          "pair_id": "S3_r1",
+          "left_method": "A",
+          "right_method": "D",
+          "status": "LEFT_ONLY_SUCCESS",
+          "reason": null,
+          "left_run_id": "confirmation_retained_S3_A_r1",
+          "right_run_id": "confirmation_retained_S3_D_r1",
+          "raw_exclusion_reason": "LEFT_ONLY_SUCCESS",
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "A_MOVE_LIMIT",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "NATIVE_DEADLINE_REJECTED"
+          },
+          "raw": null,
+          "J": null
+        }
+      ],
+      "retries_not_substituted_for_primary": [],
+      "units": {
+        "D": "km",
+        "W": "min",
+        "T_program": "s",
+        "J": "dimensionless"
+      }
+    },
+    {
+      "pair": [
+        "C",
+        "D"
+      ],
+      "target_cases": 3,
+      "raw_adopted_cases": 2,
+      "excluded_from_raw_count": 1,
+      "J_adopted_cases": 2,
+      "entries": [
+        {
+          "case_id": "S1",
+          "pair_id": "S1_r1",
+          "left_method": "C",
+          "right_method": "D",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "confirmation_retained_S1_C_r1",
+          "right_run_id": "confirmation_retained_S1_D_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "C": 410.1098,
+              "D": 444.1768,
+              "right_minus_left": 34.06700000000001
+            },
+            "W": {
+              "C": 246.0,
+              "D": 246.0,
+              "right_minus_left": 0.0
+            },
+            "T_program": {
+              "C": 148.42059317603707,
+              "D": 141.09038863284513,
+              "right_minus_left": -7.33020454319194
+            }
+          },
+          "J": {
+            "C": 3.791731285442155,
+            "D": 3.6496167825455683
+          }
+        },
+        {
+          "case_id": "S2",
+          "pair_id": "S2_r1",
+          "left_method": "C",
+          "right_method": "D",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "confirmation_retained_S2_C_r1",
+          "right_run_id": "confirmation_retained_S2_D_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "C": 709.2558,
+              "D": 759.6125,
+              "right_minus_left": 50.35669999999993
+            },
+            "W": {
+              "C": 563.8833333333333,
+              "D": 578.6666666666666,
+              "right_minus_left": 14.783333333333303
+            },
+            "T_program": {
+              "C": 137.40743091213517,
+              "D": 158.56805212190375,
+              "right_minus_left": 21.16062120976858
+            }
+          },
+          "J": {
+            "C": 3.7803802781376223,
+            "D": 4.311834132231342
+          }
+        },
+        {
+          "case_id": "S3",
+          "pair_id": "S3_r1",
+          "left_method": "C",
+          "right_method": "D",
+          "status": "LEFT_ONLY_SUCCESS",
+          "reason": null,
+          "left_run_id": "confirmation_retained_S3_C_r1",
+          "right_run_id": "confirmation_retained_S3_D_r1",
+          "raw_exclusion_reason": "LEFT_ONLY_SUCCESS",
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "NATIVE_DEADLINE_REJECTED"
+          },
+          "raw": null,
+          "J": null
+        }
+      ],
+      "retries_not_substituted_for_primary": [],
+      "units": {
+        "D": "km",
+        "W": "min",
+        "T_program": "s",
+        "J": "dimensionless"
+      }
+    },
+    {
+      "pair": [
+        "A",
+        "B"
+      ],
+      "target_cases": 3,
+      "raw_adopted_cases": 3,
+      "excluded_from_raw_count": 0,
+      "J_adopted_cases": 3,
+      "entries": [
+        {
+          "case_id": "S1",
+          "pair_id": "S1_r1",
+          "left_method": "A",
+          "right_method": "B",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "confirmation_retained_S1_A_r1",
+          "right_run_id": "confirmation_retained_S1_B_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "A_MOVE_LIMIT",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "A": 518.4218,
+              "B": 444.1768,
+              "right_minus_left": -74.24499999999995
+            },
+            "W": {
+              "A": 396.1,
+              "B": 264.0,
+              "right_minus_left": -132.10000000000002
+            },
+            "T_program": {
+              "A": 14.897081738803536,
+              "B": 142.04708678997122,
+              "right_minus_left": 127.15000505116768
+            }
+          },
+          "J": {
+            "A": 1.0,
+            "B": 3.686171308526038
+          }
+        },
+        {
+          "case_id": "S2",
+          "pair_id": "S2_r1",
+          "left_method": "A",
+          "right_method": "B",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "confirmation_retained_S2_A_r1",
+          "right_run_id": "confirmation_retained_S2_B_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "A_MOVE_LIMIT",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "A": 936.6191,
+              "B": 759.6125,
+              "right_minus_left": -177.00660000000005
+            },
+            "W": {
+              "A": 806.7666666666667,
+              "B": 592.8833333333333,
+              "right_minus_left": -213.88333333333333
+            },
+            "T_program": {
+              "A": 13.900673816911876,
+              "B": 139.9475462329574,
+              "right_minus_left": 126.04687241604552
+            }
+          },
+          "J": {
+            "A": 1.0,
+            "B": 3.8711947914955402
+          }
+        },
+        {
+          "case_id": "S3",
+          "pair_id": "S3_r1",
+          "left_method": "A",
+          "right_method": "B",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "confirmation_retained_S3_A_r1",
+          "right_run_id": "confirmation_retained_S3_B_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "A_MOVE_LIMIT",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "A": 1658.9498,
+              "B": 1322.0793,
+              "right_minus_left": -336.8705
+            },
+            "W": {
+              "A": 1575.2833333333333,
+              "B": 1150.9,
+              "right_minus_left": -424.3833333333332
+            },
+            "T_program": {
+              "A": 21.823543231002986,
+              "B": 140.54519042000175,
+              "right_minus_left": 118.72164718899876
+            }
+          },
+          "J": {
+            "A": 1.0,
+            "B": 2.6558694191253855
+          }
+        }
+      ],
+      "retries_not_substituted_for_primary": [],
+      "units": {
+        "D": "km",
+        "W": "min",
+        "T_program": "s",
+        "J": "dimensionless"
+      }
+    },
+    {
+      "pair": [
+        "A",
+        "C"
+      ],
+      "target_cases": 3,
+      "raw_adopted_cases": 3,
+      "excluded_from_raw_count": 0,
+      "J_adopted_cases": 3,
+      "entries": [
+        {
+          "case_id": "S1",
+          "pair_id": "S1_r1",
+          "left_method": "A",
+          "right_method": "C",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "confirmation_retained_S1_A_r1",
+          "right_run_id": "confirmation_retained_S1_C_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "A_MOVE_LIMIT",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "A": 518.4218,
+              "C": 410.1098,
+              "right_minus_left": -108.31199999999995
+            },
+            "W": {
+              "A": 396.1,
+              "C": 246.0,
+              "right_minus_left": -150.10000000000002
+            },
+            "T_program": {
+              "A": 14.897081738803536,
+              "C": 148.42059317603707,
+              "right_minus_left": 133.52351143723354
+            }
+          },
+          "J": {
+            "A": 1.0,
+            "C": 3.791731285442155
+          }
+        },
+        {
+          "case_id": "S2",
+          "pair_id": "S2_r1",
+          "left_method": "A",
+          "right_method": "C",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "confirmation_retained_S2_A_r1",
+          "right_run_id": "confirmation_retained_S2_C_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "A_MOVE_LIMIT",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "A": 936.6191,
+              "C": 709.2558,
+              "right_minus_left": -227.36329999999998
+            },
+            "W": {
+              "A": 806.7666666666667,
+              "C": 563.8833333333333,
+              "right_minus_left": -242.88333333333333
+            },
+            "T_program": {
+              "A": 13.900673816911876,
+              "C": 137.40743091213517,
+              "right_minus_left": 123.50675709522329
+            }
+          },
+          "J": {
+            "A": 1.0,
+            "C": 3.7803802781376223
+          }
+        },
+        {
+          "case_id": "S3",
+          "pair_id": "S3_r1",
+          "left_method": "A",
+          "right_method": "C",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "confirmation_retained_S3_A_r1",
+          "right_run_id": "confirmation_retained_S3_C_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "A_MOVE_LIMIT",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "A": 1658.9498,
+              "C": 1322.0793,
+              "right_minus_left": -336.8705
+            },
+            "W": {
+              "A": 1575.2833333333333,
+              "C": 1681.05,
+              "right_minus_left": 105.76666666666665
+            },
+            "T_program": {
+              "A": 21.823543231002986,
+              "C": 152.11522196698934,
+              "right_minus_left": 130.29167873598635
+            }
+          },
+          "J": {
+            "A": 1.0,
+            "C": 2.944771241607316
+          }
+        }
+      ],
+      "retries_not_substituted_for_primary": [],
+      "units": {
+        "D": "km",
+        "W": "min",
+        "T_program": "s",
+        "J": "dimensionless"
+      }
+    },
+    {
+      "pair": [
+        "B",
+        "C"
+      ],
+      "target_cases": 3,
+      "raw_adopted_cases": 3,
+      "excluded_from_raw_count": 0,
+      "J_adopted_cases": 3,
+      "entries": [
+        {
+          "case_id": "S1",
+          "pair_id": "S1_r1",
+          "left_method": "B",
+          "right_method": "C",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "confirmation_retained_S1_B_r1",
+          "right_run_id": "confirmation_retained_S1_C_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "B": 444.1768,
+              "C": 410.1098,
+              "right_minus_left": -34.06700000000001
+            },
+            "W": {
+              "B": 264.0,
+              "C": 246.0,
+              "right_minus_left": -18.0
+            },
+            "T_program": {
+              "B": 142.04708678997122,
+              "C": 148.42059317603707,
+              "right_minus_left": 6.373506386065856
+            }
+          },
+          "J": {
+            "B": 3.686171308526038,
+            "C": 3.791731285442155
+          }
+        },
+        {
+          "case_id": "S2",
+          "pair_id": "S2_r1",
+          "left_method": "B",
+          "right_method": "C",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "confirmation_retained_S2_B_r1",
+          "right_run_id": "confirmation_retained_S2_C_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "B": 759.6125,
+              "C": 709.2558,
+              "right_minus_left": -50.35669999999993
+            },
+            "W": {
+              "B": 592.8833333333333,
+              "C": 563.8833333333333,
+              "right_minus_left": -29.0
+            },
+            "T_program": {
+              "B": 139.9475462329574,
+              "C": 137.40743091213517,
+              "right_minus_left": -2.540115320822224
+            }
+          },
+          "J": {
+            "B": 3.8711947914955402,
+            "C": 3.7803802781376223
+          }
+        },
+        {
+          "case_id": "S3",
+          "pair_id": "S3_r1",
+          "left_method": "B",
+          "right_method": "C",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "confirmation_retained_S3_B_r1",
+          "right_run_id": "confirmation_retained_S3_C_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "B": 1322.0793,
+              "C": 1322.0793,
+              "right_minus_left": 0.0
+            },
+            "W": {
+              "B": 1150.9,
+              "C": 1681.05,
+              "right_minus_left": 530.1499999999999
+            },
+            "T_program": {
+              "B": 140.54519042000175,
+              "C": 152.11522196698934,
+              "right_minus_left": 11.570031546987593
+            }
+          },
+          "J": {
+            "B": 2.6558694191253855,
+            "C": 2.944771241607316
+          }
+        }
+      ],
+      "retries_not_substituted_for_primary": [],
+      "units": {
+        "D": "km",
+        "W": "min",
+        "T_program": "s",
+        "J": "dimensionless"
+      }
+    },
+    {
+      "pair": [
+        "B",
+        "D"
+      ],
+      "target_cases": 3,
+      "raw_adopted_cases": 2,
+      "excluded_from_raw_count": 1,
+      "J_adopted_cases": 2,
+      "entries": [
+        {
+          "case_id": "S1",
+          "pair_id": "S1_r1",
+          "left_method": "B",
+          "right_method": "D",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "confirmation_retained_S1_B_r1",
+          "right_run_id": "confirmation_retained_S1_D_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "B": 444.1768,
+              "D": 444.1768,
+              "right_minus_left": 0.0
+            },
+            "W": {
+              "B": 264.0,
+              "D": 246.0,
+              "right_minus_left": -18.0
+            },
+            "T_program": {
+              "B": 142.04708678997122,
+              "D": 141.09038863284513,
+              "right_minus_left": -0.956698157126084
+            }
+          },
+          "J": {
+            "B": 3.686171308526038,
+            "D": 3.6496167825455683
+          }
+        },
+        {
+          "case_id": "S2",
+          "pair_id": "S2_r1",
+          "left_method": "B",
+          "right_method": "D",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "confirmation_retained_S2_B_r1",
+          "right_run_id": "confirmation_retained_S2_D_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "B": 759.6125,
+              "D": 759.6125,
+              "right_minus_left": 0.0
+            },
+            "W": {
+              "B": 592.8833333333333,
+              "D": 578.6666666666666,
+              "right_minus_left": -14.216666666666697
+            },
+            "T_program": {
+              "B": 139.9475462329574,
+              "D": 158.56805212190375,
+              "right_minus_left": 18.620505888946354
+            }
+          },
+          "J": {
+            "B": 3.8711947914955402,
+            "D": 4.311834132231342
+          }
+        },
+        {
+          "case_id": "S3",
+          "pair_id": "S3_r1",
+          "left_method": "B",
+          "right_method": "D",
+          "status": "LEFT_ONLY_SUCCESS",
+          "reason": null,
+          "left_run_id": "confirmation_retained_S3_B_r1",
+          "right_run_id": "confirmation_retained_S3_D_r1",
+          "raw_exclusion_reason": "LEFT_ONLY_SUCCESS",
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "NATIVE_DEADLINE_REJECTED"
+          },
+          "raw": null,
+          "J": null
+        }
+      ],
+      "retries_not_substituted_for_primary": [],
+      "units": {
+        "D": "km",
+        "W": "min",
+        "T_program": "s",
+        "J": "dimensionless"
+      }
+    }
+  ]
+}

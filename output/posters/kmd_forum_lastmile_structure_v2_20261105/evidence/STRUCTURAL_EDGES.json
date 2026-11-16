@@ -1,0 +1,42 @@
+[
+  {
+    "source": "quantum_design",
+    "target": "candidate_quality",
+    "status": "saved_plan_comparison"
+  },
+  {
+    "source": "quantum_design",
+    "target": "acquisition_time",
+    "status": "conditional_not_total_runtime_validation"
+  },
+  {
+    "source": "candidate_quality",
+    "target": "adoption_gate",
+    "condition": "strict_improvement_and_feasibility"
+  },
+  {
+    "source": "acquisition_time",
+    "target": "adoption_gate",
+    "condition": "completed_before_common_departure_deadline"
+  },
+  {
+    "source": "adoption_gate",
+    "target": "delivery_outcomes",
+    "condition": "all_gates_pass"
+  },
+  {
+    "source": "adoption_gate",
+    "target": "classical_fallback",
+    "condition": "any_gate_fails"
+  },
+  {
+    "source": "classical_fallback",
+    "target": "delivery_outcomes",
+    "condition": "use_retained_baseline"
+  },
+  {
+    "source": "deadline_slack_traffic_service",
+    "target": "delivery_outcomes",
+    "status": "conditions_not_empirical_effect_identification"
+  }
+]

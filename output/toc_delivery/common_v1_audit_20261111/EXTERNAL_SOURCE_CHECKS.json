@@ -1,0 +1,38 @@
+{
+  "checked_at": "2026-11-11T07:32:20.355724+00:00",
+  "sources": [
+    {
+      "url": "https://project-osrm.org/docs/v26.5.0/http",
+      "tool": "web.open/find",
+      "status": "read",
+      "findings": [
+        "distance and duration share fastest route; metres/seconds",
+        "fallback_speed estimates use straight line and are forbidden here",
+        "CH distance,duration table example; live support still needs verification"
+      ]
+    },
+    {
+      "url": "https://www.openstreetmap.org/copyright",
+      "tool": "web.open",
+      "status": "read",
+      "findings": [
+        "OSM contributors attribution and ODbL"
+      ]
+    },
+    {
+      "url": "https://www.j-m-t.co.jp/terminal/modal/keihin_map.html",
+      "tool": "web.open",
+      "status": "read",
+      "findings": [
+        "address Ota-ku Heiwajima 2-1-1; precise vehicle entrance not verified"
+      ]
+    },
+    {
+      "url": "https://www.j-m-t.co.jp/images/terminal/keihin/kei_access_big.png",
+      "tool": "web.click",
+      "status": "503 Service Unavailable",
+      "adopted_entrance_coordinate": null
+    }
+  ],
+  "public_osrm_queries": 0
+}

@@ -1,0 +1,17 @@
+id,cause,location,action,status,verification
+F01,旧差の符号が依頼と逆,旧方法/図表/要旨/結論,"候補−greedyへ統一し全36,800分数を旧差と逆符号照合",RESOLVED,NUMERICAL_CHECKS/FINAL_AUTOMATED_CHECKS
+F02,計画中央値と入力中央値の混同余地,4.2/全統計,0秒と7.473770秒、SD1459.379/622.305を別表示,RESOLVED,INPUT_UNIT_STATISTICS/GAP_DESCRIPTIVE_STATISTICS
+F03,平均相対率と平均J比の非同義性,3.8/4.2,22.243524%と28.471877%を分離,RESOLVED,RELATIVE_GAP_VS_RATIO_OF_MEANS
+F04,帰庫を配送完了と同一視する危険,4.5,最終帰路を除外してLを再構成。負差180件も保存,RESOLVED,OPERATIONAL_SUMMARY/B_PLAN_GAPS
+F05,共通上限遵守を契約定時率へ転用する危険,4.5/要旨/結論,モデル内100%両側と契約率NULLを分離,RESOLVED_SCOPE,S5-OP-02
+F06,存在と取得の混同,4.6/6.2,mirror不存在、全支持135+条件付41、238等値、46未証明を分離,RESOLVED_SCOPE,FULL_SUPPORT_EXISTENCE_BY_INPUT
+F07,Chen算術PASSを主材料採用に昇格する危険,5章/要旨/結論,主は記号感度と材料非依存DC。参考節はHOLD注記保持,RESOLVED_SCOPE,STEP4_EVIDENCE_DECISIONS
+F08,縮小後の新図の文字が小さい,図4-1〜4,実寸を想定したfigsize/文字サイズへ再生成、PDF代表頁を拡大確認,RESOLVED,"scripts/refine_figures.py/render/page_017,019,020"
+F09,同年Robinson Part I/IIの表記,2.4/参考文献,2008a=Part I、2008b=Part IIへ整形、内容HOLDは維持,RESOLVED_FORMAT,FINAL_AUTOMATED_CHECKS
+F10,PDF抽出でminus/arrowの順序がずれる,5.2/6.7,DOCXの字形を維持しPDF22/27頁を拡大目視。本文一致検査は当該字形を正規化,RESOLVED_RENDER_EXTRACTION,DOCX_PDF_PROSE_MATCH
+F11,Step5外の既存ポスターに開始後更新を検出,poster_causal_structure_revision_20261105,13ファイルのhash差と新規Gitエントリを記録。Step5は戻さず、研究入力と区別,EXTERNAL_CHANGE_RECORDED,EXTERNAL_BASELINE_CHANGES/EXTERNAL_GIT_STATUS_CHANGES
+H01,46最適値未証明/41外部証明未了,4.6/6.7,主greedy差は460全件使用可。最適gap等の断定を限定,HOLD_RESEARCH,Step4 P1-04/07
+H02,計画締切/全工程時間/QPU/実採用,3.11/4.6/6.7,不足数値を補作しない,HOLD_RESEARCH,Step4 P1-12/13
+H03,実材料/full-cell/未知BOM/実車,5/6.7,Chen入力適格性・完成pack・実車効果を断定しない,HOLD_RESEARCH,Step4 M-03/P2
+H04,旧引用原意図と原著未確認,2/参考文献/保存付録,Papachristos等を現行主結果の根拠から除外,HOLD_SUBMISSION_SCOPE,Step4 CITATION_AUDIT/Step5 LITERATURE_COMPARISON
+H05,Microsoft Word実機/大学提出体裁,全原稿,LibreOffice表示版と機械/目視監査まで。提出先の様式確定は別途必要,HOLD_SUBMISSION,render/RENDER_RUN.json

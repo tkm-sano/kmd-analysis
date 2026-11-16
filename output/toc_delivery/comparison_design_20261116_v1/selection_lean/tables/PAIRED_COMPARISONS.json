@@ -1,0 +1,658 @@
+{
+  "metadata": {
+    "contract_id": "whole-method-A_rule_v1-20261115-comparison-v1",
+    "phase": "selection_pilot",
+    "units": {
+      "D": "km",
+      "W": "min",
+      "T_program": "s"
+    },
+    "independent_sample_count": null,
+    "p_values": null,
+    "confidence_intervals": null
+  },
+  "pairs": [
+    {
+      "pair": [
+        "A",
+        "D"
+      ],
+      "target_cases": 3,
+      "raw_adopted_cases": 1,
+      "excluded_from_raw_count": 2,
+      "J_adopted_cases": 1,
+      "entries": [
+        {
+          "case_id": "S1",
+          "pair_id": "S1_r1",
+          "left_method": "A",
+          "right_method": "D",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "selection_pilot_lean_S1_A_r1",
+          "right_run_id": "selection_pilot_lean_S1_D_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "A_MOVE_LIMIT",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "A": 518.4218,
+              "D": 444.1768,
+              "right_minus_left": -74.24499999999995
+            },
+            "W": {
+              "A": 396.1,
+              "D": 258.0,
+              "right_minus_left": -138.10000000000002
+            },
+            "T_program": {
+              "A": 6.162798451026902,
+              "D": 67.19762322306633,
+              "right_minus_left": 61.03482477203943
+            }
+          },
+          "J": {
+            "A": 1.0,
+            "D": 4.137296243230323
+          }
+        },
+        {
+          "case_id": "S2",
+          "pair_id": "S2_r1",
+          "left_method": "A",
+          "right_method": "D",
+          "status": "LEFT_ONLY_SUCCESS",
+          "reason": null,
+          "left_run_id": "selection_pilot_lean_S2_A_r1",
+          "right_run_id": "selection_pilot_lean_S2_D_r1",
+          "raw_exclusion_reason": "LEFT_ONLY_SUCCESS",
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "A_MOVE_LIMIT",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "NATIVE_DEADLINE_REJECTED"
+          },
+          "raw": null,
+          "J": null
+        },
+        {
+          "case_id": "S3",
+          "pair_id": "S3_r1",
+          "left_method": "A",
+          "right_method": "D",
+          "status": "LEFT_ONLY_SUCCESS",
+          "reason": null,
+          "left_run_id": "selection_pilot_lean_S3_A_r1",
+          "right_run_id": "selection_pilot_lean_S3_D_r1",
+          "raw_exclusion_reason": "LEFT_ONLY_SUCCESS",
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "A_MOVE_LIMIT",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "NO_PLAN"
+          },
+          "raw": null,
+          "J": null
+        }
+      ],
+      "retries_not_substituted_for_primary": [],
+      "units": {
+        "D": "km",
+        "W": "min",
+        "T_program": "s",
+        "J": "dimensionless"
+      }
+    },
+    {
+      "pair": [
+        "C",
+        "D"
+      ],
+      "target_cases": 3,
+      "raw_adopted_cases": 1,
+      "excluded_from_raw_count": 2,
+      "J_adopted_cases": 1,
+      "entries": [
+        {
+          "case_id": "S1",
+          "pair_id": "S1_r1",
+          "left_method": "C",
+          "right_method": "D",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "selection_pilot_lean_S1_C_r1",
+          "right_run_id": "selection_pilot_lean_S1_D_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "C": 414.63009999999997,
+              "D": 444.1768,
+              "right_minus_left": 29.546700000000044
+            },
+            "W": {
+              "C": 288.0,
+              "D": 258.0,
+              "right_minus_left": -30.0
+            },
+            "T_program": {
+              "C": 64.60302102006972,
+              "D": 67.19762322306633,
+              "right_minus_left": 2.5946022029966116
+            }
+          },
+          "J": {
+            "C": 4.003207744462411,
+            "D": 4.137296243230323
+          }
+        },
+        {
+          "case_id": "S2",
+          "pair_id": "S2_r1",
+          "left_method": "C",
+          "right_method": "D",
+          "status": "LEFT_ONLY_SUCCESS",
+          "reason": null,
+          "left_run_id": "selection_pilot_lean_S2_C_r1",
+          "right_run_id": "selection_pilot_lean_S2_D_r1",
+          "raw_exclusion_reason": "LEFT_ONLY_SUCCESS",
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "NATIVE_DEADLINE_REJECTED"
+          },
+          "raw": null,
+          "J": null
+        },
+        {
+          "case_id": "S3",
+          "pair_id": "S3_r1",
+          "left_method": "C",
+          "right_method": "D",
+          "status": "BOTH_FAILED",
+          "reason": null,
+          "left_run_id": "selection_pilot_lean_S3_C_r1",
+          "right_run_id": "selection_pilot_lean_S3_D_r1",
+          "raw_exclusion_reason": "BOTH_FAILED",
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "NO_PLAN"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "NO_PLAN"
+          },
+          "raw": null,
+          "J": null
+        }
+      ],
+      "retries_not_substituted_for_primary": [],
+      "units": {
+        "D": "km",
+        "W": "min",
+        "T_program": "s",
+        "J": "dimensionless"
+      }
+    },
+    {
+      "pair": [
+        "A",
+        "B"
+      ],
+      "target_cases": 3,
+      "raw_adopted_cases": 1,
+      "excluded_from_raw_count": 2,
+      "J_adopted_cases": 1,
+      "entries": [
+        {
+          "case_id": "S1",
+          "pair_id": "S1_r1",
+          "left_method": "A",
+          "right_method": "B",
+          "status": "LEFT_ONLY_SUCCESS",
+          "reason": null,
+          "left_run_id": "selection_pilot_lean_S1_A_r1",
+          "right_run_id": "selection_pilot_lean_S1_B_r1",
+          "raw_exclusion_reason": "LEFT_ONLY_SUCCESS",
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "A_MOVE_LIMIT",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "NO_PLAN"
+          },
+          "raw": null,
+          "J": null
+        },
+        {
+          "case_id": "S2",
+          "pair_id": "S2_r1",
+          "left_method": "A",
+          "right_method": "B",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "selection_pilot_lean_S2_A_r1",
+          "right_run_id": "selection_pilot_lean_S2_B_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "A_MOVE_LIMIT",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "A": 936.6191,
+              "B": 759.6125,
+              "right_minus_left": -177.00660000000005
+            },
+            "W": {
+              "A": 806.7666666666667,
+              "B": 479.3833333333333,
+              "right_minus_left": -327.3833333333333
+            },
+            "T_program": {
+              "A": 8.358493108069524,
+              "B": 59.682839679997414,
+              "right_minus_left": 51.32434657192789
+            }
+          },
+          "J": {
+            "A": 1.0,
+            "B": 2.8485337647004823
+          }
+        },
+        {
+          "case_id": "S3",
+          "pair_id": "S3_r1",
+          "left_method": "A",
+          "right_method": "B",
+          "status": "LEFT_ONLY_SUCCESS",
+          "reason": null,
+          "left_run_id": "selection_pilot_lean_S3_A_r1",
+          "right_run_id": "selection_pilot_lean_S3_B_r1",
+          "raw_exclusion_reason": "LEFT_ONLY_SUCCESS",
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "A_MOVE_LIMIT",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "NO_PLAN"
+          },
+          "raw": null,
+          "J": null
+        }
+      ],
+      "retries_not_substituted_for_primary": [],
+      "units": {
+        "D": "km",
+        "W": "min",
+        "T_program": "s",
+        "J": "dimensionless"
+      }
+    },
+    {
+      "pair": [
+        "A",
+        "C"
+      ],
+      "target_cases": 3,
+      "raw_adopted_cases": 2,
+      "excluded_from_raw_count": 1,
+      "J_adopted_cases": 2,
+      "entries": [
+        {
+          "case_id": "S1",
+          "pair_id": "S1_r1",
+          "left_method": "A",
+          "right_method": "C",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "selection_pilot_lean_S1_A_r1",
+          "right_run_id": "selection_pilot_lean_S1_C_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "A_MOVE_LIMIT",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "A": 518.4218,
+              "C": 414.63009999999997,
+              "right_minus_left": -103.79169999999999
+            },
+            "W": {
+              "A": 396.1,
+              "C": 288.0,
+              "right_minus_left": -108.10000000000002
+            },
+            "T_program": {
+              "A": 6.162798451026902,
+              "C": 64.60302102006972,
+              "right_minus_left": 58.44022256904282
+            }
+          },
+          "J": {
+            "A": 1.0,
+            "C": 4.003207744462411
+          }
+        },
+        {
+          "case_id": "S2",
+          "pair_id": "S2_r1",
+          "left_method": "A",
+          "right_method": "C",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "selection_pilot_lean_S2_A_r1",
+          "right_run_id": "selection_pilot_lean_S2_C_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "A_MOVE_LIMIT",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "A": 936.6191,
+              "C": 730.3588000000001,
+              "right_minus_left": -206.26029999999992
+            },
+            "W": {
+              "A": 806.7666666666667,
+              "C": 645.0,
+              "right_minus_left": -161.76666666666665
+            },
+            "T_program": {
+              "A": 8.358493108069524,
+              "C": 67.34156342595816,
+              "right_minus_left": 58.98307031788863
+            }
+          },
+          "J": {
+            "A": 1.0,
+            "C": 3.211977636348113
+          }
+        },
+        {
+          "case_id": "S3",
+          "pair_id": "S3_r1",
+          "left_method": "A",
+          "right_method": "C",
+          "status": "LEFT_ONLY_SUCCESS",
+          "reason": null,
+          "left_run_id": "selection_pilot_lean_S3_A_r1",
+          "right_run_id": "selection_pilot_lean_S3_C_r1",
+          "raw_exclusion_reason": "LEFT_ONLY_SUCCESS",
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "A_MOVE_LIMIT",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "NO_PLAN"
+          },
+          "raw": null,
+          "J": null
+        }
+      ],
+      "retries_not_substituted_for_primary": [],
+      "units": {
+        "D": "km",
+        "W": "min",
+        "T_program": "s",
+        "J": "dimensionless"
+      }
+    },
+    {
+      "pair": [
+        "B",
+        "C"
+      ],
+      "target_cases": 3,
+      "raw_adopted_cases": 1,
+      "excluded_from_raw_count": 2,
+      "J_adopted_cases": 1,
+      "entries": [
+        {
+          "case_id": "S1",
+          "pair_id": "S1_r1",
+          "left_method": "B",
+          "right_method": "C",
+          "status": "RIGHT_ONLY_SUCCESS",
+          "reason": null,
+          "left_run_id": "selection_pilot_lean_S1_B_r1",
+          "right_run_id": "selection_pilot_lean_S1_C_r1",
+          "raw_exclusion_reason": "RIGHT_ONLY_SUCCESS",
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "NO_PLAN"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": null,
+          "J": null
+        },
+        {
+          "case_id": "S2",
+          "pair_id": "S2_r1",
+          "left_method": "B",
+          "right_method": "C",
+          "status": "BOTH_SUCCESS",
+          "reason": null,
+          "left_run_id": "selection_pilot_lean_S2_B_r1",
+          "right_run_id": "selection_pilot_lean_S2_C_r1",
+          "raw_exclusion_reason": null,
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": {
+            "D": {
+              "B": 759.6125,
+              "C": 730.3588000000001,
+              "right_minus_left": -29.253699999999867
+            },
+            "W": {
+              "B": 479.3833333333333,
+              "C": 645.0,
+              "right_minus_left": 165.61666666666667
+            },
+            "T_program": {
+              "B": 59.682839679997414,
+              "C": 67.34156342595816,
+              "right_minus_left": 7.658723745960742
+            }
+          },
+          "J": {
+            "B": 2.8485337647004823,
+            "C": 3.211977636348113
+          }
+        },
+        {
+          "case_id": "S3",
+          "pair_id": "S3_r1",
+          "left_method": "B",
+          "right_method": "C",
+          "status": "BOTH_FAILED",
+          "reason": null,
+          "left_run_id": "selection_pilot_lean_S3_B_r1",
+          "right_run_id": "selection_pilot_lean_S3_C_r1",
+          "raw_exclusion_reason": "BOTH_FAILED",
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "NO_PLAN"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "NO_PLAN"
+          },
+          "raw": null,
+          "J": null
+        }
+      ],
+      "retries_not_substituted_for_primary": [],
+      "units": {
+        "D": "km",
+        "W": "min",
+        "T_program": "s",
+        "J": "dimensionless"
+      }
+    },
+    {
+      "pair": [
+        "B",
+        "D"
+      ],
+      "target_cases": 3,
+      "raw_adopted_cases": 0,
+      "excluded_from_raw_count": 3,
+      "J_adopted_cases": 0,
+      "entries": [
+        {
+          "case_id": "S1",
+          "pair_id": "S1_r1",
+          "left_method": "B",
+          "right_method": "D",
+          "status": "RIGHT_ONLY_SUCCESS",
+          "reason": null,
+          "left_run_id": "selection_pilot_lean_S1_B_r1",
+          "right_run_id": "selection_pilot_lean_S1_D_r1",
+          "raw_exclusion_reason": "RIGHT_ONLY_SUCCESS",
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "NO_PLAN"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "raw": null,
+          "J": null
+        },
+        {
+          "case_id": "S2",
+          "pair_id": "S2_r1",
+          "left_method": "B",
+          "right_method": "D",
+          "status": "LEFT_ONLY_SUCCESS",
+          "reason": null,
+          "left_run_id": "selection_pilot_lean_S2_B_r1",
+          "right_run_id": "selection_pilot_lean_S2_D_r1",
+          "raw_exclusion_reason": "LEFT_ONLY_SUCCESS",
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "VALIDATED"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "NATIVE_DEADLINE_REJECTED"
+          },
+          "raw": null,
+          "J": null
+        },
+        {
+          "case_id": "S3",
+          "pair_id": "S3_r1",
+          "left_method": "B",
+          "right_method": "D",
+          "status": "BOTH_FAILED",
+          "reason": null,
+          "left_run_id": "selection_pilot_lean_S3_B_r1",
+          "right_run_id": "selection_pilot_lean_S3_D_r1",
+          "raw_exclusion_reason": "BOTH_FAILED",
+          "left_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "NO_PLAN"
+          },
+          "right_state": {
+            "input_state": "VALID",
+            "termination_reason": "NORMAL",
+            "validation_state": "NO_PLAN"
+          },
+          "raw": null,
+          "J": null
+        }
+      ],
+      "retries_not_substituted_for_primary": [],
+      "units": {
+        "D": "km",
+        "W": "min",
+        "T_program": "s",
+        "J": "dimensionless"
+      }
+    }
+  ]
+}

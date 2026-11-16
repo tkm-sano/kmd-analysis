@@ -1,0 +1,287 @@
+[
+  {
+    "argv": [
+      "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+      "-B",
+      "/home/takuma/kmd-analysis/scripts/run_human_comparison_v1.py",
+      "--mode",
+      "human_inclusive",
+      "register",
+      "--plan",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/plan.json",
+      "--output",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/registration"
+    ],
+    "returncode": 0,
+    "stdout": "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/registration/REGISTERED.json\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+      "-B",
+      "/home/takuma/kmd-analysis/scripts/run_human_comparison_v1.py",
+      "--mode",
+      "human_inclusive",
+      "prepare",
+      "--registration",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/registration/REGISTERED.json",
+      "--run-id",
+      "A_path_check",
+      "--output",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/A"
+    ],
+    "returncode": 0,
+    "stdout": "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/A\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+      "-B",
+      "/home/takuma/kmd-analysis/scripts/run_human_comparison_v1.py",
+      "--mode",
+      "human_inclusive",
+      "start",
+      "--session",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/A",
+      "--confirm-unseen"
+    ],
+    "returncode": 0,
+    "stdout": "{}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+      "-B",
+      "/home/takuma/kmd-analysis/scripts/run_human_comparison_v1.py",
+      "--mode",
+      "human_inclusive",
+      "activity",
+      "--session",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/A",
+      "--state",
+      "begin",
+      "--task",
+      "assignment_order",
+      "--actor",
+      "SCRIPTED_NOT_HUMAN"
+    ],
+    "returncode": 0,
+    "stdout": "None\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+      "-B",
+      "/home/takuma/kmd-analysis/scripts/run_human_comparison_v1.py",
+      "--mode",
+      "human_inclusive",
+      "evaluate",
+      "--session",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/A"
+    ],
+    "returncode": 0,
+    "stdout": "{}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+      "-B",
+      "/home/takuma/kmd-analysis/scripts/run_human_comparison_v1.py",
+      "--mode",
+      "human_inclusive",
+      "activity",
+      "--session",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/A",
+      "--state",
+      "begin",
+      "--task",
+      "review",
+      "--actor",
+      "SCRIPTED_NOT_HUMAN"
+    ],
+    "returncode": 0,
+    "stdout": "None\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+      "-B",
+      "/home/takuma/kmd-analysis/scripts/run_human_comparison_v1.py",
+      "--mode",
+      "human_inclusive",
+      "accept",
+      "--session",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/A",
+      "--attest-human-authored",
+      "--attest-reviewed"
+    ],
+    "returncode": 0,
+    "stdout": "{\"status\": \"success\", \"run_id\": \"A_path_check\", \"T_total_sec\": null}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+      "-B",
+      "/home/takuma/kmd-analysis/scripts/run_human_comparison_v1.py",
+      "--mode",
+      "human_inclusive",
+      "run-system",
+      "--registration",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/registration/REGISTERED.json",
+      "--run-id",
+      "B_path_check",
+      "--output",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/B"
+    ],
+    "returncode": 0,
+    "stdout": "{\"status\": \"success\", \"run_id\": \"B_path_check\", \"T_total_sec\": null}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+      "-B",
+      "/home/takuma/kmd-analysis/scripts/run_human_comparison_v1.py",
+      "--mode",
+      "human_inclusive",
+      "run-system",
+      "--registration",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/registration/REGISTERED.json",
+      "--run-id",
+      "C_path_check",
+      "--output",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/C"
+    ],
+    "returncode": 0,
+    "stdout": "{\"status\": \"success\", \"run_id\": \"C_path_check\", \"T_total_sec\": null}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+      "-B",
+      "/home/takuma/kmd-analysis/scripts/run_human_comparison_v1.py",
+      "--mode",
+      "human_inclusive",
+      "run-system",
+      "--registration",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/registration/REGISTERED.json",
+      "--run-id",
+      "D_path_check",
+      "--output",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/D"
+    ],
+    "returncode": 0,
+    "stdout": "{\"status\": \"success\", \"run_id\": \"D_path_check\", \"T_total_sec\": null}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+      "-B",
+      "/home/takuma/kmd-analysis/scripts/run_human_comparison_v1.py",
+      "--mode",
+      "human_inclusive",
+      "verify",
+      "--registration",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/registration/REGISTERED.json",
+      "--session",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/A"
+    ],
+    "returncode": 0,
+    "stdout": "{\"status\": \"success\", \"run_id\": \"A_path_check\", \"T_total_sec\": null}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+      "-B",
+      "/home/takuma/kmd-analysis/scripts/run_human_comparison_v1.py",
+      "--mode",
+      "human_inclusive",
+      "verify",
+      "--registration",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/registration/REGISTERED.json",
+      "--session",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/B"
+    ],
+    "returncode": 2,
+    "stdout": "",
+    "stderr": "ValueError: SOURCE_HASH_MISMATCH:src/kmd_toc/termination_v1/work.py\n"
+  },
+  {
+    "argv": [
+      "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+      "-B",
+      "/home/takuma/kmd-analysis/scripts/run_human_comparison_v1.py",
+      "--mode",
+      "human_inclusive",
+      "verify",
+      "--registration",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/registration/REGISTERED.json",
+      "--session",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/C"
+    ],
+    "returncode": 2,
+    "stdout": "",
+    "stderr": "ValueError: SOURCE_HASH_MISMATCH:src/kmd_toc/termination_v1/work.py\n"
+  },
+  {
+    "argv": [
+      "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+      "-B",
+      "/home/takuma/kmd-analysis/scripts/run_human_comparison_v1.py",
+      "--mode",
+      "human_inclusive",
+      "verify",
+      "--registration",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/registration/REGISTERED.json",
+      "--session",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/D"
+    ],
+    "returncode": 2,
+    "stdout": "",
+    "stderr": "ValueError: SOURCE_HASH_MISMATCH:src/kmd_toc/termination_v1/work.py\n"
+  },
+  {
+    "argv": [
+      "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+      "-B",
+      "/home/takuma/kmd-analysis/scripts/run_human_comparison_v1.py",
+      "--mode",
+      "human_inclusive",
+      "aggregate",
+      "--registration",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/registration/REGISTERED.json",
+      "--output",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/aggregate"
+    ],
+    "returncode": 2,
+    "stdout": "",
+    "stderr": "ValueError: SOURCE_HASH_MISMATCH:src/kmd_toc/termination_v1/work.py\n"
+  },
+  {
+    "argv": [
+      "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+      "-B",
+      "/home/takuma/kmd-analysis/scripts/run_human_comparison_v1.py",
+      "--mode",
+      "human_inclusive",
+      "adopt",
+      "--registration",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/registration/REGISTERED.json",
+      "--output",
+      "/home/takuma/kmd-analysis/output/toc_delivery/human_comparison_v1_20261116_path02/ADOPTION.json"
+    ],
+    "returncode": 2,
+    "stdout": "",
+    "stderr": "ValueError: SOURCE_HASH_MISMATCH:src/kmd_toc/termination_v1/work.py\n"
+  }
+]

@@ -1,0 +1,57 @@
+[
+  {
+    "revision": "small_01_to_small_02",
+    "data_use": "implementation debugging only; never main or variance data",
+    "preserved": "output/toc_delivery/termination_rules_20261116_v1/small_01",
+    "causes": [
+      "frozen A generate returns (plan,diagnostic), adapter unpacking fixed",
+      "OR-Tools 9.14 NO_RESTART enum is sat_parameters_pb2.SatParameters.NO_RESTART, not cp_model.NO_RESTART",
+      "frozen input directory constructed from pinned input_root and scale; no nonexistent directory field assumed"
+    ],
+    "affected_checks": "all five small adapter executions; fresh snapshot small_02"
+  },
+  {
+    "revision": "small_02_to_small_03",
+    "reason": [
+      "defensive objective evaluation guard preserves best evaluated angles",
+      "instrument SciPy last-x memoization without changing behavior",
+      "include interpreter-start CPU in branch accounting"
+    ],
+    "effect": "same finite method settings; all five fixture methods re-executed under fresh small_03 snapshot"
+  },
+  {
+    "revision": "after_small_03_before_scale_registration",
+    "reason": [
+      "snapshot now also includes new tests and resource/A configs",
+      "MemoryError and signal exit classified separately from algorithm termination",
+      "historical audit verifies saved snapshot hashes rather than requiring current source to equal earlier revision"
+    ],
+    "affected_validation": "registration/audit/error paths; normal method sources unchanged from successful small_03",
+    "scale_trials": "not yet registered"
+  },
+  {
+    "revision": "small_03_to_small_04",
+    "reason": "final native-source audit found SAT inprocessing and symmetry defaults with internal deterministic-time effort controls; disable these phases explicitly instead of substituting deterministic time for wall limits",
+    "settings_changes": [
+      "use_sat_inprocessing=false",
+      "symmetry_level=0",
+      "use_rins_lns=false",
+      "use_feasibility_pump=false"
+    ],
+    "affected_validation": "CP shared completion all methods except frozen A; final five-method fixture rerun small_04, then actual-scale 15 registration"
+  },
+  {
+    "revision": "preexecution_C_incumbent_fix",
+    "reason": "preserve independently valid CW plan across expanded C route pool and native no-plan outcome",
+    "withdrawn_registration": "scales_01: zero attempts launched; immutable manifest/snapshot preserved, WITHDRAWN.json added",
+    "affected_validation": "C flow preservation unit test, final small_05 five-method fixture",
+    "replacement_registration": "scales_02 with fresh source snapshot; same seeds/config/15 run IDs, first actual-scale execution only"
+  },
+  {
+    "revision": "postrun preservation audit classification",
+    "reason": "one unrelated human_comparison_v1/session.py changed between initial baseline and FIRST fixture registration; origin not established; never edited by this task and unused by its runtime path",
+    "evidence": "PRETRIAL_UNRELATED_CHANGE.json: same c42ee95b hash in every registered snapshot and current tree",
+    "action": "preserve current change, original baseline and first audit; distinguish strict all-file equality from preservation of task assets and pretrial registered version",
+    "affected_trials": "none; all 15 same frozen code/settings/input, no reruns"
+  }
+]

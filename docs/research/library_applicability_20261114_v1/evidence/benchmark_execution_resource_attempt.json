@@ -1,0 +1,35 @@
+{
+  "python": "3.11.15 (main, Jun 11 2026, 15:20:16) [GCC 14.3.0]",
+  "executable": "/tmp/kmd-library-survey-20261114/bin/python",
+  "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+  "cpu_info": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9684X 96-Core Processor\nstepping\t: 2\nmicrocode\t: 0xa101253\ncpu MHz\t\t: 3699.920\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 192\ncore id\t\t: 0\ncpu cores\t: 96\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 16\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good amd_lbr_v2 nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba perfmon_v2 ibrs ibpb stibp ibrs_enhanced vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local user_shstk avx512_bf16 clzero irperf xsaveerptr rdpru wbnoinvd amd_ppin cppc amd_ibpb_ret arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif x2avic v_spec_ctrl vnmi avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid overflow_recov succor smca fsrm flush_l1d debug_swap ibpb_exit_to_user\nbugs\t\t: sysret_ss_attrs spectre_v1 spectre_v2 spec_store_bypass srso tsa vmscape\nbogomips\t: 5099.99\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 52 bits physical, 57 bits virtual\npower management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]",
+  "meminfo": "MemTotal:       1584675316 kB\nMemFree:        412820924 kB\nMemAvailable:   1365030984 kB\nBuffers:         1364524 kB\nCached:         932068040 kB\nSwapCached:        33188 kB\nActive:         240733396 kB\nInactive:       880596976 kB\nActive(anon):   185931728 kB\nInactive(anon):  2365204 kB\nActive(file):   54801668 kB\nInactive(file): 878231772 kB\nUnevictable:       30664 kB\nMlocked:           27576 kB\nSwapTotal:       8388604 kB\nSwapFree:        8259096 kB\nZswap:                 0 kB\nZswapped:              0 kB\nDirty:               168 kB\nWriteback:            64 kB\nAnonPages:      187922900 kB\nMapped:          4824392 kB\nShmem:            390556 kB\nKReclaimable:   28751088 kB\nSlab:           35355748 kB\nSReclaimable:   28751088 kB\nSUnreclaim:      6604660 kB\nKernelStack:      429168 kB\nPageTables:       734840 kB\nSecPageTables:         0 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nWritebackTmp:          0 kB\nCommitLimit:    800726260 kB\nCommitted_AS:   497930876 kB\nVmallocTotal:   13743895347199 kB\nVmallocUsed:     1014788 kB\nVmallocChunk:          0 kB\nPercpu:          3124224 kB\nHardwareCorrupted:     0 kB\nAnonHugePages:         0 kB\nShmemHugePages:        0 kB\nShmemPmdMapped:        0 kB\nFileHugePages:         0 kB\nFilePmdMapped:         0 kB\nUnaccepted:            0 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugePages_Rsvd:        0\nHugePages_Surp:        0\nHugepagesize:       2048 kB\nHugetlb:               0 kB\nDirectMap4k:    12462644 kB\nDirectMap2M:    809170944 kB\nDirectMap1G:    788529152 kB\n",
+  "loadavg": "3.48 4.95 4.53 4/26443 1080761\n",
+  "limits": {
+    "address_space_GiB": 4,
+    "CPU_ID": 0,
+    "native_threads": 1
+  },
+  "env": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "runs": [
+    {
+      "case": "macro",
+      "seed": 1101,
+      "backend": "qiskit",
+      "order": [
+        "qiskit",
+        "qulacs",
+        "quri",
+        "qamomile_ising"
+      ],
+      "returncode": -6,
+      "launch_import_run_export_wall_s": 8.007208188064396,
+      "stdout": "",
+      "stderr": "terminate called without an active exception\n"
+    }
+  ]
+}

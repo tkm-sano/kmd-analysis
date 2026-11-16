@@ -1,0 +1,35 @@
+--- /home/takuma/kmd-analysis/output/toc_delivery/a_rule_v1_20261112/SOURCE_BEFORE/common_validation.py
++++ /home/takuma/kmd-analysis/src/kmd_toc/common/validation.py
+@@ -51,7 +51,7 @@
+                 any(not isinstance(v.stop_id,str) for v in t.visits)):
+             fail('PLAN_FIELD_TYPES')
+             return result()
+-    if (plan.schema_version != '1.0' or not plan.plan_id or plan.method_id not in ('B','C','D') or
++    if (plan.schema_version != '1.0' or not plan.plan_id or plan.method_id not in ('A','B','C','D') or
+             plan.execution_kind not in ('classical', 'quantum_circuit_simulator')):
+         fail('PLAN_METADATA')
+     if plan.method_id == 'D' and plan.execution_kind != 'quantum_circuit_simulator':
+--- /home/takuma/kmd-analysis/output/toc_delivery/a_rule_v1_20261112/SOURCE_BEFORE/A_BASELINE_DECISION.md
++++ /home/takuma/kmd-analysis/docs/research/toc_delivery_a/A_BASELINE_DECISION.md
+@@ -1,3 +1,5 @@
++> **現行のA（2026-11-12）：** 最新指示により、佐川急便の従来業務を参考にした規則ベース推計A1〜A3を定義・実装した。同社の実測・実アルゴリズムの再現とはしない。正本は[A_RULE_FINAL_DECISION.md](A_RULE_FINAL_DECISION.md)と[A_RULE_BASELINE_SPEC.md](A_RULE_BASELINE_SPEC.md)。以下は以前の実績参照/公開資料調査の履歴として保全する。S1〜S3性能レンジは実道路OD等の不足でHOLD。
++
+ > **現行判断（2026-11-12）：** Aは佐川急便のLoogia導入前の人手配送計画を対象とする。改善後・改善率・別集団の観測をA性能値へ代入しない。現行正本は[A_SAGAWA_FINAL_DECISION.md](A_SAGAWA_FINAL_DECISION.md)と[A_SAGAWA_MANUAL_BASELINE.json](A_SAGAWA_MANUAL_BASELINE.json)。以下の本文・数値・採否は旧版の履歴として保全する。問い合わせ禁止は継続する。
+ 
+ # 比較対象Aの採用決定
+--- /home/takuma/kmd-analysis/output/toc_delivery/a_rule_v1_20261112/SOURCE_BEFORE/A_PUBLIC_ONLY_PLAN.md
++++ /home/takuma/kmd-analysis/docs/research/toc_delivery_a/A_PUBLIC_ONLY_PLAN.md
+@@ -1,3 +1,5 @@
++> **現行のA（2026-11-12）：** 最新指示により、佐川急便の従来業務を参考にした規則ベース推計A1〜A3を定義・実装した。同社の実測・実アルゴリズムの再現とはしない。正本は[A_RULE_FINAL_DECISION.md](A_RULE_FINAL_DECISION.md)と[A_RULE_BASELINE_SPEC.md](A_RULE_BASELINE_SPEC.md)。以下は以前の実績参照/公開資料調査の履歴として保全する。S1〜S3性能レンジは実道路OD等の不足でHOLD。
++
+ > **現行判断（2026-11-12）：** Aは佐川急便のLoogia導入前の人手配送計画を対象とする。改善後・改善率・別集団の観測をA性能値へ代入しない。現行正本は[A_SAGAWA_FINAL_DECISION.md](A_SAGAWA_FINAL_DECISION.md)と[A_SAGAWA_MANUAL_BASELINE.json](A_SAGAWA_MANUAL_BASELINE.json)。以下の本文・数値・採否は旧版の履歴として保全する。問い合わせ禁止は継続する。
+ 
+ # A：問い合わせを行わない研究継続案
+--- /home/takuma/kmd-analysis/output/toc_delivery/a_rule_v1_20261112/SOURCE_BEFORE/A_SAGAWA_FINAL_DECISION.md
++++ /home/takuma/kmd-analysis/docs/research/toc_delivery_a/A_SAGAWA_FINAL_DECISION.md
+@@ -1,3 +1,5 @@
++> **現行のA（2026-11-12）：** 最新指示により、佐川急便の従来業務を参考にした規則ベース推計A1〜A3を定義・実装した。同社の実測・実アルゴリズムの再現とはしない。正本は[A_RULE_FINAL_DECISION.md](A_RULE_FINAL_DECISION.md)と[A_RULE_BASELINE_SPEC.md](A_RULE_BASELINE_SPEC.md)。以下は以前の実績参照/公開資料調査の履歴として保全する。S1〜S3性能レンジは実道路OD等の不足でHOLD。
++
+ # 比較対象A：佐川急便の従来人手計画に関する最終採用判断
+ 
+ 2026-11-12。版：`Sagawa-manual-A-20261112-v1.0`。

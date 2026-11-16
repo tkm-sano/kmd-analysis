@@ -1,0 +1,84 @@
+{
+  "model": [
+    {
+      "source": "depot",
+      "target": "customer_a"
+    },
+    {
+      "source": "customer_a",
+      "target": "customer_b"
+    },
+    {
+      "source": "customer_b",
+      "target": "customer_c"
+    },
+    {
+      "source": "customer_c",
+      "target": "depot"
+    }
+  ],
+  "pipeline": [
+    {
+      "source": "input",
+      "target": "classical"
+    },
+    {
+      "source": "input",
+      "target": "quantum"
+    },
+    {
+      "source": "classical",
+      "target": "compare"
+    },
+    {
+      "source": "quantum",
+      "target": "compare"
+    },
+    {
+      "source": "compare",
+      "target": "decision"
+    },
+    {
+      "source": "decision",
+      "target": "outcomes"
+    }
+  ],
+  "qaoa": [
+    {
+      "source": "q_init",
+      "target": "q_cost"
+    },
+    {
+      "source": "q_cost",
+      "target": "q_mix"
+    },
+    {
+      "source": "q_mix",
+      "target": "q_eval"
+    },
+    {
+      "source": "q_eval",
+      "target": "q_update"
+    },
+    {
+      "source": "q_update",
+      "target": "q_init"
+    },
+    {
+      "source": "q_update",
+      "target": "q_fixed"
+    },
+    {
+      "source": "q_fixed",
+      "target": "q_restate"
+    },
+    {
+      "source": "q_restate",
+      "target": "q_sample"
+    },
+    {
+      "source": "q_sample",
+      "target": "q_best"
+    }
+  ]
+}

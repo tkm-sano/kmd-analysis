@@ -1,0 +1,22 @@
+﻿矢印ID,入力,接続先,表示区分,作用の意味,根拠,成立範囲と未検証事項
+P1_S_influence,P1_S,P1_existence,B,探索範囲Sと主対照JCが、改善候補の存在を定める,Step4 P1-08; Step2 PATH1_SUPPORT_AUDIT.csv,支持内最小とJCの数学的比較。量子手法一般の不可能性ではない
+P1_resources_influence,P1_resources,P1_acquire,B,初期状態・混合・有限学習/測定予算が取得過程を条件付ける,Step4 P1-09; QAOA_CONTROLLED_CELL_SUMMARY.csv,初期状態等は3診断入力の対照、予算自体の一要因効果を一般化しない
+P1_H_influence,P1_H,P1_adopt,C,可行性と品質に加え、計算締切の充足が運用採用の判断へ入る,Step4 P1-12; PATH1_RUNTIME_RESULTS.csv,H未設定、全工程の公平計時は未確定。品質と時間を直列の因果としない
+P1_dynamic_influence,P1_dynamic,P1_integrate,C,需要・道路の更新が計画への統合条件を変える,Step4 I-02; P1未解決事項,想定する動的運用の接続。更新実験は実施していない
+P1_road_influence,P1_road,P1_real,C,道路・荷重・運行条件が実配送成果に関係する,Step4 I-02,モデル外の実世界接続。実測因果効果を主張しない
+P1_angles,classical_tuning,ideal_model,A,古典最適化が角度を理想量子モデルへ渡す,保存FITとStep2統制実装・Step4 P1-09,CPU上の役割分担。QPU実行や実機速度の実証ではない
+P1_evaluation,ideal_model,classical_tuning,A,状態/測定の評価が古典側の角度調整へ戻る,保存学習・評価記録、Step4 P1-09,学習評価と最終候補のbest取得を区別する
+P1_main_0,P1_existence,P1_acquire,B,支持に改善候補が存在することが、その支持からの取得の前提となる,Step4 P1-08; PATH1_CONTRIBUTION_CONDITIONS.md,JCを上回る解品質への寄与を扱う。等品質の計時寄与一般の必要条件とはしない
+P1_main_1,P1_acquire,P1_adopt,A,保存候補を古典側が目的・順序・制約と照合する,Step4 P1-01; B_PLAN_REFERENCES_36800.csv,全保存bestを確認。運用で実採用した結果ではない
+P1_main_2,P1_adopt,P1_integrate,C,採用された候補を運用中の全体計画へ反映する,Step4 P1-13/I-02; UNRESOLVED_ISSUES.md,動的更新・顧客部分問題の選択/統合は未実施。保存の限定支持は全顧客を保持する
+P1_main_3,P1_integrate,P1_real,C,採用計画を実道路で実行して実移動時間へつなぐ,Step4 I-02,固定OD目的の解品質と実道路効果は別の評価段階である
+P2_quantum_resource_influence,P2_quantum_resource,P2_qmat,C,精度・計算資源・費用が量子材料評価の利用可能性に関係する,Delgado2022; Shokrian Zini2023; Step4 P2-09,文献は計算法・資源推計の根拠。対象材料の量子改善や実用性の実証ではない
+P2_symbolic_entry,symbolic_assumptions,model_input,B,今回の解析では記号入力・設計仮定をモデルへ直接与える,Step4 P2-01〜03; PATH2_ANALYTICAL_SENSITIVITY.csv,Chen逆算qを主材料値として採用しない。量子生成物性を使っていない
+P2_driving_influence,P2_driving,P2_dc,B,速度・物理係数が質量から電力量への写像を修飾する,凍結Controlled-DCモデル、Step4 P2-04,平坦・回生なし・補機/旋回除外・荷重一定。対象外物理の効果を新規に実測していない
+P2_real_conditions_influence,P2_real_conditions,P2_real,C,実用性能と運行条件が実車への適用を制約する,Step4 P2-07/09,必要条件を満たす製品・実用可能性を証明したものではない
+P2_use,P2_qmat,P2_design,C,量子材料評価の情報を設計者が実用条件の判断に利用する,Step4 P2-09; I-01,対象材料の物性改善・設計採用は未検証
+P2_adoption_unverified,P2_design,model_input,C,評価情報が設計条件へ採用される場合の接続,Step4 P2-09; P2-07,物性情報とq/u/V等の実用設計入力を同一視しない
+P2_mass_from_input,model_input,P2_mass,B,入力容量・利用率・電圧・部材設計を質量へ換算する,Step4 P2-01/06; T08/T09,T08記号感度とT09構造補完は異なるモデル。未知部材を0で補わない
+P2_mass_dc,P2_mass,P2_dc,B,他の質量を固定した電池差を走行総質量へ移し、転がり・並進加速の仕事を介するDCモデルの応答を評価する,Step4 P2-04/05; DC_MASS_KERNEL_INDEPENDENT.csv,両比較質量が1000〜1250kg内、同じ速度・係数・物理条件で符号対応する
+P2_real_link,P2_dc,P2_real,C,完成パックと実運行でモデルの効果が成立するかを検証する,Step4 P2-07/P2-09,完成pack、出力・寿命・安全性、実車、量子帰属は未検証
+P2_component_modifier,component_design_and_extra_mass,P2_mass,B,設計方針は既知部材差bを変え、会計外差δが正味差を相殺する,Step4 P2-02/06; PATH2_BOUNDARY_ANALYSIS.csv,ΔM=b−δ、δ=bで0。同一非重複会計の恒等式であり完成pack成立の保証ではない

@@ -1,0 +1,25 @@
+{
+  "pass": true,
+  "replay_directory": "/tmp/user/1011/termination-replay-5dtqemx_",
+  "additional_planning_trials": 0,
+  "results": [
+    {
+      "command": [
+        "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+        "-c",
+        "from kmd_toc.comparison_v1.contract import check_freeze; from kmd_toc.common.config import load_conditions; check_freeze(); load_conditions(); print(\"frozen assets verified\")"
+      ],
+      "returncode": 0,
+      "output": "frozen assets verified\n"
+    },
+    {
+      "command": [
+        "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+        "scripts/run_termination_rules.py",
+        "--help"
+      ],
+      "returncode": 0,
+      "output": "usage: run_termination_rules.py [-h]\n                                {register,register-fixture,run,aggregate,child}\n                                path\n\npositional arguments:\n  {register,register-fixture,run,aggregate,child}\n  path\n\noptions:\n  -h, --help            show this help message and exit\n"
+    }
+  ]
+}

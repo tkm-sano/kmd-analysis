@@ -1,0 +1,35 @@
+case_id,parameter,value,unit,input_class,source,basis,limitation,observed_case,cycle,rate,temperature_C,window,actual_target_measurement
+R0_Z_H1,q,270.85,Ah/kg active,原著数値からの計算値,Zhang SourceData FigS17a,same discharge branch Qend−Qstart,effective delivered capacity; NOT a Li-metal reference,Z_H1,formation1,0.1C,30,1.8–4.75V,False
+R0_Z_H1,V,3.5014388812996,V full cell,原著数値からの計算値,Zhang SourceData FigS17a,same branch integral VdQ/Qspan,terminal mean voltage in the specific formation cycle,Z_H1,formation1,0.1C,30,1.8–4.75V,False
+R0_Z_H1,fp,0.8,kg/kg dry coating,研究上の仮定,Zhang Methods Electrochemical measurements,same-paper standard active:SuperP:CNT:PVDF80:8:2:10 conditionally associated,standard recipe adopted conditionally; full-cell specific recipe not separately restated; do not use thick90%,Z_H1,formation1,0.1C,30,1.8–4.75V,False
+R0_Z_H1,fn,0.8,kg/kg dry coating,実測・原著報告,Zhang Methods,graphite:SuperP:PVDF80:10:10 standard recipe,reported electrode recipe; not measured completed-cell mass,Z_H1,formation1,0.1C,30,1.8–4.75V,False
+R0_Z_H1,qn,360,Ah/kg active,他資料からの移用値,BatPaC Fig3.14 PDFp46,360 design default from NMC811/graphite,not measured for Zhang graphite; qn sensitivity300/400 declared,Z_H1,formation1,0.1C,30,1.8–4.75V,False
+R0_Z_H1,np,1.2,capacity ratio,研究上の仮定,Zhang Methods,paper design N/P~1.2 mapped to T08 effective reversible N/P,ratio basis/time after formation unspecified; mapping is a declared design assumption,Z_H1,formation1,0.1C,30,1.8–4.75V,False
+R0_Z_H1,u,1,1,研究上の仮定,accounting identity,u=1 because q is directly measured effective full-cell discharge capacity,NOT measured100% utilization; no ICE or retention applied again,Z_H1,formation1,0.1C,30,1.8–4.75V,False
+R0_Z_H1,cellother,0.19,kg/cell,研究上の仮定,legacy T08 model,0.19 inherited T08 hypothetical lump,actual cell other mass remains UNKNOWN,Z_H1,formation1,0.1C,30,1.8–4.75V,False
+R0_Z_H1,packother,15,kg/pack,研究上の仮定,legacy T08 model,15 inherited T08 hypothetical lump,actual pack other mass remains UNKNOWN,Z_H1,formation1,0.1C,30,1.8–4.75V,False
+R0_Z_H1,extra,0,kg S-minus-reference,研究上の仮定,controlled comparison,zero differential in the declared base design only,does not assert actual absent material,Z_H1,formation1,0.1C,30,1.8–4.75V,False
+R0_Z_H1,E,20000,Wh,研究上の仮定,legacy T08,20000 fixed research design,not the public coin cell measured energy,Z_H1,formation1,0.1C,30,1.8–4.75V,False
+R0_Z_H1,n_cells,100,count,研究上の仮定,legacy T08,100 cell mass sum as legacy T08,hypothetical topology/manufacturability unqualified,Z_H1,formation1,0.1C,30,1.8–4.75V,False
+R0_Z_H1,actual_qn,,not determined,未確定値,no target measurement in source,kept unknown,not filled with design assumptions,R0_Z_H1,,,,,False
+R0_Z_H1,actual_effective_NP,,not determined,未確定値,no target measurement in source,kept unknown,not filled with design assumptions,R0_Z_H1,,,,,False
+R0_Z_H1,actual_cell_other,,not determined,未確定値,no target measurement in source,kept unknown,not filled with design assumptions,R0_Z_H1,,,,,False
+R0_Z_H1,actual_pack_other,,not determined,未確定値,no target measurement in source,kept unknown,not filled with design assumptions,R0_Z_H1,,,,,False
+R0_Z_H1,actual_pack_mass,,not determined,未確定値,no target measurement in source,kept unknown,not filled with design assumptions,R0_Z_H1,,,,,False
+P0_Z_H2,q,273.65,Ah/kg active,原著数値からの計算値,Zhang SourceData FigS17a,same discharge branch Qend−Qstart,effective delivered capacity; NOT a Li-metal reference,Z_H2,formation2,0.1C,30,1.8–4.75V,False
+P0_Z_H2,V,3.4854900255801,V full cell,原著数値からの計算値,Zhang SourceData FigS17a,same branch integral VdQ/Qspan,terminal mean voltage in the specific formation cycle,Z_H2,formation2,0.1C,30,1.8–4.75V,False
+P0_Z_H2,fp,0.8,kg/kg dry coating,研究上の仮定,Zhang Methods Electrochemical measurements,same-paper standard active:SuperP:CNT:PVDF80:8:2:10 conditionally associated,standard recipe adopted conditionally; full-cell specific recipe not separately restated; do not use thick90%,Z_H2,formation2,0.1C,30,1.8–4.75V,False
+P0_Z_H2,fn,0.8,kg/kg dry coating,実測・原著報告,Zhang Methods,graphite:SuperP:PVDF80:10:10 standard recipe,reported electrode recipe; not measured completed-cell mass,Z_H2,formation2,0.1C,30,1.8–4.75V,False
+P0_Z_H2,qn,360,Ah/kg active,他資料からの移用値,BatPaC Fig3.14 PDFp46,360 design default from NMC811/graphite,not measured for Zhang graphite; qn sensitivity300/400 declared,Z_H2,formation2,0.1C,30,1.8–4.75V,False
+P0_Z_H2,np,1.2,capacity ratio,研究上の仮定,Zhang Methods,paper design N/P~1.2 mapped to T08 effective reversible N/P,ratio basis/time after formation unspecified; mapping is a declared design assumption,Z_H2,formation2,0.1C,30,1.8–4.75V,False
+P0_Z_H2,u,1,1,研究上の仮定,accounting identity,u=1 because q is directly measured effective full-cell discharge capacity,NOT measured100% utilization; no ICE or retention applied again,Z_H2,formation2,0.1C,30,1.8–4.75V,False
+P0_Z_H2,cellother,0.19,kg/cell,研究上の仮定,legacy T08 model,0.19 inherited T08 hypothetical lump,actual cell other mass remains UNKNOWN,Z_H2,formation2,0.1C,30,1.8–4.75V,False
+P0_Z_H2,packother,15,kg/pack,研究上の仮定,legacy T08 model,15 inherited T08 hypothetical lump,actual pack other mass remains UNKNOWN,Z_H2,formation2,0.1C,30,1.8–4.75V,False
+P0_Z_H2,extra,0,kg S-minus-reference,研究上の仮定,controlled comparison,zero differential in the declared base design only,does not assert actual absent material,Z_H2,formation2,0.1C,30,1.8–4.75V,False
+P0_Z_H2,E,20000,Wh,研究上の仮定,legacy T08,20000 fixed research design,not the public coin cell measured energy,Z_H2,formation2,0.1C,30,1.8–4.75V,False
+P0_Z_H2,n_cells,100,count,研究上の仮定,legacy T08,100 cell mass sum as legacy T08,hypothetical topology/manufacturability unqualified,Z_H2,formation2,0.1C,30,1.8–4.75V,False
+P0_Z_H2,actual_qn,,not determined,未確定値,no target measurement in source,kept unknown,not filled with design assumptions,P0_Z_H2,,,,,False
+P0_Z_H2,actual_effective_NP,,not determined,未確定値,no target measurement in source,kept unknown,not filled with design assumptions,P0_Z_H2,,,,,False
+P0_Z_H2,actual_cell_other,,not determined,未確定値,no target measurement in source,kept unknown,not filled with design assumptions,P0_Z_H2,,,,,False
+P0_Z_H2,actual_pack_other,,not determined,未確定値,no target measurement in source,kept unknown,not filled with design assumptions,P0_Z_H2,,,,,False
+P0_Z_H2,actual_pack_mass,,not determined,未確定値,no target measurement in source,kept unknown,not filled with design assumptions,P0_Z_H2,,,,,False

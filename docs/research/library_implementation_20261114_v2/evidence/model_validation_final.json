@@ -1,0 +1,2799 @@
+{
+  "results": [
+    {
+      "nodes": 3,
+      "slots": 3,
+      "q": 6,
+      "penalty": "customer_unique",
+      "lambda_capacity": 1.0,
+      "lambda_visit": 1.0,
+      "variable_mapping": [
+        {
+          "customer": 0,
+          "position": 1,
+          "qubit": 0
+        },
+        {
+          "customer": 1,
+          "position": 1,
+          "qubit": 1
+        },
+        {
+          "customer": 2,
+          "position": 1,
+          "qubit": 2
+        },
+        {
+          "customer": 0,
+          "position": 2,
+          "qubit": 3
+        },
+        {
+          "customer": 1,
+          "position": 2,
+          "qubit": 4
+        },
+        {
+          "customer": 2,
+          "position": 2,
+          "qubit": 5
+        }
+      ],
+      "QUBO_term_max_abs": 4.440892098500626e-16,
+      "Ising_term_max_abs": 2.220446049250313e-16,
+      "energy_max_abs": 3.552713678800501e-15,
+      "basis_states_checked": 64,
+      "native_terms": 15,
+      "qamomile_terms": 15,
+      "ising_terms": 17,
+      "constant_native": 4.865,
+      "constant_qamomile": 4.865,
+      "decode_errors": 0,
+      "classifications": {
+        "EMPTY_WALK": 1,
+        "VALID": 6,
+        "REPEATED_CUSTOMER": 2
+      },
+      "examples": {
+        "EMPTY_WALK": {
+          "mask": 9,
+          "sequence": [
+            0,
+            0,
+            0
+          ],
+          "energy": 6.0,
+          "capacity_residual": -3,
+          "ALiM": 6.0,
+          "decoded": [],
+          "missing_from_domain": [
+            1,
+            2
+          ]
+        },
+        "VALID": {
+          "mask": 10,
+          "sequence": [
+            0,
+            1,
+            0
+          ],
+          "energy": 3.3,
+          "capacity_residual": -2,
+          "ALiM": 2.0,
+          "decoded": [
+            [
+              1
+            ]
+          ],
+          "missing_from_domain": [
+            2
+          ]
+        },
+        "REPEATED_CUSTOMER": {
+          "mask": 18,
+          "sequence": [
+            0,
+            1,
+            1
+          ],
+          "energy": 2.4,
+          "capacity_residual": -1,
+          "ALiM": 0.0,
+          "decoded": [],
+          "missing_from_domain": [
+            2
+          ]
+        }
+      },
+      "timings": [
+        {
+          "repetition": -1,
+          "warmup": true,
+          "native_build_s": 9.128008969128132e-05,
+          "native_conversion_s": 8.929986506700516e-06,
+          "qamomile_build_s": 0.00021737092174589634,
+          "qamomile_conversion_s": 6.646104156970978e-05,
+          "qamomile_total_s": 0.0002860310487449169,
+          "native_energy_s": 6.0020945966243744e-05,
+          "qamomile_energy_s": 4.408997483551502e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 0,
+          "warmup": false,
+          "native_build_s": 8.782115764915943e-05,
+          "native_conversion_s": 8.049886673688889e-06,
+          "qamomile_build_s": 0.00021006097085773945,
+          "qamomile_conversion_s": 7.061008363962173e-05,
+          "qamomile_total_s": 0.0002841909881681204,
+          "native_energy_s": 5.985097959637642e-05,
+          "qamomile_energy_s": 4.3520936742424965e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 1,
+          "warmup": false,
+          "native_build_s": 8.536083623766899e-05,
+          "native_conversion_s": 7.699942216277122e-06,
+          "qamomile_build_s": 0.00020309211686253548,
+          "qamomile_conversion_s": 6.068008951842785e-05,
+          "qamomile_total_s": 0.0002670020330697298,
+          "native_energy_s": 5.9579964727163315e-05,
+          "qamomile_energy_s": 4.276004619896412e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 2,
+          "warmup": false,
+          "native_build_s": 8.355989120900631e-05,
+          "native_conversion_s": 7.4801500886678696e-06,
+          "qamomile_build_s": 0.00019779079593718052,
+          "qamomile_conversion_s": 6.310991011559963e-05,
+          "qamomile_total_s": 0.00026382110081613064,
+          "native_energy_s": 5.95608726143837e-05,
+          "qamomile_energy_s": 4.261988215148449e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 3,
+          "warmup": false,
+          "native_build_s": 8.004088886082172e-05,
+          "native_conversion_s": 7.019843906164169e-06,
+          "qamomile_build_s": 0.00019601010717451572,
+          "qamomile_conversion_s": 5.7990895584225655e-05,
+          "qamomile_total_s": 0.0002565809991210699,
+          "native_energy_s": 6.107008084654808e-05,
+          "qamomile_energy_s": 4.269997589290142e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 4,
+          "warmup": false,
+          "native_build_s": 7.9781049862504e-05,
+          "native_conversion_s": 6.58002682030201e-06,
+          "qamomile_build_s": 0.00019356119446456432,
+          "qamomile_conversion_s": 5.763978697359562e-05,
+          "qamomile_total_s": 0.0002538610715419054,
+          "native_energy_s": 6.619002670049667e-05,
+          "qamomile_energy_s": 4.319101572036743e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 5,
+          "warmup": false,
+          "native_build_s": 8.132006041705608e-05,
+          "native_conversion_s": 6.920192390680313e-06,
+          "qamomile_build_s": 0.00019776099361479282,
+          "qamomile_conversion_s": 5.972106009721756e-05,
+          "qamomile_total_s": 0.0002602620515972376,
+          "native_energy_s": 5.867006257176399e-05,
+          "qamomile_energy_s": 4.21600416302681e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 6,
+          "warmup": false,
+          "native_build_s": 8.2401093095541e-05,
+          "native_conversion_s": 7.119961082935333e-06,
+          "qamomile_build_s": 0.00019480101764202118,
+          "qamomile_conversion_s": 5.8159930631518364e-05,
+          "qamomile_total_s": 0.0002553509548306465,
+          "native_energy_s": 6.075110286474228e-05,
+          "qamomile_energy_s": 5.012098699808121e-05,
+          "evaluated_states": 9
+        }
+      ]
+    },
+    {
+      "nodes": 3,
+      "slots": 3,
+      "q": 6,
+      "penalty": "customer_unique",
+      "lambda_capacity": 0.7,
+      "lambda_visit": 2.3,
+      "variable_mapping": [
+        {
+          "customer": 0,
+          "position": 1,
+          "qubit": 0
+        },
+        {
+          "customer": 1,
+          "position": 1,
+          "qubit": 1
+        },
+        {
+          "customer": 2,
+          "position": 1,
+          "qubit": 2
+        },
+        {
+          "customer": 0,
+          "position": 2,
+          "qubit": 3
+        },
+        {
+          "customer": 1,
+          "position": 2,
+          "qubit": 4
+        },
+        {
+          "customer": 2,
+          "position": 2,
+          "qubit": 5
+        }
+      ],
+      "QUBO_term_max_abs": 8.881784197001252e-16,
+      "Ising_term_max_abs": 1.7763568394002505e-15,
+      "energy_max_abs": 7.105427357601002e-15,
+      "basis_states_checked": 64,
+      "native_terms": 15,
+      "qamomile_terms": 15,
+      "ising_terms": 17,
+      "constant_native": 5.415000000000002,
+      "constant_qamomile": 5.415,
+      "decode_errors": 0,
+      "classifications": {
+        "EMPTY_WALK": 1,
+        "VALID": 6,
+        "REPEATED_CUSTOMER": 2
+      },
+      "examples": {
+        "EMPTY_WALK": {
+          "mask": 9,
+          "sequence": [
+            0,
+            0,
+            0
+          ],
+          "energy": 4.199999999999999,
+          "capacity_residual": -3,
+          "ALiM": 4.199999999999999,
+          "decoded": [],
+          "missing_from_domain": [
+            1,
+            2
+          ]
+        },
+        "VALID": {
+          "mask": 10,
+          "sequence": [
+            0,
+            1,
+            0
+          ],
+          "energy": 2.6999999999999993,
+          "capacity_residual": -2,
+          "ALiM": 1.4,
+          "decoded": [
+            [
+              1
+            ]
+          ],
+          "missing_from_domain": [
+            2
+          ]
+        },
+        "REPEATED_CUSTOMER": {
+          "mask": 18,
+          "sequence": [
+            0,
+            1,
+            1
+          ],
+          "energy": 5.0,
+          "capacity_residual": -1,
+          "ALiM": 0.0,
+          "decoded": [],
+          "missing_from_domain": [
+            2
+          ]
+        }
+      },
+      "timings": [
+        {
+          "repetition": -1,
+          "warmup": true,
+          "native_build_s": 8.807098492980003e-05,
+          "native_conversion_s": 8.00006091594696e-06,
+          "qamomile_build_s": 0.00020660110749304295,
+          "qamomile_conversion_s": 6.148009561002254e-05,
+          "qamomile_total_s": 0.00027167191728949547,
+          "native_energy_s": 6.005004979670048e-05,
+          "qamomile_energy_s": 4.313001409173012e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 0,
+          "warmup": false,
+          "native_build_s": 8.260016329586506e-05,
+          "native_conversion_s": 7.519964128732681e-06,
+          "qamomile_build_s": 0.00020142109133303165,
+          "qamomile_conversion_s": 0.00019873096607625484,
+          "qamomile_total_s": 0.0004041919019073248,
+          "native_energy_s": 6.002001464366913e-05,
+          "qamomile_energy_s": 4.319101572036743e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 1,
+          "warmup": false,
+          "native_build_s": 8.547003380954266e-05,
+          "native_conversion_s": 7.610069587826729e-06,
+          "qamomile_build_s": 0.0002038809470832348,
+          "qamomile_conversion_s": 6.20309729129076e-05,
+          "qamomile_total_s": 0.000269182026386261,
+          "native_energy_s": 5.886983126401901e-05,
+          "qamomile_energy_s": 4.285993054509163e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 2,
+          "warmup": false,
+          "native_build_s": 8.416082710027695e-05,
+          "native_conversion_s": 7.360009476542473e-06,
+          "qamomile_build_s": 0.0002079908736050129,
+          "qamomile_conversion_s": 5.9999991208314896e-05,
+          "qamomile_total_s": 0.00027099112048745155,
+          "native_energy_s": 5.953991785645485e-05,
+          "qamomile_energy_s": 4.2890897020697594e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 3,
+          "warmup": false,
+          "native_build_s": 8.153007365763187e-05,
+          "native_conversion_s": 6.760004907846451e-06,
+          "qamomile_build_s": 0.0001972008030861616,
+          "qamomile_conversion_s": 5.8990903198719025e-05,
+          "qamomile_total_s": 0.0002594019751995802,
+          "native_energy_s": 5.931011401116848e-05,
+          "qamomile_energy_s": 4.196004010736942e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 4,
+          "warmup": false,
+          "native_build_s": 8.173100650310516e-05,
+          "native_conversion_s": 7.029855623841286e-06,
+          "qamomile_build_s": 0.00020477105863392353,
+          "qamomile_conversion_s": 5.99101185798645e-05,
+          "qamomile_total_s": 0.00026788096874952316,
+          "native_energy_s": 5.952990613877773e-05,
+          "qamomile_energy_s": 4.248996265232563e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 5,
+          "warmup": false,
+          "native_build_s": 8.171005174517632e-05,
+          "native_conversion_s": 6.6999346017837524e-06,
+          "qamomile_build_s": 0.00019511091522872448,
+          "qamomile_conversion_s": 5.8540841564536095e-05,
+          "qamomile_total_s": 0.00025676190853118896,
+          "native_energy_s": 5.929986946284771e-05,
+          "qamomile_energy_s": 4.182988777756691e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 6,
+          "warmup": false,
+          "native_build_s": 8.090096525847912e-05,
+          "native_conversion_s": 6.800051778554916e-06,
+          "qamomile_build_s": 0.00019735097885131836,
+          "qamomile_conversion_s": 6.661983206868172e-05,
+          "qamomile_total_s": 0.0002671009860932827,
+          "native_energy_s": 5.974108353257179e-05,
+          "qamomile_energy_s": 4.27409540861845e-05,
+          "evaluated_states": 9
+        }
+      ]
+    },
+    {
+      "nodes": 3,
+      "slots": 3,
+      "q": 6,
+      "penalty": "paper_literal",
+      "lambda_capacity": 1.0,
+      "lambda_visit": 1.0,
+      "variable_mapping": [
+        {
+          "customer": 0,
+          "position": 1,
+          "qubit": 0
+        },
+        {
+          "customer": 1,
+          "position": 1,
+          "qubit": 1
+        },
+        {
+          "customer": 2,
+          "position": 1,
+          "qubit": 2
+        },
+        {
+          "customer": 0,
+          "position": 2,
+          "qubit": 3
+        },
+        {
+          "customer": 1,
+          "position": 2,
+          "qubit": 4
+        },
+        {
+          "customer": 2,
+          "position": 2,
+          "qubit": 5
+        }
+      ],
+      "QUBO_term_max_abs": 4.440892098500626e-16,
+      "Ising_term_max_abs": 4.440892098500626e-16,
+      "energy_max_abs": 3.552713678800501e-15,
+      "basis_states_checked": 64,
+      "native_terms": 19,
+      "qamomile_terms": 19,
+      "ising_terms": 21,
+      "constant_native": 6.865,
+      "constant_qamomile": 6.865,
+      "decode_errors": 0,
+      "classifications": {
+        "EMPTY_WALK": 1,
+        "VALID": 6,
+        "REPEATED_CUSTOMER": 2
+      },
+      "examples": {
+        "EMPTY_WALK": {
+          "mask": 9,
+          "sequence": [
+            0,
+            0,
+            0
+          ],
+          "energy": 6.0,
+          "capacity_residual": -3,
+          "ALiM": 6.0,
+          "decoded": [],
+          "missing_from_domain": [
+            1,
+            2
+          ]
+        },
+        "VALID": {
+          "mask": 10,
+          "sequence": [
+            0,
+            1,
+            0
+          ],
+          "energy": 3.3,
+          "capacity_residual": -2,
+          "ALiM": 2.0,
+          "decoded": [
+            [
+              1
+            ]
+          ],
+          "missing_from_domain": [
+            2
+          ]
+        },
+        "REPEATED_CUSTOMER": {
+          "mask": 18,
+          "sequence": [
+            0,
+            1,
+            1
+          ],
+          "energy": 0.3999999999999999,
+          "capacity_residual": -1,
+          "ALiM": 0.0,
+          "decoded": [],
+          "missing_from_domain": [
+            2
+          ]
+        }
+      },
+      "timings": [
+        {
+          "repetition": -1,
+          "warmup": true,
+          "native_build_s": 9.925104677677155e-05,
+          "native_conversion_s": 8.079921826720238e-06,
+          "qamomile_build_s": 0.00022974098101258278,
+          "qamomile_conversion_s": 7.772096432745457e-05,
+          "qamomile_total_s": 0.00031157187186181545,
+          "native_energy_s": 5.948101170361042e-05,
+          "qamomile_energy_s": 4.975008778274059e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 0,
+          "warmup": false,
+          "native_build_s": 9.293085895478725e-05,
+          "native_conversion_s": 1.356983557343483e-05,
+          "qamomile_build_s": 0.00021946104243397713,
+          "qamomile_conversion_s": 7.39500392228365e-05,
+          "qamomile_total_s": 0.00029680109582841396,
+          "native_energy_s": 5.875108763575554e-05,
+          "qamomile_energy_s": 5.024997517466545e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 1,
+          "warmup": false,
+          "native_build_s": 9.261001832783222e-05,
+          "native_conversion_s": 7.170950993895531e-06,
+          "qamomile_build_s": 0.0002144710160791874,
+          "qamomile_conversion_s": 7.316004484891891e-05,
+          "qamomile_total_s": 0.0002908410970121622,
+          "native_energy_s": 5.9209996834397316e-05,
+          "qamomile_energy_s": 4.9640191718935966e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 2,
+          "warmup": false,
+          "native_build_s": 9.439000859856606e-05,
+          "native_conversion_s": 6.970018148422241e-06,
+          "qamomile_build_s": 0.00021189195103943348,
+          "qamomile_conversion_s": 7.245107553899288e-05,
+          "qamomile_total_s": 0.00028747180476784706,
+          "native_energy_s": 5.925004370510578e-05,
+          "qamomile_energy_s": 4.898081533610821e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 3,
+          "warmup": false,
+          "native_build_s": 9.00698360055685e-05,
+          "native_conversion_s": 6.820075213909149e-06,
+          "qamomile_build_s": 0.00021355110220611095,
+          "qamomile_conversion_s": 7.453118450939655e-05,
+          "qamomile_total_s": 0.00029154191724956036,
+          "native_energy_s": 5.945982411503792e-05,
+          "qamomile_energy_s": 4.905997775495052e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 4,
+          "warmup": false,
+          "native_build_s": 9.307102300226688e-05,
+          "native_conversion_s": 7.059890776872635e-06,
+          "qamomile_build_s": 0.00021499115973711014,
+          "qamomile_conversion_s": 7.304013706743717e-05,
+          "qamomile_total_s": 0.0002910909242928028,
+          "native_energy_s": 5.9371115639805794e-05,
+          "qamomile_energy_s": 4.903017543256283e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 5,
+          "warmup": false,
+          "native_build_s": 9.01510939002037e-05,
+          "native_conversion_s": 6.970949470996857e-06,
+          "qamomile_build_s": 0.0002175911795347929,
+          "qamomile_conversion_s": 7.267994806170464e-05,
+          "qamomile_total_s": 0.0002932308707386255,
+          "native_energy_s": 5.897996015846729e-05,
+          "qamomile_energy_s": 5.621090531349182e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 6,
+          "warmup": false,
+          "native_build_s": 9.158998727798462e-05,
+          "native_conversion_s": 6.689922884106636e-06,
+          "qamomile_build_s": 0.00022146105766296387,
+          "qamomile_conversion_s": 7.229112088680267e-05,
+          "qamomile_total_s": 0.00029694195836782455,
+          "native_energy_s": 5.8519886806607246e-05,
+          "qamomile_energy_s": 4.950002767145634e-05,
+          "evaluated_states": 9
+        }
+      ]
+    },
+    {
+      "nodes": 3,
+      "slots": 3,
+      "q": 6,
+      "penalty": "paper_literal",
+      "lambda_capacity": 0.7,
+      "lambda_visit": 2.3,
+      "variable_mapping": [
+        {
+          "customer": 0,
+          "position": 1,
+          "qubit": 0
+        },
+        {
+          "customer": 1,
+          "position": 1,
+          "qubit": 1
+        },
+        {
+          "customer": 2,
+          "position": 1,
+          "qubit": 2
+        },
+        {
+          "customer": 0,
+          "position": 2,
+          "qubit": 3
+        },
+        {
+          "customer": 1,
+          "position": 2,
+          "qubit": 4
+        },
+        {
+          "customer": 2,
+          "position": 2,
+          "qubit": 5
+        }
+      ],
+      "QUBO_term_max_abs": 8.881784197001252e-16,
+      "Ising_term_max_abs": 4.440892098500626e-16,
+      "energy_max_abs": 7.105427357601002e-15,
+      "basis_states_checked": 64,
+      "native_terms": 19,
+      "qamomile_terms": 19,
+      "ising_terms": 21,
+      "constant_native": 10.015,
+      "constant_qamomile": 10.015,
+      "decode_errors": 0,
+      "classifications": {
+        "EMPTY_WALK": 1,
+        "VALID": 6,
+        "REPEATED_CUSTOMER": 2
+      },
+      "examples": {
+        "EMPTY_WALK": {
+          "mask": 9,
+          "sequence": [
+            0,
+            0,
+            0
+          ],
+          "energy": 4.199999999999999,
+          "capacity_residual": -3,
+          "ALiM": 4.199999999999999,
+          "decoded": [],
+          "missing_from_domain": [
+            1,
+            2
+          ]
+        },
+        "VALID": {
+          "mask": 10,
+          "sequence": [
+            0,
+            1,
+            0
+          ],
+          "energy": 2.6999999999999993,
+          "capacity_residual": -2,
+          "ALiM": 1.4,
+          "decoded": [
+            [
+              1
+            ]
+          ],
+          "missing_from_domain": [
+            2
+          ]
+        },
+        "REPEATED_CUSTOMER": {
+          "mask": 18,
+          "sequence": [
+            0,
+            1,
+            1
+          ],
+          "energy": 0.39999999999999947,
+          "capacity_residual": -1,
+          "ALiM": 0.0,
+          "decoded": [],
+          "missing_from_domain": [
+            2
+          ]
+        }
+      },
+      "timings": [
+        {
+          "repetition": -1,
+          "warmup": true,
+          "native_build_s": 9.829108603298664e-05,
+          "native_conversion_s": 7.659895345568657e-06,
+          "qamomile_build_s": 0.00023057102225720882,
+          "qamomile_conversion_s": 7.7039934694767e-05,
+          "qamomile_total_s": 0.0003118410240858793,
+          "native_energy_s": 5.963095463812351e-05,
+          "qamomile_energy_s": 4.9350084736943245e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 0,
+          "warmup": false,
+          "native_build_s": 9.311106987297535e-05,
+          "native_conversion_s": 7.729977369308472e-06,
+          "qamomile_build_s": 0.00022331112995743752,
+          "qamomile_conversion_s": 7.566995918750763e-05,
+          "qamomile_total_s": 0.000302240950986743,
+          "native_energy_s": 5.9371115639805794e-05,
+          "qamomile_energy_s": 4.9680937081575394e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 1,
+          "warmup": false,
+          "native_build_s": 9.064003825187683e-05,
+          "native_conversion_s": 7.0999376475811005e-06,
+          "qamomile_build_s": 0.00022795191034674644,
+          "qamomile_conversion_s": 7.373001426458359e-05,
+          "qamomile_total_s": 0.00030513200908899307,
+          "native_energy_s": 5.9870071709156036e-05,
+          "qamomile_energy_s": 4.910002462565899e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 2,
+          "warmup": false,
+          "native_build_s": 9.253993630409241e-05,
+          "native_conversion_s": 6.909947842359543e-06,
+          "qamomile_build_s": 0.0002165110781788826,
+          "qamomile_conversion_s": 7.413094863295555e-05,
+          "qamomile_total_s": 0.00029372191056609154,
+          "native_energy_s": 5.958997644484043e-05,
+          "qamomile_energy_s": 4.970002919435501e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 3,
+          "warmup": false,
+          "native_build_s": 9.70310065895319e-05,
+          "native_conversion_s": 7.010065019130707e-06,
+          "qamomile_build_s": 0.00021647103130817413,
+          "qamomile_conversion_s": 7.311999797821045e-05,
+          "qamomile_total_s": 0.0002926909364759922,
+          "native_energy_s": 5.9369951486587524e-05,
+          "qamomile_energy_s": 4.8549845814704895e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 4,
+          "warmup": false,
+          "native_build_s": 9.073014371097088e-05,
+          "native_conversion_s": 7.019843906164169e-06,
+          "qamomile_build_s": 0.0002197008579969406,
+          "qamomile_conversion_s": 7.297983393073082e-05,
+          "qamomile_total_s": 0.000296120997518301,
+          "native_energy_s": 5.946122109889984e-05,
+          "qamomile_energy_s": 4.926091060042381e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 5,
+          "warmup": false,
+          "native_build_s": 9.0740155428648e-05,
+          "native_conversion_s": 6.990041583776474e-06,
+          "qamomile_build_s": 0.00021671107970178127,
+          "qamomile_conversion_s": 7.268018089234829e-05,
+          "qamomile_total_s": 0.0002926022280007601,
+          "native_energy_s": 6.117997691035271e-05,
+          "qamomile_energy_s": 4.9291178584098816e-05,
+          "evaluated_states": 9
+        },
+        {
+          "repetition": 6,
+          "warmup": false,
+          "native_build_s": 9.097019210457802e-05,
+          "native_conversion_s": 6.810063496232033e-06,
+          "qamomile_build_s": 0.00021973112598061562,
+          "qamomile_conversion_s": 7.20310490578413e-05,
+          "qamomile_total_s": 0.00029471213929355145,
+          "native_energy_s": 6.606010720133781e-05,
+          "qamomile_energy_s": 4.8419926315546036e-05,
+          "evaluated_states": 9
+        }
+      ]
+    },
+    {
+      "nodes": 4,
+      "slots": 3,
+      "q": 8,
+      "penalty": "customer_unique",
+      "lambda_capacity": 1.0,
+      "lambda_visit": 1.0,
+      "variable_mapping": [
+        {
+          "customer": 0,
+          "position": 1,
+          "qubit": 0
+        },
+        {
+          "customer": 1,
+          "position": 1,
+          "qubit": 1
+        },
+        {
+          "customer": 2,
+          "position": 1,
+          "qubit": 2
+        },
+        {
+          "customer": 3,
+          "position": 1,
+          "qubit": 3
+        },
+        {
+          "customer": 0,
+          "position": 2,
+          "qubit": 4
+        },
+        {
+          "customer": 1,
+          "position": 2,
+          "qubit": 5
+        },
+        {
+          "customer": 2,
+          "position": 2,
+          "qubit": 6
+        },
+        {
+          "customer": 3,
+          "position": 2,
+          "qubit": 7
+        }
+      ],
+      "QUBO_term_max_abs": 1.7763568394002505e-15,
+      "Ising_term_max_abs": 0.0,
+      "energy_max_abs": 2.842170943040401e-14,
+      "basis_states_checked": 256,
+      "native_terms": 28,
+      "qamomile_terms": 28,
+      "ising_terms": 30,
+      "constant_native": 21.145,
+      "constant_qamomile": 21.145,
+      "decode_errors": 0,
+      "classifications": {
+        "EMPTY_WALK": 1,
+        "VALID": 8,
+        "REPEATED_CUSTOMER": 3,
+        "CAPACITY_EXCEEDED": 4
+      },
+      "examples": {
+        "EMPTY_WALK": {
+          "mask": 17,
+          "sequence": [
+            0,
+            0,
+            0
+          ],
+          "energy": 6.0,
+          "capacity_residual": -3,
+          "ALiM": 6.0,
+          "decoded": [],
+          "missing_from_domain": [
+            1,
+            2,
+            3
+          ]
+        },
+        "VALID": {
+          "mask": 18,
+          "sequence": [
+            0,
+            1,
+            0
+          ],
+          "energy": 3.3,
+          "capacity_residual": -2,
+          "ALiM": 2.0,
+          "decoded": [
+            [
+              1
+            ]
+          ],
+          "missing_from_domain": [
+            2,
+            3
+          ]
+        },
+        "REPEATED_CUSTOMER": {
+          "mask": 34,
+          "sequence": [
+            0,
+            1,
+            1
+          ],
+          "energy": 2.4,
+          "capacity_residual": -1,
+          "ALiM": 0.0,
+          "decoded": [],
+          "missing_from_domain": [
+            2,
+            3
+          ]
+        },
+        "CAPACITY_EXCEEDED": {
+          "mask": 40,
+          "sequence": [
+            0,
+            3,
+            1
+          ],
+          "energy": 1.4800000000000004,
+          "capacity_residual": 1,
+          "ALiM": 2.0,
+          "decoded": [],
+          "missing_from_domain": [
+            2
+          ]
+        }
+      },
+      "timings": [
+        {
+          "repetition": -1,
+          "warmup": true,
+          "native_build_s": 0.00013023102656006813,
+          "native_conversion_s": 1.2930016964673996e-05,
+          "qamomile_build_s": 0.0003348609898239374,
+          "qamomile_conversion_s": 0.00011226092465221882,
+          "qamomile_total_s": 0.00045265210792422295,
+          "native_energy_s": 0.00016971095465123653,
+          "qamomile_energy_s": 0.00012121093459427357,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 0,
+          "warmup": false,
+          "native_build_s": 0.0001243001315742731,
+          "native_conversion_s": 1.2408941984176636e-05,
+          "qamomile_build_s": 0.00031930115073919296,
+          "qamomile_conversion_s": 0.00010547088459134102,
+          "qamomile_total_s": 0.0004292018711566925,
+          "native_energy_s": 0.00016936101019382477,
+          "qamomile_energy_s": 0.0001213601790368557,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 1,
+          "warmup": false,
+          "native_build_s": 0.0001226810272783041,
+          "native_conversion_s": 1.1490192264318466e-05,
+          "qamomile_build_s": 0.0003226820845156908,
+          "qamomile_conversion_s": 0.00010439986363053322,
+          "qamomile_total_s": 0.0004318219143897295,
+          "native_energy_s": 0.0001685710158199072,
+          "qamomile_energy_s": 0.00011437106877565384,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 2,
+          "warmup": false,
+          "native_build_s": 0.00012668012641370296,
+          "native_conversion_s": 1.1191004887223244e-05,
+          "qamomile_build_s": 0.00032014097087085247,
+          "qamomile_conversion_s": 0.00014165113680064678,
+          "qamomile_total_s": 0.00046593183651566505,
+          "native_energy_s": 0.00017026090063154697,
+          "qamomile_energy_s": 0.00012220093049108982,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 3,
+          "warmup": false,
+          "native_build_s": 0.00012598000466823578,
+          "native_conversion_s": 1.1319993063807487e-05,
+          "qamomile_build_s": 0.0003313219640403986,
+          "qamomile_conversion_s": 0.00010244105942547321,
+          "qamomile_total_s": 0.00043811299838125706,
+          "native_energy_s": 0.00016966997645795345,
+          "qamomile_energy_s": 0.00011215009726583958,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 4,
+          "warmup": false,
+          "native_build_s": 0.00012031081132590771,
+          "native_conversion_s": 1.1279946193099022e-05,
+          "qamomile_build_s": 0.0003277419600635767,
+          "qamomile_conversion_s": 0.00010617007501423359,
+          "qamomile_total_s": 0.00043805199675261974,
+          "native_energy_s": 0.0001688809134066105,
+          "qamomile_energy_s": 0.00011248118244111538,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 5,
+          "warmup": false,
+          "native_build_s": 0.00012116110883653164,
+          "native_conversion_s": 1.1389143764972687e-05,
+          "qamomile_build_s": 0.0003240210935473442,
+          "qamomile_conversion_s": 0.00010474119335412979,
+          "qamomile_total_s": 0.00043254299089312553,
+          "native_energy_s": 0.000169751001521945,
+          "qamomile_energy_s": 0.00011556991375982761,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 6,
+          "warmup": false,
+          "native_build_s": 0.00012098089791834354,
+          "native_conversion_s": 1.1190073564648628e-05,
+          "qamomile_build_s": 0.00031596189364790916,
+          "qamomile_conversion_s": 0.0001102709211409092,
+          "qamomile_total_s": 0.0004306631162762642,
+          "native_energy_s": 0.000169381033629179,
+          "qamomile_energy_s": 0.00011388096027076244,
+          "evaluated_states": 16
+        }
+      ]
+    },
+    {
+      "nodes": 4,
+      "slots": 3,
+      "q": 8,
+      "penalty": "customer_unique",
+      "lambda_capacity": 0.7,
+      "lambda_visit": 2.3,
+      "variable_mapping": [
+        {
+          "customer": 0,
+          "position": 1,
+          "qubit": 0
+        },
+        {
+          "customer": 1,
+          "position": 1,
+          "qubit": 1
+        },
+        {
+          "customer": 2,
+          "position": 1,
+          "qubit": 2
+        },
+        {
+          "customer": 3,
+          "position": 1,
+          "qubit": 3
+        },
+        {
+          "customer": 0,
+          "position": 2,
+          "qubit": 4
+        },
+        {
+          "customer": 1,
+          "position": 2,
+          "qubit": 5
+        },
+        {
+          "customer": 2,
+          "position": 2,
+          "qubit": 6
+        },
+        {
+          "customer": 3,
+          "position": 2,
+          "qubit": 7
+        }
+      ],
+      "QUBO_term_max_abs": 8.881784197001252e-16,
+      "Ising_term_max_abs": 8.881784197001252e-16,
+      "energy_max_abs": 2.842170943040401e-14,
+      "basis_states_checked": 256,
+      "native_terms": 28,
+      "qamomile_terms": 28,
+      "ising_terms": 30,
+      "constant_native": 17.395000000000003,
+      "constant_qamomile": 17.395000000000003,
+      "decode_errors": 0,
+      "classifications": {
+        "EMPTY_WALK": 1,
+        "VALID": 8,
+        "REPEATED_CUSTOMER": 3,
+        "CAPACITY_EXCEEDED": 4
+      },
+      "examples": {
+        "EMPTY_WALK": {
+          "mask": 17,
+          "sequence": [
+            0,
+            0,
+            0
+          ],
+          "energy": 4.199999999999999,
+          "capacity_residual": -3,
+          "ALiM": 4.199999999999999,
+          "decoded": [],
+          "missing_from_domain": [
+            1,
+            2,
+            3
+          ]
+        },
+        "VALID": {
+          "mask": 18,
+          "sequence": [
+            0,
+            1,
+            0
+          ],
+          "energy": 2.6999999999999993,
+          "capacity_residual": -2,
+          "ALiM": 1.4,
+          "decoded": [
+            [
+              1
+            ]
+          ],
+          "missing_from_domain": [
+            2,
+            3
+          ]
+        },
+        "REPEATED_CUSTOMER": {
+          "mask": 34,
+          "sequence": [
+            0,
+            1,
+            1
+          ],
+          "energy": 5.0,
+          "capacity_residual": -1,
+          "ALiM": 0.0,
+          "decoded": [],
+          "missing_from_domain": [
+            2,
+            3
+          ]
+        },
+        "CAPACITY_EXCEEDED": {
+          "mask": 40,
+          "sequence": [
+            0,
+            3,
+            1
+          ],
+          "energy": 0.8799999999999994,
+          "capacity_residual": 1,
+          "ALiM": 1.4,
+          "decoded": [],
+          "missing_from_domain": [
+            2
+          ]
+        }
+      },
+      "timings": [
+        {
+          "repetition": -1,
+          "warmup": true,
+          "native_build_s": 0.00012968084774911404,
+          "native_conversion_s": 1.2489967048168182e-05,
+          "qamomile_build_s": 0.0003351320046931505,
+          "qamomile_conversion_s": 0.00011504022404551506,
+          "qamomile_total_s": 0.0004566330462694168,
+          "native_energy_s": 0.0001676599495112896,
+          "qamomile_energy_s": 0.00011295103468000889,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 0,
+          "warmup": false,
+          "native_build_s": 0.00012430106289684772,
+          "native_conversion_s": 1.1380063369870186e-05,
+          "qamomile_build_s": 0.0003261908423155546,
+          "qamomile_conversion_s": 0.00010662083514034748,
+          "qamomile_total_s": 0.00043711205944418907,
+          "native_energy_s": 0.00017441087402403355,
+          "qamomile_energy_s": 0.00011439109221100807,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 1,
+          "warmup": false,
+          "native_build_s": 0.00012229010462760925,
+          "native_conversion_s": 1.1509982869029045e-05,
+          "qamomile_build_s": 0.000321362167596817,
+          "qamomile_conversion_s": 0.00010519102215766907,
+          "qamomile_total_s": 0.0004304631147533655,
+          "native_energy_s": 0.00016797101125121117,
+          "qamomile_energy_s": 0.00011916016228497028,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 2,
+          "warmup": false,
+          "native_build_s": 0.00012081116437911987,
+          "native_conversion_s": 1.1210097000002861e-05,
+          "qamomile_build_s": 0.0003253722097724676,
+          "qamomile_conversion_s": 0.00010492000728845596,
+          "qamomile_total_s": 0.0004344920162111521,
+          "native_energy_s": 0.00016850093379616737,
+          "qamomile_energy_s": 0.00011492101475596428,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 3,
+          "warmup": false,
+          "native_build_s": 0.00012328103184700012,
+          "native_conversion_s": 1.116911880671978e-05,
+          "qamomile_build_s": 0.0003235719632357359,
+          "qamomile_conversion_s": 0.00010647089220583439,
+          "qamomile_total_s": 0.0004342431202530861,
+          "native_energy_s": 0.00016711093485355377,
+          "qamomile_energy_s": 0.00011655990965664387,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 4,
+          "warmup": false,
+          "native_build_s": 0.00012806104496121407,
+          "native_conversion_s": 1.0999850928783417e-05,
+          "qamomile_build_s": 0.0003243719693273306,
+          "qamomile_conversion_s": 0.00010391999967396259,
+          "qamomile_total_s": 0.000432461965829134,
+          "native_energy_s": 0.00016784085892140865,
+          "qamomile_energy_s": 0.00011366116814315319,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 5,
+          "warmup": false,
+          "native_build_s": 0.00011909101158380508,
+          "native_conversion_s": 1.127016730606556e-05,
+          "qamomile_build_s": 0.00032716081477701664,
+          "qamomile_conversion_s": 0.0001053009182214737,
+          "qamomile_total_s": 0.0004368419758975506,
+          "native_energy_s": 0.000167130958288908,
+          "qamomile_energy_s": 0.0001134900376200676,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 6,
+          "warmup": false,
+          "native_build_s": 0.00011825095862150192,
+          "native_conversion_s": 1.134001649916172e-05,
+          "qamomile_build_s": 0.0003276218194514513,
+          "qamomile_conversion_s": 0.00010296003893017769,
+          "qamomile_total_s": 0.00043453299440443516,
+          "native_energy_s": 0.00016620103269815445,
+          "qamomile_energy_s": 0.00011276104487478733,
+          "evaluated_states": 16
+        }
+      ]
+    },
+    {
+      "nodes": 4,
+      "slots": 3,
+      "q": 8,
+      "penalty": "paper_literal",
+      "lambda_capacity": 1.0,
+      "lambda_visit": 1.0,
+      "variable_mapping": [
+        {
+          "customer": 0,
+          "position": 1,
+          "qubit": 0
+        },
+        {
+          "customer": 1,
+          "position": 1,
+          "qubit": 1
+        },
+        {
+          "customer": 2,
+          "position": 1,
+          "qubit": 2
+        },
+        {
+          "customer": 3,
+          "position": 1,
+          "qubit": 3
+        },
+        {
+          "customer": 0,
+          "position": 2,
+          "qubit": 4
+        },
+        {
+          "customer": 1,
+          "position": 2,
+          "qubit": 5
+        },
+        {
+          "customer": 2,
+          "position": 2,
+          "qubit": 6
+        },
+        {
+          "customer": 3,
+          "position": 2,
+          "qubit": 7
+        }
+      ],
+      "QUBO_term_max_abs": 1.7763568394002505e-15,
+      "Ising_term_max_abs": 0.0,
+      "energy_max_abs": 2.842170943040401e-14,
+      "basis_states_checked": 256,
+      "native_terms": 34,
+      "qamomile_terms": 34,
+      "ising_terms": 36,
+      "constant_native": 25.645,
+      "constant_qamomile": 25.645,
+      "decode_errors": 0,
+      "classifications": {
+        "EMPTY_WALK": 1,
+        "VALID": 8,
+        "REPEATED_CUSTOMER": 3,
+        "CAPACITY_EXCEEDED": 4
+      },
+      "examples": {
+        "EMPTY_WALK": {
+          "mask": 17,
+          "sequence": [
+            0,
+            0,
+            0
+          ],
+          "energy": 6.0,
+          "capacity_residual": -3,
+          "ALiM": 6.0,
+          "decoded": [],
+          "missing_from_domain": [
+            1,
+            2,
+            3
+          ]
+        },
+        "VALID": {
+          "mask": 18,
+          "sequence": [
+            0,
+            1,
+            0
+          ],
+          "energy": 3.3,
+          "capacity_residual": -2,
+          "ALiM": 2.0,
+          "decoded": [
+            [
+              1
+            ]
+          ],
+          "missing_from_domain": [
+            2,
+            3
+          ]
+        },
+        "REPEATED_CUSTOMER": {
+          "mask": 34,
+          "sequence": [
+            0,
+            1,
+            1
+          ],
+          "energy": 0.3999999999999999,
+          "capacity_residual": -1,
+          "ALiM": 0.0,
+          "decoded": [],
+          "missing_from_domain": [
+            2,
+            3
+          ]
+        },
+        "CAPACITY_EXCEEDED": {
+          "mask": 40,
+          "sequence": [
+            0,
+            3,
+            1
+          ],
+          "energy": 1.4800000000000004,
+          "capacity_residual": 1,
+          "ALiM": 2.0,
+          "decoded": [],
+          "missing_from_domain": [
+            2
+          ]
+        }
+      },
+      "timings": [
+        {
+          "repetition": -1,
+          "warmup": true,
+          "native_build_s": 0.00014776084572076797,
+          "native_conversion_s": 1.2659933418035507e-05,
+          "qamomile_build_s": 0.0003762019332498312,
+          "qamomile_conversion_s": 0.00013227993622422218,
+          "qamomile_total_s": 0.0005148430354893208,
+          "native_energy_s": 0.00016976101323962212,
+          "qamomile_energy_s": 0.00013258983381092548,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 0,
+          "warmup": false,
+          "native_build_s": 0.0001419109757989645,
+          "native_conversion_s": 1.2269942089915276e-05,
+          "qamomile_build_s": 0.0003638120833784342,
+          "qamomile_conversion_s": 0.00012516113929450512,
+          "qamomile_total_s": 0.0004939530044794083,
+          "native_energy_s": 0.0001756411511451006,
+          "qamomile_energy_s": 0.00013252999633550644,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 1,
+          "warmup": false,
+          "native_build_s": 0.00013865996152162552,
+          "native_conversion_s": 1.1440133675932884e-05,
+          "qamomile_build_s": 0.000355052063241601,
+          "qamomile_conversion_s": 0.0001238009426742792,
+          "qamomile_total_s": 0.0004836530424654484,
+          "native_energy_s": 0.00017133005894720554,
+          "qamomile_energy_s": 0.00013244105502963066,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 2,
+          "warmup": false,
+          "native_build_s": 0.0001381710171699524,
+          "native_conversion_s": 1.1140014976263046e-05,
+          "qamomile_build_s": 0.0003524420317262411,
+          "qamomile_conversion_s": 0.00012816092930734158,
+          "qamomile_total_s": 0.00048531312495470047,
+          "native_energy_s": 0.00017517106607556343,
+          "qamomile_energy_s": 0.00013023009523749352,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 3,
+          "warmup": false,
+          "native_build_s": 0.0001367309596389532,
+          "native_conversion_s": 1.0780058801174164e-05,
+          "qamomile_build_s": 0.0003494319971650839,
+          "qamomile_conversion_s": 0.00013040099292993546,
+          "qamomile_total_s": 0.00048443302512168884,
+          "native_energy_s": 0.00016924110241234303,
+          "qamomile_energy_s": 0.00012860982678830624,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 4,
+          "warmup": false,
+          "native_build_s": 0.0001339409500360489,
+          "native_conversion_s": 1.09898392111063e-05,
+          "qamomile_build_s": 0.00034457212314009666,
+          "qamomile_conversion_s": 0.00016872095875442028,
+          "qamomile_total_s": 0.0005178728606551886,
+          "native_energy_s": 0.00017477083019912243,
+          "qamomile_energy_s": 0.00013426109217107296,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 5,
+          "warmup": false,
+          "native_build_s": 0.0001346101053059101,
+          "native_conversion_s": 1.1770986020565033e-05,
+          "qamomile_build_s": 0.0003504508640617132,
+          "qamomile_conversion_s": 0.00013316120021045208,
+          "qamomile_total_s": 0.0004893520381301641,
+          "native_energy_s": 0.00017144088633358479,
+          "qamomile_energy_s": 0.00013232091441750526,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 6,
+          "warmup": false,
+          "native_build_s": 0.00013605994172394276,
+          "native_conversion_s": 1.1009862646460533e-05,
+          "qamomile_build_s": 0.0003488408401608467,
+          "qamomile_conversion_s": 0.0001246610190719366,
+          "qamomile_total_s": 0.0004783628974109888,
+          "native_energy_s": 0.00018020113930106163,
+          "qamomile_energy_s": 0.00013317097909748554,
+          "evaluated_states": 16
+        }
+      ]
+    },
+    {
+      "nodes": 4,
+      "slots": 3,
+      "q": 8,
+      "penalty": "paper_literal",
+      "lambda_capacity": 0.7,
+      "lambda_visit": 2.3,
+      "variable_mapping": [
+        {
+          "customer": 0,
+          "position": 1,
+          "qubit": 0
+        },
+        {
+          "customer": 1,
+          "position": 1,
+          "qubit": 1
+        },
+        {
+          "customer": 2,
+          "position": 1,
+          "qubit": 2
+        },
+        {
+          "customer": 3,
+          "position": 1,
+          "qubit": 3
+        },
+        {
+          "customer": 0,
+          "position": 2,
+          "qubit": 4
+        },
+        {
+          "customer": 1,
+          "position": 2,
+          "qubit": 5
+        },
+        {
+          "customer": 2,
+          "position": 2,
+          "qubit": 6
+        },
+        {
+          "customer": 3,
+          "position": 2,
+          "qubit": 7
+        }
+      ],
+      "QUBO_term_max_abs": 1.7763568394002505e-15,
+      "Ising_term_max_abs": 3.552713678800501e-15,
+      "energy_max_abs": 5.684341886080802e-14,
+      "basis_states_checked": 256,
+      "native_terms": 34,
+      "qamomile_terms": 34,
+      "ising_terms": 36,
+      "constant_native": 27.744999999999994,
+      "constant_qamomile": 27.74499999999999,
+      "decode_errors": 0,
+      "classifications": {
+        "EMPTY_WALK": 1,
+        "VALID": 8,
+        "REPEATED_CUSTOMER": 3,
+        "CAPACITY_EXCEEDED": 4
+      },
+      "examples": {
+        "EMPTY_WALK": {
+          "mask": 17,
+          "sequence": [
+            0,
+            0,
+            0
+          ],
+          "energy": 4.199999999999999,
+          "capacity_residual": -3,
+          "ALiM": 4.199999999999999,
+          "decoded": [],
+          "missing_from_domain": [
+            1,
+            2,
+            3
+          ]
+        },
+        "VALID": {
+          "mask": 18,
+          "sequence": [
+            0,
+            1,
+            0
+          ],
+          "energy": 2.6999999999999993,
+          "capacity_residual": -2,
+          "ALiM": 1.4,
+          "decoded": [
+            [
+              1
+            ]
+          ],
+          "missing_from_domain": [
+            2,
+            3
+          ]
+        },
+        "REPEATED_CUSTOMER": {
+          "mask": 34,
+          "sequence": [
+            0,
+            1,
+            1
+          ],
+          "energy": 0.39999999999999947,
+          "capacity_residual": -1,
+          "ALiM": 0.0,
+          "decoded": [],
+          "missing_from_domain": [
+            2,
+            3
+          ]
+        },
+        "CAPACITY_EXCEEDED": {
+          "mask": 40,
+          "sequence": [
+            0,
+            3,
+            1
+          ],
+          "energy": 0.8799999999999994,
+          "capacity_residual": 1,
+          "ALiM": 1.4,
+          "decoded": [],
+          "missing_from_domain": [
+            2
+          ]
+        }
+      },
+      "timings": [
+        {
+          "repetition": -1,
+          "warmup": true,
+          "native_build_s": 0.0001467911060899496,
+          "native_conversion_s": 1.2520002201199532e-05,
+          "qamomile_build_s": 0.00036439206451177597,
+          "qamomile_conversion_s": 0.00012654997408390045,
+          "qamomile_total_s": 0.0004987427964806557,
+          "native_energy_s": 0.00018333201296627522,
+          "qamomile_energy_s": 0.0001316498965024948,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 0,
+          "warmup": false,
+          "native_build_s": 0.00013959105126559734,
+          "native_conversion_s": 1.1740019544959068e-05,
+          "qamomile_build_s": 0.0003588718827813864,
+          "qamomile_conversion_s": 0.00012402981519699097,
+          "qamomile_total_s": 0.0004884419031441212,
+          "native_energy_s": 0.00017436104826629162,
+          "qamomile_energy_s": 0.00013169017620384693,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 1,
+          "warmup": false,
+          "native_build_s": 0.00013692118227481842,
+          "native_conversion_s": 1.103011891245842e-05,
+          "qamomile_build_s": 0.00035470188595354557,
+          "qamomile_conversion_s": 0.00012313108891248703,
+          "qamomile_total_s": 0.0004825431387871504,
+          "native_energy_s": 0.00017816107720136642,
+          "qamomile_energy_s": 0.00017834105528891087,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 2,
+          "warmup": false,
+          "native_build_s": 0.00013644015416502953,
+          "native_conversion_s": 1.1020107194781303e-05,
+          "qamomile_build_s": 0.00035031186416745186,
+          "qamomile_conversion_s": 0.00012236088514328003,
+          "qamomile_total_s": 0.0004772020038217306,
+          "native_energy_s": 0.00017461110837757587,
+          "qamomile_energy_s": 0.00013206107541918755,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 3,
+          "warmup": false,
+          "native_build_s": 0.00013574003241956234,
+          "native_conversion_s": 1.0940944775938988e-05,
+          "qamomile_build_s": 0.00034738099202513695,
+          "qamomile_conversion_s": 0.00012167100794613361,
+          "qamomile_total_s": 0.00047352281399071217,
+          "native_energy_s": 0.00017862091772258282,
+          "qamomile_energy_s": 0.00013532000593841076,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 4,
+          "warmup": false,
+          "native_build_s": 0.00013925996609032154,
+          "native_conversion_s": 1.1410098522901535e-05,
+          "qamomile_build_s": 0.00034517189487814903,
+          "qamomile_conversion_s": 0.00012366101145744324,
+          "qamomile_total_s": 0.00047316309064626694,
+          "native_energy_s": 0.00017082085832953453,
+          "qamomile_energy_s": 0.00013894005678594112,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 5,
+          "warmup": false,
+          "native_build_s": 0.00013696006499230862,
+          "native_conversion_s": 1.11311674118042e-05,
+          "qamomile_build_s": 0.00034749205224215984,
+          "qamomile_conversion_s": 0.00012382096610963345,
+          "qamomile_total_s": 0.000475842971354723,
+          "native_energy_s": 0.00017682090401649475,
+          "qamomile_energy_s": 0.0001392001286149025,
+          "evaluated_states": 16
+        },
+        {
+          "repetition": 6,
+          "warmup": false,
+          "native_build_s": 0.00013572094030678272,
+          "native_conversion_s": 1.1109979823231697e-05,
+          "qamomile_build_s": 0.0003476119600236416,
+          "qamomile_conversion_s": 0.00012555113062262535,
+          "qamomile_total_s": 0.00047807302325963974,
+          "native_energy_s": 0.00016946112737059593,
+          "qamomile_energy_s": 0.00013073114678263664,
+          "evaluated_states": 16
+        }
+      ]
+    },
+    {
+      "nodes": 4,
+      "slots": 4,
+      "q": 12,
+      "penalty": "customer_unique",
+      "lambda_capacity": 1.0,
+      "lambda_visit": 1.0,
+      "variable_mapping": [
+        {
+          "customer": 0,
+          "position": 1,
+          "qubit": 0
+        },
+        {
+          "customer": 1,
+          "position": 1,
+          "qubit": 1
+        },
+        {
+          "customer": 2,
+          "position": 1,
+          "qubit": 2
+        },
+        {
+          "customer": 3,
+          "position": 1,
+          "qubit": 3
+        },
+        {
+          "customer": 0,
+          "position": 2,
+          "qubit": 4
+        },
+        {
+          "customer": 1,
+          "position": 2,
+          "qubit": 5
+        },
+        {
+          "customer": 2,
+          "position": 2,
+          "qubit": 6
+        },
+        {
+          "customer": 3,
+          "position": 2,
+          "qubit": 7
+        },
+        {
+          "customer": 0,
+          "position": 3,
+          "qubit": 8
+        },
+        {
+          "customer": 1,
+          "position": 3,
+          "qubit": 9
+        },
+        {
+          "customer": 2,
+          "position": 3,
+          "qubit": 10
+        },
+        {
+          "customer": 3,
+          "position": 3,
+          "qubit": 11
+        }
+      ],
+      "QUBO_term_max_abs": 1.7763568394002505e-15,
+      "Ising_term_max_abs": 0.0,
+      "energy_max_abs": 1.1368683772161603e-13,
+      "basis_states_checked": 4096,
+      "native_terms": 58,
+      "qamomile_terms": 58,
+      "ising_terms": 61,
+      "constant_native": 57.905,
+      "constant_qamomile": 57.905,
+      "decode_errors": 0,
+      "classifications": {
+        "EMPTY_WALK": 1,
+        "VALID": 15,
+        "REPEATED_CUSTOMER": 30,
+        "CAPACITY_EXCEEDED": 18
+      },
+      "examples": {
+        "EMPTY_WALK": {
+          "mask": 273,
+          "sequence": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "energy": 6.0,
+          "capacity_residual": -3,
+          "ALiM": 6.0,
+          "decoded": [],
+          "missing_from_domain": [
+            1,
+            2,
+            3
+          ]
+        },
+        "VALID": {
+          "mask": 274,
+          "sequence": [
+            0,
+            1,
+            0,
+            0
+          ],
+          "energy": 3.3,
+          "capacity_residual": -2,
+          "ALiM": 2.0,
+          "decoded": [
+            [
+              1
+            ]
+          ],
+          "missing_from_domain": [
+            2,
+            3
+          ]
+        },
+        "REPEATED_CUSTOMER": {
+          "mask": 290,
+          "sequence": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "energy": 2.3999999999999995,
+          "capacity_residual": -1,
+          "ALiM": 0.0,
+          "decoded": [],
+          "missing_from_domain": [
+            2,
+            3
+          ]
+        },
+        "CAPACITY_EXCEEDED": {
+          "mask": 296,
+          "sequence": [
+            0,
+            3,
+            1,
+            0
+          ],
+          "energy": 1.4799999999999998,
+          "capacity_residual": 1,
+          "ALiM": 2.0,
+          "decoded": [],
+          "missing_from_domain": [
+            2
+          ]
+        }
+      },
+      "timings": [
+        {
+          "repetition": -1,
+          "warmup": true,
+          "native_build_s": 0.00023156101815402508,
+          "native_conversion_s": 2.951989881694317e-05,
+          "qamomile_build_s": 0.0005995328538119793,
+          "qamomile_conversion_s": 0.0003049718216061592,
+          "qamomile_total_s": 0.000912264920771122,
+          "native_energy_s": 0.0014349468983709812,
+          "qamomile_energy_s": 0.0008173750247806311,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 0,
+          "warmup": false,
+          "native_build_s": 0.0002079308032989502,
+          "native_conversion_s": 2.368004061281681e-05,
+          "qamomile_build_s": 0.0005199529696255922,
+          "qamomile_conversion_s": 0.0002193909604102373,
+          "qamomile_total_s": 0.0007476040627807379,
+          "native_energy_s": 0.001430516829714179,
+          "qamomile_energy_s": 0.0008193438407033682,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 1,
+          "warmup": false,
+          "native_build_s": 0.00020523089915513992,
+          "native_conversion_s": 2.3479806259274483e-05,
+          "qamomile_build_s": 0.0005177229177206755,
+          "qamomile_conversion_s": 0.00020711100660264492,
+          "qamomile_total_s": 0.0007320039439946413,
+          "native_energy_s": 0.00143537693656981,
+          "qamomile_energy_s": 0.0008163340389728546,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 2,
+          "warmup": false,
+          "native_build_s": 0.00020289095118641853,
+          "native_conversion_s": 2.3070024326443672e-05,
+          "qamomile_build_s": 0.0005180030129849911,
+          "qamomile_conversion_s": 0.00022026104852557182,
+          "qamomile_total_s": 0.0007453339640051126,
+          "native_energy_s": 0.0014931680634617805,
+          "qamomile_energy_s": 0.000850545009598136,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 3,
+          "warmup": false,
+          "native_build_s": 0.00020252098329365253,
+          "native_conversion_s": 2.3090047761797905e-05,
+          "qamomile_build_s": 0.0005081831477582455,
+          "qamomile_conversion_s": 0.00020977109670639038,
+          "qamomile_total_s": 0.0007246641907840967,
+          "native_energy_s": 0.001435526879504323,
+          "qamomile_energy_s": 0.0008212151005864143,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 4,
+          "warmup": false,
+          "native_build_s": 0.00020245090126991272,
+          "native_conversion_s": 2.2709835320711136e-05,
+          "qamomile_build_s": 0.0005105328746140003,
+          "qamomile_conversion_s": 0.0002479508984833956,
+          "qamomile_total_s": 0.0007659238763153553,
+          "native_energy_s": 0.0014285680372267962,
+          "qamomile_energy_s": 0.000828244024887681,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 5,
+          "warmup": false,
+          "native_build_s": 0.0002024711575359106,
+          "native_conversion_s": 2.2770138457417488e-05,
+          "qamomile_build_s": 0.0005174730904400349,
+          "qamomile_conversion_s": 0.00021035107783973217,
+          "qamomile_total_s": 0.0007347639184445143,
+          "native_energy_s": 0.0014470780733972788,
+          "qamomile_energy_s": 0.000822033965960145,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 6,
+          "warmup": false,
+          "native_build_s": 0.00020783091895282269,
+          "native_conversion_s": 2.2979918867349625e-05,
+          "qamomile_build_s": 0.0005065330769866705,
+          "qamomile_conversion_s": 0.00020625116303563118,
+          "qamomile_total_s": 0.0007201640401035547,
+          "native_energy_s": 0.0014993678778409958,
+          "qamomile_energy_s": 0.0008335739839822054,
+          "evaluated_states": 64
+        }
+      ]
+    },
+    {
+      "nodes": 4,
+      "slots": 4,
+      "q": 12,
+      "penalty": "customer_unique",
+      "lambda_capacity": 0.7,
+      "lambda_visit": 2.3,
+      "variable_mapping": [
+        {
+          "customer": 0,
+          "position": 1,
+          "qubit": 0
+        },
+        {
+          "customer": 1,
+          "position": 1,
+          "qubit": 1
+        },
+        {
+          "customer": 2,
+          "position": 1,
+          "qubit": 2
+        },
+        {
+          "customer": 3,
+          "position": 1,
+          "qubit": 3
+        },
+        {
+          "customer": 0,
+          "position": 2,
+          "qubit": 4
+        },
+        {
+          "customer": 1,
+          "position": 2,
+          "qubit": 5
+        },
+        {
+          "customer": 2,
+          "position": 2,
+          "qubit": 6
+        },
+        {
+          "customer": 3,
+          "position": 2,
+          "qubit": 7
+        },
+        {
+          "customer": 0,
+          "position": 3,
+          "qubit": 8
+        },
+        {
+          "customer": 1,
+          "position": 3,
+          "qubit": 9
+        },
+        {
+          "customer": 2,
+          "position": 3,
+          "qubit": 10
+        },
+        {
+          "customer": 3,
+          "position": 3,
+          "qubit": 11
+        }
+      ],
+      "QUBO_term_max_abs": 8.881784197001252e-16,
+      "Ising_term_max_abs": 1.4210854715202004e-14,
+      "energy_max_abs": 1.7053025658242404e-13,
+      "basis_states_checked": 4096,
+      "native_terms": 58,
+      "qamomile_terms": 58,
+      "ising_terms": 61,
+      "constant_native": 48.00500000000001,
+      "constant_qamomile": 48.004999999999995,
+      "decode_errors": 0,
+      "classifications": {
+        "EMPTY_WALK": 1,
+        "VALID": 15,
+        "REPEATED_CUSTOMER": 30,
+        "CAPACITY_EXCEEDED": 18
+      },
+      "examples": {
+        "EMPTY_WALK": {
+          "mask": 273,
+          "sequence": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "energy": 4.199999999999999,
+          "capacity_residual": -3,
+          "ALiM": 4.199999999999999,
+          "decoded": [],
+          "missing_from_domain": [
+            1,
+            2,
+            3
+          ]
+        },
+        "VALID": {
+          "mask": 274,
+          "sequence": [
+            0,
+            1,
+            0,
+            0
+          ],
+          "energy": 2.6999999999999993,
+          "capacity_residual": -2,
+          "ALiM": 1.4,
+          "decoded": [
+            [
+              1
+            ]
+          ],
+          "missing_from_domain": [
+            2,
+            3
+          ]
+        },
+        "REPEATED_CUSTOMER": {
+          "mask": 290,
+          "sequence": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "energy": 5.0,
+          "capacity_residual": -1,
+          "ALiM": 0.0,
+          "decoded": [],
+          "missing_from_domain": [
+            2,
+            3
+          ]
+        },
+        "CAPACITY_EXCEEDED": {
+          "mask": 296,
+          "sequence": [
+            0,
+            3,
+            1,
+            0
+          ],
+          "energy": 0.8800000000000001,
+          "capacity_residual": 1,
+          "ALiM": 1.4,
+          "decoded": [],
+          "missing_from_domain": [
+            2
+          ]
+        }
+      },
+      "timings": [
+        {
+          "repetition": -1,
+          "warmup": true,
+          "native_build_s": 0.00022950093261897564,
+          "native_conversion_s": 2.623000182211399e-05,
+          "qamomile_build_s": 0.0005451429169625044,
+          "qamomile_conversion_s": 0.00031383102759718895,
+          "qamomile_total_s": 0.0008672238327562809,
+          "native_energy_s": 0.001425767783075571,
+          "qamomile_energy_s": 0.0008272139821201563,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 0,
+          "warmup": false,
+          "native_build_s": 0.00021282094530761242,
+          "native_conversion_s": 2.3780157789587975e-05,
+          "qamomile_build_s": 0.0005187930073589087,
+          "qamomile_conversion_s": 0.0002109010238200426,
+          "qamomile_total_s": 0.0007372540421783924,
+          "native_energy_s": 0.0014530681073665619,
+          "qamomile_energy_s": 0.0008279941976070404,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 1,
+          "warmup": false,
+          "native_build_s": 0.00020218105055391788,
+          "native_conversion_s": 2.3619970306754112e-05,
+          "qamomile_build_s": 0.0005064329598098993,
+          "qamomile_conversion_s": 0.00021445099264383316,
+          "qamomile_total_s": 0.000727703096345067,
+          "native_energy_s": 0.001466828165575862,
+          "qamomile_energy_s": 0.0008420241065323353,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 2,
+          "warmup": false,
+          "native_build_s": 0.0002030208706855774,
+          "native_conversion_s": 2.2710999473929405e-05,
+          "qamomile_build_s": 0.0005129920318722725,
+          "qamomile_conversion_s": 0.000207061180844903,
+          "qamomile_total_s": 0.0007281939033418894,
+          "native_energy_s": 0.0014385080430656672,
+          "qamomile_energy_s": 0.0008423640392720699,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 3,
+          "warmup": false,
+          "native_build_s": 0.00020644115284085274,
+          "native_conversion_s": 2.2819964215159416e-05,
+          "qamomile_build_s": 0.0005070120096206665,
+          "qamomile_conversion_s": 0.00020889099687337875,
+          "qamomile_total_s": 0.0007224339060485363,
+          "native_energy_s": 0.001427927054464817,
+          "qamomile_energy_s": 0.0008297041058540344,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 4,
+          "warmup": false,
+          "native_build_s": 0.00020208093337714672,
+          "native_conversion_s": 2.275104634463787e-05,
+          "qamomile_build_s": 0.0005063929129391909,
+          "qamomile_conversion_s": 0.000214720843359828,
+          "qamomile_total_s": 0.0007274230010807514,
+          "native_energy_s": 0.0014331580605357885,
+          "qamomile_energy_s": 0.0008302740752696991,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 5,
+          "warmup": false,
+          "native_build_s": 0.00020075100474059582,
+          "native_conversion_s": 2.282089553773403e-05,
+          "qamomile_build_s": 0.0005146919284015894,
+          "qamomile_conversion_s": 0.00020686117932200432,
+          "qamomile_total_s": 0.0007284241728484631,
+          "native_energy_s": 0.0014377080369740725,
+          "qamomile_energy_s": 0.0008386338595300913,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 6,
+          "warmup": false,
+          "native_build_s": 0.00020071095786988735,
+          "native_conversion_s": 2.2579915821552277e-05,
+          "qamomile_build_s": 0.0005131729412823915,
+          "qamomile_conversion_s": 0.00021502096205949783,
+          "qamomile_total_s": 0.0007360440213233232,
+          "native_energy_s": 0.0014320481568574905,
+          "qamomile_energy_s": 0.0008680140599608421,
+          "evaluated_states": 64
+        }
+      ]
+    },
+    {
+      "nodes": 4,
+      "slots": 4,
+      "q": 12,
+      "penalty": "paper_literal",
+      "lambda_capacity": 1.0,
+      "lambda_visit": 1.0,
+      "variable_mapping": [
+        {
+          "customer": 0,
+          "position": 1,
+          "qubit": 0
+        },
+        {
+          "customer": 1,
+          "position": 1,
+          "qubit": 1
+        },
+        {
+          "customer": 2,
+          "position": 1,
+          "qubit": 2
+        },
+        {
+          "customer": 3,
+          "position": 1,
+          "qubit": 3
+        },
+        {
+          "customer": 0,
+          "position": 2,
+          "qubit": 4
+        },
+        {
+          "customer": 1,
+          "position": 2,
+          "qubit": 5
+        },
+        {
+          "customer": 2,
+          "position": 2,
+          "qubit": 6
+        },
+        {
+          "customer": 3,
+          "position": 2,
+          "qubit": 7
+        },
+        {
+          "customer": 0,
+          "position": 3,
+          "qubit": 8
+        },
+        {
+          "customer": 1,
+          "position": 3,
+          "qubit": 9
+        },
+        {
+          "customer": 2,
+          "position": 3,
+          "qubit": 10
+        },
+        {
+          "customer": 3,
+          "position": 3,
+          "qubit": 11
+        }
+      ],
+      "QUBO_term_max_abs": 1.7763568394002505e-15,
+      "Ising_term_max_abs": 0.0,
+      "energy_max_abs": 1.1368683772161603e-13,
+      "basis_states_checked": 4096,
+      "native_terms": 67,
+      "qamomile_terms": 67,
+      "ising_terms": 70,
+      "constant_native": 62.405,
+      "constant_qamomile": 62.405,
+      "decode_errors": 0,
+      "classifications": {
+        "EMPTY_WALK": 1,
+        "VALID": 15,
+        "REPEATED_CUSTOMER": 30,
+        "CAPACITY_EXCEEDED": 18
+      },
+      "examples": {
+        "EMPTY_WALK": {
+          "mask": 273,
+          "sequence": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "energy": 6.0,
+          "capacity_residual": -3,
+          "ALiM": 6.0,
+          "decoded": [],
+          "missing_from_domain": [
+            1,
+            2,
+            3
+          ]
+        },
+        "VALID": {
+          "mask": 274,
+          "sequence": [
+            0,
+            1,
+            0,
+            0
+          ],
+          "energy": 3.3,
+          "capacity_residual": -2,
+          "ALiM": 2.0,
+          "decoded": [
+            [
+              1
+            ]
+          ],
+          "missing_from_domain": [
+            2,
+            3
+          ]
+        },
+        "REPEATED_CUSTOMER": {
+          "mask": 290,
+          "sequence": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "energy": 0.3999999999999997,
+          "capacity_residual": -1,
+          "ALiM": 0.0,
+          "decoded": [],
+          "missing_from_domain": [
+            2,
+            3
+          ]
+        },
+        "CAPACITY_EXCEEDED": {
+          "mask": 296,
+          "sequence": [
+            0,
+            3,
+            1,
+            0
+          ],
+          "energy": 1.4799999999999998,
+          "capacity_residual": 1,
+          "ALiM": 2.0,
+          "decoded": [],
+          "missing_from_domain": [
+            2
+          ]
+        }
+      },
+      "timings": [
+        {
+          "repetition": -1,
+          "warmup": true,
+          "native_build_s": 0.0002651119139045477,
+          "native_conversion_s": 2.598995342850685e-05,
+          "qamomile_build_s": 0.0005913828499615192,
+          "qamomile_conversion_s": 0.0002630110830068588,
+          "qamomile_total_s": 0.0008691640105098486,
+          "native_energy_s": 0.0014239668380469084,
+          "qamomile_energy_s": 0.0009283048566430807,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 0,
+          "warmup": false,
+          "native_build_s": 0.00024785101413726807,
+          "native_conversion_s": 2.3639993742108345e-05,
+          "qamomile_build_s": 0.0005626729689538479,
+          "qamomile_conversion_s": 0.00031788204796612263,
+          "qamomile_total_s": 0.0008877450600266457,
+          "native_energy_s": 0.0014894080813974142,
+          "qamomile_energy_s": 0.0009394851513206959,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 1,
+          "warmup": false,
+          "native_build_s": 0.0002333910670131445,
+          "native_conversion_s": 2.41999514400959e-05,
+          "qamomile_build_s": 0.000561713008210063,
+          "qamomile_conversion_s": 0.00024245097301900387,
+          "qamomile_total_s": 0.0008146439213305712,
+          "native_energy_s": 0.0014306579250842333,
+          "qamomile_energy_s": 0.0009248349815607071,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 2,
+          "warmup": false,
+          "native_build_s": 0.00022977101616561413,
+          "native_conversion_s": 2.283998765051365e-05,
+          "qamomile_build_s": 0.0005600729491561651,
+          "qamomile_conversion_s": 0.0002424411941319704,
+          "qamomile_total_s": 0.0008107940666377544,
+          "native_energy_s": 0.0015217980835586786,
+          "qamomile_energy_s": 0.0009415450040251017,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 3,
+          "warmup": false,
+          "native_build_s": 0.0002262410707771778,
+          "native_conversion_s": 2.262997440993786e-05,
+          "qamomile_build_s": 0.0005666629876941442,
+          "qamomile_conversion_s": 0.00023466208949685097,
+          "qamomile_total_s": 0.0008097339887171984,
+          "native_energy_s": 0.0014181970618665218,
+          "qamomile_energy_s": 0.0009270450100302696,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 4,
+          "warmup": false,
+          "native_build_s": 0.000230130972340703,
+          "native_conversion_s": 2.287980169057846e-05,
+          "qamomile_build_s": 0.0005615628324449062,
+          "qamomile_conversion_s": 0.0002361019141972065,
+          "qamomile_total_s": 0.0008059649262577295,
+          "native_energy_s": 0.001515046926215291,
+          "qamomile_energy_s": 0.0009216358885169029,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 5,
+          "warmup": false,
+          "native_build_s": 0.00022707111202180386,
+          "native_conversion_s": 2.3399945348501205e-05,
+          "qamomile_build_s": 0.000565582886338234,
+          "qamomile_conversion_s": 0.00023832102306187153,
+          "qamomile_total_s": 0.0008123740553855896,
+          "native_energy_s": 0.001463437918573618,
+          "qamomile_energy_s": 0.0009296038188040257,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 6,
+          "warmup": false,
+          "native_build_s": 0.0002265509683638811,
+          "native_conversion_s": 2.3239990696310997e-05,
+          "qamomile_build_s": 0.0005585530307143927,
+          "qamomile_conversion_s": 0.00023455102927982807,
+          "qamomile_total_s": 0.0008018140215426683,
+          "native_energy_s": 0.0015262479428201914,
+          "qamomile_energy_s": 0.0009249548893421888,
+          "evaluated_states": 64
+        }
+      ]
+    },
+    {
+      "nodes": 4,
+      "slots": 4,
+      "q": 12,
+      "penalty": "paper_literal",
+      "lambda_capacity": 0.7,
+      "lambda_visit": 2.3,
+      "variable_mapping": [
+        {
+          "customer": 0,
+          "position": 1,
+          "qubit": 0
+        },
+        {
+          "customer": 1,
+          "position": 1,
+          "qubit": 1
+        },
+        {
+          "customer": 2,
+          "position": 1,
+          "qubit": 2
+        },
+        {
+          "customer": 3,
+          "position": 1,
+          "qubit": 3
+        },
+        {
+          "customer": 0,
+          "position": 2,
+          "qubit": 4
+        },
+        {
+          "customer": 1,
+          "position": 2,
+          "qubit": 5
+        },
+        {
+          "customer": 2,
+          "position": 2,
+          "qubit": 6
+        },
+        {
+          "customer": 3,
+          "position": 2,
+          "qubit": 7
+        },
+        {
+          "customer": 0,
+          "position": 3,
+          "qubit": 8
+        },
+        {
+          "customer": 1,
+          "position": 3,
+          "qubit": 9
+        },
+        {
+          "customer": 2,
+          "position": 3,
+          "qubit": 10
+        },
+        {
+          "customer": 3,
+          "position": 3,
+          "qubit": 11
+        }
+      ],
+      "QUBO_term_max_abs": 1.7763568394002505e-15,
+      "Ising_term_max_abs": 7.105427357601002e-15,
+      "energy_max_abs": 2.2737367544323206e-13,
+      "basis_states_checked": 4096,
+      "native_terms": 67,
+      "qamomile_terms": 67,
+      "ising_terms": 70,
+      "constant_native": 58.355,
+      "constant_qamomile": 58.35499999999999,
+      "decode_errors": 0,
+      "classifications": {
+        "EMPTY_WALK": 1,
+        "VALID": 15,
+        "REPEATED_CUSTOMER": 30,
+        "CAPACITY_EXCEEDED": 18
+      },
+      "examples": {
+        "EMPTY_WALK": {
+          "mask": 273,
+          "sequence": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "energy": 4.199999999999999,
+          "capacity_residual": -3,
+          "ALiM": 4.199999999999999,
+          "decoded": [],
+          "missing_from_domain": [
+            1,
+            2,
+            3
+          ]
+        },
+        "VALID": {
+          "mask": 274,
+          "sequence": [
+            0,
+            1,
+            0,
+            0
+          ],
+          "energy": 2.6999999999999993,
+          "capacity_residual": -2,
+          "ALiM": 1.4,
+          "decoded": [
+            [
+              1
+            ]
+          ],
+          "missing_from_domain": [
+            2,
+            3
+          ]
+        },
+        "REPEATED_CUSTOMER": {
+          "mask": 290,
+          "sequence": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "energy": 0.3999999999999997,
+          "capacity_residual": -1,
+          "ALiM": 0.0,
+          "decoded": [],
+          "missing_from_domain": [
+            2,
+            3
+          ]
+        },
+        "CAPACITY_EXCEEDED": {
+          "mask": 296,
+          "sequence": [
+            0,
+            3,
+            1,
+            0
+          ],
+          "energy": 0.8800000000000001,
+          "capacity_residual": 1,
+          "ALiM": 1.4,
+          "decoded": [],
+          "missing_from_domain": [
+            2
+          ]
+        }
+      },
+      "timings": [
+        {
+          "repetition": -1,
+          "warmup": true,
+          "native_build_s": 0.0002548608463257551,
+          "native_conversion_s": 2.555013634264469e-05,
+          "qamomile_build_s": 0.0006374530494213104,
+          "qamomile_conversion_s": 0.0002710418775677681,
+          "qamomile_total_s": 0.0009276249911636114,
+          "native_energy_s": 0.001529657980427146,
+          "qamomile_energy_s": 0.0009112348780035973,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 0,
+          "warmup": false,
+          "native_build_s": 0.00022733095102012157,
+          "native_conversion_s": 2.3289816454052925e-05,
+          "qamomile_build_s": 0.0005811629816889763,
+          "qamomile_conversion_s": 0.00024322094395756721,
+          "qamomile_total_s": 0.0008341239299625158,
+          "native_energy_s": 0.001466528046876192,
+          "qamomile_energy_s": 0.000921834958717227,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 1,
+          "warmup": false,
+          "native_build_s": 0.00023021106608211994,
+          "native_conversion_s": 2.3789936676621437e-05,
+          "qamomile_build_s": 0.000563282985240221,
+          "qamomile_conversion_s": 0.00023722206242382526,
+          "qamomile_total_s": 0.0008093349169939756,
+          "native_energy_s": 0.0015148681122809649,
+          "qamomile_energy_s": 0.0009398448746651411,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 2,
+          "warmup": false,
+          "native_build_s": 0.0002264420036226511,
+          "native_conversion_s": 2.3139873519539833e-05,
+          "qamomile_build_s": 0.0005717030726373196,
+          "qamomile_conversion_s": 0.0002395310439169407,
+          "qamomile_total_s": 0.0008196139242500067,
+          "native_energy_s": 0.0014477770309895277,
+          "qamomile_energy_s": 0.0009226850233972073,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 3,
+          "warmup": false,
+          "native_build_s": 0.00022903108038008213,
+          "native_conversion_s": 2.277991734445095e-05,
+          "qamomile_build_s": 0.0005611530505120754,
+          "qamomile_conversion_s": 0.00023714103735983372,
+          "qamomile_total_s": 0.0008071539923548698,
+          "native_energy_s": 0.0015159780159592628,
+          "qamomile_energy_s": 0.0009051039814949036,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 4,
+          "warmup": false,
+          "native_build_s": 0.00022694095969200134,
+          "native_conversion_s": 2.305000089108944e-05,
+          "qamomile_build_s": 0.0005901828408241272,
+          "qamomile_conversion_s": 0.00023718085139989853,
+          "qamomile_total_s": 0.0008354838937520981,
+          "native_energy_s": 0.0014631280209869146,
+          "qamomile_energy_s": 0.0009159550536423922,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 5,
+          "warmup": false,
+          "native_build_s": 0.00022864085622131824,
+          "native_conversion_s": 2.262997440993786e-05,
+          "qamomile_build_s": 0.0005554528906941414,
+          "qamomile_conversion_s": 0.00025191111490130424,
+          "qamomile_total_s": 0.0008158551063388586,
+          "native_energy_s": 0.0015088769141584635,
+          "qamomile_energy_s": 0.000923265004530549,
+          "evaluated_states": 64
+        },
+        {
+          "repetition": 6,
+          "warmup": false,
+          "native_build_s": 0.00022846204228699207,
+          "native_conversion_s": 2.2819964215159416e-05,
+          "qamomile_build_s": 0.0005594519898295403,
+          "qamomile_conversion_s": 0.00023796199820935726,
+          "qamomile_total_s": 0.0008057639934122562,
+          "native_energy_s": 0.0014668169897049665,
+          "qamomile_energy_s": 0.0009162840433418751,
+          "evaluated_states": 64
+        }
+      ]
+    }
+  ],
+  "memory": {
+    "ru_maxrss_KiB": 159744,
+    "VmHWM_KiB": 163328,
+    "threads": 1
+  },
+  "ALiM_policy": "explicit lambda*(h+h*h) via BinaryExpr; no automatic OMMX penalty/slack conversion",
+  "source_change": "independent code only; production files unchanged"
+}

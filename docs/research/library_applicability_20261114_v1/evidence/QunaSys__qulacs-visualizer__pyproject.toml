@@ -1,0 +1,47 @@
+[tool.poetry]
+name = "qulacsvis"
+version = "0.7.6"
+readme = "README.md"
+description = "visualizers for qulacs"
+repository = "https://github.com/Qulacs-Osaka/qulacs-visualizer"
+homepage = "https://github.com/Qulacs-Osaka/qulacs-visualizer"
+documentation = "https://qulacs-osaka.github.io/qulacs-visualizer"
+authors = ["Qulacs-Osaka <you@example.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+Qulacs = ">=0.5.0"
+temp = "^2020.7.2"
+Pillow = "^10.4.0"
+numpy = ">=1.24.0"
+matplotlib = "^3.4.3"
+dataclasses-json = ">=0.5"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^6.2.5"
+Sphinx = "^5.0.0"
+sphinx-rtd-theme = "^1.0.0"
+black = "^22.3.0"
+flake8 = "^6.0.0"
+mypy = "^0.910"
+isort = "^5.10.1"
+pytest-mpl = "^0.13"
+skqulacs = ">=0.5.0"
+scipy = [
+    { version = "^1.10.0", python = ">=3.9" },
+    { version = "^1.14.1", python = ">=3.13" }
+]
+
+[tool.isort]
+default_section = "THIRDPARTY"
+ensure_newline_before_comments = true
+force_grid_wrap = 0
+force_single_line = false
+include_trailing_comma = true
+multi_line_output = 3
+use_parentheses = true
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

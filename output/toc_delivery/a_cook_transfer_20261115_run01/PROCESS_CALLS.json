@@ -1,0 +1,219 @@
+[
+  {
+    "command": [
+      "/opt/miniconda/bin/python3.13",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/analyze_zone_id_order_main.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/training_routes.json",
+      "--s_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_plan03/training_actual.json",
+      "--out_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/model.json"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01",
+    "label": "model_training",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/000_model_training.log",
+    "pid": 3149523,
+    "returncode": 0,
+    "wall_s": 0.5094327400438488
+  },
+  {
+    "command": [
+      "/opt/miniconda/bin/python3.13",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/build_TSPLIB.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_public_zones/route_data.json",
+      "--t_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_public_zones/travel_times.json",
+      "--p_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_public_zones/package_stop_order.json",
+      "--z_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/model.json",
+      "--br_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/training_routes.json",
+      "-noPrune",
+      "-noPruneFailed",
+      "-zoneNeighborTrans",
+      "-superNeighborTrans",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_public_zones/author_path"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_public_zones",
+    "label": "Cook_public_zones_author_path_prepare",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/001_Cook_public_zones_author_path_prepare.log",
+    "pid": 3149572,
+    "returncode": 1,
+    "wall_s": 0.4530212169047445
+  },
+  {
+    "command": [
+      "/opt/miniconda/bin/python3.13",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/build_TSPLIB.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_no_station_history/route_data.json",
+      "--t_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_no_station_history/travel_times.json",
+      "--p_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_no_station_history/package_stop_order.json",
+      "--z_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/model_no_station_history.json",
+      "--br_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/training_routes.json",
+      "-noPrune",
+      "-noPruneFailed",
+      "-zoneNeighborTrans",
+      "-superNeighborTrans",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_no_station_history/author_path"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_no_station_history",
+    "label": "Cook_no_station_history_author_path_prepare",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/002_Cook_no_station_history_author_path_prepare.log",
+    "pid": 3149603,
+    "returncode": 1,
+    "wall_s": 0.4538901699706912
+  },
+  {
+    "command": [
+      "/opt/miniconda/bin/python3.13",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/build_TSPLIB.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_auto_zones/route_data.json",
+      "--t_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_auto_zones/travel_times.json",
+      "--p_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_auto_zones/package_stop_order.json",
+      "--z_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/model_no_station_history.json",
+      "--br_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/training_routes.json",
+      "-noPrune",
+      "-noPruneFailed",
+      "-zoneNeighborTrans",
+      "-superNeighborTrans",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_auto_zones/author_path"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_auto_zones",
+    "label": "Cook_auto_zones_author_path_prepare",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/003_Cook_auto_zones_author_path_prepare.log",
+    "pid": 3149622,
+    "returncode": 1,
+    "wall_s": 0.5060707188677043
+  },
+  {
+    "command": [
+      "/opt/miniconda/bin/python3.13",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/build_TSPLIB.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_no_zones/route_data.json",
+      "--t_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_no_zones/travel_times.json",
+      "--p_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_no_zones/package_stop_order.json",
+      "--z_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/model.json",
+      "--br_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/training_routes.json",
+      "-noPrune",
+      "-noPruneFailed",
+      "-zoneNeighborTrans",
+      "-superNeighborTrans",
+      "-noZone",
+      "-noZonePred",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_no_zones/author_path"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/Cook_no_zones",
+    "label": "Cook_no_zones_author_path_prepare",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/004_Cook_no_zones_author_path_prepare.log",
+    "pid": 3149645,
+    "returncode": 1,
+    "wall_s": 0.5035999480169266
+  },
+  {
+    "command": [
+      "/opt/miniconda/bin/python3.13",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/build_TSPLIB.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/repeat_same_station_future/route_data.json",
+      "--t_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/repeat_same_station_future/travel_times.json",
+      "--p_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/repeat_same_station_future/package_stop_order.json",
+      "--z_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/model.json",
+      "--br_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/training_routes.json",
+      "-noPrune",
+      "-noPruneFailed",
+      "-zoneNeighborTrans",
+      "-superNeighborTrans",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/repeat_same_station_future/author_path"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/repeat_same_station_future",
+    "label": "Cook_public_zones_author_path_prepare",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/005_Cook_public_zones_author_path_prepare.log",
+    "pid": 3149681,
+    "returncode": 1,
+    "wall_s": 0.4537221158389002
+  },
+  {
+    "command": [
+      "/opt/miniconda/bin/python3.13",
+      "/home/takuma/.cache/kmd-analysis/external/cook_jpt_amz_dc4ebc0_20261115_v1/scripts/build_TSPLIB.py",
+      "--r_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/repeat_unknown_station/route_data.json",
+      "--t_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/repeat_unknown_station/travel_times.json",
+      "--p_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/repeat_unknown_station/package_stop_order.json",
+      "--z_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/model.json",
+      "--br_file",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/training_routes.json",
+      "-noPrune",
+      "-noPruneFailed",
+      "-zoneNeighborTrans",
+      "-superNeighborTrans",
+      "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/repeat_unknown_station/author_path"
+    ],
+    "cwd": "/home/takuma/kmd-analysis/output/toc_delivery/a_cook_transfer_20261115_run01/repeat_unknown_station",
+    "label": "Cook_public_zones_author_path_prepare",
+    "native_threads": 1,
+    "affinity": [
+      0
+    ],
+    "wall_timeout_s": 45,
+    "log": "logs/006_Cook_public_zones_author_path_prepare.log",
+    "pid": 3149705,
+    "returncode": 1,
+    "wall_s": 0.45311490492895246
+  }
+]

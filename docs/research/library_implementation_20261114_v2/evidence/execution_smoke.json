@@ -1,0 +1,62 @@
+{
+  "phase": "smoke",
+  "CPU_ids": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "python": "3.11.15 (main, Jun 11 2026, 15:20:16) [GCC 14.3.0]",
+  "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+  "jobs": [
+    {
+      "name": "smoke_N6_1101_legacy_quri",
+      "argv": [
+        "/home/takuma/kmd-analysis/docs/research/library_implementation_20261114_v2/code/trial_driver.py",
+        "/home/takuma/kmd-analysis/docs/research/library_implementation_20261114_v2/evidence/trials/smoke_N6_1101_legacy_quri/spec.json"
+      ],
+      "returncode": 1,
+      "wall_including_import_output_s": 10.131636471953243,
+      "executor_tree_peak_RSS_KiB_sampled_10ms": 252824,
+      "parallel": true,
+      "log": "evidence/logs/smoke_smoke_N6_1101_legacy_quri_0.log"
+    },
+    {
+      "name": "smoke_N6_1101_legacy_quri",
+      "argv": [
+        "/home/takuma/kmd-analysis/docs/research/library_implementation_20261114_v2/code/trial_driver.py",
+        "/home/takuma/kmd-analysis/docs/research/library_implementation_20261114_v2/evidence/trials/smoke_N6_1101_legacy_quri/spec.json"
+      ],
+      "returncode": 0,
+      "wall_including_import_output_s": 14.783666305942461,
+      "executor_tree_peak_RSS_KiB_sampled_10ms": 1370796,
+      "parallel": true,
+      "log": "evidence/logs/smoke_smoke_N6_1101_legacy_quri_1.log"
+    },
+    {
+      "name": "smoke_N6_1101_updated_quri",
+      "argv": [
+        "/home/takuma/kmd-analysis/docs/research/library_implementation_20261114_v2/code/trial_driver.py",
+        "/home/takuma/kmd-analysis/docs/research/library_implementation_20261114_v2/evidence/trials/smoke_N6_1101_updated_quri/spec.json"
+      ],
+      "returncode": 0,
+      "wall_including_import_output_s": 13.00178528088145,
+      "executor_tree_peak_RSS_KiB_sampled_10ms": 1337564,
+      "parallel": true,
+      "log": "evidence/logs/smoke_smoke_N6_1101_updated_quri_0.log"
+    },
+    {
+      "name": "smoke_N6_1101_updated_qamomile_quri",
+      "argv": [
+        "/home/takuma/kmd-analysis/docs/research/library_implementation_20261114_v2/code/trial_driver.py",
+        "/home/takuma/kmd-analysis/docs/research/library_implementation_20261114_v2/evidence/trials/smoke_N6_1101_updated_qamomile_quri/spec.json"
+      ],
+      "returncode": 0,
+      "wall_including_import_output_s": 14.558008858002722,
+      "executor_tree_peak_RSS_KiB_sampled_10ms": 1336916,
+      "parallel": true,
+      "log": "evidence/logs/smoke_smoke_N6_1101_updated_qamomile_quri_0.log"
+    }
+  ],
+  "memory_limit_GiB_per_process": 4
+}

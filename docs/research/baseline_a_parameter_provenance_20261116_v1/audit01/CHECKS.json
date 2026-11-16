@@ -1,0 +1,2025 @@
+{
+  "purpose": "documentation provenance/value/link/preservation audit; NOT solver tests or empirical validation",
+  "checked_utc": "2026-11-16T04:18:56.359042+00:00",
+  "checks": [
+    {
+      "check": "common.operations.demand_per_stop",
+      "actual": 1,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "check": "common.operations.capacity_per_trip",
+      "actual": 60,
+      "expected": 60,
+      "passed": true
+    },
+    {
+      "check": "common.operations.max_trips_per_vehicle",
+      "actual": 2,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "check": "common.operations.service_s",
+      "actual": 120,
+      "expected": 120,
+      "passed": true
+    },
+    {
+      "check": "common.operations.loading_s",
+      "actual": 1800,
+      "expected": 1800,
+      "passed": true
+    },
+    {
+      "check": "common.operations.preparation_s",
+      "actual": 0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "check": "common.operations.opening_s",
+      "actual": 28800,
+      "expected": 28800,
+      "passed": true
+    },
+    {
+      "check": "common.operations.closing_s",
+      "actual": 72000,
+      "expected": 72000,
+      "passed": true
+    },
+    {
+      "check": "common.operations.first_ready_span_s",
+      "actual": 3600,
+      "expected": 3600,
+      "passed": true
+    },
+    {
+      "check": "operational_values_measured",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "check": "customer_time_windows",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "check": "unused_vehicles_allowed",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "first_ready_rule",
+      "actual": "opening_s + (3600 * (2*v+1)) // (2*V)",
+      "expected": "opening_s + (3600 * (2*v+1)) // (2*V)",
+      "passed": true
+    },
+    {
+      "check": "v1_0_preparation",
+      "actual": 900,
+      "expected": 900,
+      "passed": true
+    },
+    {
+      "check": "v1_1_changed_operations",
+      "actual": [
+        "preparation_s"
+      ],
+      "expected": [
+        "preparation_s"
+      ],
+      "passed": true
+    },
+    {
+      "check": "S1.counts",
+      "actual": {
+        "stops": 1000,
+        "vehicles": 10,
+        "berths": 2
+      },
+      "expected": {
+        "stops": 1000,
+        "vehicles": 10,
+        "berths": 2
+      },
+      "passed": true
+    },
+    {
+      "check": "S1.input_counts",
+      "actual": [
+        1000,
+        10,
+        2
+      ],
+      "expected": [
+        1000,
+        10,
+        2
+      ],
+      "passed": true
+    },
+    {
+      "check": "S1.demand",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "S1.vehicles",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "S1.berths",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "S1.Route",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "check": "S1.directed",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "S1.static",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "check": "S1.version",
+      "actual": "5.27.1",
+      "expected": "5.27.1",
+      "passed": true
+    },
+    {
+      "check": "S1.OSM_time",
+      "actual": "2026-07-16T20:21:30Z",
+      "expected": "2026-07-16T20:21:30Z",
+      "passed": true
+    },
+    {
+      "check": "S1.FCFS_initial_only_arithmetic",
+      "actual": 360.0,
+      "expected": 360,
+      "passed": true
+    },
+    {
+      "check": "S2.counts",
+      "actual": {
+        "stops": 2000,
+        "vehicles": 20,
+        "berths": 4
+      },
+      "expected": {
+        "stops": 2000,
+        "vehicles": 20,
+        "berths": 4
+      },
+      "passed": true
+    },
+    {
+      "check": "S2.input_counts",
+      "actual": [
+        2000,
+        20,
+        4
+      ],
+      "expected": [
+        2000,
+        20,
+        4
+      ],
+      "passed": true
+    },
+    {
+      "check": "S2.demand",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "S2.vehicles",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "S2.berths",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "S2.Route",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "check": "S2.directed",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "S2.static",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "check": "S2.version",
+      "actual": "5.27.1",
+      "expected": "5.27.1",
+      "passed": true
+    },
+    {
+      "check": "S2.OSM_time",
+      "actual": "2026-07-16T20:21:30Z",
+      "expected": "2026-07-16T20:21:30Z",
+      "passed": true
+    },
+    {
+      "check": "S2.FCFS_initial_only_arithmetic",
+      "actual": 720.0,
+      "expected": 720,
+      "passed": true
+    },
+    {
+      "check": "S3.counts",
+      "actual": {
+        "stops": 4000,
+        "vehicles": 40,
+        "berths": 8
+      },
+      "expected": {
+        "stops": 4000,
+        "vehicles": 40,
+        "berths": 8
+      },
+      "passed": true
+    },
+    {
+      "check": "S3.input_counts",
+      "actual": [
+        4000,
+        40,
+        8
+      ],
+      "expected": [
+        4000,
+        40,
+        8
+      ],
+      "passed": true
+    },
+    {
+      "check": "S3.demand",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "S3.vehicles",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "S3.berths",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "S3.Route",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "check": "S3.directed",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "S3.static",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "check": "S3.version",
+      "actual": "5.27.1",
+      "expected": "5.27.1",
+      "passed": true
+    },
+    {
+      "check": "S3.OSM_time",
+      "actual": "2026-07-16T20:21:30Z",
+      "expected": "2026-07-16T20:21:30Z",
+      "passed": true
+    },
+    {
+      "check": "S3.FCFS_initial_only_arithmetic",
+      "actual": 1440.0,
+      "expected": 1440,
+      "passed": true
+    },
+    {
+      "check": "frozen:configs/toc_delivery/a_rule_v1_20261115.json",
+      "actual": "b83288eb3feb5dd322c848341a5c17237b261812cafffc2d73a47c86bd40870d",
+      "expected": "b83288eb3feb5dd322c848341a5c17237b261812cafffc2d73a47c86bd40870d",
+      "passed": true
+    },
+    {
+      "check": "frozen:configs/toc_delivery/a_rule_v1_20261115_berth_sensitivity.json",
+      "actual": "32bc17225f4fbe553321619df7285684bd44c6b5e26a03fc1f2722c58d32281d",
+      "expected": "32bc17225f4fbe553321619df7285684bd44c6b5e26a03fc1f2722c58d32281d",
+      "passed": true
+    },
+    {
+      "check": "frozen:scripts/run_a_rule_v1.py",
+      "actual": "57784cf187bfa09076e6953b3dd4905953c8435d3389847df0a735089f840fc6",
+      "expected": "57784cf187bfa09076e6953b3dd4905953c8435d3389847df0a735089f840fc6",
+      "passed": true
+    },
+    {
+      "check": "frozen:src/kmd_toc/baseline_a/rule_inputs.py",
+      "actual": "d39d8009afe185d62ff29dc158611c193817aaa72a807788077b607d8d68da7b",
+      "expected": "d39d8009afe185d62ff29dc158611c193817aaa72a807788077b607d8d68da7b",
+      "passed": true
+    },
+    {
+      "check": "frozen:src/kmd_toc/baseline_a/rule_v1.py",
+      "actual": "1ed48568fddc42dd612f5efaf59f3dcad5d44b61c3eede9447e7551b671e4bd9",
+      "expected": "1ed48568fddc42dd612f5efaf59f3dcad5d44b61c3eede9447e7551b671e4bd9",
+      "passed": true
+    },
+    {
+      "check": "frozen:src/kmd_toc/baseline_a/rule_validation.py",
+      "actual": "33aedab1ca614c7b33f57bed1aae094fa265017e50644a4b5ff2a2e98665986b",
+      "expected": "33aedab1ca614c7b33f57bed1aae094fa265017e50644a4b5ff2a2e98665986b",
+      "passed": true
+    },
+    {
+      "check": "frozen:tests/toc_baseline_a/test_rule_v1.py",
+      "actual": "2ad9fb49da8f708ca17806d7193f4a305fe4cb9c4e2f5d903bd342db4f95e489",
+      "expected": "2ad9fb49da8f708ca17806d7193f4a305fe4cb9c4e2f5d903bd342db4f95e489",
+      "passed": true
+    },
+    {
+      "check": "A.algorithm.initial_angle_deg",
+      "actual": 0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "check": "A.algorithm.max_moves",
+      "actual": "V",
+      "expected": "V",
+      "passed": true
+    },
+    {
+      "check": "A.algorithm.objective",
+      "actual": [
+        "O_s",
+        "H_s2"
+      ],
+      "expected": [
+        "O_s",
+        "H_s2"
+      ],
+      "passed": true
+    },
+    {
+      "check": "A.algorithm.acceptance",
+      "actual": "first strict lexicographic improvement",
+      "expected": "first strict lexicographic improvement",
+      "passed": true
+    },
+    {
+      "check": "A.algorithm.orderer",
+      "actual": "nearest_order",
+      "expected": "nearest_order",
+      "passed": true
+    },
+    {
+      "check": "A.algorithm.fcfs",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "source_token:range(0, len(order), 60)",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "source_token:clock += 120",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "source_token:math.ceil(t)",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "source_token:for _ in range(len(p.vehicles))",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "source_token:candidate_state['objective'] < state['objective']",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "saved_S2_plan:a_rule_v1_20261115_checks01_S2_b4_r1",
+      "actual": "64114d3fed738a14198c0958a4c3cdd6bafb9c9d81926bdaf276250bd651f4d9",
+      "expected": "64114d3fed738a14198c0958a4c3cdd6bafb9c9d81926bdaf276250bd651f4d9",
+      "passed": true
+    },
+    {
+      "check": "saved_S2_reported_hash:a_rule_v1_20261115_checks01_S2_b4_r1",
+      "actual": "64114d3fed738a14198c0958a4c3cdd6bafb9c9d81926bdaf276250bd651f4d9",
+      "expected": "64114d3fed738a14198c0958a4c3cdd6bafb9c9d81926bdaf276250bd651f4d9",
+      "passed": true
+    },
+    {
+      "check": "saved_S2_plan:a_rule_v1_20261115_checks01_S2_b4_r2",
+      "actual": "64114d3fed738a14198c0958a4c3cdd6bafb9c9d81926bdaf276250bd651f4d9",
+      "expected": "64114d3fed738a14198c0958a4c3cdd6bafb9c9d81926bdaf276250bd651f4d9",
+      "passed": true
+    },
+    {
+      "check": "saved_S2_reported_hash:a_rule_v1_20261115_checks01_S2_b4_r2",
+      "actual": "64114d3fed738a14198c0958a4c3cdd6bafb9c9d81926bdaf276250bd651f4d9",
+      "expected": "64114d3fed738a14198c0958a4c3cdd6bafb9c9d81926bdaf276250bd651f4d9",
+      "passed": true
+    },
+    {
+      "check": "saved_S2_count",
+      "actual": 2,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "check": "saved_attempt_count",
+      "actual": 6,
+      "expected": 6,
+      "passed": true
+    },
+    {
+      "check": "saved_failure_retained",
+      "actual": 1,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P01 配送単位",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P02 車両容量",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P03 最大便数",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P04 積込時間・占有",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P05 配達作業時間",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P06 追加準備",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P07 勤務・運行枠",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P08 初便ready",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P09 地点数",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P10 車両数",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P11 バース数",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P17 顧客時間窓",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P18 配送地点生成",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P19 道路距離・時間",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P20 時間丸め",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P21 空車両・空便",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P22 単一拠点・対象域",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P12 訪問順",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P13 初期区域",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P14 積込順",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P15 区域調整",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P16 調整上限",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_column_count:P23 計算資源と時間の意味",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "check": "provenance_ID_coverage",
+      "actual": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P08",
+        "P09",
+        "P10",
+        "P11",
+        "P12",
+        "P13",
+        "P14",
+        "P15",
+        "P16",
+        "P17",
+        "P18",
+        "P19",
+        "P20",
+        "P21",
+        "P22",
+        "P23"
+      ],
+      "expected": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P08",
+        "P09",
+        "P10",
+        "P11",
+        "P12",
+        "P13",
+        "P14",
+        "P15",
+        "P16",
+        "P17",
+        "P18",
+        "P19",
+        "P20",
+        "P21",
+        "P22",
+        "P23"
+      ],
+      "passed": true
+    },
+    {
+      "check": "no_duplicate_parameter_IDs",
+      "actual": 23,
+      "expected": 23,
+      "passed": true
+    },
+    {
+      "check": "unknown_choice_reason_explicit",
+      "actual": false,
+      "expected": true,
+      "passed": false
+    },
+    {
+      "check": "six_main_sections",
+      "actual": 6,
+      "expected": 6,
+      "passed": true
+    },
+    {
+      "check": "matrix_all_parameters",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "essay_distinguishes_102_120",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "essay_distinguishes_role_and_initial_reason",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "artifact_exists:PARAMETER_PROVENANCE.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:PARAMETER_PROVENANCE.md:SOURCES.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:PARAMETER_PROVENANCE.md:GIT_HISTORY_AUDIT.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "artifact_exists:BASELINE_A_EXPLANATION_REVISED_JA.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r06",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r06",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r02",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r02",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r02",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r02",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r06",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r06",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r07",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r07",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r08",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r08",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r03",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r03",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r07",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r07",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r09",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r09",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r02",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r02",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:../../../investigations/lastmile_single_depot_20261105/japan_carrier_comparison/COMPARISON.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r02",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r02",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r03",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r03",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r02",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r02",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r02",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r02",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r02",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r02",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r02",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r02",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r04",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r04",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r04",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r04",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r06",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r06",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r06",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r06",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r06",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r06",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r06",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r06",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r01",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r05",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r06",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r06",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:BASELINE_A_EXPLANATION_REVISED_JA.md:SOURCES.md#r08",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "anchor:SOURCES.md#r08",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "artifact_exists:PARAMETER_EVIDENCE_MATRIX.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:PARAMETER_EVIDENCE_MATRIX.md:SOURCES.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:PARAMETER_EVIDENCE_MATRIX.md:PARAMETER_PROVENANCE.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "artifact_exists:WRITING_REVIEW.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:WRITING_REVIEW.md:BASELINE_A_EXPLANATION_REVISED_JA.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:WRITING_REVIEW.md:audit_writing.py",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "artifact_exists:FINAL_REPORT_JA.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:FINAL_REPORT_JA.md:SOURCES.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:FINAL_REPORT_JA.md:GIT_HISTORY_AUDIT.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:FINAL_REPORT_JA.md:BCD_CONFIG_HISTORY_READ.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:FINAL_REPORT_JA.md:PARAMETER_PROVENANCE.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:FINAL_REPORT_JA.md:SOURCE_ACCESS_LOG.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:FINAL_REPORT_JA.md:SOURCE_ACCESS_SUPPLEMENT.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:FINAL_REPORT_JA.md:WRITING_REVIEW.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:FINAL_REPORT_JA.md:PARAMETER_EVIDENCE_MATRIX.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:FINAL_REPORT_JA.md:BASELINE_A_EXPLANATION_REVISED_JA.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "artifact_exists:SOURCES.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:sources/S01.html",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../baseline_a_redesign_20261113_v2/BASELINE_A_EVIDENCE.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:sources/S02.html",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:sources/S03a.pdf",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:sources/S03b.pdf",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:sources/S04.pdf",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:sources/web_primary_2.txt",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:sources/S05.html",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:sources/S09.html",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:sources/S09b.html",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:sources/S12.html",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:sources/S13.pdf",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:sources/S13.txt",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../investigations/lastmile_single_depot_20261105/japan_carrier_comparison/COMPARISON.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../investigations/lastmile_single_depot_20261105/japan_carrier_comparison/evidence_ledger.csv",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:sources/S14b.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:SOURCE_ACCESS_LOG.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../configs/toc_delivery/common_conditions_v1.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../configs/toc_delivery/common_conditions_v1_1.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../toc_delivery_common/COMMON_CONDITIONS_V1.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../TOC_DELIVERY_SPEC.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../configs/toc_delivery/study.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../docs/audits/toc_scope_20261108/source_plan_original.docx",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../research_plan_toc_three_objectives_faceted_20261108.docx",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../docs/audits/toc_scope_20261108/DOCX_CHANGES.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:source_plan_original_TEXT.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:research_plan_toc_three_objectives_faceted_20261108_TEXT.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../QUANTITATIVE_GUIDE.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../RESEARCH_BASELINE_20261009.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../investigations/lastmile_single_depot_20261105/parameter_decisions.csv",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../investigations/lastmile_single_depot_20261105/probes/local_input_audit.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../toc_delivery_a/A_RULE_BASELINE_SPEC.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../toc_delivery_a/A_RULE_IMPLEMENTATION_PLAN.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../configs/toc_delivery/a_rule_baseline_v1.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../baseline_a_redesign_20261113_v2/BASELINE_A_EVIDENCE.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../baseline_a_redesign_20261113_v2/BASELINE_A_SPEC.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../baseline_a_area_v3_20261115/BASELINE_A_SPEC.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../baseline_a_rule_v1_20261115/BASELINE_A_RULE_SPEC.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../baseline_a_rule_v1_20261115/ASSUMPTION_AND_CHANGE_LOG.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../baseline_a_rule_v1_20261115/EXPERIMENT_CONTRACT.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../baseline_a_rule_v1_20261115/FINAL_REPORT_JA.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../baseline_a_rule_v1_20261115/DECISION.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../configs/toc_delivery/a_rule_v1_20261115.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../src/kmd_toc/baseline_a/rule_v1.py",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../src/kmd_toc/baseline_a/rule_inputs.py",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../src/kmd_toc/baseline_a/rule_validation.py",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../scripts/run_a_rule_v1.py",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../comparison_integration_v1_20261115/COMPARISON_CONTRACT.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../comparison_integration_v1_20261115/A_INTEGRATION_SPEC.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../comparison_integration_v1_20261115/REFERENCE_AND_AGGREGATION_SPEC.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../comparison_integration_v1_20261115/COMPLETION_STATUS.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../configs/toc_delivery/dwt_balance_v1_4_cpu_parallel.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../scripts/run_comparison_v1.py",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:BCD_CONFIG_HISTORY_READ.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../configs/toc_delivery/frozen_demand_v1.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/READING_CONTRACT.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../TOC_DELIVERY_SPEC.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../baseline_a_existing_data_audit_20261115_v1/DATA_USAGE_LEDGER.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../baseline_a_existing_data_audit_20261115_v1/run02/DATA_LINEAGE_CHECKS.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../../../output/toc_delivery/ad_pipeline_20261112_route_v2/roads/inputs/S2/od/manifest.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../baseline_a_rule_v1_20261115/ALL_ATTEMPTS.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../baseline_a_rule_v1_20261115/REPRODUCIBILITY.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:../baseline_a_rule_v1_20261115/REPRODUCE.md",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:GIT_HISTORY_AUDIT.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:GIT_STATUS_BEFORE.txt",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:SOURCE_ACCESS_LOG.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "local_link:SOURCES.md:SOURCE_ACCESS_SUPPLEMENT.json",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "source_saved_hash:S01",
+      "actual": "95deb465545d52b8d8ac11572a8fc64776cbd68b20ddb98bbd91c444c938d50c",
+      "expected": "95deb465545d52b8d8ac11572a8fc64776cbd68b20ddb98bbd91c444c938d50c",
+      "passed": true
+    },
+    {
+      "check": "source_saved_hash:S02",
+      "actual": "24357c481030a068d1fe9e94b5340b53242e08324bb5030e738a34f37915f3f7",
+      "expected": "24357c481030a068d1fe9e94b5340b53242e08324bb5030e738a34f37915f3f7",
+      "passed": true
+    },
+    {
+      "check": "source_saved_hash:S03a",
+      "actual": "72ec11318f4b5e5447225413fd09d84288209597cc2f47f7023966a987c88918",
+      "expected": "72ec11318f4b5e5447225413fd09d84288209597cc2f47f7023966a987c88918",
+      "passed": true
+    },
+    {
+      "check": "source_saved_hash:S03b",
+      "actual": "89fd40abd275cec93c00452b67a25aa466730159b72cd6cdbb0291f2c2467745",
+      "expected": "89fd40abd275cec93c00452b67a25aa466730159b72cd6cdbb0291f2c2467745",
+      "passed": true
+    },
+    {
+      "check": "source_saved_hash:S04",
+      "actual": "41f8a9b947e7857b825c494777ee1d206a883b80b1fb1da6124e186cd9804656",
+      "expected": "41f8a9b947e7857b825c494777ee1d206a883b80b1fb1da6124e186cd9804656",
+      "passed": true
+    },
+    {
+      "check": "source_saved_hash:S05",
+      "actual": "d02032286070b4dd9d8fbd985a7bdca8af8edf52b89ff177db3bfcb2c8a9c43d",
+      "expected": "d02032286070b4dd9d8fbd985a7bdca8af8edf52b89ff177db3bfcb2c8a9c43d",
+      "passed": true
+    },
+    {
+      "check": "source_saved_hash:S09",
+      "actual": "ad64b90ce25d9119a34f1d6b16485aff6d6918188475594c2c057223a729f2d3",
+      "expected": "ad64b90ce25d9119a34f1d6b16485aff6d6918188475594c2c057223a729f2d3",
+      "passed": true
+    },
+    {
+      "check": "source_saved_hash:S12",
+      "actual": "52e527ce049a48db7636369651df6edde6d3df142f7724aef24d16ffd86179e6",
+      "expected": "52e527ce049a48db7636369651df6edde6d3df142f7724aef24d16ffd86179e6",
+      "passed": true
+    },
+    {
+      "check": "source_saved_hash:S13",
+      "actual": "02d00647d14158d8d5514250cd182e0ccfe08d0c06ed45c29d1bdec14e1b6c24",
+      "expected": "02d00647d14158d8d5514250cd182e0ccfe08d0c06ed45c29d1bdec14e1b6c24",
+      "passed": true
+    },
+    {
+      "check": "source_saved_hash:S09b",
+      "actual": "f3fb6b019b8f9c7269fcf02c2bac4590e9317478004bf6933dac3d7d45109732",
+      "expected": "f3fb6b019b8f9c7269fcf02c2bac4590e9317478004bf6933dac3d7d45109732",
+      "passed": true
+    },
+    {
+      "check": "source_saved_hash:S14b",
+      "actual": "060722b2f92ed15ae2abc1f68b9baeac9ae16b884421d06d45bc763fa04c1ebd",
+      "expected": "060722b2f92ed15ae2abc1f68b9baeac9ae16b884421d06d45bc763fa04c1ebd",
+      "passed": true
+    },
+    {
+      "check": "job_tag_direct_body_not_claimed",
+      "actual": "HTTP_SUCCESS_BODY_NOT_CONFIRMED_USE_WEB_VIEW",
+      "expected": "HTTP_SUCCESS_BODY_NOT_CONFIRMED_USE_WEB_VIEW",
+      "passed": true
+    },
+    {
+      "check": "job_tag_browser_body_confirmed",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "protected_asset_changes",
+      "actual": [
+        {
+          "path": "configs/toc_delivery/comparison_design_20261116_v1.json",
+          "before": "9b8991b17244e8ca5696a0027f1d6eda6e2b12292ea752660bd465abd849c2a2",
+          "after": "4ad226e186b16c8d42fa3aa2fd448425575dc8cc202e5f78152c18abdc9f47e4"
+        },
+        {
+          "path": "src/kmd_toc/comparison_v1/__pycache__/contract.cpython-313.pyc",
+          "before": "c8d2bfcaabae26a41ee8d852d04c3f63adbabd005b49cad3102f82c89be6d84e",
+          "after": "8457ad9eb4c509154d36bee186b54d0a225129e152eab3f441aea063ca44a66e"
+        },
+        {
+          "path": "src/kmd_toc/comparison_v1/__pycache__/evaluation.cpython-313.pyc",
+          "before": "86a97f6799b86f5371b4892de9bae82e8a2b81fceed0a8626376a0df529fe28c",
+          "after": "2f45e8cc12fe2f214f3ec76f306375acbfaf391795cedbe923a99f662aa7967c"
+        },
+        {
+          "path": "src/kmd_toc/comparison_v1/contract.py",
+          "before": "5e13d4ef868b43ba85f95b5cf89da4367db22f4b5975d95c91db87f70b12d786",
+          "after": "99e09228e3477925c054b53baf31bf9fd367643b8b1fe85604c3e8cee4f633e4"
+        },
+        {
+          "path": "src/kmd_toc/comparison_v1/design.py",
+          "before": "087114e0d5f68d007e1bdafec1ff71e3fe000b12e373f7c79e865da2ed5e9367",
+          "after": "b5d10c2d2cacfaf1a2bf7e1d5a2b28357e77f101a1e84301bf959b19024a152c"
+        },
+        {
+          "path": "src/kmd_toc/comparison_v1/execution.py",
+          "before": "e2de5ebf08275660478d96e7339f2ae5ecc9e134eec889b7914a9713fd7f5b4e",
+          "after": "a271e5baae8a479dc373fd4b268257667539e1801ac8c200b52e7534e8130c25"
+        },
+        {
+          "path": "src/kmd_toc/dwt/__pycache__/methods.cpython-312.pyc",
+          "before": "bfe382942fd4558264e0b3ed3155a3cc2c8352edc5a6cbeff0d6272deadafe20",
+          "after": "de8724ee7dbd38debcdc05c8b7b3248e6a97123cd7f4bd9ba9f14d67a271c5c1"
+        },
+        {
+          "path": "src/kmd_toc/dwt/methods.py",
+          "before": "7db39edbcbb7a53568ee1a8a101874fa34a2aaf661b23f2c6f39e36e6534356a",
+          "after": "dec8205b90c8d99592edc4cc621fe7b79ec9c9ef8f76061ffdc8007a8508e945"
+        },
+        {
+          "path": "src/kmd_toc/dwt/worker.py",
+          "before": "a675e139b97e815435c2f9571716c1778adc86230e4f230d54abf627359dd035",
+          "after": "9866e0a19ae900187b2d8a3c58683fea9854684878997a501dfad222c9ad9422"
+        }
+      ],
+      "expected": [],
+      "passed": false
+    },
+    {
+      "check": "HEAD_preserved",
+      "actual": "8605d5412f6af62229a83095c35ab04c8c7dd9b1",
+      "expected": "8605d5412f6af62229a83095c35ab04c8c7dd9b1",
+      "passed": true
+    }
+  ],
+  "passed": 308,
+  "failed": 2,
+  "manual_review_required": [
+    "claim-to-source meaning",
+    "original motivation versus present role",
+    "empirical applicability"
+  ]
+}

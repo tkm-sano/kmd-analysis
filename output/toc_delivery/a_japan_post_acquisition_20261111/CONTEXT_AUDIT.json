@@ -1,0 +1,147 @@
+{
+  "conditions_sha256": "bbb15417a4eee5072f8118056c90ab422d792b4cedc35a6a06bf6bc0497fe8d2",
+  "conditions": {
+    "schema_version": "1.0",
+    "conditions_version": "AD-common-20261111-v1.1",
+    "adopted_on": "2026-11-11",
+    "authority": "user_instruction_20261111_preparation_zero_revision",
+    "value_kind": "research_assumption",
+    "scope": {
+      "region": "東京都大田区",
+      "depot_name": "京浜トラックターミナル",
+      "delivery": "ToC",
+      "depots": 1,
+      "homogeneous_vehicles": true,
+      "customer_time_windows": false,
+      "fixed_customer_vehicle_assignment": false,
+      "unused_vehicles_allowed": true,
+      "ev_conditions": false
+    },
+    "units": {
+      "distance": "m",
+      "travel_time": "s",
+      "clock": "s_since_midnight_Asia/Tokyo",
+      "demand": "delivery_unit",
+      "D": "km",
+      "W": "min",
+      "T": "s"
+    },
+    "operations": {
+      "demand_per_stop": 1,
+      "capacity_per_trip": 60,
+      "max_trips_per_vehicle": 2,
+      "service_s": 120,
+      "loading_s": 1800,
+      "preparation_s": 0,
+      "opening_s": 28800,
+      "closing_s": 72000,
+      "first_ready_span_s": 3600
+    },
+    "first_ready_rule": "opening_s + (3600 * (2*v+1)) // (2*V)",
+    "scenarios": {
+      "S1": {
+        "stops": 1000,
+        "vehicles": 10,
+        "berths": 2
+      },
+      "S2": {
+        "stops": 2000,
+        "vehicles": 20,
+        "berths": 4
+      },
+      "S3": {
+        "stops": 4000,
+        "vehicles": 40,
+        "berths": 8
+      }
+    },
+    "timing_policy": {
+      "travel_rounding": "ceil_each_arc_to_seconds",
+      "departure": "loading_end",
+      "service_start": "arrival",
+      "arbitrary_route_waiting": false,
+      "berth_interval": "half_open",
+      "preparation_occupies_berth": false,
+      "loading_preemptive": false,
+      "T_start": "before_common_input_load",
+      "T_end": "after_final_independent_validation",
+      "AOA_time": "quantum_circuit_simulator_wall_time"
+    },
+    "road_policy": {
+      "source": "OpenStreetMap",
+      "router": "OSRM",
+      "directed": true,
+      "time_dependent_congestion": false,
+      "distance_definition": "distance_of_fastest_route",
+      "distance_and_duration": "same_table_response",
+      "fallback_speed_allowed": false,
+      "local_only": true,
+      "snap_review_required": true,
+      "snap_alert_m": 100,
+      "block_size": 100
+    },
+    "comparison": {
+      "A": "sourced_actual_or_reference_levels",
+      "B": "VeRyPy_Clarke_Wright",
+      "C": "OR_Tools",
+      "D": "Huang_CG_AOA",
+      "multiobjective": "bidirectional_epsilon_constraint",
+      "epsilon_W_min": null,
+      "epsilon_D_km": null
+    },
+    "provenance": {
+      "operational_values": {
+        "kind": "research_assumption",
+        "source": "user_instruction_20261111_preparation_zero_revision",
+        "measured": false
+      },
+      "scenario_sizes": {
+        "kind": "research_assumption",
+        "source": "frozen_demand_v1"
+      },
+      "road_definition": {
+        "kind": "documentation",
+        "source": "https://project-osrm.org/docs/v26.5.0/http"
+      },
+      "road_license": {
+        "kind": "documentation",
+        "source": "https://www.openstreetmap.org/copyright"
+      },
+      "snap_alert_m": {
+        "kind": "audit_policy",
+        "source": "common_v1_implementation; alert only, never auto-approval"
+      }
+    },
+    "unresolved": [
+      "verified_vehicle_entrance",
+      "reviewed_OSRM_snaps",
+      "OSRM_graph_and_full_OD",
+      "A_sourced_comparable_reference",
+      "B_C_D_full_adapters",
+      "shared_resource_budget_and_seeds",
+      "epsilon_levels_after_feasible_reference"
+    ],
+    "legal_compliance_claim": false,
+    "revision": {
+      "supersedes": "AD-common-20261111-v1.0",
+      "changed_operations": [
+        "preparation_s"
+      ],
+      "scope": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "reason": "帰着後準備時間を0秒へ変更。積込1800秒/便・顧客先作業120秒/地点は研究上の固定仮定として維持。変動モデルは導入しない。"
+    }
+  },
+  "precedence": "current Japan Post acquisition instruction > current common v1.1 > previous multisource A adoption > historical proxy A research plan",
+  "research_plan_sha256": "d7bdbe204471907ac9105fbb672c028ea436865b42e52e8a6f62533d23625815",
+  "historical_plan_A_paragraphs": [
+    "対象は東京都大田区内の個人宅向けToC配送であり、京浜トラックターミナルを起点とする仮想の単一拠点とする。対象は動力方式を特定しない配送車両とする。事業者の観測実績は未取得のため、Aは公開情報と仮定から作る代理ベースラインである。",
+    "A　想定実績ベースライン",
+    "図1　想定実績ベースラインの領域（S1・S2・S3の3パネル）",
+    "凡例の色はA：灰色、B：青緑、C：青、D：橙に統一する。各領域は実測した解の集合を記述するための表示であり、可行領域全体を意味しない。領域を構成できない数の解しか得られない場合は観測点のみを描く。異なる規模のパネルで軸範囲を変える際は目盛値を明示し、面積だけで規模間を比較しない。図中の模式的な領域の形状から性能差は判断できない。"
+  ]
+}

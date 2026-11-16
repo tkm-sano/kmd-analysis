@@ -1,0 +1,26 @@
+RUN tests/test_distribution_layout.py
+..F...
+======================================================================
+FAIL: test_distribution_manifest (__main__.DistributionTests.test_distribution_manifest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/takuma/kmd-analysis/tests/test_distribution_layout.py", line 51, in test_distribution_manifest
+    if p.is_file():self.assertEqual(hashlib.sha256(p.read_bytes()).hexdigest(),r['sha256'])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '31b0d16cd3b5df1dc665d703bd423386a04f73a949b95149cf65a928d0715ab2' != 'b49bc622a08575db17eca41cccc4798c7dccaa6e518a0d2bb8efe30f982d48b5'
+- 31b0d16cd3b5df1dc665d703bd423386a04f73a949b95149cf65a928d0715ab2
++ b49bc622a08575db17eca41cccc4798c7dccaa6e518a0d2bb8efe30f982d48b5
+
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.888s
+
+FAILED (failures=1)
+Traceback (most recent call last):
+  File "/home/takuma/kmd-analysis/scripts/verify_quickstart.py", line 38, in <module>
+    main()
+  File "/home/takuma/kmd-analysis/scripts/verify_quickstart.py", line 34, in main
+    subprocess.run([sys.executable, "-B", *args], cwd=ROOT, env=env, check=True, timeout=240)
+  File "/usr/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/home/takuma/kmd-analysis-public-preview-env-20261009/bin/python', '-B', 'tests/test_distribution_layout.py']' returned non-zero exit status 1.

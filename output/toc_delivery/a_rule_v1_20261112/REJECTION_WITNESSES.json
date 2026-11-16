@@ -1,0 +1,155 @@
+{
+  "berth_overlap": {
+    "feasible": false,
+    "violations": [
+      {
+        "code": "READY_OR_SECOND_TRIP_PREPARATION",
+        "context": "v1/1",
+        "detail": ""
+      },
+      {
+        "code": "DEPARTURE_AT_LOADING_END",
+        "context": "v1/1",
+        "detail": ""
+      },
+      {
+        "code": "WAITING_DEFINITION",
+        "context": "v1/1",
+        "detail": ""
+      },
+      {
+        "code": "BERTH_OVERLAP",
+        "context": "v1/1",
+        "detail": "b0"
+      },
+      {
+        "code": "BERTH_COUNT_EXCEEDED",
+        "context": "v1/1",
+        "detail": "29400"
+      }
+    ],
+    "D_km": null,
+    "W_min": null,
+    "W1_min": null,
+    "W2_min": null,
+    "ready_to_loading_end_min": null,
+    "trip_metrics": [
+      {
+        "vehicle_id": "v0",
+        "trip_no": 1,
+        "distance_m": 1075.0,
+        "waiting_s": 0,
+        "return_s": 32141,
+        "ready_to_loading_end_s": 1800
+      },
+      {
+        "vehicle_id": "v1",
+        "trip_no": 1,
+        "distance_m": 2272.0,
+        "waiting_s": -1200,
+        "return_s": 34331,
+        "ready_to_loading_end_s": 600
+      },
+      {
+        "vehicle_id": "v2",
+        "trip_no": 1,
+        "distance_m": 1894.0,
+        "waiting_s": 1200,
+        "return_s": 36074,
+        "ready_to_loading_end_s": 3000
+      }
+    ]
+  },
+  "wrong_wait": {
+    "feasible": false,
+    "violations": [
+      {
+        "code": "WAITING_DEFINITION",
+        "context": "v0/1",
+        "detail": ""
+      }
+    ],
+    "D_km": null,
+    "W_min": null,
+    "W1_min": null,
+    "W2_min": null,
+    "ready_to_loading_end_min": null,
+    "trip_metrics": [
+      {
+        "vehicle_id": "v0",
+        "trip_no": 1,
+        "distance_m": 1075.0,
+        "waiting_s": 0,
+        "return_s": 32141,
+        "ready_to_loading_end_s": 1800
+      },
+      {
+        "vehicle_id": "v1",
+        "trip_no": 1,
+        "distance_m": 2272.0,
+        "waiting_s": 600,
+        "return_s": 34331,
+        "ready_to_loading_end_s": 2400
+      },
+      {
+        "vehicle_id": "v2",
+        "trip_no": 1,
+        "distance_m": 1894.0,
+        "waiting_s": 1200,
+        "return_s": 36074,
+        "ready_to_loading_end_s": 3000
+      }
+    ]
+  },
+  "late_return": {
+    "feasible": false,
+    "violations": [
+      {
+        "code": "RETURN_DEADLINE_2000",
+        "context": "v0/1",
+        "detail": ""
+      },
+      {
+        "code": "RETURN_DEADLINE_2000",
+        "context": "v1/1",
+        "detail": ""
+      },
+      {
+        "code": "RETURN_DEADLINE_2000",
+        "context": "v2/1",
+        "detail": ""
+      }
+    ],
+    "D_km": null,
+    "W_min": null,
+    "W1_min": null,
+    "W2_min": null,
+    "ready_to_loading_end_min": null,
+    "trip_metrics": [
+      {
+        "vehicle_id": "v0",
+        "trip_no": 1,
+        "distance_m": 1075.0,
+        "waiting_s": 0,
+        "return_s": 252920,
+        "ready_to_loading_end_s": 1800
+      },
+      {
+        "vehicle_id": "v1",
+        "trip_no": 1,
+        "distance_m": 2272.0,
+        "waiting_s": 600,
+        "return_s": 524840,
+        "ready_to_loading_end_s": 2400
+      },
+      {
+        "vehicle_id": "v2",
+        "trip_no": 1,
+        "distance_m": 1894.0,
+        "waiting_s": 1200,
+        "return_s": 469640,
+        "ready_to_loading_end_s": 3000
+      }
+    ]
+  }
+}

@@ -1,0 +1,2934 @@
+{
+  "trial_id": "main_N8_1101_legacy_qulacs",
+  "scenario_id": "ART_N8",
+  "instance_id": "artificial_N8",
+  "method": "D",
+  "repetition_id": 1101,
+  "phase": "isolated_library_validation",
+  "epsilon_W_min": 30.0,
+  "tau_s": 20.0,
+  "status": "VALIDATED",
+  "feasible": true,
+  "budget_met": true,
+  "epsilon_met": true,
+  "standard_output_complete": false,
+  "T_kind": "program_wall",
+  "D_km": 1.006,
+  "W_min": 0.0,
+  "T_program_s": 2.2926870479714125,
+  "T_attempt_wall_s": 2.2926870479714125,
+  "failure_elapsed_s": null,
+  "input_hash": "40f4f706ee6ee4d649a24911f728bbc25c9a0366c4e8e04de8b1e8e4808610af",
+  "OD_hash": "50e6209add1c915b69d16c035b04e0dfc1aefe8cd1c432911350012945115639",
+  "demand_seed": null,
+  "demand_random_generator": null,
+  "input_experiment_seed": null,
+  "demand_generation": "retained common input; no demand generation",
+  "solver_seed": 1101,
+  "quantum_seed": 11101,
+  "validation_seed": null,
+  "random_generator": "SeedSequence domain-separated branch streams; each branch uses existing solver/quantum generators",
+  "solver_seed_scope": "root branches to explicitly logged per-branch seeds; CP-SAT/OR ReSeed; HiGHS native threads=1",
+  "quantum_seed_used": true,
+  "environment_version": null,
+  "max_rss_KiB": 245760,
+  "process_cpu_s": 0.020300364000000126,
+  "total_process_cpu_s": 0.5605333180000001,
+  "observed_partial_process_cpu_s": 0.5605333180000001,
+  "resource_accounting": "CPU total is measured parent plus returned branch CPU; killed branch CPU unknown, never imputed as complete",
+  "all_branch_CPU_accounted": true,
+  "worker_pid": 1202484,
+  "cpu_affinity": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "dependency_setup_s": 8.386450547957793,
+  "dependency_setup_scope": "uniform library and waiting-process setup only; all input/solver work inside parent T",
+  "error": null,
+  "timing_events": [
+    {
+      "name": "input_load_start",
+      "elapsed_s": 0.0
+    },
+    {
+      "name": "input_load_end",
+      "elapsed_s": 0.23728159186430275
+    },
+    {
+      "name": "parallel_branches_released",
+      "elapsed_s": 0.23737611179240048
+    },
+    {
+      "name": "parallel_branches_joined",
+      "elapsed_s": 1.4126198519952595
+    },
+    {
+      "name": "parallel_candidate_selection_end",
+      "elapsed_s": 2.229556564008817
+    },
+    {
+      "name": "final_validation_start",
+      "elapsed_s": 2.230890129925683
+    },
+    {
+      "name": "final_validation_end",
+      "elapsed_s": 2.2926870479714125
+    }
+  ],
+  "T_boundary": "before coordinator common input load through all children joined, selection and final two validations; exports excluded",
+  "T_human_s": null,
+  "T_human_status": "not applicable",
+  "T_program_role": "primary measured planning time",
+  "validation": {
+    "feasible": true,
+    "violations": [],
+    "D_km": 1.006,
+    "W_min": 0.0,
+    "W1_min": 0.0,
+    "W2_min": 0.0,
+    "ready_to_loading_end_min": 30.0,
+    "trip_metrics": [
+      {
+        "vehicle_id": "v1",
+        "trip_no": 1,
+        "distance_m": 1006.0,
+        "waiting_s": 0,
+        "return_s": 34505,
+        "ready_to_loading_end_s": 1800
+      }
+    ]
+  },
+  "second_validation": {
+    "feasible": true,
+    "errors": [],
+    "D_km": "1.006",
+    "W_min": "0",
+    "arc_count": 9
+  },
+  "plan": {
+    "schema_version": "1.0",
+    "plan_id": "ART_N8-D",
+    "method_id": "D",
+    "problem_hash": "40f4f706ee6ee4d649a24911f728bbc25c9a0366c4e8e04de8b1e8e4808610af",
+    "od_hash": "50e6209add1c915b69d16c035b04e0dfc1aefe8cd1c432911350012945115639",
+    "trips": [
+      {
+        "vehicle_id": "v1",
+        "trip_no": 1,
+        "origin_id": "DEPOT",
+        "destination_id": "DEPOT",
+        "visits": [
+          {
+            "stop_id": "c0001",
+            "arrival_s": 33323,
+            "service_start_s": 33323,
+            "service_end_s": 33443
+          },
+          {
+            "stop_id": "c0002",
+            "arrival_s": 33465,
+            "service_start_s": 33465,
+            "service_end_s": 33585
+          },
+          {
+            "stop_id": "c0005",
+            "arrival_s": 33612,
+            "service_start_s": 33612,
+            "service_end_s": 33732
+          },
+          {
+            "stop_id": "c0008",
+            "arrival_s": 33756,
+            "service_start_s": 33756,
+            "service_end_s": 33876
+          },
+          {
+            "stop_id": "c0007",
+            "arrival_s": 33896,
+            "service_start_s": 33896,
+            "service_end_s": 34016
+          },
+          {
+            "stop_id": "c0004",
+            "arrival_s": 34042,
+            "service_start_s": 34042,
+            "service_end_s": 34162
+          },
+          {
+            "stop_id": "c0006",
+            "arrival_s": 34208,
+            "service_start_s": 34208,
+            "service_end_s": 34328
+          },
+          {
+            "stop_id": "c0003",
+            "arrival_s": 34355,
+            "service_start_s": 34355,
+            "service_end_s": 34475
+          }
+        ],
+        "ready_s": 31500,
+        "berth_id": "b0",
+        "load_start_s": 31500,
+        "load_end_s": 33300,
+        "departure_s": 33300,
+        "return_s": 34505,
+        "distance_m": 1006.0,
+        "waiting_s": 0
+      }
+    ],
+    "method_settings": {
+      "algorithm": "bounded_Huang_AOA_event_day_master_then_shared_completion",
+      "upstream_symmetric_core_used_unmodified": false,
+      "symmetric_OD_substitution": false,
+      "initial_CW_routes": 1,
+      "classical_route_eliminations": 0,
+      "post_completion_route_count": 1,
+      "route_generation_D_km": 1.006,
+      "generated_routes_before_completion": [
+        [
+          1,
+          2,
+          5,
+          8,
+          7,
+          4,
+          6,
+          3
+        ]
+      ],
+      "solver_seed": 1660853483,
+      "random_generator": "NumPy SeedSequence/PCG64; OR ReSeed and CP-SAT integer seed",
+      "scope": "finite CW macro/time catalogue; no global VRP certificate",
+      "quantum_enabled": true,
+      "quantum": [
+        {
+          "iteration": 0,
+          "route_index": 0,
+          "quantum_seed": 2237913568,
+          "fragment_groups": [
+            [
+              1,
+              2,
+              5
+            ],
+            [
+              8,
+              7,
+              4
+            ],
+            [
+              6,
+              3
+            ]
+          ],
+          "full_routes": [],
+          "circuit_build_s": 0.000716113019734621,
+          "training_evaluations": 30,
+          "training_total_shots": 30000,
+          "final_total_shots": 4096,
+          "simulation_sampling_decode_s": 0.031064739916473627,
+          "sampling_only_s": null,
+          "sampling_scope": "combined statevector evolution, finite-shot sampling and decoding",
+          "result": {
+            "routes": [],
+            "config": {
+              "slots": 4,
+              "p": 2,
+              "max_evaluations": 80,
+              "restarts": 1,
+              "train_shots": 1000,
+              "final_shots": 4096,
+              "solver_seed": 2237913568,
+              "fixed_depot": true,
+              "penalty": "customer_unique",
+              "lambda_capacity": 1.0,
+              "lambda_visit": 1.0,
+              "tolerance": 0.001
+            },
+            "qubits": 12,
+            "logical_depth": 33,
+            "logical_gates": {},
+            "native_circuit": null,
+            "raw_statevector_bytes": 65536,
+            "one_hot_basis_states": 64,
+            "measured_shots": 4096,
+            "feasible_shots": 0,
+            "improving_shots": 0,
+            "feasible_rate": 0.0,
+            "improving_rate": 0.0,
+            "reason_counts": {
+              "REPEATED_CUSTOMER": 4096
+            },
+            "qiskit_tensor_max_infidelity": 1.7763568394002505e-15,
+            "qiskit_one_hot_max_leakage": 2.1094237467877974e-15,
+            "training_seconds": 0.019831572892144322,
+            "qiskit_seconds": 0.03178085293620825,
+            "total_seconds": 0.05172441597096622,
+            "history": [
+              {
+                "restart": 0,
+                "initial_angles": [
+                  0.05,
+                  0.5235987755982989,
+                  0.1,
+                  0.26179938779914946
+                ],
+                "optimized_angles": [
+                  0.11069868503799918,
+                  1.5722307329526723,
+                  1.1635945968446126,
+                  0.020642151961024514
+                ],
+                "nfev": 30,
+                "optimizer_success": true,
+                "optimizer_message": "Return from COBYLA because the trust region radius reaches its lower bound.",
+                "evaluations": [
+                  {
+                    "angles": [
+                      0.05,
+                      0.5235987755982989,
+                      0.1,
+                      0.26179938779914946
+                    ],
+                    "sample_mean": 3207.2039640000007
+                  },
+                  {
+                    "angles": [
+                      1.05,
+                      0.5235987755982989,
+                      0.1,
+                      0.26179938779914946
+                    ],
+                    "sample_mean": 3231.732105
+                  },
+                  {
+                    "angles": [
+                      0.05,
+                      1.523598775598299,
+                      0.1,
+                      0.26179938779914946
+                    ],
+                    "sample_mean": 2583.67791
+                  },
+                  {
+                    "angles": [
+                      0.05,
+                      1.523598775598299,
+                      1.1,
+                      0.26179938779914946
+                    ],
+                    "sample_mean": 2577.8441989999997
+                  },
+                  {
+                    "angles": [
+                      0.05,
+                      1.523598775598299,
+                      1.1,
+                      1.2617993877991496
+                    ],
+                    "sample_mean": 3377.129619
+                  },
+                  {
+                    "angles": [
+                      0.02581147146191014,
+                      2.138491594072475,
+                      1.1057529384312688,
+                      -0.5264192624340532
+                    ],
+                    "sample_mean": 2763.745395
+                  },
+                  {
+                    "angles": [
+                      -0.3428269964853881,
+                      1.2545973053669062,
+                      1.101114663465127,
+                      0.10907768871556311
+                    ],
+                    "sample_mean": 2593.8110049999996
+                  },
+                  {
+                    "angles": [
+                      0.12062573939800438,
+                      1.4204629189116684,
+                      1.1,
+                      0.26179938779914946
+                    ],
+                    "sample_mean": 2582.9059439999996
+                  },
+                  {
+                    "angles": [
+                      0.11353917356603888,
+                      1.5815232926830134,
+                      1.101713313751182,
+                      0.027055722710957103
+                    ],
+                    "sample_mean": 2557.1915719999997
+                  },
+                  {
+                    "angles": [
+                      0.13698465179172756,
+                      1.649227031343858,
+                      1.1078525365037362,
+                      -0.04243401225837004
+                    ],
+                    "sample_mean": 2560.7076349999998
+                  },
+                  {
+                    "angles": [
+                      0.11770223743682,
+                      1.575629795629719,
+                      1.1511899188958918,
+                      0.02708941314112512
+                    ],
+                    "sample_mean": 2556.980192
+                  },
+                  {
+                    "angles": [
+                      0.1865388360400471,
+                      1.5091535880846927,
+                      1.1388775554926176,
+                      0.0008055353717680465
+                    ],
+                    "sample_mean": 2558.144311999999
+                  },
+                  {
+                    "angles": [
+                      0.08523138434510152,
+                      1.55444706123032,
+                      1.151420362667628,
+                      -0.0044840307402227615
+                    ],
+                    "sample_mean": 2556.994496
+                  },
+                  {
+                    "angles": [
+                      0.06855903343541772,
+                      1.537308741247998,
+                      1.1617247784283782,
+                      0.10458430991620658
+                    ],
+                    "sample_mean": 2560.9326349999997
+                  },
+                  {
+                    "angles": [
+                      0.12500231020098254,
+                      1.6126119933601888,
+                      1.1594900052109534,
+                      -0.004693200908460069
+                    ],
+                    "sample_mean": 2557.1634569999997
+                  },
+                  {
+                    "angles": [
+                      0.10071401007122646,
+                      1.5809253757227362,
+                      1.1606778343519006,
+                      0.04186562452134598
+                    ],
+                    "sample_mean": 2557.335761
+                  },
+                  {
+                    "angles": [
+                      0.11815615654063005,
+                      1.5713154775818516,
+                      1.1506361669168292,
+                      0.02951304182034282
+                    ],
+                    "sample_mean": 2556.97702
+                  },
+                  {
+                    "angles": [
+                      0.1257658648962796,
+                      1.5683546754825373,
+                      1.1521974203765124,
+                      0.02395530151467183
+                    ],
+                    "sample_mean": 2557.088865
+                  },
+                  {
+                    "angles": [
+                      0.1213677257934596,
+                      1.5734687077029517,
+                      1.1502791328598123,
+                      0.032662954463893085
+                    ],
+                    "sample_mean": 2557.35965
+                  },
+                  {
+                    "angles": [
+                      0.11205900146473041,
+                      1.5680185974396088,
+                      1.1461148870110722,
+                      0.023899370176764512
+                    ],
+                    "sample_mean": 2556.99003
+                  },
+                  {
+                    "angles": [
+                      0.11387907933002973,
+                      1.5691565940191687,
+                      1.1593605681600345,
+                      0.028548337075408436
+                    ],
+                    "sample_mean": 2556.892409
+                  },
+                  {
+                    "angles": [
+                      0.11069868503799918,
+                      1.5722307329526723,
+                      1.1635945968446126,
+                      0.020642151961024514
+                    ],
+                    "sample_mean": 2556.7883849999994
+                  },
+                  {
+                    "angles": [
+                      0.10330993722879012,
+                      1.575078973856308,
+                      1.1695742024538045,
+                      0.01940189137337151
+                    ],
+                    "sample_mean": 2556.793581
+                  },
+                  {
+                    "angles": [
+                      0.11287241518953696,
+                      1.570467544068211,
+                      1.166262206849182,
+                      0.017471991231735106
+                    ],
+                    "sample_mean": 2556.8915989999996
+                  },
+                  {
+                    "angles": [
+                      0.1113572215935765,
+                      1.573134926606597,
+                      1.1640457177045318,
+                      0.020970410107787746
+                    ],
+                    "sample_mean": 2556.9854209999994
+                  },
+                  {
+                    "angles": [
+                      0.10927401348014236,
+                      1.5709034019848716,
+                      1.1622768895581777,
+                      0.019792357302635254
+                    ],
+                    "sample_mean": 2557.0844789999996
+                  },
+                  {
+                    "angles": [
+                      0.11106354550860648,
+                      1.5720856226133062,
+                      1.1632953118504759,
+                      0.020721198268223436
+                    ],
+                    "sample_mean": 2556.7883849999994
+                  },
+                  {
+                    "angles": [
+                      0.11065079599473296,
+                      1.5716266056314707,
+                      1.1640085341202482,
+                      0.021321410933105182
+                    ],
+                    "sample_mean": 2557.089485
+                  },
+                  {
+                    "angles": [
+                      0.11048107188685002,
+                      1.5724116252167037,
+                      1.1633236463626924,
+                      0.020952809878367232
+                    ],
+                    "sample_mean": 2557.0892549999994
+                  },
+                  {
+                    "angles": [
+                      0.11094274606776061,
+                      1.571995166728574,
+                      1.1637618489935977,
+                      0.01971642549684856
+                    ],
+                    "sample_mean": 2556.9950759999997
+                  }
+                ],
+                "qiskit_counts": {
+                  "001001000100": 3,
+                  "010000100100": 2,
+                  "010001000100": 4087,
+                  "010010000100": 2,
+                  "100001000100": 2
+                }
+              }
+            ],
+            "backend": "qulacs",
+            "timing": {
+              "training_s": 0.019831572892144322,
+              "circuit_build_s": 0.0007209428586065769,
+              "conversion_s": 0.0,
+              "statevector_s": 0.0022173591423779726,
+              "validation_s": 0.00012554996646940708,
+              "sampling_s": 0.02869507111608982,
+              "decode_s": 1.478102058172226e-05,
+              "final_s": 0.03178085293620825
+            },
+            "internal_depot_handling": "split at depot; free-fleet reference only"
+          }
+        },
+        {
+          "iteration": 1,
+          "route_index": 0,
+          "quantum_seed": 1386060020,
+          "fragment_groups": [
+            [
+              1,
+              2,
+              5
+            ],
+            [
+              8,
+              7,
+              4
+            ],
+            [
+              6,
+              3
+            ]
+          ],
+          "full_routes": [],
+          "circuit_build_s": 0.0004567820578813553,
+          "training_evaluations": 29,
+          "training_total_shots": 29000,
+          "final_total_shots": 4096,
+          "simulation_sampling_decode_s": 0.022616693750023842,
+          "sampling_only_s": null,
+          "sampling_scope": "combined statevector evolution, finite-shot sampling and decoding",
+          "result": {
+            "routes": [],
+            "config": {
+              "slots": 4,
+              "p": 2,
+              "max_evaluations": 80,
+              "restarts": 1,
+              "train_shots": 1000,
+              "final_shots": 4096,
+              "solver_seed": 1386060020,
+              "fixed_depot": true,
+              "penalty": "customer_unique",
+              "lambda_capacity": 1.0,
+              "lambda_visit": 1.0,
+              "tolerance": 0.001
+            },
+            "qubits": 12,
+            "logical_depth": 33,
+            "logical_gates": {},
+            "native_circuit": null,
+            "raw_statevector_bytes": 65536,
+            "one_hot_basis_states": 64,
+            "measured_shots": 4096,
+            "feasible_shots": 0,
+            "improving_shots": 0,
+            "feasible_rate": 0.0,
+            "improving_rate": 0.0,
+            "reason_counts": {
+              "REPEATED_CUSTOMER": 4096
+            },
+            "qiskit_tensor_max_infidelity": 3.552713678800501e-15,
+            "qiskit_one_hot_max_leakage": 0.0,
+            "training_seconds": 0.015480734873563051,
+            "qiskit_seconds": 0.023073475807905197,
+            "total_seconds": 0.03865342098288238,
+            "history": [
+              {
+                "restart": 0,
+                "initial_angles": [
+                  0.05,
+                  0.5235987755982989,
+                  0.1,
+                  0.26179938779914946
+                ],
+                "optimized_angles": [
+                  0.906593415220256,
+                  1.5728705601519342,
+                  1.1643342224063817,
+                  -0.010293598327962708
+                ],
+                "nfev": 29,
+                "optimizer_success": true,
+                "optimizer_message": "Return from COBYLA because the trust region radius reaches its lower bound.",
+                "evaluations": [
+                  {
+                    "angles": [
+                      0.05,
+                      0.5235987755982989,
+                      0.1,
+                      0.26179938779914946
+                    ],
+                    "sample_mean": 3226.902263
+                  },
+                  {
+                    "angles": [
+                      1.05,
+                      0.5235987755982989,
+                      0.1,
+                      0.26179938779914946
+                    ],
+                    "sample_mean": 3225.929702
+                  },
+                  {
+                    "angles": [
+                      1.05,
+                      1.523598775598299,
+                      0.1,
+                      0.26179938779914946
+                    ],
+                    "sample_mean": 2585.9906569999994
+                  },
+                  {
+                    "angles": [
+                      1.05,
+                      1.523598775598299,
+                      1.1,
+                      0.26179938779914946
+                    ],
+                    "sample_mean": 2573.789481999999
+                  },
+                  {
+                    "angles": [
+                      1.05,
+                      1.523598775598299,
+                      1.1,
+                      1.2617993877991496
+                    ],
+                    "sample_mean": 3369.857323
+                  },
+                  {
+                    "angles": [
+                      1.0509521213581494,
+                      2.150088664312886,
+                      1.1119447513441492,
+                      -0.5175380459987083
+                    ],
+                    "sample_mean": 2859.8139689999994
+                  },
+                  {
+                    "angles": [
+                      1.4421219286266562,
+                      1.2516567210427292,
+                      1.102287890656515,
+                      0.11252555348599508
+                    ],
+                    "sample_mean": 2597.358219
+                  },
+                  {
+                    "angles": [
+                      0.9787650137760201,
+                      1.4208827752007496,
+                      1.1,
+                      0.26179938779914946
+                    ],
+                    "sample_mean": 2587.712577
+                  },
+                  {
+                    "angles": [
+                      0.9970028760907467,
+                      1.599870218045373,
+                      1.1035570508180341,
+                      0.029718972180192427
+                    ],
+                    "sample_mean": 2557.4570409999997
+                  },
+                  {
+                    "angles": [
+                      1.0081122555646678,
+                      1.6956931788826841,
+                      1.112875841916384,
+                      0.005067359727030447
+                    ],
+                    "sample_mean": 2559.3435379999996
+                  },
+                  {
+                    "angles": [
+                      0.9936676428460746,
+                      1.5954418393205834,
+                      1.1532487108099143,
+                      0.029786856823858246
+                    ],
+                    "sample_mean": 2557.1450039999995
+                  },
+                  {
+                    "angles": [
+                      0.9086850870717653,
+                      1.5756610756679128,
+                      1.1513535827483043,
+                      -0.019030098150962765
+                    ],
+                    "sample_mean": 2556.892409
+                  },
+                  {
+                    "angles": [
+                      0.9594644269022368,
+                      1.5354247993101184,
+                      1.1558566271440156,
+                      -0.09507102990755653
+                    ],
+                    "sample_mean": 2561.7872620000003
+                  },
+                  {
+                    "angles": [
+                      0.8564683952681746,
+                      1.5676856836554063,
+                      1.1582285847985443,
+                      0.06560171954276797
+                    ],
+                    "sample_mean": 2558.394884
+                  },
+                  {
+                    "angles": [
+                      0.9004763385364523,
+                      1.6240448049835687,
+                      1.157397775598343,
+                      -0.026452962677873705
+                    ],
+                    "sample_mean": 2557.0568079999994
+                  },
+                  {
+                    "angles": [
+                      0.9092408860450973,
+                      1.5740869372017219,
+                      1.1637151247886182,
+                      -0.019839699272539153
+                    ],
+                    "sample_mean": 2556.8918289999997
+                  },
+                  {
+                    "angles": [
+                      0.9188545161860668,
+                      1.5674278969750293,
+                      1.1610707207965811,
+                      -0.04177693761967005
+                    ],
+                    "sample_mean": 2557.2520569999997
+                  },
+                  {
+                    "angles": [
+                      0.9046514071839494,
+                      1.5730530653994046,
+                      1.1636789367100995,
+                      -0.02153276846853294
+                    ],
+                    "sample_mean": 2556.8962079999997
+                  },
+                  {
+                    "angles": [
+                      0.906593415220256,
+                      1.5728705601519342,
+                      1.1643342224063817,
+                      -0.010293598327962708
+                    ],
+                    "sample_mean": 2556.798
+                  },
+                  {
+                    "angles": [
+                      0.9046650169679219,
+                      1.5703615611322888,
+                      1.1647714942459557,
+                      -0.0008175760908566438
+                    ],
+                    "sample_mean": 2556.798
+                  },
+                  {
+                    "angles": [
+                      0.9093347282073627,
+                      1.5687244537363523,
+                      1.1642452625836834,
+                      -0.010829406920032284
+                    ],
+                    "sample_mean": 2556.896828
+                  },
+                  {
+                    "angles": [
+                      0.9084892825702391,
+                      1.5818585334001258,
+                      1.1672851851252093,
+                      -0.007664179587414186
+                    ],
+                    "sample_mean": 2556.8878
+                  },
+                  {
+                    "angles": [
+                      0.9017736109685858,
+                      1.5727162188234114,
+                      1.1651253267291075,
+                      -0.011351813655982423
+                    ],
+                    "sample_mean": 2556.8962479999996
+                  },
+                  {
+                    "angles": [
+                      0.9067898157760167,
+                      1.5729726965941668,
+                      1.16556442159366,
+                      -0.01028335486738127
+                    ],
+                    "sample_mean": 2556.798
+                  },
+                  {
+                    "angles": [
+                      0.9076116576017916,
+                      1.5749872332325339,
+                      1.1639894008045795,
+                      -0.00951003238610473
+                    ],
+                    "sample_mean": 2556.798
+                  },
+                  {
+                    "angles": [
+                      0.9066898351328727,
+                      1.5729960101029163,
+                      1.164312358814403,
+                      -0.010767399439818012
+                    ],
+                    "sample_mean": 2556.798
+                  },
+                  {
+                    "angles": [
+                      0.9074721843367373,
+                      1.5724084735101016,
+                      1.1642317821915797,
+                      -0.010232387399607133
+                    ],
+                    "sample_mean": 2556.798
+                  },
+                  {
+                    "angles": [
+                      0.9067970636965632,
+                      1.5732938947680541,
+                      1.1642652580860213,
+                      -0.010136885139591113
+                    ],
+                    "sample_mean": 2556.896828
+                  },
+                  {
+                    "angles": [
+                      0.9061861182676418,
+                      1.5720238909196942,
+                      1.1644721510471026,
+                      -0.0106070247047059
+                    ],
+                    "sample_mean": 2556.798
+                  }
+                ],
+                "qiskit_counts": {
+                  "010001000100": 4095,
+                  "010001001000": 1
+                }
+              }
+            ],
+            "backend": "qulacs",
+            "timing": {
+              "training_s": 0.015480734873563051,
+              "circuit_build_s": 0.0004606719594448805,
+              "conversion_s": 0.0,
+              "statevector_s": 0.00221369881182909,
+              "validation_s": 0.00011069094762206078,
+              "sampling_s": 0.020268894964829087,
+              "decode_s": 1.2140022590756416e-05,
+              "final_s": 0.023073475807905197
+            },
+            "internal_depot_handling": "split at depot; free-fleet reference only"
+          }
+        }
+      ],
+      "quantum_stage_stopped_at_budget": false,
+      "quantum_calls": 2,
+      "quantum_new_routes": 0,
+      "quantum_obtained_full_routes": 0,
+      "visited_macro_domain_size": 6,
+      "macro_domain_coverage_note": "only domains of circuits actually evaluated; not all possible VRP routes",
+      "classical_seed_routes": [
+        [
+          1,
+          2,
+          5,
+          8,
+          7,
+          4,
+          6,
+          3
+        ]
+      ],
+      "seed_plan": {
+        "schema_version": "1.0",
+        "plan_id": "ART_N8-D",
+        "method_id": "D",
+        "problem_hash": "40f4f706ee6ee4d649a24911f728bbc25c9a0366c4e8e04de8b1e8e4808610af",
+        "od_hash": "50e6209add1c915b69d16c035b04e0dfc1aefe8cd1c432911350012945115639",
+        "trips": [
+          {
+            "vehicle_id": "v1",
+            "trip_no": 1,
+            "origin_id": "DEPOT",
+            "destination_id": "DEPOT",
+            "visits": [
+              {
+                "stop_id": "c0001",
+                "arrival_s": 33323,
+                "service_start_s": 33323,
+                "service_end_s": 33443
+              },
+              {
+                "stop_id": "c0002",
+                "arrival_s": 33465,
+                "service_start_s": 33465,
+                "service_end_s": 33585
+              },
+              {
+                "stop_id": "c0005",
+                "arrival_s": 33612,
+                "service_start_s": 33612,
+                "service_end_s": 33732
+              },
+              {
+                "stop_id": "c0008",
+                "arrival_s": 33756,
+                "service_start_s": 33756,
+                "service_end_s": 33876
+              },
+              {
+                "stop_id": "c0007",
+                "arrival_s": 33896,
+                "service_start_s": 33896,
+                "service_end_s": 34016
+              },
+              {
+                "stop_id": "c0004",
+                "arrival_s": 34042,
+                "service_start_s": 34042,
+                "service_end_s": 34162
+              },
+              {
+                "stop_id": "c0006",
+                "arrival_s": 34208,
+                "service_start_s": 34208,
+                "service_end_s": 34328
+              },
+              {
+                "stop_id": "c0003",
+                "arrival_s": 34355,
+                "service_start_s": 34355,
+                "service_end_s": 34475
+              }
+            ],
+            "ready_s": 31500,
+            "berth_id": "b0",
+            "load_start_s": 31500,
+            "load_end_s": 33300,
+            "departure_s": 33300,
+            "return_s": 34505,
+            "distance_m": 1006.0,
+            "waiting_s": 0
+          }
+        ],
+        "method_settings": {
+          "algorithm": "VeRyPy_savings_order_with_explicit_directed_tail_to_head_CW_extension",
+          "upstream_symmetric_core_used_unmodified": false,
+          "symmetric_OD_substitution": false,
+          "initial_CW_routes": 1,
+          "classical_route_eliminations": 0,
+          "post_completion_route_count": 1,
+          "route_generation_D_km": 1.006,
+          "generated_routes_before_completion": [
+            [
+              1,
+              2,
+              5,
+              8,
+              7,
+              4,
+              6,
+              3
+            ]
+          ],
+          "solver_seed": 1660853483,
+          "random_generator": "NumPy SeedSequence/PCG64; OR ReSeed and CP-SAT integer seed",
+          "CP_status": "OPTIMAL",
+          "completion": "shared_CP_SAT_with_independently_verified_incumbent",
+          "pool_routes": 1,
+          "primary": "D",
+          "other_limit": 30.0,
+          "distance_objective_resolution_m": 0.1,
+          "requested_completion_seconds": 1.8317540331929922,
+          "completion_input_routes": [
+            [
+              1,
+              2,
+              5,
+              8,
+              7,
+              4,
+              6,
+              3
+            ]
+          ],
+          "completion_selected_source": "CP_candidate",
+          "completion_CP_error": null,
+          "completion_incumbent_available": true,
+          "validation_reserve_s": 1.261008342243731,
+          "max_observed_validation_s": 0.05930695799179375,
+          "completion_wall_s": 0.06489494116976857,
+          "CP_details": {
+            "algorithm": "VeRyPy_savings_order_with_explicit_directed_tail_to_head_CW_extension",
+            "upstream_symmetric_core_used_unmodified": false,
+            "symmetric_OD_substitution": false,
+            "initial_CW_routes": 1,
+            "classical_route_eliminations": 0,
+            "post_completion_route_count": 1,
+            "route_generation_D_km": 1.006,
+            "generated_routes_before_completion": [
+              [
+                1,
+                2,
+                5,
+                8,
+                7,
+                4,
+                6,
+                3
+              ]
+            ],
+            "solver_seed": 1660853483,
+            "random_generator": "NumPy SeedSequence/PCG64; OR ReSeed and CP-SAT integer seed",
+            "completion": "shared_CP_SAT_route_pool_physical_vehicles_and_optional_cumulative_loading",
+            "primary": "D",
+            "other_limit": 30.0,
+            "pool_routes": 1,
+            "CP_status": "OPTIMAL",
+            "scope": "finite_supplied_route_pool_only",
+            "seed": 1660853483,
+            "threads": 1,
+            "CP_objective_bound": 1738378060.0,
+            "distance_objective_resolution_m": 0.1,
+            "lexicographic_tie_break": true
+          }
+        },
+        "execution_kind": "quantum_circuit_simulator"
+      },
+      "base_columns": 2,
+      "hybrid_columns": 2,
+      "base": {
+        "pool": [
+          0,
+          1
+        ],
+        "trace": [
+          {
+            "round": 0,
+            "LP": 1.006,
+            "global_min_rc_in_declared_pool": 0.0,
+            "new_negative": 0
+          }
+        ],
+        "LP": {
+          "success": true,
+          "objective": 1.006,
+          "weights": [
+            1.0
+          ],
+          "dual_customer": [
+            1.006,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0
+          ],
+          "rc": [
+            0.0,
+            0.0
+          ],
+          "epsilon_dual": -0.0
+        },
+        "IP_before_zero_face": {
+          "success": true,
+          "certified_in_finite_pool": true,
+          "status": 0,
+          "reason": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "objective": 1.006,
+          "mip_gap": 0.0,
+          "lexicographic_tie_break": true,
+          "secondary_certified_in_finite_pool": true,
+          "secondary_objective": 0.0,
+          "primary_secondary_total_budget_s": 1.8871599154081196,
+          "integer_wall_s": 0.058007461950182915,
+          "selected": [
+            0
+          ]
+        },
+        "IP": {
+          "success": true,
+          "certified_in_finite_pool": true,
+          "status": 0,
+          "reason": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "objective": 1.006,
+          "mip_gap": 0.0,
+          "lexicographic_tie_break": true,
+          "secondary_certified_in_finite_pool": true,
+          "secondary_objective": 0.0,
+          "primary_secondary_total_budget_s": 1.829131372505799,
+          "integer_wall_s": 0.0019000670872628689,
+          "selected": [
+            0
+          ]
+        },
+        "zero_face_added": 1,
+        "IP_after_zero_face": {
+          "success": true,
+          "certified_in_finite_pool": true,
+          "status": 0,
+          "reason": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "objective": 1.006,
+          "mip_gap": 0.0,
+          "lexicographic_tie_break": true,
+          "secondary_certified_in_finite_pool": true,
+          "secondary_objective": 0.0,
+          "primary_secondary_total_budget_s": 1.829131372505799,
+          "integer_wall_s": 0.0019000670872628689,
+          "selected": [
+            0
+          ]
+        },
+        "IP_all_declared_columns": null,
+        "integer_enrichment_attribution": "classical full finite-pool IP when positive-RC integer columns may matter",
+        "zero_face_attribution": "classical finite-catalogue enrichment, not AOA",
+        "finite_pool_lp_closed": true,
+        "catalogue_construction": {
+          "truncated_at_time_limit": false,
+          "attempted_patterns": 2,
+          "validated_columns": 2,
+          "construction_window_s": 0.6620293796779587,
+          "finite_pool_closure_not_full_catalogue_closure": true
+        }
+      },
+      "hybrid": {
+        "pool": [
+          0,
+          1
+        ],
+        "trace": [
+          {
+            "round": 0,
+            "LP": 1.006,
+            "global_min_rc_in_declared_pool": 0.0,
+            "new_negative": 0
+          }
+        ],
+        "LP": {
+          "success": true,
+          "objective": 1.006,
+          "weights": [
+            1.0
+          ],
+          "dual_customer": [
+            1.006,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0,
+            -0.0
+          ],
+          "rc": [
+            0.0,
+            0.0
+          ],
+          "epsilon_dual": -0.0
+        },
+        "IP_before_zero_face": {
+          "success": true,
+          "certified_in_finite_pool": true,
+          "status": 0,
+          "reason": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "objective": 1.006,
+          "mip_gap": 0.0,
+          "lexicographic_tie_break": true,
+          "secondary_certified_in_finite_pool": true,
+          "secondary_objective": 0.0,
+          "primary_secondary_total_budget_s": 1.8879253284540027,
+          "integer_wall_s": 0.0018544080667197704,
+          "selected": [
+            0
+          ]
+        },
+        "IP": {
+          "success": true,
+          "certified_in_finite_pool": true,
+          "status": 0,
+          "reason": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "objective": 1.006,
+          "mip_gap": 0.0,
+          "lexicographic_tie_break": true,
+          "secondary_certified_in_finite_pool": true,
+          "secondary_objective": 0.0,
+          "primary_secondary_total_budget_s": 1.886053110472858,
+          "integer_wall_s": 0.001801908016204834,
+          "selected": [
+            0
+          ]
+        },
+        "zero_face_added": 1,
+        "IP_after_zero_face": {
+          "success": true,
+          "certified_in_finite_pool": true,
+          "status": 0,
+          "reason": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+          "objective": 1.006,
+          "mip_gap": 0.0,
+          "lexicographic_tie_break": true,
+          "secondary_certified_in_finite_pool": true,
+          "secondary_objective": 0.0,
+          "primary_secondary_total_budget_s": 1.886053110472858,
+          "integer_wall_s": 0.001801908016204834,
+          "selected": [
+            0
+          ]
+        },
+        "IP_all_declared_columns": null,
+        "integer_enrichment_attribution": "classical full finite-pool IP when positive-RC integer columns may matter",
+        "zero_face_attribution": "classical finite-catalogue enrichment, not AOA",
+        "finite_pool_lp_closed": true,
+        "catalogue_construction": {
+          "truncated_at_time_limit": false,
+          "attempted_patterns": 2,
+          "validated_columns": 2,
+          "construction_window_s": 0.6620293796779587,
+          "finite_pool_closure_not_full_catalogue_closure": true
+        }
+      },
+      "base_solver_calls": [
+        {
+          "type": "LP",
+          "limit_s": 1.891008271370083,
+          "status": 0
+        },
+        {
+          "type": "LP",
+          "limit_s": 1.888622171478346,
+          "status": 0
+        },
+        {
+          "type": "IP",
+          "limit_s": 1.8871599154081196,
+          "status": true
+        },
+        {
+          "type": "IP",
+          "limit_s": 1.829131372505799,
+          "status": true
+        }
+      ],
+      "hybrid_solver_calls": [
+        {
+          "type": "LP",
+          "limit_s": 1.8910598014481366,
+          "status": 0
+        },
+        {
+          "type": "LP",
+          "limit_s": 1.8893243335187435,
+          "status": 0
+        },
+        {
+          "type": "IP",
+          "limit_s": 1.8879253284540027,
+          "status": true
+        },
+        {
+          "type": "IP",
+          "limit_s": 1.886053110472858,
+          "status": true
+        }
+      ],
+      "master_selected_routes": [
+        [
+          1,
+          2,
+          5,
+          8,
+          7,
+          4,
+          6,
+          3
+        ]
+      ],
+      "day_IP_incumbent_verified": true,
+      "all_candidate_routes": [
+        [
+          1,
+          2,
+          5,
+          8,
+          7,
+          4,
+          6,
+          3
+        ]
+      ],
+      "quantum_seed": 3682789573,
+      "classical_only_control": false,
+      "quantum_improvement_claim": false,
+      "CP_status": "OPTIMAL",
+      "completion": "shared_CP_SAT_with_independently_verified_incumbent",
+      "pool_routes": 1,
+      "primary": "D",
+      "other_limit": 30.0,
+      "distance_objective_resolution_m": 0.1,
+      "requested_completion_seconds": 13.681814490603283,
+      "completion_input_routes": [
+        [
+          1,
+          2,
+          5,
+          8,
+          7,
+          4,
+          6,
+          3
+        ]
+      ],
+      "completion_selected_source": "CP_candidate",
+      "completion_CP_error": null,
+      "completion_incumbent_available": true,
+      "validation_reserve_s": 1.261008342243731,
+      "max_observed_validation_s": 0.11360776494257152,
+      "completion_wall_s": 0.004454628098756075,
+      "CP_details": {
+        "algorithm": "bounded_Huang_AOA_event_day_master_then_shared_completion",
+        "upstream_symmetric_core_used_unmodified": false,
+        "symmetric_OD_substitution": false,
+        "initial_CW_routes": 1,
+        "classical_route_eliminations": 0,
+        "post_completion_route_count": 1,
+        "route_generation_D_km": 1.006,
+        "generated_routes_before_completion": [
+          [
+            1,
+            2,
+            5,
+            8,
+            7,
+            4,
+            6,
+            3
+          ]
+        ],
+        "solver_seed": 1660853483,
+        "random_generator": "NumPy SeedSequence/PCG64; OR ReSeed and CP-SAT integer seed",
+        "scope": "finite_supplied_route_pool_only",
+        "quantum_enabled": true,
+        "quantum": [
+          {
+            "iteration": 0,
+            "route_index": 0,
+            "quantum_seed": 2237913568,
+            "fragment_groups": [
+              [
+                1,
+                2,
+                5
+              ],
+              [
+                8,
+                7,
+                4
+              ],
+              [
+                6,
+                3
+              ]
+            ],
+            "full_routes": [],
+            "circuit_build_s": 0.000716113019734621,
+            "training_evaluations": 30,
+            "training_total_shots": 30000,
+            "final_total_shots": 4096,
+            "simulation_sampling_decode_s": 0.031064739916473627,
+            "sampling_only_s": null,
+            "sampling_scope": "combined statevector evolution, finite-shot sampling and decoding",
+            "result": {
+              "routes": [],
+              "config": {
+                "slots": 4,
+                "p": 2,
+                "max_evaluations": 80,
+                "restarts": 1,
+                "train_shots": 1000,
+                "final_shots": 4096,
+                "solver_seed": 2237913568,
+                "fixed_depot": true,
+                "penalty": "customer_unique",
+                "lambda_capacity": 1.0,
+                "lambda_visit": 1.0,
+                "tolerance": 0.001
+              },
+              "qubits": 12,
+              "logical_depth": 33,
+              "logical_gates": {},
+              "native_circuit": null,
+              "raw_statevector_bytes": 65536,
+              "one_hot_basis_states": 64,
+              "measured_shots": 4096,
+              "feasible_shots": 0,
+              "improving_shots": 0,
+              "feasible_rate": 0.0,
+              "improving_rate": 0.0,
+              "reason_counts": {
+                "REPEATED_CUSTOMER": 4096
+              },
+              "qiskit_tensor_max_infidelity": 1.7763568394002505e-15,
+              "qiskit_one_hot_max_leakage": 2.1094237467877974e-15,
+              "training_seconds": 0.019831572892144322,
+              "qiskit_seconds": 0.03178085293620825,
+              "total_seconds": 0.05172441597096622,
+              "history": [
+                {
+                  "restart": 0,
+                  "initial_angles": [
+                    0.05,
+                    0.5235987755982989,
+                    0.1,
+                    0.26179938779914946
+                  ],
+                  "optimized_angles": [
+                    0.11069868503799918,
+                    1.5722307329526723,
+                    1.1635945968446126,
+                    0.020642151961024514
+                  ],
+                  "nfev": 30,
+                  "optimizer_success": true,
+                  "optimizer_message": "Return from COBYLA because the trust region radius reaches its lower bound.",
+                  "evaluations": [
+                    {
+                      "angles": [
+                        0.05,
+                        0.5235987755982989,
+                        0.1,
+                        0.26179938779914946
+                      ],
+                      "sample_mean": 3207.2039640000007
+                    },
+                    {
+                      "angles": [
+                        1.05,
+                        0.5235987755982989,
+                        0.1,
+                        0.26179938779914946
+                      ],
+                      "sample_mean": 3231.732105
+                    },
+                    {
+                      "angles": [
+                        0.05,
+                        1.523598775598299,
+                        0.1,
+                        0.26179938779914946
+                      ],
+                      "sample_mean": 2583.67791
+                    },
+                    {
+                      "angles": [
+                        0.05,
+                        1.523598775598299,
+                        1.1,
+                        0.26179938779914946
+                      ],
+                      "sample_mean": 2577.8441989999997
+                    },
+                    {
+                      "angles": [
+                        0.05,
+                        1.523598775598299,
+                        1.1,
+                        1.2617993877991496
+                      ],
+                      "sample_mean": 3377.129619
+                    },
+                    {
+                      "angles": [
+                        0.02581147146191014,
+                        2.138491594072475,
+                        1.1057529384312688,
+                        -0.5264192624340532
+                      ],
+                      "sample_mean": 2763.745395
+                    },
+                    {
+                      "angles": [
+                        -0.3428269964853881,
+                        1.2545973053669062,
+                        1.101114663465127,
+                        0.10907768871556311
+                      ],
+                      "sample_mean": 2593.8110049999996
+                    },
+                    {
+                      "angles": [
+                        0.12062573939800438,
+                        1.4204629189116684,
+                        1.1,
+                        0.26179938779914946
+                      ],
+                      "sample_mean": 2582.9059439999996
+                    },
+                    {
+                      "angles": [
+                        0.11353917356603888,
+                        1.5815232926830134,
+                        1.101713313751182,
+                        0.027055722710957103
+                      ],
+                      "sample_mean": 2557.1915719999997
+                    },
+                    {
+                      "angles": [
+                        0.13698465179172756,
+                        1.649227031343858,
+                        1.1078525365037362,
+                        -0.04243401225837004
+                      ],
+                      "sample_mean": 2560.7076349999998
+                    },
+                    {
+                      "angles": [
+                        0.11770223743682,
+                        1.575629795629719,
+                        1.1511899188958918,
+                        0.02708941314112512
+                      ],
+                      "sample_mean": 2556.980192
+                    },
+                    {
+                      "angles": [
+                        0.1865388360400471,
+                        1.5091535880846927,
+                        1.1388775554926176,
+                        0.0008055353717680465
+                      ],
+                      "sample_mean": 2558.144311999999
+                    },
+                    {
+                      "angles": [
+                        0.08523138434510152,
+                        1.55444706123032,
+                        1.151420362667628,
+                        -0.0044840307402227615
+                      ],
+                      "sample_mean": 2556.994496
+                    },
+                    {
+                      "angles": [
+                        0.06855903343541772,
+                        1.537308741247998,
+                        1.1617247784283782,
+                        0.10458430991620658
+                      ],
+                      "sample_mean": 2560.9326349999997
+                    },
+                    {
+                      "angles": [
+                        0.12500231020098254,
+                        1.6126119933601888,
+                        1.1594900052109534,
+                        -0.004693200908460069
+                      ],
+                      "sample_mean": 2557.1634569999997
+                    },
+                    {
+                      "angles": [
+                        0.10071401007122646,
+                        1.5809253757227362,
+                        1.1606778343519006,
+                        0.04186562452134598
+                      ],
+                      "sample_mean": 2557.335761
+                    },
+                    {
+                      "angles": [
+                        0.11815615654063005,
+                        1.5713154775818516,
+                        1.1506361669168292,
+                        0.02951304182034282
+                      ],
+                      "sample_mean": 2556.97702
+                    },
+                    {
+                      "angles": [
+                        0.1257658648962796,
+                        1.5683546754825373,
+                        1.1521974203765124,
+                        0.02395530151467183
+                      ],
+                      "sample_mean": 2557.088865
+                    },
+                    {
+                      "angles": [
+                        0.1213677257934596,
+                        1.5734687077029517,
+                        1.1502791328598123,
+                        0.032662954463893085
+                      ],
+                      "sample_mean": 2557.35965
+                    },
+                    {
+                      "angles": [
+                        0.11205900146473041,
+                        1.5680185974396088,
+                        1.1461148870110722,
+                        0.023899370176764512
+                      ],
+                      "sample_mean": 2556.99003
+                    },
+                    {
+                      "angles": [
+                        0.11387907933002973,
+                        1.5691565940191687,
+                        1.1593605681600345,
+                        0.028548337075408436
+                      ],
+                      "sample_mean": 2556.892409
+                    },
+                    {
+                      "angles": [
+                        0.11069868503799918,
+                        1.5722307329526723,
+                        1.1635945968446126,
+                        0.020642151961024514
+                      ],
+                      "sample_mean": 2556.7883849999994
+                    },
+                    {
+                      "angles": [
+                        0.10330993722879012,
+                        1.575078973856308,
+                        1.1695742024538045,
+                        0.01940189137337151
+                      ],
+                      "sample_mean": 2556.793581
+                    },
+                    {
+                      "angles": [
+                        0.11287241518953696,
+                        1.570467544068211,
+                        1.166262206849182,
+                        0.017471991231735106
+                      ],
+                      "sample_mean": 2556.8915989999996
+                    },
+                    {
+                      "angles": [
+                        0.1113572215935765,
+                        1.573134926606597,
+                        1.1640457177045318,
+                        0.020970410107787746
+                      ],
+                      "sample_mean": 2556.9854209999994
+                    },
+                    {
+                      "angles": [
+                        0.10927401348014236,
+                        1.5709034019848716,
+                        1.1622768895581777,
+                        0.019792357302635254
+                      ],
+                      "sample_mean": 2557.0844789999996
+                    },
+                    {
+                      "angles": [
+                        0.11106354550860648,
+                        1.5720856226133062,
+                        1.1632953118504759,
+                        0.020721198268223436
+                      ],
+                      "sample_mean": 2556.7883849999994
+                    },
+                    {
+                      "angles": [
+                        0.11065079599473296,
+                        1.5716266056314707,
+                        1.1640085341202482,
+                        0.021321410933105182
+                      ],
+                      "sample_mean": 2557.089485
+                    },
+                    {
+                      "angles": [
+                        0.11048107188685002,
+                        1.5724116252167037,
+                        1.1633236463626924,
+                        0.020952809878367232
+                      ],
+                      "sample_mean": 2557.0892549999994
+                    },
+                    {
+                      "angles": [
+                        0.11094274606776061,
+                        1.571995166728574,
+                        1.1637618489935977,
+                        0.01971642549684856
+                      ],
+                      "sample_mean": 2556.9950759999997
+                    }
+                  ],
+                  "qiskit_counts": {
+                    "001001000100": 3,
+                    "010000100100": 2,
+                    "010001000100": 4087,
+                    "010010000100": 2,
+                    "100001000100": 2
+                  }
+                }
+              ],
+              "backend": "qulacs",
+              "timing": {
+                "training_s": 0.019831572892144322,
+                "circuit_build_s": 0.0007209428586065769,
+                "conversion_s": 0.0,
+                "statevector_s": 0.0022173591423779726,
+                "validation_s": 0.00012554996646940708,
+                "sampling_s": 0.02869507111608982,
+                "decode_s": 1.478102058172226e-05,
+                "final_s": 0.03178085293620825
+              },
+              "internal_depot_handling": "split at depot; free-fleet reference only"
+            }
+          },
+          {
+            "iteration": 1,
+            "route_index": 0,
+            "quantum_seed": 1386060020,
+            "fragment_groups": [
+              [
+                1,
+                2,
+                5
+              ],
+              [
+                8,
+                7,
+                4
+              ],
+              [
+                6,
+                3
+              ]
+            ],
+            "full_routes": [],
+            "circuit_build_s": 0.0004567820578813553,
+            "training_evaluations": 29,
+            "training_total_shots": 29000,
+            "final_total_shots": 4096,
+            "simulation_sampling_decode_s": 0.022616693750023842,
+            "sampling_only_s": null,
+            "sampling_scope": "combined statevector evolution, finite-shot sampling and decoding",
+            "result": {
+              "routes": [],
+              "config": {
+                "slots": 4,
+                "p": 2,
+                "max_evaluations": 80,
+                "restarts": 1,
+                "train_shots": 1000,
+                "final_shots": 4096,
+                "solver_seed": 1386060020,
+                "fixed_depot": true,
+                "penalty": "customer_unique",
+                "lambda_capacity": 1.0,
+                "lambda_visit": 1.0,
+                "tolerance": 0.001
+              },
+              "qubits": 12,
+              "logical_depth": 33,
+              "logical_gates": {},
+              "native_circuit": null,
+              "raw_statevector_bytes": 65536,
+              "one_hot_basis_states": 64,
+              "measured_shots": 4096,
+              "feasible_shots": 0,
+              "improving_shots": 0,
+              "feasible_rate": 0.0,
+              "improving_rate": 0.0,
+              "reason_counts": {
+                "REPEATED_CUSTOMER": 4096
+              },
+              "qiskit_tensor_max_infidelity": 3.552713678800501e-15,
+              "qiskit_one_hot_max_leakage": 0.0,
+              "training_seconds": 0.015480734873563051,
+              "qiskit_seconds": 0.023073475807905197,
+              "total_seconds": 0.03865342098288238,
+              "history": [
+                {
+                  "restart": 0,
+                  "initial_angles": [
+                    0.05,
+                    0.5235987755982989,
+                    0.1,
+                    0.26179938779914946
+                  ],
+                  "optimized_angles": [
+                    0.906593415220256,
+                    1.5728705601519342,
+                    1.1643342224063817,
+                    -0.010293598327962708
+                  ],
+                  "nfev": 29,
+                  "optimizer_success": true,
+                  "optimizer_message": "Return from COBYLA because the trust region radius reaches its lower bound.",
+                  "evaluations": [
+                    {
+                      "angles": [
+                        0.05,
+                        0.5235987755982989,
+                        0.1,
+                        0.26179938779914946
+                      ],
+                      "sample_mean": 3226.902263
+                    },
+                    {
+                      "angles": [
+                        1.05,
+                        0.5235987755982989,
+                        0.1,
+                        0.26179938779914946
+                      ],
+                      "sample_mean": 3225.929702
+                    },
+                    {
+                      "angles": [
+                        1.05,
+                        1.523598775598299,
+                        0.1,
+                        0.26179938779914946
+                      ],
+                      "sample_mean": 2585.9906569999994
+                    },
+                    {
+                      "angles": [
+                        1.05,
+                        1.523598775598299,
+                        1.1,
+                        0.26179938779914946
+                      ],
+                      "sample_mean": 2573.789481999999
+                    },
+                    {
+                      "angles": [
+                        1.05,
+                        1.523598775598299,
+                        1.1,
+                        1.2617993877991496
+                      ],
+                      "sample_mean": 3369.857323
+                    },
+                    {
+                      "angles": [
+                        1.0509521213581494,
+                        2.150088664312886,
+                        1.1119447513441492,
+                        -0.5175380459987083
+                      ],
+                      "sample_mean": 2859.8139689999994
+                    },
+                    {
+                      "angles": [
+                        1.4421219286266562,
+                        1.2516567210427292,
+                        1.102287890656515,
+                        0.11252555348599508
+                      ],
+                      "sample_mean": 2597.358219
+                    },
+                    {
+                      "angles": [
+                        0.9787650137760201,
+                        1.4208827752007496,
+                        1.1,
+                        0.26179938779914946
+                      ],
+                      "sample_mean": 2587.712577
+                    },
+                    {
+                      "angles": [
+                        0.9970028760907467,
+                        1.599870218045373,
+                        1.1035570508180341,
+                        0.029718972180192427
+                      ],
+                      "sample_mean": 2557.4570409999997
+                    },
+                    {
+                      "angles": [
+                        1.0081122555646678,
+                        1.6956931788826841,
+                        1.112875841916384,
+                        0.005067359727030447
+                      ],
+                      "sample_mean": 2559.3435379999996
+                    },
+                    {
+                      "angles": [
+                        0.9936676428460746,
+                        1.5954418393205834,
+                        1.1532487108099143,
+                        0.029786856823858246
+                      ],
+                      "sample_mean": 2557.1450039999995
+                    },
+                    {
+                      "angles": [
+                        0.9086850870717653,
+                        1.5756610756679128,
+                        1.1513535827483043,
+                        -0.019030098150962765
+                      ],
+                      "sample_mean": 2556.892409
+                    },
+                    {
+                      "angles": [
+                        0.9594644269022368,
+                        1.5354247993101184,
+                        1.1558566271440156,
+                        -0.09507102990755653
+                      ],
+                      "sample_mean": 2561.7872620000003
+                    },
+                    {
+                      "angles": [
+                        0.8564683952681746,
+                        1.5676856836554063,
+                        1.1582285847985443,
+                        0.06560171954276797
+                      ],
+                      "sample_mean": 2558.394884
+                    },
+                    {
+                      "angles": [
+                        0.9004763385364523,
+                        1.6240448049835687,
+                        1.157397775598343,
+                        -0.026452962677873705
+                      ],
+                      "sample_mean": 2557.0568079999994
+                    },
+                    {
+                      "angles": [
+                        0.9092408860450973,
+                        1.5740869372017219,
+                        1.1637151247886182,
+                        -0.019839699272539153
+                      ],
+                      "sample_mean": 2556.8918289999997
+                    },
+                    {
+                      "angles": [
+                        0.9188545161860668,
+                        1.5674278969750293,
+                        1.1610707207965811,
+                        -0.04177693761967005
+                      ],
+                      "sample_mean": 2557.2520569999997
+                    },
+                    {
+                      "angles": [
+                        0.9046514071839494,
+                        1.5730530653994046,
+                        1.1636789367100995,
+                        -0.02153276846853294
+                      ],
+                      "sample_mean": 2556.8962079999997
+                    },
+                    {
+                      "angles": [
+                        0.906593415220256,
+                        1.5728705601519342,
+                        1.1643342224063817,
+                        -0.010293598327962708
+                      ],
+                      "sample_mean": 2556.798
+                    },
+                    {
+                      "angles": [
+                        0.9046650169679219,
+                        1.5703615611322888,
+                        1.1647714942459557,
+                        -0.0008175760908566438
+                      ],
+                      "sample_mean": 2556.798
+                    },
+                    {
+                      "angles": [
+                        0.9093347282073627,
+                        1.5687244537363523,
+                        1.1642452625836834,
+                        -0.010829406920032284
+                      ],
+                      "sample_mean": 2556.896828
+                    },
+                    {
+                      "angles": [
+                        0.9084892825702391,
+                        1.5818585334001258,
+                        1.1672851851252093,
+                        -0.007664179587414186
+                      ],
+                      "sample_mean": 2556.8878
+                    },
+                    {
+                      "angles": [
+                        0.9017736109685858,
+                        1.5727162188234114,
+                        1.1651253267291075,
+                        -0.011351813655982423
+                      ],
+                      "sample_mean": 2556.8962479999996
+                    },
+                    {
+                      "angles": [
+                        0.9067898157760167,
+                        1.5729726965941668,
+                        1.16556442159366,
+                        -0.01028335486738127
+                      ],
+                      "sample_mean": 2556.798
+                    },
+                    {
+                      "angles": [
+                        0.9076116576017916,
+                        1.5749872332325339,
+                        1.1639894008045795,
+                        -0.00951003238610473
+                      ],
+                      "sample_mean": 2556.798
+                    },
+                    {
+                      "angles": [
+                        0.9066898351328727,
+                        1.5729960101029163,
+                        1.164312358814403,
+                        -0.010767399439818012
+                      ],
+                      "sample_mean": 2556.798
+                    },
+                    {
+                      "angles": [
+                        0.9074721843367373,
+                        1.5724084735101016,
+                        1.1642317821915797,
+                        -0.010232387399607133
+                      ],
+                      "sample_mean": 2556.798
+                    },
+                    {
+                      "angles": [
+                        0.9067970636965632,
+                        1.5732938947680541,
+                        1.1642652580860213,
+                        -0.010136885139591113
+                      ],
+                      "sample_mean": 2556.896828
+                    },
+                    {
+                      "angles": [
+                        0.9061861182676418,
+                        1.5720238909196942,
+                        1.1644721510471026,
+                        -0.0106070247047059
+                      ],
+                      "sample_mean": 2556.798
+                    }
+                  ],
+                  "qiskit_counts": {
+                    "010001000100": 4095,
+                    "010001001000": 1
+                  }
+                }
+              ],
+              "backend": "qulacs",
+              "timing": {
+                "training_s": 0.015480734873563051,
+                "circuit_build_s": 0.0004606719594448805,
+                "conversion_s": 0.0,
+                "statevector_s": 0.00221369881182909,
+                "validation_s": 0.00011069094762206078,
+                "sampling_s": 0.020268894964829087,
+                "decode_s": 1.2140022590756416e-05,
+                "final_s": 0.023073475807905197
+              },
+              "internal_depot_handling": "split at depot; free-fleet reference only"
+            }
+          }
+        ],
+        "quantum_stage_stopped_at_budget": false,
+        "quantum_calls": 2,
+        "quantum_new_routes": 0,
+        "quantum_obtained_full_routes": 0,
+        "visited_macro_domain_size": 6,
+        "macro_domain_coverage_note": "only domains of circuits actually evaluated; not all possible VRP routes",
+        "classical_seed_routes": [
+          [
+            1,
+            2,
+            5,
+            8,
+            7,
+            4,
+            6,
+            3
+          ]
+        ],
+        "seed_plan": {
+          "schema_version": "1.0",
+          "plan_id": "ART_N8-D",
+          "method_id": "D",
+          "problem_hash": "40f4f706ee6ee4d649a24911f728bbc25c9a0366c4e8e04de8b1e8e4808610af",
+          "od_hash": "50e6209add1c915b69d16c035b04e0dfc1aefe8cd1c432911350012945115639",
+          "trips": [
+            {
+              "vehicle_id": "v1",
+              "trip_no": 1,
+              "origin_id": "DEPOT",
+              "destination_id": "DEPOT",
+              "visits": [
+                {
+                  "stop_id": "c0001",
+                  "arrival_s": 33323,
+                  "service_start_s": 33323,
+                  "service_end_s": 33443
+                },
+                {
+                  "stop_id": "c0002",
+                  "arrival_s": 33465,
+                  "service_start_s": 33465,
+                  "service_end_s": 33585
+                },
+                {
+                  "stop_id": "c0005",
+                  "arrival_s": 33612,
+                  "service_start_s": 33612,
+                  "service_end_s": 33732
+                },
+                {
+                  "stop_id": "c0008",
+                  "arrival_s": 33756,
+                  "service_start_s": 33756,
+                  "service_end_s": 33876
+                },
+                {
+                  "stop_id": "c0007",
+                  "arrival_s": 33896,
+                  "service_start_s": 33896,
+                  "service_end_s": 34016
+                },
+                {
+                  "stop_id": "c0004",
+                  "arrival_s": 34042,
+                  "service_start_s": 34042,
+                  "service_end_s": 34162
+                },
+                {
+                  "stop_id": "c0006",
+                  "arrival_s": 34208,
+                  "service_start_s": 34208,
+                  "service_end_s": 34328
+                },
+                {
+                  "stop_id": "c0003",
+                  "arrival_s": 34355,
+                  "service_start_s": 34355,
+                  "service_end_s": 34475
+                }
+              ],
+              "ready_s": 31500,
+              "berth_id": "b0",
+              "load_start_s": 31500,
+              "load_end_s": 33300,
+              "departure_s": 33300,
+              "return_s": 34505,
+              "distance_m": 1006.0,
+              "waiting_s": 0
+            }
+          ],
+          "method_settings": {
+            "algorithm": "VeRyPy_savings_order_with_explicit_directed_tail_to_head_CW_extension",
+            "upstream_symmetric_core_used_unmodified": false,
+            "symmetric_OD_substitution": false,
+            "initial_CW_routes": 1,
+            "classical_route_eliminations": 0,
+            "post_completion_route_count": 1,
+            "route_generation_D_km": 1.006,
+            "generated_routes_before_completion": [
+              [
+                1,
+                2,
+                5,
+                8,
+                7,
+                4,
+                6,
+                3
+              ]
+            ],
+            "solver_seed": 1660853483,
+            "random_generator": "NumPy SeedSequence/PCG64; OR ReSeed and CP-SAT integer seed",
+            "CP_status": "OPTIMAL",
+            "completion": "shared_CP_SAT_with_independently_verified_incumbent",
+            "pool_routes": 1,
+            "primary": "D",
+            "other_limit": 30.0,
+            "distance_objective_resolution_m": 0.1,
+            "requested_completion_seconds": 1.8317540331929922,
+            "completion_input_routes": [
+              [
+                1,
+                2,
+                5,
+                8,
+                7,
+                4,
+                6,
+                3
+              ]
+            ],
+            "completion_selected_source": "CP_candidate",
+            "completion_CP_error": null,
+            "completion_incumbent_available": true,
+            "validation_reserve_s": 1.261008342243731,
+            "max_observed_validation_s": 0.05930695799179375,
+            "completion_wall_s": 0.06489494116976857,
+            "CP_details": {
+              "algorithm": "VeRyPy_savings_order_with_explicit_directed_tail_to_head_CW_extension",
+              "upstream_symmetric_core_used_unmodified": false,
+              "symmetric_OD_substitution": false,
+              "initial_CW_routes": 1,
+              "classical_route_eliminations": 0,
+              "post_completion_route_count": 1,
+              "route_generation_D_km": 1.006,
+              "generated_routes_before_completion": [
+                [
+                  1,
+                  2,
+                  5,
+                  8,
+                  7,
+                  4,
+                  6,
+                  3
+                ]
+              ],
+              "solver_seed": 1660853483,
+              "random_generator": "NumPy SeedSequence/PCG64; OR ReSeed and CP-SAT integer seed",
+              "completion": "shared_CP_SAT_route_pool_physical_vehicles_and_optional_cumulative_loading",
+              "primary": "D",
+              "other_limit": 30.0,
+              "pool_routes": 1,
+              "CP_status": "OPTIMAL",
+              "scope": "finite_supplied_route_pool_only",
+              "seed": 1660853483,
+              "threads": 1,
+              "CP_objective_bound": 1738378060.0,
+              "distance_objective_resolution_m": 0.1,
+              "lexicographic_tie_break": true
+            }
+          },
+          "execution_kind": "quantum_circuit_simulator"
+        },
+        "base_columns": 2,
+        "hybrid_columns": 2,
+        "base": {
+          "pool": [
+            0,
+            1
+          ],
+          "trace": [
+            {
+              "round": 0,
+              "LP": 1.006,
+              "global_min_rc_in_declared_pool": 0.0,
+              "new_negative": 0
+            }
+          ],
+          "LP": {
+            "success": true,
+            "objective": 1.006,
+            "weights": [
+              1.0
+            ],
+            "dual_customer": [
+              1.006,
+              -0.0,
+              -0.0,
+              -0.0,
+              -0.0,
+              -0.0,
+              -0.0,
+              -0.0
+            ],
+            "rc": [
+              0.0,
+              0.0
+            ],
+            "epsilon_dual": -0.0
+          },
+          "IP_before_zero_face": {
+            "success": true,
+            "certified_in_finite_pool": true,
+            "status": 0,
+            "reason": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+            "objective": 1.006,
+            "mip_gap": 0.0,
+            "lexicographic_tie_break": true,
+            "secondary_certified_in_finite_pool": true,
+            "secondary_objective": 0.0,
+            "primary_secondary_total_budget_s": 1.8871599154081196,
+            "integer_wall_s": 0.058007461950182915,
+            "selected": [
+              0
+            ]
+          },
+          "IP": {
+            "success": true,
+            "certified_in_finite_pool": true,
+            "status": 0,
+            "reason": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+            "objective": 1.006,
+            "mip_gap": 0.0,
+            "lexicographic_tie_break": true,
+            "secondary_certified_in_finite_pool": true,
+            "secondary_objective": 0.0,
+            "primary_secondary_total_budget_s": 1.829131372505799,
+            "integer_wall_s": 0.0019000670872628689,
+            "selected": [
+              0
+            ]
+          },
+          "zero_face_added": 1,
+          "IP_after_zero_face": {
+            "success": true,
+            "certified_in_finite_pool": true,
+            "status": 0,
+            "reason": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+            "objective": 1.006,
+            "mip_gap": 0.0,
+            "lexicographic_tie_break": true,
+            "secondary_certified_in_finite_pool": true,
+            "secondary_objective": 0.0,
+            "primary_secondary_total_budget_s": 1.829131372505799,
+            "integer_wall_s": 0.0019000670872628689,
+            "selected": [
+              0
+            ]
+          },
+          "IP_all_declared_columns": null,
+          "integer_enrichment_attribution": "classical full finite-pool IP when positive-RC integer columns may matter",
+          "zero_face_attribution": "classical finite-catalogue enrichment, not AOA",
+          "finite_pool_lp_closed": true,
+          "catalogue_construction": {
+            "truncated_at_time_limit": false,
+            "attempted_patterns": 2,
+            "validated_columns": 2,
+            "construction_window_s": 0.6620293796779587,
+            "finite_pool_closure_not_full_catalogue_closure": true
+          }
+        },
+        "hybrid": {
+          "pool": [
+            0,
+            1
+          ],
+          "trace": [
+            {
+              "round": 0,
+              "LP": 1.006,
+              "global_min_rc_in_declared_pool": 0.0,
+              "new_negative": 0
+            }
+          ],
+          "LP": {
+            "success": true,
+            "objective": 1.006,
+            "weights": [
+              1.0
+            ],
+            "dual_customer": [
+              1.006,
+              -0.0,
+              -0.0,
+              -0.0,
+              -0.0,
+              -0.0,
+              -0.0,
+              -0.0
+            ],
+            "rc": [
+              0.0,
+              0.0
+            ],
+            "epsilon_dual": -0.0
+          },
+          "IP_before_zero_face": {
+            "success": true,
+            "certified_in_finite_pool": true,
+            "status": 0,
+            "reason": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+            "objective": 1.006,
+            "mip_gap": 0.0,
+            "lexicographic_tie_break": true,
+            "secondary_certified_in_finite_pool": true,
+            "secondary_objective": 0.0,
+            "primary_secondary_total_budget_s": 1.8879253284540027,
+            "integer_wall_s": 0.0018544080667197704,
+            "selected": [
+              0
+            ]
+          },
+          "IP": {
+            "success": true,
+            "certified_in_finite_pool": true,
+            "status": 0,
+            "reason": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+            "objective": 1.006,
+            "mip_gap": 0.0,
+            "lexicographic_tie_break": true,
+            "secondary_certified_in_finite_pool": true,
+            "secondary_objective": 0.0,
+            "primary_secondary_total_budget_s": 1.886053110472858,
+            "integer_wall_s": 0.001801908016204834,
+            "selected": [
+              0
+            ]
+          },
+          "zero_face_added": 1,
+          "IP_after_zero_face": {
+            "success": true,
+            "certified_in_finite_pool": true,
+            "status": 0,
+            "reason": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+            "objective": 1.006,
+            "mip_gap": 0.0,
+            "lexicographic_tie_break": true,
+            "secondary_certified_in_finite_pool": true,
+            "secondary_objective": 0.0,
+            "primary_secondary_total_budget_s": 1.886053110472858,
+            "integer_wall_s": 0.001801908016204834,
+            "selected": [
+              0
+            ]
+          },
+          "IP_all_declared_columns": null,
+          "integer_enrichment_attribution": "classical full finite-pool IP when positive-RC integer columns may matter",
+          "zero_face_attribution": "classical finite-catalogue enrichment, not AOA",
+          "finite_pool_lp_closed": true,
+          "catalogue_construction": {
+            "truncated_at_time_limit": false,
+            "attempted_patterns": 2,
+            "validated_columns": 2,
+            "construction_window_s": 0.6620293796779587,
+            "finite_pool_closure_not_full_catalogue_closure": true
+          }
+        },
+        "base_solver_calls": [
+          {
+            "type": "LP",
+            "limit_s": 1.891008271370083,
+            "status": 0
+          },
+          {
+            "type": "LP",
+            "limit_s": 1.888622171478346,
+            "status": 0
+          },
+          {
+            "type": "IP",
+            "limit_s": 1.8871599154081196,
+            "status": true
+          },
+          {
+            "type": "IP",
+            "limit_s": 1.829131372505799,
+            "status": true
+          }
+        ],
+        "hybrid_solver_calls": [
+          {
+            "type": "LP",
+            "limit_s": 1.8910598014481366,
+            "status": 0
+          },
+          {
+            "type": "LP",
+            "limit_s": 1.8893243335187435,
+            "status": 0
+          },
+          {
+            "type": "IP",
+            "limit_s": 1.8879253284540027,
+            "status": true
+          },
+          {
+            "type": "IP",
+            "limit_s": 1.886053110472858,
+            "status": true
+          }
+        ],
+        "master_selected_routes": [
+          [
+            1,
+            2,
+            5,
+            8,
+            7,
+            4,
+            6,
+            3
+          ]
+        ],
+        "day_IP_incumbent_verified": true,
+        "all_candidate_routes": [
+          [
+            1,
+            2,
+            5,
+            8,
+            7,
+            4,
+            6,
+            3
+          ]
+        ],
+        "quantum_seed": 3682789573,
+        "classical_only_control": false,
+        "quantum_improvement_claim": false,
+        "completion": "shared_CP_SAT_route_pool_physical_vehicles_and_optional_cumulative_loading",
+        "primary": "D",
+        "other_limit": 30.0,
+        "pool_routes": 1,
+        "CP_status": "OPTIMAL",
+        "seed": 1660853483,
+        "threads": 1,
+        "CP_objective_bound": 1738378060.0,
+        "distance_objective_resolution_m": 0.1,
+        "lexicographic_tie_break": true
+      },
+      "new_quantum_routes_in_final": 0,
+      "base_seed_D_km": 1.006,
+      "final_minus_seed_D_km": 0.0,
+      "cpu_parallel": {
+        "mode": "parallel_multistart",
+        "workers": 4,
+        "cpu_ids": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "native_threads_per_branch": 1,
+        "coordinator_reserve_fraction": 0.2,
+        "method_concurrency": 1,
+        "statistical_trial_count": 1,
+        "selected_branch": 0,
+        "root_seeds": {
+          "solver_seed": 1101,
+          "quantum_seed": 11101,
+          "validation_seed": null
+        },
+        "selected_seeds": {
+          "solver_seed": 1660853483,
+          "quantum_seed": 3682789573,
+          "validation_seed": null
+        },
+        "all_branches": [
+          {
+            "status": "VALIDATED",
+            "D_km": 1.006,
+            "W_min": 0.0,
+            "T_program_s": 0.8814874421805143,
+            "T_attempt_wall_s": 0.8814874421805143,
+            "process_cpu_s": 0.132892888,
+            "max_rss_KiB": 264192,
+            "quantum_seed_used": true,
+            "error": null,
+            "input_hash": "40f4f706ee6ee4d649a24911f728bbc25c9a0366c4e8e04de8b1e8e4808610af",
+            "OD_hash": "50e6209add1c915b69d16c035b04e0dfc1aefe8cd1c432911350012945115639",
+            "branch_id": 0,
+            "pid": 1203086,
+            "cpu_affinity": [
+              0
+            ],
+            "seeds": {
+              "solver_seed": 1660853483,
+              "quantum_seed": 3682789573,
+              "validation_seed": null
+            },
+            "exitcode": 0,
+            "timed_out": false,
+            "children_joined": true,
+            "quantum_calls": 2,
+            "quantum_accounting_complete": true,
+            "training_shots": 59000,
+            "final_shots": 8192
+          },
+          {
+            "status": "VALIDATED",
+            "D_km": 1.006,
+            "W_min": 0.0,
+            "T_program_s": 0.8814815219957381,
+            "T_attempt_wall_s": 0.8814815219957381,
+            "process_cpu_s": 0.13521321599999991,
+            "max_rss_KiB": 270860,
+            "quantum_seed_used": true,
+            "error": null,
+            "input_hash": "40f4f706ee6ee4d649a24911f728bbc25c9a0366c4e8e04de8b1e8e4808610af",
+            "OD_hash": "50e6209add1c915b69d16c035b04e0dfc1aefe8cd1c432911350012945115639",
+            "branch_id": 1,
+            "pid": 1203095,
+            "cpu_affinity": [
+              1
+            ],
+            "seeds": {
+              "solver_seed": 1104532311,
+              "quantum_seed": 3884528189,
+              "validation_seed": null
+            },
+            "exitcode": 0,
+            "timed_out": false,
+            "children_joined": true,
+            "quantum_calls": 2,
+            "quantum_accounting_complete": true,
+            "training_shots": 64000,
+            "final_shots": 8192
+          },
+          {
+            "status": "VALIDATED",
+            "D_km": 1.006,
+            "W_min": 0.0,
+            "T_program_s": 0.8814819119870663,
+            "T_attempt_wall_s": 0.8814819119870663,
+            "process_cpu_s": 0.13402018000000004,
+            "max_rss_KiB": 270336,
+            "quantum_seed_used": true,
+            "error": null,
+            "input_hash": "40f4f706ee6ee4d649a24911f728bbc25c9a0366c4e8e04de8b1e8e4808610af",
+            "OD_hash": "50e6209add1c915b69d16c035b04e0dfc1aefe8cd1c432911350012945115639",
+            "branch_id": 2,
+            "pid": 1203097,
+            "cpu_affinity": [
+              2
+            ],
+            "seeds": {
+              "solver_seed": 51761238,
+              "quantum_seed": 4192967377,
+              "validation_seed": null
+            },
+            "exitcode": 0,
+            "timed_out": false,
+            "children_joined": true,
+            "quantum_calls": 2,
+            "quantum_accounting_complete": true,
+            "training_shots": 62000,
+            "final_shots": 8192
+          },
+          {
+            "status": "VALIDATED",
+            "D_km": 1.006,
+            "W_min": 0.0,
+            "T_program_s": 0.8814824419096112,
+            "T_attempt_wall_s": 0.8814824419096112,
+            "process_cpu_s": 0.13810667,
+            "max_rss_KiB": 267264,
+            "quantum_seed_used": true,
+            "error": null,
+            "input_hash": "40f4f706ee6ee4d649a24911f728bbc25c9a0366c4e8e04de8b1e8e4808610af",
+            "OD_hash": "50e6209add1c915b69d16c035b04e0dfc1aefe8cd1c432911350012945115639",
+            "branch_id": 3,
+            "pid": 1203099,
+            "cpu_affinity": [
+              3
+            ],
+            "seeds": {
+              "solver_seed": 256137079,
+              "quantum_seed": 1975378677,
+              "validation_seed": null
+            },
+            "exitcode": 0,
+            "timed_out": false,
+            "children_joined": true,
+            "quantum_calls": 2,
+            "quantum_accounting_complete": true,
+            "training_shots": 67000,
+            "final_shots": 8192
+          }
+        ],
+        "selection": "validated minimum D, then W, then branch index",
+        "quantum_totals_include_unselected_branches": true
+      }
+    },
+    "execution_kind": "quantum_circuit_simulator"
+  },
+  "execution_config_sha256": "1cfbfa32e881e3b5566175559544d116bfe148f4eb109ae8a0ae2011a59fe91b",
+  "cpu_parallel_profile": {
+    "mode": "parallel_multistart",
+    "workers": 4,
+    "cpu_ids": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "native_threads_per_branch": 1,
+    "coordinator_reserve_fraction": 0.2,
+    "method_concurrency": 1,
+    "statistical_trial_count": 1
+  },
+  "parallel_start_method": "spawn",
+  "parallel_branches": [
+    {
+      "status": "VALIDATED",
+      "D_km": 1.006,
+      "W_min": 0.0,
+      "T_program_s": 0.8814874421805143,
+      "T_attempt_wall_s": 0.8814874421805143,
+      "process_cpu_s": 0.132892888,
+      "max_rss_KiB": 264192,
+      "quantum_seed_used": true,
+      "error": null,
+      "input_hash": "40f4f706ee6ee4d649a24911f728bbc25c9a0366c4e8e04de8b1e8e4808610af",
+      "OD_hash": "50e6209add1c915b69d16c035b04e0dfc1aefe8cd1c432911350012945115639",
+      "branch_id": 0,
+      "pid": 1203086,
+      "cpu_affinity": [
+        0
+      ],
+      "seeds": {
+        "solver_seed": 1660853483,
+        "quantum_seed": 3682789573,
+        "validation_seed": null
+      },
+      "exitcode": 0,
+      "timed_out": false,
+      "children_joined": true,
+      "quantum_calls": 2,
+      "quantum_accounting_complete": true,
+      "training_shots": 59000,
+      "final_shots": 8192
+    },
+    {
+      "status": "VALIDATED",
+      "D_km": 1.006,
+      "W_min": 0.0,
+      "T_program_s": 0.8814815219957381,
+      "T_attempt_wall_s": 0.8814815219957381,
+      "process_cpu_s": 0.13521321599999991,
+      "max_rss_KiB": 270860,
+      "quantum_seed_used": true,
+      "error": null,
+      "input_hash": "40f4f706ee6ee4d649a24911f728bbc25c9a0366c4e8e04de8b1e8e4808610af",
+      "OD_hash": "50e6209add1c915b69d16c035b04e0dfc1aefe8cd1c432911350012945115639",
+      "branch_id": 1,
+      "pid": 1203095,
+      "cpu_affinity": [
+        1
+      ],
+      "seeds": {
+        "solver_seed": 1104532311,
+        "quantum_seed": 3884528189,
+        "validation_seed": null
+      },
+      "exitcode": 0,
+      "timed_out": false,
+      "children_joined": true,
+      "quantum_calls": 2,
+      "quantum_accounting_complete": true,
+      "training_shots": 64000,
+      "final_shots": 8192
+    },
+    {
+      "status": "VALIDATED",
+      "D_km": 1.006,
+      "W_min": 0.0,
+      "T_program_s": 0.8814819119870663,
+      "T_attempt_wall_s": 0.8814819119870663,
+      "process_cpu_s": 0.13402018000000004,
+      "max_rss_KiB": 270336,
+      "quantum_seed_used": true,
+      "error": null,
+      "input_hash": "40f4f706ee6ee4d649a24911f728bbc25c9a0366c4e8e04de8b1e8e4808610af",
+      "OD_hash": "50e6209add1c915b69d16c035b04e0dfc1aefe8cd1c432911350012945115639",
+      "branch_id": 2,
+      "pid": 1203097,
+      "cpu_affinity": [
+        2
+      ],
+      "seeds": {
+        "solver_seed": 51761238,
+        "quantum_seed": 4192967377,
+        "validation_seed": null
+      },
+      "exitcode": 0,
+      "timed_out": false,
+      "children_joined": true,
+      "quantum_calls": 2,
+      "quantum_accounting_complete": true,
+      "training_shots": 62000,
+      "final_shots": 8192
+    },
+    {
+      "status": "VALIDATED",
+      "D_km": 1.006,
+      "W_min": 0.0,
+      "T_program_s": 0.8814824419096112,
+      "T_attempt_wall_s": 0.8814824419096112,
+      "process_cpu_s": 0.13810667,
+      "max_rss_KiB": 267264,
+      "quantum_seed_used": true,
+      "error": null,
+      "input_hash": "40f4f706ee6ee4d649a24911f728bbc25c9a0366c4e8e04de8b1e8e4808610af",
+      "OD_hash": "50e6209add1c915b69d16c035b04e0dfc1aefe8cd1c432911350012945115639",
+      "branch_id": 3,
+      "pid": 1203099,
+      "cpu_affinity": [
+        3
+      ],
+      "seeds": {
+        "solver_seed": 256137079,
+        "quantum_seed": 1975378677,
+        "validation_seed": null
+      },
+      "exitcode": 0,
+      "timed_out": false,
+      "children_joined": true,
+      "quantum_calls": 2,
+      "quantum_accounting_complete": true,
+      "training_shots": 67000,
+      "final_shots": 8192
+    }
+  ],
+  "selected_branch": 0,
+  "quantum_accounting_complete": true,
+  "total_quantum_calls": 8,
+  "total_training_shots": 252000,
+  "total_final_shots": 32768,
+  "completed_quantum_call_observations": 8,
+  "stage_evidence_files": [
+    "stages/parallel_candidates.json"
+  ],
+  "aggregate_RSS_upper_bound_KiB": 1318412,
+  "aggregate_RSS_scope": "sum of process high-water marks including shared pages; not measured simultaneous physical RSS; incomplete if a branch was killed"
+}

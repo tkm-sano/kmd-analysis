@@ -1,0 +1,584 @@
+diff --git a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/docs/research/toc_delivery_common/COMMON_CONDITIONS_V1.md b/docs/research/toc_delivery_common/COMMON_CONDITIONS_V1.md
+index 88db868..d5fccef 100644
+--- a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/docs/research/toc_delivery_common/COMMON_CONDITIONS_V1.md
++++ b/docs/research/toc_delivery_common/COMMON_CONDITIONS_V1.md
+@@ -1,6 +1,6 @@
+-# A〜D共通配送計画条件 v1.0
++# A〜D共通配送計画条件 v1.1
+ 
+-採用日：2026-11-11。正本は`configs/toc_delivery/common_conditions_v1.json`。今回のユーザー指示に基づく研究上の共通仮定であり、実事業者の測定値・設備仕様・勤務実績ではない。設定ファイルの全バイトをコードのSHA256 pinで検査する。下記表は設定から生成し、新規テストで一致を確認する。版を変えずに数値だけ書き換えた入力は拒否する。
++採用日：2026-11-11。正本は`configs/toc_delivery/common_conditions_v1_1.json`。今回のユーザー指示に基づく研究上の共通仮定であり、実事業者の測定値・設備仕様・勤務実績ではない。設定ファイルの全バイトをコードのSHA256 pinで検査する。下記表は設定から生成し、新規テストで一致を確認する。版を変えずに数値だけ書き換えた入力は拒否する。
+ 
+ <!-- BEGIN GENERATED CONDITIONS -->
+ |設定キー|採択値|
+@@ -26,7 +26,7 @@
+ |operations.max_trips_per_vehicle|2|
+ |operations.service_s|120|
+ |operations.loading_s|1800|
+-|operations.preparation_s|900|
++|operations.preparation_s|0|
+ |operations.opening_s|28800|
+ |operations.closing_s|72000|
+ |operations.first_ready_span_s|3600|
+@@ -62,14 +62,25 @@
+ |comparison.epsilon_W_min|null|
+ |comparison.epsilon_D_km|null|
+ |first_ready_rule|opening_s + (3600 * (2*v+1)) // (2*V)|
+-|conditions_version|AD-common-20261111-v1.0|
++|conditions_version|AD-common-20261111-v1.1|
+ <!-- END GENERATED CONDITIONS -->
+ 
++## v1.1改訂と適用範囲
++
++本追加指示により、A〜D共通の帰着後準備時間を15分から0分へ変更した。旧v1.0設定と既存保存結果はそのまま保全し、現行loaderはv1.1の版・hashを要求する。旧入力・計画の無言変換はしない。積込1800秒/便と顧客先作業120秒/地点は研究上の固定仮定として維持する。顧客作業は帰着時刻、そこから定まる次便ready、勤務終了判定の時間伝播にのみ使用し、D/Wへの直接加算・変動モデル・新たな作業時間目的は導入しない。
++
++以下を共通に使用する。
++
++- `load_end_r = load_start_r + 1800`、バース占有は`[load_start_r, load_end_r)`。
++- `return_r = departure_r + Σ ceil(OD_duration_ij) + 120 × 訪問地点数`。
++- `ready_v2 = return_v1 + 0 = return_v1`、`load_start_v2 >= return_v1`。
++- `W = Σ(load_start_r − ready_r)/60`。積込作業30分と顧客先作業を待機時間へ加算しない。
++
+ ## 解釈と根拠
+ 
+ 単一拠点から出発・帰着する非空便を、各車最大2便まで使う。未使用車両は出力に便を持たず、1便だけの運行も許す。顧客割当・便・順序は解法が決定し、共通入力には固定担当を持たない。準備中はバースを占有しない。積込は半開区間[start,end)の連続1800秒で、中断を認めない。
+ 
+-時刻はAsia/Tokyoの午前0時からの整数秒。第1便readyは28800+floor(3600(v+0.5)/V)。実装は整数演算`28800+(3600*(2*v+1))//(2*V)`で誤差を避ける。第2便readyは第1便の独立再計算帰着+900秒。積込終了と出発は同時、顧客の到着と作業開始は同時とし、旧採用仕様の任意途中待機なしを維持する。運行8〜20時の設定によって休憩・労働時間の全法令を満たすとは主張しない。
++時刻はAsia/Tokyoの午前0時からの整数秒。第1便readyは28800+floor(3600(v+0.5)/V)。実装は整数演算`28800+(3600*(2*v+1))//(2*V)`で誤差を避ける。第2便readyは第1便の独立再計算帰着と同時（帰着後準備0秒）。第2便積込は帰着直後から開始でき、出発はその積込完了後となる。積込終了と出発は同時、顧客の到着と作業開始は同時とし、旧採用仕様の任意途中待機なしを維持する。運行8〜20時の設定によって休憩・労働時間の全法令を満たすとは主張しない。
+ 
+ 道路はOpenStreetMap、経路計算はOSRM。静的・有向ODを用い、一方通行を考慮する。同じtable応答のdistanceとdurationを保存する。距離は最速経路に対応する道路距離で、直線距離や最短距離へ置換しない。OSRMの生durationはfloat64秒で保存し、運行計画と検査には各arcのceil秒を共通適用する。保守的丸めの増分は各arcにつき0以上1秒未満で、全体の増分はarc数に依存する。マクロ便でまとめて丸めない。根拠：[OSRM公式HTTP仕様](https://project-osrm.org/docs/v26.5.0/http)。道路の帰属は© OpenStreetMap contributors、[ODbL](https://www.openstreetmap.org/copyright)。実交通混雑や車両寸法制限の完全再現を保証しない。
+ 
+diff --git a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/docs/research/toc_delivery_common/COMMON_DATA_AUDIT.md b/docs/research/toc_delivery_common/COMMON_DATA_AUDIT.md
+index 88bbbdc..00ca382 100644
+--- a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/docs/research/toc_delivery_common/COMMON_DATA_AUDIT.md
++++ b/docs/research/toc_delivery_common/COMMON_DATA_AUDIT.md
+@@ -2,6 +2,10 @@
+ 
+ 2026-11-11。証拠の正本は`output/toc_delivery/common_v1_audit_20261111/`。本書はデータを再生成せずに読取・照合した結果である。
+ 
++## v1.1改訂
++
++時間条件は全A〜D共通の研究仮定として、積込30分/便、顧客先作業120秒/地点、帰着後準備0分とする。需要・道路の既存監査数値は下記v1.0時点の記録を保全する。現行条件はcommon_conditions_v1_1.json、追加の検証証拠はoutput/toc_delivery/common_v1_1_revision_20261111/。道路・OD・S1〜S3のHOLDは時間仮定変更だけで解除しない。
++
+ ## 監査範囲と採用順序
+ 
+ 開始HEADは8605d5412f6af62229a83095c35ab04c8c7dd9b1。git statusはmainがorigin/mainより7 commit先行し、README.md/.gitignoreに既存変更と大量の未追跡成果を含んだ。初期の完全一覧はGIT_STATUS_BEFORE.txt、既存47,440ファイル・21,422,393,920 bytesのhashはPRESERVATION_BEFORE.jsonへ記録した。リポジトリ内・親階層にAGENTS.mdは見つからなかった。読み取り専用の遠隔HEAD確認は1b00bd7927fa1e7688e4772ac1da9db46d9bac11で、merge/pull/resetはしていない。
+@@ -12,7 +16,7 @@ README、11/8研究計画DOCX、TOC_DELIVERY_SPEC、11/10凍結需要とpin、11
+ |---|---|
+ |11/8のNの意味・人口再配分がHOLD|11/10凍結需要v1の一意配送地点を使う。元39,956の町丁目比、PASS34,912から固定抽出済み|
+ |旧PE/容量216、固定担当、作業102秒、帰庫32400秒|使用しない。1配送単位、60/便、作業120秒、8〜20時へ新規設定で固定|
+-|計画書の積込20分、7時は候補のままHOLD|今回の指示により30分、初便ready8〜9時均等、準備15分を採択|
++|計画書の積込20分、7時は候補のままHOLD|今回の指示により30分、初便ready8〜9時均等、準備0分を採択（v1.0の15分から追加指示で改訂）|
+ |各車2便と空便条件が未確定|最大2便、未使用・1便を許容。使用便は非空|
+ |Aが代理割当・近傍・FCFS|出典付き実績/参照水準へ置換する方針。代理計画を実績としない|
+ |Bが一般的貪欲/探索、Dが旧訪問順QAOA|最新D文書のB=VeRyPy CW、C=OR-Tools、D=Huang CG＋AOAを維持|
+diff --git a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/docs/research/toc_delivery_common/COMMON_IMPLEMENTATION_PLAN.md b/docs/research/toc_delivery_common/COMMON_IMPLEMENTATION_PLAN.md
+index 49577a8..75c085e 100644
+--- a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/docs/research/toc_delivery_common/COMMON_IMPLEMENTATION_PLAN.md
++++ b/docs/research/toc_delivery_common/COMMON_IMPLEMENTATION_PLAN.md
+@@ -1,25 +1,34 @@
+-# A〜D共通基盤 実装前計画 v1.0
++# A〜D共通基盤 改訂実装計画 v1.1
+ 
+-採用日：2026-11-11。ユーザーの「A〜D共通条件 v1.0」を今回の正本とする。本ファイルの初版を証拠ディレクトリへ保存した後に実装を開始する。
++採用日：2026-11-11。準備時間を0秒とする追加ユーザー指示を反映した「A〜D共通条件 v1.1」を現行の正本とする。初版v1.0の実装前記録は旧監査ディレクトリへ保全済み。v1.1の実装前計画はoutput/toc_delivery/common_v1_1_revision_20261111/REVISION_PLAN.mdへ保存した。
++
++## v1.1変更仕様・検証順序
++
++積込1800秒/便と作業120秒/地点を固定の研究仮定として維持し、準備のみ0秒へ変更する。`ready_v2=return_v1`、`load_start_v2>=return_v1`、`load_end=load_start+1800`、`return=departure+Σceil(OD秒)+120×地点数`とする。Wはstart−readyで、積込作業・顧客作業を直接加算しない。顧客作業は帰着・次便ready・勤務終了制約への時間伝播にのみ使用し、詳細変動モデルを導入しない。
++
++1. 旧条件のhashと保存結果を保全し、v1.1設定とpinを追加・切替する。
++2. fixture・独立指標監査の900秒固定参照を解消し、共通検査器と既存D bridgeへの0秒伝播を確認する。
++3. B/C/D共通の帰着直後可・1秒前不可、旧900秒ready拒否、実際の15分待機はWに計上、バース排他を検証する。
++4. 関連回帰と新規ディレクトリへの人工監査、保全hash/diffを確認する。旧検証結果は過去版として残す。
+ 
+ ## 監査で確認した差分
+ 
+ - 作業開始時HEADは8605d54、mainはorigin/mainより7 commit先行。読み取り専用の`git ls-remote origin HEAD`は1b00bd7927fa1e7688e4772ac1da9db46d9bac11。pull/resetしない。
+ - README/.gitignoreに既存変更、大量の未追跡成果が存在する。AGENTS.mdはリポジトリ内・親階層で見つからない。
+-- 11/8計画DOCX・study.json・contracts.pyは旧HOLD契約。11/10需要追補を優先し、今回の容量60、作業120秒、積込1800秒、準備900秒、8〜20時、均等ready、最大2便・未使用可を新しい設定へ採択する。
++- 11/8計画DOCX・study.json・contracts.pyは旧HOLD契約。11/10需要追補を優先し、今回の容量60、作業120秒、積込1800秒、準備0秒、8〜20時、均等ready、最大2便・未使用可を新しい設定へ採択する。
+ - Aは代理計画から出典付き実績・参照水準へ、BはVeRyPy Clarke–Wright、CはOR-Tools、DはHuang CG＋AOA。既存文書は保全し差分を新文書へ記載する。
+ - DEP_006（35.586971,139.745306）は代理座標。車両用出入口の根拠は未確認。既存SUMO対応・固定担当内ODは新OSRM全有向ODへ転用しない。
+ - Dの日列・価格付け改善は小規模人工問題の成果。長い便、全列依存、整数化、秒精度と研究ODの接続はHOLDを維持する。
+ 
+ ## 保全対象・変更境界
+ 
+-凍結需要8ファイル、既存src/tests/scripts/configs、A〜C・Dコード、研究計画DOCX、旧研究文書・保存結果、README/.gitignoreの既存変更を保全する。既存ファイルは編集しない。新規のcommon/、設定、テスト、実行スクリプト、共通文書・監査成果だけを追加する。アルゴリズム本体の変更予定はない。commit/push、本比較実験、需要生成、公開OSRMへの通信は行わない。
++凍結需要8ファイル、既存src/tests/scripts/configs、A〜C・Dコード、研究計画DOCX、旧研究文書・保存結果、README/.gitignoreの既存変更を保全する。v1.1ではcommon/config.py・validation.py、共通テスト、監査スクリプト、共通文書を修正し、common_conditions_v1_1.jsonと新しい検証出力を追加する。旧v1.0設定、凍結需要、既存実験結果、アルゴリズム本体は変更しない。アルゴリズム本体の変更予定はない。commit/push、本比較実験、需要生成、公開OSRMへの通信は行わない。
+ 
+ ## 構成・依存関係・実装順序
+ 
+ |順|新規パス|役割・依存|
+ |---|---|---|
+-|1|configs/toc_delivery/common_conditions_v1.json|版付き採択値・由来・単位・未確認項目。標準ライブラリJSON|
++|1|configs/toc_delivery/common_conditions_v1_1.json|版付き採択値・由来・単位・未確認項目。標準ライブラリJSON|
+ |2|src/kmd_toc/common/config.py, models.py|設定値厳格検査、不変モデル、JSON入出力・fingerprint。凍結loaderだけを既存から利用|
+ |3|src/kmd_toc/common/od.py|有向distance/time同経路OD、欠損・到達不能・snap監査、mmap binary読込、ローカルOSRMブロック生成。NumPyはOD保存読込時のみ|
+ |4|src/kmd_toc/common/validation.py|解法をimportしない秒単位の独立全制約検査・D/W再計算。失敗は理由を保持しnull指標|
+@@ -42,7 +51,7 @@ S3の4001²ペアはブロック100×100、1681要求を上限見積りとし、
+ 
+ 1. Test 1：ID/欠損/単位/数/需要/凍結pin、設定改変・hash不一致の拒否。
+ 2. Test 2：shape/対角/有向非対称/null/欠損/単位/同じODの経路再計算。OSRM応答stubとblock読込も検査。
+-3. Test 3〜5：0/1/2便・3便拒否、容量、準備前/帰着前2便、積込/バース競合/境界、作業時間、20時ちょうど/超過。
++3. Test 3〜5：0/1/2便・3便拒否、容量、帰着直後の第2便積込可・帰着前拒否、積込/バース競合/境界、作業時間、20時ちょうど/超過。
+ 4. Test 6：同一計画を別実装でD/W再計算。Tを偽時計と実時計で検査、読込・変換・求解・復号・整数化・後処理・検証を含む。
+ 5. Test 7：開始時の全保全対象hashを終了時再照合。新規テストと既存ToC/Dテスト、既存公開APIの回帰検査を実施し失敗も記録。
+ 
+diff --git a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/docs/research/toc_delivery_common/COMMON_INTERFACE_SPEC.md b/docs/research/toc_delivery_common/COMMON_INTERFACE_SPEC.md
+index 283f163..93e33ee 100644
+--- a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/docs/research/toc_delivery_common/COMMON_INTERFACE_SPEC.md
++++ b/docs/research/toc_delivery_common/COMMON_INTERFACE_SPEC.md
+@@ -1,7 +1,9 @@
+-# A〜D共通入出力仕様 v1.0
++# A〜D共通入出力仕様（schema v1.0・条件 v1.1）
+ 
+ 採用日2026-11-11。実装は`src/kmd_toc/common/`。条件の正本はCOMMON_CONDITIONS_V1.mdが参照するJSONである。solverを選ぶ設定と共通の問題データを分離する。旧`study.json`/`contracts.py`は凍結履歴として維持し、新入口から読まない。
+ 
++v1.1ではA〜D共通に帰着後準備を0秒とする。積込1800秒と作業120秒は研究上の固定仮定として維持する。顧客作業は訪問時刻の伝播を通じた帰着・次便ready・勤務期限の計算に使用し、変動モデルは持たない。旧v1.0設定・既存結果を保持し、旧条件hashの入力を現行条件として読込むことは拒否する。
++
+ ## 共通入力の保存構成
+ 
+ ```text
+@@ -36,7 +38,7 @@ instance/
+ |Depot.entrance_verified / entrance_evidence|bool / str|実車両出入口の確認と証拠。代理座標だけではtrueにしない|
+ |Berth.berth_id / depot_id|str / str|一意バースID・所属拠点|
+ |Berth.opening_s / closing_s|int / int|28800 / 72000秒|
+-|Berth.loading_s / preparation_s|int / int|1800 / 900秒|
++|Berth.loading_s / preparation_s|int / int|1800 / 0秒|
+ |Experiment.scenario_id|str|S1/S2/S3、検証はTEST_N4等の明示ラベル|
+ |Experiment.conditions_version / conditions_sha256|str / str|採択版・設定ファイルhash|
+ |Experiment.random_seed|intまたはnull|方法のseed。固定需要はseedで再生成しない|
+@@ -70,7 +72,7 @@ metadataはkind/units/road_version/graph_id、source_url/acquired_at/osm_timesta
+ |Trip.visits|Visit[]|訪問先の順序。使用便は非空|
+ |Visit.stop_id|str|原配送先ID|
+ |Visit.arrival_s / service_start_s / service_end_s|int|到着・作業開始・終了、JST秒|
+-|Trip.ready_s|int|積込準備完了。第2便は第1便再計算帰着+900秒|
++|Trip.ready_s|int|積込準備完了。第2便は第1便再計算帰着と同時（+0秒）|
+ |Trip.berth_id|str|明示バース割当|
+ |Trip.load_start_s / load_end_s|int|連続1800秒の積込占有|
+ |Trip.departure_s / return_s|int|拠点発着、JST秒|
+diff --git a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/docs/research/toc_delivery_common/COMMON_VALIDATION_REPORT.md b/docs/research/toc_delivery_common/COMMON_VALIDATION_REPORT.md
+index a599fa7..78e4a59 100644
+--- a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/docs/research/toc_delivery_common/COMMON_VALIDATION_REPORT.md
++++ b/docs/research/toc_delivery_common/COMMON_VALIDATION_REPORT.md
+@@ -1,3 +1,65 @@
++# A〜D共通基盤 v1.1 準備時間0秒への改訂・検証
++
++2026-11-11。今回の追加ユーザー指示を採用し、積込1800秒/便、顧客先作業120秒/地点を固定の研究仮定として維持し、帰着後準備のみ900秒から0秒へ改訂した。A〜D全てに共通適用する。時間変動モデルを導入しない。
++
++## 現行条件・数式・実装
++
++現行設定は`configs/toc_delivery/common_conditions_v1_1.json`、条件版は`AD-common-20261111-v1.1`。旧v1.0設定ファイルは保全し、共通loaderの参照先とSHA256 pinを新しい版へ切り替えた。旧条件の入力をv1.1として無言で扱わない。
++
++- バース占有：`[load_start, load_start+1800)`、積込終了後に出発する。
++- 帰着：`return = departure + Σ ceil(OD_duration) + 120×訪問地点数`。
++- 第2便準備完了：`ready_v2 = return_v1 + 0 = return_v1`。
++- 第2便積込：`load_start_v2 >= return_v1`。帰着直後の積込を許すが、出発には30分の積込が必要。
++- 待機：`W = Σ(load_start−ready)/60`。積込作業・顧客作業を直接加算しない。
++
++顧客作業は時刻伝播を通じた帰着、次便ready、72000秒の勤務終了判定にのみ使用する。距離・容量の目的へ加えず、詳細な変動モデルは作らない。積込時間はバース占有と待機の時系列計算に使用する。全時間値は実測値ではない。
++
++共通検査器は既存の設定参照式を維持した。変更した実装は共通設定loader/pin、検査器の式注記、fixture、独立再計算・監査の旧900秒固定参照である。既存のB/C/Dアルゴリズム本体とD bridge本体は変更していない。D bridgeが0秒を受け取ることを回帰テストした。共通条件・入出力・実装計画・データ監査文書も更新した。
++
++## テスト結果
++
++新規条件を扱う共通72件＋既存ToC/D64件、合計**136 passed（4.93秒）**。実行ログは`output/toc_delivery/common_v1_1_revision_20261111/TEST_ACCEPTANCE.log`。Python3.12.11の既存vehicle-day-v1環境を使用し、依存を追加していない。
++
++- 積込1800秒・作業120秒の固定値、準備0秒、文書生成表とJSON pinの一致。
++- v1.0入力版・旧900秒Berth設定の拒否。過去結果の無言変換なし。
++- B/C/Dの同一Plan形式で帰着直後の第2便積込可、1秒前の積込不可。
++- 実際に900秒遅らせた場合はW=15分。readyを帰着+900秒へ偽装してW=0にすると拒否。
++- 準備0秒でもバース重複拒否、30分の積込、120秒の顧客作業、20時帰着期限を維持。
++- Dの日列入力へpreparation_s=0、loading_s=1800、service_s=120が渡ることを確認。
++- 4/5/6/20地点の人工入力を新規保存し、D/Wを独立Decimal計算と照合。
++
++旧の需要再生成を呼ぶテストは今回も実行せず、凍結8ファイルのハッシュ・全手法のloader一致・一時コピーの破損拒否を検証した。旧公開APIの無関係な既知4失敗は今回再実行・修復せず、以下のv1.0記録を保持する。
++
++## v1.1人工検証結果（性能比較ではない）
++
++|地点数|D [km]|W [分]|T実測 [秒]|独立再計算|
++|---:|---:|---:|---:|---|
++|4|0.8|1.5|0.005827|一致|
++|5|1.4|3.5|0.005567|一致|
++|6|1.22|1.5|0.005423|一致|
++|20|6.4|1.5|0.008844|一致|
++
++5地点例の帰着は31716/34124/32721秒。v0第2便は旧版35024秒から900秒早くなる。指定した待機60/120/30秒と訪問順を維持したためD=1.4km、W=3.5分、readyから積込終了まで93.5分は同じである。この一致を一般の最適化結果への影響なしと解釈しない。これらは新しい版の人工witnessで、旧保存結果を更新していない。
++
++## 時間下界の再計算と準備状況
++
++r=ceil(N/60)とすると、車両当たりの移動を除く作業時間下界は`(120N+1800r)/(60V)`分となる。旧式の`900max(0,r−V)`は現行条件では0である。
++
++|系列|必要最小便数|車両当たり下界 [分]|旧版の下界 [分]|
++|---|---:|---:|---:|
++|S1|17|251|261.5|
++|S2|34|251|261.5|
++|S3|67|250.25|260.375|
++
++総容量・必要便数・積込バース占有・顧客総作業時間・OD容量は変更されない。下界の成立は運行可行性の証明ではない。共通条件改訂は**GO**、共通モジュール全体は実OSRM未検証のため**CONDITIONAL GO**、S1/S2/S3適用は**HOLD**を維持する。道路・OD整備と各solver全体接続の課題は今回の時間仮定変更では解消しない。
++
++## 再現と保全
++
++証拠は`output/toc_delivery/common_v1_1_revision_20261111/`。REVISION_PLAN.md、SOURCE_BEFORE/、PRESERVATION_BEFORE.json、PRESERVATION_AFTER.json、audit/、FINAL_REVIEW.json、REPRODUCE.mdを保存する。既存凍結需要・過去の実験/検証出力・旧設定・アルゴリズム本体は保全し、許可した共通コード・テスト・文書だけを変更したことをhashで検査する。S1〜S3本実験、commit/pushは実施しない。
++
++<details>
++<summary>v1.0の過去検証記録（以下の900秒・数値は旧条件の履歴で、現行仕様ではない）</summary>
++
+ # A〜D共通基盤 独立検証・適用準備判定
+ 
+ 2026-11-11。共通条件の定義は**GO**、共通モジュールは**CONDITIONAL GO（人工入力で検証済み、実OSRM接続は未検証）**、S1/S2/S3適用はそれぞれ**HOLD**である。未取得の実道路データや可行性を小規模人工計画で代替しない。
+@@ -104,3 +166,5 @@ S1を最初に動かす最低条件は、固定8ファイルpin、確認済み
+ ## 再現・保全
+ 
+ 再現コマンドは証拠REPRODUCE.md。新規結果は排他的に新ディレクトリへ書く。過去の結果を更新するコマンドは使用しない。最終のhash照合、git diff/statusと追加ファイル一覧はPRESERVATION_AFTER.json、FINAL_REVIEW.json、TASK_FILE_HASHES.jsonへ記録する。
++
++</details>
+diff --git a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/scripts/audit_toc_common.py b/scripts/audit_toc_common.py
+index ee5c6df..b464147 100644
+--- a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/scripts/audit_toc_common.py
++++ b/scripts/audit_toc_common.py
+@@ -154,7 +154,7 @@ def witnesses(out):
+             if trip['trip_no']==1:
+                 ready=next(v.first_ready_s for v in problem.vehicles if v.vehicle_id==trip['vehicle_id'])
+             else:
+-                ready=next(t['return_s'] for t in plan['trips'] if t['vehicle_id']==trip['vehicle_id'] and t['trip_no']==1)+900
++                ready=next(t['return_s'] for t in plan['trips'] if t['vehicle_id']==trip['vehicle_id'] and t['trip_no']==1)
+             waiting+=Decimal(trip['load_start_s']-ready)/60
+         for (i,j),count in arcs.items():
+             distance+=Decimal(str(problem.od.distance_m[problem.od.ids.index(i),problem.od.ids.index(j)]))*count/1000
+diff --git a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/src/kmd_toc/common/config.py b/src/kmd_toc/common/config.py
+index ad996ff..3ec2528 100644
+--- a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/src/kmd_toc/common/config.py
++++ b/src/kmd_toc/common/config.py
+@@ -4,9 +4,9 @@ import json
+ from pathlib import Path
+ 
+ ROOT = Path(__file__).resolve().parents[3]
+-CONFIG_PATH = ROOT / 'configs/toc_delivery/common_conditions_v1.json'
+-# Populated at initial adoption, before tests; protects all nested policy values.
+-CONFIG_SHA256 = 'cb0cb6ed00df857d01a77631b4cc5bd1fdb3d26ef37ec6b98f147c5dbb0f23d3'
++CONFIG_PATH = ROOT / 'configs/toc_delivery/common_conditions_v1_1.json'
++# Approved v1.1 adoption; protects all nested policy values.
++CONFIG_SHA256 = 'bbb15417a4eee5072f8118056c90ab422d792b4cedc35a6a06bf6bc0497fe8d2'
+ 
+ 
+ def digest_file(path):
+diff --git a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/src/kmd_toc/common/validation.py b/src/kmd_toc/common/validation.py
+index 12d057e..f8aeb0a 100644
+--- a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/src/kmd_toc/common/validation.py
++++ b/src/kmd_toc/common/validation.py
+@@ -95,6 +95,7 @@ def validate_plan(problem, plan):
+                     (visit.arrival_s,visit.service_start_s,visit.service_end_s)):
+                 fail('INTEGER_SECOND_TIMES', context)
+                 continue
++            # Common v1.1: preparation_s=0, so trip 2 may load at trip 1 return.
+             ready = vehicle.first_ready_s if t.trip_no == 1 else (
+                 previous_return + o['preparation_s'] if previous_return is not None else None)
+             if ready is None or t.ready_s != ready:
+diff --git a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/tests/toc_common/conftest.py b/tests/toc_common/conftest.py
+index 02a3d32..95f90a6 100644
+--- a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/tests/toc_common/conftest.py
++++ b/tests/toc_common/conftest.py
+@@ -31,7 +31,7 @@ def fixture_problem(n=5, vehicles=3, berths=2):
+     o = c['operations']
+     return Problem(stops,tuple(Vehicle(f'v{i}',60,2,ready_s(i,vehicles),72000) for i in range(vehicles)),
+                    Depot('depot',139.7,35.58,snap(0),True,'synthetic depot'),
+-                   tuple(Berth(f'b{i}','depot',28800,72000,1800,900) for i in range(berths)),od,
++                   tuple(Berth(f'b{i}','depot',28800,72000,1800,o['preparation_s']) for i in range(berths)),od,
+                    Experiment(f'TEST_N{n}',c['conditions_version'],CONFIG_SHA256,0,
+                               {'od':od.fingerprint},{'fixture':True},{},'synthetic_validation'))
+ 
+@@ -42,24 +42,25 @@ def fixture_plan(p, assignments=None):
+         assignments = [('v0',('c1','c2'),60,'b0'),('v0',('c3','c4'),120,'b0'),
+                        ('v1',('c5',),30,'b1')]
+     previous, counts, trips = {}, {}, []
++    o = load_conditions()['operations']
+     for vid, identifiers, delay, berth in assignments:
+         counts[vid] = counts.get(vid,0)+1
+-        ready = (previous[vid]+900 if vid in previous else
++        ready = (previous[vid]+o['preparation_s'] if vid in previous else
+                  next(v.first_ready_s for v in p.vehicles if v.vehicle_id == vid))
+         start = ready+delay
+-        clock = start+1800
++        clock = start+o['loading_s']
+         visits, distance, node = [],0.0,0
+         for identifier in identifiers:
+             j=p.od.ids.index(identifier)
+             distance += float(p.od.distance_m[node,j])
+             clock += math.ceil(float(p.od.duration_s[node,j]))
+-            visits.append(Visit(identifier,clock,clock,clock+120))
+-            clock+=120
++            visits.append(Visit(identifier,clock,clock,clock+o['service_s']))
++            clock+=o['service_s']
+             node=j
+         distance+=float(p.od.distance_m[node,0])
+         clock+=math.ceil(float(p.od.duration_s[node,0]))
+         trips.append(Trip(vid,counts[vid],'depot','depot',tuple(visits),ready,berth,
+-                          start,start+1800,start+1800,clock,distance,delay))
++                          start,start+o['loading_s'],start+o['loading_s'],clock,distance,delay))
+         previous[vid]=clock
+     return Plan('1.0','synthetic-witness','B',p.fingerprint,p.od.fingerprint,tuple(trips),{},'classical')
+ 
+diff --git a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/tests/toc_common/test_common.py b/tests/toc_common/test_common.py
+index 392aab5..77d9964 100644
+--- a/output/toc_delivery/common_v1_1_revision_20261111/SOURCE_BEFORE/tests/toc_common/test_common.py
++++ b/tests/toc_common/test_common.py
+@@ -39,7 +39,7 @@ def independent_objectives(p,plan):
+     for vehicle in p.vehicles:
+         trips=sorted((t for t in plan.trips if t.vehicle_id==vehicle.vehicle_id),key=lambda t:t.trip_no)
+         for k,trip in enumerate(trips):
+-            ready=vehicle.first_ready_s if k==0 else trips[k-1].return_s+900
++            ready=vehicle.first_ready_s if k==0 else trips[k-1].return_s
+             wait+=Decimal(trip.load_start_s-ready)/60
+     return distance,wait
+ 
+@@ -47,7 +47,14 @@ def independent_objectives(p,plan):
+ def test_adopted_config_and_doc_sync():
+     c=load_conditions()
+     assert c['operations']==dict(demand_per_stop=1,capacity_per_trip=60,max_trips_per_vehicle=2,
+-        service_s=120,loading_s=1800,preparation_s=900,opening_s=28800,closing_s=72000,first_ready_span_s=3600)
++        service_s=120,loading_s=1800,preparation_s=0,opening_s=28800,closing_s=72000,first_ready_span_s=3600)
++    assert c['conditions_version']=='AD-common-20261111-v1.1'
++    old=json.loads((ROOT/'configs/toc_delivery/common_conditions_v1.json').read_text())
++    assert old['operations']['preparation_s']==900
++    assert {k:v for k,v in c['operations'].items() if k!='preparation_s'}=={
++        k:v for k,v in old['operations'].items() if k!='preparation_s'}
++    for section in ('scope','units','scenarios','timing_policy','road_policy','comparison'):
++        assert c[section]==old[section]
+     assert c['comparison']['epsilon_W_min'] is None and c['comparison']['epsilon_D_km'] is None
+     doc=(ROOT/'docs/research/toc_delivery_common/COMMON_CONDITIONS_V1.md').read_text()
+     assert doc.split('<!-- BEGIN GENERATED CONDITIONS -->\n')[1].split('\n<!-- END GENERATED CONDITIONS -->')[0]==conditions_table()
+@@ -61,6 +68,15 @@ def test_config_drift_rejected(tmp_path):
+         load_conditions(path)
+ 
+ 
++def test_old_conditions_are_not_silently_relabelled(problem):
++    with pytest.raises(ValueError,match='CONDITIONS_HASH'):
++        load_conditions(ROOT/'configs/toc_delivery/common_conditions_v1.json')
++    old=replace(problem,experiment=replace(problem.experiment,conditions_version='AD-common-20261111-v1.0'))
++    with pytest.raises(ValueError,match='VERSION'):old.validate()
++    old=replace(problem,berths=(replace(problem.berths[0],preparation_s=900),*problem.berths[1:]))
++    with pytest.raises(ValueError,match='BERTH_CONDITIONS'):old.validate()
++
++
+ @pytest.mark.parametrize('count',[10,20,40])
+ def test_ready_equation(count):
+     for v in range(count):
+@@ -163,7 +179,7 @@ def test_hand_calculation_0_1_2_trips(problem,plan):
+     assert r.D_km==1.4 and r.W_min==3.5
+     assert r.W1_min==1.5 and r.W2_min==2
+     assert r.ready_to_loading_end_min==93.5
+-    assert [t.return_s for t in plan.trips]==[31716,35024,32721]
++    assert [t.return_s for t in plan.trips]==[31716,34124,32721]
+     assert len([t for t in plan.trips if t.vehicle_id=='v0'])==2
+     assert len([t for t in plan.trips if t.vehicle_id=='v1'])==1
+     assert not any(t.vehicle_id=='v2' for t in plan.trips)
+@@ -203,13 +219,45 @@ def test_capacity_60_and_61():
+         if not feasible:assert 'CAPACITY' in codes(r)
+ 
+ 
+-def test_second_trip_requires_return_plus_preparation(problem,plan):
++def test_second_trip_cannot_load_before_return(problem,plan):
+     first=plan.trips[0]
+-    for start in [first.return_s-1,first.return_s+899]:
++    for start in [first.return_s-120,first.return_s-1]:
+         r=validate_plan(problem,change_trip(plan,1,load_start_s=start,departure_s=start+1800,load_end_s=start+1800))
+         assert 'READY_OR_SECOND_TRIP_PREPARATION' in codes(r)
+ 
+ 
++@pytest.mark.parametrize('method,execution_kind',[
++    ('B','classical'),('C','classical'),('D','quantum_circuit_simulator')])
++def test_immediate_second_loading_and_waiting_shared_by_methods(problem,method,execution_kind):
++    plan=fixture_plan(problem,[('v0',('c1','c2'),0,'b0'),('v0',('c3','c4','c5'),0,'b0')])
++    plan=replace(plan,method_id=method,execution_kind=execution_kind)
++    first,second=plan.trips
++    assert second.ready_s==second.load_start_s==first.return_s
++    assert second.load_end_s==second.departure_s==first.return_s+1800
++    report=validate_plan(problem,plan)
++    assert report.feasible and report.W_min==0
++    assert report.ready_to_loading_end_min==60
++    # Starting one second before the independently recomputed return is invalid.
++    early=replace(shift_trip(second,-1),waiting_s=0)
++    assert 'READY_OR_SECOND_TRIP_PREPARATION' in codes(validate_plan(problem,replace(plan,trips=(first,early))))
++    # A scheduled 15-minute delay remains real waiting, not preparation.
++    delayed=shift_trip(second,900)
++    report=validate_plan(problem,replace(plan,trips=(first,delayed)))
++    assert report.feasible and report.W_min==15
++    assert float(independent_objectives(problem,replace(plan,trips=(first,delayed)))[1])==15
++    forged=replace(delayed,ready_s=first.return_s+900,waiting_s=0)
++    rejected=validate_plan(problem,replace(plan,trips=(first,forged)))
++    assert 'READY_DEFINITION' in codes(rejected) and 'WAITING_DEFINITION' in codes(rejected)
++
++
++def test_zero_preparation_still_requires_free_berth(problem):
++    plan=fixture_plan(problem,[('v0',('c1','c2'),0,'b0'),('v0',('c3','c4'),0,'b0'),
++                               ('v1',('c5',),0,'b0')])
++    first,second,_=plan.trips
++    assert second.load_start_s==first.return_s
++    assert 'BERTH_OVERLAP' in codes(validate_plan(problem,plan))
++
++
+ def test_customer_service_and_travel(problem,plan):
+     t=plan.trips[0];v=t.visits[0]
+     for visit,code in [(replace(v,service_end_s=v.service_end_s-1),'CUSTOMER_SERVICE_TIME'),
+@@ -309,6 +357,8 @@ def test_input_bridges_only_no_solver(problem):
+     assert np.array_equal(day.base.distance,problem.od.distance_m/1000)
+     assert day.delta_s==1 and all(v.capacity==60 for v in day.vehicles)
+     assert day.travel_s[0][1]==66
++    assert all(v.preparation_s==0 and v.loading_s==1800 for v in day.vehicles)
++    assert day.service_s==(0,*(120 for _ in problem.stops))
+ 
+ 
+ def test_d_output_bridge_preserves_bad_distance_for_rejection(problem,plan):
+@@ -322,7 +372,7 @@ def test_d_output_bridge_preserves_bad_distance_for_rejection(problem,plan):
+             ids=tuple(problem.od.ids.index(x.stop_id) for x in t.visits)
+             trips.append(TripSchedule(t.trip_no,ids,len(ids),t.ready_s,t.load_start_s,t.load_end_s,
+                 t.departure_s,t.return_s,t.return_s-t.departure_s-120*len(ids),120*len(ids),
+-                0 if t.trip_no==1 else 900,t.distance_m/1000))
++                load_conditions()['operations']['preparation_s'],t.distance_m/1000))
+             berths[v.vehicle_id,t.trip_no]=t.berth_id
+         columns.append(DayColumn(day.fingerprint,v.vehicle_id,28800,72000,tuple(trips)))
+     exported=from_vehicle_day(problem,day,columns,berths,method_settings={'validation_only':True})
+diff --git a/configs/toc_delivery/common_conditions_v1_1.json b/configs/toc_delivery/common_conditions_v1_1.json
+new file mode 100644
+index 0000000..4772c91
+--- /dev/null
++++ b/configs/toc_delivery/common_conditions_v1_1.json
+@@ -0,0 +1,136 @@
++{
++  "schema_version": "1.0",
++  "conditions_version": "AD-common-20261111-v1.1",
++  "adopted_on": "2026-11-11",
++  "authority": "user_instruction_20261111_preparation_zero_revision",
++  "value_kind": "research_assumption",
++  "scope": {
++    "region": "東京都大田区",
++    "depot_name": "京浜トラックターミナル",
++    "delivery": "ToC",
++    "depots": 1,
++    "homogeneous_vehicles": true,
++    "customer_time_windows": false,
++    "fixed_customer_vehicle_assignment": false,
++    "unused_vehicles_allowed": true,
++    "ev_conditions": false
++  },
++  "units": {
++    "distance": "m",
++    "travel_time": "s",
++    "clock": "s_since_midnight_Asia/Tokyo",
++    "demand": "delivery_unit",
++    "D": "km",
++    "W": "min",
++    "T": "s"
++  },
++  "operations": {
++    "demand_per_stop": 1,
++    "capacity_per_trip": 60,
++    "max_trips_per_vehicle": 2,
++    "service_s": 120,
++    "loading_s": 1800,
++    "preparation_s": 0,
++    "opening_s": 28800,
++    "closing_s": 72000,
++    "first_ready_span_s": 3600
++  },
++  "first_ready_rule": "opening_s + (3600 * (2*v+1)) // (2*V)",
++  "scenarios": {
++    "S1": {
++      "stops": 1000,
++      "vehicles": 10,
++      "berths": 2
++    },
++    "S2": {
++      "stops": 2000,
++      "vehicles": 20,
++      "berths": 4
++    },
++    "S3": {
++      "stops": 4000,
++      "vehicles": 40,
++      "berths": 8
++    }
++  },
++  "timing_policy": {
++    "travel_rounding": "ceil_each_arc_to_seconds",
++    "departure": "loading_end",
++    "service_start": "arrival",
++    "arbitrary_route_waiting": false,
++    "berth_interval": "half_open",
++    "preparation_occupies_berth": false,
++    "loading_preemptive": false,
++    "T_start": "before_common_input_load",
++    "T_end": "after_final_independent_validation",
++    "AOA_time": "quantum_circuit_simulator_wall_time"
++  },
++  "road_policy": {
++    "source": "OpenStreetMap",
++    "router": "OSRM",
++    "directed": true,
++    "time_dependent_congestion": false,
++    "distance_definition": "distance_of_fastest_route",
++    "distance_and_duration": "same_table_response",
++    "fallback_speed_allowed": false,
++    "local_only": true,
++    "snap_review_required": true,
++    "snap_alert_m": 100,
++    "block_size": 100
++  },
++  "comparison": {
++    "A": "sourced_actual_or_reference_levels",
++    "B": "VeRyPy_Clarke_Wright",
++    "C": "OR_Tools",
++    "D": "Huang_CG_AOA",
++    "multiobjective": "bidirectional_epsilon_constraint",
++    "epsilon_W_min": null,
++    "epsilon_D_km": null
++  },
++  "provenance": {
++    "operational_values": {
++      "kind": "research_assumption",
++      "source": "user_instruction_20261111_preparation_zero_revision",
++      "measured": false
++    },
++    "scenario_sizes": {
++      "kind": "research_assumption",
++      "source": "frozen_demand_v1"
++    },
++    "road_definition": {
++      "kind": "documentation",
++      "source": "https://project-osrm.org/docs/v26.5.0/http"
++    },
++    "road_license": {
++      "kind": "documentation",
++      "source": "https://www.openstreetmap.org/copyright"
++    },
++    "snap_alert_m": {
++      "kind": "audit_policy",
++      "source": "common_v1_implementation; alert only, never auto-approval"
++    }
++  },
++  "unresolved": [
++    "verified_vehicle_entrance",
++    "reviewed_OSRM_snaps",
++    "OSRM_graph_and_full_OD",
++    "A_sourced_comparable_reference",
++    "B_C_D_full_adapters",
++    "shared_resource_budget_and_seeds",
++    "epsilon_levels_after_feasible_reference"
++  ],
++  "legal_compliance_claim": false,
++  "revision": {
++    "supersedes": "AD-common-20261111-v1.0",
++    "changed_operations": [
++      "preparation_s"
++    ],
++    "scope": [
++      "A",
++      "B",
++      "C",
++      "D"
++    ],
++    "reason": "帰着後準備時間を0秒へ変更。積込1800秒/便・顧客先作業120秒/地点は研究上の固定仮定として維持。変動モデルは導入しない。"
++  }
++}

@@ -1,0 +1,35 @@
+{
+  "reason": "parallelize independent Route requests and gzip/path logging; no planning/OD policy change",
+  "before": {
+    "parent_pid": 109429,
+    "thread_workers": 4,
+    "port": 5000,
+    "checkpoint": {
+      "status": "INCOMPLETE",
+      "context": "f90710b4a0c867fbff1be492c9204501b21aa8d1ced595464b04d2540bf0bbfd",
+      "completed": 1750,
+      "total": 6561,
+      "elapsed_s": 264.68257922586054
+    }
+  },
+  "after": {
+    "fork_workers": 8,
+    "server_threads": 8,
+    "port": 5002,
+    "server_verbosity": "ERROR"
+  },
+  "unchanged": [
+    "OSM PBF",
+    "OSRM5.27.1 executable and graph",
+    "car profile",
+    "all original coordinates and reviewed hints",
+    "all existing Route responses",
+    "A parameters",
+    "B/C/D parameters",
+    "conditions v1.1",
+    "random seeds"
+  ],
+  "geometry_changed": false,
+  "cache_context_excludes_only_execution_parallelism": true,
+  "recorded_utc": "2026-11-12T06:59:37.212640+00:00"
+}

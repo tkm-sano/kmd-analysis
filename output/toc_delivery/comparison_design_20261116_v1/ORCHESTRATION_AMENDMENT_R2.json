@@ -1,0 +1,20 @@
+{
+  "revision": "prefreeze-orchestration-r2",
+  "before_settings_lock": true,
+  "reason": "A final attempt leaves coordinator affinity at one core; subsequent stage registration rejects four-core allocation",
+  "change": "restore registered four cores in stage finally, after all timed attempts; preserve failed registration draft and total pipeline wall across resume",
+  "algorithm_or_trial_timing_changed": false,
+  "completed_selection_attempts": 15,
+  "reexecute_completed_attempts": false,
+  "additional_tuning_opportunities": 0,
+  "old_script_sha256": "36793f58254312ea52acdb7d507d44aa34ed23e111a525be78f950ecb6b453ea",
+  "new_script_sha256": "ea9db3f45884d8832088cae205865ab20f1b51427c493502eb00abddd4a7ef3e",
+  "unchanged_source_hashes_except_script": true,
+  "newly_registered_remaining_attempts": 75,
+  "maximum_combined_attempts": 90,
+  "combined_attempt_cap_s": 19800,
+  "total_pipeline_wall_s": 21600,
+  "initial_mtime_based_remaining_estimate_s": 21225.31070613861,
+  "clock_correction": "resume uses persisted monotonic trial timestamps minus 300s conservative preparation; NFS server mtime is not a reliable elapsed clock; boot ID required",
+  "validation": "post-stage CPU allocation restoration verified with controlled runner; no timed method executed"
+}

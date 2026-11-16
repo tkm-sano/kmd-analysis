@@ -1,0 +1,78 @@
+{
+  "status": "INPUT_HOLD",
+  "D_km": null,
+  "W_min": null,
+  "T_program_s": null,
+  "T_A_program": null,
+  "T_A_human_reference": null,
+  "physical_feasible": false,
+  "T_kind": "program_wall",
+  "T_scope": [
+    "model_read_and_hash",
+    "input_read_and_hash",
+    "assignment",
+    "order",
+    "trip_split",
+    "FCFS",
+    "all_timestamps",
+    "common_validation",
+    "independent_recalculation",
+    "agreement"
+  ],
+  "error": {
+    "stage": "INPUT",
+    "type": "NameError",
+    "message": "name 'ROOT' is not defined"
+  },
+  "J": null,
+  "reference_status": "NOT_FROZEN",
+  "full_representativeness": "NOT_ESTABLISHED",
+  "main_experiment_eligible": false,
+  "T_attempt_wall_s": 0.23996657109819353,
+  "cpu_time_s": 0.0006934359999999362,
+  "timing_events": [
+    {
+      "name": "input_and_model_load_start",
+      "elapsed_s": 0.0
+    },
+    {
+      "name": "failed",
+      "elapsed_s": 0.23996657109819353
+    }
+  ],
+  "max_rss_KiB": 159744,
+  "budget_met": true,
+  "method": "A",
+  "version": "A-area-v3-20261115-research-candidate",
+  "selected_model_sha256": "30206923f994a46ab38eb724521ef54bdb9f5ade6f4273e02e4ca5e14c7c79f6",
+  "setup": {
+    "dependency_setup_wall_s": 120.94239056389779,
+    "allocated_cpu_ids": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "active_cpu_ids": [
+      0
+    ],
+    "python": "3.12.11 | packaged by Anaconda, Inc. | (main, Jun  5 2025, 13:09:17) [GCC 11.2.0]",
+    "executable": "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+    "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+    "native_threads_environment": {
+      "OPENBLAS_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1"
+    }
+  },
+  "pid": 2810268,
+  "cpu_affinity": [
+    0
+  ],
+  "execution_role": "calibration_selected",
+  "returncode": 1,
+  "scenario_id": "S1",
+  "repetition": 1,
+  "process_wall_including_setup_export_s": 122.85174120590091
+}

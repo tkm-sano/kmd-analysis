@@ -1,0 +1,83 @@
+{
+  "started_utc": "2026-11-10T10:17:04.982713+00:00",
+  "python": "3.12.11 | packaged by Anaconda, Inc. | (main, Jun  5 2025, 13:09:17) [GCC 11.2.0]",
+  "executable": "/home/takuma/.cache/kmd-analysis/venvs/huang-cg-aoa-v1/bin/python",
+  "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+  "cpu_count": 384,
+  "thread_environment": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "packages": {
+    "typing_extensions": "4.16.0",
+    "stevedore": "5.9.1",
+    "Pygments": "2.21.0",
+    "pluggy": "1.7.0",
+    "pip": "25.1.1",
+    "packaging": "26.3",
+    "numpy": "2.3.1",
+    "iniconfig": "2.3.1",
+    "dill": "0.4.1",
+    "scipy": "1.16.0",
+    "rustworkx": "0.18.1",
+    "pytest": "8.4.2",
+    "qiskit": "2.1.1"
+  },
+  "config": {
+    "experiment_id": "huang-independent-reference-v1",
+    "paper": "https://arxiv.org/html/2503.17051v1",
+    "scope": "artificial_small_CVRP_only",
+    "method": "Huang column generation plus AOA; independent Qiskit implementation",
+    "customer_counts": [
+      4,
+      5,
+      6
+    ],
+    "master_variant": "cover",
+    "final_integer_master": "partition",
+    "capacity_artificial_only": 25,
+    "slots": 4,
+    "p": 2,
+    "max_evaluations": 200,
+    "restarts": 3,
+    "train_shots": 1000,
+    "final_shots": 4096,
+    "solver_seeds": [
+      1101,
+      1102
+    ],
+    "lambda_capacity": 1.0,
+    "lambda_visit": 1.0,
+    "optimizer": "COBYLA",
+    "tolerance": 0.001,
+    "max_cg_rounds": 20,
+    "cg_batch_size": 5,
+    "aoa_no_improvement_stall_rounds": 1,
+    "main_stop_is_wall_time": false,
+    "study_data_access": false,
+    "settings_not_published_in_paper": [
+      "fixture_coordinates_and_demands",
+      "solver_seeds",
+      "initial_angles",
+      "max_evaluations",
+      "restarts",
+      "tolerance",
+      "final_shots",
+      "max_cg_rounds",
+      "aoa_no_improvement_stall_rounds"
+    ]
+  },
+  "config_sha256": "2d85445ecda3889d88ee66d901a13640ed881440dbacac16769ceb868cd85bcb",
+  "git_head": "8605d5412f6af62229a83095c35ab04c8c7dd9b1",
+  "source_hashes": {
+    "src/kmd_toc/column_generation/__init__.py": "52182a465859e8d3a1d7849978f5e8b1e0f776470bd5cfc5e2cc413f7f9b65ba",
+    "src/kmd_toc/column_generation/aoa.py": "6409aa17ea67cd37a9e5e6b6d79b72fc6abfd4652293d2426e5688197dbfe182",
+    "src/kmd_toc/column_generation/experiment.py": "1e760066d6491d5d8fcbc1b988502cb5beaddec251e9b680f2b6977dd529f538",
+    "src/kmd_toc/column_generation/master.py": "d158402e21fc83cdac486fd379f3d115288e8b0243f278ef6e21c24272cac205",
+    "src/kmd_toc/column_generation/models.py": "a5288f2243964d13001a250b458a08a14ba81cdb8292708eda03eddc58a4e859",
+    "src/kmd_toc/column_generation/reduction.py": "e5d4d60c4db4b93b3e578ccb36d17938c3fd1534fbf2e48f3c243d5e9f75678b",
+    "src/kmd_toc/column_generation/runner.py": "8ef9173cb214fd76c044e19d2f62136a8a68ec8ce9c88d6fa8b37689a73a1e9d"
+  },
+  "study_data_read_or_modified": false,
+  "authors_numerical_reproduction": false
+}

@@ -1,0 +1,21 @@
+# A参照と集計の確定仕様
+
+参照group_id、purpose（contract_check/formal）、required_count、全run_ids集合を実行前manifestで固定する。正式件数・反復数は今回決めない。後続の明示値がnull/欠落なら登録を拒否する。Aの最速回を事後選択しない。
+
+新比較契約の凍結A実行だけを参照会員にできる。同じシナリオ/scale/input/OD/物理条件/利用可能資源/T_kind/外側予算/検索条件/A_frozen_hashで照合する。method固有設定hashがB/C/Dと異なることは許容する。
+
+全会員が実行・成功・期限内採用済みで、計画semantic hashとD/Wが一致した場合だけ、全会員T_programの中央値をT_A_refとする。一人でも失敗ならREFERENCE_TRIAL_FAILED、未完了ならA_TIME_REFERENCE_INCOMPLETE。成功分への縮小をしない。plan/D/Wが不一致ならA_REFERENCE_PLAN_MISMATCH。groupと対象のphase/入力/時間/資源不一致も拒否する。
+
+`J=(D/D_A+W/W_A+T_program/T_A_ref)/3`。適格な対象計画、適格A参照、正の有限分母、非負の有限対象値を要する。基準ベクトル自身は1、個々のA試行は時間が中央値と違えばJも異なる。A行を一律1へ上書きしない。等重みは研究設定であり、J低下を全指標低下と同一視しない。
+
+J不成立はnullと次の理由コードを保存する。A_REFERENCE_PLAN_MISSING、A_TIME_REFERENCE_INCOMPLETE、REFERENCE_TRIAL_FAILED、A_REFERENCE_PLAN_MISMATCH、ZERO_REFERENCE_DENOMINATOR、NONFINITE_VALUE、TARGET_PLAN_INVALID、INPUT_CONDITIONS_MISMATCH、TIME_SCOPE_MISMATCH、RESOURCE_CONTRACT_MISMATCH、LEGACY_METHOD_OR_CONTRACT。epsilon加算・任意の大Jによる失敗代用はしない。今回の参照はcontract_checkで、formal_T_A_ref_registered=false。
+
+第一層は全予定runを起点とする。resultがないものもNOT_STARTED/NOT_CHECKED/NOT_RUN/nullで埋め、未実行として残す。予定/実行/有効入力実行/検証済み計画/未発見/不正計画/上限/実行エラー/入力不正/未実行/リトライを別に数える。件数は軸が重なる場合があり単純合計で分母へ戻さない。成功率の分母は有効入力の全実行（実行時エラー/時間切れを含む）、分子は採用計画数。入力不正と未実行は別に明示する。全実行T_attemptを保存し、成功回のTだけで全方式の所要時間を評価しない。
+
+第二層はcase_id/pair_idで事前に対応させた元試行の比較で、A-D/C-D/A-B/A-C/B-C/B-DごとにBOTH_SUCCESS、LEFT_ONLY_SUCCESS、RIGHT_ONLY_SUCCESS、BOTH_FAILED、EXCLUDEDを保存する。入力不正/未実行/対応相手の予定なし/契約不一致は理由付きEXCLUDED。有効入力でのエラー/時間切れは成功でない側として保持する。片方の成功だけを別需要から補充しない。同一pairに元試行が二つある場合は曖昧さとして拒否する。
+
+リトライは第一層へ全て残し、retry_ofを持つ行は主対応ペアへ黙って代入しない。別の再試行分析が必要なら明示的な別契約/対応指定を行う。今回の表にも除外したretry run_idsを保存する。
+
+双方成功なら生D/W/Tと差を保存する。C/Dが成功していればA失敗でも生比較は可能。A参照不成立でJがnullでも、有効な生指標を消さない。各ペアは対象数、raw採用数、raw除外数、J採用数、全対応識別子、除外理由、単位を持ち、親metadataにcontract_idとphaseを持つ。
+
+旧契約/旧A implementation/異なるsource・設定・input・T・資源を表へ混入させた場合、結果identity照合で自動拒否する。異なるphaseを混ぜない。需要シナリオ、scale、repeat_id、attempt_id、内部branchを分け、S1⊂S2⊂S3や4内部枝を独立需要へ数えない。独立標本数は今回はnull。p値・CI・統計優越性を算出しない。

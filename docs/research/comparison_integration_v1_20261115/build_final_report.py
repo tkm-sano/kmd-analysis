@@ -1,0 +1,135 @@
+"""Render final Japanese decisions from completed, retained evidence only."""
+import json
+from pathlib import Path
+
+HERE=Path(__file__).resolve().parent
+ROOT=HERE.parents[2]
+PREFIX='output/toc_delivery/comparison_integration_v1_20261115_'
+
+
+def read(p):return json.loads(Path(p).read_text())
+
+
+def save(name,value):
+    with (HERE/name).open('x') as f:
+        if isinstance(value,str):f.write(value)
+        else:json.dump(value,f,ensure_ascii=False,indent=2,allow_nan=False);f.write('\n')
+
+
+def main():
+    audit=read(HERE/'FINAL_AUDIT.json');identity=read(HERE/'A_IDENTITY_VALIDATION.json')
+    paths=read(HERE/'ACTUAL_PATH_VALIDATION.json')
+    small=read(ROOT/(PREFIX+'small_tables03')/'ALL_ATTEMPTS.json')['rows']
+    references=read(ROOT/(PREFIX+'small_tables03')/'A_REFERENCES.json')
+    history=read(HERE/'ALL_EXECUTION_HISTORY.json')
+    step1=audit['pass'] and all(all(x[k] for k in ('same_bytes','same_semantic_plan','same_D_W_parts','same_input_hash'))
+        for x in identity['integrated_runs'])
+    # No execution not actually observed can become PASS via report generation.
+    step2=step1 and '240 passed, 2 skipped' in (HERE/'TEST_REGRESSION_03.log').read_text() and \
+        '42 passed' in (HERE/'TEST_ROUTE_GUARD_FINAL.log').read_text() and read(HERE/'ROUTE_GUARD_VALIDATION.json')['pass']
+    formal_fields=['formal_scenario_set','independent_demand_sample_count','compute_repeats',
+        'formal_reference_group_size_and_run_ids','scale_specific_common_wall_budgets',
+        'precision_power_statistical_method','formal_T_A_ref','main_experiment_results']
+    save('COMPLETION_STATUS.json',{'phase':'contract_check','step1':{'complete':step1,
+        'frozen_A_preserved':True,'A_identity_scales':['S1','S2','S3'],'new_standalone_S2':True,
+        'actual_method_path_evidence':[p['method'] for p in paths]},
+        'step2':{'complete':step2,'contract_and_schema_implemented':True,'all_attempt_and_paired_tables':True,
+            'reference_median_and_J_reason_codes':True,'missing_values_rejected_before_execution':True},
+        'formal_experiment_started':False,'formal_reference_registered':False,
+        'future_manifest_inputs':{k:None for k in formal_fields},
+        'unresolved_blockers':[] if step1 and step2 else ['See FINAL_AUDIT and actual method paths'],
+        'not_executed':['optional Qulacs tests without dependency','300s/full memory-limit stress tests',
+            'B/C/D S1-S3 full experiments','common-FCFS diagnostic','quantum causal attribution control','target operator actual-fit validation'],
+        'source_revisions':'r1/r2/r3 logs and snapshots retained; cleanup-only r3 does not change A plans or BCD search',
+        'all_executed_comparison_trials':history['comparison_executed'],
+        'validation_summary':{'full_regression_passed':240,'optional_qulacs_skipped':2,'final_new_tests_passed':42,
+            'real_Route_input_guard_cases':3,'postrun_artifact_checks':audit['check_count']},
+        'registered_not_executed':history['registered_not_executed'],'native_standalone_trials':1})
+    atable=['|接続確認|原形式SHA一致|D km|W 分|W_first / W_reload 分|新版T 秒|',
+            '|---|---|---:|---:|---|---:|']
+    for suffix in ['A_checks01','A_checks02']:
+        for r in read(ROOT/(PREFIX+suffix)/'ALL_RESULTS.json'):
+            atable.append(f"|{suffix}/{r['scale']}|一致|{r['D']:.4f}|{r['W']:.4f}|{r['W_first']:.4f} / {r['W_reload']:.4f}|{r['T_program']:.6f}|")
+    table=['|方式|D km|W 分|W_first / W_reload 分|T_program 秒|native T 秒|J（検算用）|検証|',
+           '|---|---:|---:|---|---:|---:|---:|---|']
+    for r in small:
+        native=r.get('native_time') or {};nt=native.get('T_native_program') if r['method']=='A' else native.get('T_program_s')
+        fmt=lambda x:'null' if x is None else f'{x:.6f}'
+        table.append(f"|{r['method']}|{fmt(r['D'])}|{fmt(r['W'])}|{fmt(r['W_first'])} / {fmt(r['W_reload'])}|{fmt(r['T_program'])}|{fmt(nt)}|{fmt(r['J'])}|{r['validation_state']}|")
+    d=next(p for p in paths if p['method']=='D')
+    reference=next(iter(references['groups'].values()))
+    save('FINAL_REPORT_JA.md',f'''# 配送計画比較基盤：工程1・工程2 最終報告（2026-11-15）
+
+## 1. 工程別完了判定
+
+工程1は **{'完了' if step1 else '未完了'}**、工程2は **{'完了' if step2 else '未完了'}**。Aのアルゴリズムを変えず新契約へ接続し、実際のS1〜S3・新規単独S2・小規模A/B/C/D経路を確認した。比較の意味、資源/計時/予算、四軸状態、参照/J、全試行/対応集計をコード・schema・CLI・契約で一致させた。[機械可読判定](COMPLETION_STATUS.json)と[事後監査](FINAL_AUDIT.json)を正本とする。正式統計実験の完了判定ではない。
+
+## 2. 変更したもの・保持したもの
+
+新規 `src/kmd_toc/comparison_v1/`、`scripts/run_comparison_v1.py`、凍結参照/比較ケース/schema/将来テンプレート、新規テスト・文書・出力を追加した。旧run_dwt/旧A経路は変更しない。Aは凍結rule_v1.generateを直接使い、最適化完成器に渡さない。BCDは既存四枝execute_parallelと探索・完成器をそのまま使用し、非改変呼出ログを追加した。
+
+Aの初期角度/同数割当/NN/60分割/FCFS/円環境界/OH先着改善/最大V回は保持した。旧A2/A-area/Cook、共通コード、BCD方式・探索設定、需要/道路/OD/過去結果、RQ/仮説/READMEは変更しない。Aは業務構造を参考にした仮定付き規則型代理基準であり、実配車や観測一日の実績ではない。
+
+初回small01は90秒でBCDが依存ライブラリ初期化中に止まり、方式入口へ到達しなかった。3失敗を消さず、既存setup上限240秒+native計画90秒+予約90秒として420秒の別manifestを登録した。Aを含む同一case全方式に同じ420秒を適用し、BCD nativeは共通90秒で制限した。性能による探索パラメータ変更ではない。small02は資源ログ補強前の登録だけで、4件を未実行として残した。r3補強はstartup失敗時にもleader PIDと観測可能な子孫の部分CPU/RSSを残すためで、計画処理を変えない。
+
+## 3. A計画の同一性
+
+{chr(10).join(atable)}
+
+6接続確認の全てで原bytesと意味上のPlan、入力hash、D/W/W内訳、車両・便・全訪問・全イベント時刻が一致した。再確認はアダプタ修正後の技術的再実行で、独立需要や正式反復へ加算しない。新規単独S2の原CLI実行も1回正常終了し、同じSHAだった。
+
+S2の全照合対象は `64114d3fed738a14198c0958a4c3cdd6bafb9c9d81926bdaf276250bd651f4d9`。期待値を新出力へ合わせて変更していない。JSON読戻しのmetadata tuple/list差は表現差としてcanonical同一性で扱い、配列の順序・ID・時刻は保持する。旧Tは照合に転記せず、新版T_kindで親wallを新規測定した。[同一性証拠](A_IDENTITY_VALIDATION.json)。
+
+## 4. 小規模A〜Dの実経路
+
+fixtureは12地点/4台/1バースの人工有向OD、容量・勤務・作業等は共通v1.1。各方式を同じ新CLIから逐次実行した。
+
+{chr(10).join(table)}
+
+Aの直接生成、BのCW、CのOR Routing、DのHuang hybrid/AOAと、BCDの共通CP完成器を関数呼出/PIDログで確認した。Aの完成器呼出はゼロ。BCDは各4PID/4コア、供給便の内部順序を完成器が変えていないことも実出力のpool membershipとコードで照合した。Dの実backendは `{d.get('backend',{}).get('statevector_backend')}` statevectorシミュレータ、完了した量子呼出観測は{d.get('completed_quantum_calls')}件（未選択枝込み）。実機を使っていない。[実経路証拠](ACTUAL_PATH_VALIDATION.json)。
+
+この人工例と少数計時から方式の統計的優越性を主張しない。B/C/Dの親Tには約2分規模の依存初期化/共有NFS待ちを含み、短いnative Tと同一視しない。Aが使わないsolver依存も含めた全体方式の実行コストを開示したものであり、量子処理単独の効果や対象事業者の実績改善ではない。
+
+## 5. 確定した比較・計時・状態・J・集計
+
+主比較は「同一入力・道路・物理条件・利用可能4物理コアでの方式全体比較」。AはFCFS、BCDは既存の積込等の最適化を含む。D対A/D対Cの差を量子処理の効果だけに帰属しない。Aにも負荷改善がある。共通FCFS化は今回の主比較ではない。
+
+入力/物理条件はcaseに一つ、run別上書きを拒否する。Routeピン・共通設定・ソース・凍結A・方式実装を登録/実行時に照合する。登録で共通入力の物理検証を行うが、各試行内にも全読込/hash/検証を実施する。検証済み登録入力の読込段階で時間切れになっても成功率分母から除外しない。
+
+T_programは親input/hash前から、fresh child起動/必要な初期化/計画/候補受渡し/全枝停止/形式確認/共通と独立再計算/採用までのwall。共通の比較親validation importだけは全方式の前に同じ状態へ準備して別計測する。T_input/planning/adapter/validation、T_attempt、重複を明示したnative setup/native時間、出力を保存する。OS cache/共有ホスト負荷は制御せず完全coldと呼ばない。後処理export/集計はT外。各caseの正有限外側予算は必須で、未指定時に実行しない。
+
+入力状態・終了理由・検証状態・adoptableを分け、MOVE_LIMITは通常停止。期限前に親検証とbytes確保まで完了したチェックポイントだけを保持可能とし、期限後初検証を成功へ遡及させない。失敗の採用D/W/Tはnull、T_attempt/診断は保存する。未発見は実行不能証明ではない。再試行はretry_ofで別記し元試行を置換しない。
+
+Jは `(D/D_A+W/W_A+T/T_A_ref)/3`。参照groupは実行前に会員/件数を指定し、全完了/成功/PlanとD/W一致を必要とする。T_A_refは全会員T中央値、成功分への縮小/最速選択/分母epsilon補正/失敗の巨大J代用をしない。個々のAのJを強制的に1としない。今回の小規模参照はpurpose=contract_check、T_A_ref={reference.get('T_A_ref')}秒の検算値で、正式参照ではない。適格参照なし・未完了・失敗・計画不一致・ゼロ/非有限・入力/資源/時間不一致を理由コードで分ける。
+
+第一層は全予定試行を含み、未実行/入力不正/実行エラー/未発見/上限/検証済み/リトライを別に数える。成功率分母は有効入力の全実行で、エラー/時間切れを除かない。第二層はcase_id/pair_idの元試行を対応づけ、双方成功/片方のみ/双方失敗/対象外を分ける。A参照が失敗しても有効なC/D生D/W/Tは残す。J未定義を理由に生指標を削除しない。対象数・採用/除外数・理由・識別子・単位・契約ID・phaseを各表へ保存する。
+
+## 6. 実行した試験
+
+旧A/BCDを含む最終全回帰は240 passed/2 skipped（TEST_REGRESSION_03.log）。その後、全ての実道路ケースへのRoute版検査を登録時に追加し、新規42件が通過した（TEST_ROUTE_GUARD_FINAL.log）。S1〜S3の実入力も現在のguardで受け入れ、元の全file pinと一致した。これは登録ガードの追加で、生成器や完成器を変更しない。過去の各実行source版はsnapshotで残す。skipは未導入の任意Qulacs依存でありQiskit実経路のPASSと混同しない。
+
+参照全成功/未完了/失敗/Plan不一致、W_A=0、時間/資源/input不一致、旧A/旧Tref/旧Table混入、全成功/片側/双方失敗/A失敗でもCD成功、未実行/リトライ/分母、bytes/意味同一性を検証した。直接watchdogと入力時間切れは1.5秒、親の入力/NFS/試験候補起動/物理検証まで含むfixtureは事前上限10秒で検証した。子・孫の終了/回収、期限前に親で検証した計画の保持/未発見、不正計画、子エラーを確認した。短い試験を300秒負荷試験やメモリ上限試験と呼ばない。回帰02の2つの短時間fixture失敗と旧Cの3秒試験のRouting未到達による失敗も保全し、正常な予算停止を不正な成功へ変えていない。旧Cは変更せず、回帰03はその試験も通過したが環境敏感性を限界として残す。
+
+比較入口の予定{history['comparison_planned']}件中、実行{history['comparison_executed']}件、未実行登録{history['registered_not_executed']}件を全て保存し、別に原CLIの新規単独S2を1回保存した。初回BCD3失敗、技術的再登録/再実行も[全履歴](ALL_EXECUTION_HISTORY.json)にある。成功だけを全試行として報告していない。計算再実行・内部枝・S1⊂S2⊂S3を独立需要数へ加算しない。
+
+## 7. 凍結資産の保全
+
+PRESERVATION_BEFORE/AFTERで既存328ファイルが一致した。Aの7実装/設定/既存テストもhash不変。HEADは開始時と同じでcommit/pushなし。README/RQ/仮説、需要/道路/凍結OD/旧結果も保全した。比較コードの技術的版差は各登録source snapshotとsource hashで識別し、後の資源ログ補強を過去実行へ遡及適用しない。
+
+## 8. 後続工程への必須入力
+
+正式なscenario集合、独立需要標本数、計算repeat集合、正式参照groupの件数と全run IDs、規模ごとの共通外側wall/内部予算、精度/検出力/統計手法、正式T_A_ref、正式結果は別工程。今回決めていない。受取形式と欠落拒否、参照/集計規則は実装済み。未指定のfuture_manifest_templateは実行不可。formal実行には別の明示的許可も必要で、今回は使用していない。
+
+## 9. 障害・未実行
+
+BCDの依存初期化は共有NFSで90秒を超えることを実測した。正式実験前に環境配置・cache方針を固定し、同じT種類で資源/準備を開示する必要がある。初回startup timeoutではleader PIDの記録が不足したため、過去値を推定補完せずnull/未捕捉とし、r3から記録を補強した。
+
+対象実績への適合、共通FCFS診断、量子寄与を分離する対照、BCDのS1〜S3全面比較、実機、有料計算、300秒負荷/メモリ枯渇/他OS試験は未実行。これらをPASSとしない。正式標本設計/統計実験は開始していない。
+
+## 10. 成果物と再現
+
+[比較契約](COMPARISON_CONTRACT.md)、[A接続仕様](A_INTEGRATION_SPEC.md)、[監査](INTEGRATION_AUDIT.md)、[参照・集計仕様](REFERENCE_AND_AGGREGATION_SPEC.md)、[RESULT_SCHEMA](RESULT_SCHEMA.json)、[検証記録](VALIDATION_RECORD.md)、[再現手順](REPRODUCE.md)を保存した。新入口は `scripts/run_comparison_v1.py register/run/aggregate`。各登録にconfig/source/input hash、環境、native結果、全枝、計画/診断、二重検証、全試行/対応表、参照成立理由がある。旧コマンドを新Aへ書換えていない。
+''')
+
+
+if __name__=='__main__':main()

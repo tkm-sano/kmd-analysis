@@ -1,0 +1,135 @@
+[
+  {
+    "key": "depot",
+    "text": "拠点",
+    "text_shape_id": 15,
+    "shape_id": 14,
+    "planned": false
+  },
+  {
+    "key": "customer_a",
+    "text": "配送先A",
+    "text_shape_id": 17,
+    "shape_id": 16,
+    "planned": false
+  },
+  {
+    "key": "customer_b",
+    "text": "配送先B",
+    "text_shape_id": 19,
+    "shape_id": 18,
+    "planned": false
+  },
+  {
+    "key": "customer_c",
+    "text": "配送先C",
+    "text_shape_id": 21,
+    "shape_id": 20,
+    "planned": false
+  },
+  {
+    "key": "input",
+    "text": "配送先・荷物量・地点間の移動時間",
+    "text_shape_id": 34,
+    "shape_id": 33,
+    "planned": false
+  },
+  {
+    "key": "classical",
+    "text": "古典手法で作成した基準計画",
+    "text_shape_id": 36,
+    "shape_id": 35,
+    "planned": false
+  },
+  {
+    "key": "quantum",
+    "text": "QAOAで生成した訪問順の候補",
+    "text_shape_id": 38,
+    "shape_id": 37,
+    "planned": false
+  },
+  {
+    "key": "compare",
+    "text": "総移動時間を比較",
+    "text_shape_id": 40,
+    "shape_id": 39,
+    "planned": false
+  },
+  {
+    "key": "decision",
+    "text": "今後：出発前に採用を判断",
+    "text_shape_id": 42,
+    "shape_id": 41,
+    "planned": true
+  },
+  {
+    "key": "outcomes",
+    "text": "今後：採用後の配送結果を評価",
+    "text_shape_id": 54,
+    "shape_id": 53,
+    "planned": true
+  },
+  {
+    "key": "q_init",
+    "text": "初期の量子状態を準備",
+    "text_shape_id": 66,
+    "shape_id": 65,
+    "planned": false
+  },
+  {
+    "key": "q_cost",
+    "text": "総移動時間を位相に反映",
+    "text_shape_id": 68,
+    "shape_id": 67,
+    "planned": false
+  },
+  {
+    "key": "q_mix",
+    "text": "訪問順に対応する状態を混ぜる",
+    "text_shape_id": 70,
+    "shape_id": 69,
+    "planned": false
+  },
+  {
+    "key": "q_eval",
+    "text": "候補の総移動時間を評価",
+    "text_shape_id": 72,
+    "shape_id": 71,
+    "planned": false
+  },
+  {
+    "key": "q_update",
+    "text": "量子操作のパラメータを調整",
+    "text_shape_id": 74,
+    "shape_id": 73,
+    "planned": false
+  },
+  {
+    "key": "q_fixed",
+    "text": "調整したパラメータを固定",
+    "text_shape_id": 88,
+    "shape_id": 87,
+    "planned": false
+  },
+  {
+    "key": "q_restate",
+    "text": "固定したパラメータで量子状態を計算",
+    "text_shape_id": 90,
+    "shape_id": 89,
+    "planned": false
+  },
+  {
+    "key": "q_sample",
+    "text": "訪問順の候補を繰り返し抽出",
+    "text_shape_id": 92,
+    "shape_id": 91,
+    "planned": false
+  },
+  {
+    "key": "q_best",
+    "text": "最短候補を選び、条件確認して保存",
+    "text_shape_id": 94,
+    "shape_id": 93,
+    "planned": false
+  }
+]

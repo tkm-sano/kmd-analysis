@@ -1,0 +1,2202 @@
+diff --git a/configs/toc_delivery/common_conditions_v1.json b/configs/toc_delivery/common_conditions_v1.json
+new file mode 100644
+index 0000000..c0cc394
+--- /dev/null
++++ b/configs/toc_delivery/common_conditions_v1.json
+@@ -0,0 +1,67 @@
++{
++  "schema_version": "1.0",
++  "conditions_version": "AD-common-20261111-v1.0",
++  "adopted_on": "2026-11-11",
++  "authority": "user_instruction_20261111",
++  "value_kind": "research_assumption",
++  "scope": {
++    "region": "東京都大田区",
++    "depot_name": "京浜トラックターミナル",
++    "delivery": "ToC",
++    "depots": 1,
++    "homogeneous_vehicles": true,
++    "customer_time_windows": false,
++    "fixed_customer_vehicle_assignment": false,
++    "unused_vehicles_allowed": true,
++    "ev_conditions": false
++  },
++  "units": {"distance": "m", "travel_time": "s", "clock": "s_since_midnight_Asia/Tokyo", "demand": "delivery_unit", "D": "km", "W": "min", "T": "s"},
++  "operations": {
++    "demand_per_stop": 1,
++    "capacity_per_trip": 60,
++    "max_trips_per_vehicle": 2,
++    "service_s": 120,
++    "loading_s": 1800,
++    "preparation_s": 900,
++    "opening_s": 28800,
++    "closing_s": 72000,
++    "first_ready_span_s": 3600
++  },
++  "first_ready_rule": "opening_s + (3600 * (2*v+1)) // (2*V)",
++  "scenarios": {"S1": {"stops": 1000, "vehicles": 10, "berths": 2}, "S2": {"stops": 2000, "vehicles": 20, "berths": 4}, "S3": {"stops": 4000, "vehicles": 40, "berths": 8}},
++  "timing_policy": {
++    "travel_rounding": "ceil_each_arc_to_seconds",
++    "departure": "loading_end",
++    "service_start": "arrival",
++    "arbitrary_route_waiting": false,
++    "berth_interval": "half_open",
++    "preparation_occupies_berth": false,
++    "loading_preemptive": false,
++    "T_start": "before_common_input_load",
++    "T_end": "after_final_independent_validation",
++    "AOA_time": "quantum_circuit_simulator_wall_time"
++  },
++  "road_policy": {
++    "source": "OpenStreetMap",
++    "router": "OSRM",
++    "directed": true,
++    "time_dependent_congestion": false,
++    "distance_definition": "distance_of_fastest_route",
++    "distance_and_duration": "same_table_response",
++    "fallback_speed_allowed": false,
++    "local_only": true,
++    "snap_review_required": true,
++    "snap_alert_m": 100,
++    "block_size": 100
++  },
++  "comparison": {"A": "sourced_actual_or_reference_levels", "B": "VeRyPy_Clarke_Wright", "C": "OR_Tools", "D": "Huang_CG_AOA", "multiobjective": "bidirectional_epsilon_constraint", "epsilon_W_min": null, "epsilon_D_km": null},
++  "provenance": {
++    "operational_values": {"kind": "research_assumption", "source": "user_instruction_20261111", "measured": false},
++    "scenario_sizes": {"kind": "research_assumption", "source": "frozen_demand_v1"},
++    "road_definition": {"kind": "documentation", "source": "https://project-osrm.org/docs/v26.5.0/http"},
++    "road_license": {"kind": "documentation", "source": "https://www.openstreetmap.org/copyright"},
++    "snap_alert_m": {"kind": "audit_policy", "source": "common_v1_implementation; alert only, never auto-approval"}
++  },
++  "unresolved": ["verified_vehicle_entrance", "reviewed_OSRM_snaps", "OSRM_graph_and_full_OD", "A_sourced_comparable_reference", "B_C_D_full_adapters", "shared_resource_budget_and_seeds", "epsilon_levels_after_feasible_reference"],
++  "legal_compliance_claim": false
++}
+diff --git a/docs/research/toc_delivery_common/COMMON_CONDITIONS_V1.md b/docs/research/toc_delivery_common/COMMON_CONDITIONS_V1.md
+new file mode 100644
+index 0000000..88db868
+--- /dev/null
++++ b/docs/research/toc_delivery_common/COMMON_CONDITIONS_V1.md
+@@ -0,0 +1,90 @@
++# A〜D共通配送計画条件 v1.0
++
++採用日：2026-11-11。正本は`configs/toc_delivery/common_conditions_v1.json`。今回のユーザー指示に基づく研究上の共通仮定であり、実事業者の測定値・設備仕様・勤務実績ではない。設定ファイルの全バイトをコードのSHA256 pinで検査する。下記表は設定から生成し、新規テストで一致を確認する。版を変えずに数値だけ書き換えた入力は拒否する。
++
++<!-- BEGIN GENERATED CONDITIONS -->
++|設定キー|採択値|
++|---|---|
++|scope.region|"東京都大田区"|
++|scope.depot_name|"京浜トラックターミナル"|
++|scope.delivery|"ToC"|
++|scope.depots|1|
++|scope.homogeneous_vehicles|true|
++|scope.customer_time_windows|false|
++|scope.fixed_customer_vehicle_assignment|false|
++|scope.unused_vehicles_allowed|true|
++|scope.ev_conditions|false|
++|units.distance|"m"|
++|units.travel_time|"s"|
++|units.clock|"s_since_midnight_Asia/Tokyo"|
++|units.demand|"delivery_unit"|
++|units.D|"km"|
++|units.W|"min"|
++|units.T|"s"|
++|operations.demand_per_stop|1|
++|operations.capacity_per_trip|60|
++|operations.max_trips_per_vehicle|2|
++|operations.service_s|120|
++|operations.loading_s|1800|
++|operations.preparation_s|900|
++|operations.opening_s|28800|
++|operations.closing_s|72000|
++|operations.first_ready_span_s|3600|
++|scenarios.S1|{"berths": 2, "stops": 1000, "vehicles": 10}|
++|scenarios.S2|{"berths": 4, "stops": 2000, "vehicles": 20}|
++|scenarios.S3|{"berths": 8, "stops": 4000, "vehicles": 40}|
++|timing_policy.travel_rounding|"ceil_each_arc_to_seconds"|
++|timing_policy.departure|"loading_end"|
++|timing_policy.service_start|"arrival"|
++|timing_policy.arbitrary_route_waiting|false|
++|timing_policy.berth_interval|"half_open"|
++|timing_policy.preparation_occupies_berth|false|
++|timing_policy.loading_preemptive|false|
++|timing_policy.T_start|"before_common_input_load"|
++|timing_policy.T_end|"after_final_independent_validation"|
++|timing_policy.AOA_time|"quantum_circuit_simulator_wall_time"|
++|road_policy.source|"OpenStreetMap"|
++|road_policy.router|"OSRM"|
++|road_policy.directed|true|
++|road_policy.time_dependent_congestion|false|
++|road_policy.distance_definition|"distance_of_fastest_route"|
++|road_policy.distance_and_duration|"same_table_response"|
++|road_policy.fallback_speed_allowed|false|
++|road_policy.local_only|true|
++|road_policy.snap_review_required|true|
++|road_policy.snap_alert_m|100|
++|road_policy.block_size|100|
++|comparison.A|"sourced_actual_or_reference_levels"|
++|comparison.B|"VeRyPy_Clarke_Wright"|
++|comparison.C|"OR_Tools"|
++|comparison.D|"Huang_CG_AOA"|
++|comparison.multiobjective|"bidirectional_epsilon_constraint"|
++|comparison.epsilon_W_min|null|
++|comparison.epsilon_D_km|null|
++|first_ready_rule|opening_s + (3600 * (2*v+1)) // (2*V)|
++|conditions_version|AD-common-20261111-v1.0|
++<!-- END GENERATED CONDITIONS -->
++
++## 解釈と根拠
++
++単一拠点から出発・帰着する非空便を、各車最大2便まで使う。未使用車両は出力に便を持たず、1便だけの運行も許す。顧客割当・便・順序は解法が決定し、共通入力には固定担当を持たない。準備中はバースを占有しない。積込は半開区間[start,end)の連続1800秒で、中断を認めない。
++
++時刻はAsia/Tokyoの午前0時からの整数秒。第1便readyは28800+floor(3600(v+0.5)/V)。実装は整数演算`28800+(3600*(2*v+1))//(2*V)`で誤差を避ける。第2便readyは第1便の独立再計算帰着+900秒。積込終了と出発は同時、顧客の到着と作業開始は同時とし、旧採用仕様の任意途中待機なしを維持する。運行8〜20時の設定によって休憩・労働時間の全法令を満たすとは主張しない。
++
++道路はOpenStreetMap、経路計算はOSRM。静的・有向ODを用い、一方通行を考慮する。同じtable応答のdistanceとdurationを保存する。距離は最速経路に対応する道路距離で、直線距離や最短距離へ置換しない。OSRMの生durationはfloat64秒で保存し、運行計画と検査には各arcのceil秒を共通適用する。保守的丸めの増分は各arcにつき0以上1秒未満で、全体の増分はarc数に依存する。マクロ便でまとめて丸めない。根拠：[OSRM公式HTTP仕様](https://project-osrm.org/docs/v26.5.0/http)。道路の帰属は© OpenStreetMap contributors、[ODbL](https://www.openstreetmap.org/copyright)。実交通混雑や車両寸法制限の完全再現を保証しない。
++
++需要は11/10固定v1を全量読込し、1地点=1配送単位とする。元の合成需要抽出方式・地点・座標・IDを保全し、再生成・削除・再抽出しない。車両容量60は重量kgや実測荷物個数への校正値ではない。
++
++## 評価式・多目的条件
++
++D=Σ全便全arc d_ij/1000 [km]。W=Σ(積込start−ready)/60 [min]で、積込作業は含めない。参考値としてΣ(積込end−ready)/60とW1/W2を保存する。Tは共通入力読込の直前から最終計画の独立検証完了までのperf_counter実測wall秒。方法固有の調整・初期化・変換・最適化・サンプリング・復号・整数選択・後処理も全て含める。共通の道路取得・OD構築は別の前処理台帳へ保存しTに含めない。
++
++AOAは量子回路シミュレータの実行時間であり、実機時間ではない。D/Wの両方向ε制約法を維持し、可行参照計画取得後にε_W[min]、ε_D[km]を全手法共通で固定する。現段階はnullである。
++
++## 由来の区別・感度分析・未確認事項
++
++運行・規模はresearch_assumption、OSRMの単位・経路意味とOSMライセンスはdocumentation、需要はfrozen_synthetic_demand、検証問題はsynthetic_fixtureとデータ上区別する。今回採用した運行値にmeasuredの値はない。Aの実績・参照は出典と地域・需要・期間・指標範囲を伴う別台帳が必要で、異条件の値をS1〜S3結果として扱わない。
++
++感度分析は今回は行わない。候補軸は容量、作業/積込/準備時間、道路snap・経路profile、時間刻みであり、別版を採択して全B〜Dに同一適用する。N/V/バースを解きやすくするために変えない。数値水準は未採択。
++
++未確認は車両用出入口、全地点のOSRM対応、道路graphと全OD、A参照、B/C/D運行接続、共通資源予算/探索seed、ε水準である。条件定義GOと実データ適用HOLDを区別する。監査・判定は同ディレクトリのCOMMON_DATA_AUDIT.md、COMMON_VALIDATION_REPORT.mdを参照する。
+diff --git a/docs/research/toc_delivery_common/COMMON_DATA_AUDIT.md b/docs/research/toc_delivery_common/COMMON_DATA_AUDIT.md
+new file mode 100644
+index 0000000..88bbbdc
+--- /dev/null
++++ b/docs/research/toc_delivery_common/COMMON_DATA_AUDIT.md
+@@ -0,0 +1,77 @@
++# A〜D共通データ監査
++
++2026-11-11。証拠の正本は`output/toc_delivery/common_v1_audit_20261111/`。本書はデータを再生成せずに読取・照合した結果である。
++
++## 監査範囲と採用順序
++
++開始HEADは8605d5412f6af62229a83095c35ab04c8c7dd9b1。git statusはmainがorigin/mainより7 commit先行し、README.md/.gitignoreに既存変更と大量の未追跡成果を含んだ。初期の完全一覧はGIT_STATUS_BEFORE.txt、既存47,440ファイル・21,422,393,920 bytesのhashはPRESERVATION_BEFORE.jsonへ記録した。リポジトリ内・親階層にAGENTS.mdは見つからなかった。読み取り専用の遠隔HEAD確認は1b00bd7927fa1e7688e4772ac1da9db46d9bac11で、merge/pull/resetはしていない。
++
++README、11/8研究計画DOCX、TOC_DELIVERY_SPEC、11/10凍結需要とpin、11/11のD全関連文書（D_VEHICLE_DAY_*を含む）、現場課題調査、既存需要・道路・OD・シミュレーションコードを確認した。実際の旧道路生成実装の一部は保全領域へ移されており、通常の公開cloneの再現性とローカルで読めた事実を区別する。文書inventoryはaudit_results/DOCUMENT_INVENTORY.json。
++
++|既存資料の値/方針|今回の採用・扱い|
++|---|---|
++|11/8のNの意味・人口再配分がHOLD|11/10凍結需要v1の一意配送地点を使う。元39,956の町丁目比、PASS34,912から固定抽出済み|
++|旧PE/容量216、固定担当、作業102秒、帰庫32400秒|使用しない。1配送単位、60/便、作業120秒、8〜20時へ新規設定で固定|
++|計画書の積込20分、7時は候補のままHOLD|今回の指示により30分、初便ready8〜9時均等、準備15分を採択|
++|各車2便と空便条件が未確定|最大2便、未使用・1便を許容。使用便は非空|
++|Aが代理割当・近傍・FCFS|出典付き実績/参照水準へ置換する方針。代理計画を実績としない|
++|Bが一般的貪欲/探索、Dが旧訪問順QAOA|最新D文書のB=VeRyPy CW、C=OR-Tools、D=Huang CG＋AOAを維持|
++|既存Dの日列・改善実験|人工小規模の成果を保全。今回の運行値の採用と大規模化は別|
++|旧SUMO道路OD・固定担当内中心|新しいOSRM全有向ODに混ぜない|
++
++矛盾する旧文書を上書きしていない。今回のCOMMON_*と共通設定が新入口であり、旧study.jsonのrequire_readyは引き続きHOLDを返す。
++
++## 凍結需要8ファイル
++
++全ファイルは`03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1/`。11/10 FILE_HASHES.jsonと実読込bytesのSHA256が全て一致した。既存pin loaderと別実装のCSV検査を両方行い、A〜Dの読込hash一致、ID一意、各1単位、座標有限・範囲、S1⊂S2⊂S3を確認した。
++
++|ファイル|SHA256|
++|---|---|
++|MANIFEST.json|9e1b0ba8afed05f9fbae6ff725489a3e0d602bf8b1e9f19e5b9e8a6a8eada776|
++|SHA256SUMS|b1460b059cbe986d989406903d2802e51b64cf86217b2207d207a14fc07387e4|
++|S1.csv|e3c2040766636b2cbd6de670f93a5356ba893dfbb8417bf1c136a5f785172398|
++|S2.csv|7c8fcecabf34545d3021d53cf774e99df9d33967fcffdf324cd07f53e95a3cb2|
++|S3.csv|b8b5b041e724c8337d697a538e9340e45c9cac8e10a55bb088321011913d253d|
++|REGIONAL_ALLOCATION.csv|317299aab117a0de99e0fc6127a1c060d115e15ff7acabd209ac9e4bad46b881|
++|READING_CONTRACT.md|b1cddc9395ab717a2197f7d0f39b8a716f8064321a7f66d94320fc101ba115a8|
++|VALIDATION.json|9215b84dc696c56e1789f2600044649a4bd996a7b4eecc730a0a671fc574a931|
++
++|系列|地点/需要単位|車両/バース|元監査overall PASS|現実の道路アクセス|
++|---|---:|---:|---:|---|
++|S1|1000/1000|10/2|1000|全1000地点UNVERIFIED_MODEL_SERVICE_POINT、新研究道路採用HOLD|
++|S2|2000/2000|20/4|2000|全2000地点同上|
++|S3|4000/4000|40/8|4000|全4000地点同上|
++
++元監査のroad_mapping_statusとroad_reachability_statusも選択地点は全てPASSだった。ただしこれは凍結SUMOモデル内の確認であり、現実の入口・OSRM対応が検証済みという意味ではない。監査元ALL_STOPS_AUDIT.csvのhashはe785f8fe9e26e37a8a8ccc9b047d8eb04138034f7ec5a13bb2e3378ba1178b7b。最終照合はaudit_final/DEMAND_AUDIT.json、ROAD_AUDIT.jsonを正本とし、初回audit_results/も保全する。
++
++## 拠点・道路・OD
++
++既存DEP_006は緯度35.586971、経度139.745306。DEPOT_ROUTING_DEFINITIONと施設freezeで一致するが、proxyのままである。旧SUMO edge617631294/lane617631294_0と位置12.5074mは道路モデル内の代理位置であり、実際の車両用出入口の確認根拠にはしない。
++
++公式[日本自動車ターミナル施設案内](https://www.j-m-t.co.jp/terminal/modal/keihin_map.html)は大田区平和島2-1-1と車アクセスを掲載するが、今回車両入口の数値座標を確定できなかった。構内図画像取得も503で失敗し、未確認のまま保存する。住所・代理座標から入口を推測して採択しない。Depot.entrance_verified=falseの入力は共通実行入口が拒否する。
++
++|道路資産|取得元/日時/版|実測SHA256|
++|---|---|---|
++|kanto-260716.osm.pbf、476,772,780 bytes|Geofabrik https://download.geofabrik.de/asia/japan/kanto-260716.osm.pbf 、OSM日時2026-07-16T20:21:30Z|aef890f28b652ed7bd2b0d77e86f263219b479fe3eedbdd8610dcfc1572c420d|
++|osm_ota_ward_20260716.osm.pbf、12,218,967 bytes|同rawからcomplete_ways抽出、生成記録2026-07-17T23:19:56+09:00|10d554a13e89b815ca416c272d23d9477d52e312fa3d299f466fb3c01cf9d041|
++
++実測hashは既存quality_summaryの記録と一致した。rawの厳密なダウンロード時刻は独立確認できず、上記生成時刻を取得時刻と偽らない。道路source_id=osm_geofabrik_kanto_20260716。旧データは存在するが、OSRM用graph/profile/実行版・生成hashは未整備。現在読める旧ODはSUMO・固定担当/旧施設条件で、S1〜S3の共通OSRM行列として採用できない。
++
++## 整備方法と残る確認
++
++1. 施設案内・地図・必要なら現場確認で車両入口を確定し、座標・根拠・採択日・証拠hashを別保存する。
++2. 関東rawまたは余裕を持った抽出範囲からOSRM graphを作る。区境で切ると区外経由の経路や接続が失われ得るため、大田区だけの抽出を自動採用しない。
++3. OSRM binary/containerの版・digest、Lua profileとhash、extract/contract等のコマンド、生成物hashをmanifestへ固定する。公式v26.5.0仕様にはdistance,duration同時tableのCH例があるため、まずCHの小例で対応を確認し、未対応の構成は採択しない。
++4. 凍結地点をnearestへ対応付け、複数候補・snap距離・hint・node候補・道路アクセス・一方通行/車線を確認する。原需要は変更せず別表に保存する。異常なsnap、未確認、未接続はHOLDとする。
++5. 同じgraph/hint/profileで全有向ODをブロック生成し、raw応答と前処理wall秒を保存する。null・欠損・snap変化を検出する。推定値・直線距離による補完を禁じる。
++6. tableとrouteの独立経路照合、小規模実道路の時刻整合、全OD到達性を確認してからS1の可行参照計画へ進む。現在は実道路route照合をしていない。
++
++公共OSRMへの要求は0件。ローカルtable生成器はstubで検証済みで、実サーバE2Eは未検証。道路・ODの実データ判定はHOLDである。
++
++## S3資源の事前評価
++
++4001地点、16,008,001ペア。float64距離+float64時間+bool到達性の生配列は272,136,017 bytes（259.53MiB）で、.npy header・metadata・raw応答・ファイルシステム分は別。100×100ブロックなら最大41²=1681 table要求、最大200座標/要求（同一IDは重複除去）。1応答を処理してmmapへ書くため、16M個のPython辞書を保持しない。
++
++ブロック監査の一時配列は概ね数MiBで、mmapページcache・OSRMサーバgraph・OSRM構築・solverメモリは別に必要である。Dの現入力bridgeは既存dense km行列コピーと全travel tupleを作るので、S3向け省メモリsolver接続を達成したとはしない。
++
++実生成時間は未計測でnull。必要時間はgraph構築時間＋1681×実測block秒＋hash/I/O秒として、ローカルCHで複数ブロックの分位点を測ってから見積もる。OSRM構築のpeak RSSも未測定であり、rawファイルサイズだけでRAMを予測しない。先に入口・profile・snapが確定する必要がある。
+diff --git a/docs/research/toc_delivery_common/COMMON_IMPLEMENTATION_PLAN.md b/docs/research/toc_delivery_common/COMMON_IMPLEMENTATION_PLAN.md
+new file mode 100644
+index 0000000..49577a8
+--- /dev/null
++++ b/docs/research/toc_delivery_common/COMMON_IMPLEMENTATION_PLAN.md
+@@ -0,0 +1,49 @@
++# A〜D共通基盤 実装前計画 v1.0
++
++採用日：2026-11-11。ユーザーの「A〜D共通条件 v1.0」を今回の正本とする。本ファイルの初版を証拠ディレクトリへ保存した後に実装を開始する。
++
++## 監査で確認した差分
++
++- 作業開始時HEADは8605d54、mainはorigin/mainより7 commit先行。読み取り専用の`git ls-remote origin HEAD`は1b00bd7927fa1e7688e4772ac1da9db46d9bac11。pull/resetしない。
++- README/.gitignoreに既存変更、大量の未追跡成果が存在する。AGENTS.mdはリポジトリ内・親階層で見つからない。
++- 11/8計画DOCX・study.json・contracts.pyは旧HOLD契約。11/10需要追補を優先し、今回の容量60、作業120秒、積込1800秒、準備900秒、8〜20時、均等ready、最大2便・未使用可を新しい設定へ採択する。
++- Aは代理計画から出典付き実績・参照水準へ、BはVeRyPy Clarke–Wright、CはOR-Tools、DはHuang CG＋AOA。既存文書は保全し差分を新文書へ記載する。
++- DEP_006（35.586971,139.745306）は代理座標。車両用出入口の根拠は未確認。既存SUMO対応・固定担当内ODは新OSRM全有向ODへ転用しない。
++- Dの日列・価格付け改善は小規模人工問題の成果。長い便、全列依存、整数化、秒精度と研究ODの接続はHOLDを維持する。
++
++## 保全対象・変更境界
++
++凍結需要8ファイル、既存src/tests/scripts/configs、A〜C・Dコード、研究計画DOCX、旧研究文書・保存結果、README/.gitignoreの既存変更を保全する。既存ファイルは編集しない。新規のcommon/、設定、テスト、実行スクリプト、共通文書・監査成果だけを追加する。アルゴリズム本体の変更予定はない。commit/push、本比較実験、需要生成、公開OSRMへの通信は行わない。
++
++## 構成・依存関係・実装順序
++
++|順|新規パス|役割・依存|
++|---|---|---|
++|1|configs/toc_delivery/common_conditions_v1.json|版付き採択値・由来・単位・未確認項目。標準ライブラリJSON|
++|2|src/kmd_toc/common/config.py, models.py|設定値厳格検査、不変モデル、JSON入出力・fingerprint。凍結loaderだけを既存から利用|
++|3|src/kmd_toc/common/od.py|有向distance/time同経路OD、欠損・到達不能・snap監査、mmap binary読込、ローカルOSRMブロック生成。NumPyはOD保存読込時のみ|
++|4|src/kmd_toc/common/validation.py|解法をimportしない秒単位の独立全制約検査・D/W再計算。失敗は理由を保持しnull指標|
++|5|src/kmd_toc/common/runtime.py, adapters.py|読込前から検証終了までのperf_counter計時、Dへの単位変換入口（求解なし）、B/C/D接続契約|
++|6|tests/toc_common/|4〜6/20地点の人工有向OD、手計算/Decimal別実装、変異試験、入出力・時計境界、凍結hash・文書設定同期|
++|7|scripts/audit_toc_common.py|凍結需要/既存道路hash、下界・資源見積り・小規模検証記録。最適化を呼ばない|
++|8|docs/research/toc_delivery_common/COMMON_*.md|条件・監査・仕様・検証・適用判定。条件表はJSONから生成しテストで一致検査|
++
++証拠はoutput/toc_delivery/common_v1_audit_20261111/。初期status、既存ファイルhash、計画snapshot/開始時刻、入力出力、テストlog、時間/RSS、hash再照合、diffを保存する。新規依存のインストールは予定しない。既存vehicle-day-v1環境のPython/NumPy/pytestを使用する。
++
++## ODの設計判断
++
++OSRM tableの`annotations=distance,duration`を同一要求で取得する。距離は採択した最速経路の道路距離であり、最短距離とは主張しない。fallback_speedを禁じ、nullを到達不能として保存する。全必要ペアの欠損・到達不能は本実験HOLD。道路源のURL/取得日時/OSM日時/版/生データ・profile・生成成果hash、OSRM版・実行引数をmanifestへ保存する。
++
++固定需要の座標を変更せず、別表にnearestの座標・hint・node候補・snap距離・確認根拠を保存する。距離閾値は自動承認根拠ではない。高速道路、反対車線、私道、入口の誤対応は地図・アクセス確認を要し、未確認は拒否する。全ペアは同じhint・座標・profile・graphを使う。公共サーバは拒否しローカルloopbackのみ許可する。
++
++S3の4001²ペアはブロック100×100、1681要求を上限見積りとし、2 float64＋1 boolで272,136,017 bytes＋metadata。全行列をPython objectへ展開せずmmap/逐次書込み。実時間はローカルgraph構築・小ブロック測定後のみ推定し、未測定を創作しない。今回は研究OD生成は入口確認不足のため実行しない。
++
++## 独立テストと完了条件
++
++1. Test 1：ID/欠損/単位/数/需要/凍結pin、設定改変・hash不一致の拒否。
++2. Test 2：shape/対角/有向非対称/null/欠損/単位/同じODの経路再計算。OSRM応答stubとblock読込も検査。
++3. Test 3〜5：0/1/2便・3便拒否、容量、準備前/帰着前2便、積込/バース競合/境界、作業時間、20時ちょうど/超過。
++4. Test 6：同一計画を別実装でD/W再計算。Tを偽時計と実時計で検査、読込・変換・求解・復号・整数化・後処理・検証を含む。
++5. Test 7：開始時の全保全対象hashを終了時再照合。新規テストと既存ToC/Dテスト、既存公開APIの回帰検査を実施し失敗も記録。
++
++条件定義、共通モジュール、小規模検証、実OD、A参照値、B/C/D全体接続、S1〜S3は別判定とする。容量/時間下界は可行性証明ではない。未取得OD・入口・solver機能不足が残る限りS1〜S3はHOLD。ε水準は可行参照計画後までnullを維持する。
+diff --git a/docs/research/toc_delivery_common/COMMON_INTERFACE_SPEC.md b/docs/research/toc_delivery_common/COMMON_INTERFACE_SPEC.md
+new file mode 100644
+index 0000000..283f163
+--- /dev/null
++++ b/docs/research/toc_delivery_common/COMMON_INTERFACE_SPEC.md
+@@ -0,0 +1,107 @@
++# A〜D共通入出力仕様 v1.0
++
++採用日2026-11-11。実装は`src/kmd_toc/common/`。条件の正本はCOMMON_CONDITIONS_V1.mdが参照するJSONである。solverを選ぶ設定と共通の問題データを分離する。旧`study.json`/`contracts.py`は凍結履歴として維持し、新入口から読まない。
++
++## 共通入力の保存構成
++
++```text
++instance/
++  input.json                  # schema_version, Problem全フィールド, problem_hash, od_hash
++  od/manifest.json            # ID順序、道路来歴、OD全内容hash、各配列ファイルhash
++  od/distance_m.npy           # float64 [n,n], m
++  od/duration_s.npy           # float64 [n,n], 生の移動秒
++  od/reachable.npy            # bool [n,n]
++```
++
++`save_problem`は既存ディレクトリを上書きしない。`load_problem`は配列hash、OD内容hash、input内容hash、条件pin、入力制約を検査する。ODはread-only mmapで読み、hash・監査は逐次走査する。A〜Dで別の行列を再生成せず、同じinstanceとod_hashを指定する。配列のID順序は`depot, stops...`で厳密一致を要求する。入出力JSONの重複キーとNaN/Infinityを拒否する。
++
++|レコード/フィールド|型|単位・意味|
++|---|---|---|
++|Stop.stop_id|非空str|固定配送先ID。一意|
++|Stop.longitude / latitude|finite float|EPSG:4326、度。原CSV座標をfloatへ読込。原トークンは凍結CSVとそのhashに残る|
++|Stop.demand|int（bool不可）|delivery_unit、採択値1|
++|Stop.snap|Snap|別表の道路対応。原需要を変更しない|
++|Stop.source|object|kind/source/generation/sha256。実測・文献・合成・仮定の種別を保持|
++|Snap.longitude / latitude|finite float|OSRM nearestで得た道路上の位置、度|
++|Snap.distance_m|finite float|原座標からのsnap距離[m]。OD費用へ加算しない|
++|Snap.hint / node_ids|str / int[]|同じOSRM graphでの対応位置・候補端点。nodeだけへ勝手に丸めない|
++|Snap.graph_id|str|使用graphの版識別子|
++|Snap.reviewed / evidence|bool / str|手動アクセス確認の有無・証拠識別。実道路はsha256:64桁hash|
++|Vehicle.vehicle_id|非空str|物理車両の一意ID|
++|Vehicle.capacity / max_trips|int|60配送単位/便、最大2便|
++|Vehicle.first_ready_s|int|配列内の車両順vから均等式で検査|
++|Vehicle.return_deadline_s|int|JST午前0時からの秒、72000|
++|Depot.depot_id|非空str|単一拠点ID、stop_idと非重複|
++|Depot.longitude / latitude / snap|float / float / Snap|拠点の採択車両出入口と道路位置|
++|Depot.entrance_verified / entrance_evidence|bool / str|実車両出入口の確認と証拠。代理座標だけではtrueにしない|
++|Berth.berth_id / depot_id|str / str|一意バースID・所属拠点|
++|Berth.opening_s / closing_s|int / int|28800 / 72000秒|
++|Berth.loading_s / preparation_s|int / int|1800 / 900秒|
++|Experiment.scenario_id|str|S1/S2/S3、検証はTEST_N4等の明示ラベル|
++|Experiment.conditions_version / conditions_sha256|str / str|採択版・設定ファイルhash|
++|Experiment.random_seed|intまたはnull|方法のseed。固定需要はseedで再生成しない|
++|Experiment.data_hashes|object|od、実研究ではdemand_manifest/demand_csv必須|
++|Experiment.environment|object|計算環境。実行環境はrun_resultにも別記録|
++|Experiment.method_settings|object|共通instanceでは空。実行別設定はPlan側へ記録|
++|Experiment.kind|enum|frozen_research / synthetic_validation|
++
++実研究入力は既存`load_frozen_demand`で8ファイル全体をpin検査し、S1〜S3の件数・車両・バース・全属性を照合する。synthetic_validationをS1等の名前で保存すること、実研究で人工ODを使うことを拒否する。`from_frozen`は道路snap・確認済みDepot・ODが揃った場合だけProblemを組み立てる。道路不足を0や直線距離で埋める機能はない。
++
++## ODと生成契約
++
++論理的な1レコードは`(origin_id,destination_id,distance_m,duration_s,reachable,road_version)`である。IDはmanifestの順序から対応付ける。到達不能は両数値NaN（OSRM応答ではnull）とreachable=false。未計算はINCOMPLETE manifestに保持し、COMPLETEとして読めない。reachable=trueのNaN・負値・非有限値、片側だけnull、誤った対角、shape不一致を拒否する。実研究実行には全必要ペアのreachable=trueを要求する。非対称を検査し保存するが、全ての実データが非対称になることを強制はしない。
++
++metadataはkind/units/road_version/graph_id、source_url/acquired_at/osm_timestamp、raw_sha256、osrm_version/profile/profile_sha256、graph_artifacts（各生成物hash）、build_commands/generated_at、directed=true/route_policy=fastest_same_route/fallback_speed_allowed=falseを持つ。日付・版が不明なら未確認とし、実研究完成manifestを作らない。
++
++`LocalOSRM`は数値loopback HTTPのみ許し、公開ホスト・localhost名・リダイレクトを拒否する。nearestは複数候補を返すだけで自動承認しない。snap距離100m超をHOLDとし、100m以下でもreviewedと証拠が必須。原座標とsnapの測地距離と申告値の差3m超を拒否する。この測地距離は品質検査専用であり、配送距離・ODには使用しない。高速道路、反対車線、私道、建物からの接続、拠点出入口は人による根拠確認を要する。証拠hashの形式・reviewedフラグは現地アクセスの自動実証ではない。
++
++`generate_local_od(ids,snaps,metadata,new_directory)`は最大100×100のブロックを逐次書込みし、同一要求でdistance,durationを受け取る。hint・snap座標を固定し、戻りのsnap座標やdata_versionの変化を拒否する。生応答をresponses/*.json.gzへ残す。失敗は途中ファイルとINCOMPLETE manifestを残し、再試行は新ディレクトリへ行う。自動修復・推定・自動再開はない。OSRM実サーバとの接続試験は未実施で、stub試験の成功と区別する。
++
++## 共通出力
++
++`Plan`は`schema_version,plan_id,method_id,problem_hash,od_hash,trips,method_settings,execution_kind`を持つ。B/C/Dは同一Planを独立検査する。Aは出典付き参照水準なので運行Planが取得できない場合に架空のルートを作らない。
++
++|レコード/フィールド|型|単位・意味|
++|---|---|---|
++|Plan.method_id|enum B/C/D|方法識別。人工検証にはmethod_settings.validation_onlyを明示|
++|Plan.execution_kind|enum|classical / quantum_circuit_simulator。Dの実機時間と混同しない|
++|Trip.vehicle_id / trip_no|str / int|物理車両、連続便番号1/2。0便はレコードなし|
++|Trip.origin_id / destination_id|str / str|共通Depotと一致する必要がある|
++|Trip.visits|Visit[]|訪問先の順序。使用便は非空|
++|Visit.stop_id|str|原配送先ID|
++|Visit.arrival_s / service_start_s / service_end_s|int|到着・作業開始・終了、JST秒|
++|Trip.ready_s|int|積込準備完了。第2便は第1便再計算帰着+900秒|
++|Trip.berth_id|str|明示バース割当|
++|Trip.load_start_s / load_end_s|int|連続1800秒の積込占有|
++|Trip.departure_s / return_s|int|拠点発着、JST秒|
++|Trip.distance_m|finite float|共通有向ODからの全arc合計と絶対誤差1e-6m以内で一致|
++|Trip.waiting_s|int|load_start−ready。積込作業を含めない|
++
++`save_plan`は既存ファイルへの上書きを拒否する。`Validation`はfeasible、violations[{code,context,detail}]、D_km/W_min/W1_min/W2_min/ready_to_loading_end_min、独立再計算したtrip_metricsを返す。1件でも違反があれば正式なD/Wはnullである。再計算診断は残るが採用結果にしない。入力とPlanは補正しない。将来補正する場合は別plan_idで両方保存・検証する。
++
++## Tの実行契約
++
++```python
++from kmd_toc.common import load_problem, run_measured
++result = run_measured(
++    lambda: load_problem("instance"),
++    lambda problem, mark: method_all_processing(problem, mark),
++)
++```
++
++T開始前にProblemやODを読込して渡さない。create_planの範囲へ初期解・変換・調整・探索・サンプリング・復号・整数化・後処理を入れる。最後に共通検査器が実行され、その完了イベントまでをT_sとする。計画未取得、入力不足、違反計画はstatus=INPUT_HOLD/ERROR/INFEASIBLE_PLAN、D/W/T=nullとし、elapsed_wall_sと例外・違反を保持する。FEASIBLEでも最適性証明を意味しない。道路取得/OD生成は前処理秒として別保存する。
++
++結果はrun_result.jsonにPlan、Validation、D_km/W_min/T_s、elapsed_wall_s、timing_events、environment、errorを保持する。偽時計テストで全段階包含を、実時計テストで読込前/検証後の境界と秒単位を検証する。任意callbackの内部で作業を隠していないことまでは自動検証できないため、各solverの統合レビューも必要である。
++
++## A〜Dとの接続・版管理
++
++|方法|接続口|残る作業|
++|---|---|---|
++|A|出典付きD/W/Tの外部参照台帳|同条件か、異条件参考かの区別。数値未取得はnull|
++|B|indexed_solver_input→VeRyPy→Plan→validate_plan|CW経路を物理車両2便・バースへ結合するwrapperが未実装|
++|C|indexed_solver_input→OR-Tools→Plan→validate_plan|物理車両/2便/ready/バース/εの一体化が未実装|
++|D|to_vehicle_day / from_vehicle_day→Plan→validate_plan|入力m→既存Dのkm、各arc秒切上げ。出力は時間・距離を保全し明示バースを要求。大規模価格付け・疎主問題・秒精度検証は未完|
++
++D出力に元々存在しない各訪問時刻は、保存された出発と順序から共通ODで展開する。保存されたready/積込/出発/帰着/距離は書き換えず、不一致を共通検査器へ渡して拒否する。D adapterを作ったことと、DのS1求解可能性は別である。
++
++schema_version、conditions_version、設定pin、凍結需要pin、OD/Problem hashを併用する。条件変更は新しい版へ分岐し、文書生成表・テスト・参照計画を更新する。現在はε、資源予算・探索seed・A参照の採用が未完で、本比較実行を許可するスクリプトは追加していない。
+diff --git a/docs/research/toc_delivery_common/COMMON_VALIDATION_REPORT.md b/docs/research/toc_delivery_common/COMMON_VALIDATION_REPORT.md
+new file mode 100644
+index 0000000..a599fa7
+--- /dev/null
++++ b/docs/research/toc_delivery_common/COMMON_VALIDATION_REPORT.md
+@@ -0,0 +1,106 @@
++# A〜D共通基盤 独立検証・適用準備判定
++
++2026-11-11。共通条件の定義は**GO**、共通モジュールは**CONDITIONAL GO（人工入力で検証済み、実OSRM接続は未検証）**、S1/S2/S3適用はそれぞれ**HOLD**である。未取得の実道路データや可行性を小規模人工計画で代替しない。
++
++## 実施範囲と正本
++
++既存ファイルを編集せず、版付きJSON、`src/kmd_toc/common/`、`tests/toc_common/`、`scripts/audit_toc_common.py`、本ディレクトリの5文書を新規追加した。既存A〜C・Dアルゴリズムの変更は0件。S1〜S3最適化、本比較実験、需要再生成、公共OSRM要求、量子実機、commit/pushは0実行である。
++
++証拠は`output/toc_delivery/common_v1_audit_20261111/`。実装前計画はPLAN_BEFORE_IMPLEMENTATION.md、そのhash・保存時刻はAUDIT_PLAN_GATE.json、実装開始はIMPLEMENTATION_START.json。最終実データ・小規模監査の正本はaudit_final/、初回audit_results/と失敗logも保全する。
++
++## Test 1〜7の結果
++
++|試験|確認した内容|結果・限界|
++|---|---|---|
++|1 入力|ID重複/欠損、車両/バース、需要1、bool/単位/条件改変、JSON重複/非有限、凍結8hash、実研究件数の拒否|GO。A〜Dは同じ需要hash。実研究の道路不足は拒否|
++|2 OD|shape/対角/有向非対称、null/到達不能/欠損、単位、ファイル改ざん、mmap読込、ブロック生成とsnap変化防止|人工OD・stubはGO。実道路の一方通行・route対照は未検証でHOLD|
++|3 車両/便|未使用/1便/2便、3便拒否、60単位可・61拒否、帰着前/準備完了1秒前の第2便拒否|GO（人工入力）|
++|4 バース|明示バース、同時利用拒否、総同時数上限、30分未満拒否、時間外、半開区間隣接可、W再計算|GO（人工入力）|
++|5 時刻|移動秒切上げ、顧客作業120秒、準備900秒、20時ちょうど可・1秒超過拒否|GO（人工入力）。休憩法令適合の検証ではない|
++|6 指標|D/Wを独立Decimal arc集計で照合、手計算、Tの偽時計全段階・実時計境界、失敗null|GO（人工入力）。手法性能・量子実機の計時ではない|
++|7 保全|開始時全ファイルhash、凍結8ファイル、旧A〜C/Dコード・結果、初期差分の照合|PRESERVATION_AFTER.jsonとFINAL_REVIEW.json参照|
++
++新規67件と既存ToC/D64件は、最終**131 passed**。pytest実測4.74秒、外側wall5.15秒、最大RSS140,992KiB（137.69MiB）。Python3.12.11、NumPy2.3.1、SciPy1.16.0、Qiskit2.1.1、pytest8.4.2の既存vehicle-day-v1環境を使用した。新しい依存はインストールしていない。CPUスレッド環境はOPENBLAS_NUM_THREADS=1、OMP_NUM_THREADS=1。lockと実環境一覧は証拠へ保存した。
++
++旧公開API等49件は別の既存Python3.11.15環境で**45 passed / 4 failed**。成功扱いにしていない。失敗は以下の開始時からの保全状態に由来する。
++
++1. `DistributionTests.test_distribution_manifest`：旧配布manifestと現行CI/README等のhash不一致。全不一致ファイルの現在hashは開始時hashと同じ。
++2. `LegacyCompatibilityTests.test_qualification_old_paths`：旧qualificationのsymlink不在。
++3. `RoutingMigrationTests.test_old_imports_have_same_results`：旧solver.py/independent.pyパス不在。
++4. `RoutingMigrationTests.test_source_bytes_and_legacy_links`：旧CLASSICAL_VRPTW_BASELINE_FREEZE.json不在。
++
++根拠はPREEXISTING_REGRESSION_FAILURES.jsonとTEST_PUBLIC_API_REGRESSION.log。旧リンク・配布manifestは今回修復していない。初回新規テストは58 passed / 3 failedで、stub側のurlparseが座標のセミコロンをparamsとして切ったことが原因だった。stubをurlsplitへ修正し61件合格、その後入力境界とD入出力の6件を追加して最終67件合格とした。失敗log TEST_INITIAL.logを残している。
++
++旧`tests/test_toc_frozen_demand.py`はsetUpClassがbuild_bundleを呼ぶため、需要再生成禁止に従い今回は実行しなかった。代わりに新規試験が原8ファイルの読取hash・既存loader・全手法一致・一時コピーの破損拒否を確認し、需要生成コードを呼んでいない。
++
++## 小規模問題・独立再計算
++
++人工有向行列の全値、input.json、配列hash、Plan、検査結果・時計イベントはaudit_final/N4,N5,N6,N20/に保存した。4〜6地点と20地点を使い、既存のsolverやD fixtureを流用していない。新規テスト専用の算術生成器が指定順序の計画を作り、solverをimportしない共通検査器と別のDecimal arc-incidence集計で検査した。最適化探索ではなく、共通条件に整合する人工witnessである。
++
++<!-- BEGIN GENERATED WITNESS RESULTS -->
++|人工地点数|D [km]|W [min]|T実測 [s]|独立再計算|
++|---:|---:|---:|---:|---|
++|4|0.8|1.5|0.005282|一致|
++|5|1.4|3.5|0.005268|一致|
++|6|1.22|1.5|0.005126|一致|
++|20|6.4|1.5|0.008832|一致|
++<!-- END GENERATED WITNESS RESULTS -->
++
++5地点例は3台中、v0が2便、v1が1便、v2が未使用。D=1.4km、W=3.5分（W1=1.5、W2=2）、readyから積込終了まで93.5分。帰着は31716/35024/32721秒で手計算と一致した。積込時間90分をWへ加えれば不一致として拒否される。生durationの端数を区間別に切上げていることも66秒等の具体例で確認した。
++
++Tの偽時計は、読込2秒＋初期解/変換/最適化/調整/サンプリング/復号/整数化/後処理8秒＋検証7秒=17秒と一致した。実時計では保存入力/ODの読込から検証完了までを計測した。表のTは人工witness作成・検査の実測であり、A/B/C/Dの性能比較値ではない。
++
++実データ＋人工監査全体の最新wall/RSSはaudit_final/EXECUTION.jsonとAUDIT_FINAL.logを参照する。道路取得/OD実生成の時間は未計測で、Tへ含めていない。
++
++## S1〜S3の事前下界
++
++|系列|総容量/需要|必要最小便数/最大便数|少なくとも必要な2便目|積込総占有分|バース占有の下界分|顧客総作業分|車両当たり作業下界分|
++|---|---:|---:|---:|---:|---:|---:|---:|
++|S1|1200/1000|17/20|7|510|255（連続量）/270（非中断）|2000|200（顧客のみ）/261.5（積込・準備込）|
++|S2|2400/2000|34/40|14|1020|255/270|4000|200/261.5|
++|S3|4800/4000|67/80|27|2010|251.25/270|8000|200/260.375|
++
++必要便数r=ceil(N/60)、必要2便目≥max(0,r−V)、積込総占有=30r分。Bバースの最小経過時間は連続量の30r/Bより、同一30分の非中断jobの30ceil(r/B)が強い下界となる。これらはバース使用可能起点からの必要占有時間であり、初便ready・帰着・準備・移動によってさらに遅くなる。
++
++車両当たり総作業の下界は`[120N+1800r+900max(0,r−V)]/(60V)`分。移動を除いた算術下界で、全運行がこの時間で終わるという推定ではない。全台最大2便の総容量に20%の余剰（需要比）があっても、地理・一方通行・バース競合と勤務の連動により可行性は未証明である。各台2便を全て使えば平均50地点/便だが固定担当や固定便長にはしない。
++
++|系列|OD地点/ペア|生配列容量MiB|100×100要求数|判定|
++|---|---:|---:|---:|---|
++|S1|1001 / 1,002,001|16.24|121|HOLD|
++|S2|2001 / 4,004,001|64.91|441|HOLD|
++|S3|4001 / 16,008,001|259.53|1681|HOLD|
++
++OSRM graph構築のRAM/秒、1 block秒は未測定であり、推定値を作らなかった。S3は2 float64+boolの272,136,017 bytesにmetadata・応答保存・graph・solver領域を追加する。mmapと逐次処理を実装したが、実ODの性能を測ったことにはしない。詳細はCOMMON_DATA_AUDIT.mdとaudit_final/SCALE_PREFLIGHT.json。
++
++## A〜D接続と判定
++
++|対象|判定|根拠・未完|
++|---|---|---|
++|共通条件の定義・設定同期|GO|採択値・単位・由来・pin・文書生成表を検証|
++|共通入力・出力・独立制約・D/W/T|GO（人工問題）|全12制約・入出力hash・独立再計算・秒単位計時を検証|
++|共通モジュール全体|CONDITIONAL GO|人工入力とstubの範囲で完成。実OSRM E2E・実道路route対照は未完|
++|凍結需要保全|GO|8ファイルのpin・独立hash・全手法一致|
++|拠点/道路対応/実研究OD|HOLD|入口未確認、全snap実アクセス未検証、OSRM graphと全ODなし|
++|A参照|HOLD|同条件の出典付きD/W/T未取得。異条件文献をS1等の実績にしない|
++|B接続|CONDITIONAL GO（仕様のみ）|共通indexed入力とPlanがある。VeRyPyの2便・バースwrapper未実装|
++|C接続|CONDITIONAL GO（仕様のみ）|共通indexed入力とPlanがある。OR-Tools全体連動未実装|
++|D入出力変換|GO（人工問題）|m→km、秒切上げ、日列→Plan、誤距離を補正せず拒否を確認|
++|D研究規模接続|HOLD|長い便の価格付け、全列依存、整数化、疎主問題、秒精度の候補管理が未解決|
++|S1 / S2 / S3適用|HOLD / HOLD / HOLD|容量下界のみ成立。実道路可行参照計画・solver統合がない|
++
++Dのdelta_s=1 bridgeは秒精度の入力変換であり、現行小規模全列挙をS1へ拡大する機能ではない。旧DayProblemは絶対時刻のmax_end/deltaでslotを作るため、この入力では72000 slotとなり、dense主問題の行数と候補列数が大きい。旧6顧客guardを外したり、粗い格子へ黙って丸めたりしない。量子小問題の成功でS1判定をGOに変更していない。
++
++## 未解決事項と次の作業
++
++1. **優先P0（データ）**：車両用出入口の根拠、OSM取得日時の確度、道路profile/graph版とhash、凍結地点のアクセスレビューを固定する。OSRM構築・snap/全有向ODと実道路小例の独立照合を行う。
++2. **優先P1（古典基盤）**：BのCW経路→物理車両2便・バース、CのOR-Tools全体接続を小例から実装する。旧アルゴリズム変更が必要なら理由とファイルを別計画に先に記す。
++3. **優先P1（比較契約）**：共通予算・停止・seed・環境、A参照の条件範囲、可行参照計画取得後の共通ε水準を採択する。数値未取得はnullを維持する。
++4. **優先P2（D）**：全列非依存の完成、長い便/マクロ、疎主問題、整数列・秒時刻・資源管理を既存Dの別計画に沿って検証する。
++5. **別工程**：S1の全需要・同じOD・容量・2便・バース・20時条件を満たす参照計画を独立検査し、計時/RSSを確認してからS1予備実験の可否を再判定する。S2/S3はその後である。
++6. **保全/運用**：旧公開API回帰4失敗のリンク・manifest整合は別修復として扱う。今回の共通基盤の成功で既存配布テストを成功扱いしない。
++
++S1を最初に動かす最低条件は、固定8ファイルpin、確認済み入口・snap、完全な有向実道路OD、2便/バースに対応する古典参照生成器、共通検査・計時計測の統合である。これがない状態は入力不足/実装不足に分類し、数学的不可行とは呼ばない。
++
++## 再現・保全
++
++再現コマンドは証拠REPRODUCE.md。新規結果は排他的に新ディレクトリへ書く。過去の結果を更新するコマンドは使用しない。最終のhash照合、git diff/statusと追加ファイル一覧はPRESERVATION_AFTER.json、FINAL_REVIEW.json、TASK_FILE_HASHES.jsonへ記録する。
+diff --git a/scripts/audit_toc_common.py b/scripts/audit_toc_common.py
+new file mode 100644
+index 0000000..ee5c6df
+--- /dev/null
++++ b/scripts/audit_toc_common.py
+@@ -0,0 +1,189 @@
++#!/usr/bin/env python3
++"""Read-only real-data audit and synthetic validation; no optimization experiments."""
++import argparse
++from collections import Counter
++import csv
++from dataclasses import replace
++from datetime import datetime, timezone
++from decimal import Decimal
++import hashlib
++import json
++import math
++import os
++from pathlib import Path
++import platform
++import resource
++import subprocess
++import sys
++import time
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0,str(ROOT/'src'))
++from kmd_toc.common.config import load_conditions, digest_file, CONFIG_SHA256
++from kmd_toc.common.models import save_problem, load_problem, save_plan
++from kmd_toc.common.runtime import run_measured
++from kmd_toc.frozen_demand import load_frozen_demand
++
++
++def write(p,value):
++    p.write_text(json.dumps(value,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
++
++
++def demand_audit():
++    config=json.loads((ROOT/'configs/toc_delivery/frozen_demand_v1.json').read_text())
++    bundle=ROOT/config['bundle_relative_path']
++    historical=json.loads((ROOT/'review_outputs/toc_demand_freeze_20261110/FILE_HASHES.json').read_text())
++    files=[]
++    for p in sorted(bundle.iterdir()):
++        rel=str(p.relative_to(ROOT));actual=digest_file(p)
++        files.append(dict(path=rel,bytes=p.stat().st_size,sha256=actual,
++                          matches_freeze=actual==historical[rel]['sha256']))
++    if len(files)!=8 or not all(r['matches_freeze'] for r in files):raise ValueError('FROZEN_HASH_MISMATCH')
++    audit_path=ROOT/'review_outputs/toc_stops_full_audit_20261108/run_20261108T091121Z_attempt02/ALL_STOPS_AUDIT.csv'
++    with audit_path.open(newline='') as s:
++        old={row['stop_id']:row for row in csv.DictReader(s)}
++    results,sets={},{}
++    for sid,expected in [('S1',(1000,10,2)),('S2',(2000,20,4)),('S3',(4000,40,8))]:
++        consumers={m:load_frozen_demand(sid,method_id=m) for m in 'ABCD'}
++        frozen=consumers['B']
++        with (bundle/(sid+'.csv')).open(newline='') as s:rows=list(csv.DictReader(s))
++        ids=[r['stop_id'] for r in rows]
++        if len(ids)!=expected[0] or len(set(ids))!=len(ids) or any(not i for i in ids):raise ValueError('DEMAND_IDS')
++        if any(r['parcel_count']!='1' for r in rows):raise ValueError('DEMAND_QUANTITY')
++        for r in rows:
++            lon,lat=Decimal(r['longitude']),Decimal(r['latitude'])
++            if not(lon.is_finite() and lat.is_finite() and -180<=lon<=180 and -90<=lat<=90):raise ValueError('DEMAND_COORDS')
++        sets[sid]=set(ids)
++        status={key:dict(Counter(old[i][key] for i in ids)) for key in
++                ('overall_status','road_mapping_status','road_reachability_status','real_access_status','new_study_road_adoption')}
++        results[sid]=dict(stops=len(rows),vehicles=frozen.vehicles,berths=frozen.berths,
++            demand_units=sum(int(r['parcel_count']) for r in rows),csv_sha256=frozen.csv_sha256,
++            source_audit_status=status,all_consumers_same_hash=len({d.csv_sha256 for d in consumers.values()})==1,
++            bbox=dict(west=min(float(r['longitude']) for r in rows),east=max(float(r['longitude']) for r in rows),
++                      south=min(float(r['latitude']) for r in rows),north=max(float(r['latitude']) for r in rows)))
++    return dict(files=files,scenarios=results,strict_nested=sets['S1']<sets['S2']<sets['S3'],
++                source_audit_sha256=digest_file(audit_path),runtime_regeneration=False)
++
++
++def road_audit():
++    quality_path=ROOT/'03_data/processed/traffic_simulation/validation/osm_ota_ward_20260716_quality_summary.json'
++    q=json.loads(quality_path.read_text())
++    files=[]
++    for key in ('raw','extract'):
++        p=ROOT/q[key+'_path']
++        actual=digest_file(p) if p.exists() else None
++        files.append(dict(path=str(p.relative_to(ROOT)),present=p.exists(),sha256=actual,
++                          expected_sha256=q[key+'_sha256'],matches=actual==q[key+'_sha256'],
++                          bytes=p.stat().st_size if p.exists() else None))
++    prior=json.loads((ROOT/'review_outputs/toc_demand_map_depot_20261110/BEFORE.json').read_text())['depot_sources']
++    sources=[]
++    for name,r in prior.items():
++        p=Path(r['path'])
++        sources.append(dict(name=name,path=str(p),sha256=digest_file(p) if p.exists() else None,
++                            matches=p.exists() and digest_file(p)==r['sha256']))
++    return dict(files=files,source_url=q['source_url'],source_id=q['source_id'],
++                snapshot_date=q['snapshot_date'],osm_timestamp=q['raw_data_timestamp'],
++                recorded_local_acquisition_or_processing_at=q['generated_at'],
++                download_time_independently_confirmed=False,source_registry_record=quality_path.relative_to(ROOT).as_posix(),
++                depot=dict(depot_id='DEP_006',longitude=139.745306,latitude=35.586971,
++                           kind='historical_proxy',vehicle_entrance_verified=False,sources=sources),
++                osrm_graph_found=False,research_od_available=False,public_osrm_requests=0,
++                notes=['SUMO mappings do not certify OSRM snaps',
++                       'Exact download timestamp absent; generated_at is processing timestamp',
++                       'Local OSRM generation not attempted before entrance and snap review'])
++
++
++def preflight():
++    c=load_conditions();o=c['operations'];result={}
++    for sid,r in c['scenarios'].items():
++        n,v,b=r['stops'],r['vehicles'],r['berths']
++        trips=math.ceil(n/o['capacity_per_trip']);pairs=(n+1)**2
++        second=max(0,trips-v)
++        workload=n*o['service_s']+trips*o['loading_s']+second*o['preparation_s']
++        result[sid]=dict(stops=n,vehicles=v,berths=b,max_trips=2*v,total_capacity=120*v,
++            spare_capacity=120*v-n,capacity_utilization=n/(120*v),minimum_trips=trips,
++            minimum_second_trips=second,minimum_used_vehicles=math.ceil(n/120),
++            loading_aggregate_min=trips*30,berth_fluid_lower_bound_min=trips*30/b,
++            berth_nonpreemptive_lower_bound_min=math.ceil(trips/b)*30,
++            total_service_min=2*n,service_per_vehicle_lower_bound_min=2*n/v,
++            vehicle_work_excluding_travel_lower_bound_min=workload/v/60,
++            total_minimum_vehicle_work_s=workload,od_points=n+1,od_pairs=pairs,
++            od_numeric_bytes=pairs*17,od_numeric_MiB=pairs*17/1024**2,
++            od_blocks_100=math.ceil((n+1)/100)**2,
++            od_time_estimate_s=None,osrm_build_peak_memory_bytes=None,
++            status='HOLD',capacity_necessary_condition_passes=120*v>=n,
++            feasibility_proven=False)
++    return result
++
++
++def document_inventory():
++    paths=[ROOT/'README.md',ROOT/'research_plan_toc_three_objectives_faceted_20261108.docx',
++           ROOT/'docs/research/TOC_DELIVERY_SPEC.md',ROOT/'docs/audits/toc_scope_20261108/REPORT.md',
++           ROOT/'docs/research/delivery_planning_desktop_20261111_1230/report.md']
++    paths+=sorted((ROOT/'docs/research/toc_delivery_d').glob('*.md'))
++    records=[]
++    for p in paths:
++        data=p.read_bytes()
++        records.append(dict(path=p.relative_to(ROOT).as_posix(),bytes=len(data),sha256=hashlib.sha256(data).hexdigest(),
++                            first_lines=data.decode(errors='replace').splitlines()[:4] if p.suffix=='.md' else []))
++    return records
++
++
++def witnesses(out):
++    # New validation fixtures only; no existing A–D generator or optimizer.
++    sys.path.insert(0,str(ROOT/'tests/toc_common'))
++    from conftest import fixture_problem, fixture_plan
++    results=[]
++    for n in (4,5,6,20):
++        problem=fixture_problem(n)
++        p=out/f'N{n}';p.mkdir()
++        save_problem(problem,p/'input')
++        assignments=None if n==5 else [('v0',tuple(s.stop_id for s in problem.stops),90,'b0')]
++        def construct(actual,mark):
++            mark('specified_witness_construction_start')
++            plan=fixture_plan(actual,assignments)
++            return replace(plan,method_settings={'validation_only':True,'optimizer_executed':False})
++        result=run_measured(lambda:load_problem(p/'input'),construct)
++        write(p/'run_result.json',result)
++        # Independent Decimal arc incidence evaluation, no validator imports.
++        plan=result['plan'];distance=Decimal(0);waiting=Decimal(0)
++        arcs=Counter()
++        for trip in plan['trips']:
++            ids=[trip['origin_id']]+[v['stop_id'] for v in trip['visits']]+[trip['destination_id']]
++            arcs.update(zip(ids,ids[1:]))
++            if trip['trip_no']==1:
++                ready=next(v.first_ready_s for v in problem.vehicles if v.vehicle_id==trip['vehicle_id'])
++            else:
++                ready=next(t['return_s'] for t in plan['trips'] if t['vehicle_id']==trip['vehicle_id'] and t['trip_no']==1)+900
++            waiting+=Decimal(trip['load_start_s']-ready)/60
++        for (i,j),count in arcs.items():
++            distance+=Decimal(str(problem.od.distance_m[problem.od.ids.index(i),problem.od.ids.index(j)]))*count/1000
++        match=result['D_km']==float(distance) and result['W_min']==float(waiting)
++        if not match or result['status']!='FEASIBLE':raise ValueError('SYNTHETIC_WITNESS_FAILED')
++        results.append(dict(N=n,D_km=result['D_km'],W_min=result['W_min'],T_s=result['T_s'],
++                            independent_D_km=str(distance),independent_W_min=str(waiting),match=match,
++                            input_hash=problem.fingerprint,validation_only=True))
++    return results
++
++
++def main():
++    parser=argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--output',type=Path,required=True)
++    args=parser.parse_args()
++    args.output.mkdir(parents=True,exist_ok=False)
++    start=time.perf_counter()
++    write(args.output/'DEMAND_AUDIT.json',demand_audit())
++    write(args.output/'ROAD_AUDIT.json',road_audit())
++    write(args.output/'SCALE_PREFLIGHT.json',preflight())
++    write(args.output/'DOCUMENT_INVENTORY.json',document_inventory())
++    write(args.output/'SYNTHETIC_WITNESSES.json',witnesses(args.output))
++    record=dict(created_at=datetime.now(timezone.utc).isoformat(),wall_s=time.perf_counter()-start,
++                peak_RSS_KiB=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
++                python=sys.version,platform=platform.platform(),logical_cpu_count=os.cpu_count(),
++                conditions_sha256=CONFIG_SHA256,head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
++                S1_S2_S3_optimizer_runs=0,public_OSRM_requests=0,quantum_hardware_calls=0)
++    write(args.output/'EXECUTION.json',record)
++    print(json.dumps(record,ensure_ascii=False,indent=2))
++
++
++if __name__=='__main__':main()
+diff --git a/src/kmd_toc/common/__init__.py b/src/kmd_toc/common/__init__.py
+new file mode 100644
+index 0000000..8678746
+--- /dev/null
++++ b/src/kmd_toc/common/__init__.py
+@@ -0,0 +1,10 @@
++"""Solver-independent A–D delivery contracts, v1.0. No optimizer imports."""
++from .config import load_conditions
++from .models import (Stop, Snap, Vehicle, Depot, Berth, Experiment, Problem,
++                     Visit, Trip, Plan, load_problem, save_problem, load_plan, save_plan)
++from .validation import validate_plan
++from .runtime import run_measured
++
++__all__ = ['load_conditions', 'Stop', 'Snap', 'Vehicle', 'Depot', 'Berth',
++           'Experiment', 'Problem', 'Visit', 'Trip', 'Plan', 'load_problem',
++           'save_problem', 'load_plan', 'save_plan', 'validate_plan', 'run_measured']
+diff --git a/src/kmd_toc/common/adapters.py b/src/kmd_toc/common/adapters.py
+new file mode 100644
+index 0000000..f3839ba
+--- /dev/null
++++ b/src/kmd_toc/common/adapters.py
+@@ -0,0 +1,92 @@
++"""Explicit unit/index conversion only. No solver invocation or success fallback."""
++from .config import load_conditions, ready_s, CONFIG_SHA256
++from .models import Stop, Vehicle, Berth, Experiment, Problem
++
++
++def from_frozen(scenario_id, *, depot, snaps, od, environment, random_seed=None):
++    from kmd_toc.frozen_demand import load_frozen_demand
++    demand = load_frozen_demand(scenario_id, method_id='B')
++    if set(snaps) != {s.stop_id for s in demand.stops}:
++        raise ValueError('FROZEN_SNAP_ID_SET')
++    c = load_conditions()
++    o = c['operations']
++    stops = tuple(Stop(s.stop_id,float(s.longitude),float(s.latitude),s.parcel_count,snaps[s.stop_id],
++                       {'kind':'frozen_synthetic_demand','source':f'{scenario_id}.csv',
++                        'generation':'frozen_demand_v1_no_runtime_generation','sha256':demand.csv_sha256})
++                  for s in demand.stops)
++    vehicles = tuple(Vehicle(f'v{v}',o['capacity_per_trip'],o['max_trips_per_vehicle'],
++                             ready_s(v,demand.vehicles,c),o['closing_s']) for v in range(demand.vehicles))
++    berths = tuple(Berth(f'b{b}',depot.depot_id,o['opening_s'],o['closing_s'],o['loading_s'],
++                         o['preparation_s']) for b in range(demand.berths))
++    experiment = Experiment(scenario_id,c['conditions_version'],CONFIG_SHA256,random_seed,
++                            {'demand_manifest':demand.manifest_sha256,'demand_csv':demand.csv_sha256,
++                             'od':od.fingerprint},environment,{},'frozen_research')
++    return Problem(stops,vehicles,depot,berths,od,experiment).validate()
++
++
++def indexed_solver_input(problem):
++    """B/C neutral view. Arrays stay in metres/seconds; assignment remains free."""
++    problem.validate()
++    return {'ids':problem.od.ids,'distance_m':problem.od.distance_m,'duration_s':problem.od.duration_s,
++            'demand':(0,*(s.demand for s in problem.stops)), 'vehicles':problem.vehicles,
++            'berths':problem.berths,'problem_hash':problem.fingerprint,'od_hash':problem.od.fingerprint}
++
++
++def to_vehicle_day(problem, *, delta_s=1):
++    """Input conversion to existing D contracts; does NOT establish S1 readiness.
++
++    This explicit bridge imports existing D only when called. D distance uses km.
++    The exact raw OD stays common; travel is ceiled per arc under common policy.
++    """
++    import math
++    from kmd_toc.column_generation.models import Instance
++    from kmd_toc.vehicle_day.model import DayProblem, Vehicle as DayVehicle
++    problem.validate()
++    if type(delta_s) is not int or delta_s < 1:
++        raise ValueError('D_TIME_GRID')
++    c = load_conditions()['operations']
++    base = Instance(problem.experiment.scenario_id,problem.od.distance_m/1000,
++                    (0,*(s.demand for s in problem.stops)),c['capacity_per_trip'])
++    vehicles = tuple(DayVehicle(v.vehicle_id,v.capacity,v.first_ready_s,c['opening_s'],
++                                v.return_deadline_s,c['loading_s'],c['preparation_s'])
++                     for v in problem.vehicles)
++    travel = tuple(tuple(math.ceil(float(x)) for x in row) for row in problem.od.duration_s)
++    return DayProblem(base,travel,(0,*(c['service_s'] for s in problem.stops)),vehicles,len(problem.berths),delta_s)
++
++
++def from_vehicle_day(problem, day_problem, columns, berth_assignments, *, method_settings):
++    """Serialize D records; preserve reported times/costs for independent rejection.
++
++    D has ordered stops but no per-stop timestamps. Expansion uses the common OD.
++    Explicit berth assignment is required; no scheduling, repair, or optimization.
++    """
++    from .models import Visit, Trip, Plan
++    problem.validate()
++    service_s = load_conditions()['operations']['service_s']
++    if day_problem.fingerprint != to_vehicle_day(problem,delta_s=day_problem.delta_s).fingerprint:
++        raise ValueError('D_BRIDGE_INPUT_HASH')
++    trips = []
++    for column in columns:
++        if column.problem_hash != day_problem.fingerprint:
++            raise ValueError('D_COLUMN_INPUT_HASH')
++        for trip in column.trips:
++            try:
++                berth_id = berth_assignments[column.vehicle_id,trip.trip_id]
++            except KeyError as error:
++                raise ValueError('D_EXPLICIT_BERTH_REQUIRED') from error
++            clock, node, visits = trip.departure_s, problem.depot.depot_id, []
++            for index in trip.customers:
++                if type(index) is not int or not 1 <= index < len(problem.od.ids):
++                    raise ValueError('D_CUSTOMER_INDEX')
++                identifier = problem.od.ids[index]
++                _, seconds = problem.od.leg(node,identifier)
++                clock += seconds
++                visits.append(Visit(identifier,clock,clock,clock+service_s))
++                clock += service_s
++                node = identifier
++            trips.append(Trip(column.vehicle_id,trip.trip_id,problem.depot.depot_id,problem.depot.depot_id,
++                              tuple(visits),trip.ready_s,berth_id,trip.load_start_s,trip.load_end_s,
++                              trip.departure_s,trip.return_s,trip.distance_km*1000,
++                              trip.load_start_s-trip.ready_s))
++    return Plan('1.0','D-day-column-export','D',problem.fingerprint,problem.od.fingerprint,tuple(trips),
++                method_settings,'quantum_circuit_simulator')
+diff --git a/src/kmd_toc/common/config.py b/src/kmd_toc/common/config.py
+new file mode 100644
+index 0000000..ad996ff
+--- /dev/null
++++ b/src/kmd_toc/common/config.py
+@@ -0,0 +1,63 @@
++"""Pinned adopted conditions; new values require a new version and review."""
++import hashlib
++import json
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[3]
++CONFIG_PATH = ROOT / 'configs/toc_delivery/common_conditions_v1.json'
++# Populated at initial adoption, before tests; protects all nested policy values.
++CONFIG_SHA256 = 'cb0cb6ed00df857d01a77631b4cc5bd1fdb3d26ef37ec6b98f147c5dbb0f23d3'
++
++
++def digest_file(path):
++    h = hashlib.sha256()
++    with Path(path).open('rb') as stream:
++        for block in iter(lambda: stream.read(1024 * 1024), b''):
++            h.update(block)
++    return h.hexdigest()
++
++
++def fingerprint(value):
++    return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=False,
++                                    separators=(',', ':'), allow_nan=False).encode()).hexdigest()
++
++
++def read_json(path):
++    """Reject duplicate fields and non-JSON NaN/Infinity, including nested ones."""
++    def pairs(items):
++        result = {}
++        for key, value in items:
++            if key in result:
++                raise ValueError('DUPLICATE_JSON_FIELD: ' + key)
++            result[key] = value
++        return result
++    def constant(value):
++        raise ValueError('NONFINITE_JSON_NUMBER: ' + value)
++    return json.loads(Path(path).read_text(), object_pairs_hook=pairs, parse_constant=constant)
++
++
++def load_conditions(path=CONFIG_PATH):
++    content = Path(path).read_bytes()
++    if hashlib.sha256(content).hexdigest() != CONFIG_SHA256:
++        raise ValueError('CONDITIONS_HASH_MISMATCH: use a new adopted version')
++    return json.loads(content)
++
++
++def ready_s(v, count, conditions=None):
++    c = load_conditions() if conditions is None else conditions
++    if type(v) is not int or type(count) is not int or not 0 <= v < count:
++        raise ValueError('INVALID_VEHICLE_INDEX')
++    return c['operations']['opening_s'] + (3600 * (2 * v + 1)) // (2 * count)
++
++
++def conditions_table(conditions=None):
++    """Exact generated region in COMMON_CONDITIONS_V1.md, checked in tests."""
++    c = load_conditions() if conditions is None else conditions
++    rows = ['|設定キー|採択値|', '|---|---|']
++    for section in ('scope', 'units', 'operations', 'scenarios', 'timing_policy',
++                    'road_policy', 'comparison'):
++        for key, value in c[section].items():
++            rows.append(f'|{section}.{key}|{json.dumps(value, ensure_ascii=False, sort_keys=True)}|')
++    rows.append(f'|first_ready_rule|{c["first_ready_rule"]}|')
++    rows.append(f'|conditions_version|{c["conditions_version"]}|')
++    return '\n'.join(rows)
+diff --git a/src/kmd_toc/common/models.py b/src/kmd_toc/common/models.py
+new file mode 100644
+index 0000000..2adfeed
+--- /dev/null
++++ b/src/kmd_toc/common/models.py
+@@ -0,0 +1,277 @@
++"""Method-independent v1 records. Times are integer seconds since JST midnight."""
++from dataclasses import dataclass, asdict
++import json
++import math
++from pathlib import Path
++from .config import load_conditions, ready_s, fingerprint, CONFIG_SHA256, read_json
++from .od import OD, save_od, load_od
++
++
++def integer(value, *, minimum=0):
++    return type(value) is int and value >= minimum
++
++
++def number(value):
++    return type(value) in (int, float) and math.isfinite(value)
++
++
++@dataclass(frozen=True)
++class Snap:
++    longitude: float
++    latitude: float
++    distance_m: float
++    hint: str
++    node_ids: tuple[int, ...]
++    graph_id: str
++    reviewed: bool
++    evidence: str
++
++    def validate(self, graph_id, kind, original=None):
++        if (not number(self.longitude) or not -180 <= self.longitude <= 180 or
++                not number(self.latitude) or not -90 <= self.latitude <= 90 or
++                not number(self.distance_m) or self.distance_m < 0 or
++                self.distance_m > load_conditions()['road_policy']['snap_alert_m'] or
++                not isinstance(self.hint,str) or not self.hint or
++                not isinstance(self.node_ids,(list,tuple)) or not self.node_ids or
++                any(not integer(i) for i in self.node_ids) or self.graph_id != graph_id or
++                self.reviewed is not True or not isinstance(self.evidence,str) or not self.evidence):
++            raise ValueError('SNAP_MISSING_UNREVIEWED_OR_INAPPROPRIATE')
++        if kind == 'osm_osrm':
++            token = self.evidence.removeprefix('sha256:')
++            if not self.evidence.startswith('sha256:') or len(token) != 64 or any(c not in '0123456789abcdef' for c in token):
++                raise ValueError('SNAP_REVIEW_EVIDENCE_HASH_REQUIRED')
++        if original is not None:
++            lon, lat = original
++            phi1, phi2 = math.radians(lat), math.radians(self.latitude)
++            a = (math.sin((phi2-phi1)/2)**2 + math.cos(phi1)*math.cos(phi2)*
++                 math.sin(math.radians(self.longitude-lon)/2)**2)
++            displacement = 6371008.8 * 2 * math.asin(math.sqrt(min(1,a)))
++            # Geodesic distance is only a snap diagnostic, never an OD cost.
++            if abs(displacement-self.distance_m) > 3:
++                raise ValueError('SNAP_REPORTED_DISTANCE_INCONSISTENT')
++
++
++@dataclass(frozen=True)
++class Stop:
++    stop_id: str
++    longitude: float
++    latitude: float
++    demand: int
++    snap: Snap
++    source: dict
++
++
++@dataclass(frozen=True)
++class Vehicle:
++    vehicle_id: str
++    capacity: int
++    max_trips: int
++    first_ready_s: int
++    return_deadline_s: int
++
++
++@dataclass(frozen=True)
++class Depot:
++    depot_id: str
++    longitude: float
++    latitude: float
++    snap: Snap
++    entrance_verified: bool
++    entrance_evidence: str
++
++
++@dataclass(frozen=True)
++class Berth:
++    berth_id: str
++    depot_id: str
++    opening_s: int
++    closing_s: int
++    loading_s: int
++    preparation_s: int
++
++
++@dataclass(frozen=True)
++class Experiment:
++    scenario_id: str
++    conditions_version: str
++    conditions_sha256: str
++    random_seed: int | None
++    data_hashes: dict
++    environment: dict
++    method_settings: dict
++    kind: str  # synthetic_validation or frozen_research
++
++
++@dataclass(frozen=True)
++class Problem:
++    stops: tuple[Stop, ...]
++    vehicles: tuple[Vehicle, ...]
++    depot: Depot
++    berths: tuple[Berth, ...]
++    od: OD
++    experiment: Experiment
++
++    def payload(self):
++        return {'schema_version': '1.0', 'stops': [asdict(s) for s in self.stops],
++                'vehicles': [asdict(v) for v in self.vehicles], 'depot': asdict(self.depot),
++                'berths': [asdict(b) for b in self.berths], 'experiment': asdict(self.experiment),
++                'od_hash': self.od.fingerprint}
++
++    @property
++    def fingerprint(self):
++        return fingerprint(self.payload())
++
++    def validate(self):
++        c = load_conditions()
++        o, e = c['operations'], self.experiment
++        if (e.conditions_version != c['conditions_version'] or e.conditions_sha256 != CONFIG_SHA256 or
++                e.kind not in ('synthetic_validation', 'frozen_research') or
++                (e.random_seed is not None and not integer(e.random_seed)) or
++                not isinstance(e.environment, dict) or not e.environment or
++                not isinstance(e.method_settings, dict) or not isinstance(e.data_hashes, dict)):
++            raise ValueError('EXPERIMENT_VERSION_OR_METADATA')
++        if not self.stops or not self.vehicles or not self.berths:
++            raise ValueError('EMPTY_INPUT')
++        for records, key in [(self.stops, 'stop_id'), (self.vehicles, 'vehicle_id'), (self.berths, 'berth_id')]:
++            ids = [getattr(r, key) for r in records]
++            if any(not isinstance(i, str) or not i for i in ids) or len(set(ids)) != len(ids):
++                raise ValueError('MISSING_OR_DUPLICATE_' + key)
++        if not self.depot.depot_id or self.depot.depot_id in {s.stop_id for s in self.stops}:
++            raise ValueError('DEPOT_ID')
++        if self.depot.entrance_verified is not True or not self.depot.entrance_evidence:
++            raise ValueError('DEPOT_ENTRANCE_UNVERIFIED')
++        if (self.od.ids != (self.depot.depot_id, *(s.stop_id for s in self.stops)) or
++                e.data_hashes.get('od') != self.od.fingerprint):
++            raise ValueError('OD_IDS_OR_HASH')
++        self.od.audit()
++        for record in (*self.stops, self.depot):
++            if (not number(record.longitude) or not -180 <= record.longitude <= 180 or
++                    not number(record.latitude) or not -90 <= record.latitude <= 90):
++                raise ValueError('COORDINATE_RANGE')
++            record.snap.validate(self.od.metadata['graph_id'], self.od.metadata['kind'],
++                                 (record.longitude,record.latitude))
++        for s in self.stops:
++            if type(s.demand) is not int or s.demand != o['demand_per_stop']:
++                raise ValueError('DEMAND_UNIT_OR_VALUE')
++            if not isinstance(s.source, dict) or not all(s.source.get(k) for k in ('kind', 'source', 'generation', 'sha256')):
++                raise ValueError('STOP_PROVENANCE')
++        for index, v in enumerate(self.vehicles):
++            expected = (o['capacity_per_trip'], o['max_trips_per_vehicle'],
++                        ready_s(index, len(self.vehicles), c), o['closing_s'])
++            actual = (v.capacity, v.max_trips, v.first_ready_s, v.return_deadline_s)
++            if any(type(x) is not int for x in actual) or actual != expected:
++                raise ValueError('VEHICLE_CONDITIONS_OR_ORDER')
++        for b in self.berths:
++            actual = (b.opening_s, b.closing_s, b.loading_s, b.preparation_s)
++            if (any(type(x) is not int for x in actual) or
++                    actual != tuple(o[k] for k in ('opening_s', 'closing_s', 'loading_s', 'preparation_s')) or
++                    b.depot_id != self.depot.depot_id):
++                raise ValueError('BERTH_CONDITIONS')
++        if e.kind == 'frozen_research':
++            self._validate_frozen(c)
++        elif (self.od.metadata['kind'] != 'synthetic' or e.scenario_id in c['scenarios']):
++            raise ValueError('SYNTHETIC_LABEL_REQUIRED')
++        return self
++
++    def _validate_frozen(self, conditions):
++        from kmd_toc.frozen_demand import load_frozen_demand
++        e = self.experiment
++        frozen = load_frozen_demand(e.scenario_id, method_id='B')
++        if (len(self.stops), len(self.vehicles), len(self.berths)) != (frozen.N, frozen.vehicles, frozen.berths):
++            raise ValueError('FROZEN_SCENARIO_COUNTS')
++        if (e.data_hashes.get('demand_manifest') != frozen.manifest_sha256 or
++                e.data_hashes.get('demand_csv') != frozen.csv_sha256):
++            raise ValueError('FROZEN_DEMAND_HASH')
++        expected = tuple((s.stop_id, float(s.longitude), float(s.latitude), s.parcel_count) for s in frozen.stops)
++        if tuple((s.stop_id, s.longitude, s.latitude, s.demand) for s in self.stops) != expected:
++            raise ValueError('FROZEN_DEMAND_ATTRIBUTES')
++        if any(s.source['sha256'] != frozen.csv_sha256 or s.source['kind'] != 'frozen_synthetic_demand'
++               for s in self.stops):
++            raise ValueError('FROZEN_STOP_PROVENANCE')
++        if self.od.metadata['kind'] != 'osm_osrm':
++            raise ValueError('RESEARCH_REQUIRES_OSM_OSRM')
++
++
++@dataclass(frozen=True)
++class Visit:
++    stop_id: str
++    arrival_s: int
++    service_start_s: int
++    service_end_s: int
++
++
++@dataclass(frozen=True)
++class Trip:
++    vehicle_id: str
++    trip_no: int
++    origin_id: str
++    destination_id: str
++    visits: tuple[Visit, ...]
++    ready_s: int
++    berth_id: str
++    load_start_s: int
++    load_end_s: int
++    departure_s: int
++    return_s: int
++    distance_m: float
++    waiting_s: int
++
++
++@dataclass(frozen=True)
++class Plan:
++    schema_version: str
++    plan_id: str
++    method_id: str
++    problem_hash: str
++    od_hash: str
++    trips: tuple[Trip, ...]
++    method_settings: dict
++    execution_kind: str  # classical or quantum_circuit_simulator
++
++
++def save_problem(problem, directory):
++    problem.validate()
++    p = Path(directory)
++    p.mkdir(parents=True, exist_ok=False)
++    save_od(problem.od, p / 'od')
++    data = problem.payload()
++    data['problem_hash'] = problem.fingerprint
++    (p / 'input.json').write_text(json.dumps(data, ensure_ascii=False, indent=2, allow_nan=False))
++
++
++def load_problem(directory):
++    p = Path(directory)
++    d = read_json(p / 'input.json')
++    if set(d) != {'schema_version', 'stops', 'vehicles', 'depot', 'berths', 'experiment', 'od_hash', 'problem_hash'} or d['schema_version'] != '1.0':
++        raise ValueError('INPUT_SCHEMA')
++    try:
++        def with_snap(cls, row):
++            row = dict(row)
++            snap = dict(row.pop('snap'))
++            snap['node_ids'] = tuple(snap['node_ids'])
++            return cls(**row, snap=Snap(**snap))
++        problem = Problem(tuple(with_snap(Stop, row) for row in d['stops']),
++                          tuple(Vehicle(**row) for row in d['vehicles']), with_snap(Depot, d['depot']),
++                          tuple(Berth(**row) for row in d['berths']), load_od(p / 'od'), Experiment(**d['experiment']))
++    except (TypeError, KeyError) as error:
++        raise ValueError('INPUT_FIELDS') from error
++    if problem.od.fingerprint != d['od_hash'] or problem.fingerprint != d['problem_hash']:
++        raise ValueError('INPUT_HASH')
++    return problem.validate()
++
++
++def save_plan(plan, path):
++    with Path(path).open('x') as stream:
++        json.dump(asdict(plan), stream, ensure_ascii=False, indent=2, allow_nan=False)
++
++
++def load_plan(path):
++    d = read_json(path)
++    try:
++        trips = []
++        for row in d.pop('trips'):
++            row['visits'] = tuple(Visit(**v) for v in row['visits'])
++            trips.append(Trip(**row))
++        return Plan(**d, trips=tuple(trips))
++    except (TypeError, KeyError) as error:
++        raise ValueError('OUTPUT_FIELDS') from error
+diff --git a/src/kmd_toc/common/od.py b/src/kmd_toc/common/od.py
+new file mode 100644
+index 0000000..00ba2e9
+--- /dev/null
++++ b/src/kmd_toc/common/od.py
+@@ -0,0 +1,239 @@
++"""Directed, same-route metre/second OD; local OSRM only, no estimation."""
++from dataclasses import dataclass
++from datetime import datetime, timezone
++import gzip
++import hashlib
++import ipaddress
++import json
++import math
++from pathlib import Path
++import time
++from urllib.parse import urlencode, urlparse
++from urllib.request import Request, build_opener, HTTPRedirectHandler
++import numpy as np
++from .config import digest_file, fingerprint, read_json
++
++
++def array_digest(array):
++    h = hashlib.sha256()
++    h.update(str(array.dtype).encode())
++    h.update(str(array.shape).encode())
++    for row in array:
++        h.update(np.ascontiguousarray(row).tobytes())
++    return h.hexdigest()
++
++
++@dataclass(frozen=True)
++class OD:
++    ids: tuple[str, ...]
++    distance_m: np.ndarray
++    duration_s: np.ndarray
++    reachable: np.ndarray
++    metadata: dict
++
++    @property
++    def fingerprint(self):
++        return fingerprint({'ids': self.ids, 'metadata': self.metadata,
++                            'arrays': [array_digest(a) for a in
++                                       (self.distance_m, self.duration_s, self.reachable)]})
++
++    def audit(self, *, require_all_reachable=True):
++        n = len(self.ids)
++        if not n or any(not isinstance(s, str) or not s for s in self.ids) or len(set(self.ids)) != n:
++            raise ValueError('OD_IDS')
++        if any(a.shape != (n, n) for a in (self.distance_m, self.duration_s, self.reachable)):
++            raise ValueError('OD_SHAPE')
++        if (self.distance_m.dtype != np.dtype('float64') or
++                self.duration_s.dtype != np.dtype('float64') or self.reachable.dtype != np.dtype('bool')):
++            raise ValueError('OD_DTYPE')
++        if self.metadata.get('units') != {'distance': 'm', 'duration': 's'}:
++            raise ValueError('OD_UNITS')
++        if self.metadata.get('kind') not in ('synthetic', 'osm_osrm'):
++            raise ValueError('OD_PROVENANCE_KIND')
++        if not self.metadata.get('road_version') or not self.metadata.get('graph_id'):
++            raise ValueError('OD_ROAD_VERSION')
++        if self.metadata['kind'] == 'osm_osrm':
++            validate_road_metadata(self.metadata)
++        for a in (self.distance_m, self.duration_s):
++            if np.any(np.diag(a) != 0) or not np.diag(self.reachable).all():
++                raise ValueError('OD_DIAGONAL')
++        unreachable = asymmetry = 0
++        examples = []
++        for lo in range(0, n, 100):
++            sl = slice(lo, lo + 100)
++            mask = self.reachable[sl]
++            for a in (self.distance_m, self.duration_s):
++                b = a[sl]
++                if np.any(~np.isfinite(b[mask])) or np.any(b[mask] < 0):
++                    raise ValueError('OD_MISSING_OR_INVALID_REACHABLE_VALUE')
++                if np.any(~np.isnan(b[~mask])):
++                    raise ValueError('OD_UNREACHABLE_MUST_BE_NULL')
++            unreachable += int(np.count_nonzero(~mask))
++            if len(examples) < 10:
++                examples.extend((self.ids[lo + int(i)], self.ids[int(j)])
++                                for i, j in np.argwhere(~mask)[:10-len(examples)])
++            asymmetry += int(np.count_nonzero(mask & self.reachable[:, sl].T &
++                                             (self.distance_m[sl] != self.distance_m[:, sl].T)))
++        if require_all_reachable and unreachable:
++            raise ValueError(f'OD_UNREACHABLE: {unreachable}; {examples}')
++        return {'points': n, 'pairs': n*n, 'unreachable_pairs': unreachable,
++                'unreachable_examples': examples, 'asymmetric_directed_cells': asymmetry}
++
++    def leg(self, origin, destination):
++        i, j = self.ids.index(origin), self.ids.index(destination)
++        if not self.reachable[i, j]:
++            raise ValueError(f'OD_UNREACHABLE: {origin}->{destination}')
++        return float(self.distance_m[i, j]), math.ceil(float(self.duration_s[i, j]))
++
++
++def validate_road_metadata(meta):
++    required = ('source_url', 'acquired_at', 'osm_timestamp', 'road_version', 'graph_id',
++                'osrm_version', 'profile', 'profile_sha256', 'raw_sha256', 'graph_artifacts',
++                'build_commands', 'generated_at')
++    if any(not meta.get(k) for k in required):
++        raise ValueError('OD_INCOMPLETE_ROAD_PROVENANCE')
++    for value in [meta['profile_sha256'], meta['raw_sha256'], *meta['graph_artifacts'].values()]:
++        if not isinstance(value, str) or len(value) != 64 or any(c not in '0123456789abcdef' for c in value):
++            raise ValueError('OD_PROVENANCE_HASH')
++    if (meta.get('route_policy') != 'fastest_same_route' or
++            meta.get('fallback_speed_allowed') is not False or meta.get('directed') is not True):
++        raise ValueError('OD_ROUTE_POLICY')
++
++
++def save_od(od, directory):
++    od.audit(require_all_reachable=False)
++    p = Path(directory)
++    p.mkdir(parents=True, exist_ok=False)
++    files = {}
++    for key, array in [('distance_m', od.distance_m), ('duration_s', od.duration_s), ('reachable', od.reachable)]:
++        name = key + '.npy'
++        np.save(p / name, array, allow_pickle=False)
++        files[name] = digest_file(p / name)
++    manifest = {'schema_version': '1.0', 'status': 'COMPLETE', 'ids': od.ids,
++                'metadata': od.metadata, 'files': files, 'od_hash': od.fingerprint}
++    (p / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2))
++
++
++def load_od(directory):
++    p = Path(directory)
++    manifest = read_json(p / 'manifest.json')
++    if manifest['schema_version'] != '1.0' or manifest['status'] != 'COMPLETE':
++        raise ValueError('OD_INCOMPLETE_BUNDLE')
++    names = ('distance_m.npy', 'duration_s.npy', 'reachable.npy')
++    if set(manifest['files']) != set(names):
++        raise ValueError('OD_FILE_INVENTORY')
++    for name in names:
++        if digest_file(p / name) != manifest['files'][name]:
++            raise ValueError('OD_FILE_HASH: ' + name)
++    arrays = [np.load(p / name, mmap_mode='r', allow_pickle=False) for name in names]
++    od = OD(tuple(manifest['ids']), *arrays, manifest['metadata'])
++    od.audit(require_all_reachable=False)
++    if od.fingerprint != manifest['od_hash']:
++        raise ValueError('OD_CONTENT_HASH')
++    return od
++
++
++class NoRedirect(HTTPRedirectHandler):
++    def redirect_request(self, req, fp, code, msg, headers, newurl):
++        raise ValueError('OSRM_REDIRECT_FORBIDDEN')
++
++
++class LocalOSRM:
++    """No public endpoint or fallback option. Transport injectable for unit tests."""
++    def __init__(self, endpoint='http://127.0.0.1:5000', transport=None):
++        u = urlparse(endpoint)
++        try:
++            local = ipaddress.ip_address(u.hostname).is_loopback
++        except ValueError:
++            local = False
++        if (not local or u.scheme != 'http' or u.username or u.password or
++                u.path not in ('', '/') or u.query or u.fragment):
++            raise ValueError('OSRM_LOCAL_LOOPBACK_ONLY')
++        self.endpoint = endpoint.rstrip('/')
++        self.transport = transport or self._get
++
++    def _get(self, url):
++        with build_opener(NoRedirect()).open(Request(url), timeout=120) as response:
++            return json.load(response)
++
++    def nearest(self, longitude, latitude, *, number=3):
++        response = self.transport(f'{self.endpoint}/nearest/v1/driving/{longitude},{latitude}?number={number}')
++        if response.get('code') != 'Ok' or not response.get('waypoints'):
++            raise ValueError('OSRM_NO_SNAP')
++        return response  # review candidates; never auto-select/approve a snap
++
++    def table(self, origins, destinations, snaps):
++        ids = tuple(dict.fromkeys((*origins, *destinations)))
++        points = ';'.join(f'{snaps[i].longitude},{snaps[i].latitude}' for i in ids)
++        query = urlencode({'sources': ';'.join(str(ids.index(i)) for i in origins),
++                           'destinations': ';'.join(str(ids.index(i)) for i in destinations),
++                           'hints': ';'.join(snaps[i].hint for i in ids),
++                           'annotations': 'distance,duration', 'skip_waypoints': 'false'})
++        response = self.transport(f'{self.endpoint}/table/v1/driving/{points}?{query}')
++        if response.get('code') != 'Ok' or response.get('fallback_speed_cells'):
++            raise ValueError('OSRM_RESPONSE_OR_FALLBACK')
++        for key, group in [('sources', origins), ('destinations', destinations)]:
++            waypoints = response.get(key, [])
++            if len(waypoints) != len(group):
++                raise ValueError('OSRM_WAYPOINT_COUNT')
++            for waypoint, identifier in zip(waypoints, group):
++                expected = snaps[identifier]
++                location = waypoint.get('location', [])
++                if len(location) != 2 or max(abs(location[0]-expected.longitude),
++                                              abs(location[1]-expected.latitude)) > 1e-6:
++                    raise ValueError('OSRM_SNAP_DRIFT')
++        shape = (len(origins), len(destinations))
++        d = np.array(response.get('distances'), dtype='float64')
++        t = np.array(response.get('durations'), dtype='float64')
++        if d.shape != shape or t.shape != shape or not np.array_equal(np.isnan(d), np.isnan(t)):
++            raise ValueError('OSRM_MATRIX_SHAPE_OR_NULL_PAIR')
++        return d, t, np.isfinite(d) & np.isfinite(t), response
++
++
++def generate_local_od(ids, snaps, metadata, directory, *, client=None, block_size=100):
++    """Opt-in precomputation only; partial output is retained on error, never loaded."""
++    validate_road_metadata(metadata)
++    if type(block_size) is not int or not 1 <= block_size <= 100:
++        raise ValueError('OD_BLOCK_SIZE')
++    if len(set(ids)) != len(ids) or set(ids) != set(snaps):
++        raise ValueError('OD_SNAP_IDS')
++    for snap in snaps.values():
++        snap.validate(metadata['graph_id'], metadata['kind'])
++    p = Path(directory)
++    p.mkdir(parents=True, exist_ok=False)
++    (p / 'responses').mkdir()
++    start = time.perf_counter()
++    manifest = {'schema_version': '1.0', 'status': 'INCOMPLETE', 'ids': ids,
++                'metadata': metadata, 'completed_blocks': []}
++    def checkpoint():
++        (p / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2))
++    checkpoint()
++    n = len(ids)
++    arrays = [np.lib.format.open_memmap(p / name, mode='w+', dtype=dtype, shape=(n,n))
++              for name, dtype in [('distance_m.npy', 'float64'), ('duration_s.npy', 'float64'),
++                                  ('reachable.npy', 'bool')]]
++    arrays[0][:] = arrays[1][:] = np.nan
++    arrays[2][:] = False
++    client = client or LocalOSRM()
++    for i in range(0, n, block_size):
++        for j in range(0, n, block_size):
++            src, dst = ids[i:i+block_size], ids[j:j+block_size]
++            d, t, mask, raw = client.table(src, dst, snaps)
++            if raw.get('data_version') not in (None, metadata['osm_timestamp']):
++                raise ValueError('OSRM_DATA_VERSION_DRIFT')
++            for a, values in zip(arrays, (d, t, mask)):
++                a[i:i+len(src), j:j+len(dst)] = values
++                a.flush()
++            with gzip.open(p / 'responses' / f'{i}_{j}.json.gz', 'wt') as stream:
++                json.dump(raw, stream, allow_nan=False)
++            manifest['completed_blocks'].append([i, j, len(src), len(dst)])
++            checkpoint()
++    od = OD(tuple(ids), *arrays, metadata)
++    audit = od.audit(require_all_reachable=False)
++    manifest.update(status='COMPLETE', od_hash=od.fingerprint,
++                    files={name: digest_file(p/name) for name in
++                           ('distance_m.npy', 'duration_s.npy', 'reachable.npy')},
++                    audit=audit, preprocessing_wall_s=time.perf_counter()-start,
++                    completed_at=datetime.now(timezone.utc).isoformat())
++    checkpoint()
++    return load_od(p)
+diff --git a/src/kmd_toc/common/runtime.py b/src/kmd_toc/common/runtime.py
+new file mode 100644
+index 0000000..577e761
+--- /dev/null
++++ b/src/kmd_toc/common/runtime.py
+@@ -0,0 +1,50 @@
++"""End-to-end measured boundary: before input load through final validation."""
++from dataclasses import asdict
++import platform
++import sys
++import time
++from .validation import validate_plan
++from .models import Plan
++
++
++def environment():
++    return {'python':sys.version, 'platform':platform.platform(), 'processor':platform.processor(),
++            'timer':'time.perf_counter; elapsed wall seconds'}
++
++
++def run_measured(load_input, create_plan, *, clock=time.perf_counter, validator=validate_plan):
++    """create_plan(problem, mark) includes ALL method-specific work and tuning.
++
++    The complete common input/OD load must occur in load_input, never beforehand.
++    No optimizer is selected or executed by this module itself.
++    """
++    start = clock()
++    events = [{'name':'input_load_start','elapsed_s':0.0}]
++    def mark(name):
++        events.append({'name':name,'elapsed_s':clock()-start})
++    plan = report = None
++    status, error = 'ERROR', None
++    try:
++        problem = load_input()
++        problem.validate()
++        mark('input_load_end')
++        candidate = create_plan(problem, mark)
++        if not isinstance(candidate,Plan):
++            raise ValueError('METHOD_DID_NOT_RETURN_PLAN')
++        plan = candidate
++        mark('method_all_processing_end')
++        mark('independent_validation_start')
++        report = validator(problem, plan)
++        mark('independent_validation_end')
++        status = 'FEASIBLE' if report.feasible else 'INFEASIBLE_PLAN'
++    except Exception as exc:
++        error = {'type':type(exc).__name__, 'message':str(exc)}
++        status = 'INPUT_HOLD' if not any(e['name']=='input_load_end' for e in events) else 'ERROR'
++        mark('failed')
++    elapsed = events[-1]['elapsed_s']
++    return {'schema_version':'1.0','status':status,'plan':asdict(plan) if plan is not None else None,
++            'validation':report.as_dict() if report is not None else None,
++            'D_km':report.D_km if report else None,'W_min':report.W_min if report else None,
++            'T_s':elapsed if status == 'FEASIBLE' else None,'elapsed_wall_s':elapsed,
++            'timing_events':events,'environment':environment(),'error':error,
++            'common_road_OD_preprocessing_in_T':False}
+diff --git a/src/kmd_toc/common/validation.py b/src/kmd_toc/common/validation.py
+new file mode 100644
+index 0000000..12d057e
+--- /dev/null
++++ b/src/kmd_toc/common/validation.py
+@@ -0,0 +1,181 @@
++"""Independent reconstruction from common input. Never imports a solver/builder."""
++from collections import Counter, defaultdict
++from dataclasses import dataclass, asdict
++import math
++from .config import load_conditions
++from .models import integer, number
++
++
++@dataclass(frozen=True)
++class Validation:
++    feasible: bool
++    violations: tuple[dict, ...]
++    D_km: float | None
++    W_min: float | None
++    W1_min: float | None
++    W2_min: float | None
++    ready_to_loading_end_min: float | None
++    trip_metrics: tuple[dict, ...]
++
++    def as_dict(self):
++        return asdict(self)
++
++
++def validate_plan(problem, plan):
++    violations = []
++    def fail(code, context='', detail=''):
++        violations.append({'code': code, 'context': context, 'detail': detail})
++    def result(metrics=()):
++        feasible = not violations
++        if not feasible:
++            return Validation(False, tuple(violations), None, None, None, None, None, tuple(metrics))
++        return Validation(True, (), math.fsum(m['distance_m'] for m in metrics)/1000,
++                          sum(m['waiting_s'] for m in metrics)/60,
++                          sum(m['waiting_s'] for m in metrics if m['trip_no']==1)/60,
++                          sum(m['waiting_s'] for m in metrics if m['trip_no']==2)/60,
++                          sum(m['ready_to_loading_end_s'] for m in metrics)/60, tuple(metrics))
++    try:
++        problem.validate()
++    except ValueError as error:
++        fail('INPUT_HOLD', detail=str(error))
++        return result()
++    # Invalid JSON scalar/container types must produce a rejection, not a crash.
++    if (not isinstance(plan.plan_id,str) or not isinstance(plan.method_id,str) or
++            not isinstance(plan.method_settings,dict) or not isinstance(plan.trips,(list,tuple))):
++        fail('PLAN_FIELD_TYPES')
++        return result()
++    for t in plan.trips:
++        if (any(not isinstance(x,str) for x in
++                (t.vehicle_id,t.berth_id,t.origin_id,t.destination_id)) or
++                not isinstance(t.visits,(list,tuple)) or
++                any(not isinstance(v.stop_id,str) for v in t.visits)):
++            fail('PLAN_FIELD_TYPES')
++            return result()
++    if (plan.schema_version != '1.0' or not plan.plan_id or plan.method_id not in ('B','C','D') or
++            plan.execution_kind not in ('classical', 'quantum_circuit_simulator')):
++        fail('PLAN_METADATA')
++    if plan.method_id == 'D' and plan.execution_kind != 'quantum_circuit_simulator':
++        fail('AOA_EXECUTION_KIND')
++    if plan.problem_hash != problem.fingerprint or plan.od_hash != problem.od.fingerprint:
++        fail('COMMON_INPUT_OR_OD_HASH')
++    c = load_conditions()
++    o = c['operations']
++    stops = {s.stop_id:s for s in problem.stops}
++    vehicles = {v.vehicle_id:v for v in problem.vehicles}
++    berths = {b.berth_id:b for b in problem.berths}
++    visits = Counter(v.stop_id for t in plan.trips for v in t.visits)
++    for identifier in sorted(stops.keys() | visits.keys()):
++        if identifier not in stops:
++            fail('UNKNOWN_STOP', identifier)
++        elif visits[identifier] != 1:
++            fail('VISIT_EXACTLY_ONCE', identifier, str(visits[identifier]))
++    groups = defaultdict(list)
++    intervals = []
++    metrics = []
++    for t in plan.trips:
++        if t.vehicle_id not in vehicles:
++            fail('UNKNOWN_VEHICLE', str(t.vehicle_id))
++        if not integer(t.trip_no, minimum=1):
++            fail('TRIP_NUMBER', str(t.vehicle_id))
++            continue
++        groups[t.vehicle_id].append(t)
++    for vid, trips in groups.items():
++        if vid not in vehicles:
++            continue
++        vehicle = vehicles[vid]
++        trips = sorted(trips, key=lambda t:t.trip_no)
++        if len(trips) > vehicle.max_trips or [t.trip_no for t in trips] != list(range(1, len(trips)+1)):
++            fail('MAX_TWO_CONTIGUOUS_TRIPS', vid)
++        previous_return = None
++        for t in trips:
++            context = f'{vid}/{t.trip_no}'
++            fields = (t.ready_s,t.load_start_s,t.load_end_s,t.departure_s,t.return_s,t.waiting_s)
++            if any(not integer(s) for s in fields) or any(
++                    not integer(s) for visit in t.visits for s in
++                    (visit.arrival_s,visit.service_start_s,visit.service_end_s)):
++                fail('INTEGER_SECOND_TIMES', context)
++                continue
++            ready = vehicle.first_ready_s if t.trip_no == 1 else (
++                previous_return + o['preparation_s'] if previous_return is not None else None)
++            if ready is None or t.ready_s != ready:
++                fail('READY_DEFINITION', context)
++            if ready is not None and t.load_start_s < ready:
++                fail('READY_OR_SECOND_TRIP_PREPARATION', context)
++            if not t.visits:
++                fail('EMPTY_USED_TRIP', context)
++            if t.origin_id != problem.depot.depot_id or t.destination_id != problem.depot.depot_id:
++                fail('DEPOT_ROUND_TRIP', context)
++            if sum(stops[v.stop_id].demand for v in t.visits if v.stop_id in stops) > vehicle.capacity:
++                fail('CAPACITY', context)
++            if t.load_end_s - t.load_start_s != o['loading_s']:
++                fail('LOADING_DURATION', context)
++            if t.departure_s != t.load_end_s:
++                fail('DEPARTURE_AT_LOADING_END', context)
++            if t.berth_id not in berths:
++                fail('UNKNOWN_BERTH', context)
++            else:
++                b = berths[t.berth_id]
++                if t.load_start_s < b.opening_s or t.load_end_s > b.closing_s:
++                    fail('BERTH_AVAILABILITY', context)
++            if t.load_end_s > t.load_start_s:
++                intervals.append((t.load_start_s,t.load_end_s,t.berth_id,context))
++            distances = []
++            clock = t.departure_s
++            current = problem.depot.depot_id
++            valid_route = True
++            for visit in t.visits:
++                if visit.stop_id not in stops:
++                    valid_route = False
++                    continue
++                try:
++                    distance, seconds = problem.od.leg(current, visit.stop_id)
++                except ValueError as error:
++                    fail('OD_ROUTE', context, str(error))
++                    valid_route = False
++                    continue
++                clock += seconds
++                distances.append(distance)
++                if visit.arrival_s != clock:
++                    fail('TRAVEL_TIME', context, visit.stop_id)
++                if visit.service_start_s != clock or visit.service_end_s != clock + o['service_s']:
++                    fail('CUSTOMER_SERVICE_TIME', context, visit.stop_id)
++                clock += o['service_s']
++                current = visit.stop_id
++            if valid_route:
++                distance, seconds = problem.od.leg(current,problem.depot.depot_id)
++                distances.append(distance)
++                clock += seconds
++                previous_return = clock
++                if t.return_s != clock:
++                    fail('RETURN_TIME', context)
++                distance = math.fsum(distances)
++                if not number(t.distance_m) or not math.isclose(t.distance_m, distance, rel_tol=0, abs_tol=1e-6):
++                    fail('DISTANCE_FROM_COMMON_OD', context)
++            else:
++                distance = None
++                previous_return = None
++            if t.return_s > vehicle.return_deadline_s or (valid_route and clock > vehicle.return_deadline_s):
++                fail('RETURN_DEADLINE_2000', context)
++            if t.departure_s < o['opening_s']:
++                fail('OPERATING_WINDOW', context)
++            waiting = t.load_start_s - ready if ready is not None else None
++            if waiting is None or t.waiting_s != waiting:
++                fail('WAITING_DEFINITION', context)
++            metrics.append({'vehicle_id':vid,'trip_no':t.trip_no,'distance_m':distance,
++                            'waiting_s':waiting, 'return_s':clock if valid_route else None,
++                            'ready_to_loading_end_s':t.load_end_s-ready if ready is not None else None})
++    # Half-open intervals: an end event sorts before a start at the same second.
++    for berth_id in berths:
++        ordered = sorted((s,e,k) for s,e,b,k in intervals if b == berth_id)
++        largest_end = -1
++        for s,e,k in ordered:
++            if s < largest_end:
++                fail('BERTH_OVERLAP', k, berth_id)
++            largest_end = max(largest_end,e)
++    active = 0
++    events = sorted([(s,1,k) for s,e,b,k in intervals] + [(e,-1,k) for s,e,b,k in intervals])
++    for second, change, context in events:
++        active += change
++        if active > len(berths):
++            fail('BERTH_COUNT_EXCEEDED', context, str(second))
++    return result(metrics)
+diff --git a/tests/toc_common/conftest.py b/tests/toc_common/conftest.py
+new file mode 100644
+index 0000000..02a3d32
+--- /dev/null
++++ b/tests/toc_common/conftest.py
+@@ -0,0 +1,79 @@
++"""Synthetic witnesses only; no geographic demand or optimizer calls."""
++from dataclasses import replace
++import math
++import numpy as np
++import pytest
++from kmd_toc.common.config import load_conditions, ready_s, CONFIG_SHA256
++from kmd_toc.common.models import (Snap, Stop, Vehicle, Depot, Berth, Experiment,
++                                   Problem, Visit, Trip, Plan)
++from kmd_toc.common.od import OD
++
++
++def fixture_problem(n=5, vehicles=3, berths=2):
++    ids = ('depot',*(f'c{i}' for i in range(1,n+1)))
++    d = np.zeros((n+1,n+1),dtype='float64')
++    t = np.zeros_like(d)
++    for i in range(n+1):
++        for j in range(n+1):
++            if i!=j:
++                d[i,j] = 100+13*i+7*j+(100 if i>j else 0)
++                t[i,j] = 60+3*i+5*j+(9 if i>j else 0)+0.2
++    od = OD(ids,d,t,np.ones_like(d,dtype='bool'),
++            {'kind':'synthetic','road_version':'synthetic-directed-v1',
++             'graph_id':'synthetic-graph-v1','units':{'distance':'m','duration':'s'}})
++    def snap(i):
++        return Snap(139.7+i*.0001,35.58,0.0,'synthetic-hint',(i,),
++                    'synthetic-graph-v1',True,'synthetic witness, not actual road')
++    stops = tuple(Stop(ids[i],139.7+i*.0001,35.58,1,snap(i),
++                       {'kind':'synthetic_fixture','source':'tests/toc_common/conftest.py',
++                        'generation':'arithmetic_directed_matrix_v1','sha256':'1'*64}) for i in range(1,n+1))
++    c = load_conditions()
++    o = c['operations']
++    return Problem(stops,tuple(Vehicle(f'v{i}',60,2,ready_s(i,vehicles),72000) for i in range(vehicles)),
++                   Depot('depot',139.7,35.58,snap(0),True,'synthetic depot'),
++                   tuple(Berth(f'b{i}','depot',28800,72000,1800,900) for i in range(berths)),od,
++                   Experiment(f'TEST_N{n}',c['conditions_version'],CONFIG_SHA256,0,
++                              {'od':od.fingerprint},{'fixture':True},{},'synthetic_validation'))
++
++
++def fixture_plan(p, assignments=None):
++    """Build a specified witness by arithmetic. No search or repairs."""
++    if assignments is None:
++        assignments = [('v0',('c1','c2'),60,'b0'),('v0',('c3','c4'),120,'b0'),
++                       ('v1',('c5',),30,'b1')]
++    previous, counts, trips = {}, {}, []
++    for vid, identifiers, delay, berth in assignments:
++        counts[vid] = counts.get(vid,0)+1
++        ready = (previous[vid]+900 if vid in previous else
++                 next(v.first_ready_s for v in p.vehicles if v.vehicle_id == vid))
++        start = ready+delay
++        clock = start+1800
++        visits, distance, node = [],0.0,0
++        for identifier in identifiers:
++            j=p.od.ids.index(identifier)
++            distance += float(p.od.distance_m[node,j])
++            clock += math.ceil(float(p.od.duration_s[node,j]))
++            visits.append(Visit(identifier,clock,clock,clock+120))
++            clock+=120
++            node=j
++        distance+=float(p.od.distance_m[node,0])
++        clock+=math.ceil(float(p.od.duration_s[node,0]))
++        trips.append(Trip(vid,counts[vid],'depot','depot',tuple(visits),ready,berth,
++                          start,start+1800,start+1800,clock,distance,delay))
++        previous[vid]=clock
++    return Plan('1.0','synthetic-witness','B',p.fingerprint,p.od.fingerprint,tuple(trips),{},'classical')
++
++
++@pytest.fixture
++def problem():
++    return fixture_problem()
++
++
++@pytest.fixture
++def plan(problem):
++    return fixture_plan(problem)
++
++
++def rehash_problem(p, **kwargs):
++    p=replace(p,**kwargs)
++    return replace(p,experiment=replace(p.experiment,data_hashes={**p.experiment.data_hashes,'od':p.od.fingerprint}))
+diff --git a/tests/toc_common/test_common.py b/tests/toc_common/test_common.py
+new file mode 100644
+index 0000000..392aab5
+--- /dev/null
++++ b/tests/toc_common/test_common.py
+@@ -0,0 +1,430 @@
++from copy import deepcopy
++from dataclasses import asdict, replace
++from decimal import Decimal
++import hashlib
++import json
++import math
++from pathlib import Path
++from urllib.parse import urlsplit, parse_qs
++import numpy as np
++import pytest
++from kmd_toc.common import (load_conditions, validate_plan, save_problem, load_problem,
++                             save_plan, load_plan, run_measured)
++from kmd_toc.common.config import CONFIG_PATH, ROOT, CONFIG_SHA256, ready_s, conditions_table
++from kmd_toc.common.od import OD, LocalOSRM, generate_local_od, load_od
++from kmd_toc.common.adapters import to_vehicle_day, from_vehicle_day, indexed_solver_input, from_frozen
++from conftest import fixture_problem, fixture_plan, rehash_problem
++
++
++def codes(report):
++    return {v['code'] for v in report.violations}
++
++
++def change_trip(plan,index=0,**changes):
++    trips=list(plan.trips)
++    trips[index]=replace(trips[index],**changes)
++    return replace(plan,trips=tuple(trips))
++
++
++def independent_objectives(p,plan):
++    """Second implementation: arc incidence counts and vehicle ready equations."""
++    arcs={}
++    for trip in plan.trips:
++        nodes=['depot']+[v.stop_id for v in trip.visits]+['depot']
++        for i,j in zip(nodes,nodes[1:]):
++            arcs[i,j]=arcs.get((i,j),0)+1
++    distance=sum((Decimal(str(p.od.distance_m[p.od.ids.index(i),p.od.ids.index(j)]))*count
++                  for (i,j),count in arcs.items()),Decimal(0))/1000
++    wait=Decimal(0)
++    for vehicle in p.vehicles:
++        trips=sorted((t for t in plan.trips if t.vehicle_id==vehicle.vehicle_id),key=lambda t:t.trip_no)
++        for k,trip in enumerate(trips):
++            ready=vehicle.first_ready_s if k==0 else trips[k-1].return_s+900
++            wait+=Decimal(trip.load_start_s-ready)/60
++    return distance,wait
++
++
++def test_adopted_config_and_doc_sync():
++    c=load_conditions()
++    assert c['operations']==dict(demand_per_stop=1,capacity_per_trip=60,max_trips_per_vehicle=2,
++        service_s=120,loading_s=1800,preparation_s=900,opening_s=28800,closing_s=72000,first_ready_span_s=3600)
++    assert c['comparison']['epsilon_W_min'] is None and c['comparison']['epsilon_D_km'] is None
++    doc=(ROOT/'docs/research/toc_delivery_common/COMMON_CONDITIONS_V1.md').read_text()
++    assert doc.split('<!-- BEGIN GENERATED CONDITIONS -->\n')[1].split('\n<!-- END GENERATED CONDITIONS -->')[0]==conditions_table()
++    assert hashlib.sha256(CONFIG_PATH.read_bytes()).hexdigest()==CONFIG_SHA256
++
++
++def test_config_drift_rejected(tmp_path):
++    c=load_conditions();c['operations']['capacity_per_trip']=61
++    path=tmp_path/'changed.json';path.write_text(json.dumps(c))
++    with pytest.raises(ValueError,match='CONDITIONS_HASH'):
++        load_conditions(path)
++
++
++@pytest.mark.parametrize('count',[10,20,40])
++def test_ready_equation(count):
++    for v in range(count):
++        expected=28800+(Decimal(3600)*(Decimal(v)+Decimal('0.5'))/count).__floor__()
++        assert ready_s(v,count)==expected
++
++
++@pytest.mark.parametrize('mutation,code',[
++    (lambda p: replace(p,stops=(p.stops[0],p.stops[0],*p.stops[2:])), 'DUPLICATE'),
++    (lambda p: replace(p,stops=(replace(p.stops[0],stop_id=''),*p.stops[1:])), 'MISSING'),
++    (lambda p: replace(p,stops=p.stops[:-1]), 'OD_IDS'),
++    (lambda p: replace(p,vehicles=()),'EMPTY'),
++    (lambda p: replace(p,berths=()),'EMPTY'),
++    (lambda p: replace(p,stops=(replace(p.stops[0],demand=2),*p.stops[1:])),'DEMAND'),
++    (lambda p: replace(p,stops=(replace(p.stops[0],demand=True),*p.stops[1:])),'DEMAND'),
++    (lambda p: replace(p,vehicles=(replace(p.vehicles[0],capacity=59),*p.vehicles[1:])),'VEHICLE'),
++    (lambda p: replace(p,vehicles=(replace(p.vehicles[0],first_ready_s=28800),*p.vehicles[1:])),'VEHICLE'),
++    (lambda p: replace(p,depot=replace(p.depot,entrance_verified=False)),'ENTRANCE'),
++    (lambda p: replace(p,stops=(replace(p.stops[0],longitude=math.nan),*p.stops[1:])),'COORDINATE'),
++    (lambda p: replace(p,stops=(replace(p.stops[0],snap=replace(p.stops[0].snap,reviewed=False)),*p.stops[1:])),'SNAP'),
++    (lambda p: replace(p,stops=(replace(p.stops[0],snap=replace(p.stops[0].snap,distance_m=101)),*p.stops[1:])),'SNAP'),
++    (lambda p: replace(p,stops=(replace(p.stops[0],source={}),*p.stops[1:])),'PROVENANCE'),
++    (lambda p: replace(p,experiment=replace(p.experiment,conditions_sha256='0'*64)),'VERSION'),
++])
++def test_input_mutations(problem,mutation,code):
++    with pytest.raises(ValueError,match=code):mutation(problem).validate()
++
++
++def test_roundtrip_common_io_and_output(tmp_path,problem,plan):
++    save_problem(problem,tmp_path/'input')
++    loaded=load_problem(tmp_path/'input')
++    assert isinstance(loaded.od.distance_m,np.memmap)
++    assert not loaded.od.distance_m.flags.writeable
++    assert loaded.fingerprint==problem.fingerprint
++    save_plan(plan,tmp_path/'plan.json')
++    actual=load_plan(tmp_path/'plan.json')
++    assert actual==plan
++    assert validate_plan(loaded,actual).feasible
++    with pytest.raises(FileExistsError):save_problem(problem,tmp_path/'input')
++    with pytest.raises(FileExistsError):save_plan(plan,tmp_path/'plan.json')
++
++
++def test_bundle_hash_tamper_rejected(tmp_path,problem):
++    save_problem(problem,tmp_path/'input')
++    path=tmp_path/'input/od/distance_m.npy'
++    a=np.load(path,allow_pickle=False);a[0,1]+=1;np.save(path,a)
++    with pytest.raises(ValueError,match='OD_FILE_HASH'):load_problem(tmp_path/'input')
++
++
++def test_json_duplicate_and_nonfinite_rejected(tmp_path,plan):
++    p=tmp_path/'plan.json'
++    for data in ['{"schema_version":"1.0","schema_version":"2"}', '{"distance_m":NaN}']:
++        p.write_text(data)
++        with pytest.raises(ValueError):load_plan(p)
++
++
++def test_snap_displacement_cannot_be_hidden(problem):
++    s=problem.stops[0]
++    bad=replace(s,snap=replace(s.snap,longitude=s.snap.longitude+.01))
++    with pytest.raises(ValueError,match='REPORTED_DISTANCE'):
++        replace(problem,stops=(bad,*problem.stops[1:])).validate()
++
++
++def test_od_shape_units_diagonal_missing_asymmetry(problem):
++    assert problem.od.audit()['asymmetric_directed_cells']>0
++    for od,match in [(replace(problem.od,distance_m=np.zeros((2,2))),'SHAPE'),
++            (replace(problem.od,metadata={**problem.od.metadata,'units':{'distance':'km','duration':'s'}}),'UNITS')]:
++        with pytest.raises(ValueError,match=match):od.audit()
++    d=problem.od.distance_m.copy();d[0,0]=1
++    with pytest.raises(ValueError,match='DIAGONAL'):replace(problem.od,distance_m=d).audit()
++    d[0,0]=0;d[0,1]=np.nan
++    with pytest.raises(ValueError,match='MISSING'):replace(problem.od,distance_m=d).audit()
++
++
++def test_od_unreachable_is_detected_and_never_estimated(problem):
++    d=problem.od.distance_m.copy();t=problem.od.duration_s.copy();r=problem.od.reachable.copy()
++    d[0,1]=t[0,1]=np.nan;r[0,1]=False
++    od=replace(problem.od,distance_m=d,duration_s=t,reachable=r)
++    assert od.audit(require_all_reachable=False)['unreachable_pairs']==1
++    with pytest.raises(ValueError,match='UNREACHABLE'):od.audit()
++    with pytest.raises(ValueError,match='UNREACHABLE'):od.leg('depot','c1')
++
++
++@pytest.mark.parametrize('n',[4,5,6,20])
++def test_small_and_medium_witness_and_independent_metrics(n):
++    p=fixture_problem(n)
++    if n==5:plan=fixture_plan(p)
++    else:plan=fixture_plan(p,[('v0',tuple(s.stop_id for s in p.stops),90,'b0')])
++    before=deepcopy(asdict(plan))
++    report=validate_plan(p,plan)
++    assert report.feasible,report.violations
++    d,w=independent_objectives(p,plan)
++    assert report.D_km==pytest.approx(float(d)) and report.W_min==pytest.approx(float(w))
++    assert asdict(plan)==before
++
++
++def test_hand_calculation_0_1_2_trips(problem,plan):
++    r=validate_plan(problem,plan)
++    assert r.feasible
++    assert r.D_km==1.4 and r.W_min==3.5
++    assert r.W1_min==1.5 and r.W2_min==2
++    assert r.ready_to_loading_end_min==93.5
++    assert [t.return_s for t in plan.trips]==[31716,35024,32721]
++    assert len([t for t in plan.trips if t.vehicle_id=='v0'])==2
++    assert len([t for t in plan.trips if t.vehicle_id=='v1'])==1
++    assert not any(t.vehicle_id=='v2' for t in plan.trips)
++
++
++@pytest.mark.parametrize('field,value,code',[
++    ('origin_id','elsewhere','DEPOT_ROUND_TRIP'),('destination_id','elsewhere','DEPOT_ROUND_TRIP'),
++    ('ready_s',28800,'READY_DEFINITION'),('load_end_s',31000,'LOADING_DURATION'),
++    ('departure_s',30000,'DEPARTURE_AT_LOADING_END'),('return_s',72001,'RETURN_DEADLINE_2000'),
++    ('distance_m',0.46,'DISTANCE_FROM_COMMON_OD'),('distance_m',math.nan,'DISTANCE_FROM_COMMON_OD'),
++    ('waiting_s',1860,'WAITING_DEFINITION'),('berth_id','b999','UNKNOWN_BERTH'),
++    ('departure_s',31260.0,'INTEGER_SECOND_TIMES'),('trip_no',3,'MAX_TWO_CONTIGUOUS_TRIPS'),
++])
++def test_output_mutations(problem,plan,field,value,code):
++    changed=change_trip(plan,**{field:value})
++    r=validate_plan(problem,changed)
++    assert not r.feasible and code in codes(r)
++    assert r.D_km is None and r.W_min is None
++    assert getattr(changed.trips[0],field)==value or math.isnan(value)
++
++
++def test_missing_repeated_unknown_visits_and_trip3(problem,plan):
++    for trips,expected in [(plan.trips[:-1],'VISIT_EXACTLY_ONCE'),
++                           ((*plan.trips,plan.trips[0]),'MAX_TWO_CONTIGUOUS_TRIPS')]:
++        r=validate_plan(problem,replace(plan,trips=tuple(trips)))
++        assert expected in codes(r)
++    r=validate_plan(problem,change_trip(plan,visits=(replace(plan.trips[0].visits[0],stop_id='unknown'),)))
++    assert 'UNKNOWN_STOP' in codes(r)
++
++
++def test_capacity_60_and_61():
++    for n,feasible in [(60,True),(61,False)]:
++        p=fixture_problem(n)
++        plan=fixture_plan(p,[('v0',tuple(s.stop_id for s in p.stops),0,'b0')])
++        r=validate_plan(p,plan)
++        assert r.feasible==feasible
++        if not feasible:assert 'CAPACITY' in codes(r)
++
++
++def test_second_trip_requires_return_plus_preparation(problem,plan):
++    first=plan.trips[0]
++    for start in [first.return_s-1,first.return_s+899]:
++        r=validate_plan(problem,change_trip(plan,1,load_start_s=start,departure_s=start+1800,load_end_s=start+1800))
++        assert 'READY_OR_SECOND_TRIP_PREPARATION' in codes(r)
++
++
++def test_customer_service_and_travel(problem,plan):
++    t=plan.trips[0];v=t.visits[0]
++    for visit,code in [(replace(v,service_end_s=v.service_end_s-1),'CUSTOMER_SERVICE_TIME'),
++                       (replace(v,arrival_s=v.arrival_s-1),'TRAVEL_TIME')]:
++        r=validate_plan(problem,change_trip(plan,visits=(visit,*t.visits[1:])))
++        assert code in codes(r)
++
++
++def shift_trip(trip,delta):
++    return replace(trip,load_start_s=trip.load_start_s+delta,load_end_s=trip.load_end_s+delta,
++        departure_s=trip.departure_s+delta,return_s=trip.return_s+delta,waiting_s=trip.waiting_s+delta,
++        visits=tuple(replace(v,arrival_s=v.arrival_s+delta,service_start_s=v.service_start_s+delta,
++                             service_end_s=v.service_end_s+delta) for v in trip.visits))
++
++
++def test_deadline_exact_and_one_second_late():
++    p=fixture_problem(4)
++    plan=fixture_plan(p,[('v0',tuple(s.stop_id for s in p.stops),0,'b0')])
++    t=plan.trips[0]
++    for deadline in [72000,72001]:
++        altered=replace(plan,trips=(shift_trip(t,deadline-t.return_s),))
++        r=validate_plan(p,altered)
++        assert r.feasible==(deadline==72000)
++
++
++def test_berth_overlap_count_half_open_and_availability(problem,plan):
++    # Initial v0 and v1 loading overlap, valid on separate berths, invalid on b0.
++    assert validate_plan(problem,plan).feasible
++    assert 'BERTH_OVERLAP' in codes(validate_plan(problem,change_trip(plan,2,berth_id='b0')))
++    p=fixture_problem(5,berths=1)
++    adapted=replace(plan,problem_hash=p.fingerprint,od_hash=p.od.fingerprint,
++                    trips=tuple(replace(t,berth_id='b0') for t in plan.trips))
++    r=validate_plan(p,adapted)
++    assert 'BERTH_COUNT_EXCEEDED' in codes(r)
++    # End==start is accepted, while moving one second earlier creates overlap.
++    t=plan.trips[2];delta=plan.trips[0].load_end_s-t.load_start_s
++    adjacent=replace(shift_trip(t,delta),berth_id='b0')
++    later_second=shift_trip(plan.trips[1],adjacent.load_end_s-plan.trips[1].load_start_s)
++    test=replace(plan,trips=(plan.trips[0],later_second,adjacent))
++    assert validate_plan(problem,test).feasible
++    assert 'BERTH_OVERLAP' in codes(validate_plan(problem,replace(test,trips=(*test.trips[:2],shift_trip(adjacent,-1)))))
++    r=validate_plan(problem,change_trip(plan,load_start_s=28799,load_end_s=30599))
++    assert 'BERTH_AVAILABILITY' in codes(r)
++
++
++def test_hash_and_aoa_execution_labels(problem,plan):
++    assert 'COMMON_INPUT_OR_OD_HASH' in codes(validate_plan(problem,replace(plan,od_hash='fake')))
++    assert 'AOA_EXECUTION_KIND' in codes(validate_plan(problem,replace(plan,method_id='D')))
++    assert validate_plan(problem,replace(plan,method_id='D',execution_kind='quantum_circuit_simulator')).feasible
++
++
++def test_output_bad_scalar_type_rejected(problem,plan):
++    assert 'PLAN_FIELD_TYPES' in codes(validate_plan(problem,change_trip(plan,vehicle_id=['v0'])))
++    assert 'INTEGER_SECOND_TIMES' in codes(validate_plan(problem,change_trip(plan,waiting_s=True)))
++
++
++def test_t_boundary_includes_load_method_all_stages_and_validation(problem,plan):
++    class Clock:
++        t=0
++        def __call__(self):return self.t
++    clock=Clock()
++    stages=['initial_solution','transformation','optimization','tuning','sampling',
++            'decoding','integer_selection','postprocessing']
++    def load():
++        clock.t+=2
++        return problem
++    def solve(p,mark):
++        for stage in stages:clock.t+=1;mark(stage)
++        return plan
++    def check(p,pl):
++        clock.t+=7
++        return validate_plan(p,pl)
++    r=run_measured(load,solve,clock=clock,validator=check)
++    assert r['T_s']==17 and r['elapsed_wall_s']==17
++    assert r['timing_events'][0]['name']=='input_load_start'
++    assert r['timing_events'][-1]['name']=='independent_validation_end'
++    assert set(stages)<={e['name'] for e in r['timing_events']}
++    bad=run_measured(load,lambda p,m:replace(plan,trips=()),clock=clock)
++    assert bad['status']=='INFEASIBLE_PLAN' and bad['T_s'] is None
++    failed=run_measured(lambda: (_ for _ in ()).throw(ValueError('input missing')),solve,clock=clock)
++    assert failed['status']=='INPUT_HOLD' and failed['D_km'] is None
++
++
++def test_t_real_clock_reads_serialized_input(tmp_path,problem,plan):
++    import time
++    save_problem(problem,tmp_path/'input')
++    before=time.perf_counter()
++    result=run_measured(lambda:load_problem(tmp_path/'input'),lambda p,m:plan)
++    outer=time.perf_counter()-before
++    assert result['status']=='FEASIBLE' and 0<result['T_s']<=outer
++
++
++def test_input_bridges_only_no_solver(problem):
++    view=indexed_solver_input(problem)
++    assert view['distance_m'] is problem.od.distance_m
++    day=to_vehicle_day(problem)
++    assert np.array_equal(day.base.distance,problem.od.distance_m/1000)
++    assert day.delta_s==1 and all(v.capacity==60 for v in day.vehicles)
++    assert day.travel_s[0][1]==66
++
++
++def test_d_output_bridge_preserves_bad_distance_for_rejection(problem,plan):
++    from kmd_toc.vehicle_day.model import DayColumn, TripSchedule
++    day=to_vehicle_day(problem)
++    columns=[];berths={}
++    for v in problem.vehicles:
++        trips=[]
++        for t in plan.trips:
++            if t.vehicle_id!=v.vehicle_id:continue
++            ids=tuple(problem.od.ids.index(x.stop_id) for x in t.visits)
++            trips.append(TripSchedule(t.trip_no,ids,len(ids),t.ready_s,t.load_start_s,t.load_end_s,
++                t.departure_s,t.return_s,t.return_s-t.departure_s-120*len(ids),120*len(ids),
++                0 if t.trip_no==1 else 900,t.distance_m/1000))
++            berths[v.vehicle_id,t.trip_no]=t.berth_id
++        columns.append(DayColumn(day.fingerprint,v.vehicle_id,28800,72000,tuple(trips)))
++    exported=from_vehicle_day(problem,day,columns,berths,method_settings={'validation_only':True})
++    assert validate_plan(problem,exported).feasible
++    bad=replace(columns[0].trips[0],distance_km=123)
++    columns[0]=replace(columns[0],trips=(bad,*columns[0].trips[1:]))
++    altered=from_vehicle_day(problem,day,columns,berths,method_settings={})
++    assert altered.trips[0].distance_m==123000
++    assert 'DISTANCE_FROM_COMMON_OD' in codes(validate_plan(problem,altered))
++    with pytest.raises(ValueError,match='EXPLICIT_BERTH'):
++        from_vehicle_day(problem,day,columns,{},method_settings={})
++
++
++def test_frozen_research_counts_cannot_be_weakened(problem):
++    p=replace(problem,experiment=replace(problem.experiment,kind='frozen_research',scenario_id='S1'))
++    with pytest.raises(ValueError,match='SCENARIO_COUNTS'):p.validate()
++
++
++@pytest.mark.parametrize('url',['https://router.project-osrm.org','http://example.com',
++                                'http://localhost:5000','http://127.0.0.1/redirect',
++                                'http://user@127.0.0.1:5000'])
++def test_public_osrm_is_rejected(url):
++    with pytest.raises(ValueError,match='LOOPBACK'):LocalOSRM(url)
++
++
++def road_metadata():
++    return dict(kind='osm_osrm',units={'distance':'m','duration':'s'},source_url='https://example.test/osm',
++        acquired_at='2026-11-11T00:00:00Z',osm_timestamp='2026-07-16T20:21:30Z',road_version='test-OSM',
++        graph_id='synthetic-graph-v1',osrm_version='test-only',profile='test-only',profile_sha256='1'*64,
++        raw_sha256='2'*64,graph_artifacts={'test.osrm':'3'*64},build_commands=['TEST STUB ONLY'],
++        generated_at='2026-11-11T00:00:00Z',route_policy='fastest_same_route',
++        fallback_speed_allowed=False,directed=True)
++
++
++def stub_transport(problem, *, fallback=False, bad_null=False):
++    def transport(url):
++        parsed=urlsplit(url);q=parse_qs(parsed.query)
++        assert q['annotations']==['distance,duration'] and 'fallback_speed' not in q
++        points=[tuple(map(float,point.split(','))) for point in parsed.path.split('/')[-1].split(';')]
++        sources=[int(i) for i in q['sources'][0].split(';')]
++        destinations=[int(i) for i in q['destinations'][0].split(';')]
++        indexes=[round((lon-139.7)/.0001) for lon,lat in points]
++        def matrix(a):return [[float(a[indexes[i],indexes[j]]) for j in destinations] for i in sources]
++        out=dict(code='Ok',sources=[{'location':points[i]} for i in sources],
++            destinations=[{'location':points[j]} for j in destinations],
++            distances=matrix(problem.od.distance_m),durations=matrix(problem.od.duration_s))
++        if fallback:out['fallback_speed_cells']=[[0,0]]
++        if bad_null:out['distances'][0][0]=None
++        return out
++    return transport
++
++
++def test_osrm_block_pipeline_stub_and_hash(tmp_path,problem):
++    snaps={s.stop_id:replace(s.snap,evidence='sha256:'+'4'*64) for s in problem.stops}
++    snaps['depot']=replace(problem.depot.snap,evidence='sha256:'+'5'*64)
++    client=LocalOSRM(transport=stub_transport(problem))
++    od=generate_local_od(problem.od.ids,snaps,road_metadata(),tmp_path/'od',client=client,block_size=2)
++    assert np.array_equal(od.distance_m,problem.od.distance_m)
++    assert np.array_equal(od.duration_s,problem.od.duration_s)
++    assert len(list((tmp_path/'od/responses').glob('*.gz')))==9
++    assert json.loads((tmp_path/'od/manifest.json').read_text())['status']=='COMPLETE'
++
++
++@pytest.mark.parametrize('fallback,bad_null',[(True,False),(False,True)])
++def test_osrm_invalid_response_preserves_incomplete(tmp_path,problem,fallback,bad_null):
++    snaps={
++        **{s.stop_id:replace(s.snap,evidence='sha256:'+'4'*64) for s in problem.stops},
++        'depot':replace(problem.depot.snap,evidence='sha256:'+'5'*64)}
++    with pytest.raises(ValueError):
++        generate_local_od(problem.od.ids,snaps,road_metadata(),tmp_path/'od',
++                          client=LocalOSRM(transport=stub_transport(problem,fallback=fallback,bad_null=bad_null)))
++    assert json.loads((tmp_path/'od/manifest.json').read_text())['status']=='INCOMPLETE'
++    with pytest.raises(ValueError,match='INCOMPLETE'):load_od(tmp_path/'od')
++
++
++def test_frozen_bundle_all_eight_hashes_and_consumers():
++    from kmd_toc.frozen_demand import load_frozen_demand
++    from kmd_toc.frozen_demand_pin import MANIFEST_SHA256
++    inventory=json.loads((ROOT/'review_outputs/toc_demand_freeze_20261110/FILE_HASHES.json').read_text())
++    bundle=ROOT/'03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1'
++    assert len(list(bundle.iterdir()))==8
++    for path in bundle.iterdir():
++        assert hashlib.sha256(path.read_bytes()).hexdigest()==inventory[str(path.relative_to(ROOT))]['sha256']
++    for scenario,n,v,b in [('S1',1000,10,2),('S2',2000,20,4),('S3',4000,40,8)]:
++        values=[load_frozen_demand(scenario,method_id=m) for m in 'ABCD']
++        assert len({a.csv_sha256 for a in values})==1
++        assert (values[0].N,values[0].vehicles,values[0].berths)==(n,v,b)
++        assert values[0].manifest_sha256==MANIFEST_SHA256
++
++
++def test_frozen_bridge_rejects_missing_road_input(problem):
++    with pytest.raises(ValueError,match='SNAP_ID_SET'):
++        from_frozen('S1',depot=problem.depot,snaps={},od=problem.od,environment={'test':True})
++
++
++def test_frozen_corruption_rejected_without_generating_demand(tmp_path):
++    import shutil
++    from kmd_toc.frozen_demand import load_frozen_demand, FrozenDemandError
++    source=ROOT/'03_data/processed/traffic_simulation/demand/toc_delivery/frozen_demand/v1'
++    target=tmp_path/'frozen-copy'
++    shutil.copytree(source,target)
++    path=target/'S1.csv'
++    path.write_bytes(path.read_bytes()+b'\n')
++    with pytest.raises(FrozenDemandError):
++        load_frozen_demand('S1',method_id='B',bundle_dir=target)

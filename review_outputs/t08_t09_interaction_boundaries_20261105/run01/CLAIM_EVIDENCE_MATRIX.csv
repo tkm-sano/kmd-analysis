@@ -1,0 +1,16 @@
+claim_id,claim,evidence,decision,limit
+C01,指定6値は表示精度内で再現,evidence/REPRODUCTION.csv; evidence/NUMERICAL_AUDIT.csv,GO,数値再現の確認、入力の実物適格性を意味しない
+C02,正極q改善は共通V/u/fp/負極で正極必要量のみを減らす,INTERACTION_RESULTS.csv; data/ANODE_DESIGN_COMPARISON.csv,GO_MODEL,負極量はqに依存しない
+C03,q×V、q×uには質量の非加算効果がある,data/MIXED_DIFFERENCES.csv; data/DC_MIXED_DIFFERENCES.csv,GO_MODEL,探索された有限差分、製造可能性未検証
+C04,q×追加質量、u×追加質量は質量上加算的,data/MIXED_DIFFERENCES.csv; BOUNDARY_SURFACES.csv,GO_MODEL,同時にゼロ境界を跨ぐため実用判断上は結合条件
+C05,担持×空隙率は現T09の独立入力式で加算的,data/MIXED_DIFFERENCES.csv; INTERACTION_RESULTS.csv,GO_MODEL,独立物性達成の証明ではなく式の分離可能性
+C06,負極共通再設計でq由来絶対質量差は不変,data/ANODE_DESIGN_COMPARISON.csv,GO_MODEL,共通V等の条件下、S-only再設計では異なる
+C07,連続相殺境界と符号を解析・数値で確認,BOUNDARY_SURFACES.csv; data/BOUNDARY_REPRESENTATIVES.csv; evidence/NUMERICAL_AUDIT.csv,GO_MODEL,基本定義域外の根を物理採用しない
+C08,5.448kgによるDC差は軌跡・Crrに依存,data/BASELINE_SUMMARY.csv; DC_INTERACTION_RESULTS.csv; data/DRIVING_EXTREMES.csv,CONDITIONAL GO,保存観測窓の駆動DC限定、独立実験ではない
+C09,W1/W3と正枝補正でDC差を閉じる,data/BASELINE_COMPONENT_SUMMARY.csv; evidence/INDEPENDENT_AUDIT.csv,GO_MODEL,基準正枝maskの会計規約
+C10,正極容量・全電池平均電圧・利用率・正極配合等の局所効果とその他質量の範囲効果を区別,FACTOR_IMPORTANCE.csv,CONDITIONAL GO,正規化と探索幅に依存、確率的寄与率ではない
+C11,T09完成差は既知差−未知差,T08_T09_COMPARABILITY.md; BOUNDARY_SURFACES.csv,GO_MODEL,未知差を記号変数として保持
+C12,T09完成絶対質量と絶対DCは確定できない,INTERACTION_RESULTS.csv; T08_T09_COMPARABILITY.md,HOLD,未知BOMと実物入力不足
+C13,Chen逆算値は初回放電実測として採用しない,EXPERIMENT_DESIGN.md; data/INHERITED_PARAMETER_ADOPTION.csv,HOLD,保持率分母・cycle/activation未確定、原著再取得なし
+C14,量子計算による材料改善実証を主張しない,FINAL_REPORT_JA.md,GO_SCOPE,本追加計算は古典的条件付き変換評価
+C15,既存成果物・論文・凍結核・原軌跡を保存,evidence/SOURCE_MANIFEST.csv; evidence/INDEPENDENT_AUDIT.csv,GO,読み取り対象のSHA256照合

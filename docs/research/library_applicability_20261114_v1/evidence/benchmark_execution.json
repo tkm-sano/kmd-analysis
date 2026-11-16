@@ -1,0 +1,620 @@
+{
+  "python": "3.11.15 (main, Jun 11 2026, 15:20:16) [GCC 14.3.0]",
+  "executable": "/tmp/kmd-library-survey-20261114/bin/python",
+  "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+  "cpu_info": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9684X 96-Core Processor\nstepping\t: 2\nmicrocode\t: 0xa101253\ncpu MHz\t\t: 3699.987\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 192\ncore id\t\t: 0\ncpu cores\t: 96\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 16\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good amd_lbr_v2 nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba perfmon_v2 ibrs ibpb stibp ibrs_enhanced vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local user_shstk avx512_bf16 clzero irperf xsaveerptr rdpru wbnoinvd amd_ppin cppc amd_ibpb_ret arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif x2avic v_spec_ctrl vnmi avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid overflow_recov succor smca fsrm flush_l1d debug_swap ibpb_exit_to_user\nbugs\t\t: sysret_ss_attrs spectre_v1 spectre_v2 spec_store_bypass srso tsa vmscape\nbogomips\t: 5099.99\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 52 bits physical, 57 bits virtual\npower management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]",
+  "meminfo": "MemTotal:       1584675316 kB\nMemFree:        412676028 kB\nMemAvailable:   1364890332 kB\nBuffers:         1364528 kB\nCached:         932071936 kB\nSwapCached:        33188 kB\nActive:         240733748 kB\nInactive:       880600752 kB\nActive(anon):   185931844 kB\nInactive(anon):  2365204 kB\nActive(file):   54801904 kB\nInactive(file): 878235548 kB\nUnevictable:       30664 kB\nMlocked:           27576 kB\nSwapTotal:       8388604 kB\nSwapFree:        8259096 kB\nZswap:                 0 kB\nZswapped:              0 kB\nDirty:               568 kB\nWriteback:             0 kB\nAnonPages:      187922012 kB\nMapped:          4821128 kB\nShmem:            390556 kB\nKReclaimable:   28751320 kB\nSlab:           35356372 kB\nSReclaimable:   28751320 kB\nSUnreclaim:      6605052 kB\nKernelStack:      429216 kB\nPageTables:       734900 kB\nSecPageTables:         0 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nWritebackTmp:          0 kB\nCommitLimit:    800726260 kB\nCommitted_AS:   497950488 kB\nVmallocTotal:   13743895347199 kB\nVmallocUsed:     1015540 kB\nVmallocChunk:          0 kB\nPercpu:          3124224 kB\nHardwareCorrupted:     0 kB\nAnonHugePages:         0 kB\nShmemHugePages:        0 kB\nShmemPmdMapped:        0 kB\nFileHugePages:         0 kB\nFilePmdMapped:         0 kB\nUnaccepted:            0 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugePages_Rsvd:        0\nHugePages_Surp:        0\nHugepagesize:       2048 kB\nHugetlb:               0 kB\nDirectMap4k:    12462644 kB\nDirectMap2M:    809170944 kB\nDirectMap1G:    788529152 kB\n",
+  "loadavg": "5.00 5.18 4.63 4/26450 1083339\n",
+  "limits": {
+    "address_space_GiB": 4,
+    "CPU_ID": 0,
+    "native_threads": 1
+  },
+  "env": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "runs": [
+    {
+      "case": "macro",
+      "seed": 1101,
+      "backend": "qiskit",
+      "order": [
+        "qiskit",
+        "qulacs",
+        "quri",
+        "qamomile_ising"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 9.460580903105438,
+      "stdout": "qiskit 1101 0.024391082813963294 0.9999999999999984\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "macro",
+      "seed": 1101,
+      "backend": "qulacs",
+      "order": [
+        "qiskit",
+        "qulacs",
+        "quri",
+        "qamomile_ising"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 8.257664012955502,
+      "stdout": "qulacs 1101 0.02309898566454649 0.9999999999999978\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "macro",
+      "seed": 1101,
+      "backend": "quri",
+      "order": [
+        "qiskit",
+        "qulacs",
+        "quri",
+        "qamomile_ising"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 3.3111321630422026,
+      "stdout": "quri 1101 0.023909751093015075 0.9999999999999978\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "macro",
+      "seed": 1101,
+      "backend": "qamomile_ising",
+      "order": [
+        "qiskit",
+        "qulacs",
+        "quri",
+        "qamomile_ising"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 3.3534744430799037,
+      "stdout": "qamomile_ising 1101 0.02535394416190684 0.9999999999999993\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "macro",
+      "seed": 1102,
+      "backend": "qulacs",
+      "order": [
+        "qulacs",
+        "quri",
+        "qamomile_ising",
+        "qiskit"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 3.292715775081888,
+      "stdout": "qulacs 1102 0.02481287787668407 0.9999999999999967\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "macro",
+      "seed": 1102,
+      "backend": "quri",
+      "order": [
+        "qulacs",
+        "quri",
+        "qamomile_ising",
+        "qiskit"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 4.336742639075965,
+      "stdout": "quri 1102 0.025334836216643453 0.9999999999999967\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "macro",
+      "seed": 1102,
+      "backend": "qamomile_ising",
+      "order": [
+        "qulacs",
+        "quri",
+        "qamomile_ising",
+        "qiskit"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 7.214081916026771,
+      "stdout": "qamomile_ising 1102 0.026250306982547045 0.999999999999996\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "macro",
+      "seed": 1102,
+      "backend": "qiskit",
+      "order": [
+        "qulacs",
+        "quri",
+        "qamomile_ising",
+        "qiskit"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 3.7088647650089115,
+      "stdout": "qiskit 1102 0.02615344780497253 0.9999999999999964\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "macro",
+      "seed": 1103,
+      "backend": "quri",
+      "order": [
+        "quri",
+        "qamomile_ising",
+        "qiskit",
+        "qulacs"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 3.3345687978435308,
+      "stdout": "quri 1103 0.02262634178623557 0.999999999999996\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "macro",
+      "seed": 1103,
+      "backend": "qamomile_ising",
+      "order": [
+        "quri",
+        "qamomile_ising",
+        "qiskit",
+        "qulacs"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 3.4610653510317206,
+      "stdout": "qamomile_ising 1103 0.023478239541873336 0.999999999999998\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "macro",
+      "seed": 1103,
+      "backend": "qiskit",
+      "order": [
+        "quri",
+        "qamomile_ising",
+        "qiskit",
+        "qulacs"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 2.501854093046859,
+      "stdout": "qiskit 1103 0.02305451175197959 0.9999999999999976\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "macro",
+      "seed": 1103,
+      "backend": "qulacs",
+      "order": [
+        "quri",
+        "qamomile_ising",
+        "qiskit",
+        "qulacs"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 2.4914593298453838,
+      "stdout": "qulacs 1103 0.02132943389005959 0.999999999999996\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "macro",
+      "seed": 1104,
+      "backend": "qamomile_ising",
+      "order": [
+        "qamomile_ising",
+        "qiskit",
+        "qulacs",
+        "quri"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 4.812651822110638,
+      "stdout": "qamomile_ising 1104 0.02429656940512359 0.9999999999999973\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "macro",
+      "seed": 1104,
+      "backend": "qiskit",
+      "order": [
+        "qamomile_ising",
+        "qiskit",
+        "qulacs",
+        "quri"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 16.07978350506164,
+      "stdout": "qiskit 1104 0.023577298736199737 0.9999999999999962\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "macro",
+      "seed": 1104,
+      "backend": "qulacs",
+      "order": [
+        "qamomile_ising",
+        "qiskit",
+        "qulacs",
+        "quri"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 9.25114625506103,
+      "stdout": "qulacs 1104 0.02179172309115529 0.9999999999999967\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "macro",
+      "seed": 1104,
+      "backend": "quri",
+      "order": [
+        "qamomile_ising",
+        "qiskit",
+        "qulacs",
+        "quri"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 2.954762240173295,
+      "stdout": "quri 1104 0.02233811211772263 0.9999999999999967\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "macro",
+      "seed": 1105,
+      "backend": "qiskit",
+      "order": [
+        "qiskit",
+        "qulacs",
+        "quri",
+        "qamomile_ising"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 2.9217907858546823,
+      "stdout": "qiskit 1105 0.02004162804223597 0.9999999999999978\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "macro",
+      "seed": 1105,
+      "backend": "qulacs",
+      "order": [
+        "qiskit",
+        "qulacs",
+        "quri",
+        "qamomile_ising"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 3.198506848886609,
+      "stdout": "qulacs 1105 0.018365767318755388 0.9999999999999978\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "macro",
+      "seed": 1105,
+      "backend": "quri",
+      "order": [
+        "qiskit",
+        "qulacs",
+        "quri",
+        "qamomile_ising"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 3.249528708169237,
+      "stdout": "quri 1105 0.019421222852542996 0.9999999999999978\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "macro",
+      "seed": 1105,
+      "backend": "qamomile_ising",
+      "order": [
+        "qiskit",
+        "qulacs",
+        "quri",
+        "qamomile_ising"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 2.833210382144898,
+      "stdout": "qamomile_ising 1105 0.020624107215553522 0.9999999999999978\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1101,
+      "backend": "qiskit",
+      "order": [
+        "qiskit",
+        "qulacs",
+        "quri",
+        "qamomile_ising"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 3.091371946968138,
+      "stdout": "qiskit 1101 0.026734373765066266 1.0000000000000027\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1101,
+      "backend": "qulacs",
+      "order": [
+        "qiskit",
+        "qulacs",
+        "quri",
+        "qamomile_ising"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 2.9899942770134658,
+      "stdout": "qulacs 1101 0.022833965020254254 1.0000000000000027\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1101,
+      "backend": "quri",
+      "order": [
+        "qiskit",
+        "qulacs",
+        "quri",
+        "qamomile_ising"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 6.611597921932116,
+      "stdout": "quri 1101 0.02456856914795935 1.0000000000000027\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1101,
+      "backend": "qamomile_ising",
+      "order": [
+        "qiskit",
+        "qulacs",
+        "quri",
+        "qamomile_ising"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 3.8154496520292014,
+      "stdout": "qamomile_ising 1101 0.029058169573545456 1.000000000000003\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1102,
+      "backend": "qulacs",
+      "order": [
+        "qulacs",
+        "quri",
+        "qamomile_ising",
+        "qiskit"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 3.010190931847319,
+      "stdout": "qulacs 1102 0.025519547751173377 0.9999999999999982\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1102,
+      "backend": "quri",
+      "order": [
+        "qulacs",
+        "quri",
+        "qamomile_ising",
+        "qiskit"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 2.707618733868003,
+      "stdout": "quri 1102 0.026858202181756496 0.9999999999999982\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1102,
+      "backend": "qamomile_ising",
+      "order": [
+        "qulacs",
+        "quri",
+        "qamomile_ising",
+        "qiskit"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 3.217546066036448,
+      "stdout": "qamomile_ising 1102 0.031830609776079655 0.9999999999999993\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1102,
+      "backend": "qiskit",
+      "order": [
+        "qulacs",
+        "quri",
+        "qamomile_ising",
+        "qiskit"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 3.293408673023805,
+      "stdout": "qiskit 1102 0.02965112146921456 0.9999999999999991\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1103,
+      "backend": "quri",
+      "order": [
+        "quri",
+        "qamomile_ising",
+        "qiskit",
+        "qulacs"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 3.810622392920777,
+      "stdout": "quri 1103 0.023459973745048046 1.000000000000004\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1103,
+      "backend": "qamomile_ising",
+      "order": [
+        "quri",
+        "qamomile_ising",
+        "qiskit",
+        "qulacs"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 5.380961105925962,
+      "stdout": "qamomile_ising 1103 0.0283385852817446 1.000000000000003\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1103,
+      "backend": "qiskit",
+      "order": [
+        "quri",
+        "qamomile_ising",
+        "qiskit",
+        "qulacs"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 9.83771854499355,
+      "stdout": "qiskit 1103 0.02581879892386496 1.0000000000000044\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1103,
+      "backend": "qulacs",
+      "order": [
+        "quri",
+        "qamomile_ising",
+        "qiskit",
+        "qulacs"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 4.228157532168552,
+      "stdout": "qulacs 1103 0.022239296697080135 1.000000000000004\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1104,
+      "backend": "qamomile_ising",
+      "order": [
+        "qamomile_ising",
+        "qiskit",
+        "qulacs",
+        "quri"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 2.863826708868146,
+      "stdout": "qamomile_ising 1104 0.03026990103535354 1.0000000000000036\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1104,
+      "backend": "qiskit",
+      "order": [
+        "qamomile_ising",
+        "qiskit",
+        "qulacs",
+        "quri"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 2.8585066029336303,
+      "stdout": "qiskit 1104 0.027469594264402986 1.0000000000000036\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1104,
+      "backend": "qulacs",
+      "order": [
+        "qamomile_ising",
+        "qiskit",
+        "qulacs",
+        "quri"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 2.6773401179816574,
+      "stdout": "qulacs 1104 0.023878872860223055 1.000000000000004\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1104,
+      "backend": "quri",
+      "order": [
+        "qamomile_ising",
+        "qiskit",
+        "qulacs",
+        "quri"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 2.714722776087001,
+      "stdout": "quri 1104 0.025124547071754932 1.000000000000004\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1105,
+      "backend": "qiskit",
+      "order": [
+        "qiskit",
+        "qulacs",
+        "quri",
+        "qamomile_ising"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 3.1467318809591234,
+      "stdout": "qiskit 1105 0.028451354941353202 1.0000000000000036\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1105,
+      "backend": "qulacs",
+      "order": [
+        "qiskit",
+        "qulacs",
+        "quri",
+        "qamomile_ising"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 3.448837102157995,
+      "stdout": "qulacs 1105 0.025034592021256685 1.0000000000000027\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1105,
+      "backend": "quri",
+      "order": [
+        "qiskit",
+        "qulacs",
+        "quri",
+        "qamomile_ising"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 2.866578212939203,
+      "stdout": "quri 1105 0.02647338598035276 1.0000000000000027\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    },
+    {
+      "case": "selection",
+      "seed": 1105,
+      "backend": "qamomile_ising",
+      "order": [
+        "qiskit",
+        "qulacs",
+        "quri",
+        "qamomile_ising"
+      ],
+      "returncode": 0,
+      "launch_import_run_export_wall_s": 2.7335915740113705,
+      "stdout": "qamomile_ising 1105 0.030969087965786457 1.0000000000000036\n",
+      "stderr": "/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: OptimizeWarning: Unrecognized options detected: {'threads': 1}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n/home/takuma/kmd-analysis/docs/research/library_applicability_20261114_v1/code/benchmark.py:31: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.\n  return function(*args,**kwargs)\n"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+claim_id,claim,step5_evidence,original_source,calculation,judgment,thesis_location
+S5-P1-01,平均差+441.790609秒、相対+22.243524%,data/SUMMARY.json;data/B_PLAN_GAPS_36800.csv,/home/takuma/kmd-analysis/review_outputs/no_sumo_full_analysis_20261102/run01/B_PLAN_REFERENCES_36800.csv;/home/takuma/kmd-analysis/review_outputs/quantum_ev_step2_analysis_trial_20261104_155535/PATH1_PAIRED_COMPARISONS.csv,candidate fraction−greedy fraction、100Δ/Jg、全件平均,PASS_FIXED_COHORT,要旨/3.8/4.2/7
+S5-P1-02,計画中央値0、入力中央値7.473770秒,data/GAP_DESCRIPTIVE_STATISTICS.csv;data/INPUT_UNIT_STATISTICS.csv,同上,入力80出力平均→460入力のmedian、ddof1,PASS_DESCRIPTIVE,4.2/6.1
+S5-P1-03,設定差/規模差,data/INPUT_UNIT_STATISTICS.csv;data/INPUT_CONFIG_MEANS_3680.csv,同上,入力×設定10rep平均→入力等重み,CONDITIONAL_UNMATCHED_BUDGET,4.3
+S5-P1-04,入力影響診断,data/INPUT_INFLUENCE.csv;data/SUMMARY.json,同上,正差総和の上位寄与/leave-one-input-out,PASS_FIXED_COHORT,4.4
+S5-OP-01,帰庫差/最終顧客差/余裕,data/B_PLAN_GAPS_36800.csv;data/B_INPUT_CONDITIONS_460.csv,ANALYSIS_INPUT_SHA256のNPZとgreedy RESULT,R=J+102n、L=R−最終帰路,CONDITIONAL_STATIC_OD,4.5
+S5-OP-02,共通上限内100%両側/契約率NULL,data/OPERATIONAL_SUMMARY.csv,同上,全顧客prefix完了≤32400。契約率は未同定,CONDITIONAL_NOT_REAL_OTD,4.5/6.3/7
+S5-P1-A,mirror460支持内候補不存在,data/PATHWAY1_CONDITIONS.csv,/home/takuma/kmd-analysis/review_outputs/quantum_ev_step2_analysis_trial_20261104_155535/PATH1_SUPPORT_AUDIT.csv,J*_S=Jinitial≥Jgreedy,CONDITIONAL_SPECIFIED_SUPPORT,4.6/6.2
+S5-P2-01,記号的感度/b−δ,data/PATH2_ANALYTICAL_SENSITIVITY.csv,/home/takuma/kmd-analysis/review_outputs/quantum_ev_step4_evidence_decisions_20261104_183654/CLAIM_EVIDENCE_MATRIX.csv,正の定義域で偏微分、非重複部材会計,CONDITIONAL_MODEL,5/6.4
+S5-P2-02,DC質量感度2.368077/2.431780Wh/kg,data/DC_MASS_KERNEL_SUMMARY.csv;data/DC_MASS_KERNEL_INDEPENDENT.csv,/home/takuma/kmd-analysis/review_outputs/quantum_ev_step4_thesis_integration_trial_20261104_184043/data/DC_MASS_KERNEL_INDEPENDENT.csv,1000kg右微分、軌跡間mean/SD,CONDITIONAL_FROZEN_MODEL,要旨/5.3/7
+S5-H01,Chen実用材料HOLD,evidence/STEP4_EVIDENCE_DECISIONS.md,/home/takuma/kmd-analysis/review_outputs/quantum_ev_step4_evidence_decisions_20261104_183654/MATERIAL_INPUT_PROVENANCE_AUDIT.md,原報告/逆算/用途適格性を分離,HOLD_MAINTAINED,5.5/6.4/7
+S5-I01,二経路の条件・証拠非対称性,data/CROSS_PATH_COMPARISON.csv,本研究の各経路証拠と文献台帳,秒とWhを統合せず媒介を比較,CONDITIONAL_CASE_INTERPRETATION,6/7

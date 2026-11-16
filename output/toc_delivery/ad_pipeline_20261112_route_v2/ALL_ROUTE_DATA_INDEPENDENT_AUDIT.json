@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "blocks": 34163,
+  "pair_records_audited": 21014003,
+  "direct_annotated_HTTP_paths": 16008001,
+  "ancestor_records_audited": 5006002,
+  "overlap_checks": [
+    {
+      "subset": "S1",
+      "superset": "S2",
+      "all_three_arrays_equal": true,
+      "pairs": 1002001
+    },
+    {
+      "subset": "S2",
+      "superset": "S3",
+      "all_three_arrays_equal": true,
+      "pairs": 4004001
+    },
+    {
+      "subset": "S1",
+      "superset": "S3",
+      "all_three_arrays_equal": true,
+      "pairs": 1002001
+    }
+  ],
+  "OD_hashes": {
+    "S1": "9b90a13dc3bfd1a5e50afb3c6eaf5070a043b79695da8b4643a2eed5332b0280",
+    "S2": "81755ba57345f706182a13fc13e2a0f0d4df793064ca77bbf57f455b17c26345",
+    "S3": "254bb8f3fb28d86419f36ad6814efbad15d88822a3186952e79d53f40c864e81"
+  },
+  "elapsed_s": 47.11620979709551,
+  "workers": 8,
+  "scope": "all S1/S2/S3 retained records; scalar values from same Route object or recursively audited ancestor; separate from generator"
+}
