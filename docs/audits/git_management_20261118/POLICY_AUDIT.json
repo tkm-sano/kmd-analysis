@@ -1,0 +1,69 @@
+{
+  "policy_id": "ota-toc-DW-20261117-v1",
+  "policy_date": "2026-11-17",
+  "audit_completed_date": "2026-11-18",
+  "checks": {
+    "policy_and_initial_scope_are_two_objective": true,
+    "active_local_links_exist": true,
+    "old_rq_not_in_current_documents": true,
+    "exact_rq_hypothesis:README.md": true,
+    "exact_rq_hypothesis:docs/research/DW_RESEARCH_POLICY.md": true,
+    "exact_rq_hypothesis:docs/research/BASELINE_A_DESIGN.md": true,
+    "old_cli_requires_explicit_history": true,
+    "protected_data_results_and_old_registrations_unchanged": true,
+    "docx_zip_integrity": true,
+    "docx_exact_rq_hypothesis": true,
+    "docx_has_no_legacy_figures": true,
+    "all_saved_pilot_attempts_included": true,
+    "analysis_projects_only_quality_and_status": true,
+    "composite_remains_undefined": true,
+    "main_remains_unexecutable": true,
+    "diff_whitespace_valid": true,
+    "tests:UNIT_VALIDATION.xml": true,
+    "tests:REGRESSION_VALIDATION.xml": true
+  },
+  "passed": 18,
+  "total": 18,
+  "protected_files": 358,
+  "authorized_changed_protected_files": [
+    "configs/toc_delivery/study.json",
+    "README.md"
+  ],
+  "unexpected_changed_protected_files": [],
+  "broken_current_links": [],
+  "stale_rq_in_current_files": [],
+  "tests": {
+    "UNIT_VALIDATION.xml": {
+      "tests": 44,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "REGRESSION_VALIDATION.xml": {
+      "tests": 187,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 2,
+      "initial_failures": [
+        [
+          "tests.toc_comparison_v1.test_process_control",
+          "test_parent_result_real_control_and_physical_validation[invalid_plan]"
+        ],
+        [
+          "tests.toc_termination_v1.test_termination",
+          "test_legacy_sources_unchanged"
+        ]
+      ],
+      "unresolved_after_followup": [],
+      "followup_file": "REGRESSION_FOLLOWUP.xml"
+    }
+  },
+  "new_experiments_executed": false,
+  "new_demand_or_OD_generated": false,
+  "README_authority": "explicit user response: READMEも更新する",
+  "limits": [
+    "historical documents, snapshots and old source APIs retain timing for reproduction",
+    "DOCX package and native text checked; visual rendering unavailable in this environment",
+    "composite definition and formal experimental design remain HOLD"
+  ]
+}

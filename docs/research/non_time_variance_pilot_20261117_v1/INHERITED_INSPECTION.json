@@ -1,0 +1,2483 @@
+{
+  "inspected_paths": [
+    {
+      "path": "docs/research/termination_rules_20261116_v1/STOPPING_RULES.md",
+      "sha256": "ac944197318bb2772e47a1a9a078ef53c603471970b5e3bf55e8b80d4475e23d",
+      "bytes": 12207,
+      "kind": "inherited rules/report"
+    },
+    {
+      "path": "docs/research/termination_rules_20261116_v1/STOPPING_AUDIT.md",
+      "sha256": "c951c086e9e61760c369dce3474246f5a347c319dc30a2ff12d70ee0aac7e843",
+      "bytes": 13603,
+      "kind": "inherited rules/report"
+    },
+    {
+      "path": "docs/research/termination_rules_20261116_v1/COUNTER_DEFINITIONS.json",
+      "sha256": "cacb61a2c47324970ec06bd08e2b8bcce6cc973a7943780f89a702a0a248225d",
+      "bytes": 4327,
+      "kind": "inherited rules/report"
+    },
+    {
+      "path": "docs/research/termination_rules_20261116_v1/FINAL_REPORT.md",
+      "sha256": "791ce81cda017ee7341f51795c44e69584928ebc8ff717eec198e5a3bfba58f9",
+      "bytes": 8201,
+      "kind": "inherited rules/report"
+    },
+    {
+      "path": "docs/research/termination_rules_20261116_v1/REPRODUCE.md",
+      "sha256": "77cf751744e21068729a2648a98c29e4952b9b842465a24e1438da56a3138439",
+      "bytes": 6990,
+      "kind": "inherited rules/report"
+    },
+    {
+      "path": "docs/research/termination_rules_20261116_v1/COMPLETION_STATUS.json",
+      "sha256": "2be1bef2d88e5adabeaec94f958004a49c31922570f229e839b1c92299581fb4",
+      "bytes": 904,
+      "kind": "inherited rules/report"
+    },
+    {
+      "path": "docs/research/comparison_design_20261116_v1/PROTOCOL.md",
+      "sha256": "d4dc2000fd61e5a28dc3056efde2c63d0f75828f2815d75bb68fa67152d205a3",
+      "bytes": 10184,
+      "kind": "prior protocol/analysis/runner"
+    },
+    {
+      "path": "src/kmd_toc/comparison_v1/design.py",
+      "sha256": "b5d10c2d2cacfaf1a2bf7e1d5a2b28357e77f101a1e84301bf959b19024a152c",
+      "bytes": 9993,
+      "kind": "prior protocol/analysis/runner"
+    },
+    {
+      "path": "src/kmd_toc/comparison_v1/design_report.py",
+      "sha256": "3659cda5c77a21a23860de5f0bfe8d694869eb770358891ff5882b50f7aedd9c",
+      "bytes": 17337,
+      "kind": "prior protocol/analysis/runner"
+    },
+    {
+      "path": "scripts/run_comparison_design_supplement.py",
+      "sha256": "8864ed3f19a6abea849d589c1a7c77e2bc436d2f857275204405098e7c97e170",
+      "bytes": 15058,
+      "kind": "prior protocol/analysis/runner"
+    },
+    {
+      "path": "src/kmd_toc/termination_v1/runner.py",
+      "sha256": "00e1d411cb4cb30a64af8cd2e170c3c3a0219bfdd224b3255b6fe40e38bf1f4f",
+      "bytes": 20628,
+      "kind": "prior protocol/analysis/runner"
+    },
+    {
+      "path": "scripts/audit_termination_rules.py",
+      "sha256": "097b8ac2d9e6ef1fdd7242a7192e8728f74e50e917d5dd9c91e69544c397ac67",
+      "bytes": 6386,
+      "kind": "prior protocol/analysis/runner"
+    }
+  ],
+  "old_manifest": "output/toc_delivery/termination_rules_20261116_v1/scales_02/REGISTERED.json",
+  "old_snapshot_sha256": "2c671e81e7516a4e81f58cd72223fe3ede18a84edae382d17f602914f2df4c6b",
+  "functional_15_rows_for_history_only": [
+    {
+      "run_id": "S1_A_check01",
+      "scale": "S1",
+      "method": "A",
+      "D": 518.4218,
+      "W": 396.1,
+      "T": 8.25596482399851,
+      "adoptable": true,
+      "trip_count": 20,
+      "resource_records": 9,
+      "branches": [
+        {
+          "branch_id": 0,
+          "work_events": 2,
+          "termination_events": [
+            {
+              "event": "A_complete",
+              "elapsed_s": 2.8145485708955675,
+              "reason": "MOVE_LIMIT",
+              "candidate_evaluations": 82,
+              "accepted_moves": 10
+            }
+          ],
+          "counts": {},
+          "final_source": "A_rule_v1_FCFS"
+        }
+      ]
+    },
+    {
+      "run_id": "S1_B_check01",
+      "scale": "S1",
+      "method": "B",
+      "D": 444.1768,
+      "W": 411.28333333333336,
+      "T": 29.800619303947315,
+      "adoptable": true,
+      "trip_count": 17,
+      "resource_records": 44,
+      "branches": [
+        {
+          "branch_id": 0,
+          "work_events": 6,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 22.096963972086087,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 334,
+              "objective": 3837692018445.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 999000,
+            "double_candidate_checks": 2,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 334,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        },
+        {
+          "branch_id": 1,
+          "work_events": 6,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 21.962323864921927,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 375,
+              "objective": 3837692018445.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 999000,
+            "double_candidate_checks": 2,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 375,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        },
+        {
+          "branch_id": 2,
+          "work_events": 6,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 21.59626577491872,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 410,
+              "objective": 3837692018445.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 999000,
+            "double_candidate_checks": 2,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 410,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        },
+        {
+          "branch_id": 3,
+          "work_events": 6,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 21.596159174107015,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 354,
+              "objective": 3837692018445.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 999000,
+            "double_candidate_checks": 2,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 354,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        }
+      ]
+    },
+    {
+      "run_id": "S1_C_check01",
+      "scale": "S1",
+      "method": "C",
+      "D": 444.1768,
+      "W": 354.98333333333335,
+      "T": 15.92235444393009,
+      "adoptable": true,
+      "trip_count": 17,
+      "resource_records": 20,
+      "branches": [
+        {
+          "branch_id": 0,
+          "work_events": 9,
+          "termination_events": [
+            {
+              "event": "Routing_end",
+              "elapsed_s": 6.913990878965706,
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "limit": 16000,
+              "checks": 16000,
+              "acknowledgements": 0,
+              "native_status": 2,
+              "generated_routes": 17,
+              "failures": 58,
+              "branches": 91,
+              "solutions": 12,
+              "proof": "none; incumbent preserved; no-plan is not an infeasibility proof"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 8.614550111815333,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 351,
+              "objective": 3837692015067.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 999000,
+            "double_candidate_checks": 3,
+            "Routing_limit_checks": 16000,
+            "Routing_limit_acknowledgements": 0,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 351,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        },
+        {
+          "branch_id": 1,
+          "work_events": 9,
+          "termination_events": [
+            {
+              "event": "Routing_end",
+              "elapsed_s": 6.840301901102066,
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "limit": 16000,
+              "checks": 16000,
+              "acknowledgements": 0,
+              "native_status": 2,
+              "generated_routes": 17,
+              "failures": 58,
+              "branches": 91,
+              "solutions": 12,
+              "proof": "none; incumbent preserved; no-plan is not an infeasibility proof"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 8.541184275178239,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 358,
+              "objective": 3837692015067.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 999000,
+            "double_candidate_checks": 3,
+            "Routing_limit_checks": 16000,
+            "Routing_limit_acknowledgements": 0,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 358,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        },
+        {
+          "branch_id": 2,
+          "work_events": 9,
+          "termination_events": [
+            {
+              "event": "Routing_end",
+              "elapsed_s": 6.6016713108401746,
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "limit": 16000,
+              "checks": 16000,
+              "acknowledgements": 0,
+              "native_status": 2,
+              "generated_routes": 17,
+              "failures": 58,
+              "branches": 91,
+              "solutions": 12,
+              "proof": "none; incumbent preserved; no-plan is not an infeasibility proof"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 8.302646884927526,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 376,
+              "objective": 3837692015067.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 999000,
+            "double_candidate_checks": 3,
+            "Routing_limit_checks": 16000,
+            "Routing_limit_acknowledgements": 0,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 376,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        },
+        {
+          "branch_id": 3,
+          "work_events": 9,
+          "termination_events": [
+            {
+              "event": "Routing_end",
+              "elapsed_s": 6.601648960961029,
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "limit": 16000,
+              "checks": 16000,
+              "acknowledgements": 0,
+              "native_status": 2,
+              "generated_routes": 17,
+              "failures": 58,
+              "branches": 91,
+              "solutions": 12,
+              "proof": "none; incumbent preserved; no-plan is not an infeasibility proof"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 8.302626295015216,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 385,
+              "objective": 3837692015067.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 999000,
+            "double_candidate_checks": 3,
+            "Routing_limit_checks": 16000,
+            "Routing_limit_acknowledgements": 0,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 385,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        }
+      ]
+    },
+    {
+      "run_id": "S1_D_check01",
+      "scale": "S1",
+      "method": "D",
+      "D": 444.1768,
+      "W": 411.28333333333336,
+      "T": 243.0727611950133,
+      "adoptable": true,
+      "trip_count": 17,
+      "resource_records": 435,
+      "branches": [
+        {
+          "branch_id": 0,
+          "work_events": 2597,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 8.837328769033775,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 341,
+              "objective": 3837692018445.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 227.2783332359977,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 304,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 999000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 645,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 2790,
+            "day_pattern_infeasible": 766,
+            "day_pattern_duplicates": 6,
+            "LP_calls": 18,
+            "LP_iterations": 382,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 34,
+            "quantum_objective_requests": 1160,
+            "quantum_training_attempts": 1160,
+            "quantum_training_tensor_calls": 1160,
+            "quantum_training_sampling_calls": 1160,
+            "quantum_training_shots": 11600000,
+            "quantum_training_successes": 1160,
+            "quantum_optimizer_initial_preparations": 34,
+            "quantum_optimizer_value_requests": 1160,
+            "quantum_optimizer_cache_hits": 34,
+            "quantum_final_circuit_calls": 34,
+            "quantum_final_state_successes": 34,
+            "quantum_validation_tensor_calls": 34,
+            "quantum_final_sampling_calls": 34,
+            "quantum_final_shots": 340000,
+            "quantum_calls_completed": 34
+          },
+          "final_source": "verified_incumbent"
+        },
+        {
+          "branch_id": 1,
+          "work_events": 2667,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 8.667970706010237,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 408,
+              "objective": 3837692018445.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 235.40476346202195,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 371,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 999000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 779,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 2730,
+            "day_pattern_infeasible": 742,
+            "day_pattern_duplicates": 6,
+            "LP_calls": 20,
+            "LP_iterations": 442,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 34,
+            "quantum_objective_requests": 1194,
+            "quantum_training_attempts": 1194,
+            "quantum_training_tensor_calls": 1194,
+            "quantum_training_sampling_calls": 1194,
+            "quantum_training_shots": 11940000,
+            "quantum_training_successes": 1194,
+            "quantum_optimizer_initial_preparations": 34,
+            "quantum_optimizer_value_requests": 1194,
+            "quantum_optimizer_cache_hits": 34,
+            "quantum_final_circuit_calls": 34,
+            "quantum_final_state_successes": 34,
+            "quantum_validation_tensor_calls": 34,
+            "quantum_final_sampling_calls": 34,
+            "quantum_final_shots": 340000,
+            "quantum_calls_completed": 34
+          },
+          "final_source": "verified_incumbent"
+        },
+        {
+          "branch_id": 2,
+          "work_events": 2543,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 8.355997134000063,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 418,
+              "objective": 3837692018445.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 224.01976308389567,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 381,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 999000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 799,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 2760,
+            "day_pattern_infeasible": 746,
+            "day_pattern_duplicates": 6,
+            "LP_calls": 20,
+            "LP_iterations": 442,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 34,
+            "quantum_objective_requests": 1132,
+            "quantum_training_attempts": 1132,
+            "quantum_training_tensor_calls": 1132,
+            "quantum_training_sampling_calls": 1132,
+            "quantum_training_shots": 11320000,
+            "quantum_training_successes": 1132,
+            "quantum_optimizer_initial_preparations": 34,
+            "quantum_optimizer_value_requests": 1132,
+            "quantum_optimizer_cache_hits": 34,
+            "quantum_final_circuit_calls": 34,
+            "quantum_final_state_successes": 34,
+            "quantum_validation_tensor_calls": 34,
+            "quantum_final_sampling_calls": 34,
+            "quantum_final_shots": 340000,
+            "quantum_calls_completed": 34
+          },
+          "final_source": "verified_incumbent"
+        },
+        {
+          "branch_id": 3,
+          "work_events": 2557,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 8.27263678307645,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 443,
+              "objective": 3837692018445.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 224.07604776415974,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 406,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 999000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 849,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 2760,
+            "day_pattern_infeasible": 754,
+            "day_pattern_duplicates": 6,
+            "LP_calls": 18,
+            "LP_iterations": 382,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 34,
+            "quantum_objective_requests": 1140,
+            "quantum_training_attempts": 1140,
+            "quantum_training_tensor_calls": 1140,
+            "quantum_training_sampling_calls": 1140,
+            "quantum_training_shots": 11400000,
+            "quantum_training_successes": 1140,
+            "quantum_optimizer_initial_preparations": 34,
+            "quantum_optimizer_value_requests": 1140,
+            "quantum_optimizer_cache_hits": 34,
+            "quantum_final_circuit_calls": 34,
+            "quantum_final_state_successes": 34,
+            "quantum_validation_tensor_calls": 34,
+            "quantum_final_sampling_calls": 34,
+            "quantum_final_shots": 340000,
+            "quantum_calls_completed": 34
+          },
+          "final_source": "verified_incumbent"
+        }
+      ]
+    },
+    {
+      "run_id": "S1_D_CLASSICAL_REPLACEMENT_check01",
+      "scale": "S1",
+      "method": "D_CLASSICAL_REPLACEMENT",
+      "D": 444.1768,
+      "W": 411.28333333333336,
+      "T": 82.48097643395886,
+      "adoptable": true,
+      "trip_count": 17,
+      "resource_records": 96,
+      "branches": [
+        {
+          "branch_id": 0,
+          "work_events": 77,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 30.395615183049813,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 396,
+              "objective": 3837692018445.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 52.879907018039376,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 323,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 999000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 719,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 3570,
+            "day_pattern_infeasible": 1130,
+            "day_pattern_duplicates": 6,
+            "LP_calls": 22,
+            "LP_iterations": 458,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 34,
+            "classical_permutations_evaluated": 204
+          },
+          "final_source": "verified_incumbent"
+        },
+        {
+          "branch_id": 1,
+          "work_events": 77,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 30.29516820795834,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 437,
+              "objective": 3837692018445.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 52.77945199306123,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 323,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 999000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 760,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 3570,
+            "day_pattern_infeasible": 1130,
+            "day_pattern_duplicates": 6,
+            "LP_calls": 22,
+            "LP_iterations": 458,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 34,
+            "classical_permutations_evaluated": 204
+          },
+          "final_source": "verified_incumbent"
+        },
+        {
+          "branch_id": 2,
+          "work_events": 77,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 30.08143918402493,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 369,
+              "objective": 3837692018445.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 52.999604410957545,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 348,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 999000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 717,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 3570,
+            "day_pattern_infeasible": 1130,
+            "day_pattern_duplicates": 6,
+            "LP_calls": 22,
+            "LP_iterations": 458,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 34,
+            "classical_permutations_evaluated": 204
+          },
+          "final_source": "verified_incumbent"
+        },
+        {
+          "branch_id": 3,
+          "work_events": 77,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 29.875355124939233,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 352,
+              "objective": 3837692018445.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 52.35887972684577,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 280,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 999000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 632,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 3570,
+            "day_pattern_infeasible": 1130,
+            "day_pattern_duplicates": 6,
+            "LP_calls": 22,
+            "LP_iterations": 458,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 34,
+            "classical_permutations_evaluated": 204
+          },
+          "final_source": "verified_incumbent"
+        }
+      ]
+    },
+    {
+      "run_id": "S2_A_check01",
+      "scale": "S2",
+      "method": "A",
+      "D": 936.6191,
+      "W": 806.7666666666667,
+      "T": 85.73517705290578,
+      "adoptable": true,
+      "trip_count": 40,
+      "resource_records": 19,
+      "branches": [
+        {
+          "branch_id": 0,
+          "work_events": 2,
+          "termination_events": [
+            {
+              "event": "A_complete",
+              "elapsed_s": 69.69693470490165,
+              "reason": "MOVE_LIMIT",
+              "candidate_evaluations": 310,
+              "accepted_moves": 20
+            }
+          ],
+          "counts": {},
+          "final_source": "A_rule_v1_FCFS"
+        }
+      ]
+    },
+    {
+      "run_id": "S2_B_check01",
+      "scale": "S2",
+      "method": "B",
+      "D": 759.6125,
+      "W": 856.8,
+      "T": 62.114783640019596,
+      "adoptable": true,
+      "trip_count": 34,
+      "resource_records": 79,
+      "branches": [
+        {
+          "branch_id": 0,
+          "work_events": 6,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 42.40303392894566,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 454,
+              "objective": 13126111647533.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 3998000,
+            "double_candidate_checks": 2,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 454,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        },
+        {
+          "branch_id": 1,
+          "work_events": 6,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 42.199829591903836,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 510,
+              "objective": 13126111647533.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 3998000,
+            "double_candidate_checks": 2,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 510,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        },
+        {
+          "branch_id": 2,
+          "work_events": 6,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 41.973135370062664,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 521,
+              "objective": 13126111647533.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 3998000,
+            "double_candidate_checks": 2,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 521,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        },
+        {
+          "branch_id": 3,
+          "work_events": 6,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 41.76046611298807,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 374,
+              "objective": 13126111647533.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 3998000,
+            "double_candidate_checks": 2,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 374,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        }
+      ]
+    },
+    {
+      "run_id": "S2_C_check01",
+      "scale": "S2",
+      "method": "C",
+      "D": 759.6125,
+      "W": 806.6166666666667,
+      "T": 56.13192939106375,
+      "adoptable": true,
+      "trip_count": 34,
+      "resource_records": 61,
+      "branches": [
+        {
+          "branch_id": 0,
+          "work_events": 9,
+          "termination_events": [
+            {
+              "event": "Routing_end",
+              "elapsed_s": 30.05207065399736,
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "limit": 32000,
+              "checks": 32000,
+              "acknowledgements": 0,
+              "native_status": 2,
+              "generated_routes": 34,
+              "failures": 75,
+              "branches": 135,
+              "solutions": 21,
+              "proof": "none; incumbent preserved; no-plan is not an infeasibility proof"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 32.95356952212751,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 396,
+              "objective": 13126111644522.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 3998000,
+            "double_candidate_checks": 3,
+            "Routing_limit_checks": 32000,
+            "Routing_limit_acknowledgements": 0,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 396,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        },
+        {
+          "branch_id": 1,
+          "work_events": 9,
+          "termination_events": [
+            {
+              "event": "Routing_end",
+              "elapsed_s": 30.05195822380483,
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "limit": 32000,
+              "checks": 32000,
+              "acknowledgements": 0,
+              "native_status": 2,
+              "generated_routes": 34,
+              "failures": 75,
+              "branches": 135,
+              "solutions": 21,
+              "proof": "none; incumbent preserved; no-plan is not an infeasibility proof"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 32.95498704700731,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 510,
+              "objective": 13126111644522.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 3998000,
+            "double_candidate_checks": 3,
+            "Routing_limit_checks": 32000,
+            "Routing_limit_acknowledgements": 0,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 510,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        },
+        {
+          "branch_id": 2,
+          "work_events": 9,
+          "termination_events": [
+            {
+              "event": "Routing_end",
+              "elapsed_s": 29.59476394415833,
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "limit": 32000,
+              "checks": 32000,
+              "acknowledgements": 0,
+              "native_status": 2,
+              "generated_routes": 34,
+              "failures": 75,
+              "branches": 135,
+              "solutions": 21,
+              "proof": "none; incumbent preserved; no-plan is not an infeasibility proof"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 32.49671163316816,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 448,
+              "objective": 13126111644522.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 3998000,
+            "double_candidate_checks": 3,
+            "Routing_limit_checks": 32000,
+            "Routing_limit_acknowledgements": 0,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 448,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        },
+        {
+          "branch_id": 3,
+          "work_events": 9,
+          "termination_events": [
+            {
+              "event": "Routing_end",
+              "elapsed_s": 29.286648100009188,
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "limit": 32000,
+              "checks": 32000,
+              "acknowledgements": 0,
+              "native_status": 2,
+              "generated_routes": 34,
+              "failures": 75,
+              "branches": 135,
+              "solutions": 21,
+              "proof": "none; incumbent preserved; no-plan is not an infeasibility proof"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 32.186107201036066,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 455,
+              "objective": 13126111644522.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 3998000,
+            "double_candidate_checks": 3,
+            "Routing_limit_checks": 32000,
+            "Routing_limit_acknowledgements": 0,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 455,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        }
+      ]
+    },
+    {
+      "run_id": "S2_D_check01",
+      "scale": "S2",
+      "method": "D",
+      "D": 759.6125,
+      "W": 835.1,
+      "T": 559.4600791679695,
+      "adoptable": true,
+      "trip_count": 34,
+      "resource_records": 974,
+      "branches": [
+        {
+          "branch_id": 0,
+          "work_events": 5070,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 24.813859838992357,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 407,
+              "objective": 13126111647533.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 534.2656931460369,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 615,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 3998000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 1022,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 10740,
+            "day_pattern_duplicates": 14,
+            "day_pattern_infeasible": 2832,
+            "LP_calls": 39,
+            "LP_iterations": 1636,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 68,
+            "quantum_objective_requests": 2267,
+            "quantum_training_attempts": 2267,
+            "quantum_training_tensor_calls": 2267,
+            "quantum_training_sampling_calls": 2267,
+            "quantum_training_shots": 22670000,
+            "quantum_training_successes": 2267,
+            "quantum_optimizer_initial_preparations": 68,
+            "quantum_optimizer_value_requests": 2267,
+            "quantum_optimizer_cache_hits": 68,
+            "quantum_final_circuit_calls": 68,
+            "quantum_final_state_successes": 68,
+            "quantum_validation_tensor_calls": 68,
+            "quantum_final_sampling_calls": 68,
+            "quantum_final_shots": 680000,
+            "quantum_calls_completed": 68
+          },
+          "final_source": "verified_incumbent"
+        },
+        {
+          "branch_id": 1,
+          "work_events": 5078,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 24.35920405993238,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 374,
+              "objective": 13126111647533.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 534.3051585271023,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 506,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 3998000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 880,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 10620,
+            "day_pattern_duplicates": 14,
+            "day_pattern_infeasible": 2780,
+            "LP_calls": 39,
+            "LP_iterations": 1568,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 68,
+            "quantum_objective_requests": 2271,
+            "quantum_training_attempts": 2271,
+            "quantum_training_tensor_calls": 2271,
+            "quantum_training_sampling_calls": 2271,
+            "quantum_training_shots": 22710000,
+            "quantum_training_successes": 2271,
+            "quantum_optimizer_initial_preparations": 68,
+            "quantum_optimizer_value_requests": 2271,
+            "quantum_optimizer_cache_hits": 68,
+            "quantum_final_circuit_calls": 68,
+            "quantum_final_state_successes": 68,
+            "quantum_validation_tensor_calls": 68,
+            "quantum_final_sampling_calls": 68,
+            "quantum_final_shots": 680000,
+            "quantum_calls_completed": 68
+          },
+          "final_source": "verified_incumbent"
+        },
+        {
+          "branch_id": 2,
+          "work_events": 5185,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 24.293752640020102,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 410,
+              "objective": 13126111647533.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 545.3014802280813,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 609,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 3998000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 1019,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 10680,
+            "day_pattern_duplicates": 14,
+            "day_pattern_infeasible": 2854,
+            "LP_calls": 42,
+            "LP_iterations": 1824,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 68,
+            "quantum_objective_requests": 2323,
+            "quantum_training_attempts": 2323,
+            "quantum_training_tensor_calls": 2323,
+            "quantum_training_sampling_calls": 2323,
+            "quantum_training_shots": 23230000,
+            "quantum_training_successes": 2323,
+            "quantum_optimizer_initial_preparations": 68,
+            "quantum_optimizer_value_requests": 2323,
+            "quantum_optimizer_cache_hits": 68,
+            "quantum_final_circuit_calls": 68,
+            "quantum_final_state_successes": 68,
+            "quantum_validation_tensor_calls": 68,
+            "quantum_final_sampling_calls": 68,
+            "quantum_final_shots": 680000,
+            "quantum_calls_completed": 68
+          },
+          "final_source": "verified_incumbent"
+        },
+        {
+          "branch_id": 3,
+          "work_events": 5064,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 25.912252719979733,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 454,
+              "objective": 13126111647533.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 539.7413303880021,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 613,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 3998000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 1067,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 10800,
+            "day_pattern_duplicates": 14,
+            "day_pattern_infeasible": 2826,
+            "LP_calls": 39,
+            "LP_iterations": 1556,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 68,
+            "quantum_objective_requests": 2264,
+            "quantum_training_attempts": 2264,
+            "quantum_training_tensor_calls": 2264,
+            "quantum_training_sampling_calls": 2264,
+            "quantum_training_shots": 22640000,
+            "quantum_training_successes": 2264,
+            "quantum_optimizer_initial_preparations": 68,
+            "quantum_optimizer_value_requests": 2264,
+            "quantum_optimizer_cache_hits": 68,
+            "quantum_final_circuit_calls": 68,
+            "quantum_final_state_successes": 68,
+            "quantum_validation_tensor_calls": 68,
+            "quantum_final_sampling_calls": 68,
+            "quantum_final_shots": 680000,
+            "quantum_calls_completed": 68
+          },
+          "final_source": "verified_incumbent"
+        }
+      ]
+    },
+    {
+      "run_id": "S2_D_CLASSICAL_REPLACEMENT_check01",
+      "scale": "S2",
+      "method": "D_CLASSICAL_REPLACEMENT",
+      "D": 759.6125,
+      "W": 837.2666666666667,
+      "T": 104.01700116507709,
+      "adoptable": true,
+      "trip_count": 34,
+      "resource_records": 159,
+      "branches": [
+        {
+          "branch_id": 0,
+          "work_events": 145,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 28.29281036905013,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 426,
+              "objective": 13126111647533.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 84.3316466291435,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 549,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 3998000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 975,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 14280,
+            "day_pattern_duplicates": 13,
+            "day_pattern_infeasible": 3918,
+            "LP_calls": 56,
+            "LP_iterations": 2778,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 68,
+            "classical_permutations_evaluated": 408
+          },
+          "final_source": "verified_incumbent"
+        },
+        {
+          "branch_id": 1,
+          "work_events": 145,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 28.230229520006105,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 423,
+              "objective": 13126111647533.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 80.58319906704128,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 595,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 3998000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 1018,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 14280,
+            "day_pattern_duplicates": 13,
+            "day_pattern_infeasible": 3918,
+            "LP_calls": 56,
+            "LP_iterations": 2778,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 68,
+            "classical_permutations_evaluated": 408
+          },
+          "final_source": "verified_incumbent"
+        },
+        {
+          "branch_id": 2,
+          "work_events": 145,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 28.058314176974818,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 390,
+              "objective": 13126111647533.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 80.05968362907879,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 593,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 3998000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 983,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 14280,
+            "day_pattern_duplicates": 13,
+            "day_pattern_infeasible": 3918,
+            "LP_calls": 56,
+            "LP_iterations": 2778,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 68,
+            "classical_permutations_evaluated": 408
+          },
+          "final_source": "verified_incumbent"
+        },
+        {
+          "branch_id": 3,
+          "work_events": 145,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 27.92178617999889,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 374,
+              "objective": 13126111647533.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 79.92346368706785,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 593,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 3998000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 967,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 14280,
+            "day_pattern_duplicates": 13,
+            "day_pattern_infeasible": 3918,
+            "LP_calls": 56,
+            "LP_iterations": 2778,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 68,
+            "classical_permutations_evaluated": 408
+          },
+          "final_source": "verified_incumbent"
+        }
+      ]
+    },
+    {
+      "run_id": "S3_A_check01",
+      "scale": "S3",
+      "method": "A",
+      "D": 1658.9498,
+      "W": 1575.2833333333333,
+      "T": 23.266708113020286,
+      "adoptable": true,
+      "trip_count": 80,
+      "resource_records": 23,
+      "branches": [
+        {
+          "branch_id": 0,
+          "work_events": 2,
+          "termination_events": [
+            {
+              "event": "A_complete",
+              "elapsed_s": 8.10716500109993,
+              "reason": "MOVE_LIMIT",
+              "candidate_evaluations": 1047,
+              "accepted_moves": 40
+            }
+          ],
+          "counts": {},
+          "final_source": "A_rule_v1_FCFS"
+        }
+      ]
+    },
+    {
+      "run_id": "S3_B_check01",
+      "scale": "S3",
+      "method": "B",
+      "D": 1322.0793,
+      "W": 1681.05,
+      "T": 96.20880111004226,
+      "adoptable": true,
+      "trip_count": 67,
+      "resource_records": 155,
+      "branches": [
+        {
+          "branch_id": 0,
+          "work_events": 6,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 68.38667622604407,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 509,
+              "objective": 45691073929656.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 15996000,
+            "double_candidate_checks": 2,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 509,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        },
+        {
+          "branch_id": 1,
+          "work_events": 6,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 77.9949529049918,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 509,
+              "objective": 45691073929656.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 15996000,
+            "double_candidate_checks": 2,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 509,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        },
+        {
+          "branch_id": 2,
+          "work_events": 6,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 67.91364684607834,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 509,
+              "objective": 45691073929656.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 15996000,
+            "double_candidate_checks": 2,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 509,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        },
+        {
+          "branch_id": 3,
+          "work_events": 6,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 67.74588644318283,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 509,
+              "objective": 45691073929656.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 15996000,
+            "double_candidate_checks": 2,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 509,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        }
+      ]
+    },
+    {
+      "run_id": "S3_C_check01",
+      "scale": "S3",
+      "method": "C",
+      "D": 1322.0793,
+      "W": 1573.4333333333334,
+      "T": 97.69447397300974,
+      "adoptable": true,
+      "trip_count": 67,
+      "resource_records": 157,
+      "branches": [
+        {
+          "branch_id": 0,
+          "work_events": 9,
+          "termination_events": [
+            {
+              "event": "Routing_end",
+              "elapsed_s": 60.601014300016686,
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "limit": 64000,
+              "checks": 64000,
+              "acknowledgements": 0,
+              "native_status": 2,
+              "generated_routes": 67,
+              "failures": 47,
+              "branches": 65,
+              "solutions": 7,
+              "proof": "none; incumbent preserved; no-plan is not an infeasibility proof"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 63.12827175599523,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 551,
+              "objective": 45691073923199.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 15996000,
+            "double_candidate_checks": 3,
+            "Routing_limit_checks": 64000,
+            "Routing_limit_acknowledgements": 0,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 551,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        },
+        {
+          "branch_id": 1,
+          "work_events": 9,
+          "termination_events": [
+            {
+              "event": "Routing_end",
+              "elapsed_s": 78.45019568107091,
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "limit": 64000,
+              "checks": 64000,
+              "acknowledgements": 0,
+              "native_status": 2,
+              "generated_routes": 67,
+              "failures": 47,
+              "branches": 65,
+              "solutions": 7,
+              "proof": "none; incumbent preserved; no-plan is not an infeasibility proof"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 80.24092521821149,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 551,
+              "objective": 45691073923199.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 15996000,
+            "double_candidate_checks": 3,
+            "Routing_limit_checks": 64000,
+            "Routing_limit_acknowledgements": 0,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 551,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        },
+        {
+          "branch_id": 2,
+          "work_events": 9,
+          "termination_events": [
+            {
+              "event": "Routing_end",
+              "elapsed_s": 60.11657645809464,
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "limit": 64000,
+              "checks": 64000,
+              "acknowledgements": 0,
+              "native_status": 2,
+              "generated_routes": 67,
+              "failures": 47,
+              "branches": 65,
+              "solutions": 7,
+              "proof": "none; incumbent preserved; no-plan is not an infeasibility proof"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 62.4623424441088,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 590,
+              "objective": 45691073923199.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 15996000,
+            "double_candidate_checks": 3,
+            "Routing_limit_checks": 64000,
+            "Routing_limit_acknowledgements": 0,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 590,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        },
+        {
+          "branch_id": 3,
+          "work_events": 9,
+          "termination_events": [
+            {
+              "event": "Routing_end",
+              "elapsed_s": 60.033296840963885,
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "limit": 64000,
+              "checks": 64000,
+              "acknowledgements": 0,
+              "native_status": 2,
+              "generated_routes": 67,
+              "failures": 47,
+              "branches": 65,
+              "solutions": 7,
+              "proof": "none; incumbent preserved; no-plan is not an infeasibility proof"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 62.45502805383876,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 512,
+              "objective": 45691073923199.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 15996000,
+            "double_candidate_checks": 3,
+            "Routing_limit_checks": 64000,
+            "Routing_limit_acknowledgements": 0,
+            "CP_calls": 1,
+            "CP_conflicts": 256,
+            "CP_branches": 512,
+            "CP_solutions": 1
+          },
+          "final_source": "CP_candidate"
+        }
+      ]
+    },
+    {
+      "run_id": "S3_D_check01",
+      "scale": "S3",
+      "method": "D",
+      "D": 1322.0793,
+      "W": 1681.05,
+      "T": 1048.635868316982,
+      "adoptable": true,
+      "trip_count": 67,
+      "resource_records": 1915,
+      "branches": [
+        {
+          "branch_id": 0,
+          "work_events": 9979,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 69.81751679512672,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 548,
+              "objective": 45691073929656.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 1022.8071436821483,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 583,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 15996000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 1131,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 46440,
+            "day_pattern_infeasible": 13126,
+            "day_pattern_duplicates": 26,
+            "LP_calls": 80,
+            "LP_iterations": 6625,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 134,
+            "quantum_objective_requests": 4470,
+            "quantum_training_attempts": 4470,
+            "quantum_training_tensor_calls": 4470,
+            "quantum_training_sampling_calls": 4470,
+            "quantum_training_shots": 44700000,
+            "quantum_training_successes": 4470,
+            "quantum_optimizer_initial_preparations": 134,
+            "quantum_optimizer_value_requests": 4470,
+            "quantum_optimizer_cache_hits": 134,
+            "quantum_final_circuit_calls": 134,
+            "quantum_final_state_successes": 134,
+            "quantum_validation_tensor_calls": 134,
+            "quantum_final_sampling_calls": 134,
+            "quantum_final_shots": 1340000,
+            "quantum_calls_completed": 134
+          },
+          "final_source": "verified_incumbent"
+        },
+        {
+          "branch_id": 1,
+          "work_events": 9993,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 69.64724525087513,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 509,
+              "objective": 45691073929656.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 1014.3650934370235,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 360,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 15996000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 869,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 45240,
+            "day_pattern_infeasible": 12882,
+            "day_pattern_duplicates": 26,
+            "LP_calls": 80,
+            "LP_iterations": 6051,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 134,
+            "quantum_objective_requests": 4477,
+            "quantum_training_attempts": 4477,
+            "quantum_training_tensor_calls": 4477,
+            "quantum_training_sampling_calls": 4477,
+            "quantum_training_shots": 44770000,
+            "quantum_training_successes": 4477,
+            "quantum_optimizer_initial_preparations": 134,
+            "quantum_optimizer_value_requests": 4477,
+            "quantum_optimizer_cache_hits": 134,
+            "quantum_final_circuit_calls": 134,
+            "quantum_final_state_successes": 134,
+            "quantum_validation_tensor_calls": 134,
+            "quantum_final_sampling_calls": 134,
+            "quantum_final_shots": 1340000,
+            "quantum_calls_completed": 134
+          },
+          "final_source": "verified_incumbent"
+        },
+        {
+          "branch_id": 2,
+          "work_events": 10073,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 69.40044666011818,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 587,
+              "objective": 45691073929656.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 1005.9058196779806,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 449,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 15996000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 1036,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 45840,
+            "day_pattern_infeasible": 13040,
+            "day_pattern_duplicates": 26,
+            "LP_calls": 80,
+            "LP_iterations": 6483,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 134,
+            "quantum_objective_requests": 4517,
+            "quantum_training_attempts": 4517,
+            "quantum_training_tensor_calls": 4517,
+            "quantum_training_sampling_calls": 4517,
+            "quantum_training_shots": 45170000,
+            "quantum_training_successes": 4517,
+            "quantum_optimizer_initial_preparations": 134,
+            "quantum_optimizer_value_requests": 4517,
+            "quantum_optimizer_cache_hits": 134,
+            "quantum_final_circuit_calls": 134,
+            "quantum_final_state_successes": 134,
+            "quantum_validation_tensor_calls": 134,
+            "quantum_final_sampling_calls": 134,
+            "quantum_final_shots": 1340000,
+            "quantum_calls_completed": 134
+          },
+          "final_source": "verified_incumbent"
+        },
+        {
+          "branch_id": 3,
+          "work_events": 10003,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 69.32044974295422,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 509,
+              "objective": 45691073929656.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 997.7698006108403,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 380,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 15996000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 889,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 45840,
+            "day_pattern_infeasible": 12982,
+            "day_pattern_duplicates": 26,
+            "LP_calls": 80,
+            "LP_iterations": 6626,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 134,
+            "quantum_objective_requests": 4482,
+            "quantum_training_attempts": 4482,
+            "quantum_training_tensor_calls": 4482,
+            "quantum_training_sampling_calls": 4482,
+            "quantum_training_shots": 44820000,
+            "quantum_training_successes": 4482,
+            "quantum_optimizer_initial_preparations": 134,
+            "quantum_optimizer_value_requests": 4482,
+            "quantum_optimizer_cache_hits": 134,
+            "quantum_final_circuit_calls": 134,
+            "quantum_final_state_successes": 134,
+            "quantum_validation_tensor_calls": 134,
+            "quantum_final_sampling_calls": 134,
+            "quantum_final_shots": 1340000,
+            "quantum_calls_completed": 134
+          },
+          "final_source": "verified_incumbent"
+        }
+      ]
+    },
+    {
+      "run_id": "S3_D_CLASSICAL_REPLACEMENT_check01",
+      "scale": "S3",
+      "method": "D_CLASSICAL_REPLACEMENT",
+      "D": 1322.0793,
+      "W": 1681.05,
+      "T": 438.5841226009652,
+      "adoptable": true,
+      "trip_count": 67,
+      "resource_records": 805,
+      "branches": [
+        {
+          "branch_id": 0,
+          "work_events": 235,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 64.99533718591556,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 509,
+              "objective": 45691073929656.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 395.92548679793254,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 360,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 15996000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 869,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 56280,
+            "day_pattern_infeasible": 15830,
+            "day_pattern_duplicates": 26,
+            "LP_calls": 80,
+            "LP_iterations": 6089,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 134,
+            "classical_permutations_evaluated": 804
+          },
+          "final_source": "verified_incumbent"
+        },
+        {
+          "branch_id": 1,
+          "work_events": 235,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 77.13189895497635,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 548,
+              "objective": 45691073929656.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 417.4279810390435,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 399,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 15996000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 947,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 56280,
+            "day_pattern_infeasible": 15830,
+            "day_pattern_duplicates": 26,
+            "LP_calls": 80,
+            "LP_iterations": 6089,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 134,
+            "classical_permutations_evaluated": 804
+          },
+          "final_source": "verified_incumbent"
+        },
+        {
+          "branch_id": 2,
+          "work_events": 235,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 64.84650876512751,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 587,
+              "objective": 45691073929656.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 370.04063759511337,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 385,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 15996000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 972,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 56280,
+            "day_pattern_infeasible": 15830,
+            "day_pattern_duplicates": 26,
+            "LP_calls": 80,
+            "LP_iterations": 6089,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 134,
+            "classical_permutations_evaluated": 804
+          },
+          "final_source": "verified_incumbent"
+        },
+        {
+          "branch_id": 3,
+          "work_events": 235,
+          "termination_events": [
+            {
+              "event": "CP_end",
+              "elapsed_s": 64.60421219305135,
+              "status": "FEASIBLE",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 1,
+              "conflicts": 256,
+              "branches": 548,
+              "objective": 45691073929656.0,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            },
+            {
+              "event": "CP_end",
+              "elapsed_s": 369.740642555058,
+              "status": "UNKNOWN",
+              "algorithm_termination": "WORK_BUDGET_REACHED",
+              "improving_solutions": 0,
+              "conflicts": 256,
+              "branches": 393,
+              "objective": null,
+              "bound": 0.0,
+              "proof_scope": "supplied route pool and integer D resolution only; zero gap parameters"
+            }
+          ],
+          "counts": {
+            "CW_directed_savings": 15996000,
+            "double_candidate_checks": 4,
+            "CP_calls": 2,
+            "CP_conflicts": 512,
+            "CP_branches": 941,
+            "CP_solutions": 1,
+            "day_pattern_attempts": 56280,
+            "day_pattern_infeasible": 15830,
+            "day_pattern_duplicates": 26,
+            "LP_calls": 80,
+            "LP_iterations": 6089,
+            "IP_calls": 8,
+            "pricing_rounds": 2,
+            "pricing_calls_attempted": 134,
+            "classical_permutations_evaluated": 804
+          },
+          "final_source": "verified_incumbent"
+        }
+      ]
+    }
+  ],
+  "used_for_new_variance_or_cost": false,
+  "prior_regression_status": "termination FINAL_REPORT records 127 pass/2 failures; old time-limit tests not reinstated",
+  "no_location_substitution_needed": true
+}

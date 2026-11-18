@@ -1,0 +1,72 @@
+{
+  "cpu_profile": {
+    "mode": "parallel_multistart",
+    "workers": 4,
+    "cpu_ids": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "native_threads_per_branch": 1,
+    "coordinator_reserve_fraction": 0.2,
+    "method_concurrency": 1,
+    "statistical_trial_count": 1
+  },
+  "C": [
+    {
+      "run_id": "S1_C_check01",
+      "source": "CP_candidate",
+      "CP_states": [
+        "FEASIBLE"
+      ],
+      "CW_visit_order_set_equal": true,
+      "CW_route_count": 17,
+      "adopted_route_count": 17,
+      "new_selected_routes_vs_CW": 0,
+      "initial_CW_candidate": {
+        "D": 444.1768,
+        "W": 411.28333333333336,
+        "scope": "pre-Routing verified CW completion"
+      },
+      "new_pricing_routes_in_final": null,
+      "interpretation": "same visit order set does not fix vehicle assignment; CP FEASIBLE is not optimality; C non-CW implies Routing-pool origin only"
+    },
+    {
+      "run_id": "S2_C_check01",
+      "source": "CP_candidate",
+      "CP_states": [
+        "FEASIBLE"
+      ],
+      "CW_visit_order_set_equal": true,
+      "CW_route_count": 34,
+      "adopted_route_count": 34,
+      "new_selected_routes_vs_CW": 0,
+      "initial_CW_candidate": {
+        "D": 759.6125,
+        "W": 856.8,
+        "scope": "pre-Routing verified CW completion"
+      },
+      "new_pricing_routes_in_final": null,
+      "interpretation": "same visit order set does not fix vehicle assignment; CP FEASIBLE is not optimality; C non-CW implies Routing-pool origin only"
+    },
+    {
+      "run_id": "S3_C_check01",
+      "source": "CP_candidate",
+      "CP_states": [
+        "FEASIBLE"
+      ],
+      "CW_visit_order_set_equal": true,
+      "CW_route_count": 67,
+      "adopted_route_count": 67,
+      "new_selected_routes_vs_CW": 0,
+      "initial_CW_candidate": {
+        "D": 1322.0793,
+        "W": 1681.05,
+        "scope": "pre-Routing verified CW completion"
+      },
+      "new_pricing_routes_in_final": null,
+      "interpretation": "same visit order set does not fix vehicle assignment; CP FEASIBLE is not optimality; C non-CW implies Routing-pool origin only"
+    }
+  ]
+}

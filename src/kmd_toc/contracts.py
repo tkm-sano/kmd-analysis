@@ -42,6 +42,7 @@ _TEXT_OR_NULL = (str, type(None))
 _NUMBER_OR_NULL = (int, float, type(None))
 _SCHEMA = {
     "schema_version": int, "study_id": str, "status": str, "rq": str,
+    "hypothesis": str, "policy_id": str,
     "scope": {"delivery_type": str, "region": str, "depot": str,
               "vehicle_label": str, "depots": int, "trips_per_vehicle": int,
               "customer_time_windows": type(None)},
@@ -63,12 +64,11 @@ _SCHEMA = {
                "sampling_rule": _TEXT_OR_NULL, "input_seeds": [int],
                "road_matrix_manifest": _TEXT_OR_NULL},
     "comparisons": {"A": str, "B": str, "C": str, "D": str,
-                    "D_classical_control": str, "time_budget_s": _NUMBER_OR_NULL,
+                    "D_classical_control": str,
                     "solver_seeds": [int], "repetitions": (int, type(None)),
                     "candidate_selection_rule": _TEXT_OR_NULL,
                     "subproblem_rule": _TEXT_OR_NULL, "subproblem_size": (int, type(None))},
-    "metrics": {"D": str, "W": str, "W1": str, "W2": str, "T": str,
-                "first_feasible_T": str, "comparison": str},
+    "metrics": {"D": str, "W": str, "W1": str, "W2": str, "comparison": str},
     "figures": {"count": int, "panels": [str], "colors": {"A": str, "B": str,
                 "C": str, "D": str}, "no_results": str},
 }
@@ -80,8 +80,11 @@ def load_study(path):
                       parse_constant=lambda x: (_ for _ in ()).throw(ValueError(x)))
     _shape(data, _SCHEMA)
     if (data["schema_version"], data["study_id"], data["status"]) != (
-            1, "ota_toc_two_trip", "SPECIFIED_WITH_HOLDS"):
+            2, "ota_toc_two_trip", "SPECIFIED_WITH_HOLDS"):
         raise ValueError("Unsupported study identity/version/status")
+    from .dw import POLICY_ID, RQ, HYPOTHESIS
+    if (data['policy_id'], data['rq'], data['hypothesis']) != (POLICY_ID, RQ, HYPOTHESIS):
+        raise ValueError("Research policy/RQ/hypothesis differs from the adopted specification")
     if data["scope"] != {"delivery_type": "ToC", "region": "東京都大田区",
                          "depot": "京浜トラックターミナルを起点とする仮想拠点",
                          "vehicle_label": "配送車両", "depots": 1,
@@ -107,12 +110,10 @@ def load_study(path):
             raise ValueError("Invalid provisional parameter")
     expected_metrics = {"D": "total_distance_km", "W": "total_loading_wait_min",
                         "W1": "trip1_loading_wait_min", "W2": "trip2_loading_wait_min",
-                        "T": "selected_plan_available_elapsed_s",
-                        "first_feasible_T": "first_feasible_elapsed_s",
-                        "comparison": "paired_absolute_delta_and_3d_dominance"}
+                        "comparison": "same_input_absolute_delta_and_2d_dominance"}
     if data["metrics"] != expected_metrics:
         raise ValueError("Unexpected metric boundary")
-    if (data["figures"]["count"] != 7 or data["figures"]["panels"] != ["S1", "S2", "S3"]
+    if (data["figures"]["count"] != 4 or data["figures"]["panels"] != ["S1", "S2", "S3"]
             or data["figures"]["no_results"] != "DO_NOT_GENERATE"):
         raise ValueError("Unexpected figure contract")
     return data
@@ -160,15 +161,15 @@ def allocate_customers(populations, total):
 
 
 def compare_objectives(candidate, baseline):
-    """Compare paired successful plans as (D km, W min, T s).
+    """Compare successful plans on the same input as (D km, W min).
 
     Pairing, provenance and feasibility must be verified by the caller. Missing
     plans have null objectives and must not be passed to this numeric function.
     """
     for vector in (candidate, baseline):
-        if len(vector) != 3 or any(isinstance(x, bool) or not isinstance(x, (int, float))
+        if len(vector) != 2 or any(isinstance(x, bool) or not isinstance(x, (int, float))
                                    or not math.isfinite(x) or x < 0 for x in vector):
-            raise ValueError("Expected three finite nonnegative objective values")
+            raise ValueError("Expected two finite nonnegative objective values")
     delta = [x - y for x, y in zip(candidate, baseline)]
     dominates = all(x <= 0 for x in delta) and any(x < 0 for x in delta)
     dominated = all(x >= 0 for x in delta) and any(x > 0 for x in delta)

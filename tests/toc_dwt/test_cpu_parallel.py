@@ -66,7 +66,7 @@ def test_candidates_are_rejected_for_actual_schedule_violation():
 
 
 def test_serial_cli_requires_explicit_historical_reproduction_flag():
-    r = subprocess.run([sys.executable, '-B', 'scripts/run_dwt.py', 'register', '--config',
+    r = subprocess.run([sys.executable, '-B', 'scripts/run_dwt.py', '--historical-reproduction', 'register', '--config',
                         'configs/toc_delivery/dwt_balance_v1_3_1.json'], capture_output=True, text=True)
     assert r.returncode == 2 and 'historical serial reproduction must be explicit' in r.stderr
 
@@ -75,7 +75,7 @@ def test_actual_serial_registration_cannot_bypass_parallel_cli_policy(tmp_path):
     old = {'method': 'B', 'config': {'threads': 1}}
     path = tmp_path / 'old.json'
     path.write_text(json.dumps({'specs': [old]}))
-    r = subprocess.run([sys.executable, '-B', 'scripts/run_dwt.py', 'run', '--registration', str(path)],
+    r = subprocess.run([sys.executable, '-B', 'scripts/run_dwt.py', '--historical-reproduction', 'run', '--registration', str(path)],
                        capture_output=True, text=True)
     assert r.returncode == 2 and 'Actual registration is historical serial' in r.stderr
 

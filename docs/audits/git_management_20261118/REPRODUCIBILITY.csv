@@ -1,0 +1,9 @@
+item,assessment,evidence_and_limits
+ソースコード,PASS,A/B/C/D既存実装＋新DWモジュール/CLIを追跡対象に含む。コード改変なし
+設定,PASS,現行policyと既存scope変更をstage対象とし、main HOLD/4枝/native1/有限作業量を保持
+凍結需要,PASS,追跡8件を保持。7 checksum対象一致
+OD,FAIL,現物は保持し入力metadataを追加するが、独立保存/実証済み復元手順が未確立
+ノード索引,FAIL,現物保持。独立保存/復元が未確認。今回のstageで解決とはしない
+実行環境,UNKNOWN,原ENVIRONMENT/登録と今回の版情報を保存。Python3.12.11/OR-Tools9.14.6206/Qiskit2.1.1等。可搬lock/独立構築は未確認
+検証,UNKNOWN,現在の軽量44件PASS、policy audit18/18。過去回帰XML2件はwhitespaceで保留のためGit単独の歴史監査は未完
+統計分析,UNKNOWN,既存75試行のメモリ内再分析は保存DW出力と完全一致。独立復元/本仮説J_DWはHOLD

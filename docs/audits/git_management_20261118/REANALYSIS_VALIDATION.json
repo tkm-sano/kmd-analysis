@@ -1,0 +1,59 @@
+{
+  "policy_id": "ota-toc-DW-20261117-v1",
+  "registered_rows": 75,
+  "saved_output_equal_to_fresh_in_memory_analysis": true,
+  "verified_provenance_files": 241,
+  "frozen_checksum_checks": [
+    {
+      "path": "MANIFEST.json",
+      "sha256_matches": true
+    },
+    {
+      "path": "READING_CONTRACT.md",
+      "sha256_matches": true
+    },
+    {
+      "path": "REGIONAL_ALLOCATION.csv",
+      "sha256_matches": true
+    },
+    {
+      "path": "S1.csv",
+      "sha256_matches": true
+    },
+    {
+      "path": "S2.csv",
+      "sha256_matches": true
+    },
+    {
+      "path": "S3.csv",
+      "sha256_matches": true
+    },
+    {
+      "path": "VALIDATION.json",
+      "sha256_matches": true
+    }
+  ],
+  "environment": {
+    "python": "3.12.11 | packaged by Anaconda, Inc. | (main, Jun  5 2025, 13:09:17) [GCC 11.2.0]",
+    "executable": "/home/takuma/.cache/kmd-analysis/venvs/ad-pipeline-v1/bin/python",
+    "package_versions": {
+      "ortools": "9.14.6206",
+      "qiskit": "2.1.1",
+      "numpy": "2.3.1",
+      "scipy": "1.16.0",
+      "pandas": "2.3.1",
+      "osmium": "4.1.1",
+      "psutil": "7.0.0",
+      "matplotlib": "3.10.3",
+      "pytest": "8.4.2"
+    }
+  },
+  "solver_executed": false,
+  "original_results_overwritten": false,
+  "new_demand_or_OD_generated": false,
+  "main_experiment_authorized": false,
+  "limits": [
+    "Same existing environment and local inputs only; no independent restore of external OD/node indexes",
+    "Statistical equality is for post-policy exploratory fixed-family pilot; J_DW/main hypothesis remain HOLD"
+  ]
+}

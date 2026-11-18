@@ -1,0 +1,5 @@
+# 登録前の実行管理の追加
+
+既存src/scripts/config/READMEは編集せず、新ID文書ディレクトリにpilot.py/analysis.py/finalize.pyと人工fixture検証を追加した。既存termination_v1.runner.execute/branch_entryをそのまま用いる。登録75件/seed導出と順序、manifest hash lock、flock、残存子確認、開始済み未回収拒否、完了済み失敗も再実行拒否、試行後parent affinity復帰、T外管理時刻とgapを追加。wrapperは既存runnerの親affinityを強制変更せず、子だけが登録4物理コアへpinする既存条件を維持する。共通準備や検査は全手法同じ規則。追加source inventory確認の費用も既存runnerではT内へ含まれる。探索・計時範囲・I/O方式・ログ方式・予算は変更しない。
+
+git status/diffと保全hash取得にNFS応答待ちを観測した。重複して起動した読み取り専用git status 3プロセスだけを停止し、trace付きstatusとdiffを残した。ソルバー/実規模試行はこの時点で未起動。これはソルバー時間終了規則ではない。開始時差分はprotected sourceに一切編集を加えず取得を継続する。git traceはリポジトリファイルを読むsystem callの診断で、実験計時中には実行しない。

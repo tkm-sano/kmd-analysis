@@ -1,0 +1,23 @@
+Git管理対象の最終確認・ステージング報告（2026-11-18）
+
+作業対象は /home/takuma/kmd-analysis の既存リポジトリ1つだけ。Git clone/init/worktree/リポジトリ全体複製なし。
+HEAD dfc895ff9f4abc0a7f5b55209ac2c6818ebe0356、main、全refs不変。commit/push/pull/fetch/追跡解除/.gitignore変更/研究原本の移動・削除なし。
+622候補の最終分類: ADD354、KEEP_LOCAL263、REVIEW5。判断・path・容量・SHA・機密/環境metadataはCANDIDATE_DECISIONS.csv。
+KEEP_LOCAL: 全255枝RESULTは親RESULT.branchesと全field構造が同一。親75試行のRESULTをGitへ追加して全枝・未選択枝・seed/PID/affinity/時間/資源を保持。枝原本はローカルに無変更で残す。残り8件は空のstatus/diff placeholder。
+REVIEW: 原記録に既存の末尾空白/EOF空行があり、Git whitespace checkと整合しないため原文を変更せず除外。秘密情報検出による保留ではない。
+  docs/audits/dw_policy_20261117_v1/FINAL_DIFF.patch — GIT_WHITESPACE:trailing whitespace.
+  docs/audits/dw_policy_20261117_v1/PLAN_TEXT.txt — GIT_WHITESPACE:new blank line at EOF.
+  docs/audits/dw_policy_20261117_v1/REGRESSION_INITIAL.xml — GIT_WHITESPACE:trailing whitespace.
+  docs/audits/dw_policy_20261117_v1/REGRESSION_VALIDATION.xml — GIT_WHITESPACE:trailing whitespace.
+  docs/audits/dw_policy_20261117_v1/before/docs/research/CPX01_D10_PROVISIONAL_20261017.md — GIT_WHITESPACE:trailing whitespace.
+既存28件は全てADD判定しstage。HEAD/current SHA、内容・理由・証拠・保全結果をEXISTING_28_REVIEW.csv、完全な変更前後差分をPRE_EXISTING_CHANGES.patch.gzへ保存。研究計算の新規変更はしていない。
+新規stage: 候補354 + 今回監査記録17 = 371件。既存変更28件。合計399件。
+stageされた対象blobの論理容量合計 71604702 bytes（Git圧縮容量ではない）。正確な個別対象はSTAGING_PLAN.json。
+機密検査: 候補622、既存28、tar regular members/DOCX XMLを検査。既知token/private-key/URL認証/literal-secret pattern該当0。原環境path/boot/mount等は不変の実行provenanceとして識別保存。完全な機密不存在や公開許可を保証する検査ではない。
+追加の監査記録も個別にUTF-8/XML/JSON/gzip diff・機密pattern・whitespaceを確認した。対象外のファイルはstageしていない。
+検証: 44軽量テストPASS。ソルバーなしの既存75試行メモリ内再分析は保存DW出力と完全一致、241provenance照合。凍結需要の7 checksum一致。policy監査18/18。
+再現性: ソース/設定/凍結需要PASS。ODとノード索引の独立保管・実証済み復元はFAIL（未整備）。可搬環境/過去回帰XMLを含む検証/独立統計再現はUNKNOWN。REPRODUCIBILITY.csvとDEPENDENCY_REVIEW.jsonに範囲を明記。
+現行D/W方針・運行条件・有限作業量・B/C/D4枝/native1・本実験HOLDは保持。Tは原記録として保持し、研究目的/順位の指標へ戻していない。
+残課題: OD/ノード索引/原logの独立保存・復元、Python3.12.11/OR-Tools9.14.6206/Qiskit2.1.1等の可搬lock、旧研究の独立保管設計、font4件の条件付き追跡解除、REVIEW5件の保存形式/扱い。いずれも今回自動実施しない。
+一時directory: /tmp/kmd-git-stage-20261118-hFYYwCnQ。今回作成した内部file 86件、directory 46件（root含む）を削除。結果はTEMP_CLEANUP.json。以前から存在する監査/計画一時directoryは残す。
+最終コミット判定: HOLD。stage内容の技術検査は通過したが、保留5件（うち過去回帰XML2件は歴史監査の依存）と独立data保管/可搬環境/復元条件の確認が残る。コミット・pushは実行せず次の指示を待つ。

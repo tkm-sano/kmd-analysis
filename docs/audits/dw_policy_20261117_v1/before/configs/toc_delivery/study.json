@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "study_id": "ota_toc_two_trip",
+  "status": "SPECIFIED_WITH_HOLDS",
+  "rq": "京浜トラックターミナルを起点とする大田区内のToC配送において、量子計算は、配送実績を想定するベースライン、従来的な手法、古典最適化計算と比較して、全車両の総走行距離、積込待機時間、配送計画の計算時間という三目的について、どのような性能差とトレードオフを示すか。",
+  "scope": {
+    "delivery_type": "ToC",
+    "region": "東京都大田区",
+    "depot": "京浜トラックターミナルを起点とする仮想拠点",
+    "vehicle_label": "配送車両",
+    "depots": 1,
+    "trips_per_vehicle": 2,
+    "customer_time_windows": null
+  },
+  "cases": [
+    {"id": "S1", "N": 1000, "vehicles": 10, "berths": 2},
+    {"id": "S2", "N": 2000, "vehicles": 20, "berths": 4},
+    {"id": "S3", "N": 4000, "vehicles": 40, "berths": 8}
+  ],
+  "operations": {
+    "first_loading_ready_s": null,
+    "shift_end_s": null,
+    "loading_duration_s": null,
+    "turnaround_s": null,
+    "capacity_PE_per_trip": null,
+    "service_s_per_stop": null,
+    "empty_trip_policy": null
+  },
+  "provisional_parameters": [
+    {"name": "capacity_PE_per_trip", "value": 216, "unit": "PE/trip", "status": "HOLD_NOT_ADOPTED", "source": "investigations/lastmile_single_depot_20261105/sources/CAPACITY_FREEZE_MANIFEST.json; physical_calibration=false"},
+    {"name": "service_s_per_stop", "value": 102, "unit": "s/stop", "status": "HOLD_NOT_ADOPTED", "source": "investigations/lastmile_single_depot_20261105/probes/local_input_audit.json; historical assumption"},
+    {"name": "loading_duration_s", "value": 1200, "unit": "s/trip", "status": "HOLD_NOT_ADOPTED", "source": "research_plan_toc_three_objectives_faceted_20261108.docx; original provisional assumption"},
+    {"name": "first_loading_ready_s", "value": 25200, "unit": "seconds after local midnight", "status": "HOLD_NOT_ADOPTED", "source": "research_plan_toc_three_objectives_faceted_20261108.docx; original provisional 07:00 assumption"}
+  ],
+  "demand": {
+    "allocation": "largest_remainder_population_share",
+    "tie_break": "region_id_ascending",
+    "N_meaning": null,
+    "population": {"source_url": null, "statistical_date": null, "table": null, "sha256": null},
+    "geography": {"boundary_path": null, "boundary_sha256": null, "crs": null, "crosswalk_56_path": null, "crosswalk_56_sha256": null},
+    "residential_candidates_path": null,
+    "customer_order_stop_rule": null,
+    "PE_rule": null,
+    "sampling_rule": null,
+    "input_seeds": [],
+    "road_matrix_manifest": null
+  },
+  "comparisons": {
+    "A": "proxy_area_assignment_nearest_visit_FCFS_loading",
+    "B": "greedy_assignment_local_search_and_loading_order_adjustment",
+    "C": "OR_Tools_Routing_and_CP_SAT_coordination",
+    "D": "classical_global_plan_QAOA_subproblem_reintegration",
+    "D_classical_control": "same_initial_plan_subproblem_selection_and_budget_with_classical_solver",
+    "time_budget_s": null,
+    "solver_seeds": [],
+    "repetitions": null,
+    "candidate_selection_rule": null,
+    "subproblem_rule": null,
+    "subproblem_size": null
+  },
+  "metrics": {
+    "D": "total_distance_km",
+    "W": "total_loading_wait_min",
+    "W1": "trip1_loading_wait_min",
+    "W2": "trip2_loading_wait_min",
+    "T": "selected_plan_available_elapsed_s",
+    "first_feasible_T": "first_feasible_elapsed_s",
+    "comparison": "paired_absolute_delta_and_3d_dominance"
+  },
+  "figures": {
+    "count": 7,
+    "panels": ["S1", "S2", "S3"],
+    "colors": {"A": "#808080", "B": "#008C95", "C": "#2563EB", "D": "#EA8A23"},
+    "no_results": "DO_NOT_GENERATE"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "T_kind": "comparison_parent_wall_including_process_setup_v1",
+  "timed_executor_unchanged": true,
+  "timed_scope": "existing runner input/source hashes and input loading, fresh child startup/import, all branch completion and collection, transfer/selection and final double validation",
+  "management_preflight": "before each timed executor call, pilot wrapper also hashes registered sources, all three frozen input inventories and dependency module files uniformly for all methods",
+  "management_preflight_timing": "outside the original timed executor; its per-trial cost is in inter-wrapper gaps except first preflight/setup, and no existing timed input hash/load was removed",
+  "cache_scope": "no deliberate warm-up, cache clear/prefetch or method-specific operation. Integrity reads can populate OS caches; cold cache is not claimed and historical timing conditions are not asserted identical. All 75 new attempts use the same registered wrapper; no historical timing rows are pooled.",
+  "initial_management_preflight_wall_s": null,
+  "initial_management_preflight_reason": "not separately timestamped before coordinator metadata; do not invent zero or treat import-only setup as full preparation",
+  "final_post_wrapper_output_wall_s": null,
+  "final_post_wrapper_output_reason": "last metadata and invocation-result output are not separately clocked; costs are not complete end-to-end upper bounds",
+  "cost_prediction_scope": "measured T_attempt means plus separately modeled observed gap/wrapper overhead; registration, measured import setup, analysis and final audit/output have their own scope. Missing fixed preparation/output stays unknown. No finite wall upper bound.",
+  "parent_HWM_scope": "RUSAGE_SELF lifetime highwater of the reused coordinator sampled at trial end; not a per-trial instantaneous peak",
+  "branch_HWM_scope": "fresh child RUSAGE_SELF lifetime highwater, KiB; summing highwaters is nonconcurrent and duplicates shared pages",
+  "resource_sample_scope": "RSS summed over observed child process trees; nominal 0.5 second monitoring, actual measurement/record delays retained, instantaneous peaks not guaranteed observed",
+  "time_correction_applied": false,
+  "strict_parent_first_arrival_s": null,
+  "first_arrival_reason": "not exported/observed by inherited timed executor; completion T is never substituted",
+  "git_scope": "source-scoped status completed clean before experiment; full status/diff not completed, see PREFLIGHT_STATUS.json",
+  "preservation_scope": "839 protected-file hashes; historical per-evaluation traces not individually rehashed, old namespaces never written by this task",
+  "all_trial_management_conditions_registered_before_start": true,
+  "measurement_conditions_changed_during_batch": false
+}

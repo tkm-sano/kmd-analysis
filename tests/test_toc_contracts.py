@@ -84,15 +84,15 @@ class ToCContractsTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 allocate_customers({"a": 1}, total)
 
-    def test_three_objectives_and_zero_baseline(self):
-        self.assertEqual(compare_objectives([1, 0, 3], [2, 0, 3]), {
-            "delta": [-1, 0, 0], "relative_delta": [-0.5, None, 0.0], "relation": "DOMINATES"})
-        self.assertEqual(compare_objectives([1, 1, 4], [2, 2, 3])["relation"], "INCOMPARABLE")
-        self.assertEqual(compare_objectives([2, 0, 3], [1, 0, 3])["relation"], "DOMINATED")
-        self.assertEqual(compare_objectives([1, 0, 3], [1, 0, 3])["relation"], "EQUAL")
-        for vector in [[1, None, 3], [1, float("nan"), 3], [1, -1, 3], [1, 2], [True, 2, 3]]:
+    def test_two_objectives_and_zero_baseline(self):
+        self.assertEqual(compare_objectives([1, 0], [2, 0]), {
+            "delta": [-1, 0], "relative_delta": [-0.5, None], "relation": "DOMINATES"})
+        self.assertEqual(compare_objectives([1, 3], [2, 2])["relation"], "INCOMPARABLE")
+        self.assertEqual(compare_objectives([2, 0], [1, 0])["relation"], "DOMINATED")
+        self.assertEqual(compare_objectives([1, 0], [1, 0])["relation"], "EQUAL")
+        for vector in [[1, None], [1, float("nan")], [1, -1], [1, 2, 3], [True, 2]]:
             with self.assertRaises(ValueError):
-                compare_objectives(vector, [1, 2, 3])
+                compare_objectives(vector, [1, 2])
 
     def test_import_does_not_load_historical_or_solver_modules(self):
         script = ("import sys; sys.path.insert(0, 'src'); import kmd_toc; "
