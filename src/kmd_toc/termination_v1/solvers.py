@@ -5,6 +5,9 @@ from .work import CheckBudget, key, verified
 from kmd_toc.pipeline.completion import route_distance, route_duration, assemble, greedy_assignment
 
 def solve_completion(p,routes,method,config,ledger,seed,settings=None):
+    if config.get('operating_policy') == 'FCFS_v1':
+        from kmd_toc.fcfs_v1.cp import solve_completion as fcfs_completion
+        return fcfs_completion(p,routes,method,config,ledger,seed,settings)
     primary='D';other_limit=None
     from ortools.sat.python import cp_model
     from ortools.sat import sat_parameters_pb2
@@ -81,6 +84,9 @@ def solve_completion(p,routes,method,config,ledger,seed,settings=None):
 
 
 def complete(p,routes,method,config,ledger,seed,settings=None,incumbent=None):
+    if config.get('operating_policy') == 'FCFS_v1':
+        from kmd_toc.fcfs_v1.cp import complete as fcfs_complete
+        return fcfs_complete(p,routes,method,config,ledger,seed,settings,incumbent)
     settings=settings or {};best=None;source=None
     if incumbent is None:
         try:incumbent=assemble(p,greedy_assignment(p,routes),method,{'candidate_source':'shared_greedy'})

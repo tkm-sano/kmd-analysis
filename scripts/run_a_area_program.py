@@ -15,6 +15,9 @@ sys.path.insert(0,str(ROOT/'src'))
 
 
 def main():
+    if '--historical-reproduction' not in sys.argv:
+        raise SystemExit('HISTORICAL_ENTRYPOINT: legacy A plans require --historical-reproduction; current A is an external administrative reference')
+    sys.argv.remove('--historical-reproduction')
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--model',required=True)
     parser.add_argument('--model-sha256',required=True)
@@ -80,7 +83,7 @@ def main():
         for repeat in range(args.repetitions):
             target = out/f'{case}-repeat{repeat+1:02}'
             before = time.perf_counter()
-            command = [sys.executable,str(Path(__file__).resolve()),'--worker',case,'--model',str(model_path),
+            command = [sys.executable,str(Path(__file__).resolve()),'--historical-reproduction','--worker',case,'--model',str(model_path),
                 '--model-sha256',args.model_sha256,'--output',str(target),'--cpus',*map(str,cpus)]
             if args.diagnostic_best_area:
                 command += ['--diagnostic-best-area']

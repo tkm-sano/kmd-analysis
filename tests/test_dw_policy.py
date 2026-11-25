@@ -11,7 +11,7 @@ from kmd_toc.dw import (analyze_rows, difference, digest, fingerprint, load_poli
                         load_saved_pilot, write_analysis)
 
 ROOT = Path(__file__).resolve().parents[1]
-POLICY = ROOT/'configs/toc_delivery/dw_policy_20261117_v1.json'
+POLICY = ROOT/'configs/toc_delivery/dw_policy_20261117_v1_historical_loading.json'
 
 
 def rows():

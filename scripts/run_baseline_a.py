@@ -16,6 +16,9 @@ sys.path.insert(0, str(ROOT / 'src'))
 
 
 def main():
+    if '--historical-reproduction' not in sys.argv:
+        raise SystemExit('HISTORICAL_ENTRYPOINT: legacy A plans require --historical-reproduction; current A is an external administrative reference')
+    sys.argv.remove('--historical-reproduction')
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', required=True)
     parser.add_argument('--scenarios', nargs='+', choices=['S1', 'S2', 'S3'], default=['S1', 'S2', 'S3'])
@@ -83,7 +86,7 @@ def main():
         for repetition in range(cfg['timing_check']['repetitions']):
             target = out / f'{case}-repeat{repetition + 1:02}'
             before = time.perf_counter()
-            command = [sys.executable, str(Path(__file__).resolve()), '--worker', case,
+            command = [sys.executable, str(Path(__file__).resolve()), '--historical-reproduction', '--worker', case,
                        '--allocated-cpus', *map(str, cpus), '--output', str(target)]
             if args.input_root:
                 command += ['--input-root', str(Path(args.input_root).resolve())]

@@ -134,6 +134,9 @@ def worker(args):
 
 
 def main():
+    if '--historical-reproduction' not in sys.argv:
+        raise SystemExit('HISTORICAL_ENTRYPOINT: legacy A plans require --historical-reproduction; current A is an external administrative reference')
+    sys.argv.remove('--historical-reproduction')
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--config',default=str(ROOT/'configs/toc_delivery/a_rule_v1_20261115.json'))
     parser.add_argument('--output',required=True)
@@ -185,7 +188,7 @@ def main():
             'input_files_sha256':config['inputs']['scenarios'][scale]['files'],
             'demand_seed_note':'frozen artifact is the scenario identity; no new sampling; see original frozen manifest'}
         dump(target/'manifest.json',manifest)
-        command = [sys.executable,'-B',str(Path(__file__).resolve()),'--config',str(config_path),
+        command = [sys.executable,'-B',str(Path(__file__).resolve()),'--historical-reproduction','--config',str(config_path),
                    '--output',str(out),'--worker',str(target)]
         process_start = time.perf_counter()
         try:

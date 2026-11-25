@@ -1,0 +1,87 @@
+{
+  "version": "descriptive-statistics-20261121-v1",
+  "authority": "User explicit formal Freeze request, 2026-11-21",
+  "FREEZE": [
+    "formal RQ",
+    "primary D and total loading W",
+    "five comparison slots",
+    "descriptive statistics ddof=1",
+    "Tukey 1.5IQR boxes",
+    "mean +/- 1 sample SD result bars",
+    "MCSE for internal J precision review"
+  ],
+  "SUPERSEDED": [
+    "MDE",
+    "MDE-based J",
+    "alpha=.05 testing design",
+    "80% power sample size",
+    "Cohen d power sample size",
+    "six confirmatory tests",
+    "Holm multiplicity adjustment",
+    "hypothesis tests and significance decisions",
+    "SEM/95%CI result errorbars"
+  ],
+  "HOLD": [
+    "formal outer J",
+    "MCSE numerical tolerance",
+    "resource budget for J selection",
+    "SESOI external numeric basis",
+    "outer unit/design proof for future pilots",
+    "failure/missing estimand decisions",
+    "A metric comparability",
+    "full experiment Freeze"
+  ],
+  "historical_artifacts_not_deleted_or_rewritten": [
+    {
+      "paths": [
+        "scripts/stat_conditions_pilot_20261120_v1/stats_engine.py",
+        "scripts/stat_conditions_pilot_20261120_v1/run.py",
+        "output/stat_conditions_pilot_20261120_v2"
+      ],
+      "old": "Welch/paired t, CI, six tests, Holm and power diagnostics",
+      "current": "Historical evidence only; current engine never imports it"
+    },
+    {
+      "paths": [
+        "scripts/mde_review_20261120_v1",
+        "output/mde_review_20261120_v1",
+        "output/mde_review_20261120_v2",
+        "output/mde_review_20261120_v3"
+      ],
+      "old": "MDE sensitivity and J30 power",
+      "current": "SUPERSEDED statistical design; past raw values retained"
+    },
+    {
+      "paths": [
+        "docs/research/bcd_sample_design_20261119",
+        "docs/research/DWT_EXPERIMENT_DESIGN.md",
+        "docs/research/DWT_PILOT_DESIGN.md"
+      ],
+      "old": "Earlier sample/testing proposals",
+      "current": "Statistics-scope provisions superseded; operational/source history preserved"
+    },
+    {
+      "paths": [
+        "docs/research/DWT_STATISTICAL_PROTOCOL.md",
+        "docs/research/DWT_SAMPLE_SIZE_PIPELINE.md",
+        "docs/research/DWT_7_FIGURES_SPEC.md"
+      ],
+      "old": "Earlier protocol/sample/figure guidance",
+      "current": "New current notices prepended, complete original text retained below as history and in before/"
+    }
+  ],
+  "unchanged": [
+    "all optimizer algorithms",
+    "input problems/OD",
+    "duty/FCFS/D-final selection policies",
+    "p/shots",
+    "n/K/R/COBYLA status",
+    "old outputs and seeds"
+  ],
+  "not_authorized": [
+    "main experiment",
+    "new demand",
+    "commit",
+    "push"
+  ]
+}

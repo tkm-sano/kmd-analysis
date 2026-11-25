@@ -1,0 +1,15 @@
+{
+  "version": "ota-toc-cargo-wait-20261119-v2",
+  "destination_wait": "immediate_handover_assumption",
+  "loading_wait": "ready_is_arrival_facility_queue_assumption",
+  "other_wait": "none_assumption",
+  "operation": "active_vehicle_day_same_driver",
+  "customer_time_windows": false,
+  "assumptions": [
+    "同一車両の最大2便を同一運転者の1日の1運行とする。非稼働車両は運行を構成しない。",
+    "初便readyと再便readyを積込場所への到着とみなし、積込開始までを施設都合の荷待ちとする。到着指定と除外時間はない。",
+    "配送先待機0分：全地点で到着直後に受渡し作業を開始する研究上の仮定。観測値ではない。120秒の配送先作業は荷待ちに含めない。",
+    "モデル上のその他の荷待ちはない。実運行の待機が観測されて0分であることを意味しない。",
+    "行政統計60分への校正を行わず、顧客時間窓を導入しない。"
+  ]
+}

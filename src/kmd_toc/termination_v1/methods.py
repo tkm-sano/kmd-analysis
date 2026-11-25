@@ -100,10 +100,17 @@ def hybrid(p,routes,info,method,config,ledger,seeds):
     best=seed_plan
     if solved.get('IP',{}).get('success'):
         vehicle_index={v.vehicle_id:i for i,v in enumerate(p.vehicles)}
-        items=[{'v':vehicle_index[cols[i].vehicle_id],'trip_no':t.trip_id,'route':t.customers,'start_s':t.load_start_s}
-               for i in solved['IP']['selected'] for t in cols[i].trips]
+        if config.get('operating_policy') == 'FCFS_v1':
+            from kmd_toc.fcfs_v1.scheduler import schedule
+            rows=solved['IP']['fcfs_assignments']
+            proposed=schedule(p,{(r['vehicle_id'],r['trip_no']):tuple(r['route']) for r in rows},native_method,
+                              {**solved['IP']['fcfs_settings'],'candidate_source':'finite_day_IP_FCFS'})
+            items=None
+        else:
+            items=[{'v':vehicle_index[cols[i].vehicle_id],'trip_no':t.trip_id,'route':t.customers,'start_s':t.load_start_s}
+                   for i in solved['IP']['selected'] for t in cols[i].trips]
         try:
-            proposed=assemble(p,items,native_method,{'candidate_source':'finite_day_IP'})
+            if items is not None:proposed=assemble(p,items,native_method,{'candidate_source':'finite_day_IP'})
             if verified(p,proposed,ledger) and key(proposed)<key(best):best=proposed
         except ValueError as e:ledger.emit('day_IP_rejected',error=str(e))
     metadata={**info,'algorithm':'finite_Huang_AOA_vehicle_day_master_shared_completion',
@@ -112,6 +119,9 @@ def hybrid(p,routes,info,method,config,ledger,seeds):
         'quantum_calls':quantum_summary,'macro_domain_size':len(domain),'candidate_routes':len(pool),
         'sampling_new_routes':len(sampled-set(routes)),'final_candidate_source_before_CP':best.method_settings.get('candidate_source',best.method_settings.get('completion_selected_source')),
         'quantum_improvement_claim':False}
+    if config.get('operating_policy') == 'FCFS_v1':
+        metadata.update(algorithm=metadata['algorithm']+'_FCFS_v1',
+            scope='same_finite_macro_routes; distance_pricing_LP_surrogate; joint_FCFS_route_pool_CP_completion')
     result=complete(p,pool,native_method,config,ledger,seeds['solver_seed'],metadata,incumbent=best)
     final_routes={tuple(id_index[v.stop_id] for v in t.visits) for t in result.trips}
     return replace(result,execution_kind='quantum_circuit_simulator' if method=='D' else 'classical',

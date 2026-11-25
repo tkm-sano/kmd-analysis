@@ -1,3 +1,5 @@
+> 2026-11-20の現行案内：この文書の本文は旧A_rule_v1等の方法・監査の履歴です。研究仕様の唯一の正本は[凍結v1](docs/frozen/配送計画最適化_評価指標と実験条件_1-7.md)、追加運用は[FCFS_v1](docs/research/FCFS_OPERATING_POLICY_V1.md)です。現行Aは行政統計の外部参照で、配送計画やFCFSを持ちません。[現行Aの案内](docs/research/BASELINE_A_DESIGN.md)と[現行研究案内](docs/research/DW_RESEARCH_POLICY.md)を参照してください。以下の旧RQ・仮説・T除外等の記述を現行条件へ流用しません。
+
 # ベースラインAの方法と採用根拠
 
 2026-11-17追補：現行の[二目的研究方針](docs/research/DW_RESEARCH_POLICY.md)に従い、評価対象はD/Wである。以下のTの定義や人手比較は実装の履歴・別契約の説明として保持し、現行のRQ・仮説検証・分析には用いない。

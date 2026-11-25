@@ -1,0 +1,43 @@
+{
+  "version": "grouped-loading-20261124-v1",
+  "status": "HOLD",
+  "research_question": "量子計算を活用することで、配送車両の走行距離を短縮しながら、荷物の積み込みを待つ時間も削減できるか。",
+  "vehicle": {
+    "manufacturer": "三菱自動車",
+    "model": "MINICAB EV",
+    "variant": "CD 20.0kWh・2シーター・2WD",
+    "type": "ZAB-U69V",
+    "max_payload_kg": 350,
+    "cargo_compartment_mm": [1830, 1300, 1230],
+    "model_capacity_per_trip": 60,
+    "model_capacity_unit": "delivery_unit",
+    "cargo_mass_or_volume_mapping": null,
+    "battery_constraints_in_model": false,
+    "source": "https://www.mitsubishi-motors.co.jp/lineup/minicab_ev/spec/spe_02.html"
+  },
+  "loading_s": 900,
+  "loading_basis": "fixed research assumption",
+  "loading_reference": "https://www.kuronekoyamato.co.jp/ytc/corp/recruit/sales-driver/job-description.html",
+  "after_loading_s": 0,
+  "return_preparation_s": 0,
+  "max_trips_per_vehicle": 2,
+  "group_size": 5,
+  "scales": {
+    "S1": {"vehicles": 10, "berths": 2, "groups": 2},
+    "S2": {"vehicles": 20, "berths": 4, "groups": 4},
+    "S3": {"vehicles": 40, "berths": 8, "groups": 8}
+  },
+  "study_decisions": {
+    "physical_ready_source_and_values": null,
+    "precall_is_actual_wait": null,
+    "group_membership_mode_and_initial_rule": null,
+    "earliest_group_call_s": null,
+    "latest_group_call_s": null,
+    "allow_equal_group_call": null,
+    "min_group_gap_s": null,
+    "B_call_construction_rule": null,
+    "timing_candidate_budget_allocation": null
+  },
+  "unchanged_formal_contract": "output/iterative_d3/formal_J30_v4",
+  "formal_worker_launch_allowed": false
+}

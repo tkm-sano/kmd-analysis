@@ -1,0 +1,144 @@
+{
+  "version": "iterative-d3-v1",
+  "role": "MAIN_REGISTERED_J30",
+  "scales": [
+    "S1",
+    "S2",
+    "S3"
+  ],
+  "methods": [
+    "C_Idual",
+    "D_classical",
+    "D_quantum"
+  ],
+  "classical_python": "/tmp/kmd-library-validation-20261114-v2/bin/python",
+  "branch_python": "/tmp/kmd-p1-pricing-20261118/bin/python",
+  "physical_cores": 4,
+  "native_threads": 1,
+  "rest_options": {
+    "allow_assumed_locations": true,
+    "allow_post_final_depot_break": true,
+    "confirmed_locations": []
+  },
+  "search": {
+    "mode": "adaptive_adopted_plan",
+    "outer_iterations": 10,
+    "moves_per_family": 1,
+    "neighbor_attempts_per_family": 64,
+    "tabu_tenure": 3,
+    "local_calls_per_iteration": 1,
+    "local_order_size": 12,
+    "returned_order_candidates": 4,
+    "physical_completion_budget": 70,
+    "reallocation_families": [
+      "inter_relocate",
+      "inter_swap",
+      "intra_transfer"
+    ],
+    "state_adoption": "pi0 I_dual/ties among current and non-tabu/aspirational complete plans; no objective worsening",
+    "classical": {
+      "classical_exact_up_to": 6,
+      "classical_evaluations": 2048,
+      "classical_starts": 8,
+      "classical_sweeps_per_start": 2
+    },
+    "quantum": {
+      "optimizer_max_evaluations": 24,
+      "optimizer_restarts": 1,
+      "initial_angles": [
+        0.3,
+        0.2,
+        0.3,
+        0.2
+      ],
+      "optimizer_rhobeg": 0.1,
+      "optimizer_tol": 0.01,
+      "mps_bond": 1280,
+      "mps_cutoff": 1e-18,
+      "TV_bound_max": 1e-06
+    },
+    "variant": "D3",
+    "transfer_attempts": 64
+  },
+  "p": 2,
+  "optimization_shots": 1000,
+  "final_shots": 10000,
+  "limits": {
+    "per_worker_rss_mib": 8192,
+    "tree_rss_mib": 32768,
+    "minimum_free_disk_gib": 1,
+    "wall_time_limit": null,
+    "predictive_time_exclusion": false
+  },
+  "old_n_K_R_reused": false,
+  "formal_J_contribution": 1,
+  "formal_J_confirmed": true,
+  "main_experiment_authorized": false,
+  "budget_rationale": "User-adopted fixed research work: 10 iterations / 70 completion attempts per branch, not a convergence or superiority guarantee",
+  "formal_J": 30,
+  "cpu_ids": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "formal_seed_root": 2026112251,
+  "excluded_pilot_seeds": [
+    9201,
+    2026112231,
+    2026112232,
+    2026112233,
+    2026112241
+  ],
+  "reference_pilot": "/home/takuma/kmd-analysis/output/iterative_comparison_20261122_v3/pilot_ready",
+  "budget_pilot_evidence": "/home/takuma/kmd-analysis/output/iterative_d3/pilot_v2",
+  "diagnosis_evidence": "/home/takuma/kmd-analysis/output/iterative_study_20261122_v1/diagnosis_verified",
+  "entry_probe": "/home/takuma/kmd-analysis/output/iterative_study_20261122_v1/entry_probe_final",
+  "validation_xml": [
+    "/home/takuma/kmd-analysis/docs/research/iterative_d3/TESTS_FINAL.xml"
+  ],
+  "freeze_spec": "/home/takuma/kmd-analysis/docs/research/iterative_d3/SPEC.md",
+  "freeze_spec_sha256": "c57d9fca0c39a39814a571e8df6dbb4666930fb01c119c52ce1b0cbe1ddc2b4e",
+  "precision_policy": {
+    "kind": "achieved_precision_fixed_J",
+    "target": null,
+    "J_adjustment": false,
+    "confidence_or_power_design": false
+  },
+  "statistics": {
+    "primary_cohort": [
+      "B_reference",
+      "C_Idual_normal",
+      "D_quantum_normal"
+    ],
+    "control_cohort": [
+      "D_classical_normal",
+      "D_quantum_normal"
+    ],
+    "I_dual": "trial-first",
+    "error_bars": "mean +/- 1 sample SD",
+    "MCSE": "sample SD/sqrt(independent valid J_eff)",
+    "strict_dual_tolerance_D_km": 0,
+    "strict_dual_tolerance_W_min": 0,
+    "B_distribution": "none; fixed reference",
+    "hypothesis_tests": false
+  },
+  "legacy_entry_disabled": true,
+  "preparation_approved": true,
+  "J_status": "FREEZE",
+  "precision_status": "FREEZE",
+  "environment_reference": "/home/takuma/kmd-analysis/docs/research/iterative_study_20261122_v1/ENVIRONMENT.json",
+  "environment_reference_sha256": "521df5bfd4bf566bc64e8218cee5e06226993605e80b90f86421d5cfc21832b2",
+  "execution_action": "explicit --execute in new CLI; not invoked during preparation",
+  "D0_archive": "/home/takuma/kmd-analysis/output/iterative_study_20261122_v1/budget_pilot",
+  "D0_formal_manifest": "/home/takuma/kmd-analysis/output/iterative_study_20261122_v1/formal_J30_final/MANIFEST.json",
+  "validation_receipt": "/home/takuma/kmd-analysis/output/iterative_d3/VALIDATION.json",
+  "variants": {
+    "D0": "preserved",
+    "D1": "2+2",
+    "D2": "2+2 and 5+5",
+    "D3": "2+2, 5+5 and rotating whole-vehicle transfer"
+  },
+  "local_input_policy": "odd current, even reallocation",
+  "transfer_rotation": "F[(t-1)%3], F[t%3]; third if transfer unavailable"
+}

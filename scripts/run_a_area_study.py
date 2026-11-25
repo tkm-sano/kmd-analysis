@@ -11,6 +11,9 @@ sys.path.insert(0,str(ROOT/'src'))
 
 
 def main():
+    if '--historical-reproduction' not in sys.argv:
+        raise SystemExit('HISTORICAL_ENTRYPOINT: legacy A plans require --historical-reproduction; current A is an external administrative reference')
+    sys.argv.remove('--historical-reproduction')
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--data',required=True)
     parser.add_argument('--output',required=True)

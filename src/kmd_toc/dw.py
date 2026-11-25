@@ -1,7 +1,8 @@
-"""Distance/wait-only research policy and read-only analysis of saved trials.
+"""Historical loading-wait policy and read-only analysis of pre-v2 saved trials.
 
 This module never calls a solver, changes a registration, or consumes timing
-values. Old three-objective implementations remain available for reproduction.
+values. Current cargo-W policy/evaluation lives in cargo_wait_v2. A_rule_v1 in
+this module is historical and must never be used as administrative reference A.
 """
 from collections import Counter, defaultdict
 import hashlib
@@ -13,12 +14,12 @@ from statistics import mean, median, stdev, variance
 POLICY_ID = 'ota-toc-DW-20261117-v1'
 METHODS = ('A', 'B', 'C', 'D', 'D_CLASSICAL_REPLACEMENT')
 SCALES = ('S1', 'S2', 'S3')
-RQ = ('京浜トラックターミナルを起点とする大田区内のToC配送において、量子・古典ハイブリッド最適化は、'
-      '配送実績を想定するベースライン、従来的な手法および古典最適化計算と比較して、'
-      '全車両の総走行距離と積込待機時間という二目的について、どのような性能差とトレードオフを示すか。')
-HYPOTHESIS = ('量子・古典ハイブリッド最適化は、同一の配送需要と運行制約の下で、'
-              '配送実績を想定するベースライン、従来的な手法および古典最適化計算のいずれと比較しても、'
-              '全車両の総走行距離と積込待機時間の二指標を総合した評価値が小さくなる。')
+RQ = ('京浜トラックターミナルを起点とする大田区のToC配送において、量子・古典ハイブリッド最適化手法は、'
+      'オープンデータに基づくベースライン、従来の経路作成手法および最適化手法と比較して、'
+      '同一の計画作成時間内に得られる配送計画の総走行距離および積込待機時間にどのような差異を示すか。')
+HYPOTHESIS = ('量子・古典ハイブリッド最適化手法は、オープンデータに基づくベースライン、'
+              '従来の経路作成手法および最適化手法と比較して、同一の計画作成時間内に、'
+              '総走行距離および積込待機時間の両方を削減した配送計画を生成できる。')
 
 
 def read(path):
@@ -228,7 +229,7 @@ def analyze_rows(rows):
             'nested_scales_are_not_independent_families': True,
             'rows': projected, 'summaries': summaries, 'comparisons': comparisons,
             'observed_fronts': fronts, 'J_DW': None,
-            'hypothesis_status': 'NOT_TESTABLE_UNTIL_COMPOSITE_AND_SUPPORT_RULE_ARE_REGISTERED'}
+            'hypothesis_status': 'NOT_TESTABLE_UNTIL_EQUAL_TIME_BOTH_REDUCTIONS_AND_SUPPORT_RULE_ARE_REGISTERED'}
 
 
 def load_saved_pilot(root, policy):
@@ -335,7 +336,8 @@ def write_analysis(source, output, policy_path):
     for row in report['summaries']:
         values = [f"{row[k]['mean']:.4f}" if row[k]['mean'] is not None else '未取得' for k in ('D','W')]
         lines.append(f"|{row['scale']}|{row['method']}|{len(row['adopted_run_ids'])}/{row['registered']}|{'|'.join(values)}|")
-    lines += ['', '総合評価の重み・正規化・支持規則が未決定のためJ_DWと研究仮説の検証は保留。',
+    lines += ['', '同一計画作成時間の具体的条件とD/W両方の削減に関する推定対象・支持規則が未決定のため研究仮説の検証は保留。',
+              '既存予備試行は有限作業量条件の結果であり、同一計画作成時間比較の結果とは扱わない。J_DWの採否・定義も未決定。',
               '全比較は成功条件付き・探索的。0観測分散に0幅の信頼区間を付けず、非有意を同等性と解釈しない。',
               '方式全体の差と量子候補生成の寄与を区別し、古典置換対照を併記する。', '']
     (output/'REPORT.md').write_text('\n'.join(lines))

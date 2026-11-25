@@ -34,7 +34,7 @@ def _shape(value, schema, path="study"):
             raise ValueError(f"Expected list at {path}")
         for index, child in enumerate(value):
             _shape(child, schema[0], f"{path}[{index}]")
-    elif not isinstance(value, schema) or isinstance(value, bool):
+    elif not isinstance(value, schema) or (isinstance(value, bool) and schema is not bool):
         raise ValueError(f"Invalid type at {path}")
 
 
@@ -45,7 +45,7 @@ _SCHEMA = {
     "hypothesis": str, "policy_id": str,
     "scope": {"delivery_type": str, "region": str, "depot": str,
               "vehicle_label": str, "depots": int, "trips_per_vehicle": int,
-              "customer_time_windows": type(None)},
+              "customer_time_windows": bool},
     "cases": [{"id": str, "N": int, "vehicles": int, "berths": int}],
     "operations": {"first_loading_ready_s": _NUMBER_OR_NULL,
                    "shift_end_s": _NUMBER_OR_NULL, "loading_duration_s": _NUMBER_OR_NULL,
@@ -68,7 +68,7 @@ _SCHEMA = {
                     "solver_seeds": [int], "repetitions": (int, type(None)),
                     "candidate_selection_rule": _TEXT_OR_NULL,
                     "subproblem_rule": _TEXT_OR_NULL, "subproblem_size": (int, type(None))},
-    "metrics": {"D": str, "W": str, "W1": str, "W2": str, "comparison": str},
+    "metrics": {"D": str, "W": str, "W_total": str, "W_loading": str, "W_unloading": str, "comparison": str},
     "figures": {"count": int, "panels": [str], "colors": {"A": str, "B": str,
                 "C": str, "D": str}, "no_results": str},
 }
@@ -80,15 +80,15 @@ def load_study(path):
                       parse_constant=lambda x: (_ for _ in ()).throw(ValueError(x)))
     _shape(data, _SCHEMA)
     if (data["schema_version"], data["study_id"], data["status"]) != (
-            2, "ota_toc_two_trip", "SPECIFIED_WITH_HOLDS"):
+            3, "ota_toc_two_trip", "SPECIFIED_WITH_HOLDS"):
         raise ValueError("Unsupported study identity/version/status")
-    from .dw import POLICY_ID, RQ, HYPOTHESIS
+    from .cargo_wait_v2.policy import POLICY_ID, RQ, HYPOTHESIS
     if (data['policy_id'], data['rq'], data['hypothesis']) != (POLICY_ID, RQ, HYPOTHESIS):
         raise ValueError("Research policy/RQ/hypothesis differs from the adopted specification")
     if data["scope"] != {"delivery_type": "ToC", "region": "東京都大田区",
                          "depot": "京浜トラックターミナルを起点とする仮想拠点",
                          "vehicle_label": "配送車両", "depots": 1,
-                         "trips_per_vehicle": 2, "customer_time_windows": None}:
+                         "trips_per_vehicle": 2, "customer_time_windows": False}:
         raise ValueError("Study scope differs from the adopted specification")
     cases = [(x["id"], x["N"], x["vehicles"], x["berths"]) for x in data["cases"]]
     if cases != [("S1", 1000, 10, 2), ("S2", 2000, 20, 4), ("S3", 4000, 40, 8)]:
@@ -108,9 +108,10 @@ def load_study(path):
         if (item["name"] not in allowed or item["status"] != "HOLD_NOT_ADOPTED"
                 or not math.isfinite(item["value"]) or item["value"] < 0):
             raise ValueError("Invalid provisional parameter")
-    expected_metrics = {"D": "total_distance_km", "W": "total_loading_wait_min",
-                        "W1": "trip1_loading_wait_min", "W2": "trip2_loading_wait_min",
-                        "comparison": "same_input_absolute_delta_and_2d_dominance"}
+    expected_metrics = {"D": "total_distance_km", "W": "mean_cargo_wait_min_per_operation",
+                        "W_total": "total_cargo_wait_min", "W_loading": "loading_cargo_wait_min",
+                        "W_unloading": "unloading_cargo_wait_min",
+                        "comparison": "direct_BCD_and_separate_external_A_levels"}
     if data["metrics"] != expected_metrics:
         raise ValueError("Unexpected metric boundary")
     if (data["figures"]["count"] != 4 or data["figures"]["panels"] != ["S1", "S2", "S3"]

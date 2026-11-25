@@ -90,7 +90,18 @@ def catalogue(p,day,pool,seed_plan,initial,config,ledger):
 def solve_master(p,day,pool,seed_plan,initial,config,ledger,label):
     columns=catalogue(p,day,pool,seed_plan,initial,config,ledger)
     master=FiniteMaster(day,columns,config,ledger);index={c.column_id:i for i,c in enumerate(columns)}
+    if config.get('operating_policy') == 'FCFS_v1':
+        # The historical calendar LP supplies D-only pricing duals. Its additive
+        # calendar W cannot represent a shared FCFS queue, so NEVER run that IP
+        # or its W tie-break under the new policy. The integer completion below
+        # uses the SAME route pool and D-first/W-second objective with exact FCFS.
+        from kmd_toc.fcfs_v1.master import FCFSIntegerCompletion
+        master=FCFSIntegerCompletion(p,day,columns,pool,seed_plan,config,ledger)
     outcome=column_generation(master,[index[c.column_id] for c in initial],'D',None,
                               max_rounds=config['catalogue']['column_generation_rounds'])
+    if config.get('operating_policy') == 'FCFS_v1':
+        outcome.update(operating_policy='FCFS_v1',
+            integer_enrichment_attribution='shared_route_pool_FCFS_CP_completion_not_calendar_W_IP',
+            LP_scope='fixed_calendar_distance_pricing_surrogate_not_a_global_FCFS_bound')
     ledger.capture(label,{'outcome':outcome,'columns':len(columns)})
     return columns,outcome

@@ -1,12 +1,12 @@
 {
-  "policy_id": "ota-toc-DW-20261117-v1",
+  "policy_id": "ota-toc-cargo-wait-20261119-v2",
   "status": "ADOPTED_SCOPE_MAIN_HOLD",
-  "authority": "2026-11-17 user: remove T from RQ and analyses; adopt proposed two-objective RQ/hypothesis and audit/correct the whole study",
-  "rq": "京浜トラックターミナルを起点とする大田区内のToC配送において、量子・古典ハイブリッド最適化は、配送実績を想定するベースライン、従来的な手法および古典最適化計算と比較して、全車両の総走行距離と積込待機時間という二目的について、どのような性能差とトレードオフを示すか。",
-  "hypothesis": "量子・古典ハイブリッド最適化は、同一の配送需要と運行制約の下で、配送実績を想定するベースライン、従来的な手法および古典最適化計算のいずれと比較しても、全車両の総走行距離と積込待機時間の二指標を総合した評価値が小さくなる。",
+  "authority": "2026-11-19 user: external administrative A and whole-operation cargo waiting; implementation and small validation only",
+  "rq": "京浜トラックターミナルを起点とする大田区のToC配送において、量子・古典ハイブリッド最適化手法は、従来的な経路作成手法および古典的最適化手法と比較して、同一の計画作成時間内に得られる配送計画の総走行距離および1運行当たりの荷待ち時間にどのような差異を示すか。また、これらの評価結果は、オープンデータに基づく外部参照ベースラインとどのような関係にあるか。",
+  "hypothesis": "量子・古典ハイブリッド最適化手法は、従来的な経路作成手法および古典的最適化手法と比較して、同一の計画作成時間内に、総走行距離および1運行当たり平均荷待ち時間の両方を削減した配送計画を生成できる。",
   "objectives": {
     "D": "total_distance_km",
-    "W": "total_loading_wait_min"
+    "W": "mean_cargo_wait_min_per_operation"
   },
   "composite": {
     "name": "J_DW",
@@ -18,26 +18,35 @@
   "analysis": {
     "metrics": [
       "D",
-      "W"
+      "W_total",
+      "W_mean",
+      "W_loading",
+      "W_unloading",
+      "W_other",
+      "wait_incidence",
+      "T_auxiliary"
     ],
-    "dominance_dimensions": 2,
-    "saved_pilot_role": "post_policy_exploratory_reanalysis",
-    "primary_contrast_candidate": "S2:D_minus_C:distance",
-    "confirmatory_primary_adopted": false,
-    "include_all_registered_attempts": true
+    "direct_methods": [
+      "B",
+      "C",
+      "D"
+    ],
+    "A_role": "external_only_no_dominance_no_hypothesis_test",
+    "legacy_W": "historical_only_no_mix",
+    "statistical_support_rule": null
   },
   "execution": {
-    "mode": "finite_work",
+    "mode": "preserved_finite_work_not_equal_time_evidence",
     "rules": "configs/toc_delivery/termination_rules_20261116_v1.json",
     "BCD_branches": 4,
     "native_threads_per_branch": 1,
     "outer_execution": "sequential",
-    "timing_logs": "preserve_as_execution_metadata_only",
+    "timing_logs": "auxiliary_record",
     "launch_authorized": false
   },
   "source": {
-    "experiment_id": "non_time_variance_pilot_20261117_v1",
-    "kind": "saved_pilot_only"
+    "kind": "saved_BCD_plans_or_small_artificial_validation",
+    "legacy_policy": "configs/toc_delivery/dw_policy_20261117_v1_historical_loading.json"
   },
   "main": {
     "executable": false,
@@ -45,6 +54,15 @@
     "repetitions": null,
     "precision_D_km": null,
     "precision_W_min": null,
-    "reason": "composite, normalization, comparison family, support rule, required precision and repetitions remain unresolved"
+    "reason": "equal planning time budget, measurement boundary, deadline adoption, statistical estimand/support, repetitions and precision unresolved; small model validation only"
+  },
+  "wait_model": "configs/toc_delivery/cargo_wait_model_20261119_v2.json",
+  "A": {
+    "role": "external_administrative_reference",
+    "distance_km_per_parcel": 0.58,
+    "wait_min_per_operation": 60,
+    "generated_plan": false,
+    "planning_time": null,
+    "same_observed_plan_pair": false
   }
 }

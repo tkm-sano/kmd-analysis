@@ -1,0 +1,69 @@
+{
+  "checked_date": "2026-11-21",
+  "method": "primary-source web browsing; no fulltext archive or webpage content hash claimed",
+  "sources": [
+    {
+      "id": "Cumming2007",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2064100/",
+      "status": "BODY_CONFIRMED_EARLIER_REACCESS_RECAPTCHA",
+      "sections": [
+        "Table 1",
+        "descriptive and inferential error bars"
+      ],
+      "supports": "SD describes observation spread; SE differs",
+      "does_not_establish": "No-testing policy, formal J or SEM as result bars"
+    },
+    {
+      "id": "BartzBeielstein2020",
+      "url": "https://arxiv.org/html/2007.03488v2",
+      "bibliography": "https://arxiv.org/abs/2007.03488",
+      "status": "PRIMARY_AUTHOR_ORIGINAL_CONFIRMED",
+      "sections": [
+        "6.2.2",
+        "6.3"
+      ],
+      "supports": "Mean median min max Q1 Q3 SD in optimization benchmarking",
+      "does_not_establish": "Abandonment of all inferential methods"
+    },
+    {
+      "id": "SpringerSupplied",
+      "url": "https://link.springer.com/book/10.1007/978-3-030-75519-9",
+      "status": "UNVERIFIED_TARGET_BIBLIOGRAPHY",
+      "replacement": "BartzBeielstein2020",
+      "supports": null
+    },
+    {
+      "id": "KrzywinskiAltman2014",
+      "url": "https://www.nature.com/articles/nmeth.2813",
+      "indexed_primary_text": "https://www.nature.com/articles/nmeth.2813.pdf",
+      "bibliography": "https://pubmed.ncbi.nlm.nih.gov/24645192/",
+      "author_bibliography": "https://mk.bcgsc.ca/points-of-significance/bibliography.mhtml",
+      "status": "PRIMARY_INDEX_TEXT_AND_BIBLIOGRAPHY_CONFIRMED_DIRECT_FULLTEXT_BLOCKED",
+      "supports": "Quartile boxes, median, IQR/outliers; caution with small samples",
+      "does_not_establish": "type 7 is the only quartile definition"
+    },
+    {
+      "id": "NIST",
+      "url": "https://www.itl.nist.gov/div898/handbook/eda/section3/boxplot.htm",
+      "status": "PRIMARY_OFFICIAL_BODY_CONFIRMED",
+      "sections": [
+        "Definition",
+        "Box plots with fences"
+      ],
+      "supports": "Quartiles median and 1.5 IQR fence variant",
+      "boundary_difference": "This research explicitly includes observations equal to fences; NIST prose uses strict greater/smaller"
+    },
+    {
+      "id": "MorrisWhiteCrowther2019",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6492164/",
+      "status": "PRIMARY_BODY_CONFIRMED",
+      "sections": [
+        "5.2 Table 6",
+        "5.3"
+      ],
+      "supports": "Monte Carlo uncertainty and replication precision; mean MCSE s/sqrt(n) for independent replicates",
+      "scope_difference": "Statistical method simulations with known DGM versus fixed delivery-problem stochastic algorithm runs",
+      "does_not_establish": "Formal J, numeric MCSE tolerance or resource bound for this study"
+    }
+  ]
+}

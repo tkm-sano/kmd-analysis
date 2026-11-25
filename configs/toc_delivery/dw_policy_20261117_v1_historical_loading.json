@@ -1,0 +1,50 @@
+{
+  "policy_id": "ota-toc-DW-20261117-v1",
+  "status": "ADOPTED_SCOPE_MAIN_HOLD",
+  "authority": "2026-11-17 user: adopt D/W objectives and retain main HOLD; 2026-11-18 user: fix exact RQ and corrected hypothesis wording, requiring reductions in both D and W within equal planning time; time budget, measurement boundary, deadline plan rule, estimand and support rule unresolved; existing finite-work execution preserved",
+  "rq": "京浜トラックターミナルを起点とする大田区のToC配送において、量子・古典ハイブリッド最適化手法は、オープンデータに基づくベースライン、従来の経路作成手法および最適化手法と比較して、同一の計画作成時間内に得られる配送計画の総走行距離および積込待機時間にどのような差異を示すか。",
+  "hypothesis": "量子・古典ハイブリッド最適化手法は、オープンデータに基づくベースライン、従来の経路作成手法および最適化手法と比較して、同一の計画作成時間内に、総走行距離および積込待機時間の両方を削減した配送計画を生成できる。",
+  "objectives": {
+    "D": "total_distance_km",
+    "W": "total_loading_wait_min"
+  },
+  "composite": {
+    "name": "J_DW",
+    "status": "HOLD",
+    "weights": null,
+    "normalization": null,
+    "support_rule": null
+  },
+  "analysis": {
+    "metrics": [
+      "D",
+      "W"
+    ],
+    "dominance_dimensions": 2,
+    "saved_pilot_role": "post_policy_exploratory_reanalysis",
+    "primary_contrast_candidate": "S2:D_minus_C:distance",
+    "confirmatory_primary_adopted": false,
+    "include_all_registered_attempts": true
+  },
+  "execution": {
+    "mode": "finite_work",
+    "rules": "configs/toc_delivery/termination_rules_20261116_v1.json",
+    "BCD_branches": 4,
+    "native_threads_per_branch": 1,
+    "outer_execution": "sequential",
+    "timing_logs": "preserve_as_execution_metadata_only",
+    "launch_authorized": false
+  },
+  "source": {
+    "experiment_id": "non_time_variance_pilot_20261117_v1",
+    "kind": "saved_pilot_only"
+  },
+  "main": {
+    "executable": false,
+    "runs": [],
+    "repetitions": null,
+    "precision_D_km": null,
+    "precision_W_min": null,
+    "reason": "equal planning time budget, measurement boundary, deadline plan rule, estimand and support rule for reductions in both D and W, comparison family, required precision and repetitions remain unresolved; auxiliary composite adoption, normalization and weights remain undecided; existing finite-work pilot is not evidence of equal planning time"
+  }
+}

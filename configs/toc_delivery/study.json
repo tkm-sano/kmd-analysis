@@ -1,8 +1,8 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "study_id": "ota_toc_two_trip",
   "status": "SPECIFIED_WITH_HOLDS",
-  "rq": "京浜トラックターミナルを起点とする大田区内のToC配送において、量子・古典ハイブリッド最適化は、配送実績を想定するベースライン、従来的な手法および古典最適化計算と比較して、全車両の総走行距離と積込待機時間という二目的について、どのような性能差とトレードオフを示すか。",
+  "rq": "京浜トラックターミナルを起点とする大田区のToC配送において、量子・古典ハイブリッド最適化手法は、従来的な経路作成手法および古典的最適化手法と比較して、同一の計画作成時間内に得られる配送計画の総走行距離および1運行当たりの荷待ち時間にどのような差異を示すか。また、これらの評価結果は、オープンデータに基づく外部参照ベースラインとどのような関係にあるか。",
   "scope": {
     "delivery_type": "ToC",
     "region": "東京都大田区",
@@ -10,7 +10,7 @@
     "vehicle_label": "配送車両",
     "depots": 1,
     "trips_per_vehicle": 2,
-    "customer_time_windows": null
+    "customer_time_windows": false
   },
   "cases": [
     {
@@ -96,10 +96,10 @@
     "road_matrix_manifest": null
   },
   "comparisons": {
-    "A": "proxy_area_assignment_nearest_visit_FCFS_loading",
-    "B": "greedy_assignment_local_search_and_loading_order_adjustment",
+    "A": "external_administrative_reference_no_plan_no_T",
+    "B": "directed_Clarke_Wright_and_shared_completion",
     "C": "OR_Tools_Routing_and_CP_SAT_coordination",
-    "D": "classical_global_plan_QAOA_subproblem_reintegration",
+    "D": "preserved_finite_Huang_AOA_hybrid_and_shared_completion",
     "D_classical_control": "same_initial_plan_subproblem_selection_and_budget_with_classical_solver",
     "solver_seeds": [],
     "repetitions": null,
@@ -109,10 +109,11 @@
   },
   "metrics": {
     "D": "total_distance_km",
-    "W": "total_loading_wait_min",
-    "W1": "trip1_loading_wait_min",
-    "W2": "trip2_loading_wait_min",
-    "comparison": "same_input_absolute_delta_and_2d_dominance"
+    "W": "mean_cargo_wait_min_per_operation",
+    "W_total": "total_cargo_wait_min",
+    "W_loading": "loading_cargo_wait_min",
+    "W_unloading": "unloading_cargo_wait_min",
+    "comparison": "direct_BCD_and_separate_external_A_levels"
   },
   "figures": {
     "count": 4,
@@ -129,6 +130,6 @@
     },
     "no_results": "DO_NOT_GENERATE"
   },
-  "policy_id": "ota-toc-DW-20261117-v1",
-  "hypothesis": "量子・古典ハイブリッド最適化は、同一の配送需要と運行制約の下で、配送実績を想定するベースライン、従来的な手法および古典最適化計算のいずれと比較しても、全車両の総走行距離と積込待機時間の二指標を総合した評価値が小さくなる。"
+  "policy_id": "ota-toc-cargo-wait-20261119-v2",
+  "hypothesis": "量子・古典ハイブリッド最適化手法は、従来的な経路作成手法および古典的最適化手法と比較して、同一の計画作成時間内に、総走行距離および1運行当たり平均荷待ち時間の両方を削減した配送計画を生成できる。"
 }

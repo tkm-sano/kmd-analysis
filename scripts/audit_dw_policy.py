@@ -25,11 +25,15 @@ GUARDED = ('run_dwt.py', 'run_dwt_bundle.py', 'run_comparison_v1.py', 'run_compa
 
 
 def main():
+    if '--historical-reproduction' not in sys.argv:
+        from audit_cargo_wait_v2 import main as current_main
+        return current_main()
+    sys.argv.remove('--historical-reproduction')
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--write', action='store_true', help='Write derived audit files only')
     args = parser.parse_args()
     checks = {}
-    policy = load_policy(ROOT/'configs/toc_delivery/dw_policy_20261117_v1.json')
+    policy = load_policy(ROOT/'configs/toc_delivery/dw_policy_20261117_v1_historical_loading.json')
     study = load_study(ROOT/'configs/toc_delivery/study.json')
     checks['policy_and_initial_scope_are_two_objective'] = set(policy['objectives']) == {'D','W'} and study['figures']['count'] == 4
     active = [ROOT/'README.md', ROOT/'AGENTS.md', ROOT/'BASELINE_A_METHOD.md']

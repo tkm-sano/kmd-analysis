@@ -1,0 +1,18 @@
+{
+  "selection_version": "D-final-Idual-20261121-v1",
+  "status": "FROZEN",
+  "authority": "2026-11-21 explicit user instruction to freeze final four-branch selection",
+  "scope": "D_FINAL_SELECTION_ONLY",
+  "primary": "maximize 100*min((D_C-D_X)/D_C,(W_C-W_X)/W_C)",
+  "ties": ["maximize relative improvement sum", "minimize D", "minimize W", "prefer saved initial plan", "ascending fixed integer branch ID"],
+  "candidates": "feasible final plans from exactly four registered branches plus feasible saved initial plan",
+  "reference": "one explicit, hash-pinned, FCFS-valid C plan for the same problem and outer trial; never substitute the initial plan",
+  "zero_W_C": "minimize W, then D, then initial preference, then branch ID",
+  "zero_D_C": "minimize D, then W, then initial preference, then branch ID",
+  "zero_both": "minimize D, then W, then initial preference, then branch ID",
+  "undefined_I_dual": null,
+  "comparison": "exact rational arithmetic on decimal OD distances and integer total loading-wait seconds; no epsilon or comparison tolerance",
+  "local_acceptance": "unchanged: both D and total W nonworsening and at least one strict improvement",
+  "legacy_final_rule": "distance rounded to 0.1m, total waiting seconds, ascending branch ID; historical only",
+  "main_experiment_authorized": false
+}
